@@ -22,8 +22,8 @@ from promogest.dao.Operazione import Operazione
 from promogest.dao.Azienda import Azienda
 from promogest.dao.TipoRecapito import TipoRecapito
 from promogest.dao.RoleAction import RoleAction
-from promogest.lib.sqlalchemy.orm import *
-from promogest.lib.sqlalchemy import *
+from sqlalchemy.orm import *
+from sqlalchemy import *
 #from utils import leggiAgente
 import string, re
 import xml.etree.cElementTree as ElementTree

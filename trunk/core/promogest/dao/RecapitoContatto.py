@@ -6,8 +6,8 @@
  license: GPL see LICENSE file
 """
 
-from promogest.lib.sqlalchemy import *
-from promogest.lib.sqlalchemy.orm import *
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import *
 from TipoRecapito import TipoRecapito
 #from promogest.dao.Contatto import Contatto

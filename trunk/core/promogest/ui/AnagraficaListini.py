@@ -10,8 +10,8 @@
 
 import gtk
 import gobject
-from promogest.lib.sqlalchemy import *
-from promogest.lib.sqlalchemy.orm import *
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment

@@ -5,9 +5,8 @@
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 
-from promogest.lib.sqlalchemy import *
-from promogest.lib.sqlalchemy.orm import mapper
-from promogest.lib.sqlalchemy import and_, or_
+from sqlalchemy import *
+from sqlalchemy.orm import mapper
 from promogest.Environment import *
 from Dao import Dao
 from promogest.ui.utils import  codeIncrement

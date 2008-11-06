@@ -9,11 +9,10 @@
 """
 
 import datetime
-from promogest.lib.sqlalchemy import *
-from promogest.lib.sqlalchemy.orm import *
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.lib.sqlalchemy import and_, or_
 from Articolo import Articolo
 from Magazzino import Magazzino
 from DaoUtils import giacenzaSel

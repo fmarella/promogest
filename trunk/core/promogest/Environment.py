@@ -13,9 +13,9 @@ import os
 import shutil
 import glob
 import getopt, sys
-from promogest.lib.sqlalchemy import *
-from promogest.lib.sqlalchemy.orm import *
-from promogest.lib.sqlalchemy import pool
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from sqlalchemy import pool
 
 debugDao = False
 

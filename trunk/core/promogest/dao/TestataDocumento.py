@@ -8,8 +8,8 @@ import datetime
 import Dao
 from promogest.Environment import *
 from promogest import Environment
-from promogest.lib.sqlalchemy import *
-from promogest.lib.sqlalchemy.orm import *
+from sqlalchemy import *
+from sqlalchemy.orm import *
 import RigaDocumento
 from RigaDocumento import RigaDocumento
 from RigaDocumento import *

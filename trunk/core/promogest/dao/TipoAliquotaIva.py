@@ -3,8 +3,8 @@
 # Promogest
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 
-from promogest.lib.sqlalchemy import *
-from promogest.lib.sqlalchemy.orm import *
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 

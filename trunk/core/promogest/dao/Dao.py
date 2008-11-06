@@ -7,13 +7,13 @@
 # Author: Francesco Meloni <francesco@promotux.it>
 
 
-import promogest.lib.sqlalchemy
-from promogest.lib.sqlalchemy import *
-from promogest.lib.sqlalchemy.orm import *
+import sqlalchemy
+from sqlalchemy import *
+from sqlalchemy.orm import *
 #from sqlalchemy import and_, or_ , in_
 from promogest.Environment import *
 from UserDict import UserDict
-from promogest.lib.sqlalchemy.util import OrderedDict
+from sqlalchemy.util import OrderedDict
 import datetime
 import string
 from promogest.ui.GtkExceptionHandler import GtkExceptionHandler
