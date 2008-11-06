@@ -549,7 +549,7 @@ class Main(GladeWidget):
         svndialog.getTopLevel().show_all()
         response = svndialog.svnupdate_dialog.run()
         if response == gtk.RESPONSE_OK:
-            command = 'svn co http://svn.promotux.it/svn/works/promogest/branches/promogest2/ ~/pg2'
+            command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
             stdin, stdouterr = os.popen4(command)
             for line in stdouterr.readlines():
                 textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))

@@ -14,7 +14,7 @@ from promogest import Environment
 from promogest.dao.Dao import Dao
 import promogest.dao.Promemoria
 from promogest.dao.Promemoria import Promemoria
-import feedparser
+from promogest.lib import feedparser
 from utils import *
 import threading
 import time

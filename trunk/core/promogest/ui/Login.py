@@ -39,7 +39,7 @@ from promogest.ui.SendEmail import SendEmail
 from sqlalchemy import *
 from sqlalchemy.orm import *
 import threading
-import feedparser
+from promogest.lib import feedparser
 
 windowGroup = []
 statusIcon = gtk.StatusIcon()
@@ -100,7 +100,7 @@ class Login(GladeApp):
             thread.start()
             #thread.join(1.3)
         self.getTopLevel().show_all()
-        
+
 
     def randomSplash(self):
         import random
