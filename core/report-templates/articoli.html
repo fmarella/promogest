@@ -1,0 +1,32 @@
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:py="http://genshi.edgewall.org/"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        lang="en">
+    <head>
+        <title>Preview Articoli</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <xi:include href="style.css"><xi:fallback/></xi:include>
+    </head>
+    <body>
+        <table cellpadding="0" cellspacing="3" border="0">
+            <tr>
+                <th>Codice</th>
+                <th>Descrizione</th>
+                <th>IVA</th>
+                <th>Famiglia</th>
+                <th>Categoria</th>
+                <th>UB</th>
+                <th>Produttore</th>
+            </tr>
+            <tr class="row" py:for="dao in objects">
+                <td class="detail">${dao.codice}</td>
+                <td class="detail">${dao.denominazione}</td>
+                <td class="detail">${'%14.2f' % dao.percentuale_aliquota_iva}</td>
+                <td class="detail">${dao.denominazione_famiglia}</td>
+                <td class="detail">${dao.denominazione_categoria}</td>
+                <td class="detail">${dao.denominazione_unita_base}</td>
+                <td class="detail">${dao.produttore}</td>
+            </tr>
+        </table>
+    </body>
+</html>

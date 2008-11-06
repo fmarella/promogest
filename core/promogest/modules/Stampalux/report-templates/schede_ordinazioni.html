@@ -1,0 +1,33 @@
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:py="http://genshi.edgewall.org/"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        lang="en">
+    <head>
+        <title>Preview Schede ordinazioni</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <xi:include href="style.css"><xi:fallback/></xi:include>
+    </head>
+    <body>
+        <table cellpadding="0" cellspacing="3" border="0">
+            <tr>
+                <th>Numero</th>
+                <th>Nomi degli Sposi</th>
+                <th>Data ordine</th>
+                <th>Colore</th>
+                <th>Carattere</th>
+                <th>Importo</th>
+                <th>Saldato</th>
+            </tr>
+            <tr><td colspan="7"><hr /></td></tr>
+            <tr py:for="dao in objects">
+                <td class="detail" py:content="dao.numero"></td>
+                <td class="detail" py:content="dao.nomi_sposi"></td>
+                <td class="detail" py:content="dao.data_presa_in_carico.strftime('%d/%m/%Y')"></td>
+                <td class="detail" py:content="dao.colore_stampa"></td>
+                <td class="detail" py:content="dao.carattere_stampa"></td>
+                <td class="detail" py:content="dao.totale_lordo"></td>
+                <td class="detail" py:if="dao.saldato">Si</td>
+            </tr>
+        </table>
+    </body>                                                                    
+</html>

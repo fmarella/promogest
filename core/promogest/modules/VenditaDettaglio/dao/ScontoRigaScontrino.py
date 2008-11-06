@@ -1,0 +1,39 @@
+# -*- coding: iso-8859-15 -*-
+
+# Promogest
+#
+# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
+# Author: Francesco <francesco@promotux.it>
+
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from promogest.Environment import *
+from promogest.dao.Dao import Dao
+from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import scontoRigaScontrinoDel
+
+class ScontoRigaScontrino(Dao):
+
+    def __init__(self, arg=None,isList=False, id=None):
+        Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
+
+    def filter_values(self,k,v):
+        dic= {'id':sconto_riga_scontrino.c.id ==v,
+        'idRigaScontrino':sconto_riga_scontrino.c.id_riga_scontrino==v,}
+        return  dic[k]
+
+
+sconto_riga_scontrino=Table('sconto_riga_scontrino',
+                            params['metadata'],
+                            schema = params['schema'],
+                            autoload=True)
+
+sconto=Table('sconto',
+            params['metadata'],
+            schema = params['schema'],
+            autoload=True)
+
+j = join(sconto, sconto_riga_scontrino)
+
+std_mapper = mapper(ScontoRigaScontrino,j, properties={
+            'id':[sconto.c.id, sconto_riga_scontrino.c.id],
+            }, order_by=sconto_riga_scontrino.c.id)

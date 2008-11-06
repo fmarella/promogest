@@ -1,0 +1,35 @@
+A      python/promogest/plugins/vetreria
+A      python/promogest/plugins/vetreria/dao
+A  +   python/promogest/plugins/vetreria/dao/MisuraPezzo.py
+A      python/promogest/plugins/vetreria/dao/__init__.py
+A      python/promogest/plugins/vetreria/__init__.py
+A      python/promogest/plugins/vetreria/Vetreria.py
+A      python/promogest/plugins/vetreria/data
+A      python/promogest/plugins/vetreria/data/app
+A  +   python/promogest/plugins/vetreria/data/app/misura_pezzo_app.sql
+A      python/promogest/plugins/vetreria/data/sp
+A  +   python/promogest/plugins/vetreria/data/sp/misura_pezzo_set.sql
+A      python/promogest/plugins/vetreria/data/tab
+A  +   python/promogest/plugins/vetreria/data/tab/misura_pezzo.sql
+A      python/promogest/plugins/vetreria/data/view
+A  +   python/promogest/plugins/vetreria/data/view/misura_pezzo_view.sql
+A      python/promogest/plugins/vetreria/install_db
+A      python/promogest/plugins/vetreria/install_db/setup.py
+A      python/promogest/plugins/__init__.py
+A      python/promogest/dao/InformazioniFatturazioneDocumento.py
+M      python/promogest/ui/AnagraficaDocumenti.py
+A      python/promogest/ui/FatturazioneDifferita.py
+M      python/promogest/ui/AnagraficaComplessa.py
+A      python/gui/anagrafica_documenti.glade
+A      python/gui/fatturazione_differita.glade
+A      data/app/informazioni_fatturazione_documento_app.sql
+A      data/reg/sp/informazioni_fatturazione_documento_view.sql
+A      data/reg/tab/informazioni_contabili_documento.sql
+A      data/reg/tab/informazioni_fatturazione_documento.sql
+A      data/reg/view/informazioni_fatturazione_documento_view.sql
+A      install_db/update_old_db.sh
+A      python/promogest/plugins/pagamenti/__init__.py
+A      python/promogest/plugins/pagamenti/Pagamenti.py
+A      python/promogest/ui/AnagraficaDocumentiFilter.py
+A      python/promogest/ui/AnagraficaDocumentiEdit.py
+A

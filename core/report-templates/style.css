@@ -1,0 +1,73 @@
+<style>
+
+    body {
+        background-color: white;
+        font-family: monospace;
+    }        
+    
+    table {
+        width: 98%;      
+    }
+    
+    tr.row {
+        border-bottom : 1px solid black;
+    }
+
+    td {
+        padding-left: 4px;
+    }
+    
+    td.detail {
+        padding-left: 2px;
+
+    }
+    
+    td.left {
+        text-align: left;
+    }
+    
+    th {
+        background : #c0c0c0;
+        color : #FFFFFF;
+        padding-left: 4px;
+        font-weight: bold;
+        font-style: normal;
+        font-size: 1.1em;
+    }
+    
+    th.left {
+        font-weight: normal;
+    }
+    
+    li {
+        padding-left: 4px; 
+        list-style: square;
+    }
+    
+    .header {
+        font-style: italic;
+        border-width: 1px 0px 1px 0px;
+        border-style: solid;
+        border-color: black;
+        padding: 4px;
+        margin: 4px;
+        font-size: 1.2em;
+    }
+    
+    .totale {
+        padding-top: 6px;
+        margin-top: 6px;
+        border-width: 1px 0px 0px 0px;
+        border-style: solid;
+        border-color: black;
+    }
+    
+    td.number {
+        text-align: right;
+    }
+    
+    th.number {
+        text-align: right;
+    }
+    
+</style>

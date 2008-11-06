@@ -1,0 +1,35 @@
+[Numbers]
+decimals = 2
+
+[Database]
+user = promoadmin
+password = admin
+host = db.promotux.it
+port = 5432
+database = promowear_demo
+
+[Layout]
+min_rows_per_document_page = 10
+
+[Documenti]
+cartella_predefinita =
+ricerca_per = codice / descrizione / codice_a_barre / codice_articolo_fornitore
+
+[Articoli]
+lunghezza_codice_famiglia = 0
+lunghezza_progressivo = 7
+numero_famiglie = 0
+prefisso_codice = ART
+
+[Clienti]
+lunghezza_codice = 5
+prefisso_codice = CL
+
+[Fornitori]
+lunghezza_codice = 5
+prefisso_codice = FO
+
+#[TaglieColori]
+#mod_enable = yes
+#anno_default = <id_anno_default>
+#stagione_default = <id_stagione_default>

@@ -1,0 +1,14 @@
+<html xmlns:py="http://genshi.edgewall.org/" py:strip=""
+      xmlns:xi="http://www.w3.org/2001/XInclude" xi:strip="">
+<?python from genshi import HTML ?>
+<body>
+    <div>
+    <py:for each="f in feed">
+    <div style = "font-weight:bold">${f.updated}&nbsp;-&nbsp;<a href="${f.links}">${f.title}</a></div>
+    <div>${HTML(f.body)}</div>
+    <div style="color:#FCAF3E">Inserita da: <span style = "font-weight:bold;font-style:italic;color: #2B4F81">${f.autore}</span></div>
+    <div><br/></div>
+    </py:for>
+    </div>
+</body>
+</html>

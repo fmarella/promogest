@@ -1,0 +1,41 @@
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:py="http://genshi.edgewall.org/"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        lang="en">
+    <head>
+        <title>Report Agenti</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <xi:include href="style.css"><xi:fallback/></xi:include>
+    </head>
+    <body>
+        <table cellpadding="0" cellspacing="3" border="0">
+            <tr>
+                <th>Numero/Parte</th>
+                <th>Operazione</th>
+                <th>Data docum.</th>
+                <th>Cliente/Fornitore</th>
+                <th>Pagamento</th>
+                <th>Banca</th>
+            </tr>
+            <tr class="row" py:for="dao in objects">
+                <?python
+                    cliente = dao.ragione_sociale_cliente or ''
+                    if cliente == '':
+                        cliente = (dao.cognome_cliente or '') + ' ' + (dao.nome_cliente or '')
+                ?>
+                <?python
+                    fornitore = dao.ragione_sociale_fornitore or ''
+                    if fornitore == '':
+                        fornitore = (dao.cognome_fornitore or '') + ' ' + (dao.nome_fornitore or '')
+                ?>
+
+                <td class="detail">${str(dao.numero) + ' ' + (dao.parte or '')}</td>
+                <td class="detail">${dao.operazione}</td>
+                <td class="detail">${dao.data_documento.strftime('%d/%m/%Y')}</td>
+                <td class="detail">${dao.intestatario}</td>
+                <td class="detail">${dao.pagamento}</td>
+                <td class="detail">${dao.banca}</td>
+            </tr>
+        </table>
+    </body>
+</html>

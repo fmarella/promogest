@@ -1,0 +1,139 @@
+Installazione su piattaforma linux
+----------------------------------
+Promogest2 ¶
+
+Finchè non avrò un nome nuovo userò questo ... ( Mi piace MentoR ..) <--- quasi sicuramente sarà MENTOR
+
+Creazione Ambiente. La base di partenza testata è una ubuntu 8.04 ed 8.10 in uscita a 32 ed a 64 bit. E' necessario avere installato il postgresql-8.3 ed avere modificato i file pg_hba.conf e postgres.conf per permettere la connessione in "trust" dell'applicazione.
+
+E' necessario anche avere python-genshi, python-feedparser, python-psycopg2, python-reportlab tutti pacchetti python installabili tramiti apt-get install o synaptic.
+
+Attenzione!!!!
+
+La versione richiesta di SQLALCHEMY è la 0.5 RC1 scaricabile ed installabile dal sito ufficiale qui ( brevemente per installarla si scarica, si scompatta si accede alla cartella e si lancia il comando sudo python setup.py install ) magari avendo precedentemente disintallato la versione del pacchetto deb qualora ci fosse)
+
+Installazione promogest2 scaricare i sorgenti tramite svn da qui : E' sufficiente copiare TUTTA la rica ed incollarla in una shell della nostra linux box
+
+svn co http://svn.promotux.it/svn/works/promogest/branches/promogest2/ pg2
+
+Per entrare nella cartella con i sorgenti per il database:
+
+$cd pg2/dbScheme
+
+Vediamo un po' l'help del comando:
+
+$python create_db.py --help
+
+
+Usage: Uso: create_db.py [options]
+
+
+                    Prima di tutto lanciare questi due righe sostituendo i valori desiderati:
+
+                    #CREAZIONE UTENTE CON PRIVILEGI
+                    psql -d template1 -U postgres -h HOST_DEL_DB -c "CREATE USER NOME_UTENTE WITH ENCRYPTED PASSWORD 'PASSWORD_TRA_VIRGOLETTE' CREATEDB;"
+
+                    #CREAZIONE DATABASE
+                    psql -d template1 -U NOME_UTENTE -h HOST_DEL_DB -c "CREATE DATABASE NOME_DE_DATABSE WITH ENCODING = 'UNICODE';"
+
+                    #LANCIARE UNO DI QUESTI COMANDI DOPO AVER EDITATO LE PRIME RIGHE DI QUESTO FILE <----NOTA BENE  serve editare il file create_db.py  per riportare nella prima sezione i valori usati nei due comandi precedenti
+
+
+
+                    Es: python create_db.py -s MIOSITO -o setup -t web
+                    Es: python create_db.py --schema=MOSITO" --operazione=setup -t web
+                    Es: python create_db.py -s mia_azienda -o setup -t classico   <-------QUESTO VA BENISSIMO PER IL NOSTRO CASO
+
+                    Es: python create_db.py --schema=mia_azienda" --operazione=setup -t web
+
+
+Options:
+  -h, --help            show this help message and exit
+  -s SCHEMA, --schema=SCHEMA
+                        Schema azienda o sottodominio da inserire
+  -o OPERAZIONE, --operation=OPERAZIONE
+                        Operazione da svolgere conlo schema
+  -t TIPO, --type=TIPO  Typo di azione ( scegliere tra: classico e web )
+  -v, --verbose         rende l'operazione di creazione piu' dettagliata
+
+Lancio quindi :
+
+$python create_db.py -s mia_azienda -o setup -t classico
+
+scorrerà un po' finendo con azienda creata ....
+
+In questo modo verranno create le tabelle universali su uno schema chiamato promogest2 e tutte le tabelle relative alla nostra azienda nell'apposito schema.
+
+Entrando ora nella cartella pg2/core possiamo lanciare il file installa.sh danto un
+
+$sudo ./installa.sh
+
+Adesso dovreste avere la possibilità di far partire il programma da una comoda voce di menu START > ufficio > promogest-2 oppure attraverso il comando promoGest2.
+
+Se queste due strade fallissero lanciate pure tramite $python promogest.py nella cartella /pg2/core/
+
+ricordarsi di sistemare il file configure che dovrebbe essere in /home/tuahome/promogest2 con i dati di connessione al nostro db locale creato in precedenza. 
+
+
+
+Parametrizzazione ( da completare ...)
+-----------------
+
+Il Promogest puo' essere configurato agendo sulla voce Opzioni - Configurazione 
+presente nel menu della finestra principale del programma: cio' e' possibile pero' 
+solo se il programma e' in grado di portare a termine la connessione iniziale al 
+database.
+Per modificare manualmente la configurazione, editare il file "configure" presente 
+nella cartella "promogest" situata nella propria home, con un qualunque editor di testo.
+
+Le opzioni principali sono:
+
+[Numbers]
+decimals = 2                                ( numero decimali che il promogest utilizzera' 
+                                              nei valori monetari, da 2 a 4 )
+
+[Database]
+user = promoadmin                           ( utente database )
+password = admin                            ( password database )
+host = localhost                            ( host database )
+port = 5432                                 ( porta database )
+database = promogest_db                     ( nome database )
+
+[Documenti]
+cartella_predefinita =                      ( cartella predefinita nella quale salvare 
+                                              i pdf generati )
+ricerca_per = codice /                      ( indica il tipo di ricerca predefinita nella 
+              descrizione /                   gestione dei documenti: lasciare una sola 
+              codice_a_barre /                voce indicata )
+              codice_articolo_fornitore
+
+[Articoli]
+lunghezza_codice_famiglia = 0               ( indica quanti caratteri del codice famiglia 
+                                              devono essere presi nella generazione 
+                                              automatica dei codici articolo )
+lunghezza_progressivo = 10                  ( indica la lunghezza della parte finale numerica 
+                                              del codice articolo generato automaticamente )
+numero_famiglie = 0                         ( indica quante famiglie devono essere presenti nel 
+                                              codice articolo generato automaticamente, risalendo
+                                              a ritroso rispetto alla famiglia di appartenenza 
+                                              dell'articolo )
+
+[Clienti]
+lunghezza_codice = 5                        ( indica la lunghezza totale del codice cliente 
+                                              generato automaticamente )
+prefisso_codice = CL                        ( indica il prefisso che verra' aggiunto alla parte
+                                              numerica nella generazione automatica del codice
+                                              cliente )
+
+[Fornitori]
+lunghezza_codice = 5                        ( indica la lunghezza totale del codice fornitore 
+                                              generato automaticamente )
+prefisso_codice = FO                        ( indica il prefisso che verra' aggiunto alla parte
+                                              numerica nella generazione automatica del codice
+                                              fornitore )
+
+
+Lancio del programma
+--------------------
+
+Per connettersi Admin - Admin 

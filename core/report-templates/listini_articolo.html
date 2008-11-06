@@ -1,0 +1,48 @@
+<?python
+    from promogest.ui.utils import *
+    from promogest.Environment import *
+?>
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:py="http://genshi.edgewall.org/"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        lang="en">
+    <head>
+        <title>Dettaglio Articolo</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <xi:include href="style.css"><xi:fallback/></xi:include>
+    </head>
+    <body>
+        <div py:strip="True" py:for="dao in objects">
+        <table cellpadding="0" cellspacing="4" border="0">
+            <tr>
+                <td><h3>Articolo: <strong>${dao.articolo}</strong></h3></td>
+            </tr>
+            <tr>
+                <td><h3>Listino: <strong>${dao.denominazione}</strong></h3></td>
+            </tr>
+        </table>
+        <table cellpadding="0" cellspacing="3" border="0">
+            <tr>
+                <th class="left">Data prezzo</th>
+                <th class="number">Ultimo costo</th>
+                <th class="number">Ultimo costo iva.</th>
+                <th class="number">Prezzo det. iva</th>
+                <th class="number">% ric. det.</th>
+                <th class="number">Prezzo ingr.</th>
+                <th class="number">% ric. ingr.</th>
+
+            </tr>
+            <tr>
+                <td>${dao.data_listino_articolo.strftime('%d/%m/%Y')}</td>
+                <td class="number">${dao.ultimo_costo}</td>
+                <td class="number">${conf.number_format % calcolaPrezzoIva(dao.ultimo_costo,dao.percentuale_iva)}</td>
+                <td class="number">${dao.prezzo_dettaglio}</td>
+                <td class="number">${conf.number_format % calcolaRicarico(dao.ultimo_costo,dao.prezzo_dettaglio,dao.percentuale_iva)}</td>
+                <td class="number">${dao.prezzo_ingrosso}</td>
+                <td class="number">${conf.number_format % calcolaRicarico(dao.ultimo_costo,dao.prezzo_ingrosso)}</td>
+            </tr>
+        </table>
+        <hr />
+        </div>
+    </body>
+</html>

@@ -1,0 +1,32 @@
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:py="http://genshi.edgewall.org/"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        lang="en">
+    <head>
+        <title>Report Agenti</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <xi:include href="style.css"><xi:fallback/></xi:include>
+    </head>
+    <body>
+        <table cellpadding="0" cellspacing="3" border="0">
+            <tr>
+                <th>Codice</th>
+                <th>Rag.Sociale</th>
+                <th>Cognome/Nome</th>
+                <th>Indirizzo</th>
+                <th>Località</th>
+                <th>Provincia</th>
+                <th>CAP</th>
+            </tr>
+            <tr class="row" py:for="dao in objects">
+                <td class="detail">${dao.codice}</td>
+                <td class="detail">${dao.ragione_sociale}</td>
+                <td class="detail">${(dao.cognome + dao.nome)}</td>
+                <td class="detail">${dao.sede_operativa_indirizzo}</td>
+                <td class="detail">${dao.sede_operativa_localita}</td>
+                <td class="detail">${dao.sede_operativa_provincia}</td>
+                <td class="detail">${dao.sede_operativa_cap}</td>
+            </tr>
+        </table>
+    </body>
+</html>

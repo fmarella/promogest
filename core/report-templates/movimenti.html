@@ -1,0 +1,42 @@
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:py="http://genshi.edgewall.org/"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        lang="en">
+    <head>
+    <?python import string?>
+        <title>Dettaglio Articolo</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <xi:include href="style.css"><xi:fallback/></xi:include>
+    </head>
+    <body>
+        <div py:strip="True" py:for="dao in objects">
+        <table cellpadding="0" cellspacing="4" border="0">
+            <tr>
+                <td colspan="2"><h3>Numero: <strong>${dao.numero}</strong> / <strong>${dao.parte}</strong></h3></td>
+            </tr>
+            <tr>
+                <td colspan="2"><h3>Data movimento: <strong>${dao.data_movimento.strftime('%d/%m/%Y %H:%M')}</strong></h3></td>
+            </tr>
+        </table>
+        <table cellpadding="0" cellspacing="3" border="0">
+            <tr>
+                <th class="left">Magazzino</th>
+                <th class="left">Articolo</th>
+                <th class="number">Iva (%)</th>
+                <th class="number">Quantita'</th>
+                <th class="number">Prezzo netto</th>
+                <th class="number">Totale</th>
+            </tr>
+            <tr py:for="riga in dao.righe">
+                <td>${riga.magazzino[:20]}</td>
+                <td>${riga.descrizione[:20]}</td>
+                <td class="number">${conf.number_format % riga.percentuale_iva}</td>
+                <td class="number">${conf.number_format % ( riga.quantita * riga.moltiplicatore )}</td>
+                <td class="number">${conf.number_format % riga.valore_unitario_netto}</td>
+                <td class="number">${conf.number_format % ( riga.quantita * riga.moltiplicatore * riga.valore_unitario_netto )}</td>
+            </tr>
+        </table>
+        <hr />
+        </div>
+    </body>
+</html>

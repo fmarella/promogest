@@ -1,0 +1,96 @@
+[Database]
+user = promoadmin
+password = admin
+host = localhost
+port = 5432
+database = promogest_db
+azienda= azienda_prova
+
+
+#NON RIMUOVERE LE RIGHE VUOTE SOPRA QUESTA 
+# L'opzione omogeneus_codice serve a stabilire come dev'essere trattato il codice.
+#    Permette 4 possibili opzioni che sono : None ( non in uso),
+#                                            upper ( Maiuscolizza tutto il codice),
+#                                            capitalize ( Maiuscolizza solo la prima lettera ),
+#                                            lower ( Minuscolizza tutto il codice)
+
+
+[Numbers]
+decimals = 2
+batch_size = 15
+
+[Documenti]
+cartella_predefinita =
+pdf_reader = acroread / evince
+# Il processo di stampa necessita di un visualizzatore di PDF:
+# - su GNU/Linux consigliamo kpdf o evince (sostituire con la voce che interessa)
+# - su MS Windows consigliamo l'utilizzo di Adobe Acrobat Reader 8
+#   (download http://ardownload.adobe.com/pub/adobe/reader/win/8.x/8.1.2/ita/AdbeRdr812_it_IT.exe )
+#pdf_reader = C:\Programmi\Adobe\Reader~1.0\Reader\AcroRd32.exe
+
+
+cliente_predefinito = ""
+tipo_documento_predefinito = ""
+ricerca_per = codice / descrizione / codice_a_barre / codice_articolo_fornitore
+
+
+[Feed]
+feed = True
+
+[Articoli]
+lunghezza_codice_famiglia = 0
+lunghezza_progressivo = 7
+numero_famiglie = 0
+prefisso_codice = ART
+omogeneus_codice= upper
+struttura_codice = ART000000
+immagini = True
+
+[Clienti]
+lunghezza_codice = 5
+prefisso_codice = CL
+omogeneus_codice= upper
+struttura_codice = CLI000000
+
+[Forniture]
+omogeneus_codice = upper
+
+[Fornitori]
+lunghezza_codice = 5
+prefisso_codice = FO
+omogeneus_codice= upper
+struttura_codice = FOR000000
+
+[Agenti]
+omogeneus_codice = upper
+prefisso_codice = AG
+lunghezza_codice = 5
+struttura_codice = AG000000
+
+[Famiglie]
+omogeneus_codice = upper
+
+[Vettori]
+omogeneus_codice = upper
+prefisso_codice = VE
+lunghezza_codice = 5
+struttura_codice = VE000000
+
+
+[SMTP]
+smtpserver = cambiami
+emailmittente = cambia anche me
+
+[Multilinea]
+multilinealimite = 40
+
+[Pagamenti]
+mod_enable = yes
+
+[Moduli]
+cartella_moduli = ./promogest/modules
+
+#in sistemi *nix inserire thunderbird -compose, in sistemi windows  è necessario
+# inserire anche il percorso completo C:\programmi\Thunderbird ....
+[Composer]
+emailcompose = thunderbird

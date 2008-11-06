@@ -1,0 +1,189 @@
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:py="http://genshi.edgewall.org/"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        lang="en">
+    <head>
+        <title>Dettaglio Articolo</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <xi:include href="style.css"><xi:fallback/></xi:include>
+    </head>
+    <body>
+<table cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td class="report-header" width="50%"><h3>Articolo: <strong>${dao.codice}</strong></h3></td>
+		<td class="report-header" width="50%"><h3>Codice a barre principale:
+			<strong>${dao.codice_a_barre}</strong></h3></td>
+            </tr>
+</table>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr><td width="55%">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tr>
+		<td colspan="2" class="table-header">Riepilogo</td>
+	    </tr>
+            <tr>
+                <td width="130px" class="odd-detail">Descrizione</td>
+                <td class="odd-detail"><strong>${dao.denominazione}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Produttore</td>
+                <td class="even-detail"><strong>${dao.produttore}</strong></td>
+            </tr>
+            <tr>
+                <td class="odd-detail">Famiglia</td>
+                <td class="odd-detail"><strong>${dao.denominazione_famiglia}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Categoria</td>
+                <td class="even-detail"><strong>${dao.denominazione_categoria}</strong></td>
+            </tr>
+            <tr>
+                <td class="odd-detail">Aliquota IVA</td>
+                <td class="odd-detail">
+                    <strong>${dao.denominazione_aliquota_iva}
+                    ( ${dao.denominazione_breve_aliquota_iva})</strong>
+                </td>
+            </tr>
+        </table></td>
+<td>
+        <table colspan="2" cellpadding="0" cellspacing="0" border="0">
+            <tr><td class="table-header" colspan="2">Informazioni listini ed etichette</td></tr>
+            <tr>
+                <td width="200px" class="odd-detail">Descrizione nel listino</td>
+                <td class="odd-detail">
+                    <strong>${dao.descrizione_listino}</strong>
+                </td>
+            </tr>
+            <tr>
+                <td class="even-detail">Incluso nel listino</td>
+                <td class="even-detail">
+                    <strong py:if="dao.stampa_listino is True">
+                        si
+                    </strong>
+                    <strong py:if="dao.stampa_listino is False">
+                        no
+                    </strong>
+                    <strong py:if="dao.stampa_listino is None">
+                        no
+                    </strong>
+                </td>
+            </tr>
+            <tr>
+                <td class="odd-detail">Codice etichetta</td>
+                <td class="odd-detail">
+                    <strong>${dao.codice_etichetta}</strong>
+                </td>
+            </tr>
+            <tr>
+                <td class="even-detail">Descrizione etichetta</td>
+                <td class="even-detail">
+                    <strong>${dao.descrizione_etichetta}</strong>
+                </td>
+            </tr>
+            <tr>
+                <td class="odd-detail">Stampa etichetta</td>
+                <td class="odd-detail">
+                    <strong py:if="dao.stampa_etichetta is True">
+                        si
+                    </strong>
+                    <strong py:if="dao.stampa_etichetta is False">
+                        no
+                    </strong>
+                    <strong py:if="dao.stampa_etichetta is None">
+                        no
+                    </strong>
+                </td>
+            </tr>
+
+        </table>
+</td></tr>
+</table>
+
+
+<table cellpadding="0" cellspacing="0" border="0">
+    <tr><td colspan="4" class="table-header">Dettaglio capo</td></tr>
+    <tr>
+                <td width="20%" class="odd-detail">Gruppo taglia</td>
+                <td width="25%" class="odd-detail"><strong py:content="dao.denominazione_gruppo_taglia">Americane</strong></td>
+
+                <td width="12%" class="odd-detail">Taglie</td>
+                <td width="43%" class="odd-detail"><strong py:for="t in dao.taglie">
+                        <span py:replace="t.denominazione">XL</span>
+                        <strong> </strong>
+                    </strong>
+        </td>
+            </tr>
+    <tr>
+                <td width="12%" class="even-detail">Genere</td>
+                <td width="25%"  class="even-detail"><strong py:content="dao.genere"></strong></td>
+
+                <td width="10%" class="even-detail">Stagione</td>
+                <td with="43%" class="even-detail"><strong py:content="dao.stagione"></strong>
+                    <strong py:content="dao.anno"></strong>
+        </td>
+            </tr>
+
+            <tr>
+                <td class="odd-detail">Colori</td>
+                <td colspan="3" class="odd-detail"><strong py:for="c in dao.colori">
+                    <span py:replace="c.denominazione">Rosso</span>
+                    <strong> </strong>
+                    </strong>
+        </td>
+            </tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" border="0">
+            <tr><td colspan="4" class="table-header">Caratteristiche fisiche</td></tr>
+            <tr>
+                <td width="20%" class="odd-detail">Unità di misura</td>
+                <td width="30%" class="odd-detail"><strong>${dao.denominazione_unita_base}</strong></td>
+
+		<td width="20%" class="odd-detail">Dimensioni</td>
+                <td width="30%" colspan="2" class="odd-detail">
+			<strong>${dao.lunghezza}</strong> x
+			<strong>${dao.larghezza}</strong> x
+			<strong>${dao.altezza}</strong>
+			<strong>${dao.unita_dimensioni}</strong>
+		</td>
+
+     <!--           <td class="odd-detail" colspan="2">Unità di misura dimensioni</td>
+                <td class="odd-detail" colspan="2"><strong py:content="dao.unita_dimensioni"></strong></td>-->
+            </tr>
+            <tr>
+
+            </tr>
+            <tr>
+<!--                <td class="odd-detail">Unità di misura volume</td>
+                <td class="odd-detail"><strong py:content="dao.unita_volume"></strong></td>            -->
+                <td class="even-detail">Volume</td>
+		<td class="even-detail">
+			<strong>${dao.volume}</strong>
+			<strong>${dao.unita_volume}</strong>
+		</td>
+<!--                <td class="odd-detail">Unità di misura peso</td>
+                <td class="odd-detail"> <strong py:content="dao.unita_peso"></strong></td>            -->
+                <td class="even-detail">Peso</td>
+                <td class="even-detail">
+			<strong>${dao.peso_lordo}</strong>
+			<strong>${dao.unita_peso}</strong>
+		</td>
+            </tr>
+            <tr>
+                <td class="odd-detail">Imballaggio</td>
+                <td class="odd-detail"><strong>${dao.imballaggio}</strong></td>
+                <td class="odd-detail">Peso imballaggio</td>
+                <td class="odd-detail">
+			<strong>${dao.peso_imballaggio}</strong>
+			<strong>${dao.unita_peso}</strong>
+		</td>
+            </tr>
+
+            <tr><td colspan="4" class="table-header">Note</td></tr>
+            <tr>
+                <td class="odd-detail"><strong>${dao.note}</strong>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
