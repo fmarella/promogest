@@ -7,12 +7,12 @@
  License: GNU GPLv2
 """
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
-from promogest.dao.ListinoMagazzino import ListinoMagazzino
+from ListinoCategoriaCliente import ListinoCategoriaCliente
+from ListinoMagazzino import ListinoMagazzino
 
 
 class Listino(Dao):

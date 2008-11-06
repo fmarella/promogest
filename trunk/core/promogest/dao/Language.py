@@ -5,12 +5,12 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from sqlalchemy import and_, or_
-from promogest.dao.Role import Role
+from promogest.lib.sqlalchemy import and_, or_
+from Role import Role
 
 class Language(Dao):
 

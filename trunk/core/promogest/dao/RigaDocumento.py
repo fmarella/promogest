@@ -6,23 +6,23 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.dao.Riga import Riga
-from promogest.dao.UnitaBase import UnitaBase
-import promogest.dao.ScontoRigaDocumento
-from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
-from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
-from promogest.dao.ScontoRigaMovimento import *
-from promogest.dao.ScontoRigaDocumento import *
-from promogest.dao.Articolo import Articolo
-from promogest.dao.AliquotaIva import AliquotaIva
-from promogest.dao.Magazzino import Magazzino
-from promogest.dao.Listino import Listino
-from promogest.dao.Multiplo import Multiplo
-from promogest.dao.DaoUtils import *
+from Riga import Riga
+from UnitaBase import UnitaBase
+import ScontoRigaDocumento
+from ScontoRigaDocumento import ScontoRigaDocumento
+from ScontoRigaMovimento import ScontoRigaMovimento
+from ScontoRigaMovimento import *
+from ScontoRigaDocumento import *
+from Articolo import Articolo
+from AliquotaIva import AliquotaIva
+from Magazzino import Magazzino
+from Listino import Listino
+from Multiplo import Multiplo
+from DaoUtils import *
 
 if "SuMisura" in modulesList:
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo

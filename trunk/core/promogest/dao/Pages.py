@@ -5,8 +5,8 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Maccis <amaccis@promotux.it>
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 

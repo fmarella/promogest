@@ -7,11 +7,11 @@
  License: GNU GPLv2
 """
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.dao.TipoAliquotaIva import TipoAliquotaIva
+from TipoAliquotaIva import TipoAliquotaIva
 
 class AliquotaIva(Dao):
 

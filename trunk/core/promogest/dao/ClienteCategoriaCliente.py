@@ -5,11 +5,11 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.dao.CategoriaCliente import CategoriaCliente
+from CategoriaCliente import CategoriaCliente
 
 class ClienteCategoriaCliente(Dao):
 

@@ -7,16 +7,16 @@
  License: GNU GPLv2
 """
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.dao.PersonaGiuridica import PersonaGiuridica_
-from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
+from PersonaGiuridica import PersonaGiuridica_
+from ClienteCategoriaCliente import ClienteCategoriaCliente
 #from promogest.dao.ContattoCliente import ContattoCliente
-from promogest.dao.CategoriaCliente import CategoriaCliente
-import promogest.dao.Banca
-import promogest.dao.Pagamento
+from CategoriaCliente import CategoriaCliente
+import Banca
+import Pagamento
 from promogest.ui.utils import  codeIncrement
 
 class Cliente(Dao):

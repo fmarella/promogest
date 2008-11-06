@@ -11,7 +11,7 @@
 
 import gtk
 import gobject
-from sqlalchemy import and_, or_
+from promogest.lib.sqlalchemy import and_, or_
 from RicercaComplessa import RicercaComplessa
 from RicercaComplessa import analyze_treeview_key_press_event
 from RicercaComplessa import parseModel, onColumnEdited, columnSelectAll

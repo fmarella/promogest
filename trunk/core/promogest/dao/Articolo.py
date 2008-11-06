@@ -6,18 +6,18 @@
  license: GPL see LICENSE file
 """
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.dao.Immagine import Immagine
-from promogest.dao.UnitaBase import UnitaBase
-from promogest.dao.FamigliaArticolo import FamigliaArticolo
-from promogest.dao.AliquotaIva import AliquotaIva
-from promogest.dao.CategoriaArticolo import CategoriaArticolo
-from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-from promogest.dao.Imballaggio import Imballaggio
-from promogest.dao.StatoArticolo import StatoArticolo
+from Immagine import Immagine
+from UnitaBase import UnitaBase
+from FamigliaArticolo import FamigliaArticolo
+from AliquotaIva import AliquotaIva
+from CategoriaArticolo import CategoriaArticolo
+from CodiceABarreArticolo import CodiceABarreArticolo
+from Imballaggio import Imballaggio
+from StatoArticolo import StatoArticolo
 from promogest.ui.utils import idArticoloFromFornitura, codeIncrement
 
 if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":

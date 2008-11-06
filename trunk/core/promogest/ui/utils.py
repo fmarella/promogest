@@ -27,8 +27,8 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 import time, datetime
-from sqlalchemy.orm import *
-from sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
 from promogest import Environment
 from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.Operazione import Operazione

@@ -8,18 +8,18 @@
 """
 
 import datetime
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from sqlalchemy import and_, or_
+from promogest.lib.sqlalchemy import and_, or_
 
 
 def giacenzaSel(year=None, idMagazzino=None, idArticolo=None):
-    from promogest.dao.TestataMovimento import TestataMovimento
-    from promogest.dao.RigaMovimento import RigaMovimento
-    from promogest.dao.Riga import Riga
-    from promogest.dao.Operazione import Operazione
+    from TestataMovimento import TestataMovimento
+    from RigaMovimento import RigaMovimento
+    from Riga import Riga
+    from Operazione import Operazione
 
     righeArticoloMovimentate= params["session"]\
             .query(RigaMovimento,TestataMovimento)\

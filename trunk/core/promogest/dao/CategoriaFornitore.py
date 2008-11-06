@@ -5,8 +5,8 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 
@@ -23,5 +23,5 @@ categoria_fornitore=Table('categoria_fornitore',
                         params['metadata'],
                         schema = params['schema'],
                         autoload=True)
-                        
+
 std_mapper = mapper(CategoriaFornitore,categoria_fornitore)

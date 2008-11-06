@@ -6,12 +6,12 @@
 # Author: Francesco Meloni <francesco@promotux.it>
 # Licenza: GNU GPLv2
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.dao.Role import Role
-from promogest.dao.Action import Action
+from Role import Role
+from Action import Action
 
 class RoleAction(Dao):
     """ RoleAction class database functions  """

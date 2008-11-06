@@ -6,14 +6,14 @@
  Author: Francesco Meloni <francesco@promotux.it>
  License: GNU GPLv2
 """
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.dao.Multiplo import Multiplo
-from promogest.dao.ScontoFornitura import ScontoFornitura
-from promogest.dao.Fornitore import Fornitore
-from promogest.dao.Articolo import Articolo
+from Multiplo import Multiplo
+from ScontoFornitura import ScontoFornitura
+from Fornitore import Fornitore
+from Articolo import Articolo
 
 if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
         from promogest.modules.PromoWear.dao.FornituraPromowear import Fornitura

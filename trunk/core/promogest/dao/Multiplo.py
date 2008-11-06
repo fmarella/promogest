@@ -6,11 +6,11 @@
  Author: Francesco Meloni <francesco@promotux.it>
  License: GNU GPLv2
 """
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.UnitaBase import UnitaBase
-from promogest.dao.Articolo import Articolo
+from UnitaBase import UnitaBase
+from Articolo import Articolo
 from Dao import Dao
 
 class Multiplo(Dao):

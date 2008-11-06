@@ -7,15 +7,15 @@
  License: GNU GPLv2
 """
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 #from promogest.dao.Recapito import Recapito
 from promogest.ui.utils import getCategorieContatto, getRecapitiContatto
-from promogest.dao.RecapitoContatto import RecapitoContatto
+from RecapitoContatto import RecapitoContatto
 #import promogest.dao.ContattoCategoriaContatto
-from promogest.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
+from ContattoCategoriaContatto import ContattoCategoriaContatto
 
 class Contatto(Dao):
 
@@ -74,7 +74,7 @@ contatto=Table('contatto',
         params['metadata'],
         schema = params['schema'],
         autoload=True)
-        
+
 std_mapper=mapper(Contatto, contatto,properties={
     'recapito' : relation(RecapitoContatto, backref=backref('contatto')),
     "contatto_cat_cont": relation(ContattoCategoriaContatto,backref=backref("contatto")),

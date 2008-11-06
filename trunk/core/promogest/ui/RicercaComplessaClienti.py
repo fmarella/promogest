@@ -10,7 +10,7 @@
 import gtk
 import gobject
 from RicercaComplessa import RicercaComplessa
-from sqlalchemy import and_, or_
+from promogest.lib.sqlalchemy import and_, or_
 from RicercaComplessa import analyze_treeview_key_press_event
 from RicercaComplessa import parseModel, onColumnEdited, columnSelectAll
 from RicercaComplessa import optimizeString, insertTreeViewRow, deleteTreeViewRow, clearWhereString

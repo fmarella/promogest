@@ -18,8 +18,8 @@ from promogest.dao.DataIntegrityException import DataIntegrityException
 from ApplicationException import ApplicationException as DBApplicationException
 
 
-from sqlalchemy.exc  import IntegrityError as pgIntegrityError
-from sqlalchemy.exc import ProgrammingError as pgProgrammingError
+from promogest.lib.sqlalchemy.exc  import IntegrityError as pgIntegrityError
+from promogest.lib.sqlalchemy.exc import ProgrammingError as pgProgrammingError
 
 class GtkExceptionHandler(ExceptionHandler):
     """ Exception handler that shows exceptions in a GTK window """

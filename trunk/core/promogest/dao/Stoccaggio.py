@@ -9,14 +9,14 @@
 """
 
 import datetime
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from sqlalchemy import and_, or_
-from promogest.dao.Articolo import Articolo
-from promogest.dao.Magazzino import Magazzino
-from promogest.dao.DaoUtils import giacenzaSel
+from promogest.lib.sqlalchemy import and_, or_
+from Articolo import Articolo
+from Magazzino import Magazzino
+from DaoUtils import giacenzaSel
 
 class Stoccaggio(Dao):
     """ User class provides to make a Users dao which include more used"""

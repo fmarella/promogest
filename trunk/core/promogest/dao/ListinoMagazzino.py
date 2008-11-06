@@ -6,12 +6,12 @@
 # Author: Francesco Meloni <francesco@promotux.it>
 
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 #from promogest.dao.Listino import Listino
-from promogest.dao.Magazzino import Magazzino
+from Magazzino import Magazzino
 
 
 

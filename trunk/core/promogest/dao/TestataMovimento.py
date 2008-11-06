@@ -6,17 +6,17 @@
 """
 
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.dao.DaoUtils import *
-from promogest.dao.RigaMovimento import RigaMovimento
+from DaoUtils import *
+from RigaMovimento import RigaMovimento
 from promogest.ui.utils import numeroRegistroGet
-from promogest.dao.Fornitore import Fornitore
-from promogest.dao.Cliente import Cliente
-from promogest.dao.Fornitura import Fornitura
-from promogest.dao.Operazione import Operazione
+from Fornitore import Fornitore
+from Cliente import Cliente
+from Fornitura import Fornitura
+from Operazione import Operazione
 from ScontoFornitura import ScontoFornitura
 
 class TestataMovimento(Dao):

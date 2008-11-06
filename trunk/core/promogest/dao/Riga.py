@@ -6,14 +6,14 @@
 # Author: Francesco Meloni <francesco@promotux.it>
 
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.dao.Magazzino import Magazzino
-from promogest.dao.Articolo import Articolo
-from promogest.dao.Multiplo import Multiplo
-from promogest.dao.Listino import Listino
+from Magazzino import Magazzino
+from Articolo import Articolo
+from Multiplo import Multiplo
+from Listino import Listino
 
 class Riga(Dao):
 
@@ -31,7 +31,7 @@ riga=Table('riga',
         params['metadata'],
         schema = params['schema'],
         autoload=True)
-        
+
 std_mapper = mapper(Riga, riga, properties={}, order_by=riga.c.id)
 
 

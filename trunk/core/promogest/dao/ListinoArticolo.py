@@ -7,15 +7,15 @@
  License: GNU GPLv2
 """
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.dao.AliquotaIva import AliquotaIva
-from promogest.dao.Articolo import Articolo
-from promogest.dao.Listino import Listino
-import promogest.dao.Listino
-import promogest.dao.Articolo
+from AliquotaIva import AliquotaIva
+from Articolo import Articolo
+from Listino import Listino
+import Listino
+import Articolo
 import datetime
 
 class ListinoArticolo(Dao):

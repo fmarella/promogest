@@ -6,10 +6,10 @@
 # Author: Francesco Meloni <francesco@promotux.it>
 
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.CategoriaContatto import CategoriaContatto
+from CategoriaContatto import CategoriaContatto
 from Dao import Dao
 
 class ContattoCategoriaContatto(Dao):
@@ -32,7 +32,7 @@ contatto_categoria_contatto=Table('contatto_categoria_contatto',
                             params['metadata'],
                             schema = params['schema'],
                             autoload=True)
-                            
+
 std_mapper= mapper(ContattoCategoriaContatto, contatto_categoria_contatto,properties={
 "categoria_con":relation(CategoriaContatto,backref=backref("contatto_categoria_contatto"))},
                     order_by=contatto_categoria_contatto.c.id_contatto)

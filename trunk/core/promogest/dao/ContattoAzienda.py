@@ -7,13 +7,13 @@
  License: GNU GPLv2
 """
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from promogest.dao.Azienda import Azienda
-from promogest.dao.RecapitoContatto import RecapitoContatto
-from promogest.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
+from Azienda import Azienda
+from RecapitoContatto import RecapitoContatto
+from ContattoCategoriaContatto import ContattoCategoriaContatto
 
 class ContattoAzienda(Dao):
 

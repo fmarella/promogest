@@ -10,8 +10,8 @@
 
 import gtk
 import gobject
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
@@ -314,7 +314,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
                 daoListinoMagazzino.id_listino = self.dao.id
                 daoListinoMagazzino.id_magazzino = m[0]
                 daoListinoMagazzino.persist()
- 
+
         #self.dao.persist()
 
         self._refreshCategorieClienti()

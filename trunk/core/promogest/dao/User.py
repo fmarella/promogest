@@ -7,13 +7,13 @@
  License: GNU GPLv2
 """
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from sqlalchemy import and_, or_
-from promogest.dao.Role import Role
-from promogest.dao.Language import Language
+from promogest.lib.sqlalchemy import and_, or_
+from Role import Role
+from Language import Language
 
 class User(Dao):
     """ User class provides to make a Users dao which include more used"""

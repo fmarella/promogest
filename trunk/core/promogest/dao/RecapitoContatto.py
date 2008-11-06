@@ -6,10 +6,10 @@
  license: GPL see LICENSE file
 """
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from promogest.lib.sqlalchemy import *
+from promogest.lib.sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.TipoRecapito import TipoRecapito
+from TipoRecapito import TipoRecapito
 #from promogest.dao.Contatto import Contatto
 from Dao import Dao
 
