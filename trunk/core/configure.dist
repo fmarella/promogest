@@ -1,13 +1,13 @@
 [Database]
 user = promoadmin
 password = admin
-host = localhost
+host = db.promotux.it
 port = 5432
-database = promogest_db
-azienda= azienda_prova
+database = promogest_demo
+azienda= azienda_mentor
 
 
-#NON RIMUOVERE LE RIGHE VUOTE SOPRA QUESTA 
+#NON RIMUOVERE LE RIGHE VUOTE SOPRA QUESTA
 # L'opzione omogeneus_codice serve a stabilire come dev'essere trattato il codice.
 #    Permette 4 possibili opzioni che sono : None ( non in uso),
 #                                            upper ( Maiuscolizza tutto il codice),
