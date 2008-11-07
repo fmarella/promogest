@@ -134,8 +134,8 @@ class RigaDocumento(Dao):
         #FIXME : il sistema originale aveva una UNION di due view fatte su mov e doc per cui avevano due campi
         # movimento e riga documento con l'id della riga a cui si riferivano ...
         # noi non avendo la union al momento facciamo due query ed appendiamo le liste
-        self.__dbScontiRigaMovimentoPart = params["session"].query(ScontoRigaMovimento).filter_by(id_movimento=self.id).all()
-        self.__dbScontiRigaDocumentoPart = params["session"].query(ScontoRigaDocumento).filter_by(id_documento=self.id).all()
+        self.__dbScontiRigaMovimentoPart = params["session"].query(ScontoRigaMovimento).filter_by(id_riga_movimento=self.id).all()
+        self.__dbScontiRigaDocumentoPart = params["session"].query(ScontoRigaDocumento).filter_by(id_riga_documento=self.id).all()
         self.__dbScontiRigaDocumento = self.__dbScontiRigaMovimentoPart + self.__dbScontiRigaDocumentoPart
         self.__scontiRigaDocumento = self.__dbScontiRigaDocumento[:]
         return self.__scontiRigaDocumento
@@ -179,19 +179,18 @@ class RigaDocumento(Dao):
                 Environment.TRENINO["misuraPezzo"]  = None
 
 
-        if Environment.TRENINO["scontiRigaDocumento"]:
-            scontiRigaDocumentoDel(id=self.id)
+            #scontiRigaDocumentoDel(id=self.id)
 
-            for rigasconto in Environment.TRENINO["scontiRigaDocumento"]:
-                #annullamento id dello sconto
-                rigasconto._resetId()
-                #associazione allo sconto della riga
-                rigasconto.id_riga_documento = self.id
-                #salvataggio sconto
-                #rigasconto.persist()
-                params["session"].add(rigasconto)
-                params["session"].commit()
-                #params["session"].add(self.rowScontiToSave[i])
+            #for rigasconto in Environment.TRENINO["scontiRigaDocumento"]:
+                ##annullamento id dello sconto
+                #rigasconto._resetId()
+                ##associazione allo sconto della riga
+                #rigasconto.id_riga_documento = self.id
+                ##salvataggio sconto
+                ##rigasconto.persist()
+                #params["session"].add(rigasconto)
+                #params["session"].commit()
+                ##params["session"].add(self.rowScontiToSave[i])
         params["session"].commit()
         params["session"].flush()
             #self.__scontiRigaDocumento[i].persist()

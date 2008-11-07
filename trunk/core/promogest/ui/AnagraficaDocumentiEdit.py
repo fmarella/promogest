@@ -88,6 +88,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         #campi controllo modifica
         self._controllo_data_documento = None
         self._controllo_numero_documento = None
+        self.reuseDataRow = False
 
 
     def hideSuMisura(self):
@@ -1277,6 +1278,7 @@ del documento.
         """
         Memorizza la riga inserita o modificata
         """
+
         self._righe[0]["idMagazzino"] = findIdFromCombobox(self.id_magazzino_combobox)
         magazzino = leggiMagazzino(self._righe[0]["idMagazzino"])
         self._righe[0]["magazzino"] = magazzino["denominazione"]
