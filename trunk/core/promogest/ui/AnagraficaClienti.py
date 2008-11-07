@@ -398,10 +398,10 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 
         self.dao.codice = self.codice_entry.get_text()
         self.dao.codice = omogeneousCode(section="Clienti", string=self.dao.codice )
-        if not self._oldDaoRicreato:
-            cod=checkCodiceDuplicato(codice=self.dao.codice, tipo="Clienti")
-            if not cod:
-                return
+        #if not self._oldDaoRicreato:
+            #cod=checkCodiceDuplicato(codice=self.dao.codice, tipo="Clienti")
+            #if not cod:
+                #return
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
         self.dao.insegna = self.insegna_entry.get_text()
         self.dao.cognome= self.cognome_entry.get_text()
