@@ -433,7 +433,7 @@ class TestataDocumento(Dao):
                     #associazione alla riga della testata
                     row.id_testata_documento = self.id
                     #salvataggio riga
-                    row.persist()
+                    row.persist(scontiRigaDocumento=scontiRigaDocumento)
         #params['session'].commit()
         if (DaoTestataMovimento is not None):
             if len(righeMovimento.values()) > 0:

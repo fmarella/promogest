@@ -153,7 +153,7 @@ class RigaDocumento(Dao):
         dic= {  'idTestataDocumento' : riga_doc.c.id_testata_documento==v }
         return  dic[k]
 
-    def persist(self):
+    def persist(self,scontiRigaDocumento=None ):
 
         #salvataggio riga
         params["session"].add(self)
@@ -179,9 +179,14 @@ class RigaDocumento(Dao):
                 Environment.TRENINO["misuraPezzo"]  = None
 
 
-            #scontiRigaDocumentoDel(id=self.id)
-
-            #for rigasconto in Environment.TRENINO["scontiRigaDocumento"]:
+        if scontiRigaDocumento:
+            scontiRigaDocumentoDel(id=self.id)
+            for key,value in scontiRigaDocumento.items():
+                if key==self:
+                    for v in value:
+                        v.id_riga_documento = self.id
+                        params["session"].add(v)
+                    #params["session"].commit()
                 ##annullamento id dello sconto
                 #rigasconto._resetId()
                 ##associazione allo sconto della riga
