@@ -883,7 +883,10 @@ class ProductFromCsv:
         if self.codice_articolo:
             #self.daoArticolo = promogest.dao.Articolo.getByCodice(Environment.connection,
                                                              #codice=self.codice_articolo)
-            self.daoArticolo = Articolo(isList=True).select(codice=self.codice_articolo)
+            try:
+                self.daoArticolo = Articolo(isList=True).select(codice=self.codice_articolo)[0]
+            except:
+                pass
 
         elif self.codice_fornitore:
             daoFornitura =Fornitura(isList=True).select(codiceArticoloFornitore=self.codice_fornitore)
@@ -902,11 +905,11 @@ class ProductFromCsv:
         """fillDaos method fills all Dao related to daoArticolo"""
         if self.daoArticolo is None:
             self.daoArticolo = Articolo().getRecord()
+        self.codice_articolo = str(self.codice_articolo)
         if self.codice_articolo is None:
             self.codice_articolo = promogest.dao.Articolo.getNuovoCodiceArticolo()
-        self.codice_articolo = str(self.codice_articolo)
-        self.denominazione_articolo = str(self.denominazione_articolo)
 
+        self.denominazione_articolo = str(self.denominazione_articolo)
         self.daoArticolo.codice = self.codice_articolo
         self.daoArticolo.denominazione = self.denominazione_articolo
 
@@ -986,7 +989,7 @@ class ProductFromCsv:
         else:
             self._vats = AliquotaIva(isList=True).select(batchSize=None)
             for v in self._vats:
-                if self.aliquota_iva in (v.denominazione_breve,v.denominazione) or\
+                if self.aliquota_iva.lower() in (v.denominazione_breve.lower(),v.denominazione.lower()) or\
                             int(str(self.aliquota_iva).replace('%','')) == int(v.percentuale):
                     id_aliquota_iva = v.id
                     break
@@ -1012,14 +1015,14 @@ class ProductFromCsv:
             self.unita_base = UnitaBase(id=self.unita_base_id).getRecord()
             id_unita_base = self.unita_base_id
         else:
-            unis = promogest.dao.UnitaBase.select(batchSize=None)
+            unis = UnitaBase(isList=True).select(batchSize=None)
             for u in unis:
-                if self.unita_base in (u.denominazione,u.denominazione_breve):
+                if self.unita_base.lower() in (u.denominazione.lower(),u.denominazione_breve.lower()):
                     id_unita_base = u.id
                     break
             if id_unita_base is None:
                 self.unita_base = UnitaBase(isList=True).select(denominazione='Pezzi',
-                                                            batchSize=None)
+                                                                    batchSize=None)
                 id_unita_base = self.unita_base.id
         self.daoArticolo.id_unita_base = id_unita_base
         self.daoArticolo.produttore = self.produttore or ''
@@ -1106,7 +1109,7 @@ class ProductFromCsv:
             daoFornitura.prezzo_lordo = prezzo or 0
             daoFornitura.id_fornitore = self.fornitore
             daoFornitura.id_articolo = self.daoArticolo.id
-            daoFornitura.percentuale_iva = Decimal(str(self.aliquota_iva.percentuale))
+            daoFornitura.percentuale_iva = Decimal(str(self.aliquota_iva))
             daoFornitura.data_prezzo = self.dataListino
             daoFornitura.codice_articolo_fornitore = self.codice_fornitore
             daoFornitura.fornitore_preferenziale = True

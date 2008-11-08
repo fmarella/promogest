@@ -56,9 +56,12 @@ class Listino(Dao):
         params['session'].flush()
 
     def filter_values(self,k,v):
-        dic= {'id':listino.c.id ==v,
-            'idListino' : listino.c.id ==v,
-            'denominazione' : listino.c.denominazione.ilike("%"+v+"%")}
+        if k=='id':
+            dic= {k:listino.c.id ==v}
+        elif k =='idListino':
+            dic= {k:listino.c.id ==v}
+        elif k=='denominazione':
+            dic= {k:listino.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
 
 listino=Table('listino',
