@@ -158,10 +158,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         self.setPagamento(enabled = False)
 
-        if hasattr(Environment.conf.PromoWear, 'taglia_colore'):
-            if Environment.conf.taglia_colore:
-                self.new_button.set_no_show_all(True)
-                self.new_button.set_property('visible', False)
+
+        #if Environment.taglia_colore:
+            #self.new_button.set_no_show_all(True)
+            #self.new_button.set_property('visible', False)
 
         self.codice_a_barre_entry.grab_focus()
         self._loading = False
