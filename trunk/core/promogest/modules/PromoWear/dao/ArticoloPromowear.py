@@ -157,12 +157,12 @@ class Articolo(Dao):
             #return None
         #try:
             #from promogest.modules.PromoWear.dao.ArticoloTagliaColore import select
-        articolo = Articolo(isList=True).select(idArticolo=self.id,
-                                                offset=None,
-                                                batchSize=None)
-        #if len(articolo) > 0:
-            #return articolo or None
-        return articolo[0]
+        articolo = ArticoloTagliaColore(isList=True).select(idArticolo=self.id,
+                                                            offset=None,
+                                                            batchSize=None)
+        if len(articolo) > 0:
+            return articolo or None
+        #return articolo[0]
         #else:
             #return None
         #except Exception:
@@ -174,7 +174,7 @@ class Articolo(Dao):
     def getArticoliTagliaColore(self, idGruppoTaglia=None, idTaglia=None, idColore=None):
         """ Restituisce una lista di Dao ArticoloTagliaColore figli del Dao Articolo """
         #from promogest.modules.PromoWear.dao.ArticoloTagliaColore import select
-        articoli = Articolo(isList=True).select(idArticoloPadre=self.id,
+        articoli = ArticoloTagliaColore(isList=True).select(idArticoloPadre=self.id,
                                                 idGruppoTaglia=idGruppoTaglia,
                                                 idTaglia=idTaglia,
                                                 idColore=idColore,

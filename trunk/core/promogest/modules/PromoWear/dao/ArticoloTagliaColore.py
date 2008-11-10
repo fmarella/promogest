@@ -126,7 +126,16 @@ class ArticoloTagliaColore(Dao):
 
 
     def filter_values(self,k,v):
-        dic= {'id':articolotagliacolore.c.id ==v}
+        if k =='idArticolo':
+            dic= {k:articolotagliacolore.c.id_articolo ==v}
+        elif k == "idTaglia":
+            dic = {k:articolotagliacolore.c.id_taglia ==v}
+        elif k == "idGruppoTaglia":
+            dic = {k:articolotagliacolore.c.id_gruppo_taglia ==v}
+        elif k == "idColore":
+            dic = {k:articolotagliacolore.c.id_colore ==v}
+        elif k == "idArticoloPadre":
+            dic = {k:articolotagliacolore.c.id_articolo_padre ==v}
         return  dic[k]
 
 articolo=Table('articolo',params['metadata'],schema = params['schema'],autoload=True)
