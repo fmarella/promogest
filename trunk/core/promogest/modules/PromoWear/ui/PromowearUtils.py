@@ -59,27 +59,27 @@ def leggiArticolo(id):
     _genere = ''
 
     if id is not None:
-        daoArticolo = Articolo(Environment.connection, id)
+        daoArticolo = Articolo(id=id).getRecord()
         if daoArticolo is not None:
             _id = id
             _denominazione = daoArticolo.denominazione or ''
             _codice = daoArticolo.codice or ''
             _idUnitaBase = daoArticolo.id_unita_base
             if _idUnitaBase is not None:
-                queryString = ("SELECT * FROM promogest.unita_base WHERE id = '" + str(_idUnitaBase) + "'")
-                argList = []
-                Environment.connection._cursor.execute(queryString, argList)
-                res = Environment.connection._cursor.fetchall()
+                #queryString = ("SELECT * FROM promogest.unita_base WHERE id = '" + str(_idUnitaBase) + "'")
+                #argList = []
+                #Environment.connection._cursor.execute(queryString, argList)
+                #res = Environment.connection._cursor.fetchall()
+                res = UnitaBase(isList=True).select(batchSize=None)
                 if res is not None:
-                    _unitaBase = res[0]['denominazione']
+                    _unitaBase = res[0].denominazione
             if daoArticolo.id_aliquota_iva is not None:
-                daoAliquotaIva = promogest.dao.AliquotaIva.AliquotaIva(Environment.connection,
-                                                                       daoArticolo.id_aliquota_iva)
+                daoAliquotaIva = AliquotaIva(id=daoArticolo.id_aliquota_iva).getRecord()
                 if daoAliquotaIva is not None:
                     _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
                     _percentualeAliquotaIva = daoAliquotaIva.percentuale or 0
             if "PromoWear" in Environment.modulesList and Enviroment.taglia_colore:
-                daoArticoloTagliaColore = daoArticolo.articoloTagliaColoreCompleto
+                daoArticoloTagliaColore = daoArticolo
                 if daoArticoloTagliaColore is not None:
                     _idGruppoTaglia = daoArticoloTagliaColore.id_gruppo_taglia
                     _gruppoTaglia = daoArticoloTagliaColore.denominazione_gruppo_taglia or '-'
@@ -123,7 +123,7 @@ def leggiListino(idListino, idArticolo=None):
 
     if idListino is not None:
         try:
-            daoListino = promogest.dao.Listino.Listino(Environment.connection, idListino)
+            daoListino = Listino(id=idListino).getRecord()
             if daoListino is not None:
                 _denominazione = daoListino.denominazione
         except:
@@ -131,14 +131,18 @@ def leggiListino(idListino, idArticolo=None):
 
         try:
             if idArticolo is not None:
-                daoListinoArticolo = promogest.dao.ListinoArticolo.ListinoArticolo(Environment.connection, idListino, idArticolo)
+                daoListinoArticolo = ListinoArticolo(isList=True).select(idListino=idListino,
+                                                                        idArticolo= idArticolo,
+                                                                            batchSize=None)
                 if "PromoWear" in Environment.modulesList and Environment.taglia_colore:
                         try:
-                            articolo = ArticoloTagliaColore(Environment.connection, idArticolo)
+                            articolo = ArticoloTagliaColore(id=idArticolo).getRecord()
                             idArticoloPadre = articolo.id_articolo_padre
                             if idArticoloPadre is not None:
                                 try:
-                                    daoListinoArticolo = promogest.dao.ListinoArticolo.ListinoArticolo(Environment.connection, idListino, idArticoloPadre)
+                                    daoListinoArticolo = ListinoArticolo(idListino=idListino,
+                                                                        idArticolo= idArticoloPadre,
+                                                                        batchSize=None)
                                 except Exception:
                                     daoListinoArticolo = None
                         except:
@@ -158,16 +162,15 @@ def fillComboboxMultipli(combobox, idArticolo=None, noSottoMultipli=False, filte
     Crea l'elenco dei multipli
     """
 
-    model = gtk.ListStore(gobject.TYPE_PYOBJECT, int, str, float)
+    model = gtk.ListStore(object, int, str, float)
     # multipli legati all'articolo
-    muls = promogest.dao.Multiplo.select(Environment.connection,
-                                         denominazione=None,
+    muls = Multiplo(isList=True).select(denominazione=None,
                                          idArticolo=idArticolo,
                                          idUnitaBase=None,
                                          orderBy = None,
                                          offset = None,
-                                         batchSize = None,
-                                         immediate = True)
+                                         batchSize = None)
+                                        
     if not filter:
         emptyRow = ''
     else:
@@ -182,17 +185,15 @@ def fillComboboxMultipli(combobox, idArticolo=None, noSottoMultipli=False, filte
 
     if "PromoWear" in Environment.modulesList and Environment.conf.PromoWear.taglia_colore=="yes":
         try:
-            articolo = ArticoloTagliaColore(Environment.connection, idArticolo)
+            articolo = ArticoloTagliaColore(id=idArticolo).getRecord()
             if articolo.id_articolo_padre is not None:
                 # multipli legati all'articolo padre
-                muls = promogest.dao.Multiplo.select(Environment.connection,
-                                                     denominazione=None,
+                muls = Multiplo(isList=True).select(denominazione=None,
                                                      idArticolo=articolo.id_articolo_padre,
                                                      idUnitaBase=None,
                                                      orderBy = None,
                                                      offset = None,
-                                                     batchSize = None,
-                                                     immediate = True)
+                                                     batchSize = None)
 
                 if noSottoMultipli:
                     muls = [ item for item in muls if item.moltiplicatore > 1 ]
@@ -375,7 +376,7 @@ def fillComboboxStagioniAbbigliamento(combobox, filter=False):
     #argList = []
     #Environment.connection._cursor.execute(queryString, argList)
     #res = Environment.connection._cursor.fetchall()
-    res = StagioneAbbigliamento(isList=True).select()
+    res = StagioneAbbigliamento(isList=True).select(batchSize=None)
     model = gtk.ListStore(object, int, str)
 
     if not filter:
@@ -399,7 +400,7 @@ def fillComboboxGeneriAbbigliamento(combobox, filter=False):
     #argList = []
     #Environment.connection._cursor.execute(queryString, argList)
     #res = Environment.connection._cursor.fetchall()
-    res = GenereAbbigliamento(isList=True).select()
+    res = GenereAbbigliamento(isList=True).select(batchSize=None)
     model = gtk.ListStore(object, int, str)
 
     if not filter:

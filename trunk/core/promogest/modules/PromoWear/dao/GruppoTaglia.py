@@ -25,7 +25,7 @@ class GruppoTaglia(Dao):
 
     def _getTaglie(self):
         if self.__taglie is None:
-            grtts = GruppoTagliaTaglia(isList=True)(idGruppoTaglia=self.id,
+            grtts = GruppoTagliaTaglia(isList=True).select(idGruppoTaglia=self.id,
                                                         batchSize=None)
 
             self.__taglie = [Taglia(id=grtt.id_taglia).getRecord()

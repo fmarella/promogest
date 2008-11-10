@@ -47,7 +47,7 @@ class GestioneTaglieColori(GladeWidget):
 
     def __init__(self, articolo):
         GladeWidget.__init__(self, 'gestione_taglie_colori',
-                            './promogest/modules/PromoWear/gui/selezione,gestione_taglie_colori.glade')
+                            './promogest/modules/PromoWear/gui/selezione,gestione_taglie_colori.glade', isModule=True)
 
         dialog = self.gestione_taglie_colori
         self.placeWindow(self.getTopLevel())
@@ -314,7 +314,6 @@ class GestioneTaglieColori(GladeWidget):
     def on_ok_button_clicked(self, button):
         model = self.taglie_colori_treeview.get_model()
 
-        conn = Environment.connection
         articoloBase = self._articoloBase
         articoloPadre = self._articoloPadre
         gruppoTaglia = self._gruppoTaglia
@@ -333,12 +332,11 @@ class GestioneTaglieColori(GladeWidget):
 
                 codice = row[i + 2]
                 if codice != self._noValue:
-                    codici = promogest.dao.CodiceABarreArticolo.select(Environment.connection,
-                                                                       codice=codice,
+                    codici = CodiceABarreArticolo(isList=True).select(codice=codice,
                                                                        orderBy=None,
                                                                        offset=None,
-                                                                       batchSize=None,
-                                                                       immediate=True)
+                                                                       batchSize=None)
+                                                                    
                     for dao in codici:
                         # FIXME: la select non esegue una ricerca esatta !!
                         if dao.codice != codice:
@@ -353,11 +351,10 @@ class GestioneTaglieColori(GladeWidget):
                             return
 
                     codice = articoloBase.codice + gruppoTaglia.denominazione_breve + taglia.denominazione_breve + colore.denominazione_breve
-                    codici = promogest.dao.CodiceABarreArticolo.select(Environment.connection,
-                                                           codice=codice,
+                    codici = CodiceABarreArticolo(isList=True).select(codice=codice,
                                                            offset = None,
-                                                           batchSize = None,
-                                                           immediate=True)
+                                                           batchSize = None)
+                                                           
                     for dao in codici:
                         # FIXME: la select non esegue una ricerca esatta !!
                         if dao.codice != codice:
@@ -444,14 +441,13 @@ class GestioneTaglieColori(GladeWidget):
                     articoloTagliaColore.id_anno = articoloPadre.id_anno
                     articoloTagliaColore.id_stagione = articoloPadre.id_stagione
                     articoloTagliaColore.id_genere = articoloPadre.id_genere
-                    articoloTagliaColore.persist(conn=conn)
+                    articoloTagliaColore.persist()
 
-                    codici = promogest.dao.CodiceABarreArticolo.select(Environment.connection,
-                                                                       idArticolo=idVariante,
+                    codici = CodiceABarreArticolo(isList=True).select( idArticolo=idVariante,
                                                                        orderBy='primario',
                                                                        offset=None,
-                                                                       batchSize=None,
-                                                                       immediate=True)
+                                                                       batchSize=None)
+                                                                      
                     codici.reverse() # Prima i codici a barre primari
 
                     codice = None
@@ -460,18 +456,18 @@ class GestioneTaglieColori(GladeWidget):
                             # Codice a barre non impostato, niente salvataggio
                             continue
 
-                        codice = CodiceABarreArticolo(Environment.connection)
+                        codice = CodiceABarreArticolo().getRecord()
                         codice.codice = newCodice
                         codice.id_articolo = articoloTagliaColore.id_articolo
                         codice.primario = True
                     else:
-                        codice = CodiceABarreArticolo(Environment.connection, codici[0].id)
+                        codice = CodiceABarreArticolo(id=codici[0].id).getRecord()
                         if newCodice == self._noValue or newCodice.strip() == '':
                             # Codice a barre non impostato, rimozione
-                            codice.delete(conn=conn)
+                            codice.delete()
                             continue
                         codice.codice = newCodice
-                    codice.persist(conn=conn)
+                    codice.persist()
 
         except:
             conn.abortTransaction()
