@@ -104,21 +104,17 @@ class GladeWidget(SimpleGladeApp):
         """ Return a lookup ComboBox with changes possibility """
         return CustomComboBoxModify()
 
-
     def createCustomComboBoxSearch(self, str1, str2, int1, int2):
         """ Return a ComboBox with search & history possibility """
         return CustomComboBoxSearch()
-
 
     def createScontiWidget(self, str1, str2, int1, int2):
         """ Return a ScontiWidget widget """
         return ScontiWidget(str1, str2)
 
-
     def createScontoWidget(self, str1, str2, int1, int2):
         """ Return an EntryField for discount input with selection of the discount type"""
         return ScontoWidget(str1, str2, int1, int2)
-
 
     def createGtkHtml2Widget(self, str1, str2, int1, int2):
         """ Return a GtkHtml2 widget """
@@ -132,18 +128,14 @@ class GladeWidget(SimpleGladeApp):
         """ Return a DateWidget widget """
         return DateWidget(str1, str2, int1, int2)
 
-
     def createDateTimeWidget(self, str1, str2, int1, int2):
         """ Return a DateTimeWidget widget """
         return DateTimeWidget(str1, str2, int1, int2)
 
-
     def createArticoloSearchWidget(self, str1, str2, int1, int2):
         """ Return an ArticoloSearchWidget widget """
         from widgets.ArticoloSearchWidget import ArticoloSearchWidget
-
         return ArticoloSearchWidget()
-
 
     def createClienteSearchWidget(self, str1, str2, int1, int2):
         """ Return an ClienteSearchWidget widget """
@@ -152,12 +144,10 @@ class GladeWidget(SimpleGladeApp):
         #print widget.__class__
         return widget
 
-
     def createFornitoreSearchWidget(self, str1, str2, int1, int2):
         """ Return an FornitoreSearchWidget widget """
         from widgets.FornitoreSearchWidget import FornitoreSearchWidget
         return FornitoreSearchWidget()
-
 
     def createPersonaGiuridicaSearchWidget(self, str1, str2, int1, int2):
         """ Return an PersonaGiuridicaSearchWidget widget """
@@ -171,7 +161,6 @@ class GladeWidget(SimpleGladeApp):
         self._windowName = self.__class__.__name__
         self.isWindowPlaced = False
         self.topLevelWindow = None
-
         try:
             xmlFile = open(self._defaultWindowAttributesFile, 'r')
             xmlFile.close()

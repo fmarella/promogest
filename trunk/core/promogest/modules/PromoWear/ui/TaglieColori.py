@@ -4,20 +4,7 @@
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+# Author: Francesco Meloni <francesco@promotux.it>
 
 import gtk
 import gobject
@@ -42,7 +29,6 @@ from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.ui.utils import *
 
 
-
 class GestioneTaglieColori(GladeWidget):
 
     def __init__(self, articolo):
@@ -55,7 +41,7 @@ class GestioneTaglieColori(GladeWidget):
         self._articoloBase = articolo
         self._articoloPadre = articolo.articoloTagliaColore
         if self._articoloPadre is None:
-            self._articoloPadre = ArticoloTagliaColore(Environment.connection)
+            self._articoloPadre = ArticoloTagliaColore().getRecord()
         self._articoliTagliaColore = self._articoloBase.articoliTagliaColore
         self._noValue = 'n/a'
         self._varianti = {}
@@ -67,7 +53,7 @@ class GestioneTaglieColori(GladeWidget):
 
         # Colori attualmente presenti nella treeview
         colori = set(a.id_colore for a in self._articoliTagliaColore)
-        self._colori = [Colore(Environment.connection, c) for c in colori]
+        self._colori = [Colore(id= c).getRecord() for c in colori]
 
         # Dizionario che associa alla chiave (taglia,colore) l'id della variante
         for a in self._articoliTagliaColore:
@@ -84,14 +70,14 @@ class GestioneTaglieColori(GladeWidget):
 
         self.refreshTaglie()
 
-
     def refreshTaglie(self):
         # identificazione taglie associate al gruppo taglia selezionato
         id = self._articoloPadre.id_gruppo_taglia
+        print "IDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",id
         gruppo = None
         if id is None:
             id = 1 # Nessuna taglia
-        gruppo = GruppoTaglia(Environment.connection, id)
+        gruppo = GruppoTaglia(id=id).getRecord()
 
         self.gruppo_taglia_label.set_markup('<span weight="bold">%s</span>'
                                             % (gruppo.denominazione,))
@@ -99,7 +85,6 @@ class GestioneTaglieColori(GladeWidget):
         self._gruppoTaglia = gruppo
         self._taglie = gruppo.taglie
         self.refreshTaglieColoriTreeView()
-
 
     def _drawColoriTreeView(self):
         # disegno della treeview per la selezione dei colori
@@ -129,9 +114,7 @@ class GestioneTaglieColori(GladeWidget):
 
         model = gtk.ListStore(object, bool, str, str)
         treeview.set_model(model)
-
         treeview.set_search_column(2)
-
 
     def on_colori_cell_edited(self, cell, path):
         # selezione / deselezione dei colori
@@ -139,7 +122,6 @@ class GestioneTaglieColori(GladeWidget):
         iterator = model.get_iter(path)
         column = 1
         model.set_value(iterator, column, not cell.get_active())
-
 
     def refreshColoriTreeView(self):
         # Crea l'elenco dei colori, evidenziando quelli gia' presenti
@@ -293,12 +275,10 @@ class GestioneTaglieColori(GladeWidget):
                     value = getDictValue(valuesDict, (t.id,c.id)) or self._noValue
                     row.append(value)
                 else:
-                    codici = promogest.dao.CodiceABarreArticolo.select(Environment.connection,
-                                                                       idArticolo=idVariante,
+                    codici = CodiceABarreArticolo(isList=True).select( idArticolo=idVariante,
                                                                        orderBy='primario',
                                                                        offset=None,
-                                                                       batchSize=None,
-                                                                       immediate=True)
+                                                                       batchSize=None)                                                                      
                     codici.reverse() # Prima i codici a barre primari
 
                     if len(codici) == 0:
@@ -336,7 +316,7 @@ class GestioneTaglieColori(GladeWidget):
                                                                        orderBy=None,
                                                                        offset=None,
                                                                        batchSize=None)
-                                                                    
+
                     for dao in codici:
                         # FIXME: la select non esegue una ricerca esatta !!
                         if dao.codice != codice:
@@ -354,7 +334,7 @@ class GestioneTaglieColori(GladeWidget):
                     codici = CodiceABarreArticolo(isList=True).select(codice=codice,
                                                            offset = None,
                                                            batchSize = None)
-                                                           
+
                     for dao in codici:
                         # FIXME: la select non esegue una ricerca esatta !!
                         if dao.codice != codice:
@@ -368,112 +348,106 @@ class GestioneTaglieColori(GladeWidget):
                             dialog.destroy()
                             return
 
-        conn.startTransaction()
+        #conn.startTransaction()
 
-        try:
+        #try:
             # Rimozione articoli
-            idTaglie = set(t.id for t in taglie)
-            idColori = set(c.id for c in colori)
+        idTaglie = set(t.id for t in taglie)
+        idColori = set(c.id for c in colori)
 
-            for a in articoliTagliaColore:
-                if (a.id_gruppo_taglia != gruppoTaglia.id
-                    or a.id_taglia not in idTaglie
-                    or a.id_colore not in idColori):
+        for a in articoliTagliaColore:
+            if (a.id_gruppo_taglia != gruppoTaglia.id
+                or a.id_taglia not in idTaglie
+                or a.id_colore not in idColori):
 
-                    articolo = a.articolo()
-                    articolo.delete(conn=conn)
+                articolo = a.articolo()
+                articolo.delete()
 
-            for row in model:
-                taglia = row[0]
-                for i, colore in enumerate(colori):
-                    try:
-                        idVariante = self._varianti[(taglia.id, colore.id)]
-                    except:
-                        idVariante = None
+        for row in model:
+            taglia = row[0]
+            for i, colore in enumerate(colori):
+                try:
+                    idVariante = self._varianti[(taglia.id, colore.id)]
+                except:
+                    idVariante = None
 
-                    newCodice = row[i + 2]
-                    if idVariante is None:
-                        if newCodice == self._noValue:
-                            continue
-                        # La combinazione taglia/colore non esiste sul DB
+                newCodice = row[i + 2]
+                if idVariante is None:
+                    if newCodice == self._noValue:
+                        continue
+                    # La combinazione taglia/colore non esiste sul DB
 
-                        articolo = Articolo(Environment.connection)
-                        articolo.codice = articoloBase.codice + gruppoTaglia.denominazione_breve + taglia.denominazione_breve + colore.denominazione_breve
-                        articolo.denominazione = articoloBase.denominazione + ' ' + taglia.denominazione + ' ' + colore.denominazione
-                        articolo.id_aliquota_iva = articoloBase.id_aliquota_iva
-                        articolo.id_famiglia_articolo = articoloBase.id_famiglia_articolo
-                        articolo.id_categoria_articolo = articoloBase.id_categoria_articolo
-                        articolo.id_unita_base = articoloBase.id_unita_base
-                        articolo.id_stato_articolo = articoloBase.id_stato_articolo
-                        articolo.id_imballaggio = articoloBase.id_imballaggio
-                        articolo.produttore = articoloBase.produttore
-                        articolo.unita_dimensioni = articoloBase.unita_dimensioni
-                        articolo.unita_volume = articoloBase.unita_volume
-                        articolo.unita_peso = articoloBase.unita_peso
-                        articolo.lunghezza = articoloBase.lunghezza
-                        articolo.larghezza = articoloBase.larghezza
-                        articolo.altezza = articoloBase.altezza
-                        articolo.volume = articoloBase.volume
-                        articolo.peso_lordo = articoloBase.peso_lordo
-                        articolo.peso_imballaggio = articoloBase.peso_imballaggio
-                        articolo.stampa_etichetta = articoloBase.stampa_etichetta
-                        articolo.codice_etichetta = articoloBase.codice_etichetta
-                        articolo.descrizione_etichetta = articoloBase.descrizione_etichetta
-                        articolo.stampa_listino = articoloBase.stampa_listino
-                        articolo.descrizione_listino = articoloBase.descrizione_listino
-                        articolo.note = articoloBase.note
-                        articolo.sospeso = articoloBase.sospeso
-                        articolo.cancellato = articoloBase.cancellato
-                        articolo.aggiornamento_listino_auto = articoloBase.aggiornamento_listino_auto
-                        articolo.persist(conn=conn)
+                    articolo = Articolo().getRecord()
+                    articolo.codice = articoloBase.codice + gruppoTaglia.denominazione_breve + taglia.denominazione_breve + colore.denominazione_breve
+                    articolo.denominazione = articoloBase.denominazione + ' ' + taglia.denominazione + ' ' + colore.denominazione
+                    articolo.id_aliquota_iva = articoloBase.id_aliquota_iva
+                    articolo.id_famiglia_articolo = articoloBase.id_famiglia_articolo
+                    articolo.id_categoria_articolo = articoloBase.id_categoria_articolo
+                    articolo.id_unita_base = articoloBase.id_unita_base
+                    articolo.id_stato_articolo = articoloBase.id_stato_articolo
+                    articolo.id_imballaggio = articoloBase.id_imballaggio
+                    articolo.produttore = articoloBase.produttore
+                    articolo.unita_dimensioni = articoloBase.unita_dimensioni
+                    articolo.unita_volume = articoloBase.unita_volume
+                    articolo.unita_peso = articoloBase.unita_peso
+                    articolo.lunghezza = articoloBase.lunghezza
+                    articolo.larghezza = articoloBase.larghezza
+                    articolo.altezza = articoloBase.altezza
+                    articolo.volume = articoloBase.volume
+                    articolo.peso_lordo = articoloBase.peso_lordo
+                    articolo.peso_imballaggio = articoloBase.peso_imballaggio
+                    articolo.stampa_etichetta = articoloBase.stampa_etichetta
+                    articolo.codice_etichetta = articoloBase.codice_etichetta
+                    articolo.descrizione_etichetta = articoloBase.descrizione_etichetta
+                    articolo.stampa_listino = articoloBase.stampa_listino
+                    articolo.descrizione_listino = articoloBase.descrizione_listino
+                    articolo.note = articoloBase.note
+                    articolo.sospeso = articoloBase.sospeso
+                    articolo.cancellato = articoloBase.cancellato
+                    articolo.aggiornamento_listino_auto = articoloBase.aggiornamento_listino_auto
+                    articolo.persist()
 
-                        articoloTagliaColore = ArticoloTagliaColore(conn)
-                        articoloTagliaColore.id_articolo = articolo.id
-                        idVariante = articolo.id
-                    else:
-                        # La combinazione taglia/colore esiste gia'
-                        articoloTagliaColore = ArticoloTagliaColore(Environment.connection, idVariante)
+                    articoloTagliaColore = ArticoloTagliaColore().getRecord()
+                    articoloTagliaColore.id_articolo = articolo.id
+                    idVariante = articolo.id
+                else:
+                    # La combinazione taglia/colore esiste gia'
+                    articoloTagliaColore = ArticoloTagliaColore(id=idVariante).getRecord()
 
-                    articoloTagliaColore.id_articolo_padre = articoloPadre.id_articolo
-                    articoloTagliaColore.id_gruppo_taglia = articoloPadre.id_gruppo_taglia
-                    articoloTagliaColore.id_taglia = taglia.id
-                    articoloTagliaColore.id_colore = colore.id
-                    articoloTagliaColore.id_anno = articoloPadre.id_anno
-                    articoloTagliaColore.id_stagione = articoloPadre.id_stagione
-                    articoloTagliaColore.id_genere = articoloPadre.id_genere
-                    articoloTagliaColore.persist()
+                articoloTagliaColore.id_articolo_padre = articoloPadre.id_articolo
+                articoloTagliaColore.id_gruppo_taglia = articoloPadre.id_gruppo_taglia
+                articoloTagliaColore.id_taglia = taglia.id
+                articoloTagliaColore.id_colore = colore.id
+                articoloTagliaColore.id_anno = articoloPadre.id_anno
+                articoloTagliaColore.id_stagione = articoloPadre.id_stagione
+                articoloTagliaColore.id_genere = articoloPadre.id_genere
+                articoloTagliaColore.persist()
 
-                    codici = CodiceABarreArticolo(isList=True).select( idArticolo=idVariante,
-                                                                       orderBy='primario',
-                                                                       offset=None,
-                                                                       batchSize=None)
-                                                                      
-                    codici.reverse() # Prima i codici a barre primari
+                codici = CodiceABarreArticolo(isList=True).select( idArticolo=idVariante,
+                                                                    orderBy='primario',
+                                                                    offset=None,
+                                                                    batchSize=None)
 
-                    codice = None
-                    if len(codici) == 0:
-                        if newCodice == self._noValue or newCodice.strip() == '':
-                            # Codice a barre non impostato, niente salvataggio
-                            continue
+                codici.reverse() # Prima i codici a barre primari
 
-                        codice = CodiceABarreArticolo().getRecord()
-                        codice.codice = newCodice
-                        codice.id_articolo = articoloTagliaColore.id_articolo
-                        codice.primario = True
-                    else:
-                        codice = CodiceABarreArticolo(id=codici[0].id).getRecord()
-                        if newCodice == self._noValue or newCodice.strip() == '':
-                            # Codice a barre non impostato, rimozione
-                            codice.delete()
-                            continue
-                        codice.codice = newCodice
-                    codice.persist()
+                codice = None
+                if len(codici) == 0:
+                    if newCodice == self._noValue or newCodice.strip() == '':
+                        # Codice a barre non impostato, niente salvataggio
+                        continue
 
-        except:
-            conn.abortTransaction()
-            raise
-
-        conn.commitTransaction()
+                    codice = CodiceABarreArticolo().getRecord()
+                    codice.codice = newCodice
+                    codice.id_articolo = articoloTagliaColore.id_articolo
+                    codice.primario = True
+                else:
+                    codice = CodiceABarreArticolo(id=codici[0].id).getRecord()
+                    if newCodice == self._noValue or newCodice.strip() == '':
+                        # Codice a barre non impostato, rimozione
+                        codice.delete()
+                        continue
+                    codice.codice = newCodice
+                codice.persist()
 
         self.destroy()
 

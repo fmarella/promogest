@@ -127,6 +127,7 @@ class AnagraficaArticoli(Anagrafica):
         self.editElement.dao.cancellato = dao.cancellato
         self.editElement.dao.sospeso = dao.sospeso
         self.editElement.dao.id_stato_articolo = dao.id_stato_articolo
+        self.editElement.dao.quantita_minima = dao.quantita_minima
 
         if self.editElement._codiceByFamiglia:
             self.editElement.dao.codice = promogest.dao.Articolo.getNuovoCodiceArticolo(idFamiglia=dao.id_famiglia_articolo)
@@ -384,6 +385,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             cancellato = True
 
         if "PromoWear" in Environment.modulesList and self._anagrafica._taglia_colore:
+            print "PASIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIFFIFIIFFI", self._anagrafica._taglia_colore,self.taglie_colori_filter_combobox.get_active()
             padriTagliaColore = ((self.taglie_colori_filter_combobox.get_active() == 0) or
                                  (self.taglie_colori_filter_combobox.get_active() == 1))
             figliTagliaColore = ((self.taglie_colori_filter_combobox.get_active() == 0) or
@@ -578,6 +580,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                                 gladeFile='_anagrafica_articoli_elements.glade')
         self._widgetFirstFocus = self.codice_entry
         self._loading = False
+        #FIXME: promogest.dao.Articolo.isNuovoCodiceByFamiglia()
         self._codiceByFamiglia = promogest.dao.Articolo.isNuovoCodiceByFamiglia()
         self._duplicatedDaoId = None
         if "PromoWear" in Environment.modulesList:
@@ -588,6 +591,37 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
 
     def draw(self):
+        if "PromoWear" in Environment.modulesList and not self._anagrafica._taglia_colore:
+            self.senza_taglie_colori_radiobutton.set_active(True)
+            self.codici_a_barre_label.set_text('')
+            self.senza_taglie_colori_radiobutton.set_property('visible', False)
+            self.senza_taglie_colori_radiobutton.set_no_show_all(True)
+            self.codici_a_barre_hseparator.set_property('visible', False)
+            self.codici_a_barre_hseparator.set_no_show_all(True)
+            self.con_taglie_colori_radiobutton.set_property('visible', False)
+            self.con_taglie_colori_radiobutton.set_no_show_all(True)
+            self.taglie_colori_togglebutton.set_property('visible', False)
+            self.taglie_colori_togglebutton.set_no_show_all(True)
+            self.notebook1.remove_page(3)
+        elif "PromoWear" in Environment.modulesList and self._anagrafica._taglia_colore:
+            #Popola combobox gruppi taglia
+            fillComboboxGruppiTaglia(self.id_gruppo_taglia_customcombobox.combobox)
+            self.id_gruppo_taglia_customcombobox.connect('clicked',
+                                                         on_id_gruppo_taglia_customcombobox_clicked)
+            #Popola combobox taglie
+            fillComboboxTaglie(self.id_taglia_customcombobox.combobox)
+            self.id_taglia_customcombobox.connect('clicked',
+                                                  self.on_id_taglia_customcombobox_clicked)
+            #Popola combobox colori
+            fillComboboxColori(self.id_colore_customcombobox.combobox)
+            self.id_colore_customcombobox.connect('clicked',
+                                                  self.on_id_colore_customcombobox_clicked)
+            #Popola combobox anni
+            fillComboboxAnniAbbigliamento(self.id_anno_combobox)
+            #Popola combobox stagioni
+            fillComboboxStagioniAbbigliamento(self.id_stagione_combobox)
+            #Popola combobox generi
+            fillComboboxGeneriAbbigliamento(self.id_genere_combobox)
         #print "MA TU ESISTIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", self._anagrafica._taglia_colore, "PromoWear" in Environment.modulesList
         if "PromoWear" in Environment.modulesList and not self._anagrafica._taglia_colore:
             self.senza_taglie_colori_radiobutton.set_active(True)
@@ -737,6 +771,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.senza_taglie_colori_radiobutton.set_sensitive(True)
             self.con_taglie_colori_radiobutton.set_sensitive(True)
             self._articoloTagliaColore = self.dao.articoloTagliaColoreCompleto
+            print "9999999999999999999999999999999999999999",self._articoloTagliaColore
             if self._articoloTagliaColore is not None:
                 print "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", self._articoloTagliaColore.id_articolo_padre
                 if self._articoloTagliaColore.id_articolo_padre is not None:
@@ -930,7 +965,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                     obligatoryField(self.dialogTopLevel,
                                     self.id_genere_combobox,
                                     msg='Campo obbligatorio !\nGenere')
-
+    
+                print "(((88888888888888888888888888888888888888))))))))",self._articoloTagliaColore
                 if self._articoloTagliaColore is not None:
                     if self._articoloTagliaColore.id_articolo_padre is not None:
                         if findIdFromCombobox(self.id_taglia_customcombobox.combobox) is None:
@@ -944,11 +980,12 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                                             msg='Campo obbligatorio !\nColore')
             else:
                 isArticoloTagliaColore = False
+            print "Prima di questo if isArticoloTagliaColore", isArticoloTagliaColore
             if isArticoloTagliaColore:
                 if self._articoloTagliaColore is not None:
-                    articoloTagliaColore = ArticoloTagliaColore(Environment.connection, self.dao.id)
+                    articoloTagliaColore = ArticoloTagliaColore(id=self.dao.id).getREcord()
                 else:
-                    articoloTagliaColore = ArticoloTagliaColore(Environment.connection)
+                    articoloTagliaColore = ArticoloTagliaColore().getRecord()
                     articoloTagliaColore.id_articolo = self.dao.id
 
                 articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
@@ -1026,6 +1063,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if self._duplicatedDaoId is not None:
             self.duplicaListini()
         if "PromoWear" in Environment.modulesList:
+            print "BECCATOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",self.dao.articoloTagliaColoreCompleto
             self._articoloTagliaColore = self.dao.articoloTagliaColoreCompleto
 
 
@@ -1035,6 +1073,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             toggleButton.set_active(False)
             return
 
+        print "TU SEI VUOTO VEROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",self.dao.id
         if self.dao.id is None:
             msg = 'Prima di poter inserire i codici a barre occorre salvare l\' articolo.\n Salvare ?'
             dialog = gtk.MessageDialog(self.dialogTopLevel,
@@ -1203,7 +1242,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
     def on_senza_taglie_colori_radiobutton_toggled(self, radioButton):
         active = radioButton.get_active()
         self.codici_a_barre_togglebutton.set_sensitive(active)
-        print "PODIOIDFVDFVDFDFBDGHHHHHGHHGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
         self.taglie_colori_togglebutton.set_sensitive(not active)
         if active and self._articoloTagliaColore is None:
             self.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
@@ -1213,7 +1251,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
 
     def on_taglie_colori_togglebutton_clicked(self, toggleButton):
-        print "KKKKKKKKKKJDFDDDDDDDDDDDDDDDDDDDDDDDDDDDD"
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return

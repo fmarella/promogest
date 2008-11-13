@@ -22,7 +22,7 @@
 import gtk
 import gobject
 from GladeWidget import GladeWidget
-from promogest.lib.ImportPriceList import ImportPriceList
+
 from promogest import Environment
 from promogest.dao.Dao import Dao
 import promogest.dao.Listino
@@ -152,6 +152,7 @@ class ElencoListini(GladeWidget):
         showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
 
     def on_importazione_listini_togglebutton_clicked(self, toggleButton):
+        from promogest.lib.ImportPriceList import ImportPriceList
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return

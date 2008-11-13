@@ -4,32 +4,16 @@
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Alessandro Scano <alessandro@promotux.it>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+# Author: Francesco Meloni <francesco@promotux.it>
+
 
 import gtk
 import gobject
-
 from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-
 from promogest import Environment
 from promogest.dao.Dao import Dao
 import promogest.modules.PromoWear.dao.GruppoTaglia
 from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
-
 from promogest.ui.utils import *
 
 
@@ -76,11 +60,7 @@ class AnagraficaGruppiTaglia(Anagrafica):
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
-
         treeview.set_search_column(1)
-
-        treeview.set_search_column(1)
-
         # Model: Dao, denominazione, denominazione_breve, sensitive
         self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, bool)
         treeview.set_model(self._treeViewModel)
@@ -139,28 +119,24 @@ class AnagraficaGruppoTagliaDetail(AnagraficaDetail):
     """ 
     Dettaglio dell'anagrafica degli imballaggi
     """
-
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                                   anagrafica)
 
-
     def setDao(self, dao):
         if dao is None:
-            self.dao = GruppoTaglia(Environment.connection)
+            self.dao = GruppoTaglia().getRecord()
             self._anagrafica._newRow((self.dao, '', '', True))
             self._refresh()
         else:
             self.dao = dao
 
-
     def updateDao(self):
         if self.dao is not None:
-            self.dao = GruppoTaglia(Environment.connection, self.dao.id)
+            self.dao = GruppoTaglia(id=self.dao.id).getRecord()
             self._refresh()
         else:
             raise Exception, 'Update not possible'
-
 
     def _refresh(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
@@ -169,14 +145,12 @@ class AnagraficaGruppoTagliaDetail(AnagraficaDetail):
         model.set_value(iterator, 1, self.dao.denominazione)
         model.set_value(iterator, 2, self.dao.denominazione_breve)
 
-
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
         self.dao.denominazione = model.get_value(iterator, 1)
         self.dao.denominazione_breve = model.get_value(iterator, 2)
         self.dao.persist()
-
 
     def deleteDao(self):
         self.dao.delete()

@@ -32,15 +32,6 @@ except ImportError:
     print "\nATTENZIONE: Il modulo Spam non e` stato trovato\n"
     raise SystemExit
 
-# Caricamento moduli
-#try:
-    #if hasattr(Environment.conf,'Dettaglio'):
-        #mod_enable = getattr(Environment.conf.Dettaglio,'mod_enable','no')
-        #if mod_enable == 'yes':
-            #from promogest.ui.plus.plus002 import VenditaDettaglio
-#except ImportError:
-    #print "\nATTENZIONE: Il modulo di vendita al dettaglio non e` stato trovato\n"
-    #raise SystemExit
 
 # Caricamento moduli
 try:
@@ -916,15 +907,6 @@ class MagazziniFrame(ElencoMagazzini):
 
 
 
-class ListiniFrame(ElencoListini):
-    """ Frame per la gestione dei listini """
-
-    def __init__(self, mainWindow,azs):
-        self.mainWindow = mainWindow
-        ElencoListini.__init__(self, self.mainWindow,azs)
-
-
-
 class RegistrazioniFrame(GladeWidget):
     """ Frame per la gestione delle registrazioni """
 
@@ -1124,6 +1106,13 @@ class AziendaFrame(AnagraficaAziende):
         AnagraficaAziende.__init__(self, self.mainWindow)
 
 
+from ElencoListini import ElencoListini
+class ListiniFrame(ElencoListini):
+    """ Frame per la gestione dei listini """
+
+    def __init__(self, mainWindow,azs):
+        self.mainWindow = mainWindow
+        ElencoListini.__init__(self, self.mainWindow,azs)
 
 
 def on_anagrafica_destroyed(anagrafica_window, argList):

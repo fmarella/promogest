@@ -132,18 +132,20 @@ class Articolo(Dao):
     def getArticoloTagliaColore(self):
         """ Restituisce il Dao ArticoloTagliaColore collegato al Dao Articolo #"""
         #if self.__articoloTagliaColore is not None:
-        self.__articoloTagliaColore = None
-        #try:
-        #self.__articoloTagliaColore = ArticoloTagliaColore(id=self.id).getRecord()
-        return self.__articoloTagliaColore
-        #except Exception:
-            #print "Errore in getArticoloTagliaColore"
-            #return None
+        #self.__articoloTagliaColore = None
+        try:
+            self.__articoloTagliaColore = ArticoloTagliaColore(isList=True).select(idArticolo=self.id,
+                                                                                    offset=None,
+                                                                                    batchSize=None)[0]
+            return self.__articoloTagliaColore
+        except Exception:
+            print "Errore in getArticoloTagliaColore"
 
     def setArticoloTagliaColore(self, value):
         """
         Imposta il Dao ArticoloTagliaColore collegato al Dao Articolo
         """
+        print "VALUEEEEEEEEE articoloTagliaColore " , value
         self.__articoloTagliaColore = value
 
     articoloTagliaColore = property(getArticoloTagliaColore, setArticoloTagliaColore)
@@ -175,21 +177,19 @@ class Articolo(Dao):
         """ Restituisce una lista di Dao ArticoloTagliaColore figli del Dao Articolo """
         #from promogest.modules.PromoWear.dao.ArticoloTagliaColore import select
         articoli = ArticoloTagliaColore(isList=True).select(idArticoloPadre=self.id,
-                                                idGruppoTaglia=idGruppoTaglia,
-                                                idTaglia=idTaglia,
-                                                idColore=idColore,
-                                                offset=None,
-                                                batchSize=None)
+                                                            idGruppoTaglia=idGruppoTaglia,
+                                                            idTaglia=idTaglia,
+                                                            idColore=idColore,
+                                                            offset=None,
+                                                            batchSize=None)
         return articoli
     articoliTagliaColore = property(getArticoliTagliaColore)
 
     def _getTaglie(self):
         """ Restituisce una lista di Dao Taglia relativi alle taglie di tutti i Dao
             ArticoloTagliaColore figli del Dao Articolo  """
-
-
         idTaglie = set(a.id_taglia for a in self.articoliTagliaColore)
-        return [Taglia(Environment.connection, idt) for idt in idTaglie]
+        return [Taglia(id=idt).getRecord() for idt in idTaglie]
 
     taglie = property(_getTaglie)
 
@@ -201,14 +201,14 @@ class Articolo(Dao):
         """
 
         idColori = set(a.id_colore for a in self.articoliTagliaColore)
-        return [Colore(Environment.connection, idc) for idc in idColori]
+        return [Colore(id=idc).getRecord() for idc in idColori]
 
     colori = property(_getColori)
 
 
 
     def _denominazione_gruppo_taglia(self):
-        if self.ATC: return self.ATC.denominazione or ""
+        if self.ATC: return self.ATC.GT.denominazione or ""
         #else: return ""
     denominazione_gruppo_taglia = property(_denominazione_gruppo_taglia)
 
@@ -238,7 +238,7 @@ class Articolo(Dao):
     def _denominazione_taglia(self):
         """ esempio di funzione  unita alla property """
         a =  params["session"].query(Articolo)\
-                                .filter(and_( ArticoloTagliaColore.id_taglia==Taglia.id)).all()
+                                .filter(and_(ArticoloTagliaColore.id_articolo == self.id,ArticoloTagliaColore.id_taglia==Taglia.id)).all()
         if not a: return a
         else: return a[0].denominazione
     denominazione_taglia = property(_denominazione_taglia)
@@ -246,7 +246,7 @@ class Articolo(Dao):
     def _denominazione_colore(self):
         """ esempio di funzione  unita alla property """
         a =  params["session"].query(Articolo)\
-                                .filter(and_( ArticoloTagliaColore.id_colore==Colore.id)).all()
+                                .filter(and_(ArticoloTagliaColore.id_articolo == self.id,ArticoloTagliaColore.id_colore==Colore.id)).all()
         if not a: return a
         else: return a[0].denominazione
     denominazione_colore = property(_denominazione_colore)
@@ -254,7 +254,7 @@ class Articolo(Dao):
     def _anno(self):
         """ esempio di funzione  unita alla property """
         a =  params["session"].query(Articolo)\
-                                .filter(and_(ArticoloTagliaColore.id_anno==AnnoAbbigliamento.id)).all()
+                                .filter(and_(ArticoloTagliaColore.id_articolo == self.id,ArticoloTagliaColore.id_anno==AnnoAbbigliamento.id)).all()
         if not a: return a
         else: return a[0].denominazione
     anno = property(_anno)
@@ -262,7 +262,7 @@ class Articolo(Dao):
     def _stagione(self):
         """ esempio di funzione  unita alla property """
         a =  params["session"].query(Articolo)\
-                                .filter(and_(ArticoloTagliaColore.id_stagione==StagioneAbbigliamento.id)).all()
+                        .filter(and_(ArticoloTagliaColore.id_articolo == self.id, ArticoloTagliaColore.id_stagione==StagioneAbbigliamento.id)).all()
         if not a: return a
         else: return a[0].denominazione
     stagione = property(_stagione)
@@ -270,7 +270,7 @@ class Articolo(Dao):
     def _genere(self):
         """ esempio di funzione  unita alla property """
         a =  params["session"].query(Articolo)\
-                                .filter(and_( ArticoloTagliaColore.id_genere==GenereAbbigliamento.id)).all()
+                                .filter(and_(ArticoloTagliaColore.id_articolo == self.id, ArticoloTagliaColore.id_genere==GenereAbbigliamento.id)).all()
         if not a: return a
         else: return a[0].denominazione
     genere = property(_genere)
@@ -306,22 +306,20 @@ class Articolo(Dao):
         elif k == 'figliTagliaColore':
             dic = {k:None}
         elif k == 'idTaglia':
-            dic = {k:None}
+            dic = {k:articolotagliacolore.c.id_taglia==v}
         elif k == 'idGruppoTaglia':
-            dic = {k:None}
+            dic = {k:articolotagliacolore.c.id_gruppo_taglia ==v}
         elif k == 'padriTagliaColore':
             dic = {k:None}
         elif k == 'idColore':
-            dic = {k:None}
+            dic = {k:articolotagliacolore.c.id_colore ==v}
         elif k == 'idStagione':
-            dic = {k:None}
+            dic = {k:articolotagliacolore.c.id_stagione ==v}
         elif k == 'idAnno':
-            dic = {k:None}
+            dic = {k:articolotagliacolore.c.id_anno ==v}
         elif k == 'idGenere':
-            dic = {k:None}
+            dic = {k:articolotagliacolore.c.id_genere ==v}
         return  dic[k]
-
-
 
 
     def persist(self):
@@ -354,6 +352,14 @@ class Articolo(Dao):
         except:
             pass
             #print "nessuna immagine associata all'articolo"
+        if self.__articoloTagliaColore:
+            self.__articoloTagliaColore.id=self.id
+            params["session"].add(self.__articoloTagliaColore)
+            params["session"].commit()
+
+
+
+            print "qui c'è del lavoro da fareeeeeeeeeeeeeeeeeeeeeeeeeeeee"
         params["session"].flush()
 
 
@@ -449,7 +455,6 @@ std_mapper = mapper(Articolo,articolo,properties={
             "sa":relation(StatoArticolo,primaryjoin=(articolo.c.id_stato_articolo==StatoArticolo.id)),
             #"articoloTagliaColore":relation(ArticoloTagliaColore),
             "ATC":relation(ArticoloTagliaColore,primaryjoin=(articolo.c.id==ArticoloTagliaColore.id_articolo)),
-
             }, order_by=articolo.c.id)
 
 

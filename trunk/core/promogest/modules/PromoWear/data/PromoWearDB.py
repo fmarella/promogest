@@ -100,8 +100,8 @@ if hasattr(conf, 'PromoWear'):
 
         #tabella TAGLIA
         gruppoTagliaTagliaTable = Table('gruppo_taglia_taglia', params['metadata'],
-                Column('id_gruppo_taglia',Integer,primary_key=True),
-                Column('id_taglia',Integer,primary_key=True),
+                Column('id_gruppo_taglia',Integer,ForeignKey(params['schema']+'.gruppo_taglia.id',onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
+                Column('id_taglia',Integer,ForeignKey(params['schema']+'.taglia.id',onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
                 Column('ordine',Integer,nullable=False),
                 schema=params["schema"])
         gruppoTagliaTagliaTable.create(checkfirst=True)
@@ -111,6 +111,7 @@ if hasattr(conf, 'PromoWear'):
             tipo.execute(id_gruppo_taglia=1, id_taglia=1, ordine=1)
 
         #tabella articolo taglia colore
+        articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
         articoloTagliaColoreTable = Table('articolo_taglia_colore', params['metadata'],
                     Column('id_articolo',Integer,ForeignKey(params['schema']+'.articolo.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
                     Column('id_articolo_padre',Integer,ForeignKey(params['schema']+'.articolo.id',onupdate="CASCADE",ondelete="CASCADE")),

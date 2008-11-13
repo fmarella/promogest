@@ -950,6 +950,7 @@ class AnagraficaHtml(object):
         self._anagrafica = anagrafica
         self._gtkHtml = None # Will be filled later
         #self._htmlTemplate = os.path.join('templates', template + '.kid')
+        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", templatesHTMLDir
         if not templatesHTMLDir:
             self._htmlTemplate = os.path.join('templates')
         else:

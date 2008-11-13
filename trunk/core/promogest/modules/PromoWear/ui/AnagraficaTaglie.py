@@ -4,21 +4,8 @@
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Alessandro Scano <alessandro@promotux.it>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+# Author: Francesco Meloni <francesco@promotux.it>
+
 
 import gtk
 import gobject
@@ -168,15 +155,14 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
         for gruppoTagliaTaglia in gruppiTaglieTaglie:
             if gruppoTagliaTaglia.id_gruppo_taglia not in gruppiTaglie:
                 gruppiTaglie.add(gruppoTagliaTaglia.id_gruppo_taglia)
-                gruppoTaglia = GruppoTaglia(Environment.connection,
-                                            gruppoTagliaTaglia.id_gruppo_taglia)
+                gruppoTaglia = GruppoTaglia(id =gruppoTagliaTaglia.id_gruppo_taglia).getRecord()
                 parentNode = self._treeViewModel.append(None,
                                                         (gruppoTaglia,
                                                          gruppoTaglia.denominazione,
                                                          gruppoTaglia.denominazione_breve,
                                                          None))
                 parentNodes[gruppoTagliaTaglia.id_gruppo_taglia] = parentNode
-            taglia = Taglia(Environment.connection, gruppoTagliaTaglia.id_taglia)
+            taglia = Taglia(id=gruppoTagliaTaglia.id_taglia).getRecord()
             node = self._treeViewModel.append(parentNodes[gruppoTagliaTaglia.id_gruppo_taglia],
                                               (gruppoTagliaTaglia,
                                                taglia.denominazione,
@@ -195,7 +181,7 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
         c = model.get_value(iter, 0)
         found = False;
         if isinstance(c, GruppoTagliaTaglia):
-            taglia = Taglia(Environment.connection, c.id_taglia)
+            taglia = Taglia(id= c.id_taglia).getRecord()
             found = denominazione.upper() in taglia.denominazione.upper()
         elif isinstance(c, GruppoTaglia):
             found = denominazione.upper() in c.denominazione.upper()
@@ -215,7 +201,7 @@ class AnagraficaTaglieHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica,'taglia',
                                 'Informazioni sulla famiglia articoli',
-                                templatesHTMLDir=os.path.join("promogest/modules/PromoWear/gui/"))
+                                templatesHTMLDir=os.path.join("promogest/modules/PromoWear/templates/"))
 
 
 

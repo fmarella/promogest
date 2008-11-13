@@ -199,14 +199,8 @@ else:
             #return Articolo(connection, res[0]['id'])
             #else:
                 #return None
-    fornitura=Table('fornitura',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
-    articolo=Table('articolo',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
+    fornitura=Table('fornitura',params['metadata'],schema = params['schema'],autoload=True)
+    articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
 
     std_mapper = mapper(Articolo,articolo,
                 properties={

@@ -2,22 +2,10 @@
 
 # Promogest
 #
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
+# Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+# Author: Francesco Meloni <francesco@promotux.it>
+
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
@@ -87,21 +75,21 @@ class ArticoloTagliaColore(Dao):
         return Articolo(Environment.connection, self.id_articolo)
 
 
-    def delete(self, conn=None):
-        """ Elimina fisicamente o logicamente un articolo """
-        def isMovimentato(id):
-            """Verifica se l'articolo e' presente almeno una riga di movimento/documento"""
-            queryString = ('SELECT COUNT(*) FROM ' +
-                           Environment.connection._schemaAzienda + '.riga ' +
-                           'WHERE id_articolo = ' + str(id_articolo))
-            argList = []
-            self._connection._cursor.execute(queryString, argList)
-            res = Environment.connection._cursor.fetchall()
+    #def delete(self, conn=None):
+        #""" Elimina fisicamente o logicamente un articolo """
+        #def isMovimentato(id):
+            #"""Verifica se l'articolo e' presente almeno una riga di movimento/documento"""
+            #queryString = ('SELECT COUNT(*) FROM ' +
+                           #Environment.connection._schemaAzienda + '.riga ' +
+                           #'WHERE id_articolo = ' + str(id_articolo))
+            #argList = []
+            #self._connection._cursor.execute(queryString, argList)
+            #res = Environment.connection._cursor.fetchall()
 
-            return res[0][0] > 0
+            #return res[0][0] > 0
 
 
-        conn = conn or self._connection
+        #conn = conn or self._connection
 
         #if conn is None:
         #    conn = Environment.connection

@@ -8,64 +8,40 @@
         width: 100%;
     }
 
-    td {
-/*         padding-left: 0px; */
-    }
-
-    td.detail {
-/*         padding-left: 2px; */
-    }
-
 /* da eliminare dopo la riconversione */
     td.left {
         text-align: left;
-/*  width: 25%; */
     }
 /* */
 
     td.odd-detail {
         text-align: left;
         color :black;
-/*  color: #2B4F81; */
-/*  width: 25%; */
-/*  background-color: #F0F0F0    ; */
         border-bottom : 1px solid #c0c0c0;
     }
 
     td.even-detail {
         text-align: left;
         color :black;
-/*  color: #2B4F81; */
-/*  width: 25%; */
-/*  background-color: #EBEBEB; */
         background: #efefef;
         border-bottom : 1px solid #FFFFFF;
     }
 
     td.odd-number {
         text-align: right;
-color :black;
-/*  color: #2B4F81; */
-/*  width: 25%; */
-/*  background-color: #F0F0F0    ; */
+        color :black;
         border-bottom : 1px solid #c0c0c0;
     }
 
     td.even-number {
         text-align: right;
-color :black;
-/*  color: #2B4F81; */
-/*  width: 25%; */
-/*  background-color: #EBEBEB   ; */
+        color :black;
         background: #efefef;
     }
 
     tr.even-detail {
         text-align: left;
-color :black;
-/*  color: #2B4F81; */
-/*  width: 25%; */
-/*  background-color: #E8E8E8     ; */
+        color :black;
         border : 1px solid #000000;
     }
 
@@ -112,9 +88,6 @@ color :black;
     .report-header {
         text-align: left;
         color :black;
-/*  color: #2B4F81; */
-
-/*  background-color: #E8E8E8 */
         font-size: 1.2em;
     }
 
@@ -139,9 +112,6 @@ color :black;
 
     td.number {
         text-align: right;
-/*  color: #2B4F81; */
-/*  width: 25%; */
-/*  background-color: #E8E8E8    */
     }
 
     th.number {
