@@ -96,7 +96,7 @@ class Dao(object):
             self.raiseException(e)
 
     def commit(self):
-        params["session"].add(self)
+        #params["session"].add(self)
         params["session"].commit()
         return True
 
@@ -106,9 +106,9 @@ class Dao(object):
         if record:
             #try:
             params["session"].add(self)
-            params["session"].commit()
+            #params["session"].commit()
             #params["session"].save_or_update(self)
-            params["session"].flush()
+            #params["session"].flush()
             #params["session"].refresh(self)
             return True
             #except:
@@ -136,8 +136,8 @@ class Dao(object):
         if record:
             #try:
             params['session'].delete(self)
-            params["session"].commit()
-            params['session'].flush()
+            #params["session"].commit()
+            #params['session'].flush()
             #params["session"].refresh(self)
             #params["session"].clear()
                 #return True

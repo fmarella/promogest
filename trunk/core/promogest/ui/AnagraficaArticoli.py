@@ -15,6 +15,7 @@ from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, An
 
 from promogest import Environment
 from promogest.dao.Dao import Dao
+import promogest.dao.Fornitura
 import promogest.dao.Articolo
 #if hasattr(conf, "PromoWear"):
     #if getattr(conf.PromoWear,'mod_enable','yes'):
@@ -965,7 +966,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                     obligatoryField(self.dialogTopLevel,
                                     self.id_genere_combobox,
                                     msg='Campo obbligatorio !\nGenere')
-    
+
                 print "(((88888888888888888888888888888888888888))))))))",self._articoloTagliaColore
                 if self._articoloTagliaColore is not None:
                     if self._articoloTagliaColore.id_articolo_padre is not None:
@@ -983,7 +984,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             print "Prima di questo if isArticoloTagliaColore", isArticoloTagliaColore
             if isArticoloTagliaColore:
                 if self._articoloTagliaColore is not None:
-                    articoloTagliaColore = ArticoloTagliaColore(id=self.dao.id).getREcord()
+                    articoloTagliaColore = ArticoloTagliaColore(id=self.dao.id).getRecord()
                 else:
                     articoloTagliaColore = ArticoloTagliaColore().getRecord()
                     articoloTagliaColore.id_articolo = self.dao.id

@@ -32,16 +32,33 @@ class GruppoTaglia(Dao):
 
     taglie = property(_getTaglie)
 
-    #def _denominazione_breve_gt(self):
-        #if self.GTT :return self.GTT.denominazione_breve or ""
-    #denominazione_breve_gruppo_taglia= property(_denominazione_breve_gt)
 
-    #def _denominazione_gt(self):
-        #if self.GTT :return self.GTT.denominazione or ""
-    #denominazione_gruppo_taglia= property(_denominazione_gt)
+    def _denominazione_gruppo_taglia(self):
+        """ esempio di funzione  unita alla property """
+        return self.denominazione
+    denominazione_gruppo_taglia = property(_denominazione_gruppo_taglia)
+
+    def _denominazione_breve_gruppo_taglia(self):
+        """ esempio di funzione  unita alla property """
+        return self.denominazione_breve
+    denominazione_breve_gruppo_taglia = property(_denominazione_breve_gruppo_taglia)
 
 
+    def _denominazione_taglia(self):
+        """ esempio di funzione  unita alla property """
+        a =  params["session"].query(GruppoTaglia)\
+                                .filter(and_(GruppoTagliaTaglia.id_gruppo_taglia == self.id,GruppoTagliaTaglia.id_taglia==Taglia.id)).all()
+        if not a: return a
+        else: return a[0].denominazione
+    denominazione_taglia = property(_denominazione_taglia)
 
+    def _denominazione_breve_taglia(self):
+        """ esempio di funzione  unita alla property """
+        a =  params["session"].query(GruppoTaglia)\
+                                .filter(and_(GruppoTagliaTaglia.id_gruppo_taglia == self.id,GruppoTagliaTaglia.id_taglia==Taglia.id)).all()
+        if not a: return a
+        else: return a[0].denominazione_breve
+    denominazione_breve_taglia = property(_denominazione_breve_taglia)
 
     def filter_values(self,k,v):
         if k == "id":

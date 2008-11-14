@@ -86,16 +86,19 @@ class TestataMovimento(Dao):
         return  dic[k]
 
 
-    def persist(self, righeMovimento=None,
-                        scontiRigaMovimento=None):
+    def persist(self, righeMovimento=None, scontiRigaMovimento=None):
         """cancellazione righe associate alla testata
             conn.execStoredProcedure('RigheMovimentoDel',(self.id, ))"""
+        import datetime
+        print "testatamovimento", datetime.datetime.now()
         if not self.numero:
             valori = numeroRegistroGet(tipo="Movimento", date=self.data_movimento)
             self.numero = valori[0]
             self.registro_numerazione= valori[1]
         params["session"].add(self)
         params["session"].commit()
+        #import datetime
+        print "testatamovimento_dopo commit", datetime.datetime.now()
         if righeMovimento:
             righeMovimentoDel(id=self.id)
             for key,riga in righeMovimento.items():
@@ -104,19 +107,23 @@ class TestataMovimento(Dao):
                 #associazione alla riga della testata
                 riga.id_testata_movimento = self.id
                 params["session"].add(riga)
-                params["session"].commit()
+                #params["session"].commit()
+                #import datetime
+                print "righedentro testata", datetime.datetime.now()
                 #salvataggio riga
                 riga.persist(scontiRigaMovimento=scontiRigaMovimento)
                 if self.id_fornitore is not None:
                     """aggiornamento forniture cerca la fornitura relativa al fornitore
                         con data <= alla data del movimento"""
                     fors = Fornitura(isList=True).select(idArticolo=riga.id_articolo,
-                                                            idFornitore=self.id_fornitore,
-                                                            daDataPrezzo=None,
-                                                            aDataPrezzo=self.data_movimento,
-                                                            orderBy = 'data_prezzo DESC',
-                                                            offset = None,
-                                                            batchSize = None)
+                                                        idFornitore=self.id_fornitore,
+                                                        daDataPrezzo=None,
+                                                        aDataPrezzo=self.data_movimento,
+                                                        orderBy = 'data_prezzo DESC',
+                                                        offset = None,
+                                                        batchSize = None)
+                    #import datetime
+                    print "fors", datetime.datetime.now()
                     daoFornitura = None
                     if len(fors) > 0:
                         if fors[0].data_prezzo == self.data_movimento:
@@ -159,8 +166,10 @@ class TestataMovimento(Dao):
                         sconti.append(daoSconto)
 
                     daoFornitura.sconti = sconti
-                    daoFornitura.persist()
-        params["session"].flush()
+                    #daoFornitura.persist()
+                    params["session"].add(daoFornitura)
+        params["session"].commit()
+        #params["session"].flush()
 
 testata_mov=Table('testata_movimento',
                     params['metadata'],

@@ -24,6 +24,7 @@
 from promogest.modules.PromoWear.dao.ArticoloPromowear import Articolo
 from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
 from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
+from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTaglia
 from promogest.modules.PromoWear.dao.Taglia import Taglia
 from promogest.modules.PromoWear.dao.Colore import Colore
 from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
@@ -170,7 +171,7 @@ def fillComboboxMultipli(combobox, idArticolo=None, noSottoMultipli=False, filte
                                          orderBy = None,
                                          offset = None,
                                          batchSize = None)
-                                        
+
     if not filter:
         emptyRow = ''
     else:

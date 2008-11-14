@@ -24,16 +24,10 @@ class ScontoTestataDocumento(Dao):
 
 
 
-sconto=Table('sconto',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
+sconto=Table('sconto', params['metadata'], schema = params['schema'], autoload=True)
 
-sconto_testata_documento=Table('sconto_testata_documento',
-                                    params['metadata'],
-                                    schema = params['schema'],
-                                    autoload=True)
-
+sconto_testata_documento=Table('sconto_testata_documento',params['metadata'],schema = params['schema'],
+                                autoload=True)
 j = join(sconto, sconto_testata_documento)
 
 std_mapper = mapper(ScontoTestataDocumento,j, properties={

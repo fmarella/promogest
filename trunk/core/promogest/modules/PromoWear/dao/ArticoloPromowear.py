@@ -24,6 +24,7 @@ from promogest.modules.PromoWear.dao.Colore import Colore
 from promogest.modules.PromoWear.dao.Taglia import Taglia
 from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
 from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
+from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
 from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
 from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
         #import promogest.modules.PromoWear.dao.Taglia
@@ -162,8 +163,8 @@ class Articolo(Dao):
         articolo = ArticoloTagliaColore(isList=True).select(idArticolo=self.id,
                                                             offset=None,
                                                             batchSize=None)
-        if len(articolo) > 0:
-            return articolo or None
+        if articolo:
+            return articolo[0] or None
         #return articolo[0]
         #else:
             #return None
@@ -206,11 +207,9 @@ class Articolo(Dao):
     colori = property(_getColori)
 
 
-
-    def _denominazione_gruppo_taglia(self):
-        if self.ATC: return self.ATC.GT.denominazione or ""
-        #else: return ""
-    denominazione_gruppo_taglia = property(_denominazione_gruppo_taglia)
+    #def _denominazione_gruppo_taglia(self):
+        #if self.ATC: return self.ATC.denominazione or ""
+    #denominazione_gruppo_taglia = property(_denominazione_gruppo_taglia)
 
     def _id_articolo_padre(self):
         if self.ATC: return self.ATC.id_articolo_padre or None
@@ -235,44 +234,59 @@ class Articolo(Dao):
     id_anno = property(_id_anno)
 
 
+    def _denominazione_gruppo_taglia(self):
+        """ esempio di funzione  unita alla property """
+        if self.ATC :
+            try:
+                return self.ATC[0].denominazione_gruppo_taglia
+            except:
+                return self.ATC.denominazione_gruppo_taglia
+    denominazione_gruppo_taglia = property(_denominazione_gruppo_taglia)
+
+
     def _denominazione_taglia(self):
         """ esempio di funzione  unita alla property """
-        a =  params["session"].query(Articolo)\
-                                .filter(and_(ArticoloTagliaColore.id_articolo == self.id,ArticoloTagliaColore.id_taglia==Taglia.id)).all()
-        if not a: return a
-        else: return a[0].denominazione
+        if self.ATC :
+            try:
+                return self.ATC[0].denominazione_taglia
+            except:
+                return self.ATC.denominazione_taglia
     denominazione_taglia = property(_denominazione_taglia)
 
     def _denominazione_colore(self):
         """ esempio di funzione  unita alla property """
-        a =  params["session"].query(Articolo)\
-                                .filter(and_(ArticoloTagliaColore.id_articolo == self.id,ArticoloTagliaColore.id_colore==Colore.id)).all()
-        if not a: return a
-        else: return a[0].denominazione
+        if self.ATC :
+            try:
+                return self.ATC[0].denominazione_colore
+            except:
+                return self.ATC.denominazione_colore
     denominazione_colore = property(_denominazione_colore)
 
     def _anno(self):
         """ esempio di funzione  unita alla property """
-        a =  params["session"].query(Articolo)\
-                                .filter(and_(ArticoloTagliaColore.id_articolo == self.id,ArticoloTagliaColore.id_anno==AnnoAbbigliamento.id)).all()
-        if not a: return a
-        else: return a[0].denominazione
+        if self.ATC :
+            try:
+                return self.ATC[0].anno
+            except:
+                return self.ATC.anno
     anno = property(_anno)
 
     def _stagione(self):
         """ esempio di funzione  unita alla property """
-        a =  params["session"].query(Articolo)\
-                        .filter(and_(ArticoloTagliaColore.id_articolo == self.id, ArticoloTagliaColore.id_stagione==StagioneAbbigliamento.id)).all()
-        if not a: return a
-        else: return a[0].denominazione
+        if self.ATC :
+            try:
+                return self.ATC[0].stagione
+            except:
+                return self.ATC.stagione
     stagione = property(_stagione)
 
     def _genere(self):
         """ esempio di funzione  unita alla property """
-        a =  params["session"].query(Articolo)\
-                                .filter(and_(ArticoloTagliaColore.id_articolo == self.id, ArticoloTagliaColore.id_genere==GenereAbbigliamento.id)).all()
-        if not a: return a
-        else: return a[0].denominazione
+        if self.ATC :
+            try:
+                return self.ATC[0].genere
+            except:
+                return self.ATC.genere
     genere = property(_genere)
 
     def isArticoloPadre(self):
@@ -454,7 +468,7 @@ std_mapper = mapper(Articolo,articolo,properties={
             "image":relation(Immagine,primaryjoin= (articolo.c.id_immagine==Immagine.id)),
             "sa":relation(StatoArticolo,primaryjoin=(articolo.c.id_stato_articolo==StatoArticolo.id)),
             #"articoloTagliaColore":relation(ArticoloTagliaColore),
-            "ATC":relation(ArticoloTagliaColore,primaryjoin=(articolo.c.id==ArticoloTagliaColore.id_articolo)),
+            "ATC":relation(ArticoloTagliaColore,primaryjoin=(articolo.c.id==ArticoloTagliaColore.id_articolo),uselist=False),
             }, order_by=articolo.c.id)
 
 

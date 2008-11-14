@@ -62,10 +62,6 @@ class Fornitura(Dao):
         #else: return ""
     multiplo= property(_multiplo)
 
-
-
-
-
     def _denominazione_gruppo_taglia(self):
         #if self.ATC: return self.ATC.denominazione or ""
         if self.arti:return self.arti.denominazione_gruppo_taglia
@@ -99,46 +95,26 @@ class Fornitura(Dao):
 
     def _denominazione_taglia(self):
         """ esempio di funzione  unita alla property """
-        #a =  params["session"].query(Fornitura)\
-                                #.filter(and_( ArticoloTagliaColore.id_taglia==Taglia.id)).all()
-        #if not a: return a
-        #else: return a[0].denominazione
         if self.arti:return self.arti.denominazione_taglia
     denominazione_taglia = property(_denominazione_taglia)
 
     def _denominazione_colore(self):
         """ esempio di funzione  unita alla property """
-        #a =  params["session"].query(Fornitura)\
-                                #.filter(and_( ArticoloTagliaColore.id_colore==Colore.id)).all()
-        #if not a: return a
-        #else: return a[0].denominazione
         if self.arti:return self.arti.denominazione_colore
     denominazione_colore = property(_denominazione_colore)
 
     def _anno(self):
         """ esempio di funzione  unita alla property """
-        #a =  params["session"].query(Fornitura)\
-                                #.filter(and_(ArticoloTagliaColore.id_anno==AnnoAbbigliamento.id)).all()
-        #if not a: return a
-        #else: return a[0].denominazione
         if self.arti:return self.arti.anno
     anno = property(_anno)
 
     def _stagione(self):
         """ esempio di funzione  unita alla property """
-        #a =  params["session"].query(Fornitura)\
-                                #.filter(and_(ArticoloTagliaColore.id_stagione==StagioneAbbigliamento.id)).all()
-        #if not a: return a
-        #else: return a[0].denominazione
         if self.arti:return self.arti.stagione
     stagione = property(_stagione)
 
     def _genere(self):
         """ esempio di funzione  unita alla property """
-        #a =  params["session"].query(Fornitura)\
-                                #.filter(and_( ArticoloTagliaColore.id_genere==GenereAbbigliamento.id)).all()
-        #if not a: return a
-        #else: return a[0].denominazione
         if self.arti:return self.arti.genere
     genere = property(_genere)
 
@@ -164,27 +140,6 @@ class Fornitura(Dao):
             dic = {k:fornitura.c.data_fornitura <= v}
         return  dic[k]
 
-        #,GT.denominazione_breve AS denominazione_breve_gruppo_taglia
-        #,GT.denominazione AS denominazione_gruppo_taglia
-        #,T.denominazione_breve AS denominazione_breve_taglia
-        #,T.denominazione AS denominazione_taglia
-        #,C.denominazione_breve AS denominazione_breve_colore
-        #,C.denominazione AS denominazione_colore
-        #,AAB.denominazione AS anno
-        #,SAB.denominazione AS stagione
-        #,GAB.denominazione AS genere
-    #FROM fornitura F
-    #LEFT OUTER JOIN persona_giuridica P ON F.id_fornitore = P.id
-    #LEFT OUTER JOIN articolo A ON F.id_articolo = A.id
-    #LEFT OUTER JOIN multiplo M ON F.id_multiplo = M.id
-    #LEFT OUTER JOIN articolo_taglia_colore ATC ON A.id = ATC.id_articolo
-    #LEFT OUTER JOIN gruppo_taglia GT ON ATC.id_gruppo_taglia = GT.id
-    #LEFT OUTER JOIN taglia T ON ATC.id_taglia = T.id
-    #LEFT OUTER JOIN colore C ON ATC.id_colore = C.id
-    #LEFT OUTER JOIN promogest.anno_abbigliamento AAB ON ATC.id_anno = AAB.id
-    #LEFT OUTER JOIN promogest.stagione_abbigliamento SAB ON ATC.id_stagione = SAB.id
-    #LEFT OUTER JOIN promogest.genere_abbigliamento GAB ON ATC.id_genere = GAB.id
-    #WHERE A.cancellato = False;
     #def persist(self, conn=None):
 
     """FIXME:
@@ -202,27 +157,11 @@ class Fornitura(Dao):
                     #self.__scontiFornitura[i].persist(conn)
                     """
 
-fornitura=Table('fornitura',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
+fornitura=Table('fornitura', params['metadata'], schema = params['schema'], autoload=True)
 
 std_mapper = mapper(Fornitura,fornitura, properties={
         "multi": relation(Multiplo,primaryjoin=fornitura.c.id_multiplo==Multiplo.id),
         "sconto_fornitura": relation(ScontoFornitura, backref="fornitura"),
         "forni" : relation(Fornitore,primaryjoin=fornitura.c.id_fornitore==Fornitore.id),
         "arti" : relation(Articolo,primaryjoin=fornitura.c.id_articolo==Articolo.id, backref=backref("artic", uselist=False)),
-        #"ATC":relation(ArticoloTagliaColore,primaryjoin=(Articolo.id==ArticoloTagliaColore.id_articolo)),
-        #"GT":relation(GruppoTaglia,primaryjoin=
-                    #(GruppoTaglia.id==articolotagliacolore.c.id_gruppo_taglia), backref="ATCGT"),
-        #"TA":relation(Taglia,primaryjoin=
-                    #(Taglia.id==articolotagliacolore.c.id_taglia), backref="ATCTA"),
-        #"CO":relation(Colore,primaryjoin=
-                    #(Colore.id==articolotagliacolore.c.id_colore), backref="ATCCO"),
-        #"AA":relation(AnnoAbbigliamento,primaryjoin=
-                    #(AnnoAbbigliamento.id==articolotagliacolore.c.id_anno), backref="ATCAA"),
-        #"SA":relation(StagioneAbbigliamento,primaryjoin=
-                    #(StagioneAbbigliamento.id==articolotagliacolore.c.id_stagione), backref="ATCSA"),
-        #"GA":relation(GenereAbbigliamento,primaryjoin=
-                    #(GenereAbbigliamento.id==articolotagliacolore.c.id_genere), backref="ATCGA"),
                 }, order_by=fornitura.c.id)

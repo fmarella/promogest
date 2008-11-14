@@ -20,6 +20,8 @@ class GruppoTagliaTaglia(Dao):
     def filter_values(self,k,v):
         if k == 'idGruppoTaglia':
             dic= {k:gruppotagliataglia.c.id_gruppo_taglia ==v}
+        elif k == 'idTaglia':
+            dic= {k:gruppotagliataglia.c.id_taglia ==v}
         return  dic[k]
 
     def _denominazione_breve_gt(self):

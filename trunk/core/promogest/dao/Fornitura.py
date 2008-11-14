@@ -15,6 +15,7 @@ from ScontoFornitura import ScontoFornitura
 from Fornitore import Fornitore
 from Articolo import Articolo
 
+
 if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
         from promogest.modules.PromoWear.dao.FornituraPromowear import Fornitura
 else:

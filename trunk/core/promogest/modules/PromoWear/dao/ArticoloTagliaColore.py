@@ -31,7 +31,7 @@ class ArticoloTagliaColore(Dao):
         """ Restituisce il Dao GruppoTaglia collegato al Dao ArticoloTagliaColore """
         if self.id_gruppo_taglia is None:
             return None
-        return GruppoTaglia(self._connection, self.id_gruppo_taglia)
+        return GruppoTaglia(id=self.id_gruppo_taglia).getRecord()
 
     gruppoTaglia = property(_getGruppoTaglia)
 
@@ -40,19 +40,15 @@ class ArticoloTagliaColore(Dao):
         """ Restituisce il Dao Taglia collegato al Dao ArticoloTagliaColore """
         if self.id_taglia is None:
             return None
-        return Taglia(self._connection, self.id_taglia)
-
+        return Taglia(id=self.id_taglia).getREcord()
     taglia = property(_getTaglia)
-
 
     def _getColore(self):
         """ Restituisce il Dao Colore collegato al Dao ArticoloTagliaColore """
         if self.id_colore is None:
             return None
-        return Colore(self._connection, self.id_colore)
-
+        return Colore(id=self.id_colore).getRecord()
     colore = property(_getColore)
-
 
     def articoloPadre(self):
         """ Restituisce il Dao Articolo padre del Dao ArticoloTagliaColore """
@@ -60,10 +56,8 @@ class ArticoloTagliaColore(Dao):
         #resolveProperties goes in loop
         if self.id_articolo_padre is None:
             return None
-        #from Articolo import Articolo
+        from promogest.dao.Articolo import Articolo
         return Articolo(id=self.id_articolo_padre).getRecord()
-
-
 
     def articolo(self):
         """ Restituisce il Dao Articolo collegato al Dao ArticoloTagliaColore """
@@ -71,9 +65,54 @@ class ArticoloTagliaColore(Dao):
         #resolveProperties goes in loop
         if self.id_articolo is None:
             return None
-        from Articolo import Articolo
-        return Articolo(Environment.connection, self.id_articolo)
+        from promogest.dao.Articolo import Articolo
+        return Articolo(id=self.id_articolo).getRecord()
 
+    def _denominazione_breve_gruppo_taglia(self):
+        """ esempio di funzione  unita alla property """
+        if self.GT:return self.GT.denominazione_breve or ""
+    denominazione_breve_gruppo_taglia = property(_denominazione_breve_gruppo_taglia)
+
+    def _denominazione_gruppo_taglia(self):
+        """ esempio di funzione  unita alla property """
+        if self.GT:return self.GT.denominazione or ""
+    denominazione_gruppo_taglia = property(_denominazione_gruppo_taglia)
+
+    def _denominazione_taglia(self):
+        """ esempio di funzione  unita alla property """
+        if self.TA : return self.TA.denominazione or ""
+    denominazione_taglia = property(_denominazione_taglia)
+
+    def _denominazione_breve_taglia(self):
+        """ esempio di funzione  unita alla property """
+        if self.TA : return self.TA.denominazione_breve or ""
+    denominazione_breve_taglia = property(_denominazione_breve_taglia)
+
+    def _denominazione_colore(self):
+        """ esempio di funzione  unita alla property """
+        if self.CO : return self.CO.denominazione or ""
+    denominazione_colore = property(_denominazione_colore)
+
+    def _denominazione_breve_colore(self):
+        """ esempio di funzione  unita alla property """
+        if self.CO : return self.CO.denominazione_breve or ""
+    denominazione_breve_colore = property(_denominazione_breve_colore)
+
+
+    def _denominazione_anno(self):
+        """ esempio di funzione  unita alla property """
+        if self.AA : return self.AA.denominazione or ""
+    anno = property(_denominazione_anno)
+
+    def _denominazione_stagione(self):
+        """ esempio di funzione  unita alla property """
+        if self.SA : return self.SA.denominazione or ""
+    stagione = property(_denominazione_stagione)
+
+    def _denominazione_genere(self):
+        """ esempio di funzione  unita alla property """
+        if self.GA : return self.GA.denominazione or ""
+    genere = property(_denominazione_genere)
 
     #def delete(self, conn=None):
         #""" Elimina fisicamente o logicamente un articolo """
@@ -94,22 +133,22 @@ class ArticoloTagliaColore(Dao):
         #if conn is None:
         #    conn = Environment.connection
 
-        if conn is None:
-            self.raiseException(NotImplementedError('Object is read-only '
-                                                    + '(no connection has '
-                                                    + 'been associated)'))
+        #if conn is None:
+            #self.raiseException(NotImplementedError('Object is read-only '
+                                                    #+ '(no connection has '
+                                                    #+ 'been associated)'))
 
         # se l'articolo e' presente tra le righe di un movimento o documento
         # si esegue la cancellazione logica, altrimenti fisica
 
-        if self.id_articolo_padre is not None:
-            articolo = self.articolo
-            if articolo is not None:
-                if isMovimentato(self.id_articolo):
-                    articolo.cancellato = True
-                    articolo.persist(conn=conn)
-                else:
-                    articolo.delete(self, conn=conn)
+        #if self.id_articolo_padre is not None:
+            #articolo = self.articolo
+            #if articolo is not None:
+                #if isMovimentato(self.id_articolo):
+                    #articolo.cancellato = True
+                    #articolo.persist(conn=conn)
+                #else:
+                    #articolo.delete(self, conn=conn)
 
 
 

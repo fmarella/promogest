@@ -11,7 +11,7 @@
 from AnagraficaComplessa import AnagraficaFilter
 import gtk
 from utils import *
-import promogest.dao.TestataDocumento
+#import promogest.dao.TestataDocumento
 from promogest.dao.TestataDocumento import TestataDocumento
 import datetime
 from utilsCombobox import *

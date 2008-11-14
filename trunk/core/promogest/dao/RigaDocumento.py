@@ -22,7 +22,7 @@ from AliquotaIva import AliquotaIva
 from Magazzino import Magazzino
 from Listino import Listino
 from Multiplo import Multiplo
-from DaoUtils import *
+from DaoUtils import scontiRigaDocumentoDel
 
 if "SuMisura" in modulesList:
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo

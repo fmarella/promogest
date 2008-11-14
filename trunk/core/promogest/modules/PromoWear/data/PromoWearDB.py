@@ -53,7 +53,7 @@ if hasattr(conf, 'PromoWear'):
         stagioneAbbigliamentoTable.create(checkfirst=True)
         s= select([stagioneAbbigliamentoTable.c.denominazione]).execute().fetchall()
         if (u'Primavera - Estate',) not in s or s==[]:
-            tipo = genereAbbigliamentoTable.insert()
+            tipo = stagioneAbbigliamentoTable.insert()
             tipo.execute(denominazione='Primavera - Estate')
             tipo.execute(denominazione='Autunno - Inverno')
 

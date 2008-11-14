@@ -21,7 +21,7 @@ from Listino import Listino
 from AliquotaIva import AliquotaIva
 from Multiplo import Multiplo
 from Stoccaggio import Stoccaggio
-from DaoUtils import *
+from DaoUtils import scontiRigaMovimentoDel
 from Fornitura import Fornitura
 if hasattr(conf, "SuMisura"):
     if getattr(conf.SuMisura,'mod_enable','yes'):
@@ -136,15 +136,20 @@ class RigaMovimento(Dao):
         #print " UN PASSO ALLA VOLTA ....SIAMO DENTRO IL PERSIST DI RIGAMOVIMENTO", self
         params["session"].add(self)
         params["session"].commit()
+        import datetime
+        print "rigaMovimento", datetime.datetime.now()
 
         #creazione stoccaggio se non gia' presente
         stoccato = (Stoccaggio(isList=True).count(idArticolo=self.id_articolo,
                                                    idMagazzino=self.id_magazzino) > 0)
+        #import datetime
+        print "stoccato", datetime.datetime.now()
         if not(stoccato):
             daoStoccaggio = Stoccaggio().getRecord()
             daoStoccaggio.id_articolo = self.id_articolo
             daoStoccaggio.id_magazzino = self.id_magazzino
-            daoStoccaggio.persist()
+            params["session"].add(daoStoccaggio)
+            #daoStoccaggio.persist()
 
         scontiRigaMovimentoDel(id=self.id)
         if scontiRigaMovimento:
@@ -153,7 +158,7 @@ class RigaMovimento(Dao):
                     for v in value:
                         v.id_riga_movimento = self.id
                         params["session"].add(v)
-                        params["session"].commit()
+                        #params["session"].commit()
 
         if "SuMisura" in modulesList:
             try:
@@ -170,21 +175,14 @@ class RigaMovimento(Dao):
         #else:
                 self.__misuraPezzo.id_riga = self.id
                 params["session"].add(self.__misuraPezzo)
-                params["session"].commit()
+                #params["session"].commit()
                 #self.__misuraPezzo.persist()
         #FIXME: VERIFICAREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 
-        params["session"].flush()
+        #params["session"].flush()
 
-riga=Table('riga',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
-
-riga_mov=Table('riga_movimento',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
+riga=Table('riga', params['metadata'], schema = params['schema'], autoload=True)
+riga_mov=Table('riga_movimento', params['metadata'],schema = params['schema'],autoload=True)
 
 j = join(riga_mov, riga)
 
@@ -195,6 +193,3 @@ std_mapper = mapper(RigaMovimento, j,properties={
         "listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
         "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
         }, order_by=riga_mov.c.id)
-
-
-

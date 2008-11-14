@@ -113,13 +113,18 @@ def righeDocumentoDel(id=None):
 
 def righeMovimentoDel(id=None):
     """Cancella le righe associate ad un documento"""
+    import datetime
+    print "dentro la funzione di cancella righe", datetime.datetime.now()
     from promogest.dao.RigaMovimento import RigaMovimento
+    print "dentro la funzione di cancella righe dopo l'import ", datetime.datetime.now()
     row = RigaMovimento(isList=True).select(idTestataMovimento= id,
                                                     offset = None,
                                                     batchSize = None,
                                                     orderBy="id_testata_movimento")
+    print "dentro la funzione di cancella righe dopo la select ", datetime.datetime.now()
     for r in row:
         r.delete()
+    print "dentro la funzione di cancella righe dopo il ciclo", datetime.datetime.now()
     return True
 
 def scontiTestataDocumentoDel(id=None):

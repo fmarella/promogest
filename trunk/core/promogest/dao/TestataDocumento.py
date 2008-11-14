@@ -10,7 +10,7 @@ from promogest.Environment import *
 from promogest import Environment
 from sqlalchemy import *
 from sqlalchemy.orm import *
-import RigaDocumento
+#import RigaDocumento
 from RigaDocumento import RigaDocumento
 from RigaDocumento import *
 from TestataMovimento import TestataMovimento
@@ -325,9 +325,9 @@ class TestataDocumento(Dao):
         return righeMovimentazione
 
     #Salvataggi subordinati alla testata Documento, iniziamo da righe documento e poi righe
-    def persist(self,scontiRigaDocumento=None,
-                    scontiSuTotale=None,
-                        righe=None):
+    def persist(self,scontiRigaDocumento=None,scontiSuTotale=None, righe=None):
+        import datetime
+        print "testatadocumento", datetime.datetime.now()
         DaoTestataMovimento = None
         #print "RIPARTIAMO DA QUI 11111111 DAO 111111111, SCONTI E RIGHE",self.__righeDocumento
         params["session"].add(self)
@@ -467,7 +467,7 @@ class TestataDocumento(Dao):
                 row.persist()
 
         params["session"].commit()
-        params["session"].flush()
+        #params["session"].flush()
 
 
     def _al(self):
