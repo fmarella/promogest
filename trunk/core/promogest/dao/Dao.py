@@ -106,7 +106,7 @@ class Dao(object):
         if record:
             #try:
             params["session"].add(self)
-            #params["session"].commit()
+            params["session"].commit()
             #params["session"].save_or_update(self)
             #params["session"].flush()
             #params["session"].refresh(self)
@@ -136,7 +136,7 @@ class Dao(object):
         if record:
             #try:
             params['session'].delete(self)
-            #params["session"].commit()
+            params["session"].commit()
             #params['session'].flush()
             #params["session"].refresh(self)
             #params["session"].clear()
