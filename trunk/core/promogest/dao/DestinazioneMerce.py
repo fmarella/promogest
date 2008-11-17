@@ -16,12 +16,16 @@ class DestinazioneMerce(Dao):
         Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
 
     def filter_values(self,k,v):
-        dic= {'idCliente':destinazione_merce.c.id_cliente==v,
-        'denominazione': destinazione_merce.c.denominazione.ilike("%"+v+"%"),
-        'indirizzo' :destinazione_merce.c.indirizzo.ilike("%"+v+"%"),
-        'localita':destinazione_merce.c.localita.ilike("%"+v+"%"),
-        'provincia':destinazione_merce.c.provincia.ilike("%"+v+"%"),
-        }
+        if k=='idCliente':
+            dic= {k:destinazione_merce.c.id_cliente==v}
+        elif k == 'denominazione':
+            dic ={k:destinazione_merce.c.denominazione.ilike("%"+v+"%")}
+        elif k== 'indirizzo':
+            dic = {k:destinazione_merce.c.indirizzo.ilike("%"+v+"%")}
+        elif k=='localita':
+            dic = {k:destinazione_merce.c.localita.ilike("%"+v+"%")}
+        elif k == 'provincia':
+            dic = {k:destinazione_merce.c.provincia.ilike("%"+v+"%")}
         return  dic[k]
 
 destinazione_merce=Table('destinazione_merce',
