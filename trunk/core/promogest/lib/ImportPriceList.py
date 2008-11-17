@@ -47,8 +47,6 @@ possibleFieldsKeys = ['Codice',
                       'Produttore',
                       'Prezzo vendita ivato',
                       'Prezzo vendita NON ivato',
-                      'Sconto vendita dettaglio',
-                      'Sconto vendita ingrosso',  
                       'Prezzo acquisto ivato',
                       'Prezzo acquisto NON ivato',
                       'Valore nullo']
@@ -64,8 +62,6 @@ possibleFieldsValues = ['codice_articolo',
                         'produttore',
                         'prezzo_vendita_ivato',
                         'prezzo_vendita_non_ivato',
-                        'sconto_vendita_dettaglio', 
-                        'sconto_vendita_ingrosso', 
                         'prezzo_acquisto_ivato',
                         'prezzo_acquisto_non_ivato',
                         'chiave_nulla_']
@@ -343,6 +339,9 @@ class ImportPriceListModels(GladeWidget):
         treeview = self.fields_treeview
         renderer = gtk.CellRendererText()
 
+##        old_col = treeview.get_column(0)
+##        if old_col is not None:
+##            treeview.remove_column(old_col)
         column = gtk.TreeViewColumn('Campo', renderer, text=0)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
         column.set_clickable(True)
@@ -416,10 +415,6 @@ class ImportPriceListModels(GladeWidget):
                 self.prezzo_vendita_ivato_cb.set_active(True)
             elif f == 'Prezzo vendita NON ivato':
                 self.prezzo_vendita_non_ivato_cb.set_active(True)
-            elif f== 'Sconto vendita dettaglio':
-                self.sconto_vendita_dettaglio_cb.set_active(True)
-            elif f == 'Sconto vendita ingrosso':
-                self.sconto_vendita_ingrosso_cb.set_active(True)
             elif f == 'Prezzo acquisto ivato':
                 self.prezzo_acquisto_ivato_cb.set_active(True)
             elif f == 'Prezzo acquisto NON ivato':

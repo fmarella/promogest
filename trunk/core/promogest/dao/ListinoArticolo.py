@@ -15,7 +15,6 @@ from Dao import Dao
 from AliquotaIva import AliquotaIva
 from Articolo import Articolo
 from Listino import Listino
-from ScontiVendita import ScontiVendita
 import datetime
 
 class ListinoArticolo(Dao):
@@ -57,26 +56,6 @@ class ListinoArticolo(Dao):
         if self.arti:return self.arti.codice_a_barre
         else: return ""
     codice_a_barre= property(_codice_a_barre)
-
-    def _getScontiVenditaDettaglio(self):
-        self.__dbScontiVenditaDett = params['session'].query(ScontovenditaDettaglio).with_parent(self).filter_by(id_listino_articolo=listino_articolo.c.id)
-        self.__scontiVenditaDett= self.__dbScontiVenditaDett
-        return self.__scontivenditaDett
-
-    def _setScontiVenditaDettaglio(self, value):
-        self.__scontiVenditaDett = value
-
-    sconto_vendita_dettaglio = property(_getScontiVenditaDettaglio, _setScontiVenditaDettaglio)
-
-    def _getScontiVenditaIngrosso(self):
-        self.__dbScontiVenditaIngr = params['session'].query(ScontovenditaIngrosso).with_parent(self).filter_by(id_listino_articolo=listino_articolo.c.id)
-        self.__scontiVenditaIngr= self.__dbScontiVenditaIngr
-        return self.__scontivenditaDett
-
-    def _setScontiVenditaIngrosso(self, value):
-        self.__scontiVenditaIngr = value
-
-    sconto_vendita_ingrosso = property(_getScontiVenditaIngrosso, _setScontiVenditaIngrosso)
 
     def filter_values(self,k,v):
         if k=="listinoAttuale":
