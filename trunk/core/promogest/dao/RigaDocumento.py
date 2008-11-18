@@ -97,11 +97,11 @@ class RigaDocumento(Dao):
     multiplo = property(__multiplo)
 
     def __unita_base(self):
-        a =  params["session"].query(Articolo).with_parent(self).filter(Articolo.id_unita_base==UnitaBase.id).all()
+        a =  params["session"].query(Articolo).with_parent(self).filter(and_(RigaDocumento.id_articolo==Articolo.id,Articolo.id_unita_base==UnitaBase.id)).all()
         if not a:
             return a
         else:
-            return a[0].denominazione_breve
+            return a[0].denominazione_breve_unita_base
     unita_base = property(__unita_base)
 
     def __codiceArticolo(self):
