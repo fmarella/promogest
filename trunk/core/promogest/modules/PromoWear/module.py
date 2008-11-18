@@ -27,12 +27,6 @@ COMPANY = Environment.conf.PromoWear.company_name
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None
 
-if Environment.conf.PromoWear.taglie_colori == "yes" and Environment.conf.PromoWear.mod_enable == "yes" :
-    Environment.taglia_colore = True
-else:
-    Environment.taglia_colore = False
-
-
 class Taglie(object):
     VIEW_TYPE = ('anagrafica', 'Taglie', 'taglia48x48.png')
     def getApplication(self):

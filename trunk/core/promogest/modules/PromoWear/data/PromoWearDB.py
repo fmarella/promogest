@@ -123,7 +123,7 @@ if hasattr(conf, 'PromoWear'):
                     Column('id_genere',Integer,ForeignKey(params['mainSchema']+'.genere_abbigliamento.id',onupdate="CASCADE",ondelete="CASCADE")),
                     UniqueConstraint('id_articolo_padre', 'id_gruppo_taglia', "id_taglia", "id_colore"),
                     ForeignKeyConstraint(['id_gruppo_taglia', 'id_taglia'],[params['schema']+'.gruppo_taglia_taglia.id_gruppo_taglia',params['schema']+'.gruppo_taglia_taglia.id_taglia']),
-                    CheckConstraint("(( id_taglia IS NOT NULL ) AND ( id_colore IS NOT NULL ) AND ( id_gruppo_taglia IS NOT NULL ) AND ( id_articolo_padre IS NOT NULL )) OR (( id_taglia IS NULL ) AND ( id_colore IS NULL ) AND ( id_gruppo_taglia IS NOT NULL ) AND ( id_articolo_padre IS NULL ))"),
+                    #CheckConstraint("(( id_taglia IS NOT NULL ) AND ( id_colore IS NOT NULL ) AND ( id_gruppo_taglia IS NOT NULL ) AND ( id_articolo_padre IS NOT NULL )) OR (( id_taglia IS NULL ) AND ( id_colore IS NULL ) AND ( id_gruppo_taglia IS NOT NULL ) AND ( id_articolo_padre IS NULL ))"),
                     schema=params['schema'])
         articoloTagliaColoreTable.create(checkfirst=True)
 

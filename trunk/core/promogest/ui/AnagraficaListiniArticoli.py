@@ -36,9 +36,7 @@ class AnagraficaListiniArticoli(Anagrafica):
         self._idListino=idListino
         if "PromoWear" in Environment.modulesList:
             from promogest.dao.Articolo import Articolo
-            import promogest.modules.PromoWear.dao.ArticoloTagliaColore
             from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
-            self._taglia_colore = Environment.taglia_colore or False
         Anagrafica.__init__(self,
                             windowTitle='Promogest - Anagrafica listini di vendita',
                             recordMenuLabel='_Listini',
@@ -154,7 +152,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         column.set_expand(False)
         column.set_min_width(100)
         treeview.append_column(column)
-        if "PromoWear" in Environment.modulesList and self._anagrafica._taglia_colore:
+        if "PromoWear" in Environment.modulesList:
             column = gtk.TreeViewColumn('Gruppo taglia', rendererSx, text=7)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
             column.set_clickable(True)
@@ -224,7 +222,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                 column.set_property('visible', False)
                 column = self._anagrafica.anagrafica_filter_treeview.get_column(2)
                 column.set_property('visible', False)
-                if "PromoWear" in Environment.modulesList and self._anagrafica._taglia_colore:
+                if "PromoWear" in Environment.modulesList:
                     column = self._anagrafica.anagrafica_filter_treeview.get_column(6)
                     column.set_property('visible', False)
                     column = self._anagrafica.anagrafica_filter_treeview.get_column(7)
@@ -273,9 +271,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                                                         listinoAttuale=True)
 
         self._filterCountClosure = filterCountClosure
-
         self.numRecords = self.countFilterResults()
-
         self._refreshPageCount()
 
         # Let's save the current search as a closure
@@ -288,7 +284,6 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                                                             batchSize=batchSize)
 
         self._filterClosure = filterClosure
-        #print dir(filterClosure)
         self.liss = self.runFilter()
         self.xptDaoList = self.runFilter(offset=None, batchSize=None)
 
@@ -324,7 +319,6 @@ class AnagraficaListiniArticoliHtml(AnagraficaHtml):
                                 'Informazioni articolo/listino')
 
 
-
 class AnagraficaListiniArticoliReport(AnagraficaReport):
 
     def __init__(self, anagrafica):
@@ -333,6 +327,7 @@ class AnagraficaListiniArticoliReport(AnagraficaReport):
                                   defaultFileName='listini_articolo',
                                   htmlTemplate='listini_articolo',
                                   sxwTemplate='listini_articolo')
+
 
 class AnagraficaListiniArticoliLabel(AnagraficaLabel):
 
@@ -402,7 +397,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.aggiornaDaCosto()
 
-
     def calcolaDettaglioDaRicarico(self, widget=None, event=None):
         prezzoDettaglio=Environment.conf.number_format % calcolaListinoDaRicarico(float(self.ultimo_costo_entry.get_text()),
                                                                                             float(self.percentuale_ricarico_dettaglio_entry.get_text()),
@@ -415,12 +409,10 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                                                                                     float(self._percentualeIva)))
 
 
-
     def confermaCalcolaDettaglioDaRicarico(self, widget=None, event=None):
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaDettaglioDaRicarico()
-
 
     def calcolaDettaglioDaMargine(self, widget=None, event=None):
         self.prezzo_dettaglio_entry.set_text(Environment.conf.number_format % calcolaListinoDaMargine(float(self.ultimo_costo_entry.get_text()),
@@ -436,7 +428,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaDettaglioDaMargine()
-
 
     def aggiornaDaDettaglio(self, widget=None, event=None):
         self.prezzo_dettaglio_noiva_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(float(self.prezzo_dettaglio_entry.get_text()),
@@ -458,7 +449,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                     self.prezzo_ingrosso_ivato_label.set_text(self.prezzo_dettaglio_entry.get_text())
         return False
 
-
     def calcolaIngrossoDaRicarico(self, widget=None, event=None):
         self.prezzo_ingrosso_entry.set_text(Environment.conf.number_format % calcolaListinoDaRicarico(float(self.ultimo_costo_entry.get_text()),
                                                                                                       float(self.percentuale_ricarico_ingrosso_entry.get_text())))
@@ -467,12 +457,10 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         self.percentuale_margine_ingrosso_entry.set_text('%-6.3f' % calcolaMargine(float(self.ultimo_costo_entry.get_text()),
                                                                                    float(self.prezzo_ingrosso_entry.get_text())))
 
-
     def confermaCalcolaIngrossoDaRicarico(self, widget=None, event=None):
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaIngrossoDaRicarico()
-
 
     def calcolaIngrossoDaMargine(self, widget=None, event=None):
         self.prezzo_ingrosso_entry.set_text(Environment.conf.number_format % calcolaListinoDaMargine(float(self.ultimo_costo_entry.get_text()),
@@ -486,7 +474,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaIngrossoDaMargine()
-
 
     def aggiornaDaIngrosso(self, widget=None, event=None):
         self.prezzo_ingrosso_ivato_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(float(self.prezzo_ingrosso_entry.get_text()),
@@ -641,12 +628,11 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         self.prezzo_ingrosso_ivato_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(self.dao.prezzo_ingrosso,
                                                                                                     self._percentualeIva))
 
-        if "PromoWear" in Environment.modulesList and self._anagrafica._taglia_colore:
+        if "PromoWear" in Environment.modulesList:
             self._refreshTagliaColore(self.dao.id_articolo)
 
     def _refreshTagliaColore(self, idArticolo):
-        articolo = Articolo(Environment.connection, idArticolo)
-        articoloTagliaColore = articolo.articoloTagliaColoreCompleto
+        articoloTagliaColore = Articolo(id=idArticolo).getRecord()
         self.taglia_colore_table.hide()
         if articoloTagliaColore is not None:
             gruppoTaglia = articoloTagliaColore.denominazione_gruppo_taglia or ''
@@ -662,7 +648,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             self.stagione_label.set_markup('<span weight="bold">%s  %s</span>'
                                            % (stagione, anno))
             self.taglia_colore_table.show()
-
 
     def saveDao(self):
         if findIdFromCombobox(self.id_listino_customcombobox.combobox) is None:

@@ -4,6 +4,7 @@
  Promogest - promoCMS
  Copyright (C) 2007-2008 by Promotux Informatica - http://www.promotux.it/
 # Author: JJDaNiMoTh <jjdanimoth@gmail.com>
+# Author: Francesco Meloni  <francesco@promotux.it>
  license: GPL see LICENSE file
 """
 
@@ -130,6 +131,8 @@ class Articolo(Dao):
         else: return ""
     stato_articolo= property(_stato_articolo)
 
+
+
     def getArticoloTagliaColore(self):
         """ Restituisce il Dao ArticoloTagliaColore collegato al Dao Articolo #"""
         #if self.__articoloTagliaColore is not None:
@@ -139,52 +142,37 @@ class Articolo(Dao):
                                                                                     offset=None,
                                                                                     batchSize=None)[0]
             return self.__articoloTagliaColore
-        except Exception:
-            print "Errore in getArticoloTagliaColore"
+        except:
+            return False
 
     def setArticoloTagliaColore(self, value):
         """
         Imposta il Dao ArticoloTagliaColore collegato al Dao Articolo
         """
-        print "VALUEEEEEEEEE articoloTagliaColore " , value
         self.__articoloTagliaColore = value
-
     articoloTagliaColore = property(getArticoloTagliaColore, setArticoloTagliaColore)
-
-    def getArticoloTagliaColoreCompleto(self):
-        """
-        Restituisce il Dao ArticoloTagliaColore collegato al Dao Articolo
-        con le chiavi esterne risolte
-        """
-        #if self.id is None:
-            #return None
-        #try:
-            #from promogest.modules.PromoWear.dao.ArticoloTagliaColore import select
-        articolo = ArticoloTagliaColore(isList=True).select(idArticolo=self.id,
-                                                            offset=None,
-                                                            batchSize=None)
-        if articolo:
-            return articolo[0] or None
-        #return articolo[0]
-        #else:
-            #return None
-        #except Exception:
-            #print "errore in getArticolOTagliaColoreCompleto"
-            #return None
-
-    articoloTagliaColoreCompleto = property(getArticoloTagliaColoreCompleto)
 
     def getArticoliTagliaColore(self, idGruppoTaglia=None, idTaglia=None, idColore=None):
         """ Restituisce una lista di Dao ArticoloTagliaColore figli del Dao Articolo """
         #from promogest.modules.PromoWear.dao.ArticoloTagliaColore import select
-        articoli = ArticoloTagliaColore(isList=True).select(idArticoloPadre=self.id,
-                                                            idGruppoTaglia=idGruppoTaglia,
-                                                            idTaglia=idTaglia,
-                                                            idColore=idColore,
-                                                            offset=None,
-                                                            batchSize=None)
+        articolo_relato = ArticoloTagliaColore(id=self.id).getRecord()
+        if not articolo_relato.id_articolo_padre:
+            articoli = ArticoloTagliaColore(isList=True).select(idArticoloPadre=articolo_relato.id_articolo,
+                                                                idGruppoTaglia=idGruppoTaglia,
+                                                                idTaglia=idTaglia,
+                                                                idColore=idColore,
+                                                                offset=None,
+                                                                batchSize=None)
+        else:
+            articoli = ArticoloTagliaColore(isList=True).select(idArticoloPadre=articolo_relato.id_articolo_padre,
+                                                                idGruppoTaglia=idGruppoTaglia,
+                                                                idTaglia=idTaglia,
+                                                                idColore=idColore,
+                                                                offset=None,
+                                                                batchSize=None)
         return articoli
     articoliTagliaColore = property(getArticoliTagliaColore)
+
 
     def _getTaglie(self):
         """ Restituisce una lista di Dao Taglia relativi alle taglie di tutti i Dao
@@ -206,11 +194,6 @@ class Articolo(Dao):
 
     colori = property(_getColori)
 
-
-    #def _denominazione_gruppo_taglia(self):
-        #if self.ATC: return self.ATC.denominazione or ""
-    #denominazione_gruppo_taglia = property(_denominazione_gruppo_taglia)
-
     def _id_articolo_padre(self):
         if self.ATC: return self.ATC.id_articolo_padre or None
     id_articolo_padre_taglia_colore=property(_id_articolo_padre)
@@ -219,6 +202,14 @@ class Articolo(Dao):
     def _id_gruppo_taglia(self):
         if self.ATC: return self.ATC.id_gruppo_taglia or None
     id_gruppo_taglia=property(_id_gruppo_taglia)
+
+    def _id_taglia(self):
+        if self.ATC: return self.ATC.id_taglia or None
+    id_taglia=property(_id_taglia)
+
+    def _id_colore(self):
+        if self.ATC: return self.ATC.id_colore or None
+    id_colore=property(_id_colore)
 
     def _id_genere(self):
         if self.ATC: return self.ATC.id_genere or None
@@ -298,6 +289,21 @@ class Articolo(Dao):
         else:
             return False
 
+    def delete(self):
+        # se l'articolo e' presente tra le righe di un movimento o documento
+        # si esegue la cancellazione logica
+        from promogest.dao.Riga import Riga
+        res = Riga(isList=True).select(id_articolo=self.id)
+        if res:
+            daoArticolo = Articolo(id=self.id).getRecord()
+            daoArticolo.cancellato = True
+            params["session"].add(daoArticolo)
+            params["session"].commit()
+        else:
+            params["session"].delete(self)
+            params["session"].commit()
+
+
     def filter_values(self,k,v):
         if k == "codice":
             dic = {k:articolo.c.codice.ilike("%"+v+"%")}
@@ -318,21 +324,21 @@ class Articolo(Dao):
         elif k == 'cancellato':
             dic = {k:or_(articolo.c.cancellato != v)}
         elif k == 'figliTagliaColore':
-            dic = {k:None}
+            dic = {k:and_(articolo.c.id==articolotagliacolore.c.id_articolo, articolotagliacolore.c.id_articolo_padre==None)}
         elif k == 'idTaglia':
-            dic = {k:articolotagliacolore.c.id_taglia==v}
+            dic = {k:and_(articolo.c.id==articolotagliacolore.c.id_articolo, articolotagliacolore.c.id_taglia==v)}
         elif k == 'idGruppoTaglia':
-            dic = {k:articolotagliacolore.c.id_gruppo_taglia ==v}
+            dic = {k:and_(articolo.c.id==articolotagliacolore.c.id_articolo, articolotagliacolore.c.id_gruppo_taglia ==v)}
         elif k == 'padriTagliaColore':
-            dic = {k:None}
+            dic = {k:and_(articolo.c.id==articolotagliacolore.c.id_articolo, articolotagliacolore.c.id_articolo_padre!=None)}
         elif k == 'idColore':
-            dic = {k:articolotagliacolore.c.id_colore ==v}
+            dic = {k:and_(articolo.c.id==articolotagliacolore.c.id_articolo, articolotagliacolore.c.id_colore ==v)}
         elif k == 'idStagione':
-            dic = {k:articolotagliacolore.c.id_stagione ==v}
+            dic = {k:and_(articolo.c.id==articolotagliacolore.c.id_articolo, articolotagliacolore.c.id_stagione ==v)}
         elif k == 'idAnno':
-            dic = {k:articolotagliacolore.c.id_anno ==v}
+            dic = {k:and_(articolo.c.id==articolotagliacolore.c.id_articolo, articolotagliacolore.c.id_anno == v)}
         elif k == 'idGenere':
-            dic = {k:articolotagliacolore.c.id_genere ==v}
+            dic = {k:and_(articolo.c.id==articolotagliacolore.c.id_articolo, articolotagliacolore.c.id_genere ==v)}
         return  dic[k]
 
 
@@ -366,14 +372,18 @@ class Articolo(Dao):
         except:
             pass
             #print "nessuna immagine associata all'articolo"
+        # Manage main Articolo with variation
         if self.__articoloTagliaColore:
-            self.__articoloTagliaColore.id=self.id
+            self.__articoloTagliaColore.id_articolo=self.id
             params["session"].add(self.__articoloTagliaColore)
             params["session"].commit()
-
-
-
-            print "qui c'è del lavoro da fareeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+            if self.isArticoloPadre():
+                for var in self.getArticoliTagliaColore():
+                    var.id_genere = self.__articoloTagliaColore.id_genere
+                    var.id_anno = self.__articoloTagliaColore.id_anno
+                    var.id_stagione = self.__articoloTagliaColore.id_stagione
+                    params["session"].add(var)
+                params["session"].commit()
         params["session"].flush()
 
 

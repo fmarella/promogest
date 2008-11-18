@@ -155,7 +155,7 @@ else:
                 #print "nessuna immagine associata all'articolo"
             params["session"].flush()
 
-        def delete(self, conn=None):
+        def delete(self):
             # se l'articolo e' presente tra le righe di un movimento o documento
             # si esegue la cancellazione logica
             from Riga import Riga

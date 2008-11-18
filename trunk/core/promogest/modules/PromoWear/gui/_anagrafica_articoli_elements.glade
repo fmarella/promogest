@@ -43,7 +43,7 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="cancellato_filter_label3">
+                          <widget class="GtkLabel" id="cancellato_filter_label">
                             <property name="visible">True</property>
                             <property name="xalign">0</property>
                             <property name="label" translatable="yes">Includi normali</property>
@@ -57,7 +57,7 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="cancellato_filter_label1">
+                          <widget class="GtkLabel" id="cancellato_filter_label">
                             <property name="visible">True</property>
                             <property name="xalign">0</property>
                             <property name="label" translatable="yes">Includi principali</property>
@@ -105,7 +105,7 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="cancellato_filter_label2">
+                          <widget class="GtkLabel" id="cancellato_filter_label">
                             <property name="visible">True</property>
                             <property name="xalign">0</property>
                             <property name="label" translatable="yes">Includi varianti</property>
@@ -2062,7 +2062,7 @@ Solo varianti</property>
                                 <child>
                                   <widget class="GtkLabel" id="label159">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Listini 
+                                    <property name="label" translatable="yes">Listini
 vendita</property>
                                     <property name="use_underline">True</property>
                                   </widget>
@@ -2158,7 +2158,7 @@ vendita</property>
                                 <child>
                                   <widget class="GtkLabel" id="label157">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Situazione 
+                                    <property name="label" translatable="yes">Situazione
 magazzino</property>
                                     <property name="use_underline">True</property>
                                   </widget>
@@ -2900,7 +2900,7 @@ derivate</property>
                 <child>
                   <widget class="GtkLabel" id="label50">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Caratteristiche 
+                    <property name="label" translatable="yes">Caratteristiche
 fisiche</property>
                   </widget>
                   <packing>
@@ -3060,7 +3060,7 @@ fisiche</property>
                 <child>
                   <widget class="GtkLabel" id="label51">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Informazioni 
+                    <property name="label" translatable="yes">Informazioni
 listini e etichette</property>
                   </widget>
                   <packing>

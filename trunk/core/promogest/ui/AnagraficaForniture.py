@@ -36,7 +36,6 @@ class AnagraficaForniture(Anagrafica):
         if "PromoWear" in Environment.modulesList:
             import promogest.modules.PromoWear.dao.ArticoloTagliaColore
             from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
-            self._taglia_colore = (Environment.conf.PromoWear.taglie_colori =="yes") or False
         Anagrafica.__init__(self,
                             windowTitle='Promogest - Anagrafica forniture articoli',
                             recordMenuLabel='_Forniture',
@@ -128,7 +127,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         column.set_expand(False)
         column.set_min_width(100)
         treeview.append_column(column)
-        if "PromoWear" in Environment.modulesList and self._anagrafica._taglia_colore:
+        if "PromoWear" in Environment.modulesList:
             column = gtk.TreeViewColumn('Gruppo taglia', rendererSx, text=8)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
             column.set_clickable(True)
@@ -195,7 +194,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
             column.set_property('visible', False)
             column = self._anagrafica.anagrafica_filter_treeview.get_column(3)
             column.set_property('visible', False)
-            if "PromoWear" in Environment.modulesList and self._anagrafica._taglia_colore:
+            if "PromoWear" in Environment.modulesList:
                 column = self._anagrafica.anagrafica_filter_treeview.get_column(7)
                 column.set_property('visible', False)
                 column = self._anagrafica.anagrafica_filter_treeview.get_column(8)
@@ -276,16 +275,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         self._treeViewModel.clear()
 
         for f in fors:
-            if "PromoWear" not in Environment.modulesList:
-                self._treeViewModel.append((f,
-                                        (f.fornitore or ''),
-                                        (f.codice_articolo_fornitore or ''),
-                                        (f.codice_articolo or ''),
-                                        (f.articolo or ''),
-                                        dateToString(f.data_fornitura),
-                                        ('%14.' + Environment.conf.decimals + 'f') % float(f.prezzo_lordo or 0),
-                                        ('%14.' + Environment.conf.decimals + 'f') % float(f.prezzo_netto or 0)))
-            else:
+            if "PromoWear" in Environment.modulesList:
                 self._treeViewModel.append((f,
                             (f.fornitore or ''),
                             (f.codice_articolo_fornitore or ''),
@@ -300,13 +290,21 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
                             (f.anno or ''),
                             (f.stagione or ''),
                             (f.genere or '')))
+            else:
+                self._treeViewModel.append((f,
+                            (f.fornitore or ''),
+                            (f.codice_articolo_fornitore or ''),
+                            (f.codice_articolo or ''),
+                            (f.articolo or ''),
+                            dateToString(f.data_fornitura),
+                            ('%14.' + Environment.conf.decimals + 'f') % float(f.prezzo_lordo or 0),
+                            ('%14.' + Environment.conf.decimals + 'f') % float(f.prezzo_netto or 0)))
 
 
 class AnagraficaFornitureHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'fornitura',
                                 'Informazioni sulla fornitura')
-
 
 
 class AnagraficaFornitureReport(AnagraficaReport):
@@ -316,7 +314,6 @@ class AnagraficaFornitureReport(AnagraficaReport):
                                   defaultFileName='forniture',
                                   htmlTemplate='forniture',
                                   sxwTemplate='forniture')
-
 
 
 class AnagraficaFornitureEdit(AnagraficaEdit):
@@ -340,7 +337,7 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         self.id_fornitore_customcombobox.setSingleValue()
 
         self.sconti_widget.button.connect('toggled',
-                                          self.on_sconti_widget_button_toggled)
+                                        self.on_sconti_widget_button_toggled)
 
         if self._anagrafica._articoloFissato:
             self.id_articolo_customcombobox.setId(self._anagrafica._idArticolo)
@@ -370,7 +367,7 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         self._percentualeIva = res["percentualeAliquotaIva"]
         self.percentuale_aliquota_iva_label.set_text('%5.2f' % self._percentualeIva + ' %')
         fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self.id_articolo_customcombobox.getId())
-        if "PromoWear" in Environment.modulesList and self._anagrafica._taglia_colore:
+        if "PromoWear" in Environment.modulesList:
             self._refreshTagliaColore(res["id"])
 
     def setDao(self, dao):
@@ -419,12 +416,11 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
                               self.dao.id_multiplo)
         self.sconti_widget.setValues(self.dao.sconti, self.dao.applicazione_sconti)
         self._calcolaPrezzoNetto()
-        if "PromoWear" in Environment.modulesList and self._anagrafica._taglia_colore:
+        if "PromoWear" in Environment.modulesList:
             self._refreshTagliaColore(self.dao.id_articolo)
 
     def _refreshTagliaColore(self, idArticolo):
-        articolo = Articolo(Environment.connection, idArticolo)
-        articoloTagliaColore = articolo.articoloTagliaColoreCompleto
+        articoloTagliaColore = Articolo(id=idArticolo).getRecord()
         self.taglia_colore_table.hide()
         if articoloTagliaColore is not None:
             gruppoTaglia = articoloTagliaColore.denominazione_gruppo_taglia or ''

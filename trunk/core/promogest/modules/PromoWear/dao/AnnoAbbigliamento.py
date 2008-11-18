@@ -17,7 +17,10 @@ class AnnoAbbigliamento(Dao):
 
 
     def filter_values(self,k,v):
-        dic= {'id':annoabbigliamento.c.id ==v}
+        if k=="id":
+            dic= {k:annoabbigliamento.c.id ==v}
+        elif k =="denominazione":
+            dic= {k:annoabbigliamento.c.denominazione == v}
         return  dic[k]
 
 annoabbigliamento=Table('anno_abbigliamento',

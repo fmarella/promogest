@@ -17,16 +17,20 @@ from RicercaComplessa import RicercaComplessa
 from RicercaComplessa import analyze_treeview_key_press_event
 from RicercaComplessa import parseModel, onColumnEdited, columnSelectAll
 from RicercaComplessa import optimizeString, insertTreeViewRow, deleteTreeViewRow, clearWhereString
+from promogest.ui.GladeWidget import GladeWidget
+import Login
+from utils import *
+from utilsCombobox import *
 
 from promogest import Environment
 from promogest.dao.Dao import Dao
-import promogest.dao.Articolo
+#import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
-import promogest.dao.FamigliaArticolo
+#import promogest.dao.FamigliaArticolo
 from promogest.dao.FamigliaArticolo import FamigliaArticolo
-import promogest.dao.CategoriaArticolo
+#import promogest.dao.CategoriaArticolo
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
-import promogest.dao.StatoArticolo
+#import promogest.dao.StatoArticolo
 from promogest.dao.StatoArticolo import StatoArticolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 if "PromoWear" in Environment.modulesList:
@@ -37,13 +41,7 @@ if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
     from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
     from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
-
-
-from promogest.ui.GladeWidget import GladeWidget
-import Login
-from utils import *
-from utilsCombobox import *
-
+    from promogest.modules.PromoWear.ui.PromowearUtils import *
 
 
 class RicercaComplessaArticoli(RicercaComplessa):
@@ -70,8 +68,6 @@ class RicercaComplessaArticoli(RicercaComplessa):
         self._idAnno = idAnno
         self._idStagione = idStagione
         self._idGenere = idGenere
-        if "PromoWear" in Environment.modulesList:
-            self._taglia_colore = Environment.taglia_colore or False
 
         self._ricerca = RicercaArticoliFilter(parentObject=self,
                                               denominazione=denominazione,
@@ -119,15 +115,14 @@ class RicercaComplessaArticoli(RicercaComplessa):
         self.filter.filter_clear_button.connect('clicked', self.on_filter_clear_button_clicked)
         self.filter.filter_search_button.connect('clicked', self.on_filter_search_button_clicked)
 
-        #accelGroup = gtk.AccelGroup()
-        #self.getTopLevel().add_accel_group(accelGroup)
-        #self.filter.filter_clear_button.add_accelerator('clicked', accelGroup, gtk.keysyms.Escape, 0, gtk.ACCEL_VISIBLE)
-        #self.filter.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
+        accelGroup = gtk.AccelGroup()
+        self.getTopLevel().add_accel_group(accelGroup)
+        self.filter.filter_clear_button.add_accelerator('clicked', accelGroup, gtk.keysyms.Escape, 0, gtk.ACCEL_VISIBLE)
+        self.filter.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
 
         self.draw()
 
         self.setInitialSearch()
-
 
     def draw(self):
         """ Disegna la treeview relativa al risultato del filtraggio """
@@ -191,7 +186,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
         column.set_expand(False)
         column.set_min_width(100)
         treeview.append_column(column)
-        if "PromoWear" in Environment.modulesList and self._taglia_colore:
+        if "PromoWear" in Environment.modulesList:
             column = gtk.TreeViewColumn('Gruppo taglia', renderer, text=9, background=1)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
             column.set_clickable(True)
@@ -252,44 +247,34 @@ class RicercaComplessaArticoli(RicercaComplessa):
         treeview.set_search_column(1)
         treeview.set_model(model)
 
-
     def setInitialSearch(self):
         """ Imposta il tipo di ricerca iniziale """
         # puo' essere ridefinito dalle classi derivate
         self._ricerca.setRicercaSemplice()
 
-
     def clear(self):
         """ Re-inizializza i filtri """
         self._ricerca.clear()
-
 
     def refresh(self):
         """ Esegue il filtraggio in base ai filtri impostati e aggiorna la treeview """
         self._ricerca.refresh()
 
-
     def on_filter_clear_button_clicked(self, button):
         """ Gestisce la pressione del bottone pulisci """
         pass
-
 
     def on_filter_search_button_clicked(self, button):
         """ Gestisce la pressione del bottone trova """
         pass
 
-
     def insert(self, toggleButton, returnWindow):
-        # Richiamo anagrafica di competenza
-
+        """ Open Article anag widget """
         from AnagraficaArticoli import AnagraficaArticoli
         anag = AnagraficaArticoli()
         anagWindow = anag.getTopLevel()
-
         showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, self.refresh)
-
         anag.on_record_new_activate(anag.record_new_button)
-
 
     def on_filter_treeview_cursor_changed(self, treeview):
         """ Rileva la riga attualmente selezionata """
@@ -302,20 +287,16 @@ class RicercaComplessaArticoli(RicercaComplessa):
         self.dao = model.get_value(iterator, 0)
         self.refreshDetail()
 
-
     def refreshDetail(self):
-        """ Aggiornamento della parte di dettaglio """
-        # puo' essere ridefinito dalle classi derivate che
-        # prevedono un parte di dettaglio
+        """ Aggiornamento della parte di dettaglio puo' essere ridefinito dalle
+            classi derivate che prevedono un parte di dettaglio"""
         pass
-
 
     def on_filter_treeview_row_activated(self, treeview, path, column):
         """ La finestra viene nascosta perche' una riga e' stata selezionata """
         if self.getTopLevel() in Login.windowGroup:
             Login.windowGroup.remove(self.getTopLevel())
         self.getTopLevel().hide()
-
 
     def _changeTreeViewSelectionType(self):
         """ Imposta il tipo di selezione di default che si puo' fare sulla treeview """
@@ -328,7 +309,6 @@ class RicercaComplessaArticoli(RicercaComplessa):
         else:
             selection.set_mode(gtk.SELECTION_NONE)
 
-
     def setTreeViewSelectionType(self, mode=None):
         self._fixedSelectionTreeViewType = True
         if mode is not None:
@@ -336,20 +316,16 @@ class RicercaComplessaArticoli(RicercaComplessa):
                 selection = self.filter.resultsElement.get_selection()
                 selection.set_mode(mode)
 
-
     def getResultsElement(self):
         """ Restituisce il risultato della ricerca se composto da un solo elemento """
         if self._ricerca._tipoRicerca == 'semplice':
-            print "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"
             return self.dao
         else:
             selection = self.filter.resultsElement.get_selection()
             selectionMode = selection.get_mode()
             if selectionMode == gtk.SELECTION_SINGLE:
-                print "QUIIIIIIIIIIIIIIIIIIIIIIIIIIOOOOOOOOOOOOOOOOOO"
                 return self.dao
             elif self._ricerca.resultsCount == 1:
-                print "O QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
                 treeview = self.filter.resultsElement
                 model = treeview.get_model()
                 self.dao = model[0][0]
@@ -357,9 +333,8 @@ class RicercaComplessaArticoli(RicercaComplessa):
             else:
                 return self._ricerca.getArtsResult()
 
-
     def getResultsCount(self):
-        """ Restituisce il numero di clienti selezionati """
+        """ Restituisce il numero di article selezionati """
         if self._ricerca._tipoRicerca == 'semplice':
             if self.dao is not None:
                 return 1
@@ -376,16 +351,13 @@ class RicercaComplessaArticoli(RicercaComplessa):
             else:
                 return self._ricerca.resultsCount
 
-
     def setSummaryTextBefore(self, value):
         self._ricerca.textBefore = value
         self._ricerca.setRiepilogoArticolo()
 
-
     def setSummaryTextAfter(self, value):
         self._ricerca.textAfter = value
         self._ricerca.setRiepilogoArticolo()
-
 
 
 class RicercaArticoliFilter(GladeWidget):
@@ -426,8 +398,6 @@ class RicercaArticoliFilter(GladeWidget):
         self._idAnno = idAnno
         self._idStagione = idStagione
         self._idGenere = idGenere
-        if "PromoWear" in Environment.modulesList:
-            self._taglia_colore = Environment.taglia_colore or False
         self._parentObject = parentObject
         self.resultsCount = 0
         self.complexFilter=None
@@ -436,21 +406,13 @@ class RicercaArticoliFilter(GladeWidget):
         self.res = None
         self.draw()
 
-        self.ricerca_avanzata_articoli_button.connect('clicked',
-                                                      self.on_ricerca_avanzata_articoli_button_clicked)
-        self.ricerca_semplice_articoli_button.connect('clicked',
-                                                      self.on_ricerca_semplice_articoli_button_clicked)
-
-
     def on_ricerca_avanzata_articoli_button_clicked(self, button):
         """ Seleziona la ricerca avanzata """
         self.setRicercaAvanzata()
 
-
     def on_ricerca_semplice_articoli_button_clicked(self, button):
         """ Seleziona la ricerca semplice """
         self.setRicercaSemplice()
-
 
     def setRicercaSemplice(self):
         """ Gestisce la visualizzazione della sola parte semplice della ricerca """
@@ -462,7 +424,6 @@ class RicercaArticoliFilter(GladeWidget):
         self._parentObject._changeTreeViewSelectionType()
         self._parentObject.refresh()
 
-
     def setRicercaAvanzata(self):
         """ Gestisce la visualizzazione della sola parte avanzata della ricerca """
         self._tipoRicerca = 'avanzata'
@@ -473,21 +434,17 @@ class RicercaArticoliFilter(GladeWidget):
         self._parentObject._changeTreeViewSelectionType()
         self._parentObject.refresh()
 
-
-
     def draw(self):
         """ Disegna e imposta i widgets relativi a tutta la ricerca """
         self.drawRicercaSemplice()
         self.drawRicercaComplessa()
 
-
     def drawRicercaSemplice(self):
-        """ Disegna e imposta i widgets relativi alla sola parte semplice della ricerca """
+        """ Draw and set widgets related to the simple search part """
         fillComboboxFamiglieArticoli(self.id_famiglia_articolo_filter_combobox, filter=True)
         fillComboboxCategorieArticoli(self.id_categoria_articolo_filter_combobox, True)
         fillComboboxStatiArticoli(self.id_stato_articolo_filter_combobox, True)
         if "PromoWear" in Environment.modulesList:
-            from promogest.modules.PromoWear.ui.PromowearUtils import fillComboboxGruppiTaglia, fillComboboxTaglie, fillComboboxColori, fillComboboxAnniAbbigliamento, fillComboboxStagioniAbbigliamento, fillComboboxGeneriAbbigliamento
             self.filter_promowear.set_property('visible', True)
             fillComboboxGruppiTaglia(self.id_gruppo_taglia_articolo_filter_combobox, True)
             fillComboboxTaglie(self.id_taglia_articolo_filter_combobox, True)
@@ -504,55 +461,24 @@ class RicercaArticoliFilter(GladeWidget):
             if self._idColore is not None:
                 findComboboxRowFromId(self.id_colore_articolo_filter_combobox, self._idColore)
             self.id_anno_articolo_filter_combobox.set_active(0)
-            if self._idAnno is not None:
-                findComboboxRowFromId(self.id_anno_articolo_filter_combobox, self._idAnno)
-            else:
-                if hasattr(Environment.conf,'TaglieColori'):
-                    anno = getattr(Environment.conf.TaglieColori,'anno_default', None)
-                    if anno is not None:
-                        findComboboxRowFromId(self.id_anno_articolo_filter_combobox, int(anno))
+            self.id_anno_articolo_filter_combobox.set_active(0)
+            anno = getattr(Environment.conf.PromoWear,'anno_default', None)
+            if anno is not None:
+                try:
+                    idAnno = AnnoAbbigliamento(isList = True).select(denominazione = anno)[0].id
+                    findComboboxRowFromId(self.id_anno_articolo_filter_combobox, idAnno)
+                except:
+                    pass
+            #gestione stagione abbigliamento con prelievo del dato di default dal configure ( nb da usare l'id)
             self.id_stagione_articolo_filter_combobox.set_active(0)
-            if self._idStagione is not None:
-                findComboboxRowFromId(self.id_stagione_articolo_filter_combobox, self._idStagione)
-            else:
-                if hasattr(Environment.conf,'TaglieColori'):
-                    stagione = getattr(Environment.conf.TaglieColori,'stagione_default', None)
-                    if stagione is not None:
-                        findComboboxRowFromId(self.id_stagione_articolo_filter_combobox, int(stagione))
+            stagione = getattr(Environment.conf.PromoWear,'stagione_default', None)
+            if stagione is not None:
+                findComboboxRowFromId(self.id_stagione_articolo_filter_combobox, int(stagione))
             self.id_genere_articolo_filter_combobox.set_active(0)
             if self._idGenere is not None:
                 findComboboxRowFromId(self.id_colore_articolo_filter_combobox, self._idGenere)
             self.taglie_colori_filter_combobox.set_active(0)
             self.id_stato_articolo_filter_combobox.set_active(0)
-            if not self._parentObject._taglia_colore:
-                self.gruppo_taglia_filter_label.set_no_show_all(True)
-                self.gruppo_taglia_filter_label.set_property('visible', False)
-                self.id_gruppo_taglia_articolo_filter_combobox.set_property('visible', False)
-                self.id_gruppo_taglia_articolo_filter_combobox.set_no_show_all(True)
-                self.taglia_articolo_filter_label.set_no_show_all(True)
-                self.taglia_articolo_filter_label.set_property('visible', False)
-                self.id_taglia_articolo_filter_combobox.set_property('visible', False)
-                self.id_taglia_articolo_filter_combobox.set_no_show_all(True)
-                self.colore_filter_label.set_no_show_all(True)
-                self.colore_filter_label.set_property('visible', False)
-                self.id_colore_articolo_filter_combobox.set_property('visible', False)
-                self.id_colore_articolo_filter_combobox.set_no_show_all(True)
-                self.anno_filter_label.set_no_show_all(True)
-                self.anno_filter_label.set_property('visible', False)
-                self.id_anno_articolo_filter_combobox.set_property('visible', False)
-                self.id_anno_articolo_filter_combobox.set_no_show_all(True)
-                self.stagione_filter_label.set_no_show_all(True)
-                self.stagione_filter_label.set_property('visible', False)
-                self.id_stagione_articolo_filter_combobox.set_property('visible', False)
-                self.id_stagione_articolo_filter_combobox.set_no_show_all(True)
-                self.genere_filter_label.set_no_show_all(True)
-                self.genere_filter_label.set_property('visible', False)
-                self.id_genere_articolo_filter_combobox.set_property('visible', False)
-                self.id_genere_articolo_filter_combobox.set_no_show_all(True)
-                self.taglie_colori_filter_label.set_no_show_all(True)
-                self.taglie_colori_filter_label.set_property('visible', False)
-                self.taglie_colori_filter_combobox.set_property('visible', False)
-                self.taglie_colori_filter_combobox.set_no_show_all(True)
 
         self.denominazione_filter_entry.set_text(self._denominazione or '')
         self.produttore_filter_entry.set_text(self._produttore or '')
@@ -568,11 +494,10 @@ class RicercaArticoliFilter(GladeWidget):
         self.id_stato_articolo_filter_combobox.set_active(0)
         if self._idStato is not None:
             findComboboxRowFromId(self.id_stato_articolo_filter_combobox, self._idStato)
-        self.cancellato_filter_label.set_property('visible', False)
-        self.cancellato_filter_label.set_no_show_all(True)
-        self.cancellato_filter_checkbutton.set_property('visible', False)
-        self.cancellato_filter_checkbutton.set_no_show_all(True)
-
+        self.cancellato_filter_label.set_property('visible', True)
+        self.cancellato_filter_label.set_no_show_all(False)
+        self.cancellato_filter_checkbutton.set_property('visible', True)
+        self.cancellato_filter_checkbutton.set_no_show_all(False)
 
     def drawRicercaComplessa(self):
         """ Disegna e imposta i widgets relativi alla sola parte avanzata della ricerca """
@@ -596,9 +521,11 @@ class RicercaArticoliFilter(GladeWidget):
             self.drawAnnoTreeView()
             self.drawStagioneTreeView()
             self.drawGenereTreeView()
-            self.includi_principali_articolo_filter_checkbutton.set_active(True)
-            self.includi_varianti_articolo_filter_checkbutton.set_active(True)
-            self.includi_normali_articolo_filter_checkbutton.set_active(True)
+            self.drawCutSizeTreeView()
+            #FIXME: They are not present anywhere
+            #self.includi_principali_articolo_filter_checkbutton.set_active(True)
+            #self.includi_varianti_articolo_filter_checkbutton.set_active(True)
+            #self.includi_normali_articolo_filter_checkbutton.set_active(True)
 
         self._activeExpander = None
         self.setRiepilogoArticolo()
@@ -831,6 +758,49 @@ class RicercaArticoliFilter(GladeWidget):
 
     def getArtsResult(self):
         return self.artsResult or None
+
+
+    def drawCutSizeTreeView(self):
+        treeview = self.cutsize_articolo_filter_treeview
+        treeview.selectAllIncluded = False
+        treeview.selectAllExcluded = False
+        model = gtk.ListStore(bool, bool, str)
+        self._cutisizeTreeViewModel = model
+
+        for c in treeview.get_columns():
+            treeview.remove_column(c)
+
+        renderer = gtk.CellRendererToggle()
+        renderer.set_property('activatable', True)
+        renderer.connect('toggled', self.onColumnEdited, None, treeview)
+        renderer.set_data('model_index', 0)
+        renderer.set_data('column', 1)
+        column = gtk.TreeViewColumn('Includi', renderer, active=0)
+        column.connect("clicked", self.columnSelectAll, treeview)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(True)
+        column.set_resizable(True)
+        column.set_expand(False)
+        treeview.append_column(column)
+
+        renderer = gtk.CellRendererText()
+        column = gtk.TreeViewColumn('Descrizione', renderer, text=2)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(False)
+        column.set_resizable(True)
+        column.set_expand(True)
+        treeview.append_column(column)
+
+        treeview.set_search_column(2)
+
+        stas = [(True,False,"Tutti"),(False,True,"Solo principali"), (False,True,"Solo Varianti")]
+
+        for s in stas:
+            model.append((s[0],
+                          s[1],
+                          s[2]))
+
+        treeview.set_model(model)
 
 
     def drawStagioneTreeView(self):
@@ -1977,14 +1947,15 @@ class RicercaArticoliFilter(GladeWidget):
                 testo += '  Genere:\n'
                 testo += self._includedString
 
-            if self.includi_principali_articolo_filter_checkbutton.get_active():
-                testo += '  + Compresi articoli principali taglia/colore\n'
+            #FIXME They are not present. check how to make this kinf of filter now
+            #if self.includi_principali_articolo_filter_checkbutton.get_active():
+                #testo += '  + Compresi articoli principali taglia/colore\n'
 
-            if self.includi_varianti_articolo_filter_checkbutton.get_active():
-                testo += '  + Comprese varianti taglia/colore\n'
+            #if self.includi_varianti_articolo_filter_checkbutton.get_active():
+                #testo += '  + Comprese varianti taglia/colore\n'
 
-            if self.includi_normali_articolo_filter_checkbutton.get_active():
-                testo += '  + Compresi articoli no taglia/colore\n'
+            #if self.includi_normali_articolo_filter_checkbutton.get_active():
+                #testo += '  + Compresi articoli no taglia/colore\n'
 
         if self.textBefore is not None:
             testo = self.textBefore + testo
@@ -2077,7 +2048,7 @@ class RicercaArticoliFilter(GladeWidget):
             idCategoria = findIdFromCombobox(self.id_categoria_articolo_filter_combobox)
             idStato = findIdFromCombobox(self.id_stato_articolo_filter_combobox)
             cancellato = False
-            if "PromoWear" in Environment.modulesList and self._parentObject._taglia_colore:
+            if "PromoWear" in Environment.modulesList:
                 idGruppoTaglia = findIdFromCombobox(self.id_gruppo_taglia_articolo_filter_combobox)
                 idTaglia = findIdFromCombobox(self.id_taglia_articolo_filter_combobox)
                 idColore = findIdFromCombobox(self.id_colore_articolo_filter_combobox)
@@ -2085,9 +2056,14 @@ class RicercaArticoliFilter(GladeWidget):
                 idStagione = findIdFromCombobox(self.id_stagione_articolo_filter_combobox)
                 idGenere = findIdFromCombobox(self.id_genere_articolo_filter_combobox)
                 padriTagliaColore = ((self.taglie_colori_filter_combobox.get_active() == 0) or
-                                     (self.taglie_colori_filter_combobox.get_active() == 1))
+                                    (self.taglie_colori_filter_combobox.get_active() == 1))
+                if padriTagliaColore: padriTagliaColore = None
+                else:padriTagliaColore = True
                 figliTagliaColore = ((self.taglie_colori_filter_combobox.get_active() == 0) or
-                                     (self.taglie_colori_filter_combobox.get_active() == 2))
+                                    (self.taglie_colori_filter_combobox.get_active() == 2))
+                if figliTagliaColore:figliTagliaColore = None
+                else:figliTagliaColore = True
+
             else:
                 idGruppoTaglia = None
                 idTaglia = None
@@ -2223,6 +2199,7 @@ class RicercaArticoliFilter(GladeWidget):
                             (str(a.denominazione_categoria) or '')))
 
         self.artsResult = arts
+
     def _prepare(self):
         """
         Viene costruita ed eseguita la query di filtraggio sugli articoli in base
@@ -2310,6 +2287,10 @@ class RicercaArticoliFilter(GladeWidget):
             if row[0]:
                 self._idGeneriIn.append(row[index])
 
+        def getCutSizeIn(row, index):
+            if row[0]:
+                self._idCutSizeIn.append(row[index])
+
 
 
         # eliminazione tabella articoli filtrati
@@ -2336,6 +2317,7 @@ class RicercaArticoliFilter(GladeWidget):
             self._idAnniIn = []
             self._idStagioniIn = []
             self._idGeneriIn = []
+            self._idCutSizeIn = []
             self._principaliIn = None
             self._variantiIn = None
             self._normaliIn = None
@@ -2363,9 +2345,8 @@ class RicercaArticoliFilter(GladeWidget):
                 parseModel(self._annoTreeViewModel, getAnniIn, 2)
                 parseModel(self._stagioneTreeViewModel, getStagioniIn, 2)
                 parseModel(self._genereTreeViewModel, getGeneriIn, 2)
-                self._principaliIn = self.includi_principali_articolo_filter_checkbutton.get_active()
-                self._variantiIn = self.includi_varianti_articolo_filter_checkbutton.get_active()
-                self._normaliIn = self.includi_normali_articolo_filter_checkbutton.get_active()
+                parseModel(self._cutisizeTreeViewModel, getCutSizeIn, 2)
+
 
             if self.includi_eliminati_articolo_filter_checkbutton.get_active():
                 self._eliminatiIn = True

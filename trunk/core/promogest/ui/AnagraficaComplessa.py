@@ -1230,6 +1230,8 @@ class AnagraficaEdit(GladeWidget):
 
     def on_anagrafica_complessa_detail_dialog_response(self, dialog, responseId):
         if responseId == gtk.RESPONSE_CANCEL:
+            #print "7777777777777777777777777777777777777777777777777777777777777777777777777777777777"
+            #self.clearDao()
             self.setVisible(False)
         elif responseId == gtk.RESPONSE_OK:
             self.saveDao()

@@ -10,43 +10,30 @@
 
 import gtk
 import gobject
-
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
-
 from promogest import Environment
 from promogest.dao.Dao import Dao
 import promogest.dao.Fornitura
 import promogest.dao.Articolo
-#if hasattr(conf, "PromoWear"):
-    #if getattr(conf.PromoWear,'mod_enable','yes'):
-        #from promogest.modules.PromoWear.dao.ArticoloPromowear import ArticoloPromowear as Articolo
-    #else:
 from promogest.dao.Articolo import Articolo
-
 from GladeWidget import GladeWidget
 from utils import *
 from utilsCombobox import *
-
 if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.ui.PromowearUtils import *
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
-    import promogest.modules.PromoWear.dao.ArticoloTagliaColore
     from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
     from promogest.modules.PromoWear.dao.Taglia import Taglia
     from promogest.modules.PromoWear.dao.Colore import Colore
+    from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
     #import promogest.modules.PromoWear.dao.ArticoloPromowear
     #from promogest.modules.PromoWear.dao.ArticoloPromowear import ArticoloPromowear as Articolo
 #else:
-import promogest.dao.Articolo
-from promogest.dao.Articolo import Articolo
-
 
 class AnagraficaArticoli(Anagrafica):
     """ Anagrafica articoli """
 
     def __init__(self, aziendaStr=None):
-        if "PromoWear" in Environment.modulesList:
-            self._taglia_colore = Environment.taglia_colore or False
         Anagrafica.__init__(self,
                             windowTitle='Promogest - Anagrafica articoli',
                             recordMenuLabel='_Articoli',
@@ -56,7 +43,6 @@ class AnagraficaArticoli(Anagrafica):
                             editElement=AnagraficaArticoliEdit(self),
                             aziendaStr=aziendaStr)
         self.record_duplicate_menu.set_property('visible', True)
-
 
     def on_record_edit_activate(self, widget, path=None, column=None):
         dao = self.filter.getSelectedDao()
@@ -79,7 +65,6 @@ class AnagraficaArticoli(Anagrafica):
                 return
         Anagrafica.on_record_edit_activate(self, widget, path, column)
 
-
     def duplicate(self,dao):
         """ Duplica le informazioni relative ad un articolo scelto su uno nuovo (a meno del codice) """
         if dao is None:
@@ -90,8 +75,8 @@ class AnagraficaArticoli(Anagrafica):
 
         if "PromoWear" in Environment.modulesList:
                 # le varianti non si possono duplicare !!!
-                articoloTagliaColore = dao.articoloTagliaColore
-                if articoloTagliaColore is not None and articoloTagliaColore.id_articolo_padre is not None:
+                #articoloTagliaColore = dao.articoloTagliaColore
+                if dao.id_articolo_padre is not None:
                     msg = "Attenzione !\n\n Le varianti non sono duplicabili !"
                     dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                             gtk.MESSAGE_QUESTION, gtk.BUTTONS_OK, msg)
@@ -229,7 +214,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         column.set_expand(False)
         column.set_min_width(100)
         treeview.append_column(column)
-        if "PromoWear" in Environment.modulesList and self._anagrafica._taglia_colore:
+        if "PromoWear" in Environment.modulesList:
             column = gtk.TreeViewColumn('Gruppo taglia', renderer, text=9, background=1)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
             column.set_clickable(True)
@@ -284,36 +269,35 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             column.set_min_width(100)
             treeview.append_column(column)
             self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str, str, str, str, str, str)
-            if not self._anagrafica._taglia_colore:
-                self.gruppo_taglia_filter_label.set_no_show_all(True)
-                self.gruppo_taglia_filter_label.set_property('visible', False)
-                self.id_gruppo_taglia_articolo_filter_combobox.set_property('visible', False)
-                self.id_gruppo_taglia_articolo_filter_combobox.set_no_show_all(True)
-                self.taglia_filter_label.set_no_show_all(True)
-                self.taglia_filter_label.set_property('visible', False)
-                self.id_taglia_articolo_filter_combobox.set_property('visible', False)
-                self.id_taglia_articolo_filter_combobox.set_no_show_all(True)
-                self.colore_filter_label.set_no_show_all(True)
-                self.colore_filter_label.set_property('visible', False)
-                self.id_colore_articolo_filter_combobox.set_property('visible', False)
-                self.id_colore_articolo_filter_combobox.set_no_show_all(True)
-                self.anno_filter_label.set_no_show_all(True)
-                self.anno_filter_label.set_property('visible', False)
-                self.id_anno_articolo_filter_combobox.set_property('visible', False)
-                self.id_anno_articolo_filter_combobox.set_no_show_all(True)
-                self.stagione_filter_label.set_no_show_all(True)
-                self.stagione_filter_label.set_property('visible', False)
-                self.id_stagione_articolo_filter_combobox.set_property('visible', False)
-                self.id_stagione_articolo_filter_combobox.set_no_show_all(True)
-                self.genere_filter_label.set_no_show_all(True)
-                self.genere_filter_label.set_property('visible', False)
-                self.id_genere_articolo_filter_combobox.set_property('visible', False)
-                self.id_genere_articolo_filter_combobox.set_no_show_all(True)
-                self.taglie_colori_filter_label.set_no_show_all(True)
-                self.taglie_colori_filter_label.set_property('visible', False)
-                self.taglie_colori_filter_combobox.set_property('visible', False)
-                self.taglie_colori_filter_combobox.set_no_show_all(True)
         else:
+            self.gruppo_taglia_filter_label.set_no_show_all(True)
+            self.gruppo_taglia_filter_label.set_property('visible', False)
+            self.id_gruppo_taglia_articolo_filter_combobox.set_property('visible', False)
+            self.id_gruppo_taglia_articolo_filter_combobox.set_no_show_all(True)
+            self.taglia_filter_label.set_no_show_all(True)
+            self.taglia_filter_label.set_property('visible', False)
+            self.id_taglia_articolo_filter_combobox.set_property('visible', False)
+            self.id_taglia_articolo_filter_combobox.set_no_show_all(True)
+            self.colore_filter_label.set_no_show_all(True)
+            self.colore_filter_label.set_property('visible', False)
+            self.id_colore_articolo_filter_combobox.set_property('visible', False)
+            self.id_colore_articolo_filter_combobox.set_no_show_all(True)
+            self.anno_filter_label.set_no_show_all(True)
+            self.anno_filter_label.set_property('visible', False)
+            self.id_anno_articolo_filter_combobox.set_property('visible', False)
+            self.id_anno_articolo_filter_combobox.set_no_show_all(True)
+            self.stagione_filter_label.set_no_show_all(True)
+            self.stagione_filter_label.set_property('visible', False)
+            self.id_stagione_articolo_filter_combobox.set_property('visible', False)
+            self.id_stagione_articolo_filter_combobox.set_no_show_all(True)
+            self.genere_filter_label.set_no_show_all(True)
+            self.genere_filter_label.set_property('visible', False)
+            self.id_genere_articolo_filter_combobox.set_property('visible', False)
+            self.id_genere_articolo_filter_combobox.set_no_show_all(True)
+            self.taglie_colori_filter_label.set_no_show_all(True)
+            self.taglie_colori_filter_label.set_property('visible', False)
+            self.taglie_colori_filter_combobox.set_property('visible', False)
+            self.taglie_colori_filter_combobox.set_no_show_all(True)
             self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str)
         treeview.set_search_column(2)
 
@@ -353,16 +337,20 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             self.id_gruppo_taglia_articolo_filter_combobox.set_active(0)
             self.id_taglia_articolo_filter_combobox.set_active(0)
             self.id_colore_articolo_filter_combobox.set_active(0)
+            #gestione anno abbigliamento con prelievo del dato di default dal configure
             self.id_anno_articolo_filter_combobox.set_active(0)
-            if hasattr(Environment.conf,'TaglieColori'):
-                anno = getattr(Environment.conf.TaglieColori,'anno_default', None)
-                if anno is not None:
-                    findComboboxRowFromId(self.id_anno_articolo_filter_combobox, int(anno))
+            anno = getattr(Environment.conf.PromoWear,'anno_default', None)
+            if anno is not None:
+                try:
+                    idAnno = AnnoAbbigliamento(isList = True).select(denominazione = anno)[0].id
+                    findComboboxRowFromId(self.id_anno_articolo_filter_combobox, idAnno)
+                except:
+                    pass
+            #gestione stagione abbigliamento con prelievo del dato di default dal configure ( nb da usare l'id)
             self.id_stagione_articolo_filter_combobox.set_active(0)
-            if hasattr(Environment.conf,'TaglieColori'):
-                stagione = getattr(Environment.conf.TaglieColori,'stagione_default', None)
-                if stagione is not None:
-                    findComboboxRowFromId(self.id_stagione_articolo_filter_combobox, int(stagione))
+            stagione = getattr(Environment.conf.PromoWear,'stagione_default', None)
+            if stagione is not None:
+                findComboboxRowFromId(self.id_stagione_articolo_filter_combobox, int(stagione))
             self.id_genere_articolo_filter_combobox.set_active(0)
             self.taglie_colori_filter_combobox.set_active(0)
 
@@ -384,59 +372,51 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             cancellato = False
         else:
             cancellato = True
-
-        if "PromoWear" in Environment.modulesList and self._anagrafica._taglia_colore:
-            print "PASIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIFFIFIIFFI", self._anagrafica._taglia_colore,self.taglie_colori_filter_combobox.get_active()
+        if "PromoWear" in Environment.modulesList:
             padriTagliaColore = ((self.taglie_colori_filter_combobox.get_active() == 0) or
                                  (self.taglie_colori_filter_combobox.get_active() == 1))
+            if padriTagliaColore: padriTagliaColore = None
+            else:padriTagliaColore = True
             figliTagliaColore = ((self.taglie_colori_filter_combobox.get_active() == 0) or
                                  (self.taglie_colori_filter_combobox.get_active() == 2))
+            if figliTagliaColore:figliTagliaColore = None
+            else:figliTagliaColore = True
             idGruppoTaglia = findIdFromCombobox(self.id_gruppo_taglia_articolo_filter_combobox)
             idTaglia = findIdFromCombobox(self.id_taglia_articolo_filter_combobox)
             idColore = findIdFromCombobox(self.id_colore_articolo_filter_combobox)
             idAnno = findIdFromCombobox(self.id_anno_articolo_filter_combobox)
             idStagione = findIdFromCombobox(self.id_stagione_articolo_filter_combobox)
             idGenere = findIdFromCombobox(self.id_genere_articolo_filter_combobox)
-        else: # Qua c'e' un errore, anche se promowear e' False ho lo stesso queste
-                  # variabili. Ma siamo sicuri che non sia uno spreco di memoria?
-            padriTagliaColore = None
-            figliTagliaColore = None
-            idGruppoTaglia = None
-            idTaglia = None
-            idColore = None
-            idAnno = None
-            idStagione = None
-            idGenere = None
 
         def filterCountClosure():
             if "PromoWear" in Environment.modulesList:
                 return Articolo(isList=True).count(denominazione=denominazione,
-                                                codice=codice,
-                                                codiceABarre=codiceABarre,
-                                                codiceArticoloFornitore=codiceArticoloFornitore,
-                                                produttore=produttore,
-                                                idFamiglia=idFamiglia,
-                                                idCategoria=idCategoria,
-                                                idStato=idStato,
-                                                cancellato=cancellato,
-                                                idGruppoTaglia=idGruppoTaglia,
-                                                idTaglia=idTaglia,
-                                                idColore=idColore,
-                                                idAnno=idAnno,
-                                                idStagione=idStagione,
-                                                idGenere=idGenere,
-                                                padriTagliaColore=padriTagliaColore,
-                                                figliTagliaColore=figliTagliaColore)
+                                                    codice=codice,
+                                                    codiceABarre=codiceABarre,
+                                                    codiceArticoloFornitore=codiceArticoloFornitore,
+                                                    produttore=produttore,
+                                                    idFamiglia=idFamiglia,
+                                                    idCategoria=idCategoria,
+                                                    idStato=idStato,
+                                                    cancellato=cancellato,
+                                                    idGruppoTaglia=idGruppoTaglia,
+                                                    idTaglia=idTaglia,
+                                                    idColore=idColore,
+                                                    idAnno=idAnno,
+                                                    idStagione=idStagione,
+                                                    idGenere=idGenere,
+                                                    padriTagliaColore=padriTagliaColore,
+                                                    figliTagliaColore=figliTagliaColore)
             else:
                 return Articolo(isList=True).count(denominazione=denominazione,
-                                    codice=codice,
-                                    codiceABarre=codiceABarre,
-                                    codiceArticoloFornitore=codiceArticoloFornitore,
-                                    produttore=produttore,
-                                    idFamiglia=idFamiglia,
-                                    idCategoria=idCategoria,
-                                    idStato=idStato,
-                                    cancellato=cancellato)
+                                                    codice=codice,
+                                                    codiceABarre=codiceABarre,
+                                                    codiceArticoloFornitore=codiceArticoloFornitore,
+                                                    produttore=produttore,
+                                                    idFamiglia=idFamiglia,
+                                                    idCategoria=idCategoria,
+                                                    idStato=idStato,
+                                                    cancellato=cancellato)
 
         self._filterCountClosure = filterCountClosure
 
@@ -485,7 +465,6 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         arts = self.runFilter()
         self._treeViewModel.clear()
         for a in arts:
-            #promogest.dao.Articolo.boh
             col = None
             if a.cancellato:
                 col = 'red'
@@ -529,30 +508,6 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             self.id_taglia_articolo_filter_combo.set_sensitive(True)
             self.id_colore_articolo_filter_combobox.set_sensitive(True)
 
-#def setTreeElement(parent,article):
-            #elements = promogest.dao.DistintaBase.select(idNodo=article.id, offset=None, batchSize=None, immediate=True)
-            #col = None
-            #if article.cancellato:
-                #col = 'red'
-            #self._treeViewModel.append(parent, (article,
-                                        #col,
-                                        #(article.codice or ''),
-                                        #(article.denominazione or ''),
-                                        #(article.produttore or ''),
-                                        #(article.codice_a_barre or ''),
-                                        #(article.codice_articolo_fornitore or ''),
-                                        #(article.denominazione_famiglia or ''),
-                                        #(article.denominazione_categoria or '')))
-            #new_parent = self._treeViewModel.get_iter(-1)
-            #if len(elements) > 0:
-                #for e in elements:
-                    #new_article = promogest.dao.articolo.select(codice=e.codice,
-                                                                                                #immediate=True)
-                    #setTreeElement(new_parent, new_article)
-
-        #for a in arts:
-            #setTreeElement(None,a)
-
 class AnagraficaArticoliHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'articolo',
@@ -584,15 +539,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         #FIXME: promogest.dao.Articolo.isNuovoCodiceByFamiglia()
         self._codiceByFamiglia = promogest.dao.Articolo.isNuovoCodiceByFamiglia()
         self._duplicatedDaoId = None
-        if "PromoWear" in Environment.modulesList:
-            self._articoloTagliaColore = None
-        else:
-            self.notebook1.remove_page(3)
-            self.promowear_frame.destroy()
-
-
-    def draw(self):
-        if "PromoWear" in Environment.modulesList and not self._anagrafica._taglia_colore:
+        self.tipoArticoloTagliaColore=False
+        if "PromoWear" not in Environment.modulesList:
             self.senza_taglie_colori_radiobutton.set_active(True)
             self.codici_a_barre_label.set_text('')
             self.senza_taglie_colori_radiobutton.set_property('visible', False)
@@ -604,7 +552,11 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.taglie_colori_togglebutton.set_property('visible', False)
             self.taglie_colori_togglebutton.set_no_show_all(True)
             self.notebook1.remove_page(3)
-        elif "PromoWear" in Environment.modulesList and self._anagrafica._taglia_colore:
+            self.promowear_frame.destroy()
+
+
+    def draw(self):
+        if "PromoWear" in Environment.modulesList:
             #Popola combobox gruppi taglia
             fillComboboxGruppiTaglia(self.id_gruppo_taglia_customcombobox.combobox)
             self.id_gruppo_taglia_customcombobox.connect('clicked',
@@ -623,44 +575,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             fillComboboxStagioniAbbigliamento(self.id_stagione_combobox)
             #Popola combobox generi
             fillComboboxGeneriAbbigliamento(self.id_genere_combobox)
-        #print "MA TU ESISTIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", self._anagrafica._taglia_colore, "PromoWear" in Environment.modulesList
-        if "PromoWear" in Environment.modulesList and not self._anagrafica._taglia_colore:
-            self.senza_taglie_colori_radiobutton.set_active(True)
-            self.codici_a_barre_label.set_text('')
-            self.senza_taglie_colori_radiobutton.set_property('visible', False)
-            self.senza_taglie_colori_radiobutton.set_no_show_all(True)
-            self.codici_a_barre_hseparator.set_property('visible', False)
-            self.codici_a_barre_hseparator.set_no_show_all(True)
-            self.con_taglie_colori_radiobutton.set_property('visible', False)
-            self.con_taglie_colori_radiobutton.set_no_show_all(True)
-            self.taglie_colori_togglebutton.set_property('visible', False)
-            self.taglie_colori_togglebutton.set_no_show_all(True)
-            self.notebook1.remove_page(3)
-
-        elif "PromoWear" in Environment.modulesList and self._anagrafica._taglia_colore:
-            #Popola combobox gruppi taglia
-            fillComboboxGruppiTaglia(self.id_gruppo_taglia_customcombobox.combobox)
-            self.id_gruppo_taglia_customcombobox.connect('clicked',
-                                        on_id_gruppo_taglia_customcombobox_clicked)
-            #Popola combobox taglie
-            fillComboboxTaglie(self.id_taglia_customcombobox.combobox)
-            self.id_taglia_customcombobox.connect('clicked',
-                                        self.on_id_taglia_customcombobox_clicked)
-            #Popola combobox colori
-            fillComboboxColori(self.id_colore_customcombobox.combobox)
-            self.id_colore_customcombobox.connect('clicked',
-                                        self.on_id_colore_customcombobox_clicked)
-            #Popola combobox anni
-            fillComboboxAnniAbbigliamento(self.id_anno_combobox)
-            #Popola combobox stagioni
-            fillComboboxStagioniAbbigliamento(self.id_stagione_combobox)
-            #Popola combobox generi
-            fillComboboxGeneriAbbigliamento(self.id_genere_combobox)
-
 
         #combo e draw della parte normale dell'applicazione  ...
-
-
         #Popola combobox aliquote iva
         fillComboboxAliquoteIva(self.id_aliquota_iva_customcombobox.combobox)
         self.id_aliquota_iva_customcombobox.connect('clicked',
@@ -694,6 +610,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
 
     def setDao(self, dao):
+        self.tipoArticoloTagliaColore=False
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = Articolo().getRecord()
@@ -724,7 +641,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                               self.dao.id_aliquota_iva)
         findComboboxRowFromId(self.id_famiglia_articolo_customcombobox.combobox,
                               self.dao.id_famiglia_articolo)
-        findComboboxRowFromId(self.id_categoria_articolo_customcombobox.combobox, self.dao.id_categoria_articolo)
+        findComboboxRowFromId(self.id_categoria_articolo_customcombobox.combobox,
+                              self.dao.id_categoria_articolo)
         findComboboxRowFromId(self.id_unita_base_combobox,
                               self.dao.id_unita_base)
         findComboboxRowFromId(self.id_stato_articolo_combobox,
@@ -758,147 +676,99 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             textBuffer.set_text('')
         self.note_textview.set_buffer(textBuffer)
         self.sospeso_checkbutton.set_active(self.dao.sospeso or False)
-        self._loading = False
-        if "PromoWear" in Environment.modulesList and self._anagrafica._taglia_colore:
-            self.id_aliquota_iva_customcombobox.set_sensitive(True)
-            self.id_famiglia_articolo_customcombobox.set_sensitive(True)
-            self.id_categoria_articolo_customcombobox.set_sensitive(True)
-            self.id_unita_base_combobox.set_sensitive(True)
-            self.produttore_entry.set_sensitive(True)
 
-            # Aggiorna con/senza taglie e colori
-            self.senza_taglie_colori_radiobutton.set_active(False)
-            self.con_taglie_colori_radiobutton.set_active(True)
-            self.senza_taglie_colori_radiobutton.set_sensitive(True)
-            self.con_taglie_colori_radiobutton.set_sensitive(True)
-            self._articoloTagliaColore = self.dao.articoloTagliaColoreCompleto
-            print "9999999999999999999999999999999999999999",self._articoloTagliaColore
-            if self._articoloTagliaColore is not None:
-                print "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", self._articoloTagliaColore.id_articolo_padre
-                if self._articoloTagliaColore.id_articolo_padre is not None:
-                # variante: niente gestione taglie, ma possibilita' di trattare i codici a barre
-                    self.senza_taglie_colori_radiobutton.set_active(True)
-                    self.con_taglie_colori_radiobutton.set_active(False)
-                    self.senza_taglie_colori_radiobutton.set_sensitive(True)
-                    self.con_taglie_colori_radiobutton.set_sensitive(False)
-
-                    # niente possibilita' di variare gruppo taglie, genere, anno e stagione
-                    findComboboxRowFromId(self.id_gruppo_taglia_customcombobox.combobox, self._articoloTagliaColore.id_gruppo_taglia)
-                    self.id_gruppo_taglia_customcombobox.set_property('visible', False)
-                    self.denominazione_gruppo_taglia_label.set_markup(
-                            '<span weight="bold">%s</span>'
-                            % (self._articoloTagliaColore.denominazione_gruppo_taglia,))
-                    self.denominazione_gruppo_taglia_label.set_property('visible', True)
-                    findComboboxRowFromId(self.id_genere_combobox, self._articoloTagliaColore.id_genere)
-                    self.id_genere_combobox.set_property('visible', False)
-                    self.denominazione_genere_label.set_markup(
-                            '<span weight="bold">%s</span>'
-                            % (self._articoloTagliaColore.genere,))
-                    self.denominazione_genere_label.set_property('visible', True)
-                    findComboboxRowFromId(self.id_stagione_combobox, self._articoloTagliaColore.id_stagione)
-                    self.id_stagione_combobox.set_property('visible', False)
-                    findComboboxRowFromId(self.id_anno_combobox, self._articoloTagliaColore.id_anno)
-                    self.id_anno_combobox.set_property('visible', False)
-                    self.denominazione_stagione_anno_label.set_markup(
-                            '<span weight="bold">%s - %s</span>'
-                            % (self._articoloTagliaColore.stagione,
-                                self._articoloTagliaColore.anno))
-                    self.denominazione_stagione_anno_label.set_property('visible', True)
-
-                    # possibilita' di variare taglia e colore
-                    articoliTagliaColore = self._articoloTagliaColore.articoloPadre().articoliTagliaColore
-                    idTaglie = set(a.id_taglia for a in articoliTagliaColore)
-                    idTaglie.remove(self._articoloTagliaColore.id_taglia)
-                    fillComboboxTaglie(self.id_taglia_customcombobox.combobox,
-                        idGruppoTaglia=self._articoloTagliaColore.id_gruppo_taglia,
-                        ignore=list(idTaglie))
-                    findComboboxRowFromId(self.id_taglia_customcombobox.combobox,
-                        self._articoloTagliaColore.id_taglia)
-                    self.id_taglia_customcombobox.set_property('visible', True)
-                    self.denominazione_taglia_label.set_markup('-')
-                    self.denominazione_taglia_label.set_property('visible', False)
-                    idColori = set(a.id_colore for a in articoliTagliaColore)
-                    idColori.remove(self._articoloTagliaColore.id_colore)
-                    fillComboboxColori(self.id_colore_customcombobox.combobox, ignore=list(idColori))
-                    findComboboxRowFromId(self.id_colore_customcombobox.combobox, self._articoloTagliaColore.id_colore)
-                    self.id_colore_customcombobox.set_property('visible', True)
-                    self.denominazione_colore_label.set_markup('-')
-                    self.denominazione_colore_label.set_property('visible', False)
-
-                    self.id_aliquota_iva_customcombobox.set_sensitive(False)
-                    self.id_famiglia_articolo_customcombobox.set_sensitive(False)
-                    self.id_categoria_articolo_customcombobox.set_sensitive(False)
-                    self.id_unita_base_combobox.set_sensitive(False)
-                    self.produttore_entry.set_sensitive(False)
-                else:
-                    # articolo principale: gestione codici a barre - taglie - colori
-                    self.senza_taglie_colori_radiobutton.set_active(False)
-                    self.con_taglie_colori_radiobutton.set_active(True)
-
-                    # niente variazione gruppo taglia
-                    # possibilita' di variare anno, stagione e genere
-                    findComboboxRowFromId(self.id_gruppo_taglia_customcombobox.combobox, self._articoloTagliaColore.id_gruppo_taglia)
-                    self.id_gruppo_taglia_customcombobox.set_property('visible', False)
-                    self.denominazione_gruppo_taglia_label.set_markup('<span weight="bold">%s</span>'
-                                                                        % (self._articoloTagliaColore.denominazione_gruppo_taglia,))
-                    findComboboxRowFromId(self.id_genere_combobox, self._articoloTagliaColore.id_genere)
-                    self.id_genere_combobox.set_property('visible', True)
-                    self.denominazione_genere_label.set_markup('-')
-                    self.denominazione_genere_label.set_property('visible', False)
-                    findComboboxRowFromId(self.id_stagione_combobox, self._articoloTagliaColore.id_stagione)
-                    self.id_stagione_combobox.set_property('visible', True)
-                    findComboboxRowFromId(self.id_anno_combobox, self._articoloTagliaColore.id_anno)
-                    self.denominazione_stagione_anno_label.set_markup('-')
-                    self.denominazione_stagione_anno_label.set_property('visible', False)
-
-                    # niente variazione taglia, colore
-                    self.id_taglia_customcombobox.combobox.set_active(-1)
-                    self.id_taglia_customcombobox.set_property('visible', False)
-                    self.denominazione_taglia_label.set_markup('<span weight="bold">-</span>')
-                    self.denominazione_taglia_label.set_property('visible', True)
-                    self.id_colore_customcombobox.combobox.set_active(-1)
-                    self.id_colore_customcombobox.set_property('visible', False)
-                    self.denominazione_colore_label.set_markup('<span weight="bold">-</span>')
-                    self.denominazione_colore_label.set_property('visible', True)
-            elif "PromoWear" in Environment.modulesList:
-                # possibile articolo principale
-                # possibilita' di inserire gruppo taglia, genere, anno, stagione
-                if self.dao.id is None:
-                    self.senza_taglie_colori_radiobutton.set_active(False)
-                    self.con_taglie_colori_radiobutton.set_active(True)
-                else:
-                    self.senza_taglie_colori_radiobutton.set_active(True)
-                    self.con_taglie_colori_radiobutton.set_active(False)
+        if "PromoWear" in Environment.modulesList:
+            self.tipoArticoloTagliaColore=False
+            #articolo ancora non salvato o articolo senza taglia e colore
+            # Articolo in anagrafica già salvato con id_articolo_padre pieno quindi è una variante
+            if self.dao.id and self.dao.id_articolo_padre is not None and self.dao.articoloTagliaColore:
+                self.memo_wear.set_text("""ARTICOLO VARIANTE""")
+                self.frame_promowear.set_sensitive(True)
+                # VARIANTE: niente gestione taglie, ma possibilita' di trattare i codici a barre
+                self.senza_taglie_colori_radiobutton.set_active(True)
+                self.con_taglie_colori_radiobutton.set_active(False)
                 self.senza_taglie_colori_radiobutton.set_sensitive(True)
-                self.con_taglie_colori_radiobutton.set_sensitive(True)
+                self.con_taglie_colori_radiobutton.set_sensitive(False)
 
-                self.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
-                self.id_gruppo_taglia_customcombobox.set_property('visible', True)
-                self.denominazione_gruppo_taglia_label.set_markup('-')
-                self.denominazione_gruppo_taglia_label.set_property('visible', False)
-                self.id_genere_combobox.set_active(-1)
+                # niente possibilita' di variare gruppo taglie, genere, anno e stagione
+
+                findComboboxRowFromId(self.id_gruppo_taglia_customcombobox.combobox, self.dao.id_gruppo_taglia)
+                self.id_gruppo_taglia_customcombobox.set_property('visible', False)
+                self.denominazione_gruppo_taglia_label.set_markup(
+                        '<span weight="bold">%s</span>'
+                        % (self.dao.denominazione_gruppo_taglia,))
+                self.denominazione_gruppo_taglia_label.set_property('visible', True)
+                findComboboxRowFromId(self.id_genere_combobox, self.dao.id_genere)
+                self.id_genere_combobox.set_property('visible', False)
+                self.denominazione_genere_label.set_markup(
+                        '<span weight="bold">%s</span>'
+                        % (self.dao.genere,))
+                self.denominazione_genere_label.set_property('visible', True)
+                findComboboxRowFromId(self.id_stagione_combobox, self.dao.id_stagione)
+                self.id_stagione_combobox.set_property('visible', False)
+                findComboboxRowFromId(self.id_anno_combobox, self.dao.id_anno)
+                self.id_anno_combobox.set_property('visible', False)
+                self.denominazione_stagione_anno_label.set_markup(
+                        '<span weight="bold">%s - %s</span>'
+                        % (self.dao.stagione,self.dao.anno))
+                self.denominazione_stagione_anno_label.set_property('visible', True)
+
+                # possibilita' di variare taglia e colore solo nella misura in cui non ci sia già una variante
+                articoliTagliaColore = self.dao.articoliTagliaColore
+                idTaglie = set(a.id_taglia for a in articoliTagliaColore)
+                idTaglie.remove(self.dao.id_taglia)
+                fillComboboxTaglie(self.id_taglia_customcombobox.combobox,
+                    idGruppoTaglia=self.dao.id_gruppo_taglia,
+                    ignore=list(idTaglie))
+                findComboboxRowFromId(self.id_taglia_customcombobox.combobox,
+                                    self.dao.id_taglia)
+                self.id_taglia_customcombobox.set_property('visible', True)
+                self.denominazione_taglia_label.set_markup('-')
+                self.denominazione_taglia_label.set_property('visible', False)
+                idColori = set(a.id_colore for a in articoliTagliaColore)
+                idColori.remove(self.dao.id_colore)
+                fillComboboxColori(self.id_colore_customcombobox.combobox, ignore=list(idColori))
+                findComboboxRowFromId(self.id_colore_customcombobox.combobox, self.dao.id_colore)
+                self.id_colore_customcombobox.set_property('visible', True)
+                self.denominazione_colore_label.set_markup('-')
+                self.denominazione_colore_label.set_property('visible', False)
+
+                #self.id_aliquota_iva_customcombobox.set_sensitive(False)
+                #self.id_famiglia_articolo_customcombobox.set_sensitive(False)
+                #self.id_categoria_articolo_customcombobox.set_sensitive(False)
+                #self.id_unita_base_combobox.set_sensitive(False)
+                #self.produttore_entry.set_sensitive(False)
+
+            elif self.dao.id and not self.dao.id_articolo_padre and self.dao.articoloTagliaColore:
+                self.tipoArticoloTagliaColore=True
+                # Articolo principale in quando id_articolo_padre è vuoto
+                # possibilita' di inserire gruppo taglia, genere, anno, stagione
+                self.frame_promowear.set_sensitive(True)
+                self.senza_taglie_colori_radiobutton.set_active(False)
+                self.con_taglie_colori_radiobutton.set_active(True)
+                self.senza_taglie_colori_radiobutton.set_sensitive(False)
+                self.con_taglie_colori_radiobutton.set_sensitive(True)
+                findComboboxRowFromId(self.id_gruppo_taglia_customcombobox.combobox, self.dao.id_gruppo_taglia)
+                self.id_gruppo_taglia_customcombobox.set_property('visible', False)
+                self.denominazione_gruppo_taglia_label.set_markup('<span weight="bold">%s</span>'
+                                                                    % (self.dao.denominazione_gruppo_taglia,))
+                self.denominazione_gruppo_taglia_label.set_property('visible', True)
+
+                findComboboxRowFromId(self.id_genere_combobox, self.dao.id_genere)
+                #self.id_genere_combobox.set_active(-1)
                 self.id_genere_combobox.set_property('visible', True)
-                self.denominazione_genere_label.set_markup('-')
+
+                #self.denominazione_genere_label.set_markup('-')
                 self.denominazione_genere_label.set_property('visible', False)
-                self.id_stagione_combobox.set_active(-1)
+                findComboboxRowFromId(self.id_stagione_combobox, self.dao.id_stagione)
+                #self.id_stagione_combobox.set_active(-1)
                 self.id_stagione_combobox.set_property('visible', True)
-                self.id_anno_combobox.set_active(-1)
+                #self.id_anno_combobox.set_active(-1)
+                findComboboxRowFromId(self.id_anno_combobox, self.dao.id_anno)
                 self.id_anno_combobox.set_property('visible', True)
+
                 self.denominazione_stagione_anno_label.set_markup('-')
                 self.denominazione_stagione_anno_label.set_property('visible', False)
-                if self.dao.id is None:
-                    # Prova a impostare l'anno di default
-                    self.id_anno_combobox.set_active(0)
-                    if hasattr(Environment.conf,'TaglieColori'):
-                        anno = getattr(Environment.conf.TaglieColori,'anno_default', None)
-                        if anno is not None:
-                            findComboboxRowFromId(self.id_anno_combobox, int(anno))
-                    # Prova a impostare la stagione di default
-                    self.id_stagione_combobox.set_active(0)
-                    if hasattr(Environment.conf,'TaglieColori'):
-                        stagione = getattr(Environment.conf.TaglieColori,'stagione_default', None)
-                        if stagione is not None:
-                            findComboboxRowFromId(self.id_stagione_combobox, int(stagione))
 
                 # niente possibilita' di inserire taglia, colore
                 self.id_taglia_customcombobox.combobox.set_active(-1)
@@ -909,6 +779,69 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                 self.id_colore_customcombobox.set_property('visible', False)
                 self.denominazione_colore_label.set_markup('<span weight="bold">-</span>')
                 self.denominazione_colore_label.set_property('visible', True)
+                varianti = str(len(self.dao.articoliTagliaColore))
+                testo= """ARTICOLO PRINCIPALE CON %s VARIANTI""" %varianti
+                self.memo_wear.set_text(testo)
+
+            elif self.dao.articoloTagliaColore is None or self.tipoArticoloTagliaColore==False:
+                #self.frame_promowear.set_sensitive(False)
+                self.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
+                self.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
+                self.denominazione_genere_label.set_markup('-')
+                self.denominazione_genere_label.set_property('visible', False)
+                self.denominazione_gruppo_taglia_label.set_markup('-')
+                self.denominazione_gruppo_taglia_label.set_property('visible', False)
+                self.denominazione_stagione_anno_label.set_markup('-')
+                self.denominazione_stagione_anno_label.set_property('visible', False)
+                self.denominazione_colore_label.set_markup('-')
+                self.denominazione_colore_label.set_property('visible', False)
+                self.denominazione_taglia_label.set_markup('-')
+                self.denominazione_taglia_label.set_property('visible', False)
+                self.id_anno_combobox.set_active(-1)
+                self.id_genere_combobox.set_active(-1)
+                self.id_stagione_combobox.set_active(-1)
+                print "ARTICOLO SEMPLICE"
+                return
+            elif self.dao.articoloTagliaColore is None or self.tipoArticoloTagliaColore:
+                self.frame_promowear.set_sensitive(True)
+                self.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
+                self.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
+                self.denominazione_genere_label.set_markup('-')
+                self.denominazione_genere_label.set_property('visible', False)
+                print "ARTICOLO PLUS"
+                return
+
+            #else:
+                ## articolo principale: gestione codici a barre - taglie - colori
+                #self.senza_taglie_colori_radiobutton.set_active(False)
+                #self.con_taglie_colori_radiobutton.set_active(True)
+
+                ## niente variazione gruppo taglia
+                ## possibilita' di variare anno, stagione e genere
+                #findComboboxRowFromId(self.id_gruppo_taglia_customcombobox.combobox, self.dao.id_gruppo_taglia)
+                #self.id_gruppo_taglia_customcombobox.set_property('visible', False)
+                #self.denominazione_gruppo_taglia_label.set_markup('<span weight="bold">%s</span>'
+                                                                    #% (self.dao.denominazione_gruppo_taglia,))
+                #findComboboxRowFromId(self.id_genere_combobox, self.dao.id_genere)
+                #self.id_genere_combobox.set_property('visible', True)
+                #self.denominazione_genere_label.set_markup('-')
+                #self.denominazione_genere_label.set_property('visible', False)
+                #findComboboxRowFromId(self.id_stagione_combobox, self.dao.id_stagione)
+                #self.id_stagione_combobox.set_property('visible', True)
+                #findComboboxRowFromId(self.id_anno_combobox, self.dao.id_anno)
+                #self.denominazione_stagione_anno_label.set_markup('-')
+                #self.denominazione_stagione_anno_label.set_property('visible', False)
+
+                ## niente variazione taglia, colore
+                #self.id_taglia_customcombobox.combobox.set_active(-1)
+                #self.id_taglia_customcombobox.set_property('visible', False)
+                #self.denominazione_taglia_label.set_markup('<span weight="bold">-</span>')
+                #self.denominazione_taglia_label.set_property('visible', True)
+                #self.id_colore_customcombobox.combobox.set_active(-1)
+                #self.id_colore_customcombobox.set_property('visible', False)
+                #self.denominazione_colore_label.set_markup('<span weight="bold">-</span>')
+                #self.denominazione_colore_label.set_property('visible', True)
+        self._loading = False
 
     def saveDao(self):
         if (self.codice_entry.get_text() == ''):
@@ -940,65 +873,21 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             obligatoryField(self.dialogTopLevel,
                             self.id_unita_base_combobox,
                             msg='Campo obbligatorio !\n\nUnita\' base')
-        if "PromoWear" in Environment.modulesList:
-            idGruppoTaglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
-            idAnno = findIdFromCombobox(self.id_anno_combobox)
-            idStagione = findIdFromCombobox(self.id_stagione_combobox)
-            idGenere = findIdFromCombobox(self.id_genere_combobox)
-            if idGruppoTaglia is not None or idAnno is not None or idStagione is not None or idGenere is not None:
-                isArticoloTagliaColore = True
-                if findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox) is None:
-                    obligatoryField(self.dialogTopLevel,
-                                    self.id_gruppo_taglia_customcombobox.combobox,
-                                    msg='Campo obbligatorio !\nGruppo taglia')
-
-                if findIdFromCombobox(self.id_anno_combobox) is None:
-                    obligatoryField(self.dialogTopLevel,
-                                    self.id_anno_combobox,
-                                    msg='Campo obbligatorio !\nAnno')
-
-                if findIdFromCombobox(self.id_stagione_combobox) is None:
-                    obligatoryField(self.dialogTopLevel,
-                                    self.id_stagione_combobox,
-                                    msg='Campo obbligatorio !\nStagione')
-
-                if findIdFromCombobox(self.id_genere_combobox) is None:
-                    obligatoryField(self.dialogTopLevel,
-                                    self.id_genere_combobox,
-                                    msg='Campo obbligatorio !\nGenere')
-
-                print "(((88888888888888888888888888888888888888))))))))",self._articoloTagliaColore
-                if self._articoloTagliaColore is not None:
-                    if self._articoloTagliaColore.id_articolo_padre is not None:
-                        if findIdFromCombobox(self.id_taglia_customcombobox.combobox) is None:
-                            obligatoryField(self.dialogTopLevel,
-                                            self.id_taglia_customcombobox.combobox,
-                                            msg='Campo obbligatorio !\nTaglia')
-
-                        if findIdFromCombobox(self.id_colore_customcombobox.combobox) is None:
-                            obligatoryField(self.dialogTopLevel,
-                                            self.id_colore_customcombobox.combobox,
-                                            msg='Campo obbligatorio !\nColore')
+        if "PromoWear" in Environment.modulesList and self.tipoArticoloTagliaColore:
+            if self.dao is not None:
+                articoloTagliaColore = ArticoloTagliaColore(id=self.dao.id).getRecord()
             else:
-                isArticoloTagliaColore = False
-            print "Prima di questo if isArticoloTagliaColore", isArticoloTagliaColore
-            if isArticoloTagliaColore:
-                if self._articoloTagliaColore is not None:
-                    articoloTagliaColore = ArticoloTagliaColore(id=self.dao.id).getRecord()
-                else:
-                    articoloTagliaColore = ArticoloTagliaColore().getRecord()
-                    articoloTagliaColore.id_articolo = self.dao.id
+                articoloTagliaColore = ArticoloTagliaColore().getRecord()
+                articoloTagliaColore.id_articolo = self.dao.id
 
-                articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
-                articoloTagliaColore.id_taglia = findIdFromCombobox(self.id_taglia_customcombobox.combobox)
-                articoloTagliaColore.id_colore = findIdFromCombobox(self.id_colore_customcombobox.combobox)
-                articoloTagliaColore.id_anno = findIdFromCombobox(self.id_anno_combobox)
-                articoloTagliaColore.id_stagione = findIdFromCombobox(self.id_stagione_combobox)
-                articoloTagliaColore.id_genere = findIdFromCombobox(self.id_genere_combobox)
-                self.dao.articoloTagliaColore = articoloTagliaColore
-            else:
-                self.dao.articoloTagliaColore = None
-
+            articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
+            articoloTagliaColore.id_taglia = findIdFromCombobox(self.id_taglia_customcombobox.combobox)
+            articoloTagliaColore.id_colore = findIdFromCombobox(self.id_colore_customcombobox.combobox)
+            articoloTagliaColore.id_anno = findIdFromCombobox(self.id_anno_combobox)
+            articoloTagliaColore.id_stagione = findIdFromCombobox(self.id_stagione_combobox)
+            articoloTagliaColore.id_genere = findIdFromCombobox(self.id_genere_combobox)
+            self.dao.articoloTagliaColore = articoloTagliaColore
+            articoloTagliaColore = None
         self.dao.codice = self.codice_entry.get_text()
         #if not self._oldDaoRicreato:
             #cod=checkCodiceDuplicato(codice=self.dao.codice, tipo="Articolo")
@@ -1063,18 +952,12 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
         if self._duplicatedDaoId is not None:
             self.duplicaListini()
-        if "PromoWear" in Environment.modulesList:
-            print "BECCATOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",self.dao.articoloTagliaColoreCompleto
-            self._articoloTagliaColore = self.dao.articoloTagliaColoreCompleto
-
-
 
     def on_codici_a_barre_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
 
-        print "TU SEI VUOTO VEROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",self.dao.id
         if self.dao.id is None:
             msg = 'Prima di poter inserire i codici a barre occorre salvare l\' articolo.\n Salvare ?'
             dialog = gtk.MessageDialog(self.dialogTopLevel,
@@ -1095,7 +978,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         anagWindow = anag.getTopLevel()
 
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
-
 
     def on_multipli_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):
@@ -1123,7 +1005,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
 
-
     def on_stoccaggi_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
@@ -1149,7 +1030,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         anagWindow = anag.getTopLevel()
 
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
-
 
     def on_forniture_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):
@@ -1178,7 +1058,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
 
-
     def on_listini_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
@@ -1205,7 +1084,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
 
-
     def duplicaListini(self):
         """ Duplica i listini relativi ad un articolo scelto su un nuovo articolo """
         if self._duplicatedDaoId is None:
@@ -1225,7 +1103,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
         self._duplicatedDaoId = None
 
-
     def on_id_famiglia_articolo_customcombobox_changed(self, combobox):
         """ Restituisce un nuovo codice articolo al cambiamento della famiglia """
 
@@ -1244,12 +1121,13 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         active = radioButton.get_active()
         self.codici_a_barre_togglebutton.set_sensitive(active)
         self.taglie_colori_togglebutton.set_sensitive(not active)
-        if active and self._articoloTagliaColore is None:
-            self.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
-            self.id_genere_combobox.set_active(-1)
-            self.id_stagione_combobox.set_active(-1)
-            self.id_anno_combobox.set_active(-1)
-
+        if active:
+            self.senza_taglie_colori_radiobutton.set_active(True)
+            self.frame_promowear.set_sensitive(False)
+            self.tipoArticoloTagliaColore=False
+        else:
+            self.frame_promowear.set_sensitive(True)
+            self.tipoArticoloTagliaColore=True
 
     def on_taglie_colori_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):
@@ -1259,8 +1137,45 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox) is None:
             toggleButton.set_active(False)
             obligatoryField(self.dialogTopLevel, self.id_gruppo_taglia_customcombobox.combobox, 'Specificare il gruppo taglia !')
+        idGruppoTaglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
+        idAnno = findIdFromCombobox(self.id_anno_combobox)
+        idStagione = findIdFromCombobox(self.id_stagione_combobox)
+        idGenere = findIdFromCombobox(self.id_genere_combobox)
+        if idGruppoTaglia is not None or idAnno is not None or idStagione is not None or idGenere is not None:
+                isArticoloTagliaColore = True
+                if findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox) is None:
+                    obligatoryField(self.dialogTopLevel,
+                                    self.id_gruppo_taglia_customcombobox.combobox,
+                                    msg='Campo obbligatorio !\nGruppo taglia')
 
-        if self.dao.id is None or self._articoloTagliaColore is None:
+                if findIdFromCombobox(self.id_anno_combobox) is None:
+                    obligatoryField(self.dialogTopLevel,
+                                    self.id_anno_combobox,
+                                    msg='Campo obbligatorio !\nAnno')
+
+                if findIdFromCombobox(self.id_stagione_combobox) is None:
+                    obligatoryField(self.dialogTopLevel,
+                                    self.id_stagione_combobox,
+                                    msg='Campo obbligatorio !\nStagione')
+
+                if findIdFromCombobox(self.id_genere_combobox) is None:
+                    obligatoryField(self.dialogTopLevel,
+                                    self.id_genere_combobox,
+                                    msg='Campo obbligatorio !\nGenere')
+
+                if self.dao is not None:
+                    if self.dao.id_articolo_padre is not None:
+                        if findIdFromCombobox(self.id_taglia_customcombobox.combobox) is None:
+                            obligatoryField(self.dialogTopLevel,
+                                            self.id_taglia_customcombobox.combobox,
+                                            msg='Campo obbligatorio !\nTaglia')
+
+                        if findIdFromCombobox(self.id_colore_customcombobox.combobox) is None:
+                            obligatoryField(self.dialogTopLevel,
+                                            self.id_colore_customcombobox.combobox,
+                                            msg='Campo obbligatorio !\nColore')
+
+        if self.dao.id is None or self.dao is None:
             msg = 'Prima di poter inserire taglie, colori e codici a barre occorre salvare l\' articolo.\n Salvare ?'
             dialog = gtk.MessageDialog(self.dialogTopLevel,
                                        gtk.DIALOG_MODAL
@@ -1287,19 +1202,20 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
 
     def on_id_taglia_customcombobox_clicked(self, widget, button):
-        articoliTagliaColore = self._articoloTagliaColore.articoloPadre().articoliTagliaColore
+        articoliTagliaColore = self.dao.articoliTagliaColore
         idTaglie = set(a.id_taglia for a in articoliTagliaColore)
-        idTaglie.remove(self._articoloTagliaColore.id_taglia)
+        idTaglie.remove(self.dao.id_taglia)
         on_id_taglia_customcombobox_clicked(widget,
                                             button,
-                                            idGruppoTaglia=self._articoloTagliaColore.id_gruppo_taglia,
+                                            idGruppoTaglia=self.dao.id_gruppo_taglia,
                                             ignore=list(idTaglie))
 
 
     def on_id_colore_customcombobox_clicked(self, widget, button):
-        articoliTagliaColore = self._articoloTagliaColore.articoloPadre().articoliTagliaColore
+        articoliTagliaColore = self.dao.articoliTagliaColore
         idColori = set(a.id_colore for a in articoliTagliaColore)
-        idColori.remove(self._articoloTagliaColore.id_colore)
+        idColori.remove(self.dao.id_colore)
         on_id_colore_customcombobox_clicked(widget,
                                             button,
                                             ignore=list(idColori))
+
