@@ -46,6 +46,25 @@ class User(Dao):
         else: return ""
     lingua = property(_language)
 
+    def delete(self):
+        if self.username == "admin":
+            print "TENTATIVO DI CANCELLAZIONE ADMIN L'EVENTO VERRA' REGISTRATO "
+            return False
+        else:
+            params['session'].delete(self)
+            params["session"].commit()
+            return True
+
+    def persist(self):
+        if self.username == "admin" and host=="db.promotux.it" and database == "promogest_demo":
+            print "TENTATIVO DI MODIFICA ADMIN L'EVENTO VERRA' REGISTRATO "
+            return False
+        else:
+            params["session"].add(self)
+            params["session"].commit()
+            return True
+
+
 user=Table('utente', params['metadata'],
     schema = params['mainSchema'],
     autoload=True)
