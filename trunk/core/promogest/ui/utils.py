@@ -47,37 +47,38 @@ def leggiArticolo(id):
     if id is not None:
         daoArticolo = Articolo(id=id).getRecord()
         variantiList = []
-        #if "PromoWear" in Environment.modulesList and not daoArticolo.id_articolo_padre:
-            #varianti = daoArticolo.articoliVarianti
-            #from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear
-            #for varia in varianti:
-                #variantiList.append(leggiArticoloPromoWear(varia.id))
-            #artiDict = leggiArticoloPromoWear(id)
-            #artiDict["varianti"] = variantiList
-        #else:
-        if daoArticolo is not None:
-            _id = id
-            _denominazione = daoArticolo.denominazione or ''
-            _codice = daoArticolo.codice or ''
-            _idUnitaBase = daoArticolo.id_unita_base
-            _quantita_minima = ''
-            if _idUnitaBase is not None:
-                res = UnitaBase(id =_idUnitaBase).getRecord()
-                if res is not None:
-                    _unitaBase = res.denominazione
-            if daoArticolo.id_aliquota_iva is not None:
-                daoAliquotaIva = AliquotaIva(id=daoArticolo.id_aliquota_iva).getRecord()
-                if daoAliquotaIva is not None:
-                    _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
-                    _percentualeAliquotaIva = daoAliquotaIva.percentuale or 0
+        artiDict = {}
+        if "PromoWear" in Environment.modulesList and not daoArticolo.id_articolo_padre:
+            varianti = daoArticolo.articoliVarianti
+            from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear
+            for varia in varianti:
+                variantiList.append(leggiArticoloPromoWear(varia.id))
+            artiDict = leggiArticoloPromoWear(id)
+            artiDict["varianti"] = variantiList
+        else:
+            if daoArticolo is not None:
+                _id = id
+                _denominazione = daoArticolo.denominazione or ''
+                _codice = daoArticolo.codice or ''
+                _idUnitaBase = daoArticolo.id_unita_base
+                _quantita_minima = ''
+                if _idUnitaBase is not None:
+                    res = UnitaBase(id =_idUnitaBase).getRecord()
+                    if res is not None:
+                        _unitaBase = res.denominazione
+                if daoArticolo.id_aliquota_iva is not None:
+                    daoAliquotaIva = AliquotaIva(id=daoArticolo.id_aliquota_iva).getRecord()
+                    if daoAliquotaIva is not None:
+                        _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
+                        _percentualeAliquotaIva = daoAliquotaIva.percentuale or 0
 
-            artiDict = {"id": _id,
-                    "denominazione": _denominazione, "codice": _codice,
-                    "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
-                    "percentualeAliquotaIva": _percentualeAliquotaIva,
-                    "idUnitaBase": _idUnitaBase,
-                    "unitaBase": _unitaBase,
-                    "quantita_minima": _quantita_minima}
+                artiDict = {"id": _id,
+                        "denominazione": _denominazione, "codice": _codice,
+                        "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
+                        "percentualeAliquotaIva": _percentualeAliquotaIva,
+                        "idUnitaBase": _idUnitaBase,
+                        "unitaBase": _unitaBase,
+                        "quantita_minima": _quantita_minima}
 
     return artiDict
 
