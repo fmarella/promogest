@@ -24,7 +24,7 @@ from utilsCombobox import *
 
 from promogest import Environment
 from promogest.dao.Dao import Dao
-#import promogest.dao.Articolo
+import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
 #import promogest.dao.FamigliaArticolo
 from promogest.dao.FamigliaArticolo import FamigliaArticolo

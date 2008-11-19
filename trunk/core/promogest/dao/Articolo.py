@@ -18,6 +18,8 @@ from CategoriaArticolo import CategoriaArticolo
 from CodiceABarreArticolo import CodiceABarreArticolo
 from Imballaggio import Imballaggio
 from StatoArticolo import StatoArticolo
+from Fornitura import Fornitura
+from Multiplo import Multiplo
 from promogest.ui.utils import idArticoloFromFornitura, codeIncrement
 
 if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
@@ -44,8 +46,7 @@ else:
         codice_a_barre = property(_codice_a_barre)
 
         def _codice_articolo_fornitore(self):
-            if self.artic: return self.artic.codice_articolo_fornitore
-            else: return ""
+            if self.fornitur: return self.fornitur.codice_articolo_fornitore or ""
         codice_articolo_fornitore= property(_codice_articolo_fornitore)
 
         def _codice_a_barre_all(self):
@@ -216,7 +217,9 @@ else:
                     and_(articolo.c.id_categoria_articolo==CategoriaArticolo.id)),
                 "den_unita":relation(UnitaBase,primaryjoin= (articolo.c.id_unita_base==UnitaBase.id)),
                 "image":relation(Immagine,primaryjoin= (articolo.c.id_immagine==Immagine.id)),
-                "sa":relation(StatoArticolo,primaryjoin=(articolo.c.id_stato_articolo==StatoArticolo.id))
+                "sa":relation(StatoArticolo,primaryjoin=(articolo.c.id_stato_articolo==StatoArticolo.id)),
+                "fornitur" : relation(Fornitura,primaryjoin=Fornitura.id_articolo==articolo.c.id, backref=backref("arti"),uselist=False),
+                "multi":relation(Multiplo,primaryjoin=Multiplo.id_articolo==articolo.c.id,backref=backref("arti"))
                 }, order_by=articolo.c.id)
 
 

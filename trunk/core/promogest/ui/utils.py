@@ -5,21 +5,6 @@
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-
 
 import gobject, os, decimal
 from decimal import *
@@ -61,6 +46,15 @@ def leggiArticolo(id):
 
     if id is not None:
         daoArticolo = Articolo(id=id).getRecord()
+        variantiList = []
+        #if "PromoWear" in Environment.modulesList and not daoArticolo.id_articolo_padre:
+            #varianti = daoArticolo.articoliVarianti
+            #from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear
+            #for varia in varianti:
+                #variantiList.append(leggiArticoloPromoWear(varia.id))
+            #artiDict = leggiArticoloPromoWear(id)
+            #artiDict["varianti"] = variantiList
+        #else:
         if daoArticolo is not None:
             _id = id
             _denominazione = daoArticolo.denominazione or ''
@@ -77,13 +71,15 @@ def leggiArticolo(id):
                     _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
                     _percentualeAliquotaIva = daoAliquotaIva.percentuale or 0
 
-    return {"id": _id,
-            "denominazione": _denominazione, "codice": _codice,
-            "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
-            "percentualeAliquotaIva": _percentualeAliquotaIva,
-            "idUnitaBase": _idUnitaBase,
-            "unitaBase": _unitaBase,
-            "quantita_minima": _quantita_minima}
+            artiDict = {"id": _id,
+                    "denominazione": _denominazione, "codice": _codice,
+                    "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
+                    "percentualeAliquotaIva": _percentualeAliquotaIva,
+                    "idUnitaBase": _idUnitaBase,
+                    "unitaBase": _unitaBase,
+                    "quantita_minima": _quantita_minima}
+
+    return artiDict
 
 
 def leggiCliente(id):

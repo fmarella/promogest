@@ -13,8 +13,9 @@ from sqlalchemy import and_, or_
 from promogest.Environment import *
 from Dao import Dao
 from AliquotaIva import AliquotaIva
-from Articolo import Articolo
 from Listino import Listino
+from Articolo import Articolo
+
 import datetime
 
 class ListinoArticolo(Dao):

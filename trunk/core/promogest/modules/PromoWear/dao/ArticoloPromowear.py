@@ -52,8 +52,7 @@ class Articolo(Dao):
     codice_a_barre = property(_codice_a_barre)
 
     def _codice_articolo_fornitore(self):
-        if self.artic: return self.artic.codice_articolo_fornitore
-        else: return ""
+        if self.fornitur: return self.fornitur.codice_articolo_fornitore or ""
     codice_articolo_fornitore= property(_codice_articolo_fornitore)
 
     def _codice_a_barre_all(self):
@@ -172,6 +171,15 @@ class Articolo(Dao):
                                                                 batchSize=None)
         return articoli
     articoliTagliaColore = property(getArticoliTagliaColore)
+
+
+    def getArticoliVarianti(self):
+        """ Restituisce una lista di Dao Articolo Varianti """
+        articoli = []
+        for art in self.getArticoliTagliaColore():
+            articoli.append(Articolo(id=art.id_articolo).getRecord())
+        return articoli
+    articoliVarianti = property(getArticoliVarianti)
 
 
     def _getTaglie(self):
@@ -477,6 +485,8 @@ std_mapper = mapper(Articolo,articolo,properties={
             "den_unita":relation(UnitaBase,primaryjoin= (articolo.c.id_unita_base==UnitaBase.id)),
             "image":relation(Immagine,primaryjoin= (articolo.c.id_immagine==Immagine.id)),
             "sa":relation(StatoArticolo,primaryjoin=(articolo.c.id_stato_articolo==StatoArticolo.id)),
+            "fornitur" : relation(Fornitura,primaryjoin=Fornitura.id_articolo==articolo.c.id, backref=backref("arti"),uselist=False),
+            "multi":relation(Multiplo,primaryjoin=Multiplo.id_articolo==articolo.c.id,backref=backref("arti"))
             #"articoloTagliaColore":relation(ArticoloTagliaColore),
             "ATC":relation(ArticoloTagliaColore,primaryjoin=(articolo.c.id==ArticoloTagliaColore.id_articolo),uselist=False),
             }, order_by=articolo.c.id)

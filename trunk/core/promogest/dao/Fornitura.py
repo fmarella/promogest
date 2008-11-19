@@ -13,7 +13,7 @@ from Dao import Dao
 from Multiplo import Multiplo
 from ScontoFornitura import ScontoFornitura
 from Fornitore import Fornitore
-from Articolo import Articolo
+#from Articolo import Articolo
 
 class Fornitura(Dao):
 
@@ -162,5 +162,5 @@ std_mapper = mapper(Fornitura,fornitura, properties={
         "multi": relation(Multiplo,primaryjoin=fornitura.c.id_multiplo==Multiplo.id),
         "sconto_fornitura": relation(ScontoFornitura, backref="fornitura"),
         "forni" : relation(Fornitore,primaryjoin=fornitura.c.id_fornitore==Fornitore.id),
-        "arti" : relation(Articolo,primaryjoin=fornitura.c.id_articolo==Articolo.id, backref=backref("artic", uselist=False)),
+        #"arti" : relation(Articolo,primaryjoin=fornitura.c.id_articolo==Articolo.id, backref=backref("artic", uselist=False)),
                 }, order_by=fornitura.c.id)

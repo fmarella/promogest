@@ -10,7 +10,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from UnitaBase import UnitaBase
-from Articolo import Articolo
+#from Articolo import Articolo
 from Dao import Dao
 
 class Multiplo(Dao):
@@ -100,5 +100,5 @@ multiplo=Table('multiplo',
 
 std_mapper = mapper(Multiplo, multiplo, properties={
     "uniba":relation(UnitaBase,primaryjoin=multiplo.c.id_unita_base==UnitaBase.id),
-    "arti":relation(Articolo,primaryjoin=multiplo.c.id_articolo==Articolo.id)
+    #"arti":relation(Articolo,primaryjoin=multiplo.c.id_articolo==Articolo.id)
         }, order_by=multiplo.c.id)
