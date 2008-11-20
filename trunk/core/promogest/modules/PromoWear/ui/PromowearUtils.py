@@ -21,6 +21,8 @@
 
 
 #import promogest.modules.PromoWear.dao.ArticoloPromowear
+from promogest.dao.UnitaBase import UnitaBase
+from promogest.dao.AliquotaIva import AliquotaIva
 from promogest.modules.PromoWear.dao.ArticoloPromowear import Articolo
 from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
 from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
@@ -37,7 +39,7 @@ import gtk
 import gobject
 
 
-def leggiArticolo(id):
+def leggiArticoloPromoWear(id):
     # restituisce un dizionario con le informazioni sull'articolo letto
     _id = None
     _denominazione = ''
@@ -67,10 +69,6 @@ def leggiArticolo(id):
             _codice = daoArticolo.codice or ''
             _idUnitaBase = daoArticolo.id_unita_base
             if _idUnitaBase is not None:
-                #queryString = ("SELECT * FROM promogest.unita_base WHERE id = '" + str(_idUnitaBase) + "'")
-                #argList = []
-                #Environment.connection._cursor.execute(queryString, argList)
-                #res = Environment.connection._cursor.fetchall()
                 res = UnitaBase(isList=True).select(batchSize=None)
                 if res is not None:
                     _unitaBase = res[0].denominazione
@@ -79,7 +77,7 @@ def leggiArticolo(id):
                 if daoAliquotaIva is not None:
                     _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
                     _percentualeAliquotaIva = daoAliquotaIva.percentuale or 0
-            if "PromoWear" in Environment.modulesList and Enviroment.taglia_colore:
+            if "PromoWear" in Environment.modulesList:
                 daoArticoloTagliaColore = daoArticolo
                 if daoArticoloTagliaColore is not None:
                     _idGruppoTaglia = daoArticoloTagliaColore.id_gruppo_taglia
@@ -135,7 +133,7 @@ def leggiListino(idListino, idArticolo=None):
                 daoListinoArticolo = ListinoArticolo(isList=True).select(idListino=idListino,
                                                                         idArticolo= idArticolo,
                                                                             batchSize=None)
-                if "PromoWear" in Environment.modulesList and Environment.taglia_colore:
+                if "PromoWear" in Environment.modulesList:
                         try:
                             articolo = ArticoloTagliaColore(id=idArticolo).getRecord()
                             idArticoloPadre = articolo.id_articolo_padre
@@ -184,7 +182,7 @@ def fillComboboxMultipli(combobox, idArticolo=None, noSottoMultipli=False, filte
     for m in muls:
         model.append((m, m.id, m.denominazione, m.moltiplicatore))
 
-    if "PromoWear" in Environment.modulesList and Environment.conf.PromoWear.taglia_colore=="yes":
+    if "PromoWear" in Environment.modulesList:
         try:
             articolo = ArticoloTagliaColore(id=idArticolo).getRecord()
             if articolo.id_articolo_padre is not None:
@@ -349,10 +347,6 @@ def fillComboboxColori(combobox, filter=False, ignore=[]):
 
 def fillComboboxAnniAbbigliamento(combobox, filter=False):
     #crea l'elenco degli anni per l'abbigliamento
-    #queryString = ('SELECT * FROM promogest.anno_abbigliamento')
-    #argList = []
-    #Environment.connection._cursor.execute(queryString, argList)
-    #res = Environment.connection._cursor.fetchall()
     res = AnnoAbbigliamento(isList=True).select()
     model = gtk.ListStore(object, int, str)
 
@@ -373,10 +367,6 @@ def fillComboboxAnniAbbigliamento(combobox, filter=False):
 
 def fillComboboxStagioniAbbigliamento(combobox, filter=False):
     #crea l'elenco degli anni per l'abbigliamento
-    #queryString = ('SELECT * FROM promogest.stagione_abbigliamento')
-    #argList = []
-    #Environment.connection._cursor.execute(queryString, argList)
-    #res = Environment.connection._cursor.fetchall()
     res = StagioneAbbigliamento(isList=True).select(batchSize=None)
     model = gtk.ListStore(object, int, str)
 
@@ -397,10 +387,6 @@ def fillComboboxStagioniAbbigliamento(combobox, filter=False):
 
 def fillComboboxGeneriAbbigliamento(combobox, filter=False):
     #crea l'elenco degli anni per l'abbigliamento
-    #queryString = ('SELECT * FROM promogest.genere_abbigliamento')
-    #argList = []
-    #Environment.connection._cursor.execute(queryString, argList)
-    #res = Environment.connection._cursor.fetchall()
     res = GenereAbbigliamento(isList=True).select(batchSize=None)
     model = gtk.ListStore(object, int, str)
 

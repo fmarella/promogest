@@ -20,6 +20,8 @@ from promogest.dao.CategoriaArticolo import CategoriaArticolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.dao.Imballaggio import Imballaggio
 from promogest.dao.StatoArticolo import StatoArticolo
+from promogest.dao.Fornitura import Fornitura
+from promogest.dao.Multiplo import Multiplo
 from promogest.ui.utils import idArticoloFromFornitura, codeIncrement
 from promogest.modules.PromoWear.dao.Colore import Colore
 from promogest.modules.PromoWear.dao.Taglia import Taglia
@@ -486,7 +488,7 @@ std_mapper = mapper(Articolo,articolo,properties={
             "image":relation(Immagine,primaryjoin= (articolo.c.id_immagine==Immagine.id)),
             "sa":relation(StatoArticolo,primaryjoin=(articolo.c.id_stato_articolo==StatoArticolo.id)),
             "fornitur" : relation(Fornitura,primaryjoin=Fornitura.id_articolo==articolo.c.id, backref=backref("arti"),uselist=False),
-            "multi":relation(Multiplo,primaryjoin=Multiplo.id_articolo==articolo.c.id,backref=backref("arti"))
+            "multi":relation(Multiplo,primaryjoin=Multiplo.id_articolo==articolo.c.id,backref=backref("arti")),
             #"articoloTagliaColore":relation(ArticoloTagliaColore),
             "ATC":relation(ArticoloTagliaColore,primaryjoin=(articolo.c.id==ArticoloTagliaColore.id_articolo),uselist=False),
             }, order_by=articolo.c.id)

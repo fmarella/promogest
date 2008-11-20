@@ -196,13 +196,13 @@ class RigaMovimento(Dao):
         params["session"].add(self)
         params["session"].commit()
         import datetime
-        print "rigaMovimento", datetime.datetime.now()
+        #print "rigaMovimento", datetime.datetime.now()
 
         #creazione stoccaggio se non gia' presente
         stoccato = (Stoccaggio(isList=True).count(idArticolo=self.id_articolo,
                                                    idMagazzino=self.id_magazzino) > 0)
         #import datetime
-        print "stoccato", datetime.datetime.now()
+        #print "stoccato", datetime.datetime.now()
         if not(stoccato):
             daoStoccaggio = Stoccaggio().getRecord()
             daoStoccaggio.id_articolo = self.id_articolo
@@ -237,7 +237,7 @@ class RigaMovimento(Dao):
                 #params["session"].commit()
                 #self.__misuraPezzo.persist()
         #FIXME: VERIFICAREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-
+        params["session"].commit()
         #params["session"].flush()
 
 riga=Table('riga', params['metadata'], schema = params['schema'], autoload=True)

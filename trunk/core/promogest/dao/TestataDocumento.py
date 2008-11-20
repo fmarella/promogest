@@ -672,21 +672,9 @@ class TestataDocumento(Dao):
         #FIXME : testata_documento.c.id_articolo == v  ARRIVANO QUI TRAMITE RIGA - RIGA DOCUMENTO
         return  dic[k]
 
-riga=Table('riga',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
-
-
-riga_doc=Table('riga_documento',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
-
-testata_documento=Table('testata_documento',
-                    params['metadata'],
-                    schema = params['schema'],
-                    autoload=True)
+riga=Table('riga',params['metadata'],schema = params['schema'],autoload=True)
+riga_doc=Table('riga_documento',params['metadata'],schema = params['schema'],autoload=True)
+testata_documento=Table('testata_documento',params['metadata'],schema = params['schema'],autoload=True)
 
 std_mapper = mapper(TestataDocumento, testata_documento, properties={
         "rigadoc": relation(RigaDocumento, backref="testata_documento"),

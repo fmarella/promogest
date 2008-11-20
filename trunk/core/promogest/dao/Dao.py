@@ -107,30 +107,8 @@ class Dao(object):
             #try:
             params["session"].add(self)
             params["session"].commit()
-            #params["session"].save_or_update(self)
-            #params["session"].flush()
-            #params["session"].refresh(self)
+             #params["session"].flush()
             return True
-            #except:
-                #print "Problema col DAO in save_update, premuto applica più volte?"
-                #return False
-            #params["session"].clear()
-            #params["session"].refresh(self)
-            #params["session"].expire(self)
-
-        #if not self.isList:
-            #self.session.save_or_update(self.record)
-        #elif self.isList and (self.id is None) and (len(self.record) > 0):
-            #if multiple:
-                #for dao in self.record:
-                    #self.session.save_or_update(dao)
-                    #self.session.refresh(dao)
-                #self.session.commit()
-            #else:
-                #print "si sta tentando di salvare una lista di oggetti. specificare multiple=True per salvare ogni singolo oggetto nella lista"
-                #return False
-        ##self.session.flush()
-        #return True
 
     def delete(self, multiple=False, record = True ):
         if record:
@@ -138,23 +116,6 @@ class Dao(object):
             params['session'].delete(self)
             params["session"].commit()
             #params['session'].flush()
-            #params["session"].refresh(self)
-            #params["session"].clear()
-                #return True
-            #except:
-                #print " ERRORE nella cancellazione ......"
-                #return False
-        #if not self.isList and (self.id is not None and self.id > 0):
-            #self.session.delete(self.record)
-        #elif isList and (self.id is None):
-            #if multiple:
-                #for dao in records:
-                    #dao.delete()
-                ##self.session.commit()
-            #else:
-                #print "si sta tentando di cancellare una lista di oggetti. specificare multiple=True per cancellare ogni singolo oggetto nella lista"
-                #return False
-        #self.session.flush()
         return True
 
     def _resetId(self):
@@ -166,8 +127,6 @@ class Dao(object):
         the given Dao
         """
         if record:
-            #print "IO SONO DAODICT(SELF)",DaoDict(self)
-            #print "IO SONO DAODICT(DAO)",DaoDict(dao)
             return True
             #return (self.__class__ == dao.__class__) and (DaoDict(self) == DaoDict(dao))
 
@@ -206,11 +165,6 @@ class Dao(object):
                 continue
             elif att[0]=='_':
                 continue
-            #if att in ('_entity_name', '_instance_key', '_sa_session_id',
-                       #'_attributesLocked', '_keyValues', '_exceptionHandler',
-                       #'_delSPName', '_getSPName', '_setSPName'):
-                #continue
-
             attrs[att] = getattr(self, att)
 
         sqlDict.update(props)
@@ -225,9 +179,6 @@ class Dao(object):
         the properties to keep an internal cache that will avoid
         further SQL DBMS accesses.
         """
-        # This method is no longer necessary since we have
-        # translated daos in sqlalchemy objects
-        # we kept it here just for code compatibility purpose
         pass
 
     def raiseException(self, exception):
@@ -235,7 +186,6 @@ class Dao(object):
         Pump an exception instance or type through the object exception
         handler (if any)
         """
-        # FIXME: duplicated in db/Connection.py!
         #if self._exceptionHandler is not None:
         GtkExceptionHandler().handle(exception)
 

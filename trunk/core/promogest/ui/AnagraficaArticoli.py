@@ -1142,7 +1142,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         idStagione = findIdFromCombobox(self.id_stagione_combobox)
         idGenere = findIdFromCombobox(self.id_genere_combobox)
         if idGruppoTaglia is not None or idAnno is not None or idStagione is not None or idGenere is not None:
-                isArticoloTagliaColore = True
                 if findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox) is None:
                     obligatoryField(self.dialogTopLevel,
                                     self.id_gruppo_taglia_customcombobox.combobox,

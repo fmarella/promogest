@@ -406,12 +406,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 on_id_banca_customcombobox_clicked)
         self.id_aliquota_iva_esenzione_customcombobox.connect('clicked',
                 on_id_aliquota_iva_customcombobox_clicked)
-        self.variazione_listini_button.connect('clicked',
-                self.on_variazione_listini_button_clicked)
-        self.storico_costi_button.connect('clicked',
-                self.on_storico_costi_button_clicked)
-        self.storico_listini_button.connect('clicked',
-                self.on_storico_listini_button_clicked)
         self.ricerca_codice_button.connect('clicked',
                 self.on_ricerca_codice_button_clicked)
         self.ricerca_codice_a_barre_button.connect('clicked',
@@ -1481,7 +1475,6 @@ del documento.
     def ricercaArticolo(self):
 
         def on_ricerca_articolo_hide(anagWindow, anag):
-            #print '55bis'
             if anag.dao is None:
                 anagWindow.destroy()
                 return
@@ -1550,7 +1543,6 @@ del documento.
 
 
     def mostraArticolo(self, id):
-
         self.articolo_entry.set_text('')
         self.descrizione_entry.set_text('')
         self.codice_articolo_fornitore_entry.set_text('')
@@ -1584,6 +1576,10 @@ del documento.
 
         if id is not None:
             articolo = leggiArticolo(id)
+            print "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG", articolo
+            if articolo.has_key("varianti"):
+                from promogest.modules.PromoWear.ui.ManageSizeAndColor import ManageSizeAndColor
+                manag = ManageSizeAndColor(self, data=articolo)
             self._righe[0]["idArticolo"] = id
             self._righe[0]["codiceArticolo"] = articolo["codice"]
             self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
@@ -1784,9 +1780,7 @@ del documento.
             idFornitore = self.id_persona_giuridica_customcombobox.getId()
         else:
             idFornitore = None
-        print "INIZIAMO DA QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
         anag = StoricoForniture(idArticolo, idFornitore)
-        print "PERCHÈ NE APRI DUEEEEE", anag
         anagWindow = anag.getTopLevel()
         anagWindow.set_transient_for(self.dialogTopLevel)
         anagWindow.show_all()
@@ -1796,9 +1790,7 @@ del documento.
 
         from StoricoListini import StoricoListini
         idArticolo = self._righe[0]["idArticolo"]
-
         anag = StoricoListini(idArticolo)
-
         anagWindow = anag.getTopLevel()
         anagWindow.set_transient_for(self.dialogTopLevel)
         anagWindow.show_all()

@@ -89,8 +89,8 @@ class TestataMovimento(Dao):
     def persist(self, righeMovimento=None, scontiRigaMovimento=None):
         """cancellazione righe associate alla testata
             conn.execStoredProcedure('RigheMovimentoDel',(self.id, ))"""
-        import datetime
-        print "testatamovimento", datetime.datetime.now()
+        #import datetime
+        #print "testatamovimento", datetime.datetime.now()
         if not self.numero:
             valori = numeroRegistroGet(tipo="Movimento", date=self.data_movimento)
             self.numero = valori[0]
@@ -109,7 +109,7 @@ class TestataMovimento(Dao):
                 params["session"].add(riga)
                 #params["session"].commit()
                 #import datetime
-                print "righedentro testata", datetime.datetime.now()
+                #print "righedentro testata", datetime.datetime.now()
                 #salvataggio riga
                 riga.persist(scontiRigaMovimento=scontiRigaMovimento)
                 if self.id_fornitore is not None:
@@ -123,7 +123,7 @@ class TestataMovimento(Dao):
                                                         offset = None,
                                                         batchSize = None)
                     #import datetime
-                    print "fors", datetime.datetime.now()
+                    #print "fors", datetime.datetime.now()
                     daoFornitura = None
                     if len(fors) > 0:
                         if fors[0].data_prezzo == self.data_movimento:
@@ -166,7 +166,6 @@ class TestataMovimento(Dao):
                         sconti.append(daoSconto)
 
                     daoFornitura.sconti = sconti
-                    #daoFornitura.persist()
                     params["session"].add(daoFornitura)
         params["session"].commit()
         #params["session"].flush()

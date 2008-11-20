@@ -57,7 +57,7 @@ class User(Dao):
 
     def persist(self):
         if self.username == "admin" and host=="db.promotux.it" and database == "promogest_demo":
-            print "TENTATIVO DI MODIFICA ADMIN L'EVENTO VERRA' REGISTRATO "
+            print "TENTATIVO DI MODIFICA ADMIN L'EVENTO VERRA' REGISTRATO E SEGNALATO "
             return False
         else:
             params["session"].add(self)

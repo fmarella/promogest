@@ -27,7 +27,7 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None):
             .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
             .filter(Riga.id_articolo==idArticolo)\
             .filter(Riga.id_magazzino==idMagazzino)\
-                                .all()
+            .all()
 
     lista = []
     for ram in righeArticoloMovimentate:
@@ -108,7 +108,9 @@ def righeDocumentoDel(id=None):
                                                 batchSize = None,
                                                 orderBy="id_testata_documento")
     for r in row:
-        r.delete()
+        params['session'].delete(r)
+    params["session"].commit()
+        #r.delete()
     return True
 
 def righeMovimentoDel(id=None):
@@ -123,7 +125,9 @@ def righeMovimentoDel(id=None):
                                                     orderBy="id_testata_movimento")
     print "dentro la funzione di cancella righe dopo la select ", datetime.datetime.now()
     for r in row:
-        r.delete()
+        params['session'].delete(r)
+    params["session"].commit()
+        #r.delete()
     print "dentro la funzione di cancella righe dopo il ciclo", datetime.datetime.now()
     return True
 
@@ -135,8 +139,10 @@ def scontiTestataDocumentoDel(id=None):
                                                     batchSize = None,
                                                     orderBy="id_testata_documento")
     for r in row:
-        r.delete()
-        return True
+        params['session'].delete(r)
+    params["session"].commit()
+        #r.delete()
+    return True
 
 def testataDocumentoScadenzaDel(id=None):
     """Cancella la scadenza documento associato ad un documento"""
@@ -146,8 +152,10 @@ def testataDocumentoScadenzaDel(id=None):
                                                                 batchSize = None,
                                                                 orderBy="id_testata_documento")
     for r in row:
-        r.delete()
-        return True
+        params['session'].delete(r)
+    params["session"].commit()
+        #params.add(r)
+    return True
 
 def scontiRigaDocumentoDel(id=None):
     """Cancella gli sconti legati ad una riga movimento"""
@@ -156,7 +164,9 @@ def scontiRigaDocumentoDel(id=None):
                                                 offset = None,
                                                 batchSize = None)
     for r in row:
-        r.delete()
+        params['session'].delete(r)
+    params["session"].commit()
+        #r.delete()
     return True
 
 def scontiRigaMovimentoDel(id=None):
@@ -166,5 +176,7 @@ def scontiRigaMovimentoDel(id=None):
                                                         offset = None,
                                                         batchSize = None)
     for r in row:
-        r.delete()
+        params['session'].delete(r)
+    params["session"].commit()
+        #r.delete()
     return True
