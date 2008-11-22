@@ -24,7 +24,7 @@ from Stoccaggio import Stoccaggio
 from DaoUtils import scontiRigaMovimentoDel
 from Fornitura import Fornitura
 if hasattr(conf, "SuMisura"):
-    if getattr(conf.SuMisura,'mod_enable','yes'):
+    if getattr(conf.SuMisura,'mod_enable') == "yes":
         from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
 
 
