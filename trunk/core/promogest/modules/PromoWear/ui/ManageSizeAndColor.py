@@ -35,6 +35,7 @@ class ManageSizeAndColor(GladeWidget):
         self._rowEditingPath = None
         self._tabPressed = False
         self.denominazione_label.set_text(data['codice'] +" - "+data['denominazione'])
+        self.mainWindow = mainWindow
         self.draw()
         #self.getTopLevel().show_all()
 
@@ -168,6 +169,7 @@ class ManageSizeAndColor(GladeWidget):
         for row in self._treeViewModel:
             resultList.append(row[0])
         Environment.tagliacoloretempdata= (False, resultList)
+        self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
         self.destroy()
 
     def on_conferma_direttamente_button_clicked(self,button):
@@ -176,7 +178,9 @@ class ManageSizeAndColor(GladeWidget):
         for row in self._treeViewModel:
             resultList.append(row[0])
         Environment.tagliacoloretempdata= (True, resultList)
+        self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
         self.destroy()
 
     def on_cancel_button_clicked(self, button):
+        self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
         self.destroy()

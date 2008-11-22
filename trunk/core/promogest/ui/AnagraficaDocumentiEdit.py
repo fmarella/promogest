@@ -89,7 +89,14 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._controllo_data_documento = None
         self._controllo_numero_documento = None
         self.reuseDataRow = False
-        self.firstPassage = True
+        if "PromoWear" in Environment.modulesList:
+            self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
+            self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
+            self.promowear_data_label.set_text("Gruppo Taglia:")
+        else:
+            self.promowear_manager_taglia_colore_togglebutton.set_property("visible", False)
+            self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
+            self.promowear_data_label.set_text('')
 
     def hideSuMisura(self):
         """
@@ -1256,7 +1263,7 @@ del documento.
         self.reuseDataRow = True
         self.on_confirm_row_button_clicked(widget)
 
-    def on_confirm_row_button_clicked(self, widget):
+    def on_confirm_row_button_clicked(self, widget,row=None):
         """
         Memorizza la riga inserita o modificata
         """
@@ -1511,7 +1518,7 @@ del documento.
                                              batchSize=None)
 
         if (len(arts) == 1):
-            
+
             self.mostraArticolo(arts[0].id)
         else:
             from RicercaComplessaArticoli import RicercaComplessaArticoli
@@ -1528,20 +1535,16 @@ del documento.
             anagWindow.set_transient_for(self.dialogTopLevel)
             anag.show_all()
 
-    def tagliecoloriwidget(self,id):
-        data = stringToDate(self.data_documento_entry.get_text())
-        articoloo = leggiArticolo(id,
-                    idFornitore=self.id_persona_giuridica_customcombobox.getId(),
-                    data=data)
-        if articoloo.has_key("varianti"):
+    def on_promowear_manager_taglia_colore_togglebutton_toggled(self, togglebutton):
+        active=self.promowear_manager_taglia_colore_togglebutton.get_active()
+        if active:
             from promogest.modules.PromoWear.ui.ManageSizeAndColor import ManageSizeAndColor
-            manag = ManageSizeAndColor(self, data=articoloo)
+            manag = ManageSizeAndColor(self, data=self.idArticoloWithVarianti)
             anagWindow = manag.getTopLevel()
             anagWindow.set_transient_for(self.dialogTopLevel)
-            #manag.show_all()
-            #articolo = Environment.tagliacoloretempdata[1][0]
-        self.firstPassage = False
-        self.mostraArticolo(id)
+        else:
+            for var in Environment.tagliacoloretempdata[1]:
+                self.mostraArticolo(var['id'])
 
     def mostraArticolo(self, id):
         self.articolo_entry.set_text('')
@@ -1576,12 +1579,14 @@ del documento.
         fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, id, True)
 
         if id is not None:
-            if "PromoWear" in Environment.modulesList and self.firstPassage:
-                self.tagliecoloriwidget(id)
-                self.firstPassage = False
-                return
-            elif "PromoWear" in Environment.modulesList and not self.firstPassage:
-                articolo = Environment.tagliacoloretempdata[1][0]
+            if "PromoWear" in Environment.modulesList:
+                articolo = leggiArticolo(id,
+                        idFornitore=self.id_persona_giuridica_customcombobox.getId(),
+                        data=data)
+                if articolo.has_key("varianti"):
+                    self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
+                    self.promowear_manager_taglia_colore_togglebutton.set_sensitive(True)
+                    self.idArticoloWithVarianti = articolo
             else:
                 articolo = leggiArticolo(id)
             self._righe[0]["idArticolo"] = id
