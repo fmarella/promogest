@@ -45,8 +45,8 @@ sistemaRigaFrontaline = None
 feedCache = ""
 feedAll = ""
 usernameLoggedList=["","",""]
-TRENINO = {}
 scontisave = {}
+tagliacoloretempdata = (False,None)
 
 def getConfigureDir(company='__default__'):
     """ Tests if another configuration folder was indicated """

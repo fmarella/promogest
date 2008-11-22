@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Thu Nov 20 00:07:43 2008 -->
+<!--Generated with glade3 3.4.5 on Sat Nov 22 00:35:59 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="gestione_varianti_taglie_colore">
-    <property name="width_request">550</property>
-    <property name="height_request">450</property>
+    <property name="width_request">740</property>
+    <property name="height_request">500</property>
     <property name="visible">True</property>
     <property name="has_tooltip">True</property>
     <property name="border_width">5</property>
@@ -24,9 +24,6 @@
                 <property name="visible">True</property>
                 <property name="homogeneous">True</property>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
                   <widget class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">Dati Generali Articolo:</property>
@@ -35,6 +32,33 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="padding">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkHBox" id="hbox5">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkLabel" id="label1">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Descrizione:</property>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="denominazione_label">
+                        <property name="visible">True</property>
+                      </widget>
+                      <packing>
+                        <property name="padding">5</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </widget>
+                  <packing>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -52,24 +76,10 @@
               <widget class="GtkHBox" id="hbox1">
                 <property name="visible">True</property>
                 <child>
-                  <widget class="GtkLabel" id="label1">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Descrizione:</property>
-                  </widget>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="padding">5</property>
-                  </packing>
+                  <placeholder/>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="denominazione_label">
-                    <property name="visible">True</property>
-                  </widget>
-                  <packing>
-                    <property name="padding">5</property>
-                    <property name="position">1</property>
-                  </packing>
+                  <placeholder/>
                 </child>
                 <child>
                   <widget class="GtkLabel" id="quantita_label">
@@ -77,6 +87,8 @@
                     <property name="label" translatable="yes">Quantità:</property>
                   </widget>
                   <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
                     <property name="padding">5</property>
                     <property name="position">2</property>
                   </packing>
@@ -99,6 +111,8 @@
                     <property name="label" translatable="yes">Prezzo:</property>
                   </widget>
                   <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
                     <property name="padding">5</property>
                     <property name="position">4</property>
                   </packing>
@@ -128,9 +142,6 @@
                 <property name="visible">True</property>
                 <property name="homogeneous">True</property>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
                   <widget class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">Dati varianti Taglia/colore Articolo:</property>
@@ -139,8 +150,10 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="padding">5</property>
-                    <property name="position">1</property>
                   </packing>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>
@@ -183,7 +196,14 @@
             <property name="visible">True</property>
             <property name="layout_style">GTK_BUTTONBOX_END</property>
             <child>
-              <placeholder/>
+              <widget class="GtkButton" id="button1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="label" translatable="yes">gtk-help</property>
+                <property name="use_stock">True</property>
+                <property name="response_id">0</property>
+              </widget>
             </child>
             <child>
               <widget class="GtkButton" id="cancel_button">
@@ -193,22 +213,104 @@
                 <property name="label" translatable="yes">gtk-cancel</property>
                 <property name="use_stock">True</property>
                 <property name="response_id">0</property>
+                <signal name="clicked" handler="on_cancel_button_clicked"/>
               </widget>
               <packing>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="ok_button">
+              <widget class="GtkButton" id="conferma_direttamente_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="label" translatable="yes">gtk-ok</property>
-                <property name="use_stock">True</property>
-                <property name="response_id">0</property>
+                <property name="can_default">True</property>
+                <property name="response_id">-5</property>
+                <signal name="clicked" handler="on_conferma_direttamente_button_clicked"/>
+                <child>
+                  <widget class="GtkAlignment" id="alignment1">
+                    <property name="visible">True</property>
+                    <property name="xscale">0</property>
+                    <property name="yscale">0</property>
+                    <child>
+                      <widget class="GtkHBox" id="hbox4">
+                        <property name="visible">True</property>
+                        <property name="spacing">2</property>
+                        <child>
+                          <widget class="GtkImage" id="image1">
+                            <property name="visible">True</property>
+                            <property name="pixbuf">conferma16x16.png</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="label4">
+                            <property name="visible">True</property>
+                            <property name="label">_Conferma direttamente</property>
+                            <property name="use_underline">True</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
               </widget>
               <packing>
                 <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkButton" id="conferma_singolarmente_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="response_id">-5</property>
+                <signal name="clicked" handler="on_conferma_singolarmente_button_clicked"/>
+                <child>
+                  <widget class="GtkAlignment" id="alignment527">
+                    <property name="visible">True</property>
+                    <property name="xscale">0</property>
+                    <property name="yscale">0</property>
+                    <child>
+                      <widget class="GtkHBox" id="hbox395">
+                        <property name="visible">True</property>
+                        <property name="spacing">2</property>
+                        <child>
+                          <widget class="GtkImage" id="image422">
+                            <property name="visible">True</property>
+                            <property name="pixbuf">conferma16x16.png</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="label3482">
+                            <property name="visible">True</property>
+                            <property name="label">Conferma _Singolarmente</property>
+                            <property name="use_underline">True</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="position">3</property>
               </packing>
             </child>
           </widget>

@@ -39,7 +39,71 @@ import gtk
 import gobject
 
 
-def leggiArticoloPromoWear(id):
+def leggiFornituraPromoWear(idArticolo, idFornitore=None, data=None, noPreferenziale=False):
+    """ Restituisce un dizionario con le informazioni sulla fornitura letta """
+    from promogest.dao.Fornitura import Fornitura
+    from promogest.dao.ScontoFornitura import ScontoFornitura
+    _prezzoLordo = 0
+    _prezzoNetto = 0
+    _sconti = []
+    _applicazioneSconti = 'scalare'
+    _codiceArticoloFornitore = ''
+
+    if (idArticolo is not None):
+        fors = Fornitura(isList=True).select(idArticolo=idArticolo,
+                                              idFornitore=None,
+                                              daDataFornitura=None,
+                                              aDataFornitura=None,
+                                              daDataPrezzo=None,
+                                              aDataPrezzo=data,
+                                              codiceArticoloFornitore=None,
+                                              orderBy = 'data_prezzo DESC, fornitore_preferenziale DESC',
+                                              offset = None,
+                                              batchSize = None)
+
+        fornitura = None
+        if idFornitore is not None:
+            # cerca tra tutti i fornitori quello utile, o in sua assenza, quello preferenziale
+            for f in fors:
+                if f.id_fornitore == idFornitore:
+                    fornitura = f
+                    break
+                elif not(noPreferenziale) and f.fornitore_preferenziale:
+                    fornitura = f
+        else:
+            if len(fors) > 0:
+                fornitura = fors[0]
+
+        if fornitura is not None:
+            _codiceArticoloFornitore = fornitura.codice_articolo_fornitore or ''
+            _prezzoLordo = fornitura.prezzo_lordo or 0
+            _prezzoNetto = _prezzoLordo
+            _applicazioneSconti = fornitura.applicazione_sconti
+
+            idFornitura = fornitura.id
+            if idFornitura is not None:
+                scos = ScontoFornitura(isList=True).select(idFornitura=idFornitura)
+
+                for s in scos:
+                    _sconti.append({"valore": s.valore, "tipo": s.tipo_sconto})
+
+                    if s.tipo_sconto == 'percentuale':
+                        if _applicazioneSconti == 'scalare':
+                            _prezzoNetto = float(_prezzoNetto) * (1 - float(s.valore) / 100)
+                        elif _applicazioneSconti == 'non scalare':
+                            _prezzoNetto = float(_prezzoNetto) - float(_prezzoLordo) * float(s.valore) / 100
+                    elif s.tipo_sconto == 'valore':
+                        _prezzoNetto = float(_prezzoNetto) - float(s.valore)
+    return {"prezzoLordo": _prezzoLordo,
+            "prezzoNetto": _prezzoNetto,
+            "sconti": _sconti,
+            "applicazioneSconti": _applicazioneSconti,
+            "codiceArticoloFornitore": _codiceArticoloFornitore}
+
+
+
+
+def leggiArticoloPromoWear(id, full=False):
     # restituisce un dizionario con le informazioni sull'articolo letto
     _id = None
     _denominazione = ''
@@ -92,7 +156,6 @@ def leggiArticoloPromoWear(id):
                     _stagione = daoArticoloTagliaColore.stagione or '-'
                     _idGenere = daoArticoloTagliaColore.id_genere
                     _genere = daoArticoloTagliaColore.genere or '-'
-
     return {"id": _id,
             "denominazione": _denominazione, "codice": _codice,
             "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,

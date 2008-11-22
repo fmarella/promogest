@@ -89,7 +89,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._controllo_data_documento = None
         self._controllo_numero_documento = None
         self.reuseDataRow = False
-
+        self.firstPassage = True
 
     def hideSuMisura(self):
         """
@@ -568,15 +568,12 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         Reimposta i totali saldato e da saldare alla modifica della data di pagamento
         della prima scadenza
         """
-
         self.Pagamenti.ricalcola_sospeso_e_pagato()
 
     def on_data_pagamento_seconda_scadenza_entry_changed(self, entry):
-        """
-        Reimposta i totali saldato e da saldare alla modifica della data di pagamento
+        """ Reimposta i totali saldato e da saldare alla modifica della data di pagamento
         della seconda scadenza
         """
-
         self.Pagamenti.ricalcola_sospeso_e_pagato()
 
     def on_data_pagamento_terza_scadenza_entry_changed(self, entry):
@@ -700,10 +697,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.on_show_totali_riga()
 
     def getPrezzoVenditaLordo(self, idListino, idArticolo):
-        """
-        cerca il prezzo di vendita
-        """
-
+        """ cerca il prezzo di vendita """
         prezzoLordo = 0
         if idListino is not None and idArticolo is not None:
             listino = leggiListino(idListino, idArticolo)
@@ -716,10 +710,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._righe[0]["idListino"] = idListino
 
     def getPrezzoNetto(self):
-        """
-        calcola il prezzo netto dal prezzo lordo e dagli sconti
-        """
-
+        """ calcola il prezzo netto dal prezzo lordo e dagli sconti """
         prezzoLordo = float(self._righe[0]["prezzoLordo"])
         prezzoNetto = float(self._righe[0]["prezzoLordo"])
         applicazione = self._righe[0]["applicazioneSconti"]
@@ -1146,9 +1137,6 @@ del documento.
                     sconti.append(daoSconto)
             scontiRigaDocumento[daoRiga] = sconti
             sconti =[]
-            #daoRiga.sconti = sconti
-
-            #print "SCONTISCONTISCONTISCONTISCONTISCONTISCONTISCONTISCONTI", scontiRigaDocumento
 
             if self._righe[i]["altezza"] != '' and self._righe[i]["larghezza"] != '' and "SuMisura" in Environment.modulesList:
                 print "VEDIAMO SE ARRIVI A ISTANZIARE LA MISURA PEZZO EHHHHHH"
@@ -1203,7 +1191,7 @@ del documento.
         self._refresh()
 
     def on_righe_treeview_row_activated(self, treeview, path, column):
-        """ riporta la rica selezionata in primo piano per la modifica """
+        """ riporta la riva selezionata in primo piano per la modifica """
         sel = treeview.get_selection()
         (model, self._iteratorRiga) = sel.get_selected()
         (selRow, ) = path
@@ -1371,8 +1359,6 @@ del documento.
                 self._righe[self._numRiga]["prezzoNetto"]))
             self.modelRiga.set_value(self._iteratorRiga, 14, ('%14.2f') % round(
                 float(self._righe[self._numRiga]["totale"]), 2))
-
-
         else:
             self.modelRiga.append((self._righe[self._numRiga]["magazzino"],
                 self._righe[self._numRiga]["codiceArticolo"],
@@ -1525,6 +1511,7 @@ del documento.
                                              batchSize=None)
 
         if (len(arts) == 1):
+            
             self.mostraArticolo(arts[0].id)
         else:
             from RicercaComplessaArticoli import RicercaComplessaArticoli
@@ -1541,6 +1528,20 @@ del documento.
             anagWindow.set_transient_for(self.dialogTopLevel)
             anag.show_all()
 
+    def tagliecoloriwidget(self,id):
+        data = stringToDate(self.data_documento_entry.get_text())
+        articoloo = leggiArticolo(id,
+                    idFornitore=self.id_persona_giuridica_customcombobox.getId(),
+                    data=data)
+        if articoloo.has_key("varianti"):
+            from promogest.modules.PromoWear.ui.ManageSizeAndColor import ManageSizeAndColor
+            manag = ManageSizeAndColor(self, data=articoloo)
+            anagWindow = manag.getTopLevel()
+            anagWindow.set_transient_for(self.dialogTopLevel)
+            #manag.show_all()
+            #articolo = Environment.tagliacoloretempdata[1][0]
+        self.firstPassage = False
+        self.mostraArticolo(id)
 
     def mostraArticolo(self, id):
         self.articolo_entry.set_text('')
@@ -1575,11 +1576,14 @@ del documento.
         fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, id, True)
 
         if id is not None:
-            articolo = leggiArticolo(id)
-            print "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG", articolo
-            if articolo.has_key("varianti"):
-                from promogest.modules.PromoWear.ui.ManageSizeAndColor import ManageSizeAndColor
-                manag = ManageSizeAndColor(self, data=articolo)
+            if "PromoWear" in Environment.modulesList and self.firstPassage:
+                self.tagliecoloriwidget(id)
+                self.firstPassage = False
+                return
+            elif "PromoWear" in Environment.modulesList and not self.firstPassage:
+                articolo = Environment.tagliacoloretempdata[1][0]
+            else:
+                articolo = leggiArticolo(id)
             self._righe[0]["idArticolo"] = id
             self._righe[0]["codiceArticolo"] = articolo["codice"]
             self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])

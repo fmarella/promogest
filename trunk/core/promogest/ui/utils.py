@@ -29,7 +29,7 @@ from promogest.dao.Dao import Dao
 from utilsCombobox import *
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
 
-def leggiArticolo(id):
+def leggiArticolo(id, full=False, idFornitore=False,data=None):
     """
     Restituisce un dizionario con le informazioni sull'articolo letto
     """
@@ -50,11 +50,18 @@ def leggiArticolo(id):
         artiDict = {}
         if ("PromoWear" in Environment.modulesList) and (daoArticolo.id_articolo_padre is None) and (daoArticolo is not None):
             varianti = daoArticolo.articoliVarianti
-            from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear
+            from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
             for varia in varianti:
-                variantiList.append(leggiArticoloPromoWear(varia.id))
+                variante=leggiArticoloPromoWear(varia.id, full=True)
+                variante['fornitura'] = leggiFornituraPromoWear(idArticolo=varia.id,
+                                                idFornitore=idFornitore,
+                                                data=data)
+                variantiList.append(variante)
             artiDict = leggiArticoloPromoWear(id)
             artiDict["varianti"] = variantiList
+            artiDict["fornitura"] = leggiFornituraPromoWear(idArticolo=varia.id,
+                                                idFornitore=idFornitore,
+                                                data=data)
         else:
             if daoArticolo is not None:
                 _id = id
@@ -265,7 +272,6 @@ def leggiContatto(id):
             "cognome": _cognome,
             "email": _email}
 
-
 def leggiMagazzino(id):
     """
     Restituisce un dizionario con le informazioni sul magazzino letto
@@ -291,11 +297,8 @@ def leggiMagazzino(id):
             "denominazione": _denominazione,
             "email": _email}
 
-
 def leggiListino(idListino, idArticolo=None):
-    """
-    Restituisce un dizionario con le informazioni sul listino letto
-    """
+    """ Restituisce un dizionario con le informazioni sul listino letto """
     from promogest.dao.Listino import Listino
     from promogest.dao.ListinoArticolo import ListinoArticolo
     _denominazione = ''
@@ -311,7 +314,6 @@ def leggiListino(idListino, idArticolo=None):
         except:
             print "leggiListino ha cannato qualcosa.....1"
             #pass
-
         try:
             if idArticolo is not None:
                 daoListinoArticolo = ListinoArticolo(isList=True)\
@@ -324,16 +326,12 @@ def leggiListino(idListino, idArticolo=None):
         except:
             print "leggiListino ha cannato qualcosa.....2"
             #pass
-
     return {"denominazione": _denominazione,
             "prezzoIngrosso": _prezzoIngrosso,
             "prezzoDettaglio": _prezzoDettaglio}
 
-
 def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=False):
-    """
-    Restituisce un dizionario con le informazioni sulla fornitura letta
-    """
+    """ Restituisce un dizionario con le informazioni sulla fornitura letta """
     from promogest.dao.Fornitura import Fornitura
     from promogest.dao.ScontoFornitura import ScontoFornitura
     _prezzoLordo = 0
@@ -387,7 +385,6 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
                             _prezzoNetto = float(_prezzoNetto) - float(_prezzoLordo) * float(s.valore) / 100
                     elif s.tipo_sconto == 'valore':
                         _prezzoNetto = float(_prezzoNetto) - float(s.valore)
-
     return {"prezzoLordo": _prezzoLordo,
             "prezzoNetto": _prezzoNetto,
             "sconti": _sconti,

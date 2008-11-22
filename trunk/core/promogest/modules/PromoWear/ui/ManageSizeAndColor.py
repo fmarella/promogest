@@ -36,7 +36,7 @@ class ManageSizeAndColor(GladeWidget):
         self._tabPressed = False
         self.denominazione_label.set_text(data['codice'] +" - "+data['denominazione'])
         self.draw()
-        self.getTopLevel().show_all()
+        #self.getTopLevel().show_all()
 
     def draw(self):
         """Creo una treeview che abbia come colonne i colori e come righe
@@ -111,14 +111,14 @@ class ManageSizeAndColor(GladeWidget):
         column.set_min_width(80)
         self.treeview.append_column(column)
 
-
         self._treeViewModel = gtk.ListStore(object,str,str,str,str)
         self.treeview.set_model(self._treeViewModel)
         self.refresh()
 
     def refresh(self):
         # Aggiornamento TreeView
-        #denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
+        self.price_entry.set_text(str(self.data['fornitura']['prezzoNetto']))
+
         self._treeViewModel.clear()
         varianti = self.data["varianti"]
         for var in varianti:
@@ -127,9 +127,8 @@ class ManageSizeAndColor(GladeWidget):
             self._treeViewModel.append((var,
                                         var['taglia']+" - "+var['colore'],
                                         quantita,
-                                        prezzo,
+                                        str(var['fornitura']['prezzoNetto']),
                                         var['codice'] +" - "+var['denominazione']))
-
 
     def _getRowEditingPath(self, model, iterator):
         """ Restituisce il path relativo alla riga che e' in modifica """
@@ -137,69 +136,47 @@ class ManageSizeAndColor(GladeWidget):
             row = model[iterator]
             self._rowEditingPath = row.path
 
-
     def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
         """ Function ti set the value quantita edit in the cell"""
         model = treeview.get_model()
-        #model[path][0]["quantita"] = value
+        model[path][0]["quantita"] = value
         model[path][2] = value
 
     def on_column_prezzo_edited(self, cell, path, value, treeview, editNext=True):
         """ Function ti set the value quantita edit in the cell"""
         model = treeview.get_model()
-        #model[path][0]["prezzo"] = value
+        model[path][0]["prezzoNetto"] = value
         model[path][3] = value
-
-    def on_column_edited(self, cell, path, value, treeview, editNext=True):
-        """ Gestisce l'immagazzinamento dei valori nelle celle """
-        model = treeview.get_model()
-
-        print "Change '%s' to '%s'" % (model[path][1], value)
-
-        #model[path][0] = new_text
-
-        iterator = model.get_iter(path)
-        column = cell.get_data('column')
-        row = model[iterator]
-        if row.path == self._rowEditingPath:
-            if cell.__class__ is gtk.CellRendererText:
-                try:
-                    length = cell.get_data('max_length')
-                    model.set_value(iterator, column+1, value[:length])
-                except:
-                    model.set_value(iterator, column+1, value)
-
-    def anagrafica_treeview_set_edit(self, flag):
-        """ Mette la riga corrente della treeview in stato di edit / browse """
-        sel = self.anagrafica_treeview.get_selection()
-        (model, iterator) = sel.get_selected()
-        columns = self.anagrafica_treeview.get_columns()
-        for c in columns:
-            renderers = c.get_cell_renderers()
-            for r in renderers:
-                if r.__class__ is gtk.CellRendererText:
-                    r.set_property('editable', flag)
-                elif r.__class__ is gtk.CellRendererToggle:
-                    r.set_property('activatable', flag)
-        if flag:
-            self._getRowEditingPath(model, iterator)
-            row = model[iterator]
-            column = self.anagrafica_treeview.get_column(0)
-            self.anagrafica_treeview.grab_focus()
-            self.anagrafica_treeview.set_cursor(row.path, column, start_editing=True)
-        else:
-            self._rowEditingPath = None
-
 
     def on_quantita_entry_focus_out_event(self, entry, widget):
         quantitagenerale = self.quantita_entry.get_text()
         #self._treeViewModel, quantitagenerale
         for row in self._treeViewModel:
+            row[0]["quantita"] = quantitagenerale
             row[2] = quantitagenerale
-
 
     def on_price_entry_focus_out_event(self, entry, widget):
         prezzogenerale = self.price_entry.get_text()
         #self._treeViewModel, quantitagenerale
         for row in self._treeViewModel:
+            row[0]["prezzoNetto"] = prezzogenerale
             row[3] = prezzogenerale
+
+    def on_conferma_singolarmente_button_clicked(self,button):
+        self.data['prezzoNetto']=self.price_entry.get_text()
+        resultList= []
+        for row in self._treeViewModel:
+            resultList.append(row[0])
+        Environment.tagliacoloretempdata= (False, resultList)
+        self.destroy()
+
+    def on_conferma_direttamente_button_clicked(self,button):
+        self.data['prezzoNetto']=self.price_entry.get_text()
+        resultList = []
+        for row in self._treeViewModel:
+            resultList.append(row[0])
+        Environment.tagliacoloretempdata= (True, resultList)
+        self.destroy()
+
+    def on_cancel_button_clicked(self, button):
+        self.destroy()
