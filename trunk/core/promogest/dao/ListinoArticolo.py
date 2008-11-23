@@ -188,32 +188,35 @@ class ListinoArticolo(Dao):
         params["session"].commit()
 
         if sconti:
-            import pdb
-            pdb.set_trace()
+            print "SCOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", sconti
+            #import pdb
+            #pdb.set_trace()
 
             for key,value in sconti.items():
                 if key=="dettaglio" and len(value) != 0:
-                    scontiVenditaDettaglioDel(idListino_=self.id_listino,
-                                                            idArticolo_=self.id_articolo,
-                                                            dataListinoArticolo_=self.data_listino_articolo)
+                    #scontiVenditaDettaglioDel(idListino=self.id_listino,
+                                                            #idArticolo=self.id_articolo,
+                                                            #dataListinoArticolo=self.data_listino_articolo)
                     for v in value:
+                        print "VVVVVVVVVVVVVVVVVVVV", v
                         v.id_listino = self.id_listino
                         v.id_articolo = self.id_articolo
                         v.data_listino_articolo = self.data_listino_articolo
                         print v.id_listino,v.id_articolo,v.data_listino_articolo,v.valore,v.tipo_sconto
+                        print v, dir(v)
                         params["session"].add(v)
-                    params["session"].commit()
+                        params["session"].commit()
                 elif key=="ingrosso" and len(value) != 0:
-                    scontiVenditaIngrossoDel(idListino_=self.id_listino,
-                                                            idArticolo_=self.id_articolo,
-                                                            dataListinoArticolo_=self.data_listino_articolo)
+                    scontiVenditaIngrossoDel(idListino=self.id_listino,
+                                                            idArticolo=self.id_articolo,
+                                                            dataListinoArticolo=self.data_listino_articolo)
                     for u in value:
                         u.id_listino = self.id_listino
                         u.id_articolo = self.id_articolo
                         u.data_listino = self.data_listino_articolo
                         print u.id_listino,u.id_articolo,u.data_listino_articolo,u.valore,u.tipo_sconto
                         params["session"].add(u)
-                    params["session"].commit()
+                        params["session"].commit()
 
         params["session"].commit()
         params["session"].flush()

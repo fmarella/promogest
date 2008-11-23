@@ -43,11 +43,11 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
     _idUnitaBase = None
     _unitaBase = ''
     _quantita_minima = ''
-
+    artiDict = {}
     if id is not None:
+        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         daoArticolo = Articolo(id=id).getRecord()
         variantiList = []
-        artiDict = {}
         if ("PromoWear" in Environment.modulesList) and (daoArticolo.id_articolo_padre is None) and (daoArticolo.id_articolo is not None) and (daoArticolo is not None):
             varianti = daoArticolo.articoliVarianti
             from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
@@ -64,6 +64,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
                                                 data=data)
         else:
             if daoArticolo is not None:
+                print "BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
                 _id = id
                 _denominazione = daoArticolo.denominazione or ''
                 _codice = daoArticolo.codice or ''
@@ -1269,7 +1270,7 @@ def calcolaRicarico(costo=0, listino=0, iva=0):
 def calcolaListinoDaMargine(costo=0, margine=0, iva=0):
     """
     Calcola il prezzo di vendita a partire dal costo, dal margine e dall'iva
-    sel gli argomenti sono tutti oggetti Decimal, lo � anche il valore di ritorno
+    sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
     """
     if costo is None:
         costo = 0
@@ -1286,7 +1287,7 @@ def calcolaListinoDaMargine(costo=0, margine=0, iva=0):
 def calcolaMargine(costo=0, listino=0, iva=0):
     """
     Calcola il margine a partire dal costo, dal prezzo di vendita e dall'iva
-    sel gli argomenti sono tutti oggetti Decimal, lo � anche il valore di ritorno
+    sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
     """
     if costo is None:
         costo = 0
@@ -1307,7 +1308,7 @@ def calcolaMargine(costo=0, listino=0, iva=0):
 def calcolaMargineDaRicarico(ricarico=0):
     """
     Calcola il margine dal ricarico
-    sel l'argomento � un oggetto Decimal, lo � anche il valore di ritorno
+    sel l'argomento è un oggetto Decimal, lo è anche il valore di ritorno
     """
     if ricarico is None:
         ricarico = 0
@@ -1332,7 +1333,7 @@ def calcolaRicaricoDaMargine(margine=0):
 def calcolaPrezzoIva(prezzo=0, iva=0):
     """
     Calcola un prezzo ivato (iva > 0) o scorpora l'iva da un prezzo (iva < 0)
-    sel gli argomenti sono tutti oggetti Decimal, lo � anche il valore di ritorno
+    sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
     """
     if prezzo is None:
         prezzo = 0

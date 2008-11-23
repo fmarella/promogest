@@ -19,15 +19,15 @@ class ScontoVenditaDettaglio(Dao):
         Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
 
     def filter_values(self,k,v):
-        dic= {'idListino' : sconti_vendita_dettaglio.c.id_listino ==v,
-                    'idArticolo':sconti_vendita_dettaglio.c.id_articolo ==v,
-                    'dataListinoArticolo':sconti_vendita_dettaglio.c.data_listino_articolo==v}
+        if k == 'idListino':
+            dic= {k : sconti_vendita_dettaglio.c.id_listino ==v}
+        elif k == 'idArticolo':
+            dic = {k:sconti_vendita_dettaglio.c.id_articolo ==v}
+        elif k == 'dataListinoArticolo':
+            dic = {k:sconti_vendita_dettaglio.c.data_listino_articolo==v}
         return  dic[k]
         
-sconto=Table('sconto',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
+sconto=Table('sconto', params['metadata'],schema = params['schema'],autoload=True)
 
 sconti_vendita_dettaglio=Table('sconti_vendita_dettaglio',
                 params['metadata'],

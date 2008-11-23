@@ -143,13 +143,13 @@ def scontiTestataDocumentoDel(id=None):
     params["session"].commit()
     return True
 
-def scontiVenditaDettaglioDel(idListino_=None,idArticolo_=None,dataListinoArticolo_=None):
+def scontiVenditaDettaglioDel(idListino=None,idArticolo=None,dataListinoArticolo=None):
     """cancella gli sconti associati al listino articolo"""
     
     from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
-    row = ScontoVenditaDettaglio(isList=True).select(idListino=idListino_,
-                                                            idArticolo=idArticolo_,
-                                                            dataListinoArticolo=dataListinoArticolo_,
+    row = ScontoVenditaDettaglio(isList=True).select(idListino=idListino,
+                                                            idArticolo=idArticolo,
+                                                            dataListinoArticolo=dataListinoArticolo,
                                                             offset = None,
                                                             batchSize = None,
                                                             orderBy="id_listino")

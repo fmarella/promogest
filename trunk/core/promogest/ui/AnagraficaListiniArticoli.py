@@ -623,6 +623,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         print self.dao.sconto_vendita_ingrosso,self.dao.sconto_vendita_dettaglio,"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
         self.sconti_dettaglio_widget.setValues(sco=self.dao.sconto_vendita_dettaglio)
         self.sconti_ingrosso_widget.setValues(sco=self.dao.sconto_vendita_ingrosso)
+        print "PERCHé SEI VUOTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.dao.id_articolo
         self.id_articolo_customcombobox.setId(self.dao.id_articolo)
         res = self.id_articolo_customcombobox.getData()
         self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])

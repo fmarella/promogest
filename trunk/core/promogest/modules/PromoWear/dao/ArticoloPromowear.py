@@ -213,7 +213,6 @@ class Articolo(Dao):
         # we need it to see if this is ia tagliacolore simple article without father or variant
         if self.ATC: return self.ATC.id_articolo or None
     id_articolo_taglia_colore=property(_id_articolo)
-    id_articolo = property(_id_articolo)
 
     def _id_gruppo_taglia(self):
         if self.ATC: return self.ATC.id_gruppo_taglia or None
