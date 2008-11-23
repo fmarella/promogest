@@ -118,6 +118,7 @@ class ManageSizeAndColor(GladeWidget):
     def refresh(self):
         # Aggiornamento TreeView
         self.price_entry.set_text(str(self.data['fornitura']['prezzoLordo']))
+        self.discount_entry.set_text(str(self.formatSconti(self.data)))
 
         self._treeViewModel.clear()
         varianti = self.data["varianti"]
@@ -168,7 +169,26 @@ class ManageSizeAndColor(GladeWidget):
         model[path][4] = value
         if model[path][3] and "%" in value:
             value= int(value[0:-1].strip())
-            model[path][5] = float(model[path][3]) * (1 - float(value) / 100)
+            prezzo = float(model[path][3]) * (1 - float(value) / 100)
+            model[path][5] = prezzo
+            model[path][0]['fornitura']["sconti"] = [{'tipo':"percentuale",
+                                            'valore':float(value)},]
+            model[path][0]['fornitura']["prezzoNetto"]= model[path][5]
+        elif model[path][3] and value == "0" or value == "":
+            model[path][5] = model[path][3]
+            model[path][0]['fornitura']["sconti"] = []
+            model[path][0]['fornitura']["prezzoNetto"]= model[path][5]
+        elif model[path][3] and "€" in value:
+            value = str(value).strip()
+            value = value.replace("€", '')
+            value= int(value)
+            model[path][5] = float(model[path][3]) - float(value)
+            model[path][0]['fornitura']["sconti"] = [{'tipo':"valore",
+                                            'valore':float(value)},]
+            model[path][3]['fornitura']["prezzoNetto"]= float(model[path][5])
+        #if model[path][3] and "%" in value:
+            #value= int(value[0:-1].strip())
+            #model[path][5] = float(model[path][3]) * (1 - float(value) / 100)
 
     def on_quantita_entry_focus_out_event(self, entry, widget):
         quantitagenerale = self.quantita_entry.get_text()
@@ -198,6 +218,8 @@ class ManageSizeAndColor(GladeWidget):
                 row[0]['fornitura']["prezzoNetto"]= row[5]
             elif row[3] and scontogenerale == "0" or scontogenerale == "":
                 row[5] = row[3]
+                row[0]['fornitura']["sconti"] = []
+                row[0]['fornitura']["prezzoNetto"]= row[5]
             elif row[3] and "€" in scontogenerale:
                 value = str(scontogenerale).strip()
                 value = value.replace("€", '')
@@ -233,4 +255,6 @@ class ManageSizeAndColor(GladeWidget):
 
     def on_cancel_button_clicked(self, button):
         self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
+        resultList = []
+        Environment.tagliacoloretempdata= (True, resultList)
         self.destroy()

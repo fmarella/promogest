@@ -209,6 +209,12 @@ class Articolo(Dao):
     id_articolo_padre_taglia_colore=property(_id_articolo_padre)
     id_articolo_padre = property(_id_articolo_padre)
 
+    def _id_articolo(self):
+        # we need it to see if this is ia tagliacolore simple article without father or variant
+        if self.ATC: return self.ATC.id_articolo or None
+    id_articolo_taglia_colore=property(_id_articolo)
+    id_articolo = property(_id_articolo)
+
     def _id_gruppo_taglia(self):
         if self.ATC: return self.ATC.id_gruppo_taglia or None
     id_gruppo_taglia=property(_id_gruppo_taglia)
@@ -234,7 +240,6 @@ class Articolo(Dao):
         if self.ATC: return self.ATC.id_anno or ""
     id_anno = property(_id_anno)
 
-
     def _denominazione_gruppo_taglia(self):
         """ esempio di funzione  unita alla property """
         if self.ATC :
@@ -243,7 +248,6 @@ class Articolo(Dao):
             except:
                 return self.ATC.denominazione_gruppo_taglia
     denominazione_gruppo_taglia = property(_denominazione_gruppo_taglia)
-
 
     def _denominazione_taglia(self):
         """ esempio di funzione  unita alla property """

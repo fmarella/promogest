@@ -1543,8 +1543,10 @@ del documento.
             anagWindow = manag.getTopLevel()
             anagWindow.set_transient_for(self.dialogTopLevel)
         else:
-            for var in Environment.tagliacoloretempdata[1]:
-                self.mostraArticolo(var['id'],art=var)
+            if Environment.tagliacoloretempdata[1]:
+                for var in Environment.tagliacoloretempdata[1]:
+                    self.mostraArticolo(var['id'],art=var)
+            Environment.tagliacoloretempdata = (False,[])
 
     def mostraArticolo(self, id, art=None):
         self.articolo_entry.set_text('')
@@ -1588,7 +1590,7 @@ del documento.
                     self.promowear_manager_taglia_colore_togglebutton.set_sensitive(True)
                     self.idArticoloWithVarianti = articolo
                 if art:
-                    print "ARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT2", art
+                    #print "ARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT2", art
                     articolo = art
                     self._righe[0]["idArticolo"] = id
                     self._righe[0]["codiceArticolo"] = articolo["codice"]

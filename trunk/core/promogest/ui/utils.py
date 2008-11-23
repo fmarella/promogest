@@ -48,7 +48,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
         daoArticolo = Articolo(id=id).getRecord()
         variantiList = []
         artiDict = {}
-        if ("PromoWear" in Environment.modulesList) and (daoArticolo.id_articolo_padre is None) and (daoArticolo is not None):
+        if ("PromoWear" in Environment.modulesList) and (daoArticolo.id_articolo_padre is None) and (daoArticolo.id_articolo is not None) and (daoArticolo is not None):
             varianti = daoArticolo.articoliVarianti
             from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
             for varia in varianti:
