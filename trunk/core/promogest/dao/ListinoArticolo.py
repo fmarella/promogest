@@ -163,8 +163,6 @@ class ListinoArticolo(Dao):
     applicazione_sconti_ingrosso = property(_getApplicazioneScontiIngrosso)
 
 
-
-
     def filter_values(self,k,v):
         if k=="listinoAttuale":
             dic={ k : listinoarticolo.c.listino_attuale ==v}
@@ -188,23 +186,18 @@ class ListinoArticolo(Dao):
         params["session"].commit()
 
         if sconti:
-            print "SCOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", sconti
-            #import pdb
-            #pdb.set_trace()
-
             for key,value in sconti.items():
                 if (key=="dettaglio") and (value):
-                    print "TTTTTTTTTTTTTTTTTTTTTTTTTT", value
+                    scontiVenditaDettaglioDel(idListino=self.id_listino,
+                                                idArticolo=self.id_articolo,
+                                                dataListinoArticolo=self.data_listino_articolo)
                     for v in value:
-                        print "VVVVVVVVVVVVVVVVVVVV", v
-                        scontiVenditaDettaglioDel(idListino=self.id_listino,
-                                                    idArticolo=self.id_articolo)
                         v.id_listino = self.id_listino
                         v.id_articolo = self.id_articolo
                         v.data_listino_articolo = self.data_listino_articolo
                         print v.id_listino,v.id_articolo,v.data_listino_articolo,v.valore,v.tipo_sconto
                         params["session"].add(v)
-                        params["session"].commit()
+                        #params["session"].commit()
                 elif (key=="ingrosso") and (value):
                     scontiVenditaIngrossoDel(idListino=self.id_listino,
                                                             idArticolo=self.id_articolo,
@@ -215,9 +208,9 @@ class ListinoArticolo(Dao):
                         u.data_listino = self.data_listino_articolo
                         print u.id_listino,u.id_articolo,u.data_listino_articolo,u.valore,u.tipo_sconto
                         params["session"].add(u)
-                        params["session"].commit()
+                        #params["session"].commit()
 
-        #params["session"].commit()
+        params["session"].commit()
         #params["session"].flush()
             #self.__scontiRigaDocumento[i].persist()
 
@@ -230,11 +223,11 @@ listinoarticolo=Table('listino_articolo',
 std_mapper=mapper(ListinoArticolo, listinoarticolo, properties={
             "arti" : relation(Articolo,primaryjoin=
                 and_(listinoarticolo.c.id_articolo==Articolo.id,Articolo.cancellato==False)),
-            "sconto_vendita_dettaglio": relation(ScontoVenditaDettaglio,primaryjoin=and_(
+            "SVD": relation(ScontoVenditaDettaglio,primaryjoin=and_(
                 listinoarticolo.c.id_listino==ScontoVenditaDettaglio.id_listino,
                 listinoarticolo.c.id_articolo==ScontoVenditaDettaglio.id_articolo,
                 listinoarticolo.c.data_listino_articolo==ScontoVenditaDettaglio.data_listino_articolo)),
-            "sconto_vendita_ingrosso": relation(ScontoVenditaIngrosso,primaryjoin=and_(
+            "SVI": relation(ScontoVenditaIngrosso,primaryjoin=and_(
                 listinoarticolo.c.id_listino==ScontoVenditaIngrosso.id_listino,
                 listinoarticolo.c.id_articolo==ScontoVenditaIngrosso.id_articolo,
                 listinoarticolo.c.data_listino_articolo==ScontoVenditaIngrosso.data_listino_articolo)),

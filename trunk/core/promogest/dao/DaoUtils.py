@@ -107,29 +107,24 @@ def righeDocumentoDel(id=None):
                                                 offset = None,
                                                 batchSize = None,
                                                 orderBy="id_testata_documento")
-    for r in row:
-        params['session'].delete(r)
-    params["session"].commit()
-        #r.delete()
-    return True
+    if row:
+        for r in row:
+            params['session'].delete(r)
+        params["session"].commit()
+        return True
 
 def righeMovimentoDel(id=None):
     """Cancella le righe associate ad un documento"""
-    import datetime
-    print "dentro la funzione di cancella righe", datetime.datetime.now()
     from promogest.dao.RigaMovimento import RigaMovimento
-    print "dentro la funzione di cancella righe dopo l'import ", datetime.datetime.now()
     row = RigaMovimento(isList=True).select(idTestataMovimento= id,
                                                     offset = None,
                                                     batchSize = None,
                                                     orderBy="id_testata_movimento")
-    print "dentro la funzione di cancella righe dopo la select ", datetime.datetime.now()
-    for r in row:
-        params['session'].delete(r)
-    params["session"].commit()
-        #r.delete()
-    print "dentro la funzione di cancella righe dopo il ciclo", datetime.datetime.now()
-    return True
+    if row:
+        for r in row:
+            params['session'].delete(r)
+        params["session"].commit()
+        return True
 
 def scontiTestataDocumentoDel(id=None):
     """Cancella gli sconti associati ad un documento"""
@@ -138,14 +133,14 @@ def scontiTestataDocumentoDel(id=None):
                                                     offset = None,
                                                     batchSize = None,
                                                     orderBy="id_testata_documento")
-    for r in row:
-        params['session'].delete(r)
-    params["session"].commit()
-    return True
+    if row:
+        for r in row:
+            params['session'].delete(r)
+        params["session"].commit()
+        return True
 
 def scontiVenditaDettaglioDel(idListino=None,idArticolo=None,dataListinoArticolo=None):
     """cancella gli sconti associati al listino articolo"""
-    
     from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
     row = ScontoVenditaDettaglio(isList=True).select(idListino=idListino,
                                                     idArticolo=idArticolo,
@@ -153,14 +148,14 @@ def scontiVenditaDettaglioDel(idListino=None,idArticolo=None,dataListinoArticolo
                                                     offset = None,
                                                     batchSize = None,
                                                     orderBy="id_listino")
-    for r in row:
-        params['session'].delete(r)
-    params["session"].commit()
-    return True
+    if row:
+        for r in row:
+            params['session'].delete(r)
+        params["session"].commit()
+        return True
 
 def scontiVenditaIngrossoDel(idListino_=None,idArticolo_=None,dataListinoArticolo_=None):
     """cancella gli sconti associati al listino articolo"""
-
     from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
     row = ScontoVenditaIngrosso(isList=True).select(idListino=idListino_,
                                                             idArticolo=idArticolo_,
@@ -168,12 +163,11 @@ def scontiVenditaIngrossoDel(idListino_=None,idArticolo_=None,dataListinoArticol
                                                             offset = None,
                                                             batchSize = None,
                                                             orderBy="id_listino")
-    if row is not None:
+    if row:
         for r in row:
             params['session'].delete(r)
         params["session"].commit()
         return True
-
 
 def testataDocumentoScadenzaDel(id=None):
     """Cancella la scadenza documento associato ad un documento"""
@@ -185,7 +179,6 @@ def testataDocumentoScadenzaDel(id=None):
     for r in row:
         params['session'].delete(r)
     params["session"].commit()
-        #params.add(r)
     return True
 
 def scontiRigaDocumentoDel(id=None):
@@ -194,11 +187,11 @@ def scontiRigaDocumentoDel(id=None):
     row = ScontoRigaDocumento(isList=True).select(idRigaDocumento= id,
                                                 offset = None,
                                                 batchSize = None)
-    for r in row:
-        params['session'].delete(r)
-    params["session"].commit()
-        #r.delete()
-    return True
+    if row:
+        for r in row:
+            params['session'].delete(r)
+        params["session"].commit()
+        return True
 
 def scontiRigaMovimentoDel(id=None):
     """Cancella gli sconti legati ad una riga movimento"""
@@ -206,8 +199,8 @@ def scontiRigaMovimentoDel(id=None):
     row = ScontoRigaMovimento(isList=True).select(idRigaMovimento= id,
                                                         offset = None,
                                                         batchSize = None)
-    for r in row:
-        params['session'].delete(r)
-    params["session"].commit()
-        #r.delete()
-    return True
+    if row:
+        for r in row:
+            params['session'].delete(r)
+        params["session"].commit()
+        return True
