@@ -12,9 +12,12 @@ from sqlalchemy.orm import *
 from sqlalchemy import and_, or_
 from promogest.Environment import *
 from Dao import Dao
+from DaoUtils import *
 from AliquotaIva import AliquotaIva
 from Listino import Listino
 from Articolo import Articolo
+from ScontoVenditaDettaglio import ScontoVenditaDettaglio
+from ScontoVenditaIngrosso import ScontoVenditaIngrosso
 
 import datetime
 
@@ -117,6 +120,51 @@ class ListinoArticolo(Dao):
         genere = property(_genere)
 
 
+    def _getScontiVenditaDettaglio(self):
+        if self.__scontiVenditaDett is None:
+            self.__dbScontiVenditaDett = params['session'].query(ScontoVenditaDettaglio).filter_by(id_listino=self.id_listino,
+                                                                                                                    id_articolo=self.id_articolo,
+                                                                                                                    data_listino_articolo=self.data_listino_articolo).all()
+            self.__scontiVenditaDett= self.__dbScontiVenditaDett
+        return self.__scontivenditaDett
+
+    def _setScontiVenditaDettaglio(self,value):
+        self.__scontivenditaDett = value
+
+    sconto_vendita_dettaglio = property(_getScontiVenditaDettaglio, _setScontiVenditaDettaglio)
+
+    def _getApplicazioneScontiDettaglio(self):
+        return "scalare"
+
+##    def _setApplicazioneScontiDettaglio(self,value):
+##        return
+
+    applicazione_sconti_dettaglio = property(_getApplicazioneScontiDettaglio)
+
+    def _getScontiVenditaIngrosso(self):
+        if self.__scontiVenditaIngr is None:
+            self.__dbScontiVenditaIngr = params['session'].query(ScontoVenditaIngrosso).filter_by(id_listino=self.id_listino,
+                                                                                                                    id_articolo=self.id_articolo,
+                                                                                                                    data_listino_articolo=self.data_listino_articolo)
+            self.__scontiVenditaIngr= self.__dbScontiVenditaIngr
+        return self.__scontiVenditaIngr
+
+    def _setScontiVenditaIngrosso(self,value):
+        self.__scontivenditaIngr = value
+
+    sconto_vendita_ingrosso = property(_getScontiVenditaIngrosso, _setScontiVenditaIngrosso)    
+
+    def _getApplicazioneScontiIngrosso(self):
+        return "scalare"
+
+##    def _setApplicazioneScontiIngrosso(self,value):
+##        self._applicazione_sconti_ingrosso = value
+
+    applicazione_sconti_ingrosso = property(_getApplicazioneScontiIngrosso)
+
+
+
+
     def filter_values(self,k,v):
         if k=="listinoAttuale":
             dic={ k : listinoarticolo.c.listino_attuale ==v}
@@ -128,7 +176,8 @@ class ListinoArticolo(Dao):
             dic={ k: listinoarticolo.c.id_listino==v}
         return  dic[k]
 
-    def persist(self):
+    def persist(self,sconti=None):
+
         if not self.data_listino_articolo:
             self.data_listino_articolo = datetime.datetime.today()
         if not self.listino_attuale:
@@ -137,7 +186,38 @@ class ListinoArticolo(Dao):
             self.listino_attuale = True
         params["session"].add(self)
         params["session"].commit()
+
+        if sconti:
+            import pdb
+            pdb.set_trace()
+
+            for key,value in sconti.items():
+                if key=="dettaglio" and len(value) != 0:
+                    scontiVenditaDettaglioDel(idListino_=self.id_listino,
+                                                            idArticolo_=self.id_articolo,
+                                                            dataListinoArticolo_=self.data_listino_articolo)
+                    for v in value:
+                        v.id_listino = self.id_listino
+                        v.id_articolo = self.id_articolo
+                        v.data_listino_articolo = self.data_listino_articolo
+                        print v.id_listino,v.id_articolo,v.data_listino_articolo,v.valore,v.tipo_sconto
+                        params["session"].add(v)
+                    params["session"].commit()
+                elif key=="ingrosso" and len(value) != 0:
+                    scontiVenditaIngrossoDel(idListino_=self.id_listino,
+                                                            idArticolo_=self.id_articolo,
+                                                            dataListinoArticolo_=self.data_listino_articolo)
+                    for u in value:
+                        u.id_listino = self.id_listino
+                        u.id_articolo = self.id_articolo
+                        u.data_listino = self.data_listino_articolo
+                        print u.id_listino,u.id_articolo,u.data_listino_articolo,u.valore,u.tipo_sconto
+                        params["session"].add(u)
+                    params["session"].commit()
+
+        params["session"].commit()
         params["session"].flush()
+            #self.__scontiRigaDocumento[i].persist()
 
 
 listinoarticolo=Table('listino_articolo',
@@ -148,6 +228,14 @@ listinoarticolo=Table('listino_articolo',
 std_mapper=mapper(ListinoArticolo, listinoarticolo, properties={
             "arti" : relation(Articolo,primaryjoin=
                 and_(listinoarticolo.c.id_articolo==Articolo.id,Articolo.cancellato==False)),
+            "sconto_vendita_dettaglio": relation(ScontoVenditaDettaglio,primaryjoin=and_(
+                listinoarticolo.c.id_listino==ScontoVenditaDettaglio.id_listino,
+                listinoarticolo.c.id_articolo==ScontoVenditaDettaglio.id_articolo,
+                listinoarticolo.c.data_listino_articolo==ScontoVenditaDettaglio.data_listino_articolo)),
+            "sconto_vendita_ingrosso": relation(ScontoVenditaIngrosso,primaryjoin=and_(
+                listinoarticolo.c.id_listino==ScontoVenditaIngrosso.id_listino,
+                listinoarticolo.c.id_articolo==ScontoVenditaIngrosso.id_articolo,
+                listinoarticolo.c.data_listino_articolo==ScontoVenditaIngrosso.data_listino_articolo)),
             "listi" : relation(Listino,primaryjoin=
                 listinoarticolo.c.id_listino==Listino.id)},
                 order_by=listinoarticolo.c.id_listino)

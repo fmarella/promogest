@@ -141,8 +141,40 @@ def scontiTestataDocumentoDel(id=None):
     for r in row:
         params['session'].delete(r)
     params["session"].commit()
-        #r.delete()
     return True
+
+def scontiVenditaDettaglioDel(idListino_=None,idArticolo_=None,dataListinoArticolo_=None):
+    """cancella gli sconti associati al listino articolo"""
+    
+    from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
+    row = ScontoVenditaDettaglio(isList=True).select(idListino=idListino_,
+                                                            idArticolo=idArticolo_,
+                                                            dataListinoArticolo=dataListinoArticolo_,
+                                                            offset = None,
+                                                            batchSize = None,
+                                                            orderBy="id_listino")
+    if row is not None:
+        for r in row:
+            params['session'].delete(r)
+        params["session"].commit()
+        return True
+
+def scontiVenditaIngrossoDel(idListino_=None,idArticolo_=None,dataListinoArticolo_=None):
+    """cancella gli sconti associati al listino articolo"""
+
+    from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
+    row = ScontoVenditaIngrosso(isList=True).select(idListino=idListino_,
+                                                            idArticolo=idArticolo_,
+                                                            dataListinoArticolo=dataListinoArticolo_,
+                                                            offset = None,
+                                                            batchSize = None,
+                                                            orderBy="id_listino")
+    if row is not None:
+        for r in row:
+            params['session'].delete(r)
+        params["session"].commit()
+        return True
+
 
 def testataDocumentoScadenzaDel(id=None):
     """Cancella la scadenza documento associato ad un documento"""

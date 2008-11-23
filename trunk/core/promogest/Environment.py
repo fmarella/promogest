@@ -98,7 +98,6 @@ def set_configuration(company=None, year = None):
     try:
         dir = getConfigureDir(company)
         promogestDir = os.path.expanduser('~') + os.sep + dir + os.sep
-        #print "ETUUUUUUUUUUUU", os.path.expanduser('~') + os.sep + 'promogest' + os.sep
         if not (os.path.exists(promogestDir)):
             os.mkdir(promogestDir)
 
@@ -301,7 +300,7 @@ engine = create_engine('postgres:'+'//'+conf.Database.user+':'
                     encoding='utf-8',
                     convert_unicode=True )
 
-engine.echo = False
+engine.echo = True
 meta = MetaData(engine)
 Session = sessionmaker(bind=engine)
 session = Session()

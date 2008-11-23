@@ -323,12 +323,21 @@ def leggiListino(idListino, idArticolo=None):
             if daoListinoArticolo is not None:
                 _prezzoIngrosso = daoListinoArticolo.prezzo_ingrosso
                 _prezzoDettaglio = daoListinoArticolo.prezzo_dettaglio
+                _scontiDettaglio = daoListinoArticolo.sconti_vendita_dettaglio
+                _scontiIngrosso = daoListinoArticolo.sconti_vendita_ingrosso
+                _applicazioneDettaglio = daoListinoArticolo.applicazione_sconti_dettaglio
+                _applicazioneIngrosso = daoListinoArticolo.applicazione_sconti_ingrosso
+                return {"denominazione": _denominazione,
+                                    "prezzoIngrosso": _prezzoIngrosso,
+                                    "prezzoDettaglio": _prezzoDettaglio,
+                                    "scontiDettaglio":_scontiDettaglio,
+                                    "scontiIngrosso":_scontiIngrosso,
+                                    'applicazioneScontiDettaglio':_applicazioneDettaglio,
+                                    'applicazioneScontiIngrosso':_applicazioneIngrosso}
         except:
             print "leggiListino ha cannato qualcosa.....2"
-            #pass
-    return {"denominazione": _denominazione,
-            "prezzoIngrosso": _prezzoIngrosso,
-            "prezzoDettaglio": _prezzoDettaglio}
+            
+    
 
 def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=False):
     """ Restituisce un dizionario con le informazioni sulla fornitura letta """
@@ -1248,7 +1257,7 @@ def calcolaRicarico(costo=0, listino=0, iva=0):
         iva = 0
     if costo.__class__ == Decimal and listino.__class__ == Decimal and iva.__class__ == Decimal:
         if costo == 0:
-            return 0
+            return Decimal('0')
         else:
             return (((100 * 100) * listino) / (costo * (iva + 100))) - 100
     else:
@@ -1277,7 +1286,7 @@ def calcolaListinoDaMargine(costo=0, margine=0, iva=0):
 def calcolaMargine(costo=0, listino=0, iva=0):
     """
     Calcola il margine a partire dal costo, dal prezzo di vendita e dall'iva
-    sel gli argomenti sono tutti oggetti Decimal, lo ï¿½ anche il valore di ritorno
+    sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
     """
     if costo is None:
         costo = 0
@@ -1323,7 +1332,7 @@ def calcolaRicaricoDaMargine(margine=0):
 def calcolaPrezzoIva(prezzo=0, iva=0):
     """
     Calcola un prezzo ivato (iva > 0) o scorpora l'iva da un prezzo (iva < 0)
-    sel gli argomenti sono tutti oggetti Decimal, lo Ã¨ anche il valore di ritorno
+    sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
     """
     if prezzo is None:
         prezzo = 0

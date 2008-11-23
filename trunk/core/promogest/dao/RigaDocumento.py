@@ -97,11 +97,11 @@ class RigaDocumento(Dao):
     multiplo = property(__multiplo)
 
     def __unita_base(self):
-        a =  params["session"].query(Articolo).with_parent(self).filter(and_(RigaDocumento.id_articolo==Articolo.id,Articolo.id_unita_base==UnitaBase.id)).all()
+        a =  params["session"].query(Articolo).with_parent(self).filter(Articolo.id_unita_base==UnitaBase.id).all()
         if not a:
             return a
         else:
-            return a[0].denominazione_breve_unita_base
+            return a[0].denominazione_breve
     unita_base = property(__unita_base)
 
     def __codiceArticolo(self):
@@ -144,71 +144,8 @@ class RigaDocumento(Dao):
     def _setScontiRigaDocumento(self, value):
 
         self.__scontiRigaDocumento = value
-        #print "VALUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", value, Environment.scontiRigaDocumentoList
 
     sconti = property(_getScontiRigaDocumento, _setScontiRigaDocumento)
-
-    if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
-        def _denominazione_gruppo_taglia(self):
-            #if self.ATC: return self.ATC.denominazione or ""
-            if self.arti:return self.arti.denominazione_gruppo_taglia
-            #else: return ""
-        denominazione_gruppo_taglia = property(_denominazione_gruppo_taglia)
-
-        def _id_articolo_padre(self):
-            #if self.ATC: return self.ATC.id_articolo_padre or None
-            if self.arti:return self.arti.id_articolo_padre
-        id_articolo_padre_taglia_colore=property(_id_articolo_padre)
-        id_articolo_padre = property(_id_articolo_padre)
-
-        def _id_gruppo_taglia(self):
-            #if self.ATC: return self.ATC.id_gruppo_taglia or None
-            if self.arti:return self.arti.id_gruppo_taglia
-        id_gruppo_taglia=property(_id_gruppo_taglia)
-
-        def _id_genere(self):
-            #if self.ATC: return self.ATC.id_genere or None
-            if self.arti:return self.arti.id_genere
-            #else: return ""
-        id_genere = property(_id_genere)
-
-        def _id_stagione(self):
-            if self.arti:return self.arti.id_stagione
-        id_stagione = property(_id_stagione)
-
-        def _id_anno(self):
-            if self.arti:return self.arti.id_anno
-        id_anno = property(_id_anno)
-
-        def _denominazione_taglia(self):
-            """ esempio di funzione  unita alla property """
-            if self.arti:return self.arti.denominazione_taglia
-        denominazione_taglia = property(_denominazione_taglia)
-
-        def _denominazione_colore(self):
-            """ esempio di funzione  unita alla property """
-            if self.arti:return self.arti.denominazione_colore
-        denominazione_colore = property(_denominazione_colore)
-
-        def _anno(self):
-            """ esempio di funzione  unita alla property """
-            if self.arti:return self.arti.anno
-        anno = property(_anno)
-
-        def _stagione(self):
-            """ esempio di funzione  unita alla property """
-            if self.arti:return self.arti.stagione
-        stagione = property(_stagione)
-
-        def _genere(self):
-            """ esempio di funzione  unita alla property """
-            if self.arti:return self.arti.genere
-        genere = property(_genere)
-
-
-
-
-
 
 
     def filter_values(self,k,v):
@@ -229,7 +166,6 @@ class RigaDocumento(Dao):
             except:
                 pass
             #conn.execStoredProcedure('MisuraPezzoDel', (self.id, ))
-            print "MISURA PEZZOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.__misuraPezzo
             if Environment.TRENINO["misuraPezzo"]:
         #if type(self.__misuraPezzo) == list:
             #if self.__misuraPezzo != []:
@@ -282,3 +218,5 @@ std_mapper = mapper(RigaDocumento, j,properties={
         "listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
         "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),},
                 order_by=riga_doc.c.id)
+
+

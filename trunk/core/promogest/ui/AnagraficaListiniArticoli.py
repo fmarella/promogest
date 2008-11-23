@@ -20,6 +20,8 @@ from promogest.dao.Dao import Dao
 import promogest.dao.Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.Articolo import Articolo
+from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
+from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 
 from utils import *
 from utilsCombobox import fillComboboxListini,findIdFromCombobox,findComboboxRowFromId
@@ -58,8 +60,10 @@ class AnagraficaListiniArticoli(Anagrafica):
             articolo = d.articolo or ''
             data = dateToString(d.data_listino_articolo)
             prezzo_dettaglio = float(d.prezzo_dettaglio or 0)
+            sconto_dettaglio = float(d.sconto_vendita_dettaglio or 0)
             prezzo_ingrosso = float(d.prezzo_ingrosso or 0)
-            datalist=[denominazione,codice_articolo,articolo,data,prezzo_dettaglio,prezzo_ingrosso]
+            sconto_ingrosso = float(d.sconto_vendita_ingrosso or 0)
+            datalist=[denominazione,codice_articolo,articolo,data,prezzo_dettaglio,scontodettaglio,prezzo_ingrosso,sconto_ingrosso]
             rowlist.append(datalist)
         return rowlist
 
@@ -73,9 +77,10 @@ class AnagraficaListiniArticoli(Anagrafica):
         data_details['curr_date'] = curr_date
         data_details['currentName'] = 'Listino_Articoli_aggiornato_al_'+curr_date+'.xml'
 
-        FieldsList = ['Listino','Codice Articolo','Articolo','Data Variazione','Prezzo Dettaglio','Prezzo Ingrosso']
-        colData= [0,0,0,1,2,2]
-        colWidth_Align = [('130','l'),('100','c'),('250','l'),('100','c'),('100','r'),('100','r')]
+        FieldsList = ['Listino','Codice Articolo','Articolo','Data Variazione','Prezzo Dettaglio', 'Sconto Dettaglio', 
+                            'Prezzo Ingrosso', 'Sconto Ingrosso']
+        colData= [0,0,0,1,2,0,2,0]
+        colWidth_Align = [('130','l'),('100','c'),('250','l'),('100','c'),('100','r'),('100','r'),('100','r'),('100','r')]
         data_details['XmlMarkup'] = (FieldsList, colData, colWidth_Align)
 
         return data_details
@@ -353,6 +358,33 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         if "PromoWear" not in Environment.modulesList:
             self.taglia_colore_table.hide()
             self.taglia_colore_table.set_no_show_all(True)
+        self.sconti_dettaglio_widget.button.connect('toggled',
+                                        self.on_sconti_dettaglio_widget_button_toggled)
+        self.sconti_ingrosso_widget.button.connect('toggled',
+                                        self.on_sconti_ingrosso_widget_button_toggled)
+
+
+    def on_sconti_dettaglio_widget_button_toggled(self, button):
+        if button.get_property('active') is True:
+            return
+        _scontoDettaglio= self.sconti_dettaglio_widget.getSconti()
+        print _scontoDettaglio,"____________________SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSss"
+        for s in _scontoDettaglio:
+            self.dao.sconto_vendita_dettaglio.append(ScontoVenditaDettaglio().getRecord())
+            self.dao.sconto_vendita_dettaglio[-1].tipo_sconto = s["tipo"]
+            self.dao.sconto_vendita_dettaglio[-1].valore = float(s["valore"])
+##        self.dao.applicazione_sconti_dettaglio = self.sconti_dettaglio_widget.getApplicazione()
+    
+    def on_sconti_ingrosso_widget_button_toggled(self, button):
+        if button.get_property('active') is True:
+            return
+
+        _scontoIngrosso= self.sconti_ingrosso_widget.getSconti()
+        for s in _scontoIngrosso:
+            self.dao.sconto_vendita_ingrosso.append(ScontoVenditaIngrosso().getRecord())
+            self.dao.sconto_vendita_ingrosso[-1].tipo_sconto = s["tipo"]
+            self.dao.sconto_vendita_ingrosso[-1].valore = s["valore"]
+##        self.dao.applicazione_sconti_ingrosso = self.sconti_ingrosso_widget.getApplicazione()
 
     def calcolaPercentualiDettaglio(self, widget=None, event=None):
         self.percentuale_ricarico_dettaglio_entry.set_text('%-6.3f' % calcolaRicarico(float(self.ultimo_costo_entry.get_text()),
@@ -515,6 +547,9 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         if self._anagrafica._listinoFissato:
             findComboboxRowFromId(self.id_listino_customcombobox.combobox, self._anagrafica._idListino)
             self.id_listino_customcombobox.set_sensitive(False)
+        
+        self.sconti_dettaglio_widget.setValues()
+        self.sconti_ingrosso_widget.setValues()
 
         self.ultimo_costo_entry.connect('focus_out_event',
                                         self.aggiornaDaCosto)
@@ -585,11 +620,14 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                 self.id_articolo_customcombobox.set_sensitive(False)
         else:
             self.id_articolo_customcombobox.set_sensitive(False)
+        print self.dao.sconto_vendita_ingrosso,self.dao.sconto_vendita_dettaglio,"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
+        self.sconti_dettaglio_widget.setValues(sco=self.dao.sconto_vendita_dettaglio)
+        self.sconti_ingrosso_widget.setValues(sco=self.dao.sconto_vendita_ingrosso)
         self.id_articolo_customcombobox.setId(self.dao.id_articolo)
         res = self.id_articolo_customcombobox.getData()
         self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
         self._percentualeIva = res["percentualeAliquotaIva"]
-        self.percentuale_aliquota_iva_label.set_text(('%5.' + Environment.conf.decimals + 'f') % self._percentualeIva + ' %')
+        self.percentuale_aliquota_iva_label.set_text(Environment.conf.number_format % self._percentualeIva + ' %')
         self.id_listino_customcombobox.combobox.set_active(-1)
         self.id_listino_customcombobox.set_sensitive(True)
         if self.dao.id_listino is None:
@@ -627,6 +665,9 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
         self.prezzo_ingrosso_ivato_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(self.dao.prezzo_ingrosso,
                                                                                                     self._percentualeIva))
+        
+        self.sconti_dettaglio_widget.setValues(self.dao.sconto_vendita_dettaglio, self.dao.applicazione_sconti_dettaglio)
+        self.sconti_ingrosso_widget.setValues(self.dao.sconto_vendita_ingrosso, self.dao.applicazione_sconti_ingrosso)
 
         if "PromoWear" in Environment.modulesList:
             self._refreshTagliaColore(self.dao.id_articolo)
@@ -663,4 +704,25 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         self.dao.prezzo_dettaglio = float(self.prezzo_dettaglio_entry.get_text())
         self.dao.prezzo_ingrosso = float(self.prezzo_ingrosso_entry.get_text())
         self.dao.data_listino_articolo = datetime.datetime.now()
-        self.dao.persist()
+        
+        sconti_dettaglio = []
+        self.dao.applicazione_sconti = "scalare"
+        for s in self.sconti_dettaglio_widget.getSconti():
+            daoSconto = ScontoVenditaDettaglio().getRecord()
+            daoSconto.valore = s["valore"]
+            daoSconto.tipo_sconto = s["tipo"]
+            sconti_dettaglio.append(daoSconto)
+            
+        self.dao.sconto_vendita_dettaglio = sconti_dettaglio
+        
+        sconti_ingrosso = []
+        self.dao.applicazione_sconti = "scalare"
+        for s in self.sconti_ingrosso_widget.getSconti():
+            daoSconto = ScontoVenditaIngrosso().getRecord()
+            daoSconto.valore = s["valore"]
+            daoSconto.tipo_sconto = s["tipo"]
+            sconti_ingrosso.append(daoSconto)
+            
+        self.dao.sconto_vendita_ingrosso = sconti_ingrosso
+        
+        self.dao.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})

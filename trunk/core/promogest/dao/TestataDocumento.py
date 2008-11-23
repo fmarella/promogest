@@ -379,7 +379,7 @@ class TestataDocumento(Dao):
             # ci sono piu' movimenti collegati al documento
             # FIXME: che fare ?
             #print "ATTENZIONE CI SONO PIÙ DOCUMENTI LEGATI AD UN DOCUMENTO"
-            raise Exception, "ATTENZIONE CI SONO PIÙ MOVIMENTI LEGATI AD UN DOCUMENTO"
+            raise Exception, "ATTENZIONE CI SONO PI� MOVIMENTI LEGATI AD UN DOCUMENTO"
         righeMovimento = {}
         scontiRigaMovimento = {}
         if righe is not None:

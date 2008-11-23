@@ -22,6 +22,8 @@ import promogest.dao.ScontoRigaDocumento
 from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
 import promogest.dao.ScontoTestataDocumento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
+from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
+from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 from promogest.dao.Articolo import Articolo
 from utils import *
 from utilsCombobox import *
@@ -276,6 +278,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
+        
         if "SuMisura" in Environment.modulesList:
             column = gtk.TreeViewColumn('H', rendererSx, text=4)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
@@ -701,20 +704,32 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         idArticolo = self._righe[0]["idArticolo"]
         self.getPrezzoVenditaLordo(idListino, idArticolo)
         self.prezzo_lordo_entry.set_text(Environment.conf.number_format % float(self._righe[0]["prezzoLordo"]))
+        self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], True)
         self.on_show_totali_riga()
+
+
 
     def getPrezzoVenditaLordo(self, idListino, idArticolo):
         """ cerca il prezzo di vendita """
         prezzoLordo = 0
+        sconti = []
+        applicazione = "scalare"
         if idListino is not None and idArticolo is not None:
             listino = leggiListino(idListino, idArticolo)
             self._righe[0]["listino"] = listino["denominazione"]
             if (self._fonteValore == "vendita_iva"):
                 prezzoLordo = listino["prezzoDettaglio"]
+                sconti = listino["scontiDettaglio"]
+                applicazione = listino["applicazioneScontiDettaglio"]
             elif (self._fonteValore == "vendita_senza_iva"):
                 prezzoLordo = listino["prezzoIngrosso"]
+                sconti = listino["scontiIngrosso"]
+                applicazione = listino["applicazioneScontiIngrosso"]
         self._righe[0]["prezzoLordo"] = prezzoLordo
         self._righe[0]["idListino"] = idListino
+        self._righe[0]["sconti"] = sconti
+        self._righe[0]["applicazioneSconti"] = applicazione
+        
 
     def getPrezzoNetto(self):
         """ calcola il prezzo netto dal prezzo lordo e dagli sconti """
@@ -1198,7 +1213,8 @@ del documento.
         self._refresh()
 
     def on_righe_treeview_row_activated(self, treeview, path, column):
-        """ riporta la riva selezionata in primo piano per la modifica """
+        """ riporta la riga selezionata in primo piano per la modifica"""
+
         sel = treeview.get_selection()
         (model, self._iteratorRiga) = sel.get_selected()
         (selRow, ) = path

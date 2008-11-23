@@ -11,6 +11,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
+from Sconto import Sconto
 
 class ScontoVenditaIngrosso(Dao):
     """  """
@@ -18,12 +19,23 @@ class ScontoVenditaIngrosso(Dao):
         Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
 
     def filter_values(self,k,v):
-        dic= {'idListino' : sconti_vendita_Ingrosso.c.id_listino_articolo ==v}
+        dic= {'idListino' : sconti_vendita_ingrosso.c.id_listino ==v,
+                    'idArticolo':sconti_vendita_ingrosso.c.id_articolo ==v,
+                    'dataListinoArticolo':sconti_vendita_ingrosso.c.data_listino_articolo==v}
         return  dic[k]
 
-sconto_fornitura=Table('sconti_vendita_ingrosso',
+sconto=Table('sconto',
+            params['metadata'],
+            schema = params['schema'],
+            autoload=True)
+
+sconti_vendita_ingrosso=Table('sconti_vendita_ingrosso',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
 
-std_mapper = mapper(ScontoVenditaIngrosso, sconti_vendita_Ingrosso, order_by=sconti_vendita_ingrosso.c.id)
+j = join(sconto, sconti_vendita_ingrosso)
+
+std_mapper = mapper(ScontoVenditaIngrosso,j,properties={
+                    "id" : [sconto.c.id, sconti_vendita_ingrosso.c.id]},
+                    order_by=sconti_vendita_ingrosso.c.id)
