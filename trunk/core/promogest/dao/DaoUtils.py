@@ -148,16 +148,15 @@ def scontiVenditaDettaglioDel(idListino=None,idArticolo=None,dataListinoArticolo
     
     from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
     row = ScontoVenditaDettaglio(isList=True).select(idListino=idListino,
-                                                            idArticolo=idArticolo,
-                                                            dataListinoArticolo=dataListinoArticolo,
-                                                            offset = None,
-                                                            batchSize = None,
-                                                            orderBy="id_listino")
-    if row is not None:
-        for r in row:
-            params['session'].delete(r)
-        params["session"].commit()
-        return True
+                                                    idArticolo=idArticolo,
+                                                    #dataListinoArticolo=dataListinoArticolo,
+                                                    offset = None,
+                                                    batchSize = None,
+                                                    orderBy="id_listino")
+    for r in row:
+        params['session'].delete(r)
+    params["session"].commit()
+    return True
 
 def scontiVenditaIngrossoDel(idListino_=None,idArticolo_=None,dataListinoArticolo_=None):
     """cancella gli sconti associati al listino articolo"""

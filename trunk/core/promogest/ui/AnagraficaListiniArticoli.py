@@ -705,7 +705,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         self.dao.prezzo_dettaglio = float(self.prezzo_dettaglio_entry.get_text())
         self.dao.prezzo_ingrosso = float(self.prezzo_ingrosso_entry.get_text())
         self.dao.data_listino_articolo = datetime.datetime.now()
-        
+
         sconti_dettaglio = []
         self.dao.applicazione_sconti = "scalare"
         for s in self.sconti_dettaglio_widget.getSconti():
@@ -713,9 +713,9 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             daoSconto.valore = s["valore"]
             daoSconto.tipo_sconto = s["tipo"]
             sconti_dettaglio.append(daoSconto)
-            
-        self.dao.sconto_vendita_dettaglio = sconti_dettaglio
-        
+
+        #self.dao.sconto_vendita_dettaglio = sconti_dettaglio
+
         sconti_ingrosso = []
         self.dao.applicazione_sconti = "scalare"
         for s in self.sconti_ingrosso_widget.getSconti():
@@ -724,6 +724,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             daoSconto.tipo_sconto = s["tipo"]
             sconti_ingrosso.append(daoSconto)
             
-        self.dao.sconto_vendita_ingrosso = sconti_ingrosso
+        #self.dao.sconto_vendita_ingrosso = sconti_ingrosso
         
         self.dao.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})

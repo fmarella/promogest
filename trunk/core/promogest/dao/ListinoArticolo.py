@@ -193,20 +193,19 @@ class ListinoArticolo(Dao):
             #pdb.set_trace()
 
             for key,value in sconti.items():
-                if key=="dettaglio" and len(value) != 0:
-                    #scontiVenditaDettaglioDel(idListino=self.id_listino,
-                                                            #idArticolo=self.id_articolo,
-                                                            #dataListinoArticolo=self.data_listino_articolo)
+                if (key=="dettaglio") and (value):
+                    print "TTTTTTTTTTTTTTTTTTTTTTTTTT", value
                     for v in value:
                         print "VVVVVVVVVVVVVVVVVVVV", v
+                        scontiVenditaDettaglioDel(idListino=self.id_listino,
+                                                    idArticolo=self.id_articolo)
                         v.id_listino = self.id_listino
                         v.id_articolo = self.id_articolo
                         v.data_listino_articolo = self.data_listino_articolo
                         print v.id_listino,v.id_articolo,v.data_listino_articolo,v.valore,v.tipo_sconto
-                        print v, dir(v)
                         params["session"].add(v)
                         params["session"].commit()
-                elif key=="ingrosso" and len(value) != 0:
+                elif (key=="ingrosso") and (value):
                     scontiVenditaIngrossoDel(idListino=self.id_listino,
                                                             idArticolo=self.id_articolo,
                                                             dataListinoArticolo=self.data_listino_articolo)
@@ -218,8 +217,8 @@ class ListinoArticolo(Dao):
                         params["session"].add(u)
                         params["session"].commit()
 
-        params["session"].commit()
-        params["session"].flush()
+        #params["session"].commit()
+        #params["session"].flush()
             #self.__scontiRigaDocumento[i].persist()
 
 
