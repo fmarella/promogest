@@ -1544,9 +1544,9 @@ del documento.
             anagWindow.set_transient_for(self.dialogTopLevel)
         else:
             for var in Environment.tagliacoloretempdata[1]:
-                self.mostraArticolo(var['id'])
+                self.mostraArticolo(var['id'],art=var)
 
-    def mostraArticolo(self, id):
+    def mostraArticolo(self, id, art=None):
         self.articolo_entry.set_text('')
         self.descrizione_entry.set_text('')
         self.codice_articolo_fornitore_entry.set_text('')
@@ -1587,17 +1587,60 @@ del documento.
                     self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
                     self.promowear_manager_taglia_colore_togglebutton.set_sensitive(True)
                     self.idArticoloWithVarianti = articolo
+                if art:
+                    print "ARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT2", art
+                    articolo = art
+                    self._righe[0]["idArticolo"] = id
+                    self._righe[0]["codiceArticolo"] = articolo["codice"]
+                    self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
+                    self._righe[0]["descrizione"] = articolo["denominazione"]
+                    self.descrizione_entry.set_text(self._righe[0]["descrizione"])
+                    self._righe[0]["percentualeIva"] = articolo["percentualeAliquotaIva"]
+                    self.percentuale_iva_entry.set_text('%-5.2f' % self._righe[0]["percentualeIva"])
+                    self._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
+                    self._righe[0]["unitaBase"] = articolo["unitaBase"]
+                    self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
+                    if ((self._fonteValore == "acquisto_iva") or  (self._fonteValore == "acquisto_senza_iva")):
+                        costoLordo = articolo['fornitura']["prezzoLordo"]
+                        if costoLordo:costoLordo = costoLordo.replace(',','.')
+                        costoNetto = articolo['fornitura']["prezzoNetto"]
+                        if costoNetto:costoNetto = costoNetto.replace(',','.')
+                        if self._fonteValore == "acquisto_iva":
+                            costoLordo = calcolaPrezzoIva(costoLordo, self._righe[0]["percentualeIva"])
+                            costoNetto = calcolaPrezzoIva(costoNetto, self._righe[0]["percentualeIva"])
+                        self._righe[0]["prezzoLordo"] = float(costoLordo)
+                        self.prezzo_lordo_entry.set_text(Environment.conf.number_format % float(self._righe[0]["prezzoLordo"]))
+                        self._righe[0]["prezzoNetto"] = float(costoNetto)
+                        self.prezzo_netto_label.set_text(('%14.' + Environment.conf.decimals + 'f') % float(self._righe[0]["prezzoNetto"]))
+                        self._righe[0]["prezzoNettoUltimo"] = float(costoNetto)
+                        self._righe[0]["sconti"] = articolo['fornitura']["sconti"]
+                        self._righe[0]["applicazioneSconti"] = articolo['fornitura']["applicazioneSconti"]
+                        self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
+                        self._righe[0]["codiceArticoloFornitore"] = articolo['fornitura']["codiceArticoloFornitore"]
+                        self.codice_articolo_fornitore_entry.set_text(self._righe[0]["codiceArticoloFornitore"])
+                        quantita =articolo["quantita"]
+                        quantita = quantita.replace(',','.')
+                        self._righe[0]["quantita"] = quantita
+                        self.quantita_entry.set_text(self._righe[0]["quantita"])
+                        if self._righe[0]["quantita"]:
+                            self.calcolaTotaleRiga()
+
+                    elif ((self._fonteValore == "vendita_iva") or
+                        (self._fonteValore == "vendita_senza_iva")):
+                        self.refresh_combobox_listini()
+                    self.on_confirm_row_button_clicked(self.dialogTopLevel)
             else:
                 articolo = leggiArticolo(id)
-            self._righe[0]["idArticolo"] = id
-            self._righe[0]["codiceArticolo"] = articolo["codice"]
-            self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
-            self._righe[0]["descrizione"] = articolo["denominazione"]
-            self.descrizione_entry.set_text(self._righe[0]["descrizione"])
-            self._righe[0]["percentualeIva"] = articolo["percentualeAliquotaIva"]
-            self.percentuale_iva_entry.set_text('%-5.2f' % self._righe[0]["percentualeIva"])
-            self._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
-            self._righe[0]["unitaBase"] = articolo["unitaBase"]
+                self._righe[0]["idArticolo"] = id
+                self._righe[0]["codiceArticolo"] = articolo["codice"]
+                self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
+                self._righe[0]["descrizione"] = articolo["denominazione"]
+                self.descrizione_entry.set_text(self._righe[0]["descrizione"])
+                self._righe[0]["percentualeIva"] = articolo["percentualeAliquotaIva"]
+                self.percentuale_iva_entry.set_text('%-5.2f' % self._righe[0]["percentualeIva"])
+                self._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
+                self._righe[0]["unitaBase"] = articolo["unitaBase"]
+                self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
             self._righe[0]["idMultiplo"] = None
             self._righe[0]["moltiplicatore"] = 1
             self._righe[0]["prezzoLordo"] = 0
@@ -1605,7 +1648,6 @@ del documento.
             self._righe[0]["sconti"] = []
             self._righe[0]["applicazioneSconti"] = 'scalare'
             self._righe[0]["codiceArticoloFornitore"] = ''
-            self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
 
             if ((self._fonteValore == "acquisto_iva") or  (self._fonteValore == "acquisto_senza_iva")):
                 fornitura = leggiFornitura(id, self.id_persona_giuridica_customcombobox.getId(), data)

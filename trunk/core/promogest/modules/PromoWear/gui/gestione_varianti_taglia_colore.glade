@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sat Nov 22 00:35:59 2008 -->
+<!--Generated with glade3 3.4.5 on Sun Nov 23 01:33:14 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="gestione_varianti_taglie_colore">
-    <property name="width_request">740</property>
+    <property name="width_request">755</property>
     <property name="height_request">500</property>
     <property name="visible">True</property>
     <property name="has_tooltip">True</property>
@@ -76,12 +76,6 @@
               <widget class="GtkHBox" id="hbox1">
                 <property name="visible">True</property>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
                   <widget class="GtkLabel" id="quantita_label">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">Quantità:</property>
@@ -90,7 +84,6 @@
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="padding">5</property>
-                    <property name="position">2</property>
                   </packing>
                 </child>
                 <child>
@@ -102,7 +95,7 @@
                   </widget>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="position">3</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
@@ -114,7 +107,7 @@
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="padding">5</property>
-                    <property name="position">4</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
                 <child>
@@ -123,6 +116,32 @@
                     <property name="can_focus">True</property>
                     <signal name="focus_out_event" handler="on_price_entry_focus_out_event"/>
                     <signal name="key_press_event" handler="on_price_entry_focus_out_event"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label5">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Sconto:</property>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="padding">4</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkEntry" id="discount_entry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="has_tooltip">True</property>
+                    <property name="tooltip_text">Inserisci un valore di sconto di questo tipo 4% o 4€</property>
+                    <signal name="focus_out_event" handler="on_discount_entry_focus_out_event"/>
+                    <signal name="key_press_event" handler="on_discount_entry_focus_out_event"/>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
@@ -204,6 +223,10 @@
                 <property name="use_stock">True</property>
                 <property name="response_id">0</property>
               </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+              </packing>
             </child>
             <child>
               <widget class="GtkButton" id="cancel_button">
@@ -216,12 +239,14 @@
                 <signal name="clicked" handler="on_cancel_button_clicked"/>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
               <widget class="GtkButton" id="conferma_direttamente_button">
-                <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="response_id">-5</property>
@@ -263,6 +288,8 @@
                 </child>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -310,6 +337,8 @@
                 </child>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">3</property>
               </packing>
             </child>
