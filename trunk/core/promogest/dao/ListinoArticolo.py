@@ -143,7 +143,7 @@ class ListinoArticolo(Dao):
     def _getScontiVenditaIngrosso(self):
         self.__dbScontiVenditaIngr = params['session'].query(ScontoVenditaIngrosso).filter_by(id_listino=self.id_listino,
                                                                                             id_articolo=self.id_articolo,
-                                                                                            data_listino_articolo=self.data_listino_articolo)
+                                                                                            data_listino_articolo=self.data_listino_articolo).all()
         self.__scontiVenditaIngr= self.__dbScontiVenditaIngr
         return self.__scontiVenditaIngr
 
@@ -182,36 +182,29 @@ class ListinoArticolo(Dao):
             self.listino_attuale = True
         params["session"].add(self)
         params["session"].commit()
-
+        scontiVenditaDettaglioDel(idListino=self.id_listino,
+                                    idArticolo=self.id_articolo,
+                                    dataListinoArticolo=self.data_listino_articolo)
+        scontiVenditaIngrossoDel(idListino=self.id_listino,
+                                            idArticolo=self.id_articolo,
+                                            dataListinoArticolo=self.data_listino_articolo)
         if sconti:
             for key,value in sconti.items():
                 if (key=="dettaglio") and (value):
-                    scontiVenditaDettaglioDel(idListino=self.id_listino,
-                                                idArticolo=self.id_articolo,
-                                                dataListinoArticolo=self.data_listino_articolo)
                     for v in value:
                         v.id_listino = self.id_listino
                         v.id_articolo = self.id_articolo
                         v.data_listino_articolo = self.data_listino_articolo
                         print v.id_listino,v.id_articolo,v.data_listino_articolo,v.valore,v.tipo_sconto
                         params["session"].add(v)
-                        #params["session"].commit()
                 elif (key=="ingrosso") and (value):
-                    scontiVenditaIngrossoDel(idListino=self.id_listino,
-                                            idArticolo=self.id_articolo,
-                                            dataListinoArticolo=self.data_listino_articolo)
-                for u in value:
+                    for u in value:
                         u.id_listino = self.id_listino
                         u.id_articolo = self.id_articolo
-                        u.data_listino = self.data_listino_articolo
-                        print u.id_listino,u.id_articolo,u.data_listino_articolo,u.valore,u.tipo_sconto
+                        u.data_listino_articolo = self.data_listino_articolo
+                        print u.id_listino,u.id_articolo,u.data_listino_articolo,u.valore,u.tipo_sconto+'_ingrosso'
                         params["session"].add(u)
-                        #params["session"].commit()
-
         params["session"].commit()
-        #params["session"].flush()
-            #self.__scontiRigaDocumento[i].persist()
-
 
 listinoarticolo=Table('listino_articolo',
                 params['metadata'],

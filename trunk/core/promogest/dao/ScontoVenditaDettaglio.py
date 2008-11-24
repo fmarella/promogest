@@ -25,6 +25,7 @@ class ScontoVenditaDettaglio(Dao):
             dic = {k:sconti_vendita_dettaglio.c.id_articolo ==v}
         elif k == 'dataListinoArticolo':
             dic = {k:sconti_vendita_dettaglio.c.data_listino_articolo==v}
+
         return  dic[k]
         
 sconto=Table('sconto', params['metadata'],schema = params['schema'],autoload=True)

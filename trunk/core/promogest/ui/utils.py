@@ -323,8 +323,8 @@ def leggiListino(idListino, idArticolo=None):
             if daoListinoArticolo is not None:
                 _prezzoIngrosso = daoListinoArticolo.prezzo_ingrosso
                 _prezzoDettaglio = daoListinoArticolo.prezzo_dettaglio
-                _scontiDettaglio = daoListinoArticolo.sconti_vendita_dettaglio
-                _scontiIngrosso = daoListinoArticolo.sconti_vendita_ingrosso
+                _scontiDettaglio = daoListinoArticolo.sconto_vendita_dettaglio
+                _scontiIngrosso = daoListinoArticolo.sconto_vendita_ingrosso
                 _applicazioneDettaglio = daoListinoArticolo.applicazione_sconti_dettaglio
                 _applicazioneIngrosso = daoListinoArticolo.applicazione_sconti_ingrosso
                 return {"denominazione": _denominazione,
