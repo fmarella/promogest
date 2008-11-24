@@ -64,7 +64,6 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
                                                 data=data)
         else:
             if daoArticolo is not None:
-                print "BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
                 _id = id
                 _denominazione = daoArticolo.denominazione or ''
                 _codice = daoArticolo.codice or ''

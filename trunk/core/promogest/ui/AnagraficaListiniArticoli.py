@@ -368,11 +368,11 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         if button.get_property('active') is True:
             return
         _scontoDettaglio= self.sconti_dettaglio_widget.getSconti()
-        print _scontoDettaglio,"____________________SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSss"
-        for s in _scontoDettaglio:
-            self.dao.sconto_vendita_dettaglio.append(ScontoVenditaDettaglio().getRecord())
-            self.dao.sconto_vendita_dettaglio[-1].tipo_sconto = s["tipo"]
-            self.dao.sconto_vendita_dettaglio[-1].valore = float(s["valore"])
+        #print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", _scontoDettaglio
+        #for s in _scontoDettaglio:
+            #self.dao.sconto_vendita_dettaglio.append(ScontoVenditaDettaglio().getRecord())
+            #self.dao.sconto_vendita_dettaglio[-1].tipo_sconto = s["tipo"]
+            #self.dao.sconto_vendita_dettaglio[-1].valore = float(s["valore"])
 ##        self.dao.applicazione_sconti_dettaglio = self.sconti_dettaglio_widget.getApplicazione()
     
     def on_sconti_ingrosso_widget_button_toggled(self, button):
@@ -380,10 +380,10 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             return
 
         _scontoIngrosso= self.sconti_ingrosso_widget.getSconti()
-        for s in _scontoIngrosso:
-            self.dao.sconto_vendita_ingrosso.append(ScontoVenditaIngrosso().getRecord())
-            self.dao.sconto_vendita_ingrosso[-1].tipo_sconto = s["tipo"]
-            self.dao.sconto_vendita_ingrosso[-1].valore = s["valore"]
+        #for s in _scontoIngrosso:
+            #self.dao.sconto_vendita_ingrosso.append(ScontoVenditaIngrosso().getRecord())
+            #self.dao.sconto_vendita_ingrosso[-1].tipo_sconto = s["tipo"]
+            #self.dao.sconto_vendita_ingrosso[-1].valore = s["valore"]
 ##        self.dao.applicazione_sconti_ingrosso = self.sconti_ingrosso_widget.getApplicazione()
 
     def calcolaPercentualiDettaglio(self, widget=None, event=None):
@@ -620,7 +620,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                 self.id_articolo_customcombobox.set_sensitive(False)
         else:
             self.id_articolo_customcombobox.set_sensitive(False)
-        print self.dao.sconto_vendita_ingrosso,self.dao.sconto_vendita_dettaglio,"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
         self.sconti_dettaglio_widget.setValues(sco=self.dao.sconto_vendita_dettaglio)
         self.sconti_ingrosso_widget.setValues(sco=self.dao.sconto_vendita_ingrosso)
         print "PERCHé SEI VUOTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.dao.id_articolo

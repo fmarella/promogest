@@ -11,6 +11,7 @@ import gtk, gobject
 import threading, os, signal, popen2, md5
 from promogest import Environment
 from GladeWidget import GladeWidget
+from promogest.lib.UpdateDB import *
 from AnagraficaAziende import AnagraficaAziende
 from ElencoMagazzini import ElencoMagazzini
 from ElencoListini import ElencoListini

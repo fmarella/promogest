@@ -121,15 +121,14 @@ class ListinoArticolo(Dao):
 
 
     def _getScontiVenditaDettaglio(self):
-        if self.__scontiVenditaDett is None:
-            self.__dbScontiVenditaDett = params['session'].query(ScontoVenditaDettaglio).filter_by(id_listino=self.id_listino,
-                                                                                                                    id_articolo=self.id_articolo,
-                                                                                                                    data_listino_articolo=self.data_listino_articolo).all()
-            self.__scontiVenditaDett= self.__dbScontiVenditaDett
-        return self.__scontivenditaDett
+        self.__dbScontiVenditaDett = params['session'].query(ScontoVenditaDettaglio).filter_by(id_listino=self.id_listino,
+                                                                                            id_articolo=self.id_articolo,
+                                                                                            data_listino_articolo=self.data_listino_articolo).all()
+        self.__scontiVenditaDett= self.__dbScontiVenditaDett
+        return self.__scontiVenditaDett
 
     def _setScontiVenditaDettaglio(self,value):
-        self.__scontivenditaDett = value
+        self.__scontiVenditaDett = value
 
     sconto_vendita_dettaglio = property(_getScontiVenditaDettaglio, _setScontiVenditaDettaglio)
 
@@ -142,15 +141,14 @@ class ListinoArticolo(Dao):
     applicazione_sconti_dettaglio = property(_getApplicazioneScontiDettaglio)
 
     def _getScontiVenditaIngrosso(self):
-        if self.__scontiVenditaIngr is None:
-            self.__dbScontiVenditaIngr = params['session'].query(ScontoVenditaIngrosso).filter_by(id_listino=self.id_listino,
-                                                                                                                    id_articolo=self.id_articolo,
-                                                                                                                    data_listino_articolo=self.data_listino_articolo)
-            self.__scontiVenditaIngr= self.__dbScontiVenditaIngr
+        self.__dbScontiVenditaIngr = params['session'].query(ScontoVenditaIngrosso).filter_by(id_listino=self.id_listino,
+                                                                                            id_articolo=self.id_articolo,
+                                                                                            data_listino_articolo=self.data_listino_articolo)
+        self.__scontiVenditaIngr= self.__dbScontiVenditaIngr
         return self.__scontiVenditaIngr
 
     def _setScontiVenditaIngrosso(self,value):
-        self.__scontivenditaIngr = value
+        self.__scontiVenditaIngr = value
 
     sconto_vendita_ingrosso = property(_getScontiVenditaIngrosso, _setScontiVenditaIngrosso)    
 
@@ -200,9 +198,9 @@ class ListinoArticolo(Dao):
                         #params["session"].commit()
                 elif (key=="ingrosso") and (value):
                     scontiVenditaIngrossoDel(idListino=self.id_listino,
-                                                            idArticolo=self.id_articolo,
-                                                            dataListinoArticolo=self.data_listino_articolo)
-                    for u in value:
+                                            idArticolo=self.id_articolo,
+                                            dataListinoArticolo=self.data_listino_articolo)
+                for u in value:
                         u.id_listino = self.id_listino
                         u.id_articolo = self.id_articolo
                         u.data_listino = self.data_listino_articolo
