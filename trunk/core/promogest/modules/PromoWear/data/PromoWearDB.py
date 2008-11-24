@@ -13,10 +13,10 @@ from promogest.dao.Dao import Dao
 
 #def create()
 #if hasattr(conf, 'PromoWear'):
-    #if conf.PromoWear.primoavvio=="yes":
-        """ tabelle schema principale """
+#if conf.PromoWear.primoavvio=="yes":
+""" tabelle schema principale """
 
-        #creo tabella anno abbigliamento in schema principale e ci metto i dati di default
+#creo tabella anno abbigliamento in schema principale e ci metto i dati di default
 annoAbbigliamentoTable = Table('anno_abbigliamento', params['metadata'],
                     Column('id',Integer,primary_key=True),
                     Column('denominazione',String(50),nullable=False),
