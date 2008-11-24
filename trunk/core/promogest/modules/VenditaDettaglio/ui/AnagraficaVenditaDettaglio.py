@@ -537,8 +537,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         else:
             if self._currentRow['tipoSconto'] == self._simboloPercentuale:
-                self._currentRow['prezzoScontato'] = prezzo - (prezzo * self._currentRow['valoreSconto']) / 100
-                self.prezzo_scontato_entry.set_text(Environment.conf.number_format % self._currentRow['prezzoScontato'])
+                self._currentRow['prezzoScontato'] = Decimal(str(prezzo)) - (Decimal(str(prezzo)) * self._currentRow['valoreSconto']) / 100
+                self.prezzo_scontato_entry.set_text(str( self._currentRow['prezzoScontato']))
                 self.marginevalue_label.set_text('')
 
             else:
@@ -993,8 +993,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             # Ricerca listino_articolo
             listino = leggiListino(self.id_listino, idArticolo)
             prezzo = listino["prezzoDettaglio"]
-            valoreSconto = 0
-            tipoSconto = None
+            valoreSconto = listino["scontiDettaglio"][0].valore
+            tipoSconto = listino["scontiDettaglio"][0].tipo_sconto
             prezzoScontato = prezzo
             quantita = 1
 
