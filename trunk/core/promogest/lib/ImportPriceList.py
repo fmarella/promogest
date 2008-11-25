@@ -49,6 +49,8 @@ possibleFieldsKeys = ['Codice',
                       'Prezzo vendita NON ivato',
                       'Prezzo acquisto ivato',
                       'Prezzo acquisto NON ivato',
+                      'Sconto Vendita Dettaglio',
+                      'Sconto Vendita Ingrosso',
                       'Valore nullo']
 # possibleFieldsValues is a global module list containing all real fields that is possible to import from a price list
 possibleFieldsValues = ['codice_articolo',
@@ -64,6 +66,8 @@ possibleFieldsValues = ['codice_articolo',
                         'prezzo_vendita_non_ivato',
                         'prezzo_acquisto_ivato',
                         'prezzo_acquisto_non_ivato',
+                        'sconto_vendita_dettaglio',
+                        'sconto_vendita_ingrosso',
                         'chiave_nulla_']
 # possibleFieldsDict is a global module dictionary containing all fields that is possible to import from a price list
 possibleFieldsDict = dict(zip(possibleFieldsKeys, possibleFieldsValues))
@@ -339,9 +343,6 @@ class ImportPriceListModels(GladeWidget):
         treeview = self.fields_treeview
         renderer = gtk.CellRendererText()
 
-##        old_col = treeview.get_column(0)
-##        if old_col is not None:
-##            treeview.remove_column(old_col)
         column = gtk.TreeViewColumn('Campo', renderer, text=0)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
         column.set_clickable(True)
@@ -419,6 +420,10 @@ class ImportPriceListModels(GladeWidget):
                 self.prezzo_acquisto_ivato_cb.set_active(True)
             elif f == 'Prezzo acquisto NON ivato':
                 self.prezzo_acquisto_non_ivato_cb.set_active(True)
+            elif f == 'Sconto Vendita Dettaglio':
+                self.sconto_vendita_dettaglio_cb.set_active(True)
+            elif f == 'Sconto Vendita Ingrosso':
+                self.sconto_vendita_ingrosso_cb.set_active(True)
         def_list = ['Aliquota iva','Famiglia','Categoria','Unita base']
         self.default_unita_base_combobox.set_sensitive(False)
         self.default_categoria_combobox.set_sensitive(False)
@@ -463,6 +468,8 @@ class ImportPriceListModels(GladeWidget):
         self.prezzo_vendita_ivato_cb.set_active(False)
         self.prezzo_vendita_non_ivato_cb.set_active(False)
         self.prezzo_acquisto_ivato_cb.set_active(False)
+        self.sconto_vendita_dettaglio_cb.set_active(False)
+        self.sconto_vendita_ingrosso_cb.set_active(False)
         self.draw()
 
     def on_field_checkbutton_checked(self, checkbutton):
@@ -1081,6 +1088,29 @@ class ProductFromCsv:
                     daoPriceListProduct.prezzo_ingrosso = prezzo
             else:
                 daoPriceListProduct.prezzo_ingrosso = Decimal('0')
+                
+            sconti_ingrosso = [ScontoVenditaIngrosso().getRecord(),]
+            sconti_dettaglio = [ScontoVenditaDettaglio().getRecord(),]
+            if self.sconto_vendita_ingrosso is not None:
+                try:
+                    sconti_ingrosso[0].valore = Decimal(self.sconto_vendita_ingrosso or 0)
+                    sconti_ingrosso[0].tipo_sconto = 'percentuale'
+                    daoPriceListProduct.sconto_vendita_ingrosso = sconti_ingrosso
+                except:
+                    sconti_ingrosso[0].valore = Decimal(self.checkDecimalSymbol(self.sconto_vendita_ingrosso, decimalSymbol))
+                    sconti_ingrosso[0].tipo_sconto = 'percentuale'
+                    daoPriceListProduct.sconto_vendita_ingrosso = sconti_ingrosso
+            
+            if self.sconto_vendita_dettaglio is not None:
+                try:
+                    sconti_dettaglio[0].valore = Decimal(self.sconto_vendita_dettaglio or 0)
+                    sconti_dettaglio[0].tipo_sconto = 'percentuale'
+                    daoPriceListProduct.sconto_vendita_dettaglio = sconti_dettaglio
+                except:
+                    sconti_dettaglio[0].valore = Decimal(self.checkDecimalSymbol(self.sconto_vendita_dettaglio, decimalSymbol))
+                    sconti_dettaglio[0].tipo_sconto = 'percentuale'
+                    daoPriceListProduct.sconto_vendita_dettaglio = sconti_dettaglio
+
             if self.prezzo_acquisto_non_ivato is not None:
                 prezzo = self.prezzo_acquisto_non_ivato or '0'
                 try:
