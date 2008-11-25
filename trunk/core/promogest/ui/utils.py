@@ -48,7 +48,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
         print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         daoArticolo = Articolo(id=id).getRecord()
         variantiList = []
-        if ("PromoWear" in Environment.modulesList) and (daoArticolo.id_articolo_padre is None) and (daoArticolo.id_articolo is not None) and (daoArticolo is not None):
+        if ("PromoWear" in Environment.modulesList) and (daoArticolo.id_articolo_padre is None) and (daoArticolo.id_articolo_taglia_colore is not None) and (daoArticolo is not None):
             varianti = daoArticolo.articoliVarianti
             from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
             for varia in varianti:
@@ -320,24 +320,27 @@ def leggiListino(idListino, idArticolo=None):
                                             .select(idListino=idListino,
                                             idArticolo = idArticolo,
                                             batchSize=None, orderBy="id_listino")[0]
-            if daoListinoArticolo is not None:
-                _prezzoIngrosso = daoListinoArticolo.prezzo_ingrosso
-                _prezzoDettaglio = daoListinoArticolo.prezzo_dettaglio
-                _scontiDettaglio = daoListinoArticolo.sconto_vendita_dettaglio
-                _scontiIngrosso = daoListinoArticolo.sconto_vendita_ingrosso
-                _applicazioneDettaglio = daoListinoArticolo.applicazione_sconti_dettaglio
-                _applicazioneIngrosso = daoListinoArticolo.applicazione_sconti_ingrosso
+                if daoListinoArticolo is not None:
+                    _prezzoIngrosso = daoListinoArticolo.prezzo_ingrosso
+                    _prezzoDettaglio = daoListinoArticolo.prezzo_dettaglio
+                    _scontiDettaglio = daoListinoArticolo.sconto_vendita_dettaglio
+                    _scontiIngrosso = daoListinoArticolo.sconto_vendita_ingrosso
+                    _applicazioneDettaglio = daoListinoArticolo.applicazione_sconti_dettaglio
+                    _applicazioneIngrosso = daoListinoArticolo.applicazione_sconti_ingrosso
+
                 return {"denominazione": _denominazione,
-                                    "prezzoIngrosso": _prezzoIngrosso,
-                                    "prezzoDettaglio": _prezzoDettaglio,
-                                    "scontiDettaglio":_scontiDettaglio,
-                                    "scontiIngrosso":_scontiIngrosso,
-                                    'applicazioneScontiDettaglio':_applicazioneDettaglio,
-                                    'applicazioneScontiIngrosso':_applicazioneIngrosso}
+                        "prezzoIngrosso": _prezzoIngrosso,
+                        "prezzoDettaglio": _prezzoDettaglio,
+                        "scontiDettaglio":_scontiDettaglio,
+                        "scontiIngrosso":_scontiIngrosso,
+                        'applicazioneScontiDettaglio':_applicazioneDettaglio,
+                        'applicazioneScontiIngrosso':_applicazioneIngrosso}
         except:
             print "leggiListino ha cannato qualcosa.....2"
-            
-    
+
+    return {"denominazione": _denominazione,
+            "prezzoIngrosso": _prezzoIngrosso,
+            "prezzoDettaglio": _prezzoDettaglio}
 
 def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=False):
     """ Restituisce un dizionario con le informazioni sulla fornitura letta """

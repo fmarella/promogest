@@ -278,7 +278,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
-        
+
         if "SuMisura" in Environment.modulesList:
             column = gtk.TreeViewColumn('H', rendererSx, text=4)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
@@ -729,7 +729,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._righe[0]["idListino"] = idListino
         self._righe[0]["sconti"] = sconti
         self._righe[0]["applicazioneSconti"] = applicazione
-        
+
 
     def getPrezzoNetto(self):
         """ calcola il prezzo netto dal prezzo lordo e dagli sconti """
