@@ -993,9 +993,13 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             # Ricerca listino_articolo
             listino = leggiListino(self.id_listino, idArticolo)
             prezzo = listino["prezzoDettaglio"]
-            valoreSconto = listino["scontiDettaglio"][0].valore
-            tipoSconto = listino["scontiDettaglio"][0].tipo_sconto
-            prezzoScontato = prezzo
+            if  len(listino["scontiDettaglio"]) > 0:
+                valoreSconto = listino["scontiDettaglio"][0].valore
+                tipoSconto = listino["scontiDettaglio"][0].tipo_sconto
+            else:
+                valoreSconto = 0
+                tipoSconto = 'percentuale'
+            prezzoScontato = prezzo - prezzo * valoreSconto / 100
             quantita = 1
 
             self.activate_item(idArticolo,
