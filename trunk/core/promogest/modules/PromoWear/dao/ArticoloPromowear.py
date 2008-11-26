@@ -156,21 +156,26 @@ class Articolo(Dao):
     def getArticoliTagliaColore(self, idGruppoTaglia=None, idTaglia=None, idColore=None):
         """ Restituisce una lista di Dao ArticoloTagliaColore figli del Dao Articolo """
         #from promogest.modules.PromoWear.dao.ArticoloTagliaColore import select
-        articolo_relato = ArticoloTagliaColore(id=self.id).getRecord()
-        if not articolo_relato.id_articolo_padre:
-            articoli = ArticoloTagliaColore(isList=True).select(idArticoloPadre=articolo_relato.id_articolo,
-                                                                idGruppoTaglia=idGruppoTaglia,
-                                                                idTaglia=idTaglia,
-                                                                idColore=idColore,
-                                                                offset=None,
-                                                                batchSize=None)
-        else:
-            articoli = ArticoloTagliaColore(isList=True).select(idArticoloPadre=articolo_relato.id_articolo_padre,
-                                                                idGruppoTaglia=idGruppoTaglia,
-                                                                idTaglia=idTaglia,
-                                                                idColore=idColore,
-                                                                offset=None,
-                                                                batchSize=None)
+        articoli = []
+        try:
+            articolo_relato = ArticoloTagliaColore(id=self.id).getRecord()
+            if not articolo_relato.id_articolo_padre:
+                articoli = ArticoloTagliaColore(isList=True).select(idArticoloPadre=articolo_relato.id_articolo,
+                                                                    idGruppoTaglia=idGruppoTaglia,
+                                                                    idTaglia=idTaglia,
+                                                                    idColore=idColore,
+                                                                    offset=None,
+                                                                    batchSize=None)
+            else:
+                articoli = ArticoloTagliaColore(isList=True).select(idArticoloPadre=articolo_relato.id_articolo_padre,
+                                                                    idGruppoTaglia=idGruppoTaglia,
+                                                                    idTaglia=idTaglia,
+                                                                    idColore=idColore,
+                                                                    offset=None,
+                                                                    batchSize=None)
+        except:
+            print "FOR DEBUG ONLY getArticoliTagliaColore FAILED"
+            pass
         return articoli
     articoliTagliaColore = property(getArticoliTagliaColore)
 

@@ -8,9 +8,6 @@
 # Author: Dr astico  (Marco Pinna)<marco@promotux.it>
 # Author: Francesco Meloni  <francesco@promotux.it>
 
-#!/usr/local/bin/python
-# coding: UTF-8
-
 from AnagraficaComplessa import AnagraficaEdit
 import gtk
 import promogest.dao.TestataDocumento
@@ -96,8 +93,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
             self.promowear_data_label.set_text("Gruppo Taglia:")
         else:
-            self.promowear_manager_taglia_colore_togglebutton.set_property("visible", False)
-            self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
+            self.promowear_manager_taglia_colore_togglebutton.destroy()
+            self.promowear_manager_taglia_colore_image.hide()
+            #self.promowear_manager_taglia_colore_togglebutton.set_property("visible", False)
+            #self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
             self.promowear_data_label.set_text('')
 
     def hideSuMisura(self):

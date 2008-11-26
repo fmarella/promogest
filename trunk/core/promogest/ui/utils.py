@@ -45,7 +45,6 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
     _quantita_minima = ''
     artiDict = {}
     if id is not None:
-        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         daoArticolo = Articolo(id=id).getRecord()
         variantiList = []
         if ("PromoWear" in Environment.modulesList) and (daoArticolo.id_articolo_padre is None) and (daoArticolo.id_articolo_taglia_colore is not None) and (daoArticolo is not None):
@@ -1921,3 +1920,22 @@ def checkCodiceDuplicato(codice=None,tipo=None):
         return False
     else:
         return True
+
+def articleType(dao):
+    if dao and "PromoWear" in Environment.modulesList:
+        print "RICICCIO", dao.id, dao
+        if (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre is None) and (dao.articoliTagliaColore):
+            print "ARTICOLO FATHER"
+            return "father"
+        elif (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre) and (not dao.articoliTagliaColore):
+            print "ARTICOLO SON"
+            return "son"
+        elif (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre is None) and (not dao.articoliTagliaColore):
+            print "ARTICOLO PLUS"
+            return "plus"
+        elif (dao.id) and (dao.id_articolo_taglia_colore is None) and (dao.id_articolo_padre is None) and (not dao.articoliTagliaColore):
+            print "ARTICOLO NORMAL"
+            return "normal"
+        elif not dao.id:
+            print "ARTICOLO NEW NORMAL"
+            return "new"

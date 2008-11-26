@@ -26,9 +26,7 @@ if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.dao.Taglia import Taglia
     from promogest.modules.PromoWear.dao.Colore import Colore
     from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
-    #import promogest.modules.PromoWear.dao.ArticoloPromowear
-    #from promogest.modules.PromoWear.dao.ArticoloPromowear import ArticoloPromowear as Articolo
-#else:
+    from promogest.modules.PromoWear.ui.AnagraficaArticoliExpand import articleTypeGuiManage, treeViewExpand
 
 class AnagraficaArticoli(Anagrafica):
     """ Anagrafica articoli """
@@ -215,89 +213,8 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
         if "PromoWear" in Environment.modulesList:
-            column = gtk.TreeViewColumn('Gruppo taglia', renderer, text=9, background=1)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self._changeOrderBy, 'denominazione_gruppo_taglia')
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(100)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('Taglia', renderer, text=10, background=1)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self._changeOrderBy, 'denominazione_taglia')
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(100)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('Colore', renderer, text=11, background=1)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self._changeOrderBy, 'denominazione_colore')
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(100)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('Anno', renderer, text=12, background=1)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self._changeOrderBy, 'anno')
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(100)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('Stagione', renderer, text=13, background=1)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self._changeOrderBy, 'stagione')
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(100)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('Genere', renderer, text=14, background=1)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self._changeOrderBy, 'genere')
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(100)
-            treeview.append_column(column)
-            self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str, str, str, str, str, str)
+            treeViewExpand(self, treeview, renderer)
         else:
-            self.gruppo_taglia_filter_label.set_no_show_all(True)
-            self.gruppo_taglia_filter_label.set_property('visible', False)
-            self.id_gruppo_taglia_articolo_filter_combobox.set_property('visible', False)
-            self.id_gruppo_taglia_articolo_filter_combobox.set_no_show_all(True)
-            self.taglia_filter_label.set_no_show_all(True)
-            self.taglia_filter_label.set_property('visible', False)
-            self.id_taglia_articolo_filter_combobox.set_property('visible', False)
-            self.id_taglia_articolo_filter_combobox.set_no_show_all(True)
-            self.colore_filter_label.set_no_show_all(True)
-            self.colore_filter_label.set_property('visible', False)
-            self.id_colore_articolo_filter_combobox.set_property('visible', False)
-            self.id_colore_articolo_filter_combobox.set_no_show_all(True)
-            self.anno_filter_label.set_no_show_all(True)
-            self.anno_filter_label.set_property('visible', False)
-            self.id_anno_articolo_filter_combobox.set_property('visible', False)
-            self.id_anno_articolo_filter_combobox.set_no_show_all(True)
-            self.stagione_filter_label.set_no_show_all(True)
-            self.stagione_filter_label.set_property('visible', False)
-            self.id_stagione_articolo_filter_combobox.set_property('visible', False)
-            self.id_stagione_articolo_filter_combobox.set_no_show_all(True)
-            self.genere_filter_label.set_no_show_all(True)
-            self.genere_filter_label.set_property('visible', False)
-            self.id_genere_articolo_filter_combobox.set_property('visible', False)
-            self.id_genere_articolo_filter_combobox.set_no_show_all(True)
-            self.taglie_colori_filter_label.set_no_show_all(True)
-            self.taglie_colori_filter_label.set_property('visible', False)
-            self.taglie_colori_filter_combobox.set_property('visible', False)
-            self.taglie_colori_filter_combobox.set_no_show_all(True)
             self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str)
         treeview.set_search_column(2)
 
@@ -676,171 +593,10 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             textBuffer.set_text('')
         self.note_textview.set_buffer(textBuffer)
         self.sospeso_checkbutton.set_active(self.dao.sospeso or False)
-
         if "PromoWear" in Environment.modulesList:
-            self.tipoArticoloTagliaColore=False
-            #articolo ancora non salvato o articolo senza taglia e colore
+             #articolo ancora non salvato o articolo senza taglia e colore
             # Articolo in anagrafica già salvato con id_articolo_padre pieno quindi è una variante
-            if self.dao.id and self.dao.id_articolo_padre is not None and self.dao.articoloTagliaColore:
-                self.memo_wear.set_text("""ARTICOLO VARIANTE""")
-                self.frame_promowear.set_sensitive(True)
-                # VARIANTE: niente gestione taglie, ma possibilita' di trattare i codici a barre
-                self.senza_taglie_colori_radiobutton.set_active(True)
-                self.con_taglie_colori_radiobutton.set_active(False)
-                self.senza_taglie_colori_radiobutton.set_sensitive(True)
-                self.con_taglie_colori_radiobutton.set_sensitive(False)
-
-                # niente possibilita' di variare gruppo taglie, genere, anno e stagione
-
-                findComboboxRowFromId(self.id_gruppo_taglia_customcombobox.combobox, self.dao.id_gruppo_taglia)
-                self.id_gruppo_taglia_customcombobox.set_property('visible', False)
-                self.denominazione_gruppo_taglia_label.set_markup(
-                        '<span weight="bold">%s</span>'
-                        % (self.dao.denominazione_gruppo_taglia,))
-                self.denominazione_gruppo_taglia_label.set_property('visible', True)
-                findComboboxRowFromId(self.id_genere_combobox, self.dao.id_genere)
-                self.id_genere_combobox.set_property('visible', False)
-                self.denominazione_genere_label.set_markup(
-                        '<span weight="bold">%s</span>'
-                        % (self.dao.genere,))
-                self.denominazione_genere_label.set_property('visible', True)
-                findComboboxRowFromId(self.id_stagione_combobox, self.dao.id_stagione)
-                self.id_stagione_combobox.set_property('visible', False)
-                findComboboxRowFromId(self.id_anno_combobox, self.dao.id_anno)
-                self.id_anno_combobox.set_property('visible', False)
-                self.denominazione_stagione_anno_label.set_markup(
-                        '<span weight="bold">%s - %s</span>'
-                        % (self.dao.stagione,self.dao.anno))
-                self.denominazione_stagione_anno_label.set_property('visible', True)
-
-                # possibilita' di variare taglia e colore solo nella misura in cui non ci sia già una variante
-                articoliTagliaColore = self.dao.articoliTagliaColore
-                idTaglie = set(a.id_taglia for a in articoliTagliaColore)
-                idTaglie.remove(self.dao.id_taglia)
-                fillComboboxTaglie(self.id_taglia_customcombobox.combobox,
-                    idGruppoTaglia=self.dao.id_gruppo_taglia,
-                    ignore=list(idTaglie))
-                findComboboxRowFromId(self.id_taglia_customcombobox.combobox,
-                                    self.dao.id_taglia)
-                self.id_taglia_customcombobox.set_property('visible', True)
-                self.denominazione_taglia_label.set_markup('-')
-                self.denominazione_taglia_label.set_property('visible', False)
-                idColori = set(a.id_colore for a in articoliTagliaColore)
-                idColori.remove(self.dao.id_colore)
-                fillComboboxColori(self.id_colore_customcombobox.combobox, ignore=list(idColori))
-                findComboboxRowFromId(self.id_colore_customcombobox.combobox, self.dao.id_colore)
-                self.id_colore_customcombobox.set_property('visible', True)
-                self.denominazione_colore_label.set_markup('-')
-                self.denominazione_colore_label.set_property('visible', False)
-
-                #self.id_aliquota_iva_customcombobox.set_sensitive(False)
-                #self.id_famiglia_articolo_customcombobox.set_sensitive(False)
-                #self.id_categoria_articolo_customcombobox.set_sensitive(False)
-                #self.id_unita_base_combobox.set_sensitive(False)
-                #self.produttore_entry.set_sensitive(False)
-
-            elif self.dao.id and not self.dao.id_articolo_padre and self.dao.articoloTagliaColore:
-                self.tipoArticoloTagliaColore=True
-                # Articolo principale in quando id_articolo_padre è vuoto
-                # possibilita' di inserire gruppo taglia, genere, anno, stagione
-                self.frame_promowear.set_sensitive(True)
-                self.senza_taglie_colori_radiobutton.set_active(False)
-                self.con_taglie_colori_radiobutton.set_active(True)
-                self.senza_taglie_colori_radiobutton.set_sensitive(False)
-                self.con_taglie_colori_radiobutton.set_sensitive(True)
-                findComboboxRowFromId(self.id_gruppo_taglia_customcombobox.combobox, self.dao.id_gruppo_taglia)
-                self.id_gruppo_taglia_customcombobox.set_property('visible', False)
-                self.denominazione_gruppo_taglia_label.set_markup('<span weight="bold">%s</span>'
-                                                                    % (self.dao.denominazione_gruppo_taglia,))
-                self.denominazione_gruppo_taglia_label.set_property('visible', True)
-
-                findComboboxRowFromId(self.id_genere_combobox, self.dao.id_genere)
-                #self.id_genere_combobox.set_active(-1)
-                self.id_genere_combobox.set_property('visible', True)
-
-                #self.denominazione_genere_label.set_markup('-')
-                self.denominazione_genere_label.set_property('visible', False)
-                findComboboxRowFromId(self.id_stagione_combobox, self.dao.id_stagione)
-                #self.id_stagione_combobox.set_active(-1)
-                self.id_stagione_combobox.set_property('visible', True)
-                #self.id_anno_combobox.set_active(-1)
-                findComboboxRowFromId(self.id_anno_combobox, self.dao.id_anno)
-                self.id_anno_combobox.set_property('visible', True)
-
-                self.denominazione_stagione_anno_label.set_markup('-')
-                self.denominazione_stagione_anno_label.set_property('visible', False)
-
-                # niente possibilita' di inserire taglia, colore
-                self.id_taglia_customcombobox.combobox.set_active(-1)
-                self.id_taglia_customcombobox.set_property('visible', False)
-                self.denominazione_taglia_label.set_markup('<span weight="bold">-</span>')
-                self.denominazione_taglia_label.set_property('visible', True)
-                self.id_colore_customcombobox.combobox.set_active(-1)
-                self.id_colore_customcombobox.set_property('visible', False)
-                self.denominazione_colore_label.set_markup('<span weight="bold">-</span>')
-                self.denominazione_colore_label.set_property('visible', True)
-                varianti = str(len(self.dao.articoliTagliaColore))
-                testo= """ARTICOLO PRINCIPALE CON %s VARIANTI""" %varianti
-                self.memo_wear.set_text(testo)
-
-            elif self.dao.articoloTagliaColore is None or self.tipoArticoloTagliaColore==False:
-                #self.frame_promowear.set_sensitive(False)
-                self.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
-                self.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
-                self.denominazione_genere_label.set_markup('-')
-                self.denominazione_genere_label.set_property('visible', False)
-                self.denominazione_gruppo_taglia_label.set_markup('-')
-                self.denominazione_gruppo_taglia_label.set_property('visible', False)
-                self.denominazione_stagione_anno_label.set_markup('-')
-                self.denominazione_stagione_anno_label.set_property('visible', False)
-                self.denominazione_colore_label.set_markup('-')
-                self.denominazione_colore_label.set_property('visible', False)
-                self.denominazione_taglia_label.set_markup('-')
-                self.denominazione_taglia_label.set_property('visible', False)
-                self.id_anno_combobox.set_active(-1)
-                self.id_genere_combobox.set_active(-1)
-                self.id_stagione_combobox.set_active(-1)
-                print "ARTICOLO SEMPLICE"
-                return
-            elif self.dao.articoloTagliaColore is None or self.tipoArticoloTagliaColore:
-                self.frame_promowear.set_sensitive(True)
-                self.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
-                self.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
-                self.denominazione_genere_label.set_markup('-')
-                self.denominazione_genere_label.set_property('visible', False)
-                print "ARTICOLO PLUS"
-                return
-
-            #else:
-                ## articolo principale: gestione codici a barre - taglie - colori
-                #self.senza_taglie_colori_radiobutton.set_active(False)
-                #self.con_taglie_colori_radiobutton.set_active(True)
-
-                ## niente variazione gruppo taglia
-                ## possibilita' di variare anno, stagione e genere
-                #findComboboxRowFromId(self.id_gruppo_taglia_customcombobox.combobox, self.dao.id_gruppo_taglia)
-                #self.id_gruppo_taglia_customcombobox.set_property('visible', False)
-                #self.denominazione_gruppo_taglia_label.set_markup('<span weight="bold">%s</span>'
-                                                                    #% (self.dao.denominazione_gruppo_taglia,))
-                #findComboboxRowFromId(self.id_genere_combobox, self.dao.id_genere)
-                #self.id_genere_combobox.set_property('visible', True)
-                #self.denominazione_genere_label.set_markup('-')
-                #self.denominazione_genere_label.set_property('visible', False)
-                #findComboboxRowFromId(self.id_stagione_combobox, self.dao.id_stagione)
-                #self.id_stagione_combobox.set_property('visible', True)
-                #findComboboxRowFromId(self.id_anno_combobox, self.dao.id_anno)
-                #self.denominazione_stagione_anno_label.set_markup('-')
-                #self.denominazione_stagione_anno_label.set_property('visible', False)
-
-                ## niente variazione taglia, colore
-                #self.id_taglia_customcombobox.combobox.set_active(-1)
-                #self.id_taglia_customcombobox.set_property('visible', False)
-                #self.denominazione_taglia_label.set_markup('<span weight="bold">-</span>')
-                #self.denominazione_taglia_label.set_property('visible', True)
-                #self.id_colore_customcombobox.combobox.set_active(-1)
-                #self.id_colore_customcombobox.set_property('visible', False)
-                #self.denominazione_colore_label.set_markup('<span weight="bold">-</span>')
-                #self.denominazione_colore_label.set_property('visible', True)
+            a = articleTypeGuiManage(self, self.dao)
         self._loading = False
 
     def saveDao(self):
