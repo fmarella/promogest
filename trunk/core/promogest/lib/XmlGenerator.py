@@ -29,11 +29,11 @@ from SimpleXMLWriter import XMLWriter
 
 class XlsXmlGenerator:
     """Convert a database query result into an xml spreadsheet file"""
-    
+
     def __init__(self, _file, encoding="utf-8"):
         self.myfile=open(str(_file), 'w')
         self.filename = XMLWriter(_file, encoding)
-        
+
     def setAttributes(self, head, cols, data, totColumns=None, sn=1):
         self.head = head
         self.cols = cols
@@ -44,13 +44,13 @@ class XlsXmlGenerator:
     def XlsXmlHeader(self):
         """Set up all the Xml code that we need to make a well formed document for MSO 2003"""
         wrkbook_attr={'xmlns':'urn:schemas-microsoft-com:office:spreadsheet',
-                                'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-instance',
-                                'xmlns:x':'urn:schemas-microsoft-com:office:excel',
-                                'xmlns:x2':'http://schemas.microsoft.com/office/excel/2003/xml', 
-                                'xmlns:ss':'urn:schemas-microsoft-com:office:spreadsheet',
-                                'xmlns:o':'urn:schemas-microsoft-com:office:office',
-                                'xmlns:html':'http://www.w3.org/TR/REC-html40', 
-                                'xmlns:c':'urn:schemas-microsoft-com:office:component:spreadsheet'}
+                    'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-instance',
+                    'xmlns:x':'urn:schemas-microsoft-com:office:excel',
+                    'xmlns:x2':'http://schemas.microsoft.com/office/excel/2003/xml',
+                    'xmlns:ss':'urn:schemas-microsoft-com:office:spreadsheet',
+                    'xmlns:o':'urn:schemas-microsoft-com:office:office',
+                    'xmlns:html':'http://www.w3.org/TR/REC-html40',
+                    'xmlns:c':'urn:schemas-microsoft-com:office:component:spreadsheet'}
         ods_attr={'xmlns':'urn:schemas-microsoft-com:office:office'}
         EWB_attr={'xmlns':'urn:schemas-microsoft-com:office:excel'}
         Style_attr={'ss:ID':'Default', 'ss:Name':'Default'}
@@ -88,7 +88,7 @@ class XlsXmlGenerator:
         Align_left_attr={'ss:Horizontal':'Left', 'ss:Vertical':'Center', 'ss:indent':'0'}
         Align_right_attr={'ss:Horizontal':'Right', 'ss:Vertical':'Center', 'ss:indent':'0'}
         ssWs_attr={'ss:Name':'Tabella1'}
-        
+
         self.filename.declaration()
         self.filename.suffix()
         self._id = self.filename.start('Workbook', wrkbook_attr)
@@ -336,18 +336,18 @@ class XlsXmlGenerator:
         self.filename.end('Interior')
         self.filename.end('Style')
         self.filename.end('Styles')
-    
+
     #writes up data in the xml document from a sql cursor
     #the same function writes II, III and more spreadsheet by specifying the sheet number "sn"
     #making a function call for each sheet you need to create.
     def XlsXmlsheet(self, wtot):
         """writes the concrete data you need to be in the spreadsheet
-        
+
         if more than one data sheet is needed to be written, just do multiple calls to this function
-        before you close the document. Making successive calls to this function, the 'sn' ("Sheet Number") 
+        before you close the document. Making successive calls to this function, the 'sn' ("Sheet Number")
         attribute is required to be increased each time by one."""
         #This way seems to work good enough,
-        #But for the future, consider to make some method that 
+        #But for the future, consider to make some method that
         #try to 'append' another list of data to the generated document as separated worksheet"""
         sn = str(self.sn)
         work_attr = {'ss:Name':'tabella'+sn}
@@ -384,7 +384,7 @@ class XlsXmlGenerator:
                 print "WARNING!! unknown column style! Is this normal??"
                 single_col={}
             col.append(single_col)
-        
+
         self.filename.start('ss:Worksheet', work_attr)
         self.filename.start('Table', tab_attr)
 
@@ -413,9 +413,9 @@ class XlsXmlGenerator:
                 self.filename.data(head[i])
                 self.filename.end('Data')
                 self.filename.end('Cell')
-        
+
         self.filename.end('Row')
-        
+
         #Now let's play. the real data inserting starts here
         flag = 0
         values = self.values
@@ -461,7 +461,7 @@ class XlsXmlGenerator:
             self.closeSheet()
         else:
             self.closeSheet()
-        
+
     def closeSheet(self):
         self.filename.end('Table')
         self.filename.start('x:WorksheetOptions')
@@ -469,10 +469,10 @@ class XlsXmlGenerator:
         self.filename.end('ss:Worksheet')
 
     def setTotalColumns(self):
-        """Writes up the code needed to create sum of values indicated by "columns" 
-        
+        """Writes up the code needed to create sum of values indicated by "columns"
+
         columns should be a list, and each value is paired with a table field (in the order) and can be 0, 1 or 2.
-        0 is for an empty cell, 
+        0 is for an empty cell,
         1 is for the "Totale" word,
         2 is to tell the function to format the cell with the value of the sum"""
         columns = self.totColumns
@@ -506,18 +506,18 @@ class XlsXmlGenerator:
                 self.filename.start('Cell', cel_formula)
                 self.filename.start('Data', da[0])
                 if flag == 0:
-                    self.filename.data('¤     '+sum0)
+                    self.filename.data('ï¿½     '+sum0)
                     flag = 1
                 elif flag == 1:
-                    self.filename.data('¤     '+sum1)
+                    self.filename.data('ï¿½     '+sum1)
                     flag = 2
                 elif flag == 2:
-                    self.filename.data('¤     '+sum2)
+                    self.filename.data('ï¿½     '+sum2)
                 self.filename.end('Data')
                 self.filename.end('Cell')
-            
+
         self.filename.end('Row')
-   
+
 
     def createFile(self, wtot=False):
         self.XlsXmlHeader()

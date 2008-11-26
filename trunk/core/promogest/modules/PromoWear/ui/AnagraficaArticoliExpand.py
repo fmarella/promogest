@@ -160,7 +160,6 @@ def articleTypeGuiManage(anagrafica, dao):
         #gtkgui.produttore_entry.set_sensitive(False)
 
     elif articleType(dao) == "father":
-        gtkgui.tipoArticoloTagliaColore=True
         # Articolo principale in quando id_articolo_padre è vuoto
         # possibilita' di inserire gruppo taglia, genere, anno, stagione
         gtkgui.frame_promowear.set_sensitive(True)
@@ -207,21 +206,28 @@ def articleTypeGuiManage(anagrafica, dao):
         #gtkgui.frame_promowear.set_sensitive(False)
         gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
         gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
-        gtkgui.denominazione_genere_label.set_markup('-')
-        gtkgui.denominazione_genere_label.set_property('visible', False)
-        gtkgui.denominazione_gruppo_taglia_label.set_markup('-')
-        gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
-        gtkgui.denominazione_stagione_anno_label.set_markup('-')
-        gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
-        gtkgui.denominazione_colore_label.set_markup('-')
-        gtkgui.denominazione_colore_label.set_property('visible', False)
-        gtkgui.denominazione_taglia_label.set_markup('-')
-        gtkgui.denominazione_taglia_label.set_property('visible', False)
         gtkgui.id_anno_combobox.set_active(-1)
         gtkgui.id_genere_combobox.set_active(-1)
         gtkgui.id_stagione_combobox.set_active(-1)
+
+        gtkgui.denominazione_genere_label.set_markup('-')
+        gtkgui.denominazione_genere_label.set_property('visible', False)
+
+        gtkgui.denominazione_gruppo_taglia_label.set_markup('-')
+        gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
+
+        gtkgui.denominazione_stagione_anno_label.set_markup('-')
+        gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
+
+        gtkgui.denominazione_colore_label.set_markup('-')
+        gtkgui.denominazione_colore_label.set_property('visible', False)
+
+        gtkgui.denominazione_taglia_label.set_markup('-')
+        gtkgui.denominazione_taglia_label.set_property('visible', False)
+
         print "ARTICOLO SEMPLICE"
-        return
+
+
     elif articleType(dao) == "plus":
         gtkgui.frame_promowear.set_sensitive(True)
         gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
@@ -229,25 +235,30 @@ def articleTypeGuiManage(anagrafica, dao):
         gtkgui.denominazione_genere_label.set_markup('-')
         gtkgui.denominazione_genere_label.set_property('visible', False)
         print "ARTICOLO PLUS"
-        return
+
     elif articleType(dao) == "new":
         gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
         gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
-        gtkgui.denominazione_genere_label.set_markup('-')
-        gtkgui.denominazione_genere_label.set_property('visible', False)
-        gtkgui.denominazione_gruppo_taglia_label.set_markup('-')
-        gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
-        gtkgui.denominazione_stagione_anno_label.set_markup('-')
-        gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
-        gtkgui.denominazione_colore_label.set_markup('-')
-        gtkgui.denominazione_colore_label.set_property('visible', False)
-        gtkgui.denominazione_taglia_label.set_markup('-')
-        gtkgui.denominazione_taglia_label.set_property('visible', False)
         gtkgui.id_anno_combobox.set_active(-1)
         gtkgui.id_genere_combobox.set_active(-1)
         gtkgui.id_stagione_combobox.set_active(-1)
+
+        gtkgui.denominazione_genere_label.set_markup('-')
+        gtkgui.denominazione_genere_label.set_property('visible', False)
+
+        gtkgui.denominazione_gruppo_taglia_label.set_markup('-')
+        gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
+
+        gtkgui.denominazione_stagione_anno_label.set_markup('-')
+        gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
+
+        gtkgui.denominazione_colore_label.set_markup('-')
+        gtkgui.denominazione_colore_label.set_property('visible', False)
+
+        gtkgui.denominazione_taglia_label.set_markup('-')
+        gtkgui.denominazione_taglia_label.set_property('visible', False)
+
         print "ARTICOLO NEW"
-        return
 
     #else:
         ## articolo principale: gestione codici a barre - taglie - colori

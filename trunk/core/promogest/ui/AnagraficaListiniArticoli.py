@@ -63,7 +63,7 @@ class AnagraficaListiniArticoli(Anagrafica):
             sconto_dettaglio = float(d.sconto_vendita_dettaglio or 0)
             prezzo_ingrosso = float(d.prezzo_ingrosso or 0)
             sconto_ingrosso = float(d.sconto_vendita_ingrosso or 0)
-            datalist=[denominazione,codice_articolo,articolo,data,prezzo_dettaglio,scontodettaglio,prezzo_ingrosso,sconto_ingrosso]
+            datalist=[denominazione,codice_articolo,articolo,data,prezzo_dettaglio,sconto_dettaglio,prezzo_ingrosso,sconto_ingrosso]
             rowlist.append(datalist)
         return rowlist
 
@@ -77,7 +77,7 @@ class AnagraficaListiniArticoli(Anagrafica):
         data_details['curr_date'] = curr_date
         data_details['currentName'] = 'Listino_Articoli_aggiornato_al_'+curr_date+'.xml'
 
-        FieldsList = ['Listino','Codice Articolo','Articolo','Data Variazione','Prezzo Dettaglio', 'Sconto Dettaglio', 
+        FieldsList = ['Listino','Codice Articolo','Articolo','Data Variazione','Prezzo Dettaglio', 'Sconto Dettaglio',
                             'Prezzo Ingrosso', 'Sconto Ingrosso']
         colData= [0,0,0,1,2,0,2,0]
         colWidth_Align = [('130','l'),('100','c'),('250','l'),('100','c'),('100','r'),('100','r'),('100','r'),('100','r')]
@@ -374,7 +374,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             #self.dao.sconto_vendita_dettaglio[-1].tipo_sconto = s["tipo"]
             #self.dao.sconto_vendita_dettaglio[-1].valore = float(s["valore"])
 ##        self.dao.applicazione_sconti_dettaglio = self.sconti_dettaglio_widget.getApplicazione()
-    
+
     def on_sconti_ingrosso_widget_button_toggled(self, button):
         if button.get_property('active') is True:
             return
@@ -547,7 +547,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         if self._anagrafica._listinoFissato:
             findComboboxRowFromId(self.id_listino_customcombobox.combobox, self._anagrafica._idListino)
             self.id_listino_customcombobox.set_sensitive(False)
-        
+
         self.sconti_dettaglio_widget.setValues()
         self.sconti_ingrosso_widget.setValues()
 
@@ -665,7 +665,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
         self.prezzo_ingrosso_ivato_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(self.dao.prezzo_ingrosso,
                                                                                                     self._percentualeIva))
-        
+
         self.sconti_dettaglio_widget.setValues(self.dao.sconto_vendita_dettaglio, self.dao.applicazione_sconti_dettaglio)
         self.sconti_ingrosso_widget.setValues(self.dao.sconto_vendita_ingrosso, self.dao.applicazione_sconti_ingrosso)
 
@@ -722,7 +722,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             daoSconto.valore = s["valore"]
             daoSconto.tipo_sconto = s["tipo"]
             sconti_ingrosso.append(daoSconto)
-            
+
         #self.dao.sconto_vendita_ingrosso = sconti_ingrosso
-        
+
         self.dao.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})
