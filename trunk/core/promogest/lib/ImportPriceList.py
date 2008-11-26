@@ -22,6 +22,8 @@ from promogest.dao.Fornitura import Fornitura
 from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.UnitaBase import UnitaBase
+from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
+from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 import promogest.ui.AnagraficaListini
 import promogest.ui.Main
 from promogest.ui.Main import *
@@ -1088,6 +1090,7 @@ class ProductFromCsv:
                     daoPriceListProduct.prezzo_ingrosso = prezzo
             else:
                 daoPriceListProduct.prezzo_ingrosso = Decimal('0')
+            
                 
             sconti_ingrosso = [ScontoVenditaIngrosso().getRecord(),]
             sconti_dettaglio = [ScontoVenditaDettaglio().getRecord(),]
