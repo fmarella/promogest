@@ -88,16 +88,17 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._controllo_data_documento = None
         self._controllo_numero_documento = None
         self.reuseDataRow = False
+        self.NoRowUsableArticle = False
         if "PromoWear" in Environment.modulesList:
             self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
             self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
-            self.promowear_data_label.set_text("Gruppo Taglia:")
         else:
             self.promowear_manager_taglia_colore_togglebutton.destroy()
             self.promowear_manager_taglia_colore_image.hide()
             #self.promowear_manager_taglia_colore_togglebutton.set_property("visible", False)
             #self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
-            self.promowear_data_label.set_text('')
+            self.hbox9.destroy()
+
 
     def hideSuMisura(self):
         """
@@ -143,7 +144,18 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "prezzoNettoUltimo": 0,
                                 "altezza": '',
                                 "larghezza": '',
-                                "molt_pezzi": 0}
+                                "molt_pezzi": 0,"idGruppoTaglia": None,
+                                "gruppoTaglia": '',
+                                "idTaglia": None,
+                                "taglia": '',
+                                "idColore": None,
+                                "colore": '',
+                                "idAnno": None,
+                                "anno": '',
+                                "idStagione": None,
+                                "stagione": '',
+                                "idGenere": None,
+                                "genere": ''}
 
 
     def azzeraRigaPartial(self, numero = 0, rigatampone=None):
@@ -197,6 +209,13 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.prezzo_netto_label.set_text('0')
         self.sconti_widget.clearValues()
         self.totale_riga_label.set_text('0')
+        if "PromoWear" in Environment.modulesList:
+            self.gruppo_taglia_label.set_markup('<span weight="bold">%s</span>' % ('',))
+            self.taglia_label.set_markup('<span weight="bold">%s</span>' % ('',))
+            self.colore_label.set_markup('<span weight="bold">%s</span>' % ('',))
+            self.stagione_label.set_markup('<span weight="bold">%s</span>' % ('',))
+            self.anno_label.set_markup('<span weight="bold">%s</span>' % ('',))
+            self.tipo_label.set_markup('<span weight="bold">%s</span>' % ('',))
         if "SuMisura" in Environment.modulesList:
             self.altezza_entry.set_text('')
             self.larghezza_entry.set_text('')
@@ -211,8 +230,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.data_documento_entry.set_sensitive(True)
             self.id_persona_giuridica_customcombobox.set_sensitive(self.id_operazione_combobox.get_active() != -1)
             self.id_operazione_combobox.set_sensitive(True)
-            #if Environment.tipo_documento_predefinito != "":
-                #findComboboxRowFromStr(self.id_operazione_combobox,Environment.tipo_documento_predefinito,1)
             if self._anagrafica._magazzinoFissato:
                 findComboboxRowFromId(self.id_magazzino_combobox, self._anagrafica._idMagazzino)
             elif self._id_magazzino is not None:
@@ -1005,6 +1022,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
         if dao is None:
             # Crea un nuovo Dao vuoto
+            Environment.tagliacoloretempdata = (False,[])
             self.dao = TestataDocumento().getRecord()
             # Suggerisce la data odierna
             self.dao.data_documento = datetime.datetime.today()
@@ -1012,6 +1030,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = TestataDocumento(id=dao.id).getRecord()
+            Environment.tagliacoloretempdata = (False,[])
             self._controllo_data_documento = dateToString(self.dao.data_documento)
             self._controllo_numero_documento = self.dao.numero
             self._oldDaoRicreato = True #il dao è nuovo il controllo sul nuovo codice non  è necessario
@@ -1282,6 +1301,9 @@ del documento.
         """
         Memorizza la riga inserita o modificata
         """
+        if self.NoRowUsableArticle:
+            self.showMessage('ARTICOLO NON USABILE IN UNA RIGA IN QUANTO ARTICOLO PRINCIPALE O PADRE!')
+            return
 
         self._righe[0]["idMagazzino"] = findIdFromCombobox(self.id_magazzino_combobox)
         magazzino = leggiMagazzino(self._righe[0]["idMagazzino"])
@@ -1562,6 +1584,7 @@ del documento.
                 for var in Environment.tagliacoloretempdata[1]:
                     self.mostraArticolo(var['id'],art=var)
             Environment.tagliacoloretempdata = (False,[])
+            self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
 
     def mostraArticolo(self, id, art=None):
         self.articolo_entry.set_text('')
@@ -1596,58 +1619,24 @@ del documento.
         fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, id, True)
 
         if id is not None:
-            if "PromoWear" in Environment.modulesList:
-                articolo = leggiArticolo(id,
-                        idFornitore=self.id_persona_giuridica_customcombobox.getId(),
-                        data=data)
-                if articolo.has_key("varianti"):
-                    self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
-                    self.promowear_manager_taglia_colore_togglebutton.set_sensitive(True)
-                    self.idArticoloWithVarianti = articolo
-                if art:
-                    #print "ARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT2", art
-                    articolo = art
-                    self._righe[0]["idArticolo"] = id
-                    self._righe[0]["codiceArticolo"] = articolo["codice"]
-                    self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
-                    self._righe[0]["descrizione"] = articolo["denominazione"]
-                    self.descrizione_entry.set_text(self._righe[0]["descrizione"])
-                    self._righe[0]["percentualeIva"] = articolo["percentualeAliquotaIva"]
-                    self.percentuale_iva_entry.set_text('%-5.2f' % self._righe[0]["percentualeIva"])
-                    self._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
-                    self._righe[0]["unitaBase"] = articolo["unitaBase"]
-                    self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
-                    if ((self._fonteValore == "acquisto_iva") or  (self._fonteValore == "acquisto_senza_iva")):
-                        costoLordo = articolo['fornitura']["prezzoLordo"]
-                        if costoLordo:costoLordo = costoLordo.replace(',','.')
-                        costoNetto = articolo['fornitura']["prezzoNetto"]
-                        if costoNetto:costoNetto = costoNetto.replace(',','.')
-                        if self._fonteValore == "acquisto_iva":
-                            costoLordo = calcolaPrezzoIva(costoLordo, self._righe[0]["percentualeIva"])
-                            costoNetto = calcolaPrezzoIva(costoNetto, self._righe[0]["percentualeIva"])
-                        self._righe[0]["prezzoLordo"] = float(costoLordo)
-                        self.prezzo_lordo_entry.set_text(Environment.conf.number_format % float(self._righe[0]["prezzoLordo"]))
-                        self._righe[0]["prezzoNetto"] = float(costoNetto)
-                        self.prezzo_netto_label.set_text(('%14.' + Environment.conf.decimals + 'f') % float(self._righe[0]["prezzoNetto"]))
-                        self._righe[0]["prezzoNettoUltimo"] = float(costoNetto)
-                        self._righe[0]["sconti"] = articolo['fornitura']["sconti"]
-                        self._righe[0]["applicazioneSconti"] = articolo['fornitura']["applicazioneSconti"]
-                        self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
-                        self._righe[0]["codiceArticoloFornitore"] = articolo['fornitura']["codiceArticoloFornitore"]
-                        self.codice_articolo_fornitore_entry.set_text(self._righe[0]["codiceArticoloFornitore"])
-                        quantita =articolo["quantita"]
-                        quantita = quantita.replace(',','.')
-                        self._righe[0]["quantita"] = quantita
-                        self.quantita_entry.set_text(self._righe[0]["quantita"])
-                        if self._righe[0]["quantita"]:
-                            self.calcolaTotaleRiga()
-
-                    elif ((self._fonteValore == "vendita_iva") or
-                        (self._fonteValore == "vendita_senza_iva")):
-                        self.refresh_combobox_listini()
-                    self.on_confirm_row_button_clicked(self.dialogTopLevel)
-            else:
-                articolo = leggiArticolo(id)
+            #if "PromoWear" in Environment.modulesList:
+            articolo = leggiArticolo(id,
+                    idFornitore=self.id_persona_giuridica_customcombobox.getId(),
+                    data=data)
+            if articolo.has_key("varianti"):
+                self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
+                self.promowear_manager_taglia_colore_togglebutton.set_sensitive(True)
+                self.idArticoloWithVarianti = articolo
+                self.gruppo_taglia_label.set_markup('<span weight="bold">%s</span>' % (articolo['gruppoTaglia']))
+                self.taglia_label.set_markup('<span weight="bold">%s</span>' % (articolo['taglia']))
+                self.colore_label.set_markup('<span weight="bold">%s</span>' % (articolo['colore']))
+                self.stagione_label.set_markup('<span weight="bold">%s</span>' % (articolo['stagione']))
+                self.anno_label.set_markup('<span weight="bold">%s</span>' % (articolo['anno']))
+                self.tipo_label.set_markup('<span weight="bold">%s</span>' % (""))
+                self.NoRowUsableArticle = True
+            if art:
+                self.NoRowUsableArticle = False
+                articolo = art
                 self._righe[0]["idArticolo"] = id
                 self._righe[0]["codiceArticolo"] = articolo["codice"]
                 self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
@@ -1658,6 +1647,49 @@ del documento.
                 self._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
                 self._righe[0]["unitaBase"] = articolo["unitaBase"]
                 self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
+                if ((self._fonteValore == "acquisto_iva") or  (self._fonteValore == "acquisto_senza_iva")):
+                    costoLordo = str(articolo['fornitura']["prezzoLordo"])
+                    if costoLordo:costoLordo = costoLordo.replace(',','.')
+                    costoNetto = str(articolo['fornitura']["prezzoNetto"])
+                    if costoNetto:costoNetto = costoNetto.replace(',','.')
+                    if self._fonteValore == "acquisto_iva":
+                        costoLordo = calcolaPrezzoIva(costoLordo, self._righe[0]["percentualeIva"])
+                        costoNetto = calcolaPrezzoIva(costoNetto, self._righe[0]["percentualeIva"])
+                    self._righe[0]["prezzoLordo"] = float(costoLordo)
+                    self.prezzo_lordo_entry.set_text(Environment.conf.number_format % float(self._righe[0]["prezzoLordo"]))
+                    self._righe[0]["prezzoNetto"] = float(costoNetto)
+                    self.prezzo_netto_label.set_text(('%14.' + Environment.conf.decimals + 'f') % float(self._righe[0]["prezzoNetto"]))
+                    self._righe[0]["prezzoNettoUltimo"] = float(costoNetto)
+                    self._righe[0]["sconti"] = articolo['fornitura']["sconti"]
+                    self._righe[0]["applicazioneSconti"] = articolo['fornitura']["applicazioneSconti"]
+                    self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
+                    self._righe[0]["codiceArticoloFornitore"] = articolo['fornitura']["codiceArticoloFornitore"]
+                    self.codice_articolo_fornitore_entry.set_text(self._righe[0]["codiceArticoloFornitore"])
+                    quantita =articolo["quantita"]
+                    quantita = quantita.replace(',','.')
+                    self._righe[0]["quantita"] = quantita
+                    self.quantita_entry.set_text(self._righe[0]["quantita"])
+                    if self._righe[0]["quantita"]:
+                        self.calcolaTotaleRiga()
+
+                elif ((self._fonteValore == "vendita_iva") or
+                    (self._fonteValore == "vendita_senza_iva")):
+                    self.refresh_combobox_listini()
+                self.on_confirm_row_button_clicked(self.dialogTopLevel)
+                return
+            #else:
+            print "tu passi qui verooooooooooooooooooooooooooooooooooooooooooo"
+            #articolo = leggiArticolo(id)
+            self._righe[0]["idArticolo"] = id
+            self._righe[0]["codiceArticolo"] = articolo["codice"]
+            self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
+            self._righe[0]["descrizione"] = articolo["denominazione"]
+            self.descrizione_entry.set_text(self._righe[0]["descrizione"])
+            self._righe[0]["percentualeIva"] = articolo["percentualeAliquotaIva"]
+            self.percentuale_iva_entry.set_text('%-5.2f' % self._righe[0]["percentualeIva"])
+            self._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
+            self._righe[0]["unitaBase"] = articolo["unitaBase"]
+            self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
             self._righe[0]["idMultiplo"] = None
             self._righe[0]["moltiplicatore"] = 1
             self._righe[0]["prezzoLordo"] = 0

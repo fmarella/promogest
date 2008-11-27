@@ -29,6 +29,26 @@ from promogest.dao.Dao import Dao
 from utilsCombobox import *
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
 
+
+def articleType(dao):
+    if dao and "PromoWear" in Environment.modulesList:
+        if (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre is None) and (dao.articoliTagliaColore):
+            print "ARTICOLO FATHER"
+            return "father"
+        elif (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre) and (not dao.articoliTagliaColore):
+            print "ARTICOLO SON"
+            return "son"
+        elif (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre is None) and (not dao.articoliTagliaColore):
+            print "ARTICOLO PLUS"
+            return "plus"
+        elif (dao.id) and (dao.id_articolo_taglia_colore is None) and (dao.id_articolo_padre is None) and (not dao.articoliTagliaColore):
+            print "ARTICOLO NORMAL"
+            return "normal"
+        elif not dao.id:
+            print "ARTICOLO NEW NORMAL"
+            return "new"
+
+
 def leggiArticolo(id, full=False, idFornitore=False,data=None):
     """
     Restituisce un dizionario con le informazioni sull'articolo letto
@@ -47,46 +67,49 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
     if id is not None:
         daoArticolo = Articolo(id=id).getRecord()
         variantiList = []
-        if ("PromoWear" in Environment.modulesList) and (daoArticolo.id_articolo_padre is None) and (daoArticolo.id_articolo_taglia_colore is not None) and (daoArticolo is not None):
-            varianti = daoArticolo.articoliVarianti
-            from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
-            for varia in varianti:
-                variante=leggiArticoloPromoWear(varia.id, full=True)
-                variante['fornitura'] = leggiFornituraPromoWear(idArticolo=varia.id,
-                                                idFornitore=idFornitore,
-                                                data=data)
-                variantiList.append(variante)
-            artiDict = leggiArticoloPromoWear(id)
-            artiDict["varianti"] = variantiList
-            artiDict["fornitura"] = leggiFornituraPromoWear(idArticolo=varia.id,
-                                                idFornitore=idFornitore,
-                                                data=data)
-        else:
-            if daoArticolo is not None:
-                _id = id
-                _denominazione = daoArticolo.denominazione or ''
-                _codice = daoArticolo.codice or ''
-                _idUnitaBase = daoArticolo.id_unita_base
-                _quantita_minima = ''
-                if _idUnitaBase is not None:
-                    res = UnitaBase(id =_idUnitaBase).getRecord()
-                    if res is not None:
-                        _unitaBase = res.denominazione
-                if daoArticolo.id_aliquota_iva is not None:
-                    daoAliquotaIva = AliquotaIva(id=daoArticolo.id_aliquota_iva).getRecord()
-                    if daoAliquotaIva is not None:
-                        _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
-                        _percentualeAliquotaIva = daoAliquotaIva.percentuale or 0
+        if "PromoWear" in Environment.modulesList:
+            print "UNOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
+            if articleType(daoArticolo)=="father":
+                print "DUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
+                varianti = daoArticolo.articoliVarianti
+                print "VARIANNTIIIIIIIIIIIIIIIIIIII", varianti
+                from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
+                for varia in varianti:
+                    variante=leggiArticoloPromoWear(varia.id, full=True)
+                    variante['fornitura'] = leggiFornituraPromoWear(idArticolo=varia.id,
+                                                    idFornitore=idFornitore,
+                                                    data=data)
+                    variantiList.append(variante)
+                artiDict = leggiArticoloPromoWear(id)
+                artiDict["varianti"] = variantiList
+                artiDict["fornitura"] = leggiFornituraPromoWear(idArticolo=varia.id,
+                                                    idFornitore=idFornitore,
+                                                    data=data)
+                return artiDict
+        if daoArticolo is not None:
+            _id = id
+            _denominazione = daoArticolo.denominazione or ''
+            _codice = daoArticolo.codice or ''
+            _idUnitaBase = daoArticolo.id_unita_base
+            _quantita_minima = ''
+            if _idUnitaBase is not None:
+                res = UnitaBase(id =_idUnitaBase).getRecord()
+                if res is not None:
+                    _unitaBase = res.denominazione
+            if daoArticolo.id_aliquota_iva is not None:
+                daoAliquotaIva = AliquotaIva(id=daoArticolo.id_aliquota_iva).getRecord()
+                if daoAliquotaIva is not None:
+                    _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
+                    _percentualeAliquotaIva = daoAliquotaIva.percentuale or 0
 
-                artiDict = {"id": _id,
-                        "denominazione": _denominazione, "codice": _codice,
-                        "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
-                        "percentualeAliquotaIva": _percentualeAliquotaIva,
-                        "idUnitaBase": _idUnitaBase,
-                        "unitaBase": _unitaBase,
-                        "quantita_minima": _quantita_minima}
-
-    return artiDict
+            artiDict = {"id": _id,
+                    "denominazione": _denominazione, "codice": _codice,
+                    "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
+                    "percentualeAliquotaIva": _percentualeAliquotaIva,
+                    "idUnitaBase": _idUnitaBase,
+                    "unitaBase": _unitaBase,
+                    "quantita_minima": _quantita_minima}
+            return artiDict
 
 
 def leggiCliente(id):
@@ -1921,21 +1944,3 @@ def checkCodiceDuplicato(codice=None,tipo=None):
     else:
         return True
 
-def articleType(dao):
-    if dao and "PromoWear" in Environment.modulesList:
-        print "RICICCIO", dao.id, dao
-        if (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre is None) and (dao.articoliTagliaColore):
-            print "ARTICOLO FATHER"
-            return "father"
-        elif (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre) and (not dao.articoliTagliaColore):
-            print "ARTICOLO SON"
-            return "son"
-        elif (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre is None) and (not dao.articoliTagliaColore):
-            print "ARTICOLO PLUS"
-            return "plus"
-        elif (dao.id) and (dao.id_articolo_taglia_colore is None) and (dao.id_articolo_padre is None) and (not dao.articoliTagliaColore):
-            print "ARTICOLO NORMAL"
-            return "normal"
-        elif not dao.id:
-            print "ARTICOLO NEW NORMAL"
-            return "new"

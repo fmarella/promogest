@@ -203,7 +203,12 @@ def articleTypeGuiManage(anagrafica, dao):
         gtkgui.memo_wear.set_text(testo)
 
     elif articleType(dao) == "normal":
-        #gtkgui.frame_promowear.set_sensitive(False)
+        self.senza_taglie_colori_radiobutton.set_active(False)
+        self.frame_promowear.set_sensitive(False)
+        self.codici_a_barre_togglebutton.set_sensitive(active)
+        self.taglie_colori_togglebutton.set_sensitive(not active)
+
+        gtkgui.frame_promowear.set_sensitive(False)
         gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
         gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
         gtkgui.id_anno_combobox.set_active(-1)

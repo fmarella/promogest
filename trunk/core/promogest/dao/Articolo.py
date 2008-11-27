@@ -242,33 +242,29 @@ def getNuovoCodiceArticolo(idFamiglia=None):
     numeroFamiglie = 0
     codice = ''
     if hasattr(conf,'Articoli'):
-        print "c'è la sezione Articoli"
         if hasattr(conf.Articoli,'lunghezza_progressivo'):
-            lunghezzaProgressivo = int(conf.Articoli.lunghezza_progressivo)
-            print "la seziona progressivo", lunghezzaProgressivo
-        if lunghezzaProgressivo > 0:
             if isNuovoCodiceByFamiglia():
                 print "passi qui,isNuovoCodiceByFamiglia() "
                 lunghezzaCodiceFamiglia = int(conf.Articoli.lunghezza_codice_famiglia)
                 numeroFamiglie = int(conf.Articoli.numero_famiglie)
-            try:
-                print "UNO"
-                codicesel  = select([func.max(Articolo.codice)]).execute().fetchall()
-                print "DUE", codicesel
-                codice = codeIncrement(codicesel[0][0])
-                print "codiceeeee TRE", codice
-            except:
-                print "TRE PASS"
-                pass
-            try:
-                print "QUATTRO"
-                if codice == "" and hasattr(conf.Articoli,'struttura_codice'):
-                    print "CINQUE"
-                    codice = codeIncrement(conf.Articoli.struttura_codice)
-                    print "SEI", codice
-            except:
-                print "SEI PASS"
-                pass
+            #try:
+                #codicesel  = select([func.max(Articolo.codice)]).execute().fetchall()
+            codicesel  =params['session'].query(Articolo.codice).order_by("id").all()
+            print "DUE", codicesel
+            codice = codeIncrement(codicesel[0][0])
+            print "codiceeeee TRE", codice
+            #except:
+                #print "TRE PASS"
+                #pass
+            #try:
+                #print "QUATTRO"
+                #if codice == "" and hasattr(conf.Articoli,'struttura_codice'):
+                    #print "CINQUE"
+                    #codice = codeIncrement(conf.Articoli.struttura_codice)
+                    #print "SEI", codice
+            #except:
+                #print "SEI PASS"
+                #pass
     return codice
 
 

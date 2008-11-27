@@ -105,6 +105,7 @@ def leggiFornituraPromoWear(idArticolo, idFornitore=None, data=None, noPreferenz
 
 def leggiArticoloPromoWear(id, full=False):
     # restituisce un dizionario con le informazioni sull'articolo letto
+    articleDict = {}
     _id = None
     _denominazione = ''
     _codice = ''
@@ -156,24 +157,25 @@ def leggiArticoloPromoWear(id, full=False):
                     _stagione = daoArticoloTagliaColore.stagione or '-'
                     _idGenere = daoArticoloTagliaColore.id_genere
                     _genere = daoArticoloTagliaColore.genere or '-'
-    return {"id": _id,
-            "denominazione": _denominazione, "codice": _codice,
-            "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
-            "percentualeAliquotaIva": _percentualeAliquotaIva,
-            "idUnitaBase": _idUnitaBase,
-            "unitaBase": _unitaBase,
-            "idGruppoTaglia": _idGruppoTaglia,
-            "gruppoTaglia": _gruppoTaglia,
-            "idTaglia": _idTaglia,
-            "taglia": _taglia,
-            "idColore": _idColore,
-            "colore": _colore,
-            "idAnno": _idAnno,
-            "anno": _anno,
-            "idStagione": _idStagione,
-            "stagione": _stagione,
-            "idGenere": _idGenere,
-            "genere": _genere}
+        articleDict= {"id": _id,
+                        "denominazione": _denominazione, "codice": _codice,
+                        "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
+                        "percentualeAliquotaIva": _percentualeAliquotaIva,
+                        "idUnitaBase": _idUnitaBase,
+                        "unitaBase": _unitaBase,
+                        "idGruppoTaglia": _idGruppoTaglia,
+                        "gruppoTaglia": _gruppoTaglia,
+                        "idTaglia": _idTaglia,
+                        "taglia": _taglia,
+                        "idColore": _idColore,
+                        "colore": _colore,
+                        "idAnno": _idAnno,
+                        "anno": _anno,
+                        "idStagione": _idStagione,
+                        "stagione": _stagione,
+                        "idGenere": _idGenere,
+                        "genere": _genere}
+    return articleDict
 
 def leggiListino(idListino, idArticolo=None):
     """
