@@ -951,7 +951,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 altezza = ''
                 larghezza = ''
                 moltiplicatore_pezzi = ''
-
+            print "RIGAAAAAAAAAAAAAAAAAAAAAAAA", self._righe[0]
+            print "ARTICOLOOOOOOOOOOOOOOOOOOOO", articolo
+            print "CODICEEEEEEEEEEEEEEEEEEEEEE", articolo["codice"]
             self._righe[0]["idRiga"] = riga.id
             self._righe[0]["idMagazzino"] = riga.id_magazzino
             self._righe[0]["magazzino"] = magazzino["denominazione"]
