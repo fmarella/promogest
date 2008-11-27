@@ -1638,6 +1638,7 @@ del documento.
                 self.tipo_label.set_markup('<span weight="bold">%s</span>' % (""))
                 self.NoRowUsableArticle = True
             if art:
+                print "NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO". art
                 self.NoRowUsableArticle = False
                 articolo = art
                 self._righe[0]["idArticolo"] = id
