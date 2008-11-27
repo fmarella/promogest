@@ -267,14 +267,6 @@ def getNuovoCodiceArticolo(idFamiglia=None):
                 #pass
     return codice
 
-
-
-
-
-
-
-
-
     def getArticoliAssociati(connection, id):
         res = connection.execStoredProcedure('ArticoliAssociatiGet',(codice,))
         if len(res) > 0:

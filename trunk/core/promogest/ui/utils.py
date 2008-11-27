@@ -102,14 +102,15 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
                     _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
                     _percentualeAliquotaIva = daoAliquotaIva.percentuale or 0
 
-            artiDict = {"id": _id,
-                    "denominazione": _denominazione, "codice": _codice,
-                    "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
-                    "percentualeAliquotaIva": _percentualeAliquotaIva,
-                    "idUnitaBase": _idUnitaBase,
-                    "unitaBase": _unitaBase,
-                    "quantita_minima": _quantita_minima}
-            return artiDict
+    artiDict = {"id": _id,
+                "denominazione": _denominazione,
+                "codice": _codice,
+                "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
+                "percentualeAliquotaIva": _percentualeAliquotaIva,
+                "idUnitaBase": _idUnitaBase,
+                "unitaBase": _unitaBase,
+                "quantita_minima": _quantita_minima}
+    return artiDict
 
 
 def leggiCliente(id):
