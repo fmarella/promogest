@@ -938,6 +938,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.azzeraRiga(0)
             j = self.dao.righe.index(riga) + 1
             magazzino = leggiMagazzino(riga.id_magazzino)
+            print "RIGA IDDDDDDDDDDDDDDDDDDDDDDDDDDDD", riga.id_articolo
             articolo = leggiArticolo(riga.id_articolo)
             listino = leggiListino(riga.id_listino)
             multiplo = leggiMultiplo(riga.id_multiplo)

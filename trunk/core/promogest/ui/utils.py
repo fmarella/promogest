@@ -64,15 +64,14 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
     _unitaBase = ''
     _quantita_minima = ''
     artiDict = {}
+    print "ID IN LEGGI ARTICOLO ", id
     if id is not None:
         daoArticolo = Articolo(id=id).getRecord()
+        print "daoArticoloooooooooooooooooo", daoArticolo
         variantiList = []
         if "PromoWear" in Environment.modulesList:
-            print "UNOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
             if articleType(daoArticolo)=="father":
-                print "DUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
                 varianti = daoArticolo.articoliVarianti
-                print "VARIANNTIIIIIIIIIIIIIIIIIIII", varianti
                 from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
                 for varia in varianti:
                     variante=leggiArticoloPromoWear(varia.id, full=True)
@@ -87,6 +86,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
                                                     data=data)
                 return artiDict
         if daoArticolo is not None:
+            print "DENTRO L?IF DI DAO ARTICOLO", daoArticolo.codice
             _id = id
             _denominazione = daoArticolo.denominazione or ''
             _codice = daoArticolo.codice or ''
