@@ -379,7 +379,7 @@ class TestataDocumento(Dao):
             # ci sono piu' movimenti collegati al documento
             # FIXME: che fare ?
             #print "ATTENZIONE CI SONO PIÃ™ DOCUMENTI LEGATI AD UN DOCUMENTO"
-            raise Exception, "ATTENZIONE CI SONO PIÙ MOVIMENTI LEGATI AD UN DOCUMENTO"
+            raise Exception, "ATTENZIONE CI SONO PIU' MOVIMENTI LEGATI AD UN DOCUMENTO"
         righeMovimento = {}
         scontiRigaMovimento = {}
         if righe is not None:
@@ -668,8 +668,15 @@ class TestataDocumento(Dao):
         elif k == 'statoDocumento':
             dic = {k:testata_documento.c.documento_saldato == v}
         elif k == 'idArticolo':
-            dic = {k:None}
-        #FIXME : testata_documento.c.id_articolo == v  ARRIVANO QUI TRAMITE RIGA - RIGA DOCUMENTO
+            dic = {k: or_(and_(Articolo.id ==Riga.id_articolo,
+                            riga.c.id==RigaMovimento.id,
+                            RigaMovimento.id_testata_movimento == TestataMovimento.id,
+                            TestataMovimento.id_testata_documento == testata_documento.c.id,
+                            Articolo.id ==v),
+                            and_(Articolo.id ==riga.c.id_articolo,
+                            Riga.id == riga_doc.c.id,
+                            riga_doc.c.id_testata_documento == testata_documento.c.id,
+                            Articolo.id ==v))}
         return  dic[k]
 
 riga=Table('riga',params['metadata'],schema = params['schema'],autoload=True)
