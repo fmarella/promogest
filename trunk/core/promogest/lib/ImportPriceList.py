@@ -1142,7 +1142,7 @@ class ProductFromCsv:
             daoFornitura.prezzo_lordo = prezzo or 0
             daoFornitura.id_fornitore = self.fornitore
             daoFornitura.id_articolo = self.daoArticolo.id
-            daoFornitura.percentuale_iva = Decimal(str(self.aliquota_iva))
+            daoFornitura.percentuale_iva = Decimal(str(self.aliquota_iva.percentuale))
             daoFornitura.data_prezzo = self.dataListino
             daoFornitura.codice_articolo_fornitore = self.codice_fornitore
             daoFornitura.fornitore_preferenziale = True
