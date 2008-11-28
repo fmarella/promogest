@@ -6,10 +6,10 @@
 
 from promogest import Environment
 
-MODULES_NAME = "ImportaPriceList"
+MODULES_NAME = "ImportPriceList"
 MODULES_FOR_EXPORT = []
-GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/ImportaPriceList/gui/'
-COMPANY = Environment.conf.ImportaPriceList.company_name
+GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/ImportPriceList/gui/'
+COMPANY = Environment.conf.ImportPriceList.company_name
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
 

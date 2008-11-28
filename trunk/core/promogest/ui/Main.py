@@ -11,7 +11,6 @@ import gtk, gobject
 import threading, os, signal, popen2, md5
 from promogest import Environment
 from GladeWidget import GladeWidget
-from promogest.lib.UpdateDB import *
 from AnagraficaAziende import AnagraficaAziende
 from ElencoMagazzini import ElencoMagazzini
 from ElencoListini import ElencoListini
@@ -48,37 +47,24 @@ except ImportError:
 
 class Main(GladeWidget):
 
-    def __init__(self, aziendaStr):
+    def __init__(self,aziendaStr,anagrafiche_modules,parametri_modules,anagrafiche_dirette_modules,
+                frame_modules,permanent_frames):
+
         GladeWidget.__init__(self, 'main_window')
         self.main_window.set_title('*** Promogest *** Azienda : '+aziendaStr+'  *** Utente : '+Environment.usernameLoggedList[1]+' ***')
         self.aziendaStr = aziendaStr
-        self.modules = {}
         Login.windowGroup.append(self.getTopLevel())
-
+        self.anagrafiche_modules = anagrafiche_modules
+        self.parametri_modules = parametri_modules
+        self.anagrafiche_dirette_modules=anagrafiche_dirette_modules
+        self.frame_modules = frame_modules
+        self.permanent_frames = permanent_frames
         #self.main_window = self.main2_window
         self.currentFrame = None
         self.alarmFrame = None
 
         self.updates()
-        self.importModulesFromDir('promogest/modules')
 
-    def groupModulesByType(self):
-        self.anagrafiche_modules = {}
-        self.parametri_modules = {}
-        self.anagrafiche_dirette_modules = {}
-        self.frame_modules = {}
-        self.permanent_frames = {}
-        for module_name in self.modules.keys():
-            if self.modules[module_name]['type'] == 'anagrafica':
-                self.anagrafiche_modules[module_name] = self.modules[module_name]
-            elif self.modules[module_name]['type'] == 'parametro':
-                self.parametri_modules[module_name] = self.modules[module_name]
-            elif self.modules[module_name]['type'] == 'anagrafica_diretta':
-                self.anagrafiche_dirette_modules[module_name] = self.modules[module_name]
-            elif self.modules[module_name]['type'] == 'frame':
-                self.frame_modules[module_name] = self.modules[module_name]
-            elif self.modules[module_name]['type'] == 'permanent_frame':
-                self.permanent_frames[module_name] = self.modules[module_name]
 
     def show(self):
         """ Visualizza la finestra """
@@ -173,8 +159,6 @@ class Main(GladeWidget):
             self._refresh()
         self.placeWindow(self.main_window)
         self.main_window.show_all()
-
-
 
 
     def updates(self):
@@ -688,42 +672,7 @@ I Numeri:   %s
         else:
             return False
 
-    def importModulesFromDir(self, modules_dir):
-            """Check the modules directory and automatically try to load all available modules"""
-            Environment.modulesList=[]
-            modules_folders = [folder for folder in os.listdir(modules_dir) \
-                            if (os.path.isdir(os.path.join(modules_dir, folder)) \
-                            and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
-            for m_str in modules_folders:
-                #try:
-                if hasattr(Environment.conf,m_str):
-                    exec "mod_enable = getattr(Environment.conf.%s,'mod_enable','yes')" %m_str
-                    if mod_enable=="yes":
-                        exec "import %s.%s.module as m" % (modules_dir.replace("/", "."), m_str)
-                        if m.COMPANY != (self.aziendaStr):
-                            print "AZIENDA %s DEL CONFIGURE SEMBRA DIVERSA DALLA AZIENDA CORRENTE %s NON CARICO IL MODULO %s" %(m.COMPANY, self.aziendaStr,m.MODULES_NAME)
-                            continue
-                        else:
-                            Environment.modulesList.append(str(m.MODULES_NAME))
-                            for class_name in m.MODULES_FOR_EXPORT:
-                                exec 'module = m.'+ class_name
 
-                                #print "STAMPA class_name, m.COMPANY, m_str , solo per il debug",class_name, m.COMPANY, m_str
-                                self.modules[class_name] = {
-                                    'module': module(),
-                                    'type': module.VIEW_TYPE[0],
-                                    'module_dir': "%s" % (m_str),
-                                    'guiDir':m.GUI_DIR,
-                                    'company':m.COMPANY}
-                                print "'%s' imported as a module" % str(class_name)
-                else:
-                    print "ATTENZIONE modulo %s presente in cartella moduli ma non settato nel configure" %m_str
-                        #except Exception:
-                            #print '%s. Modulo non valido' % m_str
-                #except Exception:
-                    #print '%s. NON IMPORTATO POTREBBE ESSERE VOLUTO O UN ERRORE, VERIFICARE' % m_str
-            print "LISTA DEI MODULI CARICATI E FUNZIONANTI", repr(Environment.modulesList)
-            self.groupModulesByType()
 
 class ConfiguraWindow(GladeWidget):
 

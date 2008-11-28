@@ -60,7 +60,7 @@ class Login(GladeApp):
     def __init__(self):
         self.azienda=None
         self._dbConnString = ''
-
+        self.modules = {}
         Environment.exceptionHandler = GtkExceptionHandler()
 
         #azs = Dao(Azienda, isList=True).select(orderBy="schemaa")
@@ -170,12 +170,19 @@ class Login(GladeApp):
                 Environment.usernameLoggedList = [users[0].id, users[0].username,users[0].id_role]
                 if hasAction(actionID=1):
                     Environment.params["schema"]=self.azienda
+                    from promogest.lib.UpdateDB import *
                     Environment.meta = MetaData().reflect(Environment.engine,schema=self.azienda )
                     self.login_window.hide()
                     global windowGroup
                     windowGroup.remove(self.getTopLevel())
+                    self.importModulesFromDir('promogest/modules')
                     from Main import Main
-                    main = Main(self.azienda)
+                    main = Main(self.azienda,
+                                self.anagrafiche_modules,
+                                self.parametri_modules,
+                                self.anagrafiche_dirette_modules,
+                                self.frame_modules,
+                                self.permanent_frames)
                     main.getTopLevel().connect("destroy", on_main_window_closed,
                                         self.login_window)
                     main.show()
@@ -190,6 +197,64 @@ class Login(GladeApp):
                 response = dialog.run()
                 dialog.destroy()
                 do_login = False
+
+    def groupModulesByType(self):
+        self.anagrafiche_modules = {}
+        self.parametri_modules = {}
+        self.anagrafiche_dirette_modules = {}
+        self.frame_modules = {}
+        self.permanent_frames = {}
+        for module_name in self.modules.keys():
+            if self.modules[module_name]['type'] == 'anagrafica':
+                self.anagrafiche_modules[module_name] = self.modules[module_name]
+            elif self.modules[module_name]['type'] == 'parametro':
+                self.parametri_modules[module_name] = self.modules[module_name]
+            elif self.modules[module_name]['type'] == 'anagrafica_diretta':
+                self.anagrafiche_dirette_modules[module_name] = self.modules[module_name]
+            elif self.modules[module_name]['type'] == 'frame':
+                self.frame_modules[module_name] = self.modules[module_name]
+            elif self.modules[module_name]['type'] == 'permanent_frame':
+                self.permanent_frames[module_name] = self.modules[module_name]
+
+
+    def importModulesFromDir(self, modules_dir):
+            """Check the modules directory and automatically try to load all available modules"""
+            Environment.modulesList=[]
+            modules_folders = [folder for folder in os.listdir(modules_dir) \
+                            if (os.path.isdir(os.path.join(modules_dir, folder)) \
+                            and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
+            for m_str in modules_folders:
+                #try:
+                if hasattr(Environment.conf,m_str):
+                    exec "mod_enable = getattr(Environment.conf.%s,'mod_enable','yes')" %m_str
+                    if mod_enable=="yes":
+                        exec "import %s.%s.module as m" % (modules_dir.replace("/", "."), m_str)
+                        if m.COMPANY != (self.azienda):
+                            print "AZIENDA %s DEL CONFIGURE SEMBRA DIVERSA DALLA AZIENDA CORRENTE %s NON CARICO IL MODULO %s" %(m.COMPANY, self.aziendaStr,m.MODULES_NAME)
+                            continue
+                        else:
+                            Environment.modulesList.append(str(m.MODULES_NAME))
+                            for class_name in m.MODULES_FOR_EXPORT:
+                                exec 'module = m.'+ class_name
+
+                                #print "STAMPA class_name, m.COMPANY, m_str , solo per il debug",class_name, m.COMPANY, m_str
+                                self.modules[class_name] = {
+                                    'module': module(),
+                                    'type': module.VIEW_TYPE[0],
+                                    'module_dir': "%s" % (m_str),
+                                    'guiDir':m.GUI_DIR,
+                                    'company':m.COMPANY}
+                                print "'%s' imported as a module" % str(class_name)
+                else:
+                    print "ATTENZIONE modulo %s presente in cartella moduli ma non settato nel configure" %m_str
+                        #except Exception:
+                            #print '%s. Modulo non valido' % m_str
+                #except Exception:
+                    #print '%s. NON IMPORTATO POTREBBE ESSERE VOLUTO O UN ERRORE, VERIFICARE' % m_str
+            print "LISTA DEI MODULI CARICATI E FUNZIONANTI", repr(Environment.modulesList)
+            self.groupModulesByType()
+
+
 
     def on_login_window_key_press_event(self, widget, event):
         if event.type == gtk.gdk.KEY_PRESS:

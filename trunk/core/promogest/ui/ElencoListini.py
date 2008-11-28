@@ -103,7 +103,8 @@ class ElencoListini(GladeWidget):
                           (l.denominazione or ''),
                           (l.descrizione or ''),
                           dateToString(l.data_listino)))
-
+        if "ImportPriceList" not in Environment.modulesList:
+            self.importazione_listini_togglebutton.set_sensitive(False)
 
     def _changeOrderBy(self, widget, campi):
         print "CAMBI L?ORDINE", campi
@@ -152,7 +153,7 @@ class ElencoListini(GladeWidget):
         showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
 
     def on_importazione_listini_togglebutton_clicked(self, toggleButton):
-        from promogest.lib.ImportPriceList import ImportPriceList
+        from promogest.modules.ImportPriceList.ui.ImportPriceList import ImportPriceList
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
@@ -164,3 +165,4 @@ class ElencoListini(GladeWidget):
         anagWindow = anag.getTopLevel()
 
         showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton)
+
