@@ -2117,12 +2117,15 @@ magazzino</property>
                           </widget>
                         </child>
                         <child>
-                          <widget class="GtkButton" id="button1">
+                          <widget class="GtkButton" id="generate_article_code_button">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_markup">Genera un Codice Articolo Utile secondo lo schema preimpostato</property>
                             <property name="label" translatable="yes">G</property>
                             <property name="response_id">0</property>
+                            <signal name="clicked" handler="on_generate_article_code_button_clicked"/>
+                            <accelerator key="g" modifiers="GDK_CONTROL_MASK" signal="activate"/>
                           </widget>
                           <packing>
                             <property name="position">1</property>

@@ -938,7 +938,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.azzeraRiga(0)
             j = self.dao.righe.index(riga) + 1
             magazzino = leggiMagazzino(riga.id_magazzino)
-            print "RIGA IDDDDDDDDDDDDDDDDDDDDDDDDDDDD", riga.id_articolo
             articolo = leggiArticolo(riga.id_articolo)
             listino = leggiListino(riga.id_listino)
             multiplo = leggiMultiplo(riga.id_multiplo)
@@ -952,9 +951,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 altezza = ''
                 larghezza = ''
                 moltiplicatore_pezzi = ''
-            print "RIGAAAAAAAAAAAAAAAAAAAAAAAA", self._righe[0]
-            print "ARTICOLOOOOOOOOOOOOOOOOOOOO", articolo
-            print "CODICEEEEEEEEEEEEEEEEEEEEEE", articolo["codice"]
             self._righe[0]["idRiga"] = riga.id
             self._righe[0]["idMagazzino"] = riga.id_magazzino
             self._righe[0]["magazzino"] = magazzino["denominazione"]

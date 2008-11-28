@@ -122,9 +122,9 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             # Crea un nuovo Dao vuoto
             self.dao = Articolo().getRecord()
             # Assegna il codice se ne e' prevista la crazione automatica, ma non per famiglia
-            if not self._codiceByFamiglia:
-                self.dao.codice = promogest.dao.Articolo.getNuovoCodiceArticolo(idFamiglia=None)
-                print "STAMPO IL NUOVO CODICE ARTICOLO IN SETDAO GENERATO",self.dao.codice
+            #if not self._codiceByFamiglia:
+                #self.dao.codice = promogest.dao.Articolo.getNuovoCodiceArticolo(idFamiglia=None)
+                #print "STAMPO IL NUOVO CODICE ARTICOLO IN SETDAO GENERATO",self.dao.codice
             # Prova a impostare "pezzi" come unita' di misura base
             self.dao.id_unita_base = 1
             self._oldDaoRicreato = False
@@ -138,11 +138,11 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
     def _refresh(self):
         self._loading = True
         self.codice_entry.set_text(self.dao.codice or '')
-        print "STAMPO IL NUOVO CODICE ARTICOLO IN _REFRESH ",self.dao.codice
-        if self.dao.codice:
-            self.dao.codice = omogeneousCode(section="Articoli", string=self.dao.codice )
-        else:
-            print " ERRORE BY_PASSATO PER ILARIA :) "
+        #print "STAMPO IL NUOVO CODICE ARTICOLO IN _REFRESH ",self.dao.codice
+        #if self.dao.codice:
+            #self.dao.codice = omogeneousCode(section="Articoli", string=self.dao.codice )
+        #else:
+            #print " ERRORE BY_PASSATO PER ILARIA :) "
         self.denominazione_entry.set_text(self.dao.denominazione or '')
         findComboboxRowFromId(self.id_aliquota_iva_customcombobox.combobox,
                               self.dao.id_aliquota_iva)
@@ -465,7 +465,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
     def on_senza_taglie_colori_radiobutton_toggled(self, radioButton):
         active = radioButton.get_active()
-        print "Activeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", active
         if active:
             self.senza_taglie_colori_radiobutton.set_active(True)
             self.codici_a_barre_togglebutton.set_sensitive(True)
@@ -476,6 +475,10 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.codici_a_barre_togglebutton.set_sensitive(False)
             self.taglie_colori_togglebutton.set_sensitive(True)
             self.frame_promowear.set_sensitive(True)
+
+    def on_generate_article_code_button_clicked(self, button):
+        codice = promogest.dao.Articolo.getNuovoCodiceArticolo(idFamiglia=None)
+        self.codice_entry.set_text(codice)
 
     def on_taglie_colori_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):

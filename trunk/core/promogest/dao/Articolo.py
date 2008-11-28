@@ -247,24 +247,15 @@ def getNuovoCodiceArticolo(idFamiglia=None):
                 print "passi qui,isNuovoCodiceByFamiglia() "
                 lunghezzaCodiceFamiglia = int(conf.Articoli.lunghezza_codice_famiglia)
                 numeroFamiglie = int(conf.Articoli.numero_famiglie)
-            #try:
-                #codicesel  = select([func.max(Articolo.codice)]).execute().fetchall()
-            codicesel  =params['session'].query(Articolo.codice).order_by("id").all()
-            print "DUE", codicesel
-            codice = codeIncrement(codicesel[0][0])
-            print "codiceeeee TRE", codice
-            #except:
-                #print "TRE PASS"
-                #pass
-            #try:
-                #print "QUATTRO"
-                #if codice == "" and hasattr(conf.Articoli,'struttura_codice'):
-                    #print "CINQUE"
-                    #codice = codeIncrement(conf.Articoli.struttura_codice)
-                    #print "SEI", codice
-            #except:
-                #print "SEI PASS"
-                #pass
+            #codicesel  =params['session'].query(Articolo.codice).order_by("id").all()
+            codice = codeIncrement(conf.Articoli.struttura_codice)
+            #codice = codeIncrement(codicesel[0][0])
+            #print "codice", unicode(codice) in codicesel
+            while params['session'].query(Articolo.codice).filter(codice==Articolo.codice).order_by("id").all():
+                #print "codice", codice 
+                codice = codeIncrement(codice)
+            else:
+                codice = codice
     return codice
 
     def getArticoliAssociati(connection, id):
