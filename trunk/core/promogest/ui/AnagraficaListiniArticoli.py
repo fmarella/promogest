@@ -48,8 +48,10 @@ class AnagraficaListiniArticoli(Anagrafica):
                             labelHandler=AnagraficaListiniArticoliLabel(self),
                             editElement=AnagraficaListiniArticoliEdit(self),
                             aziendaStr=aziendaStr)
-        if Environment.conf.hasLabel == True:
-            self.Stampa_Frontaline.set_visible_horizontal(True)
+
+        self.Stampa_Frontaline.set_visible_horizontal(True)
+        if "Label" not in Environment.modulesList:
+            self.Stampa_Frontaline.set_sensitive(False)
         self.records_file_export.set_sensitive(True)
 
     def set_data_list(self, data):

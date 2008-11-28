@@ -65,7 +65,6 @@ class Anagrafica(GladeWidget):
         self.record_duplicate_menu.set_sensitive(False)
         self.selected_record_print_button.set_sensitive(False)
         self.selected_record_print_menu.set_sensitive(False)
-
         self.placeWindow(self.anagrafica_complessa_window)
         self.filter.draw()
         self.editElement.draw()
