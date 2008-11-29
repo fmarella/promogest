@@ -984,7 +984,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             if anag.dao is None:
                 anagWindow.destroy()
                 return
-
+            valoreSconto = 0
+            tipoSconto = 'percentuale'
             anagWindow.destroy()
             idArticolo = anag.dao.id
             codiceABarre = anag.dao.codice_a_barre or ''

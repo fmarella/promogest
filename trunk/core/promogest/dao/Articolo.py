@@ -10,6 +10,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
+from promogest import Environment
 from Immagine import Immagine
 from UnitaBase import UnitaBase
 from FamigliaArticolo import FamigliaArticolo
@@ -248,14 +249,23 @@ def getNuovoCodiceArticolo(idFamiglia=None):
                 lunghezzaCodiceFamiglia = int(conf.Articoli.lunghezza_codice_famiglia)
                 numeroFamiglie = int(conf.Articoli.numero_famiglie)
             #codicesel  =params['session'].query(Articolo.codice).order_by("id").all()
-            codice = codeIncrement(conf.Articoli.struttura_codice)
-            #codice = codeIncrement(codicesel[0][0])
-            #print "codice", unicode(codice) in codicesel
-            while params['session'].query(Articolo.codice).filter(codice==Articolo.codice).order_by("id").all():
-                #print "codice", codice 
-                codice = codeIncrement(codice)
+            if Environment.lastCode:
+                codice = codeIncrement(Environment.lastCode)
+                Environment.lastCode = codice
             else:
-                codice = codice
+                codice = codeIncrement(conf.Articoli.struttura_codice)
+                while params['session'].query(Articolo.codice).filter(codice==Articolo.codice).order_by("id").all():
+                    codice = codeIncrement(codice)
+                else:
+                    codice = codice
+    if params['session'].query(Articolo.codice).filter(codice==Articolo.codice).order_by("id").all():
+        while params['session'].query(Articolo.codice).filter(codice==Articolo.codice).order_by("id").all():
+            codice = codeIncrement(codice)
+            Environment.lastCode = codice
+        else:
+            codice = codice
+    else:
+        Environment.lastCode = codice
     return codice
 
     def getArticoliAssociati(connection, id):

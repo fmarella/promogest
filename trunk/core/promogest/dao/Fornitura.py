@@ -134,6 +134,8 @@ class Fornitura(Dao):
             dic= {k:fornitura.c.data_fornitura >= v}
         elif k == 'aDataFornitura':
             dic = {k:fornitura.c.data_fornitura <= v}
+        elif k == 'codiceArticoloFornitoreEsatto':
+            dic = {k:fornitura.c.codice_articolo_fornitore ==v}
         return  dic[k]
 
     #def persist(self, conn=None):

@@ -47,6 +47,7 @@ feedAll = ""
 usernameLoggedList=["","",""]
 scontisave = {}
 tagliacoloretempdata = (False,None)
+lastCode = None
 
 def getConfigureDir(company='__default__'):
     """ Tests if another configuration folder was indicated """
