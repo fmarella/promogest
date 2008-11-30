@@ -1921,10 +1921,13 @@ def codeIncrement(value):
 
     return increment(value)
 
-def checkCodiceDuplicato(codice=None,tipo=None):
+def checkCodiceDuplicato(codice=None,id=None,tipo=None):
     if tipo =="Articolo":
         from promogest.dao.Articolo import Articolo
-        a = Articolo(isList=True).select(codicesatto=codice)
+        if not id:
+            a = Articolo(isList=True).select(codicesatto=codice, idArticolo=id)
+        else:
+            a = False
     elif tipo =="Clienti":
         a = Cliente(isList=True).select(codicesatto=codice)
     if a:

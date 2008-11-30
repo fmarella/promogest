@@ -192,6 +192,8 @@ else:
                 dic= {k:articolo.c.id_stato_articolo == v}
             elif k == 'cancellato':
                 dic = {k:or_(articolo.c.cancellato != v)}
+            elif k == 'idArticolo':
+                dic = {k:or_(articolo.c.id == v)}
             return  dic[k]
 
     #def getByCodice(connection, codice):

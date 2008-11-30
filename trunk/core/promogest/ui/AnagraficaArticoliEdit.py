@@ -235,11 +235,9 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.dao.articoloTagliaColore = articoloTagliaColore
             articoloTagliaColore = None
         self.dao.codice = self.codice_entry.get_text()
-        #if not self._oldDaoRicreato:
-            #cod=checkCodiceDuplicato(codice=self.dao.codice, tipo="Articolo")
-            #self._oldDaoRicreato=False
-            #if not cod:
-                #return
+        cod=checkCodiceDuplicato(codice=self.dao.codice,id=self.dao.id, tipo="Articolo")
+        if not cod:
+            return
 
         self.dao.denominazione = self.denominazione_entry.get_text()
         self.dao.id_aliquota_iva = findIdFromCombobox(self.id_aliquota_iva_customcombobox.combobox)
