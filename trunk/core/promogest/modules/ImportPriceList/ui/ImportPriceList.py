@@ -1097,7 +1097,7 @@ class ProductFromCsv:
 
             sconti_ingrosso = [ScontoVenditaIngrosso().getRecord(),]
             sconti_dettaglio = [ScontoVenditaDettaglio().getRecord(),]
-            if self.sconto_vendita_ingrosso is not None:
+            if self.sconto_vendita_ingrosso is not None and str(self.sconto_vendita_ingrosso) != "0":
                 try:
                     sconti_ingrosso[0].valore = Decimal(self.sconto_vendita_ingrosso or 0)
                     sconti_ingrosso[0].tipo_sconto = 'percentuale'
@@ -1106,8 +1106,10 @@ class ProductFromCsv:
                     sconti_ingrosso[0].valore = Decimal(self.checkDecimalSymbol(self.sconto_vendita_ingrosso, decimalSymbol))
                     sconti_ingrosso[0].tipo_sconto = 'percentuale'
                     daoPriceListProduct.sconto_vendita_ingrosso = sconti_ingrosso
+            else:
+                daoPriceListProduct.sconto_vendita_ingrosso = Decimal('0')
 
-            if self.sconto_vendita_dettaglio is not None:
+            if self.sconto_vendita_dettaglio is not None and str(self.sconto_vendita_dettaglio).strip() != "0":
                 try:
                     sconti_dettaglio[0].valore = Decimal(self.sconto_vendita_dettaglio or 0)
                     sconti_dettaglio[0].tipo_sconto = 'percentuale'
@@ -1116,6 +1118,8 @@ class ProductFromCsv:
                     sconti_dettaglio[0].valore = Decimal(self.checkDecimalSymbol(self.sconto_vendita_dettaglio, decimalSymbol))
                     sconti_dettaglio[0].tipo_sconto = 'percentuale'
                     daoPriceListProduct.sconto_vendita_dettaglio = sconti_dettaglio
+            else:
+                daoPriceListProduct.sconto_vendita_dettaglio = Decimal('0')
 
             if self.prezzo_acquisto_non_ivato is not None:
                 prezzo = str(self.prezzo_acquisto_non_ivato).strip() or '0'
