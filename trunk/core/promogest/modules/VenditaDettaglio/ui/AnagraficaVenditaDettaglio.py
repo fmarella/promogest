@@ -208,7 +208,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             tipoSconto = "percentuale"
         else:
             tipoSconto = "valore"
-        if model[path][5]== 0:
+        if model[path][5]== 0 or not model[path][5]:
             tipoSconto = None
             model[path][7] = model[path][4]
         else:

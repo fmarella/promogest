@@ -459,14 +459,11 @@ def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=
     from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
     if idArticolo:
         filter1 = Listino.id.in_(select([ListinoArticolo.id_listino], ListinoArticolo.id_articolo == idArticolo))
-            #( id IN (SELECT id_listino FROM listino_articolo WHERE id_articolo = \' || _id_articolo || \'))
     else:
         filter1 = None
     if idMagazzino:
         filter2 = or_(Listino.id.in_(select([ListinoMagazzino.id_listino], ListinoMagazzino.id_magazzino == idMagazzino)),
                     not_(Listino.id.in_(select([ListinoMagazzino.id_listino]).distinct())))
-            #( id IN (SELECT id_listino FROM listino_magazzino WHERE id_magazzino = \' || _id_magazzino || \')
-                #OR id NOT IN (SELECT DISTINCT id_listino FROM listino_magazzino))
     else :
         filter2 = None
     if idCliente:
@@ -474,28 +471,20 @@ def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=
                         ListinoCategoriaCliente.id_categoria_cliente.in_(select([ClienteCategoriaCliente.id_categoria_cliente] ,
                             ClienteCategoriaCliente.id_cliente ==idCliente)))),
                         not_(Listino.id.in_(select([ListinoCategoriaCliente.id_listino]).distinct())))
-        #( id IN (SELECT id_listino FROM listino_categoria_cliente WHERE id_categoria_cliente IN (SELECT id_categoria_cliente FROM cliente_categoria_cliente WHERE id_cliente = \' || _id_cliente || \'))
-        #OR id NOT IN (SELECT DISTINCT id_listino FROM listino_categoria_cliente)) \';
     else :
         filter3 = None
     if not OrderBy:
         OrderBy= "denominazione"
 
-    ok = Listino(isList=True).select(complexFilter=and_(filter1,filter2,filter3), orderBy=OrderBy)
-
-    print "listino selezionatooooooooooooooooooooooooooooooo", ok
-
-    return ok
-
-
+    listinoSelezionato = Listino(isList=True).select(complexFilter=and_(filter1,filter2,filter3), orderBy=OrderBy)
+    print "LISTINI ASSOCIATI:", listinoSelezionato
+    return listinoSelezionato
 
 def fillComboboxListiniFiltrati(combobox, idArticolo=None, idMagazzino=None, idCliente=None, filter=False):
     """
     Crea l'elenco dei listini
     """
     model = gtk.ListStore(object, int, str)
-    #liss = Environment.connection.execStoredProcedure('ListinoCandidateSel',
-                                                      #(None, idArticolo, idMagazzino, idCliente))
     liss = listinoCandidateSel( idArticolo=idArticolo, idMagazzino=idMagazzino, idCliente = idCliente)
     if not filter:
         emptyRow = ''
