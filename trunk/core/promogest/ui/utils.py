@@ -1933,7 +1933,7 @@ def checkCodiceDuplicato(codice=None,id=None,tipo=None):
     if a:
         msg = """Attenzione!
     Codice %s : %s  è già presente
-    Inserirne un altro""" %(tipo,codice)
+    Inserirne un altro o premere il bottone "G"enera""" %(tipo,codice)
         dialog = gtk.MessageDialog(None,
                                 gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                 gtk.MESSAGE_INFO,
@@ -1945,3 +1945,15 @@ def checkCodiceDuplicato(codice=None,id=None,tipo=None):
     else:
         return True
 
+def mN(value,decimal=None):
+    if not value or value =='':
+        return
+    precisione = int(Environment.conf.decimals)
+    if precisione >=1:
+        decimal = "0."
+        decimal += (precisione-1) * "0"
+        decimal += "1"
+    else:
+        decimal = "0.01"
+    newvalue= Decimal(str(value).strip()).quantize(Decimal(decimal), rounding=ROUND_HALF_UP)
+    return newvalue

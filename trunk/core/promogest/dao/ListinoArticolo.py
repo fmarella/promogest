@@ -128,7 +128,7 @@ class ListinoArticolo(Dao):
         return self.__scontiVenditaDett
 
     def _setScontiVenditaDettaglio(self,value):
-        self.__scontiVenditaDett = value
+         self.__scontiVenditaDett = value
 
     sconto_vendita_dettaglio = property(_getScontiVenditaDettaglio, _setScontiVenditaDettaglio)
 
@@ -195,16 +195,32 @@ class ListinoArticolo(Dao):
                         v.id_listino = self.id_listino
                         v.id_articolo = self.id_articolo
                         v.data_listino_articolo = self.data_listino_articolo
-                        print v.id_listino,v.id_articolo,v.data_listino_articolo,v.valore,v.tipo_sconto
                         params["session"].add(v)
                 elif (key=="ingrosso") and (value):
                     for u in value:
                         u.id_listino = self.id_listino
                         u.id_articolo = self.id_articolo
                         u.data_listino_articolo = self.data_listino_articolo
-                        print u.id_listino,u.id_articolo,u.data_listino_articolo,u.valore,u.tipo_sconto+'_ingrosso'
                         params["session"].add(u)
+        try:
+            self.__scontiVenditaDett[0].id_listino=self.id_listino
+            self.__scontiVenditaDett[0].id_articolo = self.id_articolo
+            self.__scontiVenditaDett[0].data_listino_articolo = self.data_listino_articolo
+            params["session"].add(self.__scontiVenditaDett[0])
+        except:
+            pass
+
+        try:
+            self.__scontiVenditaIngr[0].id_listino=self.id_listino
+            self.__scontiVenditaIngr[0].id_articolo = self.id_articolo
+            self.__scontiVenditaIngr[0].data_listino_articolo = self.data_listino_articolo
+            params["session"].add(self.__scontiVenditaIngr[0])
+        except:
+            pass
+
         params["session"].commit()
+
+
 
 listinoarticolo=Table('listino_articolo',
                 params['metadata'],

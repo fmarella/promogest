@@ -87,6 +87,7 @@ class GladeWidget(SimpleGladeApp):
 
     def createSignedMoneyEntryField(self, str1, str2, int1, int2):
         """ Return an EntryField for signed money values input """
+        print "PPPPPPPPPDDDDDDDDDDDDDD",Environment.conf.decimals
         return SignedDecimalEntryField(str1, str2, int1, Environment.conf.decimals)
 
 
