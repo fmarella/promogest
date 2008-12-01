@@ -690,7 +690,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         for row in model:
             prezzo = mN(row[4])
             valoreSconto = mN(row[5])
-            prezzoScontato = mN(row[7])
+            prezzoScontato = mN(row[7]) or mN(row[4])
             quantita = Decimal(row[8])
             if valoreSconto == 0: #sconto
                 total = total + (prezzo * quantita)
