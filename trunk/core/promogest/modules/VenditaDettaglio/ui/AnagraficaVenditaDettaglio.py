@@ -41,7 +41,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self._currentRow = {}
         self._simboloPercentuale = '%'
         self._simboloEuro = '€'
-        textStatusBar = "     *****   Promogest2 - Modulo Vendita Dettaglio - by Promotux Informatica - 800034561 - www.promotux.it - promogest.promotux.it  *****     "
+        textStatusBar = "     *****   PromoGest2 - Vendita Dettaglio - by PromoTUX Informatica - 800 034561 - www.PromoTUX.it - info@PromoTUX.it  *****     "
         context_id =  self.vendita_dettaglio_statusbar.get_context_id("vendita_dettaglio_window")
         self.vendita_dettaglio_statusbar.push(context_id,textStatusBar)
         azienda = Azienda(id=Environment.params["schema"]).getRecord()
@@ -110,17 +110,37 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         column.set_min_width(80)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Sconto', rendererDx, text=5)
+        cellspinsconto = gtk.CellRendererSpin()
+        cellspinsconto.set_property("editable", True)
+        cellspinsconto.set_property("visible", True)
+        adjustment = gtk.Adjustment(1, 1, 1000,1,2)
+        cellspinsconto.set_property("adjustment", adjustment)
+        #cellspin.set_property("digits",3)
+        #cellspin.set_property("climb-rate",3)
+        cellspinsconto.connect('edited', self.on_column_sconto_edited, treeview, True)
+        column = gtk.TreeViewColumn('Sconto', cellspinsconto, text=5)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
+        column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(50)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Tipo', rendererDx, text=6)
+
+        lsmodel = gtk.ListStore(str)
+        lsmodel.append(["%"])
+        lsmodel.append(["€"])
+        cellcombo= gtk.CellRendererCombo()
+        cellcombo.set_property("editable", True)
+        cellcombo.set_property("visible", True)
+        cellcombo.set_property("text-column", 0)
+        cellcombo.set_property("editable", True)
+        cellcombo.set_property("has-entry", False)
+        cellcombo.set_property("model", lsmodel)
+        cellcombo.connect('edited', self.on_column_tipo_edited, treeview, True)
+        column = gtk.TreeViewColumn('Tipo', cellcombo, text=6)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
+        column.set_clickable(True)
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(20)
@@ -220,6 +240,12 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.refreshTotal()
         self.on_cancel_button_clicked(self.getTopLevel)
 
+    def on_column_sconto_edited(self, cell, path, value, treeview, editNext=True):
+        model = treeview.get_model()
+        model[path][5] = value
+        prez = model[path][4]
+        self.on_column_prezzo_edited(cell, path, prez, treeview)
+
     def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
         """ Function ti set the value quantita edit in the cell"""
         model = treeview.get_model()
@@ -236,6 +262,19 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         model[path][3] = value
         self.on_cancel_button_clicked(self.getTopLevel)
 
+    def on_column_tipo_edited(self, cell, path, value, treeview, editNext=True):
+        """ Function ti set the value quantita edit in the cell"""
+        model = treeview.get_model()
+        model[path][6] = value
+
+    def on_vendita_dettaglio_window_key_press_event(self,widget, event):
+        keyname = gtk.gdk.keyval_name(event.keyval)
+        if keyname == 'F9':
+            try:
+                codice = Environment.conf.VenditaDettaglio.jolly
+                self.search_item(codice=codice)
+            except:
+                print "ARTICOLO JOLLY NON SETTATO NEL CONFIGURE NELLA SEZIONE [VenditaDettaglio]"
 
     def search_item(self, codiceABarre=None, codice=None):
         # Ricerca articolo per barcode
@@ -634,7 +673,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 self.sconto_entry.tipoSconto = 'percentuale'
                 self.marginevalue_label.set_markup('<b>'+"%s" % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
                                                                    mN(self._currentRow['prezzoScontato']),
-                                                                   Decimal(str(self.art["percentualeAliquotaIva"]))))+ '</b>')
+                                                                   mN(str(self.art["percentualeAliquotaIva"]))))+ '</b>')
             else:
                 self._currentRow['valoreSconto'] = mN(self._currentRow['prezzo']) - mN(self._currentRow['prezzoScontato'])
                 self.sconto_entry.set_text(str(mN(self._currentRow['valoreSconto'])))
