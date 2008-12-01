@@ -1946,6 +1946,8 @@ def checkCodiceDuplicato(codice=None,id=None,tipo=None):
         return True
 
 def mN(value,decimal=None):
+    """ funzione importante perchè normalizza le valute, mettendo i decimali così
+        come settato nel configure e restituisce un arrotondamento corretto """
     if not value or value =='':
         return
     precisione = int(Environment.conf.decimals)

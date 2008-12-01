@@ -309,7 +309,7 @@ class ProductFromCsv(object):
                     prezzo = mN(self.checkDecimalSymbol(str(prezzo).split(), decimalSymbol))
                     daoPriceListProduct.ultimo_costo =  mN(calcolaPrezzoIva(mN(prezzo), -1 * mN(self.aliquota_iva.percentuale)))
             else:
-                daoPriceListProduct.ultimo_costo = 0svn 
+                daoPriceListProduct.ultimo_costo = 0
             daoPriceListProduct.persist()
 
         # Fornitura

@@ -503,9 +503,7 @@ def fillComboboxListiniFiltrati(combobox, idArticolo=None, idMagazzino=None, idC
         combobox.set_text_column(2)
 
 def fillComboboxFornitori(combobox,filter=False, noempty=False):
-    """
-    Crea l'elenco dei fornitori in un menu a cascata
-    """
+    """ Crea l'elenco dei fornitori in una combo """
     from promogest.dao.Fornitore import Fornitore
     model = gtk.ListStore(gobject.TYPE_PYOBJECT, int, str)
     forns = Fornitore(isList=True).select(offset=None,batchSize=None)
@@ -527,9 +525,7 @@ def fillComboboxFornitori(combobox,filter=False, noempty=False):
         combobox.set_text_column(2)
 
 def fillComboboxMagazzini(combobox, filter=False, noempty=False):
-    """
-    Crea l'elenco dei magazzini
-    """
+    """  Crea l'elenco dei magazzini  """
     from promogest.dao.Magazzino import Magazzino
     model = gtk.ListStore(object, int, str)
     mags = Magazzino(isList=True).select(offset=None,batchSize=None)
@@ -552,9 +548,7 @@ def fillComboboxMagazzini(combobox, filter=False, noempty=False):
 
 
 def fillComboboxOperazioni(combobox, tipo=None, filter=False):
-    """
-    Crea l'elenco delle operazioni per la movimentazione di magazzino
-    """
+    """ Crea l'elenco delle operazioni per la movimentazione di magazzino """
     if tipo:
         res = Environment.params['session'].query(Operazione).filter(or_(Operazione.tipo_operazione==None,Operazione.tipo_operazione==tipo)).order_by(Operazione.denominazione).all()
     else:
@@ -579,9 +573,7 @@ def fillComboboxOperazioni(combobox, tipo=None, filter=False):
 
 
 def fillComboboxTipiRecapito(combobox):
-    """
-    Crea l'elenco dei tipi di recapito per i contatti
-    """
+    """ Crea l'elenco dei tipi di recapito per i contatti """
     model = fillModelTipiRecapito()
 
     combobox.clear()
@@ -592,7 +584,6 @@ def fillComboboxTipiRecapito(combobox):
     if combobox.__class__ is gtk.ComboBoxEntry:
         combobox.set_text_column(0)
 
-
 def fillModelTipiRecapito():
     """ Crea l'elenco dei tipi di recapito per i contatti  """
     res = TipoRecapito(isList=True).select(orderBy="denominazione")
@@ -601,7 +592,6 @@ def fillModelTipiRecapito():
     for r in res:
         model.append((r.denominazione, ))
     return model
-
 
 def fillComboboxAziende(combobox, filter=False):
     """ Crea l'elenco delle aziende  """
@@ -665,8 +655,6 @@ def getModelsName():
                 existingModels[model_tag.attrib['name']] = path
     return existingModels
 
-
-
 def fillModelCombobox(combobox):
     """Appends in combobox tuples containing,
     for each file in models directory, model's name and its path"""
@@ -706,13 +694,7 @@ def fillComboboxBanche(combobox, filter=False):
         combobox.set_text_column(2)
 
 def fillComboboxCausaliTrasporto(combobox, filter=False):
-    """
-    Crea elenco delle causali di trasporto
-    """
-    #queryString = ('SELECT DISTINCT causale_trasporto FROM ' + Environment.connection._schemaAzienda + '.testata_documento ORDER BY causale_trasporto')
-    #argList = []
-    #Environment.connection._cursor.execute(queryString, argList)
-    #res = Environment.connection._cursor.fetchall()
+    """ Crea elenco delle causali di trasporto  """
     from promogest.dao.TestataDocumento import TestataDocumento
     res = TestataDocumento(isList=True).select(batchSize=None, offset=None,orderBy='causale_trasporto')
     model = gtk.ListStore(object, str)
@@ -734,13 +716,7 @@ def fillComboboxCausaliTrasporto(combobox, filter=False):
         combobox.set_text_column(1)
 
 def fillComboboxAspettoEsterioreBeni(combobox, filter=False):
-    """
-    Crea elenco degli aspetti esteriori beni
-    """
-    #queryString = ('SELECT DISTINCT aspetto_esteriore_beni FROM ' + Environment.connection._schemaAzienda + '.testata_documento ORDER BY aspetto_esteriore_beni')
-    #argList = []
-    #Environment.connection._cursor.execute(queryString, argList)
-    #res = Environment.connection._cursor.fetchall()
+    """ Crea elenco degli aspetti esteriori beni """
     from promogest.dao.TestataDocumento import TestataDocumento
     res = TestataDocumento(isList=True).select(batchSize=None, offset=None,orderBy='aspetto_esteriore_beni')
     model = gtk.ListStore(object, str)
@@ -762,14 +738,10 @@ def fillComboboxAspettoEsterioreBeni(combobox, filter=False):
         combobox.set_text_column(1)
 
 def fillComboboxPortoTrasporto(combobox):
-    """
-    Crea l'elenco dei porti trasporto
-    """
+    """ Crea l'elenco dei porti trasporto """
     model = gtk.ListStore(gobject.TYPE_STRING)
-
     model.append(('Franco'))
     model.append(('Assegnato'))
-
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)
@@ -779,9 +751,7 @@ def fillComboboxPortoTrasporto(combobox):
         combobox.set_text_column(1)
 
 def fillComboboxDestinazioniMerce(combobox, idCliente=None, filter=False):
-    """
-    Crea l'elenco delle destinazioni merce
-    """
+    """ Crea l'elenco delle destinazioni merce """
     from promogest.dao.DestinazioneMerce import DestinazioneMerce
     model = gtk.ListStore(object, int, str)
     dems = DestinazioneMerce(isList=True).select(batchSize=None,offset=None )
@@ -802,9 +772,7 @@ def fillComboboxDestinazioniMerce(combobox, idCliente=None, filter=False):
         combobox.set_text_column(2)
 
 def fillComboboxAutoriPromemoria(combobox):
-    """
-    Crea l'elenco degli autori gia'inseriti
-    """
+    """ Crea l'elenco degli autori gia'inseriti """
     from promogest.dao.Promemoria import Promemoria
     argList = []
     autors = Promemoria(isList=True).select(orderBy="autore")
@@ -821,7 +789,6 @@ def fillComboboxAutoriPromemoria(combobox):
     combobox.set_model(model)
     if combobox.__class__ is gtk.ComboBoxEntry:
         combobox.set_text_column(0)
-
 
 def fillComboboxIncaricatiPromemoria(combobox):
     """
