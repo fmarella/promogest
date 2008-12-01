@@ -274,7 +274,9 @@ class ProductFromCsv(object):
             sconti_ingrosso = [ScontoVenditaIngrosso().getRecord(),]
             sconti_dettaglio = [ScontoVenditaDettaglio().getRecord(),]
 
-            if str(self.sconto_vendita_ingrosso).strip() != "0" and str(self.sconto_vendita_ingrosso).strip() !="":
+            if self.sconto_vendita_ingrosso is not None and str(self.sconto_vendita_ingrosso).strip() != "0" and str(self.sconto_vendita_ingrosso).strip() !="":
+                self.sconto_vendita_ingrosso = self.sconto_vendita_ingrosso.replace("%","")
+                self.sconto_vendita_ingrosso = self.sconto_vendita_ingrosso.replace("€","")
                 try:
                     sconti_ingrosso[0].valore = mN(self.sconto_vendita_ingrosso)
                     sconti_ingrosso[0].tipo_sconto = 'percentuale'
@@ -284,7 +286,9 @@ class ProductFromCsv(object):
                     sconti_ingrosso[0].tipo_sconto = 'percentuale'
                     daoPriceListProduct.sconto_vendita_ingrosso = sconti_ingrosso
 
-            if str(self.sconto_vendita_dettaglio).strip() != "0" and str(self.sconto_vendita_dettaglio).strip() !="":
+            if self.sconto_vendita_dettaglio is not None and str(self.sconto_vendita_dettaglio).strip() != "0" and str(self.sconto_vendita_dettaglio).strip() !="":
+                self.sconto_vendita_dettaglio = self.sconto_vendita_dettaglio.replace("%","")
+                self.sconto_vendita_dettaglio = self.sconto_vendita_dettaglio.replace("€","")
                 try:
                     sconti_dettaglio[0].valore = mN(self.sconto_vendita_dettaglio)
                     sconti_dettaglio[0].tipo_sconto = 'percentuale'
@@ -294,15 +298,19 @@ class ProductFromCsv(object):
                     sconti_dettaglio[0].tipo_sconto = 'percentuale'
                     daoPriceListProduct.sconto_vendita_dettaglio = sconti_dettaglio
 
-            if self.prezzo_acquisto_non_ivato is not None:
-                prezzo = mN(self.prezzo_acquisto_non_ivato)
+            if self.prezzo_acquisto_non_ivato is not None and str(self.prezzo_acquisto_non_ivato).strip() != "0" and str(self.prezzo_acquisto_non_ivato).strip() !="":
+                prezzo = self.prezzo_acquisto_non_ivato
+                prezzo = prezzo.replace("€","")
+                prezzo = prezzo.replace(",",".")
                 try:
                     daoPriceListProduct.ultimo_costo = mN(prezzo)
                 except:
                     prezzo = mN(self.checkDecimalSymbol(str(prezzo).strip(), decimalSymbol))
                     daoPriceListProduct.ultimo_costo = prezzo 
-            elif self.prezzo_acquisto_ivato is not None:
-                prezzo = mN(self.prezzo_acquisto_ivato)
+            elif self.prezzo_acquisto_ivato is not None and str(self.prezzo_acquisto_ivato).strip() != "0" and str(self.prezzo_acquisto_ivato).strip() !="":
+                prezzo = self.prezzo_acquisto_ivato
+                prezzo = prezzo.replace("€","")
+                prezzo = prezzo.replace(",",".")
                 try:
                     daoPriceListProduct.ultimo_costo =  mN(calcolaPrezzoIva(mN(prezzo), -1 * (mN(self.aliquota_iva.percentuale))))
                 except:
