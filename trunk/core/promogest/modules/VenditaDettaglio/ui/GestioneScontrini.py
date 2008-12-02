@@ -2,8 +2,7 @@
 
 # Promogest
 #
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Alessandro Scano <alessandro@promotux.it>
+# Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francescoo@promotux.it>
 
 import gtk, gobject
@@ -14,19 +13,19 @@ from promogest.dao.DaoUtils import giacenzaSel
 from datetime import datetime, timedelta
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.dao.TestataMovimento import TestataMovimento
-from promogest.dao.RigaMovimento import RigaMovimento
-from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
+#from promogest.dao.TestataMovimento import TestataMovimento
+#from promogest.dao.RigaMovimento import RigaMovimento
+#from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
-from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
-from promogest.dao.Articolo import Articolo
-from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-from promogest.dao.AliquotaIva import AliquotaIva
-from promogest.dao.Magazzino import Magazzino
-from promogest.dao.Listino import Listino
-from promogest.dao.ListinoArticolo import ListinoArticolo
+#from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
+#from promogest.dao.Articolo import Articolo
+#from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
+#from promogest.dao.AliquotaIva import AliquotaIva
+#from promogest.dao.Magazzino import Magazzino
+#from promogest.dao.Listino import Listino
+#from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.ui.utils import *
 
@@ -41,7 +40,6 @@ class GestioneScontrini(GladeWidget):
         self._daData = daData
         self._aData = aData
         self._righe = righe
-
         self._htmlTemplate = None
         self.dao = None
 
@@ -51,7 +49,6 @@ class GestioneScontrini(GladeWidget):
 
         self.placeWindow(self._window)
         self.draw()
-
 
     def draw(self):
         self._window.set_title('Scontrini emessi')
@@ -67,10 +64,8 @@ class GestioneScontrini(GladeWidget):
         #self._window.add_action_widget(rhesus_button, gtk.RESPONSE_APPLY)
         #self._window.add_action_widget(quit_button, gtk.RESPONSE_CANCEL)
 
-        rhesus_button.connect('clicked',
-                              self.on_rhesus_button_clicked)
-        quit_button.connect('clicked',
-                            self.on_scontrini_window_close)
+        rhesus_button.connect('clicked', self.on_rhesus_button_clicked)
+        quit_button.connect('clicked', self.on_scontrini_window_close)
 
         main_hpaned = gtk.HPaned()
         self.main_vbox.add(main_hpaned)
@@ -128,14 +123,14 @@ class GestioneScontrini(GladeWidget):
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Carta di credito', rendererDx, text=5)
+        column = gtk.TreeViewColumn('C di Cr', rendererDx, text=5)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Data mov. mag.', rendererSx, text=6)
+        column = gtk.TreeViewColumn('Data M.M.', rendererSx, text=6)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filterss._changeOrderBy, 'data_movimento')
@@ -143,7 +138,7 @@ class GestioneScontrini(GladeWidget):
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Numero mov. mag.', rendererSx, text=7)
+        column = gtk.TreeViewColumn('N° M.M.', rendererSx, text=7)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filterss._changeOrderBy, 'numero_movimento')
@@ -198,10 +193,10 @@ class GestioneScontrini(GladeWidget):
         self.filterss._treeViewModel.clear()
 
         for s in scos:
-            totale = '%14.2f' % (s.totale_scontrino or 0)
-            contanti = '%14.2f' % (s.totale_contanti or 0)
-            assegni = '%14.2f' % (s.totale_assegni or 0)
-            carta = '%14.2f' % (s.totale_carta_credito or 0)
+            totale = mN(s.totale_scontrino) or 0
+            contanti = mN(s.totale_contanti) or 0
+            assegni = mN(s.totale_assegni) or 0
+            carta = mN(s.totale_carta_credito) or 0
             self.filterss._treeViewModel.append((s, dateToString(s.data_inserimento), totale,
                                                contanti, assegni, carta,
                                                dateToString(s.data_movimento), str(s.numero_movimento or '')))
@@ -218,16 +213,13 @@ class GestioneScontrini(GladeWidget):
         self.dao = model.get_value(iterator, 0)
         self.refreshHtml(self.dao)
 
-
     def on_filter_treeview_row_activated(self, treeview, path, column):
         # Not used here
         pass
 
-
     def on_filter_treeview_selection_changed(self, treeSelection):
         # Not used here
         pass
-
 
     def refreshHtml(self, dao=None):
         document =gtkhtml2.Document()
@@ -244,11 +236,9 @@ class GestioneScontrini(GladeWidget):
         document.close_stream()
         self.detail.detail_html.set_document(document)
 
-
     def on_scontrini_window_close(self, widget, event=None):
         self.destroy()
         return None
-
 
     def on_rhesus_button_clicked(self, widget):
         if self.dao is not None:

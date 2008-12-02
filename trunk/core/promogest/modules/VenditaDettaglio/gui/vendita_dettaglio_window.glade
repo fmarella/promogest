@@ -74,126 +74,495 @@
                             <property name="column_spacing">10</property>
                             <property name="row_spacing">2</property>
                             <child>
-                              <widget class="GtkImage" id="image3">
+                              <widget class="GtkImage" id="logo_articolo">
                                 <property name="visible">True</property>
-                                <property name="pixbuf">articolo24x24.png</property>
+                                <property name="ypad">5</property>
+                                <property name="stock">gtk-missing-image</property>
                               </widget>
                               <packing>
-                                <property name="left_attach">3</property>
-                                <property name="right_attach">4</property>
-                                <property name="x_options">GTK_FILL</property>
+                                <property name="left_attach">6</property>
+                                <property name="right_attach">7</property>
+                                <property name="x_padding">1</property>
+                                <property name="y_padding">1</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkImage" id="image2">
+                              <widget class="Custom" id="prezzo_entry">
                                 <property name="visible">True</property>
-                                <property name="pixbuf">codice_a_barre24x24.png</property>
-                              </widget>
-                              <packing>
-                                <property name="x_options">GTK_FILL</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label628">
-                                <property name="visible">True</property>
-                                <property name="xalign">0</property>
-                                <property name="yalign">1</property>
-                                <property name="label" translatable="yes">Codice a barre</property>
-                              </widget>
-                              <packing>
-                                <property name="left_attach">1</property>
-                                <property name="right_attach">3</property>
-                                <property name="x_options">GTK_FILL</property>
-                                <property name="y_options"></property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label629">
-                                <property name="visible">True</property>
-                                <property name="xalign">0</property>
-                                <property name="label" translatable="yes">Codice articolo</property>
-                              </widget>
-                              <packing>
-                                <property name="left_attach">4</property>
-                                <property name="right_attach">6</property>
-                                <property name="x_options">GTK_FILL</property>
-                                <property name="y_options"></property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="descrizione_label">
-                                <property name="visible">True</property>
-                                <property name="xalign">0</property>
-                                <property name="label" translatable="yes">&lt; Descrizione articolo &gt;</property>
-                              </widget>
-                              <packing>
-                                <property name="right_attach">6</property>
-                                <property name="top_attach">2</property>
-                                <property name="bottom_attach">3</property>
-                                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                                <property name="y_options"></property>
-                                <property name="x_padding">2</property>
-                                <property name="y_padding">10</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label632">
-                                <property name="visible">True</property>
-                                <property name="xalign">0</property>
-                                <property name="yalign">1</property>
-                                <property name="label" translatable="yes">Prezzo</property>
+                                <property name="sensitive">False</property>
+                                <property name="creation_function">createSignedMoneyEntryField</property>
+                                <property name="int1">10</property>
+                                <property name="int2">2</property>
+                                <signal name="focus_out_event" handler="on_prezzo_entry_focus_out_event"/>
                               </widget>
                               <packing>
                                 <property name="right_attach">2</property>
-                                <property name="top_attach">4</property>
-                                <property name="bottom_attach">5</property>
-                                <property name="x_options">GTK_FILL</property>
+                                <property name="top_attach">5</property>
+                                <property name="bottom_attach">6</property>
+                                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label633">
+                              <widget class="Custom" id="sconto_entry">
+                                <property name="width_request">70</property>
                                 <property name="visible">True</property>
-                                <property name="xalign">0</property>
-                                <property name="yalign">1</property>
-                                <property name="label" translatable="yes">Sconto</property>
+                                <property name="creation_function">createScontoWidget</property>
+                                <property name="int1">10</property>
+                                <property name="int2">2</property>
+                                <signal name="focus_out_event" handler="on_sconto_entry_focus_out_event"/>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
                                 <property name="right_attach">4</property>
-                                <property name="top_attach">4</property>
-                                <property name="bottom_attach">5</property>
-                                <property name="x_options">GTK_FILL</property>
+                                <property name="top_attach">5</property>
+                                <property name="bottom_attach">6</property>
+                                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label634">
+                              <widget class="Custom" id="quantita_entry">
                                 <property name="visible">True</property>
-                                <property name="xalign">0</property>
-                                <property name="yalign">1</property>
-                                <property name="label" translatable="yes">Quantita'</property>
+                                <property name="sensitive">False</property>
+                                <property name="creation_function">createSignedDecimalEntryField</property>
+                                <property name="int1">10</property>
+                                <property name="int2">2</property>
+                                <signal name="focus_out_event" handler="on_quantita_entry_focus_out_event"/>
                               </widget>
                               <packing>
                                 <property name="left_attach">5</property>
                                 <property name="right_attach">7</property>
-                                <property name="top_attach">4</property>
-                                <property name="bottom_attach">5</property>
+                                <property name="top_attach">5</property>
+                                <property name="bottom_attach">6</property>
+                                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="Custom" id="prezzo_scontato_entry">
+                                <property name="width_request">70</property>
+                                <property name="visible">True</property>
+                                <property name="sensitive">False</property>
+                                <property name="creation_function">createSignedMoneyEntryField</property>
+                                <property name="int1">10</property>
+                                <property name="int2">2</property>
+                                <signal name="focus_out_event" handler="on_prezzo_scontato_entry_focus_out_event"/>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">4</property>
+                                <property name="right_attach">5</property>
+                                <property name="top_attach">5</property>
+                                <property name="bottom_attach">6</property>
+                                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkAlignment" id="alignment430">
+                                <property name="visible">True</property>
+                                <property name="top_padding">5</property>
+                                <child>
+                                  <widget class="GtkHBox" id="hbox345">
+                                    <property name="visible">True</property>
+                                    <property name="spacing">50</property>
+                                    <property name="homogeneous">True</property>
+                                    <child>
+                                      <widget class="GtkButton" id="confirm_button">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="can_default">True</property>
+                                        <property name="has_default">True</property>
+                                        <property name="response_id">0</property>
+                                        <signal name="clicked" handler="on_confirm_button_clicked"/>
+                                        <child>
+                                          <widget class="GtkAlignment" id="alignment268">
+                                            <property name="visible">True</property>
+                                            <property name="xscale">0</property>
+                                            <property name="yscale">0</property>
+                                            <child>
+                                              <widget class="GtkHBox" id="hbox240">
+                                                <property name="visible">True</property>
+                                                <property name="spacing">2</property>
+                                                <child>
+                                                  <widget class="GtkImage" id="image183">
+                                                    <property name="visible">True</property>
+                                                    <property name="pixbuf">conferma16x16.png</property>
+                                                  </widget>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <widget class="GtkLabel" id="label504">
+                                                    <property name="visible">True</property>
+                                                    <property name="label" translatable="yes">Confer_ma</property>
+                                                    <property name="use_underline">True</property>
+                                                  </widget>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                              </widget>
+                                            </child>
+                                          </widget>
+                                        </child>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkButton" id="cancel_button">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="can_default">True</property>
+                                        <property name="has_default">True</property>
+                                        <property name="response_id">0</property>
+                                        <signal name="clicked" handler="on_cancel_button_clicked"/>
+                                        <child>
+                                          <widget class="GtkAlignment" id="alignment429">
+                                            <property name="visible">True</property>
+                                            <property name="xscale">0</property>
+                                            <property name="yscale">0</property>
+                                            <child>
+                                              <widget class="GtkHBox" id="hbox346">
+                                                <property name="visible">True</property>
+                                                <property name="spacing">2</property>
+                                                <child>
+                                                  <widget class="GtkImage" id="image297">
+                                                    <property name="visible">True</property>
+                                                    <property name="pixbuf">pulisci16x16.png</property>
+                                                  </widget>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <widget class="GtkLabel" id="label671">
+                                                    <property name="visible">True</property>
+                                                    <property name="label" translatable="yes">_Annulla</property>
+                                                    <property name="use_underline">True</property>
+                                                  </widget>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                              </widget>
+                                            </child>
+                                          </widget>
+                                        </child>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkButton" id="rhesus_button">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="can_default">True</property>
+                                        <property name="has_default">True</property>
+                                        <property name="response_id">0</property>
+                                        <signal name="clicked" handler="on_rhesus_button_clicked"/>
+                                        <child>
+                                          <widget class="GtkAlignment" id="alignment427">
+                                            <property name="visible">True</property>
+                                            <property name="xscale">0</property>
+                                            <property name="yscale">0</property>
+                                            <child>
+                                              <widget class="GtkHBox" id="hbox344">
+                                                <property name="visible">True</property>
+                                                <property name="spacing">2</property>
+                                                <child>
+                                                  <widget class="GtkImage" id="image296">
+                                                    <property name="visible">True</property>
+                                                    <property name="pixbuf">storno16x16.png</property>
+                                                  </widget>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <widget class="GtkLabel" id="label669">
+                                                    <property name="visible">True</property>
+                                                    <property name="label" translatable="yes">_Reso</property>
+                                                    <property name="use_underline">True</property>
+                                                  </widget>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                              </widget>
+                                            </child>
+                                          </widget>
+                                        </child>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="position">2</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkButton" id="annulling_button">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="can_default">True</property>
+                                        <property name="has_default">True</property>
+                                        <property name="response_id">0</property>
+                                        <signal name="clicked" handler="on_rhesus_button_clicked"/>
+                                        <child>
+                                          <widget class="GtkAlignment" id="alignment431">
+                                            <property name="visible">True</property>
+                                            <property name="xscale">0</property>
+                                            <property name="yscale">0</property>
+                                            <child>
+                                              <widget class="GtkHBox" id="hbox347">
+                                                <property name="visible">True</property>
+                                                <property name="spacing">2</property>
+                                                <child>
+                                                  <widget class="GtkImage" id="image298">
+                                                    <property name="visible">True</property>
+                                                    <property name="pixbuf">storno16x16.png</property>
+                                                  </widget>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <widget class="GtkLabel" id="label672">
+                                                    <property name="visible">True</property>
+                                                    <property name="label" translatable="yes">_Storno</property>
+                                                    <property name="use_underline">True</property>
+                                                  </widget>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                              </widget>
+                                            </child>
+                                          </widget>
+                                        </child>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="position">3</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkButton" id="delete_button">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="can_default">True</property>
+                                        <property name="response_id">0</property>
+                                        <signal name="clicked" handler="on_delete_button_clicked"/>
+                                        <child>
+                                          <widget class="GtkAlignment" id="alignment267">
+                                            <property name="visible">True</property>
+                                            <property name="xscale">0</property>
+                                            <property name="yscale">0</property>
+                                            <child>
+                                              <widget class="GtkHBox" id="hbox239">
+                                                <property name="visible">True</property>
+                                                <property name="spacing">2</property>
+                                                <child>
+                                                  <widget class="GtkImage" id="image182">
+                                                    <property name="visible">True</property>
+                                                    <property name="pixbuf">annulla2nd16x16.png</property>
+                                                  </widget>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <widget class="GtkLabel" id="label503">
+                                                    <property name="visible">True</property>
+                                                    <property name="label" translatable="yes">_Cancella</property>
+                                                    <property name="use_underline">True</property>
+                                                  </widget>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                              </widget>
+                                            </child>
+                                          </widget>
+                                        </child>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="position">4</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkButton" id="tastiera_button">
+                                        <property name="sensitive">False</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="label" translatable="yes">Tastiera</property>
+                                        <property name="response_id">0</property>
+                                        <signal name="clicked" handler="on_tastiera_button_clicked"/>
+                                      </widget>
+                                      <packing>
+                                        <property name="position">5</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="right_attach">7</property>
+                                <property name="top_attach">6</property>
+                                <property name="bottom_attach">7</property>
+                                <property name="x_options">GTK_SHRINK</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkEntry" id="codice_entry">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <signal name="activate" handler="on_codice_entry_activate"/>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">3</property>
+                                <property name="right_attach">6</property>
+                                <property name="top_attach">1</property>
+                                <property name="bottom_attach">2</property>
+                                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkEntry" id="codice_a_barre_entry">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <signal name="activate" handler="on_codice_a_barre_entry_activate"/>
+                              </widget>
+                              <packing>
+                                <property name="right_attach">3</property>
+                                <property name="top_attach">1</property>
+                                <property name="bottom_attach">2</property>
+                                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkButton" id="new_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="can_default">True</property>
+                                <property name="response_id">0</property>
+                                <signal name="clicked" handler="on_new_button_clicked"/>
+                                <child>
+                                  <widget class="GtkAlignment" id="alignment1">
+                                    <property name="visible">True</property>
+                                    <property name="xscale">0</property>
+                                    <property name="yscale">0</property>
+                                    <child>
+                                      <widget class="GtkHBox" id="hbox2">
+                                        <property name="visible">True</property>
+                                        <property name="spacing">2</property>
+                                        <child>
+                                          <widget class="GtkImage" id="image1">
+                                            <property name="visible">True</property>
+                                            <property name="pixbuf">nuovo24x24.png</property>
+                                          </widget>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <widget class="GtkLabel" id="label2">
+                                            <property name="visible">True</property>
+                                            <property name="label" translatable="yes">_Nuovo</property>
+                                            <property name="use_underline">True</property>
+                                          </widget>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </widget>
+                                    </child>
+                                  </widget>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">6</property>
+                                <property name="right_attach">7</property>
+                                <property name="top_attach">2</property>
+                                <property name="bottom_attach">3</property>
                                 <property name="x_options">GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label670">
+                              <widget class="GtkButton" id="search_button">
                                 <property name="visible">True</property>
-                                <property name="xalign">0</property>
-                                <property name="label" translatable="yes">Prezzo scontato</property>
+                                <property name="can_focus">True</property>
+                                <property name="can_default">True</property>
+                                <property name="response_id">0</property>
+                                <signal name="clicked" handler="on_search_button_clicked"/>
+                                <child>
+                                  <widget class="GtkAlignment" id="alignment266">
+                                    <property name="visible">True</property>
+                                    <property name="xscale">0</property>
+                                    <property name="yscale">0</property>
+                                    <child>
+                                      <widget class="GtkHBox" id="hbox238">
+                                        <property name="visible">True</property>
+                                        <property name="spacing">2</property>
+                                        <child>
+                                          <widget class="GtkImage" id="image181">
+                                            <property name="visible">True</property>
+                                            <property name="pixbuf">trova24x24.png</property>
+                                          </widget>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <widget class="GtkLabel" id="label502">
+                                            <property name="visible">True</property>
+                                            <property name="label" translatable="yes">Ce_rca</property>
+                                            <property name="use_underline">True</property>
+                                          </widget>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </widget>
+                                    </child>
+                                  </widget>
+                                </child>
                               </widget>
                               <packing>
-                                <property name="left_attach">4</property>
-                                <property name="right_attach">5</property>
-                                <property name="top_attach">4</property>
-                                <property name="bottom_attach">5</property>
+                                <property name="left_attach">6</property>
+                                <property name="right_attach">7</property>
+                                <property name="top_attach">1</property>
+                                <property name="bottom_attach">2</property>
                                 <property name="x_options">GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
@@ -319,488 +688,128 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkButton" id="search_button">
+                              <widget class="GtkLabel" id="label670">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="can_default">True</property>
-                                <property name="response_id">0</property>
-                                <signal name="clicked" handler="on_search_button_clicked"/>
-                                <child>
-                                  <widget class="GtkAlignment" id="alignment266">
-                                    <property name="visible">True</property>
-                                    <property name="xscale">0</property>
-                                    <property name="yscale">0</property>
-                                    <child>
-                                      <widget class="GtkHBox" id="hbox238">
-                                        <property name="visible">True</property>
-                                        <property name="spacing">2</property>
-                                        <child>
-                                          <widget class="GtkImage" id="image181">
-                                            <property name="visible">True</property>
-                                            <property name="pixbuf">trova24x24.png</property>
-                                          </widget>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">False</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <widget class="GtkLabel" id="label502">
-                                            <property name="visible">True</property>
-                                            <property name="label" translatable="yes">Ce_rca</property>
-                                            <property name="use_underline">True</property>
-                                          </widget>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">False</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                      </widget>
-                                    </child>
-                                  </widget>
-                                </child>
-                              </widget>
-                              <packing>
-                                <property name="left_attach">6</property>
-                                <property name="right_attach">7</property>
-                                <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
-                                <property name="x_options">GTK_FILL</property>
-                                <property name="y_options"></property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkButton" id="new_button">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="can_default">True</property>
-                                <property name="response_id">0</property>
-                                <signal name="clicked" handler="on_new_button_clicked"/>
-                                <child>
-                                  <widget class="GtkAlignment" id="alignment1">
-                                    <property name="visible">True</property>
-                                    <property name="xscale">0</property>
-                                    <property name="yscale">0</property>
-                                    <child>
-                                      <widget class="GtkHBox" id="hbox2">
-                                        <property name="visible">True</property>
-                                        <property name="spacing">2</property>
-                                        <child>
-                                          <widget class="GtkImage" id="image1">
-                                            <property name="visible">True</property>
-                                            <property name="pixbuf">nuovo24x24.png</property>
-                                          </widget>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">False</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <widget class="GtkLabel" id="label2">
-                                            <property name="visible">True</property>
-                                            <property name="label" translatable="yes">_Nuovo</property>
-                                            <property name="use_underline">True</property>
-                                          </widget>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">False</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                      </widget>
-                                    </child>
-                                  </widget>
-                                </child>
-                              </widget>
-                              <packing>
-                                <property name="left_attach">6</property>
-                                <property name="right_attach">7</property>
-                                <property name="top_attach">2</property>
-                                <property name="bottom_attach">3</property>
-                                <property name="x_options">GTK_FILL</property>
-                                <property name="y_options"></property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkEntry" id="codice_a_barre_entry">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <signal name="activate" handler="on_codice_a_barre_entry_activate"/>
-                              </widget>
-                              <packing>
-                                <property name="right_attach">3</property>
-                                <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
-                                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                                <property name="y_options"></property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkEntry" id="codice_entry">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <signal name="activate" handler="on_codice_entry_activate"/>
-                              </widget>
-                              <packing>
-                                <property name="left_attach">3</property>
-                                <property name="right_attach">6</property>
-                                <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
-                                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                                <property name="y_options"></property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkAlignment" id="alignment430">
-                                <property name="visible">True</property>
-                                <property name="top_padding">5</property>
-                                <child>
-                                  <widget class="GtkHBox" id="hbox345">
-                                    <property name="visible">True</property>
-                                    <property name="spacing">50</property>
-                                    <child>
-                                      <widget class="GtkButton" id="confirm_button">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="can_default">True</property>
-                                        <property name="has_default">True</property>
-                                        <property name="response_id">0</property>
-                                        <signal name="clicked" handler="on_confirm_button_clicked"/>
-                                        <child>
-                                          <widget class="GtkAlignment" id="alignment268">
-                                            <property name="visible">True</property>
-                                            <property name="xscale">0</property>
-                                            <property name="yscale">0</property>
-                                            <child>
-                                              <widget class="GtkHBox" id="hbox240">
-                                                <property name="visible">True</property>
-                                                <property name="spacing">2</property>
-                                                <child>
-                                                  <widget class="GtkImage" id="image183">
-                                                    <property name="visible">True</property>
-                                                    <property name="pixbuf">conferma16x16.png</property>
-                                                  </widget>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">False</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <widget class="GtkLabel" id="label504">
-                                                    <property name="visible">True</property>
-                                                    <property name="label" translatable="yes">Confer_ma</property>
-                                                    <property name="use_underline">True</property>
-                                                  </widget>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">False</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                              </widget>
-                                            </child>
-                                          </widget>
-                                        </child>
-                                      </widget>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkButton" id="cancel_button">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="can_default">True</property>
-                                        <property name="has_default">True</property>
-                                        <property name="response_id">0</property>
-                                        <signal name="clicked" handler="on_cancel_button_clicked"/>
-                                        <child>
-                                          <widget class="GtkAlignment" id="alignment429">
-                                            <property name="visible">True</property>
-                                            <property name="xscale">0</property>
-                                            <property name="yscale">0</property>
-                                            <child>
-                                              <widget class="GtkHBox" id="hbox346">
-                                                <property name="visible">True</property>
-                                                <property name="spacing">2</property>
-                                                <child>
-                                                  <widget class="GtkImage" id="image297">
-                                                    <property name="visible">True</property>
-                                                    <property name="pixbuf">pulisci16x16.png</property>
-                                                  </widget>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">False</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <widget class="GtkLabel" id="label671">
-                                                    <property name="visible">True</property>
-                                                    <property name="label" translatable="yes">_Annulla</property>
-                                                    <property name="use_underline">True</property>
-                                                  </widget>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">False</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                              </widget>
-                                            </child>
-                                          </widget>
-                                        </child>
-                                      </widget>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">1</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkButton" id="rhesus_button">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="can_default">True</property>
-                                        <property name="has_default">True</property>
-                                        <property name="response_id">0</property>
-                                        <signal name="clicked" handler="on_rhesus_button_clicked"/>
-                                        <child>
-                                          <widget class="GtkAlignment" id="alignment427">
-                                            <property name="visible">True</property>
-                                            <property name="xscale">0</property>
-                                            <property name="yscale">0</property>
-                                            <child>
-                                              <widget class="GtkHBox" id="hbox344">
-                                                <property name="visible">True</property>
-                                                <property name="spacing">2</property>
-                                                <child>
-                                                  <widget class="GtkImage" id="image296">
-                                                    <property name="visible">True</property>
-                                                    <property name="pixbuf">storno16x16.png</property>
-                                                  </widget>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">False</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <widget class="GtkLabel" id="label669">
-                                                    <property name="visible">True</property>
-                                                    <property name="label" translatable="yes">_Reso</property>
-                                                    <property name="use_underline">True</property>
-                                                  </widget>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">False</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                              </widget>
-                                            </child>
-                                          </widget>
-                                        </child>
-                                      </widget>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">2</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkButton" id="annulling_button">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="can_default">True</property>
-                                        <property name="has_default">True</property>
-                                        <property name="response_id">0</property>
-                                        <signal name="clicked" handler="on_rhesus_button_clicked"/>
-                                        <child>
-                                          <widget class="GtkAlignment" id="alignment431">
-                                            <property name="visible">True</property>
-                                            <property name="xscale">0</property>
-                                            <property name="yscale">0</property>
-                                            <child>
-                                              <widget class="GtkHBox" id="hbox347">
-                                                <property name="visible">True</property>
-                                                <property name="spacing">2</property>
-                                                <child>
-                                                  <widget class="GtkImage" id="image298">
-                                                    <property name="visible">True</property>
-                                                    <property name="pixbuf">storno16x16.png</property>
-                                                  </widget>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">False</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <widget class="GtkLabel" id="label672">
-                                                    <property name="visible">True</property>
-                                                    <property name="label" translatable="yes">_Storno</property>
-                                                    <property name="use_underline">True</property>
-                                                  </widget>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">False</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                              </widget>
-                                            </child>
-                                          </widget>
-                                        </child>
-                                      </widget>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">3</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkButton" id="delete_button">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="can_default">True</property>
-                                        <property name="response_id">0</property>
-                                        <signal name="clicked" handler="on_delete_button_clicked"/>
-                                        <child>
-                                          <widget class="GtkAlignment" id="alignment267">
-                                            <property name="visible">True</property>
-                                            <property name="xscale">0</property>
-                                            <property name="yscale">0</property>
-                                            <child>
-                                              <widget class="GtkHBox" id="hbox239">
-                                                <property name="visible">True</property>
-                                                <property name="spacing">2</property>
-                                                <child>
-                                                  <widget class="GtkImage" id="image182">
-                                                    <property name="visible">True</property>
-                                                    <property name="pixbuf">annulla2nd16x16.png</property>
-                                                  </widget>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">False</property>
-                                                  </packing>
-                                                </child>
-                                                <child>
-                                                  <widget class="GtkLabel" id="label503">
-                                                    <property name="visible">True</property>
-                                                    <property name="label" translatable="yes">_Cancella</property>
-                                                    <property name="use_underline">True</property>
-                                                  </widget>
-                                                  <packing>
-                                                    <property name="expand">False</property>
-                                                    <property name="fill">False</property>
-                                                    <property name="position">1</property>
-                                                  </packing>
-                                                </child>
-                                              </widget>
-                                            </child>
-                                          </widget>
-                                        </child>
-                                      </widget>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">4</property>
-                                      </packing>
-                                    </child>
-                                  </widget>
-                                </child>
-                              </widget>
-                              <packing>
-                                <property name="right_attach">7</property>
-                                <property name="top_attach">6</property>
-                                <property name="bottom_attach">7</property>
-                                <property name="x_options">GTK_SHRINK</property>
-                                <property name="y_options"></property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="Custom" id="prezzo_scontato_entry">
-                                <property name="width_request">70</property>
-                                <property name="visible">True</property>
-                                <property name="sensitive">False</property>
-                                <property name="creation_function">createSignedMoneyEntryField</property>
-                                <property name="int1">10</property>
-                                <property name="int2">2</property>
-                                <signal name="focus_out_event" handler="on_prezzo_scontato_entry_focus_out_event"/>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Prezzo scontato</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">4</property>
                                 <property name="right_attach">5</property>
-                                <property name="top_attach">5</property>
-                                <property name="bottom_attach">6</property>
-                                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                                <property name="top_attach">4</property>
+                                <property name="bottom_attach">5</property>
+                                <property name="x_options">GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="Custom" id="quantita_entry">
+                              <widget class="GtkLabel" id="label634">
                                 <property name="visible">True</property>
-                                <property name="sensitive">False</property>
-                                <property name="creation_function">createSignedDecimalEntryField</property>
-                                <property name="int1">10</property>
-                                <property name="int2">2</property>
-                                <signal name="focus_out_event" handler="on_quantita_entry_focus_out_event"/>
+                                <property name="xalign">0</property>
+                                <property name="yalign">1</property>
+                                <property name="label" translatable="yes">Quantita'</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">5</property>
                                 <property name="right_attach">7</property>
-                                <property name="top_attach">5</property>
-                                <property name="bottom_attach">6</property>
-                                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                                <property name="top_attach">4</property>
+                                <property name="bottom_attach">5</property>
+                                <property name="x_options">GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="Custom" id="sconto_entry">
-                                <property name="width_request">70</property>
+                              <widget class="GtkLabel" id="label633">
                                 <property name="visible">True</property>
-                                <property name="creation_function">createScontoWidget</property>
-                                <property name="int1">10</property>
-                                <property name="int2">2</property>
-                                <signal name="focus_out_event" handler="on_sconto_entry_focus_out_event"/>
+                                <property name="xalign">0</property>
+                                <property name="yalign">1</property>
+                                <property name="label" translatable="yes">Sconto</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">2</property>
                                 <property name="right_attach">4</property>
-                                <property name="top_attach">5</property>
-                                <property name="bottom_attach">6</property>
-                                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                                <property name="top_attach">4</property>
+                                <property name="bottom_attach">5</property>
+                                <property name="x_options">GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="Custom" id="prezzo_entry">
+                              <widget class="GtkLabel" id="label632">
                                 <property name="visible">True</property>
-                                <property name="sensitive">False</property>
-                                <property name="creation_function">createSignedMoneyEntryField</property>
-                                <property name="int1">10</property>
-                                <property name="int2">2</property>
-                                <signal name="focus_out_event" handler="on_prezzo_entry_focus_out_event"/>
+                                <property name="xalign">0</property>
+                                <property name="yalign">1</property>
+                                <property name="label" translatable="yes">Prezzo</property>
                               </widget>
                               <packing>
                                 <property name="right_attach">2</property>
-                                <property name="top_attach">5</property>
-                                <property name="bottom_attach">6</property>
-                                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                                <property name="top_attach">4</property>
+                                <property name="bottom_attach">5</property>
+                                <property name="x_options">GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkImage" id="logo_articolo">
+                              <widget class="GtkLabel" id="descrizione_label">
                                 <property name="visible">True</property>
-                                <property name="ypad">5</property>
-                                <property name="stock">gtk-missing-image</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">&lt; Descrizione articolo &gt;</property>
                               </widget>
                               <packing>
-                                <property name="left_attach">6</property>
-                                <property name="right_attach">7</property>
-                                <property name="x_padding">1</property>
-                                <property name="y_padding">1</property>
+                                <property name="right_attach">6</property>
+                                <property name="top_attach">2</property>
+                                <property name="bottom_attach">3</property>
+                                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                                <property name="y_options"></property>
+                                <property name="x_padding">2</property>
+                                <property name="y_padding">10</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkLabel" id="label629">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Codice articolo</property>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">4</property>
+                                <property name="right_attach">6</property>
+                                <property name="x_options">GTK_FILL</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkLabel" id="label628">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="yalign">1</property>
+                                <property name="label" translatable="yes">Codice a barre</property>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="right_attach">3</property>
+                                <property name="x_options">GTK_FILL</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkImage" id="image2">
+                                <property name="visible">True</property>
+                                <property name="pixbuf">codice_a_barre24x24.png</property>
+                              </widget>
+                              <packing>
+                                <property name="x_options">GTK_FILL</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkImage" id="image3">
+                                <property name="visible">True</property>
+                                <property name="pixbuf">articolo24x24.png</property>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">3</property>
+                                <property name="right_attach">4</property>
+                                <property name="x_options">GTK_FILL</property>
                               </packing>
                             </child>
                           </widget>
@@ -864,81 +873,6 @@
                             <property name="visible">True</property>
                             <property name="n_rows">4</property>
                             <property name="column_spacing">3</property>
-                            <child>
-                              <widget class="GtkEntry" id="contanti_entry">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="width_chars">50</property>
-                                <accelerator key="F10" modifiers="" signal="activate"/>
-                              </widget>
-                              <packing>
-                                <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
-                                <property name="x_options"></property>
-                                <property name="y_options"></property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkEntry" id="non_contanti_entry">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="width_chars">50</property>
-                              </widget>
-                              <packing>
-                                <property name="top_attach">3</property>
-                                <property name="bottom_attach">4</property>
-                                <property name="x_options">GTK_FILL</property>
-                                <property name="y_options"></property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkRadioButton" id="contanti_radio_button">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="response_id">0</property>
-                                <signal name="clicked" handler="on_contanti_radio_button_clicked" after="yes"/>
-                                <accelerator key="F1" modifiers="" signal="clicked"/>
-                                <child>
-                                  <widget class="GtkAlignment" id="alignment532">
-                                    <property name="visible">True</property>
-                                    <property name="xscale">0</property>
-                                    <property name="yscale">0</property>
-                                    <child>
-                                      <widget class="GtkHBox" id="hbox400">
-                                        <property name="visible">True</property>
-                                        <property name="spacing">2</property>
-                                        <child>
-                                          <widget class="GtkImage" id="image441">
-                                            <property name="visible">True</property>
-                                            <property name="pixbuf">pagamento16x16.png</property>
-                                          </widget>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">False</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <widget class="GtkLabel" id="label3487">
-                                            <property name="visible">True</property>
-                                            <property name="label" translatable="yes">Contanti (F1)</property>
-                                            <property name="use_underline">True</property>
-                                          </widget>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">False</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                      </widget>
-                                    </child>
-                                  </widget>
-                                </child>
-                              </widget>
-                              <packing>
-                                <property name="x_options">GTK_FILL</property>
-                                <property name="y_options"></property>
-                              </packing>
-                            </child>
                             <child>
                               <widget class="GtkHBox" id="hbox323">
                                 <property name="visible">True</property>
@@ -1045,6 +979,81 @@
                                 <property name="y_options"></property>
                               </packing>
                             </child>
+                            <child>
+                              <widget class="GtkRadioButton" id="contanti_radio_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="response_id">0</property>
+                                <signal name="clicked" handler="on_contanti_radio_button_clicked" after="yes"/>
+                                <accelerator key="F1" modifiers="" signal="clicked"/>
+                                <child>
+                                  <widget class="GtkAlignment" id="alignment532">
+                                    <property name="visible">True</property>
+                                    <property name="xscale">0</property>
+                                    <property name="yscale">0</property>
+                                    <child>
+                                      <widget class="GtkHBox" id="hbox400">
+                                        <property name="visible">True</property>
+                                        <property name="spacing">2</property>
+                                        <child>
+                                          <widget class="GtkImage" id="image441">
+                                            <property name="visible">True</property>
+                                            <property name="pixbuf">pagamento16x16.png</property>
+                                          </widget>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <widget class="GtkLabel" id="label3487">
+                                            <property name="visible">True</property>
+                                            <property name="label" translatable="yes">Contanti (F1)</property>
+                                            <property name="use_underline">True</property>
+                                          </widget>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </widget>
+                                    </child>
+                                  </widget>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="x_options">GTK_FILL</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkEntry" id="non_contanti_entry">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="width_chars">50</property>
+                              </widget>
+                              <packing>
+                                <property name="top_attach">3</property>
+                                <property name="bottom_attach">4</property>
+                                <property name="x_options">GTK_FILL</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkEntry" id="contanti_entry">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="width_chars">50</property>
+                                <accelerator key="F10" modifiers="" signal="activate"/>
+                              </widget>
+                              <packing>
+                                <property name="top_attach">1</property>
+                                <property name="bottom_attach">2</property>
+                                <property name="x_options"></property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
@@ -1057,7 +1066,7 @@
                             <property name="xalign">0</property>
                             <property name="xscale">0</property>
                             <property name="top_padding">15</property>
-                            <property name="left_padding">50</property>
+                            <property name="left_padding">40</property>
                             <property name="right_padding">50</property>
                             <child>
                               <widget class="GtkTable" id="table22">
@@ -1067,14 +1076,27 @@
                                 <property name="column_spacing">10</property>
                                 <property name="row_spacing">15</property>
                                 <child>
-                                  <widget class="GtkLabel" id="label636">
+                                  <widget class="GtkLabel" id="label_totale">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Resto:   &lt;b&gt;&lt;span size="xx-large"&gt;€&lt;/span&gt;&lt;/b&gt;</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">&lt;b&gt;&lt;span size="xx-large"&gt;0.00&lt;/span&gt;&lt;/b&gt;</property>
+                                    <property name="use_markup">True</property>
+                                    <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                                  </widget>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="right_attach">2</property>
+                                    <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                                    <property name="y_options"></property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <widget class="GtkLabel" id="label498">
+                                    <property name="visible">True</property>
+                                    <property name="label" translatable="yes">Totale:   &lt;b&gt;&lt;span size="xx-large"&gt;€&lt;/span&gt;&lt;/b&gt;</property>
                                     <property name="use_markup">True</property>
                                   </widget>
                                   <packing>
-                                    <property name="top_attach">1</property>
-                                    <property name="bottom_attach">2</property>
                                     <property name="x_options">GTK_FILL</property>
                                     <property name="y_options"></property>
                                   </packing>
@@ -1097,28 +1119,15 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkLabel" id="label498">
+                                  <widget class="GtkLabel" id="label636">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Totale:   &lt;b&gt;&lt;span size="xx-large"&gt;€&lt;/span&gt;&lt;/b&gt;</property>
+                                    <property name="label" translatable="yes">Resto:   &lt;b&gt;&lt;span size="xx-large"&gt;€&lt;/span&gt;&lt;/b&gt;</property>
                                     <property name="use_markup">True</property>
                                   </widget>
                                   <packing>
+                                    <property name="top_attach">1</property>
+                                    <property name="bottom_attach">2</property>
                                     <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"></property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <widget class="GtkLabel" id="label_totale">
-                                    <property name="visible">True</property>
-                                    <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">&lt;b&gt;&lt;span size="xx-large"&gt;0.00&lt;/span&gt;&lt;/b&gt;</property>
-                                    <property name="use_markup">True</property>
-                                    <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                                  </widget>
-                                  <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="right_attach">2</property>
-                                    <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
                                     <property name="y_options"></property>
                                   </packing>
                                 </child>

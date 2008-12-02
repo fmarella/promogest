@@ -732,7 +732,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         total = 0
         model = self.scontrino_treeview.get_model()
         for row in model:
-            prezzo = mN(row[4])
+            prezzo = mN(row[4]) or 0
             valoreSconto = mN(row[5]) or 0
             prezzoScontato = mN(row[7]) or 0
             quantita = Decimal(row[8])
