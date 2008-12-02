@@ -236,7 +236,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 prezzoscontato = mN(model[path][4]) - (mN(model[path][4]) * mN(model[path][5])) / 100
             else:
                 prezzoscontato = mN(model[path][4]) -mN(model[path][5])
-            model[path][7] = mN(prezzoscontato)
+            if not prezzoscontato:
+                prezzoscontato = "0.00"
+            model[path][7] = prezzoscontato
         self.refreshTotal()
         self.on_cancel_button_clicked(self.getTopLevel)
 
@@ -266,8 +268,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         """ Function ti set the value quantita edit in the cell"""
         model = treeview.get_model()
         model[path][6] = value
+        scont = model[path][5]
+        self.on_column_sconto_edited(cell, path, scont, treeview)
 
     def on_vendita_dettaglio_window_key_press_event(self,widget, event):
+        """ jolly key è F9, richiama ed inserisce l'articolo definito nel configure"""
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'F9':
             try:
@@ -724,17 +729,19 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
 
     def refreshTotal(self):
-        total = Decimal(0)
+        total = 0
         model = self.scontrino_treeview.get_model()
         for row in model:
             prezzo = mN(row[4])
-            valoreSconto = mN(row[5])
-            prezzoScontato = mN(row[7]) or mN(row[4])
+            valoreSconto = mN(row[5]) or 0
+            prezzoScontato = mN(row[7]) or 0
             quantita = Decimal(row[8])
             if valoreSconto == 0: #sconto
                 total = total + (prezzo * quantita)
             else:
                 total = total + (prezzoScontato * quantita)
+        if not total:
+            total = "0.00"
         self.label_totale.set_markup('<b><span size="xx-large">' + str(mN(total)) + '</span></b>')
         return total
 
@@ -887,6 +894,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         daoMovimento.data_movimento = datefirst
         daoMovimento.note_interne = 'Movimento chiusura fiscale'
         righeMovimento = []
+        righe = {}
+        scontiRighe= {}
         for scontrino in scontrini:
             for riga in scontrino.righe:
                 # Istanzio articolo
@@ -903,17 +912,19 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 daoRiga.id_magazzino = self.id_magazzino
                 daoRiga.id_articolo = riga.id_articolo
                 daoRiga.percentuale_iva = iva.percentuale
-                daoRiga.sconti = []
+                sconti = []
                 if riga.sconti:
                     for s in riga.sconti:
                         daoScontoRigaMovimento = ScontoRigaMovimento().getRecord()
                         daoScontoRigaMovimento.valore = s.valore
                         daoScontoRigaMovimento.tipo_sconto = s.tipo_sconto
-                        daoRiga.sconti.append(daoScontoRigaMovimento)
-                righeMovimento.append(daoRiga)
+                        sconti.append(daoScontoRigaMovimento)
+                #righeMovimento.append(daoRiga)
+                    scontiRighe[daoRiga] = sconti
+                righe[riga]=daoRiga
 
-        daoMovimento.righe = righeMovimento
-        daoMovimento.persist()
+        #daoMovimento.righe = righeMovimento
+        daoMovimento.persist(righeMovimento = righe, scontiRigaMovimento = scontiRighe)
         #daoMovimento.update()
 
         # Creo nuova chiusura
@@ -968,7 +979,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             for scontrino in scontrini:
                 daoScontrino = TestataScontrino(id=scontrino.id).getRecord()
                 daoScontrino.id_testata_movimento = daoMovimento.id
-                daoScontrino.persist(chiusura=True)
+                daoScontrino.persist(chiusura= True)
 
         # Svuoto transazione
         self.on_empty_button_clicked(self.empty_button)

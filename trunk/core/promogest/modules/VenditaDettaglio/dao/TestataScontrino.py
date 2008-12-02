@@ -52,22 +52,24 @@ class TestataScontrino(Dao):
     def update(self):
         return
 
-    def persist(self, chiusura=None):
+    def persist(self, chiusura=False):
 
         #salvataggio testata scontrino
         params['session'].add(self)
         params['session'].commit()
 
-        #cancellazione righe associate alla testata
-        if self.__righeScontrino:
-            rigaScontrinoDel(id=self.id)
-            for riga in self.__righeScontrino:
-                #annullamento id della riga
-                riga._resetId()
-                #associazione alla riga della testata
-                riga.id_testata_scontrino = self.id
-                #salvataggio riga
-                riga.persist()
+        #se siamo in chiusura fiscale non serve che vengano toccati i dati delle righe
+        if not chiusura:
+            if self.__righeScontrino:
+                rigaScontrinoDel(id=self.id)
+                #cancellazione righe associate alla testata
+                for riga in self.__righeScontrino:
+                    #annullamento id della riga
+                    riga._resetId()
+                    #associazione alla riga della testata
+                    riga.id_testata_scontrino = self.id
+                    #salvataggio riga
+                    riga.persist()
         params['session'].flush()
 
 riga_scontrinoo=Table('riga_scontrino',
