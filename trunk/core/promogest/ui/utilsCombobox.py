@@ -115,15 +115,14 @@ def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
     """
     from promogest.dao.FamigliaArticolo import FamigliaArticolo
     model = gtk.TreeStore(object, int, str)
+    print "BOOOOOOOOOOOOOOOOOOOOOOOOO",FamigliaArticolo().getRecord()
     fams = FamigliaArticolo(isList=True).select(offset=None,batchSize=None)
+    print "FAMIGLIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", fams
     if not filter:
         emptyRow = ''
     else:
         emptyRow = '< Tutti >'
     model.append(None, (None, 0, emptyRow))
-
-
-
 
     def recurse_tree(id_padre, parent_iter=None, max_depth=None):
         if parent_iter is None :
@@ -163,8 +162,6 @@ def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
                         break
                 child_index += 1
         return padre
-
-
 
     for f in fams:
         if f.id_padre is None:

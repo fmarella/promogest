@@ -179,9 +179,9 @@ else:
             elif k == 'denominazione':
                 dic = {k:articolo.c.denominazione.ilike("%"+v+"%")}
             elif k == 'codiceABarre':
-                dic = {k:and_(articolo.c.id==CodiceABarreArticolo.id_articolo,CodiceABarreArticolo.codice.like("%"+v+"%"))}
+                dic = {k:and_(articolo.c.id==CodiceABarreArticolo.id_articolo,CodiceABarreArticolo.codice.ilike("%"+v+"%"))}
             elif k== 'codiceArticoloFornitore':
-                dic = {k:and_(articolo.c.id==fornitura.c.id_articolo,fornitura.c.codice_articolo_fornitore.like("%"+v+"%"))}
+                dic = {k:and_(articolo.c.id==fornitura.c.id_articolo,fornitura.c.codice_articolo_fornitore.ilike("%"+v+"%"))}
             elif k == 'produttore':
                 dic = {k:articolo.c.produttore.ilike("%"+v+"%")}
             elif k=='idFamiglia':
@@ -209,15 +209,15 @@ else:
     std_mapper = mapper(Articolo,articolo,
                 properties={
                 "cod_barre":relation(CodiceABarreArticolo,primaryjoin=
-                    and_(articolo.c.id==CodiceABarreArticolo.id_articolo)),
+                    articolo.c.id==CodiceABarreArticolo.id_articolo),
                 "imba":relation(Imballaggio,primaryjoin=
-                    and_(articolo.c.id_imballaggio==Imballaggio.id), backref="articolo"),
+                    (articolo.c.id_imballaggio==Imballaggio.id), backref="articolo"),
                 #"stato_articolo":relation(StatoArticolo, backref="articolo"),
                 "ali_iva" : relation(AliquotaIva,primaryjoin=
-                    and_(articolo.c.id_aliquota_iva==AliquotaIva.id)),
+                    (articolo.c.id_aliquota_iva==AliquotaIva.id)),
                 "den_famiglia":relation(FamigliaArticolo,primaryjoin= articolo.c.id_famiglia_articolo==FamigliaArticolo.id),
                 "den_categoria":relation(CategoriaArticolo,primaryjoin=
-                    and_(articolo.c.id_categoria_articolo==CategoriaArticolo.id)),
+                    (articolo.c.id_categoria_articolo==CategoriaArticolo.id)),
                 "den_unita":relation(UnitaBase,primaryjoin= (articolo.c.id_unita_base==UnitaBase.id)),
                 "image":relation(Immagine,primaryjoin= (articolo.c.id_immagine==Immagine.id)),
                 "sa":relation(StatoArticolo,primaryjoin=(articolo.c.id_stato_articolo==StatoArticolo.id)),

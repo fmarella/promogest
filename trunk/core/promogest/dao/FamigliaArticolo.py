@@ -16,7 +16,8 @@ class FamigliaArticolo(Dao):
         Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
 
     def filter_values(self,k,v):
-        dic= {  'denominazione' : famiglia.c.denominazione.ilike("%"+v+"%")}
+        print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+        dic= {'denominazione' : famiglia.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
 
 def get_node_depth(id):
@@ -28,11 +29,7 @@ def get_node_depth(id):
     else:
         return ret_index
 
-famiglia=Table('famiglia_articolo',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
-
+famiglia=Table('famiglia_articolo', params['metadata'], schema = params['schema'], autoload=True)
 std_mapper = mapper(FamigliaArticolo,famiglia)
 
 

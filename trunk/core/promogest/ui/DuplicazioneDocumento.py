@@ -36,7 +36,7 @@ import promogest.dao.ScontoTestataDocumento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 if Environment.conf.hasPagamenti == True:
     import promogest.modules.Pagamenti.dao.TestataDocumentoScadenza
-    from promogest.modules.Ppagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
+    from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from utils import *
 
 
@@ -62,7 +62,7 @@ class DuplicazioneDocumento(GladeWidget):
         argList = []
         Environment.connection._cursor.execute(queryString, argList)
         res = Environment.connection._cursor.fetchall()
-        model = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str)
+        model = gtk.ListStore(object, str, str)
         for o in res:
             model.append((o, o['denominazione'], (o['denominazione'] or '')[0:30]))
 

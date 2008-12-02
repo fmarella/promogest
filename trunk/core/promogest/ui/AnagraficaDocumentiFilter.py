@@ -242,11 +242,9 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
 
         for t in tdos:
             totali = t.totali
-            totaleImponibile = ('%14.2f') % float(
-                    t._totaleImponibileScontato or 0)
-            totaleImposta = ('%14.2f') % float(
-                    t._totaleImpostaScontata or 0)
-            totale = ('%14.2f') % float(t._totaleScontato or 0)
+            totaleImponibile = mN(t._totaleImponibileScontato) or 0
+            totaleImposta = mN(t._totaleImpostaScontata) or 0
+            totale = mN(t._totaleScontato) or 0
 
             if Environment.conf.hasPagamenti == True and t.documento_saldato == 1:
                 documento_saldato_filter = "Si"
