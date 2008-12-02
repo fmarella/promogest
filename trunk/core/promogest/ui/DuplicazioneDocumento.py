@@ -1,23 +1,9 @@
 # -*- coding: iso-8859-15 -*-
-
 # Promogest
 #
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
+# Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+# Author: Francesco Meloni <francesco@promotux.it>
 
 import os
 import gtk, gobject
@@ -56,17 +42,10 @@ class DuplicazioneDocumento(GladeWidget):
     def draw(self):
         # seleziona i tipi documento compatibili
         operazione = leggiOperazione(self.dao.operazione)
-        #queryString = ("SELECT * FROM promogest.operazione " +
-                       #"WHERE (tipo_operazione IS NULL OR tipo_operazione = 'documento') AND " +
-                       #"fonte_valore = '" + operazione["fonteValore"] + "' AND " +
-                       #"tipo_persona_giuridica = '" + operazione["tipoPersonaGiuridica"] + "'")
-        #argList = []
-        #Environment.connection._cursor.execute(queryString, argList)
         res = Environment.params['session'].query(Operazione).filter(and_(or_(Operazione.tipo_operazione==None,
                                                                     Operazione.tipo_operazione =="documento"),
                                                                     (Operazione.fonte_valore == operazione["fonteValore"]),
                                                                     (Operazione.tipo_persona_giuridica == operazione["tipoPersonaGiuridica"]))).all()
-        #res = Operazione(isList=True).select(
         model = gtk.ListStore(object, str, str)
         for o in res:
             model.append((o, o.denominazione, (o.denominazione or '')[0:30]))
@@ -117,12 +96,16 @@ class DuplicazioneDocumento(GladeWidget):
         newDao.costo_da_ripartire = self.dao.costo_da_ripartire
         sconti = []
         sco = self.dao.sconti or []
+        scontiRigaDocumento={}
+        scontiSuTotale={}
+        righeDocumento={}
         for s in sco:
             daoSconto = ScontoTestataDocumento().getRecord()
             daoSconto.valore = s.valore
             daoSconto.tipo_sconto = s.tipo_sconto
-            sconti.append(daoSconto)
-        newDao.sconti = sconti
+            #sconti.append(daoSconto)
+            scontiSuTotale[s] = daoSconto
+        #newDao.sconti = sconti
         righe = []
         rig = self.dao.righe
         for r in rig:
@@ -146,10 +129,12 @@ class DuplicazioneDocumento(GladeWidget):
                 daoSconto = ScontoRigaDocumento().getRecord()
                 daoSconto.valore = s.valore
                 daoSconto.tipo_sconto = s.tipo_sconto
-                sconti.append(daoSconto)
-            daoRiga.sconti = sconti
-            righe.append(daoRiga)
-        newDao.righe = righe
+                #sconti.append(daoSconto)
+            #daoRiga.sconti = sconti
+                scontiRigaDocumento[s] = daoSconto
+            #righe.append(daoRiga)
+            righeDocumento[r] = daoRiga
+        #newDao.righe = righe
         scadenze = []
         if Environment.conf.hasPagamenti == True:
             scad = self.dao.scadenze
@@ -191,7 +176,7 @@ class DuplicazioneDocumento(GladeWidget):
             valori = numeroRegistroGet(tipo=tipo.denominazione, date=self.data_documento_entry.get_text())
             newDao.numero = valori[0]
             newDao.registro_numerazione= valori[1]
-        newDao.persist()
+        newDao.persist(righe=righeDocumento, scontiSuTotale=scontiSuTotale, scontiRigaDocumento=scontiRigaDocumento)
 
         res = TestataDocumento(id=newDao.id).getRecord()
 

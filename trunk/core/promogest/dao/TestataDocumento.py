@@ -319,6 +319,7 @@ class TestataDocumento(Dao):
         if operazione["segno"] != '':
             if righe is not None:
                 for key,row in righe.items():
+                    print "rooooooooooooooooooooooooooooooooooooooooW", row
                     if row.id_articolo is not None:
                         righeMovimentazione = True
                         break
@@ -326,10 +327,7 @@ class TestataDocumento(Dao):
 
     #Salvataggi subordinati alla testata Documento, iniziamo da righe documento e poi righe
     def persist(self,scontiRigaDocumento=None,scontiSuTotale=None, righe=None):
-        #import datetime
-        #print "testatadocumento", datetime.datetime.now()
         DaoTestataMovimento = None
-        #print "RIPARTIAMO DA QUI 11111111 DAO 111111111, SCONTI E RIGHE",self.__righeDocumento
         params["session"].add(self)
         params["session"].commit()
         scontiTestataDocumentoDel(id=self.id)
