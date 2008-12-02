@@ -42,7 +42,5 @@ def CalcolaPerimetro(altezza, larghezza):
     """
     Blabla
     """
-
     metri_lineari = ((altezza + larghezza) * 2) * 0.01
-
     return ("%.5f" % metri_lineari)

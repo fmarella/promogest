@@ -201,7 +201,7 @@ class Dao(object):
                 else:
                     filter_parameters.append((value,key,"s"))
         if filter_parameters != []:
-            print "FILTER PARAMETERS:",self.DaoModule.__name__, filter_parameters 
+            if __debug__:print "FILTER PARAMETERS:",self.DaoModule.__name__, filter_parameters
             filter = self.getFilter(filter_parameters)
             return filter
         return

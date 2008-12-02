@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Alceste Scalas <alceste@promotux.it>
+# Author: Francesco Meloni <francesco@promotux.it>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -224,37 +225,24 @@ class Login(GladeApp):
                             if (os.path.isdir(os.path.join(modules_dir, folder)) \
                             and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
             for m_str in modules_folders:
-                #try:
                 if hasattr(Environment.conf,m_str):
                     exec "mod_enable = getattr(Environment.conf.%s,'mod_enable','yes')" %m_str
                     if mod_enable=="yes":
                         exec "import %s.%s.module as m" % (modules_dir.replace("/", "."), m_str)
-                        if m.COMPANY != (self.azienda):
-                            print "AZIENDA %s DEL CONFIGURE SEMBRA DIVERSA DALLA AZIENDA CORRENTE %s NON CARICO IL MODULO %s" %(m.COMPANY, self.aziendaStr,m.MODULES_NAME)
-                            continue
-                        else:
-                            Environment.modulesList.append(str(m.MODULES_NAME))
-                            for class_name in m.MODULES_FOR_EXPORT:
-                                exec 'module = m.'+ class_name
-
-                                #print "STAMPA class_name, m.COMPANY, m_str , solo per il debug",class_name, m.COMPANY, m_str
-                                self.modules[class_name] = {
-                                    'module': module(),
-                                    'type': module.VIEW_TYPE[0],
-                                    'module_dir': "%s" % (m_str),
-                                    'guiDir':m.GUI_DIR,
-                                    'company':m.COMPANY}
-                                print "'%s' imported as a module" % str(class_name)
+                        Environment.modulesList.append(str(m.MODULES_NAME))
+                        for class_name in m.MODULES_FOR_EXPORT:
+                            exec 'module = m.'+ class_name
+                            self.modules[class_name] = {
+                                'module': module(),
+                                'type': module.VIEW_TYPE[0],
+                                'module_dir': "%s" % (m_str),
+                                'guiDir':m.GUI_DIR,
+                                'company':m.COMPANY}
+                            if __debug__ :print "'%s' imported as a module" % str(class_name)
                 else:
-                    print "ATTENZIONE modulo %s presente in cartella moduli ma non settato nel configure" %m_str
-                        #except Exception:
-                            #print '%s. Modulo non valido' % m_str
-                #except Exception:
-                    #print '%s. NON IMPORTATO POTREBBE ESSERE VOLUTO O UN ERRORE, VERIFICARE' % m_str
-            print "LISTA DEI MODULI CARICATI E FUNZIONANTI", repr(Environment.modulesList)
+                    if __debug__: print "ATTENZIONE modulo %s presente in cartella moduli ma non settato nel configure" %m_str
+            if __debug__: print "LISTA DEI MODULI CARICATI E FUNZIONANTI", repr(Environment.modulesList)
             self.groupModulesByType()
-
-
 
     def on_login_window_key_press_event(self, widget, event):
         if event.type == gtk.gdk.KEY_PRESS:
