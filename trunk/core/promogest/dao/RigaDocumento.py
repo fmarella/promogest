@@ -126,7 +126,7 @@ class RigaDocumento(Dao):
     def _setMisuraPezzo(self, value):
         #print "valueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee_setMisuraPezzodue  ", value
         self.__misuraPezzo = value
-        Environment.TRENINO["misuraPezzo"] = value
+        #Environment.TRENINO["misuraPezzo"] = value
 
     misura_pezzo = property(_getMisuraPezzo, _setMisuraPezzo)
 

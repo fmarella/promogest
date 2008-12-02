@@ -34,6 +34,7 @@ import promogest.dao.ScontoRigaDocumento
 from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
 import promogest.dao.ScontoTestataDocumento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
+from promogest.dao.Operazione import Operazione
 if Environment.conf.hasPagamenti == True:
     import promogest.modules.Pagamenti.dao.TestataDocumentoScadenza
     from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
@@ -55,16 +56,20 @@ class DuplicazioneDocumento(GladeWidget):
     def draw(self):
         # seleziona i tipi documento compatibili
         operazione = leggiOperazione(self.dao.operazione)
-        queryString = ("SELECT * FROM promogest.operazione " +
-                       "WHERE (tipo_operazione IS NULL OR tipo_operazione = 'documento') AND " +
-                       "fonte_valore = '" + operazione["fonteValore"] + "' AND " +
-                       "tipo_persona_giuridica = '" + operazione["tipoPersonaGiuridica"] + "'")
-        argList = []
-        Environment.connection._cursor.execute(queryString, argList)
-        res = Environment.connection._cursor.fetchall()
+        #queryString = ("SELECT * FROM promogest.operazione " +
+                       #"WHERE (tipo_operazione IS NULL OR tipo_operazione = 'documento') AND " +
+                       #"fonte_valore = '" + operazione["fonteValore"] + "' AND " +
+                       #"tipo_persona_giuridica = '" + operazione["tipoPersonaGiuridica"] + "'")
+        #argList = []
+        #Environment.connection._cursor.execute(queryString, argList)
+        res = Environment.params['session'].query(Operazione).filter(and_(or_(Operazione.tipo_operazione==None,
+                                                                    Operazione.tipo_operazione =="documento"),
+                                                                    (Operazione.fonte_valore == operazione["fonteValore"]),
+                                                                    (Operazione.tipo_persona_giuridica == operazione["tipoPersonaGiuridica"]))).all()
+        #res = Operazione(isList=True).select(
         model = gtk.ListStore(object, str, str)
         for o in res:
-            model.append((o, o['denominazione'], (o['denominazione'] or '')[0:30]))
+            model.append((o, o.denominazione, (o.denominazione or '')[0:30]))
 
         self.id_operazione_combobox.clear()
         renderer = gtk.CellRendererText()
@@ -149,7 +154,7 @@ class DuplicazioneDocumento(GladeWidget):
         if Environment.conf.hasPagamenti == True:
             scad = self.dao.scadenze
             for s in scad:
-                daoTestataDocumentoScadenza = TestataDocumentoScadenza(Environment.connection)
+                daoTestataDocumentoScadenza = TestataDocumentoScadenza().getRecord()
                 daoTestataDocumentoScadenza.id_testata_documento = newDao.id
                 daoTestataDocumentoScadenza.data = s.data
                 daoTestataDocumentoScadenza.importo = s.importo
@@ -171,7 +176,7 @@ class DuplicazioneDocumento(GladeWidget):
         scadenze = []
         scad = self.dao.scadenze
         for s in scad:
-            daoTestataDocumentoScadenza = TestataDocumentoScadenza(Environment.connection)
+            daoTestataDocumentoScadenza = TestataDocumentoScadenza().getRecord()
             daoTestataDocumentoScadenza.id_testata_documento = newDao.id
             daoTestataDocumentoScadenza.data = s.data
             daoTestataDocumentoScadenza.importo = s.importo
@@ -180,9 +185,15 @@ class DuplicazioneDocumento(GladeWidget):
             daoTestataDocumentoScadenza.numero_scadenza = s.numero_scadenza
             scadenze.append(daoTestataDocumentoScadenza)
         newDao.scadenze = scadenze
+        tipoid = findIdFromCombobox(self.id_operazione_combobox)
+        tipo = Operazione(id=tipoid).getRecord()
+        if not newDao.numero:
+            valori = numeroRegistroGet(tipo=tipo.denominazione, date=self.data_documento_entry.get_text())
+            newDao.numero = valori[0]
+            newDao.registro_numerazione= valori[1]
         newDao.persist()
 
-        res = TestataDocumento(Environment.connection, newDao.id)
+        res = TestataDocumento(id=newDao.id).getRecord()
 
         msg = "Nuovo documento creato !\n\nIl nuovo documento e' il n. " + str(res.numero) + " del " + dateToString(res.data_documento) + " (" + newDao.operazione + ")"
         dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
