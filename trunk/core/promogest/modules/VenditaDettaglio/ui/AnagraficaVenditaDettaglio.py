@@ -1071,8 +1071,20 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             stringa = '30                %09d00\r\n' % (daoScontrino.totale_carta_credito * 100)
             f.write(stringa)
 
+        #stringa = '10                %09.2f00\r\n' % (totale_contanti)
+        #f.write(stringa)
+        #stringa='70                00000000000..\r\n'
+        #f.write(stringa)
         stringa = '10                %09.2f00\r\n' % (totale_contanti)
         f.write(stringa)
+        #stringa='71      Francesco Meloni     ..\r\n'
+        #f.write(stringa)
+        #stringa='71 CIAO A TUTTI              ..\r\n'
+        #f.write(stringa)
+        #stringa='71ARRIVEDERCI ALLA PROSSIMA  ..\r\n'
+        #f.write(stringa)
+        #stringa='72                00000000000..\r\n'
+        #f.write(stringa)
         f.close()
         return filename
 
@@ -1080,12 +1092,83 @@ class AnagraficaVenditaDettaglio(GladeWidget):
     def create_fiscal_close_file(self):
         # Genero nome file
         filename = Environment.conf.VenditaDettaglio.export_path + 'fiscal_close_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
-
         f = file(filename,'w')
         stringa = '51                00000000002..\r\n'
         f.write(stringa)
         f.close()
         return filename
+
+    def on_stampa_del_giornale_breve_activate(self, widget):
+        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_giornale_breve_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+        f = file(filename,'w')
+        stringa = '52                00000000002..\r\n'
+        f.write(stringa)
+        f.close()
+        self.sendToPrint(filename)
+
+    def on_stampa_del_periodico_cassa_activate(self, widget):
+        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_cassa_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+        f = file(filename,'w')
+        stringa = '52                00000000004..\r\n'
+        f.write(stringa)
+        f.close()
+        self.sendToPrint(filename)
+
+    def on_stampa_del_periodico_reparti_activate(self, widget):
+        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_reparti_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+        f = file(filename,'w')
+        stringa = '52                00000000006..\r\n'
+        f.write(stringa)
+        f.close()
+        self.sendToPrint(filename)
+
+    def on_stampa_del_periodico_articoli_activate(self, widget):
+        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_articoli_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+        f = file(filename,'w')
+        stringa = '52                00000000008..\r\n'
+        f.write(stringa)
+        f.close()
+        self.sendToPrint(filename)
+
+    def on_stampa_della_affluenza_oraria_activate(self, widget):
+        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_della_affluenza_oraria_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+        f = file(filename,'w')
+        stringa = '52                00000000009..\r\n'
+        f.write(stringa)
+        f.close()
+        self.sendToPrint(filename)
+
+    def sendToPrint(self, filesToSend):
+        # Mando comando alle casse
+        program_launch = Environment.conf.VenditaDettaglio.driver_command
+        program_params = (' ' + filesToSend + ' ' +
+                            Environment.conf.VenditaDettaglio.serial_device)
+
+        if os.name == 'nt':
+            exportingProcessPid = os.spawnl(os.P_NOWAIT, program_launch, program_params)
+            id, ret_value = os.waitpid(exportingProcessPid, 0)
+            ret_value = ret_value >> 8
+        else:
+            command = program_launch + program_params
+            process = popen2.Popen3(command, True)
+            message = process.childerr.readlines()
+            ret_value = process.wait()
+
+        # Elimino il file
+        os.remove(filesToSend)
+        if ret_value != 0:
+            string_message = ''
+            for s in message:
+                string_message = string_message + s + "\n"
+
+            # Mostro messaggio di errore
+            dialog = gtk.MessageDialog(self.getTopLevel(),
+                                       gtk.DIALOG_MODAL
+                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                       gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
+                                       string_message)
+            response = dialog.run()
+            dialog.destroy()
 
     def ricercaArticolo(self):
 

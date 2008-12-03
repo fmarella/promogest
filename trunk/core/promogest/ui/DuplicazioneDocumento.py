@@ -103,9 +103,7 @@ class DuplicazioneDocumento(GladeWidget):
             daoSconto = ScontoTestataDocumento().getRecord()
             daoSconto.valore = s.valore
             daoSconto.tipo_sconto = s.tipo_sconto
-            #sconti.append(daoSconto)
             scontiSuTotale[s] = daoSconto
-        #newDao.sconti = sconti
         righe = []
         rig = self.dao.righe
         for r in rig:
@@ -129,12 +127,8 @@ class DuplicazioneDocumento(GladeWidget):
                 daoSconto = ScontoRigaDocumento().getRecord()
                 daoSconto.valore = s.valore
                 daoSconto.tipo_sconto = s.tipo_sconto
-                #sconti.append(daoSconto)
-            #daoRiga.sconti = sconti
                 scontiRigaDocumento[s] = daoSconto
-            #righe.append(daoRiga)
             righeDocumento[r] = daoRiga
-        #newDao.righe = righe
         scadenze = []
         if Environment.conf.hasPagamenti == True:
             scad = self.dao.scadenze

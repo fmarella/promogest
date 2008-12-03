@@ -40,6 +40,78 @@
                 </child>
               </widget>
             </child>
+            <child>
+              <widget class="GtkMenuItem" id="letture_NON_Fisc_menu">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Letture NON Fisc.</property>
+                <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="menu1">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="stampa_del_giornale_breve">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Stampa del giornale breve</property>
+                        <property name="use_underline">True</property>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="menu-item-image3">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-justify-left</property>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="stampa_del_periodico_cassa">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Stampa del periodico cassa</property>
+                        <property name="use_underline">True</property>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="menu-item-image4">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-justify-left</property>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="stampa_del_periodico_reparti">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Stampa del periodico reparti</property>
+                        <property name="use_underline">True</property>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="menu-item-image5">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-justify-left</property>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="stampa_del_periodico_articoli">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Stampa del periodico articoli</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_stampa_del_periodico_articoli_activate"/>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="stampa_della_affluenza_oraria">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Stampa della affluenza oraria</property>
+                        <property name="use_underline">True</property>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="menu-item-image2">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-dialog-authentication</property>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
           </widget>
           <packing>
             <property name="expand">False</property>
