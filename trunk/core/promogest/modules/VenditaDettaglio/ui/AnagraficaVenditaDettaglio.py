@@ -46,6 +46,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.vendita_dettaglio_statusbar.push(context_id,textStatusBar)
         azienda = Azienda(id=Environment.params["schema"]).getRecord()
         self.logo_articolo.set_from_file(azienda.percorso_immagine)
+        self.createPopupMenu()
         self.draw()
 
     def draw(self):
@@ -101,8 +102,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         cellspin.set_property("adjustment", adjustment)
         cellspin.set_property("digits",3)
         cellspin.set_property("climb-rate",3)
+        #cellspin.set_property("foreground", "orange")
+    
         cellspin.connect('edited', self.on_column_prezzo_edited, treeview, True)
-        column = gtk.TreeViewColumn('Prezzo', cellspin, text=4)
+        column = gtk.TreeViewColumn('Prezzo', cellspin, text=4,foreground=4, background=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         #column.set_clickable(False)
         column.set_resizable(True)
@@ -216,6 +219,28 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # Vado in stato di ricerca
         self._state = 'search'
         self.empty_current_row()
+
+    def createPopupMenu(self):
+        self.file_menu = gtk.Menu()    # Don't need to show menus
+
+        # Create the menu items
+        open_item = gtk.MenuItem("Conferma")
+        #save_item = gtk.MenuItem("Cancella")
+        quit_item = gtk.MenuItem("Annulla")
+
+        # Add them to the menu
+        self.file_menu.append(open_item)
+        self.file_menu.append(save_item)
+        self.file_menu.append(quit_item)
+        # Attach the callback functions to the activate signal
+        open_item.connect_object("activate", self.on_confirm_button_clicked, "file.open")
+        #save_item.connect_object("activate", self.on_empty_button_clicked, "file.save")
+        quit_item.connect_object ("activate", self.on_cancel_button_clicked, "file.quit")
+
+        # We do need to show menu items
+        open_item.show()
+        #save_item.show()
+        quit_item.show()
 
     def on_column_prezzo_edited(self, cell, path, value, treeview, editNext=True):
         """ Function ti set the value quantita edit in the cell"""
@@ -1373,5 +1398,18 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         #movs = Environment.connection.execStoredProcedure('ScaricoScontrinoSel', (None, Environment.conf.workingYear, idArticolo, idMagazzino, False))
         #for m in movs:
             #totGiacenza += ((m['scarico_qta'] or 0 ) * -1)
-
         return totGiacenza
+
+    def on_scontrino_treeview_button_press_event(self, treeview, event):
+        if event.button == 3:
+                x = int(event.x)
+                y = int(event.y)
+                time = event.time
+                pthinfo = treeview.get_path_at_pos(x, y)
+                if pthinfo is not None:
+                    path, col, cellx, celly = pthinfo
+                    treeview.grab_focus()
+                    treeview.set_cursor( path, col, 0)
+                    self.file_menu.popup( None, None, None, event.button, time)
+                return 1
+

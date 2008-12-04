@@ -115,9 +115,7 @@ def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
     """
     from promogest.dao.FamigliaArticolo import FamigliaArticolo
     model = gtk.TreeStore(object, int, str)
-    print "BOOOOOOOOOOOOOOOOOOOOOOOOO",FamigliaArticolo().getRecord()
     fams = FamigliaArticolo(isList=True).select(offset=None,batchSize=None)
-    print "FAMIGLIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", fams
     if not filter:
         emptyRow = ''
     else:
