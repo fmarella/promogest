@@ -182,6 +182,8 @@ else:
                 dic = {k:and_(articolo.c.id==CodiceABarreArticolo.id_articolo,CodiceABarreArticolo.codice.ilike("%"+v+"%"))}
             elif k== 'codiceArticoloFornitore':
                 dic = {k:and_(articolo.c.id==fornitura.c.id_articolo,fornitura.c.codice_articolo_fornitore.ilike("%"+v+"%"))}
+            elif k== 'codiceArticoloFornitoreEM':
+                dic = {k:and_(articolo.c.id==fornitura.c.id_articolo,fornitura.c.codice_articolo_fornitore == v)}
             elif k == 'produttore':
                 dic = {k:articolo.c.produttore.ilike("%"+v+"%")}
             elif k=='idFamiglia':

@@ -1949,8 +1949,8 @@ def mN(value,decimal=None):
     """ funzione importante perchè normalizza le valute, mettendo i decimali così
         come settato nel configure e restituisce un arrotondamento corretto """
     if not value or value =='':
-        return
-    precisione = int(Environment.conf.decimals)
+        return Decimal(0)
+    precisione = decimal or int(Environment.conf.decimals)
     if precisione >=1:
         decimal = "0."
         decimal += (precisione-1) * "0"

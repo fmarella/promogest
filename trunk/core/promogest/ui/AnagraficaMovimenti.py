@@ -1197,16 +1197,16 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
         if self.ricerca_codice_button.get_active():
             codice = self.articolo_entry.get_text()
-            orderBy = "codice"
+            orderBy = Environment.params["schema"]+".articolo.codice"
         elif self.ricerca_codice_a_barre_button.get_active():
             codiceABarre = self.articolo_entry.get_text()
-            orderBy = "codice_a_barre"
+            orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
         elif self.ricerca_descrizione_button.get_active():
             denominazione = self.articolo_entry.get_text()
-            orderBy = "denominazione"
+            orderBy = Environment.params["schema"]+".articolo.denominazione"
         elif self.ricerca_codice_articolo_fornitore_button.get_active():
             codiceArticoloFornitore = self.articolo_entry.get_text()
-            orderBy = "codice_articolo_fornitore"
+            orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
 
         arts = Articolo(isList=True).select(orderBy=orderBy,
                                 denominazione=prepareFilterString(denominazione),

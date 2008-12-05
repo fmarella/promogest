@@ -749,32 +749,32 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
     def getPrezzoNetto(self):
         """ calcola il prezzo netto dal prezzo lordo e dagli sconti """
-        prezzoLordo = float(self._righe[0]["prezzoLordo"])
-        prezzoNetto = float(self._righe[0]["prezzoLordo"])
+        prezzoLordo = mN(self._righe[0]["prezzoLordo"])
+        prezzoNetto = mN(self._righe[0]["prezzoLordo"])
         applicazione = self._righe[0]["applicazioneSconti"]
         sconti = self._righe[0]["sconti"]
         for s in sconti:
             if s["tipo"] == 'percentuale':
                 if applicazione == 'scalare':
-                    prezzoNetto = prezzoNetto * (1 - float(s["valore"]) / 100)
+                    prezzoNetto = prezzoNetto * mN(1 - mN(s["valore"]) / 100)
                 elif applicazione == 'non scalare':
-                    prezzoNetto = prezzoNetto - prezzoLordo * float(s["valore"]) / 100
+                    prezzoNetto = prezzoNetto - mN(prezzoLordo * mN(s["valore"]) / 100)
             elif s["tipo"] == 'valore':
-                prezzoNetto = prezzoNetto - float(s["valore"])
+                prezzoNetto = prezzoNetto - mN(s["valore"])
         self._righe[0]["prezzoNetto"] = prezzoNetto
 
     def getTotaleRiga(self):
 
         segnoIva = 1
-        percentualeIva = float(self._righe[0]["percentualeIva"])
-        prezzoNetto = float(self._righe[0]["prezzoNetto"])
-        quantita = float(self._righe[0]["quantita"])
-        moltiplicatore = float(self._righe[0]["moltiplicatore"])
+        percentualeIva = mN(self._righe[0]["percentualeIva"])
+        prezzoNetto = mN(self._righe[0]["prezzoNetto"]) or 0
+        quantita = Decimal(self._righe[0]["quantita"])
+        moltiplicatore = Decimal(self._righe[0]["moltiplicatore"])
         #il totale riga non e' sempre l'imponibile (dipende dal tipo di prezzo)
         #if (self._fonteValore == "vendita_iva" or self._fonteValore == "acquisto_iva"):
         #    segnoIva = -1
         #    prezzoNetto = calcolaPrezzoIva(prezzoNetto, segnoIva * percentualeIva)
-
+        
         self._righe[0]["totale"] = prezzoNetto * quantita * moltiplicatore
 
     def on_sconti_widget_button_toggled(self, button):
@@ -991,18 +991,18 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.modelRiga.append((self._righe[j]["magazzino"],
                                     self._righe[j]["codiceArticolo"],
                                     self._righe[j]["descrizione"],
-                                    '%5.2f' % float(self._righe[j]["percentualeIva"]),
+                                    mN(self._righe[j]["percentualeIva"]),
                                     self._righe[j]["altezza"],
                                     self._righe[j]["larghezza"],
                                     self._righe[j]["molt_pezzi"],
                                     self._righe[j]["multiplo"],
                                     self._righe[j]["listino"],
                                     self._righe[j]["unitaBase"],
-                                    '%9.3f' % float(self._righe[j]["quantita"]),
-                                    ('%14.' + Environment.conf.decimals + 'f') % float(self._righe[j]["prezzoLordo"]),
+                                    (self._righe[j]["quantita"]),
+                                    mN(self._righe[j]["prezzoLordo"]),
                                     self._righe[j]["applicazioneSconti"] + ' ' + getStringaSconti(self._righe[j]["sconti"]),
-                                    ('%14.' + Environment.conf.decimals + 'f') % float(self._righe[j]["prezzoNetto"]),
-                                    ('%14.2f') % round(float(self._righe[j]["totale"]), 2)))
+                                    mN(self._righe[j]["prezzoNetto"]),
+                                    mN(self._righe[j]["totale"])))
 
         self.righe_treeview.set_model(self.modelRiga)
         self._loading = False
@@ -1142,7 +1142,7 @@ del documento.
         if res is not None:
             for k in range(0, len(res)):
                 daoSconto = ScontoTestataDocumento().getRecord()
-                daoSconto.valore = float(res[k]["valore"])
+                daoSconto.valore = mN(res[k]["valore"])
                 daoSconto.tipo_sconto = res[k]["tipo"]
                 scontiSuTotale[self.dao]=daoSconto
                 #scontiSuTotale.append(daoSconto)
@@ -1171,7 +1171,7 @@ del documento.
             if self._righe[i]["sconti"] is not None:
                 for scon in self._righe[i]["sconti"]:
                     daoSconto = ScontoRigaDocumento().getRecord()
-                    daoSconto.valore = float(scon["valore"])
+                    daoSconto.valore = mN(scon["valore"])
                     daoSconto.tipo_sconto = scon["tipo"]
                     sconti.append(daoSconto)
             scontiRigaDocumento[daoRiga] = sconti
@@ -1218,7 +1218,7 @@ del documento.
         self.ripartire_importo_checkbutton.set_active(self.dao.ripartire_importo)
         self.dao.costo_da_ripartire = Decimal(self.importo_da_ripartire_entry.get_text())
 
-        self.importo_sovrapprezzo_label.set_text(str('%.2f' % float(float(self.dao.costo_da_ripartire or 0)/self.dao.totalConfections)))
+        self.importo_sovrapprezzo_label.set_text(str((mN(self.dao.costo_da_ripartire) or 0)/self.dao.totalConfections))
 
     def on_ripartire_importo_checkbutton_toggled(self, checkbutton):
         self.dao.ripartire_importo = self.ripartire_importo_checkbutton.get_active()
@@ -1258,7 +1258,7 @@ del documento.
         self._righe[0]["percentualeIva"] = self._righe[self._numRiga]["percentualeIva"]
         self._righe[0]["applicazioneSconti"] = self._righe[self._numRiga]["applicazioneSconti"]
         self._righe[0]["sconti"] = self._righe[self._numRiga]["sconti"]
-        self._righe[0]["prezzoNetto"] = float(self._righe[self._numRiga]["prezzoNetto"])
+        self._righe[0]["prezzoNetto"] = mN(self._righe[self._numRiga]["prezzoNetto"])
         self._righe[0]["totale"] = self._righe[self._numRiga]["totale"]
         self._righe[0]["prezzoNettoUltimo"] = self._righe[self._numRiga]["prezzoNettoUltimo"]
         self._righe[0]["altezza"] = self._righe[self._numRiga]["altezza"]
@@ -1277,9 +1277,9 @@ del documento.
         self.percentuale_iva_entry.set_text('%-5.2f' % self._righe[0]["percentualeIva"])
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
         self.quantita_entry.set_text('%-9.3f' % float(self._righe[0]["quantita"]))
-        self.prezzo_lordo_entry.set_text(Environment.conf.number_format % float(self._righe[0]["prezzoLordo"]))
-        self.prezzo_netto_label.set_text(('%14.' + Environment.conf.decimals + 'f') % float(self._righe[0]["prezzoNetto"]))
-        self.totale_riga_label.set_text(('%14.2f') % round(float(self._righe[0]["totale"]), 2))
+        self.prezzo_lordo_entry.set_text(str(mN(self._righe[0]["prezzoLordo"])))
+        self.prezzo_netto_label.set_text(str(mN(self._righe[0]["prezzoNetto"])))
+        self.totale_riga_label.set_text(str(mN(self._righe[0]["totale"])))
         if "SuMisura" in Environment.modulesList:
             self.altezza_entry.set_text(str(self._righe[0]["altezza"]))
             self.larghezza_entry.set_text(str(self._righe[0]["larghezza"]))
@@ -1330,7 +1330,7 @@ del documento.
             return
 
         costoVariato = (self._tipoPersonaGiuridica == "fornitore" and self._righe[0]["idArticolo"] is not None and
-                (float(self._righe[0]["prezzoNetto"]) != float(self._righe[0]["prezzoNettoUltimo"])) and
+                (mN(self._righe[0]["prezzoNetto"]) != mN(self._righe[0]["prezzoNettoUltimo"])) and
                 (self._segno is not None and self._segno != ''))
 
         if self._numRiga == 0:
@@ -1363,13 +1363,13 @@ del documento.
         self._righe[self._numRiga]["multiplo"] = self._righe[0]["multiplo"]
         self._righe[self._numRiga]["idListino"] = self._righe[0]["idListino"]
         self._righe[self._numRiga]["listino"] = self._righe[0]["listino"]
-        self._righe[self._numRiga]["quantita"] = float(self._righe[0]["quantita"])
+        self._righe[self._numRiga]["quantita"] = Decimal(self._righe[0]["quantita"])
         self._righe[self._numRiga]["moltiplicatore"] = float(self._righe[0]["moltiplicatore"])
-        self._righe[self._numRiga]["prezzoLordo"] = float(self._righe[0]["prezzoLordo"])
+        self._righe[self._numRiga]["prezzoLordo"] = mN(self._righe[0]["prezzoLordo"])
         self._righe[self._numRiga]["applicazioneSconti"] = self._righe[0]["applicazioneSconti"]
         self._righe[self._numRiga]["sconti"] = self._righe[0]["sconti"]
-        self._righe[self._numRiga]["prezzoNetto"] = float(self._righe[0]["prezzoNetto"])
-        self._righe[self._numRiga]["totale"] = float(self._righe[0]["totale"])
+        self._righe[self._numRiga]["prezzoNetto"] = mN(self._righe[0]["prezzoNetto"])
+        self._righe[self._numRiga]["totale"] = mN(self._righe[0]["totale"])
         if "SuMisura" in Environment.modulesList:
             self._righe[self._numRiga]["altezza"] = self._righe[0]["altezza"]
             self._righe[self._numRiga]["larghezza"] = self._righe[0]["larghezza"]
@@ -1393,14 +1393,11 @@ del documento.
             self.modelRiga.set_value(self._iteratorRiga, 8, self._righe[self._numRiga]["listino"])
             self.modelRiga.set_value(self._iteratorRiga, 9, self._righe[self._numRiga]["unitaBase"])
             self.modelRiga.set_value(self._iteratorRiga, 10, '%9.3f' % float(self._righe[self._numRiga]["quantita"]))
-            self.modelRiga.set_value(self._iteratorRiga, 11, ('%14.' + Environment.conf.decimals + 'f') % float(
-                self._righe[self._numRiga]["prezzoLordo"]))
+            self.modelRiga.set_value(self._iteratorRiga, 11, mN(self._righe[self._numRiga]["prezzoLordo"]))
             self.modelRiga.set_value(self._iteratorRiga, 12, self._righe[self._numRiga]["applicazioneSconti"] + (
                 ' ' + getStringaSconti(self._righe[self._numRiga]["sconti"])))
-            self.modelRiga.set_value(self._iteratorRiga, 13, ('%14.' + Environment.conf.decimals + 'f') % float(
-                self._righe[self._numRiga]["prezzoNetto"]))
-            self.modelRiga.set_value(self._iteratorRiga, 14, ('%14.2f') % round(
-                float(self._righe[self._numRiga]["totale"]), 2))
+            self.modelRiga.set_value(self._iteratorRiga, 13, mN(self._righe[self._numRiga]["prezzoNetto"]))
+            self.modelRiga.set_value(self._iteratorRiga, 14, mN(self._righe[self._numRiga]["totale"]))
         else:
             self.modelRiga.append((self._righe[self._numRiga]["magazzino"],
                 self._righe[self._numRiga]["codiceArticolo"],
@@ -1413,15 +1410,11 @@ del documento.
                 self._righe[self._numRiga]["listino"],
                 self._righe[self._numRiga]["unitaBase"],
                 '%9.3f' % float(self._righe[self._numRiga]["quantita"]),
-                ('%14.' + Environment.conf.decimals + 'f') % float(self._righe[
-                    self._numRiga]["prezzoLordo"]),
+                mN(self._righe[self._numRiga]["prezzoLordo"]),
                 self._righe[self._numRiga]["applicazioneSconti"] + ' ' + getStringaSconti(
                     self._righe[self._numRiga]["sconti"]),
-                ('%14.' + Environment.conf.decimals + 'f') % float(self._righe[
-                    self._numRiga]["prezzoNetto"]),
-
-
-                ('%14.2f') % round(float(self._righe[self._numRiga]["totale"]), 2)))
+                mN(self._righe[self._numRiga]["prezzoNetto"]),
+                mN(self._righe[self._numRiga]["totale"])))
         self.calcolaTotale()
 
         if costoVariato:
@@ -1450,7 +1443,7 @@ del documento.
             if self._variazioneListiniShow:
                 self.on_variazione_listini_button_clicked(self.variazione_listini_button)
 
-        self._righe[self._numRiga]["prezzoNettoUltimo"] = float(self._righe[0]["prezzoNetto"])
+        self._righe[self._numRiga]["prezzoNettoUltimo"] = mN(self._righe[0]["prezzoNetto"])
         if self.reuseDataRow:
             rigatampone = self._righe[0]
             self.reuseDataRow=False
@@ -1652,10 +1645,10 @@ del documento.
                     if self._fonteValore == "acquisto_iva":
                         costoLordo = calcolaPrezzoIva(costoLordo, self._righe[0]["percentualeIva"])
                         costoNetto = calcolaPrezzoIva(costoNetto, self._righe[0]["percentualeIva"])
-                    self._righe[0]["prezzoLordo"] = float(costoLordo)
-                    self.prezzo_lordo_entry.set_text(Environment.conf.number_format % float(self._righe[0]["prezzoLordo"]))
-                    self._righe[0]["prezzoNetto"] = float(costoNetto)
-                    self.prezzo_netto_label.set_text(('%14.' + Environment.conf.decimals + 'f') % float(self._righe[0]["prezzoNetto"]))
+                    self._righe[0]["prezzoLordo"] = mN(costoLordo)
+                    self.prezzo_lordo_entry.set_text(str(self._righe[0]["prezzoLordo"]))
+                    self._righe[0]["prezzoNetto"] = mN(costoNetto)
+                    self.prezzo_netto_label.set_text(str(self._righe[0]["prezzoNetto"]))
                     self._righe[0]["prezzoNettoUltimo"] = float(costoNetto)
                     self._righe[0]["sconti"] = articolo['fornitura']["sconti"]
                     self._righe[0]["applicazioneSconti"] = articolo['fornitura']["applicazioneSconti"]
@@ -1702,11 +1695,11 @@ del documento.
                 if self._fonteValore == "acquisto_iva":
                         costoLordo = calcolaPrezzoIva(costoLordo, self._righe[0]["percentualeIva"])
                         costoNetto = calcolaPrezzoIva(costoNetto, self._righe[0]["percentualeIva"])
-                self._righe[0]["prezzoLordo"] = float(costoLordo)
-                self.prezzo_lordo_entry.set_text(Environment.conf.number_format % float(self._righe[0]["prezzoLordo"]))
-                self._righe[0]["prezzoNetto"] = float(costoNetto)
-                self.prezzo_netto_label.set_text(('%14.' + Environment.conf.decimals + 'f') % float(self._righe[0]["prezzoNetto"]))
-                self._righe[0]["prezzoNettoUltimo"] = float(costoNetto)
+                self._righe[0]["prezzoLordo"] = mN(costoLordo)
+                self.prezzo_lordo_entry.set_text(str(self._righe[0]["prezzoLordo"]))
+                self._righe[0]["prezzoNetto"] = mN(costoNetto)
+                self.prezzo_netto_label.set_text(str(self._righe[0]["prezzoNetto"]))
+                self._righe[0]["prezzoNettoUltimo"] = mN(costoNetto)
                 self._righe[0]["sconti"] = fornitura["sconti"]
                 self._righe[0]["applicazioneSconti"] = fornitura["applicazioneSconti"]
                 self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
@@ -1728,15 +1721,15 @@ del documento.
         """ calcola il prezzo netto """
 
         self._righe[0]["quantita"] = float(self.quantita_entry.get_text() or 0)
-        self._righe[0]["prezzoLordo"] = float(self.prezzo_lordo_entry.get_text() or 0)
+        self._righe[0]["prezzoLordo"] = mN(self.prezzo_lordo_entry.get_text()) or 0
         self._righe[0]["percentualeIva"] = float(self.percentuale_iva_entry.get_text() or 0)
         self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()
-        self._righe[0]["prezzoNetto"] = float(self._righe[0]["prezzoLordo"])
+        self._righe[0]["prezzoNetto"] = mN(self._righe[0]["prezzoLordo"]) or 0
         self._righe[0]["sconti"] = self.sconti_widget.getSconti()
         self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()
 
         self.getPrezzoNetto()
-        self.prezzo_netto_label.set_text(('%14.' + Environment.conf.decimals + 'f') % float(self._righe[0]["prezzoNetto"]))
+        self.prezzo_netto_label.set_text(str(mN(self._righe[0]["prezzoNetto"])))
         self.calcolaTotaleRiga()
         return False
 
@@ -1754,7 +1747,7 @@ del documento.
             self._righe[0]["moltiplicatore"] = 1
 
         self.getTotaleRiga()
-        self.totale_riga_label.set_text(('%14.2f') % round(float(self._righe[0]["totale"]), 2))
+        self.totale_riga_label.set_text(str(mN(self._righe[0]["totale"])))
 
 
     def calcolaTotale(self):
@@ -1762,33 +1755,31 @@ del documento.
 
 
         # FIXME: duplicated in TestataDocumenti.py
-        totaleImponibile = float(0)
-        totaleImposta = float(0)
-        totaleNonScontato = float(0)
-
-        totaleImpostaScontata = float(0)
-        totaleImponibileScontato = float(0)
-        totaleScontato = float(0)
+        totaleImponibile = Decimal(0)
+        totaleImposta = Decimal(0)
+        totaleNonScontato = Decimal(0)
+        totaleImpostaScontata = Decimal(0)
+        totaleImponibileScontato = Decimal(0)
+        totaleScontato = Decimal(0)
 
         castellettoIva = {}
 
         for i in range(1, len(self._righe)):
-            prezzoNetto = float(self._righe[i]["prezzoNetto"])
-            quantita = float(self._righe[i]["quantita"])
-            moltiplicatore = float(self._righe[i]["moltiplicatore"])
-            percentualeIva = float(self._righe[i]["percentualeIva"])
+            prezzoNetto = mN(self._righe[i]["prezzoNetto"]) or 0
+            quantita = Decimal(self._righe[i]["quantita"])
+            moltiplicatore = Decimal(self._righe[i]["moltiplicatore"])
+            percentualeIva = Decimal(self._righe[i]["percentualeIva"])
 
-            totaleRiga = prezzoNetto * quantita * moltiplicatore
+            totaleRiga = mN(prezzoNetto * quantita * moltiplicatore) or 0
             percentualeIvaRiga = percentualeIva
 
-            if (self._fonteValore == "vendita_iva" or
-                self._fonteValore == "acquisto_iva"):
-                totaleImponibileRiga = calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)
+            if (self._fonteValore == "vendita_iva" or self._fonteValore == "acquisto_iva"):
+                totaleImponibileRiga = mN(calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)) or 0
             else:
                 totaleImponibileRiga = totaleRiga
-                totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
+                totaleRiga = mN(calcolaPrezzoIva(totaleRiga, percentualeIvaRiga))
 
-            totaleImpostaRiga = totaleRiga - totaleImponibileRiga
+            totaleImpostaRiga = totaleRiga - mN(totaleImponibileRiga)
             totaleNonScontato += totaleRiga
             totaleImponibile += totaleImponibileRiga
             totaleImposta += totaleImpostaRiga
@@ -1798,15 +1789,15 @@ del documento.
             else:
                 castellettoIva[percentualeIvaRiga]['imponibile'] += totaleImponibileRiga
                 castellettoIva[percentualeIvaRiga]['imposta'] += totaleImpostaRiga
-                castellettoIva[percentualeIvaRiga]['totale'] += totaleRiga
+                castellettoIva[percentualeIvaRiga]['totale'] += mN(totaleRiga,2)
 
-        totaleNonScontato = round(totaleNonScontato, 2)
-        totaleImponibile = round(totaleImponibile, 2)
+        totaleNonScontato = mN(totaleNonScontato,2)
+        totaleImponibile = mN(totaleImponibile)
         totaleImposta = totaleNonScontato - totaleImponibile
         for percentualeIva in castellettoIva:
-            castellettoIva[percentualeIva]['imponibile'] = round(castellettoIva[percentualeIva]['imponibile'], 2)
-            castellettoIva[percentualeIva]['imposta'] = round(castellettoIva[percentualeIva]['imposta'], 2)
-            castellettoIva[percentualeIva]['totale'] = round(castellettoIva[percentualeIva]['totale'], 2)
+            castellettoIva[percentualeIva]['imponibile'] = mN(castellettoIva[percentualeIva]['imponibile'])
+            castellettoIva[percentualeIva]['imposta'] = mN(castellettoIva[percentualeIva]['imposta'])
+            castellettoIva[percentualeIva]['totale'] = mN(castellettoIva[percentualeIva]['totale'],2)
 
         totaleImponibileScontato = totaleImponibile
         totaleImpostaScontata = totaleImposta
@@ -1818,14 +1809,14 @@ del documento.
             for s in scontiSuTotale:
                 if s["tipo"] == 'percentuale':
                     if applicazioneSconti == 'scalare':
-                        totaleScontato = float(totaleScontato) * (1 - float(s["valore"]) / 100)
+                        totaleScontato = mN(totaleScontato) * (1 - mN(s["valore"]) / 100)
                     elif applicazioneSconti == 'non scalare':
-                        totaleScontato = float(totaleScontato) - float(totaleNonScontato) * float(s["valore"]) / 100
+                        totaleScontato = mN(totaleScontato) - mN(totaleNonScontato) * mN(s["valore"]) / 100
                     else:
                         raise Exception, ('BUG! Tipo di applicazione sconto '
                                           'sconosciuto: %s' % s['tipo'])
                 elif s["tipo"] == 'valore':
-                    totaleScontato = float(totaleScontato) - float(s["valore"])
+                    totaleScontato = mN(totaleScontato) - mN(s["valore"])
 
             # riporta l'insieme di sconti ad una percentuale globale
             percentualeScontoGlobale = (1 - totaleScontato / totaleNonScontato) * 100
@@ -1834,31 +1825,31 @@ del documento.
             totaleScontato = 0
             # riproporzione del totale, dell'imponibile e dell'imposta
             for k in castellettoIva.keys():
-                castellettoIva[k]['totale'] = round(float(castellettoIva[k]['totale']) * (1 - float(percentualeScontoGlobale) / 100), 2)
-                castellettoIva[k]['imponibile'] = round(float(castellettoIva[k]['imponibile']) * (1 - float(percentualeScontoGlobale) / 100), 2)
+                castellettoIva[k]['totale'] = mN(castellettoIva[k]['totale']) * (1 - mN(percentualeScontoGlobale) / 100)
+                castellettoIva[k]['imponibile'] = mN(castellettoIva[k]['imponibile']) * (1 - mN(percentualeScontoGlobale) / 100)
                 castellettoIva[k]['imposta'] = castellettoIva[k]['totale'] - castellettoIva[k]['imponibile']
 
-                totaleImponibileScontato += castellettoIva[k]['imponibile']
-                totaleImpostaScontata += castellettoIva[k]['imposta']
+                totaleImponibileScontato += mN(castellettoIva[k]['imponibile'])
+                totaleImpostaScontata += mN(castellettoIva[k]['imposta'])
 
-            totaleScontato = totaleImponibileScontato + totaleImpostaScontata
+            totaleScontato = mN(mN(totaleImponibileScontato) + mN(totaleImpostaScontata),2)
 
-        self.totale_generale_label.set_text(('%14.2f') % float(totaleNonScontato))
-        self.totale_generale_riepiloghi_label.set_text(('%14.2f') % float(totaleNonScontato))
-        self.totale_imponibile_label.set_text(('%14.2f') % float(totaleImponibile))
-        self.totale_imponibile_riepiloghi_label.set_text(('%14.2f') % float(totaleImponibile))
-        self.totale_imposta_label.set_text(('%14.2f') % float(totaleImposta))
-        self.totale_imposta_riepiloghi_label.set_text(('%14.2f') % float(totaleImposta))
-        self.totale_imponibile_scontato_riepiloghi_label.set_text(('%14.2f') % float(totaleImponibileScontato))
-        self.totale_imposta_scontata_riepiloghi_label.set_text(('%14.2f') % float(totaleImpostaScontata))
-        self.totale_scontato_riepiloghi_label.set_text(('%14.2f') % float(totaleScontato))
+        self.totale_generale_label.set_text(str(totaleNonScontato))
+        self.totale_generale_riepiloghi_label.set_text(str(totaleNonScontato))
+        self.totale_imponibile_label.set_text(str(totaleImponibile))
+        self.totale_imponibile_riepiloghi_label.set_text(str(totaleImponibile))
+        self.totale_imposta_label.set_text(str(totaleImposta))
+        self.totale_imposta_riepiloghi_label.set_text(str(totaleImposta))
+        self.totale_imponibile_scontato_riepiloghi_label.set_text(str(totaleImponibileScontato))
+        self.totale_imposta_scontata_riepiloghi_label.set_text(str(totaleImpostaScontata))
+        self.totale_scontato_riepiloghi_label.set_text(str(totaleScontato))
 
         model = self.riepiloghi_iva_treeview.get_model()
         model.clear()
         for k in castellettoIva.keys():
-            model.append(('%5.2f' % float(k),
-                         ('%14.2f') % float(castellettoIva[k]['imponibile']),
-                         ('%14.2f') % float(castellettoIva[k]['imposta'])))
+            model.append((mN(k),
+                         (mN(castellettoIva[k]['imponibile'])),
+                         (mN(castellettoIva[k]['imposta'])),))
 
 
     def showMessage(self, msg):
@@ -1904,8 +1895,8 @@ del documento.
         costoNuovo = None
         costoUltimo = None
         if self._tipoPersonaGiuridica == "fornitore":
-            costoNuovo = float(self._righe[0]["prezzoNetto"])
-            costoUltimo = float(self._righe[0]["prezzoNettoUltimo"])
+            costoNuovo = mN(self._righe[0]["prezzoNetto"])
+            costoUltimo = mN(self._righe[0]["prezzoNettoUltimo"])
         anag = VariazioneListini(idArticolo, costoUltimo, costoNuovo)
         anagWindow = anag.getTopLevel()
         anagWindow.set_transient_for(self.dialogTopLevel)
