@@ -19,9 +19,12 @@ class Multiplo(Dao):
         Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
 
     def filter_values(self,k,v):
-        dic= {  'idArticolo' : multiplo.c.id_articolo== v,
-                'idUnitaBase' : multiplo.c.id_unita_base == v,
-                'denominazione': multiplo.c.denominazione.ilike("%"+v+"%")}
+        if k == 'idArticolo':
+            dic= { k : multiplo.c.id_articolo== v}
+        elif k == 'idUnitaBase':
+            dic = {k: multiplo.c.id_unita_base == v}
+        elif k == 'denominazione':
+            dic = {k: multiplo.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
 
     def _unitabase(self):

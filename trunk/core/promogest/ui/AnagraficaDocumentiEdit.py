@@ -1178,7 +1178,6 @@ del documento.
             sconti =[]
 
             if self._righe[i]["altezza"] != '' and self._righe[i]["larghezza"] != '' and "SuMisura" in Environment.modulesList:
-                print "VEDIAMO SE ARRIVI A ISTANZIARE LA MISURA PEZZO EHHHHHH"
                 from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
                 daoMisura = MisuraPezzo().getRecord()
                 daoMisura.altezza = float(self._righe[i]["altezza"] or 0)
@@ -1191,7 +1190,7 @@ del documento.
 
         #self.dao.righe = righe
         #FIXME : controllareee
-        #self.dao.removeDividedCost()
+        self.dao.removeDividedCost()
         self.dao.costo_da_ripartire = self.importo_da_ripartire_entry.get_text()
 
         self.dao.ripartire_importo = self.ripartire_importo_checkbutton.get_active()

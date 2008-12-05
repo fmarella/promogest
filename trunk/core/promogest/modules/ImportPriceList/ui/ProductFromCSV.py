@@ -66,22 +66,20 @@ class ProductFromCsv(object):
                 setattr(self, possibleFieldsDict[key], self.product[key])
 
         if self.codice_articolo:
-            #self.daoArticolo = promogest.dao.Articolo.getByCodice(Environment.connection,
-                                                             #codice=self.codice_articolo)
             try:
-                self.daoArticolo = Articolo(isList=True).select(codice=self.codice_articolo)[0]
+                self.daoArticolo = Articolo(isList=True).select(codiceEM=self.codice_articolo)[0]
             except:
                 pass
 
-        elif self.codice_fornitore:
-            daoFornitura =Fornitura(isList=True).select(codiceArticoloFornitore=self.codice_fornitore)
-            if len(daoFornitura) == 1:
-                self.daoArticolo = Articolo(id=daoFornitura[0].id_articolo).getRecord()
-
         elif self.codice_barre_articolo:
-            daoCodiceABarre = CodiceABarreArticolo(isList=True).select(codice=self.codice_barre_articolo)
+            daoCodiceABarre = CodiceABarreArticolo(isList=True).select(codiceEM=self.codice_barre_articolo)
             if daoCodiceABarre:
                 self.daoArticolo = Articolo(id=daoCodiceABarre.id_articolo).getRecord()
+
+        elif self.codice_fornitore:
+            daoFornitura =Fornitura(isList=True).select(codiceArticoloFornitoreEM=self.codice_fornitore)
+            if len(daoFornitura) == 1:
+                self.daoArticolo = Articolo(id=daoFornitura[0].id_articolo).getRecord()
         else:
             self.daoArticolo = None
         self.fillDaos()
@@ -222,7 +220,7 @@ class ProductFromCsv(object):
         #barcode
         if self.codice_barre_articolo is not None:
             self.codice_barre_articolo = str(self.codice_barre_articolo)
-            barCode = CodiceABarreArticolo(isList=True).select(codice=self.codice_barre_articolo,
+            barCode = CodiceABarreArticolo(isList=True).select(codiceEM=self.codice_barre_articolo,
                                                                 batchSize=None)
             if len(barCode) > 0:
                 daoBarCode = CodiceABarreArticolo(id=barCode[0].id).getRecord()
@@ -355,7 +353,3 @@ class ProductFromCsv(object):
             value = value.replace("%","")
             value = value.replace(",",".")
         return value
-
-
-
-        

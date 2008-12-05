@@ -174,7 +174,7 @@ else:
         def filter_values(self,k,v):
             if k == "codice":
                 dic = {k:articolo.c.codice.ilike("%"+v+"%")}
-            elif k == "codicesatto":
+            elif k == "codicesatto" or k == "codiceEM":
                 dic = {k:articolo.c.codice == v}
             elif k == 'denominazione':
                 dic = {k:articolo.c.denominazione.ilike("%"+v+"%")}

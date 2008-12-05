@@ -21,6 +21,8 @@ class CodiceABarreArticolo(Dao):
     def filter_values(self,k,v):
         if k == 'codice':
             dic = {k:codice_barre_articolo.c.codice.ilike("%"+v+"%")}
+        elif k == 'codiceEM':
+            dic = {k:codice_barre_articolo.c.codice == v}
         elif k == 'idArticolo':
             dic = {k:codice_barre_articolo.c.id_articolo == v}
         elif k == 'primario':

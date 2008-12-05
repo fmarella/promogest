@@ -118,6 +118,8 @@ class Fornitura(Dao):
     def filter_values(self,k,v):
         if k == 'codiceArticoloFornitore':
             dic = {k:fornitura.c.codice_articolo_fornitore.ilike("%"+v+"%")}
+        elif k == 'codiceArticoloFornitoreEM' or k == "codiceArticoloFornitoreEsatto":
+            dic = {k:fornitura.c.codice_articolo_fornitore == v}
         elif k== 'idFornitore':
             dic= {k:fornitura.c.id_fornitore ==v}
         elif k== 'idFornitoreList':
@@ -134,8 +136,6 @@ class Fornitura(Dao):
             dic= {k:fornitura.c.data_fornitura >= v}
         elif k == 'aDataFornitura':
             dic = {k:fornitura.c.data_fornitura <= v}
-        elif k == 'codiceArticoloFornitoreEsatto':
-            dic = {k:fornitura.c.codice_articolo_fornitore ==v}
         return  dic[k]
 
     #def persist(self, conn=None):
