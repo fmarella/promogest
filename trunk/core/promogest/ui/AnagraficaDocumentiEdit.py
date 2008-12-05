@@ -1765,12 +1765,12 @@ del documento.
         castellettoIva = {}
 
         for i in range(1, len(self._righe)):
-            prezzoNetto = mN(self._righe[i]["prezzoNetto"]) or 0
+            prezzoNetto = mN(self._righe[i]["prezzoNetto"]) 
             quantita = Decimal(self._righe[i]["quantita"])
-            moltiplicatore = Decimal(self._righe[i]["moltiplicatore"])
-            percentualeIva = Decimal(self._righe[i]["percentualeIva"])
+            moltiplicatore = Decimal(str(self._righe[i]["moltiplicatore"]))
+            percentualeIva = Decimal(str(self._righe[i]["percentualeIva"]))
 
-            totaleRiga = mN(prezzoNetto * quantita * moltiplicatore) or 0
+            totaleRiga = mN(prezzoNetto * quantita * moltiplicatore) 
             percentualeIvaRiga = percentualeIva
 
             if (self._fonteValore == "vendita_iva" or self._fonteValore == "acquisto_iva"):
