@@ -923,7 +923,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
         textBuffer = self.note_interne_textview.get_buffer()
         self.dao.note_interne = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter())
-
+        righeMovimento = {}
+        scontiRigheMovimento= {}
         righe = []
         for i in range(1, len(self._righe)):
             daoRiga = RigaMovimento().getRecord()
@@ -948,14 +949,15 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                     daoSconto.valore = float(self._righe[i]["sconti"][j]["valore"])
                     daoSconto.tipo_sconto = self._righe[i]["sconti"][j]["tipo"]
                     sconti.append(daoSconto)
+            scontiRigheMovimento[daoRiga] = sconti
 
             daoRiga.sconti = sconti
-
+            righeMovimento[i] = daoRiga
             righe.append(daoRiga)
 
-        self.dao.righe = righe
+        #self.dao.righe = righe
 
-        self.dao.persist()
+        self.dao.persist(scontiRigaMovimento= scontiRigheMovimento, righeMovimento=righeMovimento )
         self.label_numero_righe.hide()
         text = str(len(self.dao.righe))
         self.label_numero_righe.set_text(text)
