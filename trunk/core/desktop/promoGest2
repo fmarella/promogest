@@ -1,4 +1,4 @@
 #!/bin/sh
 cd ~/pg2/core/
 chmod +x promogest.py
-./promogest.py
+python -OO promogest.py
