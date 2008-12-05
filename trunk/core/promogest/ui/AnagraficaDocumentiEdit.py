@@ -176,7 +176,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "idMultiplo": rigatampone['idMultiplo'],
                                 "multiplo": rigatampone['multiplo'],
                                 "idListino": rigatampone['idListino'],
-                                "listino": rigatampone['idListino'],
+                                "listino": rigatampone['listino'],
                                 "quantita": rigatampone['quantita'],
                                 "moltiplicatore": rigatampone['moltiplicatore'],
                                 "prezzoLordo": rigatampone['prezzoLordo'],
