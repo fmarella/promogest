@@ -74,7 +74,7 @@ class ProductFromCsv(object):
         elif self.codice_barre_articolo:
             daoCodiceABarre = CodiceABarreArticolo(isList=True).select(codiceEM=self.codice_barre_articolo)
             if daoCodiceABarre:
-                self.daoArticolo = Articolo(id=daoCodiceABarre.id_articolo).getRecord()
+                self.daoArticolo = Articolo(id=daoCodiceABarre[0].id_articolo).getRecord()
 
         elif self.codice_fornitore:
             daoFornitura =Fornitura(isList=True).select(codiceArticoloFornitoreEM=self.codice_fornitore)
@@ -219,12 +219,21 @@ class ProductFromCsv(object):
 
         #barcode
         if self.codice_barre_articolo is not None:
-            self.codice_barre_articolo = str(self.codice_barre_articolo)
+            self.codice_barre_articolo = str(self.codice_barre_articolo).strip()
+            try:
+                oldCodeBar= CodiceABarreArticolo(isList=True).select(idArticolo=product_id)
+                if oldCodeBar:
+                    for codes in oldCodeBar:
+                        codes.primario = False
+                        codes.persist()
+            except:
+                pass
             barCode = CodiceABarreArticolo(isList=True).select(codiceEM=self.codice_barre_articolo,
-                                                                batchSize=None)
+                                                                                batchSize=None)
             if len(barCode) > 0:
                 daoBarCode = CodiceABarreArticolo(id=barCode[0].id).getRecord()
                 daoBarCode.id_articolo = product_id
+                daoBarCode.primario = True
                 daoBarCode.persist()
             else:
                 daoBarCode = CodiceABarreArticolo().getRecord()
@@ -301,7 +310,7 @@ class ProductFromCsv(object):
                 daoPriceListProduct.ultimo_costo = mN(prezzo)
                 #except:
                     #prezzo = mN(self.checkDecimalSymbol(str(prezzo).strip(), decimalSymbol))
-                    #daoPriceListProduct.ultimo_costo = prezzo 
+                    #daoPriceListProduct.ultimo_costo = prezzo
             elif self.prezzo_acquisto_ivato is not None and str(self.prezzo_acquisto_ivato).strip() != "0" and str(self.prezzo_acquisto_ivato).strip() !="":
                 prezzo = self.sanitizer(self.prezzo_acquisto_ivato)
                 self.aliquota_iva.percentuale = self.sanitizer(self.aliquota_iva.percentuale)

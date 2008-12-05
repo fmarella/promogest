@@ -103,7 +103,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         cellspin.set_property("digits",3)
         cellspin.set_property("climb-rate",3)
         #cellspin.set_property("foreground", "orange")
-    
+
         cellspin.connect('edited', self.on_column_prezzo_edited, treeview, True)
         column = gtk.TreeViewColumn('Prezzo', cellspin, text=4,foreground=4, background=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
@@ -230,7 +230,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         # Add them to the menu
         self.file_menu.append(open_item)
-        self.file_menu.append(save_item)
+        #self.file_menu.append(save_item)
         self.file_menu.append(quit_item)
         # Attach the callback functions to the activate signal
         open_item.connect_object("activate", self.on_confirm_button_clicked, "file.open")

@@ -30,9 +30,9 @@ class CodiceABarreArticolo(Dao):
         return  dic[k]
 
 codice_barre_articolo=Table('codice_a_barre_articolo',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
+                            params['metadata'],
+                            schema = params['schema'],
+                            autoload=True)
 
 std_mapper = mapper(CodiceABarreArticolo, codice_barre_articolo, properties={
         #"articolo":relation(Articolo,backref="codice_a_barre_articolo")
