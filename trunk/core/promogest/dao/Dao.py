@@ -41,50 +41,58 @@ class Dao(object):
             raise Exception, " ATTENZIONE ID MANCANTE"
         return _record
 
-    def select(self, orderBy=None,distinct=False,
-                        offset=0, batchSize=15,complexFilter=None, **kwargs):
+    def select(self, orderBy=None,
+                    distinct=False,
+                    groupBy = None,
+                    join=None,
+                    offset=0,
+                    batchSize=15,
+                    complexFilter=None,
+                    howmuch = "all",
+                    **kwargs):
         if complexFilter:
             filter = complexFilter
         else:
             filter= self.prepareFilter(kwargs)
         try:
-            if self.isList and complexFilter:
-                if (filter is not None or not []) and (orderBy !=None):
-                    self.record = self.session.query(self.DaoModule).filter(filter).order_by(orderBy).limit(batchSize).offset(offset).all()
-                elif (filter is None or not []) and (orderBy !=None):
-                    self.record = self.session.query(self.DaoModule).order_by(orderBy).offset(offset).limit(batchSize).all()
-                elif (filter is not None or not []) and (orderBy ==None):
-                    self.record = self.session.query(self.DaoModule).filter(filter).offset(offset).limit(batchSize).all()
-            elif self.isList:
-                if (filter is not None or not []) and (orderBy != None):
-                    self.record = self.session.query(self.DaoModule).filter(filter).order_by(orderBy).limit(batchSize).offset(offset).all()
-                elif (filter is  None or not []) and (orderBy != None):
-                    self.record = self.session.query(self.DaoModule).order_by(orderBy).offset(offset).limit(batchSize).all()
-                elif filter is not None or not []:
-                    self.record = self.session.query(self.DaoModule).filter(filter).offset(offset).limit(batchSize).all()
-                else:
-                    self.record = self.session.query(self.DaoModule).offset(offset).limit(batchSize).all()
+            dao = self.session.query(self.DaoModule)
+            if join:
+                print "UHMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM", join, dao
+                dao = dao.join(join)
+                print "joi", dao
+            if filter:
+                dao = dao.filter(filter)
+            if orderBy:
+                dao = dao.order_by(orderBy)
+            if batchSize:
+                dao = dao.limit(batchSize)
+            if offset:
+                dao = dao.offset(offset)
+            if distinct:
+                dao = dao.distinct()
+            if howmuch == "all":
+                self.record = dao.all()
+            elif howmuch == "one":
+                self.record = dao.one()
+            elif howmuch =="first":
+                self.record = dao.first()
             return self.record
         except Exception, e:
             self.raiseException(e)
 
-    def count(self, mapperType="select",complexFilter=None, **kwargs):
+    def count(self, complexFilter=None,distinct =None, **kwargs):
         _numRecords = 0
+        if complexFilter:
+            filter = complexFilter
+        else:
+            filter= self.prepareFilter(kwargs)
         try:
-            if complexFilter:
-                filter = complexFilter
-            else:
-                filter= self.prepareFilter(kwargs)
-            if self.isList and complexFilter:
-                if filter is not None or not []:
-                    _numRecords = self.session.query(self.DaoModule).filter(filter).count()
-                else:
-                    _numRecords= self.session.query(self.DaoModule).distinct().count()
-            elif self.isList:
-                if filter is not None or not []:
-                    _numRecords = self.session.query(self.DaoModule).filter(filter).count()
-                else:
-                    _numRecords = self.session.query(self.DaoModule).count()
+            dao = self.session.query(self.DaoModule)
+            if filter:
+                dao = dao.filter(filter)
+            if distinct:
+                dao = dao.distinct()
+            _numRecords = dao.count()
             if _numRecords > 0:
                 self.numRecords = _numRecords
             return self.numRecords
