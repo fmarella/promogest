@@ -57,9 +57,7 @@ class Dao(object):
         try:
             dao = self.session.query(self.DaoModule)
             if join:
-                print "UHMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM", join, dao
                 dao = dao.join(join)
-                print "joi", dao
             if filter:
                 dao = dao.filter(filter)
             if orderBy:

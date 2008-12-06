@@ -21,6 +21,7 @@ import promogest.dao.ScontoTestataDocumento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
+from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.dao.Articolo import Articolo
 from utils import *
 from utilsCombobox import *
@@ -768,13 +769,13 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         segnoIva = 1
         percentualeIva = mN(self._righe[0]["percentualeIva"])
         prezzoNetto = mN(self._righe[0]["prezzoNetto"]) or 0
-        quantita = Decimal(self._righe[0]["quantita"])
-        moltiplicatore = Decimal(self._righe[0]["moltiplicatore"])
+        quantita = Decimal(str(self._righe[0]["quantita"]))
+        moltiplicatore = Decimal(str(self._righe[0]["moltiplicatore"]))
         #il totale riga non e' sempre l'imponibile (dipende dal tipo di prezzo)
         #if (self._fonteValore == "vendita_iva" or self._fonteValore == "acquisto_iva"):
         #    segnoIva = -1
         #    prezzoNetto = calcolaPrezzoIva(prezzoNetto, segnoIva * percentualeIva)
-        
+
         self._righe[0]["totale"] = prezzoNetto * quantita * moltiplicatore
 
     def on_sconti_widget_button_toggled(self, button):
@@ -1363,8 +1364,8 @@ del documento.
         self._righe[self._numRiga]["multiplo"] = self._righe[0]["multiplo"]
         self._righe[self._numRiga]["idListino"] = self._righe[0]["idListino"]
         self._righe[self._numRiga]["listino"] = self._righe[0]["listino"]
-        self._righe[self._numRiga]["quantita"] = Decimal(self._righe[0]["quantita"])
-        self._righe[self._numRiga]["moltiplicatore"] = float(self._righe[0]["moltiplicatore"])
+        self._righe[self._numRiga]["quantita"] = Decimal(str(self._righe[0]["quantita"]))
+        self._righe[self._numRiga]["moltiplicatore"] = Decimal(str(self._righe[0]["moltiplicatore"]))
         self._righe[self._numRiga]["prezzoLordo"] = mN(self._righe[0]["prezzoLordo"])
         self._righe[self._numRiga]["applicazioneSconti"] = self._righe[0]["applicazioneSconti"]
         self._righe[self._numRiga]["sconti"] = self._righe[0]["sconti"]
@@ -1520,30 +1521,37 @@ del documento.
         codiceABarre = None
         denominazione = None
         codiceArticoloFornitore = None
-
+        join = None
         if self.ricerca_codice_button.get_active():
             codice = self.articolo_entry.get_text()
             orderBy = Environment.params["schema"]+".articolo.codice"
+            batchSize = Environment.conf.batch_size
         elif self.ricerca_codice_a_barre_button.get_active():
             codiceABarre = self.articolo_entry.get_text()
+            join= Articolo.cod_barre
             orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
+            batchSize = Environment.conf.batch_size
         elif self.ricerca_descrizione_button.get_active():
             denominazione = self.articolo_entry.get_text()
             orderBy = Environment.params["schema"]+".articolo.denominazione"
+            batchSize = Environment.conf.batch_size
         elif self.ricerca_codice_articolo_fornitore_button.get_active():
             codiceArticoloFornitore = self.articolo_entry.get_text()
+            join= Articolo.fornitur
             orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
+            batchSize = Environment.conf.batch_size
 
         arts = Articolo(isList=True).select(orderBy=orderBy,
-                                             denominazione=prepareFilterString(denominazione),
-                                             codice=prepareFilterString(codice),
-                                             codiceABarre=prepareFilterString(codiceABarre),
-                                             codiceArticoloFornitore=prepareFilterString(codiceArticoloFornitore),
-                                             idFamiglia=None,
-                                             idCategoria=None,
-                                             idStato=None,
-                                             offset=None,
-                                             batchSize=None)
+                                            join = join,
+                                            denominazione=prepareFilterString(denominazione),
+                                            codice=prepareFilterString(codice),
+                                            codiceABarre=prepareFilterString(codiceABarre),
+                                            codiceArticoloFornitore=prepareFilterString(codiceArticoloFornitore),
+                                            idFamiglia=None,
+                                            idCategoria=None,
+                                            idStato=None,
+                                            offset=None,
+                                            batchSize=None)
         if (len(arts) == 1):
 
             self.mostraArticolo(arts[0].id)
@@ -1766,12 +1774,12 @@ del documento.
         castellettoIva = {}
 
         for i in range(1, len(self._righe)):
-            prezzoNetto = mN(self._righe[i]["prezzoNetto"]) 
+            prezzoNetto = mN(self._righe[i]["prezzoNetto"])
             quantita = Decimal(self._righe[i]["quantita"])
             moltiplicatore = Decimal(str(self._righe[i]["moltiplicatore"]))
             percentualeIva = Decimal(str(self._righe[i]["percentualeIva"]))
 
-            totaleRiga = mN(prezzoNetto * quantita * moltiplicatore) 
+            totaleRiga = mN(prezzoNetto * quantita * moltiplicatore)
             percentualeIvaRiga = percentualeIva
 
             if (self._fonteValore == "vendita_iva" or self._fonteValore == "acquisto_iva"):
