@@ -49,7 +49,6 @@ class Dao(object):
             filter= self.prepareFilter(kwargs)
         try:
             if self.isList and complexFilter:
-
                 if (filter is not None or not []) and (orderBy !=None):
                     self.record = self.session.query(self.DaoModule).filter(filter).order_by(orderBy).limit(batchSize).offset(offset).all()
                 elif (filter is None or not []) and (orderBy !=None):

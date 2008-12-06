@@ -34,8 +34,8 @@ from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliame
 
 class Articolo(Dao):
 
-    def __init__(self, arg=None,isList=False, id=None):
-        Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
+    def __init__(self, arg=None,isList=False):
+        Dao.__init__(self, entity=self.__class__, isList=isList)
         self.__articoloTagliaColore = None
 
     def _codice_a_barre(self):
