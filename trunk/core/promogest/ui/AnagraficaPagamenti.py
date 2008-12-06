@@ -121,7 +121,7 @@ class AnagraficaPagamentiDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = Pagamento().getRecord()
+            self.dao = Pagamento()
             self._anagrafica._newRow((self.dao, ''))
             self._refresh()
         else:
@@ -129,7 +129,7 @@ class AnagraficaPagamentiDetail(AnagraficaDetail):
 
 
     def updateDao(self):
-        self.dao = Pagamento(id=self.dao.id).getRecord()
+        self.dao = Pagamento().getRecord(id=self.dao.id)
         self._refresh()
 
 

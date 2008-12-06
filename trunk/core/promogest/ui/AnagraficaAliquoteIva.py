@@ -164,10 +164,10 @@ class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = AliquotaIva().getRecord()
+            self.dao = AliquotaIva()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = AliquotaIva(id=dao.id).getRecord()
+            self.dao = AliquotaIva().getRecord(id=dao.id)
         self._refresh()
 
 

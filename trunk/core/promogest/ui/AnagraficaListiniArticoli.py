@@ -372,7 +372,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         _scontoDettaglio= self.sconti_dettaglio_widget.getSconti()
         #print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", _scontoDettaglio
         #for s in _scontoDettaglio:
-            #self.dao.sconto_vendita_dettaglio.append(ScontoVenditaDettaglio().getRecord())
+            #self.dao.sconto_vendita_dettaglio.append(ScontoVenditaDettaglio())
             #self.dao.sconto_vendita_dettaglio[-1].tipo_sconto = s["tipo"]
             #self.dao.sconto_vendita_dettaglio[-1].valore = float(s["valore"])
 ##        self.dao.applicazione_sconti_dettaglio = self.sconti_dettaglio_widget.getApplicazione()
@@ -383,7 +383,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
         _scontoIngrosso= self.sconti_ingrosso_widget.getSconti()
         #for s in _scontoIngrosso:
-            #self.dao.sconto_vendita_ingrosso.append(ScontoVenditaIngrosso().getRecord())
+            #self.dao.sconto_vendita_ingrosso.append(ScontoVenditaIngrosso())
             #self.dao.sconto_vendita_ingrosso[-1].tipo_sconto = s["tipo"]
             #self.dao.sconto_vendita_ingrosso[-1].valore = s["valore"]
 ##        self.dao.applicazione_sconti_ingrosso = self.sconti_ingrosso_widget.getApplicazione()
@@ -604,7 +604,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = ListinoArticolo().getRecord()
+            self.dao = ListinoArticolo()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = ListinoArticolo(isList=True).select(idListino=dao.id_listino,
@@ -675,7 +675,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             self._refreshTagliaColore(self.dao.id_articolo)
 
     def _refreshTagliaColore(self, idArticolo):
-        articoloTagliaColore = Articolo(id=idArticolo).getRecord()
+        articoloTagliaColore = Articolo().getRecord(id=idArticolo)
         self.taglia_colore_table.hide()
         if articoloTagliaColore is not None:
             gruppoTaglia = articoloTagliaColore.denominazione_gruppo_taglia or ''
@@ -710,7 +710,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         sconti_dettaglio = []
         self.dao.applicazione_sconti = "scalare"
         for s in self.sconti_dettaglio_widget.getSconti():
-            daoSconto = ScontoVenditaDettaglio().getRecord()
+            daoSconto = ScontoVenditaDettaglio()
             daoSconto.valore = s["valore"]
             daoSconto.tipo_sconto = s["tipo"]
             sconti_dettaglio.append(daoSconto)
@@ -720,7 +720,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         sconti_ingrosso = []
         self.dao.applicazione_sconti = "scalare"
         for s in self.sconti_ingrosso_widget.getSconti():
-            daoSconto = ScontoVenditaIngrosso().getRecord()
+            daoSconto = ScontoVenditaIngrosso()
             daoSconto.valore = s["valore"]
             daoSconto.tipo_sconto = s["tipo"]
             sconti_ingrosso.append(daoSconto)

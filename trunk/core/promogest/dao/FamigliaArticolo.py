@@ -12,19 +12,18 @@ from Dao import Dao
 
 class FamigliaArticolo(Dao):
 
-    def __init__(self, arg=None,isList=False, id=None):
-        Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
+    def __init__(self, arg=None,isList=False):
+        Dao.__init__(self, entity=self.__class__, isList=isList)
 
     def filter_values(self,k,v):
-        print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
         dic= {'denominazione' : famiglia.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
 
 def get_node_depth(id):
     ret_index = 0
-    dao = FamigliaArticolo(id=id).getRecord()
+    dao = FamigliaArticolo().getRecord(id=id)
     while dao.id_padre is not None:
-        dao = FamigliaArticolo(id=dao.id_padre).getRecord()
+        dao = FamigliaArticolo().getRecord(id=dao.id_padre)
         ret_index +=1
     else:
         return ret_index

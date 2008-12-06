@@ -231,10 +231,10 @@ class AnagraficaMultipliEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = Multiplo().getRecord()
+            self.dao = Multiplo()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Multiplo(id=dao.id).getRecord()
+            self.dao = Multiplo().getRecord(id=dao.id)
         self._refresh()
 
 

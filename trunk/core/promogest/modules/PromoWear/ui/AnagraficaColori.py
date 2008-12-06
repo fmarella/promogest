@@ -130,7 +130,7 @@ class AnagraficaColoreDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = Colore().getRecord()
+            self.dao = Colore()
             self._anagrafica._newRow((self.dao, '', '', True))
             self._refresh()
         else:
@@ -139,7 +139,7 @@ class AnagraficaColoreDetail(AnagraficaDetail):
 
     def updateDao(self):
         if self.dao is not None:
-            self.dao = Colore(id=self.dao.id).getRecord()
+            self.dao = Colore().getRecord(id=self.dao.id)
             self._refresh()
         else:
             raise Exception, 'Update not possible'

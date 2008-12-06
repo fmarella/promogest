@@ -212,11 +212,11 @@ class AnagraficaVettoriEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = Vettore().getRecord()
+            self.dao = Vettore()
             self.dao.codice = promogest.dao.Vettore.getNuovoCodiceVettore()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Vettore(id=dao.id).getRecord()
+            self.dao = Vettore().getRecord(id=dao.id)
         self._refresh()
 
 

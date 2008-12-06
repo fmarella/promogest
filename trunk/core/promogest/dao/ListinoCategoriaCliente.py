@@ -13,8 +13,8 @@ from CategoriaCliente import CategoriaCliente
 
 class ListinoCategoriaCliente(Dao):
 
-    def __init__(self, arg=None,isList=False, id=None):
-        Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
+    def __init__(self, arg=None,isList=False):
+        Dao.__init__(self, entity=self.__class__, isList=isList)
 
     def _categoriaCliente(self):
         if self.catecli: return self.catecli.denominazione

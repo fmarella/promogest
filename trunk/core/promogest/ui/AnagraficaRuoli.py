@@ -123,7 +123,7 @@ class AnagraficaRuoliDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = Role().getRecord()
+            self.dao = Role()
             self._anagrafica._newRow((self.dao, '', ''))
             self._refresh()
         else:
@@ -131,7 +131,7 @@ class AnagraficaRuoliDetail(AnagraficaDetail):
 
 
     def updateDao(self):
-        self.dao = Role(id=self.dao.id).getRecord()
+        self.dao = Role().getRecord(id=self.dao.id)
         self._refresh()
 
 

@@ -127,7 +127,7 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = CodiceABarreArticolo().getRecord()
+            self.dao = CodiceABarreArticolo()
             self.dao.id_articolo = self._anagrafica._idArticolo
             self._anagrafica._newRow((self.dao, '', ''))
             self._refresh()
@@ -136,7 +136,7 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
 
 
     def updateDao(self):
-        self.dao = CodiceABarreArticolo(id=self.dao.id).getRecord()
+        self.dao = CodiceABarreArticolo().getRecord(id=self.dao.id)
         self._refresh()
 
 

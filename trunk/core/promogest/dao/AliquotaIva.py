@@ -15,8 +15,8 @@ from TipoAliquotaIva import TipoAliquotaIva
 
 class AliquotaIva(Dao):
 
-    def __init__(self, arg=None,isList=False, id=None):
-        Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
+    def __init__(self, arg=None,isList=False):
+        Dao.__init__(self, entity=self.__class__, isList=isList)
 
     def filter_values(self, k,v):
         dic= {'denominazione' : aliquota_iva.c.denominazione.ilike("%"+v+"%")}

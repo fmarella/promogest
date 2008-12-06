@@ -143,7 +143,7 @@ class VistaPrincipale(GladeWidget):
         idAllarmi = promogest.dao.Promemoria.getScadenze()
         #fill again the model of the treeview (a gtk.ListStore)
         for idAllarme in idAllarmi:
-            dao = Promemoria(id=idAllarme).getRecord()
+            dao = Promemoria().getRecord(id=idAllarme)
             model.append((dao, dateToString(dao.data_scadenza),\
                                 dao.oggetto, dao.descrizione,\
                                 dao.incaricato, dao.autore, dao.annotazione))

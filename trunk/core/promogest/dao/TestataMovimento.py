@@ -21,8 +21,8 @@ from ScontoFornitura import ScontoFornitura
 
 class TestataMovimento(Dao):
 
-    def __init__(self, arg=None,isList=False, id=None):
-        Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
+    def __init__(self, arg=None,isList=False):
+        Dao.__init__(self, entity=self.__class__, isList=isList)
 
     def _getRigheMovimento(self):
         self.__dbRigheMovimento = params['session'].query(RigaMovimento)\
@@ -129,12 +129,12 @@ class TestataMovimento(Dao):
                         if fors[0].data_prezzo == self.data_movimento:
                             # ha trovato una fornitura con stessa data: aggiorno questa fornitura
                             print "trovato una fornitura con stessa data: aggiorno questa fornitura"
-                            daoFornitura = Fornitura(id=fors[0].id).getRecord()
+                            daoFornitura = Fornitura().getRecord(id=fors[0].id)
                         else:
                             """creo una nuova fornitura con data_prezzo pari alla data del movimento
                                 copio alcuni dati dalla fornitura piu' prossima"""
                             print "creo una nuova fornitura con data_prezzo pari alla data del movimento opio alcuni dati dalla fornitura piu' prossima"
-                            daoFornitura = Fornitura().getRecord()
+                            daoFornitura = Fornitura()
                             daoFornitura.scorta_minima = fors[0].scorta_minima
                             daoFornitura.id_multiplo = fors[0].id_multiplo
                             daoFornitura.tempo_arrivo_merce = fors[0].tempo_arrivo_merce
@@ -142,7 +142,7 @@ class TestataMovimento(Dao):
                     else:
                         # nessuna fornitura utilizzabile, ne creo una nuova (alcuni dati mancheranno)
                         print "nessuna fornitura utilizzabile, ne creo una nuova (alcuni dati mancheranno)"
-                        daoFornitura = Fornitura().getRecord()
+                        daoFornitura = Fornitura()
 
                     daoFornitura.id_fornitore = self.id_fornitore
                     daoFornitura.id_articolo = riga.id_articolo
@@ -159,7 +159,7 @@ class TestataMovimento(Dao):
                     daoFornitura.applicazione_sconti = riga.applicazione_sconti
                     sconti = []
                     for s in riga.sconti:
-                        daoSconto = ScontoFornitura().getRecord()
+                        daoSconto = ScontoFornitura()
                         daoSconto.id_fornitura = daoFornitura.id
                         daoSconto.valore = s.valore
                         daoSconto.tipo_sconto = s.tipo_sconto

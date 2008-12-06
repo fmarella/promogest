@@ -201,10 +201,10 @@ class AnagraficaStoccaggiEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = Stoccaggio().getRecord()
+            self.dao = Stoccaggio()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Stoccaggio(id=dao.id).getRecord()
+            self.dao = Stoccaggio().getRecord(id=dao.id)
         self._refresh()
 
 

@@ -28,8 +28,8 @@ if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
 else:
     class Articolo(Dao):
 
-        def __init__(self, arg=None,isList=False, id=None):
-            Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
+        def __init__(self, arg=None,isList=False):
+            Dao.__init__(self, entity=self.__class__, isList=isList)
 
         def _codice_a_barre(self):
             """ esempio di funzione  unita alla property """
@@ -131,8 +131,8 @@ else:
             #salvataggio , immagine ....per il momento viene gestita una immagine per articolo ...
             #in seguito sarà l'immagine a comandare non l'articolo
             try:
-                if self._url_immagine and Immagine(id=self.id_immagine).getRecord():
-                    img = Immagine(id=self.id_immagine).getRecord()
+                if self._url_immagine and Immagine().getRecord(id=self.id_immagine):
+                    img = Immagine().getRecord(id=self.id_immagine)
                     img.filename=self._url_immagine
                     img.id_famiglia = self.id_famiglia_articolo
                     self.id_immagine = self.id
@@ -140,7 +140,7 @@ else:
                     params["session"].add(self)
                     params["session"].commit()
                 elif self._url_immagine:
-                    img = Immagine().getRecord()
+                    img = Immagine()
                     img.id=self.id
                     img.filename=self._url_immagine
                     img.id_famiglia = self.id_famiglia_articolo
@@ -148,8 +148,8 @@ else:
                     params["session"].add(img)
                     params["session"].add(self)
                     params["session"].commit()
-                elif not self._url_immagine and Immagine(id=self.id_immagine).getRecord():
-                    img = Immagine(id=self.id_immagine).getRecord()
+                elif not self._url_immagine and Immagine().getRecord(id=self.id_immagine):
+                    img = Immagine().getRecord(id=self.id_immagine)
                     self.id_immagine = None
                     img.delete()
             except:
@@ -163,7 +163,7 @@ else:
             from Riga import Riga
             res = Riga(isList=True).select(id_articolo=self.id)
             if res:
-                daoArticolo = Articolo(id=self.id).getRecord()
+                daoArticolo = Articolo().getRecord(id=self.id)
                 daoArticolo.cancellato = True
                 params["session"].add(daoArticolo)
                 params["session"].commit()

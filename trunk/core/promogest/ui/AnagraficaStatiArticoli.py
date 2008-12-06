@@ -119,14 +119,14 @@ class AnagraficaStatiArticoliDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = StatoArticolo().getRecord()
+            self.dao = StatoArticolo()
         else:
             self.dao = dao
         self._refresh()
 
 
     def updateDao(self):
-        self.dao = StatoArticolo(id=self.dao.id).getRecord()
+        self.dao = StatoArticolo().getRecord(id=self.dao.id)
         self._refresh()
 
 

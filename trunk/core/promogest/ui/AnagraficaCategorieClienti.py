@@ -106,14 +106,14 @@ class AnagraficaCategorieClientiDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = CategoriaCliente().getRecord()
+            self.dao = CategoriaCliente()
             self._anagrafica._newRow((self.dao, ''))
             self._refresh()
         else:
             self.dao = dao
 
     def updateDao(self):
-        self.dao = CategoriaCliente(id=self.dao.id).getRecord()
+        self.dao = CategoriaCliente().getRecord(id=self.dao.id)
         self._refresh()
 
     def _refresh(self):

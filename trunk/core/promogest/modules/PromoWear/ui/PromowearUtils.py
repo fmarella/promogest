@@ -127,7 +127,7 @@ def leggiArticoloPromoWear(id, full=False):
     _genere = ''
 
     if id is not None:
-        daoArticolo = Articolo(id=id).getRecord()
+        daoArticolo = Articolo().getRecord(id=id)
         if daoArticolo is not None:
             _id = id
             _denominazione = daoArticolo.denominazione or ''
@@ -138,7 +138,7 @@ def leggiArticoloPromoWear(id, full=False):
                 if res is not None:
                     _unitaBase = res[0].denominazione
             if daoArticolo.id_aliquota_iva is not None:
-                daoAliquotaIva = AliquotaIva(id=daoArticolo.id_aliquota_iva).getRecord()
+                daoAliquotaIva = AliquotaIva().getRecord(id=daoArticolo.id_aliquota_iva)
                 if daoAliquotaIva is not None:
                     _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
                     _percentualeAliquotaIva = daoAliquotaIva.percentuale or 0
@@ -187,7 +187,7 @@ def leggiListino(idListino, idArticolo=None):
 
     if idListino is not None:
         try:
-            daoListino = Listino(id=idListino).getRecord()
+            daoListino = Listino().getRecord(id=idListino)
             if daoListino is not None:
                 _denominazione = daoListino.denominazione
         except:
@@ -200,7 +200,7 @@ def leggiListino(idListino, idArticolo=None):
                                                                             batchSize=None)
                 if "PromoWear" in Environment.modulesList:
                         try:
-                            articolo = ArticoloTagliaColore(id=idArticolo).getRecord()
+                            articolo = ArticoloTagliaColore().getRecord(id=idArticolo)
                             idArticoloPadre = articolo.id_articolo_padre
                             if idArticoloPadre is not None:
                                 try:
@@ -249,7 +249,7 @@ def fillComboboxMultipli(combobox, idArticolo=None, noSottoMultipli=False, filte
 
     if "PromoWear" in Environment.modulesList:
         try:
-            articolo = ArticoloTagliaColore(id=idArticolo).getRecord()
+            articolo = ArticoloTagliaColore().getRecord(id=idArticolo)
             if articolo.id_articolo_padre is not None:
                 # multipli legati all'articolo padre
                 muls = Multiplo(isList=True).select(denominazione=None,

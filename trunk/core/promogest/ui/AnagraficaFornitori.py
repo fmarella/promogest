@@ -225,11 +225,11 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = Fornitore().getRecord()
+            self.dao = Fornitore()
             self.dao.codice = promogest.dao.Fornitore.getNuovoCodiceFornitore()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Fornitore(id=dao.id).getRecord()
+            self.dao = Fornitore().getRecord(id=dao.id)
         self._refresh()
 
 

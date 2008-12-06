@@ -304,7 +304,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         self.dao.valore_unitario = float(self._modifica.valore_unitario_entry.get_text())
         self.dao.data_aggiornamento = datetime.datetime.today().date()
 
-        dao = Inventario(id=self.dao.id).getRecord()
+        dao = Inventario().getRecord(id=self.dao.id)
         dao.anno = self.dao.anno
         dao.id_magazzino = self.dao.id_magazzino
         dao.id_articolo = self.dao.id_articolo
@@ -522,7 +522,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         response = dialog.run()
         dialog.destroy()
         if response == gtk.RESPONSE_YES:
-            testata = TestataMovimento().getRecord()
+            testata = TestataMovimento()
             data = '01/01/' + Environment.conf.workingYear
             testata.data_movimento = stringToDate(data)
             testata.operazione = 'Carico per inventario'
@@ -536,7 +536,7 @@ class GestioneInventario(RicercaComplessaArticoli):
 
             for i in invs:
                 if i.quantita is not None and i.quantita > 0:
-                    riga = RigaMovimento().getRecord()
+                    riga = RigaMovimento()
                     riga.id_testata_movimento = testata.id
                     riga.id_articolo = i.id_articolo
                     riga.id_magazzino = i.id_magazzino

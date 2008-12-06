@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -32,8 +32,8 @@ from promogest.ui.utils import *
 class RigaDocumento(Dao):
     """ User class provides to make a Users dao which include more used"""
 
-    def __init__(self, arg=None,isList=False, id=None):
-        Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
+    def __init__(self, arg=None,isList=False):
+        Dao.__init__(self, entity=self.__class__, isList=isList)
         self.valueList = []
         if "SuMisura" in modulesList:
             self.__misuraPezzo = None
@@ -47,10 +47,10 @@ class RigaDocumento(Dao):
     def _getAliquotaIva(self):
         # Restituisce la denominazione breve dell'aliquota iva
         _denominazioneBreveAliquotaIva = '%2.0f' % (self.percentuale_iva or 0)
-        daoArticolo = Articolo(id=self.id_articolo).getRecord()
+        daoArticolo = Articolo().getRecord(id=self.id_articolo)
         if daoArticolo is not None:
             if daoArticolo.id_aliquota_iva is not None:
-                daoAliquotaIva = AliquotaIva(id=daoArticolo.id_aliquota_iva).getRecord()
+                daoAliquotaIva = AliquotaIva().getRecord(id=daoArticolo.id_aliquota_iva)
                 if daoAliquotaIva is not None:
                     _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
         if (_denominazioneBreveAliquotaIva == '0' or _denominazioneBreveAliquotaIva == '00'):
@@ -160,7 +160,7 @@ class RigaDocumento(Dao):
         #params["session"].flush()
 
         if "SuMisura" in modulesList:
-            mp = MisuraPezzo(id=self.id).getRecord()
+            mp = MisuraPezzo().getRecord(id=self.id)
             try:
                 mp.delete()
             except:

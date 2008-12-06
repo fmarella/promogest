@@ -191,10 +191,10 @@ class AnagraficaDestinazioniMerceEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = DestinazioneMerce().getRecord()
+            self.dao = DestinazioneMerce()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = DestinazioneMerce(id= dao.id).getRecord()
+            self.dao = DestinazioneMerce().getRecord(id= dao.id)
         self._refresh()
 
 

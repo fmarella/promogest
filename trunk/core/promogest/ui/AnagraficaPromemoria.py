@@ -307,11 +307,11 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = Promemoria().getRecord()
+            self.dao = Promemoria()
             self._is_changing = False
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Promemoria(id= dao.id).getRecord()
+            self.dao = Promemoria().getRecord(id= dao.id)
             self._is_changing = True
         self._refresh()
 

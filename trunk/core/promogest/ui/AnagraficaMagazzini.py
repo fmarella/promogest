@@ -150,10 +150,10 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = Magazzino().getRecord()
+            self.dao = Magazzino()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Magazzino(id=dao.id).getRecord()
+            self.dao = Magazzino().getRecord(id=dao.id)
         self._refresh()
 
 

@@ -125,7 +125,7 @@ class AnagraficaGruppoTagliaDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = GruppoTaglia().getRecord()
+            self.dao = GruppoTaglia()
             self._anagrafica._newRow((self.dao, '', '', True))
             self._refresh()
         else:
@@ -133,7 +133,7 @@ class AnagraficaGruppoTagliaDetail(AnagraficaDetail):
 
     def updateDao(self):
         if self.dao is not None:
-            self.dao = GruppoTaglia(id=self.dao.id).getRecord()
+            self.dao = GruppoTaglia().getRecord(id=self.dao.id)
             self._refresh()
         else:
             raise Exception, 'Update not possible'

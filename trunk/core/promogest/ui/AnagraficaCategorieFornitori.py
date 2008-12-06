@@ -124,7 +124,7 @@ class AnagraficaCategorieFornitoriDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = CategoriaFornitore().getRecord()
+            self.dao = CategoriaFornitore()
             self._anagrafica._newRow((self.dao, ''))
             self._refresh()
         else:
@@ -132,7 +132,7 @@ class AnagraficaCategorieFornitoriDetail(AnagraficaDetail):
 
 
     def updateDao(self):
-        self.dao = CategoriaFornitore(id=self.dao.id).getRecord()
+        self.dao = CategoriaFornitore().getRecord(id=self.dao.id)
         self._refresh()
 
 

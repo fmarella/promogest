@@ -41,7 +41,7 @@ class GestioneTaglieColori(GladeWidget):
         self._articoloBase = articolo
         self._articoloPadre = articolo.articoloTagliaColore
         if self._articoloPadre is None:
-            self._articoloPadre = ArticoloTagliaColore().getRecord()
+            self._articoloPadre = ArticoloTagliaColore()
         self._articoliTagliaColore = self._articoloBase.articoliTagliaColore
         self._noValue = 'n/a'
         self._varianti = {}
@@ -53,7 +53,7 @@ class GestioneTaglieColori(GladeWidget):
 
         # Colori attualmente presenti nella treeview
         colori = set(a.id_colore for a in self._articoliTagliaColore)
-        self._colori = [Colore(id= c).getRecord() for c in colori]
+        self._colori = [Colore().getRecord(id= c) for c in colori]
 
         # Dizionario che associa alla chiave (taglia,colore) l'id della variante
         for a in self._articoliTagliaColore:
@@ -77,7 +77,7 @@ class GestioneTaglieColori(GladeWidget):
         gruppo = None
         if id is None:
             id = 1 # Nessuna taglia
-        gruppo = GruppoTaglia(id=id).getRecord()
+        gruppo = GruppoTaglia().getRecord(id=id)
 
         self.gruppo_taglia_label.set_markup('<span weight="bold">%s</span>'
                                             % (gruppo.denominazione,))
@@ -377,7 +377,7 @@ class GestioneTaglieColori(GladeWidget):
                         continue
                     # La combinazione taglia/colore non esiste sul DB
 
-                    articolo = Articolo().getRecord()
+                    articolo = Articolo()
                     articolo.codice = articoloBase.codice + gruppoTaglia.denominazione_breve + taglia.denominazione_breve + colore.denominazione_breve
                     articolo.denominazione = articoloBase.denominazione + ' ' + taglia.denominazione + ' ' + colore.denominazione
                     articolo.id_aliquota_iva = articoloBase.id_aliquota_iva
@@ -407,12 +407,12 @@ class GestioneTaglieColori(GladeWidget):
                     articolo.aggiornamento_listino_auto = articoloBase.aggiornamento_listino_auto
                     articolo.persist()
 
-                    articoloTagliaColore = ArticoloTagliaColore().getRecord()
+                    articoloTagliaColore = ArticoloTagliaColore()
                     articoloTagliaColore.id_articolo = articolo.id
                     idVariante = articolo.id
                 else:
                     # La combinazione taglia/colore esiste gia'
-                    articoloTagliaColore = ArticoloTagliaColore(id=idVariante).getRecord()
+                    articoloTagliaColore = ArticoloTagliaColore().getRecord(id=idVariante)
 
                 articoloTagliaColore.id_articolo_padre = articoloPadre.id_articolo
                 articoloTagliaColore.id_gruppo_taglia = articoloPadre.id_gruppo_taglia
@@ -436,12 +436,12 @@ class GestioneTaglieColori(GladeWidget):
                         # Codice a barre non impostato, niente salvataggio
                         continue
 
-                    codice = CodiceABarreArticolo().getRecord()
+                    codice = CodiceABarreArticolo()
                     codice.codice = newCodice
                     codice.id_articolo = articoloTagliaColore.id_articolo
                     codice.primario = True
                 else:
-                    codice = CodiceABarreArticolo(id=codici[0].id).getRecord()
+                    codice = CodiceABarreArticolo().getRecord(id=codici[0].id)
                     if newCodice == self._noValue or newCodice.strip() == '':
                         # Codice a barre non impostato, rimozione
                         codice.delete()

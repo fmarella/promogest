@@ -74,12 +74,12 @@ class ProductFromCsv(object):
         elif self.codice_barre_articolo:
             daoCodiceABarre = CodiceABarreArticolo(isList=True).select(codiceEM=self.codice_barre_articolo)
             if daoCodiceABarre:
-                self.daoArticolo = Articolo(id=daoCodiceABarre[0].id_articolo).getRecord()
+                self.daoArticolo = Articolo().getRecord(id=daoCodiceABarre[0].id_articolo)
 
         elif self.codice_fornitore:
             daoFornitura =Fornitura(isList=True).select(codiceArticoloFornitoreEM=self.codice_fornitore)
             if len(daoFornitura) == 1:
-                self.daoArticolo = Articolo(id=daoFornitura[0].id_articolo).getRecord()
+                self.daoArticolo = Articolo().getRecord(id=daoFornitura[0].id_articolo)
         else:
             self.daoArticolo = None
         self.fillDaos()
@@ -87,7 +87,7 @@ class ProductFromCsv(object):
     def fillDaos(self):
         """fillDaos method fills all Dao related to daoArticolo"""
         if self.daoArticolo is None:
-            self.daoArticolo = Articolo().getRecord()
+            self.daoArticolo = Articolo()
         self.codice_articolo = str(self.codice_articolo)
         if self.codice_articolo is None or  self.codice_articolo == "None":
             self.codice_articolo = promogest.dao.Articolo.getNuovoCodiceArticolo()
@@ -101,7 +101,7 @@ class ProductFromCsv(object):
         id_famiglia = None
         if self.famiglia_articolo is None:
             self.famiglia_articolo_id = int(self.defaults['Famiglia'])
-            self.famiglia_articolo = FamigliaArticolo(id=self.famiglia_articolo_id).getRecord()
+            self.famiglia_articolo = FamigliaArticolo().getRecord(id=self.famiglia_articolo_id)
             id_famiglia = self.famiglia_articolo.id
 
         else:
@@ -122,7 +122,7 @@ class ProductFromCsv(object):
                             ind +=1
                     family_code = family_code+'/'+str(ind)
 
-                daoFamiglia = FamigliaArticolo().getRecord()
+                daoFamiglia = FamigliaArticolo()
                 daoFamiglia.codice = family_code
                 daoFamiglia.denominazione_breve = self.famiglia_articolo[:10]
                 daoFamiglia.denominazione = self.famiglia_articolo
@@ -136,7 +136,7 @@ class ProductFromCsv(object):
         id_categoria = None
         if self.categoria_articolo is None:
             self.categoria_articolo_id = self.defaults['Categoria']
-            self.categoria_articolo = CategoriaArticolo(id=self.categoria_articolo_id).getRecord()
+            self.categoria_articolo = CategoriaArticolo().getRecord(id=self.categoria_articolo_id)
             id_categoria = self.categoria_articolo.id
         else:
             self._categories = CategoriaArticolo(isList=True).select(batchSize=None)
@@ -154,7 +154,7 @@ class ProductFromCsv(object):
                         if category_short_name == category[:7]:
                             ind +=1
                     category_short_name = category_short_name+'/'+str(ind)
-                daoCategoria = CategoriaArticolo().getRecord()
+                daoCategoria = CategoriaArticolo()
                 daoCategoria.denominazione_breve = category_short_name
                 daoCategoria.denominazione = self.categoria_articolo
                 daoCategoria.persist()
@@ -167,7 +167,7 @@ class ProductFromCsv(object):
         id_aliquota_iva = None
         if self.aliquota_iva is None:
             self.aliquota_iva_id = self.defaults['Aliquota iva']
-            self.aliquota_iva = AliquotaIva(id=self.aliquota_iva_id).getRecord()
+            self.aliquota_iva = AliquotaIva().getRecord(id=self.aliquota_iva_id)
             id_aliquota_iva = self.aliquota_iva.id
         else:
             self._vats = AliquotaIva(isList=True).select(batchSize=None)
@@ -178,7 +178,7 @@ class ProductFromCsv(object):
                     break
             if id_aliquota_iva is None:
                 self.aliquota_iva = str(self.aliquota_iva).replace('%','')
-                daoAliquotaIva = AliquotaIva().getRecord()
+                daoAliquotaIva = AliquotaIva()
                 daoAliquotaIva.denominazione = 'ALIQUOTA '+ self.aliquota_iva +'%'
                 daoAliquotaIva.denominazione_breve = self.aliquota_iva + '%'
                 daoAliquotaIva.id_tipo = 1
@@ -195,7 +195,7 @@ class ProductFromCsv(object):
             self.unita_base_id = self.defaults['Unita base']
             #FIXME: promogest2 ----proviamo
             # La storedProcedure UnitaBaseGet NON esiste e la chiamta Dao qui sotto fallisce con un errore!!!
-            self.unita_base = UnitaBase(id=self.unita_base_id).getRecord()
+            self.unita_base = UnitaBase().getRecord(id=self.unita_base_id)
             id_unita_base = self.unita_base_id
         else:
             unis = UnitaBase(isList=True).select(batchSize=None)
@@ -231,12 +231,12 @@ class ProductFromCsv(object):
             barCode = CodiceABarreArticolo(isList=True).select(codiceEM=self.codice_barre_articolo,
                                                                                 batchSize=None)
             if len(barCode) > 0:
-                daoBarCode = CodiceABarreArticolo(id=barCode[0].id).getRecord()
+                daoBarCode = CodiceABarreArticolo().getRecord(id=barCode[0].id)
                 daoBarCode.id_articolo = product_id
                 daoBarCode.primario = True
                 daoBarCode.persist()
             else:
-                daoBarCode = CodiceABarreArticolo().getRecord()
+                daoBarCode = CodiceABarreArticolo()
                 daoBarCode.id_articolo = product_id
                 daoBarCode.codice = self.codice_barre_articolo
                 daoBarCode.primario = True
@@ -251,7 +251,7 @@ class ProductFromCsv(object):
                                                                     idArticolo=product_id,
                                                                     batchSize=None)[0]
             except:
-                daoPriceListProduct = ListinoArticolo().getRecord()
+                daoPriceListProduct = ListinoArticolo()
                 daoPriceListProduct.id_articolo = product_id
                 daoPriceListProduct.id_listino = self.price_list_id
                 daoPriceListProduct.data_listino_articolo = self.dataListino
@@ -278,8 +278,8 @@ class ProductFromCsv(object):
                 daoPriceListProduct.prezzo_ingrosso = 0
 
 
-            sconti_ingrosso = [ScontoVenditaIngrosso().getRecord(),]
-            sconti_dettaglio = [ScontoVenditaDettaglio().getRecord(),]
+            sconti_ingrosso = [ScontoVenditaIngrosso(),]
+            sconti_dettaglio = [ScontoVenditaDettaglio(),]
 
             if self.sconto_vendita_ingrosso is not None and str(self.sconto_vendita_ingrosso).strip() != "0" and str(self.sconto_vendita_ingrosso).strip() !="":
                 self.sconto_vendita_ingrosso = self.sanitizer(self.sconto_vendita_ingrosso)
@@ -332,7 +332,7 @@ class ProductFromCsv(object):
                                                     aDataPrezzo=self.dataListino,
                                                     batchSize=None)
         if len(daoFornitura) == 0:
-            daoFornitura = Fornitura().getRecord()
+            daoFornitura = Fornitura()
             daoFornitura.prezzo_netto = prezzo or 0
             daoFornitura.prezzo_lordo = prezzo or 0
             daoFornitura.id_fornitore = self.fornitore

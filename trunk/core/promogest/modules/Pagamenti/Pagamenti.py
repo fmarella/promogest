@@ -217,7 +217,7 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
         documento = self.getDocumentoCollegato(numerodocumento)
         if documento == False:
             return False
-        daoTestata = TestataDocumento(id=documento[0].id).getRecord()
+        daoTestata = TestataDocumento().getRecord(id=documento[0].id)
         tipo_documento = daoTestata.operazione
         totale_pagato = daoTestata.totale_pagato
         totale_sospeso = daoTestata.totale_sospeso
@@ -460,7 +460,7 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
         scadenze = []
 
         if self.anagrafica.data_acconto_entry.get_text() != "":
-            daoTestataDocumentoScadenza = TestataDocumentoScadenza().getRecord()
+            daoTestataDocumentoScadenza = TestataDocumentoScadenza()
             daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
             daoTestataDocumentoScadenza.data = stringToDate(self.anagrafica.data_acconto_entry.get_text())
             daoTestataDocumentoScadenza.importo = float(self.anagrafica.importo_acconto_scadenza_entry.get_text() or '0')
@@ -470,7 +470,7 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
             scadenze.append(daoTestataDocumentoScadenza)
         # Se c'e`, salviamo la prima scadenza
         if self.anagrafica.data_prima_scadenza_entry.get_text() != "":
-            daoTestataDocumentoScadenza = TestataDocumentoScadenza().getRecord()
+            daoTestataDocumentoScadenza = TestataDocumentoScadenza()
             daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
             daoTestataDocumentoScadenza.data = stringToDate(self.anagrafica.data_prima_scadenza_entry.get_text())
             daoTestataDocumentoScadenza.importo = float(self.anagrafica.importo_prima_scadenza_entry.get_text() or '0')
@@ -480,7 +480,7 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
             daoTestataDocumentoScadenza.numero_scadenza = "1"
             scadenze.append(daoTestataDocumentoScadenza)
             if self.anagrafica.data_seconda_scadenza_entry.get_text() != "":
-                daoTestataDocumentoScadenza = TestataDocumentoScadenza().getRecord()
+                daoTestataDocumentoScadenza = TestataDocumentoScadenza()
                 daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
                 daoTestataDocumentoScadenza.data = stringToDate(
                         self.anagrafica.data_seconda_scadenza_entry.get_text())
@@ -493,7 +493,7 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
                 daoTestataDocumentoScadenza.numero_scadenza = "2"
                 scadenze.append(daoTestataDocumentoScadenza)
                 if self.anagrafica.data_terza_scadenza_entry.get_text() != "":
-                    daoTestataDocumentoScadenza = TestataDocumentoScadenza().getRecord()
+                    daoTestataDocumentoScadenza = TestataDocumentoScadenza()
                     daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
                     daoTestataDocumentoScadenza.data = stringToDate(
                             self.anagrafica.data_terza_scadenza_entry.get_text())
@@ -506,7 +506,7 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
                     daoTestataDocumentoScadenza.numero_scadenza = "3"
                     scadenze.append(daoTestataDocumentoScadenza)
                     if self.anagrafica.data_quarta_scadenza_entry.get_text() != "":
-                        daoTestataDocumentoScadenza = TestataDocumentoScadenza().getRecord()
+                        daoTestataDocumentoScadenza = TestataDocumentoScadenza()
                         daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
                         daoTestataDocumentoScadenza.data = stringToDate(
                                 self.anagrafica.data_quarta_scadenza_entry.get_text())

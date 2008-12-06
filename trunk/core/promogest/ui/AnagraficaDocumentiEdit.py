@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -1022,13 +1022,13 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if dao is None:
             # Crea un nuovo Dao vuoto
             Environment.tagliacoloretempdata = (False,[])
-            self.dao = TestataDocumento().getRecord()
+            self.dao = TestataDocumento()
             # Suggerisce la data odierna
             self.dao.data_documento = datetime.datetime.today()
             self._oldDaoRicreato = False #il dao è nuovo il controllo sul nuovo codice è necessario
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = TestataDocumento(id=dao.id).getRecord()
+            self.dao = TestataDocumento().getRecord(id=dao.id)
             Environment.tagliacoloretempdata = (False,[])
             self._controllo_data_documento = dateToString(self.dao.data_documento)
             self._controllo_numero_documento = self.dao.numero
@@ -1141,7 +1141,7 @@ del documento.
         res = self.sconti_testata_widget.getSconti()
         if res is not None:
             for k in range(0, len(res)):
-                daoSconto = ScontoTestataDocumento().getRecord()
+                daoSconto = ScontoTestataDocumento()
                 daoSconto.valore = mN(res[k]["valore"])
                 daoSconto.tipo_sconto = res[k]["tipo"]
                 scontiSuTotale[self.dao]=daoSconto
@@ -1151,7 +1151,7 @@ del documento.
         scontiRigaDocumento={}
         righe = {}
         for i in range(1, len(self._righe)):
-            daoRiga = RigaDocumento().getRecord()
+            daoRiga = RigaDocumento()
             daoRiga.id_testata_documento = self.dao.id
             daoRiga.id_articolo = self._righe[i]["idArticolo"]
             daoRiga.id_magazzino = self._righe[i]["idMagazzino"]
@@ -1170,7 +1170,7 @@ del documento.
             listsco=[]
             if self._righe[i]["sconti"] is not None:
                 for scon in self._righe[i]["sconti"]:
-                    daoSconto = ScontoRigaDocumento().getRecord()
+                    daoSconto = ScontoRigaDocumento()
                     daoSconto.valore = mN(scon["valore"])
                     daoSconto.tipo_sconto = scon["tipo"]
                     sconti.append(daoSconto)
@@ -1179,7 +1179,7 @@ del documento.
 
             if self._righe[i]["altezza"] != '' and self._righe[i]["larghezza"] != '' and "SuMisura" in Environment.modulesList:
                 from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
-                daoMisura = MisuraPezzo().getRecord()
+                daoMisura = MisuraPezzo()
                 daoMisura.altezza = float(self._righe[i]["altezza"] or 0)
                 daoMisura.larghezza = float(self._righe[i]["larghezza"] or 0)
                 daoMisura.moltiplicatore = float(self._righe[i]["molt_pezzi"] or 0)
@@ -1198,7 +1198,7 @@ del documento.
             self.Pagamenti.saveScadenze()
 
         tipoid = findIdFromCombobox(self.id_operazione_combobox)
-        tipo = Operazione(id=tipoid).getRecord()
+        tipo = Operazione().getRecord(id=tipoid)
         if not self.dao.numero:
             valori = numeroRegistroGet(tipo=tipo.denominazione, date=self.data_documento_entry.get_text())
             self.dao.numero = valori[0]
@@ -1533,6 +1533,7 @@ del documento.
         elif self.ricerca_codice_articolo_fornitore_button.get_active():
             codiceArticoloFornitore = self.articolo_entry.get_text()
             orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
+
         arts = Articolo(isList=True).select(orderBy=orderBy,
                                              denominazione=prepareFilterString(denominazione),
                                              codice=prepareFilterString(codice),

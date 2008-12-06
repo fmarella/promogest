@@ -110,7 +110,7 @@ class AnagraficaImballaggiDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = Imballaggio().getRecord()
+            self.dao = Imballaggio()
             #self.dao = self.imb.record
             self._anagrafica._newRow((self.dao, ''))
             self._refresh()
@@ -119,7 +119,7 @@ class AnagraficaImballaggiDetail(AnagraficaDetail):
 
 
     def updateDao(self):
-        self.dao = Imballaggio(id=self.dao.id).getRecord()
+        self.dao = Imballaggio().getRecord(id=self.dao.id)
         #self.dao = self.imb.record
         self._refresh()
 

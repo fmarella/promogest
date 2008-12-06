@@ -204,7 +204,7 @@ class AnagraficaBancheDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = Banca().getRecord()
+            self.dao = Banca()
             self._anagrafica._newRow((self.dao, '', '', '', '', '', '', ''))
             self._refresh()
         else:
@@ -212,7 +212,7 @@ class AnagraficaBancheDetail(AnagraficaDetail):
 
 
     def updateDao(self):
-        self.dao = Banca(id= self.dao.id).getRecord()
+        self.dao = Banca().getRecord(id= self.dao.id)
         self._refresh()
 
 

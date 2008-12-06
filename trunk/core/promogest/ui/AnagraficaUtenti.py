@@ -174,11 +174,11 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = User().getRecord()
+            self.dao = User()
             self.aggiornamento = False
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = User(id=dao.id).getRecord()
+            self.dao = User().getRecord(id=dao.id)
             self.aggiornamento=True
         self._refresh()
 

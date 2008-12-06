@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest
@@ -18,8 +18,8 @@ from ContattoCategoriaContatto import ContattoCategoriaContatto
 
 class ContattoFornitore(Dao):
 
-    def __init__(self, arg=None,isList=False, id=None):
-        Dao.__init__(self, entity=self.__class__, isList=isList, id=id, orderBy='cognome, nome',)
+    def __init__(self, arg=None,isList=False):
+        Dao.__init__(self, entity=self.__class__, isList=isList, orderBy='cognome, nome',)
 
 
     def _getRecapitiContatto(self):

@@ -65,7 +65,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
     _quantita_minima = ''
     artiDict = {}
     if id is not None:
-        daoArticolo = Articolo(id=id).getRecord()
+        daoArticolo = Articolo().getRecord(id=id)
         variantiList = []
         if "PromoWear" in Environment.modulesList:
             if articleType(daoArticolo)=="father":
@@ -90,11 +90,11 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
             _idUnitaBase = daoArticolo.id_unita_base
             _quantita_minima = ''
             if _idUnitaBase is not None:
-                res = UnitaBase(id =_idUnitaBase).getRecord()
+                res = UnitaBase().getRecord(id =_idUnitaBase)
                 if res is not None:
                     _unitaBase = res.denominazione
             if daoArticolo.id_aliquota_iva is not None:
-                daoAliquotaIva = AliquotaIva(id=daoArticolo.id_aliquota_iva).getRecord()
+                daoAliquotaIva = AliquotaIva().getRecord(id=daoArticolo.id_aliquota_iva)
                 if daoAliquotaIva is not None:
                     _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
                     _percentualeAliquotaIva = daoAliquotaIva.percentuale or 0
@@ -125,7 +125,7 @@ def leggiCliente(id):
     _id_banca = None
     _email = None
     if id is not None:
-        daoCliente = Cliente(id=id).getRecord()
+        daoCliente = Cliente().getRecord(id=id)
         if daoCliente is not None:
             try:
                 for i in range(0,len(daoCliente.recapiti)):
@@ -168,7 +168,7 @@ def leggiDestinazioneMerce(id):
     _email = ""
 
     if id is not None:
-        daoDestinazioneMerce = DestinazioneMerce(id=id).getRecord()
+        daoDestinazioneMerce = DestinazioneMerce().getRecord(id=id)
         if daoDestinazioneMerce is not None:
             _id = id
             _denominazione = daoDestinazioneMerce.denominazione or ''
@@ -199,7 +199,7 @@ def leggiFornitore(id):
     _email = None
 
     if id is not None:
-        daoFornitore = Fornitore(id=id).getRecord()
+        daoFornitore = Fornitore().getRecord(id=id)
         if daoFornitore is not None:
             try:
                 for i in range(0,len(daoFornitore.recapiti)):
@@ -233,7 +233,7 @@ def leggiVettore(id):
     _ragioneSociale = ''
 
     if id is not None:
-        daoVettore = Vettore(id=id).getRecord()
+        daoVettore = Vettore().getRecord(id=id)
         if daoVettore is not None:
             _id = id
             _ragioneSociale = daoVettore.ragione_sociale or ''
@@ -251,7 +251,7 @@ def leggiDestinazioneMerce(id):
     _denominazione = ''
 
     if id is not None:
-        daoDestinazioneMerce = DestinazioneMerce(id=id).getRecord()
+        daoDestinazioneMerce = DestinazioneMerce().getRecord(id=id)
         if daoDestinazioneMerce is not None:
             _id = id
             _denominazione = daoDestinazioneMerce.denominazione or ''
@@ -271,7 +271,7 @@ def leggiContatto(id):
     _email = ''
 
     if id is not None:
-        daoContatto = Contatto(id=id).getRecord()
+        daoContatto = Contatto().getRecord(id=id)
         if daoContatto is not None:
             try:
                 for i in range(0,len(daoContatto.recapiti)):
@@ -302,7 +302,7 @@ def leggiMagazzino(id):
     _email = None
 
     if id is not None:
-        daoMagazzino = Magazzino(id=id).getRecord()
+        daoMagazzino = Magazzino().getRecord(id=id)
         if daoMagazzino is not None:
             try:
                 for i in range(0,len(daoMagazzino.recapiti)):
@@ -462,7 +462,7 @@ def leggiMultiplo(idMultiplo):
     _moltiplicatore = 0
 
     if idMultiplo is not None:
-        daoMultiplo = Multiplo(id=idMultiplo).getRecord()
+        daoMultiplo = Multiplo().getRecord(id=idMultiplo)
         if daoMultiplo is not None:
             _denominazioneBreve = daoMultiplo.denominazione_breve
             _denominazione = daoMultiplo.denominazione
@@ -482,7 +482,7 @@ def leggiAzienda(schema):
     _denominazione = ''
 
     if schema is not None:
-        daoAzienda = Azienda(id=schema).getRecord()
+        daoAzienda = Azienda().getRecord(id=schema)
         if daoAzienda is not None:
             _schema = schema
             _denominazione = daoAzienda.denominazione or ''
@@ -503,7 +503,7 @@ def leggiAgente(id):
     _email = None
 
     if id is not None:
-        daoAgente = Agente(id=id).getRecord()
+        daoAgente = Agente().getRecord(id=id)
         if daoAgente is not None:
             try:
                 for i in range(0,len(daoAgente.recapiti)):
@@ -1856,7 +1856,7 @@ def numeroRegistroGet(tipo=None, date=None):
     #datepart= string.split(date, "/")
 
     _key= str(tipo+".registro").strip()
-    registro = Setting(id=_key).getRecord()
+    registro = Setting().getRecord(id=_key)
     if not registro :
         raise "ATTENZIONE , Registro numerazione non trovato"
 

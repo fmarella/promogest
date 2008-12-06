@@ -18,15 +18,12 @@ from promogest.dao.Listino import Listino
 from promogest.dao.Multiplo import Multiplo
 
 
-riga_mov=Table('riga_movimento',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
+riga_mov=Table('riga_movimento', params['metadata'], schema = params['schema'], autoload=True)
 
 class RigaMovimento(Dao):
 
-    def __init__(self, arg=None,isList=False, id=None):
-        Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
+    def __init__(self, arg=None,isList=False):
+        Dao.__init__(self, entity=self.__class__, isList=isList)
 
     def __magazzino(self):
         a =  params["session"].query(Magazzino).with_parent(self).filter(RigaMovimento.id_magazzino==Magazzino.c.id).all()

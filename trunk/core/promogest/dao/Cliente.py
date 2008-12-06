@@ -21,8 +21,8 @@ from promogest.ui.utils import  codeIncrement
 
 class Cliente(Dao):
 
-    def __init__(self, arg=None,isList=False, id=None):
-        Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
+    def __init__(self, arg=None,isList=False):
+        Dao.__init__(self, entity=self.__class__, isList=isList)
 
     def _getCategorieCliente(self):
         self.__dbCategorieCliente = ClienteCategoriaCliente(isList=True)\

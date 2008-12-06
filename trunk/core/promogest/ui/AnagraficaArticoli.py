@@ -52,7 +52,7 @@ class AnagraficaArticoli(Anagrafica):
             response = dialog.run()
             dialog.destroy()
             if response == gtk.RESPONSE_YES:
-                daoArticolo = Articolo(id= dao.id).getRecord()
+                daoArticolo = Articolo().getRecord(id= dao.id)
                 daoArticolo.cancellato = False
                 daoArticolo.persist()
 
@@ -70,7 +70,7 @@ class AnagraficaArticoli(Anagrafica):
             return
 
         self.editElement._duplicatedDaoId = dao.id
-        self.editElement.dao = Articolo().getRecord()
+        self.editElement.dao = Articolo()
 
         if "PromoWear" in Environment.modulesList:
                 # le varianti non si possono duplicare !!!

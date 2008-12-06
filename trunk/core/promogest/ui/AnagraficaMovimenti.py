@@ -886,12 +886,12 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = TestataMovimento().getRecord()
+            self.dao = TestataMovimento()
             # Suggerisce la data odierna
             self.dao.data_movimento = datetime.datetime.today()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = TestataMovimento(id=dao.id).getRecord()
+            self.dao = TestataMovimento().getRecord(id=dao.id)
         self._refresh()
 
 
@@ -927,7 +927,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         scontiRigheMovimento= {}
         righe = []
         for i in range(1, len(self._righe)):
-            daoRiga = RigaMovimento().getRecord()
+            daoRiga = RigaMovimento()
             daoRiga.id_testata_movimento = self.dao.id
             daoRiga.id_articolo = self._righe[i]["idArticolo"]
             daoRiga.id_magazzino = self._righe[i]["idMagazzino"]
@@ -945,7 +945,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             sconti = []
             if self._righe[i]["sconti"] is not None:
                 for j in range(0, len(self._righe[i]["sconti"])):
-                    daoSconto = ScontoRigaMovimento().getRecord()
+                    daoSconto = ScontoRigaMovimento()
                     daoSconto.valore = float(self._righe[i]["sconti"][j]["valore"])
                     daoSconto.tipo_sconto = self._righe[i]["sconti"][j]["tipo"]
                     sconti.append(daoSconto)
@@ -1477,7 +1477,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             #argList = []
             #Environment.connection._cursor.execute(queryString, argList)
             #res = Environment.connection._cursor.fetchall()
-            res = TestataDocumento(id = self.dao.id_testata_documento).getRecord()
+            res = TestataDocumento().getRecord(id = self.dao.id_testata_documento)
             if res:
                 stringLabel = 'N.' + str(res.numero) + ' del ' + dateToString(res.data_documento)
 

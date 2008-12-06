@@ -155,14 +155,14 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
         for gruppoTagliaTaglia in gruppiTaglieTaglie:
             if gruppoTagliaTaglia.id_gruppo_taglia not in gruppiTaglie:
                 gruppiTaglie.add(gruppoTagliaTaglia.id_gruppo_taglia)
-                gruppoTaglia = GruppoTaglia(id =gruppoTagliaTaglia.id_gruppo_taglia).getRecord()
+                gruppoTaglia = GruppoTaglia().getRecord(id =gruppoTagliaTaglia.id_gruppo_taglia)
                 parentNode = self._treeViewModel.append(None,
                                                         (gruppoTaglia,
                                                          gruppoTaglia.denominazione,
                                                          gruppoTaglia.denominazione_breve,
                                                          None))
                 parentNodes[gruppoTagliaTaglia.id_gruppo_taglia] = parentNode
-            taglia = Taglia(id=gruppoTagliaTaglia.id_taglia).getRecord()
+            taglia = Taglia().getRecord(id=gruppoTagliaTaglia.id_taglia)
             node = self._treeViewModel.append(parentNodes[gruppoTagliaTaglia.id_gruppo_taglia],
                                               (gruppoTagliaTaglia,
                                                taglia.denominazione,
@@ -181,7 +181,7 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
         c = model.get_value(iter, 0)
         found = False;
         if isinstance(c, GruppoTagliaTaglia):
-            taglia = Taglia(id= c.id_taglia).getRecord()
+            taglia = Taglia().getRecord(id= c.id_taglia)
             found = denominazione.upper() in taglia.denominazione.upper()
         elif isinstance(c, GruppoTaglia):
             found = denominazione.upper() in c.denominazione.upper()
@@ -236,19 +236,19 @@ class AnagraficaTaglieEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = GruppoTagliaTaglia().getRecord()
+            self.dao = GruppoTagliaTaglia()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = GruppoTagliaTaglia(id=[dao.id_gruppo_taglia, dao.id_taglia]).getRecord()
+            self.dao = GruppoTagliaTaglia().getRecord(id=[dao.id_gruppo_taglia, dao.id_taglia])
         self.taglia = None
         self._refresh()
 
 
     def _refresh(self):
         if self.dao.id_taglia is not None:
-            self.taglia = Taglia(id= self.dao.id_taglia).getRecord()
+            self.taglia = Taglia().getRecord(id= self.dao.id_taglia)
         else:
-            self.taglia = Taglia().getRecord()
+            self.taglia = Taglia()
         self.denominazione_entry.set_text(self.taglia.denominazione or '')
         self.denominazione_breve_entry.set_text(self.taglia.denominazione_breve or '')
         fillComboboxGruppiTaglia(self.gruppo_taglia_combobox)

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -36,8 +36,8 @@ from promogest.ui.utilsCombobox import *
 
 class TestataDocumento(Dao):
 
-    def __init__(self, arg=None,isList=False, id=None):
-        Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
+    def __init__(self, arg=None,isList=False):
+        Dao.__init__(self, entity=self.__class__, isList=isList)
 
         self.__righeDocumento = None
         self.__operazione = None
@@ -342,7 +342,7 @@ class TestataDocumento(Dao):
             if contieneMovimentazione:
                 #print "SIAMO DENTRO QUESTO IF, CREO UNA NUOVA TESTATA MOVIMENTO", contieneMovimentazione
                 #creo una nuova testata movimento
-                DaoTestataMovimento = TestataMovimento().getRecord()
+                DaoTestataMovimento = TestataMovimento()
                 DaoTestataMovimento.data_movimento = self.data_documento
                 if not DaoTestataMovimento.numero:
                     valori = numeroRegistroGet(tipo="Movimento", date=self.data_documento)
@@ -356,7 +356,7 @@ class TestataDocumento(Dao):
                 DaoTestataMovimento.id_testata_documento = self.id
         elif len(res) == 1:
             #print "RES È UGUALE AD UNO.... ESITE UN MOVIMENTO"
-            DaoTestataMovimento = TestataMovimento(id=res[0].id).getRecord()
+            DaoTestataMovimento = TestataMovimento().getRecord(id=res[0].id)
             if not contieneMovimentazione:
                 #devo eliminare il movimento interamente, visto che non ci sono righe movimento
                 DaoTestataMovimento.delete()
@@ -385,7 +385,7 @@ class TestataDocumento(Dao):
                 if (row.id_articolo is not None and contieneMovimentazione):
                     #salvo tra le righe movimenti
                     lista =[]
-                    daoRigaMovimento = RigaMovimento().getRecord()
+                    daoRigaMovimento = RigaMovimento()
                     daoRigaMovimento.id_testata_movimento = DaoTestataMovimento.id
                     daoRigaMovimento.valore_unitario_netto = row.valore_unitario_netto
                     daoRigaMovimento.valore_unitario_lordo = row.valore_unitario_lordo
@@ -414,7 +414,7 @@ class TestataDocumento(Dao):
                         for key, value in scontiRigaDocumento.items():
                             if key==row:
                                 for v in value:
-                                    daoScontoMovimento = ScontoRigaMovimento().getRecord()
+                                    daoScontoMovimento = ScontoRigaMovimento()
                                     daoScontoMovimento.valore = v.valore
                                     daoScontoMovimento.tipo_sconto = v.tipo_sconto
                                     params["session"].add(daoScontoMovimento)
@@ -459,7 +459,7 @@ class TestataDocumento(Dao):
                 #annullamento id dello sconto
                 row._resetId()
                 #associazione allo sconto della testata
-                #ScontoTestataDocumento().getRecord()
+                #ScontoTestataDocumento()
                 row.id_testata_documento = self.id
                 #salvataggio sconto
                 row.persist()

@@ -18,8 +18,8 @@ from ContattoCategoriaContatto import ContattoCategoriaContatto
 
 class ContattoCliente(Dao):
 
-    def __init__(self, arg=None,isList=False, id=None):
-        Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
+    def __init__(self, arg=None,isList=False):
+        Dao.__init__(self, entity=self.__class__, isList=isList)
 
     def _getRecapitiContatto(self):
         self.__dbRecapitiContatto = RecapitoContatto(isList=True).select(id=self.id)

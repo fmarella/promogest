@@ -71,7 +71,7 @@ class DuplicazioneDocumento(GladeWidget):
 
         note = "Rif. " + self.dao.operazione + " n. " + str(self.dao.numero) + " del " + dateToString(self.dao.data_documento)
 
-        newDao = TestataDocumento().getRecord()
+        newDao = TestataDocumento()
         newDao.data_documento = stringToDate(self.data_documento_entry.get_text())
         newDao.operazione = findIdFromCombobox(self.id_operazione_combobox)
         newDao.id_cliente = self.dao.id_cliente
@@ -100,14 +100,14 @@ class DuplicazioneDocumento(GladeWidget):
         scontiSuTotale={}
         righeDocumento={}
         for s in sco:
-            daoSconto = ScontoTestataDocumento().getRecord()
+            daoSconto = ScontoTestataDocumento()
             daoSconto.valore = s.valore
             daoSconto.tipo_sconto = s.tipo_sconto
             scontiSuTotale[s] = daoSconto
         righe = []
         rig = self.dao.righe
         for r in rig:
-            daoRiga = RigaDocumento().getRecord()
+            daoRiga = RigaDocumento()
             daoRiga.id_testata_documento = newDao.id
             daoRiga.id_articolo = r.id_articolo
             daoRiga.id_magazzino = r.id_magazzino
@@ -124,7 +124,7 @@ class DuplicazioneDocumento(GladeWidget):
             sconti = []
             sco = r.sconti
             for s in sco:
-                daoSconto = ScontoRigaDocumento().getRecord()
+                daoSconto = ScontoRigaDocumento()
                 daoSconto.valore = s.valore
                 daoSconto.tipo_sconto = s.tipo_sconto
                 scontiRigaDocumento[s] = daoSconto
@@ -133,7 +133,7 @@ class DuplicazioneDocumento(GladeWidget):
         if Environment.conf.hasPagamenti == True:
             scad = self.dao.scadenze
             for s in scad:
-                daoTestataDocumentoScadenza = TestataDocumentoScadenza().getRecord()
+                daoTestataDocumentoScadenza = TestataDocumentoScadenza()
                 daoTestataDocumentoScadenza.id_testata_documento = newDao.id
                 daoTestataDocumentoScadenza.data = s.data
                 daoTestataDocumentoScadenza.importo = s.importo
@@ -155,7 +155,7 @@ class DuplicazioneDocumento(GladeWidget):
         scadenze = []
         scad = self.dao.scadenze
         for s in scad:
-            daoTestataDocumentoScadenza = TestataDocumentoScadenza().getRecord()
+            daoTestataDocumentoScadenza = TestataDocumentoScadenza()
             daoTestataDocumentoScadenza.id_testata_documento = newDao.id
             daoTestataDocumentoScadenza.data = s.data
             daoTestataDocumentoScadenza.importo = s.importo
@@ -165,14 +165,14 @@ class DuplicazioneDocumento(GladeWidget):
             scadenze.append(daoTestataDocumentoScadenza)
         newDao.scadenze = scadenze
         tipoid = findIdFromCombobox(self.id_operazione_combobox)
-        tipo = Operazione(id=tipoid).getRecord()
+        tipo = Operazione().getRecord(id=tipoid)
         if not newDao.numero:
             valori = numeroRegistroGet(tipo=tipo.denominazione, date=self.data_documento_entry.get_text())
             newDao.numero = valori[0]
             newDao.registro_numerazione= valori[1]
         newDao.persist(righe=righeDocumento, scontiSuTotale=scontiSuTotale, scontiRigaDocumento=scontiRigaDocumento)
 
-        res = TestataDocumento(id=newDao.id).getRecord()
+        res = TestataDocumento().getRecord(id=newDao.id)
 
         msg = "Nuovo documento creato !\n\nIl nuovo documento e' il n. " + str(res.numero) + " del " + dateToString(res.data_documento) + " (" + newDao.operazione + ")"
         dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,

@@ -31,7 +31,7 @@ class ArticoloTagliaColore(Dao):
         """ Restituisce il Dao GruppoTaglia collegato al Dao ArticoloTagliaColore """
         if self.id_gruppo_taglia is None:
             return None
-        return GruppoTaglia(id=self.id_gruppo_taglia).getRecord()
+        return GruppoTaglia().getRecord(id=self.id_gruppo_taglia)
 
     gruppoTaglia = property(_getGruppoTaglia)
 
@@ -47,7 +47,7 @@ class ArticoloTagliaColore(Dao):
         """ Restituisce il Dao Colore collegato al Dao ArticoloTagliaColore """
         if self.id_colore is None:
             return None
-        return Colore(id=self.id_colore).getRecord()
+        return Colore().getRecord(id=self.id_colore)
     colore = property(_getColore)
 
     def articoloPadre(self):
@@ -57,7 +57,7 @@ class ArticoloTagliaColore(Dao):
         if self.id_articolo_padre is None:
             return None
         from promogest.dao.Articolo import Articolo
-        return Articolo(id=self.id_articolo_padre).getRecord()
+        return Articolo().getRecord(id=self.id_articolo_padre)
 
     def articolo(self):
         """ Restituisce il Dao Articolo collegato al Dao ArticoloTagliaColore """
@@ -66,7 +66,7 @@ class ArticoloTagliaColore(Dao):
         if self.id_articolo is None:
             return None
         from promogest.dao.Articolo import Articolo
-        return Articolo(id=self.id_articolo).getRecord()
+        return Articolo().getRecord(id=self.id_articolo)
 
     def _denominazione_breve_gruppo_taglia(self):
         """ esempio di funzione  unita alla property """

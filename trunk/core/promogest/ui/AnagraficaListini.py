@@ -222,7 +222,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = Listino().getRecord()
+            self.dao = Listino()
 
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
@@ -295,7 +295,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             if c[3] == 'deleted':
                 pass
             else:
-                daoListinoCategoriaCliente = ListinoCategoriaCliente().getRecord()
+                daoListinoCategoriaCliente = ListinoCategoriaCliente()
                 daoListinoCategoriaCliente.id_listino = self.dao.id
                 daoListinoCategoriaCliente.id_categoria_cliente = c[0]
                 daoListinoCategoriaCliente.persist()
@@ -310,7 +310,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             if m[3] == 'deleted':
                 pass
             else:
-                daoListinoMagazzino = ListinoMagazzino().getRecord()
+                daoListinoMagazzino = ListinoMagazzino()
                 daoListinoMagazzino.id_listino = self.dao.id
                 daoListinoMagazzino.id_magazzino = m[0]
                 daoListinoMagazzino.persist()

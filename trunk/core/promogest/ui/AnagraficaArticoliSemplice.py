@@ -35,7 +35,7 @@ class AnagraficaArticoliSemplice(GladeWidget):
         self._codiceByFamiglia = promogest.dao.Articolo.isNuovoCodiceByFamiglia()
 
         # Crea un nuovo Dao vuoto
-        self.daoArticolo = Articolo().getRecord()
+        self.daoArticolo = Articolo()
         self.daoCodiceABarreArticolo = None
         self.daoListinoArticolo = None
 
@@ -174,7 +174,7 @@ class AnagraficaArticoliSemplice(GladeWidget):
             self.daoArticolo.persist()
 
             if self.codice_a_barre_entry.get_text() != '':
-                self.daoCodiceABarreArticolo = CodiceABarreArticolo().getRecord()
+                self.daoCodiceABarreArticolo = CodiceABarreArticolo()
                 self.daoCodiceABarreArticolo.codice = self.codice_a_barre_entry.get_text()
                 self.daoCodiceABarreArticolo.id_articolo = self.daoArticolo.id
                 self.daoCodiceABarreArticolo.primario = True
@@ -193,7 +193,7 @@ class AnagraficaArticoliSemplice(GladeWidget):
                     prezzoIngrosso = float(0)
 
                 if prezzoDettaglio > 0 or prezzoIngrosso > 0:
-                    self.daoListinoArticolo = ListinoArticolo().getRecord()
+                    self.daoListinoArticolo = ListinoArticolo()
                     self.daoListinoArticolo.id_listino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
                     self.daoListinoArticolo.id_articolo = self.daoArticolo.id
                     self.daoListinoArticolo.prezzo_dettaglio = prezzoDettaglio

@@ -44,7 +44,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         textStatusBar = "     *****   PromoGest2 - Vendita Dettaglio - by PromoTUX Informatica - 800 034561 - www.PromoTUX.it - info@PromoTUX.it  *****     "
         context_id =  self.vendita_dettaglio_statusbar.get_context_id("vendita_dettaglio_window")
         self.vendita_dettaglio_statusbar.push(context_id,textStatusBar)
-        azienda = Azienda(id=Environment.params["schema"]).getRecord()
+        azienda = Azienda().getRecord(id=Environment.params["schema"])
         self.logo_articolo.set_from_file(azienda.percorso_immagine)
         self.createPopupMenu()
         self.draw()
@@ -381,7 +381,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = ListinoArticolo().getRecord()
+            self.dao = ListinoArticolo()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = ListinoArticolo(isList=True).select(idListino=dao.id_listino,
@@ -462,7 +462,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.confirm_button.set_sensitive(True)
         self.rhesus_button.set_sensitive(True)
         self.annulling_button.set_sensitive(True)
-        listino = ListinoArticolo().getRecord()
+        listino = ListinoArticolo()
         self.art = leggiArticolo(idArticolo)
         if listino.ultimo_costo is None:
             self.fornitura = leggiFornitura(idArticolo)
@@ -794,7 +794,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             return
 
         # Creo dao testata_scontrino
-        dao = TestataScontrino().getRecord()
+        dao = TestataScontrino()
 
         dao.totale_scontrino = totale_scontrino
         totale_contanti = 0
@@ -828,7 +828,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             quantita = Decimal(row[8])
 
             # Nuova riga
-            daoRiga = RigaScontrino().getRecord()
+            daoRiga = RigaScontrino()
             daoRiga.id_testata_scontrino = dao.id
             daoRiga.id_articolo = idArticolo
             daoRiga.descrizione = descrizione
@@ -837,7 +837,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             daoRiga.quantita = quantita
             listarighesconto = []
             if valoreSconto > 0:
-                daoScontoRigaScontrino = ScontoRigaScontrino().getRecord()
+                daoScontoRigaScontrino = ScontoRigaScontrino()
                 daoScontoRigaScontrino.valore = valoreSconto
                 if tipoSconto == self._simboloPercentuale:
                     daoScontoRigaScontrino.tipo_sconto = 'percentuale'
@@ -914,7 +914,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                                           batchSize = None)
 
         # Creo nuovo movimento
-        daoMovimento = TestataMovimento().getRecord()
+        daoMovimento = TestataMovimento()
         daoMovimento.operazione = Environment.conf.VenditaDettaglio.operazione
         daoMovimento.data_movimento = datefirst
         daoMovimento.note_interne = 'Movimento chiusura fiscale'
@@ -924,11 +924,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         for scontrino in scontrini:
             for riga in scontrino.righe:
                 # Istanzio articolo
-                art = Articolo(id=riga.id_articolo).getRecord()
+                art = Articolo().getRecord(id=riga.id_articolo)
                 # Cerco IVA
-                iva = AliquotaIva(id=art.id_aliquota_iva).getRecord()
+                iva = AliquotaIva().getRecord(id=art.id_aliquota_iva)
 
-                daoRiga = RigaMovimento().getRecord()
+                daoRiga = RigaMovimento()
                 daoRiga.valore_unitario_lordo = riga.prezzo
                 daoRiga.valore_unitario_netto = riga.prezzo_scontato
                 daoRiga.quantita = riga.quantita
@@ -940,7 +940,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 sconti = []
                 if riga.sconti:
                     for s in riga.sconti:
-                        daoScontoRigaMovimento = ScontoRigaMovimento().getRecord()
+                        daoScontoRigaMovimento = ScontoRigaMovimento()
                         daoScontoRigaMovimento.valore = s.valore
                         daoScontoRigaMovimento.tipo_sconto = s.tipo_sconto
                         sconti.append(daoScontoRigaMovimento)
@@ -953,7 +953,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         #daoMovimento.update()
 
         # Creo nuova chiusura
-        daoChiusura = ChiusuraFiscale().getRecord()
+        daoChiusura = ChiusuraFiscale()
         daoChiusura.data_chiusura = datefirst
         daoChiusura.persist()
         #daoChiusura.update()
@@ -1002,7 +1002,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         if daoMovimento is not None:
             # Associo movimento agli scontrini
             for scontrino in scontrini:
-                daoScontrino = TestataScontrino(id=scontrino.id).getRecord()
+                daoScontrino = TestataScontrino().getRecord(id=scontrino.id)
                 daoScontrino.id_testata_movimento = daoMovimento.id
                 daoScontrino.persist(chiusura= True)
 
@@ -1345,7 +1345,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         if not(len(self.idRhesusSource) > 0):
             return
 
-        ts = TestataScontrino(id=self.idRhesusSource[0]).getRecord()
+        ts = TestataScontrino().getRecord(id=self.idRhesusSource[0])
         for r in ts.righe:
             idArticolo = r.id_articolo
             codiceArticolo = r.codice_articolo or ''

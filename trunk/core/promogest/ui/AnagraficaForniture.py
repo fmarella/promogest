@@ -373,10 +373,10 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = Fornitura().getRecord()
+            self.dao = Fornitura()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Fornitura(id=dao.id).getRecord()
+            self.dao = Fornitura().getRecord(id=dao.id)
         self._refresh()
 
 
@@ -420,7 +420,7 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
             self._refreshTagliaColore(self.dao.id_articolo)
 
     def _refreshTagliaColore(self, idArticolo):
-        articoloTagliaColore = Articolo(id=idArticolo).getRecord()
+        articoloTagliaColore = Articolo().getRecord(id=idArticolo)
         self.taglia_colore_table.hide()
         if articoloTagliaColore is not None:
             gruppoTaglia = articoloTagliaColore.denominazione_gruppo_taglia or ''
@@ -488,7 +488,7 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         sconti = []
         self.dao.applicazione_sconti = self.sconti_widget.getApplicazione()
         for s in self.sconti_widget.getSconti():
-            daoSconto = ScontoFornitura().getRecord()
+            daoSconto = ScontoFornitura()
             daoSconto.id_fornitura = self.dao.id
             daoSconto.valore = s["valore"]
             daoSconto.tipo_sconto = s["tipo"]

@@ -18,8 +18,8 @@ from Fornitura import Fornitura
 
 class TestataNoleggio(Dao):
 
-    def __init__(self, arg=None,isList=False, id=None):
-        Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
+    def __init__(self, arg=None,isList=False):
+        Dao.__init__(self, entity=self.__class__, isList=isList)
 
 
     def _getRigheNoleggio(self):
@@ -140,7 +140,7 @@ class TestataNoleggio(Dao):
                     #daoFornitura.applicazione_sconti = riga.applicazione_sconti
                     sconti = []
                     for s in riga.sconti:
-                        daoSconto = ScontoFornitura().getRecord()
+                        daoSconto = ScontoFornitura()
                         daoSconto.id_fornitura = daoFornitura.id
                         daoSconto.valore = s.valore
                         daoSconto.tipo_sconto = s.tipo_sconto

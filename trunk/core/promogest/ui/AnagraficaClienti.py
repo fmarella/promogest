@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest
@@ -318,12 +318,12 @@ class AnagraficaClientiEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = Cliente().getRecord()
+            self.dao = Cliente()
             self.dao.codice = promogest.dao.Cliente.getNuovoCodiceCliente()
             self._oldDaoRicreato = False
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Cliente(id=dao.id).getRecord()
+            self.dao = Cliente().getRecord(id=dao.id)
             self._oldDaoRicreato = True
         self._refresh()
 
@@ -449,7 +449,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             if c[3] == 'deleted':
                 pass
             else:
-                daoClienteCategoriaCliente = ClienteCategoriaCliente().getRecord()
+                daoClienteCategoriaCliente = ClienteCategoriaCliente()
                 daoClienteCategoriaCliente.id_cliente = self.dao.id
                 daoClienteCategoriaCliente.id_categoria_cliente = c[0]
                 daoClienteCategoriaCliente.persist()

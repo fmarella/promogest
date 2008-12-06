@@ -158,7 +158,7 @@ class Articolo(Dao):
         #from promogest.modules.PromoWear.dao.ArticoloTagliaColore import select
         articoli = []
         try:
-            articolo_relato = ArticoloTagliaColore(id=self.id).getRecord()
+            articolo_relato = ArticoloTagliaColore().getRecord(id=self.id)
             if not articolo_relato.id_articolo_padre:
                 articoli = ArticoloTagliaColore(isList=True).select(idArticoloPadre=articolo_relato.id_articolo,
                                                                     idGruppoTaglia=idGruppoTaglia,
@@ -184,7 +184,7 @@ class Articolo(Dao):
         """ Restituisce una lista di Dao Articolo Varianti """
         articoli = []
         for art in self.getArticoliTagliaColore():
-            articoli.append(Articolo(id=art.id_articolo).getRecord())
+            articoli.append(Articolo().getRecord(id=art.id_articolo))
         return articoli
     articoliVarianti = property(getArticoliVarianti)
 
@@ -193,7 +193,7 @@ class Articolo(Dao):
         """ Restituisce una lista di Dao Taglia relativi alle taglie di tutti i Dao
             ArticoloTagliaColore figli del Dao Articolo  """
         idTaglie = set(a.id_taglia for a in self.articoliTagliaColore)
-        return [Taglia(id=idt).getRecord() for idt in idTaglie]
+        return [Taglia().getRecord(id=idt) for idt in idTaglie]
 
     taglie = property(_getTaglie)
 
@@ -205,7 +205,7 @@ class Articolo(Dao):
         """
 
         idColori = set(a.id_colore for a in self.articoliTagliaColore)
-        return [Colore(id=idc).getRecord() for idc in idColori]
+        return [Colore().getRecord(id=idc) for idc in idColori]
 
     colori = property(_getColori)
 
@@ -313,7 +313,7 @@ class Articolo(Dao):
         from promogest.dao.Riga import Riga
         res = Riga(isList=True).select(id_articolo=self.id)
         if res:
-            daoArticolo = Articolo(id=self.id).getRecord()
+            daoArticolo = Articolo().getRecord(id=self.id)
             daoArticolo.cancellato = True
             params["session"].add(daoArticolo)
             params["session"].commit()
@@ -366,8 +366,8 @@ class Articolo(Dao):
         #salvataggio , immagine ....per il momento viene gestita una immagine per articolo ...
         #in seguito sarà l'immagine a comandare non l'articolo
         try:
-            if self._url_immagine and Immagine(id=self.id_immagine).getRecord():
-                img = Immagine(id=self.id_immagine).getRecord()
+            if self._url_immagine and Immagine().getRecord(id=self.id_immagine):
+                img = Immagine().getRecord(id=self.id_immagine)
                 img.filename=self._url_immagine
                 img.id_famiglia = self.id_famiglia_articolo
                 self.id_immagine = self.id
@@ -375,7 +375,7 @@ class Articolo(Dao):
                 params["session"].add(self)
                 params["session"].commit()
             elif self._url_immagine:
-                img = Immagine().getRecord()
+                img = Immagine()
                 img.id=self.id
                 img.filename=self._url_immagine
                 img.id_famiglia = self.id_famiglia_articolo
@@ -383,8 +383,8 @@ class Articolo(Dao):
                 params["session"].add(img)
                 params["session"].add(self)
                 params["session"].commit()
-            elif not self._url_immagine and Immagine(id=self.id_immagine).getRecord():
-                img = Immagine(id=self.id_immagine).getRecord()
+            elif not self._url_immagine and Immagine().getRecord(id=self.id_immagine):
+                img = Immagine().getRecord(id=self.id_immagine)
                 self.id_immagine = None
                 img.delete()
         except:

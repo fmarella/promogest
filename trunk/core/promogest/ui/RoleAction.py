@@ -130,7 +130,7 @@ class RuoloAzioni(GladeWidget):
             if row[3] and RoleAction(isList=True).select(id_role =self.idRole,
                                                             id_action=row[0].id,
                                                             orderBy="id_role") ==[]:
-                self.dao= RoleAction().getRecord()
+                self.dao= RoleAction()
                 self.dao.id_role = self.idRole
                 self.dao.id_action = row[0].id
                 self.dao.persist()

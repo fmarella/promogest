@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest - promoCMS
@@ -177,6 +177,7 @@ def set_configuration(company=None, year = None):
     # Imposto variabili di formattazione numeri
     conf.number_format = '%-14.' + str(getattr(conf.Numbers, 'decimals', 4)) + 'f'
     conf.decimals = str(getattr(conf.Numbers, 'decimals', 4))
+    conf.batch_size = int(getattr(conf.Numbers, "batch_size",15))
 
 
     # Parametri localizzazione formati
@@ -301,7 +302,7 @@ engine = create_engine('postgres:'+'//'+conf.Database.user+':'
                     encoding='utf-8',
                     convert_unicode=True )
 
-engine.echo = False
+engine.echo = True
 meta = MetaData(engine)
 Session = sessionmaker(bind=engine)
 session = Session()

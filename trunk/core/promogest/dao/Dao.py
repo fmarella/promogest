@@ -22,9 +22,8 @@ a = datetime.datetime
 
 class Dao(object):
     """Astrazione generica di ciò che fu il vecchio dao basata su sqlAlchemy"""
-    def __init__(self, entity=None, isList=False, id=None, orderBy=None, exceptionHandler=None):
-        self.entity = entity
-        self.id = id
+    def __init__(self, entity=None, isList=True, orderBy=None, exceptionHandler=None):
+        #self.entity = entity
         self.orderBy = orderBy
         self.isList = isList
         self.session = params["session"]
@@ -32,26 +31,24 @@ class Dao(object):
         self.numRecords = None
         self.DaoModule = entity
         self._exceptionHandler = exceptionHandler
-        if id is not None:
-            self.record = self.getRecord()
-        elif isList:
+        if isList:
             self.record = []
 
-    def getRecord(self):
-        if (self.id is not None) and (self.id > 0):
-            _record = self.session.query(self.entity).get(self.id)
+    def getRecord(self,id=None):
+        if id:
+            _record = self.session.query(self.DaoModule).get(id)
         else:
-            _record = self.entity()
+            raise Exception, " ATTENZIONE ID MANCANTE"
         return _record
 
-    def select(self, mapperType="select", orderBy=None,distinct=False,
+    def select(self, orderBy=None,distinct=False,
                         offset=0, batchSize=15,complexFilter=None, **kwargs):
         if complexFilter:
             filter = complexFilter
         else:
             filter= self.prepareFilter(kwargs)
         try:
-            if self.id is None and self.isList and complexFilter:
+            if self.isList and complexFilter:
 
                 if (filter is not None or not []) and (orderBy !=None):
                     self.record = self.session.query(self.DaoModule).filter(filter).order_by(orderBy).limit(batchSize).offset(offset).all()
@@ -59,7 +56,7 @@ class Dao(object):
                     self.record = self.session.query(self.DaoModule).order_by(orderBy).offset(offset).limit(batchSize).all()
                 elif (filter is not None or not []) and (orderBy ==None):
                     self.record = self.session.query(self.DaoModule).filter(filter).offset(offset).limit(batchSize).all()
-            elif self.id is None and self.isList:
+            elif self.isList:
                 if (filter is not None or not []) and (orderBy != None):
                     self.record = self.session.query(self.DaoModule).filter(filter).order_by(orderBy).limit(batchSize).offset(offset).all()
                 elif (filter is  None or not []) and (orderBy != None):
@@ -79,12 +76,12 @@ class Dao(object):
                 filter = complexFilter
             else:
                 filter= self.prepareFilter(kwargs)
-            if self.id is None and self.isList and complexFilter:
+            if self.isList and complexFilter:
                 if filter is not None or not []:
                     _numRecords = self.session.query(self.DaoModule).filter(filter).count()
                 else:
                     _numRecords= self.session.query(self.DaoModule).distinct().count()
-            elif self.id is None and self.isList:
+            elif self.isList:
                 if filter is not None or not []:
                     _numRecords = self.session.query(self.DaoModule).filter(filter).count()
                 else:

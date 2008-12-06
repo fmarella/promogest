@@ -452,7 +452,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
                                   'Dati contatto',
                                   gladeFile='_anagrafica_contatti_elements.glade')
         self._widgetFirstFocus = self.cognome_entry
-        self.dao = Contatto().getRecord()
+        self.dao = Contatto()
         self._tabPressed = False
 
 
@@ -728,36 +728,36 @@ class AnagraficaContattiEdit(AnagraficaEdit):
                 self.generico_radiobutton.set_active(True)
             # Crea un nuovo Dao vuoto
             if self.cliente_radiobutton.get_active():
-                self.dao = ContattoCliente().getRecord()
+                self.dao = ContattoCliente()
                 self.dao.tipo_contatto = 'cliente'
                 self.dao.id_cliente = self._anagrafica._ownerKey
             elif self.fornitore_radiobutton.get_active():
-                self.dao = ContattoFornitore().getRecord()
+                self.dao = ContattoFornitore()
                 self.dao.tipo_contatto = 'fornitore'
                 self.dao.id_fornitore = self._anagrafica._ownerKey
             elif self.magazzino_radiobutton.get_active():
-                self.dao = ContattoMagazzino().getRecord()
+                self.dao = ContattoMagazzino()
                 self.dao.tipo_contatto = 'magazzino'
                 self.dao.id_magazzino = self._anagrafica._ownerKey
             elif self.azienda_radiobutton.get_active():
-                self.dao = ContattoAzienda().getRecord()
+                self.dao = ContattoAzienda()
                 self.dao.tipo_contatto = 'azienda'
                 self.dao.schema_azienda = self._anagrafica._ownerKey
             elif self.generico_radiobutton.get_active():
-                self.dao = Contatto().getRecord()
+                self.dao = Contatto()
                 self.dao.tipo_contatto = 'generico'
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             if dao.tipo_contatto == 'cliente':
-                self.dao = ContattoCliente(id=(dao.id,'cliente')).getRecord()
+                self.dao = ContattoCliente().getRecord(id=(dao.id,'cliente'))
             elif dao.tipo_contatto == 'fornitore':
-                self.dao = ContattoFornitore(id=(dao.id,'fornitore')).getRecord()
+                self.dao = ContattoFornitore().getRecord(id=(dao.id,'fornitore'))
             elif dao.tipo_contatto == 'magazzino':
-                self.dao = ContattoMagazzino(id=(dao.id,'magazzino')).getRecord()
+                self.dao = ContattoMagazzino().getRecord(id=(dao.id,'magazzino'))
             elif dao.tipo_contatto == 'azienda':
-                self.dao = ContattoAzienda(id=(dao.id,'azienda')).getRecord()
+                self.dao = ContattoAzienda().getRecord(id=(dao.id,'azienda'))
             elif dao.tipo_contatto == 'generico':
-                self.dao = Contatto(id=(dao.id,'generico')).getRecord()
+                self.dao = Contatto().getRecord(id=(dao.id,'generico'))
         self._refresh()
 
 
@@ -898,27 +898,27 @@ class AnagraficaContattiEdit(AnagraficaEdit):
                 obligatoryField(self.dialogTopLevel, self.appartenenza_customcombobox)
         if self.cliente_radiobutton.get_active():
             if self.dao.id is None:
-                self.dao = ContattoCliente().getRecord()
+                self.dao = ContattoCliente()
             self.dao.id_cliente = self.appartenenza_customcombobox._id
             self.dao.tipo_contatto ="cliente"
         elif self.fornitore_radiobutton.get_active():
             if self.dao.id is None:
-                self.dao = ContattoFornitore().getRecord()
+                self.dao = ContattoFornitore()
             self.dao.id_fornitore = self.appartenenza_customcombobox._id
             self.dao.tipo_contatto ="fornitore"
         elif self.magazzino_radiobutton.get_active():
             if self.dao.id is None:
-                self.dao = ContattoMagazzino().getRecord()
+                self.dao = ContattoMagazzino()
             self.dao.id_magazzino = self.appartenenza_customcombobox._id
             self.dao.tipo_contatto ="magazzino"
         elif self.azienda_radiobutton.get_active():
             if self.dao.id is None:
-                self.dao = ContattoAzienda().getRecord()
+                self.dao = ContattoAzienda()
             self.dao.schema_azienda = self.appartenenza_customcombobox._id
             self.dao.tipo_contatto ="azienda"
         elif self.generico_radiobutton.get_active():
             if self.dao.id is None:
-                self.dao = Contatto().getRecord()
+                self.dao = Contatto()
             self.dao.tipo_contatto ="generico"
 
         self.dao.cognome = self.cognome_entry.get_text()
@@ -942,7 +942,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
             if c[3] == 'deleted':
                 pass
             else:
-                daoContattoCategoriaContatto = ContattoCategoriaContatto().getRecord()
+                daoContattoCategoriaContatto = ContattoCategoriaContatto()
                 daoContattoCategoriaContatto.id_contatto = self.dao.id
                 daoContattoCategoriaContatto.id_categoria_contatto = c[0]
                 daoContattoCategoriaContatto.persist()
@@ -960,7 +960,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
             else:
                 if r[1] == '' or r[2] == '':
                     continue
-                daoRecapitoContatto = RecapitoContatto().getRecord()
+                daoRecapitoContatto = RecapitoContatto()
                 daoRecapitoContatto.id_contatto = self.dao.id
                 daoRecapitoContatto.tipo_recapito = r[1]
                 daoRecapitoContatto.recapito = r[2]

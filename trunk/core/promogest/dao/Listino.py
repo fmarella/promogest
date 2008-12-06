@@ -17,8 +17,8 @@ from ListinoMagazzino import ListinoMagazzino
 
 class Listino(Dao):
 
-    def __init__(self, arg=None,isList=False, id=None):
-        Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
+    def __init__(self, arg=None,isList=False):
+        Dao.__init__(self, entity=self.__class__, isList=isList)
 
     def _getCategorieCliente(self):
         self.__dbCategorieCliente = params['session'].query(ListinoCategoriaCliente).with_parent(self).filter_by(id_listino=self.id).all()

@@ -120,7 +120,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         self.tipoArticoloTagliaColore=False
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = Articolo().getRecord()
+            self.dao = Articolo()
             # Assegna il codice se ne e' prevista la crazione automatica, ma non per famiglia
             #if not self._codiceByFamiglia:
                 #self.dao.codice = promogest.dao.Articolo.getNuovoCodiceArticolo(idFamiglia=None)
@@ -130,7 +130,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self._oldDaoRicreato = False
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Articolo(id=dao.id).getRecord()
+            self.dao = Articolo().getRecord(id=dao.id)
             self._oldDaoRicreato = True
         self._refresh()
 
@@ -221,9 +221,9 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                             msg='Campo obbligatorio !\n\nUnita\' base')
         if "PromoWear" in Environment.modulesList and self.tipoArticoloTagliaColore:
             if self.dao is not None:
-                articoloTagliaColore = ArticoloTagliaColore(id=self.dao.id).getRecord()
+                articoloTagliaColore = ArticoloTagliaColore().getRecord(id=self.dao.id)
             else:
-                articoloTagliaColore = ArticoloTagliaColore().getRecord()
+                articoloTagliaColore = ArticoloTagliaColore()
                 articoloTagliaColore.id_articolo = self.dao.id
 
             articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
@@ -436,7 +436,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         from promogest.dao.ListinoArticolo import ListinoArticolo
         listini = ListinoArticolo(isList=True).select(idArticolo = self._duplicatedDaoId)
         for listino in listini:
-            daoLA = ListinoArticolo().getRecord()
+            daoLA = ListinoArticolo()
             daoLA.id_listino = listino.id_listino
             daoLA.id_articolo = self.dao.id
             daoLA.prezzo_dettaglio = listino.prezzo_dettaglio
