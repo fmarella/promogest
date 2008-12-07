@@ -72,13 +72,13 @@ class AnagraficaGruppiTaglia(Anagrafica):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
 
-        self.numRecords = GruppoTaglia(isList=True).count(denominazione=denominazione)
+        self.numRecords = GruppoTaglia().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return GruppoTaglia(isList=True).select(denominazione=denominazione,
+            return GruppoTaglia().select(denominazione=denominazione,
                                                      orderBy = self.orderBy,
                                                      offset = self.offset,
                                                      batchSize = self.batchSize)
@@ -116,7 +116,7 @@ class AnagraficaGruppoTagliaFilter(AnagraficaFilter):
 
 
 class AnagraficaGruppoTagliaDetail(AnagraficaDetail):
-    """ 
+    """
     Dettaglio dell'anagrafica degli imballaggi
     """
     def __init__(self, anagrafica):

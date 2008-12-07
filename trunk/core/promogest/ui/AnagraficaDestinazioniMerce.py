@@ -118,7 +118,7 @@ class AnagraficaDestinazioniMerceFilter(AnagraficaFilter):
         provincia = prepareFilterString(self.provincia_filter_entry.get_text())
 
         def filterCountClosure():
-            return DestinazioneMerce(isList=True).count(idCliente=idCliente,
+            return DestinazioneMerce().count(idCliente=idCliente,
                                                          denominazione=denominazione,
                                                          indirizzo=indirizzo,
                                                          localita=localita,
@@ -132,7 +132,7 @@ class AnagraficaDestinazioniMerceFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return DestinazioneMerce(isList=True).select(orderBy=self.orderBy,
+            return DestinazioneMerce().select(orderBy=self.orderBy,
                                                           idCliente=idCliente,
                                                           denominazione=denominazione,
                                                           indirizzo=indirizzo,

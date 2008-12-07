@@ -15,8 +15,8 @@ from Dao import Dao
 
 class CodiceABarreArticolo(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'codice':

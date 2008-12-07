@@ -434,7 +434,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             return
 
         from promogest.dao.ListinoArticolo import ListinoArticolo
-        listini = ListinoArticolo(isList=True).select(idArticolo = self._duplicatedDaoId)
+        listini = ListinoArticolo().select(idArticolo = self._duplicatedDaoId)
         for listino in listini:
             daoLA = ListinoArticolo()
             daoLA.id_listino = listino.id_listino

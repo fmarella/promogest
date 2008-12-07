@@ -58,8 +58,8 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None):
 def TotaleAnnualeCliente(id_cliente=None):
     """ Ritorna il totale avere da un cliente """
     from promogest.dao.TestataDocumento import TestataDocumento
-    documentiCliente = TestataDocumento(isList=True).select(idCliente=id_cliente,
-                                                    batchSize=None)
+    documentiCliente = TestataDocumento().select(idCliente=id_cliente,
+                                                batchSize=None)
     totale =0
     for doc in documentiCliente:
         if doc.operazione in ["Fattura vendita",'Fattura differita vendita','Fattura accompagnatoria','Vendita dettaglio','Nota di credito a cliente']:
@@ -70,7 +70,7 @@ def TotaleAnnualeCliente(id_cliente=None):
 def TotaleClienteAperto(id_cliente=None):
     """ Ritorna il totale avere da un cliente """
     from promogest.dao.TestataDocumento import TestataDocumento
-    documentiCliente = TestataDocumento(isList=True).select(idCliente=id_cliente,
+    documentiCliente = TestataDocumento().select(idCliente=id_cliente,
                                                     batchSize=None)
     totale =0
     for doc in documentiCliente:
@@ -81,7 +81,7 @@ def TotaleClienteAperto(id_cliente=None):
 
 def TotaleAnnualeFornitore(id_fornitore=None):
     from promogest.dao.TestataDocumento import TestataDocumento
-    documentiFornitore = TestataDocumento(isList=True).select(idFornitore=id_fornitore,
+    documentiFornitore = TestataDocumento().select(idFornitore=id_fornitore,
                                                     batchSize=None)
     totale =0
     for doc in documentiFornitore:
@@ -92,7 +92,7 @@ def TotaleAnnualeFornitore(id_fornitore=None):
 
 def TotaleFornitoreAperto(id_fornitore=None):
     from promogest.dao.TestataDocumento import TestataDocumento
-    documentiFornitore = TestataDocumento(isList=True).select(idFornitore=id_fornitore,
+    documentiFornitore = TestataDocumento().select(idFornitore=id_fornitore,
                                                     batchSize=None)
     totale =0
     for doc in documentiFornitore:
@@ -103,7 +103,7 @@ def TotaleFornitoreAperto(id_fornitore=None):
 def righeDocumentoDel(id=None):
     """Cancella le righe associate ad un documento"""
     from promogest.dao.RigaDocumento import RigaDocumento
-    row = RigaDocumento(isList=True).select(idTestataDocumento= id,
+    row = RigaDocumento().select(idTestataDocumento= id,
                                                 offset = None,
                                                 batchSize = None,
                                                 orderBy="id_testata_documento")
@@ -116,10 +116,10 @@ def righeDocumentoDel(id=None):
 def righeMovimentoDel(id=None):
     """Cancella le righe associate ad un documento"""
     from promogest.dao.RigaMovimento import RigaMovimento
-    row = RigaMovimento(isList=True).select(idTestataMovimento= id,
-                                                    offset = None,
-                                                    batchSize = None,
-                                                    orderBy="id_testata_movimento")
+    row = RigaMovimento().select(idTestataMovimento= id,
+                                offset = None,
+                                batchSize = None,
+                                orderBy="id_testata_movimento")
     if row:
         for r in row:
             params['session'].delete(r)
@@ -129,7 +129,7 @@ def righeMovimentoDel(id=None):
 def scontiTestataDocumentoDel(id=None):
     """Cancella gli sconti associati ad un documento"""
     from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
-    row = ScontoTestataDocumento(isList=True).select(idScontoTestataDocumento= id,
+    row = ScontoTestataDocumento().select(idScontoTestataDocumento= id,
                                                     offset = None,
                                                     batchSize = None,
                                                     orderBy="id_testata_documento")
@@ -142,12 +142,12 @@ def scontiTestataDocumentoDel(id=None):
 def scontiVenditaDettaglioDel(idListino=None,idArticolo=None,dataListinoArticolo=None):
     """cancella gli sconti associati al listino articolo"""
     from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
-    row = ScontoVenditaDettaglio(isList=True).select(idListino=idListino,
-                                                    idArticolo=idArticolo,
-                                                    dataListinoArticolo=dataListinoArticolo,
-                                                    offset = None,
-                                                    batchSize = None,
-                                                    orderBy="id_listino")
+    row = ScontoVenditaDettaglio().select(idListino=idListino,
+                                            idArticolo=idArticolo,
+                                            dataListinoArticolo=dataListinoArticolo,
+                                            offset = None,
+                                            batchSize = None,
+                                            orderBy="id_listino")
     if row:
         for r in row:
             params['session'].delete(r)
@@ -157,7 +157,7 @@ def scontiVenditaDettaglioDel(idListino=None,idArticolo=None,dataListinoArticolo
 def scontiVenditaIngrossoDel(idListino=None,idArticolo=None,dataListinoArticolo=None):
     """cancella gli sconti associati al listino articolo"""
     from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
-    row = ScontoVenditaIngrosso(isList=True).select(idListino=idListino,
+    row = ScontoVenditaIngrosso().select(idListino=idListino,
                                                     idArticolo=idArticolo,
                                                     dataListinoArticolo=dataListinoArticolo,
                                                     offset = None,
@@ -172,7 +172,7 @@ def scontiVenditaIngrossoDel(idListino=None,idArticolo=None,dataListinoArticolo=
 def testataDocumentoScadenzaDel(id=None):
     """Cancella la scadenza documento associato ad un documento"""
     from promogest.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-    row = TestataDocumentoScadenza(isList=True).select(idTestataDocumentoScadenza= id,
+    row = TestataDocumentoScadenza().select(idTestataDocumentoScadenza= id,
                                                                 offset = None,
                                                                 batchSize = None,
                                                                 orderBy="id_testata_documento")
@@ -184,7 +184,7 @@ def testataDocumentoScadenzaDel(id=None):
 def scontiRigaDocumentoDel(id=None):
     """Cancella gli sconti legati ad una riga movimento"""
     from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
-    row = ScontoRigaDocumento(isList=True).select(idRigaDocumento= id,
+    row = ScontoRigaDocumento().select(idRigaDocumento= id,
                                                 offset = None,
                                                 batchSize = None)
     if row:
@@ -196,7 +196,7 @@ def scontiRigaDocumentoDel(id=None):
 def scontiRigaMovimentoDel(id=None):
     """Cancella gli sconti legati ad una riga movimento"""
     from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
-    row = ScontoRigaMovimento(isList=True).select(idRigaMovimento= id,
+    row = ScontoRigaMovimento().select(idRigaMovimento= id,
                                                         offset = None,
                                                         batchSize = None)
     if row:

@@ -11,8 +11,8 @@ from promogest import Environment
 
 class MisuraPezzo(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
 
 

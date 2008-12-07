@@ -101,7 +101,7 @@ class AnagraficaUtentiFilter(AnagraficaFilter):
         active = self.active_filter_checkbutton.get_active()
 
         def filterCountClosure():
-            return User(isList=True).count(usern=username,
+            return User().count(usern=username,
                                             email=email,
                                             role=idRole,
                                             active=active)
@@ -114,7 +114,7 @@ class AnagraficaUtentiFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return User(isList=True).select(usern=username,
+            return User().select(usern=username,
                                                 email=email,
                                                 role=idRole,
                                                 active=active,

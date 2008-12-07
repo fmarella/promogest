@@ -81,11 +81,11 @@ class AnagraficaStatiArticoliFilter(AnagraficaFilter):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
 
-        self.numRecords = StatoArticolo(isList=True).count(denominazione=denominazione)
+        self.numRecords = StatoArticolo().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
-        stas = StatoArticolo(isList=True).select(denominazione=denominazione,
+        stas = StatoArticolo().select(denominazione=denominazione,
                                                   orderBy = self.orderBy,
                                                   offset = self.offset,
                                                   batchSize = self.batchSize)

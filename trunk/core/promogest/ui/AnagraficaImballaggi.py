@@ -58,13 +58,13 @@ class AnagraficaImballaggi(Anagrafica):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
 
-        self.numRecords = Imballaggio(isList=True).count(denominazione=denominazione)
+        self.numRecords = Imballaggio().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return Imballaggio(isList=True).select(denominazione=denominazione,
+            return Imballaggio().select(denominazione=denominazione,
                                                     orderBy=self.orderBy,
                                                     offset=self.offset,
                                                     batchSize=self.batchSize)

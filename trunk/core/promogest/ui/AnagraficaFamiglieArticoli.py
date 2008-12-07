@@ -103,9 +103,8 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
 
     def refresh(self):
         # Aggiornamento TreeView
-        famiglia_articolo = FamigliaArticolo(isList=True)
         def filterCountClosure():
-            return famiglia_articolo.count()
+            return FamigliaArticolo().count()
 
         self._filterCountClosure = filterCountClosure
 
@@ -115,7 +114,7 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return famiglia_articolo.select(offset=None,batchSize=None)
+            return  FamigliaArticolo().select(offset=None,batchSize=None)
 
         self._filterClosure = filterClosure
 

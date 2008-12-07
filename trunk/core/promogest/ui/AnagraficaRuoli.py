@@ -70,12 +70,12 @@ class AnagraficaRuoli(Anagrafica):
     def refresh(self):
         # Aggiornamento TreeView
         name = prepareFilterString(self.filter.name_filter_entry.get_text())
-        self.numRecords = Role(isList=True).count(name=name)
+        self.numRecords = Role().count(name=name)
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return Role(isList=True).select(name=name,
+            return Role().select(name=name,
                                     orderBy=self.orderBy,
                                     offset=self.offset,
                                     batchSize=self.batchSize)

@@ -30,8 +30,8 @@ if hasattr(conf, "SuMisura"):
 
 class RigaMovimento(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
         self.__scontiRigaMovimento = None
 
     def __magazzino(self):
@@ -41,15 +41,20 @@ class RigaMovimento(Dao):
 
     def _getAliquotaIva(self):
         # Restituisce la denominazione breve dell'aliquota iva
-        _denominazioneBreveAliquotaIva = '%2.0f' % (self.percentuale_iva or 0)
-        daoArticolo = Articolo().getRecord(id=self.id_articolo)
-        if daoArticolo is not None:
-            if daoArticolo.id_aliquota_iva is not None:
-                daoAliquotaIva = AliquotaIva().getRecord(id=daoArticolo.id_aliquota_iva)
-                if daoAliquotaIva is not None:
-                    _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
-        if (_denominazioneBreveAliquotaIva == '0' or _denominazioneBreveAliquotaIva == '00'):
-            _denominazioneBreveAliquotaIva = ''
+        #_denominazioneBreveAliquotaIva = '%2.0f' % (self.percentuale_iva or 0)
+        #print "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
+        #daoArticolo = Articolo().getRecord(id=self.id_articolo)
+        #print "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"
+        #if daoArticolo is not None:
+            #if daoArticolo.id_aliquota_iva is not None:
+                #daoAliquotaIva = AliquotaIva().getRecord(id=daoArticolo.id_aliquota_iva)
+                #if daoAliquotaIva is not None:
+                    #_denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
+        #if (_denominazioneBreveAliquotaIva == '0' or _denominazioneBreveAliquotaIva == '00'):
+            #_denominazioneBreveAliquotaIva = ''
+        print "KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK"
+        _denominazioneBreveAliquotaIva = Articolo().getRecord(id=self.id_articolo).denominazione_breve_aliquota_iva
+        print "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",_denominazioneBreveAliquotaIva
         return _denominazioneBreveAliquotaIva
 
     aliquota = property(_getAliquotaIva, )
@@ -108,7 +113,7 @@ class RigaMovimento(Dao):
     def _getMisuraPezzo(self):
                 #if self.__dbMisuraPezzo is None:
         try:
-            self.__dbMisuraPezzo = MisuraPezzo(isList=True).select(idRiga=self.id)
+            self.__dbMisuraPezzo = MisuraPezzo().select(idRiga=self.id)
             self.__misuraPezzo = self.__dbMisuraPezzo[:]
             return self.__misuraPezzo
         except:
@@ -199,7 +204,7 @@ class RigaMovimento(Dao):
         #print "rigaMovimento", datetime.datetime.now()
 
         #creazione stoccaggio se non gia' presente
-        stoccato = (Stoccaggio(isList=True).count(idArticolo=self.id_articolo,
+        stoccato = (Stoccaggio().count(idArticolo=self.id_articolo,
                                                    idMagazzino=self.id_magazzino) > 0)
         #import datetime
         #print "stoccato", datetime.datetime.now()
@@ -251,4 +256,5 @@ std_mapper = mapper(RigaMovimento, j,properties={
         "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
         "listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
         "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
+        "SCM":relation(ScontoRigaMovimento,primaryjoin = (riga_mov.c.id==ScontoRigaMovimento.id_riga_movimento), backref="RM"),
         }, order_by=riga_mov.c.id)

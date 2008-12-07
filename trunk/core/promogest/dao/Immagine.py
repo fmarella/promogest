@@ -13,11 +13,11 @@ from Dao import Dao
 
 class Immagine(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'filename' : operazione.c.filename==v}
+        dic= {'filename' : immagine.c.filename==v}
         return  dic[k]
 
 immagine=Table('image',
@@ -26,4 +26,3 @@ immagine=Table('image',
         autoload=True)
 
 std_mapper = mapper(Immagine, immagine, order_by=immagine.c.id)
-

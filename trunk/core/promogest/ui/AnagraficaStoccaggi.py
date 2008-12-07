@@ -122,7 +122,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
 
 
         def filterCountClosure():
-            return Stoccaggio(isList=True).count(idArticolo=idArticolo,
+            return Stoccaggio().count(idArticolo=idArticolo,
                                                   idMagazzino=idMagazzino)
 
         self._filterCountClosure = filterCountClosure
@@ -133,7 +133,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return Stoccaggio(isList=True).select(orderBy=self.orderBy,
+            return Stoccaggio().select(orderBy=self.orderBy,
                                                    idArticolo=idArticolo,
                                                    idMagazzino=idMagazzino,
                                                    offset=offset,

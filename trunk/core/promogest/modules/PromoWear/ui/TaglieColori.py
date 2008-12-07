@@ -130,7 +130,7 @@ class GestioneTaglieColori(GladeWidget):
 
         model = self.colori_treeview.get_model()
         model.clear()
-        cols = Colore(isList=True).select( denominazione=None,
+        cols = Colore().select( denominazione=None,
                                            orderBy = 'denominazione',
                                            offset = None,
                                            batchSize = None)
@@ -275,10 +275,10 @@ class GestioneTaglieColori(GladeWidget):
                     value = getDictValue(valuesDict, (t.id,c.id)) or self._noValue
                     row.append(value)
                 else:
-                    codici = CodiceABarreArticolo(isList=True).select( idArticolo=idVariante,
+                    codici = CodiceABarreArticolo().select( idArticolo=idVariante,
                                                                        orderBy='primario',
                                                                        offset=None,
-                                                                       batchSize=None)                                                                      
+                                                                       batchSize=None)
                     codici.reverse() # Prima i codici a barre primari
 
                     if len(codici) == 0:
@@ -312,7 +312,7 @@ class GestioneTaglieColori(GladeWidget):
 
                 codice = row[i + 2]
                 if codice != self._noValue:
-                    codici = CodiceABarreArticolo(isList=True).select(codice=codice,
+                    codici = CodiceABarreArticolo().select(codice=codice,
                                                                        orderBy=None,
                                                                        offset=None,
                                                                        batchSize=None)
@@ -331,7 +331,7 @@ class GestioneTaglieColori(GladeWidget):
                             return
 
                     codice = articoloBase.codice + gruppoTaglia.denominazione_breve + taglia.denominazione_breve + colore.denominazione_breve
-                    codici = CodiceABarreArticolo(isList=True).select(codice=codice,
+                    codici = CodiceABarreArticolo().select(codice=codice,
                                                            offset = None,
                                                            batchSize = None)
 
@@ -423,7 +423,7 @@ class GestioneTaglieColori(GladeWidget):
                 articoloTagliaColore.id_genere = articoloPadre.id_genere
                 articoloTagliaColore.persist()
 
-                codici = CodiceABarreArticolo(isList=True).select( idArticolo=idVariante,
+                codici = CodiceABarreArticolo().select( idArticolo=idVariante,
                                                                     orderBy='primario',
                                                                     offset=None,
                                                                     batchSize=None)

@@ -28,8 +28,8 @@ if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
 else:
     class Articolo(Dao):
 
-        def __init__(self, arg=None,isList=False):
-            Dao.__init__(self, entity=self.__class__, isList=isList)
+        def __init__(self, arg=None):
+            Dao.__init__(self, entity=self)
 
         def _codice_a_barre(self):
             """ esempio di funzione  unita alla property """
@@ -161,7 +161,7 @@ else:
             # se l'articolo e' presente tra le righe di un movimento o documento
             # si esegue la cancellazione logica
             from Riga import Riga
-            res = Riga(isList=True).select(id_articolo=self.id)
+            res = Riga().select(id_articolo=self.id)
             if res:
                 daoArticolo = Articolo().getRecord(id=self.id)
                 daoArticolo.cancellato = True

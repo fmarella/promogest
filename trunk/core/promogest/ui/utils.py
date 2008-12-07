@@ -327,7 +327,7 @@ def leggiListino(idListino, idArticolo=None):
 
     if idListino is not None:
         try:
-            daoListino = Listino(isList=True).select(idListino=idListino,
+            daoListino = Listino().select(idListino=idListino,
                                                         batchSize=None)[0]
             if daoListino is not None:
                 _denominazione = daoListino.denominazione
@@ -336,7 +336,7 @@ def leggiListino(idListino, idArticolo=None):
             #pass
         try:
             if idArticolo is not None:
-                daoListinoArticolo = ListinoArticolo(isList=True)\
+                daoListinoArticolo = ListinoArticolo()\
                                             .select(idListino=idListino,
                                             idArticolo = idArticolo,
                                             batchSize=None, orderBy="id_listino")[0]
@@ -373,7 +373,7 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
     _codiceArticoloFornitore = ''
 
     if (idArticolo is not None):
-        fors = Fornitura(isList=True).select(idArticolo=idArticolo,
+        fors = Fornitura().select(idArticolo=idArticolo,
                                               idFornitore=None,
                                               daDataFornitura=None,
                                               aDataFornitura=None,
@@ -405,7 +405,9 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
 
             idFornitura = fornitura.id
             if idFornitura is not None:
-                scos = ScontoFornitura(isList=True).select(idFornitura=idFornitura)
+                scos = ScontoFornitura().select(join= ScontoFornitura.fornitura,
+                                                            idFornitura=idFornitura,
+                                                            batchSize=None)
 
                 for s in scos:
                     _sconti.append({"valore": s.valore, "tipo": s.tipo_sconto})
@@ -434,14 +436,10 @@ def leggiOperazione(id):
     _tipoPersonaGiuridica = ''
 
     if id is not None:
-        res = Operazione(isList=True).select(batchSize=None,
+        res = Operazione().select(join = Operazione.TD,
+                                            batchSize=None,
                                             offset=None,
-                                            denominazione=id,
-                                            orderBy="denominazione")
-        #queryString = ("SELECT * FROM promogest.operazione WHERE denominazione = '" + id + "'")
-        #argList = []
-        #Environment.connection._cursor.execute(queryString, argList)
-        #res = Environment.connection._cursor.fetchall()
+                                            denominazione=id)
         if len(res) > 0:
             _fonteValore = res[0].fonte_valore or ''
             _segno = res[0].segno or ''
@@ -1832,7 +1830,7 @@ def omogeneousCode(section=None, string = None):
 
 def hasAction(actionID=None):
     idRole = Environment.usernameLoggedList[2]
-    roleActions = RoleAction(isList=True).select(id_role=idRole,id_action = actionID,orderBy="id_role")
+    roleActions = RoleAction().select(id_role=idRole,id_action = actionID,orderBy="id_role")
     for p in roleActions:
         if int(p.id_action) == int(actionID):
             return True
@@ -1862,7 +1860,7 @@ def numeroRegistroGet(tipo=None, date=None):
 
     registrovalue = registro.value
     registrovalueforrotazione = registrovalue+".rotazione"
-    rotazione = Setting(isList=True).select(keys=registrovalueforrotazione)
+    rotazione = Setting().select(keys=registrovalueforrotazione)
     if not rotazione:
         print "ATTENZIONE , Registro numerazione non trovato"
 
@@ -1871,11 +1869,11 @@ def numeroRegistroGet(tipo=None, date=None):
                                 "giornaliera":"day"}
 
     if tipo == "Movimento":
-        numeroSEL = TestataMovimento(isList=True).select(complexFilter=(and_(func.date_part("year", TestataMovimento.data_movimento)==date ,
+        numeroSEL = TestataMovimento().select(complexFilter=(and_(func.date_part("year", TestataMovimento.data_movimento)==date ,
                             TestataMovimento.registro_numerazione==registrovalue)), batchSize=None, orderBy="id")
 
     else:
-        numeroSEL = TestataDocumento(isList=True).select(complexFilter=(and_(func.date_part("year", TestataDocumento.data_documento)==date ,
+        numeroSEL = TestataDocumento().select(complexFilter=(and_(func.date_part("year", TestataDocumento.data_documento)==date ,
                         TestataDocumento.registro_numerazione==registrovalue)), batchSize=None, orderBy="id")
 
     if numeroSEL:
@@ -1896,14 +1894,14 @@ def idArticoloFromFornitura(k,v):
 
 def getCategorieContatto(id=None):
     from promogest.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
-    dbCategorieContatto = ContattoCategoriaContatto(isList=True).select(id=id,
+    dbCategorieContatto = ContattoCategoriaContatto().select(id=id,
                                                                     batchSize=None,
                                                                     orderBy="id_contatto")
     return dbCategorieContatto
 
 def getRecapitiContatto(id=None):
     from promogest.dao.RecapitoContatto import RecapitoContatto
-    dbRecapitiContatto = RecapitoContatto(isList=True).select(idContatto=id)
+    dbRecapitiContatto = RecapitoContatto().select(idContatto=id)
     return dbRecapitiContatto
 
 def codeIncrement(value):
@@ -1925,11 +1923,11 @@ def checkCodiceDuplicato(codice=None,id=None,tipo=None):
     if tipo =="Articolo":
         from promogest.dao.Articolo import Articolo
         if not id:
-            a = Articolo(isList=True).select(codicesatto=codice, idArticolo=id)
+            a = Articolo().select(codicesatto=codice, idArticolo=id)
         else:
             a = False
     elif tipo =="Clienti":
-        a = Cliente(isList=True).select(codicesatto=codice)
+        a = Cliente().select(codicesatto=codice)
     if a:
         msg = """Attenzione!
     Codice %s : %s  è già presente

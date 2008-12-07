@@ -471,7 +471,7 @@ class Main(GladeWidget):
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
         creditsDialog.getTopLevel().show_all()
         #try:
-            #res = Setting(isList=True).select(key="update_db_version")
+            #res = Setting().select(key="update_db_version")
             #version = res[0].value
         #except:
             #version = "0.9.10"

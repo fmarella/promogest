@@ -148,7 +148,7 @@ class StoricoListiniFilter(VisualizzazioneFilter):
         daDataListino = stringToDate(self.da_data_listino_filter_entry.get_text())
         aDataListino = stringToDate(self.a_data_listino_filter_entry.get_text())
 
-        self.numRecords = ListinoArticolo(isList=True).count(idArticolo=idArticolo,
+        self.numRecords = ListinoArticolo().count(idArticolo=idArticolo,
                                                             idListino=idListino,
                                                             listinoAttuale=None,
                                                             daDataListino=daDataListino,
@@ -156,7 +156,7 @@ class StoricoListiniFilter(VisualizzazioneFilter):
 
         self._refreshPageCount()
 
-        liss = ListinoArticolo(isList=True).select(orderBy=self.orderBy,
+        liss = ListinoArticolo().select(orderBy=self.orderBy,
                                                     idArticolo=idArticolo,
                                                     idListino=idListino,
                                                     listinoAttuale=None,

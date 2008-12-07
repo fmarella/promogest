@@ -17,8 +17,8 @@ from ListinoMagazzino import ListinoMagazzino
 
 class Listino(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def _getCategorieCliente(self):
         self.__dbCategorieCliente = params['session'].query(ListinoCategoriaCliente).with_parent(self).filter_by(id_listino=self.id).all()
@@ -41,12 +41,12 @@ class Listino(Dao):
     magazzini = property(_getMagazzini, _setMagazzini)
 
     def delete(self, multiple=False, record = True):
-        cleanListinoCategoriaCliente = ListinoCategoriaCliente(isList=True)\
+        cleanListinoCategoriaCliente = ListinoCategoriaCliente()\
                                                 .select(idListino=self.id,
                                                             batchSize=None)
         for lcc in cleanListinoCategoriaCliente:
             lcc.delete()
-        cleanMagazzini = ListinoMagazzino(isList=True)\
+        cleanMagazzini = ListinoMagazzino()\
                                             .select(idListino=self.id,
                                             batchSize=None)
         for mag in cleanMagazzini:
@@ -64,16 +64,9 @@ class Listino(Dao):
             dic= {k:listino.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
 
-listino=Table('listino',
-           params['metadata'],
-           schema = params['schema'],
-           autoload=True)
+listino=Table('listino', params['metadata'],schema = params['schema'],autoload=True)
 
 std_mapper = mapper(Listino, listino, properties={
     "listino_categoria_cliente" :relation(ListinoCategoriaCliente, backref="listino"),
     "listino_magazzino" :relation(ListinoMagazzino, backref="listino")},
         order_by=listino.c.id)
-
-
-
-

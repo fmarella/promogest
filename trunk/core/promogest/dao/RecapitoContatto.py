@@ -10,13 +10,12 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from TipoRecapito import TipoRecapito
-#from promogest.dao.Contatto import Contatto
 from Dao import Dao
 
 class RecapitoContatto(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def filter_values(self, k,v):
         dic= {'id':recapito.c.id_contatto==v,
@@ -31,6 +30,3 @@ recapito=Table('recapito',
 std_mapper = mapper(RecapitoContatto, recapito,properties={
     'tipo_reca':relation(TipoRecapito, backref='recapito')
     }, order_by=recapito.c.id)
-
-
-

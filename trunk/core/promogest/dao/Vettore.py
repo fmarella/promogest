@@ -13,8 +13,8 @@ from promogest.ui.utils import  codeIncrement
 
 class Vettore(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'codice':
@@ -41,7 +41,7 @@ def getNuovoCodiceVettore():
     listacodici= []
     if hasattr(conf,'Vettori'):
         try:
-            codicesel = Vettore(isList=True).select(batchSize=None)
+            codicesel = Vettore().select(batchSize=None)
             for cod in codicesel:
                 listacodici.append(cod.codice)
             codice = codeIncrement(str(max(listacodici)))

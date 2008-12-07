@@ -20,11 +20,11 @@ from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRig
 class RigaScontrino(Dao):
 
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def _getScontiRigaScontrino(self):
-        self.__dbScontiRigaScontrino = ScontoRigaScontrino(isList=True).select(idRigaScontrino=self.id, batchSize=None)
+        self.__dbScontiRigaScontrino = ScontoRigaScontrino().select(idRigaScontrino=self.id, batchSize=None)
         self.__scontiRigaScontrino = self.__dbScontiRigaScontrino[:]
         return self.__scontiRigaScontrino
 

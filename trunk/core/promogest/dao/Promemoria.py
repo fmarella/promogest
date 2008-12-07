@@ -15,8 +15,8 @@ import datetime
 class Promemoria(Dao):
     """ User class provides to make a Users dao which include more used"""
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k=="incaricato":
@@ -51,7 +51,7 @@ def getScadenze():
     """
     Ritorna una lista di id di oggetti Promemoria in scadenza (e quindi da notificare)
     """
-    alarms = Promemoria(isList=True).select(in_scadenza=True,offset=None, batchSize=None)
+    alarms = Promemoria().select(in_scadenza=True,offset=None, batchSize=None)
     returnList = []
     for alarm in alarms:
         returnList.append(alarm.id)

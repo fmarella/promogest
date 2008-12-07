@@ -6,7 +6,6 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 
-
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
@@ -17,14 +16,11 @@ from promogest.modules.PromoWear.dao.Colore import Colore
 from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
 from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
 from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
-#from promogest.modules.PromoWear.dao.ArticoloPromowear import ArticoloPromowear
-
-
 
 class ArticoloTagliaColore(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
 
     def _getGruppoTaglia(self):

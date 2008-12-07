@@ -213,14 +213,14 @@ class GestioneInventario(RicercaComplessaArticoli):
 
         self._ricerca._prepare()
 
-        self.filter.numRecords = Inventario(isList=True).count(anno=Environment.conf.workingYear,
+        self.filter.numRecords = Inventario().count(anno=Environment.conf.workingYear,
                                                                 idMagazzino=idMagazzino,
                                                                 daDataAggiornamento=daData,
                                                                 aDataAggiornamento=aData)
 
         self.filter._refreshPageCount()
 
-        invs = Inventario(isList=True).select(orderBy=self.filter.orderBy,
+        invs = Inventario().select(orderBy=self.filter.orderBy,
                                                anno=Environment.conf.workingYear,
                                                idMagazzino=idMagazzino,
                                                daDataAggiornamento=daData,
@@ -388,7 +388,7 @@ class GestioneInventario(RicercaComplessaArticoli):
             riga = ('Codice, Descrizione, Quantita\', Valore unitario, U.M., ' +
                     'Codice a barre, Famiglia, Categoria\n')
             f.write(riga)
-            invs = Inventario(isList=True).select(anno=Environment.conf.workingYear,
+            invs = Inventario().select(anno=Environment.conf.workingYear,
                                                     idMagazzino=idMagazzino,
                                                     offset=None,
                                                     batchSize=None)
@@ -528,7 +528,7 @@ class GestioneInventario(RicercaComplessaArticoli):
             testata.operazione = 'Carico per inventario'
             righe = []
 
-            invs = Inventario(isList=True).select( anno=Environment.conf.workingYear,
+            invs = Inventario().select( anno=Environment.conf.workingYear,
                                                    idMagazzino=idMagazzino,
                                                    offset=None,
                                                    batchSize=None)

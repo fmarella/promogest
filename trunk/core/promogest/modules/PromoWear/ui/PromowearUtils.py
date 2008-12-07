@@ -4,23 +4,8 @@
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
-#import promogest.modules.PromoWear.dao.ArticoloPromowear
 from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.AliquotaIva import AliquotaIva
 from promogest.modules.PromoWear.dao.ArticoloPromowear import Articolo
@@ -50,16 +35,16 @@ def leggiFornituraPromoWear(idArticolo, idFornitore=None, data=None, noPreferenz
     _codiceArticoloFornitore = ''
 
     if (idArticolo is not None):
-        fors = Fornitura(isList=True).select(idArticolo=idArticolo,
-                                              idFornitore=None,
-                                              daDataFornitura=None,
-                                              aDataFornitura=None,
-                                              daDataPrezzo=None,
-                                              aDataPrezzo=data,
-                                              codiceArticoloFornitore=None,
-                                              orderBy = 'data_prezzo DESC, fornitore_preferenziale DESC',
-                                              offset = None,
-                                              batchSize = None)
+        fors = Fornitura().select(idArticolo=idArticolo,
+                                    idFornitore=None,
+                                    daDataFornitura=None,
+                                    aDataFornitura=None,
+                                    daDataPrezzo=None,
+                                    aDataPrezzo=data,
+                                    codiceArticoloFornitore=None,
+                                    orderBy = 'data_prezzo DESC, fornitore_preferenziale DESC',
+                                    offset = None,
+                                    batchSize = None)
 
         fornitura = None
         if idFornitore is not None:
@@ -82,7 +67,7 @@ def leggiFornituraPromoWear(idArticolo, idFornitore=None, data=None, noPreferenz
 
             idFornitura = fornitura.id
             if idFornitura is not None:
-                scos = ScontoFornitura(isList=True).select(idFornitura=idFornitura)
+                scos = ScontoFornitura().select(idFornitura=idFornitura)
 
                 for s in scos:
                     _sconti.append({"valore": s.valore, "tipo": s.tipo_sconto})
@@ -134,7 +119,7 @@ def leggiArticoloPromoWear(id, full=False):
             _codice = daoArticolo.codice or ''
             _idUnitaBase = daoArticolo.id_unita_base
             if _idUnitaBase is not None:
-                res = UnitaBase(isList=True).select(batchSize=None)
+                res = UnitaBase().select(batchSize=None)
                 if res is not None:
                     _unitaBase = res[0].denominazione
             if daoArticolo.id_aliquota_iva is not None:
@@ -195,9 +180,9 @@ def leggiListino(idListino, idArticolo=None):
 
         try:
             if idArticolo is not None:
-                daoListinoArticolo = ListinoArticolo(isList=True).select(idListino=idListino,
-                                                                        idArticolo= idArticolo,
-                                                                            batchSize=None)
+                daoListinoArticolo = ListinoArticolo().select(idListino=idListino,
+                                                                idArticolo= idArticolo,
+                                                                batchSize=None)
                 if "PromoWear" in Environment.modulesList:
                         try:
                             articolo = ArticoloTagliaColore().getRecord(id=idArticolo)
@@ -228,7 +213,7 @@ def fillComboboxMultipli(combobox, idArticolo=None, noSottoMultipli=False, filte
 
     model = gtk.ListStore(object, int, str, float)
     # multipli legati all'articolo
-    muls = Multiplo(isList=True).select(denominazione=None,
+    muls = Multiplo().select(denominazione=None,
                                          idArticolo=idArticolo,
                                          idUnitaBase=None,
                                          orderBy = None,
@@ -252,7 +237,7 @@ def fillComboboxMultipli(combobox, idArticolo=None, noSottoMultipli=False, filte
             articolo = ArticoloTagliaColore().getRecord(id=idArticolo)
             if articolo.id_articolo_padre is not None:
                 # multipli legati all'articolo padre
-                muls = Multiplo(isList=True).select(denominazione=None,
+                muls = Multiplo().select(denominazione=None,
                                                      idArticolo=articolo.id_articolo_padre,
                                                      idUnitaBase=None,
                                                      orderBy = None,
@@ -315,7 +300,7 @@ def fillComboboxGruppiTaglia(combobox, filter=False, ignoraVuoti=False,
     # Crea l'elenco dei gruppi taglia
     selected = None
     model = gtk.ListStore(object, int, str)
-    grts = GruppoTaglia(isList=True).select(denominazione=None,
+    grts = GruppoTaglia().select(denominazione=None,
                                              orderBy = None,
                                              offset = None,
                                              batchSize = None)
@@ -349,7 +334,7 @@ def fillComboboxTaglie(combobox, filter=False, idGruppoTaglia=None, ignore=[]):
 
     model = gtk.ListStore(object, int, str)
     if idGruppoTaglia is None:
-        tags = Taglia(isList=True).select(denominazione=None,
+        tags = Taglia().select(denominazione=None,
                                            orderBy = None,
                                            offset = None,
                                            batchSize = None)
@@ -364,7 +349,7 @@ def fillComboboxTaglie(combobox, filter=False, idGruppoTaglia=None, ignore=[]):
                 continue
             model.append((t, t.id, (t.denominazione or '')[0:25]))
     else:
-        tags = GruppoTagliaTaglia(isList=True).select( idGruppoTaglia=idGruppoTaglia,
+        tags = GruppoTagliaTaglia().select( idGruppoTaglia=idGruppoTaglia,
                                                        orderBy = None,
                                                        offset = None,
                                                        batchSize = None)
@@ -389,7 +374,7 @@ def fillComboboxColori(combobox, filter=False, ignore=[]):
     # Crea l'elenco dei colori, ignorando quelli presenti nella lista ignore
 
     model = gtk.ListStore(gobject.TYPE_PYOBJECT, int, str)
-    cols = Colore(isList=True).select( denominazione=None,
+    cols = Colore().select( denominazione=None,
                                        orderBy = None,
                                        offset = None,
                                        batchSize = None)
@@ -412,7 +397,7 @@ def fillComboboxColori(combobox, filter=False, ignore=[]):
 
 def fillComboboxAnniAbbigliamento(combobox, filter=False):
     #crea l'elenco degli anni per l'abbigliamento
-    res = AnnoAbbigliamento(isList=True).select()
+    res = AnnoAbbigliamento().select()
     model = gtk.ListStore(object, int, str)
 
     if not filter:
@@ -432,7 +417,7 @@ def fillComboboxAnniAbbigliamento(combobox, filter=False):
 
 def fillComboboxStagioniAbbigliamento(combobox, filter=False):
     #crea l'elenco degli anni per l'abbigliamento
-    res = StagioneAbbigliamento(isList=True).select(batchSize=None)
+    res = StagioneAbbigliamento().select(batchSize=None)
     model = gtk.ListStore(object, int, str)
 
     if not filter:
@@ -452,7 +437,7 @@ def fillComboboxStagioniAbbigliamento(combobox, filter=False):
 
 def fillComboboxGeneriAbbigliamento(combobox, filter=False):
     #crea l'elenco degli anni per l'abbigliamento
-    res = GenereAbbigliamento(isList=True).select(batchSize=None)
+    res = GenereAbbigliamento().select(batchSize=None)
     model = gtk.ListStore(object, int, str)
 
     if not filter:

@@ -110,7 +110,7 @@ class AnagraficaListiniFilter(AnagraficaFilter):
         denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
 
         def filterCountClosure():
-            return Listino(isList=True).count(denominazione=denominazione)
+            return Listino().count(denominazione=denominazione)
 
         self._filterCountClosure = filterCountClosure
 
@@ -120,7 +120,7 @@ class AnagraficaListiniFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return Listino(isList=True).select( denominazione=denominazione,
+            return Listino().select( denominazione=denominazione,
                                                 orderBy=self.orderBy,
                                                 offset=offset,
                                                 batchSize=batchSize)
@@ -226,7 +226,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
 
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Listino(isList=True).select(id=dao.id)[0]
+            self.dao = Listino().select(id=dao.id)[0]
         self._refresh()
 
 
@@ -274,10 +274,10 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         if not self.dao.id:
             listino_sequence = Sequence("listino_id_seq", schema=Environment.params['schema'])
             self.dao.id = Environment.params['session'].connection().execute(listino_sequence)
-            #provaaaaaaaaa = (Listino(isList=True).select(batchSize=None)[-1].id)+1
+            #provaaaaaaaaa = (Listino().select(batchSize=None)[-1].id)+1
             #self.dao.id = provaaaaaaaaa
         self.dao.denominazione = self.denominazione_entry.get_text()
-        listinoAtt = Listino(isList=True).select(denominazione=self.dao.denominazione)
+        listinoAtt = Listino().select(denominazione=self.dao.denominazione)
         if listinoAtt ==[]:
             self.dao.listino_attuale = False
 
@@ -286,7 +286,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
 
         self.dao.persist()
         model = self.categorie_treeview.get_model()
-        cleanListinoCategoriaCliente = ListinoCategoriaCliente(isList=True)\
+        cleanListinoCategoriaCliente = ListinoCategoriaCliente()\
                                             .select(idListino=self.dao.id,
                                             batchSize=None)
         for lcc in cleanListinoCategoriaCliente:
@@ -301,7 +301,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
                 daoListinoCategoriaCliente.persist()
 
         model = self.magazzini_treeview.get_model()
-        cleanMagazzini = ListinoMagazzino(isList=True)\
+        cleanMagazzini = ListinoMagazzino()\
                                             .select(idListino=self.dao.id,
                                             batchSize=None)
         for mag in cleanMagazzini:

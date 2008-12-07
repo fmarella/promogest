@@ -64,9 +64,8 @@ class Login(GladeApp):
         self.modules = {}
         Environment.exceptionHandler = GtkExceptionHandler()
 
-        #azs = Dao(Azienda, isList=True).select(orderBy="schemaa")
-        azs = Azienda(isList=True).select(orderBy="schemaa")
-        usrs = User(isList=True).select()
+        azs = Azienda().select(orderBy="schemaa")
+        usrs = User().select()
         GladeApp.__init__(self, 'login_window')
         model = gtk.ListStore(str, str)
         model.clear()
@@ -161,7 +160,7 @@ class Login(GladeApp):
                 dialog.destroy()
                 do_login = False
         if do_login:
-            users = User(isList=True).select(username=username,
+            users = User().select(username=username,
                                     password=md5.new(username+password).hexdigest())
 
             if len(users) ==1:

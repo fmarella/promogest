@@ -120,7 +120,7 @@ class RicercaClientiFilter(RicercaFilter):
         codiceFiscale = prepareFilterString(self.codice_fiscale_filter_entry.get_text())
         idCategoria = findIdFromCombobox(self.id_categoria_cliente_filter_combobox)
 
-        self.numRecords = Cliente(isList=True).count(codice=codice,
+        self.numRecords = Cliente().count(codice=codice,
                                                     ragioneSociale=ragioneSociale,
                                                     insegna=insegna,
                                                     cognomeNome=cognomeNome,
@@ -131,7 +131,7 @@ class RicercaClientiFilter(RicercaFilter):
 
         self._refreshPageCount()
 
-        clis = Cliente(isList=True).select(orderBy=self.orderBy,
+        clis = Cliente().select(orderBy=self.orderBy,
                                             codice=codice,
                                             ragioneSociale=ragioneSociale,
                                             insegna=insegna,

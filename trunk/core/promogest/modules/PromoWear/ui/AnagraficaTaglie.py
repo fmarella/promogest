@@ -132,7 +132,7 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
         # Aggiornamento TreeView
 
         def filterCountClosure():
-            return GruppoTagliaTaglia(isList=True).count()
+            return GruppoTagliaTaglia().count()
 
         self._filterCountClosure = filterCountClosure
 
@@ -142,7 +142,7 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return GruppoTagliaTaglia(isList=True).select(batchSize=None)
+            return GruppoTagliaTaglia().select(batchSize=None)
 
         self._filterClosure = filterClosure
 
@@ -267,7 +267,7 @@ class AnagraficaTaglieEdit(AnagraficaEdit):
             obligatoryField(self.dialogTopLevel, self.gruppo_taglia_combobox, 'Impossibile inserire nel gruppo "taglia unica" !')
 
         if self.dao.id_taglia is not None:
-            gts = GruppoTagliaTaglia(isList=True).select(idTaglia=self.dao.id_taglia,batchSize=None)
+            gts = GruppoTagliaTaglia().select(idTaglia=self.dao.id_taglia,batchSize=None)
             if len(gts) > 1:
                 msg = ('La taglia e\' collegata a diversi gruppi taglia:\n' +
                        'la modifica sara\' visibile su tutti i gruppi taglia ai quali la taglia e\' legata.\n\nContinuare ?')

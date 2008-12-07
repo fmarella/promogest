@@ -153,7 +153,7 @@ class AnagraficaMultipliFilter(AnagraficaFilter):
         idUnitaBase = None
 
         denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
-        multiplo = Multiplo(isList=True)
+        multiplo = Multiplo()
         def filterCountClosure():
             return multiplo.count(denominazione=denominazione,
                                 idArticolo=idArticolo,

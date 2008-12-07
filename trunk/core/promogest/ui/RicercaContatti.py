@@ -167,9 +167,8 @@ class RicercaContattiFilter(RicercaFilter):
         idCategoria = findIdFromCombobox(self.id_categoria_contatto_filter_combobox)
 
         if self.cliente_filter_radiobutton.get_active():
-            selDao = ContattoCliente(isList=True)
             idCliente = self.id_cliente_filter_customcombobox.getId()
-            self.numRecords = selDao.count(idCliente=idCliente,
+            self.numRecords = ContattoCliente().count(idCliente=idCliente,
                                            cognomeNome=cognomeNome,
                                            ruolo=ruolo,
                                            descrizione=descrizione,
@@ -179,7 +178,7 @@ class RicercaContattiFilter(RicercaFilter):
 
             self._refreshPageCount()
 
-            cons = selDao.select(orderBy=self.orderBy,
+            cons = ContattoCliente().select(orderBy=self.orderBy,
                                  idCliente=idCliente,
                                  cognomeNome=cognomeNome,
                                  ruolo=ruolo,
@@ -191,9 +190,8 @@ class RicercaContattiFilter(RicercaFilter):
                                  batchSize=self.batchSize)
 
         elif self.fornitore_filter_radiobutton.get_active():
-            selDao = ContattoFornitore(isList=True)
             idFornitore = self.id_fornitore_filter_customcombobox.getId()
-            self.numRecords = selDao.count(idFornitore=idFornitore,
+            self.numRecords = ContattoFornitore().count(idFornitore=idFornitore,
                                            cognomeNome=cognomeNome,
                                            ruolo=ruolo,
                                            descrizione=descrizione,
@@ -203,7 +201,7 @@ class RicercaContattiFilter(RicercaFilter):
 
             self._refreshPageCount()
 
-            cons = selDao.select(orderBy=self.orderBy,
+            cons = ContattoFornitore().select(orderBy=self.orderBy,
                                  idFornitore=idFornitore,
                                  cognomeNome=cognomeNome,
                                  ruolo=ruolo,
@@ -215,9 +213,8 @@ class RicercaContattiFilter(RicercaFilter):
                                  batchSize=self.batchSize)
 
         elif self.magazzino_filter_radiobutton.get_active():
-            selDao = ContattoMagazzino(isList=True)
             idMagazzino = findIdFromCombobox(self.id_magazzino_filter_combobox)
-            self.numRecords = selDao.count(idMagazzino=idMagazzino,
+            self.numRecords = ContattoMagazzino().count(idMagazzino=idMagazzino,
                                            cognomeNome=cognomeNome,
                                            ruolo=ruolo,
                                            descrizione=descrizione,
@@ -227,7 +224,7 @@ class RicercaContattiFilter(RicercaFilter):
 
             self._refreshPageCount()
 
-            cons = selDao.select(orderBy=self.orderBy,
+            cons = ContattoMagazzino().select(orderBy=self.orderBy,
                                  idMagazzino=idMagazzino,
                                  cognomeNome=cognomeNome,
                                  ruolo=ruolo,
@@ -239,9 +236,8 @@ class RicercaContattiFilter(RicercaFilter):
                                  batchSize=self.batchSize)
 
         elif self.azienda_filter_radiobutton.get_active():
-            selDao = ContattoAzienda(isList=True)
             schemaAzienda = findIdFromCombobox(self.schema_azienda_filter_combobox)
-            self.numRecords = selDao.count(schemaAzienda=schemaAzienda,
+            self.numRecords = ContattoAzienda().count(schemaAzienda=schemaAzienda,
                                            cognomeNome=cognomeNome,
                                            ruolo=ruolo,
                                            descrizione=descrizione,
@@ -251,7 +247,7 @@ class RicercaContattiFilter(RicercaFilter):
 
             self._refreshPageCount()
 
-            cons = selDao.select(orderBy=self.orderBy,
+            cons = ContattoAzienda().select(orderBy=self.orderBy,
                                  schemaAzienda=schemaAzienda,
                                  cognomeNome=cognomeNome,
                                  ruolo=ruolo,
@@ -263,9 +259,8 @@ class RicercaContattiFilter(RicercaFilter):
                                  batchSize=self.batchSize)
 
         else:
-            selDao = Contatto(isList=True)
             appartenenza = prepareFilterString(self.appartenenza_filter_entry.get_text())
-            self.numRecords = selDao.count(cognomeNome=cognomeNome,
+            self.numRecords = Contatto().count(cognomeNome=cognomeNome,
                                            ruolo=ruolo,
                                            descrizione=descrizione,
                                            recapito=recapito,
@@ -275,7 +270,7 @@ class RicercaContattiFilter(RicercaFilter):
 
             self._refreshPageCount()
 
-            cons = selDao.select(orderBy=self.orderBy,
+            cons = Contatto().select(orderBy=self.orderBy,
                                  cognomeNome=cognomeNome,
                                  ruolo=ruolo,
                                  descrizione=descrizione,

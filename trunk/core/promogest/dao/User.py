@@ -18,8 +18,8 @@ from Language import Language
 class User(Dao):
     """ User class provides to make a Users dao which include more used"""
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'username':

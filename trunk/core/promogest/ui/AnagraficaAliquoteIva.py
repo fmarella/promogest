@@ -96,7 +96,7 @@ class AnagraficaAliquoteIvaFilter(AnagraficaFilter):
     def refresh(self):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
-        aliquota_iva = AliquotaIva(isList=True)
+        aliquota_iva = AliquotaIva()
         def filterCountClosure():
             return aliquota_iva.count(denominazione=denominazione)
 

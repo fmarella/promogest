@@ -1070,7 +1070,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 numero = self.numero_documento_entry.get_text()
                 idOperazione = findIdFromCombobox(self.id_operazione_combobox)
                 daData, aData = getDateRange(self.data_documento_entry.get_text())
-                docs = TestataDocumento(isList=True).select(daNumero=numero,
+                docs = TestataDocumento().select(daNumero=numero,
                                                     aNumero=numero,
                                                     daData=daData, aData=aData,
                                                     idOperazione=idOperazione, offset=None,
@@ -1541,7 +1541,7 @@ del documento.
             orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
             batchSize = Environment.conf.batch_size
 
-        arts = Articolo(isList=True).select(orderBy=orderBy,
+        arts = Articolo().select(orderBy=orderBy,
                                             join = join,
                                             denominazione=prepareFilterString(denominazione),
                                             codice=prepareFilterString(codice),
@@ -1930,7 +1930,7 @@ del documento.
 
         stringLabel = '-'
         if self.dao.id is not None:
-            res = TestataMovimento(isList=True).select(id_testata_documento= self.dao.id)
+            res = TestataMovimento().select(id_testata_documento= self.dao.id)
             if len(res) > 0:
                 stringLabel = 'N.' + str(res[0].numero) + ' del ' + dateToString(res[0].data_movimento)
 

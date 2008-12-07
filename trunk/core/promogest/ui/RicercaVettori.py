@@ -126,7 +126,7 @@ class RicercaVettoriFilter(RicercaFilter):
         partitaIva = prepareFilterString(self.partita_iva_filter_entry.get_text())
         codiceFiscale = prepareFilterString(self.codice_fiscale_filter_entry.get_text())
 
-        self.numRecords = Vettore(isList=True).count(codice=codice,
+        self.numRecords = Vettore().count(codice=codice,
                                                     ragioneSociale=ragioneSociale,
                                                     insegna=insegna,
                                                     cognomeNome=cognomeNome,
@@ -136,7 +136,7 @@ class RicercaVettoriFilter(RicercaFilter):
 
         self._refreshPageCount()
 
-        vets = Vettore(isList=True).select(orderBy=self.orderBy,
+        vets = Vettore().select(orderBy=self.orderBy,
                                         codice=codice,
                                         ragioneSociale=ragioneSociale,
                                         insegna=insegna,

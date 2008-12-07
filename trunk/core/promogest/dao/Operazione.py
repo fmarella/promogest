@@ -13,18 +13,18 @@ from Dao import Dao
 
 class Operazione(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'denominazione' : operazione.c.denominazione.ilike("%"+v+"%"),
-            "tipoOperazione":operazione.c.tipo_operazione==v}
+        if k == 'denominazione':
+            dic= { k: operazione.c.denominazione.ilike("%"+v+"%")}
+        elif k== 'denominazioneEM':
+            dic= { k: operazione.c.denominazione == v}
+        elif k=="tipoOperazione":
+            dic = {k:operazione.c.tipo_operazione==v}
         return  dic[k]
 
-operazione=Table('operazione',
-        params['metadata'],
-        schema = params['mainSchema'],
-        autoload=True)
+operazione=Table('operazione',params['metadata'],schema = params['mainSchema'],autoload=True)
 
 std_mapper = mapper(Operazione, operazione, order_by=operazione.c.denominazione)
-

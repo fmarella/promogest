@@ -20,8 +20,8 @@ from DaoUtils import giacenzaSel
 class Stoccaggio(Dao):
     """ User class provides to make a Users dao which include more used"""
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def _getTotaliOperazioniMovimento(self):
         self.__dbTotaliOperazioniMovimento = giacenzaSel(year=workingYear, idMagazzino= self.id_magazzino, idArticolo=self.id_articolo)

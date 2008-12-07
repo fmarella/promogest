@@ -15,17 +15,17 @@ from TipoAliquotaIva import TipoAliquotaIva
 
 class AliquotaIva(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def filter_values(self, k,v):
-        dic= {'denominazione' : aliquota_iva.c.denominazione.ilike("%"+v+"%")}
+        if k=='denominazione':
+            dic= { k: aliquota_iva.c.denominazione.ilike("%"+v+"%")}
+        elif k == "percentuale":
+            dic= { k: aliquota_iva.c.percentuale == v}
         return  dic[k]
 
-aliquota_iva = Table('aliquota_iva',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
+aliquota_iva = Table('aliquota_iva',params['metadata'],schema = params['schema'],autoload=True)
 
 std_mapper = mapper(AliquotaIva,aliquota_iva, properties={
         'tipo_aliquota_iva':relation(TipoAliquotaIva, backref='aliquota_iva')

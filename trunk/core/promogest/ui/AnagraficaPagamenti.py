@@ -71,13 +71,13 @@ class AnagraficaPagamenti(Anagrafica):
     def refresh(self):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
-        self.numRecords = Pagamento(isList=True).count(denominazione=denominazione)
+        self.numRecords = Pagamento().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return Pagamento(isList=True).select(denominazione=denominazione,
+            return Pagamento().select(denominazione=denominazione,
                                                 orderBy=self.orderBy,
                                                 offset=self.offset,
                                                 batchSize=self.batchSize)

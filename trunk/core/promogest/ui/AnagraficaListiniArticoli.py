@@ -273,7 +273,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
 
 
         def filterCountClosure():
-            return ListinoArticolo(isList=True).count(idListino=idListino,
+            return ListinoArticolo().count(idListino=idListino,
                                                         idArticolo=idArticolo,
                                                         listinoAttuale=True)
 
@@ -283,7 +283,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return ListinoArticolo(isList=True).select(orderBy=self.orderBy,
+            return ListinoArticolo().select(orderBy=self.orderBy,
                                                             idListino=idListino,
                                                             idArticolo=idArticolo,
                                                             listinoAttuale=True,
@@ -607,7 +607,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             self.dao = ListinoArticolo()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = ListinoArticolo(isList=True).select(idListino=dao.id_listino,
+            self.dao = ListinoArticolo().select(idListino=dao.id_listino,
                                     idArticolo=dao.id_articolo,
                                     orderBy="id_articolo")[0]
         self._refresh()

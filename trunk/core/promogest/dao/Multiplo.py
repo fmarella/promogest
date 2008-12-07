@@ -10,13 +10,12 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from UnitaBase import UnitaBase
-#from Articolo import Articolo
 from Dao import Dao
 
 class Multiplo(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'idArticolo':
@@ -94,12 +93,7 @@ class Multiplo(Dao):
             if self.arti:return self.arti.genere
         genere = property(_genere)
 
-
-
-multiplo=Table('multiplo',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
+multiplo=Table('multiplo',params['metadata'],schema = params['schema'], autoload=True)
 
 std_mapper = mapper(Multiplo, multiplo, properties={
     "uniba":relation(UnitaBase,primaryjoin=multiplo.c.id_unita_base==UnitaBase.id),

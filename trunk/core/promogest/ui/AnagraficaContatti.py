@@ -179,7 +179,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             idCliente = self.id_cliente_filter_customcombobox.getId()
 
             def filterCountClosure():
-                return ContattoCliente(isList=True).count(idCliente=idCliente,
+                return ContattoCliente().count(idCliente=idCliente,
                                                         cognomeNome=cognomeNome,
                                                         ruolo=ruolo,
                                                         descrizione=descrizione,
@@ -192,7 +192,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             self._refreshPageCount()
             # Let's save the current search as a closure
             def filterClosure(offset, batchSize):
-                return ContattoCliente(isList=True).select(  orderBy=self.orderBy,
+                return ContattoCliente().select(  orderBy=self.orderBy,
                                                             idCliente=idCliente,
                                                             cognomeNome=cognomeNome,
                                                             ruolo=ruolo,
@@ -219,7 +219,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             idFornitore = self.id_fornitore_filter_customcombobox.getId()
 
             def filterCountClosure():
-                return ContattoFornitore(isList=True).count(idFornitore=idFornitore,
+                return ContattoFornitore().count(idFornitore=idFornitore,
                                                             cognomeNome=cognomeNome,
                                                             ruolo=ruolo,
                                                             descrizione=descrizione,
@@ -232,7 +232,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             self._refreshPageCount()
             # Let's save the current search as a closure
             def filterClosure(offset, batchSize):
-                return ContattoFornitore(isList=True).select(orderBy=self.orderBy,
+                return ContattoFornitore().select(orderBy=self.orderBy,
                                                             idFornitore=idFornitore,
                                                             cognomeNome=cognomeNome,
                                                             ruolo=ruolo,
@@ -256,7 +256,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         elif self.magazzino_filter_radiobutton.get_active():
             idMagazzino = findIdFromCombobox(self.id_magazzino_filter_combobox)
             def filterCountClosure():
-                return ContattoMagazzino(isList=True).count(idMagazzino=idMagazzino,
+                return ContattoMagazzino().count(idMagazzino=idMagazzino,
                                                             cognomeNome=cognomeNome,
                                                             ruolo=ruolo,
                                                             descrizione=descrizione,
@@ -270,7 +270,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
 
             # Let's save the current search as a closure
             def filterClosure(offset, batchSize):
-                return ContattoMagazzino(isList=True).select(orderBy=self.orderBy,
+                return ContattoMagazzino().select(orderBy=self.orderBy,
                                                             idMagazzino=idMagazzino,
                                                             cognomeNome=cognomeNome,
                                                             ruolo=ruolo,
@@ -295,7 +295,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             schemaAzienda = findIdFromCombobox(self.schema_azienda_filter_combobox)
 
             def filterCountClosure():
-                return ContattoAzienda(isList=True).count(schemaAzienda=schemaAzienda,
+                return ContattoAzienda().count(schemaAzienda=schemaAzienda,
                                         cognomeNome=cognomeNome,
                                         ruolo=ruolo,
                                         descrizione=descrizione,
@@ -308,7 +308,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             self._refreshPageCount()
             # Let's save the current search as a closure
             def filterClosure(offset, batchSize):
-                return ContattoAzienda(isList=True).select(orderBy=self.orderBy,
+                return ContattoAzienda().select(orderBy=self.orderBy,
                                                             schemaAzienda=schemaAzienda,
                                                             cognomeNome=cognomeNome,
                                                             ruolo=ruolo,
@@ -335,20 +335,20 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             appartenenza = prepareFilterString(self.appartenenza_filter_entry.get_text())
 
             def filterCountClosure():
-                return Contatto(isList=True).count(cognomeNome=cognomeNome,
-                                                    ruolo=ruolo,
-                                                    descrizione=descrizione,
-                                                    recapito=recapito,
-                                                    tipoRecapito=tipoRecapito,
-                                                    idCategoria=idCategoria,
-                                                    appartenenza=appartenenza)
+                return Contatto().count(cognomeNome=cognomeNome,
+                                        ruolo=ruolo,
+                                        descrizione=descrizione,
+                                        recapito=recapito,
+                                        tipoRecapito=tipoRecapito,
+                                        idCategoria=idCategoria,
+                                        appartenenza=appartenenza)
 
             self._filterCountClosure = filterCountClosure
             self.numRecords = self.countFilterResults()
             self._refreshPageCount()
             # Let's save the current search as a closure
             def filterClosure(offset, batchSize):
-                return Contatto(isList=True).select(orderBy=self.orderBy,
+                return Contatto().select(orderBy=self.orderBy,
                                                 cognomeNome=cognomeNome,
                                                 ruolo=ruolo,
                                                 descrizione=descrizione,
@@ -932,7 +932,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
         # Salvo categorie contatti
         model = self.categorie_treeview.get_model()
 
-        cleanContattoCategoriaContatto = ContattoCategoriaContatto(isList=True)\
+        cleanContattoCategoriaContatto = ContattoCategoriaContatto()\
                                                     .select(idContatto=self.dao.id,
                                                     orderBy="id_contatto",
                                                     batchSize=None)
@@ -950,7 +950,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
         ## Salvo recapiti
         model = self.recapiti_treeview.get_model()
         recapiti = []
-        cleanRecapitoContatto = RecapitoContatto(isList=True).select(idContatto=self.dao.id)
+        cleanRecapitoContatto = RecapitoContatto().select(idContatto=self.dao.id)
         for recapito in cleanRecapitoContatto:
             recapito.delete()
 

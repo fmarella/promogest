@@ -259,7 +259,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             anno = getattr(Environment.conf.PromoWear,'anno_default', None)
             if anno is not None:
                 try:
-                    idAnno = AnnoAbbigliamento(isList = True).select(denominazione = anno)[0].id
+                    idAnno = AnnoAbbigliamento().select(denominazione = anno)[0].id
                     findComboboxRowFromId(self.id_anno_articolo_filter_combobox, idAnno)
                 except:
                     pass
@@ -307,33 +307,33 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
 
         def filterCountClosure():
             if "PromoWear" in Environment.modulesList:
-                return Articolo(isList=True).count(denominazione=denominazione,
-                                                    codice=codice,
-                                                    codiceABarre=codiceABarre,
-                                                    codiceArticoloFornitore=codiceArticoloFornitore,
-                                                    produttore=produttore,
-                                                    idFamiglia=idFamiglia,
-                                                    idCategoria=idCategoria,
-                                                    idStato=idStato,
-                                                    cancellato=cancellato,
-                                                    idGruppoTaglia=idGruppoTaglia,
-                                                    idTaglia=idTaglia,
-                                                    idColore=idColore,
-                                                    idAnno=idAnno,
-                                                    idStagione=idStagione,
-                                                    idGenere=idGenere,
-                                                    padriTagliaColore=padriTagliaColore,
-                                                    figliTagliaColore=figliTagliaColore)
+                return Articolo().count(denominazione=denominazione,
+                                            codice=codice,
+                                            codiceABarre=codiceABarre,
+                                            codiceArticoloFornitore=codiceArticoloFornitore,
+                                            produttore=produttore,
+                                            idFamiglia=idFamiglia,
+                                            idCategoria=idCategoria,
+                                            idStato=idStato,
+                                            cancellato=cancellato,
+                                            idGruppoTaglia=idGruppoTaglia,
+                                            idTaglia=idTaglia,
+                                            idColore=idColore,
+                                            idAnno=idAnno,
+                                            idStagione=idStagione,
+                                            idGenere=idGenere,
+                                            padriTagliaColore=padriTagliaColore,
+                                            figliTagliaColore=figliTagliaColore)
             else:
-                return Articolo(isList=True).count(denominazione=denominazione,
-                                                    codice=codice,
-                                                    codiceABarre=codiceABarre,
-                                                    codiceArticoloFornitore=codiceArticoloFornitore,
-                                                    produttore=produttore,
-                                                    idFamiglia=idFamiglia,
-                                                    idCategoria=idCategoria,
-                                                    idStato=idStato,
-                                                    cancellato=cancellato)
+                return Articolo().count(denominazione=denominazione,
+                                        codice=codice,
+                                        codiceABarre=codiceABarre,
+                                        codiceArticoloFornitore=codiceArticoloFornitore,
+                                        produttore=produttore,
+                                        idFamiglia=idFamiglia,
+                                        idCategoria=idCategoria,
+                                        idStato=idStato,
+                                        cancellato=cancellato)
 
         self._filterCountClosure = filterCountClosure
 
@@ -343,28 +343,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             if "PromoWear" in Environment.modulesList:
-                return Articolo(isList=True).select(orderBy=self.orderBy,
-                                                 denominazione=denominazione,
-                                                 codice=codice,
-                                                 codiceABarre=codiceABarre,
-                                                 codiceArticoloFornitore=codiceArticoloFornitore,
-                                                 produttore=produttore,
-                                                 idFamiglia=idFamiglia,
-                                                 idCategoria=idCategoria,
-                                                 idStato=idStato,
-                                                 cancellato=cancellato,
-                                                 idGruppoTaglia=idGruppoTaglia,
-                                                 idTaglia=idTaglia,
-                                                 idColore=idColore,
-                                                 idAnno=idAnno,
-                                                 idStagione=idStagione,
-                                                 idGenere=idGenere,
-                                                 padriTagliaColore=padriTagliaColore,
-                                                 figliTagliaColore=figliTagliaColore,
-                                                 offset=offset,
-                                                 batchSize=batchSize)
-            else:
-                return Articolo(isList=True).select(orderBy=self.orderBy,
+                return Articolo().select(orderBy=self.orderBy,
                                         denominazione=denominazione,
                                         codice=codice,
                                         codiceABarre=codiceABarre,
@@ -374,8 +353,29 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
                                         idCategoria=idCategoria,
                                         idStato=idStato,
                                         cancellato=cancellato,
+                                        idGruppoTaglia=idGruppoTaglia,
+                                        idTaglia=idTaglia,
+                                        idColore=idColore,
+                                        idAnno=idAnno,
+                                        idStagione=idStagione,
+                                        idGenere=idGenere,
+                                        padriTagliaColore=padriTagliaColore,
+                                        figliTagliaColore=figliTagliaColore,
                                         offset=offset,
                                         batchSize=batchSize)
+            else:
+                return Articolo().select(orderBy=self.orderBy,
+                                            denominazione=denominazione,
+                                            codice=codice,
+                                            codiceABarre=codiceABarre,
+                                            codiceArticoloFornitore=codiceArticoloFornitore,
+                                            produttore=produttore,
+                                            idFamiglia=idFamiglia,
+                                            idCategoria=idCategoria,
+                                            idStato=idStato,
+                                            cancellato=cancellato,
+                                            offset=offset,
+                                            batchSize=batchSize)
 
         self._filterClosure = filterClosure
 

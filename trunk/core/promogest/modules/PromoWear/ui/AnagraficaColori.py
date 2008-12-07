@@ -78,13 +78,13 @@ class AnagraficaColori(Anagrafica):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
 
-        self.numRecords = Colore(isList=True).count(denominazione=denominazione)
+        self.numRecords = Colore().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return Colore(isList=True).select( denominazione=denominazione,
+            return Colore().select( denominazione=denominazione,
                                                orderBy = self.orderBy,
                                                offset = self.offset,
                                                batchSize = self.batchSize)

@@ -16,15 +16,15 @@ from Taglia import Taglia
 
 class GruppoTaglia(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
         self.__taglie = None
 
 
     def _getTaglie(self):
         #if self.__taglie is None:
-        grtts = GruppoTagliaTaglia(isList=True).select(idGruppoTaglia=self.id,
+        grtts = GruppoTagliaTaglia().select(idGruppoTaglia=self.id,
                                                         batchSize=None)
 
         self.__taglie = [Taglia().getRecord(id=grtt.id_taglia) for grtt in grtts]

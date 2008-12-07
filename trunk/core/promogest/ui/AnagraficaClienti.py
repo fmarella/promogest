@@ -133,10 +133,9 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         partitaIva = prepareFilterString(self.partita_iva_filter_entry.get_text())
         codiceFiscale = prepareFilterString(self.codice_fiscale_filter_entry.get_text())
         idCategoria = findIdFromCombobox(self.id_categoria_cliente_filter_combobox)
-        cliente= Cliente(isList=True)
 
         def filterCountClosure():
-            return cliente.count( codice=codice,
+            return Cliente().count( codice=codice,
                                     ragioneSociale=ragioneSociale,
                                     insegna=insegna,
                                     cognomeNome=cognomeNome,
@@ -153,7 +152,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return cliente.select(orderBy=self.orderBy,
+            return Cliente().select(orderBy=self.orderBy,
                                     codice=codice,
                                     ragioneSociale=ragioneSociale,
                                     insegna=insegna,
@@ -440,7 +439,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                 return
         self.dao.persist()
         model = self.categorie_treeview.get_model()
-        cleanClienteCategoriaCliente = ClienteCategoriaCliente(isList=True)\
+        cleanClienteCategoriaCliente = ClienteCategoriaCliente()\
                                                     .select(idCliente=self.dao.id,
                                                     batchSize=None)
         for cli in cleanClienteCategoriaCliente:
@@ -553,12 +552,12 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             #magazzinoOk = True
             #model = self.categorie_treeview.get_model()
             #categorie = set(c[0] for c in model if c[3] != 'deleted')
-            #categorieListino = set(c.id_categoria_cliente for c in ListinoCategoriaCliente(isList=True)\
+            #categorieListino = set(c.id_categoria_cliente for c in ListinoCategoriaCliente()\
                                         #.select(idListino=listino,batchSize=None, orderBy="id_listino"))
             #categoriaOk = len(categorieListino.intersection(categorie)) > 0
             #magazzino = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)
             #if magazzino is not None:
-                #magazziniListino = set(m.id_magazzino for m in ListinoMagazzino(isList=True)\
+                #magazziniListino = set(m.id_magazzino for m in ListinoMagazzino()\
                                         #.select(idListino=listino,batchSize=None, orderBy="id_listino"))
                 #magazzinoOk = (magazzino in magazziniListino)
             #print "FIXME: RICONTROLLLLLLLAAAAAARREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"

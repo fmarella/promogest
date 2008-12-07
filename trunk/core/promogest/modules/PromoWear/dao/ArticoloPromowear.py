@@ -34,8 +34,8 @@ from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliame
 
 class Articolo(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
         self.__articoloTagliaColore = None
 
     def _codice_a_barre(self):
@@ -139,7 +139,7 @@ class Articolo(Dao):
         #if self.__articoloTagliaColore is not None:
         #self.__articoloTagliaColore = None
         try:
-            self.__articoloTagliaColore = ArticoloTagliaColore(isList=True).select(idArticolo=self.id,
+            self.__articoloTagliaColore = ArticoloTagliaColore().select(idArticolo=self.id,
                                                                                     offset=None,
                                                                                     batchSize=None)[0]
             return self.__articoloTagliaColore
@@ -160,14 +160,14 @@ class Articolo(Dao):
         try:
             articolo_relato = ArticoloTagliaColore().getRecord(id=self.id)
             if not articolo_relato.id_articolo_padre:
-                articoli = ArticoloTagliaColore(isList=True).select(idArticoloPadre=articolo_relato.id_articolo,
+                articoli = ArticoloTagliaColore().select(idArticoloPadre=articolo_relato.id_articolo,
                                                                     idGruppoTaglia=idGruppoTaglia,
                                                                     idTaglia=idTaglia,
                                                                     idColore=idColore,
                                                                     offset=None,
                                                                     batchSize=None)
             else:
-                articoli = ArticoloTagliaColore(isList=True).select(idArticoloPadre=articolo_relato.id_articolo_padre,
+                articoli = ArticoloTagliaColore().select(idArticoloPadre=articolo_relato.id_articolo_padre,
                                                                     idGruppoTaglia=idGruppoTaglia,
                                                                     idTaglia=idTaglia,
                                                                     idColore=idColore,
@@ -311,7 +311,7 @@ class Articolo(Dao):
         # se l'articolo e' presente tra le righe di un movimento o documento
         # si esegue la cancellazione logica
         from promogest.dao.Riga import Riga
-        res = Riga(isList=True).select(id_articolo=self.id)
+        res = Riga().select(id_articolo=self.id)
         if res:
             daoArticolo = Articolo().getRecord(id=self.id)
             daoArticolo.cancellato = True

@@ -14,7 +14,7 @@ from promogest.dao.Dao import Dao
 def rigaScontrinoDel(id=None):
     """Cancella le righe associate ad un documento"""
     from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
-    row = RigaScontrino(isList=True).select(idTestataScontrino= id,
+    row = RigaScontrino().select(idTestataScontrino= id,
                                                     offset = None,
                                                     batchSize = None,
                                                     orderBy="id_testata_scontrino")
@@ -26,7 +26,7 @@ def rigaScontrinoDel(id=None):
 def scontoRigaScontrinoDel(id=None):
     """Cancella le righe associate ad un documento"""
     from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
-    row = ScontoRigaScontrino(isList=True).select(idRigaScontrino= id,
+    row = ScontoRigaScontrino().select(idRigaScontrino= id,
                                                     offset = None,
                                                     batchSize = None,
                                                     orderBy="id_riga_scontrino")

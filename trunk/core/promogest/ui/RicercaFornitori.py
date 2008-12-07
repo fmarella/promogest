@@ -122,7 +122,7 @@ class RicercaFornitoriFilter(RicercaFilter):
         codiceFiscale = prepareFilterString(self.codice_fiscale_filter_entry.get_text())
         idCategoria = findIdFromCombobox(self.id_categoria_fornitore_filter_combobox)
 
-        self.numRecords = Fornitore(isList=True).count(codice=codice,
+        self.numRecords = Fornitore().count(codice=codice,
                                                     ragioneSociale=ragioneSociale,
                                                     insegna=insegna,
                                                     cognomeNome=cognomeNome,
@@ -133,7 +133,7 @@ class RicercaFornitoriFilter(RicercaFilter):
 
         self._refreshPageCount()
 
-        fors = Fornitore(isList=True).select(orderBy=self.orderBy,
+        fors = Fornitore().select(orderBy=self.orderBy,
                                             codice=codice,
                                             ragioneSociale=ragioneSociale,
                                             insegna=insegna,

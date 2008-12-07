@@ -117,7 +117,7 @@ class AnagraficaArticoliSemplice(GladeWidget):
             obligatoryField(self.getTopLevel(), self.id_unita_base_combobox)
 
         # controllo esistenza codice articolo
-        arts = Articolo(isList=True).select(codice = self.codice_entry.get_text(),
+        arts = Articolo().select(codice = self.codice_entry.get_text(),
                                                         offset = None,
                                                         batchSize = None)
 
@@ -135,7 +135,7 @@ class AnagraficaArticoliSemplice(GladeWidget):
             raise Exception, 'Operation aborted'
 
         # controllo esistenza codice a barre su altro articolo
-        bars = CodiceABarreArticolo(isList=True).select(idArticolo=None,
+        bars = CodiceABarreArticolo().select(idArticolo=None,
                                     codice=self.codice_a_barre_entry.get_text(),
                                     offset=None,
                                     batchSize=None)

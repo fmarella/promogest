@@ -247,7 +247,7 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
         idFornitore = self.id_fornitore_filter_customcombobox.getId()
 
         def filterCountClosure():
-            return TestataMovimento(isList=True).count(daNumero=daNumero,
+            return TestataMovimento().count(daNumero=daNumero,
                                                     aNumero=aNumero,
                                                     daParte=None,
                                                     aParte=None,
@@ -266,7 +266,7 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return TestataMovimento(isList=True).select(orderBy=self.orderBy,
+            return TestataMovimento().select(orderBy=self.orderBy,
                                                          daNumero=daNumero,
                                                          aNumero=aNumero,
                                                          daParte=None,
@@ -1198,26 +1198,32 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         if self.ricerca_codice_button.get_active():
             codice = self.articolo_entry.get_text()
             orderBy = Environment.params["schema"]+".articolo.codice"
+            batchSize = Environment.conf.batch_size
         elif self.ricerca_codice_a_barre_button.get_active():
             codiceABarre = self.articolo_entry.get_text()
+            join= Articolo.cod_barre
             orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
+            batchSize = Environment.conf.batch_size
         elif self.ricerca_descrizione_button.get_active():
             denominazione = self.articolo_entry.get_text()
             orderBy = Environment.params["schema"]+".articolo.denominazione"
         elif self.ricerca_codice_articolo_fornitore_button.get_active():
             codiceArticoloFornitore = self.articolo_entry.get_text()
+            join= Articolo.fornitur
             orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
+            batchSize = Environment.conf.batch_size
 
-        arts = Articolo(isList=True).select(orderBy=orderBy,
-                                denominazione=prepareFilterString(denominazione),
-                                codice=prepareFilterString(codice),
-                                codiceABarre=prepareFilterString(codiceABarre),
-                                codiceArticoloFornitore=prepareFilterString(codiceArticoloFornitore),
-                                idFamiglia=None,
-                                idCategoria=None,
-                                idStato=None,
-                                offset=None,
-                                batchSize=None)
+        arts = Articolo().select(orderBy=orderBy,
+                                            join = join,
+                                            denominazione=prepareFilterString(denominazione),
+                                            codice=prepareFilterString(codice),
+                                            codiceABarre=prepareFilterString(codiceABarre),
+                                            codiceArticoloFornitore=prepareFilterString(codiceArticoloFornitore),
+                                            idFamiglia=None,
+                                            idCategoria=None,
+                                            idStato=None,
+                                            offset=None,
+                                            batchSize=None)
 
 
         if (len(arts) == 1):

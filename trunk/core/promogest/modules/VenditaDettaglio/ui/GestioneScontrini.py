@@ -177,13 +177,13 @@ class GestioneScontrini(GladeWidget):
         idArticolo = self.filters.id_articolo_filter_customcombobox.getId()
         daData = stringToDate(self.filters.da_data_filter_entry.get_text())
         aData = stringToDateBumped(self.filters.a_data_filter_entry.get_text())
-        self.filterss.numRecords = TestataScontrino(isList=True).count(idArticolo=idArticolo,
+        self.filterss.numRecords = TestataScontrino().count(idArticolo=idArticolo,
                                                                       daData=daData,
                                                                       aData=aData)
 
         self.filterss._refreshPageCount()
 
-        scos = TestataScontrino(isList=True).select( orderBy=self.filterss.orderBy,
+        scos = TestataScontrino().select( orderBy=self.filterss.orderBy,
                                                      idArticolo=idArticolo,
                                                      daData=daData,
                                                      aData=aData,

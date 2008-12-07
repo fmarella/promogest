@@ -23,8 +23,8 @@ import datetime
 
 class ListinoArticolo(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def _denominazione(self):
         if self.listi:return self.listi.denominazione
@@ -150,7 +150,7 @@ class ListinoArticolo(Dao):
     def _setScontiVenditaIngrosso(self,value):
         self.__scontiVenditaIngr = value
 
-    sconto_vendita_ingrosso = property(_getScontiVenditaIngrosso, _setScontiVenditaIngrosso)    
+    sconto_vendita_ingrosso = property(_getScontiVenditaIngrosso, _setScontiVenditaIngrosso)
 
     def _getApplicazioneScontiIngrosso(self):
         return "scalare"

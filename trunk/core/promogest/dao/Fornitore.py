@@ -16,8 +16,8 @@ from promogest.ui.utils import  codeIncrement
 
 class Fornitore(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def _categoria(self):
         a =  params["session"].query(CategoriaFornitore).with_parent(self).filter(self.id_categoria_fornitore==CategoriaFornitore.id).all()
@@ -47,7 +47,7 @@ def getNuovoCodiceFornitore():
     listacodici = []
     if hasattr(conf,'Fornitori'):
         try:
-            codicesel = Fornitore(isList=True).select(batchSize=None, orderBy="ragione_sociale")
+            codicesel = Fornitore().select(batchSize=None, orderBy="ragione_sociale")
             for cod in codicesel:
                 listacodici.append(cod.codice)
                 codice = codeIncrement(str(max(listacodici)))
@@ -60,21 +60,13 @@ def getNuovoCodiceFornitore():
             pass
     return codice
 
-fornitore=Table('fornitore',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
+fornitore=Table('fornitore',params['metadata'],schema = params['schema'],autoload=True)
 
-persona_giuridica=Table('persona_giuridica',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
+persona_giuridica=Table('persona_giuridica',params['metadata'],schema = params['schema'],autoload=True)
 
 j = join(fornitore, persona_giuridica)
+
 std_mapper = mapper(Fornitore,j, properties={
         'id':[fornitore.c.id, persona_giuridica.c.id],
         "categoria_fornitore":relation(CategoriaFornitore,backref="fornitore")
         }, order_by=fornitore.c.id)
-
-
-

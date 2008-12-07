@@ -85,11 +85,11 @@ class RicercaAziendeFilter(RicercaFilter):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
 
-        self.numRecords = Azienda(isList=True).count(denominazione=denominazione)
+        self.numRecords = Azienda().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
-        azis = Azienda(isList=True).select(orderBy=self.orderBy,
+        azis = Azienda().select(orderBy=self.orderBy,
                                             denominazione=denominazione,
                                             offset=self.offset,
                                             batchSize=self.batchSize)

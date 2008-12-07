@@ -6,7 +6,7 @@
  Author: Pinna Marco (Dr_astico) <zoccolodignu@gmail.com>
  License: GNU GPLv2
  """
- 
+
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
@@ -15,8 +15,8 @@ from Sconto import Sconto
 
 class ScontoVenditaIngrosso(Dao):
     """  """
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         if k == 'idListino':

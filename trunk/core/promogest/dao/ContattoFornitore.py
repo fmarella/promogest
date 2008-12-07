@@ -12,18 +12,17 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 from Fornitore import Fornitore
-#from promogest.dao.Contatto import Contatto
 from RecapitoContatto import RecapitoContatto
 from ContattoCategoriaContatto import ContattoCategoriaContatto
 
 class ContattoFornitore(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList, orderBy='cognome, nome',)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
 
     def _getRecapitiContatto(self):
-        self.__dbRecapitiContatto = RecapitoContatto(isList=True).select(id=self.id)
+        self.__dbRecapitiContatto = RecapitoContatto().select(id=self.id)
         self.__recapitiContatto = self.__dbRecapitiContatto[:]
         return self.__recapitiContatto
 
@@ -34,8 +33,8 @@ class ContattoFornitore(Dao):
 
 
     def _getCategorieContatto(self):
-        self.__dbCategorieContatto = ContattoCategoriaContatto(isList=True).select(id=self.id,
-                                                                            orderBy="id_contatto")
+        self.__dbCategorieContatto = ContattoCategoriaContatto().select(id=self.id,
+                                                                        orderBy="id_contatto")
         self.__categorieContatto = self.__dbCategorieContatto[:]
         return self.__categorieContatto
 
@@ -72,15 +71,9 @@ class ContattoFornitore(Dao):
         return  dic[k]
 
 
-contatto=Table('contatto',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
+contatto=Table('contatto',params['metadata'],schema = params['schema'],autoload=True)
 
-contattofornitore=Table('contatto_fornitore',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
+contattofornitore=Table('contatto_fornitore',params['metadata'],schema = params['schema'],autoload=True)
 
 j = join(contatto, contattofornitore)
 

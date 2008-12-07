@@ -195,7 +195,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         idArticolo = self.id_articolo_filter_customcombobox.getId()
 
         def filterCountClosure():
-            return TestataDocumento(isList=True).count(daNumero=daNumero,
+            return TestataDocumento().count(daNumero=daNumero,
                                                         aNumero=aNumero,
                                                         daParte=None,
                                                         aParte=None,
@@ -217,7 +217,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return TestataDocumento(isList=True).select(orderBy=self.orderBy,
+            return TestataDocumento().select(orderBy=self.orderBy,
                                                          daNumero=daNumero,
                                                          aNumero=aNumero,
                                                          daParte=None,

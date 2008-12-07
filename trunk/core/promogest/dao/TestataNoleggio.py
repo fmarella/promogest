@@ -18,8 +18,8 @@ from Fornitura import Fornitura
 
 class TestataNoleggio(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
 
     def _getRigheNoleggio(self):
@@ -79,10 +79,8 @@ class TestataNoleggio(Dao):
             conn.execStoredProcedure('RigheMovimentoDel',(self.id, ))"""
         def righeNoleggioDel(id=None):
             """Cancella le righe associate ad un movimento"""
-            row = RigaNoleggio(isList=True).select(idTestataNoleggio = id,
-                                                            offset = None,
-                                                            batchSize = None,
-                                                            orderBy="id_testata_noleggio")
+            row = RigaNoleggio().select(idTestataNoleggio = id,
+
             for r in row:
                 r.delete()
             return
@@ -101,7 +99,7 @@ class TestataNoleggio(Dao):
                         con data <= alla data del movimento"""
 
                     # ATTENZIONE Direi che le forniture non debbano essere aggiornate
-                    #fors = Dao(Fornitura,isList=True).select(idArticolo=riga.id_articolo,
+                    #fors = Dao(Fornitura).select(idArticolo=riga.id_articolo,
                                                             #idFornitore=self.id_fornitore,
                                                             #daDataPrezzo=None,
                                                             #aDataPrezzo=self.data_noleggio,

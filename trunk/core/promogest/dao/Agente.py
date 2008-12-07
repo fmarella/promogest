@@ -14,8 +14,8 @@ from promogest.ui.utils import  codeIncrement
 
 class Agente(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         dic= {  'codice' : persona_giuridica.c.codice.ilike("%"+v+"%"),
@@ -37,7 +37,7 @@ def getNuovoCodiceAgente():
     if hasattr(conf,'Agenti'):
         try:
             #codicesel  = select([func.max(Cliente.c.codice)]).execute().fetchall()
-            codicesel = Agente(isList=True).select(batchSize=None)
+            codicesel = Agente().select(batchSize=None)
             for cod in codicesel:
                 listacodici.append(cod.codice)
             codice = codeIncrement(str(max(listacodici)))

@@ -13,12 +13,12 @@ from Dao import Dao
 from Multiplo import Multiplo
 from ScontoFornitura import ScontoFornitura
 from Fornitore import Fornitore
-#from Articolo import Articolo
+
 
 class Fornitura(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def _getScontiFornitura(self):
         self.__dbScontiFornitura = params['session'].query(ScontoFornitura).with_parent(self).filter_by(id_fornitura=fornitura.c.id).all()

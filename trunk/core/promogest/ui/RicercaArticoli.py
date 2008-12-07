@@ -184,7 +184,7 @@ class RicercaArticoliFilter(RicercaFilter):
         idStato = findIdFromCombobox(self.id_stato_articolo_filter_combobox)
         cancellato = False
 
-        self.numRecords = Articolo(isList=True).count(denominazione=denominazione,
+        self.numRecords = Articolo().count(denominazione=denominazione,
                                                        codice=codice,
                                                        codiceABarre=codiceABarre,
                                                        codiceArticoloFornitore=codiceArticoloFornitore,
@@ -196,7 +196,7 @@ class RicercaArticoliFilter(RicercaFilter):
 
         self._refreshPageCount()
 
-        arts = Articolo(isList=True).select(orderBy=self.orderBy,
+        arts = Articolo().select(orderBy=self.orderBy,
                                              denominazione=denominazione,
                                              codice=codice,
                                              codiceABarre=codiceABarre,

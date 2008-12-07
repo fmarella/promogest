@@ -868,7 +868,7 @@ class RicercaClientiFilter(GladeWidget):
 
         treeview.set_search_column(3)
 
-        cats = CategoriaCliente(isList=True).select(offset=None, batchSize=None)
+        cats = CategoriaCliente().select(offset=None, batchSize=None)
 
         for c in cats:
             included = excluded = False
@@ -915,7 +915,7 @@ class RicercaClientiFilter(GladeWidget):
 
         treeview.set_search_column(3)
 
-        pags = Pagamento(isList=True).select(offset=None, batchSize=None)
+        pags = Pagamento().select(offset=None, batchSize=None)
 
         for p in pags:
             included = excluded = False
@@ -962,7 +962,7 @@ class RicercaClientiFilter(GladeWidget):
 
         treeview.set_search_column(3)
 
-        mags = Magazzino(isList=True).select(offset=None, batchSize=None)
+        mags = Magazzino().select(offset=None, batchSize=None)
 
         for m in mags:
             included = excluded = False
@@ -1009,7 +1009,7 @@ class RicercaClientiFilter(GladeWidget):
 
         treeview.set_search_column(4)
 
-        liss = Listino(isList=True).select(offset=None, batchSize=None)
+        liss = Listino().select(offset=None, batchSize=None)
 
         for l in liss:
             included = excluded = False
@@ -1569,7 +1569,7 @@ class RicercaClientiFilter(GladeWidget):
             partitaIva = None
             idCategoria = None
 
-        self.filter.numRecords = Cliente(isList=True).count(ragioneSociale = ragioneSociale,
+        self.filter.numRecords = Cliente().count(ragioneSociale = ragioneSociale,
                                                             insegna = insegna,
                                                             cognomeNome = cognomeNome,
                                                             codice = codice,
@@ -1581,7 +1581,7 @@ class RicercaClientiFilter(GladeWidget):
         self.resultsCount = self.filter.numRecords
         self.filter._refreshPageCount()
 
-        clis = Cliente(isList=True).select(orderBy = self.filter.orderBy,
+        clis = Cliente().select(orderBy = self.filter.orderBy,
                                             ragioneSociale = ragioneSociale,
                                             insegna = insegna,
                                             cognomeNome = cognomeNome,

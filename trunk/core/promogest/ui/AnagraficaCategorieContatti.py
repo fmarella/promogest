@@ -59,13 +59,13 @@ class AnagraficaCategorieContatti(Anagrafica):
     def refresh(self):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
-        self.numRecords = CategoriaContatto(isList=True).count(denominazione=denominazione)
+        self.numRecords = CategoriaContatto().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return CategoriaContatto(isList=True).select(denominazione=denominazione,
+            return CategoriaContatto().select(denominazione=denominazione,
                                                         orderBy=self.orderBy,
                                                         offset=self.offset,
                                                         batchSize=self.batchSize)

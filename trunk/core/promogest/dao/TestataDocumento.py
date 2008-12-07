@@ -36,8 +36,8 @@ from promogest.ui.utilsCombobox import *
 
 class TestataDocumento(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
         self.__righeDocumento = None
         self.__operazione = None
@@ -72,11 +72,8 @@ class TestataDocumento(Dao):
 
     def _getRigheDocumento(self):
         if self.id:
-            self.__dbRigheDocumentoPart = params['session']\
-                                        .query(RigaDocumento)\
-                                        .with_parent(self)\
-                                        .filter(RigaDocumento.id_testata_documento==self.id)\
-                                        .all()
+            self.__dbRigheDocumentoPart = RigaDocumento().select(idTestataDocumento=self.id,
+                                                                            batchSize=None)
             self.__dbRigheMovimentoPart = params['session']\
                                         .query(RigaMovimento)\
                                         .join(RigaMovimento.testata_movimento)\
@@ -137,7 +134,8 @@ class TestataDocumento(Dao):
 
     def _getScontiTestataDocumento(self):
         if self.id:
-            self.__dbScontiTestataDocumento = ScontoTestataDocumento(isList=True).select(idScontoTestataDocumento=self.id,
+            self.__dbScontiTestataDocumento = ScontoTestataDocumento().select(join = ScontoTestataDocumento.TD,
+                                                                                idScontoTestataDocumento=self.id,
                                                                                 batchSize=None)
             self.__scontiTestataDocumento = self.__dbScontiTestataDocumento
         else:
@@ -198,8 +196,6 @@ class TestataDocumento(Dao):
 
 
     def _getTotaliDocumento(self):
-        #self.__operazione = None
-        #if self.__operazione is None:
         self.__operazione = leggiOperazione(self.operazione)
 
         fonteValore = self.__operazione["fonteValore"]
@@ -224,7 +220,9 @@ class TestataDocumento(Dao):
 
             totaleRiga = float(righeDocumento[i].quantita) * float(righeDocumento[i].moltiplicatore) * float(righeDocumento[i].valore_unitario_netto)
             percentualeIvaRiga = float(righeDocumento[i].percentuale_iva)
-            aliquotaIvaRiga = righeDocumento[i].aliquota
+            ali = AliquotaIva().select(percentuale=percentualeIvaRiga, isList="one")
+            #aliquotaIvaRiga = righeDocumento[i].aliquota
+            aliquotaIvaRiga = ali.denominazione_breve
 
             if (fonteValore == "vendita_iva" or
                 fonteValore == "acquisto_iva"):
@@ -319,7 +317,6 @@ class TestataDocumento(Dao):
         if operazione["segno"] != '':
             if righe is not None:
                 for key,row in righe.items():
-                    print "rooooooooooooooooooooooooooooooooooooooooW", row
                     if row.id_articolo is not None:
                         righeMovimentazione = True
                         break
@@ -337,7 +334,7 @@ class TestataDocumento(Dao):
         contieneMovimentazione = self.contieneMovimentazione(righe=righe)
         #cerco le testate movimento associate al documento
         #FIXME: se ne trovo piu' di una ? (ad esempio se il documento e' in realta' un cappello)
-        res = TestataMovimento(isList=True).select(idTestataDocumento = self.id,batchSize=None)
+        res = TestataMovimento().select(idTestataDocumento = self.id,batchSize=None)
         if len(res) == 0:
             if contieneMovimentazione:
                 #print "SIAMO DENTRO QUESTO IF, CREO UNA NUOVA TESTATA MOVIMENTO", contieneMovimentazione
@@ -693,6 +690,8 @@ std_mapper = mapper(TestataDocumento, testata_documento, properties={
         "CLI":relation(Cliente,primaryjoin = (testata_documento.c.id_cliente==Cliente.id)),
         "FORN":relation(Fornitore,primaryjoin = (testata_documento.c.id_fornitore==Fornitore.id)),
         "AGE":relation(Agente,primaryjoin = (testata_documento.c.id_agente==Agente.id)),
+        "OP":relation(Operazione,primaryjoin = (testata_documento.c.operazione==Operazione.denominazione), backref="TD"),
+        "STD":relation(ScontoTestataDocumento,primaryjoin = (testata_documento.c.id==ScontoTestataDocumento.id_testata_documento), backref="TD"),
         #'lang':relation(Language, backref='user')
         }, order_by=testata_documento.c.id)
 

@@ -94,7 +94,7 @@ class ElencoListini(GladeWidget):
         model = self.elenco_listini_treeview.get_model()
         model.clear()
 
-        liss = Listino(isList=True).select(orderBy='denominazione',
+        liss = Listino().select(orderBy='denominazione',
                                             batchSize=None,
                                             offset=None)
 

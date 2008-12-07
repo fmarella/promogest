@@ -72,14 +72,14 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
         # Aggiornamento TreeView
         idArticolo = self._idArticolo
         codice = prepareFilterString(self.filter.codice_filter_entry.get_text())
-        self.numRecords = CodiceABarreArticolo(isList=True).count(idArticolo=idArticolo,
+        self.numRecords = CodiceABarreArticolo().count(idArticolo=idArticolo,
                                                                    codice=codice)
 
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return CodiceABarreArticolo(isList=True).select(idArticolo=idArticolo,
+            return CodiceABarreArticolo().select(idArticolo=idArticolo,
                                                              codice=codice,
                                                              orderBy=self.orderBy,
                                                              offset=self.offset,
@@ -167,7 +167,7 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
         self.dao.delete()
 
     def verifica(self, codice):
-        bars = CodiceABarreArticolo(isList=True).select(idArticolo=None,
+        bars = CodiceABarreArticolo().select(idArticolo=None,
                                                          codice=codice,
                                                          offset=None,
                                                          batchSize=None)

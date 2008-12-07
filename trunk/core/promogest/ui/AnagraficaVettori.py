@@ -126,10 +126,8 @@ class AnagraficaVettoriFilter(AnagraficaFilter):
         partitaIva = prepareFilterString(self.partita_iva_filter_entry.get_text())
         codiceFiscale = prepareFilterString(self.codice_fiscale_filter_entry.get_text())
 
-        vettore = Vettore(isList=True)
-
         def filterCountClosure():
-            return vettore.count(codice=codice,
+            return Vettore().count(codice=codice,
                                 ragioneSociale=ragioneSociale,
                                 insegna=insegna,
                                 cognomeNome=cognomeNome,
@@ -145,7 +143,7 @@ class AnagraficaVettoriFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return vettore.select(orderBy=self.orderBy,
+            return Vettore().select(orderBy=self.orderBy,
                                 codice=codice,
                                 ragioneSociale=ragioneSociale,
                                 insegna=insegna,

@@ -465,7 +465,7 @@ class RicercaArticoliFilter(GladeWidget):
             anno = getattr(Environment.conf.PromoWear,'anno_default', None)
             if anno is not None:
                 try:
-                    idAnno = AnnoAbbigliamento(isList = True).select(denominazione = anno)[0].id
+                    idAnno = AnnoAbbigliamento().select(denominazione = anno)[0].id
                     findComboboxRowFromId(self.id_anno_articolo_filter_combobox, idAnno)
                 except:
                     pass
@@ -571,7 +571,7 @@ class RicercaArticoliFilter(GladeWidget):
 
         treeview.set_search_column(4)
 
-        grts = GruppoTaglia(isList=True).select(offset=None, batchSize=None)
+        grts = GruppoTaglia().select(offset=None, batchSize=None)
 
 
         for g in grts:
@@ -629,7 +629,7 @@ class RicercaArticoliFilter(GladeWidget):
 
         treeview.set_search_column(4)
 
-        tags = Taglia(isList=True).select(offset=None, batchSize=None)
+        tags = Taglia().select(offset=None, batchSize=None)
 
         for t in tags:
             included = excluded = False
@@ -686,7 +686,7 @@ class RicercaArticoliFilter(GladeWidget):
 
         treeview.set_search_column(4)
 
-        cols = Colore(isList=True).select(offset=None, batchSize=None)
+        cols = Colore().select(offset=None, batchSize=None)
 
 
         for c in cols:
@@ -743,7 +743,7 @@ class RicercaArticoliFilter(GladeWidget):
                 anno = int(default)
 
 
-        anns = AnnoAbbigliamento(isList=True).select(offset=None, batchSize=None)
+        anns = AnnoAbbigliamento().select(offset=None, batchSize=None)
         for a in anns:
             included = excluded = False
             if anno is not None:
@@ -842,7 +842,7 @@ class RicercaArticoliFilter(GladeWidget):
             if default is not None:
                 stagione = int(default)
 
-        stas = StagioneAbbigliamento(isList=True).select(offset=None, batchSize=None)
+        stas = StagioneAbbigliamento().select(offset=None, batchSize=None)
 
         for s in stas:
             included = excluded = False
@@ -890,7 +890,7 @@ class RicercaArticoliFilter(GladeWidget):
 
         treeview.set_search_column(3)
 
-        gens = GenereAbbigliamento(isList=True).select(offset=None, batchSize=None)
+        gens = GenereAbbigliamento().select(offset=None, batchSize=None)
 
         for g in gens:
             included = excluded = False
@@ -1283,7 +1283,7 @@ class RicercaArticoliFilter(GladeWidget):
 
         treeview.set_search_column(5)
 
-        fams = FamigliaArticolo(isList=True).select()
+        fams = FamigliaArticolo().select()
         def recurse_tree(id_padre, parent_iter=None, max_depth=None, ):
             if parent_iter is None :
                 padre = None
@@ -1416,7 +1416,7 @@ class RicercaArticoliFilter(GladeWidget):
 
         treeview.set_search_column(4)
 
-        cats = CategoriaArticolo(isList=True).select(offset=None, batchSize=None)
+        cats = CategoriaArticolo().select(offset=None, batchSize=None)
 
         for c in cats:
             included = excluded = False
@@ -1465,7 +1465,7 @@ class RicercaArticoliFilter(GladeWidget):
 
         treeview.set_search_column(3)
 
-        stas = StatoArticolo(isList=True).select(offset=None, batchSize=None)
+        stas = StatoArticolo().select(offset=None, batchSize=None)
 
 
         for s in stas:
@@ -1522,7 +1522,7 @@ class RicercaArticoliFilter(GladeWidget):
 
         treeview.set_search_column(4)
 
-        units=UnitaBase(isList=True).select(batchSize=None,offset=None)
+        units=UnitaBase().select(batchSize=None,offset=None)
         for u in units:
             model.append((False,
                           False,
@@ -2096,7 +2096,7 @@ class RicercaArticoliFilter(GladeWidget):
             #if self.complexFilter:
                 #self.complexFilter= and_(*self.complexFilter)
         if "Promowear" in Environment.modulesList:
-            self.filter.numRecords = Articolo(isList=True).count(denominazione=denominazione,
+            self.filter.numRecords = Articolo().count(denominazione=denominazione,
                                                         codice=codice,
                                                         codiceABarre=codiceABarre,
                                                         codiceArticoloFornitore=codiceArticoloFornitore,
@@ -2114,7 +2114,7 @@ class RicercaArticoliFilter(GladeWidget):
                                                         padriTagliaColore=padriTagliaColore,
                                                         figliTagliaColore=figliTagliaColore)
         else:
-            self.filter.numRecords = Articolo(isList=True).count(denominazione=denominazione,
+            self.filter.numRecords = Articolo().count(denominazione=denominazione,
                                         codice=codice,
                                         codiceABarre=codiceABarre,
                                         codiceArticoloFornitore=codiceArticoloFornitore,
@@ -2127,7 +2127,7 @@ class RicercaArticoliFilter(GladeWidget):
         self.resultsCount = self.filter.numRecords
         self.filter._refreshPageCount()
         if "PromoWear" in Environment.modulesList:
-            arts = Articolo(isList=True).select(orderBy=self.filter.orderBy,
+            arts = Articolo().select(orderBy=self.filter.orderBy,
                                              denominazione=denominazione,
                                              codice=codice,
                                              codiceABarre=codiceABarre,
@@ -2168,7 +2168,7 @@ class RicercaArticoliFilter(GladeWidget):
                             (a.stagione or ''),
                             (a.genere or '')))
         else:
-            arts = Articolo(isList=True).select(orderBy=self.filter.orderBy,
+            arts = Articolo().select(orderBy=self.filter.orderBy,
                                                     denominazione=denominazione,
                                                     codice=codice,
                                                     codiceABarre=codiceABarre,

@@ -193,9 +193,8 @@ class AnagraficaPromemoriaFilter(AnagraficaFilter):
         completati = self.completati_checkbox.get_active()
         scaduti = self.scaduti_checkbox.get_active()
         in_scadenza = self.in_scadenza_checkbox.get_active()
-        prome= Promemoria(isList=True)
         def filterCountClosure():
-            return prome.count( da_data_inserimento = da_data_inserimento,
+            return Promemoria().count( da_data_inserimento = da_data_inserimento,
                                 a_data_inserimento = a_data_inserimento,
                                 da_data_scadenza = da_data_scadenza,
                                 a_data_scadenza = a_data_scadenza,
@@ -217,7 +216,7 @@ class AnagraficaPromemoriaFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return prome.select(orderBy=self.orderBy,
+            return Promemoria().select(orderBy=self.orderBy,
                                 da_data_inserimento = da_data_inserimento,
                                 a_data_inserimento = a_data_inserimento,
                                 da_data_scadenza = da_data_scadenza,

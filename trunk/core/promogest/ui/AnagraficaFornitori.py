@@ -129,7 +129,7 @@ class AnagraficaFornitoriFilter(AnagraficaFilter):
         idCategoria = findIdFromCombobox(self.id_categoria_fornitore_filter_combobox)
 
         def filterCountClosure():
-            return Fornitore(isList=True).count(codice=codice,
+            return Fornitore().count(codice=codice,
                                     ragioneSociale=ragioneSociale,
                                     insegna=insegna,
                                     cognomeNome=cognomeNome,
@@ -144,7 +144,7 @@ class AnagraficaFornitoriFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return Fornitore(isList=True).select(orderBy=self.orderBy,
+            return Fornitore().select(orderBy=self.orderBy,
                                                     codice=codice,
                                                     ragioneSociale=ragioneSociale,
                                                     insegna=insegna,

@@ -10,15 +10,14 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-#from promogest.dao.Listino import Listino
 from Magazzino import Magazzino
 
 
 
 class ListinoMagazzino(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def _magazzino(self):
         if self.magazzin:

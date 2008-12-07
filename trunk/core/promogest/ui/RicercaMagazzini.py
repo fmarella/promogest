@@ -96,11 +96,11 @@ class RicercaMagazziniFilter(RicercaFilter):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
 
-        self.numRecords = Magazzino(isList=True).count(denominazione=denominazione)
+        self.numRecords = Magazzino().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
-        mags = Magazzino(isList=True).select(orderBy=self.orderBy,
+        mags = Magazzino().select(orderBy=self.orderBy,
                                               denominazione=denominazione,
                                               offset=self.offset,
                                               batchSize=self.batchSize)

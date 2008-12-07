@@ -22,8 +22,8 @@ riga_mov=Table('riga_movimento', params['metadata'], schema = params['schema'], 
 
 class RigaMovimento(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def __magazzino(self):
         a =  params["session"].query(Magazzino).with_parent(self).filter(RigaMovimento.id_magazzino==Magazzino.c.id).all()
@@ -49,10 +49,10 @@ class RigaMovimento(Dao):
         if not a: return a
         else: return a[0].codice
     codice_articolo= property(__codiceArticolo)
- 
+
     def _getScontiRigaMovimento(self):
         #if self.__dbScontiRigaMovimento is None:
-        self.__dbScontiRigaMovimento = ScontoRigaMovimento(isList=True).select(id=self.id,
+        self.__dbScontiRigaMovimento = ScontoRigaMovimento().select(id=self.id,
                                                                             offset = None,
                                                                             batchSize = None)
         #if self.__scontiRigaMovimento is None:

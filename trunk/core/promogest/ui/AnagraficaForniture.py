@@ -241,7 +241,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         codiceArticoloFornitore = prepareFilterString(self.codice_articolo_fornitore_filter_entry.get_text())
 
         def filterCountClosure():
-            return Fornitura(isList=True).count( idArticolo=idArticolo,
+            return Fornitura().count( idArticolo=idArticolo,
                                     idFornitore=idFornitore,
                                     daDataFornitura=daDataFornitura,
                                     aDataFornitura=aDataFornitura,
@@ -257,7 +257,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return Fornitura(isList=True).select(orderBy=self.orderBy,
+            return Fornitura().select(orderBy=self.orderBy,
                                         idArticolo=idArticolo,
                                         idFornitore=idFornitore,
                                         daDataFornitura=daDataFornitura,

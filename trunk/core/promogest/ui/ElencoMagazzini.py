@@ -74,7 +74,7 @@ class ElencoMagazzini(GladeWidget):
         model = self.elenco_magazzini_treeview.get_model()
         model.clear()
 
-        mags = Magazzino(isList=True).select(offset=None, batchSize=None)
+        mags = Magazzino().select(offset=None, batchSize=None)
         for m in mags:
             model.append((m,
                           (m.denominazione or ''),

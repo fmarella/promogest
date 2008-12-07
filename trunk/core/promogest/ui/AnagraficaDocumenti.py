@@ -29,7 +29,7 @@ class AnagraficaDocumenti(Anagrafica):
     """ Anagrafica documenti """
 
     def __init__(self, idMagazzino=None, aziendaStr=None):
-        self._magazzinoFissato = (idMagazzino <> None)
+        self._magazzinoFissato = (idMagazzino != None)
         self._idMagazzino=idMagazzino
         Anagrafica.__init__(self,
                             windowTitle='Promogest - Registrazione documenti',
@@ -49,9 +49,9 @@ class AnagraficaDocumenti(Anagrafica):
             numero = str(d.numero)
             data = dateToString(d.data_documento)
             totali = d.totali
-            totaleImponibile = float(d._totaleImponibileScontato or 0)
-            totaleImposta = float(d._totaleImpostaScontata or 0)
-            totale = float(d._totaleScontato or 0)
+            totaleImponibile = mN(d._totaleImponibileScontato) or 0
+            totaleImposta = mN(d._totaleImpostaScontata) or 0
+            totale = mN(d._totaleScontato) or 0
             datalist=[data, numero, d.operazione, d.intestatario,d.protocollo,d.ragione_sociale_agente, totaleImponibile, totaleImposta, totale, d.note_interne]
             rowlist.append(datalist)
         return rowlist

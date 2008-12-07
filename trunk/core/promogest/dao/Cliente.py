@@ -21,11 +21,11 @@ from promogest.ui.utils import  codeIncrement
 
 class Cliente(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def _getCategorieCliente(self):
-        self.__dbCategorieCliente = ClienteCategoriaCliente(isList=True)\
+        self.__dbCategorieCliente = ClienteCategoriaCliente()\
                                     .select(idCliente = self.id,
                                     offset=None,
                                     batchSize=None)
@@ -71,7 +71,7 @@ def getNuovoCodiceCliente():
             prefissoCodice = conf.Clienti.prefisso_codice
             try:
                 #codicesel  = select([func.max(Cliente.c.codice)]).execute().fetchall()
-                codicesel = Cliente(isList=True).select(batchSize=None)
+                codicesel = Cliente().select(batchSize=None)
                 for cod in codicesel:
                     listacodici.append(cod.codice)
                 codice = codeIncrement(str(max(listacodici)))

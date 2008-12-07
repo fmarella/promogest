@@ -138,14 +138,14 @@ class AnagraficaBanche(Anagrafica):
         denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
         agenzia = prepareFilterString(self.filter.agenzia_filter_entry.get_text())
         iban = prepareFilterString(self.filter.iban_filter_entry.get_text())
-        self.numRecords = Banca(isList=True).count( denominazione=denominazione,
+        self.numRecords = Banca().count( denominazione=denominazione,
                                                     agenzia=agenzia,
                                                     iban=iban)
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return Banca(isList=True).select(denominazione=denominazione,
+            return Banca().select(denominazione=denominazione,
                                             agenzia=agenzia,
                                             iban=iban,
                                             orderBy=self.orderBy,

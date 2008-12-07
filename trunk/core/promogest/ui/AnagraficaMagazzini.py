@@ -86,7 +86,7 @@ class AnagraficaMagazziniFilter(AnagraficaFilter):
         denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
 
         def filterCountClosure():
-            return Magazzino(isList=True).count(denominazione=denominazione)
+            return Magazzino().count(denominazione=denominazione)
 
         self._filterCountClosure = filterCountClosure
 
@@ -96,7 +96,7 @@ class AnagraficaMagazziniFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return Magazzino(isList=True).select(  denominazione=denominazione,
+            return Magazzino().select(  denominazione=denominazione,
                                 orderBy=self.orderBy,
                                 offset=offset,
                                 batchSize=batchSize)

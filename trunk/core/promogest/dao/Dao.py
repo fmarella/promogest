@@ -10,7 +10,6 @@
 import sqlalchemy
 from sqlalchemy import *
 from sqlalchemy.orm import *
-#from sqlalchemy import and_, or_ , in_
 from promogest.Environment import *
 from UserDict import UserDict
 from sqlalchemy.util import OrderedDict
@@ -22,34 +21,22 @@ a = datetime.datetime
 
 class Dao(object):
     """Astrazione generica di ciò che fu il vecchio dao basata su sqlAlchemy"""
-    def __init__(self, entity=None, isList=True, orderBy=None, exceptionHandler=None):
-        #self.entity = entity
-        self.orderBy = orderBy
-        self.isList = isList
+    def __init__(self, entity=None, exceptionHandler=None):
         self.session = params["session"]
         self.metadata = params["metadata"]
         self.numRecords = None
-        self.DaoModule = entity
+        self.DaoModule = entity.__class__
         self._exceptionHandler = exceptionHandler
-        if isList:
-            self.record = []
 
     def getRecord(self,id=None):
         if id:
             _record = self.session.query(self.DaoModule).get(id)
         else:
-            raise Exception, " ATTENZIONE ID MANCANTE"
+            return None
         return _record
 
-    def select(self, orderBy=None,
-                    distinct=False,
-                    groupBy = None,
-                    join=None,
-                    offset=0,
-                    batchSize=15,
-                    complexFilter=None,
-                    howmuch = "all",
-                    **kwargs):
+    def select(self, orderBy=None, distinct=False, groupBy=None,join=None, offset=0,
+                batchSize=15,complexFilter=None,isList = "all", **kwargs):
         if complexFilter:
             filter = complexFilter
         else:
@@ -68,12 +55,14 @@ class Dao(object):
                 dao = dao.offset(offset)
             if distinct:
                 dao = dao.distinct()
-            if howmuch == "all":
+            if isList == "all":
                 self.record = dao.all()
-            elif howmuch == "one":
+            elif isList == "one":
                 self.record = dao.one()
-            elif howmuch =="first":
+            elif isList =="first":
                 self.record = dao.first()
+            elif isList == "noList":
+                self.record = dao
             return self.record
         except Exception, e:
             self.raiseException(e)

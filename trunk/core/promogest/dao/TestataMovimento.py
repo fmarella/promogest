@@ -21,8 +21,8 @@ from ScontoFornitura import ScontoFornitura
 
 class TestataMovimento(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def _getRigheMovimento(self):
         self.__dbRigheMovimento = params['session'].query(RigaMovimento)\
@@ -115,13 +115,13 @@ class TestataMovimento(Dao):
                 if self.id_fornitore is not None:
                     """aggiornamento forniture cerca la fornitura relativa al fornitore
                         con data <= alla data del movimento"""
-                    fors = Fornitura(isList=True).select(idArticolo=riga.id_articolo,
-                                                        idFornitore=self.id_fornitore,
-                                                        daDataPrezzo=None,
-                                                        aDataPrezzo=self.data_movimento,
-                                                        orderBy = 'data_prezzo DESC',
-                                                        offset = None,
-                                                        batchSize = None)
+                    fors = Fornitura().select(idArticolo=riga.id_articolo,
+                                                idFornitore=self.id_fornitore,
+                                                daDataPrezzo=None,
+                                                aDataPrezzo=self.data_movimento,
+                                                orderBy = 'data_prezzo DESC',
+                                                offset = None,
+                                                batchSize = None)
                     #import datetime
                     #print "fors", datetime.datetime.now()
                     daoFornitura = None

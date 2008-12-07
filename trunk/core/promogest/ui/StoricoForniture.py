@@ -154,7 +154,7 @@ class StoricoFornitureFilter(VisualizzazioneFilter):
         aDataPrezzo = stringToDate(self.a_data_prezzo_filter_entry.get_text())
         codiceArticoloFornitore = prepareFilterString(self.codice_articolo_fornitore_filter_entry.get_text())
 
-        self.numRecords = Fornitura(isList=True).count(idArticolo=idArticolo,
+        self.numRecords = Fornitura().count(idArticolo=idArticolo,
                                                         idFornitore=idFornitore,
                                                         daDataFornitura=daDataFornitura,
                                                         aDataFornitura=aDataFornitura,
@@ -164,7 +164,7 @@ class StoricoFornitureFilter(VisualizzazioneFilter):
 
         self._refreshPageCount()
 
-        fors = Fornitura(isList=True).select(orderBy=self.orderBy,
+        fors = Fornitura().select(orderBy=self.orderBy,
                                               idArticolo=idArticolo,
                                               idFornitore=idFornitore,
                                               daDataFornitura=daDataFornitura,

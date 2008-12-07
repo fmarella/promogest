@@ -114,10 +114,10 @@ class RuoloAzioni(GladeWidget):
 
     def on_abbina_button_clicked(self, button):
         self.clear()
-        azioni= Action(isList=True).select()
+        azioni= Action().select()
         self.idRole = findIdFromCombobox(self.id_role_filter_combobox)
         for i in azioni:
-            roleActions = RoleAction(isList=True).select(id_role=self.idRole,id_action = i.id,orderBy="id_role")
+            roleActions = RoleAction().select(id_role=self.idRole,id_action = i.id,orderBy="id_role")
             if roleActions ==[]:
                 act= False
             else:
@@ -127,18 +127,18 @@ class RuoloAzioni(GladeWidget):
     def saveDao(self):
         model = self.anagrafica_treeview_role.get_model()
         for row in model:
-            if row[3] and RoleAction(isList=True).select(id_role =self.idRole,
+            if row[3] and RoleAction().select(id_role =self.idRole,
                                                             id_action=row[0].id,
                                                             orderBy="id_role") ==[]:
                 self.dao= RoleAction()
                 self.dao.id_role = self.idRole
                 self.dao.id_action = row[0].id
                 self.dao.persist()
-            elif not row[3] and not RoleAction(isList=True).select(id_role =self.idRole,
+            elif not row[3] and not RoleAction().select(id_role =self.idRole,
                                                             id_action=row[0].id,
                                                             orderBy="id_role") ==[]:
                 if self.idRole != 1:
-                    riga= RoleAction(isList=True).select(id_role =self.idRole,
+                    riga= RoleAction().select(id_role =self.idRole,
                                                             id_action=row[0].id,
                                                             orderBy="id_role")[0]
                     riga.delete()

@@ -51,7 +51,7 @@ class ProductFromCsv(object):
         self.dataListino = dataListino
         self.daoArticolo = None
         if self.promoPriceList:
-            liss = Listino(isList=True).select(idListino=self.promoPriceList,batchSize=None)
+            liss = Listino().select(idListino=self.promoPriceList,batchSize=None)
             if liss:
                 self.price_list_id = liss[0].id
             del self.promoPriceList
@@ -67,17 +67,17 @@ class ProductFromCsv(object):
 
         if self.codice_articolo:
             try:
-                self.daoArticolo = Articolo(isList=True).select(codiceEM=self.codice_articolo)[0]
+                self.daoArticolo = Articolo().select(codiceEM=self.codice_articolo)[0]
             except:
                 pass
 
         elif self.codice_barre_articolo:
-            daoCodiceABarre = CodiceABarreArticolo(isList=True).select(codiceEM=self.codice_barre_articolo)
+            daoCodiceABarre = CodiceABarreArticolo().select(codiceEM=self.codice_barre_articolo)
             if daoCodiceABarre:
                 self.daoArticolo = Articolo().getRecord(id=daoCodiceABarre[0].id_articolo)
 
         elif self.codice_fornitore:
-            daoFornitura =Fornitura(isList=True).select(codiceArticoloFornitoreEM=self.codice_fornitore)
+            daoFornitura =Fornitura().select(codiceArticoloFornitoreEM=self.codice_fornitore)
             if len(daoFornitura) == 1:
                 self.daoArticolo = Articolo().getRecord(id=daoFornitura[0].id_articolo)
         else:
@@ -105,7 +105,7 @@ class ProductFromCsv(object):
             id_famiglia = self.famiglia_articolo.id
 
         else:
-            self._families = FamigliaArticolo(isList=True).select(batchSize=None)
+            self._families = FamigliaArticolo().select(batchSize=None)
             code_list = []
             for f in self._families:
                 code_list.append(f.codice)
@@ -139,7 +139,7 @@ class ProductFromCsv(object):
             self.categoria_articolo = CategoriaArticolo().getRecord(id=self.categoria_articolo_id)
             id_categoria = self.categoria_articolo.id
         else:
-            self._categories = CategoriaArticolo(isList=True).select(batchSize=None)
+            self._categories = CategoriaArticolo().select(batchSize=None)
             category_list = []
             for c in self._categories:
                 category_list.append(c.denominazione_breve)
@@ -170,7 +170,7 @@ class ProductFromCsv(object):
             self.aliquota_iva = AliquotaIva().getRecord(id=self.aliquota_iva_id)
             id_aliquota_iva = self.aliquota_iva.id
         else:
-            self._vats = AliquotaIva(isList=True).select(batchSize=None)
+            self._vats = AliquotaIva().select(batchSize=None)
             for v in self._vats:
                 if self.aliquota_iva.lower() in (v.denominazione_breve.lower(),v.denominazione.lower()) or\
                             int(str(self.aliquota_iva).replace('%','')) == int(v.percentuale):
@@ -198,13 +198,13 @@ class ProductFromCsv(object):
             self.unita_base = UnitaBase().getRecord(id=self.unita_base_id)
             id_unita_base = self.unita_base_id
         else:
-            unis = UnitaBase(isList=True).select(batchSize=None)
+            unis = UnitaBase().select(batchSize=None)
             for u in unis:
                 if self.unita_base.lower() in (u.denominazione.lower(),u.denominazione_breve.lower()):
                     id_unita_base = u.id
                     break
             if id_unita_base is None:
-                self.unita_base = UnitaBase(isList=True).select(denominazione='Pezzi',
+                self.unita_base = UnitaBase().select(denominazione='Pezzi',
                                                                     batchSize=None)
                 id_unita_base = self.unita_base.id
         self.daoArticolo.id_unita_base = id_unita_base
@@ -221,14 +221,14 @@ class ProductFromCsv(object):
         if self.codice_barre_articolo is not None:
             self.codice_barre_articolo = str(self.codice_barre_articolo).strip()
             try:
-                oldCodeBar= CodiceABarreArticolo(isList=True).select(idArticolo=product_id)
+                oldCodeBar= CodiceABarreArticolo().select(idArticolo=product_id)
                 if oldCodeBar:
                     for codes in oldCodeBar:
                         codes.primario = False
                         codes.persist()
             except:
                 pass
-            barCode = CodiceABarreArticolo(isList=True).select(codiceEM=self.codice_barre_articolo,
+            barCode = CodiceABarreArticolo().select(codiceEM=self.codice_barre_articolo,
                                                                                 batchSize=None)
             if len(barCode) > 0:
                 daoBarCode = CodiceABarreArticolo().getRecord(id=barCode[0].id)
@@ -247,7 +247,7 @@ class ProductFromCsv(object):
         if (self.prezzo_vendita_non_ivato is not None or self.prezzo_acquisto_non_ivato is not None or self.prezzo_acquisto_ivato is not None or
             self.prezzo_vendita_ivato is not None):
             try:
-                daoPriceListProduct = ListinoArticolo(isList=True).select(idListino=self.price_list_id,
+                daoPriceListProduct = ListinoArticolo().select(idListino=self.price_list_id,
                                                                     idArticolo=product_id,
                                                                     batchSize=None)[0]
             except:
@@ -326,7 +326,7 @@ class ProductFromCsv(object):
             daoPriceListProduct.persist()
 
         # Fornitura
-        daoFornitura = Fornitura(isList=True).select(idFornitore=self.fornitore,
+        daoFornitura = Fornitura().select(idFornitore=self.fornitore,
                                                     idArticolo=self.daoArticolo.id,
                                                     daDataPrezzo=self.dataListino,
                                                     aDataPrezzo=self.dataListino,

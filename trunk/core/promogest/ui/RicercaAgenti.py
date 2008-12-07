@@ -123,7 +123,7 @@ class RicercaAgentiFilter(RicercaFilter):
         partitaIva = prepareFilterString(self.partita_iva_filter_entry.get_text())
         codiceFiscale = prepareFilterString(self.codice_fiscale_filter_entry.get_text())
 
-        self.numRecords = Agente(isList=True).count(codice=codice,
+        self.numRecords = Agente().count(codice=codice,
                                                 ragioneSociale=ragioneSociale,
                                                 insegna=insegna,
                                                 cognomeNome=cognomeNome,
@@ -133,7 +133,7 @@ class RicercaAgentiFilter(RicercaFilter):
 
         self._refreshPageCount()
 
-        agts = Agente(isList=True).select(orderBy=self.orderBy,
+        agts = Agente().select(orderBy=self.orderBy,
                                             codice=codice,
                                             ragioneSociale=ragioneSociale,
                                             insegna=insegna,

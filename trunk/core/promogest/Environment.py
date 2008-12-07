@@ -302,7 +302,7 @@ engine = create_engine('postgres:'+'//'+conf.Database.user+':'
                     encoding='utf-8',
                     convert_unicode=True )
 
-engine.echo = False
+engine.echo = True
 meta = MetaData(engine)
 Session = sessionmaker(bind=engine)
 session = Session()

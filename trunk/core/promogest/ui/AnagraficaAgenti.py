@@ -130,13 +130,13 @@ class AnagraficaAgentiFilter(AnagraficaFilter):
         codiceFiscale = prepareFilterString(self.codice_fiscale_filter_entry.get_text())
 
         def filterCountClosure():
-            return Agente(isList=True).count(codice=codice,
-                                            ragioneSociale=ragioneSociale,
-                                            insegna=insegna,
-                                            cognomeNome=cognomeNome,
-                                            localita=localita,
-                                            partitaIva=partitaIva,
-                                            codiceFiscale=codiceFiscale)
+            return Agente().count(codice=codice,
+                                    ragioneSociale=ragioneSociale,
+                                    insegna=insegna,
+                                    cognomeNome=cognomeNome,
+                                    localita=localita,
+                                    partitaIva=partitaIva,
+                                    codiceFiscale=codiceFiscale)
 
         self._filterCountClosure = filterCountClosure
 
@@ -146,16 +146,16 @@ class AnagraficaAgentiFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return Agente(isList=True).select(orderBy=self.orderBy,
-                                            codice=codice,
-                                            ragioneSociale=ragioneSociale,
-                                            insegna=insegna,
-                                            cognomeNome=cognomeNome,
-                                            localita=localita,
-                                            partitaIva=partitaIva,
-                                            codiceFiscale=codiceFiscale,
-                                            offset=offset,
-                                            batchSize=batchSize)
+            return Agente().select(orderBy=self.orderBy,
+                                    codice=codice,
+                                    ragioneSociale=ragioneSociale,
+                                    insegna=insegna,
+                                    cognomeNome=cognomeNome,
+                                    localita=localita,
+                                    partitaIva=partitaIva,
+                                    codiceFiscale=codiceFiscale,
+                                    offset=offset,
+                                    batchSize=batchSize)
 
         self._filterClosure = filterClosure
 

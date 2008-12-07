@@ -873,7 +873,7 @@ class RicercaFornitoriFilter(GladeWidget):
 
         treeview.set_search_column(3)
 
-        cats = CategoriaFornitore(isList=True).select(offset=None, batchSize=None)
+        cats = CategoriaFornitore().select(offset=None, batchSize=None)
 
         for c in cats:
             included = excluded = False
@@ -921,7 +921,7 @@ class RicercaFornitoriFilter(GladeWidget):
 
         treeview.set_search_column(3)
 
-        pags = Pagamento(isList=True).select(offset=None, batchSize=None)
+        pags = Pagamento().select(offset=None, batchSize=None)
 
 
         for p in pags:
@@ -970,7 +970,7 @@ class RicercaFornitoriFilter(GladeWidget):
 
         treeview.set_search_column(3)
 
-        mags = Magazzino(isList=True).select(offset=None, batchSize=None)
+        mags = Magazzino().select(offset=None, batchSize=None)
 
         for m in mags:
             included = excluded = False
@@ -1537,7 +1537,7 @@ class RicercaFornitoriFilter(GladeWidget):
             partitaIva = None
             idCategoria = None
 
-        self.filter.numRecords = Fornitore(isList=True).count(ragioneSociale = ragioneSociale,
+        self.filter.numRecords = Fornitore().count(ragioneSociale = ragioneSociale,
                                                                insegna = insegna,
                                                                cognomeNome = cognomeNome,
                                                                codice = codice,
@@ -1549,7 +1549,7 @@ class RicercaFornitoriFilter(GladeWidget):
         self.resultsCount = self.filter.numRecords
         self.filter._refreshPageCount()
 
-        clis = Fornitore(isList=True).select(orderBy = self.filter.orderBy,
+        clis = Fornitore().select(orderBy = self.filter.orderBy,
                                               ragioneSociale = ragioneSociale,
                                               insegna = insegna,
                                               cognomeNome = cognomeNome,

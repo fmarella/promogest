@@ -17,11 +17,11 @@ from ContattoCategoriaContatto import ContattoCategoriaContatto
 
 class ContattoAzienda(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def _getRecapitiContatto(self):
-        self.__dbRecapitiContatto = RecapitoContatto(isList=True).select(id=self.id)
+        self.__dbRecapitiContatto = RecapitoContatto().select(id=self.id)
         self.__recapitiContatto = self.__dbRecapitiContatto[:]
         return self.__recapitiContatto
 
@@ -31,7 +31,7 @@ class ContattoAzienda(Dao):
     recapiti = property(_getRecapitiContatto, _setRecapitiContatto)
 
     def _getCategorieContatto(self):
-        self.__dbCategorieContatto = ContattoCategoriaContatto(isList=True).select(id=self.id)
+        self.__dbCategorieContatto = ContattoCategoriaContatto().select(id=self.id)
         self.__categorieContatto = self.__dbCategorieContatto[:]
         return self.__categorieContatto
 

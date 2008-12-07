@@ -32,8 +32,8 @@ from promogest.ui.utils import *
 class RigaDocumento(Dao):
     """ User class provides to make a Users dao which include more used"""
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
         self.valueList = []
         if "SuMisura" in modulesList:
             self.__misuraPezzo = None
@@ -116,7 +116,7 @@ class RigaDocumento(Dao):
     def _getMisuraPezzo(self):
                 #if self.__dbMisuraPezzo is None:
         try:
-            self.__dbMisuraPezzo = MisuraPezzo(isList=True).select(idRiga=self.id)
+            self.__dbMisuraPezzo = MisuraPezzo().select(idRiga=self.id)
             self.__misuraPezzo = self.__dbMisuraPezzo[:]
         except:
             self.__misuraPezzo = []
@@ -216,7 +216,8 @@ std_mapper = mapper(RigaDocumento, j,properties={
         "maga":relation(Magazzino,primaryjoin=riga.c.id_magazzino==Magazzino.id),
         "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
         "listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
-        "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),},
-                order_by=riga_doc.c.id)
+        "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
+        "SCD":relation(ScontoRigaDocumento,primaryjoin = (riga_doc.c.id==ScontoRigaDocumento.id_riga_documento), backref="RD"),
+            },order_by=riga_doc.c.id)
 
 

@@ -200,9 +200,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.id_listino = self.ricercaListino()
 
         # Ricerca magazzino
-        magalist = Magazzino(isList=True).select(denominazione = Environment.conf.VenditaDettaglio.magazzino,
-                                                  offset = None,
-                                                  batchSize = None)
+        magalist = Magazzino().select(denominazione = Environment.conf.VenditaDettaglio.magazzino,
+                                        offset = None,
+                                        batchSize = None)
 
         if len(magalist) > 0:
             self.id_magazzino = magalist[0].id
@@ -310,11 +310,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # Ricerca articolo per barcode
 
         if codiceABarre is not None:
-            arts = Articolo(isList=True).select( codiceABarre = codiceABarre,
+            arts = Articolo().select( codiceABarre = codiceABarre,
                                                  offset = None,
                                                  batchSize = None)
         else:
-            arts = Articolo(isList=True).select( codice = codice,
+            arts = Articolo().select( codice = codice,
                                                  offset = None,
                                                  batchSize = None)
 
@@ -384,7 +384,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             self.dao = ListinoArticolo()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = ListinoArticolo(isList=True).select(idListino=dao.id_listino,
+            self.dao = ListinoArticolo().select(idListino=dao.id_listino,
                                                     idArticolo=dao.id_articolo,
                                                     orderBy="id_articolo")[0]
         self._refresh()
@@ -908,7 +908,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # Seleziono scontrini della giornata
         datefirst = datetime.today().date()
         aData= stringToDateBumped(datetime.today().date())
-        scontrini = TestataScontrino(isList=True).select( daData = datefirst,
+        scontrini = TestataScontrino().select( daData = datefirst,
                                                           aData = aData,  # Scontrini prodotti nella giornata odierna
                                                           offset = None,
                                                           batchSize = None)
@@ -1021,7 +1021,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         if response ==  gtk.RESPONSE_YES:
             # controllo se vi e` gia` stata una chiusura
             datefirst = datetime.today().date()
-            chiusure = ChiusuraFiscale(isList=True).select( dataChiusura = datefirst,
+            chiusure = ChiusuraFiscale().select( dataChiusura = datefirst,
                                                             offset = None,
                                                             batchSize = None)
             if len(chiusure) != 0:
@@ -1266,9 +1266,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         showAnagraficaRichiamata(self.getTopLevel(), anagWindow, button)
 
     def ricercaListino(self):
-        pricelist = Listino(isList=True).select(denominazione = Environment.conf.VenditaDettaglio.listino,
-                                                                                            offset = None,
-                                                                                            batchSize = None)
+        pricelist = Listino().select(denominazione = Environment.conf.VenditaDettaglio.listino,
+                                    offset = None,
+                                    batchSize = None)
         if len(pricelist) > 0:
             id_listino = pricelist[0].id
         else:

@@ -163,7 +163,7 @@ class VariazioneListini(GladeWidget):
         model = treeview.get_model()
         model.clear()
 
-        liss = ListinoArticolo(isList=True).select(orderBy='id_listino',
+        liss = ListinoArticolo().select(orderBy='id_listino',
                                                     idListino=None,
                                                     idArticolo=self._idArticolo,
                                                     offset=None,
@@ -246,7 +246,7 @@ class VariazioneListini(GladeWidget):
         for r in model:
             if r[1]:
                 idListino = r[0].id_listino
-                daoListinoArticolo = ListinoArticolo(isList=True).select(idListino=r[0].id_listino,
+                daoListinoArticolo = ListinoArticolo().select(idListino=r[0].id_listino,
                                                 idArticolo= self._idArticolo,
                                                 batchSize=None, orderBy="id_listino")[0]
                 vecchioCosto = daoListinoArticolo.ultimo_costo

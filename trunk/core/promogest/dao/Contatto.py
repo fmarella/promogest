@@ -11,16 +11,14 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-#from promogest.dao.Recapito import Recapito
 from promogest.ui.utils import getCategorieContatto, getRecapitiContatto
 from RecapitoContatto import RecapitoContatto
-#import promogest.dao.ContattoCategoriaContatto
 from ContattoCategoriaContatto import ContattoCategoriaContatto
 
 class Contatto(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def _getRecapitiContatto(self):
         self.__dbRecapitiContatto = getRecapitiContatto(id=self.id)
@@ -56,10 +54,10 @@ class Contatto(Dao):
         return  dic[k]
 
     def delete(self, multiple=False, record = True):
-        cleanRecapitoContatto = RecapitoContatto(isList=True).select(idContatto=self.id)
+        cleanRecapitoContatto = RecapitoContatto().select(idContatto=self.id)
         for recapito in cleanRecapitoContatto:
             recapito.delete()
-        cleanContattoCategoriaContatto = ContattoCategoriaContatto(isList=True)\
+        cleanContattoCategoriaContatto = ContattoCategoriaContatto()\
                                                         .select(idContatto=self.id,
                                                         batchSize=None)
         for contatto in cleanContattoCategoriaContatto:

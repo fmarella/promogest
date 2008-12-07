@@ -14,8 +14,8 @@ from promogest.dao.Dao import Dao
 
 class ChiusuraFiscale(Dao):
 
-    def __init__(self, arg=None,isList=False):
-        Dao.__init__(self, entity=self.__class__, isList=isList)
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
         dic= {'id':chiusura_fiscale.c.id ==v,
