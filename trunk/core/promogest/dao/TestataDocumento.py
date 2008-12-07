@@ -53,7 +53,6 @@ class TestataDocumento(Dao):
         self._castellettoIva = 0
 
 
-
     def _getScadenzeDocumento(self):
         #from promogest.plugins.pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
         self.__dbScadenzeDocumento = params['session']\
@@ -71,6 +70,7 @@ class TestataDocumento(Dao):
     scadenze = property(_getScadenzeDocumento, _setScadenzeDocumento)
 
     def _getRigheDocumento(self):
+        #if not Environment.righeDocumentoDict.has_key(self):
         if self.id:
             self.__dbRigheDocumentoPart = RigaDocumento().select(idTestataDocumento=self.id,
                                                                             batchSize=None)
@@ -83,6 +83,9 @@ class TestataDocumento(Dao):
             self.__righeDocumento = self.__dbRigheDocumento[:]
         else:
             self.__righeDocumento = []
+            #Environment.righeDocumentoDict[self] = self.__righeDocumento
+        #else:
+            #self.__righeDocumento = Environment.righeDocumentoDict[self]
         return self.__righeDocumento
 
     def _setRigheDocumento(self, value):

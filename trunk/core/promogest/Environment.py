@@ -48,6 +48,7 @@ usernameLoggedList=["","",""]
 scontisave = {}
 tagliacoloretempdata = (False,None)
 lastCode = None
+righeDocumentoDict = {}
 
 def getConfigureDir(company='__default__'):
     """ Tests if another configuration folder was indicated """
