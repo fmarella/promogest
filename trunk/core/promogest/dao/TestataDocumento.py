@@ -70,25 +70,26 @@ class TestataDocumento(Dao):
     scadenze = property(_getScadenzeDocumento, _setScadenzeDocumento)
 
     def _getRigheDocumento(self):
-        #if not Environment.righeDocumentoDict.has_key(self):
-        if self.id:
-            self.__dbRigheDocumentoPart = RigaDocumento().select(idTestataDocumento=self.id,
-                                                                            batchSize=None)
-            self.__dbRigheMovimentoPart = params['session']\
-                                        .query(RigaMovimento)\
-                                        .join(RigaMovimento.testata_movimento)\
-                                        .filter(RigaMovimento.id_testata_movimento==select([TestataMovimento.id], \
-                                                TestataMovimento.id_testata_documento==self.id)).all()
-            self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
-            self.__righeDocumento = self.__dbRigheDocumento[:]
+        if not Environment.righeDocumentoDict.has_key(self):
+            if self.id:
+                self.__dbRigheDocumentoPart = RigaDocumento().select(idTestataDocumento=self.id,
+                                                                                batchSize=None)
+                self.__dbRigheMovimentoPart = params['session']\
+                                            .query(RigaMovimento)\
+                                            .join(RigaMovimento.testata_movimento)\
+                                            .filter(RigaMovimento.id_testata_movimento==select([TestataMovimento.id], \
+                                                    TestataMovimento.id_testata_documento==self.id)).all()
+                self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
+                self.__righeDocumento = self.__dbRigheDocumento[:]
+            else:
+                self.__righeDocumento = []
+                Environment.righeDocumentoDict[self] = self.__righeDocumento
         else:
-            self.__righeDocumento = []
-            #Environment.righeDocumentoDict[self] = self.__righeDocumento
-        #else:
-            #self.__righeDocumento = Environment.righeDocumentoDict[self]
+            self.__righeDocumento = Environment.righeDocumentoDict[self]
         return self.__righeDocumento
 
     def _setRigheDocumento(self, value):
+        Environment.righeDocumentoDict[self] = value
         self.__righeDocumento =value
 
     righe = property(_getRigheDocumento, _setRigheDocumento)
