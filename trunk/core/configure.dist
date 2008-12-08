@@ -22,7 +22,7 @@ batch_size = 15
 
 [Documenti]
 cartella_predefinita =
-pdf_reader = acroread / evince
+pdf_reader = acroread,evince,okular,kghostview,xpdf
 # Il processo di stampa necessita di un visualizzatore di PDF:
 # - su GNU/Linux consigliamo kpdf o evince (sostituire con la voce che interessa)
 # - su MS Windows consigliamo l'utilizzo di Adobe Acrobat Reader 8

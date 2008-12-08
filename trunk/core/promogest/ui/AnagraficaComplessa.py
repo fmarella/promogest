@@ -664,10 +664,14 @@ class Anagrafica(GladeWidget):
             pdfReader = ''
             labelReader = ""
             if hasattr(Environment.conf,'Documenti'):
-                pdfReader = getattr(Environment.conf.Documenti,'pdf_reader','')
+                pdfReaders = getattr(Environment.conf.Documenti,'pdf_reader','')
+                for pdfReader in pdfReaders.split(",") :
+                    ret = os.system('which ' + pdfReader + ' > /dev/null')
+                    if ret==0:
+                        break
             if pdfReader == '':
                 if sys.platform != 'win32':
-                    pdfReader = 'kpdf'
+                    pdfReader = 'okular'
             # FIXME: what if user closes Promogest before the PDF reader?
 
             def applicationThread():
