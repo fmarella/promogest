@@ -5,9 +5,9 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
-from promogest.Environment import *
+from sqlalchemy import Table
+from sqlalchemy.orm import mapper, join
+from promogest.Environment import params
 from Dao import Dao
 
 class ScontoRigaMovimento(Dao):

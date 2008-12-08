@@ -23,10 +23,8 @@ import gtk, gobject, threading
 import smtplib, mimetypes, popen2, os
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
-import promogest.dao.CategoriaContatto
-from promogest.dao.CategoriaContatto import CategoriaContatto
 from email import Encoders
-from email.Message import Message
+from promogest.dao.CategoriaContatto import CategoriaContatto
 from email.MIMEAudio import MIMEAudio
 from email.MIMEBase import MIMEBase
 from email.MIMEMultipart import MIMEMultipart
@@ -124,13 +122,10 @@ class SpamFrame(GladeWidget):
         # Riempio combobox categorie mail e fax
         combobox = self.category_combobox
         model = gtk.ListStore(int, str)
-        cats = promogest.dao.CategoriaContatto.select(Environment.connection,
-                                                 denominazione=None,
-                                                 orderBy = None,
-                                                 offset = None,
-                                                 batchSize = None,
-                                                 immediate = True)
-
+        cats = CategoriaContatto().select(denominazione=None,
+                                                orderBy = None,
+                                                offset = None,
+                                                batchSize = None)
         for c in cats:
             model.append((c.id, (c.denominazione or '')[0:20]))
 

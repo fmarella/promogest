@@ -8,10 +8,9 @@
  License: GNU GPLv2
 """
 
-import datetime
-from sqlalchemy import *
-from sqlalchemy.orm import *
-from promogest.Environment import *
+from sqlalchemy import Table
+from sqlalchemy.orm import mapper, relation
+from promogest.Environment import params, workingYear, conf
 from Dao import Dao
 from Articolo import Articolo
 from Magazzino import Magazzino
@@ -130,10 +129,6 @@ class Stoccaggio(Dao):
             if self.arti:return self.arti.genere
         genere = property(_genere)
 
-
-
-
-
     def filter_values(self,k,v):
         if k== 'idArticolo':
             dic= {k:stoc.c.id_articolo == v}
@@ -141,10 +136,7 @@ class Stoccaggio(Dao):
             dic = {k:stoc.c.id_magazzino == v}
         return  dic[k]
 
-stoc=Table('stoccaggio',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
+stoc=Table('stoccaggio',params['metadata'],schema = params['schema'],autoload=True)
 
 std_mapper = mapper(Stoccaggio, stoc, properties={
         "arti" : relation(Articolo,primaryjoin=

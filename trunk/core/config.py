@@ -9,7 +9,7 @@
 import ConfigParser
 from ConfigParser import ConfigParser
 from datetime import datetime
-import os, re
+import re
 
 
 
@@ -17,35 +17,35 @@ class Section(object):
     def __init__(self, config, name):
         self._name = name
         self._config = config
-        
-        
+
+
     def __setattr__(self, name, value):
         if name not in ('_name','_config'):
             self._config._configDict[self._name][name] = value
         self.__dict__[name] = value
-        
-        
+
+
     def remove_option(self, option):
         if self._config._ini.has_option(self._name, option):
-            self._config._ini.remove_option(self._name, option)            
+            self._config._ini.remove_option(self._name, option)
             del(self._config._configDict[self._name][option])
             del(self.__dict__[option])
-            
-            
+
+
     def options(self):
         return self._config._ini.options(self._name)
-        
-        
+
+
     def items(self):
         return self._config._ini.items(self._name)
-        
+
 
 
 class Config(object):
     def __init__(self, source):
-        f = open(source)    
+        f = open(source)
         self._configDict = {}
-        self._source = source        
+        self._source = source
         self._ini = OrderedConfigParser()
         self._config = self._ini.read(source)
         if len(self._config) > 0:
@@ -58,46 +58,46 @@ class Config(object):
                 for item in items:
                     setattr(getattr(self, section), item[0], item[1])
 
-            
+
     def save(self):
-        for section in self._configDict:            
+        for section in self._configDict:
             for entry, entryValue in self._configDict[section].iteritems():
                 self._ini.set(section, entry, entryValue)
         f = file(self._source,'w')
         self._ini.write(f)
         f.close()
-        
-    
+
+
     def add_section(self, section):
         if not self._ini.has_section(section):
             self._ini.add_section(section)
             self._configDict[section] = {}
             _sec = Section(self, section)
             self.__dict__[section] = _sec
-            
-            
+
+
     def remove_section(self, section):
         if self._ini.has_section(section):
             self._ini.remove_section(section)
             del(self._configDict[section])
             del(self.__dict__[section])
 
-        
+
     def dump(self):
         print self._configDict
-        
+
 
     def sections(self):
         return self._ini.sections()
-                
-        
+
+
     def parseDate(self, isoDate):
         __regDate = '(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)\..*'
         reg = re.compile(__regDate)
         m = reg.match(isoDate)
         if m is not None:
             params = m.groups()
-            params = map(lambda x: int(x), params)            
+            params = map(lambda x: int(x), params)
             return datetime(params[0],params[1],params[2],params[3],params[4],params[5])
         else:
             return None

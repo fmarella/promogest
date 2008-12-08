@@ -7,11 +7,10 @@
  License: GNU GPLv2
 """
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
-from promogest.Environment import *
+from sqlalchemy import Table
+from sqlalchemy.orm import mapper, relation
+from promogest.Environment import params, host, database
 from Dao import Dao
-from sqlalchemy import and_, or_
 from Role import Role
 from Language import Language
 

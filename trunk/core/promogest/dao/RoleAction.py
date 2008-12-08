@@ -6,9 +6,9 @@
 # Author: Francesco Meloni <francesco@promotux.it>
 # Licenza: GNU GPLv2
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
-from promogest.Environment import *
+from sqlalchemy import Table
+from sqlalchemy.orm import mapper, relation
+from promogest.Environment import params
 from Dao import Dao
 from Role import Role
 from Action import Action

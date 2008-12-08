@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
-import datetime
+
 import Dao
 from promogest.Environment import *
 from promogest import Environment
@@ -16,7 +16,6 @@ from RigaDocumento import *
 from TestataMovimento import TestataMovimento
 from RigaMovimento import RigaMovimento
 from RigaMovimento import *
-from MisuraPezzo import MisuraPezzo
 from Pagamento import Pagamento
 from Banca import Banca
 from Riga import Riga

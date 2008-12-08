@@ -21,7 +21,7 @@ from Imballaggio import Imballaggio
 from StatoArticolo import StatoArticolo
 from Fornitura import Fornitura
 from Multiplo import Multiplo
-from promogest.ui.utils import idArticoloFromFornitura, codeIncrement
+from promogest.ui.utils import codeIncrement
 
 if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
         from promogest.modules.PromoWear.dao.ArticoloPromowear import Articolo

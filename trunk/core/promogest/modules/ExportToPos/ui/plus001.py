@@ -8,7 +8,7 @@
 import gtk, gobject, os, threading
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import fillComboboxMagazzini
 
 
 class CasseFrame(GladeWidget):

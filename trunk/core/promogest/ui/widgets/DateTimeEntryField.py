@@ -20,10 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 import gtk
-import gobject
-import pygtk
-import locale
-import time, datetime
+import time, datetime, string
 from CustomEntryField import CustomEntryField
 
 class DateTimeEntryField(CustomEntryField):

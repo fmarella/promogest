@@ -6,17 +6,14 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
-from promogest.Environment import *
+from sqlalchemy import Table
+from sqlalchemy.orm import mapper, relation, join
+from promogest.Environment import params
 from Dao import Dao
-from Riga import Riga
 from UnitaBase import UnitaBase
 import ScontoRigaDocumento
 from ScontoRigaDocumento import ScontoRigaDocumento
 from ScontoRigaMovimento import ScontoRigaMovimento
-from ScontoRigaMovimento import *
-from ScontoRigaDocumento import *
 from Articolo import Articolo
 from AliquotaIva import AliquotaIva
 from Magazzino import Magazzino
@@ -26,7 +23,6 @@ from DaoUtils import scontiRigaDocumentoDel
 
 if "SuMisura" in modulesList:
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
-    import promogest.modules.SuMisura.dao.MisuraPezzo
 from promogest.ui.utils import *
 
 class RigaDocumento(Dao):

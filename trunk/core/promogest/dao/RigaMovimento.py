@@ -6,23 +6,19 @@
 # Author: Francesco Meloni <francesco@promotux.it>
 
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
-from promogest.Environment import *
-from promogest import Environment
+from sqlalchemy import Table
+from sqlalchemy.orm import mapper, relation, join
+from promogest.Environment import params, conf, modulesList
 from Dao import Dao
-from Riga import Riga
 from Magazzino import Magazzino
 from ScontoRigaMovimento import ScontoRigaMovimento
 from ScontoRigaDocumento import ScontoRigaDocumento
 from Articolo import Articolo
 from UnitaBase import UnitaBase
 from Listino import Listino
-from AliquotaIva import AliquotaIva
 from Multiplo import Multiplo
 from Stoccaggio import Stoccaggio
 from DaoUtils import scontiRigaMovimentoDel
-from Fornitura import Fornitura
 if hasattr(conf, "SuMisura"):
     if getattr(conf.SuMisura,'mod_enable') == "yes":
         from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
@@ -40,21 +36,7 @@ class RigaMovimento(Dao):
     magazzino= property(__magazzino)
 
     def _getAliquotaIva(self):
-        # Restituisce la denominazione breve dell'aliquota iva
-        #_denominazioneBreveAliquotaIva = '%2.0f' % (self.percentuale_iva or 0)
-        #print "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
-        #daoArticolo = Articolo().getRecord(id=self.id_articolo)
-        #print "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"
-        #if daoArticolo is not None:
-            #if daoArticolo.id_aliquota_iva is not None:
-                #daoAliquotaIva = AliquotaIva().getRecord(id=daoArticolo.id_aliquota_iva)
-                #if daoAliquotaIva is not None:
-                    #_denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
-        #if (_denominazioneBreveAliquotaIva == '0' or _denominazioneBreveAliquotaIva == '00'):
-            #_denominazioneBreveAliquotaIva = ''
-        print "KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK"
         _denominazioneBreveAliquotaIva = Articolo().getRecord(id=self.id_articolo).denominazione_breve_aliquota_iva
-        print "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",_denominazioneBreveAliquotaIva
         return _denominazioneBreveAliquotaIva
 
     aliquota = property(_getAliquotaIva, )

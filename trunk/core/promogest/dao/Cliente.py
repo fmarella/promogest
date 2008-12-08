@@ -7,12 +7,11 @@
  License: GNU GPLv2
 """
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
-from promogest.Environment import *
+from sqlalchemy import Table
+from sqlalchemy.orm import mapper, join, relation, or_
+from promogest.Environment import params, conf
 from Dao import Dao
 from ClienteCategoriaCliente import ClienteCategoriaCliente
-from CategoriaCliente import CategoriaCliente
 from promogest.ui.utils import  codeIncrement
 
 class Cliente(Dao):

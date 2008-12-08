@@ -6,9 +6,9 @@
  license: GPL see LICENSE file
 """
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
-from promogest.Environment import *
+from sqlalchemy import Table
+from sqlalchemy.orm import mapper, join, or_
+from promogest.Environment import params, conf
 from Dao import Dao
 from promogest.ui.utils import  codeIncrement
 
@@ -18,13 +18,20 @@ class Agente(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {  'codice' : persona_giuridica.c.codice.ilike("%"+v+"%"),
-                'ragioneSociale' : persona_giuridica.c.ragione_sociale.ilike("%"+v+"%"),
-                'insegna' : persona_giuridica.c.insegna.ilike("%"+v+"%"),
-                'cognomeNome' : or_(persona_giuridica.c.cognome.ilike("%"+v+"%"),persona_giuridica.c.cognome.ilike("%"+v+"%")),
-                'localita' : or_(persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"),persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%")),
-                'partitaIva' : persona_giuridica.c.partita_iva.ilike("%"+v+"%"),
-                'codiceFiscale' : persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
+        if k == 'codice':
+            dic= {k : persona_giuridica.c.codice.ilike("%"+v+"%")}
+        elif k == 'ragioneSociale':
+            dic = {k:persona_giuridica.c.ragione_sociale.ilike("%"+v+"%")}
+        elif k == 'insegna':
+            dic = {k:persona_giuridica.c.insegna.ilike("%"+v+"%")}
+        elif k == 'cognomeNome':
+            dic = {k: or_(persona_giuridica.c.cognome.ilike("%"+v+"%"),persona_giuridica.c.cognome.ilike("%"+v+"%"))}
+        elif k == 'localita':
+            dic = {k:or_(persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"),persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
+        elif k == 'partitaIva':
+            dic = {k:persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
+        elif k == 'codiceFiscale':
+            dic = { k:persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
         return  dic[k]
 
 def getNuovoCodiceAgente():
@@ -51,18 +58,12 @@ def getNuovoCodiceAgente():
     return codice
 
 
-persona_giuridica=Table('persona_giuridica',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
+persona_giuridica=Table('persona_giuridica',params['metadata'],schema = params['schema'],autoload=True)
 
-agent=Table('agente',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
+agent=Table('agente',params['metadata'],schema = params['schema'],autoload=True)
 
 j = join(agent, persona_giuridica)
 
 std_mapper = mapper(Agente,j, properties={
-       'id':[agent.c.id, persona_giuridica.c.id]},
-                                    order_by=agent.c.id)
+                    'id':[agent.c.id, persona_giuridica.c.id]},
+                    order_by=agent.c.id)

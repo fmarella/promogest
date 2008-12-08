@@ -7,14 +7,10 @@
 # Author: Francesco Meloni <francesco@promotux.it>
 
 
-import sqlalchemy
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from UserDict import UserDict
-from sqlalchemy.util import OrderedDict
 import datetime
-import string
 from promogest.ui.GtkExceptionHandler import GtkExceptionHandler
 a = datetime.datetime
 

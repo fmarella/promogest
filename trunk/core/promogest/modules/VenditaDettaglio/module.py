@@ -4,9 +4,7 @@
 #
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 
-import gtk, gobject
 from promogest import Environment
-from promogest.ui.GladeWidget import GladeWidget
 import promogest.ui.Login
 from promogest.modules.VenditaDettaglio.data.VenditaDettaglioDB import *
 #from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import *

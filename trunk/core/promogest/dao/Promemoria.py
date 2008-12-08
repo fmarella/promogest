@@ -5,12 +5,10 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: FRancesco Meloni <francesco@promotux.it>
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
-from promogest.Environment import *
-from promogest import Environment
+from sqlalchemy import Table
+from sqlalchemy.orm import mapper
+from promogest.Environment import params
 from Dao import Dao
-import datetime
 
 class Promemoria(Dao):
     """ User class provides to make a Users dao which include more used"""

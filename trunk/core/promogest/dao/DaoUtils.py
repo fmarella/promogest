@@ -7,19 +7,16 @@
  License: GNU GPLv2
 """
 
-import datetime
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
-from sqlalchemy import and_, or_
+from sqlalchemy import and_
 
 
 def giacenzaSel(year=None, idMagazzino=None, idArticolo=None):
     from TestataMovimento import TestataMovimento
     from RigaMovimento import RigaMovimento
     from Riga import Riga
-    from Operazione import Operazione
 
     righeArticoloMovimentate= params["session"]\
             .query(RigaMovimento,TestataMovimento)\

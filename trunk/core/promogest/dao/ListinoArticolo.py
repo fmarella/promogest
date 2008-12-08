@@ -7,13 +7,11 @@
  License: GNU GPLv2
 """
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
-from sqlalchemy import and_, or_
-from promogest.Environment import *
+from sqlalchemy import Table
+from sqlalchemy.orm import mapper, relation
+from promogest.Environment import params
 from Dao import Dao
 from DaoUtils import *
-from AliquotaIva import AliquotaIva
 from Listino import Listino
 from Articolo import Articolo
 from ScontoVenditaDettaglio import ScontoVenditaDettaglio

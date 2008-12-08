@@ -5,11 +5,10 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from sqlalchemy import Table
+from sqlalchemy.orm import mapper
 from promogest.Environment import *
 from Dao import Dao
-from Role import Role
 
 class Language(Dao):
 

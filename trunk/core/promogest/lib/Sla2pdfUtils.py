@@ -21,23 +21,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import sys
-import os
-import re
-import math
-import datetime, time
-from reportlab.lib import colors, utils
+import datetime
+#from reportlab.lib import colors, utils
 from reportlab.platypus import Table, TableStyle, Paragraph, Frame
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT, TA_JUSTIFY
 from reportlab.lib.pagesizes import cm, inch, A4, landscape
-from reportlab.pdfgen.canvas import Canvas
-from PIL import Image
+#from reportlab.pdfgen.canvas import Canvas
+#from PIL import Image
 
 #from elementtree import ElementTree
 ##from elementtree.ElementTree import *
 #import cElementTree as ElementTree
-import xml.etree.cElementTree as ElementTree
+#import xml.etree.cElementTree as ElementTree
 #from promogest import Environment
 try:
     from reportlab.graphics.barcode.common import *
