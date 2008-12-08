@@ -5,8 +5,8 @@
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper, join, or_
+from sqlalchemy import Table, or_
+from sqlalchemy.orm import mapper, join
 from promogest.Environment import params, conf
 from Dao import Dao
 from promogest.ui.utils import  codeIncrement
