@@ -261,20 +261,14 @@ class Main(GladeWidget):
         elif selection == 5:
             self.currentFrame = self.create_casse_frame()
         elif selection == 6:
-            from promogest.ui.plus.plus002 import VenditaDettaglio
-            anag = VenditaDettaglio()
-            showAnagrafica(self.getTopLevel(), anag, mainClass=self)
-            icon_view.unselect_all()
-            return
-        elif selection == 7:
             self.currentFrame = self.create_spam_frame()
-        elif selection == 8:
+        elif selection == 7:
             from AnagraficaPromemoria import AnagraficaPromemoria
             anag = AnagraficaPromemoria(self.aziendaStr)
             showAnagrafica(self.getTopLevel(), anag, mainClass=self)
             icon_view.unselect_all()
             return
-        elif selection == 9:
+        elif selection == 8:
             self.currentFrame = self.create_azienda_frame()
         self._refresh()
 

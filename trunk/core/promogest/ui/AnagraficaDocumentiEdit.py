@@ -1073,7 +1073,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 docs = TestataDocumento().select(daNumero=numero,
                                                     aNumero=numero,
                                                     daData=daData, aData=aData,
-                                                    idOperazione=idOperazione, offset=None,
+                                                    idOperazione=idOperazione,
+                                                    offset=None,
                                                     batchSize=None)
                 if len(docs) > 0:
                     msg = """Attenzione!

@@ -98,7 +98,6 @@ class TestataMovimento(Dao):
         params["session"].add(self)
         params["session"].commit()
         #import datetime
-        print "testatamovimento_dopo commit", datetime.datetime.now()
         if righeMovimento:
             righeMovimentoDel(id=self.id)
             for key,riga in righeMovimento.items():
@@ -107,7 +106,7 @@ class TestataMovimento(Dao):
                 #associazione alla riga della testata
                 riga.id_testata_movimento = self.id
                 params["session"].add(riga)
-                #params["session"].commit()
+                params["session"].commit()
                 #import datetime
                 #print "righedentro testata", datetime.datetime.now()
                 #salvataggio riga
@@ -167,7 +166,7 @@ class TestataMovimento(Dao):
 
                     daoFornitura.sconti = sconti
                     params["session"].add(daoFornitura)
-        params["session"].commit()
+                    params["session"].commit()
         #params["session"].flush()
 
 testata_mov=Table('testata_movimento',

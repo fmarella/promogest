@@ -49,6 +49,9 @@ scontisave = {}
 tagliacoloretempdata = (False,None)
 lastCode = None
 righeDocumentoDict = {}
+totaliDict = {}
+percentualeIvaRiga = None
+aliquotaIvaRiga = None
 
 def getConfigureDir(company='__default__'):
     """ Tests if another configuration folder was indicated """
@@ -303,7 +306,7 @@ engine = create_engine('postgres:'+'//'+conf.Database.user+':'
                     encoding='utf-8',
                     convert_unicode=True )
 
-engine.echo = True
+engine.echo = False
 meta = MetaData(engine)
 Session = sessionmaker(bind=engine)
 session = Session()

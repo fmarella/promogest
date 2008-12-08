@@ -11,12 +11,8 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-from PersonaGiuridica import PersonaGiuridica_
 from ClienteCategoriaCliente import ClienteCategoriaCliente
-#from promogest.dao.ContattoCliente import ContattoCliente
 from CategoriaCliente import CategoriaCliente
-import Banca
-import Pagamento
 from promogest.ui.utils import  codeIncrement
 
 class Cliente(Dao):
@@ -84,15 +80,9 @@ def getNuovoCodiceCliente():
                 pass
     return codice
 
-persona_giuridica=Table('persona_giuridica',
-                params['metadata'],
-                schema = params['schema'],
-                autoload=True)
+persona_giuridica=Table('persona_giuridica', params['metadata'],schema = params['schema'], autoload=True)
 
-cliente=Table('cliente',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
+cliente=Table('cliente', params['metadata'],schema = params['schema'], autoload=True)
 
 j = join(cliente, persona_giuridica)
 

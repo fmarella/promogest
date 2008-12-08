@@ -81,14 +81,17 @@ class TestataDocumento(Dao):
                                                     TestataMovimento.id_testata_documento==self.id)).all()
                 self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
                 self.__righeDocumento = self.__dbRigheDocumento[:]
+                Environment.righeDocumentoDict[self] = self.__righeDocumento
             else:
                 self.__righeDocumento = []
                 Environment.righeDocumentoDict[self] = self.__righeDocumento
         else:
+            #print "111111111111111111111111111" , Environment.righeDocumentoDict[self]
             self.__righeDocumento = Environment.righeDocumentoDict[self]
         return self.__righeDocumento
 
     def _setRigheDocumento(self, value):
+        #print "SEEEEEEEEEEEEEEEEEETTTTTTTTTTTTTTTTTTTT", Environment.righeDocumentoDict[self], value
         Environment.righeDocumentoDict[self] = value
         self.__righeDocumento =value
 
@@ -107,18 +110,18 @@ class TestataDocumento(Dao):
         if not self.ripartire_importo:
             if len(self.righe) > 0:
                 for r in self.righe:
-                    r.valore_unitario_netto = float(r.valore_unitario_netto)
+                    r.valore_unitario_netto = mN(r.valore_unitario_netto)
                     try:
-                        costo_ripartito =  Decimal(str(self.costo_da_ripartire or 0))/Decimal(str(self.totalConfections))
+                        costo_ripartito =  mN(str(self.costo_da_ripartire) or 0)/mN(str(self.totalConfections))
                     except:
                         costo_ripartito = Decimal('0')
-                    r.valore_unitario_netto -= float(costo_ripartito)
+                    r.valore_unitario_netto -= mN(costo_ripartito)
 
     def _getDividingQuote(self):
         return self.costo_da_ripartire
 
     def _setDividingQuote(self, value):
-        self.costo_da_ripartire = float(value)
+        self.costo_da_ripartire = mN(value)
 
     #manca la property...... mah
 
@@ -205,16 +208,13 @@ class TestataDocumento(Dao):
         fonteValore = self.__operazione["fonteValore"]
 
         # FIXME: duplicated in AnagraficaDocumenti.py
-        totaleImponibile = float(0)
-        totaleImposta = float(0)
-        totaleNonScontato = float(0)
-
-        totaleImpostaScontata = float(0)
-        totaleImponibileScontato = float(0)
-        totaleScontato = float(0)
-
+        totaleImponibile = Decimal(0)
+        totaleImposta = Decimal(0)
+        totaleNonScontato = Decimal(0)
+        totaleImpostaScontata = Decimal(0)
+        totaleImponibileScontato = Decimal(0)
+        totaleScontato = Decimal(0)
         castellettoIva = {}
-
         righeDocumento = self.righe
         for i in range(0, len(righeDocumento)):
 
@@ -222,39 +222,47 @@ class TestataDocumento(Dao):
             if righeDocumento[i] is None:
                 continue
 
-            totaleRiga = float(righeDocumento[i].quantita) * float(righeDocumento[i].moltiplicatore) * float(righeDocumento[i].valore_unitario_netto)
-            percentualeIvaRiga = float(righeDocumento[i].percentuale_iva)
-            ali = AliquotaIva().select(percentuale=percentualeIvaRiga, isList="one")
+            totaleRiga = Decimal(str(righeDocumento[i].quantita)) * Decimal(str(righeDocumento[i].moltiplicatore)) * mN(righeDocumento[i].valore_unitario_netto)
+            percentualeIvaRiga = Decimal(str(righeDocumento[i].percentuale_iva))
+            if percentualeIvaRiga != Environment.percentualeIvaRiga:
+                ali = AliquotaIva().select(percentuale=percentualeIvaRiga, isList="one")
+                aliquotaIvaRiga = ali.denominazione_breve
+                Environment.percentualeIvaRiga = percentualeIvaRiga
+                Environment.aliquotaIvaRiga = aliquotaIvaRiga
+            else:
+                aliquotaIvaRiga = Environment.aliquotaIvaRiga
             #aliquotaIvaRiga = righeDocumento[i].aliquota
-            aliquotaIvaRiga = ali.denominazione_breve
 
-            if (fonteValore == "vendita_iva" or
-                fonteValore == "acquisto_iva"):
+
+            if (fonteValore == "vendita_iva" or fonteValore == "acquisto_iva"):
                 totaleImponibileRiga = calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)
             else:
-                totaleImponibileRiga = float(totaleRiga)
+                totaleImponibileRiga = mN(totaleRiga,2)
                 totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
 
-            totaleImpostaRiga = totaleRiga - totaleImponibileRiga
+            totaleImpostaRiga = mN(totaleRiga,2) - totaleImponibileRiga
             totaleNonScontato += totaleRiga
             totaleImponibile += totaleImponibileRiga
             totaleImposta += totaleImpostaRiga
 
             if aliquotaIvaRiga not in castellettoIva.keys():
-                castellettoIva[aliquotaIvaRiga] = {'percentuale': percentualeIvaRiga, 'imponibile': totaleImponibileRiga, 'imposta': totaleImpostaRiga, 'totale': totaleRiga}
+                castellettoIva[aliquotaIvaRiga] = {'percentuale': percentualeIvaRiga,
+                                                    'imponibile': totaleImponibileRiga,
+                                                    'imposta': totaleImpostaRiga,
+                                                    'totale': totaleRiga}
             else:
                 castellettoIva[aliquotaIvaRiga]['percentuale'] = percentualeIvaRiga
                 castellettoIva[aliquotaIvaRiga]['imponibile'] += totaleImponibileRiga
                 castellettoIva[aliquotaIvaRiga]['imposta'] += totaleImpostaRiga
                 castellettoIva[aliquotaIvaRiga]['totale'] += totaleRiga
 
-        totaleNonScontato = round(totaleNonScontato, 2)
-        totaleImponibile = round(totaleImponibile, 2)
+        totaleNonScontato = mN(totaleNonScontato, 2)
+        totaleImponibile = mN(totaleImponibile, 2)
         totaleImposta = totaleNonScontato - totaleImponibile
         for aliquotaIva in castellettoIva:
-            castellettoIva[aliquotaIva]['imponibile'] = round(castellettoIva[aliquotaIva]['imponibile'], 2)
-            castellettoIva[aliquotaIva]['imposta'] = round(castellettoIva[aliquotaIva]['imposta'], 2)
-            castellettoIva[aliquotaIva]['totale'] = round(castellettoIva[aliquotaIva]['totale'], 2)
+            castellettoIva[aliquotaIva]['imponibile'] = mN(castellettoIva[aliquotaIva]['imponibile'], 2)
+            castellettoIva[aliquotaIva]['imposta'] = mN(castellettoIva[aliquotaIva]['imposta'], 2)
+            castellettoIva[aliquotaIva]['totale'] = mN(castellettoIva[aliquotaIva]['totale'], 2)
 
         totaleImpostaScontata = totaleImposta
         totaleImponibileScontato = totaleImponibile
@@ -266,14 +274,14 @@ class TestataDocumento(Dao):
             for s in scontiSuTotale:
                 if s.tipo_sconto == 'percentuale':
                     if applicazioneSconti == 'scalare':
-                        totaleScontato = float(totaleScontato) * (1 - float(s.valore) / 100)
+                        totaleScontato = mN(totaleScontato) * (1 - mN(s.valore) / 100)
                     elif applicazioneSconti == 'non scalare':
-                        totaleScontato = float(totaleScontato) - float(totaleNonScontato) * float(s.valore) / 100
+                        totaleScontato = mN(totaleScontato) - mN(totaleNonScontato) * mN(s.valore) / 100
                     else:
                         raise Exception, ('BUG! Tipo di applicazione sconto '
                                           'sconosciuto: %s' % s.tipo_sconto)
                 elif s.tipo_sconto == 'valore':
-                    totaleScontato = float(totaleScontato) - float(s.valore)
+                    totaleScontato = mN(totaleScontato) - mN(s.valore)
 
             # riporta l'insieme di sconti ad una percentuale globale
             if totaleNonScontato == 0:
@@ -284,21 +292,21 @@ class TestataDocumento(Dao):
             totaleScontato = 0
             # riproporzione del totale, dell'imponibile e dell'imposta
             for k in castellettoIva.keys():
-                castellettoIva[k]['totale'] = round(float(castellettoIva[k]['totale']) * (1 - float(percentualeScontoGlobale) / 100), int(Environment.conf.decimals))
-                castellettoIva[k]['imponibile'] = round(float(castellettoIva[k]['imponibile']) * (1 - float(percentualeScontoGlobale) / 100), int(Environment.conf.decimals))
+                castellettoIva[k]['totale'] = mN(castellettoIva[k]['totale'] * (1 - mN(percentualeScontoGlobale) / 100), 2)
+                castellettoIva[k]['imponibile'] = mN(castellettoIva[k]['imponibile'] * (1 - mN(percentualeScontoGlobale) / 100),2)
                 castellettoIva[k]['imposta'] = castellettoIva[k]['totale'] - castellettoIva[k]['imponibile']
 
                 totaleImponibileScontato += castellettoIva[k]['imponibile']
                 totaleImpostaScontata += castellettoIva[k]['imposta']
 
-            totaleScontato = totaleImponibileScontato + totaleImpostaScontata
+            totaleScontato = mN(totaleImponibileScontato) + mN(totaleImpostaScontata)
 
-        self._totaleNonScontato = totaleNonScontato
-        self._totaleScontato = totaleScontato
-        self._totaleImponibile = totaleImponibile
-        self._totaleImposta = totaleImposta
-        self._totaleImponibileScontato = totaleImponibileScontato
-        self._totaleImpostaScontata = totaleImpostaScontata
+        self._totaleNonScontato = mN(totaleNonScontato,2)
+        self._totaleScontato = mN(totaleScontato,2)
+        self._totaleImponibile = mN(totaleImponibile,2)
+        self._totaleImposta = mN(totaleImposta,2)
+        self._totaleImponibileScontato = mN(totaleImponibileScontato,2)
+        self._totaleImpostaScontata = mN(totaleImpostaScontata,2)
         self._castellettoIva = []
         for k in castellettoIva.keys():
             dictCastellettoIva = castellettoIva[k]
@@ -338,7 +346,7 @@ class TestataDocumento(Dao):
         contieneMovimentazione = self.contieneMovimentazione(righe=righe)
         #cerco le testate movimento associate al documento
         #FIXME: se ne trovo piu' di una ? (ad esempio se il documento e' in realta' un cappello)
-        res = TestataMovimento().select(idTestataDocumento = self.id,batchSize=None)
+        res = TestataMovimento().select(join=TestataMovimento.TD,idTestataDocumento = self.id,batchSize=None)
         if len(res) == 0:
             if contieneMovimentazione:
                 #print "SIAMO DENTRO QUESTO IF, CREO UNA NUOVA TESTATA MOVIMENTO", contieneMovimentazione
@@ -356,8 +364,8 @@ class TestataDocumento(Dao):
                 DaoTestataMovimento.note_interne = self.note_interne
                 DaoTestataMovimento.id_testata_documento = self.id
         elif len(res) == 1:
-            #print "RES È UGUALE AD UNO.... ESITE UN MOVIMENTO"
-            DaoTestataMovimento = TestataMovimento().getRecord(id=res[0].id)
+            #print "RES È UGUALE AD UNO.... ESITE UN MOVIMENTO USO RES"
+            DaoTestataMovimento = res[0] #TestataMovimento().getRecord(id=res[0].id)
             if not contieneMovimentazione:
                 #devo eliminare il movimento interamente, visto che non ci sono righe movimento
                 DaoTestataMovimento.delete()
@@ -465,9 +473,10 @@ class TestataDocumento(Dao):
                 #salvataggio sconto
                 row.persist()
 
-        params["session"].commit()
+        #params["session"].commit()
         #params["session"].flush()
-
+        if Environment.righeDocumentoDict.has_key(self): del Environment.righeDocumentoDict[self]
+        if Environment.totaliDict.has_key(self): del Environment.totaliDict[self]
 
     def _al(self):
         if self.AL: return self.AL.denominazione
@@ -667,15 +676,12 @@ class TestataDocumento(Dao):
         elif k == 'statoDocumento':
             dic = {k:testata_documento.c.documento_saldato == v}
         elif k == 'idArticolo':
-            dic = {k: or_(and_(Articolo.id ==Riga.id_articolo,
+            dic = {k: and_(Articolo.id ==Riga.id_articolo,
                             riga.c.id==RigaMovimento.id,
                             RigaMovimento.id_testata_movimento == TestataMovimento.id,
                             TestataMovimento.id_testata_documento == testata_documento.c.id,
                             Articolo.id ==v),
-                            and_(Articolo.id ==riga.c.id_articolo,
-                            Riga.id == riga_doc.c.id,
-                            riga_doc.c.id_testata_documento == testata_documento.c.id,
-                            Articolo.id ==v))}
+                                }
         return  dic[k]
 
 riga=Table('riga',params['metadata'],schema = params['schema'],autoload=True)
@@ -690,7 +696,7 @@ std_mapper = mapper(TestataDocumento, testata_documento, properties={
         "AL":relation(AliquotaIva,primaryjoin = (testata_documento.c.id_aliquota_iva_esenzione==AliquotaIva.id)),
         "PV":relation(Vettore,primaryjoin = (testata_documento.c.id_vettore==Vettore.id)),
         "DM":relation(DestinazioneMerce, primaryjoin=(testata_documento.c.id_destinazione_merce==DestinazioneMerce.id)),
-        "TM":relation(TestataMovimento,primaryjoin = (testata_documento.c.id==TestataMovimento.id_testata_documento), backref=backref('testata_documento')),
+        "TM":relation(TestataMovimento,primaryjoin = (testata_documento.c.id==TestataMovimento.id_testata_documento), backref='TD'),
         "CLI":relation(Cliente,primaryjoin = (testata_documento.c.id_cliente==Cliente.id)),
         "FORN":relation(Fornitore,primaryjoin = (testata_documento.c.id_fornitore==Fornitore.id)),
         "AGE":relation(Agente,primaryjoin = (testata_documento.c.id_agente==Agente.id)),

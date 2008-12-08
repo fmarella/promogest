@@ -430,16 +430,15 @@ def leggiOperazione(id):
     """
     Restituisce un dizionario con le informazioni sulla operazione letta
     """
-    from  promogest.dao.Operazione import Operazione
     _fonteValore = ''
     _segno = ''
     _tipoPersonaGiuridica = ''
 
     if id is not None:
         res = Operazione().select(join = Operazione.TD,
-                                            batchSize=None,
-                                            offset=None,
-                                            denominazione=id)
+                                    batchSize=None,
+                                    offset=None,
+                                    denominazioneEM=id)
         if len(res) > 0:
             _fonteValore = res[0].fonte_valore or ''
             _segno = res[0].segno or ''

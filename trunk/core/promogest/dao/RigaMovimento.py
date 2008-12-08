@@ -200,8 +200,6 @@ class RigaMovimento(Dao):
         #print " UN PASSO ALLA VOLTA ....SIAMO DENTRO IL PERSIST DI RIGAMOVIMENTO", self
         params["session"].add(self)
         params["session"].commit()
-        import datetime
-        #print "rigaMovimento", datetime.datetime.now()
 
         #creazione stoccaggio se non gia' presente
         stoccato = (Stoccaggio().count(idArticolo=self.id_articolo,
@@ -213,6 +211,7 @@ class RigaMovimento(Dao):
             daoStoccaggio.id_articolo = self.id_articolo
             daoStoccaggio.id_magazzino = self.id_magazzino
             params["session"].add(daoStoccaggio)
+            params["session"].commit()
             #daoStoccaggio.persist()
 
         scontiRigaMovimentoDel(id=self.id)
@@ -222,7 +221,7 @@ class RigaMovimento(Dao):
                     for v in value:
                         v.id_riga_movimento = self.id
                         params["session"].add(v)
-                        #params["session"].commit()
+                        params["session"].commit()
 
         if "SuMisura" in modulesList:
             try:
@@ -239,10 +238,10 @@ class RigaMovimento(Dao):
         #else:
                 self.__misuraPezzo.id_riga = self.id
                 params["session"].add(self.__misuraPezzo)
-                #params["session"].commit()
+                params["session"].commit()
                 #self.__misuraPezzo.persist()
         #FIXME: VERIFICAREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-        params["session"].commit()
+        #params["session"].commit()
         #params["session"].flush()
 
 riga=Table('riga', params['metadata'], schema = params['schema'], autoload=True)

@@ -118,8 +118,7 @@ class Dao(object):
         the given Dao
         """
         if record:
-            return True
-            #return (self.__class__ == dao.__class__) and (DaoDict(self) == DaoDict(dao))
+            return (self.id == dao.id )
 
     def dictionary(self, complete=False):
         """
