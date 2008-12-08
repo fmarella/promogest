@@ -224,8 +224,7 @@ class TestataDocumento(Dao):
             totaleRiga = Decimal(str(righeDocumento[i].quantita)) * Decimal(str(righeDocumento[i].moltiplicatore)) * mN(righeDocumento[i].valore_unitario_netto)
             percentualeIvaRiga = Decimal(str(righeDocumento[i].percentuale_iva))
             if percentualeIvaRiga != Environment.percentualeIvaRiga:
-                ali = AliquotaIva().select(percentuale=percentualeIvaRiga, isList="one")
-                aliquotaIvaRiga = ali.denominazione_breve
+                aliquotaIvaRiga = righeDocumento[i].aliquota
                 Environment.percentualeIvaRiga = percentualeIvaRiga
                 Environment.aliquotaIvaRiga = aliquotaIvaRiga
             else:
