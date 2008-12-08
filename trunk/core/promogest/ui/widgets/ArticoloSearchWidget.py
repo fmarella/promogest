@@ -7,11 +7,8 @@
 
 
 import gtk
-import gobject
 
 from CustomComboBoxSearch import CustomComboBoxSearch
-
-from promogest import Environment
 from promogest.ui.utils import leggiArticolo
 
 class ArticoloSearchWidget(CustomComboBoxSearch):

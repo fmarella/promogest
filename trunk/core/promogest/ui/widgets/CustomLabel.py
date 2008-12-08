@@ -21,7 +21,6 @@
 
 import gtk
 import gobject
-import pygtk
 from promogest import Environment
 
 class CustomLabel(gtk.HBox):

@@ -18,7 +18,6 @@ from RicercaComplessa import parseModel, onColumnEdited, columnSelectAll
 from RicercaComplessa import optimizeString, insertTreeViewRow, deleteTreeViewRow,clearWhereString
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
 import promogest.dao.Cliente
 from promogest.dao.Cliente import Cliente
 import promogest.dao.CategoriaCliente

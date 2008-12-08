@@ -6,12 +6,8 @@
 # Author: Francesco Meloni  <francesco@promotux.it>
 
 import gtk
-import gobject
-
 from CustomComboBoxSearch import CustomComboBoxSearch
-
-from promogest import Environment
-from promogest.ui.utils import *
+from promogest.ui.utils import leggiCliente
 
 class ClienteSearchWidget(CustomComboBoxSearch):
     """ Classe base per la ricerca clienti """

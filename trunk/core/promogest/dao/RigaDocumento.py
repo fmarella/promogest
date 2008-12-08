@@ -8,7 +8,7 @@
 
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation, join
-from promogest.Environment import params
+from promogest.Environment import params, modulesList
 from Dao import Dao
 from UnitaBase import UnitaBase
 import ScontoRigaDocumento

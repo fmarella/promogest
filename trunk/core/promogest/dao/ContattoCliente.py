@@ -7,9 +7,9 @@
  License: GNU GPLv2
 """
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
-from promogest.Environment import *
+from sqlalchemy import Table, or_
+from sqlalchemy.orm import mapper, relation, join
+from promogest.Environment import params
 from Dao import Dao
 from Cliente import Cliente
 from RecapitoContatto import RecapitoContatto

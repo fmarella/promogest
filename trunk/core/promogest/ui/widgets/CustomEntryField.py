@@ -7,9 +7,6 @@
 
 
 import gtk
-import gobject
-import pygtk
-import locale
 
 class CustomEntryField(gtk.Entry):
 

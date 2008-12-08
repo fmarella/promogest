@@ -12,14 +12,10 @@ import gtk
 from GladeWidget import GladeWidget
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
-import promogest.dao.CodiceABarreArticolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 import promogest.dao.ListinoArticolo
 from promogest.dao.ListinoArticolo import ListinoArticolo
-
 from utils import *
 from utilsCombobox import *
 import datetime

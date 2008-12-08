@@ -8,14 +8,8 @@
 
 
 import gtk
-import gobject
 from Ricerca import Ricerca, RicercaFilter
-
-from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Vettore
 from promogest.dao.Vettore import Vettore
-
 from utils import *
 
 

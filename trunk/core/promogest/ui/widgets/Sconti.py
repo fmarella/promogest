@@ -6,7 +6,6 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 
 import gtk
-import promogest.ui.GladeWidget
 from promogest.ui.GladeWidget import GladeWidget
 
 from promogest import Environment

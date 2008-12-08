@@ -6,13 +6,11 @@
 # Author: Francesco Meloni <francesco@promotux.it>
 
 
-from sqlalchemy import *
-from sqlalchemy.orm import *
-from promogest.Environment import *
+from sqlalchemy import Table
+from sqlalchemy.orm import mapper, relation
+from promogest.Environment import params
 from Dao import Dao
 from Magazzino import Magazzino
-
-
 
 class ListinoMagazzino(Dao):
 
@@ -37,9 +35,5 @@ listino_magazzino = Table('listino_magazzino',
             schema = params['schema'],
             autoload=True)
 std_mapper = mapper(ListinoMagazzino, listino_magazzino, properties={
-        #"listino" : relation(Listino, backref="listino_magazzino"),
         "magazzin": relation(Magazzino, backref="listino_magazzino")
             }, order_by=listino_magazzino.c.id_listino)
-
-
-

@@ -6,8 +6,6 @@
 """
 
 import gtk
-import gobject
-import pygtk
 from CustomLabel import CustomLabel
 from promogest import Environment
 

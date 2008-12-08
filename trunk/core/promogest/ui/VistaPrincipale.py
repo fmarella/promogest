@@ -4,21 +4,15 @@
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 
-import sys
-import gtk
-import gobject
-#from kiwi.ui.objectlist import ObjectList, Column
 
+import gtk
 from GladeWidget import GladeWidget
 from promogest import Environment
-from promogest.dao.Dao import Dao
 import promogest.dao.Promemoria
 from promogest.dao.Promemoria import Promemoria
 from promogest.lib import feedparser
 from utils import *
 import threading
-import time
-import genshi
 from genshi.template import TemplateLoader
 import webbrowser
 from promogest.ui.SendEmail import SendEmail

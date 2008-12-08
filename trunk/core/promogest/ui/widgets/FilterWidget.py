@@ -11,11 +11,8 @@ import gtk
 import gtkhtml2
 import math
 
-import promogest.ui.GladeWidget
 from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
-
-from promogest.dao import Dao
 
 
 class FilterWidget(GladeWidget):

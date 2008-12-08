@@ -8,15 +8,13 @@
 #         Francesco Meloni <francesco@promotux.it>
 
 import gtk
-import gobject
 from RicercaComplessa import RicercaComplessa
-from sqlalchemy import and_, or_
+from sqlalchemy import and_, or_, not_
 from RicercaComplessa import analyze_treeview_key_press_event
 from RicercaComplessa import parseModel, onColumnEdited, columnSelectAll
 from RicercaComplessa import optimizeString, insertTreeViewRow, deleteTreeViewRow, clearWhereString
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
 import promogest.dao.Cliente
 from promogest.dao.Cliente import Cliente
 import promogest.dao.CategoriaCliente

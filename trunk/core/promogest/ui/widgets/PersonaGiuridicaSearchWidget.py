@@ -20,11 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 import gtk
-import gobject
-
 from CustomComboBoxSearch import CustomComboBoxSearch
-
-from promogest import Environment
 from promogest.ui.utils import leggiCliente, leggiFornitore
 
 class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):

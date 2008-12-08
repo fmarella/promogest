@@ -9,18 +9,13 @@
  """
 
 import gtk
-import gobject
 
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Cliente
 from promogest.dao.Cliente import Cliente
-import promogest.dao.ClienteCategoriaCliente
 from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.dao.DaoUtils import *
-import re
 from utils import *
 from utilsCombobox import *
 

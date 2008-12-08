@@ -9,14 +9,12 @@
  """
 
 import gtk
-import gobject
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from AnagraficaComplessa import Anagrafica, AnagraficaEdit
 from promogest import Environment
 #from promogest.dao.Dao import Dao
 import promogest.dao.Fornitura
 import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
-from GladeWidget import GladeWidget
 from utils import *
 from utilsCombobox import *
 if "PromoWear" in Environment.modulesList:

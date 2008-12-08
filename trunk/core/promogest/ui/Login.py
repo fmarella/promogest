@@ -21,15 +21,10 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 import os, md5
-import gtk, gobject
+import gtk
 import datetime
 from GladeApp import GladeApp
-
-
-#from promogest.db.Connection import Connection
-#from promogest.dao import Azienda
 from promogest.dao.User import User
-from promogest.dao.Dao import Dao
 from promogest.dao.Azienda import Azienda
 import promogest.dao.Azienda
 from promogest import Environment

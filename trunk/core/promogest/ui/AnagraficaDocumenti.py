@@ -8,9 +8,6 @@
 # Author: Dr astico <zoccolodignu@gmail.com>
 
 
-import os
-import gtk
-import gobject
 import AnagraficaComplessa
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
