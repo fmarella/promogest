@@ -28,7 +28,7 @@ import datetime
 from reportlab.lib import colors, utils
 from reportlab.platypus import Table, TableStyle, Paragraph, Frame
 from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT,
+from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 #from reportlab.lib.pagesizes import cm, inch, A4, landscape
 from reportlab.pdfgen.canvas import Canvas
 #from PIL import Image
