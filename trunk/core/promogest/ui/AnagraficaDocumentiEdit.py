@@ -243,9 +243,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.Pagamenti.attiva_quarta_scadenza(False, True)
 
     def nuovaRigaNoClean(self, rigatampone=None):
-        """
-        Prepara per l'inserimento di una nuova riga seza cancellare i campi
-        """
+        """ Prepara per l'inserimento di una nuova riga seza cancellare i campi """
         self._numRiga = 0
         self.azzeraRigaPartial(0, rigatampone=rigatampone)
         self.unitaBaseLabel.set_text(rigatampone['unitaBase'])
@@ -477,12 +475,15 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def on_id_operazione_combobox_changed(self, combobox):
 
         self._operazione = findIdFromCombobox(self.id_operazione_combobox)
+        print "self._operazione = findIdFromCombobox(self.id_operazione_combobox)", self._operazione
         operazione = leggiOperazione(self._operazione)
+        print "OPERAZIONE", operazione
         if self._tipoPersonaGiuridica != operazione["tipoPersonaGiuridica"]:
             self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
         self._tipoPersonaGiuridica = operazione["tipoPersonaGiuridica"]
         self._fonteValore = operazione["fonteValore"]
         self._segno = operazione["segno"]
+        print "OOOOOOOOOOOOOOOOOOOOOODIDIIIIIIIIIIIIIIIIIIIIIIIIIIII", self._tipoPersonaGiuridica
 
         if (self._tipoPersonaGiuridica == "fornitore"):
             self.persona_giuridica_label.set_text('Fornitore')
@@ -530,7 +531,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         """
         Pulisce tutti i campi relativi alla tab pagamenti
         """
-
         self.Pagamenti.attiva_prima_scadenza(False,False)
         self.Pagamenti.attiva_seconda_scadenza(False,False)
         self.Pagamenti.attiva_terza_scadenza(False,False)
@@ -608,7 +608,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         Reimposta i totali saldato e da saldare alla modifica della data di pagamento
         della terza scadenza
         """
-
         self.Pagamenti.ricalcola_sospeso_e_pagato()
 
     def on_data_pagamento_quarta_scadenza_entry_changed(self, entry):

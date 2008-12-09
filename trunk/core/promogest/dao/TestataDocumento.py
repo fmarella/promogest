@@ -203,7 +203,6 @@ class TestataDocumento(Dao):
 
     def _getTotaliDocumento(self):
         self.__operazione = leggiOperazione(self.operazione)
-
         fonteValore = self.__operazione["fonteValore"]
 
         # FIXME: duplicated in AnagraficaDocumenti.py

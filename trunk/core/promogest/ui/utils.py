@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -433,20 +433,20 @@ def leggiOperazione(id):
     _fonteValore = ''
     _segno = ''
     _tipoPersonaGiuridica = ''
+    _tipoOperazione = ""
 
     if id is not None:
-        res = Operazione().select(join = Operazione.TD,
-                                    batchSize=None,
-                                    offset=None,
-                                    denominazioneEM=id)
-        if len(res) > 0:
-            _fonteValore = res[0].fonte_valore or ''
-            _segno = res[0].segno or ''
-            _tipoPersonaGiuridica = res[0].tipo_persona_giuridica or ''
+        res = Operazione().getRecord(id=(id).strip())
+        if res:
+            _fonteValore = res.fonte_valore or ''
+            _segno = res.segno or ''
+            _tipoPersonaGiuridica = res.tipo_persona_giuridica or ''
+            _tipoOperazione = res.tipo_operazione or ''
 
     return {"fonteValore": _fonteValore,
             "segno": _segno,
-            "tipoPersonaGiuridica": _tipoPersonaGiuridica}
+            "tipoPersonaGiuridica": _tipoPersonaGiuridica,
+            "tipoOperazione": _tipoOperazione}
 
 
 def leggiMultiplo(idMultiplo):

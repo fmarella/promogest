@@ -20,7 +20,7 @@ class Operazione(Dao):
         if k == 'denominazione':
             dic= { k: operazione.c.denominazione.ilike("%"+v+"%")}
         elif k== 'denominazioneEM':
-            dic= { k: operazione.c.denominazione == v}
+            dic= { k: operazione.c.denominazione == (v).strip()}
         elif k=="tipoOperazione":
             dic = {k:operazione.c.tipo_operazione==v}
         return  dic[k]
