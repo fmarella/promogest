@@ -1194,7 +1194,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         codiceABarre = None
         denominazione = None
         codiceArticoloFornitore = None
-
+        join = None
         if self.ricerca_codice_button.get_active():
             codice = self.articolo_entry.get_text()
             orderBy = Environment.params["schema"]+".articolo.codice"
