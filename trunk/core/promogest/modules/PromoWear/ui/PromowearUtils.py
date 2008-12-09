@@ -489,7 +489,6 @@ def on_id_taglia_customcombobox_clicked(widget, button, idGruppoTaglia=None, ign
         fillComboboxTaglie(widget.combobox, idGruppoTaglia=idGruppoTaglia, ignore=ignore)
         findComboboxRowFromId(widget.combobox, id)
 
-
     if widget.button.get_property('active') is False:
         return
 
@@ -500,8 +499,7 @@ def on_id_taglia_customcombobox_clicked(widget, button, idGruppoTaglia=None, ign
     returnWindow = widget.get_toplevel()
     anagWindow.set_transient_for(returnWindow)
     anagWindow.show_all()
-    anagWindow.connect("destroy",
-                        on_anagrafica_taglie_destroyed)
+    anagWindow.connect("destroy", on_anagrafica_taglie_destroyed)
 
 
 def on_id_colore_customcombobox_clicked(widget, button, ignore=None):

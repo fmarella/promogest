@@ -2198,33 +2198,49 @@ magazzino</property>
                                         <property name="spacing">3</property>
                                         <property name="homogeneous">True</property>
                                         <child>
-                                          <widget class="GtkRadioButton" id="senza_taglie_colori_radiobutton">
+                                          <widget class="GtkRadioButton" id="normale_radiobutton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="label" translatable="yes">Senza taglie/colori</property>
+                                            <property name="label" translatable="yes">NORMALE</property>
                                             <property name="use_underline">True</property>
                                             <property name="response_id">0</property>
                                             <property name="draw_indicator">True</property>
-                                            <signal name="toggled" handler="on_senza_taglie_colori_radiobutton_toggled"/>
+                                            <signal name="toggled" handler="on_normale_radiobutton_toggled"/>
                                           </widget>
                                           <packing>
                                             <property name="expand">False</property>
                                           </packing>
                                         </child>
                                         <child>
-                                          <widget class="GtkRadioButton" id="con_taglie_colori_radiobutton">
+                                          <widget class="GtkRadioButton" id="plus_radiobutton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="label" translatable="yes">Con taglie/colori</property>
+                                            <property name="label" translatable="yes">PLUS </property>
                                             <property name="use_underline">True</property>
                                             <property name="response_id">0</property>
                                             <property name="draw_indicator">True</property>
-                                            <property name="group">senza_taglie_colori_radiobutton</property>
-                                            <signal name="toggled" handler="on_con_taglie_colori_radiobutton_toggled"/>
+                                            <property name="group">normale_radiobutton</property>
+                                            <signal name="toggled" handler="on_plus_radiobutton_toggled"/>
                                           </widget>
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <widget class="GtkRadioButton" id="con_taglie_colori_radiobutton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="label" translatable="yes">Con Taglie/Colori</property>
+                                            <property name="use_underline">True</property>
+                                            <property name="response_id">0</property>
+                                            <property name="draw_indicator">True</property>
+                                            <property name="group">normale_radiobutton</property>
+                                            <signal name="toggled" handler="on_con_taglie_colori_radiobutton_toggled"/>
+                                          </widget>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="position">2</property>
                                           </packing>
                                         </child>
                                       </widget>
@@ -2241,12 +2257,15 @@ magazzino</property>
                                     <child>
                                       <widget class="GtkHBox" id="hbox7">
                                         <property name="visible">True</property>
-                                        <property name="homogeneous">True</property>
+                                        <property name="spacing">1</property>
                                         <child>
-                                          <widget class="GtkLabel" id="genera_varianti_label">
+                                          <widget class="GtkLabel" id="varianti_taglia_colore_label">
                                             <property name="visible">True</property>
-                                            <property name="label" translatable="yes">Varianti Articolo:</property>
+                                            <property name="label" translatable="yes">Varianti Taglia/Colore</property>
                                           </widget>
+                                          <packing>
+                                            <property name="padding">1</property>
+                                          </packing>
                                         </child>
                                         <child>
                                           <widget class="GtkToggleButton" id="taglie_colori_togglebutton">
@@ -3412,8 +3431,8 @@ listini e etichette</property>
                 <child>
                   <widget class="GtkLabel" id="label1">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Inoformazione
-taglia/colore</property>
+                    <property name="label" translatable="yes">Gestione
+Taglia/Colore</property>
                   </widget>
                   <packing>
                     <property name="type">tab</property>

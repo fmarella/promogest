@@ -203,66 +203,56 @@ def articleTypeGuiManage(anagrafica, dao):
         gtkgui.memo_wear.set_text(testo)
 
     elif articleType(dao) == "normal":
-        self.senza_taglie_colori_radiobutton.set_active(False)
-        self.frame_promowear.set_sensitive(False)
-        self.codici_a_barre_togglebutton.set_sensitive(active)
-        self.taglie_colori_togglebutton.set_sensitive(not active)
-
-        gtkgui.frame_promowear.set_sensitive(False)
-        gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
-        gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
+        gtkgui.normale_radiobutton.set_sensitive(True)
+        gtkgui.on_normale_radiobutton_toggled(gtk.RadioButton())
         gtkgui.id_anno_combobox.set_active(-1)
         gtkgui.id_genere_combobox.set_active(-1)
         gtkgui.id_stagione_combobox.set_active(-1)
-
-        gtkgui.denominazione_genere_label.set_markup('-')
+        gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
+        gtkgui.id_taglia_customcombobox.combobox.set_active(-1)
+        gtkgui.id_colore_customcombobox.combobox.set_active(-1)
         gtkgui.denominazione_genere_label.set_property('visible', False)
-
-        gtkgui.denominazione_gruppo_taglia_label.set_markup('-')
-        gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
-
-        gtkgui.denominazione_stagione_anno_label.set_markup('-')
-        gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
-
-        gtkgui.denominazione_colore_label.set_markup('-')
-        gtkgui.denominazione_colore_label.set_property('visible', False)
-
-        gtkgui.denominazione_taglia_label.set_markup('-')
         gtkgui.denominazione_taglia_label.set_property('visible', False)
-
+        gtkgui.denominazione_colore_label.set_property('visible', False)
+        gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
+        gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
+        gtkgui.memo_wear.set_text("""ARTICOLO NORMALE""")
         print "ARTICOLO SEMPLICE"
-
 
     elif articleType(dao) == "plus":
         gtkgui.frame_promowear.set_sensitive(True)
-        gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
-        gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
-        gtkgui.denominazione_genere_label.set_markup('-')
+        gtkgui.plus_radiobutton.set_sensitive(True)
+        gtkgui.on_plus_radiobutton_toggled(gtk.RadioButton())
+        findComboboxRowFromId(gtkgui.id_colore_customcombobox.combobox, dao.id_colore)
+        findComboboxRowFromId(gtkgui.id_taglia_customcombobox.combobox, dao.id_taglia)
+        findComboboxRowFromId(gtkgui.id_anno_combobox,dao.id_anno)
+        findComboboxRowFromId(gtkgui.id_stagione_combobox,dao.id_stagione)
+        findComboboxRowFromId(gtkgui.id_genere_combobox,dao.id_genere)
+        findComboboxRowFromId(gtkgui.id_gruppo_taglia_customcombobox.combobox,dao.id_gruppo_taglia)
+        #gtkgui.denominazione_genere_label.set_markup('-')
         gtkgui.denominazione_genere_label.set_property('visible', False)
+        gtkgui.denominazione_taglia_label.set_property('visible', False)
+        gtkgui.denominazione_colore_label.set_property('visible', False)
+        gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
+        gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
+        gtkgui.memo_wear.set_text("""ARTICOLO PLUS""")
         print "ARTICOLO PLUS"
 
     elif articleType(dao) == "new":
-        gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
-        gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
+        gtkgui.normale_radiobutton.set_sensitive(True)
+        gtkgui.on_normale_radiobutton_toggled(gtk.RadioButton())
         gtkgui.id_anno_combobox.set_active(-1)
         gtkgui.id_genere_combobox.set_active(-1)
         gtkgui.id_stagione_combobox.set_active(-1)
-
-        gtkgui.denominazione_genere_label.set_markup('-')
+        gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
+        gtkgui.id_taglia_customcombobox.combobox.set_active(-1)
+        gtkgui.id_colore_customcombobox.combobox.set_active(-1)
         gtkgui.denominazione_genere_label.set_property('visible', False)
-
-        gtkgui.denominazione_gruppo_taglia_label.set_markup('-')
-        gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
-
-        gtkgui.denominazione_stagione_anno_label.set_markup('-')
-        gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
-
-        gtkgui.denominazione_colore_label.set_markup('-')
-        gtkgui.denominazione_colore_label.set_property('visible', False)
-
-        gtkgui.denominazione_taglia_label.set_markup('-')
         gtkgui.denominazione_taglia_label.set_property('visible', False)
-
+        gtkgui.denominazione_colore_label.set_property('visible', False)
+        gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
+        gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
+        gtkgui.memo_wear.set_text("""ARTICOLO NUOVO""")
         print "ARTICOLO NEW"
 
     #else:

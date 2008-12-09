@@ -42,10 +42,10 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         self._duplicatedDaoId = None
         self.tipoArticoloTagliaColore=False
         if "PromoWear" not in Environment.modulesList:
-            self.senza_taglie_colori_radiobutton.set_active(True)
+            self.normale_radiobutton.set_active(True)
             self.codici_a_barre_label.set_text('')
-            self.senza_taglie_colori_radiobutton.set_property('visible', False)
-            self.senza_taglie_colori_radiobutton.set_no_show_all(True)
+            self.plus_radiobutton.set_property('visible', False)
+            self.plus_radiobutton.set_no_show_all(True)
             self.codici_a_barre_hseparator.set_property('visible', False)
             self.codici_a_barre_hseparator.set_no_show_all(True)
             self.con_taglie_colori_radiobutton.set_property('visible', False)
@@ -58,7 +58,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
     def draw(self):
         if "PromoWear" in Environment.modulesList:
-            self.senza_taglie_colori_radiobutton.set_active(True)
+            self.normale_radiobutton.set_active(True)
             self.frame_promowear.set_sensitive(False)
             self.codici_a_barre_togglebutton.set_sensitive(True)
             self.taglie_colori_togglebutton.set_sensitive(False)
@@ -217,13 +217,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             obligatoryField(self.dialogTopLevel,
                             self.id_unita_base_combobox,
                             msg='Campo obbligatorio !\n\nUnita\' base')
-        if "PromoWear" in Environment.modulesList and self.tipoArticoloTagliaColore:
-            if self.dao is not None:
-                articoloTagliaColore = ArticoloTagliaColore().getRecord(id=self.dao.id)
-            else:
-                articoloTagliaColore = ArticoloTagliaColore()
-                articoloTagliaColore.id_articolo = self.dao.id
-
+        if "PromoWear" in Environment.modulesList and (articleType(self.dao) == "plus" or self.plus_radiobutton.get_active()):
+            articoloTagliaColore = ArticoloTagliaColore()
             articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
             articoloTagliaColore.id_taglia = findIdFromCombobox(self.id_taglia_customcombobox.combobox)
             articoloTagliaColore.id_colore = findIdFromCombobox(self.id_colore_customcombobox.combobox)
@@ -236,7 +231,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         cod=checkCodiceDuplicato(codice=self.dao.codice,id=self.dao.id, tipo="Articolo")
         if not cod:
             return
-
         self.dao.denominazione = self.denominazione_entry.get_text()
         self.dao.id_aliquota_iva = findIdFromCombobox(self.id_aliquota_iva_customcombobox.combobox)
         self.dao.id_famiglia_articolo = findIdFromCombobox(self.id_famiglia_articolo_customcombobox.combobox)
@@ -447,7 +441,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
     def on_id_famiglia_articolo_customcombobox_changed(self, combobox):
         """ Restituisce un nuovo codice articolo al cambiamento della famiglia """
-
         if self._loading:
             return
 
@@ -459,17 +452,72 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.dao.codice = promogest.dao.Articolo.getNuovoCodiceArticolo(idFamiglia=idFamiglia)
             self.codice_entry.set_text(self.dao.codice)
 
-    def on_senza_taglie_colori_radiobutton_toggled(self, radioButton):
+    def on_normale_radiobutton_toggled(self, radioButton):
         active = radioButton.get_active()
         if active:
-            self.senza_taglie_colori_radiobutton.set_active(True)
+            if findIdFromCombobox(self.id_colore_customcombobox.combobox) is not None or \
+                findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox) is not None or \
+                findIdFromCombobox(self.id_anno_combobox) is not None or \
+                findIdFromCombobox(self.id_stagione_combobox) is not None or \
+                findIdFromCombobox(self.id_genere_combobox) is not None or \
+                findIdFromCombobox(self.id_taglia_customcombobox.combobox) is not None or \
+                findIdFromCombobox(self.id_colore_customcombobox.combobox) is not None:
+
+                msg = """ATTENZIONE: Si sta modificando un Tipo Articolo
+da PLUS a NORMALE questo comporta la perdita
+dei dati accessori. Continuare?"""
+                dialog = gtk.MessageDialog(self.dialogTopLevel,
+                                        gtk.DIALOG_MODAL
+                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                        gtk.MESSAGE_QUESTION,
+                                        gtk.BUTTONS_YES_NO, msg)
+                response = dialog.run()
+                dialog.destroy()
+                if response == gtk.RESPONSE_YES:
+                    #self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                    self.id_anno_combobox.set_active(-1)
+                    self.id_genere_combobox.set_active(-1)
+                    self.id_stagione_combobox.set_active(-1)
+                    self.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
+                    self.id_taglia_customcombobox.combobox.set_active(-1)
+                    self.id_colore_customcombobox.combobox.set_active(-1)
+                    self.denominazione_genere_label.set_property('visible', False)
+                    self.denominazione_taglia_label.set_property('visible', False)
+                    self.denominazione_colore_label.set_property('visible', False)
+                    self.denominazione_gruppo_taglia_label.set_property('visible', False)
+                    self.denominazione_stagione_anno_label.set_property('visible', False)
+                    self.memo_wear.set_text("""ARTICOLO NORMALE""")
+                else:
+                    self.plus_radiobutton.set_sensitive(True)
+                    self.on_plus_radiobutton_toggled(radioButton)
+                    return
+            self.normale_radiobutton.set_active(True)
             self.codici_a_barre_togglebutton.set_sensitive(True)
             self.taglie_colori_togglebutton.set_sensitive(False)
+            self.id_colore_customcombobox.set_sensitive(True)
+            self.id_taglia_customcombobox.set_sensitive(True)
             self.frame_promowear.set_sensitive(False)
-        else:
-            self.senza_taglie_colori_radiobutton.set_active(False)
+
+    def on_plus_radiobutton_toggled(self, radioButton):
+        active= radioButton.get_active()
+        if active:
+            self.plus_radiobutton.set_active(True)
+            self.codici_a_barre_togglebutton.set_sensitive(True)
+            self.varianti_taglia_colore_label.set_sensitive(False)
+            self.taglie_colori_togglebutton.set_sensitive(False)
+            self.id_colore_customcombobox.set_sensitive(True)
+            self.id_taglia_customcombobox.set_sensitive(True)
+            self.frame_promowear.set_sensitive(True)
+
+    def on_con_taglie_colori_radiobutton_toggled(self, radioButton):
+        active= radioButton.get_active()
+        if active:
+            self.con_taglie_colori_radiobutton.set_active(True)
             self.codici_a_barre_togglebutton.set_sensitive(False)
+            self.varianti_taglia_colore_label.set_sensitive(True)
             self.taglie_colori_togglebutton.set_sensitive(True)
+            self.id_colore_customcombobox.set_sensitive(False)
+            self.id_taglia_customcombobox.set_sensitive(False)
             self.frame_promowear.set_sensitive(True)
 
     def on_generate_article_code_button_clicked(self, button):
@@ -556,6 +604,9 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                                             idGruppoTaglia=self.dao.id_gruppo_taglia,
                                             ignore=list(idTaglie))
 
+
+    def on_with_son_checkbutton_toggled(self,checkbutton):
+        print "OOOOOOISISCSDVDFVDFVDFVFDDFV"
 
     def on_id_colore_customcombobox_clicked(self, widget, button):
         articoliTagliaColore = self.dao.articoliTagliaColore

@@ -325,6 +325,8 @@ class Articolo(Dao):
     def filter_values(self,k,v):
         if k == "codice":
             dic = {k:articolo.c.codice.ilike("%"+v+"%")}
+        elif k == "codicesatto" or k == "codiceEM":
+            dic = {k:articolo.c.codice == v}
         elif k == 'denominazione':
             dic = {k:articolo.c.denominazione.ilike("%"+v+"%")}
         elif k == 'codiceABarre':
@@ -390,8 +392,10 @@ class Articolo(Dao):
         except:
             pass
             #print "nessuna immagine associata all'articolo"
-        # Manage main Articolo with variation
         if self.__articoloTagliaColore:
+            if ArticoloTagliaColore().getRecord(id=self.id):
+                a = ArticoloTagliaColore().getRecord(id=self.id)
+                a.delete()
             self.__articoloTagliaColore.id_articolo=self.id
             params["session"].add(self.__articoloTagliaColore)
             params["session"].commit()
@@ -401,7 +405,19 @@ class Articolo(Dao):
                     var.id_anno = self.__articoloTagliaColore.id_anno
                     var.id_stagione = self.__articoloTagliaColore.id_stagione
                     params["session"].add(var)
-                params["session"].commit()
+            params["session"].commit()        # Manage main Articolo with variations
+        #print "REINIZIAMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.__articoloTagliaColore
+        #art = ArticoloTagliaColore().getRecord(id = self.id) or None
+        #if articleType(self) == "father":
+            #if art:
+                #art.id_articolo=self.id
+                #params['session'].add(art)
+                #for var in self.getArticoliTagliaColore():
+                    #var.id_genere = self.__articoloTagliaColore.id_genere
+                    #var.id_anno = self.__articoloTagliaColore.id_anno
+                    #var.id_stagione = self.__articoloTagliaColore.id_stagione
+                    #params["session"].add(var)
+                #params["session"].commit()
         params["session"].flush()
 
 

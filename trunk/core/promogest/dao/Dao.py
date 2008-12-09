@@ -108,12 +108,12 @@ class Dao(object):
     def _resetId(self):
         self.id = None
 
-    def sameRecord(self, dao, record=True):
+    def sameRecord(self, dao):
         """
         Check whether this Dao represents the same SQL DBMS record of
         the given Dao
         """
-        if record:
+        if dao:
             return (self.id == dao.id )
 
     def dictionary(self, complete=False):
