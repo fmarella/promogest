@@ -535,36 +535,20 @@ dei dati accessori. Continuare?"""
             obligatoryField(self.dialogTopLevel,
                             self.id_gruppo_taglia_customcombobox.combobox,
                             msg='Campo obbligatorio !\nGruppo taglia')
-
-        #if findIdFromCombobox(self.id_anno_combobox) is None:
-            #obligatoryField(self.dialogTopLevel,
-                            #self.id_anno_combobox,
-                            #msg='Campo obbligatorio !\nAnno')
-
-        #if findIdFromCombobox(self.id_stagione_combobox) is None:
-            #obligatoryField(self.dialogTopLevel,
-                            #self.id_stagione_combobox,
-                            #msg='Campo obbligatorio !\nStagione')
-
-        #if findIdFromCombobox(self.id_genere_combobox) is None:
-            #obligatoryField(self.dialogTopLevel,
-                            #self.id_genere_combobox,
-                            #msg='Campo obbligatorio !\nGenere')
         idGruppoTaglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
         idAnno = findIdFromCombobox(self.id_anno_combobox)
         idStagione = findIdFromCombobox(self.id_stagione_combobox)
         idGenere = findIdFromCombobox(self.id_genere_combobox)
-        if self.dao is not None:
-            if self.dao.id_articolo_padre is not None:
-                if findIdFromCombobox(self.id_taglia_customcombobox.combobox) is None:
-                    obligatoryField(self.dialogTopLevel,
-                                    self.id_taglia_customcombobox.combobox,
-                                    msg='Campo obbligatorio !\nTaglia')
+        if articleType(self.dao) == "son":
+            if findIdFromCombobox(self.id_taglia_customcombobox.combobox) is None:
+                obligatoryField(self.dialogTopLevel,
+                                self.id_taglia_customcombobox.combobox,
+                                msg='Campo obbligatorio !\nTaglia')
 
-                if findIdFromCombobox(self.id_colore_customcombobox.combobox) is None:
-                    obligatoryField(self.dialogTopLevel,
-                                    self.id_colore_customcombobox.combobox,
-                                    msg='Campo obbligatorio !\nColore')
+            if findIdFromCombobox(self.id_colore_customcombobox.combobox) is None:
+                obligatoryField(self.dialogTopLevel,
+                                self.id_colore_customcombobox.combobox,
+                                msg='Campo obbligatorio !\nColore')
 
         if self.dao.id is None or self.dao is None:
             msg = 'Prima di poter inserire taglie, colori e codici a barre occorre salvare l\' articolo.\n Salvare ?'
