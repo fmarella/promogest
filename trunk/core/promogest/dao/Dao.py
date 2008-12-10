@@ -113,7 +113,7 @@ class Dao(object):
         Check whether this Dao represents the same SQL DBMS record of
         the given Dao
         """
-        if dao:
+        if dao and self.id and dao.id:
             return (self.id == dao.id )
 
     def dictionary(self, complete=False):
