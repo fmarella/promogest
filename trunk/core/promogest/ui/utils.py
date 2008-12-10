@@ -32,10 +32,11 @@ from utilsCombobox import *
 
 def articleType(dao):
     if dao and "PromoWear" in Environment.modulesList:
+        print "AAAAAAA", dao.id, dao.id_articolo_taglia_colore, dao.id_articolo_padre_taglia_colore, dao.articoliTagliaColore, "AAAAAA"
         if (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre is None) and (dao.articoliTagliaColore):
             print "ARTICOLO FATHER"
             return "father"
-        elif (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre) and (not dao.articoliTagliaColore):
+        elif (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre_taglia_colore is not None):
             print "ARTICOLO SON"
             return "son"
         elif (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre is None) and (not dao.articoliTagliaColore):

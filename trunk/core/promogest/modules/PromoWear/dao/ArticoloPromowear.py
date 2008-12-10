@@ -140,6 +140,7 @@ class Articolo(Dao):
         #self.__articoloTagliaColore = None
         #try:
         self.__articoloTagliaColore = ArticoloTagliaColore().getRecord(id=self.id)
+        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAACCAVOLO ", self.__articoloTagliaColore, self.id
         return self.__articoloTagliaColore
         #except:
             #return False
@@ -159,21 +160,22 @@ class Articolo(Dao):
             articolo_relato = ArticoloTagliaColore().getRecord(id=self.id)
             if not articolo_relato.id_articolo_padre:
                 articoli = ArticoloTagliaColore().select(idArticoloPadre=articolo_relato.id_articolo,
-                                                                    idGruppoTaglia=idGruppoTaglia,
-                                                                    idTaglia=idTaglia,
-                                                                    idColore=idColore,
-                                                                    offset=None,
-                                                                    batchSize=None)
+                                                            idGruppoTaglia=idGruppoTaglia,
+                                                            idTaglia=idTaglia,
+                                                            idColore=idColore,
+                                                            offset=None,
+                                                            batchSize=None)
+                print "IFFFFFFFFFFFFFFFFF", articoli
             else:
                 articoli = ArticoloTagliaColore().select(idArticoloPadre=articolo_relato.id_articolo_padre,
-                                                                    idGruppoTaglia=idGruppoTaglia,
-                                                                    idTaglia=idTaglia,
-                                                                    idColore=idColore,
-                                                                    offset=None,
-                                                                    batchSize=None)
+                                                            idGruppoTaglia=idGruppoTaglia,
+                                                            idTaglia=idTaglia,
+                                                            idColore=idColore,
+                                                            offset=None,
+                                                            batchSize=None)
+                print "ELSEEEEEEEEEEEEE", articoli
         except:
             print "FOR DEBUG ONLY getArticoliTagliaColore FAILED"
-            pass
         return articoli
     articoliTagliaColore = property(getArticoliTagliaColore)
 

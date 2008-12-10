@@ -227,6 +227,38 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             articoloTagliaColore.id_genere = findIdFromCombobox(self.id_genere_combobox)
             self.dao.articoloTagliaColore = articoloTagliaColore
             articoloTagliaColore = None
+            #potrà sembrare una ripetizione ma preferisco gestirlo di fino con altri controlli
+        elif "PromoWear" in Environment.modulesList and (articleType(self.dao) == "father" and self.con_taglie_colori_radiobutton.get_active()):
+            articoloTagliaColore = ArticoloTagliaColore()
+            articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
+            articoloTagliaColore.id_taglia = findIdFromCombobox(self.id_taglia_customcombobox.combobox)
+            articoloTagliaColore.id_colore = findIdFromCombobox(self.id_colore_customcombobox.combobox)
+            if articoloTagliaColore.id_taglia or articoloTagliaColore.id_colore:
+                msg =""" ATTENZIONE: Articolo Padre Taglia e Colore NON
+    può avere Colore o Taglia propri."""
+                overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
+                                                    | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                                        gtk.MESSAGE_ERROR,
+                                                        gtk.BUTTONS_CANCEL, msg)
+                response = overDialog.run()
+                overDialog.destroy()
+                return
+            articoloTagliaColore.id_anno = findIdFromCombobox(self.id_anno_combobox)
+            articoloTagliaColore.id_stagione = findIdFromCombobox(self.id_stagione_combobox)
+            articoloTagliaColore.id_genere = findIdFromCombobox(self.id_genere_combobox)
+            self.dao.articoloTagliaColore = articoloTagliaColore
+            articoloTagliaColore = None
+        elif "PromoWear" in Environment.modulesList and (articleType(self.dao) == "son" and self.con_taglie_colori_radiobutton.get_active()):
+            articoloTagliaColore = ArticoloTagliaColore()
+            articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
+            articoloTagliaColore.id_taglia = findIdFromCombobox(self.id_taglia_customcombobox.combobox)
+            articoloTagliaColore.id_colore = findIdFromCombobox(self.id_colore_customcombobox.combobox)
+            articoloTagliaColore.id_anno = findIdFromCombobox(self.id_anno_combobox)
+            articoloTagliaColore.id_stagione = findIdFromCombobox(self.id_stagione_combobox)
+            articoloTagliaColore.id_genere = findIdFromCombobox(self.id_genere_combobox)
+            self.dao.articoloTagliaColore = articoloTagliaColore
+            articoloTagliaColore = None
+
         self.dao.codice = self.codice_entry.get_text()
         cod=checkCodiceDuplicato(codice=self.dao.codice,id=self.dao.id, tipo="Articolo")
         if not cod:
@@ -539,17 +571,6 @@ dei dati accessori. Continuare?"""
         idAnno = findIdFromCombobox(self.id_anno_combobox)
         idStagione = findIdFromCombobox(self.id_stagione_combobox)
         idGenere = findIdFromCombobox(self.id_genere_combobox)
-        if articleType(self.dao) == "son":
-            if findIdFromCombobox(self.id_taglia_customcombobox.combobox) is None:
-                obligatoryField(self.dialogTopLevel,
-                                self.id_taglia_customcombobox.combobox,
-                                msg='Campo obbligatorio !\nTaglia')
-
-            if findIdFromCombobox(self.id_colore_customcombobox.combobox) is None:
-                obligatoryField(self.dialogTopLevel,
-                                self.id_colore_customcombobox.combobox,
-                                msg='Campo obbligatorio !\nColore')
-
         if self.dao.id is None or self.dao is None:
             msg = 'Prima di poter inserire taglie, colori e codici a barre occorre salvare l\' articolo.\n Salvare ?'
             dialog = gtk.MessageDialog(self.dialogTopLevel,
@@ -568,13 +589,21 @@ dei dati accessori. Continuare?"""
             else:
                 toggleButton.set_active(False)
                 return
+        if articleType(self.dao) == "son":
+            if findIdFromCombobox(self.id_taglia_customcombobox.combobox) is None:
+                obligatoryField(self.dialogTopLevel,
+                                self.id_taglia_customcombobox.combobox,
+                                msg='Campo obbligatorio !\nTaglia')
 
+            if findIdFromCombobox(self.id_colore_customcombobox.combobox) is None:
+                obligatoryField(self.dialogTopLevel,
+                                self.id_colore_customcombobox.combobox,
+                                msg='Campo obbligatorio !\nColore')
         from promogest.modules.PromoWear.ui.TaglieColori import GestioneTaglieColori
         tagcol = GestioneTaglieColori(articolo=self.dao)
         tagcolWindow = tagcol.getTopLevel()
 
         showAnagraficaRichiamata(self.dialogTopLevel, tagcolWindow, toggleButton)
-
 
     def on_id_taglia_customcombobox_clicked(self, widget, button):
         articoliTagliaColore = self.dao.articoliTagliaColore
@@ -584,7 +613,6 @@ dei dati accessori. Continuare?"""
                                             button,
                                             idGruppoTaglia=self.dao.id_gruppo_taglia,
                                             ignore=list(idTaglie))
-
 
     def on_id_colore_customcombobox_clicked(self, widget, button):
         articoliTagliaColore = self.dao.articoliTagliaColore

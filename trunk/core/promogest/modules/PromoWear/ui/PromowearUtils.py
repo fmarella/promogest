@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -335,9 +335,9 @@ def fillComboboxTaglie(combobox, filter=False, idGruppoTaglia=None, ignore=[]):
     model = gtk.ListStore(object, int, str)
     if idGruppoTaglia is None:
         tags = Taglia().select(denominazione=None,
-                                           orderBy = None,
-                                           offset = None,
-                                           batchSize = None)
+                                orderBy = None,
+                                offset = None,
+                                batchSize = None)
 
         if not filter:
             emptyRow = ''

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -45,7 +45,6 @@ class GestioneTaglieColori(GladeWidget):
         self._articoliTagliaColore = self._articoloBase.articoliTagliaColore
         self._noValue = 'n/a'
         self._varianti = {}
-
         self._gruppoTaglia = None
 
         # Taglie attualmente presenti nella treeview

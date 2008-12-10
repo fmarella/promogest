@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -9,6 +9,7 @@ import gtk
 import gobject
 from promogest import Environment
 from promogest.ui.utils import *
+from promogest.modules.PromoWear.ui.PromowearUtils import *
 
 def treeViewExpand(gtkgui, treeview, renderer):
     """ Expand the normal article treeview """
@@ -102,35 +103,34 @@ def articleTypeGuiManage(anagrafica, dao):
     """ complex manage the new aticles type: plus, father son """
     gtkgui = anagrafica
     if articleType(dao) == "son":
-        gtkgui.memo_wear.set_text("""ARTICOLO VARIANTE""")
-        gtkgui.frame_promowear.set_sensitive(True)
-        # VARIANTE: niente gestione taglie, ma possibilita' di trattare i codici a barre
-        gtkgui.senza_taglie_colori_radiobutton.set_active(True)
-        gtkgui.con_taglie_colori_radiobutton.set_active(False)
-        gtkgui.senza_taglie_colori_radiobutton.set_sensitive(True)
-        gtkgui.con_taglie_colori_radiobutton.set_sensitive(False)
+        gtkgui.memo_wear.set_text("""ARTICOLO VARIANTE TAGLIA E COLORE""")
 
         # niente possibilita' di variare gruppo taglie, genere, anno e stagione
+        gtkgui.con_taglie_colori_radiobutton.set_sensitive(True)
+        gtkgui.on_con_taglie_colori_radiobutton_toggled(gtk.RadioButton())
 
         findComboboxRowFromId(gtkgui.id_gruppo_taglia_customcombobox.combobox, gtkgui.dao.id_gruppo_taglia)
         gtkgui.id_gruppo_taglia_customcombobox.set_property('visible', False)
         gtkgui.denominazione_gruppo_taglia_label.set_markup(
-                '<span weight="bold">%s</span>'
-                % (dao.denominazione_gruppo_taglia,))
+                '<span weight="bold">%s</span>' % (dao.denominazione_gruppo_taglia,))
         gtkgui.denominazione_gruppo_taglia_label.set_property('visible', True)
+
         findComboboxRowFromId(gtkgui.id_genere_combobox, dao.id_genere)
         gtkgui.id_genere_combobox.set_property('visible', False)
         gtkgui.denominazione_genere_label.set_markup(
-                '<span weight="bold">%s</span>'
-                % (dao.genere,))
+                '<span weight="bold">%s</span>' % (dao.genere,))
         gtkgui.denominazione_genere_label.set_property('visible', True)
+
         findComboboxRowFromId(gtkgui.id_stagione_combobox, dao.id_stagione)
         gtkgui.id_stagione_combobox.set_property('visible', False)
+        gtkgui.denominazione_stagione_anno_label.set_markup(
+                '<span weight="bold">%s - %s</span>' % (dao.stagione,dao.anno))
+        gtkgui.denominazione_stagione_anno_label.set_property('visible', True)
+
         findComboboxRowFromId(gtkgui.id_anno_combobox, dao.id_anno)
         gtkgui.id_anno_combobox.set_property('visible', False)
         gtkgui.denominazione_stagione_anno_label.set_markup(
-                '<span weight="bold">%s - %s</span>'
-                % (dao.stagione,dao.anno))
+                '<span weight="bold">%s - %s</span>' % (dao.stagione,dao.anno))
         gtkgui.denominazione_stagione_anno_label.set_property('visible', True)
 
         # possibilita' di variare taglia e colore solo nella misura in cui non ci sia già una variante
@@ -142,62 +142,69 @@ def articleTypeGuiManage(anagrafica, dao):
             ignore=list(idTaglie))
         findComboboxRowFromId(gtkgui.id_taglia_customcombobox.combobox,
                             dao.id_taglia)
-        gtkgui.id_taglia_customcombobox.set_property('visible', True)
+        gtkgui.id_taglia_customcombobox.combobox.set_property('visible', True)
+        gtkgui.id_taglia_customcombobox.set_sensitive(True)
         gtkgui.denominazione_taglia_label.set_markup('-')
         gtkgui.denominazione_taglia_label.set_property('visible', False)
         idColori = set(a.id_colore for a in articoliTagliaColore)
         idColori.remove(dao.id_colore)
         fillComboboxColori(gtkgui.id_colore_customcombobox.combobox, ignore=list(idColori))
         findComboboxRowFromId(gtkgui.id_colore_customcombobox.combobox, dao.id_colore)
-        gtkgui.id_colore_customcombobox.set_property('visible', True)
+        gtkgui.id_colore_customcombobox.combobox.set_property('visible', True)
+        gtkgui.id_colore_customcombobox.set_sensitive(True)
         gtkgui.denominazione_colore_label.set_markup('-')
         gtkgui.denominazione_colore_label.set_property('visible', False)
-
-        #gtkgui.id_aliquota_iva_customcombobox.set_sensitive(False)
+        findComboboxRowFromId(gtkgui.id_colore_customcombobox.combobox, dao.id_colore)
+        findComboboxRowFromId(gtkgui.id_taglia_customcombobox.combobox, dao.id_taglia)
+        gtkgui.id_aliquota_iva_customcombobox.set_sensitive(False)
+        gtkgui.denominazione_entry.set_sensitive(False)
         #gtkgui.id_famiglia_articolo_customcombobox.set_sensitive(False)
         #gtkgui.id_categoria_articolo_customcombobox.set_sensitive(False)
-        #gtkgui.id_unita_base_combobox.set_sensitive(False)
-        #gtkgui.produttore_entry.set_sensitive(False)
+        gtkgui.id_unita_base_combobox.set_sensitive(False)
+        gtkgui.produttore_entry.set_sensitive(False)
 
     elif articleType(dao) == "father":
         # Articolo principale in quando id_articolo_padre è vuoto
         # possibilita' di inserire gruppo taglia, genere, anno, stagione
-        gtkgui.frame_promowear.set_sensitive(True)
-        gtkgui.senza_taglie_colori_radiobutton.set_active(False)
-        gtkgui.con_taglie_colori_radiobutton.set_active(True)
-        gtkgui.senza_taglie_colori_radiobutton.set_sensitive(False)
         gtkgui.con_taglie_colori_radiobutton.set_sensitive(True)
+        gtkgui.on_con_taglie_colori_radiobutton_toggled(gtk.RadioButton())
         findComboboxRowFromId(gtkgui.id_gruppo_taglia_customcombobox.combobox, dao.id_gruppo_taglia)
-        gtkgui.id_gruppo_taglia_customcombobox.set_property('visible', False)
-        gtkgui.denominazione_gruppo_taglia_label.set_markup('<span weight="bold">%s</span>'
-                                                            % (dao.denominazione_gruppo_taglia,))
-        gtkgui.denominazione_gruppo_taglia_label.set_property('visible', True)
+        #gtkgui.id_gruppo_taglia_customcombobox.set_property('visible', False)
+        #gtkgui.denominazione_gruppo_taglia_label.set_markup('<span weight="bold">%s</span>'
+                                                            #% (dao.denominazione_gruppo_taglia,))
+        #gtkgui.denominazione_gruppo_taglia_label.set_property('visible', True)
 
         findComboboxRowFromId(gtkgui.id_genere_combobox, dao.id_genere)
         #gtkgui.id_genere_combobox.set_active(-1)
         gtkgui.id_genere_combobox.set_property('visible', True)
 
         #gtkgui.denominazione_genere_label.set_markup('-')
-        gtkgui.denominazione_genere_label.set_property('visible', False)
+        #gtkgui.denominazione_genere_label.set_property('visible', False)
         findComboboxRowFromId(gtkgui.id_stagione_combobox, dao.id_stagione)
         #gtkgui.id_stagione_combobox.set_active(-1)
         gtkgui.id_stagione_combobox.set_property('visible', True)
         #gtkgui.id_anno_combobox.set_active(-1)
         findComboboxRowFromId(gtkgui.id_anno_combobox, dao.id_anno)
         gtkgui.id_anno_combobox.set_property('visible', True)
-
-        gtkgui.denominazione_stagione_anno_label.set_markup('-')
+        gtkgui.id_taglia_customcombobox.combobox.set_active(-1)
+        gtkgui.id_colore_customcombobox.combobox.set_active(-1)
+        gtkgui.denominazione_genere_label.set_property('visible', False)
+        gtkgui.denominazione_taglia_label.set_property('visible', False)
+        gtkgui.denominazione_colore_label.set_property('visible', False)
+        gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
         gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
+        #gtkgui.denominazione_stagione_anno_label.set_markup('-')
+        #gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
 
         # niente possibilita' di inserire taglia, colore
-        gtkgui.id_taglia_customcombobox.combobox.set_active(-1)
-        gtkgui.id_taglia_customcombobox.set_property('visible', False)
-        gtkgui.denominazione_taglia_label.set_markup('<span weight="bold">-</span>')
-        gtkgui.denominazione_taglia_label.set_property('visible', True)
-        gtkgui.id_colore_customcombobox.combobox.set_active(-1)
-        gtkgui.id_colore_customcombobox.set_property('visible', False)
-        gtkgui.denominazione_colore_label.set_markup('<span weight="bold">-</span>')
-        gtkgui.denominazione_colore_label.set_property('visible', True)
+        #gtkgui.id_taglia_customcombobox.combobox.set_active(-1)
+        #gtkgui.id_taglia_customcombobox.set_property('visible', False)
+        #gtkgui.denominazione_taglia_label.set_markup('<span weight="bold">-</span>')
+        #gtkgui.denominazione_taglia_label.set_property('visible', True)
+        #gtkgui.id_colore_customcombobox.combobox.set_active(-1)
+        #gtkgui.id_colore_customcombobox.set_property('visible', False)
+        #gtkgui.denominazione_colore_label.set_markup('<span weight="bold">-</span>')
+        #gtkgui.denominazione_colore_label.set_property('visible', True)
         varianti = str(len(dao.articoliTagliaColore))
         testo= """ARTICOLO PRINCIPALE CON %s VARIANTI""" %varianti
         gtkgui.memo_wear.set_text(testo)
@@ -254,34 +261,12 @@ def articleTypeGuiManage(anagrafica, dao):
         gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
         gtkgui.memo_wear.set_text("""ARTICOLO NUOVO""")
         print "ARTICOLO NEW"
-
-    #else:
-        ## articolo principale: gestione codici a barre - taglie - colori
-        #gtkgui.senza_taglie_colori_radiobutton.set_active(False)
-        #gtkgui.con_taglie_colori_radiobutton.set_active(True)
-
-        ## niente variazione gruppo taglia
-        ## possibilita' di variare anno, stagione e genere
-        #findComboboxRowFromId(gtkgui.id_gruppo_taglia_customcombobox.combobox, dao.id_gruppo_taglia)
-        #gtkgui.id_gruppo_taglia_customcombobox.set_property('visible', False)
-        #gtkgui.denominazione_gruppo_taglia_label.set_markup('<span weight="bold">%s</span>'
-                                                            #% (dao.denominazione_gruppo_taglia,))
-        #findComboboxRowFromId(gtkgui.id_genere_combobox, dao.id_genere)
-        #gtkgui.id_genere_combobox.set_property('visible', True)
-        #gtkgui.denominazione_genere_label.set_markup('-')
-        #gtkgui.denominazione_genere_label.set_property('visible', False)
-        #findComboboxRowFromId(gtkgui.id_stagione_combobox, dao.id_stagione)
-        #gtkgui.id_stagione_combobox.set_property('visible', True)
-        #findComboboxRowFromId(gtkgui.id_anno_combobox, dao.id_anno)
-        #gtkgui.denominazione_stagione_anno_label.set_markup('-')
-        #gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
-
-        ## niente variazione taglia, colore
-        #gtkgui.id_taglia_customcombobox.combobox.set_active(-1)
-        #gtkgui.id_taglia_customcombobox.set_property('visible', False)
-        #gtkgui.denominazione_taglia_label.set_markup('<span weight="bold">-</span>')
-        #gtkgui.denominazione_taglia_label.set_property('visible', True)
-        #gtkgui.id_colore_customcombobox.combobox.set_active(-1)
-        #gtkgui.id_colore_customcombobox.set_property('visible', False)
-        #gtkgui.denominazione_colore_label.set_markup('<span weight="bold">-</span>')
-        #gtkgui.denominazione_colore_label.set_property('visible', True)
+    else:
+        msg = "ATTENZIONE LA TIPOLOGIA DI ARTICOLO NON E' CONTEMPLATA"
+        overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
+                                            | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                                gtk.MESSAGE_ERROR,
+                                                gtk.BUTTONS_CANCEL, msg)
+        response = overDialog.run()
+        overDialog.destroy()
+        return
