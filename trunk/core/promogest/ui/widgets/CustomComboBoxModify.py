@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -46,7 +46,10 @@ class CustomComboBoxModify(gtk.HBox):
                             self.do_button_clicked)
         self.combobox.connect('key_press_event',
                               self.do_combobox_key_press_event)
-
+        if hasattr(Environment.conf,'Numbers'):
+            self.combo_column = int(getattr(Environment.conf.Numbers,'combo_column',5))
+            if self.combo_column:
+                self.combobox.set_wrap_width(self.combo_column)
         renderer = gtk.CellRendererText()
         self.combobox.pack_start(renderer, True)
         self.combobox.add_attribute(renderer, 'text', 0)

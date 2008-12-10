@@ -239,8 +239,11 @@ def set_configuration(company=None, year = None):
     else:
         rivenditoreUrl = "http://promogest.promotux.it/contatti.php"
 
-
-
+    if hasattr(conf,'Numbers'):
+        conf.combo_columns = int(getattr(conf.Numbers,'combo_column',5))
+    else:
+        print "ATTENZIONE: OPZIONE combo_column = 5  MANCANTE NEL CONFIGURE SEZIONE [Numbers]"
+        conf.combo_columns = 3
     #[SMTP]
     smtpServer = str(getattr(conf.SMTP, 'smtpserver'))
     emailmittente = str(getattr(conf.SMTP, 'emailmittente'))

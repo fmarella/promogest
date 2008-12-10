@@ -138,13 +138,11 @@ class Articolo(Dao):
         """ Restituisce il Dao ArticoloTagliaColore collegato al Dao Articolo #"""
         #if self.__articoloTagliaColore is not None:
         #self.__articoloTagliaColore = None
-        try:
-            self.__articoloTagliaColore = ArticoloTagliaColore().select(idArticolo=self.id,
-                                                                                    offset=None,
-                                                                                    batchSize=None)[0]
-            return self.__articoloTagliaColore
-        except:
-            return False
+        #try:
+        self.__articoloTagliaColore = ArticoloTagliaColore().getRecord(id=self.id)
+        return self.__articoloTagliaColore
+        #except:
+            #return False
 
     def setArticoloTagliaColore(self, value):
         """

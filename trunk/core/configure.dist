@@ -19,6 +19,7 @@ azienda= azienda_mentor
 [Numbers]
 decimals = 2
 batch_size = 15
+combo_column = 3
 
 [Documenti]
 cartella_predefinita =

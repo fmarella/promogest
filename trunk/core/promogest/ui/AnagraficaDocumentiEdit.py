@@ -28,6 +28,7 @@ from utilsCombobox import *
 #from promogest.lib.TreeViewTooltips import TreeViewTooltips
 #from promogest.ui.widgets.MultiLineEditor import MultiLineEditor
 from GladeWidget import GladeWidget
+from promogest import Environment
 
 class AnagraficaDocumentiEdit(AnagraficaEdit):
     """ Modifica un record dei documenti """
@@ -379,6 +380,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         fillComboboxAliquoteIva(self.id_aliquota_iva_esenzione_customcombobox.combobox)
         fillComboboxCausaliTrasporto(self.causale_trasporto_comboboxentry)
         fillComboboxAspettoEsterioreBeni(self.aspetto_esteriore_beni_comboboxentry)
+        self.id_operazione_combobox.set_wrap_width(Environment.conf.combo_columns)
+            
 
         self.porto_combobox.set_active(-1)
         self.porto_combobox.set_sensitive(False)

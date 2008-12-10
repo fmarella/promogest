@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest
@@ -220,6 +220,8 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
 
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
         self.filter_promowear.set_property('visible', "PromoWear" in Environment.modulesList)
+        self.id_famiglia_articolo_filter_combobox.set_wrap_width(Environment.conf.combo_columns)
+        self.id_categoria_articolo_filter_combobox.set_wrap_width(Environment.conf.combo_columns)
 
         self.clear()
 

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest
@@ -91,7 +91,7 @@ def fillComboboxCategorieArticoli(combobox, filter=False):
     """
     from promogest.dao.CategoriaArticolo import CategoriaArticolo
     model = gtk.ListStore(object, int, str)
-    cats = CategoriaArticolo().select(offset=None,batchSize=None)
+    cats = CategoriaArticolo().select(offset=None,batchSize=None, orderBy="denominazione")
     if not filter:
         emptyRow = ''
     else:
@@ -115,7 +115,7 @@ def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
     """
     from promogest.dao.FamigliaArticolo import FamigliaArticolo
     model = gtk.TreeStore(object, int, str)
-    fams = FamigliaArticolo().select(offset=None,batchSize=None)
+    fams = FamigliaArticolo().select(offset=None,batchSize=None, orderBy="denominazione")
     if not filter:
         emptyRow = ''
     else:

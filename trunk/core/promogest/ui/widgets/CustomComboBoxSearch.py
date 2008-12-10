@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -32,7 +32,6 @@ class CustomComboBoxSearch(gtk.ComboBox):
         self._idChangedHandler = None
 
         gtk.ComboBox.__init__(self)
-
         renderer = gtk.CellRendererText()
         self.pack_start(renderer, True)
         self.add_attribute(renderer, 'text', 2)

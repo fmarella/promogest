@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest
@@ -525,49 +525,46 @@ dei dati accessori. Continuare?"""
         self.codice_entry.set_text(codice)
 
     def on_taglie_colori_togglebutton_clicked(self, toggleButton):
+        """ TogGLeButton delle taglie e colori, solo per la definizione delle varianti"""
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
 
+        #if idGruppoTaglia is not None or idAnno is not None or idStagione is not None or idGenere is not None:
         if findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox) is None:
-            toggleButton.set_active(False)
-            obligatoryField(self.dialogTopLevel, self.id_gruppo_taglia_customcombobox.combobox, 'Specificare il gruppo taglia !')
+            obligatoryField(self.dialogTopLevel,
+                            self.id_gruppo_taglia_customcombobox.combobox,
+                            msg='Campo obbligatorio !\nGruppo taglia')
+
+        #if findIdFromCombobox(self.id_anno_combobox) is None:
+            #obligatoryField(self.dialogTopLevel,
+                            #self.id_anno_combobox,
+                            #msg='Campo obbligatorio !\nAnno')
+
+        #if findIdFromCombobox(self.id_stagione_combobox) is None:
+            #obligatoryField(self.dialogTopLevel,
+                            #self.id_stagione_combobox,
+                            #msg='Campo obbligatorio !\nStagione')
+
+        #if findIdFromCombobox(self.id_genere_combobox) is None:
+            #obligatoryField(self.dialogTopLevel,
+                            #self.id_genere_combobox,
+                            #msg='Campo obbligatorio !\nGenere')
         idGruppoTaglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
         idAnno = findIdFromCombobox(self.id_anno_combobox)
         idStagione = findIdFromCombobox(self.id_stagione_combobox)
         idGenere = findIdFromCombobox(self.id_genere_combobox)
-        if idGruppoTaglia is not None or idAnno is not None or idStagione is not None or idGenere is not None:
-                if findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox) is None:
+        if self.dao is not None:
+            if self.dao.id_articolo_padre is not None:
+                if findIdFromCombobox(self.id_taglia_customcombobox.combobox) is None:
                     obligatoryField(self.dialogTopLevel,
-                                    self.id_gruppo_taglia_customcombobox.combobox,
-                                    msg='Campo obbligatorio !\nGruppo taglia')
+                                    self.id_taglia_customcombobox.combobox,
+                                    msg='Campo obbligatorio !\nTaglia')
 
-                if findIdFromCombobox(self.id_anno_combobox) is None:
+                if findIdFromCombobox(self.id_colore_customcombobox.combobox) is None:
                     obligatoryField(self.dialogTopLevel,
-                                    self.id_anno_combobox,
-                                    msg='Campo obbligatorio !\nAnno')
-
-                if findIdFromCombobox(self.id_stagione_combobox) is None:
-                    obligatoryField(self.dialogTopLevel,
-                                    self.id_stagione_combobox,
-                                    msg='Campo obbligatorio !\nStagione')
-
-                if findIdFromCombobox(self.id_genere_combobox) is None:
-                    obligatoryField(self.dialogTopLevel,
-                                    self.id_genere_combobox,
-                                    msg='Campo obbligatorio !\nGenere')
-
-                if self.dao is not None:
-                    if self.dao.id_articolo_padre is not None:
-                        if findIdFromCombobox(self.id_taglia_customcombobox.combobox) is None:
-                            obligatoryField(self.dialogTopLevel,
-                                            self.id_taglia_customcombobox.combobox,
-                                            msg='Campo obbligatorio !\nTaglia')
-
-                        if findIdFromCombobox(self.id_colore_customcombobox.combobox) is None:
-                            obligatoryField(self.dialogTopLevel,
-                                            self.id_colore_customcombobox.combobox,
-                                            msg='Campo obbligatorio !\nColore')
+                                    self.id_colore_customcombobox.combobox,
+                                    msg='Campo obbligatorio !\nColore')
 
         if self.dao.id is None or self.dao is None:
             msg = 'Prima di poter inserire taglie, colori e codici a barre occorre salvare l\' articolo.\n Salvare ?'
@@ -604,9 +601,6 @@ dei dati accessori. Continuare?"""
                                             idGruppoTaglia=self.dao.id_gruppo_taglia,
                                             ignore=list(idTaglie))
 
-
-    def on_with_son_checkbutton_toggled(self,checkbutton):
-        print "OOOOOOISISCSDVDFVDFVDFVFDDFV"
 
     def on_id_colore_customcombobox_clicked(self, widget, button):
         articoliTagliaColore = self.dao.articoliTagliaColore

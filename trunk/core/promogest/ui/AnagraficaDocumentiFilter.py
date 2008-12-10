@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -14,6 +14,7 @@ from utils import *
 from promogest.dao.TestataDocumento import TestataDocumento
 import datetime
 from utilsCombobox import *
+from promogest import Environment
 
 class AnagraficaDocumentiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nei documenti """
@@ -133,6 +134,9 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         fillComboboxOperazioni(self.id_operazione_filter_combobox, 'documento',True)
         self.id_operazione_filter_combobox.set_active(0)
         fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
+
+        self.id_operazione_filter_combobox.set_wrap_width(Environment.conf.combo_columns)
+        self.id_magazzino_filter_combobox.set_wrap_width(Environment.conf.combo_columns)
         #if self._anagrafica._magazzinoFissato:
             #findComboboxRowFromId(self.id_magazzino_filter_combobox,
                                   #self._anagrafica._idMagazzino)
