@@ -6,7 +6,7 @@
 # Author: Dr astico (Pinna Marco) <marco@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 
-
+import gtk
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
@@ -88,22 +88,54 @@ class Dao(object):
         return True
 
     def persist(self,multiple=False, record=True):
-        #import pdb
-        #pdb.set_trace()
-        if record:
-            #try:
-            params["session"].add(self)
-            params["session"].commit()
-             #params["session"].flush()
-            return True
+        try:
+            if record:
+                #try:
+                params["session"].add(self)
+                params["session"].commit()
+                #params["session"].flush()
+                return True
+        except Exception,e:
+            msg = """ATTENZIONE ERRORE nel salvataggio dei dati
+probabilmente a causa di un dato mancante:
+Qui sotto viene riportato l'errore di sistema:
+%s
+( normalmente il campo in errore è tra "virgolette")
+Dovrebbe essere sufficiente reinserire i dato nella loro
+completezza o integrita """ %e
+            overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
+                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                                    gtk.MESSAGE_ERROR,
+                                                    gtk.BUTTONS_CANCEL, msg)
+            response = overDialog.run()
+            overDialog.destroy()
+            params["session"].rollback()
+            return False
 
     def delete(self, multiple=False, record = True ):
-        if record:
-            #try:
-            params['session'].delete(self)
-            params["session"].commit()
-            #params['session'].flush()
-        return True
+        try:
+            if record:
+                #try:
+                params['session'].delete(self)
+                params["session"].commit()
+                #params['session'].flush()
+            return True
+        except Exception,e:
+            msg = """ATTENZIONE ERRORE nella cancellazione dei dati
+probabilmente a causa di un dato errato o di una
+procedura non correttamente gestita:
+Qui sotto viene riportato l'errore di sistema:
+%s
+( normalmente il campo in errore è tra "virgolette")
+""" %e
+            overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
+                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                                    gtk.MESSAGE_ERROR,
+                                                    gtk.BUTTONS_CANCEL, msg)
+            response = overDialog.run()
+            overDialog.destroy()
+            params["session"].rollback()
+            return False
 
     def _resetId(self):
         self.id = None
