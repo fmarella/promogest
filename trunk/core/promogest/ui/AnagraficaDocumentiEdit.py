@@ -571,7 +571,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             response = False
 
         if response != False:
-            self.Pagamenti.importo_primo_documento_entry.set_text(str(response))
+            self.importo_primo_documento_entry.set_text(str(response))
             self.Pagamenti.dividi_importo()
             self.Pagamenti.ricalcola_sospeso_e_pagato()
             self.numero_secondo_documento_entry.set_sensitive(True)

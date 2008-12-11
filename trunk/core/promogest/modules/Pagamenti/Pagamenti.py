@@ -8,7 +8,6 @@
 # Author: Dr astico <zoccolodignu@gmail.com>
 
 
-import promogest.dao.TestataDocumento
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.ui.utils import *
@@ -186,17 +185,17 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
             idFornitore = self.anagrafica.id_persona_giuridica_customcombobox.getId()
             tipoDocumento = "Nota di credito da fornitore"
 
-        result = promogest.dao.TestataDocumento.select(daNumero=numerodocumento,
-                                                     aNumero=numerodocumento,
-                                                     daParte=None,
-                                                     aParte=None,
-                                                     daData=None,
-                                                     aData=None,
-                                                     protocollo=None,
-                                                     idOperazione=tipoDocumento,
-                                                     idMagazzino=None,
-                                                     idCliente=idCliente,
-                                                     idFornitore=idFornitore)
+        result = TestataDocumento().select(daNumero=numerodocumento,
+                                            aNumero=numerodocumento,
+                                            daParte=None,
+                                            aParte=None,
+                                            daData=None,
+                                            aData=None,
+                                            protocollo=None,
+                                            idOperazione=tipoDocumento,
+                                            idMagazzino=None,
+                                            idCliente=idCliente,
+                                            idFornitore=idFornitore)
 
         if len(result) > 1:
             self.anagrafica.showMessage("Sono stati trovati piu` di un documento. Hai scovato un bug :D")
@@ -429,16 +428,15 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
             self.anagrafica.dao.totale_pagato or 0))
         self.anagrafica.totale_sospeso_scadenza_label.set_text(str(
             self.anagrafica.dao.totale_sospeso or 0))
-
         if self.anagrafica.dao.id_primo_riferimento != None:
-            doc = TestataDocumento(Environment.connection, self.anagrafica.dao.id_primo_riferimento)
+            doc = TestataDocumento().getRecord(id=self.anagrafica.dao.id_primo_riferimento)
             self.anagrafica.importo_primo_documento_entry.set_text(str(doc.totale_pagato) or '')
             self.anagrafica.numero_primo_documento_entry.set_text(str(doc.numero) or '')
             self.anagrafica.importo_secondo_documento_entry.set_sensitive(True)
             self.anagrafica.numero_secondo_documento_entry.set_sensitive(True)
             self.anagrafica.seleziona_seconda_nota_button.set_sensitive(True)
             if self.anagrafica.dao.id_secondo_riferimento != None:
-                doc = TestataDocumento(Environment.connection, self.anagrafica.dao.id_secondo_riferimento)
+                doc = TestataDocumento().getRecord(id=self.anagrafica.dao.id_secondo_riferimento)
                 self.anagrafica.importo_secondo_documento_entry.set_text(str(doc.totale_pagato) or '')
                 self.anagrafica.numero_secondo_documento_entry.set_text(str(doc.numero) or '')
             else:
@@ -519,12 +517,12 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
                         scadenze.append(daoTestataDocumentoScadenza)
         self.anagrafica.dao.scadenze = scadenze
         doc = self.anagrafica.numero_primo_documento_entry.get_text()
-        if doc != "" and doc != "0" and self.anagrafica.canSaveCont == True:
-            documentocollegato = self.anagrafica.getDocumentoCollegato(int(doc))
+        if doc != "" and doc != "0":
+            documentocollegato = self.getDocumentoCollegato(int(doc))
             self.anagrafica.dao.id_primo_riferimento = documentocollegato[0].id
             doc2 = self.anagrafica.numero_secondo_documento_entry.get_text()
             if doc2 != "" and doc2 != "0":
-                documentocollegato = self.anagrafica.getDocumentoCollegato(int(doc2))
+                documentocollegato = self.getDocumentoCollegato(int(doc2))
                 self.anagrafica.dao.id_secondo_riferimento = documentocollegato[0].id
 
     def connectEntryPag(self):
