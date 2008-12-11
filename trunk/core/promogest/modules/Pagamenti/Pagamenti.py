@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -186,8 +186,7 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
             idFornitore = self.anagrafica.id_persona_giuridica_customcombobox.getId()
             tipoDocumento = "Nota di credito da fornitore"
 
-        result = promogest.dao.TestataDocumento.select(orderBy=None,
-                                                     daNumero=numerodocumento,
+        result = promogest.dao.TestataDocumento.select(daNumero=numerodocumento,
                                                      aNumero=numerodocumento,
                                                      daParte=None,
                                                      aParte=None,
