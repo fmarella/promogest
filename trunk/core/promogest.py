@@ -55,7 +55,7 @@ class BigBang(object):
         elif options.debugALL == True:
             debugDao=True
             debugSQL=True
-        print options.debugALL, options.debugSQL, debugDao
+        #print options.debugALL, options.debugSQL, debugDao
         login = Login(debugALL=debugALL, debugDao=debugDao, debugSQL= debugSQL )
         login.run()
 
