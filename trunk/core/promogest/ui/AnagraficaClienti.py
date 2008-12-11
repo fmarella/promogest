@@ -19,7 +19,6 @@ from promogest.dao.DaoUtils import *
 from utils import *
 from utilsCombobox import *
 
-
 class AnagraficaClienti(Anagrafica):
     """ Anagrafica clienti """
 
@@ -32,8 +31,6 @@ class AnagraficaClienti(Anagrafica):
                             reportHandler=AnagraficaClientiReport(self),
                             editElement=AnagraficaClientiEdit(self),
                             aziendaStr=aziendaStr)
-
-
 
 class AnagraficaClientiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei clienti """

@@ -17,7 +17,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 
 debugDao = False
-
+debugSQL = False
 reportTemplatesDir = None
 imagesDir = None
 labelTemplatesDir = None
@@ -307,8 +307,8 @@ engine = create_engine('postgres:'+'//'+conf.Database.user+':'
                     + conf.Database.database,
                     encoding='utf-8',
                     convert_unicode=True )
-
-engine.echo = False
+print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", debugSQL
+engine.echo = debugSQL
 meta = MetaData(engine)
 Session = sessionmaker(bind=engine)
 session = Session()

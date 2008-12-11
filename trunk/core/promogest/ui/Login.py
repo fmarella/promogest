@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -20,14 +20,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+
 import os, md5
 import gtk
 import datetime
 from GladeApp import GladeApp
+from promogest import Environment
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
-import promogest.dao.Azienda
-from promogest import Environment
+#import promogest.dao.Azienda
 from GtkExceptionHandler import GtkExceptionHandler
 from utils import hasAction,on_status_activate
 from utilsCombobox import findComboboxRowFromStr
@@ -53,11 +54,13 @@ statusIcon.connect('activate', on_activate)
 
 class Login(GladeApp):
 
-    def __init__(self):
+    def __init__(self, debugDao=None, debugSQL=None, debugALL=None):
         self.azienda=None
         self._dbConnString = ''
         self.modules = {}
         Environment.exceptionHandler = GtkExceptionHandler()
+        Environment.debugSQL = debugSQL
+        Environment.debugDao = debugDao
 
         azs = Azienda().select(orderBy="schemaa")
         usrs = User().select()

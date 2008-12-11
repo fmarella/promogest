@@ -7,7 +7,7 @@
  License: GNU GPLv2
 """
 
-from sqlalchemy import Table, or_
+from sqlalchemy import Table, or_,and_
 from sqlalchemy.orm import mapper, join, relation
 from promogest.Environment import params, conf
 from Dao import Dao
@@ -21,9 +21,9 @@ class Cliente(Dao):
 
     def _getCategorieCliente(self):
         self.__dbCategorieCliente = ClienteCategoriaCliente()\
-                                    .select(idCliente = self.id,
-                                    offset=None,
-                                    batchSize=None)
+                                            .select(idCliente = self.id,
+                                            offset=None,
+                                            batchSize=None)
         self.__categorieCliente = self.__dbCategorieCliente[:]
         return self.__categorieCliente
 
@@ -48,6 +48,8 @@ class Cliente(Dao):
             dic = {k:persona_giuridica.partita_iva.ilike("%"+v+"%")}
         elif k == 'codiceFiscale':
             dic = {k:persona_giuridica.codice_fiscale.ilike("%"+v+"%")}
+        elif k == 'idCategoria':
+            dic = {k:and_(Cliente.id==ClienteCategoriaCliente.id_cliente,ClienteCategoriaCliente.id_categoria_cliente==v)}
         return  dic[k]
 
 def getNuovoCodiceCliente():
