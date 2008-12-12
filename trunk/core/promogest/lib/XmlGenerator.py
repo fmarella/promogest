@@ -448,9 +448,25 @@ class XlsXmlGenerator:
                             flag = 2
                         elif flag == 2:
                             self.sum2 += r
+                elif isinstance(r,Decimal):
+                    __r = str(r)
+                    self.filename.start('Data',da[1])
+                    self.filename.data(__r)
+                    self.filename.end('Data')
+                    #flag is needed to know how many numerical fields are in the table
+                    #to permit the sum of each value without miss the order of the data
+                    if wtot:
+                        if flag == 0:
+                            self.sum0 +=  r
+                            flag = 1
+                        elif flag == 1:
+                            self.sum1 +=  r
+                            flag = 2
+                        elif flag == 2:
+                            self.sum2 += r
                 else:
                     self.filename.start('Data', da[0])
-                    self.filename.data(r or '')
+                    self.filename.data(str(r) or '')
                     self.filename.end('Data')
                 self.filename.end('Cell')
 

@@ -919,6 +919,28 @@ def on_combobox_articolo_search_clicked(combobox, callName=None):
 
 
 # ---
+
+def setFileName(filename, ext, returnName = False):
+    """Verify that the filename have the extension "ext"
+
+    If not, it will append the extension to the end of the filename."""
+    name = os.path.split(filename)
+    _filename = os.path.splitext(name[1])
+    _ext = _filename[1].upper()[1:]
+
+    if _ext == ext.upper():
+        if returnName:
+            return name[1]
+        else:
+            return filename
+
+    else:
+        if returnName:
+            return _filename[0]+'.'+ext.lower()
+        else:
+            _name = name[0]+os.path.sep+_filename[0]+'.'+ext.lower()
+            return _name
+
 def on_typeComboBox_changed(combobox, dialogWidget, currentName, isEvent=True):
     cb_model = combobox.get_model()
     iter = combobox.get_active_iter()

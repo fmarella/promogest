@@ -61,10 +61,16 @@ class AnagraficaListiniArticoli(Anagrafica):
             codice_articolo = d.codice_articolo or ''
             articolo = d.articolo or ''
             data = dateToString(d.data_listino_articolo)
-            prezzo_dettaglio = float(d.prezzo_dettaglio or 0)
-            sconto_dettaglio = float(d.sconto_vendita_dettaglio or 0)
-            prezzo_ingrosso = float(d.prezzo_ingrosso or 0)
-            sconto_ingrosso = float(d.sconto_vendita_ingrosso or 0)
+            prezzo_dettaglio = mN(d.prezzo_dettaglio) or 0
+            sconto_dettaglio = []
+            for sconto_det in d.sconto_vendita_dettaglio:
+                sconto_dettaglio.append(mN(sconto_det) or 0)
+            #sconto_dettaglio = mN(d.sconto_vendita_dettaglio) or 0
+            prezzo_ingrosso = mN(d.prezzo_ingrosso) or 0
+            sconto_ingrosso = []
+            for sconto_ing in d.sconto_vendita_ingrosso:
+                sconto_ingrosso.append(mN(sconto_ing) or 0)
+            #sconto_ingrosso = mN(d.sconto_vendita_ingrosso[0]) or 0
             datalist=[denominazione,codice_articolo,articolo,data,prezzo_dettaglio,sconto_dettaglio,prezzo_ingrosso,sconto_ingrosso]
             rowlist.append(datalist)
         return rowlist
@@ -84,7 +90,6 @@ class AnagraficaListiniArticoli(Anagrafica):
         colData= [0,0,0,1,2,0,2,0]
         colWidth_Align = [('130','l'),('100','c'),('250','l'),('100','c'),('100','r'),('100','r'),('100','r'),('100','r')]
         data_details['XmlMarkup'] = (FieldsList, colData, colWidth_Align)
-
         return data_details
 
 

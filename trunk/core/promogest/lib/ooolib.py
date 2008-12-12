@@ -1,7 +1,7 @@
-"ooolib-python - Copyright (C) 2006-2007 Joseph Colton"
+"ooolib-python - Copyright (C) 2006-2008 Joseph Colton"
 
 # ooolib-python - Python module for creating Open Document Format documents.
-# Copyright (C) 2006-2007  Joseph Colton
+# Copyright (C) 2006-2008  Joseph Colton
 
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -20,20 +20,23 @@
 # You can contact me by email at josephcolton@gmail.com
 
 # Import Standard Modules
-import zipfile
+import zipfile           # Needed for reading/writing documents
 import time
 import sys
 import glob
 import os
 import re
+import xml.parsers.expat # Needed for parsing documents
 
 def version():
 	"Get the ooolib-python version"
-	return "ooolib-python-0.0.11"
+	return "ooolib-python-0.0.16"
 
 def clean_string(data):
 	"Returns an XML friendly copy of the data string"
-	data = str(data)
+
+	data = unicode(data) # This line thanks to Chris Ender
+
 	data = data.replace('&', '&amp;')
 	data = data.replace("'", '&apos;')
 	data = data.replace('"', '&quot;')
@@ -114,7 +117,7 @@ class XML:
 		datatype = data.pop(0)
 		dataname = data.pop(0)
 		datavalue = data.pop(0)
-		outstring = '%s="%s"' % (dataname, datavalue)	
+		outstring = '%s="%s"' % (dataname, datavalue)
 		return outstring
 
 	def convert(self, data):
@@ -148,7 +151,7 @@ class XML:
 		Bring them all together for something like this.
 
 		Lists:
-		['tag', 'xml', ['element', 'a', 'b'], ['tagline', 'xml2'], 
+		['tag', 'xml', ['element', 'a', 'b'], ['tagline', 'xml2'],
 		['data', 'asdf']]
 
 		XML:
@@ -163,9 +166,14 @@ class XML:
 class Meta:
 	"Meta Data Class"
 
-	def __init__(self, doctype):
+	def __init__(self, doctype, debug=False):
 		self.doctype = doctype
-		self.meta_generator = version()       # The generator should always default to the version number
+
+		# Set the debug mode
+		self.debug = debug
+
+		# The generator should always default to the version number
+		self.meta_generator = version()
 		self.meta_title = ''
 		self.meta_subject = ''
 		self.meta_description = ''
@@ -181,6 +189,11 @@ class Meta:
 		self.meta_user3_value = ''
 		self.meta_user4_value = ''
 		self.meta_creation_date = self.meta_time()
+
+		# Parser data
+		self.parser_element_list = []
+		self.parser_element = ""
+		self.parser_count = 0
 
 	def set_meta(self, metaname, value):
 		"""Set meta data in your document.
@@ -205,11 +218,97 @@ class Meta:
 			if value not in self.meta_keywords:
 				self.meta_keywords.append(value)
 
+	def get_meta_value(self, metaname):
+		"Get meta data value for a given metaname."
+
+		if metaname == 'creator': return self.meta_creator
+		if metaname == 'editor': return self.meta_editor
+		if metaname == 'title': return self.meta_title
+		if metaname == 'subject': return self.meta_subject
+		if metaname == 'description': return self.meta_description
+		if metaname == 'user1name': return self.meta_user1_name
+		if metaname == 'user2name': return self.meta_user2_name
+		if metaname == 'user3name': return self.meta_user3_name
+		if metaname == 'user4name': return self.meta_user4_name
+		if metaname == 'user1value': return self.meta_user1_value
+		if metaname == 'user2value': return self.meta_user2_value
+		if metaname == 'user3value': return self.meta_user3_value
+		if metaname == 'user4value': return self.meta_user4_value
+		if metaname == 'keyword': return self.meta_keywords
+
 	def meta_time(self):
 		"Return time string in meta data format"
 		t = time.localtime()
 		stamp = "%04d-%02d-%02dT%02d:%02d:%02d" % (t[0], t[1], t[2], t[3], t[4], t[5])
 		return stamp
+
+	def parse_start_element(self, name, attrs):
+		if self.debug: print '* Start element:', name
+		self.parser_element_list.append(name)
+		self.parser_element = self.parser_element_list[-1]
+
+		# Need the meta name from the user-defined tags
+		if (self.parser_element == "meta:user-defined"):
+			self.parser_count += 1
+			# Set user-defined name
+			self.set_meta("user%dname" % self.parser_count, attrs['meta:name'])
+
+		# Debugging statements
+		if self.debug: print "  List: ", self.parser_element_list
+		if self.debug: print "  Attributes: ", attrs
+
+
+	def parse_end_element(self, name):
+		if self.debug: print '* End element:', name
+		if name != self.parser_element:
+			print "Tag Mismatch: '%s' != '%s'" % (name, self.parser_element)
+		self.parser_element_list.pop()
+
+		# Readjust parser_element_list and parser_element
+		if (self.parser_element_list):
+			self.parser_element = self.parser_element_list[-1]
+		else:
+			self.parser_element = ""
+
+	def parse_char_data(self, data):
+		if self.debug: print "  Character data: ", repr(data)
+
+		# Collect Meta data fields
+		if (self.parser_element == "dc:title"):
+			self.set_meta("title", data)
+		if (self.parser_element == "dc:description"):
+			self.set_meta("description", data)
+		if (self.parser_element == "dc:subject"):
+			self.set_meta("subject", data)
+		if (self.parser_element == "meta:initial-creator"):
+			self.set_meta("creator", data)
+
+		# Try to maintain the same creation date
+		if (self.parser_element == "meta:creation-date"):
+			self.meta_creation_date = data
+
+		# The user defined fields need to be kept track of, parser_count does that
+		if (self.parser_element == "meta:user-defined"):
+			self.set_meta("user%dvalue" % self.parser_count, data)
+
+	def meta_parse(self, data):
+		"Parse Meta Data from a meta.xml file"
+
+		# Debugging statements
+		if self.debug:
+			# Sometimes it helps to see the document that was read from
+			print data
+			print "\n\n\n"
+
+		# Create parser
+		parser = xml.parsers.expat.ParserCreate()
+		# Set up parser callback functions
+		parser.StartElementHandler = self.parse_start_element
+		parser.EndElementHandler = self.parse_end_element
+		parser.CharacterDataHandler = self.parse_char_data
+
+		# Actually parse the data
+		parser.Parse(data, 1)
 
 	def get_meta(self):
 		"Generate meta.xml file data"
@@ -434,7 +533,7 @@ class CalcStyles:
 					if name == 'background':
 						tagline.append(['element', 'fo:background-color', value])
 					if name == 'valign':
-						if value in ['top', 'bottom', 'middle']: 
+						if value in ['top', 'bottom', 'middle']:
 							tagline.append(['element', 'style:vertical-align', value])
 					if name == 'halign':
 						tagline.append(['element', 'style:text-align-source', 'fix'])
@@ -483,7 +582,7 @@ class CalcStyles:
 				style_list.append(tagline)
 
 				automatic_styles.append(style_list)
-				
+
 
 		# Attach ta1 style
 		automatic_styles.append(['tag', 'style:style',
@@ -510,32 +609,57 @@ class CalcSheet:
 		self.max_col = 0
 		self.max_row = 0
 
+	def get_sheet_dimensions(self):
+		"Returns the max column and row"
+		return (self.max_col, self.max_row)
+
 	def clean_formula(self, data):
 		"Returns a formula for use in ODF"
 		# Example Translations
 		# '=SUM(A1:A2)'
 		# datavalue = 'oooc:=SUM([.A1:.A2])'
+		# '=IF((A5>A4);A4;"")'
+		# datavalue = 'oooc:=IF(([.A5]&gt;[.A4]);[.A4];&quot;&quot;)'
 		data = str(data)
-		redata = re.search('^=([A-Z]+)\(([A-Z0-9:]+)\)$', data)
+		data = clean_string(data)
+		redata = re.search('^=([A-Z]+)(\(.*)$', data)
 		if redata:
+			# funct is the function name.  The rest if the string will be the functArgs
 			funct = redata.group(1)
-			parts = redata.group(2).split(':')
-			nparts = []
-			while parts:
-				part = parts.pop(0)
-				part = '.%s' % part
-				nparts.append(part)
-			parts = ':'.join(nparts)
-			data = 'oooc:=%s([%s])' % (funct, parts)
+			functArgs = redata.group(2)
+			# Search for cell lebels and replace them
+			reList = re.findall('([A-Z]+\d+)', functArgs)
+			# sort and keep track so we do not do a cell more than once
+			reList.sort()
+			lastVar = ''
+			while reList:
+				# Replace each cell label
+				curVar = reList.pop()
+				if curVar == lastVar: continue
+				lastVar = curVar
+				functArgs = functArgs.replace(curVar, '[.%s]' % curVar)
+			data = 'oooc:=%s%s' % (funct, functArgs)
 		return data
 
 	def get_name(self):
 		"Returns the sheet name"
 		return self.sheet_name
 
+	def set_name(self, sheetname):
+		"Resets the sheet name"
+		self.sheet_name = sheetname
+
 	def get_sheet_values(self):
 		"Returns the sheet cell values"
 		return self.sheet_values
+
+	def get_sheet_value(self, col, row):
+		"Get the value contents of a cell"
+		cell = (col, row)
+		if cell in self.sheet_values:
+			return self.sheet_values[cell]
+		else:
+			return None
 
 	def get_sheet_config(self):
 		"Returns the sheet cell properties"
@@ -624,7 +748,7 @@ class CalcSheet:
 #			    ['element', 'table:number-columns-repeated', self.max_col], # max_col? '2'
 #			    ['element', 'table:default-cell-style-name', 'Default']],
 
-			# Need to add column information			
+			# Need to add column information
 			for col in range(1, self.max_col+1):
 				location = ('col', col)
 				style_code = 'co1'
@@ -640,7 +764,7 @@ class CalcSheet:
 				location = ('row', row)
 				style_code = 'ro1'
 				if location in self.sheet_config:
-					style_code = self.sheet_config[location]				
+					style_code = self.sheet_config[location]
 				rowlist = ['tag', 'table:table-row',
 				  ['element', 'table:style-name', style_code]]
 				for col in range(1, self.max_col + 1):
@@ -701,10 +825,10 @@ class CalcSheet:
 
 class Calc:
 	"Calc Class - Used to create OpenDocument Format Calc Spreadsheets."
-	def __init__(self, sheetname=None):
+	def __init__(self, sheetname=None, opendoc=None, debug=False):
 		"Initialize ooolib Calc instance"
 		# Default to no debugging
-		self.debug = False
+		self.debug = debug
 		if not sheetname: sheetname = "Sheet1"
 		self.sheets = [CalcSheet(sheetname)]  # The main sheet will be initially called 'Sheet1'
 		self.sheet_index = 0                  # We initially start on the first sheet
@@ -714,6 +838,24 @@ class Calc:
 		self.styles.get_style_code('row')     # Force generation of default row
 		self.styles.get_style_code('table')   # Force generation of default table
 		self.styles.get_style_code('cell')    # Force generation of default cell
+
+		# Data Parsing
+		self.parser_element_list = []
+		self.parser_element = ""
+		self.parser_sheet_num = 0
+		self.parser_sheet_row = 0
+		self.parser_sheet_column = 0
+		self.parser_cell_repeats = 0
+		self.parser_cell_string_pending = False
+		self.parser_cell_string_line = ""
+
+		# See if we need to read a document
+		if opendoc:
+			# Verify that the document exists
+			if self.debug: print "Opening Document: %s" % opendoc
+
+			# Okay, now we load the file
+			self.load(opendoc)
 
 	def debug_level(self, level):
 		"""Set debug level:
@@ -725,6 +867,18 @@ class Calc:
 	def set_meta(self, metaname, value):
 		"Set meta data in your document."
 		self.meta.set_meta(metaname, value)
+
+	def get_meta_value(self, metaname):
+		"Get meta data value for a given metaname"
+		return self.meta.get_meta_value(metaname)
+
+	def get_sheet_name(self):
+		"Returns the sheet name"
+		return self.sheets[self.sheet_index].get_name()
+
+	def get_sheet_dimensions(self):
+		"Returns the sheet dimensions in (cols, rows)"
+		return self.sheets[self.sheet_index].get_sheet_dimensions()
 
 	def set_column_property(self, column, name, value):
 		"Set Column Properties"
@@ -759,6 +913,10 @@ class Calc:
 				self.sheet_index = index
 		return self.sheet_index
 
+	def get_sheet_count(self):
+		"Returns the number of existing sheets"
+		return len(self.sheets)
+
 	def new_sheet(self, sheetname):
 		"Create a new sheet"
 		self.sheet_index = len(self.sheets)
@@ -770,6 +928,175 @@ class Calc:
 		self.sheets[self.sheet_index].set_sheet_value((col, row), datatype, value)
 		style_code = self.styles.get_style_code('cell')
 		self.sheets[self.sheet_index].set_sheet_config((col, row), style_code)
+
+	def get_cell_value(self, col, row):
+		"Get a cell value tuple (type, value) for a given cell"
+		sheetvalue = self.sheets[self.sheet_index].get_sheet_value(col, row)
+		# We stop here if there is no value for sheetvalue
+		if sheetvalue == None: return sheetvalue
+		# Now check to see if we have a value tuple
+		if 'value' in sheetvalue:
+			return sheetvalue['value']
+		else:
+			return None
+
+	def load(self, filename):
+		"""Load .ods spreadsheet.
+
+		The load function loads data from a document into the current cells.
+		"""
+		# Read in the important files
+
+		# meta.xml
+		data = self._zip_read(filename, "meta.xml")
+		self.meta.meta_parse(data)
+
+		# content.xml
+		data = self._zip_read(filename, "content.xml")
+		self.content_parse(data)
+
+		# settings.xml - I do not remember putting anything here
+		# styles.xml - I do not remember putting anything here
+
+	def parse_content_start_element(self, name, attrs):
+		if self.debug: print '* Start element:', name
+		self.parser_element_list.append(name)
+		self.parser_element = self.parser_element_list[-1]
+
+		# Keep track of the current sheet number
+		if (self.parser_element == 'table:table'):
+			# Move to starting cell
+			self.parser_sheet_row = 0
+			self.parser_sheet_column = 0
+			# Increment the sheet number count
+			self.parser_sheet_num += 1
+			if (self.parser_sheet_num - 1 != self.sheet_index):
+				# We are not on the first sheet and need to create a new sheet.
+				# We will automatically move to the new sheet
+				sheetname = "Sheet%d" % self.parser_sheet_num
+				if 'table:name' in attrs: sheetname = attrs['table:name']
+				self.new_sheet(sheetname)
+			else:
+				# We are on the first sheet and will need to overwrite the default name
+				sheetname = "Sheet%d" % self.parser_sheet_num
+				if 'table:name' in attrs: sheetname = attrs['table:name']
+				self.sheets[self.sheet_index].set_name(sheetname)
+
+		# Update the row numbers
+		if (self.parser_element == 'table:table-row'):
+			self.parser_sheet_row += 1
+			self.parser_sheet_column = 0
+
+		# Okay, now keep track of the sheet cell data
+		if (self.parser_element == 'table:table-cell'):
+			# By default it will repeat zero times
+			self.parser_cell_repeats = 0
+			# We must be in a new column
+			self.parser_sheet_column += 1
+			# Set some default values
+			datatype = ""
+			value = ""
+			# Get values from attrs hash
+			if 'office:value-type' in attrs: datatype = attrs['office:value-type']
+			if 'office:value' in attrs: value = attrs['office:value']
+			if 'table:formula' in attrs:
+				datatype = 'formula'
+				value = attrs['table:formula']
+			if datatype == 'string':
+				datatype = ""
+				self.parser_cell_string_pending = True
+				self.parser_cell_string_line = ""
+			if 'table:number-columns-repeated' in attrs:
+				self.parser_cell_repeats = int(attrs['table:number-columns-repeated']) - 1
+			# Set the cell value
+			if datatype:
+				# I should do this once per cell repeat above 0
+				for i in range(0, self.parser_cell_repeats+1):
+					self.set_cell_value(self.parser_sheet_column+i, self.parser_sheet_row, datatype, value)
+
+		# There are lots of interesting cases with table:table-cell data.  One problem is
+		# reading the number of embedded spaces correctly.  This code should help us get
+		# the number of spaces out.
+
+		if (self.parser_element == 'text:s'):
+			# This means we have a number of spaces
+			count_num = 0
+			if 'text:c' in attrs:
+				count_alpha = attrs['text:c']
+				if (count_alpha.isdigit()):
+					count_num = int(count_alpha)
+			# I am not sure what to do if we do not have a string pending
+			if (self.parser_cell_string_pending == True):
+				# Append the currect number of spaces to the end
+				self.parser_cell_string_line = "%s%s" % (self.parser_cell_string_line, ' '*count_num)
+
+		if (self.parser_element == 'text:tab-stop'):
+			if (self.parser_cell_string_pending == True):
+				self.parser_cell_string_line = "%s\t" % (self.parser_cell_string_line)
+
+		if (self.parser_element == 'text:line-break'):
+			if (self.parser_cell_string_pending == True):
+				self.parser_cell_string_line = "%s\n" % (self.parser_cell_string_line)
+
+		# Debugging statements
+		if self.debug: print "  List: ", self.parser_element_list
+		if self.debug: print "  Attributes: ", attrs
+
+
+	def parse_content_end_element(self, name):
+		if self.debug: print '* End element:', name
+		if name != self.parser_element:
+			print "Tag Mismatch: '%s' != '%s'" % (name, self.parser_element)
+		self.parser_element_list.pop()
+
+		# If the element was text:p and we are in string mode
+		if (self.parser_element == 'text:p'):
+			if (self.parser_cell_string_pending):
+				self.parser_cell_string_pending = False
+
+		# Take care of repeated cells
+		if (self.parser_element == 'table:table-cell'):
+			self.parser_sheet_column += self.parser_cell_repeats
+
+		# Readjust parser_element_list and parser_element
+		if (self.parser_element_list):
+			self.parser_element = self.parser_element_list[-1]
+		else:
+			self.parser_element = ""
+
+	def parse_content_char_data(self, data):
+		if self.debug: print "  Character data: ", repr(data)
+
+		if (self.parser_element == 'text:p' or self.parser_element == 'text:span'):
+			if (self.parser_cell_string_pending):
+				# Set the string and leave string pending mode
+				# This does feel a little kludgy, but it does the job
+				self.parser_cell_string_line = "%s%s" % (self.parser_cell_string_line, data)
+
+				# I should do this once per cell repeat above 0
+				for i in range(0, self.parser_cell_repeats+1):
+					self.set_cell_value(self.parser_sheet_column+i, self.parser_sheet_row,
+						    'string', self.parser_cell_string_line)
+
+
+	def content_parse(self, data):
+		"Parse Content Data from a content.xml file"
+
+		# Debugging statements
+		if self.debug:
+			# Sometimes it helps to see the document that was read from
+			print data
+			print "\n\n\n"
+
+		# Create parser
+		parser = xml.parsers.expat.ParserCreate()
+		# Set up parser callback functions
+		parser.StartElementHandler = self.parse_content_start_element
+		parser.EndElementHandler = self.parse_content_end_element
+		parser.CharacterDataHandler = self.parse_content_char_data
+
+		# Actually parse the data
+		parser.Parse(data, 1)
 
 	def save(self, filename):
 		"""Save .ods spreadsheet.
@@ -794,11 +1121,22 @@ class Calc:
 		self._zip_insert(self.savefile, "styles.xml", self._ods_styles())
 
 	def _zip_insert(self, file, filename, data):
+		"Insert a file into the zip archive"
+
+		# zip seems to struggle with non-ascii characters
+		data = data.encode('utf-8')
+
 		now = time.localtime(time.time())[:6]
 		info = zipfile.ZipInfo(filename)
 		info.date_time = now
 		info.compress_type = zipfile.ZIP_DEFLATED
 		file.writestr(info, data)
+
+	def _zip_read(self, file, filename):
+		"Get the data from a file in the zip archive by filename"
+		file = zipfile.ZipFile(file, "r")
+		data = file.read(filename)
+		return data
 
 	def _ods_content(self):
 		"Generate ods content.xml data"
@@ -806,7 +1144,7 @@ class Calc:
 		# This will list all of the sheets in the document
 		self.sheetdata = ['tag', 'office:spreadsheet']
 		for sheet in self.sheets:
-			if self.debug:	
+			if self.debug:
 				sheet_name = sheet.get_name()
 				print "    Creating Sheet '%s'" % sheet_name
 			sheet_list = sheet.get_lists()
@@ -1258,7 +1596,7 @@ class Calc:
 		        ['element', 'number:language', 'en'],
 		        ['element', 'number:country', 'US'],
 		        ['data', '$']],
-		      ['tagline', 'number:number', 
+		      ['tagline', 'number:number',
 		        ['element', 'number:decimal-places', '2'],
 		        ['element', 'number:min-integer-digits', '1'],
 		        ['element', 'number:grouping', 'true']],

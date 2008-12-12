@@ -177,16 +177,19 @@ class Anagrafica(GladeWidget):
         xmlMarkup = data['XmlMarkup']
 
         data_export = self.filter.xptDaoList
+        #print "VEDIAMO UN PO?", data_export
+        #self.exporttoods(data_export)
+        #return
         values = self.set_data_list(data_export)
         saveDialog.show_all()
         response = saveDialog.run()
         if response == gtk.RESPONSE_OK:
             (fileType,file_name) = on_typeComboBox_changed(typeComboBox, saveDialog, currentName, isEvent=False)
-            if fileType == "CSV files":
-                csvFile = csvFileGenerator(file_name)
+            if fileType == "CSV":
+                csvFile = CsvFileGenerator(file_name)
                 csvFile.setAttributes(head=xmlMarkup[0], cols=xmlMarkup[2], data=values, totColumns=xmlMarkup[1])
                 csvFile.createFile(wtot=True)
-            elif fileType == "XML files":
+            elif fileType == "XML":
                 xmlFile = XlsXmlGenerator(file_name)
                 xmlFile.setAttributes(head=xmlMarkup[0], cols=xmlMarkup[2], data=values, totColumns=xmlMarkup[1])
                 # wtot is to tell the function if it can close the worksheet after filling it with data.
@@ -197,6 +200,14 @@ class Anagrafica(GladeWidget):
             saveDialog.destroy()
         elif response == gtk.RESPONSE_CANCEL:
             saveDialog.destroy()
+
+    #def exporttoods(self,data_export):
+        #import promogest.lib.ooolib
+        #if data_export:
+            #doc = ooolib.Calc()
+            #for data in data_export:
+                #if str(data.__module__).split(".")[-1] == "ListinoArticolo":
+                    #leggi
 
     def on_credits_menu_activate(self, widget):
         creditsDialog = GladeWidget('credits_dialog', callbacks_proxy=self)
@@ -1146,12 +1157,6 @@ class AnagraficaLabel(object):
         param = []
         for d in self.objects:
             d.resolveProperties()
-            #self.pippo = Articolo(Environment.connection,d.dictionary(complete=True)['id_articolo'])
-            #self.pippo1 = select(Environment.connection, codice=self.pippo.codice, immediate = True)
-            #dictParam = d.dictionary(complete=True)
-            #dictArticolo = self.pippo1[0].dictionary()
-            ##dictParam.update(dictArticolo)
-            #dictArticolo.update(dictParam)
             param.append(d.dictionary(complete=True))
         multilinedirtywork(param)
         return self._slaTemplateObj.serialize(param, self.objects)
