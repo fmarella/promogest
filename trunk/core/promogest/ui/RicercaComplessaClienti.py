@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -1608,7 +1608,18 @@ class RicercaClientiFilter(GladeWidget):
                           (c.cognome or '') + ' ' + (c.nome or ''),
                           loc,
                           pi_cf))
-        self.clientResult = clis
+        self.clientResult = Cliente().select(orderBy = self.filter.orderBy,
+                                            ragioneSociale = ragioneSociale,
+                                            insegna = insegna,
+                                            cognomeNome = cognomeNome,
+                                            codice = codice,
+                                            localita = localita,
+                                            codiceFiscale = codiceFiscale,
+                                            partitaIva = partitaIva,
+                                            idCategoria = idCategoria,
+                                            offset=None,
+                                            batchSize=None,
+                                            complexFilter=self.complexFilter)
 
     def _prepare(self):
         """

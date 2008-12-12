@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest
@@ -1579,7 +1579,18 @@ class RicercaFornitoriFilter(GladeWidget):
                           loc,
                           pi_cf))
 
-        self.forniResult = clis
+        self.forniResult =  Fornitore().select(orderBy = self.filter.orderBy,
+                                              ragioneSociale = ragioneSociale,
+                                              insegna = insegna,
+                                              cognomeNome = cognomeNome,
+                                              codice = codice,
+                                              localita = localita,
+                                              codiceFiscale = codiceFiscale,
+                                              partitaIva = partitaIva,
+                                              idCategoria = idCategoria,
+                                              offset=None,
+                                              batchSize=None,
+                                              complexFilter=self.complexFilter)
 
     def getForniResult(self):
         return self.forniResult or None

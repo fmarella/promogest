@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest
@@ -21,16 +21,12 @@ from promogest.ui.GladeWidget import GladeWidget
 import Login
 from utils import *
 from utilsCombobox import *
-
 from promogest import Environment
 from promogest.dao.Dao import Dao
 import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
-#import promogest.dao.FamigliaArticolo
 from promogest.dao.FamigliaArticolo import FamigliaArticolo
-#import promogest.dao.CategoriaArticolo
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
-#import promogest.dao.StatoArticolo
 from promogest.dao.StatoArticolo import StatoArticolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 if "PromoWear" in Environment.modulesList:
@@ -2198,7 +2194,19 @@ class RicercaArticoliFilter(GladeWidget):
                             (a.denominazione_famiglia or ''),
                             (str(a.denominazione_categoria) or '')))
 
-        self.artsResult = arts
+        self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
+                                            denominazione=denominazione,
+                                            codice=codice,
+                                            codiceABarre=codiceABarre,
+                                            codiceArticoloFornitore=codiceArticoloFornitore,
+                                            produttore=produttore,
+                                            idFamiglia=idFamiglia,
+                                            idCategoria=idCategoria,
+                                            idStato=idStato,
+                                            cancellato=cancellato,
+                                            offset=None,
+                                            batchSize=None,
+                                            complexFilter=self.complexFilter)
 
     def _prepare(self):
         """
