@@ -99,15 +99,19 @@ def treeViewExpand(gtkgui, treeview, renderer):
         gtkgui.taglie_colori_filter_combobox.set_no_show_all(True)
 
 
-def articleTypeGuiManage(anagrafica, dao):
+def articleTypeGuiManage(anagrafica, dao, new):
     """ complex manage the new aticles type: plus, father son """
     gtkgui = anagrafica
     if articleType(dao) == "son":
         gtkgui.memo_wear.set_text("""ARTICOLO VARIANTE TAGLIA E COLORE""")
 
         # niente possibilita' di variare gruppo taglie, genere, anno e stagione
+        gtkgui.con_taglie_colori_radiobutton.set_active(True)
         gtkgui.con_taglie_colori_radiobutton.set_sensitive(True)
-        gtkgui.on_con_taglie_colori_radiobutton_toggled(gtk.RadioButton())
+        #gtkgui.on_con_taglie_colori_radiobutton_toggled(gtk.RadioButton())
+        gtkgui.codici_a_barre_togglebutton.set_sensitive(True)
+        gtkgui.taglie_colori_togglebutton.set_sensitive(False)
+        gtkgui.varianti_taglia_colore_label.set_sensitive(False)
 
         findComboboxRowFromId(gtkgui.id_gruppo_taglia_customcombobox.combobox, gtkgui.dao.id_gruppo_taglia)
         gtkgui.id_gruppo_taglia_customcombobox.set_property('visible', False)

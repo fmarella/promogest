@@ -13,17 +13,11 @@ from promogest.ui.GladeWidget import GladeWidget
 
 from promogest import Environment
 from promogest.dao.Dao import Dao
-import promogest.modules.PromoWear.dao.ArticoloPromowear
 from promogest.modules.PromoWear.dao.ArticoloPromowear import Articolo
-import promogest.modules.PromoWear.dao.ArticoloTagliaColore
 from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
-import promogest.modules.PromoWear.dao.GruppoTaglia
 from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
-import promogest.modules.PromoWear.dao.Taglia
 from promogest.modules.PromoWear.dao.Taglia import Taglia
-import promogest.modules.PromoWear.dao.Colore
 from promogest.modules.PromoWear.dao.Colore import Colore
-import promogest.dao.CodiceABarreArticolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 
 from promogest.ui.utils import *
@@ -72,7 +66,7 @@ class GestioneTaglieColori(GladeWidget):
     def refreshTaglie(self):
         # identificazione taglie associate al gruppo taglia selezionato
         id = self._articoloPadre.id_gruppo_taglia
-        print "IDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",id
+
         gruppo = None
         if id is None:
             id = 1 # Nessuna taglia

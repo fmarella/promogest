@@ -140,7 +140,6 @@ class Articolo(Dao):
         #self.__articoloTagliaColore = None
         #try:
         self.__articoloTagliaColore = ArticoloTagliaColore().getRecord(id=self.id)
-        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAACCAVOLO ", self.__articoloTagliaColore, self.id
         return self.__articoloTagliaColore
         #except:
             #return False
@@ -165,7 +164,6 @@ class Articolo(Dao):
                                                             idColore=idColore,
                                                             offset=None,
                                                             batchSize=None)
-                print "IFFFFFFFFFFFFFFFFF", articoli
             else:
                 articoli = ArticoloTagliaColore().select(idArticoloPadre=articolo_relato.id_articolo_padre,
                                                             idGruppoTaglia=idGruppoTaglia,
@@ -173,7 +171,6 @@ class Articolo(Dao):
                                                             idColore=idColore,
                                                             offset=None,
                                                             batchSize=None)
-                print "ELSEEEEEEEEEEEEE", articoli
         except:
             print "FOR DEBUG ONLY getArticoliTagliaColore FAILED"
         return articoli
@@ -392,6 +389,7 @@ class Articolo(Dao):
         except:
             pass
             #print "nessuna immagine associata all'articolo"
+        #try:
         if self.__articoloTagliaColore:
             if ArticoloTagliaColore().getRecord(id=self.id):
                 a = ArticoloTagliaColore().getRecord(id=self.id)
@@ -406,7 +404,8 @@ class Articolo(Dao):
                     var.id_stagione = self.__articoloTagliaColore.id_stagione
                     params["session"].add(var)
             params["session"].commit()        # Manage main Articolo with variations
-        #print "REINIZIAMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.__articoloTagliaColore
+        #except:
+            #print "ARTICOLO NORMALE SENZA TAGLIE O COLORI"
         #art = ArticoloTagliaColore().getRecord(id = self.id) or None
         #if articleType(self) == "father":
             #if art:
@@ -419,16 +418,6 @@ class Articolo(Dao):
                     #params["session"].add(var)
                 #params["session"].commit()
         params["session"].flush()
-
-
-#def getByCodice(connection, codice):
-    #""" Restituisce il risultato di una ricerca per codice """
-    #res = connection.execStoredProcedure('ArticoloGetByCodice', (codice,))
-    #if len(res) > 0:
-        #return Articolo(connection, res[0]['id'])
-        #else:
-            #return None
-
 
 def isNuovoCodiceByFamiglia():
     """ Indica se un nuovo codice articolo dipende dalla famiglia o meno """
@@ -517,38 +506,6 @@ std_mapper = mapper(Articolo,articolo,properties={
             "ATC":relation(ArticoloTagliaColore,primaryjoin=(articolo.c.id==ArticoloTagliaColore.id_articolo),uselist=False),
             }, order_by=articolo.c.id)
 
-
-    #def delete(self):
-        #"""
-        #Elimina fisicamente o logicamente un articolo
-        #"""
-
-        #def isMovimentato(id):
-            #""" Verifica se l'articolo e' presente almeno una riga di movimento/documento """
-            #queryString = ('SELECT COUNT(*) FROM ' +
-                        #Environment.connection._schemaAzienda + '.riga ' +
-                        #'WHERE id_articolo = ' + str(id))
-            #argList = []
-            #self._connection._cursor.execute(queryString, argList)
-            #res = Environment.connection._cursor.fetchall()
-
-            #return res[0][0] > 0
-
-
-        #conn = conn or self._connection
-
-        ##if conn is None:
-        ##    conn = Environment.connection
-
-        #if conn is None:
-            #self.raiseException(NotImplementedError('Object is read-only '
-                                                    #+ '(no connection has '
-                                                    #+ 'been associated)'))
-
-        ## se l'articolo e' presente tra le righe di un movimento o documento
-        ## si esegue la cancellazione logica, altrimenti fisica
-
-        #conn.startTransaction()
 
         #try:
             #articolo = ArticoloPromowear(conn, self.id)
