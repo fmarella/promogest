@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -161,6 +161,10 @@ class ManageSizeAndColor(GladeWidget):
         model = treeview.get_model()
         model[path][0]['fornitura']["prezzoLordo"] = value
         model[path][3] = value
+        print 
+        if model[path][4] =="0" or model[path][4] == None or model[path][4]=="" :
+            model[path][5] = model[path][3]
+            model[path][0]['fornitura']["prezzoNetto"] = model[path][3]
 
     def on_column_sconto_edited(self, cell, path, value, treeview, editNext=True):
         """ Function ti set the value quantita edit in the cell"""

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sun Nov 23 01:33:14 2008 -->
+<!--Generated with glade3 3.4.5 on Sat Dec 13 03:35:25 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="gestione_varianti_taglie_colore">
     <property name="width_request">755</property>
@@ -273,7 +273,7 @@
                         <child>
                           <widget class="GtkLabel" id="label4">
                             <property name="visible">True</property>
-                            <property name="label">_Conferma direttamente</property>
+                            <property name="label">_Conferma singolarmente</property>
                             <property name="use_underline">True</property>
                           </widget>
                           <packing>
@@ -322,7 +322,7 @@
                         <child>
                           <widget class="GtkLabel" id="label3482">
                             <property name="visible">True</property>
-                            <property name="label">Conferma _Singolarmente</property>
+                            <property name="label">Conferma _Direttamente</property>
                             <property name="use_underline">True</property>
                           </widget>
                           <packing>
