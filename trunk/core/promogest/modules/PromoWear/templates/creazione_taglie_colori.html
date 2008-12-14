@@ -1,0 +1,28 @@
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:py="http://genshi.edgewall.org/"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        lang="en">
+    <head>
+        <title>Dettaglio listino</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <xi:include href="style.css"><xi:fallback/></xi:include>
+    </head>
+    <body>
+        <table cellpadding="3" cellspacing="5" border="0">
+            <tr>
+                <th>GRUPPO TAGLIA</th>
+                <th>COLORE</th>
+                <th>TAGLIA</th>
+                <th>CODICE A BARRE</th>
+            </tr>
+            <tr><td colspan="4"><hr /></td></tr>
+            <tr py:for="dao in datas">
+                <td class="detail" py:content="dao[0].denominazione_gruppo_taglia"></td>
+                <td class="detail" py:content="dao[0].denominazione_colore"></td>
+                <td class="detail" py:content="dao[0].denominazione_taglia"></td>
+                <td class="detail" py:content="dao[1]"></td>
+            </tr>
+        </table>
+    </body>
+</html>

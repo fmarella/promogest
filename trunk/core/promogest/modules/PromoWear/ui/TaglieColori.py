@@ -7,7 +7,7 @@
 # Author: Francesco Meloni <francesco@promotux.it>
 
 import gtk
-import gobject
+import gobject, gtkhtml2
 
 from promogest.ui.GladeWidget import GladeWidget
 
@@ -16,52 +16,287 @@ from promogest.dao.Dao import Dao
 from promogest.modules.PromoWear.dao.ArticoloPromowear import Articolo
 from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
 from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
+from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTaglia
 from promogest.modules.PromoWear.dao.Taglia import Taglia
 from promogest.modules.PromoWear.dao.Colore import Colore
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-
+import genshi
+from genshi.template import TemplateLoader
 from promogest.ui.utils import *
 
+
+templates_dir = './promogest/modules/PromoWear/templates/'
+loader = TemplateLoader([templates_dir])
 
 class GestioneTaglieColori(GladeWidget):
 
     def __init__(self, articolo):
-        GladeWidget.__init__(self, 'gestione_taglie_colori',
-                            './promogest/modules/PromoWear/gui/selezione,gestione_taglie_colori.glade', isModule=True)
+        GladeWidget.__init__(self, 'creazione_taglie_colore',
+                            './promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade', isModule=True)
 
-        dialog = self.gestione_taglie_colori
-        self.placeWindow(self.getTopLevel())
-
+        #dialog = self.creazione_taglie_colore
+        #self.placeWindow(self.getTopLevel())
+        self._treeViewModel = None
         self._articoloBase = articolo
         self._articoloPadre = articolo.articoloTagliaColore
+        self.idGruppoTaglia = self._articoloBase.id_gruppo_taglia
         if self._articoloPadre is None:
             self._articoloPadre = ArticoloTagliaColore()
         self._articoliTagliaColore = self._articoloBase.articoliTagliaColore
         self._noValue = 'n/a'
         self._varianti = {}
         self._gruppoTaglia = None
-
+        self._gtkHtml = None
+        self.order="color"
+        self.filtered = True
         # Taglie attualmente presenti nella treeview
         self._taglie = [] # Verra` aggiornato al refresh della combobox gruppi taglia
 
         # Colori attualmente presenti nella treeview
-        colori = set(a.id_colore for a in self._articoliTagliaColore)
-        self._colori = [Colore().getRecord(id= c) for c in colori]
+        #colori = set(a.id_colore for a in self._articoliTagliaColore)
+        #self._colori = [Colore().getRecord(id= c) for c in colori]
+        self.colori = Colore().select(batchSize=None)
+        self.sizes = self.sizesAvailable()
+        self.selected = False
+        ## Dizionario che associa alla chiave (taglia,colore) l'id della variante
+        #for a in self._articoliTagliaColore:
+            #self._varianti[(a.id_taglia, a.id_colore)] = a.id_articolo
 
-        # Dizionario che associa alla chiave (taglia,colore) l'id della variante
-        for a in self._articoliTagliaColore:
-            self._varianti[(a.id_taglia, a.id_colore)] = a.id_articolo
+        #self._ripetizione_taglie = 3 # Ogni quante colonne ripetere le taglie?
+        self.group_size_label.set_markup('<span weight="bold">%s</span>'
+                                       % (self._articoloBase.denominazione_gruppo_taglia,))
 
-        self._ripetizione_taglie = 3 # Ogni quante colonne ripetere le taglie?
-
-        self.articolo_label.set_markup('Articolo: '
+        self.father_label.set_markup('Articolo: '
                                        + '<span weight="bold">%s</span>'
                                        % (self._articoloBase.denominazione,))
 
-        self._drawColoriTreeView()
-        self.refreshColoriTreeView()
+        #self._drawColoriTreeView()
+        #self.refreshColoriTreeView()
+        #self.refreshTaglie()
+        self._refreshHtml()
+        self.draw()
 
-        self.refreshTaglie()
+    def sizesAvailable(self):
+        idtaglie = GruppoTagliaTaglia().select(idGruppoTaglia=self.idGruppoTaglia, batchSize=None)
+        return idtaglie
+
+    def _refreshHtml(self, data= None):
+        """ show the html page in the custom widget"""
+        if self._gtkHtml is None:
+            self._gtkHtml = self.getHtmlWidget()
+            # A bit of double buffering here
+            #self._gtkHtmlDocuments = (gtkhtml2.Document(),
+                                      #gtkhtml2.Document())
+            #for doc in self._gtkHtmlDocuments:
+                #doc.connect('request_url', self.on_html_request_url)
+                #doc.connect('link_clicked', self.on_html_link_clicked)
+
+            self._currGtkHtmlDocument = 0
+        document =gtkhtml2.Document()
+        document.open_stream('text/html')
+        if data is None:
+            html = '<html></html>'
+        else:
+            tmpl = loader.load("creazione_taglie_colori.html")
+            stream = tmpl.generate(datas=data)
+            html = stream.render('xhtml')
+        document.write_stream(html)
+        document.close_stream()
+        self._gtkHtml.set_document(document)
+            ##self._refresh(html)
+
+
+    def getHtmlWidget(self):
+        return self.creazione_varianti_html
+
+    def draw(self):
+        """Creo una treeview che abbia come colonne i colori e come righe
+           le taglie direi che sia il caso di gestire anche le descrizioni variante visto che le ho
+        """
+        self.treeview = self.color_and_size_treeview
+        cellspin = gtk.CellRendererToggle()
+        cellspin.set_property('activatable', True)
+        cellspin.connect('toggled', self.on_column_selected_edited, self.treeview, True)
+        column = gtk.TreeViewColumn('Seleziona', cellspin)
+        column.add_attribute( cellspin, "active", 1)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_resizable(True)
+        #column.set_expand(True)
+        #column.set_min_width(40)
+        self.treeview.append_column(column)
+
+        rendererSx = gtk.CellRendererText()
+        column = gtk.TreeViewColumn("Taglia / Colore", rendererSx, text=2)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(False)
+        column.set_resizable(True)
+        #column.set_expand(False)
+        column.set_min_width(40)
+        self.treeview.append_column(column)
+
+        celltext = gtk.CellRendererText()
+        celltext.set_property("editable", True)
+        celltext.set_property("visible", True)
+        celltext.connect('edited', self.on_column_codice_edited, self.treeview, True)
+        column = gtk.TreeViewColumn('Codice', celltext, text=3)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(True)
+        #column.connect("clicked", self._changeOrderBy, 'denominazione_breve')
+        column.set_resizable(True)
+        column.set_expand(True)
+        column.set_min_width(50)
+        self.treeview.append_column(column)
+
+        self._treeViewModel = gtk.TreeStore(object,bool,str,str)
+        self.treeview.set_model(self._treeViewModel)
+        self.head_color.set_active(True)
+        self.only_variation.set_active(True)
+        self.refresh()
+
+    def refresh(self,order="color",filtered =True):
+        # Aggiornamento TreeView
+        self._treeViewModel.clear()
+        #varianti = self.data["varianti"]
+        #print varianti
+
+        if self.order == "color":
+            if self.filtered:
+                for c in self._articoloBase.colori:
+                    parent = self._treeViewModel.append(None,(c,
+                                                self.selected,
+                                                c.denominazione,
+                                                ""))
+                    sizesFilterd= ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
+                                                                idColore=c.id, batchSize=None)
+                    for s in sizesFilterd:
+                        self._treeViewModel.append(parent,(s,
+                                            self.selected,
+                                            s.denominazione_taglia,
+                                            ""))
+            else:
+                for c in self.colori:
+                    parent = self._treeViewModel.append(None,(c,
+                                                self.selected,
+                                                c.denominazione,
+                                                ""))
+                    for s in self.sizes:
+                        self._treeViewModel.append(parent,(s,
+                                                self.selected,
+                                                s.denominazione_taglia,
+                                                ""))
+        else:
+            if self.filtered:
+                for s in self._articoloBase.taglie:
+                    parent = self._treeViewModel.append(None,(s,
+                                                            self.selected,
+                                                            s.denominazione,
+                                                            ""))
+                    colorFilterd= ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
+                                                                idTaglia=s.id, batchSize=None)
+                    for c in colorFilterd:
+                        self._treeViewModel.append(parent,(c,
+                                                    self.selected,
+                                                    c.denominazione_colore,
+                                                    ""))
+
+            else:
+                for s in self.sizes:
+                    parent = self._treeViewModel.append(None,(s,
+                                                            self.selected,
+                                                            s.denominazione_taglia,
+                                                            ""))
+                    for c in self.colori:
+                        self._treeViewModel.append(parent,(c,
+                                                    self.selected,
+                                                    c.denominazione,
+                                                    ""))
+        self.printModel()
+
+    def printModel(self):
+        #model = self.treeview.get_model()
+        self.datas= []
+        self._treeViewModel.foreach(self.selectFilter )
+        #print "FGFGGGGGGGGGGGG", model.get_path((0,0))
+
+    def selectFilter(self, model, path, iter):
+
+        #Seleziona elementi che concordano con il filtro
+        check = model.get_value(iter, 1)
+        if check:
+            c = model.get_value(iter, 0)
+            d = model.get_value(iter, 3)
+            self.datas.append((c,d))
+            #print "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",c, d
+        #print "DATAAAAAAAAAAAAAAAAAAA", self.datas
+        #self._refreshHtml(data=self.datas)
+
+    def on_column_selected_edited(self, cell, path, treeview,value, editNext=True):
+        """ Function ti set the value quantita edit in the cell"""
+        model = treeview.get_model()
+        #treeiter = model.get_iter(path)
+        #fffff = model.get_path(treeiter)
+        model[path][1] = not model[path][1]
+        for a in  model[path].iterchildren():
+             a[1] = not a[1]
+        self.printModel()
+
+    def on_column_codice_edited(self, cell, path, value, treeview, editNext=True):
+        """ Function ti set the value quantita edit in the cell"""
+        model = treeview.get_model()
+        model[path][3] = value
+        self.printModel()
+
+    def on_head_color_toggled(self, radioButton):
+        if self.head_color.get_active():
+            self.order="color"
+        elif self.head_size.get_active():
+            self.order="size"
+        self.refresh(order=self.order)
+
+    def on_only_variation_toggled(self, radioButton):
+        if self.only_variation.get_active():
+            self.filtered= True
+        elif self.all_variation.get_active():
+            self.filtered= False
+        self.refresh(filtered=self.filtered)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     def refreshTaglie(self):
         # identificazione taglie associate al gruppo taglia selezionato
@@ -283,7 +518,6 @@ class GestioneTaglieColori(GladeWidget):
 
             model.append(row)
 
-
     def on_ok_button_clicked(self, button):
         model = self.taglie_colori_treeview.get_model()
 
@@ -449,7 +683,7 @@ class GestioneTaglieColori(GladeWidget):
         self.destroy()
 
 
-    def on_colori_button_clicked(self, toggleButton):
+    def on_color_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
 
@@ -459,7 +693,7 @@ class GestioneTaglieColori(GladeWidget):
         showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), toggleButton, self.refreshColoriTreeView)
 
 
-    def on_taglie_button_clicked(self, toggleButton):
+    def on_size_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
 
