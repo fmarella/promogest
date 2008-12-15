@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sun Dec 14 01:52:43 2008 -->
+<!--Generated with glade3 3.4.5 on Sun Dec 14 19:41:40 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="creazione_taglie_colore">
     <property name="width_request">700</property>
@@ -414,12 +414,12 @@
             <property name="visible">True</property>
             <property name="layout_style">GTK_BUTTONBOX_END</property>
             <child>
-              <widget class="GtkButton" id="cance_button">
+              <widget class="GtkButton" id="cancel_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="response_id">-5</property>
-                <signal name="clicked" handler="on_cance_button_clicked"/>
+                <signal name="clicked" handler="on_cancel_button_clicked"/>
                 <child>
                   <widget class="GtkAlignment" id="alignment2">
                     <property name="visible">True</property>
@@ -458,7 +458,7 @@
               </widget>
             </child>
             <child>
-              <widget class="GtkButton" id="ok_button1">
+              <widget class="GtkButton" id="ok_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
