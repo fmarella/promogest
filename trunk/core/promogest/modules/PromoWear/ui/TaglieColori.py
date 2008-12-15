@@ -347,7 +347,7 @@ class GestioneTaglieColori(GladeWidget):
         from AnagraficaColori import AnagraficaColori
         anag = AnagraficaColori()
 
-        #showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), toggleButton, self.refreshColoriTreeView)
+        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), toggleButton, self.refresh)
 
 
     def on_size_button_toggled(self, toggleButton):
@@ -357,7 +357,7 @@ class GestioneTaglieColori(GladeWidget):
         from AnagraficaTaglie import AnagraficaTaglie
         anag = AnagraficaTaglie()
 
-        #showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), toggleButton, self.refreshTaglie)
+        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), toggleButton, self.refresh)
 
     def on_ok_button_clicked(self, button):
         for dat in self.datas:
