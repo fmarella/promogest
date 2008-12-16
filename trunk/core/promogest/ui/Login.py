@@ -24,7 +24,9 @@
 import os, md5
 import gtk
 import datetime
+import locale
 from GladeApp import GladeApp
+from GladeWidget import GladeWidget
 from promogest import Environment
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
@@ -195,6 +197,39 @@ class Login(GladeApp):
                 response = dialog.run()
                 dialog.destroy()
                 do_login = False
+
+    def on_aggiorna_button_clicked(self, widget):
+        svndialog = GladeWidget('svnupdate_dialog', callbacks_proxy=self)
+        svndialog.getTopLevel().set_transient_for(self.getTopLevel())
+        encoding = locale.getlocale()[1]
+        utf8conv = lambda x : unicode(x, encoding).encode('utf8')
+        licenseText = ''
+        textBuffer = svndialog.svn_textview.get_buffer()
+        textBuffer.set_text(licenseText)
+        svndialog.svn_textview.set_buffer(textBuffer)
+        svndialog.getTopLevel().show_all()
+        response = svndialog.svnupdate_dialog.run()
+        if response == gtk.RESPONSE_OK:
+            command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
+            stdin, stdouterr = os.popen4(command)
+            for line in stdouterr.readlines():
+                textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
+            msg = """ Se è apparsa la dicitura "Estratta Revisione XXXX
+l'aggiornamento è riuscito, nel caso di messaggio fosse differente
+potete contattare l'assistenza tramite il numero verde 80034561
+o tramite email all'indirizzo info@promotux.it
+
+        Aggiornamento de|l Promogest2 terminato !!!
+        Riavviare l'applicazione per rendere le modifiche effettive
+                    """
+            dialog = gtk.MessageDialog(self.getTopLevel(),
+                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_INFO,
+                                   gtk.BUTTONS_OK,
+                                   msg)
+            dialog.run()
+            dialog.destroy()
+            svndialog.svnupdate_dialog.destroy()
 
     def groupModulesByType(self):
         self.anagrafiche_modules = {}
