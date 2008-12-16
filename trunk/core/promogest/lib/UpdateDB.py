@@ -61,7 +61,7 @@ listinoComplessoListinoTable.create(checkfirst=True)
 print "CREATO listino_complesso_listino"
 
 listinoComplessoArticoloPrevalenteTable = Table('listino_complesso_articolo_prevalente',params['metadata'],
-        Column('id_listino_complesso',Integer,ForeignKey(params['schema']+'.listino_complesso_listino.id_listino_complesso',onupdate="CASCADE",ondelete="CASCADE"), primary_key=True),
+        Column('id_listino_complesso',Integer, primary_key=True),
         Column('id_listino',Integer),
         Column('id_articolo',Integer),
         Column('data_listino_articolo',DateTime),
