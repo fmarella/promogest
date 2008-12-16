@@ -22,7 +22,7 @@ from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.Articolo import Articolo
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
-
+from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
 from utils import *
 from utilsCombobox import fillComboboxListini,findIdFromCombobox,findComboboxRowFromId
 
@@ -37,7 +37,6 @@ class AnagraficaListiniArticoli(Anagrafica):
         self._idArticolo=idArticolo
         self._idListino=idListino
         if "PromoWear" in Environment.modulesList:
-            from promogest.dao.Articolo import Articolo
             from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
         Anagrafica.__init__(self,
                             windowTitle='Promogest - Anagrafica listini di vendita',
@@ -135,7 +134,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         column.connect("clicked", self._changeOrderBy, 'id_articolo')
         column.set_resizable(True)
         column.set_expand(True)
-        column.set_min_width(250)
+        column.set_min_width(200)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Data variazione', rendererSx, text=4)
@@ -223,7 +222,12 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         else:
             self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-
+        self.isComplexPriceList = ListinoComplessoListino().select(idListinoComplesso = self._anagrafica._idListino, batchSize=None)
+        if self.isComplexPriceList:
+            self.sotto_listini_label.set_sensitive(True)
+            self.id_sotto_listino_filter_combobox.set_sensitive(True)
+            fillComboboxListiniComplessi(self.id_sotto_listino_filter_combobox,
+                                        idListinoComplesso = self._anagrafica._idListino,filter=True)
         fillComboboxListini(self.id_listino_filter_combobox, True)
 
         if self._anagrafica._articoloFissato:
@@ -263,6 +267,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
             self.id_articolo_filter_customcombobox.set_active(0)
         if not(self._anagrafica._listinoFissato):
             self.id_listino_filter_combobox.set_active(0)
+            self.id_sotto_listino_filter_combobox.set_active(0)
         self.refresh()
 
 
@@ -273,9 +278,20 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
             viaggia una lista di id che deve essere gestita poi in una query
             il risultato è minore pulizia ma maggiore velocità
         """
+        #if not self.isComplexPriceList:
+        listcount = 0
+        multilistCount = 0
+        multilist = []
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         idListino = findIdFromCombobox(self.id_listino_filter_combobox)
+        idSottoListino = findIdFromCombobox(self.id_sotto_listino_filter_combobox)
 
+        if not idSottoListino and self.isComplexPriceList:
+            for sottolist in self.isComplexPriceList:
+                multilist.append(sottolist.id_listino)
+            idListino=multilist
+        elif idSottoListino and self.isComplexPriceList :
+            idListino=idSottoListino
 
         def filterCountClosure():
             return ListinoArticolo().count(idListino=idListino,

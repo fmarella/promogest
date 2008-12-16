@@ -438,6 +438,31 @@ def fillComboboxListini(combobox, filter=False):
     if combobox.__class__ is gtk.ComboBoxEntry:
         combobox.set_text_column(2)
 
+def fillComboboxListiniComplessi(combobox,idListinoComplesso=None, filter=False):
+    """
+    Crea l'elenco dei listini
+    """
+    from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
+    model = gtk.ListStore(object, int, str)
+    liss= ListinoComplessoListino().select(idListinoComplesso=idListinoComplesso,offset=None,batchSize=None)
+
+    if not filter:
+        emptyRow = ''
+    else:
+        emptyRow = '< Tutti >'
+    model.append((None, 0, emptyRow))
+    for l in liss:
+        model.append((l, l.id_listino, (l.listino_denominazione or '')[0:20]))
+
+    combobox.clear()
+    renderer = gtk.CellRendererText()
+    combobox.pack_start(renderer, True)
+    combobox.add_attribute(renderer, 'text', 2)
+    combobox.set_model(model)
+    if combobox.__class__ is gtk.ComboBoxEntry:
+        combobox.set_text_column(2)
+
+
 def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=None):
     from promogest.dao.Listino import Listino
     from promogest.dao.ListinoMagazzino import ListinoMagazzino
