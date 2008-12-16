@@ -25,6 +25,14 @@
                     </strong>
                 </td>
             </tr>
+            <tr><td colspan="2" class="table-header">Composto Da Questi Listini:</td></tr>
+            <tr><td class="odd-detail" colspan="2">
+            <ul>
+                <li py:for="listino in dao.listiniComplessi">
+                    ${listino.listino_denominazione}
+                </li>
+            </ul>
+            </td></tr>
             <tr><td colspan="2" class="table-header">Categorie cliente associate</td></tr>
             <tr><td class="odd-detail" colspan="2">
             <ul>

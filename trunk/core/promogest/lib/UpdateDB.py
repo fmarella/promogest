@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -52,3 +52,25 @@ scontiVenditaDettaglioTable = Table('sconti_vendita_dettaglio',params['metadata'
 scontiVenditaDettaglioTable.create(checkfirst=True)
 print "CREATO sconti_vendita_dettaglio"
 
+# aggiunta delle due tabelle listino_complesso_listino e listino_complesso_articolo_prevalente
+listinoComplessoListinoTable = Table('listino_complesso_listino',params['metadata'],
+        Column('id_listino_complesso',Integer, primary_key=True),
+        Column('id_listino', Integer,ForeignKey(params['schema']+'.listino.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
+        schema=params['schema'])
+listinoComplessoListinoTable.create(checkfirst=True)
+print "CREATO listino_complesso_listino"
+
+listinoComplessoArticoloPrevalenteTable = Table('listino_complesso_articolo_prevalente',params['metadata'],
+        Column('id_listino_complesso',Integer,ForeignKey(params['schema']+'.listino_complesso_listino.id_listino_complesso',onupdate="CASCADE",ondelete="CASCADE"), primary_key=True),
+        Column('id_listino',Integer),
+        Column('id_articolo',Integer),
+        Column('data_listino_articolo',DateTime),
+        ForeignKeyConstraint(columns=("id_listino","id_articolo","data_listino_articolo"),
+                                        refcolumns=(params['schema']+'.listino_articolo.id_listino',
+                                                    params['schema']+'.listino_articolo.id_articolo',
+                                                    params['schema']+'.listino_articolo.data_listino_articolo'),
+                                        onupdate="CASCADE", ondelete="CASCADE"),
+        schema=params['schema']
+        )
+listinoComplessoArticoloPrevalenteTable.create(checkfirst=True)
+print "CREATO listino_complesso_articolo_prevalente"

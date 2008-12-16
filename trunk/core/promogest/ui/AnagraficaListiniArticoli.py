@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -279,8 +279,8 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
 
         def filterCountClosure():
             return ListinoArticolo().count(idListino=idListino,
-                                                        idArticolo=idArticolo,
-                                                        listinoAttuale=True)
+                                            idArticolo=idArticolo,
+                                            listinoAttuale=True)
 
         self._filterCountClosure = filterCountClosure
         self.numRecords = self.countFilterResults()
@@ -289,11 +289,11 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return ListinoArticolo().select(orderBy=self.orderBy,
-                                                            idListino=idListino,
-                                                            idArticolo=idArticolo,
-                                                            listinoAttuale=True,
-                                                            offset=offset,
-                                                            batchSize=batchSize)
+                                            idListino=idListino,
+                                            idArticolo=idArticolo,
+                                            listinoAttuale=True,
+                                            offset=offset,
+                                            batchSize=batchSize)
 
         self._filterClosure = filterClosure
         self.liss = self.runFilter()

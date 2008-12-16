@@ -33,8 +33,6 @@ from promogest.dao.Dao import Dao
 
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
 
-
-
 # Riempimento lookup combobox
 
 
@@ -421,13 +419,7 @@ def fillComboboxListini(combobox, filter=False):
     Crea l'elenco dei listini
     """
     from promogest.dao.Listino import Listino
-    model = gtk.ListStore(gobject.TYPE_PYOBJECT, int, str)
-    #liss = Listino().select(Environment.connection,
-                                        #denominazione=None,
-                                        #orderBy = None,
-                                        #offset = None,
-                                        #batchSize = None,
-                                        #immediate = True)
+    model = gtk.ListStore(object, int, str)
     liss= Listino().select(denominazione=None,offset=None,orderBy = None,batchSize=None)
 
     if not filter:

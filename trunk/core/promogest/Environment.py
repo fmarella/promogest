@@ -307,7 +307,7 @@ engine = create_engine('postgres:'+'//'+conf.Database.user+':'
                     + conf.Database.database,
                     encoding='utf-8',
                     convert_unicode=True )
-print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", debugSQL
+
 engine.echo = debugSQL
 meta = MetaData(engine)
 Session = sessionmaker(bind=engine)

@@ -13,6 +13,7 @@ from promogest.Environment import *
 from Dao import Dao
 from ListinoCategoriaCliente import ListinoCategoriaCliente
 from ListinoMagazzino import ListinoMagazzino
+from ListinoComplessoListino import ListinoComplessoListino
 
 
 class Listino(Dao):
@@ -21,7 +22,7 @@ class Listino(Dao):
         Dao.__init__(self, entity=self)
 
     def _getCategorieCliente(self):
-        self.__dbCategorieCliente = params['session'].query(ListinoCategoriaCliente).with_parent(self).filter_by(id_listino=self.id).all()
+        self.__dbCategorieCliente = ListinoCategoriaCliente().select(idListino=self.id, batchSize=None)
         self.__categorieCliente = self.__dbCategorieCliente[:]
         return self.__categorieCliente
 
@@ -31,7 +32,7 @@ class Listino(Dao):
     categorieCliente = property(_getCategorieCliente, _setCategorieCliente)
 
     def _getMagazzini(self):
-        self.__dbMagazzini = params['session'].query(ListinoMagazzino).with_parent(self).filter_by(id_listino=self.id).all()
+        self.__dbMagazzini = ListinoMagazzino().select(idListino=self.id, batchSize=None)
         self.__magazzini = self.__dbMagazzini[:]
         return self.__magazzini
 
@@ -39,6 +40,17 @@ class Listino(Dao):
         self.__magazzini = value
 
     magazzini = property(_getMagazzini, _setMagazzini)
+
+    def _getListinoComplesso(self):
+        self.__dbListinoComplesso = ListinoComplessoListino().select(idListinoComplesso=self.id, batchSize=None)
+        self.__listinocomplesso = self.__dbListinoComplesso[:]
+        return self.__listinocomplesso
+
+    def _setListinoComplesso(self, value):
+        self.__listinocomplesso = value
+
+    listiniComplessi = property(_getListinoComplesso, _setListinoComplesso)
+
 
     def delete(self, multiple=False, record = True):
         cleanListinoCategoriaCliente = ListinoCategoriaCliente()\
@@ -68,5 +80,7 @@ listino=Table('listino', params['metadata'],schema = params['schema'],autoload=T
 
 std_mapper = mapper(Listino, listino, properties={
     "listino_categoria_cliente" :relation(ListinoCategoriaCliente, backref="listino"),
-    "listino_magazzino" :relation(ListinoMagazzino, backref="listino")},
+    "listino_magazzino" :relation(ListinoMagazzino, backref="listino"),
+    "listino_complesso":relation(ListinoComplessoListino,primaryjoin=
+                        ListinoComplessoListino.id_listino==listino.c.id, backref="listino")},
         order_by=listino.c.id)
