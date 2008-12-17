@@ -239,5 +239,5 @@ std_mapper=mapper(ListinoArticolo, listinoarticolo, properties={
                 listinoarticolo.c.id_articolo==ScontoVenditaIngrosso.id_articolo,
                 listinoarticolo.c.data_listino_articolo==ScontoVenditaIngrosso.data_listino_articolo)),
             "listi" : relation(Listino,primaryjoin=
-                listinoarticolo.c.id_listino==Listino.id)},
+                listinoarticolo.c.id_listino==Listino.id, backref="listinoarticolo")},
                 order_by=listinoarticolo.c.id_listino)

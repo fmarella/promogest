@@ -8,11 +8,13 @@
 
 import gtk
 import gobject, gtkhtml2
+from sets import Set
 
 from promogest.ui.GladeWidget import GladeWidget
 
 from promogest import Environment
 from promogest.dao.Dao import Dao
+from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 import genshi
 from genshi.template import TemplateLoader
@@ -24,81 +26,27 @@ from promogest.ui.utils import *
 
 class CrossFilterPriceList(GladeWidget):
 
-    def __init__(self, idListino):
+    def __init__(self, listino):
         GladeWidget.__init__(self, 'cross_filter_pricelist',
                             'cross_filter_pricelist.glade')
 
         dialog = self.cross_filter_pricelist
         self.placeWindow(self.getTopLevel())
         self._treeViewModel = None
-        #self._articoloBase = articolo
-        #self._articoloPadre = articolo.articoloTagliaColore
-        #self.idGruppoTaglia = self._articoloBase.id_gruppo_taglia
-        #if self._articoloPadre is None:
-            #self._articoloPadre = ArticoloTagliaColore()
-        #self._articoliTagliaColore = self._articoloBase.articoliTagliaColore
-        self._noValue = 'n/a'
-        self._varianti = {}
-        self._gruppoTaglia = None
-        self._gtkHtml = None
-        self.order="color"
-        self.filtered = True
-        # Taglie attualmente presenti nella treeview
-        self._taglie = [] # Verra` aggiornato al refresh della combobox gruppi taglia
-
-        # Colori attualmente presenti nella treeview
-        #colori = set(a.id_colore for a in self._articoliTagliaColore)
-        #self._colori = [Colore().getRecord(id= c) for c in colori]
-        #self.refreshColori()
-        #self.sizesAvailable()
-        #self.selected = False
-        ## Dizionario che associa alla chiave (taglia,colore) l'id della variante
-        #for a in self._articoliTagliaColore:
-            #self._varianti[(a.id_taglia, a.id_colore)] = a.id_articolo
-
-        #self._ripetizione_taglie = 3 # Ogni quante colonne ripetere le taglie?
-        #self.group_size_label.set_markup('<span weight="bold">%s</span>'
-                                       #% (self._articoloBase.denominazione_gruppo_taglia,))
-
-        #self.father_label.set_markup('Articolo: ' + '<span weight="bold">%s %s</span>'
-                                       #% (self._articoloBase.codice,self._articoloBase.denominazione))
-
-        #self._drawColoriTreeView()
-        #self.refreshColoriTreeView()
-        #self.refreshTaglie()
-        #self._refreshHtml()
+        self._listino = listino
         self.rowBackGround = '#E6E6FF'
         self.rowBoldFont = 'arial bold 12'
+        #self.duplicatedData()
         self.draw()
+        #self.refreshDuplicated()
 
 
-    def refreshColori(self):
-        self.colori = Colore().select(batchSize=None)
-        return self.colori
+    def filteredData(self):
+        return
 
-    def sizesAvailable(self):
-        self.sizes = GruppoTagliaTaglia().select(idGruppoTaglia=self.idGruppoTaglia, batchSize=None)
-        return self.sizes
+    def optionData(self):
+        return
 
-    def _refreshHtml(self, data= None):
-        """ show the html page in the custom widget"""
-        if self._gtkHtml is None:
-            self._gtkHtml = self.getHtmlWidget()
-            self._currGtkHtmlDocument = 0
-        document =gtkhtml2.Document()
-        document.open_stream('text/html')
-        if data is None:
-            html = '<html></html>'
-        else:
-            tmpl = loader.load("creazione_taglie_colori.html")
-            stream = tmpl.generate(datas=data)
-            html = stream.render('xhtml')
-        document.write_stream(html)
-        document.close_stream()
-        self._gtkHtml.set_document(document)
-
-    def getHtmlWidget(self):
-        return self.creazione_varianti_html
 
     def draw(self):
         """Creo una treeview che abbia come colonne i colori e come righe
@@ -176,7 +124,7 @@ class CrossFilterPriceList(GladeWidget):
 
         cellspin = gtk.CellRendererToggle()
         cellspin.set_property('activatable', True)
-        cellspin.connect('toggled', self.on_column_selected_edited, self.treeview, True)
+        cellspin.connect('toggled', self.on_column_selected_edited, treeview_option, True)
         column = gtk.TreeViewColumn('Seleziona', cellspin)
         column.add_attribute( cellspin, "active", 1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
@@ -305,9 +253,6 @@ class CrossFilterPriceList(GladeWidget):
         self._treeViewModel_filtered = gtk.ListStore(object, str, str, str, str, str, str)
         treeview_filtered.set_model(self._treeViewModel_filtered)
 
-
-
-
         #self.treeview = self.color_and_size_treeview
         #cellspin = gtk.CellRendererToggle()
         #cellspin.set_property('activatable', True)
@@ -346,144 +291,38 @@ class CrossFilterPriceList(GladeWidget):
         #self.treeview.set_model(self._treeViewModel)
         #self.head_color.set_active(True)
         #self.only_variation.set_active(True)
-        #self.refresh()
+        self.refreshDuplicated()
 
-    def refresh(self,order="color",filtered =True):
+    def refreshDuplicated(self):
         # Aggiornamento TreeView
-        self._treeViewModel.clear()
-        #varianti = self.data["varianti"]
-        #print varianti
+        self._treeViewModel_duplicated.clear()
+        liss = self.duplicatedData()
+        #print "lissssssssssssssssssssssssssssss", liss
+        for l in liss:
+            self._treeViewModel_duplicated.append((l,
+                                        (l.denominazione or ''),
+                                        (l.codice_articolo or ''),
+                                        (l.articolo or ''),
+                                        dateToString(l.data_listino_articolo),
+                                        ('%14.' + Environment.conf.decimals + 'f') % float(l.prezzo_dettaglio or 0),
+                                        ('%14.' + Environment.conf.decimals + 'f') % float(l.prezzo_ingrosso or 0)))
+        return
+        #self.printModel()
 
-        if self.order == "color":
-            if self.filtered:
-                for c in self._articoloBase.colori:
-                    #oggetto Colore
-                    parent = self._treeViewModel.append(None,(c,
-                                                True,
-                                                c.denominazione,
-                                                "",
-                                                self.rowBackGround,
-                                                self.rowBoldFont,
-                                                None))
-                    sizesFilterd= ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
-                                                                idColore=c.id,
-                                                                batchSize=None)
-                    for r in sizesFilterd:
-                        s = Taglia().getRecord(id=r.id_taglia)
-                        articoloTagliaColore = ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
-                                                                                idTaglia=s.id,
-                                                                                idColore=c.id)
-                        if articoloTagliaColore:
-                            codiceArticolo = Articolo().getRecord(id=articoloTagliaColore[0].id_articolo)
-                            codice = codiceArticolo.codice_a_barre or ""
-                        else:
-                            codice = ""
-                            codiceArticolo = None
-                        #oggetto Taglia
-                        self._treeViewModel.append(parent,(s,
-                                            True,
-                                            s.denominazione,
-                                            codice,
-                                            None,
-                                            None,
-                                            codiceArticolo))
-            else:
-                for c in self.colori:
-                    #oggetto Colore
-                    parent = self._treeViewModel.append(None,(c,
-                                                self.selected,
-                                                c.denominazione,
-                                                "",
-                                                self.rowBackGround,
-                                                self.rowBoldFont,
-                                                None))
-                    for g in self.sizes:
-                        alreadyexist= ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
-                                                                idColore=c.id,
-                                                                idTaglia=g.id_taglia,
-                                                                batchSize=None)
-                        if alreadyexist:
-                            selected = True
-                            codiceArticolo = Articolo().getRecord(id=alreadyexist[0].id_articolo)
-                            codice= codiceArticolo.codice_a_barre or ""
-                        else:
-                            selected = False
-                            codice = ""
-                            codiceArticolo = None
-                        # oggetto Gruppo Taglia Taglia
-                        s = Taglia().getRecord(id=g.id_taglia)
-
-                        self._treeViewModel.append(parent,(s,
-                                                selected,
-                                                s.denominazione,
-                                                codice,
-                                                None,
-                                                None,
-                                                codiceArticolo))
-        else:
-            if self.filtered:
-                for s in self._articoloBase.taglie:
-                    parent = self._treeViewModel.append(None,(s,
-                                                            True,
-                                                            s.denominazione,
-                                                            "",
-                                                            self.rowBackGround,
-                                                            self.rowBoldFont,
-                                                            None))
-                    colorFilterd= ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
-                                                                idTaglia=s.id, batchSize=None)
-                    for d in colorFilterd:
-                        c = Colore().getRecord(id=d.id_colore)
-                        articoloTagliaColore = ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
-                                                                            idTaglia=s.id,
-                                                                            idColore=c.id)
-                        if articoloTagliaColore:
-                            codiceArticolo = Articolo().getRecord(id=articoloTagliaColore[0].id_articolo)
-                            codice = codiceArticolo.codice_a_barre or ""
-                        else:
-                            codice = ""
-                            codiceArticolo = None
-                        self._treeViewModel.append(parent,(c,
-                                                    True,
-                                                    c.denominazione,
-                                                    codice,
-                                                    None,
-                                                    None,
-                                                    codiceArticolo))
-
-            else:
-                for s in self.sizes:
-                    h = Taglia().getRecord(id=s.id_taglia)
-                    #oggetto GruppoTagliaTaglia
-                    parent = self._treeViewModel.append(None,(h,
-                                                            self.selected,
-                                                            h.denominazione,
-                                                            "",
-                                                            self.rowBackGround,
-                                                            self.rowBoldFont,
-                                                            None))
-                    for c in self.colori:
-                        #oggetto Colore
-                        alreadyexist= ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
-                                                                idColore=c.id,
-                                                                idTaglia=h.id,
-                                                                batchSize=None)
-                        if alreadyexist:
-                            selected = True
-                            codiceArticolo = Articolo().getRecord(id=alreadyexist[0].id_articolo)
-                            codice = codiceArticolo.codice_a_barre or ""
-                        else:
-                            selected = False
-                            codice = ""
-                            codiceArticolo = None
-                        self._treeViewModel.append(parent,(c,
-                                                    selected,
-                                                    c.denominazione,
-                                                    codice,
-                                                    None,
-                                                    None,
-                                                    codiceArticolo))
-        self.printModel()
+    def duplicatedData(self):
+        sottolistini = self._listino.sottoListini
+        #print "RRRRRRRRRRRRRRRRRRRRRRRRRR", sottolistini
+        alllistiniId = []
+        dueid = []
+        if sottolistini:
+            for sotto in sottolistini:
+                alllistiniId.append(sotto.id_listino)
+        allArt= ListinoArticolo().select(idListino = alllistiniId, batchSize=None)
+        for a in allArt:
+            dueid.append(a.id_articolo)
+        dupli = [ x for x in dueid if dueid.count(x) > 1]
+        dupli2 = ListinoArticolo().select(idListino = alllistiniId, idArticolo = dupli, batchSize=None)
+        return dupli2
 
     def printModel(self):
         self.datas= []

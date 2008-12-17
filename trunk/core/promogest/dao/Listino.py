@@ -51,6 +51,22 @@ class Listino(Dao):
 
     listiniComplessi = property(_getListinoComplesso, _setListinoComplesso)
 
+    def _isComplex(self):
+        if ListinoComplessoListino().select(idListinoComplesso=self.id):
+            return True
+        else:
+            return False
+    isComplex = property(_isComplex)
+
+    def _sottoListini(self):
+        if self.isComplex:
+            self. __sottoListiniList = ListinoComplessoListino().select(idListinoComplesso = self.id, batchSize=None)
+        else:
+            self. __sottoListiniList=None
+            return self. __sottoListiniList
+        return self. __sottoListiniList
+    sottoListini = property(_sottoListini)
+
 
     def delete(self, multiple=False, record = True):
         cleanListinoCategoriaCliente = ListinoCategoriaCliente()\

@@ -566,7 +566,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
                 return
 
         from CrossFilterPriceList import CrossFilterPriceList
-        anag = CrossFilterPriceList(idListino=self.dao.id)
+        anag = CrossFilterPriceList(listino=self.dao)
         anagWindow = anag.getTopLevel()
 
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
