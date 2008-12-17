@@ -547,3 +547,27 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         anagWindow = anag.getTopLevel()
 
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+
+    def on_check_pricelist_togglebutton_toggled(self, toggleButton):
+        if not(toggleButton.get_active()):
+            toggleButton.set_active(False)
+            return
+
+        if self.dao.id is None:
+            msg = 'Prima di poter filtrare gli articoli occorre salvare il listino.\n Salvare ?'
+            dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                       gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+            response = dialog.run()
+            dialog.destroy()
+            if response == gtk.RESPONSE_YES:
+                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+            else:
+                toggleButton.set_active(False)
+                return
+
+        from CrossFilterPriceList import CrossFilterPriceList
+        anag = CrossFilterPriceList(idListino=self.dao.id)
+        anagWindow = anag.getTopLevel()
+
+        showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+
