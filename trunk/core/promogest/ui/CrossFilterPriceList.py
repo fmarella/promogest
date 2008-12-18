@@ -319,11 +319,12 @@ class CrossFilterPriceList(GladeWidget):
         """
         filtrow =[]
         lcaps = ListinoComplessoArticoloPrevalente().select(idListinoComplesso=self._listino.id)
-        for lc in lcaps:
-            filtrow.append(ListinoArticolo().select(idListino=lc.id_listino,
-                                idArticolo=lc.id_articolo,
-                                dataListinoArticolo=lc.data_listino_articolo,
-                                batchSize=None)[0])
+        if lcaps:
+            for lc in lcaps:
+                filtrow.append(ListinoArticolo().select(idListino=lc.id_listino,
+                                    idArticolo=lc.id_articolo,
+                                    dataListinoArticolo=lc.data_listino_articolo,
+                                    batchSize=None)[0])
         return filtrow
 
     def on_filtered_treeview_row_activated(self, widget, path, column):

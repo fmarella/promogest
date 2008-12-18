@@ -330,7 +330,7 @@ def leggiListino(idListino, idArticolo=None):
     if idListino is not None:
         try:
             daoListino = Listino().select(idListino=idListino,
-                                                        batchSize=None)[0]
+                                            batchSize=None)[0]
             if daoListino is not None:
                 _denominazione = daoListino.denominazione
         except:
@@ -341,7 +341,8 @@ def leggiListino(idListino, idArticolo=None):
                 daoListinoArticolo = ListinoArticolo()\
                                             .select(idListino=idListino,
                                             idArticolo = idArticolo,
-                                            batchSize=None, orderBy="id_listino")[0]
+                                            batchSize=None,
+                                            orderBy="id_listino")[0]
                 if daoListinoArticolo is not None:
                     _prezzoIngrosso = daoListinoArticolo.prezzo_ingrosso
                     _prezzoDettaglio = daoListinoArticolo.prezzo_dettaglio
