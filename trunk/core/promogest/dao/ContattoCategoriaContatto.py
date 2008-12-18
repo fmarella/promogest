@@ -7,7 +7,7 @@
 
 
 from sqlalchemy import Table
-from sqlalchemy.orm import mapper, relation
+from sqlalchemy.orm import mapper, relation, backref
 from promogest.Environment import params
 from CategoriaContatto import CategoriaContatto
 from Dao import Dao
