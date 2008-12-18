@@ -170,6 +170,10 @@ class ListinoArticolo(Dao):
             dic={ k: listinoarticolo.c.id_listino==v}
         elif k=="idListinoList":
             dic={ k: listinoarticolo.c.id_listino.in_(v)}
+        elif k=="dataListinoArticoloList":
+            dic={ k: listinoarticolo.c.data_listino_articolo.in_(v)}
+        elif k=="dataListinoArticolo":
+            dic={ k: listinoarticolo.c.data_listino_articolo ==v}
         return  dic[k]
 
     def persist(self,sconti=None):

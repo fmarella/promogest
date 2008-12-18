@@ -8,9 +8,9 @@
  """
 
 from sqlalchemy import Table
-from sqlalchemy.orm import mapper, join
+from sqlalchemy.orm import mapper, join,relation
 from promogest.Environment import params
-from ListinoComplessoListino import ListinoComplessoListino
+from Listino import Listino
 from ListinoArticolo import ListinoArticolo
 from Dao import Dao
 
@@ -37,8 +37,5 @@ listinocomplessoarticoloprevalente=Table('listino_complesso_articolo_prevalente'
                                         autoload=True)
 
 std_mapper = mapper(ListinoComplessoArticoloPrevalente,listinocomplessoarticoloprevalente, properties={
-                "listinComplex":relation(ListinoComplessoListino,primaryjoin=
-                        listinocomplessolistino.c.id_listino==Listino.id),
-                "listiarti": relation(ListinoArticolo, backref="listinocomplessoarticoloprevalente")
                                             },
                     order_by=listinocomplessoarticoloprevalente.c.id_listino_complesso)

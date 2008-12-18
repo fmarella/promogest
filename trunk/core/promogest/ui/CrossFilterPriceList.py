@@ -16,13 +16,8 @@ from promogest import Environment
 from promogest.dao.Dao import Dao
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-import genshi
-from genshi.template import TemplateLoader
+from promogest.dao.ListinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalente
 from promogest.ui.utils import *
-
-
-#templates_dir = './promogest/modules/PromoWear/templates/'
-#loader = TemplateLoader([templates_dir])
 
 class CrossFilterPriceList(GladeWidget):
 
@@ -37,20 +32,16 @@ class CrossFilterPriceList(GladeWidget):
         self.rowBackGround = '#E6E6FF'
         self.rowBoldFont = 'arial bold 12'
         #self.duplicatedData()
+        self.duprow = []
+        self.stored = []
         self.draw()
+        self.remove=None
         #self.refreshDuplicated()
 
-
-    def filteredData(self):
-        return
-
-    def optionData(self):
-        return
-
-
     def draw(self):
-        """Creo una treeview che abbia come colonne i colori e come righe
-           le taglie direi che sia il caso di gestire anche le descrizioni variante visto che le ho
+        """
+            Creo tre treeview , degli articoli duplicati, delle opzioni e di quelli
+            gestiti
         """
         #parte dei duplicati
         treeview_duplicated = self.duplicated_treeview
@@ -114,24 +105,11 @@ class CrossFilterPriceList(GladeWidget):
         self._treeViewModel_duplicated = gtk.ListStore(object, str, str, str, str, str, str)
         treeview_duplicated.set_model(self._treeViewModel_duplicated)
 
-
         #parte delle opzioni possibili
         treeview_option = self.option_treeview
         rendererSx = gtk.CellRendererText()
         rendererDx = gtk.CellRendererText()
         rendererDx.set_property('xalign', 1)
-
-
-        cellspin = gtk.CellRendererToggle()
-        cellspin.set_property('activatable', True)
-        cellspin.connect('toggled', self.on_column_selected_edited, treeview_option, True)
-        column = gtk.TreeViewColumn('Seleziona', cellspin)
-        column.add_attribute( cellspin, "active", 1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        #column.set_expand(True)
-        #column.set_min_width(40)
-        treeview_option.append_column(column)
 
         column = gtk.TreeViewColumn('Listino', rendererSx, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
@@ -187,7 +165,7 @@ class CrossFilterPriceList(GladeWidget):
         column.set_min_width(100)
         treeview_option.append_column(column)
 
-        self._treeViewModel_option = gtk.ListStore(object,bool, str, str, str, str, str, str)
+        self._treeViewModel_option = gtk.ListStore(object, str, str, str, str, str, str)
         treeview_option.set_model(self._treeViewModel_option)
 
         #parte degli articoli filtrati
@@ -253,244 +231,175 @@ class CrossFilterPriceList(GladeWidget):
         self._treeViewModel_filtered = gtk.ListStore(object, str, str, str, str, str, str)
         treeview_filtered.set_model(self._treeViewModel_filtered)
 
-        #self.treeview = self.color_and_size_treeview
-        #cellspin = gtk.CellRendererToggle()
-        #cellspin.set_property('activatable', True)
-        #cellspin.connect('toggled', self.on_column_selected_edited, self.treeview, True)
-        #column = gtk.TreeViewColumn('Seleziona', cellspin)
-        #column.add_attribute( cellspin, "active", 1)
-        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_resizable(True)
-        ##column.set_expand(True)
-        ##column.set_min_width(40)
-        #self.treeview.append_column(column)
+        self.refreshFiltered()
 
-        #rendererSx = gtk.CellRendererText()
-        #column = gtk.TreeViewColumn("Taglia / Colore", rendererSx, text=2, background=4, font=5)
-        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_clickable(False)
-        #column.set_resizable(True)
-        ##column.set_expand(False)
-        #column.set_min_width(70)
-        #self.treeview.append_column(column)
+    def riempiTreeview(self,l, treeview):
+        """
+            tutte le treeview hanno la stessa liststore, funzione di riempiriga
+        """
+        treeview.append((l,
+                        (l.denominazione or ''),
+                        (l.codice_articolo or ''),
+                        (l.articolo or ''),
+                        dateToString(l.data_listino_articolo),
+                        str(mN(l.prezzo_dettaglio) or 0),
+                        str(mN(l.prezzo_ingrosso) or 0)))
 
-        #celltext = gtk.CellRendererText()
-        #celltext.set_property("editable", True)
-        #celltext.set_property("visible", True)
-        #celltext.connect('edited', self.on_column_codice_edited, self.treeview, True)
-        #column = gtk.TreeViewColumn('Codice', celltext, text=3)
-        #column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        ##column.set_clickable(True)
-        ##column.connect("clicked", self._changeOrderBy, 'denominazione_breve')
-        #column.set_resizable(True)
-        #column.set_expand(True)
-        #column.set_min_width(50)
-        #self.treeview.append_column(column)
 
-        #self._treeViewModel = gtk.TreeStore(object,bool,str,str, str, str, object)
-        #self.treeview.set_model(self._treeViewModel)
-        #self.head_color.set_active(True)
-        #self.only_variation.set_active(True)
-        self.refreshDuplicated()
+    def refreshFiltered(self, dao=None, remove=None):
+        """
+            Aggiornamento TreeView degli articoli già gestiti
+        """
+        #self._treeViewModel_option.clear()
+        if dao:
+            l = dao
+            self.riempiTreeview(l, self._treeViewModel_filtered)
+        elif remove:
+            self._treeViewModel_filtered.clear()
+            for l in self.stored:
+                if l == remove:
+                    pass
+                else:
+                    self.riempiTreeview(l, self._treeViewModel_filtered)
+        elif not self.stored:
+            self.stored = self.filteredData()
+            self._treeViewModel_option.clear()
+            if not self.stored:
+                self.refreshDuplicated()
+                return
+            for l in self.stored:
+                self.riempiTreeview(l, self._treeViewModel_filtered)
 
-    def refreshDuplicated(self):
-        # Aggiornamento TreeView
+
+    def refreshDuplicated(self,stored=[]):
+        """
+            Aggiornamento TreeView degli articoli dupplicati
+        """
         self._treeViewModel_duplicated.clear()
-        liss = self.duplicatedData()
-        #print "lissssssssssssssssssssssssssssss", liss
-        for l in liss:
-            self._treeViewModel_duplicated.append((l,
-                                        (l.denominazione or ''),
-                                        (l.codice_articolo or ''),
-                                        (l.articolo or ''),
-                                        dateToString(l.data_listino_articolo),
-                                        ('%14.' + Environment.conf.decimals + 'f') % float(l.prezzo_dettaglio or 0),
-                                        ('%14.' + Environment.conf.decimals + 'f') % float(l.prezzo_ingrosso or 0)))
-        return
-        #self.printModel()
+        if not self.duprow:
+            self.duprow = self.duplicatedData()
+        for l in self.duprow:
+            if l in self.stored:
+                pass
+            else:
+                self.riempiTreeview(l,self._treeViewModel_duplicated)
+ 
+
+    def refreshOption(self, daos=None):
+        """
+            Aggiornamento TreeView delle opzioni possibili
+        """
+        self._treeViewModel_option.clear()
+        for l in daos:
+            self.riempiTreeview(l,self._treeViewModel_option)
 
     def duplicatedData(self):
+        """
+            crea la lista dei Dao listinoArticolo degli articoli duplicati
+        """
         sottolistini = self._listino.sottoListini
-        #print "RRRRRRRRRRRRRRRRRRRRRRRRRR", sottolistini
         alllistiniId = []
         dueid = []
         if sottolistini:
             for sotto in sottolistini:
                 alllistiniId.append(sotto.id_listino)
         allArt= ListinoArticolo().select(idListino = alllistiniId, batchSize=None)
-        for a in allArt:
-            dueid.append(a.id_articolo)
-        dupli = [ x for x in dueid if dueid.count(x) > 1]
-        dupli2 = ListinoArticolo().select(idListino = alllistiniId, idArticolo = dupli, batchSize=None)
-        return dupli2
+        dupli2 = []
+        if allArt:
+            for a in allArt:
+                dueid.append(a.id_articolo)
+            dupli = [ x for x in dueid if dueid.count(x) > 1]
+            dupli2 = ListinoArticolo().select(idListino = alllistiniId, idArticolo = dupli, batchSize=None)
+        return dupli2 or []
 
-    def printModel(self):
-        self.datas= []
-        self._treeViewModel.foreach(self.selectFilter )
+    def filteredData(self):
+        """
+            Crea la lista di Dao Listino articolo degli articoli già gestiti
+            prelevati dal DB ListinoComplessoArticoloPrevalente
+        """
+        filtrow =[]
+        lcaps = ListinoComplessoArticoloPrevalente().select(idListinoComplesso=self._listino.id)
+        for lc in lcaps:
+            filtrow.append(ListinoArticolo().select(idListino=lc.id_listino,
+                                idArticolo=lc.id_articolo,
+                                dataListinoArticolo=lc.data_listino_articolo,
+                                batchSize=None)[0])
+        return filtrow
 
-    def selectFilter(self, model, path, iter):
-        check = model.get_value(iter, 1)
-        fatherPath = model.get_path(iter)
-        if check:
-            if len(fatherPath) ==1:
-                return
-            oggettoFiglio = model.get_value(iter, 0)
-            padre = model.iter_parent(iter)
-            oggettoPadre =model.get_value(padre, 0)
-            codice = model.get_value(iter, 3)
-            articolo = model.get_value(iter, 6)
-            self.datas.append((self._articoloBase,oggettoFiglio,oggettoPadre,codice, articolo))
-        #print self.datas
-        self._refreshHtml(data=self.datas)
+    def on_filtered_treeview_row_activated(self, widget, path, column):
+        model = self.filtered_treeview.get_model()
+        dao = model[path][0]
+        self.remove = dao
+        self.refreshFiltered(remove=dao)
+        daos = ListinoArticolo().select(idArticolo=dao.id_articolo, batchSize=None)
+        self.optionData(daos)
 
+    def on_duplicated_treeview_row_activated(self, widget, path, column):
+        model = self.duplicated_treeview.get_model()
+        dao = model[path][0]
+        daos = ListinoArticolo().select(idArticolo=dao.id_articolo, batchSize=None)
+        self.optionData(daos)
+
+    def on_option_treeview_row_activated(self, widget, path, column):
+        self.on_allocation_button_clicked(widget)
+
+    def optionData(self, daos):
+        self.refreshOption(daos)
 
     def on_column_selected_edited(self, cell, path, treeview,value, editNext=True):
         """ Function ti set the value quantita edit in the cell"""
         model = treeview.get_model()
         model[path][1] = not model[path][1]
-        for a in  model[path].iterchildren():
-             a[1] = model[path][1]
-        self.printModel()
-
-    def on_column_codice_edited(self, cell, path, value, treeview, editNext=True):
-        """ Function ti set the value quantita edit in the cell"""
-        model = treeview.get_model()
-        model[path][3] = value
-        self.printModel()
-
-    def on_head_color_toggled(self, radioButton):
-        if self.head_color.get_active():
-            self.order="color"
-        elif self.head_size.get_active():
-            self.order="size"
-        self.refresh(order=self.order)
-
-    def on_only_variation_toggled(self, radioButton):
-        if self.only_variation.get_active():
-            self.filtered= True
-        elif self.all_variation.get_active():
-            self.filtered= False
-        self.refresh(filtered=self.filtered)
+        #self.option_treeview.clear()
 
     def on_cancel_button_clicked(self, button):
         self.destroy()
 
+    def on_azzera_button_clicked(self, button):
+        self._treeViewModel_option.clear()
+        self._treeViewModel_duplicated.clear()
+        self._treeViewModel_filtered.clear()
+        lcaps = ListinoComplessoArticoloPrevalente().select(idListinoComplesso=self._listino.id)
+        for row in lcaps:
+            row.delete()
+        self.stored = []
+        self.duprow = []
+        self.refreshDuplicated()
 
-    def on_color_button_toggled(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
+    def on_allocation_button_clicked(self, button):
+        """
+            gestiamo la selezione dell'articolo tra le diverse opzioni
+        """
+        selected = self.option_treeview.get_selection()
+        row_model = selected.get_selected()
+        row = row_model[0].get_value(row_model[1], 0)
 
-        from AnagraficaColori import AnagraficaColori
-        anag = AnagraficaColori()
+        self.refreshFiltered(row)
+        rows = self.option_treeview.get_model()
+        for r in rows:
+            self.stored.append(r[0])
 
-        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), toggleButton, self.refresh)
-
-
-    def on_size_button_toggled(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
-
-        from AnagraficaTaglie import AnagraficaTaglie
-        anag = AnagraficaTaglie()
-
-        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), toggleButton, self.refresh)
+        self._treeViewModel_option.clear()
+        if not self.remove:
+            self.refreshDuplicated(stored=self.stored)
+            residui= len(self.duplicated_treeview.get_model())
+        else:
+            residui = 0
+        if residui==0:
+            self.ok_button.set_sensitive(True)
+            self.ok_button.set_property("visible",True)
 
     def on_ok_button_clicked(self, button):
-        for dat in self.datas:
-            codici = None
-            print dat
-            articoloPadre = dat[0]
-            if dat[1].__module__ =="promogest.modules.PromoWear.dao.Taglia":
-                daoTaglia = dat[1]
-                daoColore = dat[2]
-            else:
-                daoColore = dat[1]
-                daoTaglia = dat[2]
-            codiceabarre = dat[3]
-            articoloFiglio = dat[4]
-
-            if codiceabarre:
-                if articoloFiglio:
-                #verifico la correttezza del codice a barre della variante già esistente
-                # in precedenza
-                    if codiceabarre != articoloFiglio.codice_a_barre:
-                        codici = CodiceABarreArticolo().select(codiceEM=codiceabarre,
-                                                                offset=None,
-                                                                batchSize=None)
-                else:
-                    codici = CodiceABarreArticolo().select(codiceEM=codiceabarre,
-                                                                offset=None,
-                                                                batchSize=None)
-                if codici:
-                        msg = """Attenzione !
-Il codice a barre  %s è gia' presente nel Database, ricontrolla!""" % codiceabarre
-                        dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                       gtk.MESSAGE_QUESTION, gtk.BUTTONS_OK, msg)
-                        response = dialog.run()
-                        dialog.destroy()
-                        return
-            if articoloFiglio:
-                #aggiorno articoloesistenze può essere cambiato solo il codice a barre
-                if codiceabarre and codiceabarre != articoloFiglio.codice_a_barre:
-                    codici = CodiceABarreArticolo().select(codiceEM=codiceabarre,
-                                                                    offset=None,
-                                                                    batchSize=None)
-                    if not codici:
-                        cba = CodiceABarreArticolo()
-                        cba.codice = codiceabarre
-                        cba.primario = True
-                        cba.persist()
-            else:
-                #inserisco la nuova variazione articolo ed il relativo codice a barre
-                articolo = Articolo()
-                articolo.codice = articoloPadre.codice + articoloPadre.denominazione_gruppo_taglia[0:3] + daoTaglia.denominazione_breve + daoColore.denominazione_breve
-                articolo.denominazione = articoloPadre.denominazione + ' ' + daoTaglia.denominazione_breve + ' ' + daoColore.denominazione
-                articolo.id_aliquota_iva = articoloPadre.id_aliquota_iva
-                articolo.id_famiglia_articolo = articoloPadre.id_famiglia_articolo
-                articolo.id_categoria_articolo = articoloPadre.id_categoria_articolo
-                articolo.id_unita_base = articoloPadre.id_unita_base
-                articolo.id_stato_articolo = articoloPadre.id_stato_articolo
-                articolo.id_imballaggio = articoloPadre.id_imballaggio
-                articolo.produttore = articoloPadre.produttore
-                articolo.unita_dimensioni = articoloPadre.unita_dimensioni
-                articolo.unita_volume = articoloPadre.unita_volume
-                articolo.unita_peso = articoloPadre.unita_peso
-                articolo.lunghezza = articoloPadre.lunghezza
-                articolo.larghezza = articoloPadre.larghezza
-                articolo.altezza = articoloPadre.altezza
-                articolo.volume = articoloPadre.volume
-                articolo.peso_lordo = articoloPadre.peso_lordo
-                articolo.peso_imballaggio = articoloPadre.peso_imballaggio
-                articolo.stampa_etichetta = articoloPadre.stampa_etichetta
-                articolo.codice_etichetta = articoloPadre.codice_etichetta
-                articolo.descrizione_etichetta = articoloPadre.descrizione_etichetta
-                articolo.stampa_listino = articoloPadre.stampa_listino
-                articolo.descrizione_listino = articoloPadre.descrizione_listino
-                articolo.note = articoloPadre.note
-                articolo.sospeso = articoloPadre.sospeso
-                articolo.cancellato = articoloPadre.cancellato
-                articolo.aggiornamento_listino_auto = articoloPadre.aggiornamento_listino_auto
-                articolo.persist()
-
-                articoloTagliaColore = ArticoloTagliaColore()
-                articoloTagliaColore.id_articolo = articolo.id
-                articoloTagliaColore.id_articolo_padre = articoloPadre.id
-                articoloTagliaColore.id_gruppo_taglia = articoloPadre.id_gruppo_taglia
-                articoloTagliaColore.id_taglia = daoTaglia.id
-                articoloTagliaColore.id_colore = daoColore.id
-                articoloTagliaColore.id_anno = articoloPadre.id_anno
-                articoloTagliaColore.id_stagione = articoloPadre.id_stagione
-                articoloTagliaColore.id_genere = articoloPadre.id_genere
-                articoloTagliaColore.persist()
-                if codiceabarre:
-                    codici = CodiceABarreArticolo().select(codiceEM=codiceabarre,
-                                                                    offset=None,
-                                                                    batchSize=None)
-                    if not codici:
-                        cba = CodiceABarreArticolo()
-                        cba.codice = codiceabarre
-                        cba.id_articolo = articolo.id
-                        cba.primario = True
-                        cba.persist()
+        goodrows = self.filtered_treeview.get_model()
+        if ListinoComplessoArticoloPrevalente().select(idListinoComplesso= self._listino.id):
+            for a in ListinoComplessoArticoloPrevalente().select(idListinoComplesso= self._listino.id, batchSize=None):
+                a.delete()
+        for r in goodrows:
+            lcap=  ListinoComplessoArticoloPrevalente()
+            lcap.id_listino_complesso = self._listino.id
+            lcap.id_listino = r[0].id_listino
+            lcap.id_articolo = r[0].id_articolo
+            lcap.data_listino_articolo = r[0].data_listino_articolo
+            lcap.persist()
         self.destroy()
 

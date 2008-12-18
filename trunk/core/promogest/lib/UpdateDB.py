@@ -60,17 +60,25 @@ listinoComplessoListinoTable = Table('listino_complesso_listino',params['metadat
 listinoComplessoListinoTable.create(checkfirst=True)
 print "CREATO listino_complesso_listino"
 
-listinoComplessoArticoloPrevalenteTable = Table('listino_complesso_articolo_prevalente',params['metadata'],
-        Column('id_listino_complesso',Integer, primary_key=True),
-        Column('id_listino',Integer),
-        Column('id_articolo',Integer),
-        Column('data_listino_articolo',DateTime),
-        ForeignKeyConstraint(columns=("id_listino","id_articolo","data_listino_articolo"),
-                                        refcolumns=(params['schema']+'.listino_articolo.id_listino',
-                                                    params['schema']+'.listino_articolo.id_articolo',
-                                                    params['schema']+'.listino_articolo.data_listino_articolo'),
-                                        onupdate="CASCADE", ondelete="CASCADE"),
-        schema=params['schema']
-        )
-listinoComplessoArticoloPrevalenteTable.create(checkfirst=True)
-print "CREATO listino_complesso_articolo_prevalente"
+try:
+    listinoComplessoArticoloPrevalenteTable = Table('listino_complesso_articolo_prevalente',
+                                                params['metadata'],
+                                                autoload=True,
+                                                schema=params['schema'])
+    #print listinoComplessoArticoloPrevalenteTable.columns
+    if "listinoComplessoArticoloPrevalenteTable.id" in listinoComplessoArticoloPrevalenteTable.columns:
+        print "TABELLA LISTINO_COMPLESSO_ARTICOLO_PREVALENTE GIÀ AGGIORNATA"
+    else:
+        listinoComplessoArticoloPrevalenteTable.drop(checkfirst=True)
+        print "RUIMUOVO LA TABELLA LISTINO_COMPLESSO_ARTICOLO_PREVALENTE RIAVVIARE IL PROMOGEST2"
+except:
+    listinoComplessoArticoloPrevalenteTable = Table('listino_complesso_articolo_prevalente',params['metadata'],
+            Column('id',Integer, primary_key=True),
+            Column('id_listino_complesso',Integer),
+            Column('id_listino',Integer),
+            Column('id_articolo',Integer),
+            Column('data_listino_articolo',DateTime),
+            schema=params['schema'],useexisting=True
+            )
+    listinoComplessoArticoloPrevalenteTable.create(checkfirst=True)
+    print "CREATO listino_complesso_articolo_prevalente"
