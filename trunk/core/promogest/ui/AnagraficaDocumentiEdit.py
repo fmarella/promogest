@@ -478,15 +478,12 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def on_id_operazione_combobox_changed(self, combobox):
 
         self._operazione = findIdFromCombobox(self.id_operazione_combobox)
-        print "self._operazione = findIdFromCombobox(self.id_operazione_combobox)", self._operazione
         operazione = leggiOperazione(self._operazione)
-        print "OPERAZIONE", operazione
         if self._tipoPersonaGiuridica != operazione["tipoPersonaGiuridica"]:
             self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
         self._tipoPersonaGiuridica = operazione["tipoPersonaGiuridica"]
         self._fonteValore = operazione["fonteValore"]
         self._segno = operazione["segno"]
-        print "OOOOOOOOOOOOOOOOOOOOOODIDIIIIIIIIIIIIIIIIIIIIIIIIIIII", self._tipoPersonaGiuridica
 
         if (self._tipoPersonaGiuridica == "fornitore"):
             self.persona_giuridica_label.set_text('Fornitore')
@@ -725,7 +722,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.prezzo_lordo_entry.set_text(Environment.conf.number_format % float(self._righe[0]["prezzoLordo"]))
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], True)
         self.on_show_totali_riga()
-
 
 
     def getPrezzoVenditaLordo(self, idListino, idArticolo):
@@ -984,6 +980,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["molt_pezzi"] = moltiplicatore_pezzi
 
             self.getTotaleRiga()
+            print 
             self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
             if self._tipoPersonaGiuridica == "fornitore":
                 fornitura = leggiFornitura(riga.id_articolo, self.dao.id_fornitore, self.dao.data_documento, True)
@@ -1180,7 +1177,7 @@ del documento.
                     sconti.append(daoSconto)
             scontiRigaDocumento[daoRiga] = sconti
             sconti =[]
-
+            misure = []
             if self._righe[i]["altezza"] != '' and self._righe[i]["larghezza"] != '' and "SuMisura" in Environment.modulesList:
                 from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
                 daoMisura = MisuraPezzo()
@@ -1188,7 +1185,7 @@ del documento.
                 daoMisura.larghezza = float(self._righe[i]["larghezza"] or 0)
                 daoMisura.moltiplicatore = float(self._righe[i]["molt_pezzi"] or 0)
                 misure = daoMisura
-                daoRiga.misura_pezzo = misure
+                daoRiga.misura_pezzo2 = misure
             righe[i]=daoRiga
             #righe.append(daoRiga)
 
@@ -1545,16 +1542,16 @@ del documento.
             batchSize = Environment.conf.batch_size
 
         arts = Articolo().select(orderBy=orderBy,
-                                            join = join,
-                                            denominazione=prepareFilterString(denominazione),
-                                            codice=prepareFilterString(codice),
-                                            codiceABarre=prepareFilterString(codiceABarre),
-                                            codiceArticoloFornitore=prepareFilterString(codiceArticoloFornitore),
-                                            idFamiglia=None,
-                                            idCategoria=None,
-                                            idStato=None,
-                                            offset=None,
-                                            batchSize=None)
+                                    join = join,
+                                    denominazione=prepareFilterString(denominazione),
+                                    codice=prepareFilterString(codice),
+                                    codiceABarre=prepareFilterString(codiceABarre),
+                                    codiceArticoloFornitore=prepareFilterString(codiceArticoloFornitore),
+                                    idFamiglia=None,
+                                    idCategoria=None,
+                                    idStato=None,
+                                    offset=None,
+                                    batchSize=None)
         if (len(arts) == 1):
 
             self.mostraArticolo(arts[0].id)
@@ -1679,7 +1676,6 @@ del documento.
                 self.on_confirm_row_button_clicked(self.dialogTopLevel)
                 return
             #else:
-            print "tu passi qui verooooooooooooooooooooooooooooooooooooooooooo"
             #articolo = leggiArticolo(id)
             self._righe[0]["idArticolo"] = id
             self._righe[0]["codiceArticolo"] = articolo["codice"]
@@ -1966,7 +1962,7 @@ del documento.
         larghezza = float(self.larghezza_entry.get_text() or 0)
         moltiplicatore = float(self.moltiplicatore_entry.get_text() or 1)
         if larghezza != 0:
-            altezza = float(self.altezza_entry.get_text())
+            altezza = float(self.altezza_entry.get_text() or 0)
             print "altezzaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", altezza, self._righe[0]["unitaBase"]
             if altezza != 0:
                 if self._righe[0]["unitaBase"] == "Metri Quadri":

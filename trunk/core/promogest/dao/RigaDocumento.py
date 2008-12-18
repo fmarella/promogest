@@ -153,24 +153,10 @@ class RigaDocumento(Dao):
         #salvataggio riga
         params["session"].add(self)
         params["session"].commit()
-        #params["session"].flush()
 
-        if "SuMisura" in modulesList:
-            mp = MisuraPezzo().getRecord(id=self.id)
-            try:
-                mp.delete()
-            except:
-                pass
-            #conn.execStoredProcedure('MisuraPezzoDel', (self.id, ))
-            if Environment.TRENINO["misuraPezzo"]:
-        #if type(self.__misuraPezzo) == list:
-            #if self.__misuraPezzo != []:
-                #self.__misuraPezzo[-1].id_riga = self.id
-                #self.__misuraPezzo[-1].persist()
-        #else:
-                self.__misuraPezzo.id_riga = self.id
-                self.__misuraPezzo.persist()
-                Environment.TRENINO["misuraPezzo"]  = None
+        #if "SuMisura" in modulesList:
+            #self.__misuraPezzo.id_riga = self.id
+            #self.__misuraPezzo.persist()
 
 
         if scontiRigaDocumento:
@@ -180,16 +166,6 @@ class RigaDocumento(Dao):
                     for v in value:
                         v.id_riga_documento = self.id
                         params["session"].add(v)
-                    #params["session"].commit()
-                ##annullamento id dello sconto
-                #rigasconto._resetId()
-                ##associazione allo sconto della riga
-                #rigasconto.id_riga_documento = self.id
-                ##salvataggio sconto
-                ##rigasconto.persist()
-                #params["session"].add(rigasconto)
-                #params["session"].commit()
-                ##params["session"].add(self.rowScontiToSave[i])
         params["session"].commit()
         params["session"].flush()
             #self.__scontiRigaDocumento[i].persist()

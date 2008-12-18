@@ -407,13 +407,8 @@ class TestataDocumento(Dao):
                     daoRigaMovimento.codiceArticoloFornitore = row.codiceArticoloFornitore
 
                     if "SuMisura" in Environment.modulesList:
-                        if Environment.TRENINO["misuraPezzo"]:
-                            print "INIZIAMOOOOOOOOOOOOOOOOOOIL debug", Environment.TRENINO["misuraPezzo"]
-                            daoRigaMovimento.misura_pezzo = Environment.TRENINO["misuraPezzo"]
-                        else:
-                            daoRigaMovimento.misura_pezzo = None
-                        Environment.TRENINO["misuraPezzo"]=None
-
+                        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", row.misura_pezzo2
+                        daoRigaMovimento.misura_pezzo = row.misura_pezzo2
 
                     #gestione sconti in una riga documento
                     if scontiRigaDocumento:
