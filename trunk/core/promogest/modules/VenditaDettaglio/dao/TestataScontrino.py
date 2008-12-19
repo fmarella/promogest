@@ -13,6 +13,7 @@ from promogest.dao.Dao import Dao
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import rigaScontrinoDel
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
+from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
 
 class TestataScontrino(Dao):
 
@@ -40,7 +41,24 @@ class TestataScontrino(Dao):
         else: return ""
     numero_movimento=property(_numeroMovimento)
 
+    def _getScontiTestataScontrino(self):
+        if self.id:
+            self.__dbScontiTestataScontrino = ScontoTestataScontrino().select(join = ScontoTestataScontrino.TS,
+                                                                                idScontoTestataScontrino=self.id,
+                                                                                batchSize=None)
+            self.__scontiTestataScontrino = self.__dbScontiTestataScontrino
+        else:
+            self.__scontiTestataScontrino = []
+        return self.__scontiTestataScontrino
 
+    def _setScontiTestataScontrino(self, value):
+        self.__scontiTestataScontrino = value
+    sconti = property(_getScontiTestataScontrino, _setScontiTestataScontrino)
+
+    def _getStringaScontiTestataDocumento(self):
+        (listSconti, applicazione) = getScontiFromDao(self._getScontiTestataDocumento(), self.applicazione_sconti)
+        return getStringaSconti(listSconti)
+    stringaSconti = property(_getStringaScontiTestataDocumento)
     def filter_values(self,k,v):
         dic= {'id':testata_scontrino.c.id ==v,
             'idTestataMovimento':testata_scontrino.c.id_testata_movimento==v,
@@ -87,4 +105,5 @@ std_mapper = mapper(TestataScontrino, testata_scontrino,properties={
         "testatamovimento": relation(TestataMovimento,primaryjoin=
                 (testata_scontrino.c.id_testata_movimento==TestataMovimento.id), backref="testata_scontrino"),
         "riga_scontr":relation(RigaScontrino,primaryjoin=RigaScontrino.id_testata_scontrino==testata_scontrino.c.id, backref="testata_scontrino"),
+        "STS":relation(ScontoTestataScontrino,primaryjoin = (testata_scontrino.c.id==ScontoTestataScontrino.id_testata_scontrino), backref="TS"),
         }, order_by=testata_scontrino.c.id)

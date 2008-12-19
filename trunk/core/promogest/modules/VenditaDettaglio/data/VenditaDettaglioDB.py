@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -62,3 +62,12 @@ if hasattr(conf, 'VenditaDettaglio'):
         #se tutto è andato bene ..... posso settare la variabile primoavvio su False
         conf.VenditaDettaglio.primoavvio = "no"
         conf.save()
+
+testatascontrinoTable = Table('testata_scontrino', params['metadata'], autoload=True, schema=params['schema'])
+testataDoctoTable = Table('sconto', params['metadata'], autoload=True, schema=params['schema'])
+scontoTestataScontrinoTable = Table('sconto_testata_scontrino', params['metadata'],
+        Column('id',Integer,ForeignKey(params['schema']+'.sconto.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
+        Column('id_testata_scontrino',Integer,ForeignKey(params['schema']+'.testata_scontrino.id',onupdate="CASCADE",ondelete="CASCADE")),
+        schema=params['schema']
+        )
+scontoTestataScontrinoTable.create(checkfirst=True)

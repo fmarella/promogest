@@ -95,6 +95,12 @@ class Login(GladeApp):
         #self.username_comboxentry.set_active(0)
         data = datetime.datetime.now()
         self.anno_lavoro_spinbutton.set_value(data.year)
+        #widget.modify_fg(state, color)
+        #widget.modify_bg(state, color)
+        #widget.modify_base(state, color)
+        #widget.modify_text(state, red)
+
+
         if Environment.feed == "True":
             thread = threading.Thread(target=self.feddretreive)
             thread.start()
