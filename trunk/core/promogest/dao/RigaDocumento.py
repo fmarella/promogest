@@ -93,7 +93,7 @@ class RigaDocumento(Dao):
     multiplo = property(__multiplo)
 
     def __unita_base(self):
-        a =  params["session"].query(Articolo).with_parent(self).filter(Articolo.id_unita_base==UnitaBase.id).all()
+        a =  params["session"].query(UnitaBase).filter(and_(riga.c.id_articolo == Articolo.id,  Articolo.id_unita_base==UnitaBase.id)).all()
         if not a:
             return a
         else:
