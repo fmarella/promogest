@@ -1381,14 +1381,7 @@ scontrino</property>
                           </widget>
                         </child>
                         <child>
-                          <widget class="Custom" id="sconti_dettaglio_widget">
-                            <property name="sensitive">False</property>
-                            <property name="creation_function">createScontiWidget</property>
-                            <property name="string1">Sconti</property>
-                          </widget>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
+                          <placeholder/>
                         </child>
                         <child>
                           <widget class="GtkButton" id="exit_button">

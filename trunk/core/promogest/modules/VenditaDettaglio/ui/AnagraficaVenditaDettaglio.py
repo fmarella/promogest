@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -215,6 +215,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                            self.on_prezzo_scontato_entry_key_press_event)
         self.quantita_entry.connect('key_press_event',
                                     self.on_quantita_entry_key_press_event)
+        #self.sconti_scontrino_widget.button.connect('toggled',
+                #self.on_sconti_scontrino_widget_button_toggled)
 
         # Vado in stato di ricerca
         self._state = 'search'
@@ -241,6 +243,17 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         open_item.show()
         #save_item.show()
         quit_item.show()
+
+    def on_sconti_scontrino_widget_button_toggled(self, button):
+        print "OOOOOOOOOO"
+        pippo = self.sconti_scontrino_widget.getSconti()
+        return
+        #if button.get_property('active') is True:
+            #return
+
+        #self._righe[0]["sconti"] = self.sconti_widget.getSconti()
+        #self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()
+        #self.on_show_totali_riga()
 
     def on_column_prezzo_edited(self, cell, path, value, treeview, editNext=True):
         """ Function ti set the value quantita edit in the cell"""
