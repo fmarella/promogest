@@ -66,7 +66,7 @@ try:
                                                 autoload=True,
                                                 schema=params['schema'])
     #print listinoComplessoArticoloPrevalenteTable.columns
-    if "listinoComplessoArticoloPrevalenteTable.id" in listinoComplessoArticoloPrevalenteTable.columns:
+    if "listinoComplessoArticoloPrevalenteTable.id" not in listinoComplessoArticoloPrevalenteTable.columns:
         print "TABELLA LISTINO_COMPLESSO_ARTICOLO_PREVALENTE GIÀ AGGIORNATA"
     else:
         listinoComplessoArticoloPrevalenteTable.drop(checkfirst=True)

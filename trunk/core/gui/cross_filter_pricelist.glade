@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Thu Dec 18 17:53:45 2008 -->
+<!--Generated with glade3 3.4.5 on Thu Dec 18 22:56:05 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="cross_filter_pricelist">
     <property name="visible">True</property>
@@ -20,10 +20,23 @@
               <widget class="GtkHBox" id="hbox4">
                 <property name="visible">True</property>
                 <child>
+                  <widget class="GtkImage" id="image5">
+                    <property name="visible">True</property>
+                    <property name="pixbuf">listino48x48.png</property>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                  </packing>
+                </child>
+                <child>
                   <widget class="GtkLabel" id="articolo_complesso_label">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">Articolo Complesso:</property>
                   </widget>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
                 </child>
                 <child>
                   <widget class="GtkLabel" id="label4">
@@ -31,15 +44,16 @@
                     <property name="label" translatable="yes">Sotto Listino</property>
                   </widget>
                   <packing>
-                    <property name="position">1</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
                 <child>
                   <widget class="GtkComboBox" id="combobox1">
                     <property name="visible">True</property>
+                    <property name="tooltip" translatable="yes">Da completare, ci sarà un elenco dei sottolisitni che lo compongono alla cui pressione tutto il listino verrà allocato</property>
                   </widget>
                   <packing>
-                    <property name="position">2</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
               </widget>
@@ -143,7 +157,7 @@
                         <child>
                           <widget class="GtkImage" id="image4">
                             <property name="visible">True</property>
-                            <property name="pixbuf">conferma16x16.png</property>
+                            <property name="pixbuf">pulisci24x24.png</property>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
@@ -187,7 +201,7 @@
                         <child>
                           <widget class="GtkImage" id="image1">
                             <property name="visible">True</property>
-                            <property name="pixbuf">conferma16x16.png</property>
+                            <property name="pixbuf">modifica24x24.png</property>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
@@ -234,7 +248,7 @@
                         <child>
                           <widget class="GtkImage" id="image3">
                             <property name="visible">True</property>
-                            <property name="pixbuf">conferma16x16.png</property>
+                            <property name="pixbuf">annulla2nd24x24.png</property>
                           </widget>
                           <packing>
                             <property name="expand">False</property>

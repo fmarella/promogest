@@ -222,7 +222,9 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         else:
             self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-        self.isComplexPriceList = ListinoComplessoListino().select(idListinoComplesso = self._anagrafica._idListino, batchSize=None)
+        self.isComplexPriceList=None
+        if self._anagrafica._idListino:
+            self.isComplexPriceList = ListinoComplessoListino().select(idListinoComplesso = self._anagrafica._idListino, batchSize=None)
         if self.isComplexPriceList:
             self.sotto_listini_label.set_sensitive(True)
             self.id_sotto_listino_filter_combobox.set_sensitive(True)
@@ -645,7 +647,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             self.id_articolo_customcombobox.set_sensitive(False)
         self.sconti_dettaglio_widget.setValues(sco=self.dao.sconto_vendita_dettaglio)
         self.sconti_ingrosso_widget.setValues(sco=self.dao.sconto_vendita_ingrosso)
-        print "PERCHé SEI VUOTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.dao.id_articolo
         self.id_articolo_customcombobox.setId(self.dao.id_articolo)
         res = self.id_articolo_customcombobox.getData()
         self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
@@ -747,5 +748,5 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             sconti_ingrosso.append(daoSconto)
 
         #self.dao.sconto_vendita_ingrosso = sconti_ingrosso
-
+        print "MAAAAAAAADDJDJDDDEDWEFWFWEFWEFWEFWEFWFFW"
         self.dao.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})

@@ -11,7 +11,7 @@
 import gtk
 
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
-
+import promogest.dao.Cliente
 from promogest import Environment
 from promogest.dao.Cliente import Cliente
 from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente

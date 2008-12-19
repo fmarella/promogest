@@ -7,7 +7,7 @@
  License: GNU GPLv2
 """
 
-from sqlalchemy import Table, or_,and_
+from sqlalchemy import Table, or_,and_, select, func
 from sqlalchemy.orm import mapper, join, relation
 from promogest.Environment import params, conf
 from Dao import Dao
@@ -67,7 +67,7 @@ def getNuovoCodiceCliente():
         if hasattr(conf.Clienti,'prefisso_codice'):
             prefissoCodice = conf.Clienti.prefisso_codice
             try:
-                #codicesel  = select([func.max(Cliente.c.codice)]).execute().fetchall()
+            #codicesel  = select([func.max(Cliente.codice)]).execute().fetchall()
                 codicesel = Cliente().select(batchSize=None)
                 for cod in codicesel:
                     listacodici.append(cod.codice)

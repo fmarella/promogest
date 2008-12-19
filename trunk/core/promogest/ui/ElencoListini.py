@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -107,7 +107,7 @@ class ElencoListini(GladeWidget):
             self.importazione_listini_togglebutton.set_sensitive(False)
 
     def _changeOrderBy(self, widget, campi):
-        print "CAMBI L?ORDINE", campi
+        print "CAMBI L'ORDINE", campi
         self.orderBy = campi
         self.refresh()
 

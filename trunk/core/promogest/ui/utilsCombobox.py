@@ -485,10 +485,11 @@ def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=
                         not_(Listino.id.in_(select([ListinoCategoriaCliente.id_listino]).distinct())))
     else :
         filter3 = None
+    filter4 = and_(Listino.listino_attuale == True)
     if not OrderBy:
         OrderBy= "denominazione"
 
-    listinoSelezionato = Listino().select(complexFilter=and_(filter1,filter2,filter3), orderBy=OrderBy)
+    listinoSelezionato = Listino().select(complexFilter=and_(filter1,filter2,filter3, filter4), orderBy=OrderBy)
     print "LISTINI ASSOCIATI:", listinoSelezionato
     return listinoSelezionato
 

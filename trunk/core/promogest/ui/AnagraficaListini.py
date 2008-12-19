@@ -365,6 +365,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
 
         self._refreshCategorieClienti()
         self._refreshMagazzini()
+        self._refreshListiniComplessi()
 
 
     def on_add_row_categoria_button_clicked(self, widget):

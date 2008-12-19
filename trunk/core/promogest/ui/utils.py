@@ -89,7 +89,6 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
             _denominazione = daoArticolo.denominazione or ''
             _codice = daoArticolo.codice or ''
             _idUnitaBase = daoArticolo.id_unita_base
-            print "DDDDDDDDDDDDD22222DDDDDDDDDDDDDDDDDDDD",daoArticolo.id, daoArticolo.id_unita_base
             _quantita_minima = ''
             if _idUnitaBase is not None:
                 res = UnitaBase().getRecord(id =_idUnitaBase)
@@ -323,26 +322,52 @@ def leggiListino(idListino, idArticolo=None):
     """ Restituisce un dizionario con le informazioni sul listino letto """
     from promogest.dao.Listino import Listino
     from promogest.dao.ListinoArticolo import ListinoArticolo
+    from promogest.dao.ListinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalente
+    liss = Listino().select(batchSize=None)
+    for l in liss:
+        if l.listino_attuale ==False:
+            l.listino_attuale = True
+            l.persist()
+
     _denominazione = ''
     _prezzoIngrosso = 0
     _prezzoDettaglio = 0
+    _complesso = False
+    _sottoListiniID = []
 
     if idListino is not None:
-        try:
-            daoListino = Listino().select(idListino=idListino,
-                                            batchSize=None)[0]
-            if daoListino is not None:
-                _denominazione = daoListino.denominazione
-        except:
-            print "leggiListino ha cannato qualcosa.....1"
-            #pass
-        try:
+        daoListino = Listino().select(idListino=idListino, listinoAttuale=True)[0]
+        if daoListino:
+            _denominazione = daoListino.denominazione
+            _complesso = daoListino.isComplex
+            if _complesso:
+                _sottoListiniID = daoListino.sottoListiniID
             if idArticolo is not None:
-                daoListinoArticolo = ListinoArticolo()\
-                                            .select(idListino=idListino,
-                                            idArticolo = idArticolo,
-                                            batchSize=None,
-                                            orderBy="id_listino")[0]
+                if _complesso:
+                    daoListinoArticolo1 = ListinoArticolo().select(idListino=_sottoListiniID,
+                                                                idArticolo = idArticolo,
+                                                                listinoAttuale = True,
+                                                                batchSize=None,
+                                                                orderBy="id_listino")
+                    if len(daoListinoArticolo1)>1:
+                        daoListinoArticolo2 = ListinoComplessoArticoloPrevalente().select(idListinoComplesso = idListino,
+                                                                idArticolo = idArticolo, batchSize=None)
+                        if daoListinoArticolo2:
+                            daoListinoArticolo = ListinoArticolo().select(idListino=daoListinoArticolo2[0].id_listino,
+                                                                idArticolo = idArticolo,
+                                                                listinoAttuale = True,
+                                                                batchSize=None,
+                                                                orderBy="id_listino")[0]
+                        
+                else:
+                    daoListinoArticolo1 = ListinoArticolo().select(idListino=idListino,
+                                                            idArticolo = idArticolo,
+                                                            listinoAttuale = True,
+                                                            batchSize=None,
+                                                            orderBy="id_listino")
+                    if len(daoListinoArticolo1) >1:
+                        print "ATTENZIONEEEEEEEEEEEEEEEEEEE PIÙ DI UN LISTINO ARTICOLO ATTUALE",
+                    daoListinoArticolo= daoListinoArticolo1[0]
                 if daoListinoArticolo is not None:
                     _prezzoIngrosso = daoListinoArticolo.prezzo_ingrosso
                     _prezzoDettaglio = daoListinoArticolo.prezzo_dettaglio
@@ -351,19 +376,19 @@ def leggiListino(idListino, idArticolo=None):
                     _applicazioneDettaglio = daoListinoArticolo.applicazione_sconti_dettaglio
                     _applicazioneIngrosso = daoListinoArticolo.applicazione_sconti_ingrosso
 
-                return {"denominazione": _denominazione,
-                        "prezzoIngrosso": _prezzoIngrosso,
-                        "prezzoDettaglio": _prezzoDettaglio,
-                        "scontiDettaglio":_scontiDettaglio,
-                        "scontiIngrosso":_scontiIngrosso,
-                        'applicazioneScontiDettaglio':_applicazioneDettaglio,
-                        'applicazioneScontiIngrosso':_applicazioneIngrosso}
-        except:
-            print "leggiListino ha cannato qualcosa.....2"
+                    return {"denominazione": _denominazione,
+                            "prezzoIngrosso": _prezzoIngrosso,
+                            "prezzoDettaglio": _prezzoDettaglio,
+                            "scontiDettaglio":_scontiDettaglio,
+                            "scontiIngrosso":_scontiIngrosso,
+                            'applicazioneScontiDettaglio':_applicazioneDettaglio,
+                            'applicazioneScontiIngrosso':_applicazioneIngrosso}
 
     return {"denominazione": _denominazione,
             "prezzoIngrosso": _prezzoIngrosso,
-            "prezzoDettaglio": _prezzoDettaglio}
+            "prezzoDettaglio": _prezzoDettaglio,
+            "complesso": _complesso,
+            "sottoListiniID":_sottoListiniID}
 
 def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=False):
     """ Restituisce un dizionario con le informazioni sulla fornitura letta """

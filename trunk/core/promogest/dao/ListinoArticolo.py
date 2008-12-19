@@ -180,6 +180,12 @@ class ListinoArticolo(Dao):
 
         if not self.data_listino_articolo:
             self.data_listino_articolo = datetime.datetime.today()
+        check = ListinoArticolo().select(idListino=self.id_listino, idArticolo=self.id_articolo, batchSize=None)
+        if check:
+            for che in check:
+                che.listino_attuale = False
+                params["session"].add(che)
+                params["session"].commit()
         if not self.listino_attuale:
             self.listino_attuale = True
         else:

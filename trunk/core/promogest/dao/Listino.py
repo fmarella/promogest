@@ -59,13 +59,19 @@ class Listino(Dao):
     isComplex = property(_isComplex)
 
     def _sottoListini(self):
+        """
+            Return a list of Listini ID
+        """
         if self.isComplex:
-            self. __sottoListiniList = ListinoComplessoListino().select(idListinoComplesso = self.id, batchSize=None)
+            lista = []
+            for sotto in self.listiniComplessi:
+                lista.append(sotto.id_listino)
+            self. __sottoListiniID = lista
         else:
-            self. __sottoListiniList=None
-            return self. __sottoListiniList
-        return self. __sottoListiniList
-    sottoListini = property(_sottoListini)
+            self. __sottoListiniID=None
+            return self. __sottoListiniID
+        return self. __sottoListiniID
+    sottoListiniID = property(_sottoListini)
 
 
     def delete(self, multiple=False, record = True):
@@ -84,10 +90,10 @@ class Listino(Dao):
         params['session'].flush()
 
     def filter_values(self,k,v):
-        if k=='id':
+        if k=='id' or k=='idListino':
             dic= {k:listino.c.id ==v}
-        elif k =='idListino':
-            dic= {k:listino.c.id ==v}
+        elif k =='listinoAttuale':
+            dic= {k:listino.c.listino_attuale ==v}
         elif k=='denominazione':
             dic= {k:listino.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
