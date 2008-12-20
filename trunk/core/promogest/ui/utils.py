@@ -1856,7 +1856,7 @@ def omogeneousCode(section=None, string = None):
         return string
 
 def hasAction(actionID=None):
-    idRole = Environment.usernameLoggedList[2]
+    idRole = Environment.params['usernameLoggedList'][2]
     roleActions = RoleAction().select(id_role=idRole,id_action = actionID,orderBy="id_role")
     for p in roleActions:
         if int(p.id_action) == int(actionID):

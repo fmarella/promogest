@@ -13,6 +13,7 @@ from promogest.Environment import *
 import datetime
 from promogest.ui.GtkExceptionHandler import GtkExceptionHandler
 a = datetime.datetime
+import logging
 
 
 class Dao(object):
@@ -23,6 +24,24 @@ class Dao(object):
         self.numRecords = None
         self.DaoModule = entity.__class__
         self._exceptionHandler = exceptionHandler
+        #logger = logging.basicConfig()
+        #logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+        #logger2=logging.getLogger('sqlalchemy.orm.unitofwork')
+        #logger2.setLevel(logging.DEBUG)
+        ##create logger
+        #logger=logging.getLogger('sqlalchemy.engine')
+        #logger.setLevel(logging.INFO)
+        ##create console handler and set level to debug
+        #ch = logging.StreamHandler()
+        #ch.setLevel(logging.DEBUG)
+        ##create formatter
+        #formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        ###add formatter to ch
+        #ch.setFormatter(formatter)
+        ##add ch to logger
+        #logger.addHandler(ch)
+        #logger2.addHandler(ch)
+        #"application" code
 
     def getRecord(self,id=None):
         if id:
@@ -94,6 +113,7 @@ class Dao(object):
                 params["session"].add(self)
                 params["session"].commit()
                 #params["session"].flush()
+                print "INSERIMENTO O UPDATE %s fatta su schema %s in data %s  da %s" %( str(self),params['schema'], str(datetime.datetime.now()), params['usernameLoggedList'])
                 return True
         except Exception,e:
             msg = """ATTENZIONE ERRORE nel salvataggio dei dati
@@ -119,7 +139,8 @@ completezza o integrita """ %e
                 params['session'].delete(self)
                 params["session"].commit()
                 #params['session'].flush()
-            return True
+                print "CANCELLAZIONE %s fatta su schema %s in data %s  da %s" %( str(self),params['schema'], str(datetime.datetime.now()), params['usernameLoggedList'][1])
+                return True
         except Exception,e:
             msg = """ATTENZIONE ERRORE nella cancellazione dei dati
 probabilmente a causa di un dato errato o di una

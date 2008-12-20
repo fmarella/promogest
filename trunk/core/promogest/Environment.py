@@ -43,7 +43,6 @@ sistemaColonnaFrontaline = None
 sistemaRigaFrontaline = None
 feedCache = ""
 feedAll = ""
-usernameLoggedList=["","",""]
 scontisave = {}
 tagliacoloretempdata = (False,None)
 lastCode = None
@@ -322,7 +321,8 @@ params = {'db_pg': engine ,
         'widthThumbnail' : 64,
         'heightThumbnail' : 64,
         'widthdetail' : 110,
-        'heightdetail': 110 }
+        'heightdetail': 110 ,
+        'usernameLoggedList' :["","",""]}
 
 
  # Parametri localizzazione formati

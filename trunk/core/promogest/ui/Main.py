@@ -51,7 +51,7 @@ class Main(GladeWidget):
                 frame_modules,permanent_frames):
 
         GladeWidget.__init__(self, 'main_window')
-        self.main_window.set_title('*** Promogest *** Azienda : '+aziendaStr+'  *** Utente : '+Environment.usernameLoggedList[1]+' ***')
+        self.main_window.set_title('*** Promogest *** Azienda : '+aziendaStr+'  *** Utente : '+Environment.params['usernameLoggedList'][1]+' ***')
         self.aziendaStr = aziendaStr
         Login.windowGroup.append(self.getTopLevel())
         self.anagrafiche_modules = anagrafiche_modules

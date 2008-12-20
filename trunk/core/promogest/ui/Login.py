@@ -173,7 +173,7 @@ class Login(GladeApp):
                 Environment.workingYear = str(self.anno_lavoro_spinbutton.get_value_as_int())
                 Environment.azienda = self.azienda
                 Environment.set_configuration(Environment.azienda,Environment.workingYear)
-                Environment.usernameLoggedList = [users[0].id, users[0].username,users[0].id_role]
+                Environment.params['usernameLoggedList'] = [users[0].id, users[0].username,users[0].id_role]
                 if hasAction(actionID=1):
                     Environment.params["schema"]=self.azienda
                     from promogest.lib.UpdateDB import *
