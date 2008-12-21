@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sun Dec 21 18:42:21 2008 -->
+<!--Generated with glade3 3.4.5 on Sun Dec 21 20:15:55 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="cross_filter_pricelist">
     <property name="visible">True</property>
@@ -67,7 +67,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <property name="vscrollbar_policy">GTK_POLICY_NEVER</property>
+                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                 <property name="shadow_type">GTK_SHADOW_ETCHED_IN</property>
                 <child>
                   <widget class="GtkTreeView" id="filtered_treeview">
