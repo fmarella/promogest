@@ -407,7 +407,6 @@ class TestataDocumento(Dao):
                     daoRigaMovimento.codiceArticoloFornitore = row.codiceArticoloFornitore
 
                     if "SuMisura" in Environment.modulesList:
-                        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", row.misura_pezzo2
                         daoRigaMovimento.misura_pezzo = row.misura_pezzo2
 
                     #gestione sconti in una riga documento

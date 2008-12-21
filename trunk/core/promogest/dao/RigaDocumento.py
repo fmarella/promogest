@@ -34,7 +34,7 @@ class RigaDocumento(Dao):
         if "SuMisura" in modulesList:
             self.__misuraPezzo = None
             self.__dbMisuraPezzo = None
-
+            self.misura_pezzo2 = None
         # usata per mantenere il valore del codice articolo fornitore proveniente da un
         # documento o movimento di carico, per salvare la fornitura
         self.__codiceArticoloFornitore = None
@@ -116,13 +116,10 @@ class RigaDocumento(Dao):
             self.__misuraPezzo = self.__dbMisuraPezzo[:]
         except:
             self.__misuraPezzo = []
-        #print "valueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee_setMisuraPezzouno  ", self.__misuraPezzo
         return self.__misuraPezzo
 
     def _setMisuraPezzo(self, value):
-        #print "valueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee_setMisuraPezzodue  ", value
         self.__misuraPezzo = value
-        #Environment.TRENINO["misuraPezzo"] = value
 
     misura_pezzo = property(_getMisuraPezzo, _setMisuraPezzo)
 
@@ -168,18 +165,9 @@ class RigaDocumento(Dao):
                         params["session"].add(v)
         params["session"].commit()
         params["session"].flush()
-            #self.__scontiRigaDocumento[i].persist()
 
-riga=Table('riga',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
-
-
-riga_doc=Table('riga_documento',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
+riga=Table('riga', params['metadata'],schema = params['schema'], autoload=True)
+riga_doc=Table('riga_documento',params['metadata'],schema = params['schema'],autoload=True)
 
 j = join(riga_doc, riga)
 

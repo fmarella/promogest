@@ -180,7 +180,7 @@ class RigaMovimento(Dao):
         return  dic[k]
 
     def persist(self, scontiRigaMovimento=None):
-        #print " UN PASSO ALLA VOLTA ....SIAMO DENTRO IL PERSIST DI RIGAMOVIMENTO", self
+
         params["session"].add(self)
         params["session"].commit()
 
@@ -207,25 +207,11 @@ class RigaMovimento(Dao):
                         params["session"].commit()
 
         if "SuMisura" in modulesList:
-            try:
-                mp = MisuraPezzo().getRecord(id=self.id)
-                mp.delete()
-            except:
-                pass
-            print "MISURA PEZZOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.__misuraPezzo
             if self.__misuraPezzo:
-        #if type(self.__misuraPezzo) == list:
-            #if self.__misuraPezzo != []:
-                #self.__misuraPezzo[-1].id_riga = self.id
-                #self.__misuraPezzo[-1].persist()
-        #else:
                 self.__misuraPezzo.id_riga = self.id
                 params["session"].add(self.__misuraPezzo)
                 params["session"].commit()
-                #self.__misuraPezzo.persist()
-        #FIXME: VERIFICAREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-        #params["session"].commit()
-        #params["session"].flush()
+
 
 riga=Table('riga', params['metadata'], schema = params['schema'], autoload=True)
 riga_mov=Table('riga_movimento', params['metadata'],schema = params['schema'],autoload=True)

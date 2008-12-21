@@ -1184,8 +1184,7 @@ del documento.
                 daoMisura.altezza = float(self._righe[i]["altezza"] or 0)
                 daoMisura.larghezza = float(self._righe[i]["larghezza"] or 0)
                 daoMisura.moltiplicatore = float(self._righe[i]["molt_pezzi"] or 0)
-                misure = daoMisura
-                daoRiga.misura_pezzo2 = misure
+                daoRiga.misura_pezzo2 = daoMisura
             righe[i]=daoRiga
             #righe.append(daoRiga)
 

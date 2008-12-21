@@ -9,8 +9,10 @@
 import gtk
 from sqlalchemy import *
 from sqlalchemy.orm import *
+from sqlalchemy.interfaces import ConnectionProxy
 from promogest.Environment import *
 import datetime
+import time
 from promogest.ui.GtkExceptionHandler import GtkExceptionHandler
 a = datetime.datetime
 import logging
@@ -24,21 +26,13 @@ class Dao(object):
         self.numRecords = None
         self.DaoModule = entity.__class__
         self._exceptionHandler = exceptionHandler
-        #logger = logging.basicConfig()
-        #logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
-        #logger2=logging.getLogger('sqlalchemy.orm.unitofwork')
-        #logger2.setLevel(logging.DEBUG)
-        ##create logger
-        #logger=logging.getLogger('sqlalchemy.engine')
-        #logger.setLevel(logging.INFO)
-        ##create console handler and set level to debug
+        #ch = logging.basicConfig()
         #ch = logging.StreamHandler()
+        #logger = logging.getLogger('sqlalchemy.orm')
+        #logger.setLevel(logging.DEBUG)
         #ch.setLevel(logging.DEBUG)
-        ##create formatter
         #formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-        ###add formatter to ch
         #ch.setFormatter(formatter)
-        ##add ch to logger
         #logger.addHandler(ch)
         #logger2.addHandler(ch)
         #"application" code
@@ -107,30 +101,31 @@ class Dao(object):
         return True
 
     def persist(self,multiple=False, record=True):
-        try:
-            if record:
-                #try:
+        #try:
+        if record:
+            try:
                 params["session"].add(self)
+                print "newwwwwwwwwwwwwwwwwwwwwwwwwwww" ,params["session"].new
+                print "dirtiiiiiiiiiiiiiiiiiiiiiii", params["session"].dirty
                 params["session"].commit()
-                #params["session"].flush()
                 print "INSERIMENTO O UPDATE %s fatta su schema %s in data %s  da %s" %( str(self),params['schema'], str(datetime.datetime.now()), params['usernameLoggedList'])
                 return True
-        except Exception,e:
-            msg = """ATTENZIONE ERRORE nel salvataggio dei dati
+            except Exception,e:
+                msg = """ATTENZIONE ERRORE nel salvataggio dei dati
 probabilmente a causa di un dato mancante:
 Qui sotto viene riportato l'errore di sistema:
 %s
 ( normalmente il campo in errore è tra "virgolette")
 Dovrebbe essere sufficiente reinserire i dato nella loro
 completezza o integrita """ %e
-            overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
+                overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
                                                 | gtk.DIALOG_DESTROY_WITH_PARENT,
                                                     gtk.MESSAGE_ERROR,
                                                     gtk.BUTTONS_CANCEL, msg)
-            response = overDialog.run()
-            overDialog.destroy()
-            params["session"].rollback()
-            return False
+                response = overDialog.run()
+                overDialog.destroy()
+                params["session"].rollback()
+                return False
 
     def delete(self, multiple=False, record = True ):
         try:
@@ -138,7 +133,6 @@ completezza o integrita """ %e
                 #try:
                 params['session'].delete(self)
                 params["session"].commit()
-                #params['session'].flush()
                 print "CANCELLAZIONE %s fatta su schema %s in data %s  da %s" %( str(self),params['schema'], str(datetime.datetime.now()), params['usernameLoggedList'][1])
                 return True
         except Exception,e:
@@ -166,8 +160,8 @@ Qui sotto viene riportato l'errore di sistema:
         Check whether this Dao represents the same SQL DBMS record of
         the given Dao
         """
-        #if dao and self.id and dao.id:
-            #return (self.id == dao.id )
+        if dao and self:
+            return (self.__hash__ == dao.__hash__ )
         return True
 
     def dictionary(self, complete=False):
@@ -212,6 +206,8 @@ Qui sotto viene riportato l'errore di sistema:
 
         return sqlDict
 
+    def saveToAppLogTable(self):
+        pass
 
     def resolveProperties(self):
         """

@@ -126,6 +126,7 @@ def righeMovimentoDel(id=None):
                 if mp:
                     for m in mp:
                         params['session'].delete(m)
+                        params["session"].commit()
             params['session'].delete(r)
         params["session"].commit()
         return True
