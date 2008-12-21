@@ -297,19 +297,16 @@ class CrossFilterPriceList(GladeWidget):
         """
             crea la lista dei Dao listinoArticolo degli articoli duplicati
         """
-        sottolistini = self._listino.sottoListini
-        alllistiniId = []
+        sottolistini = self._listino.sottoListiniID
         dueid = []
-        if sottolistini:
-            for sotto in sottolistini:
-                alllistiniId.append(sotto.id_listino)
-        allArt= ListinoArticolo().select(idListino = alllistiniId, batchSize=None)
+
+        allArt= ListinoArticolo().select(idListino = sottolistini, batchSize=None)
         dupli2 = []
         if allArt:
             for a in allArt:
                 dueid.append(a.id_articolo)
             dupli = [ x for x in dueid if dueid.count(x) > 1]
-            dupli2 = ListinoArticolo().select(idListino = alllistiniId, idArticolo = dupli, batchSize=None)
+            dupli2 = ListinoArticolo().select(idListino = sottolistini, idArticolo = dupli, batchSize=None)
         return dupli2 or []
 
     def filteredData(self):
