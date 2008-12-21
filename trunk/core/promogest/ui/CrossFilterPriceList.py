@@ -302,12 +302,10 @@ class CrossFilterPriceList(GladeWidget):
 
         allArt= ListinoArticolo().select(idListino = sottolistini, batchSize=None)
         dupli2 = []
-        print "AAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP", allArt
         if allArt:
             for a in allArt:
                 dueid.append(a.id_articolo)
             dupli = [ x for x in dueid if dueid.count(x) > 1]
-            print "dupli, dupliiiiiiiiiiiiiiiiiiii", dupli
             if dupli:
                 dupli2 = ListinoArticolo().select(idListino = sottolistini, idArticolo = dupli, batchSize=None)
         return dupli2 or []
