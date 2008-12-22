@@ -1,2 +1,2 @@
-cd pg2
+cd ~/pg2
 svn update
