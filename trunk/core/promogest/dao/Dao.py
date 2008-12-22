@@ -64,9 +64,8 @@ class Dao(object):
                 self.record = dao.first()
             elif isList == "noList":
                 self.record = dao
-            serialized = dumps(self.record)
-            print "KKKKKKKKKKKKKKKK", serialized
-    
+
+
             return self.record
         except Exception, e:
             self.raiseException(e)
@@ -158,7 +157,16 @@ Qui sotto viene riportato l'errore di sistema:
                     strvalue = whatstr)
         
         print "%s : %s %s fatta su schema %s  da %s" %(str(when),message,str(data),str(where),utente)
+        #serialized = dumps(self.record)
+        #fh = open("pippo",'r')
+        #uf = fh.read()
+        #print "LLLLLLL", dir(fh), fh.readline(), uf
+        #fh.close()
+        ##fh.write(serialized)
 
+        ##fh.close()
+        #pippo  = loads(uf, self.metadata, self.session)
+        #print "KKKKKKKKKKKKKKKK", pippo
 
     def _resetId(self):
         self.id = None
