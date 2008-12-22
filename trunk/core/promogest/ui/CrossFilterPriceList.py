@@ -316,7 +316,7 @@ class CrossFilterPriceList(GladeWidget):
             prelevati dal DB ListinoComplessoArticoloPrevalente
         """
         filtrow =[]
-        lcaps = ListinoComplessoArticoloPrevalente().select(idListinoComplesso=self._listino.id)
+        lcaps = ListinoComplessoArticoloPrevalente().select(idListinoComplesso=self._listino.id, batchSize=None)
         if lcaps:
             for lc in lcaps:
                 riga= ListinoArticolo().select(idListino=lc.id_listino,
@@ -360,7 +360,7 @@ class CrossFilterPriceList(GladeWidget):
         self._treeViewModel_option.clear()
         self._treeViewModel_duplicated.clear()
         self._treeViewModel_filtered.clear()
-        lcaps = ListinoComplessoArticoloPrevalente().select(idListinoComplesso=self._listino.id)
+        lcaps = ListinoComplessoArticoloPrevalente().select(idListinoComplesso=self._listino.id, batchSize=None)
         for row in lcaps:
             row.delete()
         self.stored = []
@@ -392,7 +392,7 @@ class CrossFilterPriceList(GladeWidget):
 
     def on_ok_button_clicked(self, button):
         goodrows = self.filtered_treeview.get_model()
-        if ListinoComplessoArticoloPrevalente().select(idListinoComplesso= self._listino.id):
+        if ListinoComplessoArticoloPrevalente().select(idListinoComplesso= self._listino.id, batchSize=None):
             for a in ListinoComplessoArticoloPrevalente().select(idListinoComplesso= self._listino.id, batchSize=None):
                 a.delete()
         for r in goodrows:
