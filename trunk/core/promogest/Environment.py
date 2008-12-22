@@ -343,7 +343,7 @@ params = {'db_pg': engine ,
         'heightThumbnail' : 64,
         'widthdetail' : 110,
         'heightdetail': 110 ,
-        'usernameLoggedList' :["","",""]}
+        'usernameLoggedList' :["","","",user]}
 
 
  # Parametri localizzazione formati

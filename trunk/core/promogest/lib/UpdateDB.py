@@ -82,3 +82,10 @@ except:
             )
     listinoComplessoArticoloPrevalenteTable.create(checkfirst=True)
     print "CREATO listino_complesso_articolo_prevalente"
+#appLogTable = Table('application_log', params['metadata'], autoload=True, schema=params['mainSchema'])
+schema = params['mainSchema']
+table = schema+".application_log"
+print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+comando = 'ALTER TABLE %s ADD COLUMN pkid varchar(100);' % table
+params['session'].connection().execute(text(comando))
+print "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
