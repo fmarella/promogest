@@ -185,13 +185,13 @@ class ListinoArticolo(Dao):
             for che in check:
                 che.listino_attuale = False
                 params["session"].add(che)
-                self.saveToLogApp(che)
+                self.saveToAppLog(che)
         if not self.listino_attuale:
             self.listino_attuale = True
         else:
             self.listino_attuale = True
         params["session"].add(self)
-        self.saveToLogApp(self)
+        self.saveToAppLog(self)
         scontiVenditaDettaglioDel(idListino=self.id_listino,
                                     idArticolo=self.id_articolo,
                                     dataListinoArticolo=self.data_listino_articolo)
