@@ -185,13 +185,13 @@ class ListinoArticolo(Dao):
             for che in check:
                 che.listino_attuale = False
                 params["session"].add(che)
-                params["session"].commit()
+                self.saveToLogApp(che)
         if not self.listino_attuale:
             self.listino_attuale = True
         else:
             self.listino_attuale = True
         params["session"].add(self)
-        params["session"].commit()
+        self.saveToLogApp(self)
         scontiVenditaDettaglioDel(idListino=self.id_listino,
                                     idArticolo=self.id_articolo,
                                     dataListinoArticolo=self.data_listino_articolo)
@@ -206,17 +206,20 @@ class ListinoArticolo(Dao):
                         v.id_articolo = self.id_articolo
                         v.data_listino_articolo = self.data_listino_articolo
                         params["session"].add(v)
+                        self.saveToAppLog(v)
                 elif (key=="ingrosso") and (value):
                     for u in value:
                         u.id_listino = self.id_listino
                         u.id_articolo = self.id_articolo
                         u.data_listino_articolo = self.data_listino_articolo
                         params["session"].add(u)
+                        self.saveToAppLog(u)
         try:
             self.__scontiVenditaDett[0].id_listino=self.id_listino
             self.__scontiVenditaDett[0].id_articolo = self.id_articolo
             self.__scontiVenditaDett[0].data_listino_articolo = self.data_listino_articolo
             params["session"].add(self.__scontiVenditaDett[0])
+            self.saveToAppLog(self.__scontiVenditaDett[0])
         except:
             pass
 
@@ -225,6 +228,7 @@ class ListinoArticolo(Dao):
             self.__scontiVenditaIngr[0].id_articolo = self.id_articolo
             self.__scontiVenditaIngr[0].data_listino_articolo = self.data_listino_articolo
             params["session"].add(self.__scontiVenditaIngr[0])
+            self.saveToAppLog(self.__scontiVenditaIngr[0])
         except:
             pass
 

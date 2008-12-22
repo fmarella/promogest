@@ -318,6 +318,7 @@ port = conf.Database.port
 user = conf.Database.user
 password = conf.Database.password
 host = conf.Database.host
+userdata = ["","","",user]
 
 
 engine = create_engine('postgres:'+'//'+conf.Database.user+':'
@@ -343,7 +344,7 @@ params = {'db_pg': engine ,
         'heightThumbnail' : 64,
         'widthdetail' : 110,
         'heightdetail': 110 ,
-        'usernameLoggedList' :["","","",user]}
+        'usernameLoggedList':userdata}
 
 
  # Parametri localizzazione formati

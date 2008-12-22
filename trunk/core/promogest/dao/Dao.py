@@ -26,16 +26,6 @@ class Dao(object):
         self.numRecords = None
         self.DaoModule = entity.__class__
         self._exceptionHandler = exceptionHandler
-        #ch = logging.basicConfig()
-        #ch = logging.StreamHandler()
-        #logger = logging.getLogger('sqlalchemy.orm')
-        #logger.setLevel(logging.DEBUG)
-        #ch.setLevel(logging.DEBUG)
-        #formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-        #ch.setFormatter(formatter)
-        #logger.addHandler(ch)
-        #logger2.addHandler(ch)
-        #"application" code
 
     def getRecord(self,id=None):
         if id:
@@ -96,49 +86,11 @@ class Dao(object):
             self.raiseException(e)
 
     def commit(self):
-        #params["session"].add(self)
-        params["session"].commit()
-        return True
-
-    def persist(self,multiple=False, record=True):
-        #try:
-        if record:
-            #try:
-                params["session"].add(self)
-                params["session"].commit()
-                self.saveToAppLogTable(data=self)
-                else:
-                    self.saveToAppLogTable(data=self,message=message, whatstr=pk)
-                return True
-            #except Exception,e:
-                #msg = """ATTENZIONE ERRORE nel salvataggio dei dati
-#probabilmente a causa di un dato mancante:
-#Qui sotto viene riportato l'errore di sistema:
-#%s
-#( normalmente il campo in errore è tra "virgolette")
-#Dovrebbe essere sufficiente reinserire i dato nella loro
-#completezza o integrita """ %e
-                #overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                #| gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                    #gtk.MESSAGE_ERROR,
-                                                    #gtk.BUTTONS_CANCEL, msg)
-                #response = overDialog.run()
-                #overDialog.destroy()
-                #params["session"].rollback()
-                #return False
-
-    def delete(self, multiple=False, record = True ):
         try:
-            if record:
-                #try:
-                params['session'].delete(self)
-                params["session"].commit()
-                
-                return True
+            params["session"].commit()
+            return True
         except Exception,e:
-            msg = """ATTENZIONE ERRORE nella cancellazione dei dati
-probabilmente a causa di un dato errato o di una
-procedura non correttamente gestita:
+            msg = """ATTENZIONE ERRORE
 Qui sotto viene riportato l'errore di sistema:
 %s
 ( normalmente il campo in errore è tra "virgolette")
@@ -151,6 +103,56 @@ Qui sotto viene riportato l'errore di sistema:
             overDialog.destroy()
             params["session"].rollback()
             return False
+
+    def persist(self,multiple=False, record=True):
+        params["session"].add(self)
+        self.saveToAppLog(self)
+
+    def delete(self, multiple=False, record = True ):
+        params['session'].delete(self)
+        self.saveToAppLog(self)
+
+    def saveToAppLog(self, data):
+        when = datetime.datetime.now()
+        where = params['schema']
+        whoID = params['usernameLoggedList'][0]
+        utentedb = params['usernameLoggedList'][3]
+        utente = params['usernameLoggedList'][1]
+
+        if params["session"].dirty:
+            message = "UPDATE"
+        elif params["session"].new:
+            message = "INSERT"
+        elif params["session"].deleted:
+            message = "DELETE"
+        elif not params["session"].dirty and not params["session"].new and not params["session"].deleted:
+            message = "UNKNOWN"
+        mapper = object_mapper(self)
+        salvo = self.commit()
+        if salvo:
+            how = "I"
+        else:
+            how = "E"
+        pk = mapper.primary_key_from_instance(self)
+        if len(pk) ==1:
+            value = pk[0]
+            whatstr = None
+        else:
+            whatstr = str(pk)
+            value = None
+
+        appLogTable = Table('application_log', params['metadata'], autoload=True, schema=params['mainSchema'])
+        app = appLogTable.insert()
+        app.execute(id_utente=whoID,
+                    utentedb = utentedb,
+                    schema = where,
+                    level=how,
+                    object = str(data),
+                    message = message,
+                    value = value,
+                    strvalue = whatstr)
+        print "%s : %s %s fatta su schema %s  da %s" %(str(when),message,str(data),str(where),utente)
+
 
     def _resetId(self):
         self.id = None
@@ -205,47 +207,6 @@ Qui sotto viene riportato l'errore di sistema:
         sqlDict.update(attrs)
 
         return sqlDict
-
-    def saveToAppLogTable(self, data):
-            if params["session"].dirty:
-                message = "UPDATE"
-            elif params["session"].new:
-                message = "INSERT"
-            elif not params["session"].dirty and not params["session"].new:
-                message = "UNKNOWN"
-            mapper = object_mapper(self)
-            params["session"].commit()
-            pk = mapper.primary_key_from_instance(self)
-            if len(pk) ==1:
-                self.saveToAppLogTable(data=self,message=message, whatid=pk[0])
-            else:
-                self.saveToAppLogTable(data=self,message=message, whatstr=pk)
-        when = datetime.datetime.now()
-        what = data
-        where = params['schema']
-        message = message
-        #userid
-        whoID = params['usernameLoggedList'][0]
-        utentedb = params['usernameLoggedList'][2]
-        utente = params['usernameLoggedList'][1]
-        # Failed? ...
-        how = how
-        if how: how = "I"
-        else: hoW = "E"
-        whatid = whatid
-        whatstr = whatstr
-        appLogTable = Table('application_log', params['metadata'], autoload=True, schema=params['mainSchema'])
-        app = appLogTable.insert()
-        app.execute(id_utente=whoID,
-                    utentedb = utentedb,
-                    schema = where,
-                    level=how,
-                    object = str(data),
-                    message = message,
-                    value = whatid,
-                    strvalue = whatstr)
-        print "%s : %s %s fatta su schema %s  da %s" %(str(when),message,str(data),str(where),utente)
-
 
     def resolveProperties(self):
         """

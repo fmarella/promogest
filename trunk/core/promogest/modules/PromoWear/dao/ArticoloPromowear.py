@@ -313,10 +313,10 @@ class Articolo(Dao):
             daoArticolo = Articolo().getRecord(id=self.id)
             daoArticolo.cancellato = True
             params["session"].add(daoArticolo)
-            params["session"].commit()
+            self.saveToAppLog(daoArticolo)
         else:
             params["session"].delete(self)
-            params["session"].commit()
+            self.saveToAppLog(self)
 
 
     def filter_values(self,k,v):
@@ -361,7 +361,7 @@ class Articolo(Dao):
 
     def persist(self):
         params["session"].add(self)
-        params["session"].commit()
+        self.saveToAppLog(self)
         #salvataggio , immagine ....per il momento viene gestita una immagine per articolo ...
         #in seguito sarà l'immagine a comandare non l'articolo
         try:
@@ -371,8 +371,9 @@ class Articolo(Dao):
                 img.id_famiglia = self.id_famiglia_articolo
                 self.id_immagine = self.id
                 params["session"].add(img)
+                self.saveToAppLog(img)
                 params["session"].add(self)
-                params["session"].commit()
+                self.saveToAppLog(self)
             elif self._url_immagine:
                 img = Immagine()
                 img.id=self.id
@@ -380,8 +381,9 @@ class Articolo(Dao):
                 img.id_famiglia = self.id_famiglia_articolo
                 self.id_immagine = self.id
                 params["session"].add(img)
+                self.saveToAppLog(img)
                 params["session"].add(self)
-                params["session"].commit()
+                self.saveToAppLog(self)
             elif not self._url_immagine and Immagine().getRecord(id=self.id_immagine):
                 img = Immagine().getRecord(id=self.id_immagine)
                 self.id_immagine = None
@@ -389,23 +391,23 @@ class Articolo(Dao):
         except:
             pass
             #print "nessuna immagine associata all'articolo"
-        #try:
-        if self.__articoloTagliaColore:
-            if ArticoloTagliaColore().getRecord(id=self.id):
-                a = ArticoloTagliaColore().getRecord(id=self.id)
-                a.delete()
-            self.__articoloTagliaColore.id_articolo=self.id
-            params["session"].add(self.__articoloTagliaColore)
-            params["session"].commit()
-            if self.isArticoloPadre():
-                for var in self.getArticoliTagliaColore():
-                    var.id_genere = self.__articoloTagliaColore.id_genere
-                    var.id_anno = self.__articoloTagliaColore.id_anno
-                    var.id_stagione = self.__articoloTagliaColore.id_stagione
-                    params["session"].add(var)
-            params["session"].commit()        # Manage main Articolo with variations
-        #except:
-            #print "ARTICOLO NORMALE SENZA TAGLIE O COLORI"
+        try:
+            if self.__articoloTagliaColore:
+                if ArticoloTagliaColore().getRecord(id=self.id):
+                    a = ArticoloTagliaColore().getRecord(id=self.id)
+                    a.delete()
+                self.__articoloTagliaColore.id_articolo=self.id
+                params["session"].add(self.__articoloTagliaColore)
+                self.saveToAppLog(self.__articoloTagliaColore)
+                if self.isArticoloPadre():
+                    for var in self.getArticoliTagliaColore():
+                        var.id_genere = self.__articoloTagliaColore.id_genere
+                        var.id_anno = self.__articoloTagliaColore.id_anno
+                        var.id_stagione = self.__articoloTagliaColore.id_stagione
+                        params["session"].add(var)
+                        self.saveToAppLog(var)
+        except:
+            print "ARTICOLO NORMALE SENZA TAGLIE O COLORI"
         #art = ArticoloTagliaColore().getRecord(id = self.id) or None
         #if articleType(self) == "father":
             #if art:

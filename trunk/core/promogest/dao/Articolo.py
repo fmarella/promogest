@@ -127,7 +127,7 @@ else:
 
         def persist(self):
             params["session"].add(self)
-            params["session"].commit()
+            self.saveToAppLog(self)
             #salvataggio , immagine ....per il momento viene gestita una immagine per articolo ...
             #in seguito sarà l'immagine a comandare non l'articolo
             try:
@@ -137,8 +137,9 @@ else:
                     img.id_famiglia = self.id_famiglia_articolo
                     self.id_immagine = self.id
                     params["session"].add(img)
+                    self.saveToAppLog(img)
                     params["session"].add(self)
-                    params["session"].commit()
+                    self.saveToAppLog(self)
                 elif self._url_immagine:
                     img = Immagine()
                     img.id=self.id
@@ -146,8 +147,9 @@ else:
                     img.id_famiglia = self.id_famiglia_articolo
                     self.id_immagine = self.id
                     params["session"].add(img)
+                    self.saveToAppLog(img)
                     params["session"].add(self)
-                    params["session"].commit()
+                    self.saveToAppLog(self)
                 elif not self._url_immagine and Immagine().getRecord(id=self.id_immagine):
                     img = Immagine().getRecord(id=self.id_immagine)
                     self.id_immagine = None
@@ -166,10 +168,10 @@ else:
                 daoArticolo = Articolo().getRecord(id=self.id)
                 daoArticolo.cancellato = True
                 params["session"].add(daoArticolo)
-                params["session"].commit()
+                self.saveToAppLog(daoArticolo)
             else:
                 params["session"].delete(self)
-                params["session"].commit()
+                self.saveToAppLog(self)
 
         def filter_values(self,k,v):
             if k == "codice":

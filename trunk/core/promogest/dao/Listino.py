@@ -80,14 +80,13 @@ class Listino(Dao):
                                                             batchSize=None)
         for lcc in cleanListinoCategoriaCliente:
             lcc.delete()
-        cleanMagazzini = ListinoMagazzino()\
-                                            .select(idListino=self.id,
-                                            batchSize=None)
+        cleanMagazzini = ListinoMagazzino().select(idListino=self.id,
+                                                    batchSize=None)
         for mag in cleanMagazzini:
             mag.delete()
         params['session'].delete(self)
-        params["session"].commit()
-        params['session'].flush()
+        self.saveToLogApp(self)
+
 
     def filter_values(self,k,v):
         if k=='id' or k=='idListino':
