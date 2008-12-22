@@ -43,7 +43,7 @@ class UOWEventHandler(interfaces.AttributeExtension):
         if sess:
             prop = _state_mapper(state).get_property(self.key)
             if prop.cascade.save_update and item not in sess:
-                sess.save_or_update(item)
+                sess.add(item)
         return item
         
     def remove(self, state, item, initiator):
@@ -64,7 +64,7 @@ class UOWEventHandler(interfaces.AttributeExtension):
         if sess:
             prop = _state_mapper(state).get_property(self.key)
             if newvalue is not None and prop.cascade.save_update and newvalue not in sess:
-                sess.save_or_update(newvalue)
+                sess.add(newvalue)
             if prop.cascade.delete_orphan and oldvalue in sess.new:
                 sess.expunge(oldvalue)
         return newvalue
@@ -119,24 +119,20 @@ class UOWTransaction(object):
         # prevents newly loaded objects from being dereferenced during the
         # flush process
         if hashkey in self.attributes:
-            (added, unchanged, deleted, cached_passive) = self.attributes[hashkey]
+            (history, cached_passive) = self.attributes[hashkey]
             # if the cached lookup was "passive" and now we want non-passive, do a non-passive
             # lookup and re-cache
             if cached_passive and not passive:
-                (added, unchanged, deleted) = attributes.get_history(state, key, passive=False)
-                self.attributes[hashkey] = (added, unchanged, deleted, passive)
+                history = attributes.get_history(state, key, passive=False)
+                self.attributes[hashkey] = (history, passive)
         else:
-            (added, unchanged, deleted) = attributes.get_history(state, key, passive=passive)
-            self.attributes[hashkey] = (added, unchanged, deleted, passive)
+            history = attributes.get_history(state, key, passive=passive)
+            self.attributes[hashkey] = (history, passive)
 
-        if added is None or not state.get_impl(key).uses_objects:
-            return (added, unchanged, deleted)
+        if not history or not state.get_impl(key).uses_objects:
+            return history
         else:
-            return (
-                [c is not None and attributes.instance_state(c) or None for c in added],
-                [c is not None and attributes.instance_state(c) or None for c in unchanged],
-                [c is not None and attributes.instance_state(c) or None for c in deleted],
-                )
+            return history.as_state()
 
     def register_object(self, state, isdelete=False, listonly=False, postupdate=False, post_update_cols=None):
         # if object is not in the overall session, do nothing
@@ -342,6 +338,10 @@ class UOWTask(object):
         self.dependencies = set()
         self.cyclical_dependencies = set()
 
+    @util.memoized_property
+    def inheriting_mappers(self):
+        return list(self.mapper.polymorphic_iterator())
+
     @property
     def polymorphic_tasks(self):
         """Return an iterator of UOWTask objects corresponding to the
@@ -372,7 +372,7 @@ class UOWTask(object):
         those mappers.
 
         """
-        for mapper in self.mapper.polymorphic_iterator():
+        for mapper in self.inheriting_mappers:
             t = self.base_task._inheriting_tasks.get(mapper, None)
             if t is not None:
                 yield t

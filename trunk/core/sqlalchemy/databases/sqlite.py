@@ -14,8 +14,6 @@ import sqlalchemy.util as util
 from sqlalchemy.sql import compiler, functions as sql_functions
 from types import NoneType
 
-SELECT_REGEXP = re.compile(r'\s*(?:SELECT|PRAGMA)', re.I | re.UNICODE)
-
 class SLNumeric(sqltypes.Numeric):
     def bind_processor(self, dialect):
         type_ = self.asdecimal and str or float
@@ -234,14 +232,13 @@ class SQLiteExecutionContext(default.DefaultExecutionContext):
             if not len(self._last_inserted_ids) or self._last_inserted_ids[0] is None:
                 self._last_inserted_ids = [self.cursor.lastrowid] + self._last_inserted_ids[1:]
 
-    def returns_rows_text(self, statement):
-        return SELECT_REGEXP.match(statement)
-
 class SQLiteDialect(default.DefaultDialect):
     name = 'sqlite'
     supports_alter = False
     supports_unicode_statements = True
     default_paramstyle = 'qmark'
+    supports_default_values = True
+    supports_empty_insert = False
 
     def __init__(self, **kwargs):
         default.DefaultDialect.__init__(self, **kwargs)
@@ -297,9 +294,6 @@ class SQLiteDialect(default.DefaultDialect):
 
     def create_execution_context(self, connection, **kwargs):
         return SQLiteExecutionContext(self, connection, **kwargs)
-
-    def oid_column_name(self, column):
-        return "oid"
 
     def is_disconnect(self, e):
         return isinstance(e, self.dbapi.ProgrammingError) and "Cannot operate on a closed database." in str(e)
@@ -467,25 +461,6 @@ class SQLiteCompiler(compiler.DefaultCompiler):
     def for_update_clause(self, select):
         # sqlite has no "FOR UPDATE" AFAICT
         return ''
-
-    def visit_insert(self, insert_stmt):
-        self.isinsert = True
-        colparams = self._get_colparams(insert_stmt)
-        preparer = self.preparer
-
-        if not colparams:
-            if not self.dialect.supports_default_values:
-                raise exc.NotSupportedError(
-                    "The version of SQLite you are using, %s, does not support DEFAULT VALUES." % (self.dialect.dbapi.sqlite_version))
-
-            return ("INSERT INTO %s DEFAULT VALUES" % (
-                (preparer.format_table(insert_stmt.table),)))
-        else:
-            return ("INSERT INTO %s (%s) VALUES (%s)" %
-                    (preparer.format_table(insert_stmt.table),
-                     ', '.join([preparer.format_column(c[0])
-                                for c in colparams]),
-                     ', '.join([c[1] for c in colparams])))
 
 
 class SQLiteSchemaGenerator(compiler.SchemaGenerator):

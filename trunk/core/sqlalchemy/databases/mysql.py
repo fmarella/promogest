@@ -220,9 +220,6 @@ RESERVED_WORDS = set(
 AUTOCOMMIT_RE = re.compile(
     r'\s*(?:UPDATE|INSERT|CREATE|DELETE|DROP|ALTER|LOAD +DATA|REPLACE)',
     re.I | re.UNICODE)
-SELECT_RE = re.compile(
-    r'\s*(?:SELECT|SHOW|DESCRIBE|XA RECOVER|CALL)',
-    re.I | re.UNICODE)
 SET_RE = re.compile(
     r'\s*SET\s+(?:(?:GLOBAL|SESSION)\s+)?\w',
     re.I | re.UNICODE)
@@ -1463,9 +1460,6 @@ class MySQLExecutionContext(default.DefaultExecutionContext):
             # which is probably a programming error anyhow.
             self.connection.info.pop(('mysql', 'charset'), None)
 
-    def returns_rows_text(self, statement):
-        return SELECT_RE.match(statement)
-
     def should_autocommit_text(self, statement):
         return AUTOCOMMIT_RE.match(statement)
 
@@ -2216,7 +2210,7 @@ class MySQLSchemaReflector(object):
         name, type_, args, notnull = \
               spec['name'], spec['coltype'], spec['arg'], spec['notnull']
 
-        if only and name.lower() not in only:
+        if only and name not in only:
             self.logger.info("Omitting reflected column %s.%s" %
                              (table.name, name))
             return
@@ -2334,10 +2328,19 @@ class MySQLSchemaReflector(object):
     def _set_constraints(self, table, constraints, connection, only):
         """Apply constraints to a ``Table``."""
 
+        default_schema = None
+
         for spec in constraints:
             # only FOREIGN KEYs
             ref_name = spec['table'][-1]
             ref_schema = len(spec['table']) > 1 and spec['table'][-2] or None
+
+            if not ref_schema:
+                if default_schema is None:
+                    default_schema = connection.dialect.get_default_schema_name(
+                        connection)
+                if table.schema == default_schema:
+                    ref_schema = table.schema
 
             loc_names = spec['local']
             if only and not set(loc_names).issubset(only):
@@ -2472,8 +2475,9 @@ class MySQLSchemaReflector(object):
             r'  '
             r'(?:(?P<type>\S+) )?KEY'
             r'(?: +%(iq)s(?P<name>(?:%(esc_fq)s|[^%(fq)s])+)%(fq)s)?'
-            r'(?: +USING +(?P<using>\S+))?'
+            r'(?: +USING +(?P<using_pre>\S+))?'
             r' +\((?P<columns>.+?)\)'
+            r'(?: +USING +(?P<using_post>\S+))?'
             r'(?: +KEY_BLOCK_SIZE +(?P<keyblock>\S+))?'
             r'(?: +WITH PARSER +(?P<parser>\S+))?'
             r',?$'

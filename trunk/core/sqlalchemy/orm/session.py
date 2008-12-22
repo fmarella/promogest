@@ -9,7 +9,7 @@
 import weakref
 from itertools import chain
 import sqlalchemy.exceptions as sa_exc
-from sqlalchemy import util, sql, engine
+from sqlalchemy import util, sql, engine, log
 from sqlalchemy.sql import util as sql_util, expression
 from sqlalchemy.orm import (
     SessionExtension, attributes, exc, query, unitofwork, util as mapperutil,
@@ -787,13 +787,7 @@ class Session(object):
 
         """
         for state in self.identity_map.all_states() + list(self._new):
-            try:
-                del state.session_id
-            except AttributeError:
-                # asynchronous GC can sometimes result
-                # in the auto-disposal of an InstanceState within this process
-                # see test/orm/session.py DisposedStates
-                pass
+            state.detach()
 
         self.identity_map = self._identity_cls()
         self._new = {}
@@ -1018,11 +1012,11 @@ class Session(object):
     def _expunge_state(self, state):
         if state in self._new:
             self._new.pop(state)
-            del state.session_id
+            state.detach()
         elif self.identity_map.contains_state(state):
             self.identity_map.discard(state)
             self._deleted.pop(state, None)
-            del state.session_id
+            state.detach()
 
     def _register_newly_persistent(self, state):
         mapper = _state_mapper(state)
@@ -1057,7 +1051,6 @@ class Session(object):
 
         self.identity_map.discard(state)
         self._deleted.pop(state, None)
-        del state.session_id
 
     @util.pending_deprecation('0.5.x', "Use session.add()")
     def save(self, instance):

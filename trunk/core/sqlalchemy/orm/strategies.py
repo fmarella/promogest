@@ -353,9 +353,9 @@ class LazyLoader(AbstractRelationLoader):
         self.is_class_level = True
         self._register_attribute(self.parent.class_, callable_=self.class_level_loader)
 
-    def lazy_clause(self, state, reverse_direction=False, alias_secondary=False):
+    def lazy_clause(self, state, reverse_direction=False, alias_secondary=False, adapt_source=None):
         if state is None:
-            return self._lazy_none_clause(reverse_direction)
+            return self._lazy_none_clause(reverse_direction, adapt_source=adapt_source)
             
         if not reverse_direction:
             (criterion, bind_to_col, rev) = (self.__lazywhere, self.__bind_to_col, self._equated_columns)
@@ -368,14 +368,18 @@ class LazyLoader(AbstractRelationLoader):
                 # use the "committed" (database) version to get query column values
                 # also its a deferred value; so that when used by Query, the committed value is used
                 # after an autoflush occurs
-                bindparam.value = lambda: mapper._get_committed_state_attr_by_column(state, bind_to_col[bindparam.key])
+                o = state.obj() # strong ref
+                bindparam.value = lambda: mapper._get_committed_attr_by_column(o, bind_to_col[bindparam.key])
 
         if self.parent_property.secondary and alias_secondary:
             criterion = sql_util.ClauseAdapter(self.parent_property.secondary.alias()).traverse(criterion)
 
-        return visitors.cloned_traverse(criterion, {}, {'bindparam':visit_bindparam})
-    
-    def _lazy_none_clause(self, reverse_direction=False):
+        criterion = visitors.cloned_traverse(criterion, {}, {'bindparam':visit_bindparam})
+        if adapt_source:
+            criterion = adapt_source(criterion)
+        return criterion
+        
+    def _lazy_none_clause(self, reverse_direction=False, adapt_source=None):
         if not reverse_direction:
             (criterion, bind_to_col, rev) = (self.__lazywhere, self.__bind_to_col, self._equated_columns)
         else:
@@ -392,7 +396,10 @@ class LazyLoader(AbstractRelationLoader):
                 binary.right = expression.null()
                 binary.operator = operators.is_
         
-        return visitors.cloned_traverse(criterion, {}, {'binary':visit_binary})
+        criterion = visitors.cloned_traverse(criterion, {}, {'binary':visit_binary})
+        if adapt_source:
+            criterion = adapt_source(criterion)
+        return criterion
         
     def class_level_loader(self, state, options=None, path=None):
         if not mapperutil._state_has_identity(state):
@@ -539,7 +546,7 @@ class LoadLazyAttribute(object):
             return q.get(ident)
 
         if prop.order_by:
-            q = q.order_by(prop.order_by)
+            q = q.order_by(*util.to_list(prop.order_by))
 
         if self.options:
             q = q._conditional_options(*self.options)

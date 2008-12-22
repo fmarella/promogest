@@ -307,6 +307,26 @@ class SessionExtension(object):
         This is called after an add, delete or merge.
         """
 
+    def after_bulk_update(self, session, query, query_context, result):
+        """Execute after a bulk update operation to the session.
+
+        This is called after a session.query(...).update()
+
+        `query` is the query object that this update operation was called on.
+        `query_context` was the query context object.
+        `result` is the result object returned from the bulk operation.
+        """
+
+    def after_bulk_delete(self, session, query, query_context, result):
+        """Execute after a bulk delete operation to the session.
+
+        This is called after a session.query(...).delete()
+
+        `query` is the query object that this delete operation was called on.
+        `query_context` was the query context object.
+        `result` is the result object returned from the bulk operation.
+        """
+    
 class MapperProperty(object):
     """Manage the relationship of a ``Mapper`` to a single class
     attribute, as well as that attribute as it appears on individual
@@ -438,9 +458,21 @@ class PropComparator(expression.ColumnOperators):
     PropComparator.
     """
 
+    def __init__(self, prop, mapper, adapter=None):
+        self.prop = self.property = prop
+        self.mapper = mapper
+        self.adapter = adapter
+
     def __clause_element__(self):
         raise NotImplementedError("%r" % self)
 
+    def adapted(self, adapter):
+        """Return a copy of this PropComparator which will use the given adaption function
+        on the local side of generated expressions.
+        
+        """
+        return self.__class__(self.prop, self.mapper, adapter)
+        
     @staticmethod
     def any_op(a, b, **kwargs):
         return a.any(b, **kwargs)
@@ -448,10 +480,6 @@ class PropComparator(expression.ColumnOperators):
     @staticmethod
     def has_op(a, b, **kwargs):
         return a.has(b, **kwargs)
-
-    def __init__(self, prop, mapper):
-        self.prop = self.property = prop
-        self.mapper = mapper
 
     @staticmethod
     def of_type_op(a, class_):

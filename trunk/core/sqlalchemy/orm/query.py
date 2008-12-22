@@ -195,11 +195,11 @@ class Query(object):
         if as_filter and self._filter_aliases:
             adapters.append(self._filter_aliases.replace)
 
-        if self._polymorphic_adapters:
-            adapters.append(self.__adapt_polymorphic_element)
-
         if self._from_obj_alias:
             adapters.append(self._from_obj_alias.replace)
+
+        if self._polymorphic_adapters:
+            adapters.append(self.__adapt_polymorphic_element)
 
         if not adapters:
             return clause
@@ -236,14 +236,14 @@ class Query(object):
             return None
         return self._entities[0].mapper
 
-    def _only_mapper_zero(self):
+    def _only_mapper_zero(self, rationale=None):
         if len(self._entities) > 1:
-            raise sa_exc.InvalidRequestError("This operation requires a Query against a single mapper.")
+            raise sa_exc.InvalidRequestError(rationale or "This operation requires a Query against a single mapper.")
         return self._mapper_zero()
 
-    def _only_entity_zero(self):
+    def _only_entity_zero(self, rationale=None):
         if len(self._entities) > 1:
-            raise sa_exc.InvalidRequestError("This operation requires a Query against a single mapper.")
+            raise sa_exc.InvalidRequestError(rationale or "This operation requires a Query against a single mapper.")
         return self._entity_zero()
 
     def _generate_mapper_zero(self):
@@ -410,7 +410,7 @@ class Query(object):
         if hasattr(ident, '__composite_values__'):
             ident = ident.__composite_values__()
 
-        key = self._only_mapper_zero().identity_key_from_primary_key(ident)
+        key = self._only_mapper_zero("get() can only be used against a single mapped class.").identity_key_from_primary_key(ident)
         return self._get(key, ident)
 
     @classmethod
@@ -552,9 +552,11 @@ class Query(object):
 
     def value(self, column):
         """Return a scalar result corresponding to the given column expression."""
-        
-        return self.values(column).next()[0]
-        
+        try:
+            return self.values(column).next()[0]
+        except StopIteration:
+            return None
+
     @_generative()
     def add_column(self, column):
         """Add a SQL ColumnElement to the list of result columns to be returned."""
@@ -884,9 +886,15 @@ class Query(object):
                 if isinstance(onclause, sql.ClauseElement):
                     onclause = right_adapter.traverse(onclause)
 
-            if prop:
-                onclause = prop
-
+            # TODO: is this a little hacky ?
+            if not isinstance(onclause, attributes.QueryableAttribute) or not isinstance(onclause.parententity, AliasedClass):
+                if prop:
+                    # MapperProperty based onclause
+                    onclause = prop
+                else:
+                    # ClauseElement based onclause
+                    onclause = self._adapt_clause(onclause, False, True)
+                
             clause = orm_join(clause, right_entity, onclause, isouter=outerjoin)
             if alias_criterion:
                 self._filter_aliases = right_adapter
@@ -1054,6 +1062,8 @@ class Query(object):
           <Item>
           >>> session.query(Item.id).scalar()
           1
+          >>> session.query(Item.id).filter(Item.id < 0).scalar()
+          None
           >>> session.query(Item.id, Item.name).scalar()
           1
           >>> session.query(func.count(Parent.id)).scalar()
@@ -1062,10 +1072,10 @@ class Query(object):
         This results in an execution of the underlying query.
 
         """
-        ret = list(self)[0]
-        if not isinstance(ret, tuple):
-            return ret
         try:
+            ret = list(self)[0]
+            if not isinstance(ret, tuple):
+                return ret
             return ret[0]
         except IndexError:
             return None
@@ -1103,9 +1113,9 @@ class Query(object):
 
         if filtered:
             if single_entity:
-                filter = util.OrderedIdentitySet
+                filter = lambda x: util.unique_list(x, util.IdentitySet)
             else:
-                filter = util.OrderedSet
+                filter = util.unique_list
         else:
             filter = None
 
@@ -1200,7 +1210,8 @@ class Query(object):
                 try:
                     params[_get_params[primary_key].key] = ident[i]
                 except IndexError:
-                    raise sa_exc.InvalidRequestError("Could not find enough values to formulate primary key for query.get(); primary key columns are %s" % ', '.join("'%s'" % str(c) for c in q.mapper.primary_key))
+                    raise sa_exc.InvalidRequestError("Could not find enough values to formulate primary key for "
+                        "query.get(); primary key columns are %s" % ', '.join("'%s'" % c for c in q.mapper.primary_key))
             q._params = params
 
         if lockmode is not None:
@@ -1235,23 +1246,54 @@ class Query(object):
                 kwargs.get('distinct', False))
 
     def count(self):
-        """Apply this query's criterion to a SELECT COUNT statement."""
+        """Apply this query's criterion to a SELECT COUNT statement.
+        
+        If column expressions or LIMIT/OFFSET/DISTINCT are present,
+        the query "SELECT count(1) FROM (SELECT ...)" is issued, 
+        so that the result matches the total number of rows
+        this query would return.  For mapped entities,
+        the primary key columns of each is written to the 
+        columns clause of the nested SELECT statement.
+        
+        For a Query which is only against mapped entities,
+        a simpler "SELECT count(1) FROM table1, table2, ... 
+        WHERE criterion" is issued.  
+        
+        """
+        should_nest = [self._should_nest_selectable]
+        def ent_cols(ent):
+            if isinstance(ent, _MapperEntity):
+                return ent.mapper.primary_key
+            else:
+                should_nest[0] = True
+                return [ent.column]
+                
+        return self._col_aggregate(sql.literal_column('1'), sql.func.count, 
+            nested_cols=chain(*[ent_cols(ent) for ent in self._entities]),
+            should_nest = should_nest[0]
+        )
 
-        return self._col_aggregate(sql.literal_column('1'), sql.func.count, nested_cols=list(self._only_mapper_zero().primary_key))
-
-    def _col_aggregate(self, col, func, nested_cols=None):
+    def _col_aggregate(self, col, func, nested_cols=None, should_nest=False):
         context = QueryContext(self)
+
+        for entity in self._entities:
+            entity.setup_context(self, context)
+
+        if context.from_clause:
+            from_obj = [context.from_clause]
+        else:
+            from_obj = context.froms
 
         self._adjust_for_single_inheritance(context)
 
         whereclause  = context.whereclause
 
-        from_obj = self.__mapper_zero_from_obj()
-
-        if self._should_nest_selectable:
+        if should_nest:
             if not nested_cols:
                 nested_cols = [col]
-            s = sql.select(nested_cols, whereclause, from_obj=from_obj, **self._select_args)
+            else:
+                nested_cols = list(nested_cols)
+            s = sql.select(nested_cols, whereclause, from_obj=from_obj, use_labels=True, **self._select_args)
             s = s.alias()
             s = sql.select([func(s.corresponding_column(col) or col)]).select_from(s)
         else:
@@ -1336,6 +1378,9 @@ class Query(object):
                 identity_key = target_mapper.identity_key_from_primary_key(list(primary_key))
                 if identity_key in session.identity_map:
                     session._remove_newly_deleted(attributes.instance_state(session.identity_map[identity_key]))
+
+        for ext in session.extensions:
+            ext.after_bulk_delete(session, self, context, result)
 
         return result.rowcount
 
@@ -1431,6 +1476,9 @@ class Query(object):
                 if identity_key in session.identity_map:
                     session.expire(session.identity_map[identity_key], values.keys())
 
+        for ext in session.extensions:
+            ext.after_bulk_update(session, self, context, result)
+            
         return result.rowcount
 
     def _compile_context(self, labels=True):
@@ -1690,9 +1738,9 @@ class _MapperEntity(_QueryEntity):
         if context.order_by is False and self.mapper.order_by:
             context.order_by = self.mapper.order_by
 
-        if context.order_by and adapter:
-            context.order_by = adapter.adapt_list(util.to_list(context.order_by))
-
+            if adapter:
+                context.order_by = adapter.adapt_list(util.to_list(context.order_by))
+                    
         for value in self.mapper._iterate_polymorphic_properties(self._with_polymorphic):
             if query._only_load_props and value.key not in query._only_load_props:
                 continue
@@ -1743,13 +1791,13 @@ class _ColumnEntity(_QueryEntity):
         # of FROMs for the overall expression - this helps
         # subqueries which were built from ORM constructs from
         # leaking out their entities into the main select construct
-        actual_froms = set(column._get_from_objects())
+        actual_froms = set(column._from_objects)
 
         self.entities = util.OrderedSet(
             elem._annotations['parententity']
             for elem in visitors.iterate(column, {})
             if 'parententity' in elem._annotations
-            and actual_froms.intersection(elem._get_from_objects())
+            and actual_froms.intersection(elem._from_objects)
             )
 
         if self.entities:

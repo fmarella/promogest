@@ -1,10 +1,78 @@
+"""Visitor/traversal interface and library functions.
+
+SQLAlchemy schema and expression constructs rely on a Python-centric
+version of the classic "visitor" pattern as the primary way in which
+they apply functionality.  The most common use of this pattern 
+is statement compilation, where individual expression classes match 
+up to rendering methods that produce a string result.   Beyond this, 
+the visitor system is also used to inspect expressions for various 
+information and patterns, as well as for usage in 
+some kinds of expression transformation.  Other kinds of transformation
+use a non-visitor traversal system.
+
+For many examples of how the visit system is used, see the 
+sqlalchemy.sql.util and the sqlalchemy.sql.compiler modules.
+For an introduction to clause adaption, see
+http://techspot.zzzeek.org/?p=19 .
+
+"""
+
 from collections import deque
+import re
+from sqlalchemy import util
+
+__all__ = ['VisitableType', 'Visitable', 'ClauseVisitor', 
+    'CloningVisitor', 'ReplacingCloningVisitor', 'iterate', 
+    'iterate_depthfirst', 'traverse_using', 'traverse',
+    'cloned_traverse', 'replacement_traverse']
+    
+class VisitableType(type):
+    """Metaclass which applies a `__visit_name__` attribute and 
+    `_compiler_dispatch` method to classes.
+    
+    """
+    
+    def __init__(cls, clsname, bases, dict):
+        if not '__visit_name__' in cls.__dict__:
+            m = re.match(r'_?(\w+?)(?:Expression|Clause|Element|$)', clsname)
+            x = m.group(1)
+            x = re.sub(r'(?!^)[A-Z]', lambda m:'_'+m.group(0).lower(), x)
+            cls.__visit_name__ = x.lower()
+        
+        # set up an optimized visit dispatch function
+        # for use by the compiler
+        visit_name = cls.__dict__["__visit_name__"]
+        if isinstance(visit_name, str):
+            func_text = "def _compiler_dispatch(self, visitor, **kw):\n"\
+            "    return visitor.visit_%s(self, **kw)" % visit_name
+        else:
+            func_text = "def _compiler_dispatch(self, visitor, **kw):\n"\
+            "    return getattr(visitor, 'visit_%s' % self.__visit_name__)(self, **kw)"
+    
+        env = locals().copy()
+        exec func_text in env
+        cls._compiler_dispatch = env['_compiler_dispatch']
+        
+        super(VisitableType, cls).__init__(clsname, bases, dict)
+
+class Visitable(object):
+    """Base class for visitable objects, applies the
+    ``VisitableType`` metaclass.
+    
+    """
+
+    __metaclass__ = VisitableType
 
 class ClauseVisitor(object):
+    """Base class for visitor objects which can traverse using 
+    the traverse() function.
+    
+    """
+    
     __traverse_options__ = {}
     
     def traverse_single(self, obj):
-        for v in self._iterate_visitors:
+        for v in self._visitor_iterator:
             meth = getattr(v, "visit_%s" % obj.__visit_name__, None)
             if meth:
                 return meth(obj)
@@ -17,33 +85,42 @@ class ClauseVisitor(object):
     def traverse(self, obj):
         """traverse and visit the given expression structure."""
 
+        return traverse(obj, self.__traverse_options__, self._visitor_dict)
+    
+    @util.memoized_property
+    def _visitor_dict(self):
         visitors = {}
 
         for name in dir(self):
             if name.startswith('visit_'):
                 visitors[name[6:]] = getattr(self, name)
-            
-        return traverse(obj, self.__traverse_options__, visitors)
-
-    def _iterate_visitors(self):
+        return visitors
+        
+    @property
+    def _visitor_iterator(self):
         """iterate through this visitor and each 'chained' visitor."""
         
         v = self
         while v:
             yield v
             v = getattr(v, '_next', None)
-    _iterate_visitors = property(_iterate_visitors)
 
     def chain(self, visitor):
         """'chain' an additional ClauseVisitor onto this ClauseVisitor.
         
         the chained visitor will receive all visit events after this one.
+        
         """
-        tail = list(self._iterate_visitors)[-1]
+        tail = list(self._visitor_iterator)[-1]
         tail._next = visitor
         return self
 
 class CloningVisitor(ClauseVisitor):
+    """Base class for visitor objects which can traverse using 
+    the cloned_traverse() function.
+    
+    """
+
     def copy_and_process(self, list_):
         """Apply cloned traversal to the given list of elements, and return the new list."""
 
@@ -52,15 +129,14 @@ class CloningVisitor(ClauseVisitor):
     def traverse(self, obj):
         """traverse and visit the given expression structure."""
 
-        visitors = {}
-
-        for name in dir(self):
-            if name.startswith('visit_'):
-                visitors[name[6:]] = getattr(self, name)
-            
-        return cloned_traverse(obj, self.__traverse_options__, visitors)
+        return cloned_traverse(obj, self.__traverse_options__, self._visitor_dict)
 
 class ReplacingCloningVisitor(CloningVisitor):
+    """Base class for visitor objects which can traverse using 
+    the replacement_traverse() function.
+    
+    """
+
     def replace(self, elem):
         """receive pre-copied elements during a cloning traversal.
         
@@ -74,7 +150,7 @@ class ReplacingCloningVisitor(CloningVisitor):
         """traverse and visit the given expression structure."""
 
         def replace(elem):
-            for v in self._iterate_visitors:
+            for v in self._visitor_iterator:
                 e = v.replace(elem)
                 if e:
                     return e
@@ -128,6 +204,8 @@ def traverse_depthfirst(obj, opts, visitors):
     return traverse_using(iterate_depthfirst(obj, opts), obj, visitors)
 
 def cloned_traverse(obj, opts, visitors):
+    """clone the given expression structure, allowing modifications by visitors."""
+    
     cloned = {}
 
     def clone(element):
@@ -153,6 +231,8 @@ def cloned_traverse(obj, opts, visitors):
     return obj
 
 def replacement_traverse(obj, opts, replace):
+    """clone the given expression structure, allowing element replacement by a given replacement function."""
+    
     cloned = {}
     stop_on = set(opts.get('stop_on', []))
 

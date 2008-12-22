@@ -15,6 +15,8 @@ import datetime
 import time
 from promogest.ui.GtkExceptionHandler import GtkExceptionHandler
 a = datetime.datetime
+from sqlalchemy.ext.serializer import loads, dumps
+
 import logging
 
 
@@ -62,6 +64,9 @@ class Dao(object):
                 self.record = dao.first()
             elif isList == "noList":
                 self.record = dao
+            serialized = dumps(self.record)
+            print "KKKKKKKKKKKKKKKK", serialized
+    
             return self.record
         except Exception, e:
             self.raiseException(e)
@@ -151,6 +156,7 @@ Qui sotto viene riportato l'errore di sistema:
                     message = message,
                     value = value,
                     strvalue = whatstr)
+        
         print "%s : %s %s fatta su schema %s  da %s" %(str(when),message,str(data),str(where),utente)
 
 

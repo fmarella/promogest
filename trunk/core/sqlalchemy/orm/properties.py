@@ -13,12 +13,12 @@ attributes.
 
 from sqlalchemy import sql, util, log
 import sqlalchemy.exceptions as sa_exc
-from sqlalchemy.sql.util import ClauseAdapter, criterion_as_pairs
+from sqlalchemy.sql.util import ClauseAdapter, criterion_as_pairs, join_condition
 from sqlalchemy.sql import operators, expression
 from sqlalchemy.orm import (
     attributes, dependency, mapper, object_mapper, strategies,
     )
-from sqlalchemy.orm.util import CascadeOptions, _class_to_mapper, _orm_annotate
+from sqlalchemy.orm.util import CascadeOptions, _class_to_mapper, _orm_annotate, _orm_deannotate
 from sqlalchemy.orm.interfaces import (
     MANYTOMANY, MANYTOONE, MapperProperty, ONETOMANY, PropComparator,
     StrategizedProperty,
@@ -83,10 +83,13 @@ class ColumnProperty(StrategizedProperty):
         return value
 
     class ColumnComparator(PropComparator):
-        @util.memoize
+        @util.memoized_instancemethod
         def __clause_element__(self):
-            return self.prop.columns[0]._annotate({"parententity": self.mapper})
-
+            if self.adapter:
+                return self.adapter(self.prop.columns[0])
+            else:
+                return self.prop.columns[0]._annotate({"parententity": self.mapper})
+                
         def operate(self, op, *other, **kwargs):
             return op(self.__clause_element__(), *other, **kwargs)
 
@@ -147,7 +150,11 @@ class CompositeProperty(ColumnProperty):
 
     class Comparator(PropComparator):
         def __clause_element__(self):
-            return expression.ClauseList(*self.prop.columns)
+            if self.adapter:
+                # TODO: test coverage for adapted composite comparison
+                return expression.ClauseList(*[self.adapter(x) for x in self.prop.columns])
+            else:
+                return expression.ClauseList(*self.prop.columns)
 
         def __eq__(self, other):
             if other is None:
@@ -306,7 +313,7 @@ class PropertyLoader(StrategizedProperty):
         self.order_by = order_by
 
         if isinstance(backref, str):
-            # propigate explicitly sent primary/secondary join conditions to the BackRef object if
+            # propagate explicitly sent primary/secondary join conditions to the BackRef object if
             # just a string was sent
             if secondary is not None:
                 # reverse primary/secondary in case of a many-to-many
@@ -318,18 +325,30 @@ class PropertyLoader(StrategizedProperty):
         self._is_backref = _is_backref
 
     class Comparator(PropComparator):
-        def __init__(self, prop, mapper, of_type=None):
+        def __init__(self, prop, mapper, of_type=None, adapter=None):
             self.prop = self.property = prop
             self.mapper = mapper
+            self.adapter = adapter
             if of_type:
                 self._of_type = _class_to_mapper(of_type)
 
+        def adapted(self, adapter):
+            """Return a copy of this PropComparator which will use the given adaption function
+            on the local side of generated expressions.
+
+            """
+            return PropertyLoader.Comparator(self.prop, self.mapper, getattr(self, '_of_type', None), adapter)
+            
         @property
         def parententity(self):
             return self.prop.parent
 
         def __clause_element__(self):
-            return self.prop.parent._with_polymorphic_selectable
+            elem = self.prop.parent._with_polymorphic_selectable
+            if self.adapter:
+                return self.adapter(elem)
+            else:
+                return elem
 
         def operate(self, op, *other, **kwargs):
             return op(self, *other, **kwargs)
@@ -340,27 +359,20 @@ class PropertyLoader(StrategizedProperty):
         def of_type(self, cls):
             return PropertyLoader.Comparator(self.prop, self.mapper, cls)
 
+        def in_(self, other):
+            raise NotImplementedError("in_() not yet supported for relations.  For a "
+                    "simple many-to-one, use in_() against the set of foreign key values.")
+            
         def __eq__(self, other):
             if other is None:
                 if self.prop.direction in [ONETOMANY, MANYTOMANY]:
-                    return ~sql.exists([1], self.prop.primaryjoin)
+                    return ~self._criterion_exists()
                 else:
-                    return self.prop._optimized_compare(None)
+                    return self.prop._optimized_compare(None, adapt_source=self.adapter)
             elif self.prop.uselist:
-                if not hasattr(other, '__iter__'):
-                    raise sa_exc.InvalidRequestError("Can only compare a collection to an iterable object.  Use contains().")
-                else:
-                    j = self.prop.primaryjoin
-                    if self.prop.secondaryjoin:
-                        j = j & self.prop.secondaryjoin
-                    clauses = []
-                    for o in other:
-                        clauses.append(
-                            sql.exists([1], j & sql.and_(*[x==y for (x, y) in zip(self.prop.mapper.primary_key, self.prop.mapper.primary_key_from_instance(o))]))
-                        )
-                    return sql.and_(*clauses)
+                raise sa_exc.InvalidRequestError("Can't compare a collection to an object or collection; use contains() to test for membership.")
             else:
-                return self.prop._optimized_compare(other)
+                return self.prop._optimized_compare(other, adapt_source=self.adapter)
 
         def _criterion_exists(self, criterion=None, **kwargs):
             if getattr(self, '_of_type', None):
@@ -371,20 +383,28 @@ class PropertyLoader(StrategizedProperty):
             else:
                 to_selectable = None
 
-            pj, sj, source, dest, secondary, target_adapter = self.prop._create_joins(dest_polymorphic=True, dest_selectable=to_selectable)
+            if self.adapter:
+                source_selectable = self.__clause_element__()
+            else:
+                source_selectable = None
+            pj, sj, source, dest, secondary, target_adapter = \
+                self.prop._create_joins(dest_polymorphic=True, dest_selectable=to_selectable, source_selectable=source_selectable)
 
             for k in kwargs:
-                crit = self.prop.mapper.class_manager.get_inst(k) == kwargs[k]
+                crit = self.prop.mapper.class_manager[k] == kwargs[k]
                 if criterion is None:
                     criterion = crit
                 else:
                     criterion = criterion & crit
-
+            
+            # annotate the *local* side of the join condition, in the case of pj + sj this
+            # is the full primaryjoin, in the case of just pj its the local side of
+            # the primaryjoin.  
             if sj:
                 j = _orm_annotate(pj) & sj
             else:
                 j = _orm_annotate(pj, exclude=self.prop.remote_side)
-
+            
             if criterion and target_adapter:
                 # limit this adapter to annotated only?
                 criterion = target_adapter.traverse(criterion)
@@ -394,7 +414,10 @@ class PropertyLoader(StrategizedProperty):
             # to anything in the enclosing query.
             if criterion:
                 criterion = criterion._annotate({'_halt_adapt': True})
-            return sql.exists([1], j & criterion, from_obj=dest).correlate(source)
+            
+            crit = j & criterion
+            
+            return sql.exists([1], crit, from_obj=dest).correlate(source)
 
         def any(self, criterion=None, **kwargs):
             if not self.prop.uselist:
@@ -410,7 +433,7 @@ class PropertyLoader(StrategizedProperty):
         def contains(self, other, **kwargs):
             if not self.prop.uselist:
                 raise sa_exc.InvalidRequestError("'contains' not implemented for scalar attributes.  Use ==")
-            clause = self.prop._optimized_compare(other)
+            clause = self.prop._optimized_compare(other, adapt_source=self.adapter)
 
             if self.prop.secondaryjoin:
                 clause.negation_clause = self.__negated_contains_or_equals(other)
@@ -418,25 +441,40 @@ class PropertyLoader(StrategizedProperty):
             return clause
 
         def __negated_contains_or_equals(self, other):
+            if self.prop.direction == MANYTOONE:
+                state = attributes.instance_state(other)
+                strategy = self.prop._get_strategy(strategies.LazyLoader)
+                
+                def state_bindparam(state, col):
+                    o = state.obj() # strong ref
+                    return lambda: self.prop.mapper._get_committed_attr_by_column(o, col)
+                
+                def adapt(col):
+                    if self.adapter:
+                        return self.adapter(col)
+                    else:
+                        return col
+                        
+                if strategy.use_get:
+                    return sql.and_(*[
+                        sql.or_(
+                        adapt(x) != state_bindparam(state, y),
+                        adapt(x) == None)
+                        for (x, y) in self.prop.local_remote_pairs])
+                    
             criterion = sql.and_(*[x==y for (x, y) in zip(self.prop.mapper.primary_key, self.prop.mapper.primary_key_from_instance(other))])
             return ~self._criterion_exists(criterion)
 
         def __ne__(self, other):
-            # TODO: simplify MANYTOONE comparsion when 
-            # the 'use_get' flag is enabled
-            
             if other is None:
                 if self.prop.direction == MANYTOONE:
                     return sql.or_(*[x!=None for x in self.prop._foreign_keys])
-                elif self.prop.uselist:
-                    return self.any()
                 else:
-                    return self.has()
-
-            if self.prop.uselist and not hasattr(other, '__iter__'):
-                raise sa_exc.InvalidRequestError("Can only compare a collection to an iterable object")
-
-            return self.__negated_contains_or_equals(other)
+                    return self._criterion_exists()
+            elif self.prop.uselist:
+                raise sa_exc.InvalidRequestError("Can't compare a collection to an object or collection; use contains() to test for membership.")
+            else:
+                return self.__negated_contains_or_equals(other)
 
     def compare(self, op, value, value_is_parent=False):
         if op == operators.eq:
@@ -450,10 +488,11 @@ class PropertyLoader(StrategizedProperty):
         else:
             return op(self.comparator, value)
 
-    def _optimized_compare(self, value, value_is_parent=False):
+    def _optimized_compare(self, value, value_is_parent=False, adapt_source=None):
         if value is not None:
             value = attributes.instance_state(value)
-        return self._get_strategy(strategies.LazyLoader).lazy_clause(value, reverse_direction=not value_is_parent, alias_secondary=True)
+        return self._get_strategy(strategies.LazyLoader).\
+                lazy_clause(value, reverse_direction=not value_is_parent, alias_secondary=True, adapt_source=adapt_source)
 
     def __str__(self):
         return str(self.parent.class_.__name__) + "." + self.key
@@ -501,8 +540,13 @@ class PropertyLoader(StrategizedProperty):
     def cascade_iterator(self, type_, state, visited_instances, halt_on=None):
         if not type_ in self.cascade:
             return
+
         # only actively lazy load on the 'delete' cascade
-        passive = type_ != 'delete' or self.passive_deletes
+        if type_ != 'delete' or self.passive_deletes:
+            passive = attributes.PASSIVE_NO_INITIALIZE
+        else:
+            passive = attributes.PASSIVE_OFF
+
         mapper = self.mapper.primary_mapper()
         instances = state.value_as_iterable(self.key, passive=passive)
         if instances:
@@ -550,6 +594,14 @@ class PropertyLoader(StrategizedProperty):
         for attr in ('order_by', 'primaryjoin', 'secondaryjoin', 'secondary', '_foreign_keys', 'remote_side'):
             if callable(getattr(self, attr)):
                 setattr(self, attr, getattr(self, attr)())
+
+        # in the case that InstrumentedAttributes were used to construct
+        # primaryjoin or secondaryjoin, remove the "_orm_adapt" annotation so these
+        # interact with Query in the same way as the original Table-bound Column objects
+        for attr in ('primaryjoin', 'secondaryjoin'):
+            val = getattr(self, attr)
+            if val:
+                setattr(self, attr, _orm_deannotate(val))
         
         if self.order_by:
             self.order_by = [expression._literal_as_column(x) for x in util.to_list(self.order_by)]
@@ -587,19 +639,19 @@ class PropertyLoader(StrategizedProperty):
             # found will try the more general mapped table, which in the case of inheritance
             # is a join.
             try:
-                return sql.join(mapper.local_table, table)
+                return join_condition(mapper.local_table, table)
             except sa_exc.ArgumentError, e:
-                return sql.join(mapper.mapped_table, table)
+                return join_condition(mapper.mapped_table, table)
 
         try:
             if self.secondary is not None:
                 if self.secondaryjoin is None:
-                    self.secondaryjoin = _search_for_join(self.mapper, self.secondary).onclause
+                    self.secondaryjoin = _search_for_join(self.mapper, self.secondary)
                 if self.primaryjoin is None:
-                    self.primaryjoin = _search_for_join(self.parent, self.secondary).onclause
+                    self.primaryjoin = _search_for_join(self.parent, self.secondary)
             else:
                 if self.primaryjoin is None:
-                    self.primaryjoin = _search_for_join(self.parent, self.target).onclause
+                    self.primaryjoin = _search_for_join(self.parent, self.target)
         except sa_exc.ArgumentError, e:
             raise sa_exc.ArgumentError("Could not determine join condition between "
                         "parent/child tables on relation %s.  "

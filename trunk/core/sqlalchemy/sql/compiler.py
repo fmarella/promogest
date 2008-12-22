@@ -20,7 +20,7 @@ is otherwise internal to SQLAlchemy.
 
 import string, re
 from sqlalchemy import schema, engine, util, exc
-from sqlalchemy.sql import operators, functions, util as sql_util
+from sqlalchemy.sql import operators, functions, util as sql_util, visitors
 from sqlalchemy.sql import expression as sql
 
 RESERVED_WORDS = set([
@@ -47,7 +47,6 @@ ILLEGAL_INITIAL_CHARACTERS = re.compile(r'[0-9$]')
 
 BIND_PARAMS = re.compile(r'(?<![:\w\$\x5c]):([\w\$]+)(?![:\w\$])', re.UNICODE)
 BIND_PARAMS_ESC = re.compile(r'\x5c(:[\w\$]+)(?![:\w\$])', re.UNICODE)
-ANONYMOUS_LABEL = re.compile(r'{ANON (-?\d+) ([^{}]+)}')
 
 BIND_TEMPLATES = {
     'pyformat':"%%(%(name)s)s",
@@ -109,15 +108,35 @@ FUNCTIONS = {
     functions.user: 'USER'
 }
 
+
+class _CompileLabel(visitors.Visitable):
+    """lightweight label object which acts as an expression._Label."""
+
+    __visit_name__ = 'label'
+    __slots__ = 'element', 'name'
+    
+    def __init__(self, col, name):
+        self.element = col
+        self.name = name
+        
+    @property
+    def quote(self):
+        return self.element.quote
+
 class DefaultCompiler(engine.Compiled):
     """Default implementation of Compiled.
 
     Compiles ClauseElements into SQL strings.   Uses a similar visit
     paradigm as visitors.ClauseVisitor but implements its own traversal.
+
     """
 
     operators = OPERATORS
     functions = FUNCTIONS
+
+    # if we are insert/update/delete. 
+    # set to true when we visit an INSERT, UPDATE or DELETE
+    isdelete = isinsert = isupdate = False
 
     def __init__(self, dialect, statement, column_keys=None, inline=False, **kwargs):
         """Construct a new ``DefaultCompiler`` object.
@@ -131,12 +150,9 @@ class DefaultCompiler(engine.Compiled):
         column_keys
           a list of column names to be compiled into an INSERT or UPDATE
           statement.
+
         """
-
-        super(DefaultCompiler, self).__init__(dialect, statement, column_keys, **kwargs)
-
-        # if we are insert/update/delete.  set to true when we visit an INSERT, UPDATE or DELETE
-        self.isdelete = self.isinsert = self.isupdate = False
+        engine.Compiled.__init__(self, dialect, statement, column_keys, **kwargs)
 
         # compile INSERT/UPDATE defaults/sequences inlined (no pre-execute)
         self.inline = inline or getattr(statement, 'inline', False)
@@ -148,18 +164,13 @@ class DefaultCompiler(engine.Compiled):
         # actually present in the generated SQL
         self.bind_names = {}
 
-        # a stack.  what recursive compiler doesn't have a stack ? :)
+        # stack which keeps track of nested SELECT statements
         self.stack = []
 
         # relates label names in the final SQL to
         # a tuple of local column/label name, ColumnElement object (if any) and TypeEngine.
         # ResultProxy uses this for type processing and column targeting
         self.result_map = {}
-
-        # a dictionary of ClauseElement subclasses to counters, which are used to
-        # generate truncated identifier names or "anonymous" identifiers such as
-        # for aliases
-        self.generated_ids = {}
 
         # true if the paramstyle is positional
         self.positional = self.dialect.positional
@@ -171,22 +182,24 @@ class DefaultCompiler(engine.Compiled):
         # an IdentifierPreparer that formats the quoting of identifiers
         self.preparer = self.dialect.identifier_preparer
 
+        self.label_length = self.dialect.label_length or self.dialect.max_identifier_length
+        
+        # a map which tracks "anonymous" identifiers that are
+        # created on the fly here
+        self.anon_map = util.PopulateDict(self._process_anon)
+
+        # a map which tracks "truncated" names based on dialect.label_length
+        # or dialect.max_identifier_length
+        self.truncated_names = {}
+
     def compile(self):
         self.string = self.process(self.statement)
 
-    def process(self, obj, stack=None, **kwargs):
-        if stack:
-            self.stack.append(stack)
-        try:
-            meth = getattr(self, "visit_%s" % obj.__visit_name__, None)
-            if meth:
-                return meth(obj, **kwargs)
-        finally:
-            if stack:
-                self.stack.pop(-1)
+    def process(self, obj, **kwargs):
+        return obj._compiler_dispatch(self, **kwargs)
 
-    def is_subquery(self, select):
-        return self.stack and self.stack[-1].get('is_subquery')
+    def is_subquery(self):
+        return len(self.stack) > 1
 
     def construct_params(self, params=None):
         """return a dictionary of bind parameter keys and values"""
@@ -219,8 +232,8 @@ class DefaultCompiler(engine.Compiled):
         """Called when a SELECT statement has no froms, and no FROM clause is to be appended.
 
         Gives Oracle a chance to tack on a ``FROM DUAL`` to the string output.
-        """
 
+        """
         return ""
 
     def visit_grouping(self, grouping, **kwargs):
@@ -231,34 +244,27 @@ class DefaultCompiler(engine.Compiled):
         # or ORDER BY clause of a select.  dialect-specific compilers
         # can modify this behavior.
         if within_columns_clause:
-            labelname = self._truncated_identifier("colident", label.name)
+            labelname = isinstance(label.name, sql._generated_label) and \
+                    self._truncated_identifier("colident", label.name) or label.name
 
             if result_map is not None:
                 result_map[labelname.lower()] = (label.name, (label, label.element, labelname), label.element.type)
 
-            return " ".join([self.process(label.element), self.operator_string(operators.as_), self.preparer.format_label(label, labelname)])
+            return self.process(label.element) + " " + \
+                        self.operator_string(operators.as_) + " " + \
+                        self.preparer.format_label(label, labelname)
         else:
             return self.process(label.element)
             
     def visit_column(self, column, result_map=None, **kwargs):
-
-        if column._is_oid:
-            name = self.dialect.oid_column_name(column)
-            if name is None:
-                if len(column.table.primary_key) != 0:
-                    pk = list(column.table.primary_key)[0]
-                    return self.visit_column(pk, result_map=result_map, **kwargs)
-                else:
-                    return None
-        elif not column.is_literal:
-            name = self._truncated_identifier("colident", column.name)
-        else:
-            name = column.name
+        name = column.name
+        if not column.is_literal and isinstance(name, sql._generated_label):
+            name = self._truncated_identifier("colident", name)
 
         if result_map is not None:
             result_map[name.lower()] = (name, (column, ), column.type)
-
-        if getattr(column, "is_literal", False):
+        
+        if column.is_literal:
             name = self.escape_literal_column(name)
         else:
             name = self.preparer.quote(name, column.quote)
@@ -266,11 +272,11 @@ class DefaultCompiler(engine.Compiled):
         if column.table is None or not column.table.named_with_column:
             return name
         else:
-            if getattr(column.table, 'schema', None):
+            if column.table.schema:
                 schema_prefix = self.preparer.quote(column.table.schema, column.table.quote_schema) + '.'
             else:
                 schema_prefix = ''
-            return schema_prefix + self.preparer.quote(ANONYMOUS_LABEL.sub(self._process_anon, column.table.name), column.table.quote) + "." + name
+            return schema_prefix + self.preparer.quote(column.table.name % self.anon_map, column.table.quote) + "." + name
 
     def escape_literal_column(self, text):
         """provide escaping for the literal_column() construct."""
@@ -342,16 +348,11 @@ class DefaultCompiler(engine.Compiled):
         return self.functions.get(func.__class__, self.functions.get(func.name, func.name + "%(expr)s"))
 
     def visit_compound_select(self, cs, asfrom=False, parens=True, **kwargs):
-        stack_entry = {'select':cs}
+        entry = self.stack and self.stack[-1] or {}
+        self.stack.append({'from':entry.get('from', None), 'iswrapper':True})
 
-        if asfrom:
-            stack_entry['is_subquery'] = True
-        elif self.stack and self.stack[-1].get('select'):
-            stack_entry['is_subquery'] = True
-        self.stack.append(stack_entry)
-
-        text = string.join((self.process(c, asfrom=asfrom, parens=False)
-                            for c in cs.selects),
+        text = string.join((self.process(c, asfrom=asfrom, parens=False, compound_index=i)
+                            for i, c in enumerate(cs.selects)),
                            " " + cs.keyword + " ")
         group_by = self.process(cs._group_by_clause, asfrom=asfrom)
         if group_by:
@@ -361,7 +362,6 @@ class DefaultCompiler(engine.Compiled):
         text += (cs._limit is not None or cs._offset is not None) and self.limit_clause(cs) or ""
 
         self.stack.pop(-1)
-
         if asfrom and parens:
             return "(" + text + ")"
         else:
@@ -399,42 +399,37 @@ class DefaultCompiler(engine.Compiled):
             return self.bind_names[bindparam]
 
         bind_name = bindparam.key
-        bind_name = self._truncated_identifier("bindparam", bind_name)
+        bind_name = isinstance(bind_name, sql._generated_label) and \
+                        self._truncated_identifier("bindparam", bind_name) or bind_name
         # add to bind_names for translation
         self.bind_names[bindparam] = bind_name
 
         return bind_name
 
     def _truncated_identifier(self, ident_class, name):
-        if (ident_class, name) in self.generated_ids:
-            return self.generated_ids[(ident_class, name)]
+        if (ident_class, name) in self.truncated_names:
+            return self.truncated_names[(ident_class, name)]
         
-        anonname = ANONYMOUS_LABEL.sub(self._process_anon, name)
+        anonname = name % self.anon_map
 
-        if len(anonname) > self.dialect.max_identifier_length:
-            counter = self.generated_ids.get(ident_class, 1)
-            truncname = anonname[0:self.dialect.max_identifier_length - 6] + "_" + hex(counter)[2:]
-            self.generated_ids[ident_class] = counter + 1
+        if len(anonname) > self.label_length:
+            counter = self.truncated_names.get(ident_class, 1)
+            truncname = anonname[0:max(self.label_length - 6, 0)] + "_" + hex(counter)[2:]
+            self.truncated_names[ident_class] = counter + 1
         else:
             truncname = anonname
-        self.generated_ids[(ident_class, name)] = truncname
+        self.truncated_names[(ident_class, name)] = truncname
         return truncname
     
-    def _process_anon(self, match):
-        (ident, derived) = match.group(1, 2)
-
-        key = ('anonymous', ident)
-        if key in self.generated_ids:
-            return self.generated_ids[key]
-        else:
-            anonymous_counter = self.generated_ids.get(('anon_counter', derived), 1)
-            newname = derived + "_" + str(anonymous_counter)
-            self.generated_ids[('anon_counter', derived)] = anonymous_counter + 1
-            self.generated_ids[key] = newname
-            return newname
-
     def _anonymize(self, name):
-        return ANONYMOUS_LABEL.sub(self._process_anon, name)
+        return name % self.anon_map
+        
+    def _process_anon(self, key):
+        (ident, derived) = key.split(' ')
+
+        anonymous_counter = self.anon_map.get(derived, 1)
+        self.anon_map[derived] = anonymous_counter + 1
+        return derived + "_" + str(anonymous_counter)
 
     def bindparam_string(self, name):
         if self.positional:
@@ -445,7 +440,7 @@ class DefaultCompiler(engine.Compiled):
 
     def visit_alias(self, alias, asfrom=False, **kwargs):
         if asfrom:
-            return self.process(alias.original, asfrom=True, **kwargs) + " AS " + self.preparer.format_alias(alias, self._anonymize(alias.name))
+            return self.process(alias.original, asfrom=True, **kwargs) + " AS " + self.preparer.format_alias(alias, alias.name % self.anon_map)
         else:
             return self.process(alias.original, **kwargs)
 
@@ -455,8 +450,8 @@ class DefaultCompiler(engine.Compiled):
         if isinstance(column, sql._Label):
             return column
 
-        if select.use_labels and getattr(column, '_label', None):
-            return column.label(column._label)
+        if select.use_labels and column._label:
+            return _CompileLabel(column, column._label)
 
         if \
             asfrom and \
@@ -464,69 +459,56 @@ class DefaultCompiler(engine.Compiled):
             not column.is_literal and \
             column.table is not None and \
             not isinstance(column.table, sql.Select):
-            return column.label(column.name)
-        elif not isinstance(column, (sql._UnaryExpression, sql._TextClause, sql._BindParamClause)) and (not hasattr(column, 'name') or isinstance(column, sql._Function)):
-            return column.label(column.anon_label)
+            return _CompileLabel(column, sql._generated_label(column.name))
+        elif not isinstance(column, (sql._UnaryExpression, sql._TextClause, sql._BindParamClause)) \
+                and (not hasattr(column, 'name') or isinstance(column, sql._Function)):
+            return _CompileLabel(column, column.anon_label)
         else:
             return column
 
-    def visit_select(self, select, asfrom=False, parens=True, iswrapper=False, **kwargs):
+    def visit_select(self, select, asfrom=False, parens=True, iswrapper=False, compound_index=1, **kwargs):
 
-        stack_entry = {'select':select}
-        prev_entry = self.stack and self.stack[-1] or None
-
-        if asfrom or (prev_entry and 'select' in prev_entry):
-            stack_entry['is_subquery'] = True
-            stack_entry['iswrapper'] = iswrapper
-            if not iswrapper and prev_entry and 'iswrapper' in prev_entry:
-                column_clause_args = {'result_map':self.result_map}
-            else:
-                column_clause_args = {}
-        elif iswrapper:
-            column_clause_args = {}
-            stack_entry['iswrapper'] = True
-        else:
-            column_clause_args = {'result_map':self.result_map}
-
-        if self.stack and 'from' in self.stack[-1]:
-            existingfroms = self.stack[-1]['from']
-        else:
-            existingfroms = None
+        entry = self.stack and self.stack[-1] or {}
+        
+        existingfroms = entry.get('from', None)
 
         froms = select._get_display_froms(existingfroms)
 
         correlate_froms = set(sql._from_objects(*froms))
 
-        # TODO: might want to propigate existing froms for select(select(select))
+        # TODO: might want to propagate existing froms for select(select(select))
         # where innermost select should correlate to outermost
-#        if existingfroms:
-#            correlate_froms = correlate_froms.union(existingfroms)
-        stack_entry['from'] = correlate_froms
-        self.stack.append(stack_entry)
+        # if existingfroms:
+        #     correlate_froms = correlate_froms.union(existingfroms)
+
+        self.stack.append({'from':correlate_froms, 'iswrapper':iswrapper})
+
+        if compound_index==1 and not entry or entry.get('iswrapper', False):
+            column_clause_args = {'result_map':self.result_map}
+        else:
+            column_clause_args = {}
 
         # the actual list of columns to print in the SELECT column list.
-        inner_columns = util.OrderedSet(
-            [c for c in [
+        inner_columns = util.unique_list(
+            c for c in [
                 self.process(
                     self.label_select_column(select, co, asfrom=asfrom), 
                     within_columns_clause=True,
                     **column_clause_args) 
                 for co in select.inner_columns
             ]
-            if c is not None]
+            if c is not None
         )
-
-        text = " ".join(["SELECT"] + [self.process(x) for x in select._prefixes]) + " "
+        
+        text = "SELECT "  # we're off to a good start !
+        if select._prefixes:
+            text += " ".join(self.process(x) for x in select._prefixes) + " "
         text += self.get_select_precolumns(select)
         text += ', '.join(inner_columns)
 
-        from_strings = []
-        for f in froms:
-            from_strings.append(self.process(f, asfrom=True))
-
         if froms:
             text += " \nFROM "
-            text += ', '.join(from_strings)
+            text += ', '.join(self.process(f, asfrom=True) for f in froms)
         else:
             text += self.default_from()
 
@@ -535,18 +517,22 @@ class DefaultCompiler(engine.Compiled):
             if t:
                 text += " \nWHERE " + t
 
-        group_by = self.process(select._group_by_clause)
-        if group_by:
-            text += " GROUP BY " + group_by
+        if select._group_by_clause.clauses:
+            group_by = self.process(select._group_by_clause)
+            if group_by:
+                text += " GROUP BY " + group_by
 
         if select._having is not None:
             t = self.process(select._having)
             if t:
                 text += " \nHAVING " + t
 
-        text += self.order_by_clause(select)
-        text += (select._limit is not None or select._offset is not None) and self.limit_clause(select) or ""
-        text += self.for_update_clause(select)
+        if select._order_by_clause.clauses:
+            text += self.order_by_clause(select)
+        if select._limit is not None or select._offset is not None:
+            text += self.limit_clause(select)
+        if select.for_update:
+            text += self.for_update_clause(select)
 
         self.stack.pop(-1)
 
@@ -607,11 +593,18 @@ class DefaultCompiler(engine.Compiled):
         insert = ' '.join(["INSERT"] +
                           [self.process(x) for x in insert_stmt._prefixes])
 
-        return (insert + " INTO %s (%s) VALUES (%s)" %
+        if not colparams and not self.dialect.supports_default_values and not self.dialect.supports_empty_insert:
+            raise exc.NotSupportedError(
+                "The version of %s you are using does not support empty inserts." % self.dialect.name)
+        elif not colparams and self.dialect.supports_default_values:
+            return (insert + " INTO %s DEFAULT VALUES" % (
+                (preparer.format_table(insert_stmt.table),)))
+        else: 
+            return (insert + " INTO %s (%s) VALUES (%s)" %
                 (preparer.format_table(insert_stmt.table),
-                 ', '.join(preparer.quote(c[0].name, c[0].quote)
-                           for c in colparams),
-                 ', '.join(c[1] for c in colparams)))
+                 ', '.join([preparer.format_column(c[0])
+                           for c in colparams]),
+                 ', '.join([c[1] for c in colparams])))
 
     def visit_update(self, update_stmt):
         self.stack.append({'from': set([update_stmt.table])})
@@ -1024,8 +1017,8 @@ class IdentifierPreparer(object):
         self.initial_quote = initial_quote
         self.final_quote = final_quote or self.initial_quote
         self.omit_schema = omit_schema
-        self.__strings = {}
-
+        self._strings = {}
+        
     def _escape_identifier(self, value):
         """Escape an identifier.
 
@@ -1060,21 +1053,21 @@ class IdentifierPreparer(object):
                 or self.illegal_initial_characters.match(value[0])
                 or not self.legal_characters.match(unicode(value))
                 or (lc_value != value))
-
+    
     def quote(self, ident, force):
-        if force:
-            return self.quote_identifier(ident)
-        elif force is False:
-            return ident
-            
-        if ident in self.__strings:
-            return self.__strings[ident]
-        else:
-            if self._requires_quotes(ident):
-                self.__strings[ident] = self.quote_identifier(ident)
+        if force is None:
+            if ident in self._strings:
+                return self._strings[ident]
             else:
-                self.__strings[ident] = ident
-            return self.__strings[ident]
+                if self._requires_quotes(ident):
+                    self._strings[ident] = self.quote_identifier(ident)
+                else:
+                    self._strings[ident] = ident
+                return self._strings[ident]
+        elif force:
+            return self.quote_identifier(ident)
+        else:
+            return ident
 
     def format_sequence(self, sequence, use_schema=True):
         name = self.quote(sequence.name, sequence.quote)

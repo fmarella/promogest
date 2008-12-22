@@ -19,8 +19,6 @@ from sqlalchemy import exc
 
 AUTOCOMMIT_REGEXP = re.compile(r'\s*(?:UPDATE|INSERT|CREATE|DELETE|DROP|ALTER)',
                                re.I | re.UNICODE)
-SELECT_REGEXP = re.compile(r'\s*SELECT', re.I | re.UNICODE)
-
 
 class DefaultDialect(base.Dialect):
     """Default implementation of Dialect"""
@@ -39,9 +37,10 @@ class DefaultDialect(base.Dialect):
     supports_pk_autoincrement = True
     dbapi_type_map = {}
     default_paramstyle = 'named'
-    supports_default_values = True
+    supports_default_values = False 
+    supports_empty_insert = True
 
-    def __init__(self, convert_unicode=False, assert_unicode=False, encoding='utf-8', paramstyle=None, dbapi=None, **kwargs):
+    def __init__(self, convert_unicode=False, assert_unicode=False, encoding='utf-8', paramstyle=None, dbapi=None, label_length=None, **kwargs):
         self.convert_unicode = convert_unicode
         self.assert_unicode = assert_unicode
         self.encoding = encoding
@@ -56,6 +55,9 @@ class DefaultDialect(base.Dialect):
             self.paramstyle = self.default_paramstyle
         self.positional = self.paramstyle in ('qmark', 'format', 'numeric')
         self.identifier_preparer = self.preparer(self)
+        if label_length and label_length > self.max_identifier_length:
+            raise exc.ArgumentError("Label length of %d is greater than this dialect's maximum identifier length of %d" % (label_length, self.max_identifier_length))
+        self.label_length = label_length
 
     def create_execution_context(self, connection, **kwargs):
         return DefaultExecutionContext(self, connection, **kwargs)
@@ -75,9 +77,6 @@ class DefaultDialect(base.Dialect):
         if len(ident) > self.max_identifier_length:
             raise exc.IdentifierError("Identifier '%s' exceeds maximum length of %d characters" % (ident, self.max_identifier_length))
         
-    def oid_column_name(self, column):
-        return None
-
     def do_begin(self, connection):
         """Implementations might want to put logic here for turning
         autocommit on/off, etc.
@@ -137,6 +136,9 @@ class DefaultExecutionContext(base.ExecutionContext):
             # compiled clauseelement.  process bind params, process table defaults,
             # track collections used by ResultProxy to target and process results
 
+            if not compiled.can_execute:
+                raise exc.ArgumentError("Not an executable clause: %s" % compiled)
+
             self.processors = dict(
                 (key, value) for key, value in
                 ( (compiled.bind_names[bindparam],
@@ -153,12 +155,9 @@ class DefaultExecutionContext(base.ExecutionContext):
 
             self.isinsert = compiled.isinsert
             self.isupdate = compiled.isupdate
+            self.should_autocommit = compiled.statement._autocommit
             if isinstance(compiled.statement, expression._TextClause):
-                self.returns_rows = self.returns_rows_text(self.statement)
-                self.should_autocommit = compiled.statement._autocommit or self.should_autocommit_text(self.statement)
-            else:
-                self.returns_rows = self.returns_rows_compiled(compiled)
-                self.should_autocommit = getattr(compiled.statement, '_autocommit', False) or self.should_autocommit_compiled(compiled)
+                self.should_autocommit = self.should_autocommit or self.should_autocommit_text(self.statement)
 
             if not parameters:
                 self.compiled_parameters = [compiled.construct_params()]
@@ -183,15 +182,16 @@ class DefaultExecutionContext(base.ExecutionContext):
                 self.statement = statement
             self.isinsert = self.isupdate = False
             self.cursor = self.create_cursor()
-            self.returns_rows = self.returns_rows_text(statement)
             self.should_autocommit = self.should_autocommit_text(statement)
         else:
             # no statement. used for standalone ColumnDefault execution.
             self.statement = None
-            self.isinsert = self.isupdate = self.executemany = self.returns_rows = self.should_autocommit = False
+            self.isinsert = self.isupdate = self.executemany = self.should_autocommit = False
             self.cursor = self.create_cursor()
 
-    connection = property(lambda s:s._connection._branch())
+    @property
+    def connection(self):
+        return self._connection._branch()
 
     def __encode_param_keys(self, params):
         """apply string encoding to the keys of dictionary-based bind parameters.
@@ -250,37 +250,18 @@ class DefaultExecutionContext(base.ExecutionContext):
                 parameters.append(param)
         return parameters
 
-    def returns_rows_compiled(self, compiled):
-        return isinstance(compiled.statement, expression.Selectable)
-
-    def returns_rows_text(self, statement):
-        return SELECT_REGEXP.match(statement)
-
-    def should_autocommit_compiled(self, compiled):
-        return isinstance(compiled.statement, expression._UpdateBase)
-
     def should_autocommit_text(self, statement):
         return AUTOCOMMIT_REGEXP.match(statement)
 
-
     def create_cursor(self):
         return self._connection.connection.cursor()
-
-    def pre_execution(self):
-        self.pre_exec()
-
-    def post_execution(self):
-        self.post_exec()
-
-    def result(self):
-        return self.get_result_proxy()
 
     def pre_exec(self):
         pass
 
     def post_exec(self):
         pass
-
+    
     def get_result_proxy(self):
         return base.ResultProxy(self)
 
@@ -289,7 +270,7 @@ class DefaultExecutionContext(base.ExecutionContext):
             return self._rowcount
         else:
             return self.cursor.rowcount
-
+        
     def supports_sane_rowcount(self):
         return self.dialect.supports_sane_rowcount
 

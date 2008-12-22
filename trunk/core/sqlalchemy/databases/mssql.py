@@ -69,7 +69,14 @@ class MSNumeric(sqltypes.Numeric):
                 # Not sure that this exception is needed
                 return value
             else:
-                return str(value)
+                if not isinstance(value, float) and value._exp < -6:
+                    value = ((value < 0 and '-' or '')
+                        + '0.'
+                        + '0' * -(value._exp+1)
+                        + value._int)
+                    return value
+                else:
+                    return str(value)
         return process
 
     def get_col_spec(self):
@@ -205,7 +212,7 @@ class MSText(sqltypes.Text):
 
 class MSString(sqltypes.String):
     def get_col_spec(self):
-        return "VARCHAR(%(length)s)" % {'length' : self.length}
+        return "VARCHAR" + (self.length and "(%d)" % self.length or "")
 
 class MSNVarchar(sqltypes.Unicode):
     def get_col_spec(self):
@@ -337,12 +344,6 @@ class MSSQLExecutionContext(default.DefaultExecutionContext):
                 self._last_inserted_ids = [int(row[0])] + self._last_inserted_ids[1:]
         super(MSSQLExecutionContext, self).post_exec()
 
-    _ms_is_select = re.compile(r'\s*(?:SELECT|sp_columns|EXEC)',
-                               re.I | re.UNICODE)
-
-    def returns_rows_text(self, statement):
-        return self._ms_is_select.match(statement) is not None
-
 
 class MSSQLExecutionContext_pyodbc (MSSQLExecutionContext):
     def pre_exec(self):
@@ -361,6 +362,8 @@ class MSSQLExecutionContext_pyodbc (MSSQLExecutionContext):
 
 class MSSQLDialect(default.DefaultDialect):
     name = 'mssql'
+    supports_default_values = True
+    supports_empty_insert = False
 
     colspecs = {
         sqltypes.Unicode : MSNVarchar,
@@ -443,6 +446,26 @@ class MSSQLDialect(default.DefaultDialect):
                 raise ImportError('No DBAPI module detected for MSSQL - please install pyodbc, pymssql, or adodbapi')
     dbapi = classmethod(dbapi)
 
+    def server_version_info(self, connection):
+        """A tuple of the database server version.
+
+        Formats the remote server version as a tuple of version values,
+        e.g. ``(9, 0, 1399)``.  If there are strings in the version number
+        they will be in the tuple too, so don't count on these all being
+        ``int`` values.
+
+        This is a fast check that does not require a round trip.  It is also
+        cached per-Connection.
+        """
+        return connection.dialect._server_version_info(connection.connection)
+    server_version_info = base.connection_memoize(
+        ('mssql', 'server_version_info'))(server_version_info)
+
+    def _server_version_info(self, dbapi_con):
+        """Return a tuple of the database's version number."""
+
+        raise NotImplementedError()
+    
     def create_connect_args(self, url):
         opts = url.translate_connect_args(username='user')
         opts.update(url.query)
@@ -659,10 +682,10 @@ class MSSQLDialect(default.DefaultDialect):
         rows = connection.execute(s).fetchall()
 
         def _gen_fkref(table, rschema, rtbl, rcol):
-            if table.schema and rschema != table.schema or rschema != current_schema:
-                return '.'.join([rschema, rtbl, rcol])
-            else:
+            if rschema == current_schema and not table.schema:
                 return '.'.join([rtbl, rcol])
+            else:
+                return '.'.join([rschema, rtbl, rcol])
 
         # group rows by constraint ID, to handle multi-column FKs
         fknm, scols, rcols = (None, [], [])
@@ -670,7 +693,7 @@ class MSSQLDialect(default.DefaultDialect):
             scol, rschema, rtbl, rcol, rfknm, fkmatch, fkuprule, fkdelrule = r
             # if the reflected schema is the default schema then don't set it because this will
             # play into the metadata key causing duplicates.
-            if rschema == current_schema:
+            if rschema == current_schema and not table.schema:
                 schema.Table(rtbl, table.metadata, autoload=True, autoload_with=connection)
             else:
                 schema.Table(rtbl, table.metadata, schema=rschema, autoload=True, autoload_with=connection)
@@ -772,18 +795,24 @@ class MSSQLDialect_pyodbc(MSSQLDialect):
         if 'max_identifier_length' in keys:
             self.max_identifier_length = int(keys.pop('max_identifier_length'))
         if 'dsn' in keys:
-            connectors = ['dsn=%s' % keys['dsn']]
+            connectors = ['dsn=%s' % keys.pop('dsn')]
         else:
+            port = ''
+            if 'port' in keys and (
+                keys.get('driver', 'SQL Server') == 'SQL Server'):
+                port = ',%d' % int(keys.pop('port'))
+
             connectors = ["DRIVER={%s}" % keys.pop('driver', 'SQL Server'),
-                          'Server=%s' % keys['host'],
-                          'Database=%s' % keys['database'] ]
-            if 'port' in keys:
-                connectors.append('Port=%d' % int(keys['port']))
-        
-        user = keys.get("user")
+                          'Server=%s%s' % (keys.pop('host', ''), port),
+                          'Database=%s' % keys.pop('database', '') ]
+
+            if 'port' in keys and not port:
+                connectors.append('Port=%d' % int(keys.pop('port')))
+
+        user = keys.pop("user", None)
         if user:
             connectors.append("UID=%s" % user)
-            connectors.append("PWD=%s" % keys.get("password", ""))
+            connectors.append("PWD=%s" % keys.pop('password', ''))
         else:
             connectors.append("TrustedConnection=Yes")
 
@@ -791,7 +820,7 @@ class MSSQLDialect_pyodbc(MSSQLDialect):
         # textual data from your database encoding to your client encoding 
         # This should obviously be set to 'No' if you query a cp1253 encoded 
         # database from a latin1 client... 
-        if 'odbc_autotranslate' in keys: 
+        if 'odbc_autotranslate' in keys:
             connectors.append("AutoTranslate=%s" % keys.pop("odbc_autotranslate"))
 
         # Allow specification of partial ODBC connect string
@@ -800,7 +829,7 @@ class MSSQLDialect_pyodbc(MSSQLDialect):
             if odbc_options[0]=="'" and odbc_options[-1]=="'":
                 odbc_options=odbc_options[1:-1]
             connectors.append(odbc_options)
-        
+        connectors.extend(['%s=%s' % (k,v) for k,v in keys.iteritems()])
         return [[";".join (connectors)], {}]
 
     def is_disconnect(self, e):
@@ -827,6 +856,18 @@ class MSSQLDialect_pyodbc(MSSQLDialect):
                 except pyodbc.Error, e:
                     cursor.nextset()
             context._last_inserted_ids = [int(row[0])]
+
+    def _server_version_info(self, dbapi_con):
+        """Convert a pyodbc SQL_DBMS_VER string into a tuple."""
+
+        version = []
+        r = re.compile('[.\-]')
+        for n in r.split(dbapi_con.getinfo(self.dbapi.SQL_DBMS_VER)):
+            try:
+                version.append(int(n))
+            except ValueError:
+                version.append(n)
+        return tuple(version)
 
 class MSSQLDialect_adodbapi(MSSQLDialect):
     supports_sane_rowcount = True
@@ -894,12 +935,15 @@ class MSSQLCompiler(compiler.DefaultCompiler):
 
     def get_select_precolumns(self, select):
         """ MS-SQL puts TOP, it's version of LIMIT here """
-        if not self.dialect.has_window_funcs:
+        if select._distinct or select._limit:
             s = select._distinct and "DISTINCT " or ""
+            
             if select._limit:
-                s += "TOP %s " % (select._limit,)
-            if select._offset:
-                raise exc.InvalidRequestError('MSSQL does not support LIMIT with an offset')
+                if not select._offset:
+                    s += "TOP %s " % (select._limit,)
+                else:
+                    if not self.dialect.has_window_funcs:
+                        raise exc.InvalidRequestError('MSSQL does not support LIMIT with an offset')
             return s
         return compiler.DefaultCompiler.get_select_precolumns(self, select)
 
@@ -910,13 +954,13 @@ class MSSQLCompiler(compiler.DefaultCompiler):
     def visit_select(self, select, **kwargs):
         """Look for ``LIMIT`` and OFFSET in a select statement, and if
         so tries to wrap it in a subquery with ``row_number()`` criterion.
+
         """
-        if self.dialect.has_window_funcs and (not getattr(select, '_mssql_visit', None)) and (select._limit is not None or select._offset is not None):
+        if self.dialect.has_window_funcs and (not getattr(select, '_mssql_visit', None)) and select._offset:
             # to use ROW_NUMBER(), an ORDER BY is required.
             orderby = self.process(select._order_by_clause)
             if not orderby:
-                orderby = list(select.oid_column.proxies)[0]
-                orderby = self.process(orderby)
+                raise exc.InvalidRequestError('MSSQL requires an order_by when using an offset.')
 
             _offset = select._offset
             _limit = select._limit
@@ -924,12 +968,9 @@ class MSSQLCompiler(compiler.DefaultCompiler):
             select = select.column(sql.literal_column("ROW_NUMBER() OVER (ORDER BY %s)" % orderby).label("mssql_rn")).order_by(None).alias()
 
             limitselect = sql.select([c for c in select.c if c.key!='mssql_rn'])
-            if _offset is not None:
-                limitselect.append_whereclause("mssql_rn>=%d" % _offset)
-                if _limit is not None:
-                    limitselect.append_whereclause("mssql_rn<=%d" % (_limit + _offset))
-            else:
-                limitselect.append_whereclause("mssql_rn<=%d" % _limit)
+            limitselect.append_whereclause("mssql_rn>%d" % _offset)
+            if _limit is not None:
+                limitselect.append_whereclause("mssql_rn<=%d" % (_limit + _offset))
             return self.process(limitselect, iswrapper=True, **kwargs)
         else:
             return compiler.DefaultCompiler.visit_select(self, select, **kwargs)
@@ -960,7 +1001,8 @@ class MSSQLCompiler(compiler.DefaultCompiler):
         return super(MSSQLCompiler, self).visit_alias(alias, **kwargs)
 
     def visit_column(self, column, result_map=None, **kwargs):
-        if column.table is not None and not self.isupdate and not self.isdelete:
+        if column.table is not None and \
+            (not self.isupdate and not self.isdelete) or self.is_subquery():
             # translate for schema-qualified table aliases
             t = self._schema_aliased_table(column.table)
             if t is not None:
@@ -968,16 +1010,26 @@ class MSSQLCompiler(compiler.DefaultCompiler):
 
                 if result_map is not None:
                     result_map[column.name.lower()] = (column.name, (column, ), column.type)
-                    
+
                 return super(MSSQLCompiler, self).visit_column(converted, result_map=None, **kwargs)
-                
+
         return super(MSSQLCompiler, self).visit_column(column, result_map=result_map, **kwargs)
 
     def visit_binary(self, binary, **kwargs):
-        """Move bind parameters to the right-hand side of an operator, where possible."""
-        if isinstance(binary.left, expression._BindParamClause) and binary.operator == operator.eq:
+        """Move bind parameters to the right-hand side of an operator, where
+        possible.
+
+        """
+        if isinstance(binary.left, expression._BindParamClause) and binary.operator == operator.eq \
+            and not isinstance(binary.right, expression._BindParamClause):
             return self.process(expression._BinaryExpression(binary.right, binary.left, binary.operator), **kwargs)
         else:
+            if (binary.operator in (operator.eq, operator.ne)) and (
+                (isinstance(binary.left, expression._FromGrouping) and isinstance(binary.left.element, expression._ScalarSelect)) or \
+                (isinstance(binary.right, expression._FromGrouping) and isinstance(binary.right.element, expression._ScalarSelect)) or \
+                 isinstance(binary.left, expression._ScalarSelect) or isinstance(binary.right, expression._ScalarSelect)):
+                op = binary.operator == operator.eq and "IN" or "NOT IN"
+                return self.process(expression._BinaryExpression(binary.left, binary.right, op), **kwargs)
             return super(MSSQLCompiler, self).visit_binary(binary, **kwargs)
 
     def label_select_column(self, select, column, asfrom):
@@ -994,7 +1046,7 @@ class MSSQLCompiler(compiler.DefaultCompiler):
         order_by = self.process(select._order_by_clause)
 
         # MSSQL only allows ORDER BY in subqueries if there is a LIMIT
-        if order_by and (not self.is_subquery(select) or select._limit):
+        if order_by and (not self.is_subquery() or select._limit):
             return " ORDER BY " + order_by
         else:
             return ""

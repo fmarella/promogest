@@ -4,7 +4,7 @@
 # This module is part of SQLAlchemy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
-import inspect, itertools, new, operator, sets, sys, warnings, weakref
+import inspect, itertools, new, operator, sys, warnings, weakref
 import __builtin__
 types = __import__('types')
 
@@ -18,8 +18,20 @@ except ImportError:
     import dummy_threading as threading
     from dummy_threading import local as ThreadLocal
 
-# TODO: 2.6 will whine about importing `sets`, but I think we still need it to
-# around to support older DB-API modules that return the 2.3 style set.
+if sys.version_info < (2, 6):
+    import sets
+else:
+    # 2.6 deprecates sets.Set, but we still need to be able to detect them
+    # in user code and as return values from DB-APIs
+    ignore = ('ignore', None, DeprecationWarning, None, 0)
+    try:
+        warnings.filters.insert(0, ignore)
+    except Exception:
+        import sets
+    else:
+        import sets
+        warnings.filters.remove(ignore)
+
 set_types = set, sets.Set
 
 EMPTY_SET = frozenset()
@@ -40,6 +52,7 @@ if sys.version_info >= (2, 5):
 
         def __init__(self, creator):
             self.creator = creator
+            
         def __missing__(self, key):
             self[key] = val = self.creator(key)
             return val
@@ -49,6 +62,7 @@ else:
 
         def __init__(self, creator):
             self.creator = creator
+            
         def __getitem__(self, key):
             try:
                 return dict.__getitem__(self, key)
@@ -94,6 +108,7 @@ except ImportError:
             return 'defaultdict(%s, %s)' % (self.default_factory,
                                             dict.__repr__(self))
 
+        
 def to_list(x, default=None):
     if x is None:
         return default
@@ -209,10 +224,10 @@ else:
 def flatten_iterator(x):
     """Given an iterator of which further sub-elements may also be
     iterators, flatten the sub-elements into a single iterator.
-    """
 
+    """
     for elem in x:
-        if hasattr(elem, '__iter__'):
+        if not isinstance(elem, basestring) and hasattr(elem, '__iter__'):
             for y in flatten_iterator(elem):
                 yield y
         else:
@@ -222,9 +237,10 @@ def get_cls_kwargs(cls):
     """Return the full set of inherited kwargs for the given `cls`.
 
     Probes a class's __init__ method, collecting all named arguments.  If the
-    __init__ defines a **kwargs catch-all, then the constructor is presumed to
+    __init__ defines a \**kwargs catch-all, then the constructor is presumed to
     pass along unrecognized keywords to it's base classes, and the collection
     process is repeated recursively on each of the bases.
+    
     """
 
     for c in cls.__mro__:
@@ -408,7 +424,7 @@ def asbool(obj):
     return bool(obj)
 
 def coerce_kw_type(kw, key, type_, flexi_bool=True):
-    """If 'key' is present in dict 'kw', coerce its value to type 'type_' if
+    """If 'key' is present in dict 'kw', coerce its value to type 'type\_' if
     necessary.  If 'flexi_bool' is True, the string '0' is considered false
     when coercing to boolean.
     """
@@ -1009,6 +1025,9 @@ class OrderedIdentitySet(IdentitySet):
             for o in iterable:
                 self.add(o)
 
+def unique_list(seq, compare_with=set):
+    seen = compare_with()
+    return [x for x in seq if x not in seen and not seen.add(x)]    
 
 class UniqueAppender(object):
     """Appends items to a collection ensuring uniqueness.
@@ -1270,23 +1289,51 @@ def function_named(fn, name):
                           fn.func_defaults, fn.func_closure)
     return fn
 
-@decorator
-def memoize(fn, self):
-    """apply caching to the return value of a function."""
+class memoized_property(object):
+    """A read-only @property that is only evaluated once."""
+    def __init__(self, fget, doc=None):
+        self.fget = fget
+        self.__doc__ = doc or fget.__doc__
+        self.__name__ = fget.__name__
 
-    name = '_cached_' + fn.__name__
+    def __get__(self, obj, cls):
+        if obj is None:
+            return None
+        obj.__dict__[self.__name__] = result = self.fget(obj)
+        return result
 
-    try:
-        return getattr(self, name)
-    except AttributeError:
-        value = fn(self)
-        setattr(self, name, value)
-        return value
+
+class memoized_instancemethod(object):
+    """Decorate a method memoize its return value.
+
+    Best applied to no-arg methods: memoization is not sensitive to
+    argument values, and will always return the same value even when
+    called with different arguments.
+
+    """
+    def __init__(self, fget, doc=None):
+        self.fget = fget
+        self.__doc__ = doc or fget.__doc__
+        self.__name__ = fget.__name__
+
+    def __get__(self, obj, cls):
+        if obj is None:
+            return None
+        def oneshot(*args, **kw):
+            result = self.fget(obj, *args, **kw)
+            memo = lambda *a, **kw: result
+            memo.__name__ = self.__name__
+            memo.__doc__ = self.__doc__
+            obj.__dict__[self.__name__] = memo
+            return result
+        oneshot.__name__ = self.__name__
+        oneshot.__doc__ = self.__doc__
+        return oneshot
 
 def reset_memoized(instance, name):
     try:
-        delattr(instance, '_cached_' + name)
-    except AttributeError:
+        del instance.__dict__[name]
+    except KeyError:
         pass
 
 class WeakIdentityMapping(weakref.WeakKeyDictionary):
