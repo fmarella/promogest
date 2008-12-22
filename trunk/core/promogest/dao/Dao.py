@@ -15,7 +15,7 @@ import datetime
 import time
 from promogest.ui.GtkExceptionHandler import GtkExceptionHandler
 a = datetime.datetime
-from sqlalchemy.ext.serializer import loads, dumps
+#from sqlalchemy.ext.serializer import loads, dumps
 
 import logging
 
