@@ -343,6 +343,7 @@ def leggiListino(idListino, idArticolo=None):
             if _complesso:
                 _sottoListiniID = daoListino.sottoListiniID
             if idArticolo is not None:
+                daoListinoArticolo = None
                 if _complesso:
                     daoListinoArticolo1 = ListinoArticolo().select(idListino=_sottoListiniID,
                                                                 idArticolo = idArticolo,

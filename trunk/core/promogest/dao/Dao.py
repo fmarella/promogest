@@ -15,13 +15,13 @@ import datetime
 import time
 from promogest.ui.GtkExceptionHandler import GtkExceptionHandler
 a = datetime.datetime
-#from sqlalchemy.ext.serializer import loads, dumps
+from sqlalchemy.ext.serializer import loads, dumps
 
 import logging
 
 
 class Dao(object):
-    """Astrazione generica di ciò che fu il vecchio dao basata su sqlAlchemy"""
+    """Astrazione generica di ciĂ˛ che fu il vecchio dao basata su sqlAlchemy"""
     def __init__(self, entity=None, exceptionHandler=None):
         self.session = params["session"]
         self.metadata = params["metadata"]
@@ -64,8 +64,6 @@ class Dao(object):
                 self.record = dao.first()
             elif isList == "noList":
                 self.record = dao
-
-
             return self.record
         except Exception, e:
             self.raiseException(e)
@@ -97,7 +95,7 @@ class Dao(object):
             msg = """ATTENZIONE ERRORE
 Qui sotto viene riportato l'errore di sistema:
 %s
-( normalmente il campo in errore è tra "virgolette")
+( normalmente il campo in errore Ă¨ tra "virgolette")
 """ %e
             overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
                                                 | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -110,14 +108,11 @@ Qui sotto viene riportato l'errore di sistema:
 
     def persist(self,multiple=False, record=True):
         params["session"].add(self)
-        if params['session'].new or params['session'].dirty:
-            self.saveToAppLog(self)
+        self.saveToAppLog(self)
 
     def delete(self, multiple=False, record = True ):
         params['session'].delete(self)
-        if params['session'].deleted:
-            for a in params['session'].deleted:
-                self.saveToAppLog(self)
+        self.saveToAppLog(self)
 
     def saveToAppLog(self, data):
         when = datetime.datetime.now()
@@ -148,16 +143,16 @@ Qui sotto viene riportato l'errore di sistema:
             whatstr = str(pk)
             value = None
 
-        #appLogTable = Table('application_log', params['metadata'], autoload=True, schema=params['mainSchema'])
-        #app = appLogTable.insert()
-        #app.execute(id_utente=whoID,
-                    #utentedb = utentedb,
-                    #schema = where,
-                    #level=how,
-                    #object = str(data),
-                    #message = message,
-                    #value = value,
-                    #strvalue = whatstr)
+        appLogTable = Table('application_log', params['metadata'], autoload=True, schema=params['mainSchema'])
+        app = appLogTable.insert()
+        app.execute(id_utente=whoID,
+                    utentedb = utentedb,
+                    schema = where,
+                    level=how,
+                    object = str(data),
+                    message = message,
+                    value = value,
+                    strvalue = whatstr)
         
         print "%s : %s %s fatta su schema %s  da %s" %(str(when),message,str(data),str(where),utente)
         #serialized = dumps(self.record)
