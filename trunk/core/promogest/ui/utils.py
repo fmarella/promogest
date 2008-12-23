@@ -359,6 +359,8 @@ def leggiListino(idListino, idArticolo=None):
                                                                 listinoAttuale = True,
                                                                 batchSize=None,
                                                                 orderBy="id_listino")[0]
+                    else:
+                        daoListinoArticolo = daoListinoArticolo1[0]
                         
                 else:
                     daoListinoArticolo1 = ListinoArticolo().select(idListino=idListino,
