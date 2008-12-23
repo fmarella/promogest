@@ -350,6 +350,7 @@ def leggiListino(idListino, idArticolo=None):
                                                                 listinoAttuale = True,
                                                                 batchSize=None,
                                                                 orderBy="id_listino")
+                    print "RRRRRRRRRRRRRRRRRRRR", len(daoListinoArticolo1)
                     if len(daoListinoArticolo1)>1:
                         daoListinoArticolo2 = ListinoComplessoArticoloPrevalente().select(idListinoComplesso = idListino,
                                                                 idArticolo = idArticolo, batchSize=None)
@@ -359,6 +360,7 @@ def leggiListino(idListino, idArticolo=None):
                                                                 listinoAttuale = True,
                                                                 batchSize=None,
                                                                 orderBy="id_listino")[0]
+                            
                     else:
                         daoListinoArticolo = daoListinoArticolo1[0]
                         

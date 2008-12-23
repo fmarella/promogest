@@ -47,11 +47,15 @@ class Contatto(Dao):
 
     #FIXME: verificare TUTTI i filtri Contatto!!!
     def filter_values(self,k,v):
-        dic= {  'tipo_contatto' : contatto.c.tipo_contatto == v,
-                "idCategoria" : None,
-                "appartenenza" : and_(self.appartenenza == v),
-                        }
-        return  dic[k]
+        if k == 'cognomeNome':
+            dic = {k:or_(contatto.c.cognome.ilike("%"+v+"%"),contatto.c.nome.ilike("%"+v+"%"))}
+        elif k == 'ruolo':
+            dic = {k:contatto.c.ruolo.ilike("%"+v+"%")}
+        elif k=='descrizione':
+            dic = {k:contatto.c.descrizione.ilike("%"+v+"%")}
+        #FIXME: #'recapito'
+        #FIXME : #'tipoRecapito':
+        return dic[k]
 
     def delete(self, multiple=False, record = True):
         cleanRecapitoContatto = RecapitoContatto().select(idContatto=self.id)

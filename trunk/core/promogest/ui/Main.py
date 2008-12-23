@@ -106,13 +106,13 @@ class Main(GladeWidget):
             mod_enable = getattr(Environment.conf.Promospam,'mod_enable','no')
             if mod_enable == 'yes':
                 pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'spam48x48.png')
-                model.append([7, "Mails & Faxes", pbuf])
+                model.append([6, "Mails & Faxes", pbuf])
 
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'promemoria48x48.png')
-        model.append([8, "Promemoria", pbuf])
+        model.append([5, "Promemoria", pbuf])
 
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'azienda48x48.png')
-        model.append([9, "Anagrafica\nazienda", pbuf])
+        model.append([6, "Anagrafica\nazienda", pbuf])
 
         self.main_iconview.set_model(model)
         self.main_iconview.set_text_column(1)
@@ -258,17 +258,17 @@ class Main(GladeWidget):
             return
         elif selection == 4:
             self.currentFrame = self.create_parametri_frame()
+        #elif selection == 5:
+            #self.currentFrame = self.create_casse_frame()
+        #elif selection == 6:
+            #self.currentFrame = self.create_spam_frame()
         elif selection == 5:
-            self.currentFrame = self.create_casse_frame()
-        elif selection == 6:
-            self.currentFrame = self.create_spam_frame()
-        elif selection == 7:
             from AnagraficaPromemoria import AnagraficaPromemoria
             anag = AnagraficaPromemoria(self.aziendaStr)
             showAnagrafica(self.getTopLevel(), anag, mainClass=self)
             icon_view.unselect_all()
             return
-        elif selection == 8:
+        elif selection == 6:
             self.currentFrame = self.create_azienda_frame()
         self._refresh()
 
