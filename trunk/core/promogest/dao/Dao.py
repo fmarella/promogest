@@ -143,16 +143,16 @@ Qui sotto viene riportato l'errore di sistema:
             whatstr = str(pk)
             value = None
 
-        appLogTable = Table('application_log', params['metadata'], autoload=True, schema=params['mainSchema'])
-        app = appLogTable.insert()
-        app.execute(id_utente=whoID,
-                    utentedb = utentedb,
-                    schema = where,
-                    level=how,
-                    object = str(data),
-                    message = message,
-                    value = value,
-                    strvalue = whatstr)
+        # appLogTable = Table('application_log', params['metadata'], autoload=True, schema=params['mainSchema'])
+        # app = appLogTable.insert()
+        # app.execute(id_utente=whoID,
+                    # utentedb = utentedb,
+                    # schema = where,
+                    # level=how,
+                    # object = str(data),
+                    # message = message,
+                    # value = value,
+                    # strvalue = whatstr)
         
         print "%s : %s %s fatta su schema %s  da %s" %(str(when),message,str(data),str(where),utente)
         #serialized = dumps(self.record)
