@@ -2,7 +2,6 @@ Installazione su piattaforma linux
 ----------------------------------
 Promogest2
 
-Finchè non avrò un nome nuovo userò questo ... ( Mi piace MentoR ..) <--- quasi sicuramente sarà MENTOR
 
 Creazione Ambiente. La base di partenza testata è una ubuntu 8.04 ed 8.10 in uscita a 32 ed a 64 bit. E' necessario avere installato il postgresql-8.3 ed avere modificato i file pg_hba.conf e postgres.conf per permettere la connessione in "trust" dell'applicazione.
 
