@@ -2,7 +2,7 @@
 
 # Promogest
 #
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
+# Copyright (C) 2005-2009 by Promotux Informatica - http://www.promotux.it/
 # Author: Alceste Scalas <alceste@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 #
@@ -276,8 +276,7 @@ o tramite email all'indirizzo info@promotux.it
                                 'module': module(),
                                 'type': module.VIEW_TYPE[0],
                                 'module_dir': "%s" % (m_str),
-                                'guiDir':m.GUI_DIR,
-                                'company':m.COMPANY}
+                                'guiDir':m.GUI_DIR}
                             if __debug__ :print "'%s' imported as a module" % str(class_name)
                 else:
                     if __debug__: print "ATTENZIONE modulo %s presente in cartella moduli ma non settato nel configure" %m_str

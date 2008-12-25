@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -18,7 +18,7 @@ from promogest.modules.PromoWear.ui.PromowearUtils import *
 MODULES_NAME = "PromoWear"
 MODULES_FOR_EXPORT = ['Taglie', 'Colori','GruppiTaglia']
 GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/PromoWear/gui/'
-COMPANY = Environment.conf.PromoWear.company_name
+#COMPANY = Environment.conf.PromoWear.company_name
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None
 

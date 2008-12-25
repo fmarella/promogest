@@ -70,7 +70,7 @@ try:
         print "TABELLA LISTINO_COMPLESSO_ARTICOLO_PREVALENTE GIÀ AGGIORNATA"
     else:
         listinoComplessoArticoloPrevalenteTable.drop(checkfirst=True)
-        print "RUIMUOVO LA TABELLA LISTINO_COMPLESSO_ARTICOLO_PREVALENTE RIAVVIARE IL PROMOGEST2"
+        print "RIMUOVO LA TABELLA LISTINO_COMPLESSO_ARTICOLO_PREVALENTE RIAVVIARE IL PROMOGEST2"
 except:
     listinoComplessoArticoloPrevalenteTable = Table('listino_complesso_articolo_prevalente',params['metadata'],
             Column('id',Integer, primary_key=True),

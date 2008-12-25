@@ -514,6 +514,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self._currentRow['prezzo'] = mN(prezzo_dettaglio)
         self.prezzo_entry.set_text(str(mN(prezzo_dettaglio)))
 
+
     def on_scontrino_treeview_selection_changed(self, treeSelection):
         (model, iterator) = treeSelection.get_selected()
 
