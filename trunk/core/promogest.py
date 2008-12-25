@@ -5,7 +5,8 @@
 #
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 # all rights reserver
-# LICENSE: See LICENSE for more details.
+# LICENSE: See LICENSE for more detailsi.
+#
 
 
 from optparse import OptionParser
