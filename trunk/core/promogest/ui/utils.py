@@ -360,19 +360,20 @@ def leggiListino(idListino, idArticolo=None):
                                                                 listinoAttuale = True,
                                                                 batchSize=None,
                                                                 orderBy="id_listino")[0]
-                            
+
                     else:
                         daoListinoArticolo = daoListinoArticolo1[0]
-                        
+
                 else:
                     daoListinoArticolo1 = ListinoArticolo().select(idListino=idListino,
                                                             idArticolo = idArticolo,
                                                             listinoAttuale = True,
                                                             batchSize=None,
                                                             orderBy="id_listino")
-                    if len(daoListinoArticolo1) >1:
-                        print "ATTENZIONEEEEEEEEEEEEEEEEEEE PIÙ DI UN LISTINO ARTICOLO ATTUALE",
-                    daoListinoArticolo= daoListinoArticolo1[0]
+                    if len(daoListinoArticolo1) >= 1:
+                        print "ATTENZIONEEEEEEEEEEEEEEEEEEE PIÙ DI UN LISTINO ARTICOLO ATTUALE"
+                        daoListinoArticolo= daoListinoArticolo1[0]
+
                 if daoListinoArticolo is not None:
                     _prezzoIngrosso = daoListinoArticolo.prezzo_ingrosso
                     _prezzoDettaglio = daoListinoArticolo.prezzo_dettaglio

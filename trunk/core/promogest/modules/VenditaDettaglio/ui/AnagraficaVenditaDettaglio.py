@@ -29,6 +29,7 @@ from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from GestioneScontrini import GestioneScontrini
+from GestioneChiusuraFiscale import GestioneChiusuraFiscale
 
 class AnagraficaVenditaDettaglio(GladeWidget):
     """ Frame per la gestione delle vendite a dettaglio """
@@ -47,6 +48,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         azienda = Azienda().getRecord(id=Environment.params["schema"])
         self.logo_articolo.set_from_file(azienda.percorso_immagine)
         self.createPopupMenu()
+        self.info_frame.destroy()
         self.draw()
 
     def draw(self):
@@ -66,16 +68,16 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         rendererDx = gtk.CellRendererText()
         rendererDx.set_property('xalign', 1)
 
-        self.lsmodel = gtk.ListStore(str)
-        cellcombo= gtk.CellRendererCombo()
-        cellcombo.set_property("editable", True)
-        cellcombo.set_property("visible", True)
-        cellcombo.set_property("text-column", 0)
-        cellcombo.set_property("editable", True)
-        cellcombo.set_property("has-entry", False)
-        cellcombo.set_property("model", self.lsmodel)
-        cellcombo.connect('edited', self.on_column_listinoRiga_edited, treeview, True)
-        column = gtk.TreeViewColumn('List.', cellcombo, text=1)
+        self.lsmodel = gtk.ListStore(int,str)
+        cellcombo1= gtk.CellRendererCombo()
+        cellcombo1.set_property("editable", True)
+        cellcombo1.set_property("visible", True)
+        cellcombo1.set_property("text-column", 1)
+        cellcombo1.set_property("editable", True)
+        cellcombo1.set_property("has-entry", False)
+        cellcombo1.set_property("model", self.lsmodel)
+        cellcombo1.connect('edited', self.on_column_listinoRiga_edited, treeview, True)
+        column = gtk.TreeViewColumn('List.', cellcombo1, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
@@ -235,72 +237,54 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self._state = 'search'
         self.empty_current_row()
 
-    def createPopupMenu(self):
-        self.file_menu = gtk.Menu()    # Don't need to show menus
-
-        # Create the menu items
-        open_item = gtk.MenuItem("Conferma")
-        #save_item = gtk.MenuItem("Cancella")
-        quit_item = gtk.MenuItem("Annulla")
-
-        # Add them to the menu
-        self.file_menu.append(open_item)
-        #self.file_menu.append(save_item)
-        self.file_menu.append(quit_item)
-        # Attach the callback functions to the activate signal
-        open_item.connect_object("activate", self.on_confirm_button_clicked, "file.open")
-        #save_item.connect_object("activate", self.on_empty_button_clicked, "file.save")
-        quit_item.connect_object ("activate", self.on_cancel_button_clicked, "file.quit")
-
-        # We do need to show menu items
-        open_item.show()
-        #save_item.show()
-        quit_item.show()
-
-    def on_sconti_scontrino_widget_button_toggled(self, button):
-        print "OOOOOOOOOO"
-        pippo = self.sconti_scontrino_widget.getSconti()
-        return
-        #if button.get_property('active') is True:
-            #return
-
-        #self._righe[0]["sconti"] = self.sconti_widget.getSconti()
-        #self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()
-        #self.on_show_totali_riga()
-
     def on_column_prezzo_edited(self, cell, path, value, treeview, editNext=True):
-        """ Function ti set the value quantita edit in the cell"""
+        """ Function to set the value prezzo edit in the cell"""
         model = treeview.get_model()
         #model[path][0]["quantita"] = value
         value=value.replace(",",".")
         value = mN(value)
-        model[path][4] = value
-        if model[path][6] == '%':
+        model[path][5] = value
+        if model[path][7] == '%':
             tipoSconto = "percentuale"
         else:
             tipoSconto = "valore"
-        if model[path][5]== 0 or not model[path][5]:
+        if model[path][6]== 0 or not model[path][5]:
             tipoSconto = None
-            model[path][7] = model[path][4]
+            model[path][8] = model[path][5]
         else:
             if tipoSconto == "percentuale":
-                prezzoscontato = mN(model[path][4]) - (mN(model[path][4]) * mN(model[path][5])) / 100
+                prezzoscontato = mN(model[path][5]) - (mN(model[path][5]) * mN(model[path][6])) / 100
             else:
-                prezzoscontato = mN(model[path][4]) -mN(model[path][5])
+                prezzoscontato = mN(model[path][5]) -mN(model[path][6])
             if not prezzoscontato:
                 prezzoscontato = "0.00"
-            model[path][7] = prezzoscontato
+            model[path][8] = prezzoscontato
         self.refreshTotal()
         self.on_cancel_button_clicked(self.getTopLevel)
 
     def on_column_sconto_edited(self, cell, path, value, treeview, editNext=True):
         model = treeview.get_model()
-        model[path][5] = value
-        prez = model[path][4]
+        model[path][6] = value
+        prez = model[path][5]
         self.on_column_prezzo_edited(cell, path, prez, treeview)
 
     def on_column_listinoRiga_edited(self, cell, path, value, treeview, editNext=True):
-        self.lsmodel.append(["%"])
+        model = treeview.get_model()
+        model[path][1] = value
+        listin = {}
+        for l in self.lsmodel:
+            if l[1] == value:
+                idlisti=l[0]
+                listin = leggiListino(l[0],model[path][0] )
+                break
+        prez = str(listin['prezzoDettaglio'])
+        if listin.has_key('scontiDettaglio'):
+                if  len(listin["scontiDettaglio"]) > 0:
+                    model[path][6]= listino['scontiDettaglio'][0].valore or 0
+                else:
+                    model[path][6] = 0
+        self.on_column_prezzo_edited(cell, path, prez, treeview)
+
 
     def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
         """ Function ti set the value quantita edit in the cell"""
@@ -308,21 +292,21 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         #model[path][0]["quantita"] = value
         value=value.replace(",",".")
         value = mN(value)
-        model[path][8] = value
+        model[path][9] = value
         self.refreshTotal()
         self.on_cancel_button_clicked(self.getTopLevel)
 
     def on_column_descrizione_edited(self, cell, path, value, treeview, editNext=True):
         """ Function ti set the value quantita edit in the cell"""
         model = treeview.get_model()
-        model[path][3] = value
+        model[path][4] = value
         self.on_cancel_button_clicked(self.getTopLevel)
 
     def on_column_tipo_edited(self, cell, path, value, treeview, editNext=True):
         """ Function ti set the value quantita edit in the cell"""
         model = treeview.get_model()
-        model[path][6] = value
-        scont = model[path][5]
+        model[path][7] = value
+        scont = model[path][6]
         self.on_column_sconto_edited(cell, path, scont, treeview)
 
     def on_vendita_dettaglio_window_key_press_event(self,widget, event):
@@ -355,7 +339,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             # Ricerca listino_articolo
             listino = leggiListino(self.id_listino, idArticolo)
             prezzo = mN(listino["prezzoDettaglio"])
-            listinoRiga = listino['denominazione']
+            self.listinoRiga = (self.id_listino,listino['denominazione'])
             prezzoScontato = prezzo
             valoreSconto = 0
             tipoSconto = None
@@ -376,7 +360,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             self.codice_a_barre_entry.set_text(codiceABarre)
             self.codice_entry.set_text(codice)
             self.activate_item(idArticolo,
-                                listinoRiga,
+                                self.listinoRiga,
                                codiceABarre,
                                codice,
                                descrizione,
@@ -422,7 +406,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
     def empty_current_row(self):
         self._currentRow['idArticolo'] = None
-        self._currentRow['listinoRiga'] = None
+        self._currentRow['listinoRiga'] = (None,None)
         self._currentRow['codiceABarre'] = None
         self._currentRow['codice'] = None
         self._currentRow['descrizione'] = None
@@ -455,13 +439,17 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                             prezzoScontato,
                             quantita):
         self._loading = True
-        print "LISTINO RIGAAAAAAAAAAAAAAAAAAAA", listinoRiga
+        self.lsmodel.clear()
+
         fillComboboxListiniFiltrati(self.listini_combobox,
                                     idArticolo=idArticolo,
                                     idMagazzino=None,
                                     idCliente=None,
                                     filter=False)
-
+        listiniList= listinoCandidateSel(idArticolo=idArticolo,idMagazzino=None,idCliente=None)
+        if listiniList:
+            for l in listiniList:
+                self.lsmodel.append([l.id,l.denominazione])
         if self.id_listino is not None:
             findComboboxRowFromId(self.listini_combobox, self.id_listino)
         else:
@@ -514,7 +502,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.giacenza_label.set_markup('<b>' + str(mN(giacenza)) + '</b>')
 
         self._currentRow = {'idArticolo' : idArticolo,
-                            'listinoRiga' : listinoRiga,
+                            'listinoRiga' : listinoRiga[1],
                             'codiceABarre' : codiceABarre,
                             'codice' : codice,
                             'descrizione' : denominazione,
@@ -542,19 +530,19 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             self.id_listino = findIdFromCombobox(self.listini_combobox)
             listino = leggiListino(self.id_listino, self._currentRow['idArticolo'])
             idArticolo = model.get_value(iterator, 0)
-            listinoRiga = listino['denominazione']
-            codiceABarre = model.get_value(iterator, 1)
-            codice = model.get_value(iterator, 2)
-            denominazione = model.get_value(iterator, 3)
-            prezzo = model.get_value(iterator, 4)
-            valoreSconto = model.get_value(iterator, 5)
-            tipoSconto = model.get_value(iterator, 6)
+            listinoRiga = model.get_value(iterator, 1)
+            codiceABarre = model.get_value(iterator, 2)
+            codice = model.get_value(iterator, 3)
+            denominazione = model.get_value(iterator, 4)
+            prezzo = model.get_value(iterator, 5)
+            valoreSconto = model.get_value(iterator, 6)
+            tipoSconto = model.get_value(iterator, 7)
             if tipoSconto != self._simboloPercentuale:
                 tipoSconto = 'valore'
             else:
                 tipoSconto = 'percentuale'
-            prezzoScontato = model.get_value(iterator, 7)
-            quantita = model.get_value(iterator, 8)
+            prezzoScontato = model.get_value(iterator, 8)
+            quantita = model.get_value(iterator, 9)
             self.activate_item(idArticolo,
                                 listinoRiga,
                                 codiceABarre,
@@ -609,14 +597,14 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         elif self._state == 'editing':
             model.set_value(self.currentIteratorRow, 0, self._currentRow['idArticolo'])
             model.set_value(self.currentIteratorRow, 1, self._currentRow['listinoRiga'])
-            model.set_value(self.currentIteratorRow, 1, self._currentRow['codiceABarre'])
-            model.set_value(self.currentIteratorRow, 2, self._currentRow['codice'])
-            model.set_value(self.currentIteratorRow, 3, self._currentRow['descrizione'])
-            model.set_value(self.currentIteratorRow, 4, mN(self._currentRow['prezzo']))
-            model.set_value(self.currentIteratorRow, 5, mN(self._currentRow['valoreSconto']))
-            model.set_value(self.currentIteratorRow, 6, self._currentRow['tipoSconto'])
-            model.set_value(self.currentIteratorRow, 7, mN(self._currentRow['prezzoScontato']))
-            model.set_value(self.currentIteratorRow, 8, Decimal(self._currentRow['quantita']))
+            model.set_value(self.currentIteratorRow, 2, self._currentRow['codiceABarre'])
+            model.set_value(self.currentIteratorRow, 3, self._currentRow['codice'])
+            model.set_value(self.currentIteratorRow, 4, self._currentRow['descrizione'])
+            model.set_value(self.currentIteratorRow, 5, mN(self._currentRow['prezzo']))
+            model.set_value(self.currentIteratorRow, 6, mN(self._currentRow['valoreSconto']))
+            model.set_value(self.currentIteratorRow, 7, self._currentRow['tipoSconto'])
+            model.set_value(self.currentIteratorRow, 8, mN(self._currentRow['prezzoScontato']))
+            model.set_value(self.currentIteratorRow, 9, Decimal(self._currentRow['quantita']))
 
         self.marginevalue_label.set_text('')
         self.ultimocostovalue_label.set_text('')
@@ -797,10 +785,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         total = 0
         model = self.scontrino_treeview.get_model()
         for row in model:
-            prezzo = mN(row[4]) or 0
-            valoreSconto = mN(row[5]) or 0
-            prezzoScontato = mN(row[7]) or 0
-            quantita = Decimal(row[8])
+            prezzo = mN(row[5]) or 0
+            valoreSconto = mN(row[6]) or 0
+            prezzoScontato = mN(row[8]) or 0
+            quantita = Decimal(row[9])
             if valoreSconto == 0: #sconto
                 total = total + (prezzo * quantita)
             else:
@@ -860,12 +848,12 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         model = self.scontrino_treeview.get_model()
         for row in model:
             idArticolo = row[0]
-            descrizione = row[3]
-            prezzo = mN(row[4])
-            valoreSconto = mN(row[5])
-            tipoSconto = row[6]
-            prezzoScontato = mN(row[7])
-            quantita = Decimal(row[8])
+            descrizione = row[4]
+            prezzo = mN(row[5])
+            valoreSconto = mN(row[6])
+            tipoSconto = row[7]
+            prezzoScontato = mN(row[8])
+            quantita = Decimal(row[9])
 
             # Nuova riga
             daoRiga = RigaScontrino()
@@ -944,138 +932,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.on_empty_button_clicked(self.empty_button)
         self._state = 'search'
 
-    def close_day(self):
-        # Seleziono scontrini della giornata
-        datefirst = datetime.today().date()
-        aData= stringToDateBumped(datetime.today().date())
-        scontrini = TestataScontrino().select( daData = datefirst,
-                                                          aData = aData,  # Scontrini prodotti nella giornata odierna
-                                                          offset = None,
-                                                          batchSize = None)
-
-        # Creo nuovo movimento
-        daoMovimento = TestataMovimento()
-        daoMovimento.operazione = Environment.conf.VenditaDettaglio.operazione
-        daoMovimento.data_movimento = datefirst
-        daoMovimento.note_interne = 'Movimento chiusura fiscale'
-        righeMovimento = []
-        righe = {}
-        scontiRighe= {}
-        for scontrino in scontrini:
-            for riga in scontrino.righe:
-                # Istanzio articolo
-                art = Articolo().getRecord(id=riga.id_articolo)
-                # Cerco IVA
-                iva = AliquotaIva().getRecord(id=art.id_aliquota_iva)
-
-                daoRiga = RigaMovimento()
-                daoRiga.valore_unitario_lordo = riga.prezzo
-                daoRiga.valore_unitario_netto = riga.prezzo_scontato
-                daoRiga.quantita = riga.quantita
-                daoRiga.moltiplicatore = 1
-                daoRiga.descrizione = riga.descrizione
-                daoRiga.id_magazzino = self.id_magazzino
-                daoRiga.id_articolo = riga.id_articolo
-                daoRiga.percentuale_iva = iva.percentuale
-                sconti = []
-                if riga.sconti:
-                    for s in riga.sconti:
-                        daoScontoRigaMovimento = ScontoRigaMovimento()
-                        daoScontoRigaMovimento.valore = s.valore
-                        daoScontoRigaMovimento.tipo_sconto = s.tipo_sconto
-                        sconti.append(daoScontoRigaMovimento)
-                #righeMovimento.append(daoRiga)
-                    scontiRighe[daoRiga] = sconti
-                righe[riga]=daoRiga
-
-        #daoMovimento.righe = righeMovimento
-        daoMovimento.persist(righeMovimento = righe, scontiRigaMovimento = scontiRighe)
-        #daoMovimento.update()
-
-        # Creo nuova chiusura
-        daoChiusura = ChiusuraFiscale()
-        daoChiusura.data_chiusura = datefirst
-        daoChiusura.persist()
-        #daoChiusura.update()
-
-        # Creo il file
-        filechiusura = self.create_fiscal_close_file()
-        # Mando comando alle casse
-        if not(hasattr(Environment.conf.VenditaDettaglio,'disabilita_stampa_chiusura') and Environment.conf.VenditaDettaglio.disabilita_stampa_chiusura == 'yes'):
-            program_launch = Environment.conf.VenditaDettaglio.driver_command
-            program_params = (' ' + filechiusura + ' ' +
-                              Environment.conf.VenditaDettaglio.serial_device)
-
-            if os.name == 'nt':
-                exportingProcessPid = os.spawnl(os.P_NOWAIT, program_launch, program_params)
-                id, ret_value = os.waitpid(exportingProcessPid, 0)
-                ret_value = ret_value >> 8
-            else:
-                command = program_launch + program_params
-                process = popen2.Popen3(command, True)
-                message = process.childerr.readlines()
-                ret_value = process.wait()
-        else:
-            ret_value = 0
-
-        # Elimino il file
-        #os.remove(filechiusura)
-        if ret_value != 0:
-            string_message = ''
-            for s in message:
-                string_message = string_message + s + "\n"
-
-            # Mostro messaggio di errore
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
-                                       string_message)
-            response = dialog.run()
-            dialog.destroy()
-            # Elimino il movimento e la chiusura
-            daoChiusura.delete()
-            daoChiusura = None
-            daoMovimento.delete()
-            daoMovimento = None
-
-        if daoMovimento is not None:
-            # Associo movimento agli scontrini
-            for scontrino in scontrini:
-                daoScontrino = TestataScontrino().getRecord(id=scontrino.id)
-                daoScontrino.id_testata_movimento = daoMovimento.id
-                daoScontrino.persist(chiusura= True)
-
-        # Svuoto transazione
-        self.on_empty_button_clicked(self.empty_button)
-
     def on_chiusura_fiscale_activate(self, widget):
         # Chiedo conferma
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO)
-        dialog.set_markup('<b>ATTENZIONE</b>: Chiusura fiscale! Confermi?')
-        response = dialog.run()
-        dialog.destroy()
-        if response ==  gtk.RESPONSE_YES:
-            # controllo se vi e` gia` stata una chiusura
-            datefirst = datetime.today().date()
-            chiusure = ChiusuraFiscale().select( dataChiusura = datefirst,
-                                                            offset = None,
-                                                            batchSize = None)
-            if len(chiusure) != 0:
-                dialog = gtk.MessageDialog(self.getTopLevel(),
-                                           gtk.DIALOG_MODAL
-                                           | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           gtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
-                dialog.set_markup("<b>ATTENZIONE:\n La chiusura odierna e` gia' stata effettuata</b>")
-                response = dialog.run()
-                dialog.destroy()
-                return
-            self.close_day()
-        else:
-            return
+        GestioneChiusuraFiscale(self).chiusuraDialog(widget, self.id_magazzino)
 
     def create_export_file(self, daoScontrino):
         # Genero nome file
@@ -1154,17 +1013,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         return filename
 
 
-    def create_fiscal_close_file(self):
-        # Genero nome file
-        filename = Environment.conf.VenditaDettaglio.export_path + 'fiscal_close_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
-        f = file(filename,'w')
-        stringa = '51                00000000002..\r\n'
-        f.write(stringa)
-        f.close()
-        return filename
-
     def on_stampa_del_giornale_breve_activate(self, widget):
-        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_giornale_breve_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_giornale_breve_' + datetime.date.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename,'w')
         stringa = '52                00000000002..\r\n'
         f.write(stringa)
@@ -1172,7 +1022,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.sendToPrint(filename)
 
     def on_stampa_del_periodico_cassa_activate(self, widget):
-        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_cassa_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_cassa_' + datetime.date.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename,'w')
         stringa = '52                00000000004..\r\n'
         f.write(stringa)
@@ -1180,7 +1030,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.sendToPrint(filename)
 
     def on_stampa_del_periodico_reparti_activate(self, widget):
-        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_reparti_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_reparti_' + datetime.date.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename,'w')
         stringa = '52                00000000006..\r\n'
         f.write(stringa)
@@ -1188,7 +1038,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.sendToPrint(filename)
 
     def on_stampa_del_periodico_articoli_activate(self, widget):
-        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_articoli_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_articoli_' + datetime.date.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename,'w')
         stringa = '52                00000000008..\r\n'
         f.write(stringa)
@@ -1196,7 +1046,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.sendToPrint(filename)
 
     def on_stampa_della_affluenza_oraria_activate(self, widget):
-        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_della_affluenza_oraria_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_della_affluenza_oraria_' + datetime.date.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename,'w')
         stringa = '52                00000000009..\r\n'
         f.write(stringa)
@@ -1251,7 +1101,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             # Ricerca listino_articolo
             listino = leggiListino(self.id_listino, idArticolo)
             #prezzo = listino["prezzoDettaglio"]
-            listinoRiga = listino['denominazione'][0:8]
+            listinoRiga = (self.id_listino, listino['denominazione'][0:8])
             prezzo = mN(listino["prezzoDettaglio"])
             prezzoScontato = prezzo
             tipoSconto = None
@@ -1405,14 +1255,15 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                     tipoSconto = self._simboloEuro
 
             model.append((idArticolo,
-                          codiceABarre,
-                          codiceArticolo,
-                          descrizione,
-                          prezzo,
-                          sconto,
-                          tipoSconto,
-                          prezzoScontato,
-                          quantita))
+                            listinoRiga,
+                            codiceABarre,
+                            codiceArticolo,
+                            descrizione,
+                            prezzo,
+                            sconto,
+                            tipoSconto,
+                            prezzoScontato,
+                            quantita))
 
         notEmpty = (len(model) > 0)
         self.total_button.set_sensitive(notEmpty)
@@ -1435,7 +1286,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         #movs = Environment.connection.execStoredProcedure('GiacenzaSel', (None, Environment.conf.workingYear, idMagazzino, idArticolo))
         for m in movs:
             totGiacenza += m['giacenza'] or 0
-
         #FIXME: attenzione funzioen da rifareeeeeeeeeeeeeeeee
         #movs = Environment.connection.execStoredProcedure('ScaricoScontrinoSel', (None, Environment.conf.workingYear, idArticolo, idMagazzino, False))
         #for m in movs:
@@ -1455,3 +1305,26 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                     self.file_menu.popup( None, None, None, event.button, time)
                 return 1
 
+    def createPopupMenu(self):
+        self.file_menu = gtk.Menu()    # Don't need to show menus
+        # Create the menu items
+        open_item = gtk.MenuItem("Conferma")
+        #save_item = gtk.MenuItem("Cancella")
+        quit_item = gtk.MenuItem("Annulla")
+        # Add them to the menu
+        self.file_menu.append(open_item)
+        #self.file_menu.append(save_item)
+        self.file_menu.append(quit_item)
+        # Attach the callback functions to the activate signal
+        open_item.connect_object("activate", self.on_confirm_button_clicked, "file.open")
+        #save_item.connect_object("activate", self.on_empty_button_clicked, "file.save")
+        quit_item.connect_object ("activate", self.on_cancel_button_clicked, "file.quit")
+
+        # We do need to show menu items
+        open_item.show()
+        #save_item.show()
+        quit_item.show()
+
+    def on_sconti_scontrino_widget_button_toggled(self, button):
+        pippo = self.sconti_scontrino_widget.getSconti()
+        return

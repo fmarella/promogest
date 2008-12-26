@@ -13,19 +13,9 @@ from promogest.dao.DaoUtils import giacenzaSel
 from datetime import datetime, timedelta
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
-#from promogest.dao.TestataMovimento import TestataMovimento
-#from promogest.dao.RigaMovimento import RigaMovimento
-#from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
-#from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
-#from promogest.dao.Articolo import Articolo
-#from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-#from promogest.dao.AliquotaIva import AliquotaIva
-#from promogest.dao.Magazzino import Magazzino
-#from promogest.dao.Listino import Listino
-#from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.ui.utils import *
 
