@@ -59,14 +59,31 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.total_button.set_focus_on_click(False)
 
         # Costruisco treeview scontrino
-        self.modelRiga = gtk.ListStore(int, str, str, str, str, str, str, str, str)
+        self.modelRiga = gtk.ListStore(int,str, str, str, str, str, str, str, str, str)
 
         treeview = self.scontrino_treeview
         rendererSx = gtk.CellRendererText()
         rendererDx = gtk.CellRendererText()
         rendererDx.set_property('xalign', 1)
 
-        column = gtk.TreeViewColumn('Codice a barre', rendererSx, text=1)
+        self.lsmodel = gtk.ListStore(str)
+        cellcombo= gtk.CellRendererCombo()
+        cellcombo.set_property("editable", True)
+        cellcombo.set_property("visible", True)
+        cellcombo.set_property("text-column", 0)
+        cellcombo.set_property("editable", True)
+        cellcombo.set_property("has-entry", False)
+        cellcombo.set_property("model", self.lsmodel)
+        cellcombo.connect('edited', self.on_column_listinoRiga_edited, treeview, True)
+        column = gtk.TreeViewColumn('List.', cellcombo, text=1)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(True)
+        column.set_resizable(True)
+        column.set_expand(False)
+        column.set_min_width(20)
+        treeview.append_column(column)
+
+        column = gtk.TreeViewColumn('Codice a barre', rendererSx, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -74,7 +91,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         column.set_min_width(90)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Codice', rendererSx, text=2)
+        column = gtk.TreeViewColumn('Codice', rendererSx, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -86,7 +103,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         cellrendererDescrizione.set_property("editable", True)
         cellrendererDescrizione.set_property("visible", True)
         cellrendererDescrizione.connect('edited', self.on_column_descrizione_edited, treeview, True)
-        column = gtk.TreeViewColumn('Descrizione', cellrendererDescrizione, text=3)
+        column = gtk.TreeViewColumn('Descrizione', cellrendererDescrizione, text=4)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         rendererSx.connect('edited', self.on_column_descrizione_edited, treeview, True)
@@ -105,7 +122,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         #cellspin.set_property("foreground", "orange")
 
         cellspin.connect('edited', self.on_column_prezzo_edited, treeview, True)
-        column = gtk.TreeViewColumn('Prezzo', cellspin, text=4,foreground=4, background=2)
+        column = gtk.TreeViewColumn('Prezzo', cellspin, text=5,foreground=4, background=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         #column.set_clickable(False)
         column.set_resizable(True)
@@ -121,7 +138,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         #cellspin.set_property("digits",3)
         #cellspin.set_property("climb-rate",3)
         cellspinsconto.connect('edited', self.on_column_sconto_edited, treeview, True)
-        column = gtk.TreeViewColumn('Sconto', cellspinsconto, text=5)
+        column = gtk.TreeViewColumn('Sconto', cellspinsconto, text=6)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
@@ -141,7 +158,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         cellcombo.set_property("has-entry", False)
         cellcombo.set_property("model", lsmodel)
         cellcombo.connect('edited', self.on_column_tipo_edited, treeview, True)
-        column = gtk.TreeViewColumn('Tipo', cellcombo, text=6)
+        column = gtk.TreeViewColumn('Tipo', cellcombo, text=7)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
@@ -149,7 +166,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         column.set_min_width(20)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Prezzo scontato', rendererDx, text=7)
+        column = gtk.TreeViewColumn('Pr.Scont', rendererDx, text=8)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -165,7 +182,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         cellspin.set_property("digits",3)
         cellspin.set_property("climb-rate",3)
         cellspin.connect('edited', self.on_column_quantita_edited, treeview, True)
-        column = gtk.TreeViewColumn('Quantita\'', cellspin, text=8)
+        column = gtk.TreeViewColumn('Quant.', cellspin, text=9)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         #column.set_clickable(False)
         column.set_resizable(True)
@@ -184,10 +201,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.empty_button.set_sensitive(False)
 
         self.setPagamento(enabled = False)
-
-        #if Environment.taglia_colore:
-            #self.new_button.set_no_show_all(True)
-            #self.new_button.set_property('visible', False)
 
         self.codice_a_barre_entry.grab_focus()
         self._loading = False
@@ -286,6 +299,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         prez = model[path][4]
         self.on_column_prezzo_edited(cell, path, prez, treeview)
 
+    def on_column_listinoRiga_edited(self, cell, path, value, treeview, editNext=True):
+        self.lsmodel.append(["%"])
+
     def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
         """ Function ti set the value quantita edit in the cell"""
         model = treeview.get_model()
@@ -339,6 +355,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             # Ricerca listino_articolo
             listino = leggiListino(self.id_listino, idArticolo)
             prezzo = mN(listino["prezzoDettaglio"])
+            listinoRiga = listino['denominazione']
             prezzoScontato = prezzo
             valoreSconto = 0
             tipoSconto = None
@@ -359,6 +376,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             self.codice_a_barre_entry.set_text(codiceABarre)
             self.codice_entry.set_text(codice)
             self.activate_item(idArticolo,
+                                listinoRiga,
                                codiceABarre,
                                codice,
                                descrizione,
@@ -404,6 +422,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
     def empty_current_row(self):
         self._currentRow['idArticolo'] = None
+        self._currentRow['listinoRiga'] = None
         self._currentRow['codiceABarre'] = None
         self._currentRow['codice'] = None
         self._currentRow['descrizione'] = None
@@ -426,6 +445,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
 
     def activate_item(self, idArticolo,
+                            listinoRiga,
                             codiceABarre,
                             codice,
                             denominazione,
@@ -435,7 +455,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                             prezzoScontato,
                             quantita):
         self._loading = True
-
+        print "LISTINO RIGAAAAAAAAAAAAAAAAAAAA", listinoRiga
         fillComboboxListiniFiltrati(self.listini_combobox,
                                     idArticolo=idArticolo,
                                     idMagazzino=None,
@@ -457,7 +477,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 pass
 
         self._loading = False
-
         self.codice_a_barre_entry.set_text(codiceABarre)
         self.codice_entry.set_text(codice)
         self.descrizione_label.set_markup('<b>' + denominazione + '</b>')
@@ -495,14 +514,15 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.giacenza_label.set_markup('<b>' + str(mN(giacenza)) + '</b>')
 
         self._currentRow = {'idArticolo' : idArticolo,
-                           'codiceABarre' : codiceABarre,
-                           'codice' : codice,
-                           'descrizione' : denominazione,
-                           'prezzo' : prezzo,
-                           'valoreSconto' : valoreSconto,
-                           'tipoSconto' : tipoScontoString,
-                           'prezzoScontato':prezzoScontato,
-                           'quantita' : quantita}
+                            'listinoRiga' : listinoRiga,
+                            'codiceABarre' : codiceABarre,
+                            'codice' : codice,
+                            'descrizione' : denominazione,
+                            'prezzo' : prezzo,
+                            'valoreSconto' : valoreSconto,
+                            'tipoSconto' : tipoScontoString,
+                            'prezzoScontato':prezzoScontato,
+                            'quantita' : quantita}
 
     def on_listini_combobox_changed(self, combobox):
         if self._loading:
@@ -519,7 +539,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         (model, iterator) = treeSelection.get_selected()
 
         if iterator is not None:
+            self.id_listino = findIdFromCombobox(self.listini_combobox)
+            listino = leggiListino(self.id_listino, self._currentRow['idArticolo'])
             idArticolo = model.get_value(iterator, 0)
+            listinoRiga = listino['denominazione']
             codiceABarre = model.get_value(iterator, 1)
             codice = model.get_value(iterator, 2)
             denominazione = model.get_value(iterator, 3)
@@ -533,6 +556,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             prezzoScontato = model.get_value(iterator, 7)
             quantita = model.get_value(iterator, 8)
             self.activate_item(idArticolo,
+                                listinoRiga,
                                 codiceABarre,
                                 codice,
                                 denominazione,
@@ -573,16 +597,18 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         if self._state == 'search':
             model.append((self._currentRow['idArticolo'],
-                          self._currentRow['codiceABarre'],
-                          self._currentRow['codice'],
-                          self._currentRow['descrizione'],
-                          mN(self._currentRow['prezzo']),
-                          mN(self._currentRow['valoreSconto']),
-                          self._currentRow['tipoSconto'],
-                          mN(self._currentRow['prezzoScontato']),
-                          Decimal(self._currentRow['quantita'])))
+                        self._currentRow['listinoRiga'],
+                        self._currentRow['codiceABarre'],
+                        self._currentRow['codice'],
+                        self._currentRow['descrizione'],
+                        mN(self._currentRow['prezzo']),
+                        mN(self._currentRow['valoreSconto']),
+                        self._currentRow['tipoSconto'],
+                        mN(self._currentRow['prezzoScontato']),
+                        Decimal(self._currentRow['quantita'])))
         elif self._state == 'editing':
             model.set_value(self.currentIteratorRow, 0, self._currentRow['idArticolo'])
+            model.set_value(self.currentIteratorRow, 1, self._currentRow['listinoRiga'])
             model.set_value(self.currentIteratorRow, 1, self._currentRow['codiceABarre'])
             model.set_value(self.currentIteratorRow, 2, self._currentRow['codice'])
             model.set_value(self.currentIteratorRow, 3, self._currentRow['descrizione'])
@@ -1225,6 +1251,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             # Ricerca listino_articolo
             listino = leggiListino(self.id_listino, idArticolo)
             #prezzo = listino["prezzoDettaglio"]
+            listinoRiga = listino['denominazione'][0:8]
             prezzo = mN(listino["prezzoDettaglio"])
             prezzoScontato = prezzo
             tipoSconto = None
@@ -1243,6 +1270,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             quantita = 1
 
             self.activate_item(idArticolo,
+                                listinoRiga,
                                codiceABarre,
                                codice or '',
                                descrizione,
