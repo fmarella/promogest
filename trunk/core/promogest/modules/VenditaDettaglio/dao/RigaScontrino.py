@@ -78,7 +78,7 @@ class RigaScontrino(Dao):
         params['session'].commit()
 
         #cancellazione sconti associati alla riga
-        scontoRigaScontrinoDel(id=self.id)
+        #scontoRigaScontrinoDel(id=self.id)
         if self.__scontiRigaScontrino:
             for rigasconto in self.__scontiRigaScontrino:
                 #annullamento id dello sconto

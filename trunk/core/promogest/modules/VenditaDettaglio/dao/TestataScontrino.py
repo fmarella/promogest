@@ -59,12 +59,18 @@ class TestataScontrino(Dao):
         (listSconti, applicazione) = getScontiFromDao(self._getScontiTestataDocumento(), self.applicazione_sconti)
         return getStringaSconti(listSconti)
     stringaSconti = property(_getStringaScontiTestataDocumento)
+
     def filter_values(self,k,v):
-        dic= {'id':testata_scontrino.c.id ==v,
-            'idTestataMovimento':testata_scontrino.c.id_testata_movimento==v,
-            'daData':testata_scontrino.c.data_inserimento >= v,
-            'aData': testata_scontrino.c.data_inserimento <= v,
-            'idArticolo': and_(testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino,riga_scontrinoo.c.id_articolo==v)}
+        if k == 'id':
+            dic= {k:testata_scontrino.c.id ==v}
+        elif k == 'idTestataMovimento':
+            dic= {k:testata_scontrino.c.id_testata_movimento==v}
+        elif k == 'daData':
+            dic = {k :testata_scontrino.c.data_inserimento >= v}
+        elif k == 'aData':
+            dic = {k:testata_scontrino.c.data_inserimento <= v}
+        elif k== 'idArticolo':
+            dic = {k: and_(testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino,riga_scontrinoo.c.id_articolo==v)}
         return  dic[k]
 
     def update(self):
@@ -79,7 +85,7 @@ class TestataScontrino(Dao):
         #se siamo in chiusura fiscale non serve che vengano toccati i dati delle righe
         if not chiusura:
             if self.__righeScontrino:
-                rigaScontrinoDel(id=self.id)
+                #rigaScontrinoDel(id=self.id)
 
                 #cancellazione righe associate alla testata
                 for riga in self.__righeScontrino:

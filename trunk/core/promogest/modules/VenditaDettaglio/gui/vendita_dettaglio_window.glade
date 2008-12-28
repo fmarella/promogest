@@ -1012,10 +1012,10 @@
                           </widget>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="label490">
+                          <widget class="GtkLabel" id="righe_label">
                             <property name="visible">True</property>
                             <property name="xpad">5</property>
-                            <property name="label" translatable="yes">&lt;b&gt;Righe Scontrino&lt;/b&gt;</property>
+                            <property name="label" translatable="yes">&lt;b&gt; [ 0 ] Righe Scontrino&lt;/b&gt;</property>
                             <property name="use_markup">True</property>
                           </widget>
                           <packing>

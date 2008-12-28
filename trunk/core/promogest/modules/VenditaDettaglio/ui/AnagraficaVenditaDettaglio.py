@@ -523,13 +523,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                        gtk.DIALOG_MODAL
                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
                                        gtk.MESSAGE_WARNING, gtk.BUTTONS_OK)
-            dialog.set_markup("""<b>ATTENZIONE:\n</b>Inserire un prezzo all'articolo
-Momentaneamente verrà impostato a € 0.01""")
+            dialog.set_markup("<b>ATTENZIONE:\n</b>Inserire un prezzo all'articolo")
             response = dialog.run()
             dialog.destroy()
             self.prezzo_entry.grab_focus()
-            self._currentRow['prezzo'] = 0.01
-            #return
+            return
 
         treeview = self.scontrino_treeview
         model = treeview.get_model()
@@ -560,7 +558,8 @@ Momentaneamente verrà impostato a € 0.01""")
         self.marginevalue_label.set_text('')
         self.ultimocostovalue_label.set_text('')
         self.empty_current_row()
-        #self.scontrino_treeview.scroll_to_cell(len(model))
+        self.scontrino_treeview.scroll_to_cell(str(len(model)-1))
+        self.righe_label.set_markup('<b>'+ " [ "+str(len(model)) +" ] Righe scontrino"+'</b>')
         # Disabilito cancella e conferma e abilito ricerca barcode
         self.delete_button.set_sensitive(False)
         self.confirm_button.set_sensitive(False)
@@ -719,7 +718,6 @@ Momentaneamente verrà impostato a € 0.01""")
         # Creo righe
         righe = []
         model = self.scontrino_treeview.get_model()
-        print "TUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU", dao.id
         for row in model:
             idArticolo = row[0]
             descrizione = row[4]
@@ -731,6 +729,7 @@ Momentaneamente verrà impostato a € 0.01""")
 
             # Nuova riga
             daoRiga = RigaScontrino()
+            daoRiga.id_testata_scontrino = dao.id
             daoRiga.id_articolo = idArticolo
             daoRiga.descrizione = descrizione
             daoRiga.prezzo = prezzo
@@ -747,12 +746,13 @@ Momentaneamente verrà impostato a € 0.01""")
                 listarighesconto.append(daoScontoRigaScontrino)
             daoRiga.sconti=listarighesconto
             righe.append(daoRiga)
+
         # Aggiungo righe e salvo dao
         dao.righe = righe
         dao.persist()
 
         # Rileggo dao
-        #dao.update()
+        dao.update()
 
         # Creo il file
         filescontrino = self.create_export_file(dao)
@@ -803,6 +803,7 @@ Momentaneamente verrà impostato a € 0.01""")
         self.annulling_button.set_sensitive(False)
         self.delete_button.set_sensitive(False)
         self.on_empty_button_clicked(self.empty_button)
+        self.righe_label.set_markup('<b>'+ " [ 0 ] Righe scontrino"+'</b>')
         self._state = 'search'
 
     def on_chiusura_fiscale_activate(self, widget):
