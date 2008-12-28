@@ -514,7 +514,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                             +" - " \
                                             +model.get_value(self.currentIteratorRow, 4)\
                                             +'</span></b>')
-            
+
 
     def on_confirm_button_clicked(self, button):
         # controllo che il prezzo non sia nullo
@@ -523,11 +523,13 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                        gtk.DIALOG_MODAL
                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
                                        gtk.MESSAGE_WARNING, gtk.BUTTONS_OK)
-            dialog.set_markup("<b>ATTENZIONE:\n</b>Inserire un prezzo all'articolo")
+            dialog.set_markup("""<b>ATTENZIONE:\n</b>Inserire un prezzo all'articolo
+Momentaneamente verrà impostato a € 0.01""")
             response = dialog.run()
             dialog.destroy()
             self.prezzo_entry.grab_focus()
-            return
+            self._currentRow['prezzo'] = 0.01
+            #return
 
         treeview = self.scontrino_treeview
         model = treeview.get_model()
@@ -717,6 +719,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # Creo righe
         righe = []
         model = self.scontrino_treeview.get_model()
+        print "TUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU", dao.id
         for row in model:
             idArticolo = row[0]
             descrizione = row[4]
@@ -728,7 +731,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
             # Nuova riga
             daoRiga = RigaScontrino()
-            daoRiga.id_testata_scontrino = dao.id
             daoRiga.id_articolo = idArticolo
             daoRiga.descrizione = descrizione
             daoRiga.prezzo = prezzo
@@ -745,13 +747,12 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 listarighesconto.append(daoScontoRigaScontrino)
             daoRiga.sconti=listarighesconto
             righe.append(daoRiga)
-
         # Aggiungo righe e salvo dao
         dao.righe = righe
         dao.persist()
 
         # Rileggo dao
-        dao.update()
+        #dao.update()
 
         # Creo il file
         filescontrino = self.create_export_file(dao)

@@ -79,7 +79,6 @@ class RigaScontrino(Dao):
 
         #cancellazione sconti associati alla riga
         scontoRigaScontrinoDel(id=self.id)
-
         if self.__scontiRigaScontrino:
             for rigasconto in self.__scontiRigaScontrino:
                 #annullamento id dello sconto
@@ -88,7 +87,7 @@ class RigaScontrino(Dao):
                 rigasconto.id_riga_scontrino = self.id
                 #salvataggio sconto
                 rigasconto.persist()
-        params['session'].flush()
+        #params['session'].flush()
 
 
 

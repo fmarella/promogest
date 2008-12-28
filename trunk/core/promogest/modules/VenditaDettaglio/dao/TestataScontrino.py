@@ -80,6 +80,7 @@ class TestataScontrino(Dao):
         if not chiusura:
             if self.__righeScontrino:
                 rigaScontrinoDel(id=self.id)
+
                 #cancellazione righe associate alla testata
                 for riga in self.__righeScontrino:
                     #annullamento id della riga
