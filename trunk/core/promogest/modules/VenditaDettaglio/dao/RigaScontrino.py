@@ -55,35 +55,23 @@ class RigaScontrino(Dao):
             return a[0].tipo_sconto
     tipo_sconto= property(_tipoSconto)
 
-
     def __codiceArticolo(self):
         """ esempio di funzione  unita alla property """
-        a =  params["session"].query(Articolo).with_parent(self).filter(RigaScontrino.id_articolo==Articolo.id).all()
-        if not a:
-            return a
-        else:
-            return a[0].codice
+        if self.arti: return self.arti.codice
+        else: return ""
     codice_articolo= property(__codiceArticolo)
 
     def _codice_a_barre(self):
         """ esempio di funzione  unita alla property """
-        try:
-            a =  params["session"].query(CodiceABarreArticolo.codice).with_parent(self).filter(and_(riga_scontrino.c.id_articolo==Articolo.id, Articolo.id==CodiceABarreArticolo.id_articolo,
-                    CodiceABarreArticolo.primario==True)).one()
-            return a[0]
-        except:
-            return ""
+        if self.arti: return self.arti.codice_a_barre
+        else: return ""
     codice_a_barre = property(_codice_a_barre)
-
-
-
 
     def filter_values(self,k,v):
         dic= {'id':riga_scontrino.c.id ==v,
             'idArticolo':riga_scontrino.c.id_articolo==v,
             'idTestataScontrino': riga_scontrino.c.id_testata_scontrino==v}
         return  dic[k]
-
 
     def persist(self):
         params['session'].add(self)

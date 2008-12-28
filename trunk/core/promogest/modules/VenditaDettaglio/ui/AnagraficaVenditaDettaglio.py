@@ -48,7 +48,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         azienda = Azienda().getRecord(id=Environment.params["schema"])
         self.logo_articolo.set_from_file(azienda.percorso_immagine)
         self.createPopupMenu()
-        self.info_frame.destroy()
+        #nascondo i dati riga e le info aggiuntive
+        self.dati_riga_frame.destroy()
         self.draw()
 
     def draw(self):
@@ -184,7 +185,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         cellspin.set_property("digits",3)
         cellspin.set_property("climb-rate",3)
         cellspin.connect('edited', self.on_column_quantita_edited, treeview, True)
-        column = gtk.TreeViewColumn('Quant.', cellspin, text=9)
+        column = gtk.TreeViewColumn('Quantità', cellspin, text=9)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         #column.set_clickable(False)
         column.set_resizable(True)
@@ -209,6 +210,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         # Segnali
         treeViewSelection = self.scontrino_treeview.get_selection()
+        self.scontrino_treeview.set_property('rules-hint',True)
         treeViewSelection.connect('changed', self.on_scontrino_treeview_selection_changed)
 
         # Ricerca listino
@@ -224,12 +226,12 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         else:
             self.id_magazzino = None
 
-        self.prezzo_entry.connect('key_press_event',
-                                  self.on_prezzo_entry_key_press_event)
-        self.prezzo_scontato_entry.connect('key_press_event',
-                                           self.on_prezzo_scontato_entry_key_press_event)
-        self.quantita_entry.connect('key_press_event',
-                                    self.on_quantita_entry_key_press_event)
+        #self.prezzo_entry.connect('key_press_event',
+                                  #self.on_prezzo_entry_key_press_event)
+        #self.prezzo_scontato_entry.connect('key_press_event',
+                                           #self.on_prezzo_scontato_entry_key_press_event)
+        #self.quantita_entry.connect('key_press_event',
+                                    #self.on_quantita_entry_key_press_event)
         #self.sconti_scontrino_widget.button.connect('toggled',
                 #self.on_sconti_scontrino_widget_button_toggled)
 
@@ -240,7 +242,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
     def on_column_prezzo_edited(self, cell, path, value, treeview, editNext=True):
         """ Function to set the value prezzo edit in the cell"""
         model = treeview.get_model()
-        #model[path][0]["quantita"] = value
         value=value.replace(",",".")
         value = mN(value)
         model[path][5] = value
@@ -269,6 +270,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.on_column_prezzo_edited(cell, path, prez, treeview)
 
     def on_column_listinoRiga_edited(self, cell, path, value, treeview, editNext=True):
+        #rivedere assolutamente .....
         model = treeview.get_model()
         model[path][1] = value
         listin = {}
@@ -280,16 +282,14 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         prez = str(listin['prezzoDettaglio'])
         if listin.has_key('scontiDettaglio'):
                 if  len(listin["scontiDettaglio"]) > 0:
-                    model[path][6]= listino['scontiDettaglio'][0].valore or 0
+                    model[path][6]= listin['scontiDettaglio'][0].valore or 0
                 else:
                     model[path][6] = 0
         self.on_column_prezzo_edited(cell, path, prez, treeview)
 
-
     def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
-        """ Function ti set the value quantita edit in the cell"""
+        """ Function ti set the value quantita edit in the cell """
         model = treeview.get_model()
-        #model[path][0]["quantita"] = value
         value=value.replace(",",".")
         value = mN(value)
         model[path][9] = value
@@ -297,7 +297,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.on_cancel_button_clicked(self.getTopLevel)
 
     def on_column_descrizione_edited(self, cell, path, value, treeview, editNext=True):
-        """ Function ti set the value quantita edit in the cell"""
+        """ Function ti set the value quantita edit in the cell """
         model = treeview.get_model()
         model[path][4] = value
         self.on_cancel_button_clicked(self.getTopLevel)
@@ -319,18 +319,20 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             except:
                 print "ARTICOLO JOLLY NON SETTATO NEL CONFIGURE NELLA SEZIONE [VenditaDettaglio]"
 
-    def search_item(self, codiceABarre=None, codice=None):
+    def search_item(self, codiceABarre=None, codice=None, descrizione=None):
         # Ricerca articolo per barcode
-
         if codiceABarre is not None:
             arts = Articolo().select( codiceABarre = codiceABarre,
                                                  offset = None,
                                                  batchSize = None)
-        else:
+        elif codice is not None:
             arts = Articolo().select( codice = codice,
                                                  offset = None,
                                                  batchSize = None)
-
+        elif descrizione is not None:
+            arts = Articolo().select( denominazione = descrizione,
+                                                 offset = None,
+                                                 batchSize = None)
         if len(arts) == 1:
             idArticolo = arts[0].id
             codice = arts[0].codice or ''
@@ -339,7 +341,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             # Ricerca listino_articolo
             listino = leggiListino(self.id_listino, idArticolo)
             prezzo = mN(listino["prezzoDettaglio"])
-            self.listinoRiga = (self.id_listino,listino['denominazione'])
+            listinoRiga = (self.id_listino,listino['denominazione'])
             prezzoScontato = prezzo
             valoreSconto = 0
             tipoSconto = None
@@ -359,16 +361,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
             self.codice_a_barre_entry.set_text(codiceABarre)
             self.codice_entry.set_text(codice)
-            self.activate_item(idArticolo,
-                                self.listinoRiga,
-                               codiceABarre,
-                               codice,
-                               descrizione,
-                               prezzo,
-                               valoreSconto,
-                               tipoSconto,
-                               prezzoScontato,
-                               quantita)
+            self.activate_item(idArticolo, listinoRiga, codiceABarre,codice,
+                               descrizione, prezzo, valoreSconto,tipoSconto,
+                               prezzoScontato, quantita)
             self.confirm_button.grab_focus()
             try:
                 if Environment.conf.VenditaDettaglio.direct_confirm == "yes":
@@ -378,7 +373,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 pass
         else:
             self.ricercaArticolo()
-
 
     def on_search_button_clicked(self, button):
         self.ricercaArticolo()
@@ -391,6 +385,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
     def on_codice_entry_activate(self,text_entry):
         if self.codice_entry.get_text() != '':
             self.search_item(codice = prepareFilterString(self.codice_entry.get_text()))
+        return True
+
+    def on_descrizione_entry_activate(self,text_entry):
+        if self.descrizione_entry.get_text() != '':
+            self.search_item(descrizione = prepareFilterString(self.descrizione_entry.get_text()))
         return True
 
     def setDao(self, dao):
@@ -418,6 +417,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         self.codice_a_barre_entry.set_text('')
         self.codice_entry.set_text('')
+        self.descrizione_entry.set_text('')
         self.descrizione_label.set_text('')
         self.prezzo_entry.set_text('')
         self.sconto_entry.set_text('')
@@ -428,25 +428,19 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.giacenza_label.set_text('-')
 
 
-    def activate_item(self, idArticolo,
-                            listinoRiga,
-                            codiceABarre,
-                            codice,
-                            denominazione,
-                            prezzo,
-                            valoreSconto,
-                            tipoSconto,
-                            prezzoScontato,
-                            quantita):
+    def activate_item(self, idArticolo,listinoRiga,codiceABarre,codice,denominazione,
+                        prezzo,valoreSconto,tipoSconto,prezzoScontato,quantita):
         self._loading = True
         self.lsmodel.clear()
 
-        fillComboboxListiniFiltrati(self.listini_combobox,
-                                    idArticolo=idArticolo,
-                                    idMagazzino=None,
-                                    idCliente=None,
-                                    filter=False)
-        listiniList= listinoCandidateSel(idArticolo=idArticolo,idMagazzino=None,idCliente=None)
+        #fillComboboxListiniFiltrati(self.listini_combobox,
+                                    #idArticolo=idArticolo,
+                                    #idMagazzino=None,
+                                    #idCliente=None,
+                                    #filter=False)
+        listiniList= listinoCandidateSel(idArticolo=idArticolo,
+                                        idMagazzino=self.id_magazzino ,
+                                        idCliente=None)
         if listiniList:
             for l in listiniList:
                 self.lsmodel.append([l.id,l.denominazione])
@@ -465,107 +459,62 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 pass
 
         self._loading = False
-        self.codice_a_barre_entry.set_text(codiceABarre)
-        self.codice_entry.set_text(codice)
-        self.descrizione_label.set_markup('<b>' + denominazione + '</b>')
-        self.prezzo_entry.set_text(str(mN(prezzo)))
-        #self.prezzo_entry.set_text(Environment.conf.number_format % prezzo)
-        self.sconto_entry.tipoSconto = tipoSconto
-        tipoScontoString = self.sconto_entry.getTipoScontoString()
-        self.sconto_entry.set_text(str(mN(valoreSconto)))
-        if not(valoreSconto > 0):
-            tipoScontoString = ''
-        self.prezzo_scontato_entry.set_text(str(mN(prezzoScontato)))
-        self.quantita_entry.set_text(str(Decimal(quantita)))
-        #self.quantita_entry.set_text(Environment.conf.number_format % quantita)
-        #self.quantita_entry.set_text(quantita)
-        self.confirm_button.set_sensitive(True)
+        if tipoSconto == "percentuale":
+            tipoSconto = "%"
+        elif tipoSconto == "valore":
+            tipoSconto = "€"
+        else:
+            tipoSconto = ""
+
         self.rhesus_button.set_sensitive(True)
         self.annulling_button.set_sensitive(True)
-        listino = ListinoArticolo()
-        self.art = leggiArticolo(idArticolo)
-        if listino.ultimo_costo is None:
-            self.fornitura = leggiFornitura(idArticolo)
-            self.ultimocostovalue_label.set_markup('<b>' + str(mN(self.fornitura["prezzoNetto"])) + '</b>')
-        else:
-            self.ultimocostovalue_label.set_markup('<b>' + str(mN(listino.ultimo_costo or 0)) + '</b>')
-
-        if prezzoScontato == prezzo:
-            self.marginevalue_label.set_markup('<b>'+ "%s" % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
-                                                                   mN(prezzo),
-                                                                   mN(self.art["percentualeAliquotaIva"])))+ '</b>')
-        else:
-            self.marginevalue_label.set_markup('<b>'+"%s" % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
-                                                                   mN(prezzoScontato),
-                                                                   mN(self.art["percentualeAliquotaIva"])))+ '</b>')
-        giacenza = self.getGiacenzaArticolo(idArticolo=idArticolo)
-        self.giacenza_label.set_markup('<b>' + str(mN(giacenza)) + '</b>')
-
         self._currentRow = {'idArticolo' : idArticolo,
-                            'listinoRiga' : listinoRiga[1],
+                            'listinoRiga' : listinoRiga,
                             'codiceABarre' : codiceABarre,
                             'codice' : codice,
                             'descrizione' : denominazione,
                             'prezzo' : prezzo,
                             'valoreSconto' : valoreSconto,
-                            'tipoSconto' : tipoScontoString,
+                            'tipoSconto' : tipoSconto,
                             'prezzoScontato':prezzoScontato,
                             'quantita' : quantita}
-
-    def on_listini_combobox_changed(self, combobox):
-        if self._loading:
-            return
-
-        self.id_listino = findIdFromCombobox(self.listini_combobox)
-        listino = leggiListino(self.id_listino, self._currentRow['idArticolo'])
-        prezzo_dettaglio = listino["prezzoDettaglio"]
-        self._currentRow['prezzo'] = mN(prezzo_dettaglio)
-        self.prezzo_entry.set_text(str(mN(prezzo_dettaglio)))
 
 
     def on_scontrino_treeview_selection_changed(self, treeSelection):
         (model, iterator) = treeSelection.get_selected()
-
         if iterator is not None:
-            self.id_listino = findIdFromCombobox(self.listini_combobox)
-            listino = leggiListino(self.id_listino, self._currentRow['idArticolo'])
-            idArticolo = model.get_value(iterator, 0)
-            listinoRiga = model.get_value(iterator, 1)
-            codiceABarre = model.get_value(iterator, 2)
-            codice = model.get_value(iterator, 3)
-            denominazione = model.get_value(iterator, 4)
-            prezzo = model.get_value(iterator, 5)
-            valoreSconto = model.get_value(iterator, 6)
-            tipoSconto = model.get_value(iterator, 7)
-            if tipoSconto != self._simboloPercentuale:
-                tipoSconto = 'valore'
-            else:
-                tipoSconto = 'percentuale'
-            prezzoScontato = model.get_value(iterator, 8)
-            quantita = model.get_value(iterator, 9)
-            self.activate_item(idArticolo,
-                                listinoRiga,
-                                codiceABarre,
-                                codice,
-                                denominazione,
-                                prezzo,
-                                valoreSconto,
-                                tipoSconto,
-                                prezzoScontato,
-                                quantita)
-
-            # Abilito bottoni e text entry
             self.delete_button.set_sensitive(True)
-            self.confirm_button.set_sensitive(True)
+            #self.confirm_button.set_sensitive(True)
             self.rhesus_button.set_sensitive(True)
             self.annulling_button.set_sensitive(True)
             self.search_button.set_sensitive(False)
             self.codice_a_barre_entry.set_sensitive(False)
             self.codice_entry.set_sensitive(False)
-
+            self.descrizione_entry.set_sensitive(False)
             # Vado in editing
             self._state = 'editing'
+            treeview = self.scontrino_treeview
+            model = treeview.get_model()
             self.currentIteratorRow = iterator
+            listinoRiga = model.get_value(self.currentIteratorRow, 1)
+            idArticolo = model.get_value(self.currentIteratorRow, 0)
+            self.lsmodel.clear()
+            listiniList = listinoCandidateSel(idArticolo=idArticolo,
+                                                idMagazzino=self.id_magazzino)
+            listinoPref = Listino().select(idListino=self.id_listino)[0]
+            self.lsmodel.append([listinoPref.id,listinoPref.denominazione])
+            if listiniList:
+                for l in listiniList:
+                    if l.denominazione != listinoPref.denominazione:
+                        self.lsmodel.append([l.id,l.denominazione])
+            self.descrizione_label.set_markup('<b><span foreground="black" size="12000">'\
+                                            +model.get_value(self.currentIteratorRow, 2)\
+                                            + " - " \
+                                            + model.get_value(self.currentIteratorRow, 3)\
+                                            +" - " \
+                                            +model.get_value(self.currentIteratorRow, 4)\
+                                            +'</span></b>')
+            
 
     def on_confirm_button_clicked(self, button):
         # controllo che il prezzo non sia nullo
@@ -585,7 +534,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         if self._state == 'search':
             model.append((self._currentRow['idArticolo'],
-                        self._currentRow['listinoRiga'],
+                        self._currentRow['listinoRiga'][1][0:10],
                         self._currentRow['codiceABarre'],
                         self._currentRow['codice'],
                         self._currentRow['descrizione'],
@@ -596,7 +545,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                         Decimal(self._currentRow['quantita'])))
         elif self._state == 'editing':
             model.set_value(self.currentIteratorRow, 0, self._currentRow['idArticolo'])
-            model.set_value(self.currentIteratorRow, 1, self._currentRow['listinoRiga'])
+            model.set_value(self.currentIteratorRow, 1, self._currentRow['listinoRiga'][1][0:10])
             model.set_value(self.currentIteratorRow, 2, self._currentRow['codiceABarre'])
             model.set_value(self.currentIteratorRow, 3, self._currentRow['codice'])
             model.set_value(self.currentIteratorRow, 4, self._currentRow['descrizione'])
@@ -609,7 +558,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.marginevalue_label.set_text('')
         self.ultimocostovalue_label.set_text('')
         self.empty_current_row()
-
+        #self.scontrino_treeview.scroll_to_cell(len(model))
         # Disabilito cancella e conferma e abilito ricerca barcode
         self.delete_button.set_sensitive(False)
         self.confirm_button.set_sensitive(False)
@@ -617,6 +566,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.annulling_button.set_sensitive(False)
         self.codice_a_barre_entry.set_sensitive(True)
         self.codice_entry.set_sensitive(True)
+        self.descrizione_entry.set_sensitive(True)
 
         self.search_button.set_sensitive(True)
         # Abilito pulsante totale e annulla
@@ -635,6 +585,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.codice_a_barre_entry.grab_focus()
 
 
+    def on_scontrino_treeview_cursor_changed(self,treeview):
+        print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+
     def on_cancel_button_clicked(self, button):
         self.empty_current_row()
 
@@ -645,6 +598,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.annulling_button.set_sensitive(False)
         self.codice_a_barre_entry.set_sensitive(True)
         self.codice_entry.set_sensitive(True)
+        self.descrizione_entry.set_sensitive(True)
         self.search_button.set_sensitive(True)
 
         treeview = self.scontrino_treeview
@@ -686,6 +640,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.annulling_button.set_sensitive(False)
         self.codice_a_barre_entry.set_sensitive(True)
         self.codice_entry.set_sensitive(True)
+        self.descrizione_entry.set_sensitive(True)
         self.search_button.set_sensitive(True)
         self.empty_current_row()
 
@@ -695,90 +650,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # vado in search
         self._state = 'search'
         self.codice_a_barre_entry.grab_focus()
-
-    def on_prezzo_entry_focus_out_event(self, entry, event):
-        prezzo = mN(self.prezzo_entry.get_text().strip())
-        self._currentRow['prezzo'] = prezzo
-        if self._currentRow['valoreSconto'] == 0:
-            self._currentRow['prezzoScontato'] = prezzo
-            self.prezzo_scontato_entry.set_text(str(mN(self._currentRow['prezzoScontato'])).strip())
-            #self.marginevalue_label.set_markup('<b>'+'%-6.3f' % calcolaMargine(float(self.fornitura["prezzoNetto"]),
-                                                                   #float(self._currentRow['prezzoScontato']),
-                                                                   #float(self.art["percentualeAliquotaIva"]))+ '</b>')
-            self.marginevalue_label.set_text('')
-        else:
-            if self._currentRow['tipoSconto'] == self._simboloPercentuale:
-                self._currentRow['prezzoScontato'] = prezzo - ((prezzo) * (mN(self._currentRow['valoreSconto']) / 100))
-                self.prezzo_scontato_entry.set_text(str( self._currentRow['prezzoScontato']))
-                self.marginevalue_label.set_text('')
-            else:
-                self._currentRow['prezzoScontato'] = prezzo - mN(self._currentRow['valoreSconto'])
-                self.prezzo_scontato_entry.set_text(str(mN(self._currentRow['prezzoScontato'])))
-                self.marginevalue_label.set_text('')
-
-    def on_prezzo_entry_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
-        if keyname == 'Return' or keyname == 'KP_Enter':
-            self.quantita_entry.grab_focus()
-
-    def on_prezzo_scontato_entry_focus_out_event(self, entry, event):
-        prezzoScontato = mN(self.prezzo_scontato_entry.get_text())
-        self._currentRow['prezzoScontato'] = prezzoScontato
-        if abs(mN(self._currentRow['prezzo']) - self._currentRow['prezzoScontato']) > 0:
-            if self._currentRow['tipoSconto'] == self._simboloPercentuale:
-                self._currentRow['valoreSconto'] = 100 * (1 - mN(self._currentRow['prezzoScontato']) / mN(self._currentRow['prezzo']))
-                self.sconto_entry.set_text(str(mN(self._currentRow['valoreSconto'])))
-                self.sconto_entry.tipoSconto = 'percentuale'
-                self.marginevalue_label.set_markup('<b>'+"%s" % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
-                                                                   mN(self._currentRow['prezzoScontato']),
-                                                                   mN(str(self.art["percentualeAliquotaIva"]))))+ '</b>')
-            else:
-                self._currentRow['valoreSconto'] = mN(self._currentRow['prezzo']) - mN(self._currentRow['prezzoScontato'])
-                self.sconto_entry.set_text(str(mN(self._currentRow['valoreSconto'])))
-                self.sconto_entry.tipoSconto = 'valore'
-                self.marginevalue_label.set_markup('<b>'+'%s' % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
-                                                                   mN(self._currentRow['prezzoScontato']),
-                                                                   mN(self.art["percentualeAliquotaIva"])))+ '</b>')
-
-    def on_prezzo_scontato_entry_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
-        if keyname == 'Return' or keyname == 'KP_Enter':
-            self.confirm_button.grab_focus()
-
-    def on_sconto_entry_focus_out_event(self, entry, event):
-        self._currentRow['valoreSconto'] = mN(self.sconto_entry.get_text())
-        if self.sconto_entry.tipoSconto == 'percentuale':
-            self._currentRow['tipoSconto'] = self._simboloPercentuale
-        else:
-            self._currentRow['tipoSconto'] = self._simboloEuro
-        if self._currentRow['valoreSconto'] == 0:
-            self._currentRow['tipoSconto'] = None
-            self._currentRow['prezzoScontato'] = mN(self._currentRow['prezzo'])
-            self.prezzo_scontato_entry.set_text(str(mN(self._currentRow['prezzoScontato'])))
-            self.marginevalue_label.set_markup('<b>'+'%s' % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
-                                                                   mN(self._currentRow['prezzoScontato']),
-                                                                   mN(self.art["percentualeAliquotaIva"])))+ '</b>')
-        else:
-            if self._currentRow['tipoSconto'] == self._simboloPercentuale:
-                self._currentRow['prezzoScontato'] = mN(self._currentRow['prezzo']) - (mN(self._currentRow['prezzo']) * mN(self._currentRow['valoreSconto'])) / 100
-                self.prezzo_scontato_entry.set_text(str(mN(self._currentRow['prezzoScontato'])).strip())
-                self.marginevalue_label.set_markup('<b>'+'%s' % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
-                                                                   mN(self._currentRow['prezzoScontato']),
-                                                                   Decimal(str(self.art["percentualeAliquotaIva"]))))+ '</b>')
-            else:
-                self._currentRow['prezzoScontato'] = mN(self._currentRow['prezzo']) - mN(self._currentRow['valoreSconto'])
-                self.prezzo_scontato_entry.set_text(str(mN(self._currentRow['prezzoScontato'])))
-                self.marginevalue_label.set_markup('<b>'+'%s' % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
-                                                                   mN(self._currentRow['prezzoScontato']),
-                                                                   Decimal(str(self.art["percentualeAliquotaIva"]))))+ '</b>')
-
-    def on_quantita_entry_focus_out_event(self, entry, event):
-        self._currentRow['quantita'] = Decimal(self.quantita_entry.get_text().strip())
-
-    def on_quantita_entry_key_press_event(self, widget, event):
-        keyname = gtk.gdk.keyval_name(event.keyval)
-        if keyname == 'Return' or keyname == 'KP_Enter':
-            self.confirm_button.grab_focus()
 
 
     def refreshTotal(self):
@@ -795,14 +666,14 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 total = total + (prezzoScontato * quantita)
         if not total:
             total = "0.00"
-        self.label_totale.set_markup('<b><span size="xx-large">' + str(mN(total)) + '</span></b>')
+        self.label_totale.set_markup('<b><span foreground="black" size="38000">' + str(mN(total)) +'</span></b>')
         return total
 
     def on_empty_button_clicked(self, button):
         self.scontrino_treeview.get_model().clear()
         self.empty_current_row()
-        self.label_totale.set_markup('<b><span size="xx-large">0.00</span></b>')
-        self.label_resto.set_markup('<b><span size="xx-large">0.00</span></b>')
+        self.label_totale.set_markup('<b><span foreground="black" size="38000">0.00</span></b>')
+        self.label_resto.set_markup('<b><span foreground="black" size="24000">0.00</span></b>')
         self.empty_button.set_sensitive(False)
         self.total_button.set_sensitive(False)
         self.setPagamento(enabled = False)
@@ -832,7 +703,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         if self.contanti_entry.get_text() != '':
             totale_contanti = mN(self.contanti_entry.get_text())
             resto = totale_contanti - dao.totale_scontrino
-            self.label_resto.set_markup('<b><span size="xx-large">' + str(resto) + '</span></b>')
+            self.label_resto.set_markup('<b><span foreground="black" size="24000">' + str(resto) +'</span></b>')
         if self.non_contanti_entry.get_text() != '':
             if self.assegni_radio_button.get_active():
                 totale_assegni = mN(self.non_contanti_entry.get_text())
@@ -925,6 +796,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.search_button.set_sensitive(True)
         self.codice_a_barre_entry.set_sensitive(True)
         self.codice_entry.set_sensitive(True)
+        self.descrizione_entry.set_sensitive(True)
         self.confirm_button.set_sensitive(False)
         self.rhesus_button.set_sensitive(False)
         self.annulling_button.set_sensitive(False)
@@ -1101,7 +973,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             # Ricerca listino_articolo
             listino = leggiListino(self.id_listino, idArticolo)
             #prezzo = listino["prezzoDettaglio"]
-            listinoRiga = (self.id_listino, listino['denominazione'][0:8])
+            listinoRiga = (self.id_listino, listino['denominazione'][0:10])
             prezzo = mN(listino["prezzoDettaglio"])
             prezzoScontato = prezzo
             tipoSconto = None
@@ -1141,8 +1013,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
         codiceABarre = self.codice_a_barre_entry.get_text()
         codice = self.codice_entry.get_text()
+        descrizione = self.descrizione_entry.get_text()
         anag = RicercaComplessaArticoli(codiceABarre = codiceABarre,
-                                        codice = codice)
+                                        codice = codice,
+                                        denominazione=descrizione)
         anag.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
         anagWindow = anag.getTopLevel()
         anagWindow.connect("hide",
@@ -1152,12 +1026,18 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
 
     def on_new_button_clicked(self, button):
+        """
+            open the anagraficaArticolo Semplice to add a new article
+        """
         from promogest.ui.AnagraficaArticoliSemplice import AnagraficaArticoliSemplice
         anag = AnagraficaArticoliSemplice()
         anagWindow = anag.getTopLevel()
         showAnagraficaRichiamata(self.getTopLevel(), anagWindow, button)
 
     def ricercaListino(self):
+        """
+            check if there is a priceList like setted on configure file
+        """
         pricelist = Listino().select(denominazione = Environment.conf.VenditaDettaglio.listino,
                                     offset = None,
                                     batchSize = None)
@@ -1165,7 +1045,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             id_listino = pricelist[0].id
         else:
             id_listino = None
-
         return id_listino
 
     def on_total_button_grab_focus(self, button):
@@ -1253,7 +1132,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                     tipoSconto = self._simboloPercentuale
                 else:
                     tipoSconto = self._simboloEuro
-
+            listinoRiga = ""
             model.append((idArticolo,
                             listinoRiga,
                             codiceABarre,
@@ -1328,3 +1207,124 @@ class AnagraficaVenditaDettaglio(GladeWidget):
     def on_sconti_scontrino_widget_button_toggled(self, button):
         pippo = self.sconti_scontrino_widget.getSconti()
         return
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #def on_prezzo_entry_focus_out_event(self, entry, event):
+        #prezzo = mN(self.prezzo_entry.get_text().strip())
+        #self._currentRow['prezzo'] = prezzo
+        #if self._currentRow['valoreSconto'] == 0:
+            #self._currentRow['prezzoScontato'] = prezzo
+            #self.prezzo_scontato_entry.set_text(str(mN(self._currentRow['prezzoScontato'])).strip())
+            ##self.marginevalue_label.set_markup('<b>'+'%-6.3f' % calcolaMargine(float(self.fornitura["prezzoNetto"]),
+                                                                   ##float(self._currentRow['prezzoScontato']),
+                                                                   ##float(self.art["percentualeAliquotaIva"]))+ '</b>')
+            #self.marginevalue_label.set_text('')
+        #else:
+            #if self._currentRow['tipoSconto'] == self._simboloPercentuale:
+                #self._currentRow['prezzoScontato'] = prezzo - ((prezzo) * (mN(self._currentRow['valoreSconto']) / 100))
+                #self.prezzo_scontato_entry.set_text(str( self._currentRow['prezzoScontato']))
+                #self.marginevalue_label.set_text('')
+            #else:
+                #self._currentRow['prezzoScontato'] = prezzo - mN(self._currentRow['valoreSconto'])
+                #self.prezzo_scontato_entry.set_text(str(mN(self._currentRow['prezzoScontato'])))
+                #self.marginevalue_label.set_text('')
+
+    #def on_prezzo_entry_key_press_event(self, widget, event):
+        #keyname = gtk.gdk.keyval_name(event.keyval)
+        #if keyname == 'Return' or keyname == 'KP_Enter':
+            #self.quantita_entry.grab_focus()
+
+    #def on_prezzo_scontato_entry_focus_out_event(self, entry, event):
+        #prezzoScontato = mN(self.prezzo_scontato_entry.get_text())
+        #self._currentRow['prezzoScontato'] = prezzoScontato
+        #if abs(mN(self._currentRow['prezzo']) - self._currentRow['prezzoScontato']) > 0:
+            #if self._currentRow['tipoSconto'] == self._simboloPercentuale:
+                #self._currentRow['valoreSconto'] = 100 * (1 - mN(self._currentRow['prezzoScontato']) / mN(self._currentRow['prezzo']))
+                #self.sconto_entry.set_text(str(mN(self._currentRow['valoreSconto'])))
+                #self.sconto_entry.tipoSconto = 'percentuale'
+                #self.marginevalue_label.set_markup('<b>'+"%s" % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
+                                                                   #mN(self._currentRow['prezzoScontato']),
+                                                                   #mN(str(self.art["percentualeAliquotaIva"]))))+ '</b>')
+            #else:
+                #self._currentRow['valoreSconto'] = mN(self._currentRow['prezzo']) - mN(self._currentRow['prezzoScontato'])
+                #self.sconto_entry.set_text(str(mN(self._currentRow['valoreSconto'])))
+                #self.sconto_entry.tipoSconto = 'valore'
+                #self.marginevalue_label.set_markup('<b>'+'%s' % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
+                                                                   #mN(self._currentRow['prezzoScontato']),
+                                                                   #mN(self.art["percentualeAliquotaIva"])))+ '</b>')
+
+    #def on_prezzo_scontato_entry_key_press_event(self, widget, event):
+        #keyname = gtk.gdk.keyval_name(event.keyval)
+        #if keyname == 'Return' or keyname == 'KP_Enter':
+            #self.confirm_button.grab_focus()
+
+    #def on_sconto_entry_focus_out_event(self, entry, event):
+        #self._currentRow['valoreSconto'] = mN(self.sconto_entry.get_text())
+        #if self.sconto_entry.tipoSconto == 'percentuale':
+            #self._currentRow['tipoSconto'] = self._simboloPercentuale
+        #else:
+            #self._currentRow['tipoSconto'] = self._simboloEuro
+        #if self._currentRow['valoreSconto'] == 0:
+            #self._currentRow['tipoSconto'] = None
+            #self._currentRow['prezzoScontato'] = mN(self._currentRow['prezzo'])
+            #self.prezzo_scontato_entry.set_text(str(mN(self._currentRow['prezzoScontato'])))
+            #self.marginevalue_label.set_markup('<b>'+'%s' % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
+                                                                   #mN(self._currentRow['prezzoScontato']),
+                                                                   #mN(self.art["percentualeAliquotaIva"])))+ '</b>')
+        #else:
+            #if self._currentRow['tipoSconto'] == self._simboloPercentuale:
+                #self._currentRow['prezzoScontato'] = mN(self._currentRow['prezzo']) - (mN(self._currentRow['prezzo']) * mN(self._currentRow['valoreSconto'])) / 100
+                #self.prezzo_scontato_entry.set_text(str(mN(self._currentRow['prezzoScontato'])).strip())
+                #self.marginevalue_label.set_markup('<b>'+'%s' % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
+                                                                   #mN(self._currentRow['prezzoScontato']),
+                                                                   #Decimal(str(self.art["percentualeAliquotaIva"]))))+ '</b>')
+            #else:
+                #self._currentRow['prezzoScontato'] = mN(self._currentRow['prezzo']) - mN(self._currentRow['valoreSconto'])
+                #self.prezzo_scontato_entry.set_text(str(mN(self._currentRow['prezzoScontato'])))
+                #self.marginevalue_label.set_markup('<b>'+'%s' % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
+                                                                   #mN(self._currentRow['prezzoScontato']),
+                                                                   #Decimal(str(self.art["percentualeAliquotaIva"]))))+ '</b>')
+
+    #def on_quantita_entry_focus_out_event(self, entry, event):
+        #self._currentRow['quantita'] = Decimal(self.quantita_entry.get_text().strip())
+
+    #def on_quantita_entry_key_press_event(self, widget, event):
+        #keyname = gtk.gdk.keyval_name(event.keyval)
+        #if keyname == 'Return' or keyname == 'KP_Enter':
+            #self.confirm_button.grab_focus()
+
+
+        #listino = ListinoArticolo()
+        #self.art = leggiArticolo(idArticolo)
+        #if listino.ultimo_costo is None:
+            #self.fornitura = leggiFornitura(idArticolo)
+            #self.ultimocostovalue_label.set_markup('<b>' + str(mN(self.fornitura["prezzoNetto"])) + '</b>')
+        #else:
+            #self.ultimocostovalue_label.set_markup('<b>' + str(mN(listino.ultimo_costo or 0)) + '</b>')
+
+        #if prezzoScontato == prezzo:
+            #self.marginevalue_label.set_markup('<b>'+ "%s" % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
+                                                                   #mN(prezzo),
+                                                                   #mN(self.art["percentualeAliquotaIva"])))+ '</b>')
+        #else:
+            #self.marginevalue_label.set_markup('<b>'+"%s" % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
+                                                                   #mN(prezzoScontato),
+                                                                   #mN(self.art["percentualeAliquotaIva"])))+ '</b>')
+        #giacenza = self.getGiacenzaArticolo(idArticolo=idArticolo)
+        #self.giacenza_label.set_markup('<b>' + str(mN(giacenza)) + '</b>')

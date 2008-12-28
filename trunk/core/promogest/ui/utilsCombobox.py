@@ -490,6 +490,10 @@ def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=
         OrderBy= "denominazione"
 
     listinoSelezionato = Listino().select(complexFilter=and_(filter1,filter2,filter3, filter4), orderBy=OrderBy)
+    #if listinoSelezionato:
+        #for listi in listinoSelezionato:
+            #listi.sottoListiniID
+        
     print "LISTINI ASSOCIATI:", listinoSelezionato
     return listinoSelezionato
 
