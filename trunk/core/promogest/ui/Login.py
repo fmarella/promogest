@@ -92,6 +92,7 @@ class Login(GladeApp):
         self.username_comboxentry.add_attribute(renderer_usr, 'text', 1)
         self.username_comboxentry.set_model(model_usr)
         self.username_comboxentry.set_text_column(0)
+        self.username_comboxentry.grab_focus()
         #self.username_comboxentry.set_active(0)
         data = datetime.datetime.now()
         self.anno_lavoro_spinbutton.set_value(data.year)

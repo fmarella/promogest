@@ -34,7 +34,8 @@ pdf_reader = acroread,evince,okular,kghostview,xpdf
 cliente_predefinito = ""
 tipo_documento_predefinito = ""
 ricerca_per = codice / descrizione / codice_a_barre / codice_articolo_fornitore
-
+color_base = #F9FBA7
+color_text = black
 
 [Feed]
 feed = True

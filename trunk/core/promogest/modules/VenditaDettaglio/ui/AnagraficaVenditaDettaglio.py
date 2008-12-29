@@ -52,6 +52,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.dati_riga_frame.destroy()
         self.draw()
 
+
     def draw(self):
         accelGroup = gtk.AccelGroup()
         self.getTopLevel().add_accel_group(accelGroup)
@@ -559,7 +560,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.ultimocostovalue_label.set_text('')
         self.empty_current_row()
         self.scontrino_treeview.scroll_to_cell(str(len(model)-1))
-        self.righe_label.set_markup('<b>'+ " [ "+str(len(model)) +" ] Righe scontrino"+'</b>')
+        self.righe_label.set_markup('<b>[ '+str(len(model)) +' ] Righe scontrino</b>')
         # Disabilito cancella e conferma e abilito ricerca barcode
         self.delete_button.set_sensitive(False)
         self.confirm_button.set_sensitive(False)
@@ -803,7 +804,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.annulling_button.set_sensitive(False)
         self.delete_button.set_sensitive(False)
         self.on_empty_button_clicked(self.empty_button)
-        self.righe_label.set_markup('<b>'+ " [ 0 ] Righe scontrino"+'</b>')
+        self.righe_label.set_markup('<b> [ 0 ] Righe scontrino</b>')
         self._state = 'search'
 
     def on_chiusura_fiscale_activate(self, widget):
@@ -1058,7 +1059,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         else:
             totale_pagamento = 0
         resto = totale_pagamento - totale_scontrino
-        self.label_resto.set_markup('<b><span size="xx-large">' + str(resto) + '</span></b>')
+        self.label_resto.set_markup('<b><span size="xx-large">'+ str(resto) +'</span></b>')
 
         if self.total_button.is_focus():
             self.on_total_button_clicked(button)

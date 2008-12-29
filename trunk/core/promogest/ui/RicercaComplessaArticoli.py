@@ -2031,9 +2031,7 @@ class RicercaArticoliFilter(GladeWidget):
     def refresh(self):
         # Aggiornamento TreeView
         model = self._parentObject.filter.resultsElement.get_model()
-
         self.complexFilter = self._prepare()
-
         if self._tipoRicerca == 'semplice':
             denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
             produttore = prepareFilterString(self.produttore_filter_entry.get_text())
@@ -2110,7 +2108,8 @@ class RicercaArticoliFilter(GladeWidget):
                                                         padriTagliaColore=padriTagliaColore,
                                                         figliTagliaColore=figliTagliaColore)
         else:
-            self.filter.numRecords = Articolo().count(denominazione=denominazione,
+             self.filter.numRecords = Articolo().count(
+                                        denominazione=denominazione,
                                         codice=codice,
                                         codiceABarre=codiceABarre,
                                         codiceArticoloFornitore=codiceArticoloFornitore,
@@ -2164,20 +2163,20 @@ class RicercaArticoliFilter(GladeWidget):
                             (a.stagione or ''),
                             (a.genere or '')))
         else:
-            arts = Articolo().select(orderBy=self.filter.orderBy,
-                                                    denominazione=denominazione,
-                                                    codice=codice,
-                                                    codiceABarre=codiceABarre,
-                                                    codiceArticoloFornitore=codiceArticoloFornitore,
-                                                    produttore=produttore,
-                                                    idFamiglia=idFamiglia,
-                                                    idCategoria=idCategoria,
-                                                    idStato=idStato,
-                                                    cancellato=cancellato,
-                                                    offset=self.filter.offset,
-                                                    batchSize=self.filter.batchSize,
-                                                    complexFilter=self.complexFilter)
-
+            arts = Articolo().select(
+                                    orderBy=self.filter.orderBy,
+                                    denominazione=denominazione,
+                                    codice=codice,
+                                    codiceABarre=codiceABarre,
+                                    codiceArticoloFornitore=codiceArticoloFornitore,
+                                    produttore=produttore,
+                                    idFamiglia=idFamiglia,
+                                    idCategoria=idCategoria,
+                                    idStato=idStato,
+                                    cancellato=cancellato,
+                                    offset=self.filter.offset,
+                                    batchSize=self.filter.batchSize,
+                                    complexFilter=self.complexFilter)
             model.clear()
 
             for a in arts:
@@ -2300,7 +2299,6 @@ class RicercaArticoliFilter(GladeWidget):
                 self._idCutSizeIn.append(row[index])
 
 
-
         # eliminazione tabella articoli filtrati
 
         self.resultsCount = 0
@@ -2331,7 +2329,6 @@ class RicercaArticoliFilter(GladeWidget):
             self._normaliIn = None
             self._eliminatiIn = None
             self._soloEliminatiIn = None
-
             parseModel(self._descrizioneTreeViewModel, getDescrizioniIn, 2)
             parseModel(self._descrizioneTreeViewModel, getDescrizioniOut, 2)
             parseModel(self._produttoreTreeViewModel, getProduttoriIn, 2)
@@ -2365,7 +2362,6 @@ class RicercaArticoliFilter(GladeWidget):
             joinString = ""
             whereString = ""
             wherestring = []
-
             if len(self._descrizioniIn) >0:
                 variabili = []
                 for stri in self._descrizioniIn:
@@ -2373,7 +2369,6 @@ class RicercaArticoliFilter(GladeWidget):
                     variabili.append(stringa)
                 datus= or_(*variabili)
                 wherestring.append(datus)
-
             if len(self._descrizioniOut) >0:
                 variabili = []
                 for stri in self._descrizioniOut:
@@ -2381,7 +2376,6 @@ class RicercaArticoliFilter(GladeWidget):
                     variabili.append(stringa)
                 datus = and_(*variabili)
                 wherestring.append(datus)
-
             if len(self._produttoriIn) >0:
                 variabili = []
                 for stri in self._produttoriIn:
@@ -2389,7 +2383,6 @@ class RicercaArticoliFilter(GladeWidget):
                     variabili.append(stringa)
                 datus= or_(*variabili)
                 wherestring.append(datus)
-
             if  len(self._produttoriOut) >0:
                 variabili = []
                 for stri in self._produttoriOut:
@@ -2397,7 +2390,6 @@ class RicercaArticoliFilter(GladeWidget):
                     variabili.append(stringa)
                 datus= and_(*variabili)
                 wherestring.append(datus)
-
             if len(self._codiciIn) >0:
                 variabili = []
                 for stri in self._codiciIn:
@@ -2413,13 +2405,12 @@ class RicercaArticoliFilter(GladeWidget):
                     variabili.append(stringa)
                 datus= and_(*variabili)
                 wherestring.append(datus)
-
             #usata codice barre del mapper in quanto non serve il filtro per predefinito..
-            if len(self._codiciABarreIn) >0:
+            if len(self._codiciABarreIn) >0 and self._codiciABarreIn[0] !="":
                 variabili = []
                 for stri in self._codiciABarreIn:
                     quer= Environment.params["session"].query(CodiceABarreArticolo)\
-                    .filter(CodiceABarreArticolo.codice.ilike("%"+stri+"%")).all()
+                            .filter(CodiceABarreArticolo.codice.ilike("%"+stri+"%")).all()
                     for q in quer:
                         stringa= and_(Articolo.id == q.id_articolo )
                         #stringa= and_(Articolo.cod_barre.ilike("%"+stri+"%"))
@@ -2427,7 +2418,8 @@ class RicercaArticoliFilter(GladeWidget):
                 datus= or_(*variabili)
                 wherestring.append(datus)
 
-            if len(self._codiciABarreOut) >0:
+            if len(self._codiciABarreOut) >0 :
+ 
                 variabili = []
                 for stri in self._codiciABarreOut:
                     quer= Environment.params["session"].query(CodiceABarreArticolo)\
@@ -2438,7 +2430,6 @@ class RicercaArticoliFilter(GladeWidget):
                         variabili.append(stringa)
                 datus= and_(*variabili)
                 wherestring.append(datus)
-
 
             if len(self._codiciArticoloFornitoreIn) > 0:
                 variabili = []
@@ -2499,7 +2490,6 @@ class RicercaArticoliFilter(GladeWidget):
                         variabili.append(stringa)
                 datus= or_(*variabili)
                 wherestring.append(datus)
-
             #if self._principaliIn or self._variantiIn:
                 #if self._normaliIn:
                     #joinString += " LEFT OUTER"
