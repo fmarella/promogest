@@ -2031,7 +2031,7 @@ class RicercaArticoliFilter(GladeWidget):
     def refresh(self):
         # Aggiornamento TreeView
         model = self._parentObject.filter.resultsElement.get_model()
-        self.complexFilter = self._prepare()
+        
         if self._tipoRicerca == 'semplice':
             denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
             produttore = prepareFilterString(self.produttore_filter_entry.get_text())
@@ -2068,6 +2068,7 @@ class RicercaArticoliFilter(GladeWidget):
                 padriTagliaColore = None
                 figliTagliaColore = None
         elif self._tipoRicerca == 'avanzata':
+            self.complexFilter = self._prepare()
             # tutti i filtri vengono annullati in modo che nella stored procedure di select
             # venga fatta la join con il risultato della query di filtraggio sugli articoli
             denominazione = None
@@ -2406,28 +2407,20 @@ class RicercaArticoliFilter(GladeWidget):
                 datus= and_(*variabili)
                 wherestring.append(datus)
             #usata codice barre del mapper in quanto non serve il filtro per predefinito..
+
             if len(self._codiciABarreIn) >0 and self._codiciABarreIn[0] !="":
                 variabili = []
                 for stri in self._codiciABarreIn:
-                    quer= Environment.params["session"].query(CodiceABarreArticolo)\
-                            .filter(CodiceABarreArticolo.codice.ilike("%"+stri+"%")).all()
-                    for q in quer:
-                        stringa= and_(Articolo.id == q.id_articolo )
-                        #stringa= and_(Articolo.cod_barre.ilike("%"+stri+"%"))
-                        variabili.append(stringa)
+                    stringa= and_(CodiceABarreArticolo.codice.ilike("%"+stri+"%"),Articolo.id ==CodiceABarreArticolo.id_articolo )
+                    variabili.append(stringa)
                 datus= or_(*variabili)
                 wherestring.append(datus)
 
-            if len(self._codiciABarreOut) >0 :
- 
+            if len(self._codiciABarreOut) >0 and self._codiciABarreOut[0] !="":
                 variabili = []
                 for stri in self._codiciABarreOut:
-                    quer= Environment.params["session"].query(CodiceABarreArticolo)\
-                    .filter(not_(CodiceABarreArticolo.codice.ilike("%"+stri+"%"))).all()
-                    for q in quer:
-                        stringa= and_(Articolo.id ==q.id_articolo)
-                        #stringa= and_(not_(CodiceABarreArticolo.codice.ilike("%"+stri+"%")))
-                        variabili.append(stringa)
+                    stringa= and_(not_(CodiceABarreArticolo.codice.ilike("%"+stri+"%")),Articolo.id ==CodiceABarreArticolo.id_articolo)
+                    variabili.append(stringa)
                 datus= and_(*variabili)
                 wherestring.append(datus)
 
@@ -2450,22 +2443,22 @@ class RicercaArticoliFilter(GladeWidget):
             if len(self._idFamiglieIn) > 0:
                 variabili = []
                 for stri in self._idFamiglieIn:
-                    quer= Environment.params["session"].query(FamigliaArticolo)\
-                            .filter(FamigliaArticolo.id ==stri).all()
-                    for q in quer:
-                        stringa= and_(Articolo.id == q.id_articolo)
-                        variabili.append(stringa)
+                    #quer= Environment.params["session"].query(FamigliaArticolo)\
+                            #.filter(FamigliaArticolo.id ==stri).all()
+                    #for q in quer:
+                    stringa= and_(FamigliaArticolo.id ==stri,Articolo.id == FamigliaArticolo.id_articolo)
+                    variabili.append(stringa)
                 datus= or_(*variabili)
                 wherestring.append(datus)
 
             if len(self._idCategorieIn) > 0:
                 variabili = []
                 for stri in self._idCategorieIn:
-                    quer= Environment.params["session"].query(CategoriaArticolo)\
-                            .filter(CategoriaArticolo.id ==stri).all()
-                    for q in quer:
-                        stringa= and_(Articolo.id == q.id_articolo)
-                        variabili.append(stringa)
+                    #quer= Environment.params["session"].query(CategoriaArticolo)\
+                            #.filter(CategoriaArticolo.id ==stri).all()
+                    #for q in quer:
+                    stringa= and_(CategoriaArticolo.id ==stri,Articolo.id == CategoriaArticolo.id_articolo)
+                    variabili.append(stringa)
                 datus= or_(*variabili)
                 wherestring.append(datus)
 
