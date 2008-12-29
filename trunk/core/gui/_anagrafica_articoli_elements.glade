@@ -1249,7 +1249,7 @@ Solo varianti</property>
                         <child>
                           <widget class="GtkLabel" id="varie_articolo_filter_label">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">Varie</property>
+                            <property name="label" translatable="yes">Incl./Escl Eliminati</property>
                           </widget>
                           <packing>
                             <property name="type">label_item</property>
