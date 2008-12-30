@@ -47,7 +47,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         RicercaComplessaArticoli.__init__(self)
 
         # modifiche all'interfaccia originaria
-        self.getTopLevel().set_title('Promogest - Gestione inventario ' + Environment.conf.workingYear)
+        self.getTopLevel().set_title('Promogest - Gestione inventario ' + Environment.workingYear)
         self.search_image.set_no_show_all(True)
         self.search_image.set_property('visible', False)
         self.filter.filter_search_button.set_label('_Seleziona')
@@ -80,8 +80,14 @@ class GestioneInventario(RicercaComplessaArticoli):
 
     def update(self):
         """ Aggiornamento inventario con gli articoli eventualmente non presenti """
-        Environment.connection.execStoredProcedure('InventarioUpd', (int(Environment.conf.workingYear),))
-
+        #Environment.connection.execStoredProcedure('InventarioUpd', (int(Environment.conf.workingYear),))
+        #sql_statement:= \'INSERT INTO inventario (anno, id_magazzino, id_articolo, quantita, valore_unitario, data_aggiornamento)
+                            #(SELECT \' || _anno || \', M.id, A.id, NULL, NULL, NULL
+                            #FROM magazzino M CROSS JOIN articolo A
+                            #WHERE (M.id, A.id) NOT IN (SELECT I.id_magazzino, I.id_articolo FROM INVENTARIO I WHERE I.anno = \' || _anno || \')
+                            #AND A.cancellato <> True)\';
+        #ok = params['session'].query([Magazzino.id, Articolo.id])
+        #codicesel  = select([func.max(Cliente.codice)])
 
     def draw(self):
         """ Disegna la treeview relativa al risultato del filtraggio """
@@ -202,9 +208,9 @@ class GestioneInventario(RicercaComplessaArticoli):
         self._ricerca._prepare()
 
         self.filter.numRecords = Inventario().count(anno=Environment.conf.workingYear,
-                                                                idMagazzino=idMagazzino,
-                                                                daDataAggiornamento=daData,
-                                                                aDataAggiornamento=aData)
+                                                    idMagazzino=idMagazzino,
+                                                    daDataAggiornamento=daData,
+                                                    aDataAggiornamento=aData)
 
         self.filter._refreshPageCount()
 

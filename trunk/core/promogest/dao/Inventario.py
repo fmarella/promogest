@@ -7,24 +7,39 @@
 
 
 import gtk
-
-import Dao
 from promogest import Environment
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from promogest.Environment import *
+from Dao import Dao
 
 
+class Inventario(Dao):
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
-class Inventario(Dao.Dao):
+    def filter_values(self,k,v):
+        if k == 'denominazione':
+            dic= {  k : inventario.c.anno == v}
+        elif k == 'idMagazzino':
+            dic = {k:inventario.c.id_magazzino == v}
+        elif k == 'idArticolo':
+            dic = {k:inventario.c.id_articolo == v}
+        elif k == 'anno':
+            dic = {k:inventario.c.anno == v}
+        elif k == 'daDataAggiornamento':
+            dic = {k:inventario.c.data_aggiornameno >= v}
+        elif k == 'aDataAggiornamento':
+            dic = {k:inventario.c.data_aggiornameno >= v}
+        return  dic[k]
 
-    def __init__(self, connection, idInventario = None):
-        Dao.Dao.__init__(self, connection,
-                         'InventarioGet', 'InventarioSet', 'InventarioDel',
-                         ('id', ), (idInventario, ))
-
+inventario=Table('inventario',params['metadata'],schema = params['schema'],autoload=True)
+std_mapper = mapper(Inventario, inventario, order_by=inventario.c.id)
 
 
 def control(window):
     """ Verifica se esistono gia' delle righe di inventario nell'anno di esercizio """
-    res = count(connection=Environment.connection, anno=Environment.conf.workingYear)
+    res = count(anno=Environment.conf.workingYear)
 
     if res == 0:
         # richiesta di generazione dell'inventario
@@ -47,28 +62,3 @@ def control(window):
             response = dialog.run()
             dialog.destroy()
 
-
-def select(connection, orderBy=None, anno=None, idMagazzino=None, idArticolo=None,
-           daDataAggiornamento=None, aDataAggiornamento=None,
-           offset=0, batchSize=5, immediate=False):
-    """ Seleziona gli inventari relativi agli articoli """
-    cursor = connection.execStoredProcedure('InventarioSel',
-                                            (orderBy, anno, idMagazzino, idArticolo,
-                                             daDataAggiornamento, aDataAggiornamento, 
-                                             offset, batchSize),
-                                            returnCursor=True)
-
-    if immediate:
-        return Dao.select(cursor=cursor, daoClass=Inventario)
-    else:
-        return (cursor, Inventario)
-
-
-def count(connection, anno=None, idMagazzino=None, idArticolo=None,
-          daDataAggiornamento=None, aDataAggiornamento=None):
-    """ Conta gli inventari relativi agli articoli """
-    return connection.execStoredProcedure('InventarioSel',
-                                          (None, anno, idMagazzino, idArticolo,
-                                           daDataAggiornamento, aDataAggiornamento, 
-                                           None, None),
-                                          countResults = True)
