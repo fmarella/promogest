@@ -19,6 +19,10 @@ from sqlalchemy.ext.serializer import loads, dumps
 
 import logging
 
+class ApplicationLog(object):
+    pass
+appLogTable = Table('application_log', params['metadata'], autoload=True, schema=params['mainSchema'])
+std_mapper = mapper(ApplicationLog, appLogTable, order_by=appLogTable.c.id_utente)
 
 class Dao(object):
     """Astrazione generica di ciĂ˛ che fu il vecchio dao basata su sqlAlchemy"""
@@ -143,17 +147,17 @@ Qui sotto viene riportato l'errore di sistema:
             whatstr = str(pk)
             value = None
 
-        # appLogTable = Table('application_log', params['metadata'], autoload=True, schema=params['mainSchema'])
-        # app = appLogTable.insert()
-        # app.execute(id_utente=whoID,
-                    # utentedb = utentedb,
-                    # schema = where,
-                    # level=how,
-                    # object = str(data),
-                    # message = message,
-                    # value = value,
-                    # strvalue = whatstr)
-        
+        app = ApplicationLog()
+        app.id_utente=whoID
+        app.utentedb = utentedb
+        app.schema = where
+        app.level=how
+        app.object = str(data)
+        app.message = message
+        app.value = value
+        app.strvalue = whatstr
+        self.session.add(app)
+        self.commit()
         print "%s : %s %s fatta su schema %s  da %s" %(str(when),message,str(data),str(where),utente)
         #serialized = dumps(self.record)
         #fh = open("pippo",'r')
