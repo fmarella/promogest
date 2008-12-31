@@ -152,7 +152,7 @@ Qui sotto viene riportato l'errore di sistema:
         app.utentedb = utentedb
         app.schema = where
         app.level=how
-        app.object = str(data)
+        app.object = str(data)[0:99]
         app.message = message
         app.value = value
         app.strvalue = whatstr
