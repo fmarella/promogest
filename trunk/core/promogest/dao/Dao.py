@@ -156,7 +156,7 @@ Qui sotto viene riportato l'errore di sistema:
         app.message = message
         app.value = value
         app.strvalue = whatstr
-        self.session.add(app)
+        params["session"].add(app)
         self.commit()
         print "%s : %s %s fatta su schema %s  da %s" %(str(when),message,str(data),str(where),utente)
         #serialized = dumps(self.record)
