@@ -149,14 +149,21 @@ class ListinoArticolo(Dao):
     def _setScontiVenditaIngrosso(self,value):
         self.__scontiVenditaIngr = value
 
-    def _getStringaScontiRigaDocumento(self):
+    sconto_vendita_ingrosso = property(_getScontiVenditaIngrosso, _setScontiVenditaIngrosso)
+
+    def _getStringaScontiDettaglio(self):
         (listSconti, applicazione) = getScontiFromDao(self._getScontiVenditaDettaglio(),daoApplicazione = 'scalare')
         return getStringaSconti(listSconti)
 
-    stringaSconti = property(_getStringaScontiRigaDocumento)
+    stringaScontiDettaglio = property(_getStringaScontiDettaglio)
+
+    def _getStringaScontiIngrosso(self):
+        (listSconti, applicazione) = getScontiFromDao(self._getScontiVenditaIngrosso(),daoApplicazione = 'scalare')
+        return getStringaSconti(listSconti)
+
+    stringaScontiIngrosso = property(_getStringaScontiIngrosso)
 
 
-    sconto_vendita_ingrosso = property(_getScontiVenditaIngrosso, _setScontiVenditaIngrosso)
 
     def _getApplicazioneScontiIngrosso(self):
         return "scalare"
