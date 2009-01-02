@@ -62,6 +62,8 @@ multilinelimit = None
 mltext = None
 sistemaColonnaFrontaline = None
 sistemaRigaFrontaline = None
+bordoDestro = None
+bordoSinistro = None
 feedCache = ""
 feedAll = ""
 scontisave = {}
@@ -118,7 +120,9 @@ def set_configuration(company=None, year = None):
     global conf,connection, exceptionHandler, promogestDir, feed,  emailcompose,\
                 emailmittente, smtpServer, cliente_predefinito, tipo_documento_predefinito,\
                 multilinelimit, mltext, sistemaColonnaFrontaline, sistemaRigaFrontaline,\
-                imagesDir, labelTemplatesDir, templatesDir, documentsDir, reportTemplatesDir
+                imagesDir, labelTemplatesDir, templatesDir, documentsDir, reportTemplatesDir,\
+                bordoDestro, bordoSinistro
+            
     try:
         dir = getConfigureDir(company)
         promogestDir = os.path.expanduser('~') + os.sep + dir + os.sep
@@ -298,10 +302,14 @@ def set_configuration(company=None, year = None):
             conf.hasLabel = True
             sistemaColonnaFrontaline = float(getattr(conf.Label, 'sistemacolonnafrontaline'))
             sistemaRigaFrontaline = float(getattr(conf.Label, 'sistemarigafrontaline'))
+            bordoDestro = float(getattr(conf.Label, 'bordodestro'))
+            bordoSinistro = float(getattr(conf.Label, 'bordosinistro'))
         else:
             conf.hasLabel = False
             sistemaColonnaFrontaline = 0
             sistemaRigaFrontaline = 0
+            bordoDestro = None
+            bordoSinistro = None
     else:
         conf.hasLabel = False
 

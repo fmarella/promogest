@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest
@@ -60,7 +60,7 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
         column.set_expand(False)
         treeview.append_column(column)
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, bool)
+        self._treeViewModel = gtk.ListStore(object, str, bool)
         treeview.set_model(self._treeViewModel)
 
         treeview.set_search_column(1)
