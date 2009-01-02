@@ -37,7 +37,7 @@ class TimerProxy(ConnectionProxy):
                 teeeeeees = logger.info("Query: %s" % statement)
                 logger.info("Total Time: %f" % total)
 
-debugDao = False
+debugDao = True
 debugSQL = False
 reportTemplatesDir = None
 imagesDir = None
@@ -212,7 +212,7 @@ def set_configuration(company=None, year = None):
     conf.workingYear = None
     workingYear = None
     # stampa il debug del Dao
-    #debugDao = True
+    debugDao = True
 
 
     # Promowear

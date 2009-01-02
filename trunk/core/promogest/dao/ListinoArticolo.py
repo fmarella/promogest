@@ -16,6 +16,7 @@ from Listino import Listino
 from Articolo import Articolo
 from ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from ScontoVenditaIngrosso import ScontoVenditaIngrosso
+from promogest.ui.utils import *
 
 import datetime
 
@@ -147,6 +148,13 @@ class ListinoArticolo(Dao):
 
     def _setScontiVenditaIngrosso(self,value):
         self.__scontiVenditaIngr = value
+
+    def _getStringaScontiRigaDocumento(self):
+        (listSconti, applicazione) = getScontiFromDao(self._getScontiVenditaDettaglio(),daoApplicazione = 'scalare')
+        return getStringaSconti(listSconti)
+
+    stringaSconti = property(_getStringaScontiRigaDocumento)
+
 
     sconto_vendita_ingrosso = property(_getScontiVenditaIngrosso, _setScontiVenditaIngrosso)
 
