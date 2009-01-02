@@ -13,14 +13,15 @@ from datetime import datetime
 from RicercaComplessaArticoli import RicercaComplessaArticoli
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Inventario
+#from promogest.dao.Dao import Dao
+#import promogest.dao.Inventario
 from promogest.dao.Inventario import Inventario
-import promogest.dao.TestataMovimento
+#import promogest.dao.TestataMovimento
 from promogest.dao.TestataMovimento import TestataMovimento
-import promogest.dao.RigaMovimento
+#import promogest.dao.RigaMovimento
 from promogest.dao.RigaMovimento import RigaMovimento
-
+from promogest.dao.Magazzino import Magazzino
+from promogest.dao.Articolo import Articolo
 from promogest.ui.GladeWidget import GladeWidget
 
 from utils import *
@@ -86,8 +87,16 @@ class GestioneInventario(RicercaComplessaArticoli):
                             #FROM magazzino M CROSS JOIN articolo A
                             #WHERE (M.id, A.id) NOT IN (SELECT I.id_magazzino, I.id_articolo FROM INVENTARIO I WHERE I.anno = \' || _anno || \')
                             #AND A.cancellato <> True)\';
-        #ok = params['session'].query([Magazzino.id, Articolo.id])
-        #codicesel  = select([func.max(Cliente.codice)])
+        sel2 = Environment.params['session'].query(Inventario.id_magazzino, Inventario.id_articolo).filter(Inventario.anno ==Environment.workingYear).all()
+        sel = Environment.params['session'].query(Magazzino.id, Articolo.id).filter(Articolo.cancellato != True).all()
+        for s in sel:
+            if s not in sel2:
+                inv = Inventario()
+                inv.anno = Environment.workingYear
+                inv.id_magazzino = s[0]
+                inv.id_articolo = s[1]
+                inv.persist()
+        print sel2, sel
 
     def draw(self):
         """ Disegna la treeview relativa al risultato del filtraggio """
@@ -371,7 +380,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         fltr.set_name('File CSV (*.csv)')
         fileDialog.add_filter(fltr)
 
-        fileDialog.set_current_name('inv_' + Environment.conf.workingYear + '.csv')
+        fileDialog.set_current_name('inv_' + Environment.workingYear + '.csv')
 
         response = fileDialog.run()
         if response == gtk.RESPONSE_OK:

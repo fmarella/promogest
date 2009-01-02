@@ -168,8 +168,8 @@ class Main(GladeWidget):
         import promogest.dao.Promemoria
         promogest.dao.Promemoria.updateScadenze()
         #Verifica inventario  FIXME: DA SISTEMAREEEEEEEEEEEEEEEE ( FRANCESCO )
-        #import promogest.dao.Inventario
-        #promogest.dao.Inventario.control(self.getTopLevel())
+        from promogest.dao.Inventario import Inventario
+        #Inventario().control(self.getTopLevel())
 
     def _refresh(self):
         """

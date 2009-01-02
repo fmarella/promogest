@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -9,7 +9,6 @@ from promogest import Environment
 MODULES_NAME = "ImportPriceList"
 MODULES_FOR_EXPORT = []
 GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/ImportPriceList/gui/'
-COMPANY = Environment.conf.ImportPriceList.company_name
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
 
