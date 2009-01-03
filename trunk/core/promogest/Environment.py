@@ -302,8 +302,8 @@ def set_configuration(company=None, year = None):
             conf.hasLabel = True
             sistemaColonnaFrontaline = float(getattr(conf.Label, 'sistemacolonnafrontaline'))
             sistemaRigaFrontaline = float(getattr(conf.Label, 'sistemarigafrontaline'))
-            bordoDestro = float(getattr(conf.Label, 'bordodestro'))
-            bordoSinistro = float(getattr(conf.Label, 'bordosinistro'))
+            #bordoDestro = float(getattr(conf.Label, 'bordodestro'))
+            #bordoSinistro = float(getattr(conf.Label, 'bordosinistro'))
         else:
             conf.hasLabel = False
             sistemaColonnaFrontaline = 0

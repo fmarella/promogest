@@ -2454,7 +2454,7 @@ class RicercaArticoliFilter(GladeWidget):
                     #quer= Environment.params["session"].query(FamigliaArticolo)\
                             #.filter(FamigliaArticolo.id ==stri).all()
                     #for q in quer:
-                    stringa= and_(FamigliaArticolo.id ==stri,Articolo.id == FamigliaArticolo.id_articolo)
+                    stringa= and_(FamigliaArticolo.id ==stri,Articolo.id_famiglia_articolo == FamigliaArticolo.id)
                     variabili.append(stringa)
                 datus= or_(*variabili)
                 wherestring.append(datus)
@@ -2465,7 +2465,7 @@ class RicercaArticoliFilter(GladeWidget):
                     #quer= Environment.params["session"].query(CategoriaArticolo)\
                             #.filter(CategoriaArticolo.id ==stri).all()
                     #for q in quer:
-                    stringa= and_(CategoriaArticolo.id ==stri,Articolo.id == CategoriaArticolo.id_articolo)
+                    stringa= and_(CategoriaArticolo.id ==stri,Articolo.id_categoria_articolo == CategoriaArticolo.id)
                     variabili.append(stringa)
                 datus= or_(*variabili)
                 wherestring.append(datus)
