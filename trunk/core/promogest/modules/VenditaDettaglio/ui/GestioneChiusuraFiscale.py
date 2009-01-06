@@ -16,6 +16,7 @@ from promogest.ui.GladeWidget import GladeWidget
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.Articolo import Articolo
+from promogest.dao.AliquotaIva import AliquotaIva
 from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
@@ -63,9 +64,9 @@ class GestioneChiusuraFiscale(object):
         datefirst = datetime.date.today()
         aData= stringToDateBumped(datetime.date.today())
         scontrini = TestataScontrino().select( daData = datefirst,
-                                                          aData = aData,  # Scontrini prodotti nella giornata odierna
-                                                          offset = None,
-                                                          batchSize = None)
+                                                aData = aData,  # Scontrini prodotti nella giornata odierna
+                                                offset = None,
+                                                batchSize = None)
 
         # Creo nuovo movimento
         daoMovimento = TestataMovimento()
