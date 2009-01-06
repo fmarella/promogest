@@ -122,58 +122,28 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
 
         self._treeViewModel.clear()
 
+        padri= FamigliaArticolo().fathers()
 
-        def recurse_tree(id_padre, parent_iter=None, max_depth=None, ):
-            if parent_iter is None :
-                padre = None
-                path = 0
-                for row in self._treeViewModel:
-                    if row[0].id == id_padre:
-                        padre = self._treeViewModel.get_iter(path)
-                    else:
-                        iter = self._treeViewModel.get_iter(path)
-                        if self._treeViewModel.iter_has_child(iter):
-                            new_depth = self._treeViewModel.iter_n_children(iter) or 0
-                            if new_depth > 0:
-                                padre = recurse_tree(id_padre, iter, new_depth)
-                    if padre is not None:
-                        break
-                    else:
-                        path += 1
-            else:
-                padre = None
-                child_index = 0
-                #if self._treeViewModel.iter_has_child(parent_iter):
-                while child_index < max_depth:
-                    child_iter = self._treeViewModel.iter_nth_child(parent_iter, child_index)
-                    if self._treeViewModel[child_iter][0].id == id_padre:
-                        padre = child_iter
-                        break
-                    else:
-                        if self._treeViewModel.iter_has_child(child_iter):
-                            new_depth = self._treeViewModel.iter_n_children(parent_iter) or 0
-                            if new_depth > 0:
-                                padre = recurse_tree(id_padre, child_iter, new_depth)
-                        if padre is not None:
-                            break
-                    child_index += 1
-            return padre
+        def recurse(padre,f):
 
-        for f in fams:
-            if f.id_padre is None:
-                node = self._treeViewModel.append(None, (f,
+            figli= FamigliaArticolo().select(idPadre= f.id, batchSize=None)
+            if figli:
+                for s in figli:
+                    figlio1 = self._treeViewModel.append(padre, (s,
+                                                        (s.codice or ''),
+                                                        (s.denominazione_breve or ''),
+                                                        (s.denominazione or ''),
+                                                        None))
+                    recurse(figlio1,s)
+
+
+        for f in padri:
+            padre = self._treeViewModel.append(None, (f,
                                                     (f.codice or ''),
                                                     (f.denominazione_breve or ''),
                                                     (f.denominazione or ''),
                                                     None))
-        for f in fams:
-            if f.id_padre is not None:
-                padre = recurse_tree(f.id_padre)
-                node = self._treeViewModel.append(padre, (f,
-                                                    (f.codice or ''),
-                                                    (f.denominazione_breve or ''),
-                                                    (f.denominazione or ''),
-                                                    None))
+            recurse(padre,f)
 
         self._anagrafica.anagrafica_filter_treeview.collapse_all()
 

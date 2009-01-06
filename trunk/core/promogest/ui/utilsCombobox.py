@@ -113,59 +113,31 @@ def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
     """
     from promogest.dao.FamigliaArticolo import FamigliaArticolo
     model = gtk.TreeStore(object, int, str)
-    fams = FamigliaArticolo().select(offset=None,batchSize=None, orderBy="denominazione")
+    #fams = FamigliaArticolo().select(offset=None,batchSize=None, orderBy="denominazione")
     if not filter:
         emptyRow = ''
     else:
         emptyRow = '< Tutti >'
     model.append(None, (None, 0, emptyRow))
 
-    def recurse_tree(id_padre, parent_iter=None, max_depth=None):
-        if parent_iter is None :
-            padre = None
-            path = 0
-            for row in model:
-                if row[0] is None:
-                    path += 1
-                    continue
-                if row[0].id == id_padre:
-                    padre = model.get_iter(path)
-                else:
-                    iter = model.get_iter(path)
-                    if model.iter_has_child(iter):
-                        new_depth = model.iter_n_children(iter) or 0
-                        if new_depth > 0:
-                            padre = recurse_tree(id_padre, iter, new_depth)
-                if padre is not None:
-                    break
-                else:
-                    path += 1
-        else:
-            padre = None
-            child_index = 0
-            #if model.iter_has_child(parent_iter):
-            while child_index < max_depth:
-                child_iter = model.iter_nth_child(parent_iter, child_index)
-                if model[child_iter][0].id == id_padre:
-                    padre = child_iter
-                    break
-                else:
-                    if model.iter_has_child(child_iter):
-                        new_depth = model.iter_n_children(parent_iter) or 0
-                        if new_depth > 0:
-                            padre = recurse_tree(id_padre, child_iter, new_depth)
-                    if padre is not None:
-                        break
-                child_index += 1
-        return padre
+    padri= FamigliaArticolo().fathers()
 
-    for f in fams:
-        if f.id_padre is None:
-            node = model.append(None, (f, f.id, f.denominazione))
-    for f in fams:
-        if f.id_padre is not None:
-            padre = recurse_tree(f.id_padre)
-            node = model.append(padre, (f, f.id, f.denominazione))
+    def recurse(padre,f):
+
+        figli= FamigliaArticolo().select(idPadre= f.id, batchSize=None)
+        for s in figli:
+            figlio1 = model.append(padre, (s,
+                                (s.id ),
+                                (s.denominazione or ''),
+                                ))
+            recurse(figlio1,s)
+
+    for f in padri:
+        padre = model.append(None, (f,
+                            (f.id ),
+                            (f.denominazione or ''),
+                            ))
+        recurse(padre,f)
 
     combobox.clear()
     renderer = gtk.CellRendererText()
@@ -493,7 +465,7 @@ def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=
     #if listinoSelezionato:
         #for listi in listinoSelezionato:
             #listi.sottoListiniID
-        
+
     print "LISTINI ASSOCIATI:", listinoSelezionato
     return listinoSelezionato
 
