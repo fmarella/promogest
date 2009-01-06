@@ -238,6 +238,7 @@ Qui sotto viene riportato l'errore di sistema:
         handler (if any)
         """
         #if self._exceptionHandler is not None:
+        print exception
         GtkExceptionHandler().handle(exception)
 
         # Now let's raise the exception, in order to stop further processing

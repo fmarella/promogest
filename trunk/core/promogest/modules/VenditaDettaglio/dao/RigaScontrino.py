@@ -25,7 +25,10 @@ class RigaScontrino(Dao):
 
     def _getScontiRigaScontrino(self):
         self.__dbScontiRigaScontrino = ScontoRigaScontrino().select(idRigaScontrino=self.id, batchSize=None)
-        self.__scontiRigaScontrino = self.__dbScontiRigaScontrino[:]
+        if self.__dbScontiRigaScontrino:
+            self.__scontiRigaScontrino = self.__dbScontiRigaScontrino[:]
+        else:
+            self.__scontiRigaScontrino = None
         return self.__scontiRigaScontrino
 
     def _setScontiRigaScontrino(self, value):

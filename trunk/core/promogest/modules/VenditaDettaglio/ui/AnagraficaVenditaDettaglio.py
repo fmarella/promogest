@@ -527,8 +527,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             dialog.set_markup("<b>ATTENZIONE:\n</b>Inserire un prezzo all'articolo")
             response = dialog.run()
             dialog.destroy()
-            self.prezzo_entry.grab_focus()
-            return
+            #self.prezzo_entry.grab_focus()
+            self._state == 'editing'
+            #return
 
         treeview = self.scontrino_treeview
         model = treeview.get_model()
@@ -737,6 +738,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             daoRiga.prezzo_scontato = prezzoScontato
             daoRiga.quantita = quantita
             listarighesconto = []
+
             if valoreSconto > 0:
                 daoScontoRigaScontrino = ScontoRigaScontrino()
                 daoScontoRigaScontrino.valore = valoreSconto
@@ -845,13 +847,14 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             if not(riga.quantita < 0):
                 stringa = '01%-16s%09.2f%2s\r\n' % (riga.descrizione[:16], riga.prezzo, reparto)
                 f.write(stringa)
-                for sconto in riga.sconti:
-                    if sconto.valore != 0:
-                        if sconto.tipo_sconto == 'percentuale':
-                            stringa = '07%-16s%09.2f00\r\n' % ('sconto', sconto.valore)
-                        else:
-                            stringa = '06%-16s%09.2f00\r\n' % ('sconto', sconto.valore * quantita)
-                        f.write(stringa)
+                if riga.sconti:
+                    for sconto in riga.sconti:
+                        if sconto.valore != 0:
+                            if sconto.tipo_sconto == 'percentuale':
+                                stringa = '07%-16s%09.2f00\r\n' % ('sconto', sconto.valore)
+                            else:
+                                stringa = '06%-16s%09.2f00\r\n' % ('sconto', sconto.valore * quantita)
+                            f.write(stringa)
             else:
                 # per i resi, nello scontrino, si scrive direttamente il prezzo scontato (limitazione cassa)
                 stringa = '01%-16s%09.2f%2s\r\n' % (riga.descrizione[:16], riga.prezzo_scontato, reparto)
@@ -1044,7 +1047,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         pricelist = Listino().select(denominazione = Environment.conf.VenditaDettaglio.listino,
                                     offset = None,
                                     batchSize = None)
-        if len(pricelist) > 0:
+
+        if pricelist and len(pricelist) > 0:
             id_listino = pricelist[0].id
         else:
             id_listino = None

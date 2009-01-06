@@ -162,7 +162,7 @@ class GestioneChiusuraFiscale(object):
                 daoScontrino.persist(chiusura= True)
 
         # Svuoto transazione
-        self.on_empty_button_clicked(self.empty_button)
+        self.on_empty_button_clicked(self.gladeobj.empty_button)
 
     def create_fiscal_close_file(self):
         # Genero nome file
