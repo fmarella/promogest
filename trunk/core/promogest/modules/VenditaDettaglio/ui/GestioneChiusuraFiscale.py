@@ -15,6 +15,7 @@ from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.RigaMovimento import RigaMovimento
+from promogest.dao.Articolo import Articolo
 from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
