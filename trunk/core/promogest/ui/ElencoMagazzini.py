@@ -139,6 +139,7 @@ class ElencoMagazzini(GladeWidget):
 
 
     def on_inventario_togglebutton_clicked(self, toggleButton):
+        return
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
@@ -157,6 +158,7 @@ class ElencoMagazzini(GladeWidget):
                             '\nSelezionare un magazzino !')
 
     def on_statistiche_togglebutton_clicked(self, toggleButton):
+        return
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return

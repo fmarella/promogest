@@ -241,6 +241,7 @@ magazzino</property>
                       <widget class="GtkToggleButton" id="statistiche_togglebutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="focus_on_click">False</property>
                         <property name="response_id">0</property>
                         <signal name="toggled" handler="on_statistiche_togglebutton_clicked"/>
                         <child>

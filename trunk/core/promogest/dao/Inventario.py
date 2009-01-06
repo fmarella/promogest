@@ -74,7 +74,33 @@ class Inventario(Dao):
             dic = {k:inventario.c.data_aggiornameno >= v}
         return  dic[k]
 
+    def update(self):
+        """ Aggiornamento inventario con gli articoli eventualmente non presenti """
+        sel2 = Environment.params['session'].query(Inventario.id_magazzino, Inventario.id_articolo).filter(Inventario.anno ==Environment.workingYear).all()
+        sel = Environment.params['session'].query(Magazzino.id, Articolo.id).filter(Articolo.cancellato != True).all()
+        for s in sel:
+            if s not in sel2:
+                inv = Inventario()
+                inv.anno = Environment.workingYear
+                inv.id_magazzino = s[0]
+                inv.id_articolo = s[1]
+                inv.persist()
+        print sel2, sel
+
+
+
+
     def control(self,window):
+
+        def calcolaGiacenza(quantita=None, moltiplicatore=None, segno=None, valunine=None):
+            giacenza=0
+            if segno =="-":
+                giacenza -= quantita*moltiplicatore
+            else:
+                giacenza += quantita*moltiplicatore
+            valore= giacenza*valunine
+            return (giacenza, valore)
+
         """ Verifica se esistono gia' delle righe di inventario nell'anno di esercizio """
         res = self.count(anno=Environment.workingYear)
         print "REEEEEEEEEEEEEEEEEEEESSS PER INVENTARIO", res
@@ -87,9 +113,41 @@ class Inventario(Dao):
             response = dialog.run()
             dialog.destroy()
             if response == gtk.RESPONSE_YES:
+                from TestataMovimento import TestataMovimento
+                from RigaMovimento import RigaMovimento
+                from Riga import Riga
+                from Magazzino import Magazzino
+                from Articolo import Articolo
+                giacenza = 0
+                #sel2 = Environment.params['session'].query(Inventario.id_magazzino, Inventario.id_articolo).filter(Inventario.anno ==Environment.workingYear).all()
+                sel = Environment.params['session'].query(Magazzino.id, Articolo.id).filter(Articolo.cancellato != True).all()
+                for s in sel:
+                    righeArticoloMovimentate= params["session"]\
+                        .query(RigaMovimento,TestataMovimento)\
+                        .filter(and_(func.date_part("year", TestataMovimento.data_movimento)==(int(Environment.workingYear)-1)))\
+                        .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                        .filter(Riga.id_articolo==s[1])\
+                        .filter(Riga.id_magazzino==s[0])\
+                        .filter(Articolo.cancellato!=True)\
+                        .all()
+
+                    for ram in righeArticoloMovimentate:
+                        giacenza = calcolaGiacenza(quantita=ram[0].quantita,
+                                                    moltiplicatore=ram[0].moltiplicatore,
+                                                    segno=ram[1].segnoOperazione,
+                                                    valunine=ram[0].valore_unitario_netto)[0]
+                        giacenza +=giacenza
+                    #if s not in sel2:
+                    inv = Inventario()
+                    inv.anno = Environment.workingYear
+                    inv.id_magazzino = s[0]
+                    inv.quantita = giacenza
+                    inv.id_articolo = s[1]
+                    inv.persist()
+
                 # genera l'inventario per l'anno in corso sulla base delle giacenze finali
                 # dell'anno precedente, per ogni magazzino e per ogni articolo
-                Environment.connection.execStoredProcedure('InventarioFill', (int(Environment.conf.workingYear),))
+                #Environment.connection.execStoredProcedure('InventarioFill', (int(Environment.conf.workingYear),))
 
                 msg = ("Generazione completata.\n\nEffettuare le dovute modifiche dall'apposita maschera\n" +
                     "di caricamento inventario dopo aver fatto i rilevamenti\n" +
@@ -99,45 +157,18 @@ class Inventario(Dao):
                 response = dialog.run()
                 dialog.destroy()
 
-    def giacenzaSel(self, year=None, idMagazzino=None, idArticolo=None):
-        from TestataMovimento import TestataMovimento
-        from RigaMovimento import RigaMovimento
-        from Riga import Riga
-
-        righeArticoloMovimentate= params["session"]\
-                .query(RigaMovimento,TestataMovimento)\
-                .filter(and_(func.date_part("year", TestataMovimento.data_movimento)==year))\
-                .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
-                .filter(Riga.id_articolo==idArticolo)\
-                .filter(Riga.id_magazzino==idMagazzino)\
-                .filter(Articolo.cancellato!=True)\
-                .all()
-
-        lista = []
-        for ram in righeArticoloMovimentate:
-
-            def calcolaGiacenza(quantita=None, moltiplicatore=None, segno=None, valunine=None):
-                giacenza=0
-                if segno =="-":
-                    giacenza -= quantita*moltiplicatore
-                else:
-                    giacenza += quantita*moltiplicatore
-                valore= giacenza*valunine
-                return (giacenza, valore)
-
-            diz = {"numero":ram[1].numero,
-                    "data_movimento":ram[1].data_movimento,
-                    "operazione":ram[1].operazione,
-                    "id_articolo":ram[0].id_articolo,
-                    "giacenza":calcolaGiacenza(quantita=ram[0].quantita,moltiplicatore=ram[0].moltiplicatore, segno=ram[1].segnoOperazione, valunine=ram[0].valore_unitario_netto)[0],
-                    "cliente":ram[1].ragione_sociale_cliente,
-                    "fornitore":ram[1].ragione_sociale_fornitore,
-                    "valore":calcolaGiacenza(quantita=ram[0].quantita,moltiplicatore=ram[0].moltiplicatore, segno=ram[1].segnoOperazione, valunine=ram[0].valore_unitario_netto)[1],
-                    "segnoOperazione":ram[1].segnoOperazione
-                    #"test_doc":ram[1].testata_documento.numero
-                        }
-            lista.append(diz)
-        return lista
+#sql_statement:= \'INSERT INTO inventario (anno, id_magazzino, id_articolo, quantita, valore_unitario, data_aggiornamento)
+    #(SELECT \' || _anno || \', M.id, A.id, G.giacenza, NULL, CURRENT_TIMESTAMP
+        #FROM magazzino M CROSS JOIN articolo A
+        #LEFT OUTER JOIN (SELECT R.id_magazzino, R.id_articolo, SUM( CASE O.segno WHEN \'\'-\'\' THEN (-R.quantita * R.moltiplicatore) WHEN \'\'+\'\' THEN (R.quantita * R.moltiplicatore) END ) AS giacenza
+                        #FROM riga_movimento RM
+                        #INNER JOIN riga R ON RM.id = R.id
+                        #INNER JOIN testata_movimento TM ON RM.id_testata_movimento = TM.id
+                        #INNER JOIN promogest.operazione O ON TM.operazione = O.denominazione
+                        #WHERE DATE_PART(\'\'year\'\', TM.data_movimento) = \' || _anno_prec || \'
+                        #GROUP BY id_magazzino, id_articolo) G ON M.id = G.id_magazzino AND A.id = G.id_articolo
+                             #WHERE A.cancellato <> True)\';
+        #EXECUTE sql_statement;
 
 
 
