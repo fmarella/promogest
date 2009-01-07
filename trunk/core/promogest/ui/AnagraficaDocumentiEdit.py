@@ -980,31 +980,30 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["molt_pezzi"] = moltiplicatore_pezzi
 
             self.getTotaleRiga()
-            print 
             self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
             if self._tipoPersonaGiuridica == "fornitore":
                 fornitura = leggiFornitura(riga.id_articolo, self.dao.id_fornitore, self.dao.data_documento, True)
                 self._righe[0]["codiceArticoloFornitore"] = fornitura["codiceArticoloFornitore"]
 
             self._righe.append(self._righe[0])
+            rigadoc= self._righe[j]
+            self.modelRiga.append((rigadoc["magazzino"],
+                                    rigadoc["codiceArticolo"],
+                                    rigadoc["descrizione"],
+                                    mN(rigadoc["percentualeIva"]),
+                                    rigadoc["altezza"],
+                                    rigadoc["larghezza"],
+                                    rigadoc["molt_pezzi"],
+                                    rigadoc["multiplo"],
+                                    rigadoc["listino"],
+                                    rigadoc["unitaBase"],
+                                    (rigadoc["quantita"]),
+                                    mN(rigadoc["prezzoLordo"]),
+                                    rigadoc["applicazioneSconti"] + ' ' + getStringaSconti(rigadoc["sconti"]),
+                                    mN(rigadoc["prezzoNetto"]),
+                                    mN(rigadoc["totale"])))
 
-            self.modelRiga.append((self._righe[j]["magazzino"],
-                                    self._righe[j]["codiceArticolo"],
-                                    self._righe[j]["descrizione"],
-                                    mN(self._righe[j]["percentualeIva"]),
-                                    self._righe[j]["altezza"],
-                                    self._righe[j]["larghezza"],
-                                    self._righe[j]["molt_pezzi"],
-                                    self._righe[j]["multiplo"],
-                                    self._righe[j]["listino"],
-                                    self._righe[j]["unitaBase"],
-                                    (self._righe[j]["quantita"]),
-                                    mN(self._righe[j]["prezzoLordo"]),
-                                    self._righe[j]["applicazioneSconti"] + ' ' + getStringaSconti(self._righe[j]["sconti"]),
-                                    mN(self._righe[j]["prezzoNetto"]),
-                                    mN(self._righe[j]["totale"])))
-
-        self.righe_treeview.set_model(self.modelRiga)
+            self.righe_treeview.set_model(self.modelRiga)
         self._loading = False
         self.calcolaTotale()
         self.label_numero_righe.set_text(str(len(self.dao.righe)))

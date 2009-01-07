@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest
@@ -28,7 +28,10 @@ class AnagraficaAziende(GladeWidget):
     def __init__(self, mainWindow):
         self._mainWindow = mainWindow
         self.dao = Azienda()
-        GladeWidget.__init__(self, 'anagrafica_aziende_scrolledwindow',fileName='_anagrafica_aziende_elements.glade')
+        #dialog = self.creazione_taglie_colore
+        GladeWidget.__init__(self, 'anagrafica_aziende_frame',fileName='_anagrafica_aziende_elements.glade')
+        self.placeWindow(self.getTopLevel())
+        #self.show_all()
         self.draw()
 
 
@@ -41,7 +44,6 @@ class AnagraficaAziende(GladeWidget):
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura dell'anagrafica """
         self._anagrafica_aziende_elements.show_all()
-
 
     def setDao(self):
         # Creazione dao azienda corrente

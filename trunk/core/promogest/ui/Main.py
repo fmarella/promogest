@@ -94,12 +94,6 @@ class Main(GladeWidget):
                 pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'cassa48x48.png')
                 model.append([5, "Casse", pbuf])
 
-        ## Carico opzione vendita al dettaglio se esiste la configurazione apposita
-        #if hasattr(Environment.conf,'Dettaglio'):
-            #mod_enable = getattr(Environment.conf.Dettaglio,'mod_enable','no')
-            #if mod_enable == 'yes':
-                #pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'vendita_dettaglio48x48.png')
-                #model.append([6, "Vendita\nal dettaglio", pbuf])
 
         # Carico opzione spedizione email & fax se esiste la configurazione apposita
         if hasattr(Environment.conf,'Promospam'):
@@ -352,8 +346,9 @@ class Main(GladeWidget):
     def create_azienda_frame(self):
         if self.currentFrame is not None:
             self.main_hbox.remove(self.currentFrame)
-        frame = AziendaFrame(self)
-        return frame.getTopLevel()
+        frame = AziendaFrame(self.main_window)
+        return frame.anagrafica_aziende_frame
+        #return frame.getTopLevel()
 
 
     def create_spam_frame(self):

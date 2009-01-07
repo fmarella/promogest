@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -286,7 +286,7 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
         self.xptDaoList = self.runFilter(offset=None, batchSize=None)
 
         self._treeViewModel.clear()
-
+        print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", len(tdos), tdos
         for t in tdos:
             soggetto = ''
             if t.id_cliente is not None:
@@ -817,60 +817,58 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self.note_interne_textview.set_buffer(textBuffer)
 
         self.clearRows()
-        for i in range(0, len(self.dao.righe)):
-            self.azzeraRiga(0)
-            j = i + 1
-            magazzino = leggiMagazzino(self.dao.righe[i].id_magazzino)
-            articolo = leggiArticolo(self.dao.righe[i].id_articolo)
-            listino = leggiListino(self.dao.righe[i].id_listino)
-            multiplo = leggiMultiplo(self.dao.righe[i].id_multiplo)
-            (sconti, applicazione) = getScontiFromDao(self.dao.righe[i].sconti, self.dao.righe[i].applicazione_sconti)
 
-            self._righe[0]["idRiga"] = self.dao.righe[i].id
-            self._righe[0]["idMagazzino"] = self.dao.righe[i].id_magazzino
+        for riga in self.dao.righe:
+            self.azzeraRiga(0)
+            j = self.dao.righe.index(riga) + 1
+            magazzino = leggiMagazzino(riga.id_magazzino)
+            articolo = leggiArticolo(riga.id_articolo)
+            listino = leggiListino(riga.id_listino)
+            multiplo = leggiMultiplo(riga.id_multiplo)
+            (sconti, applicazione) = getScontiFromDao(riga.sconti, riga.applicazione_sconti)
+
+            self._righe[0]["idRiga"] = riga.id
+            self._righe[0]["idMagazzino"] = riga.id_magazzino
             self._righe[0]["magazzino"] = magazzino["denominazione"]
-            self._righe[0]["idArticolo"] = self.dao.righe[i].id_articolo
+            self._righe[0]["idArticolo"] = riga.id_articolo
             self._righe[0]["codiceArticolo"] = articolo["codice"]
-            self._righe[0]["descrizione"] = self.dao.righe[i].descrizione
-            self._righe[0]["percentualeIva"] = self.dao.righe[i].percentuale_iva
+            self._righe[0]["descrizione"] = riga.descrizione
+            self._righe[0]["percentualeIva"] = riga.percentuale_iva
             self._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
             self._righe[0]["unitaBase"] = articolo["unitaBase"]
-            self._righe[0]["idMultiplo"] = self.dao.righe[i].id_multiplo
+            self._righe[0]["idMultiplo"] = riga.id_multiplo
             if multiplo["moltiplicatore"] != 0:
                 self._righe[0]["multiplo"] = multiplo["denominazioneBreve"] + ' ( ' + str('%.2f' % multiplo["moltiplicatore"]) + ' X )'
             else:
                 self._righe[0]["multiplo"] = ''
-            self._righe[0]["idListino"] = self.dao.righe[i].id_listino
+            self._righe[0]["idListino"] = riga.id_listino
             self._righe[0]["listino"] = listino["denominazione"]
-            self._righe[0]["quantita"] = self.dao.righe[i].quantita
-            self._righe[0]["moltiplicatore"] = self.dao.righe[i].moltiplicatore
-            self._righe[0]["prezzoLordo"] = self.dao.righe[i].valore_unitario_lordo
+            self._righe[0]["quantita"] = riga.quantita
+            self._righe[0]["moltiplicatore"] = riga.moltiplicatore
+            self._righe[0]["prezzoLordo"] = riga.valore_unitario_lordo
             self._righe[0]["sconti"] = sconti
             self._righe[0]["applicazioneSconti"] = applicazione
-            self._righe[0]["prezzoNetto"] = self.dao.righe[i].valore_unitario_netto
-            self._righe[0]["prezzoNettoUltimo"] = self.dao.righe[i].valore_unitario_netto
+            self._righe[0]["prezzoNetto"] = riga.valore_unitario_netto
+            self._righe[0]["prezzoNettoUltimo"] = riga.valore_unitario_netto
             self._righe[0]["totale"] = 0
             self.getTotaleRiga()
-
             if self._tipoPersonaGiuridica == "fornitore":
-                fornitura = leggiFornitura(self.dao.righe[i].id_articolo, self.dao.id_fornitore, self.dao.data_movimento, True)
+                fornitura = leggiFornitura(riga.id_articolo, self.dao.id_fornitore, self.dao.data_movimento, True)
                 self._righe[0]["codiceArticoloFornitore"] = fornitura["codiceArticoloFornitore"]
-
             self._righe.append(self._righe[0])
-
-            self.modelRiga.append((self._righe[j]["magazzino"],
-                                   self._righe[j]["codiceArticolo"],
-                                   self._righe[j]["descrizione"],
-                                   '%5.2f' % float(self._righe[j]["percentualeIva"]),
-                                   self._righe[j]["unitaBase"],
-                                   self._righe[j]["multiplo"],
-                                   self._righe[j]["listino"],
-                                   '%9.3f' % float(self._righe[j]["quantita"]),
-                                   ('%14.' + Environment.conf.decimals + 'f') % float(self._righe[j]["prezzoLordo"]),
-                                   self._righe[j]["applicazioneSconti"] + ' ' + getStringaSconti(self._righe[j]["sconti"]),
-                                   ('%14.' + Environment.conf.decimals + 'f') % float(self._righe[j]["prezzoNetto"]),
-                                   ('%14.2f') % round(float(self._righe[j]["totale"]), 2)))
-
+            rigatomodel = self._righe[j]
+            self.modelRiga.append((rigatomodel["magazzino"],
+                                   rigatomodel["codiceArticolo"],
+                                   rigatomodel["descrizione"],
+                                   '%5.2f' % float(rigatomodel["percentualeIva"]),
+                                   rigatomodel["unitaBase"],
+                                   rigatomodel["multiplo"],
+                                   rigatomodel["listino"],
+                                   '%9.3f' % float(rigatomodel["quantita"]),
+                                   ('%14.' + Environment.conf.decimals + 'f') % float(rigatomodel["prezzoLordo"]),
+                                   self._righe[j]["applicazioneSconti"] + ' ' + getStringaSconti(rigatomodel["sconti"]),
+                                   ('%14.' + Environment.conf.decimals + 'f') % float(rigatomodel["prezzoNetto"]),
+                                   ('%14.2f') % round(float(rigatomodel["totale"]), 2)))
         self.righe_treeview.set_model(self.modelRiga)
         self._loading = False
         self.calcolaTotale()
