@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -37,15 +37,24 @@ class GestioneChiusuraFiscale(object):
                                    gtk.DIALOG_MODAL
                                    | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO)
-        dialog.set_markup('<b>ATTENZIONE</b>: Chiusura fiscale! Confermi?')
+        dialog.set_markup("""<b>ATTENZIONE</b>: Chiusura fiscale!
+    Confermi la data?
+    Se non sai cosa stai facendo lascia la data odierna impostata
+    e contatta la Promotux""")
+        hbox = gtk.HBox()
+        entry = self.gladeobj.createDateWidget(None,None,10,0)
+        entry.setNow()
+        hbox.pack_start(entry, False, False, 0)
+        dialog.vbox.pack_start(hbox, False, False, 0)
+        dialog.show_all()
         response = dialog.run()
         dialog.destroy()
         if response ==  gtk.RESPONSE_YES:
             # controllo se vi e` gia` stata una chiusura
-            datefirst = datetime.date.today()
-            chiusure = ChiusuraFiscale().select( dataChiusura = datefirst,
-                                                            offset = None,
-                                                            batchSize = None)
+            data = stringToDate(entry.get_text())
+            chiusure = ChiusuraFiscale().select( dataChiusura = data,
+                                                offset = None,
+                                                batchSize = None)
             if len(chiusure) != 0:
                 dialog = gtk.MessageDialog(self.gladeobj.getTopLevel(),
                                            gtk.DIALOG_MODAL
@@ -55,18 +64,22 @@ class GestioneChiusuraFiscale(object):
                 response = dialog.run()
                 dialog.destroy()
                 return
-            self.close_day(idMagazzino)
+            self.close_day(idMagazzino, data)
         else:
             return
 
-    def close_day(self, idMagazzino):
+    def close_day(self, idMagazzino, data):
         # Seleziono scontrini della giornata
-        datefirst = datetime.date.today()
-        aData= stringToDateBumped(datetime.date.today())
+        
+        #datefirst = datetime.date.today()
+        #aData= stringToDateBumped(datetime.date.today())
+        datefirst = data
+        OneDay = datetime.timedelta(days=1)
+        aData= data+OneDay
         scontrini = TestataScontrino().select( daData = datefirst,
-                                                aData = aData,  # Scontrini prodotti nella giornata odierna
-                                                offset = None,
-                                                batchSize = None)
+                                            aData = aData,  # Scontrini prodotti nella giornata odierna
+                                            offset = None,
+                                            batchSize = None)
 
         # Creo nuovo movimento
         daoMovimento = TestataMovimento()

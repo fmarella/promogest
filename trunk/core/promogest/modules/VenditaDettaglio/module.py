@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -7,14 +7,11 @@
 from promogest import Environment
 import promogest.ui.Login
 from promogest.modules.VenditaDettaglio.data.VenditaDettaglioDB import *
-#from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import *
-#import promogest.modules.VenditaDettaglio.ui.AnagraficaVenditaDettaglio
 from promogest.modules.VenditaDettaglio.ui.AnagraficaVenditaDettaglio import AnagraficaVenditaDettaglio
 
 MODULES_NAME = "VenditaDettaglio"
 MODULES_FOR_EXPORT = ['VenditaDettaglio']
 GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/VenditaDettaglio/gui/'
-COMPANY = Environment.conf.VenditaDettaglio.company_name
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
 

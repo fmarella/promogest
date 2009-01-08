@@ -286,7 +286,6 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
         self.xptDaoList = self.runFilter(offset=None, batchSize=None)
 
         self._treeViewModel.clear()
-        print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", len(tdos), tdos
         for t in tdos:
             soggetto = ''
             if t.id_cliente is not None:
