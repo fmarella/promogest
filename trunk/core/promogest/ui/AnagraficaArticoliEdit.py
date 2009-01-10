@@ -23,6 +23,7 @@ if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
     from promogest.modules.PromoWear.dao.Taglia import Taglia
     from promogest.modules.PromoWear.dao.Colore import Colore
+    from promogest.modules.PromoWear.dao.Modello import Modello
     from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
     from promogest.modules.PromoWear.ui.AnagraficaArticoliExpand import articleTypeGuiManage, treeViewExpand
 
@@ -74,6 +75,10 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             fillComboboxColori(self.id_colore_customcombobox.combobox)
             self.id_colore_customcombobox.connect('clicked',
                                                   self.on_id_colore_customcombobox_clicked)
+            #Popola combobox modelli
+            fillComboboxModelli(self.id_modello_customcombobox.combobox)
+            self.id_modello_customcombobox.connect('clicked',
+                                                  on_id_modello_customcombobox_clicked)
             #Popola combobox anni
             fillComboboxAnniAbbigliamento(self.id_anno_combobox)
             #Popola combobox stagioni
@@ -621,3 +626,11 @@ dei dati accessori. Continuare?"""
         on_id_colore_customcombobox_clicked(widget,
                                             button,
                                             ignore=list(idColori))
+
+    #def on_id_modello_customcombobox_clicked(self, widget, button):
+        #articoliTagliaColore = self.dao.articoliTagliaColore
+        #idModelli = set(a.id_colore for a in articoliTagliaColore)
+        #idColori.remove(self.dao.id_colore)
+        #on_id_colore_customcombobox_clicked(widget,
+                                            #button,
+                                            #ignore=list(idColori))

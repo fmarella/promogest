@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -126,6 +126,19 @@ if hasattr(conf, 'PromoWear'):
                     #CheckConstraint("(( id_taglia IS NOT NULL ) AND ( id_colore IS NOT NULL ) AND ( id_gruppo_taglia IS NOT NULL ) AND ( id_articolo_padre IS NOT NULL )) OR (( id_taglia IS NULL ) AND ( id_colore IS NULL ) AND ( id_gruppo_taglia IS NOT NULL ) AND ( id_articolo_padre IS NULL ))"),
                     schema=params['schema'])
         articoloTagliaColoreTable.create(checkfirst=True)
+
+        # TABELLA modello
+        modelloTable = Table('modello', params['metadata'],
+                Column('id',Integer,primary_key=True),
+                Column('denominazione_breve',String(20),nullable=False),
+                Column('denominazione',String(200),nullable=False),
+                UniqueConstraint('denominazione', 'denominazione_breve'),
+                schema=params["schema"])
+        modelloTable.create(checkfirst=True)
+        s= select([modelloTable.c.denominazione]).execute().fetchall()
+        if (u'n/a',) not in s or s==[]:
+            tipo = modelloTable.insert()
+            tipo.execute(denominazione='n/a', denominazione_breve='n/a')
 
         conf.PromoWear.primoavvio = "no"
         conf.save()

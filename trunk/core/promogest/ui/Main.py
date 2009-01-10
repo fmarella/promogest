@@ -752,7 +752,7 @@ class AnagrafichePrincipaliFrame(GladeWidget):
                 module_button.set_image(module_butt_image)
                 module_button.set_label(module[1]['module'].VIEW_TYPE[1])
                 module_button.connect('clicked', self.on_module_button_clicked)
-                self.vbox4.pack_start(module_button, True, True)
+                self.vbox1.pack_start(module_button, False, False)
             return
         else:
             return

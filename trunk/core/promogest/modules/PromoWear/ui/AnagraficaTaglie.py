@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -14,16 +14,9 @@ from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, Anagr
 import os
 from promogest import Environment
 from promogest.dao.Dao import Dao
-import promogest.modules.PromoWear.dao.Taglia
-import promogest.modules.PromoWear.dao.GruppoTaglia
-import promogest.modules.PromoWear.dao.GruppoTagliaTaglia
-import promogest.modules.PromoWear.dao.Taglia
 from promogest.modules.PromoWear.dao.Taglia import Taglia
-import promogest.modules.PromoWear.dao.GruppoTaglia
 from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
-import promogest.modules.PromoWear.dao.GruppoTagliaTaglia
 from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTaglia
-
 from promogest.modules.PromoWear.ui.PromowearUtils import *
 from promogest.ui.utils import *
 

@@ -14,6 +14,7 @@ from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
 from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTaglia
 from promogest.modules.PromoWear.dao.Taglia import Taglia
 from promogest.modules.PromoWear.dao.Colore import Colore
+from promogest.modules.PromoWear.dao.Modello import Modello
 from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
 from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
 from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
@@ -394,6 +395,27 @@ def fillComboboxColori(combobox, filter=False, ignore=[]):
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
 
+def fillComboboxModelli(combobox, filter=False, ignore=[]):
+    # Crea l'elenco dei modelli, ignorando quelli presenti nella lista ignore
+
+    model = gtk.ListStore(object, int, str)
+    cols = Modello().select( denominazione=None,
+                                       orderBy = None,
+                                       offset = None,
+                                       batchSize = None)
+    if not filter:
+        emptyRow = ''
+    else:
+        emptyRow = '< Tutti >'
+    model.append((None, 0, emptyRow))
+    for c in cols:
+        model.append((c, c.id, (c.denominazione or '')[0:25]))
+
+    combobox.clear()
+    renderer = gtk.CellRendererText()
+    combobox.pack_start(renderer, True)
+    combobox.add_attribute(renderer, 'text', 2)
+    combobox.set_model(model)
 
 def fillComboboxAnniAbbigliamento(combobox, filter=False):
     #crea l'elenco degli anni per l'abbigliamento
@@ -477,6 +499,30 @@ def on_id_gruppo_taglia_customcombobox_clicked(widget, button):
     anagWindow.show_all()
     anagWindow.connect("destroy",
                         on_anagrafica_gruppi_taglia_destroyed)
+
+def on_id_modello_customcombobox_clicked(widget, button):
+    #richiama l'anagrafica dei modelli
+
+    def on_anagrafica_modello_destroyed(window):
+        # all'uscita dall'anagrafica richiamata, aggiorna l'elenco associato
+        widget.button.set_active(False)
+        id = findIdFromCombobox(widget.combobox)
+        fillComboboxModelli(widget.combobox)
+        findComboboxRowFromId(widget.combobox, id)
+
+
+    if widget.button.get_property('active') is False:
+        return
+
+    from AnagraficaModelli import AnagraficaModelli
+    anag = AnagraficaModelli()
+
+    anagWindow = anag.getTopLevel()
+    returnWindow = widget.get_toplevel()
+    anagWindow.set_transient_for(returnWindow)
+    anagWindow.show_all()
+    anagWindow.connect("destroy",
+                        on_anagrafica_modello_destroyed)
 
 
 def on_id_taglia_customcombobox_clicked(widget, button, idGruppoTaglia=None, ignore=None):
