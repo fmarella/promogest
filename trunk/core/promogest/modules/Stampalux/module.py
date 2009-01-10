@@ -18,16 +18,17 @@ from promogest.modules.Stampalux.ui.AnagraficaColoriStampa import AnagraficaColo
 from promogest.modules.Stampalux.ui.AnagraficaSchedeOrdinazioni import AnagraficaSchedeOrdinazioni
 from promogest.modules.Stampalux.ui.StampaluxUtils import *
 
+MODULES_NAME = "Stampalux"
 MODULES_FOR_EXPORT = ['AssociazioniArticoli','CaratteriStampa','ColoriStampa','SchedeLavorazione']
 GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/Stampalux/gui/'
-COMPANY = Environment.conf.Stampalux.company_name
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
+
 
 class AssociazioniArticoli(object):
     VIEW_TYPE = ('anagrafica', 'Associazioni Articoli', 'associazione_articolo24x24.png')
     def getApplication(self):
-        anag = AnagraficaAssociazioniArticoli(COMPANY)
+        anag = AnagraficaAssociazioniArticoli()
         return anag
 
 class CaratteriStampa(object):
@@ -45,7 +46,7 @@ class ColoriStampa(object):
 class SchedeLavorazione(object):
     VIEW_TYPE = ('anagrafica_diretta', 'Schede\nLavorazione', 'scheda_lavorazione48x48.png')
     def getApplication(self):
-        anag = AnagraficaSchedeOrdinazioni(COMPANY)
+        anag = AnagraficaSchedeOrdinazioni()
         return anag
 
 ##[Stampalux]
