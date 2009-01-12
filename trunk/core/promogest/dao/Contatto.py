@@ -53,8 +53,10 @@ class Contatto(Dao):
             dic = {k:contatto.c.ruolo.ilike("%"+v+"%")}
         elif k=='descrizione':
             dic = {k:contatto.c.descrizione.ilike("%"+v+"%")}
-        #FIXME: #'recapito'
-        #FIXME : #'tipoRecapito':
+        elif k =='recapito':
+            dic = {k:and_(contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.recapito.ilike("%"+v+"%")) }
+        elif k == 'tipoRecapito':
+            dic = {k:and_(contatto.c.id == RecapitoContatto.id_contatto,RecapitoContatto.tipo_recapito.contains(v))}
         return dic[k]
 
     def delete(self, multiple=False, record = True):
