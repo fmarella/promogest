@@ -22,7 +22,7 @@ class RicercaComplessa(GladeWidget):
     def __init__(self, windowTitle, filtersElement):
         GladeWidget.__init__(self, 'ricerca_window')
 
-        self.ricerca_html.destroy()
+        #self.ricerca_html.destroy()
         self.dao = None
         self.window = self.ricerca_window
 

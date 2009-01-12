@@ -41,7 +41,7 @@ class Dao(object):
         return _record
 
     def select(self, orderBy=None, distinct=False, groupBy=None,join=None, offset=0,
-                batchSize=15,complexFilter=None,isList = "all", **kwargs):
+                batchSize=20,complexFilter=None,isList = "all", **kwargs):
         if complexFilter:
             filter = complexFilter
         else:

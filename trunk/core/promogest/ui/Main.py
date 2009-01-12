@@ -21,7 +21,6 @@ from utils import hasAction
 from utilsCombobox import *
 import Login
 
-
 # Caricamento moduli
 try:
     if hasattr(Environment.conf,'Promospam'):
@@ -31,7 +30,6 @@ try:
 except ImportError:
     print "\nATTENZIONE: Il modulo Spam non e` stato trovato\n"
     raise SystemExit
-
 
 # Caricamento moduli
 try:
@@ -68,7 +66,6 @@ class Main(GladeWidget):
 
     def show(self):
         """ Visualizza la finestra """
-
 
         model = gtk.ListStore(int, str, gtk.gdk.Pixbuf)
 
