@@ -23,7 +23,16 @@ def treeViewExpand(gtkgui, treeview, renderer):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Taglia', renderer, text=10, background=1)
+        column = gtk.TreeViewColumn('Modello', renderer, text=10, background=1)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(True)
+        column.connect("clicked", gtkgui._changeOrderBy, 'denominazione_modello')
+        column.set_resizable(True)
+        column.set_expand(False)
+        column.set_min_width(100)
+        treeview.append_column(column)
+
+        column = gtk.TreeViewColumn('Taglia', renderer, text=11, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", gtkgui._changeOrderBy, 'denominazione_taglia')
@@ -32,7 +41,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Colore', renderer, text=11, background=1)
+        column = gtk.TreeViewColumn('Colore', renderer, text=12, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", gtkgui._changeOrderBy, 'denominazione_colore')
@@ -41,7 +50,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Anno', renderer, text=12, background=1)
+        column = gtk.TreeViewColumn('Anno', renderer, text=13, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", gtkgui._changeOrderBy, 'anno')
@@ -50,7 +59,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Stagione', renderer, text=13, background=1)
+        column = gtk.TreeViewColumn('Stagione', renderer, text=14, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", gtkgui._changeOrderBy, 'stagione')
@@ -59,7 +68,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Genere', renderer, text=14, background=1)
+        column = gtk.TreeViewColumn('Genere', renderer, text=15, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", gtkgui._changeOrderBy, 'genere')
@@ -67,7 +76,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
         column.set_expand(False)
         column.set_min_width(100)
         treeview.append_column(column)
-        gtkgui._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str, str, str, str, str, str)
+        gtkgui._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str, str, str, str, str, str, str)
     else:
         gtkgui.gruppo_taglia_filter_label.set_no_show_all(True)
         gtkgui.gruppo_taglia_filter_label.set_property('visible', False)
@@ -81,6 +90,10 @@ def treeViewExpand(gtkgui, treeview, renderer):
         gtkgui.colore_filter_label.set_property('visible', False)
         gtkgui.id_colore_articolo_filter_combobox.set_property('visible', False)
         gtkgui.id_colore_articolo_filter_combobox.set_no_show_all(True)
+        gtkgui.modello_filter_label.set_no_show_all(True)
+        gtkgui.modello_filter_label.set_property('visible', False)
+        gtkgui.id_modello_articolo_filter_combobox.set_property('visible', False)
+        gtkgui.id_modello_articolo_filter_combobox.set_no_show_all(True)
         gtkgui.anno_filter_label.set_no_show_all(True)
         gtkgui.anno_filter_label.set_property('visible', False)
         gtkgui.id_anno_articolo_filter_combobox.set_property('visible', False)
@@ -125,6 +138,12 @@ def articleTypeGuiManage(anagrafica, dao, new):
                 '<span weight="bold">%s</span>' % (dao.genere,))
         gtkgui.denominazione_genere_label.set_property('visible', True)
 
+        findComboboxRowFromId(gtkgui.id_modello_customcombobox.combobox, gtkgui.dao.id_modello)
+        gtkgui.id_modello_customcombobox.set_property('visible', False)
+        gtkgui.denominazione_modello_label.set_markup(
+                '<span weight="bold">%s</span>' % (dao.denominazione_modello,))
+        gtkgui.denominazione_modello_label.set_property('visible', True)
+
         findComboboxRowFromId(gtkgui.id_stagione_combobox, dao.id_stagione)
         gtkgui.id_stagione_combobox.set_property('visible', False)
         gtkgui.denominazione_stagione_anno_label.set_markup(
@@ -168,56 +187,46 @@ def articleTypeGuiManage(anagrafica, dao, new):
         gtkgui.produttore_entry.set_sensitive(False)
 
     elif articleType(dao) == "father":
-        # Articolo principale in quando id_articolo_padre è vuoto
-        # possibilita' di inserire gruppo taglia, genere, anno, stagione
+        """ Articolo principale in quando id_articolo_padre è vuoto
+            possibilita' di inserire gruppo taglia, genere, anno, stagione """
+
         gtkgui.con_taglie_colori_radiobutton.set_sensitive(True)
         gtkgui.on_con_taglie_colori_radiobutton_toggled(gtk.RadioButton())
-        findComboboxRowFromId(gtkgui.id_gruppo_taglia_customcombobox.combobox, dao.id_gruppo_taglia)
-        #gtkgui.id_gruppo_taglia_customcombobox.set_property('visible', False)
-        #gtkgui.denominazione_gruppo_taglia_label.set_markup('<span weight="bold">%s</span>'
-                                                            #% (dao.denominazione_gruppo_taglia,))
-        #gtkgui.denominazione_gruppo_taglia_label.set_property('visible', True)
-
-        findComboboxRowFromId(gtkgui.id_genere_combobox, dao.id_genere)
-        #gtkgui.id_genere_combobox.set_active(-1)
-        gtkgui.id_genere_combobox.set_property('visible', True)
-
-        #gtkgui.denominazione_genere_label.set_markup('-')
-        #gtkgui.denominazione_genere_label.set_property('visible', False)
-        findComboboxRowFromId(gtkgui.id_stagione_combobox, dao.id_stagione)
-        #gtkgui.id_stagione_combobox.set_active(-1)
-        gtkgui.id_stagione_combobox.set_property('visible', True)
-        #gtkgui.id_anno_combobox.set_active(-1)
-        findComboboxRowFromId(gtkgui.id_anno_combobox, dao.id_anno)
-        gtkgui.id_anno_combobox.set_property('visible', True)
-        gtkgui.id_taglia_customcombobox.combobox.set_active(-1)
-        gtkgui.id_colore_customcombobox.combobox.set_active(-1)
-        gtkgui.denominazione_genere_label.set_property('visible', False)
-        gtkgui.denominazione_taglia_label.set_property('visible', False)
-        gtkgui.denominazione_colore_label.set_property('visible', False)
-        gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
-        gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
-        #gtkgui.denominazione_stagione_anno_label.set_markup('-')
-        #gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
-
-        # niente possibilita' di inserire taglia, colore
-        #gtkgui.id_taglia_customcombobox.combobox.set_active(-1)
-        #gtkgui.id_taglia_customcombobox.set_property('visible', False)
-        #gtkgui.denominazione_taglia_label.set_markup('<span weight="bold">-</span>')
-        #gtkgui.denominazione_taglia_label.set_property('visible', True)
-        #gtkgui.id_colore_customcombobox.combobox.set_active(-1)
-        #gtkgui.id_colore_customcombobox.set_property('visible', False)
-        #gtkgui.denominazione_colore_label.set_markup('<span weight="bold">-</span>')
-        #gtkgui.denominazione_colore_label.set_property('visible', True)
         varianti = str(len(dao.articoliTagliaColore))
         testo= """ARTICOLO PRINCIPALE CON %s VARIANTI""" %varianti
         gtkgui.memo_wear.set_text(testo)
+
+        findComboboxRowFromId(gtkgui.id_gruppo_taglia_customcombobox.combobox, dao.id_gruppo_taglia)
+
+        findComboboxRowFromId(gtkgui.id_genere_combobox, dao.id_genere)
+        gtkgui.id_genere_combobox.set_property('visible', True)
+
+        findComboboxRowFromId(gtkgui.id_modello_customcombobox.combobox, dao.id_modello)
+        gtkgui.id_modello_customcombobox.set_property('visible', True)
+
+        findComboboxRowFromId(gtkgui.id_stagione_combobox, dao.id_stagione)
+        gtkgui.id_stagione_combobox.set_property('visible', True)
+
+        findComboboxRowFromId(gtkgui.id_anno_combobox, dao.id_anno)
+        gtkgui.id_anno_combobox.set_property('visible', True)
+
+        gtkgui.id_taglia_customcombobox.combobox.set_active(-1)
+        gtkgui.id_colore_customcombobox.combobox.set_active(-1)
+
+        gtkgui.denominazione_genere_label.set_property('visible', False)
+        gtkgui.denominazione_taglia_label.set_property('visible', False)
+        gtkgui.denominazione_colore_label.set_property('visible', False)
+        gtkgui.denominazione_modello_label.set_property('visible', False)
+        gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
+        gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
+
 
     elif articleType(dao) == "normal":
         gtkgui.normale_radiobutton.set_sensitive(True)
         gtkgui.on_normale_radiobutton_toggled(gtk.RadioButton())
         gtkgui.id_anno_combobox.set_active(-1)
         gtkgui.id_genere_combobox.set_active(-1)
+        gtkgui.id_modello_customcombobox.set_active(-1)
         gtkgui.id_stagione_combobox.set_active(-1)
         gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
         gtkgui.id_taglia_customcombobox.combobox.set_active(-1)
@@ -225,6 +234,7 @@ def articleTypeGuiManage(anagrafica, dao, new):
         gtkgui.denominazione_genere_label.set_property('visible', False)
         gtkgui.denominazione_taglia_label.set_property('visible', False)
         gtkgui.denominazione_colore_label.set_property('visible', False)
+        gtkgui.denominazione_modello_label.set_property('visible', False)
         gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
         gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
         gtkgui.memo_wear.set_text("""ARTICOLO NORMALE""")
@@ -236,6 +246,7 @@ def articleTypeGuiManage(anagrafica, dao, new):
         gtkgui.on_plus_radiobutton_toggled(gtk.RadioButton())
         findComboboxRowFromId(gtkgui.id_colore_customcombobox.combobox, dao.id_colore)
         findComboboxRowFromId(gtkgui.id_taglia_customcombobox.combobox, dao.id_taglia)
+        findComboboxRowFromId(gtkgui.id_modello_customcombobox.combobox, dao.id_modello)
         findComboboxRowFromId(gtkgui.id_anno_combobox,dao.id_anno)
         findComboboxRowFromId(gtkgui.id_stagione_combobox,dao.id_stagione)
         findComboboxRowFromId(gtkgui.id_genere_combobox,dao.id_genere)
@@ -243,6 +254,7 @@ def articleTypeGuiManage(anagrafica, dao, new):
         #gtkgui.denominazione_genere_label.set_markup('-')
         gtkgui.denominazione_genere_label.set_property('visible', False)
         gtkgui.denominazione_taglia_label.set_property('visible', False)
+        gtkgui.denominazione_modello_label.set_property('visible', False)
         gtkgui.denominazione_colore_label.set_property('visible', False)
         gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
         gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
@@ -257,9 +269,11 @@ def articleTypeGuiManage(anagrafica, dao, new):
         gtkgui.id_stagione_combobox.set_active(-1)
         gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
         gtkgui.id_taglia_customcombobox.combobox.set_active(-1)
+        gtkgui.id_modello_customcombobox.combobox.set_active(-1)
         gtkgui.id_colore_customcombobox.combobox.set_active(-1)
         gtkgui.denominazione_genere_label.set_property('visible', False)
         gtkgui.denominazione_taglia_label.set_property('visible', False)
+        gtkgui.denominazione_modello_label.set_property('visible', False)
         gtkgui.denominazione_colore_label.set_property('visible', False)
         gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
         gtkgui.denominazione_stagione_anno_label.set_property('visible', False)

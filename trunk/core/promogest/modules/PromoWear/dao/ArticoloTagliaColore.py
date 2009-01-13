@@ -16,6 +16,7 @@ from promogest.modules.PromoWear.dao.Colore import Colore
 from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
 from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
 from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
+from promogest.modules.PromoWear.dao.Modello import Modello
 
 class ArticoloTagliaColore(Dao):
 
@@ -38,6 +39,13 @@ class ArticoloTagliaColore(Dao):
             return None
         return Taglia(id=self.id_taglia).getREcord()
     taglia = property(_getTaglia)
+
+    def _getModello(self):
+        """ Restituisce il Dao Taglia collegato al Dao ArticoloTagliaColore """
+        if self.id_modello is None:
+            return None
+        return Modello(id=self.id_modello).getREcord()
+    modello = property(_getModello)
 
     def _getColore(self):
         """ Restituisce il Dao Colore collegato al Dao ArticoloTagliaColore """
@@ -78,6 +86,11 @@ class ArticoloTagliaColore(Dao):
         """ esempio di funzione  unita alla property """
         if self.TA : return self.TA.denominazione or ""
     denominazione_taglia = property(_denominazione_taglia)
+
+    def _denominazione_modello(self):
+        """ esempio di funzione  unita alla property """
+        if self.MO : return self.MO.denominazione or ""
+    denominazione_modello = property(_denominazione_modello)
 
     def _denominazione_breve_taglia(self):
         """ esempio di funzione  unita alla property """
@@ -180,6 +193,8 @@ std_mapper = mapper(ArticoloTagliaColore, articolotagliacolore,properties={
                     (StagioneAbbigliamento.id==articolotagliacolore.c.id_stagione), backref="ATCSA"),
     "GA":relation(GenereAbbigliamento,primaryjoin=
                     (GenereAbbigliamento.id==articolotagliacolore.c.id_genere), backref="ATCGA"),
+    "MO":relation(Modello,primaryjoin=
+                    (Modello.id==articolotagliacolore.c.id_modello), backref="ATCMO"),
         },
                 order_by=articolotagliacolore.c.id_taglia)
 

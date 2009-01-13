@@ -228,6 +228,10 @@ class Articolo(Dao):
         if self.ATC: return self.ATC.id_colore or None
     id_colore=property(_id_colore)
 
+    def _id_modello(self):
+        if self.ATC: return self.ATC.id_modello or None
+    id_modello=property(_id_modello)
+
     def _id_genere(self):
         if self.ATC: return self.ATC.id_genere or None
         #else: return ""
@@ -267,6 +271,15 @@ class Articolo(Dao):
             except:
                 return self.ATC.denominazione_colore
     denominazione_colore = property(_denominazione_colore)
+
+    def _denominazione_modello(self):
+        """ esempio di funzione  unita alla property """
+        if self.ATC :
+            try:
+                return self.ATC[0].denominazione_modello
+            except:
+                return self.ATC.denominazione_modello
+    denominazione_modello = property(_denominazione_modello)
 
     def _anno(self):
         """ esempio di funzione  unita alla property """
@@ -344,6 +357,8 @@ class Articolo(Dao):
             dic = {k:and_(articolo.c.id==articolotagliacolore.c.id_articolo, articolotagliacolore.c.id_articolo_padre==None)}
         elif k == 'idTaglia':
             dic = {k:and_(articolo.c.id==articolotagliacolore.c.id_articolo, articolotagliacolore.c.id_taglia==v)}
+        elif k == 'idModello':
+            dic = {k:and_(articolo.c.id==articolotagliacolore.c.id_articolo, articolotagliacolore.c.id_modello==v)}
         elif k == 'idGruppoTaglia':
             dic = {k:and_(articolo.c.id==articolotagliacolore.c.id_articolo, articolotagliacolore.c.id_gruppo_taglia ==v)}
         elif k == 'padriTagliaColore':
@@ -404,6 +419,7 @@ class Articolo(Dao):
                         var.id_genere = self.__articoloTagliaColore.id_genere
                         var.id_anno = self.__articoloTagliaColore.id_anno
                         var.id_stagione = self.__articoloTagliaColore.id_stagione
+                        var.id_modello = self.__articoloTagliaColore.id_modello
                         params["session"].add(var)
                         self.saveToAppLog(var)
         except:

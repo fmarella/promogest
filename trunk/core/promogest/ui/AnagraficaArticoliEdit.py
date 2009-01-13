@@ -103,19 +103,13 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             #Collega la creazione di un nuovo codice articolo al cambiamento della famiglia
             self.id_famiglia_articolo_customcombobox.combobox.connect('changed',
                                                                       self.on_id_famiglia_articolo_customcombobox_changed)
-        #Popola combobox stati articolo
         fillComboboxStatiArticoli(self.id_stato_articolo_combobox)
-        #Popola combobox imballaggi
         fillComboboxImballaggi(self.id_imballaggio_customcombobox.combobox)
         self.id_imballaggio_customcombobox.connect('clicked',
                                                    on_id_imballaggio_customcombobox_clicked)
-        #Popola combobox unita base
         fillComboboxUnitaBase(self.id_unita_base_combobox)
-        #Popola comboboxentry unita dimensioni
         fillComboboxUnitaFisica(self.unita_dimensioni_comboboxentry,'dimensioni')
-        #Popola comboboxentry unita volume
         fillComboboxUnitaFisica(self.unita_volume_comboboxentry,'volume')
-        #Popola comboboxentry unita peso
         fillComboboxUnitaFisica(self.unita_peso_comboboxentry,'peso')
 
 
@@ -226,6 +220,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
             articoloTagliaColore.id_taglia = findIdFromCombobox(self.id_taglia_customcombobox.combobox)
             articoloTagliaColore.id_colore = findIdFromCombobox(self.id_colore_customcombobox.combobox)
+            articoloTagliaColore.id_modello = findIdFromCombobox(self.id_modello_customcombobox.combobox)
             articoloTagliaColore.id_anno = findIdFromCombobox(self.id_anno_combobox)
             articoloTagliaColore.id_stagione = findIdFromCombobox(self.id_stagione_combobox)
             articoloTagliaColore.id_genere = findIdFromCombobox(self.id_genere_combobox)
@@ -237,6 +232,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
             articoloTagliaColore.id_taglia = findIdFromCombobox(self.id_taglia_customcombobox.combobox)
             articoloTagliaColore.id_colore = findIdFromCombobox(self.id_colore_customcombobox.combobox)
+            articoloTagliaColore.id_modello = findIdFromCombobox(self.id_modello_customcombobox.combobox)
             articoloTagliaColore.id_anno = findIdFromCombobox(self.id_anno_combobox)
             articoloTagliaColore.id_stagione = findIdFromCombobox(self.id_stagione_combobox)
             articoloTagliaColore.id_genere = findIdFromCombobox(self.id_genere_combobox)
@@ -248,6 +244,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
             articoloTagliaColore.id_taglia = findIdFromCombobox(self.id_taglia_customcombobox.combobox)
             articoloTagliaColore.id_colore = findIdFromCombobox(self.id_colore_customcombobox.combobox)
+            articoloTagliaColore.id_modello = findIdFromCombobox(self.id_modello_customcombobox.combobox)
             if articoloTagliaColore.id_taglia or articoloTagliaColore.id_colore:
                 msg =""" ATTENZIONE: Articolo Padre Taglia e Colore NON
     può avere Colore o Taglia propri."""
@@ -517,6 +514,7 @@ dei dati accessori. Continuare?"""
                         self.id_stagione_combobox.set_active(-1)
                         self.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
                         self.id_taglia_customcombobox.combobox.set_active(-1)
+                        self.id_modello_customcombobox.combobox.set_active(-1)
                         self.id_colore_customcombobox.combobox.set_active(-1)
                         self.denominazione_genere_label.set_property('visible', False)
                         self.denominazione_taglia_label.set_property('visible', False)
@@ -533,6 +531,7 @@ dei dati accessori. Continuare?"""
             self.taglie_colori_togglebutton.set_sensitive(False)
             self.id_colore_customcombobox.set_sensitive(True)
             self.id_taglia_customcombobox.set_sensitive(True)
+            self.id_modello_customcombobox.set_sensitive(True)
             self.frame_promowear.set_sensitive(False)
 
     def on_plus_radiobutton_toggled(self, radioButton):
@@ -544,6 +543,7 @@ dei dati accessori. Continuare?"""
             self.taglie_colori_togglebutton.set_sensitive(False)
             self.id_colore_customcombobox.set_sensitive(True)
             self.id_taglia_customcombobox.set_sensitive(True)
+            self.id_modello_customcombobox.set_sensitive(True)
             self.frame_promowear.set_sensitive(True)
 
     def on_con_taglie_colori_radiobutton_toggled(self, radioButton):
@@ -555,6 +555,7 @@ dei dati accessori. Continuare?"""
             self.taglie_colori_togglebutton.set_sensitive(True)
             self.id_colore_customcombobox.set_sensitive(False)
             self.id_taglia_customcombobox.set_sensitive(False)
+            self.id_modello_customcombobox.set_sensitive(True)
             self.frame_promowear.set_sensitive(True)
 
     def on_generate_article_code_button_clicked(self, button):

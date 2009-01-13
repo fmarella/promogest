@@ -38,7 +38,6 @@ class GestioneTaglieColori(GladeWidget):
         self.placeWindow(self.getTopLevel())
         self._treeViewModel = None
         self._articoloBase = articolo
-        print "ARTICOLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" , articolo, articolo.id
         self._articoloPadre = articolo.articoloTagliaColore
         self.idGruppoTaglia = self._articoloBase.id_gruppo_taglia
         if self._articoloPadre is None:
@@ -159,37 +158,40 @@ class GestioneTaglieColori(GladeWidget):
 
         if self.order == "color":
             if self.filtered:
-                for c in self._articoloBase.colori:
-                    #oggetto Colore
-                    parent = self._treeViewModel.append(None,(c,
+                print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self._articoloBase.colori
+                if self._articoloBase.colori[0] != None:
+                    for c in self._articoloBase.colori:
+                        #oggetto Colore
+                        print "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", c
+                        parent = self._treeViewModel.append(None,(c,
+                                                    True,
+                                                    c.denominazione,
+                                                    "",
+                                                    self.rowBackGround,
+                                                    self.rowBoldFont,
+                                                    None))
+                        sizesFilterd= ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
+                                                                    idColore=c.id,
+                                                                    batchSize=None)
+                        for r in sizesFilterd:
+                            s = Taglia().getRecord(id=r.id_taglia)
+                            articoloTagliaColore = ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
+                                                                                    idTaglia=s.id,
+                                                                                    idColore=c.id)
+                            if articoloTagliaColore:
+                                codiceArticolo = Articolo().getRecord(id=articoloTagliaColore[0].id_articolo)
+                                codice = codiceArticolo.codice_a_barre or ""
+                            else:
+                                codice = ""
+                                codiceArticolo = None
+                            #oggetto Taglia
+                            self._treeViewModel.append(parent,(s,
                                                 True,
-                                                c.denominazione,
-                                                "",
-                                                self.rowBackGround,
-                                                self.rowBoldFont,
-                                                None))
-                    sizesFilterd= ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
-                                                                idColore=c.id,
-                                                                batchSize=None)
-                    for r in sizesFilterd:
-                        s = Taglia().getRecord(id=r.id_taglia)
-                        articoloTagliaColore = ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
-                                                                                idTaglia=s.id,
-                                                                                idColore=c.id)
-                        if articoloTagliaColore:
-                            codiceArticolo = Articolo().getRecord(id=articoloTagliaColore[0].id_articolo)
-                            codice = codiceArticolo.codice_a_barre or ""
-                        else:
-                            codice = ""
-                            codiceArticolo = None
-                        #oggetto Taglia
-                        self._treeViewModel.append(parent,(s,
-                                            True,
-                                            s.denominazione,
-                                            codice,
-                                            None,
-                                            None,
-                                            codiceArticolo))
+                                                s.denominazione,
+                                                codice,
+                                                None,
+                                                None,
+                                                codiceArticolo))
             else:
                 for c in self.colori:
                     #oggetto Colore
