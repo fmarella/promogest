@@ -181,9 +181,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         cellspin = gtk.CellRendererSpin()
         cellspin.set_property("editable", True)
         cellspin.set_property("visible", True)
-        adjustment = gtk.Adjustment(1, 1, 1000,0.500,2)
+        adjustment = gtk.Adjustment(1, 1, 1000,1,2)
         cellspin.set_property("adjustment", adjustment)
-        cellspin.set_property("digits",3)
+        cellspin.set_property("digits",2)
         cellspin.set_property("climb-rate",3)
         cellspin.connect('edited', self.on_column_quantita_edited, treeview, True)
         column = gtk.TreeViewColumn('Quantità', cellspin, text=9)
@@ -197,10 +197,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         treeview.set_model(self.modelRiga)
 
         # Disabilito bottoni e text entry
-        self.confirm_button.set_sensitive(False)
+        #self.confirm_button.set_sensitive(False)
         self.delete_button.set_sensitive(False)
         self.rhesus_button.set_sensitive(False)
-        self.annulling_button.set_sensitive(False)
+        #self.annulling_button.set_sensitive(False)
         self.total_button.set_sensitive(False)
         self.empty_button.set_sensitive(False)
 
@@ -226,15 +226,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             self.id_magazzino = magalist[0].id
         else:
             self.id_magazzino = None
-
-        #self.prezzo_entry.connect('key_press_event',
-                                  #self.on_prezzo_entry_key_press_event)
-        #self.prezzo_scontato_entry.connect('key_press_event',
-                                           #self.on_prezzo_scontato_entry_key_press_event)
-        #self.quantita_entry.connect('key_press_event',
-                                    #self.on_quantita_entry_key_press_event)
-        #self.sconti_scontrino_widget.button.connect('toggled',
-                #self.on_sconti_scontrino_widget_button_toggled)
 
         # Vado in stato di ricerca
         self._state = 'search'
@@ -365,13 +356,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             self.activate_item(idArticolo, listinoRiga, codiceABarre,codice,
                                descrizione, prezzo, valoreSconto,tipoSconto,
                                prezzoScontato, quantita)
-            self.confirm_button.grab_focus()
-            try:
-                if Environment.conf.VenditaDettaglio.direct_confirm == "yes":
-                    self.on_confirm_button_clicked(self.getTopLevel())
-                    self.refreshTotal()
-            except:
-                pass
+            #self.confirm_button.grab_focus()
+            self.on_confirm_button_clicked(self.getTopLevel())
+            self.refreshTotal()
         else:
             self.ricercaArticolo()
 
@@ -468,7 +455,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             tipoSconto = ""
 
         self.rhesus_button.set_sensitive(True)
-        self.annulling_button.set_sensitive(True)
+        #self.annulling_button.set_sensitive(True)
         self._currentRow = {'idArticolo' : idArticolo,
                             'listinoRiga' : listinoRiga,
                             'codiceABarre' : codiceABarre,
@@ -487,7 +474,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             self.delete_button.set_sensitive(True)
             #self.confirm_button.set_sensitive(True)
             self.rhesus_button.set_sensitive(True)
-            self.annulling_button.set_sensitive(True)
+            #self.annulling_button.set_sensitive(True)
             self.search_button.set_sensitive(False)
             self.codice_a_barre_entry.set_sensitive(False)
             self.codice_entry.set_sensitive(False)
@@ -499,6 +486,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             self.currentIteratorRow = iterator
             listinoRiga = model.get_value(self.currentIteratorRow, 1)
             idArticolo = model.get_value(self.currentIteratorRow, 0)
+            self._quantita = model.get_value(self.currentIteratorRow, 9)
             self.lsmodel.clear()
             listiniList = listinoCandidateSel(idArticolo=idArticolo,
                                                 idMagazzino=self.id_magazzino)
@@ -515,7 +503,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                             +" - " \
                                             +model.get_value(self.currentIteratorRow, 4)\
                                             +'</span></b>')
-
+            self.refreshTotal()
 
     def on_confirm_button_clicked(self, button):
         # controllo che il prezzo non sia nullo
@@ -536,7 +524,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         if self._state == 'search':
             model.append((self._currentRow['idArticolo'],
-                        self._currentRow['listinoRiga'][1][0:10],
+                        self._currentRow['listinoRiga'][1],
                         self._currentRow['codiceABarre'],
                         self._currentRow['codice'],
                         self._currentRow['descrizione'],
@@ -547,7 +535,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                         Decimal(self._currentRow['quantita'])))
         elif self._state == 'editing':
             model.set_value(self.currentIteratorRow, 0, self._currentRow['idArticolo'])
-            model.set_value(self.currentIteratorRow, 1, self._currentRow['listinoRiga'][1][0:10])
+            model.set_value(self.currentIteratorRow, 1, self._currentRow['listinoRiga'][1])
             model.set_value(self.currentIteratorRow, 2, self._currentRow['codiceABarre'])
             model.set_value(self.currentIteratorRow, 3, self._currentRow['codice'])
             model.set_value(self.currentIteratorRow, 4, self._currentRow['descrizione'])
@@ -564,9 +552,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.righe_label.set_markup('<b>[ '+str(len(model)) +' ] Righe scontrino</b>')
         # Disabilito cancella e conferma e abilito ricerca barcode
         self.delete_button.set_sensitive(False)
-        self.confirm_button.set_sensitive(False)
+        #self.confirm_button.set_sensitive(False)
         self.rhesus_button.set_sensitive(False)
-        self.annulling_button.set_sensitive(False)
+        #self.annulling_button.set_sensitive(False)
         self.codice_a_barre_entry.set_sensitive(True)
         self.codice_entry.set_sensitive(True)
         self.descrizione_entry.set_sensitive(True)
@@ -587,18 +575,14 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self._state = 'search'
         self.codice_a_barre_entry.grab_focus()
 
-
-    def on_scontrino_treeview_cursor_changed(self,treeview):
-        print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
-
     def on_cancel_button_clicked(self, button):
         self.empty_current_row()
 
         # Disabilito cancella e conferma e abilito ricerca barcode
         self.delete_button.set_sensitive(False)
-        self.confirm_button.set_sensitive(False)
+        #self.confirm_button.set_sensitive(False)
         self.rhesus_button.set_sensitive(False)
-        self.annulling_button.set_sensitive(False)
+        #self.annulling_button.set_sensitive(False)
         self.codice_a_barre_entry.set_sensitive(True)
         self.codice_entry.set_sensitive(True)
         self.descrizione_entry.set_sensitive(True)
@@ -620,10 +604,12 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.codice_a_barre_entry.grab_focus()
 
     def on_rhesus_button_clicked(self, button):
-        quantita = Decimal(self.quantita_entry.get_text())
-        self._currentRow['quantita'] = (quantita * -1)
-        self.quantita_entry.set_text(str(Decimal(self._currentRow['quantita'])))
-        self.confirm_button.grab_focus()
+        selection = self.scontrino_treeview.get_selection()
+        (model, iter) = selection.get_selected()
+        quantita = model.get_value(iter, 9)
+        model[iter][9]= Decimal(quantita)* -1
+        self.refreshTotal()
+        self.on_cancel_button_clicked(self.getTopLevel)
 
     def on_delete_button_clicked(self, button):
         treeview = self.scontrino_treeview
@@ -638,9 +624,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         # Disabilito cancella e conferma e abilito ricerca barcode
         self.delete_button.set_sensitive(False)
-        self.confirm_button.set_sensitive(False)
+        #self.confirm_button.set_sensitive(False)
         self.rhesus_button.set_sensitive(False)
-        self.annulling_button.set_sensitive(False)
+        #self.annulling_button.set_sensitive(False)
         self.codice_a_barre_entry.set_sensitive(True)
         self.codice_entry.set_sensitive(True)
         self.descrizione_entry.set_sensitive(True)
@@ -979,7 +965,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             # Ricerca listino_articolo
             listino = leggiListino(self.id_listino, idArticolo)
             #prezzo = listino["prezzoDettaglio"]
-            listinoRiga = (self.id_listino, listino['denominazione'][0:10])
+            listinoRiga = (self.id_listino, listino['denominazione'])
             prezzo = mN(listino["prezzoDettaglio"])
             prezzoScontato = prezzo
             tipoSconto = None
