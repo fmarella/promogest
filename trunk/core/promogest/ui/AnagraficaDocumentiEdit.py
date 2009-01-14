@@ -932,7 +932,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.totale_peso_entry.set_text(str(self.dao.totale_peso or 0))
         self.sconti_testata_widget.setValues(self.dao.sconti, self.dao.applicazione_sconti)
         self.clearRows()
-
         for riga in self.dao.righe:
             self.azzeraRiga(0)
             j = self.dao.righe.index(riga) + 1
@@ -1338,7 +1337,7 @@ del documento.
             inserisci = True
         else:
             inserisci = False
-
+        print "inserisciiiiiiiiiiiiiiiiiiiiiiii", inserisci
         # memorizzazione delle parti descrittive (liberamente modificabili)
         self._righe[0]["descrizione"] = self.descrizione_entry.get_text()
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
@@ -1373,8 +1372,7 @@ del documento.
             self._righe[self._numRiga]["altezza"] = self._righe[0]["altezza"]
             self._righe[self._numRiga]["larghezza"] = self._righe[0]["larghezza"]
             self._righe[self._numRiga]["molt_pezzi"] = self._righe[0]["molt_pezzi"]
-
-        if not inserisci:
+        if inserisci is False:
             if self._iteratorRiga is None:
                 return
             self.modelRiga.set_value(self._iteratorRiga, 0, self._righe[self._numRiga]["magazzino"])
@@ -1398,24 +1396,24 @@ del documento.
             self.modelRiga.set_value(self._iteratorRiga, 13, mN(self._righe[self._numRiga]["prezzoNetto"]))
             self.modelRiga.set_value(self._iteratorRiga, 14, mN(self._righe[self._numRiga]["totale"]))
         else:
-            self.modelRiga.append((self._righe[self._numRiga]["magazzino"],
-                self._righe[self._numRiga]["codiceArticolo"],
-                self._righe[self._numRiga]["descrizione"],
-                '%5.2f' % float(self._righe[self._numRiga]["percentualeIva"]),
-                self._righe[self._numRiga]["altezza"],
-                self._righe[self._numRiga]["larghezza"],
-                self._righe[self._numRiga]["molt_pezzi"],
-                self._righe[self._numRiga]["multiplo"],
-                self._righe[self._numRiga]["listino"],
-                self._righe[self._numRiga]["unitaBase"],
-                '%9.3f' % float(self._righe[self._numRiga]["quantita"]),
-                mN(self._righe[self._numRiga]["prezzoLordo"]),
-                self._righe[self._numRiga]["applicazioneSconti"] + ' ' + getStringaSconti(
-                    self._righe[self._numRiga]["sconti"]),
-                mN(self._righe[self._numRiga]["prezzoNetto"]),
-                mN(self._righe[self._numRiga]["totale"])))
+            self.modelRiga.append([self._righe[self._numRiga]["magazzino"],
+                            self._righe[self._numRiga]["codiceArticolo"],
+                            self._righe[self._numRiga]["descrizione"],
+                            '%5.2f' % float(self._righe[self._numRiga]["percentualeIva"]),
+                            self._righe[self._numRiga]["altezza"],
+                            self._righe[self._numRiga]["larghezza"],
+                            self._righe[self._numRiga]["molt_pezzi"],
+                            self._righe[self._numRiga]["multiplo"],
+                            self._righe[self._numRiga]["listino"],
+                            self._righe[self._numRiga]["unitaBase"],
+                                '%9.3f' % float(self._righe[self._numRiga]["quantita"]),
+                            mN(self._righe[self._numRiga]["prezzoLordo"]),
+                            str(self._righe[self._numRiga]["applicazioneSconti"]) + ' ' + str(getStringaSconti(
+                            self._righe[self._numRiga]["sconti"])),
+                            mN(self._righe[self._numRiga]["prezzoNetto"]),
+                            mN(self._righe[self._numRiga]["totale"])])
+        self.righe_treeview.set_model(self.modelRiga)
         self.calcolaTotale()
-
         if costoVariato:
             if not(self._variazioneListiniResponse == 'all' or self._variazioneListiniResponse == 'none'):
                 msg = 'Il prezzo di acquisto e\' stato variato:\n\n   si desidera aggiornare i listini di vendita ?'
