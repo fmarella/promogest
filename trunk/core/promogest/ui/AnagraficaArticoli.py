@@ -249,9 +249,11 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             fillComboboxGruppiTaglia(self.id_gruppo_taglia_articolo_filter_combobox, True)
             fillComboboxTaglie(self.id_taglia_articolo_filter_combobox, True)
             fillComboboxColori(self.id_colore_articolo_filter_combobox, True)
+            fillComboboxModelli(self.id_modello_filter_combobox, True)
             fillComboboxAnniAbbigliamento(self.id_anno_articolo_filter_combobox, True)
             fillComboboxStagioniAbbigliamento(self.id_stagione_articolo_filter_combobox, True)
             fillComboboxGeneriAbbigliamento(self.id_genere_articolo_filter_combobox, True)
+            self.id_modello_filter_combobox.set_active(0)
             self.id_categoria_articolo_filter_combobox.set_active(0)
             self.id_gruppo_taglia_articolo_filter_combobox.set_active(0)
             self.id_taglia_articolo_filter_combobox.set_active(0)
@@ -301,6 +303,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             if figliTagliaColore:figliTagliaColore = None
             else:figliTagliaColore = True
             idGruppoTaglia = findIdFromCombobox(self.id_gruppo_taglia_articolo_filter_combobox)
+            idModello = findIdFromCombobox(self.id_modello_filter_combobox)
             idTaglia = findIdFromCombobox(self.id_taglia_articolo_filter_combobox)
             idColore = findIdFromCombobox(self.id_colore_articolo_filter_combobox)
             idAnno = findIdFromCombobox(self.id_anno_articolo_filter_combobox)
@@ -360,6 +363,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
                                         idColore=idColore,
                                         idAnno=idAnno,
                                         idStagione=idStagione,
+                                        idModello = idModello,
                                         idGenere=idGenere,
                                         padriTagliaColore=padriTagliaColore,
                                         figliTagliaColore=figliTagliaColore,
@@ -398,6 +402,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
                                         (a.denominazione_famiglia or ''),
                                         (a.denominazione_categoria or ''),
                                         (a.denominazione_gruppo_taglia or ''),
+                                        (a.denominazione_modello or ''),
                                         (a.denominazione_taglia or ''),
                                         (a.denominazione_colore or ''),
                                         (a.anno or ''),
