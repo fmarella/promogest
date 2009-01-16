@@ -981,13 +981,13 @@ class AnagraficaHtml(object):
         self.dao = dao
 
         self._refresh()
-        if dao is not None and Environment.debugDao ==True:
+        #if dao is not None and Environment.debugDao ==True:
             # FIXME: add some logging level check here
-            import pprint
-            pp = pprint.PrettyPrinter(indent=4)
-            print ("\n\n=== DAO object dump ===\n\n"
-                   + pp.pformat(dao.dictionary(complete=True))
-                   + "\n\n")
+        #import pprint
+        #pp = pprint.PrettyPrinter(indent=4)
+        #print ("\n\n=== DAO object dump ===\n\n"
+                #+ pp.pformat(dao.dictionary(complete=True))
+                #+ "\n\n")
 
     def refresh(self):
         """ Aggiorna la vista HTML """

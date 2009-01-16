@@ -19,6 +19,7 @@ from Listino import Listino
 from Multiplo import Multiplo
 from Stoccaggio import Stoccaggio
 from DaoUtils import scontiRigaMovimentoDel
+from promogest.ui.utils import getScontiFromDao, getStringaSconti
 if hasattr(conf, "SuMisura"):
     if getattr(conf.SuMisura,'mod_enable') == "yes":
         from promogest.modules.SuMisura.data.SuMisuraDb import *
@@ -73,6 +74,12 @@ class RigaMovimento(Dao):
 
     sconti = property(_getScontiRigaMovimento, _setScontiRigaMovimento)
 
+    def _getStringaScontiRigaMovimento(self):
+        (listSconti, applicazione) = getScontiFromDao(self._getScontiRigaMovimento(), self.applicazione_sconti)
+        return getStringaSconti(listSconti)
+
+    stringaSconti = property(_getStringaScontiRigaMovimento)
+
     def _getTotaleRiga(self):
         # Il totale e' ivato o meno a seconda del prezzo
         totaleRiga = float(self.quantita) * float(self.moltiplicatore) * float(self.valore_unitario_netto)
@@ -107,6 +114,22 @@ class RigaMovimento(Dao):
             self.__misuraPezzo = value
 
     misura_pezzo = property(_getMisuraPezzo, _setMisuraPezzo)
+
+    def _altezza(self):
+        if self.misura_pezzo:
+            return self.misura_pezzo[0].altezza
+        else:
+            return ""
+    altezza = property(_altezza)
+
+    def _larghezza(self):
+        if self.misura_pezzo:
+            return self.misura_pezzo[0].larghezza
+        else:
+            return ""
+    larghezza = property(_larghezza)
+
+
 
     def __unita_base(self):
         a =  params["session"].query(Articolo).with_parent(self).filter(self.arti.id_unita_base==UnitaBase.id).all()

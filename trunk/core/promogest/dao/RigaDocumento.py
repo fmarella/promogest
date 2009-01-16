@@ -109,6 +109,7 @@ class RigaDocumento(Dao):
             return a[0].codice
     codice_articolo= property(__codiceArticolo)
 
+    #if "SuMisura" in modulesList:
     def _getMisuraPezzo(self):
                 #if self.__dbMisuraPezzo is None:
         try:
@@ -122,6 +123,20 @@ class RigaDocumento(Dao):
         self.__misuraPezzo = value
 
     misura_pezzo = property(_getMisuraPezzo, _setMisuraPezzo)
+
+    def _altezza(self):
+        if misura_pezzo:
+            return misura_pezzo[0].altezza
+        else:
+            return "5555"
+    altezza = property(_altezza)
+
+    def _larghezza(self):
+        if misura_pezzo:
+            return misura_pezzo[0].larghezza
+        else:
+            return "4444"
+    larghezza = property(_larghezza)
 
     def _getScontiRigaDocumento(self):
         #FIXME : il sistema originale aveva una UNION di due view fatte su mov e doc per cui avevano due campi
