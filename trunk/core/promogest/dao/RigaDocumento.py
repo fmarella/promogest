@@ -138,6 +138,14 @@ class RigaDocumento(Dao):
             return "4444"
     larghezza = property(_larghezza)
 
+    def _moltiplicatore(self):
+        if self.misura_pezzo:
+            return self.misura_pezzo[0].moltiplicatore
+        else:
+            return ""
+    moltiplicatore = property(_moltiplicatore)
+
+
     def _getScontiRigaDocumento(self):
         #FIXME : il sistema originale aveva una UNION di due view fatte su mov e doc per cui avevano due campi
         # movimento e riga documento con l'id della riga a cui si riferivano ...

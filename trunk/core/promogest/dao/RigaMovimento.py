@@ -129,6 +129,12 @@ class RigaMovimento(Dao):
             return ""
     larghezza = property(_larghezza)
 
+    def _moltiplicatore(self):
+        if self.misura_pezzo:
+            return self.misura_pezzo[0].moltiplicatore
+        else:
+            return ""
+    moltiplicatore = property(_moltiplicatore)
 
 
     def __unita_base(self):
