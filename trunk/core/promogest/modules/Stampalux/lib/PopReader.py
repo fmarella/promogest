@@ -88,6 +88,3 @@ def fetchMail():
             emailDictList.append(emailDict)
             emailDictCod = {}
     returned_mail_list = emailDictList
-
-
-

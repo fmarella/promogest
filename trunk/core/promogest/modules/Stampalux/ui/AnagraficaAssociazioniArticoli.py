@@ -1,24 +1,9 @@
-
-# -*- coding: iso-8859-15 -*-
-
+# -*- coding: utf-8 -*-
 # Promogest
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+# Author: vete <info@promotux.it>
 
 import gtk
 import gobject
@@ -26,12 +11,8 @@ import gobject
 from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaEdit,AnagraficaHtml, AnagraficaFilter, AnagraficaReport
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
-import promogest.modules.Stampalux.dao.AssociazioneArticoli
 from promogest.modules.Stampalux.dao.AssociazioneArticoli import AssociazioneArticoli
-
 from promogest.ui.utils import *
 
 class AnagraficaAssociazioniArticoli(Anagrafica):
@@ -131,7 +112,7 @@ class AnagraficaAssociazioniArticoliFilter(AnagraficaFilter):
 
         treeview.set_search_column(2)
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, str, str, str, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         self.clear()
@@ -173,8 +154,7 @@ class AnagraficaAssociazioniArticoliFilter(AnagraficaFilter):
             cancellato = False
 
         def filterCountClosure():
-            return promogest.modules.Stampalux.dao.AssociazioneArticoli.count(Environment.connection,
-                                                denominazione=denominazione,
+            return AssociazioneArticoli().count(denominazione=denominazione,
                                                 codice=codice,
                                                 codiceABarre=codiceABarre,
                                                 codiceArticoloFornitore=codiceArticoloFornitore,
@@ -192,8 +172,7 @@ class AnagraficaAssociazioniArticoliFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return promogest.modules.Stampalux.dao.AssociazioneArticoli.select(Environment.connection,
-                                                nodo=True,
+            return AssociazioneArticoli().select(nodo=True,
                                                  orderBy=self.orderBy,
                                                  denominazione=denominazione,
                                                  codice=codice,
@@ -280,7 +259,7 @@ class AnagraficaAssociazioniArticoliEdit(AnagraficaEdit):
         treeview.append_column(column)
         
         treeview.set_search_column(2)
-        self._assTreeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, str,)
+        self._assTreeViewModel = gtk.ListStore(object, str, str, str,)
         self.articoli_associati_treeview.set_model(self._assTreeViewModel)
         self.articoli_associati_treeview.set_rules_hint(True)
         self.articoli_associati_treeview.set_reorderable(True)
@@ -289,16 +268,14 @@ class AnagraficaAssociazioniArticoliEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.daoPadre = Articolo(Environment.connection)
+            self.daoPadre = Articolo()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.daoPadre = Articolo(Environment.connection, dao.id_articolo)
-            associatedArts = promogest.modules.Stampalux.dao.AssociazioneArticoli.select(Environment.connection,
-                                                                                                        nodo=False,
-                                                                                                        idPadre=self.daoPadre.id,
-                                                                                                        offset=None,
-                                                                                                        batchSize=None,
-                                                                                                        immediate=True)
+            associatedArts = AssociazioneArticoli().select(nodo=False,
+                                                            idPadre=self.daoPadre.id,
+                                                            offset=None,
+                                                            batchSize=None)
             self.articoliAssociatiList=[]
             for ass in associatedArts:
                 self.articoliAssociatiList.append(ass)
@@ -389,14 +366,14 @@ class AnagraficaAssociazioniArticoliEdit(AnagraficaEdit):
 
 
     def mostraArticoloPadre(self, id):
-        self.daoPadre = Articolo(Environment.connection, id)
+        self.daoPadre = Articolo(.getRecord(id=id)
         for articolo in self.articoliAssociatiList:
             articolo.id_associato = id
         self._refresh()
         
     def mostraArticoloFiglio(self,dao):
-        daoAssociazione= AssociazioneArticoli(Environment.connection)
-        # qui � sufficiente settare solo le propriet� dell'associazione che vengono poi visualizzate nella treeview
+        daoAssociazione= AssociazioneArticoli()
+        # qui è sufficiente settare solo le proprietà dell'associazione che vengono poi visualizzate nella treeview
         # nel salvataggio dellla stessa sono necessari solo id_articolo, e id_associato
         if len(self.articoliAssociatiList) > 0:
             pos = len(self.articoliAssociatiList)
@@ -416,7 +393,7 @@ class AnagraficaAssociazioniArticoliEdit(AnagraficaEdit):
             if model[iter][0] == dao:
                 self.articoliAssociatiList.remove(dao)
                 if dao.id is not None:
-                    dao.delete(Environment.connection, son=True)
+                    dao.delete(son=True)
         model.remove(iter)
 
     def on_articoli_associati_treeview_row_activated(self, widget):

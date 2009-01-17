@@ -1,23 +1,10 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+# Author: vete <info@promotux.it>
 
 import gtk
 import gobject
@@ -26,7 +13,6 @@ from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, Anagra
 
 from promogest import Environment
 from promogest.dao.Dao import Dao
-import promogest.modules.Stampalux.dao.CarattereStampa
 from promogest.modules.Stampalux.dao.CarattereStampa import CarattereStampa
 
 from promogest.ui.utils import *
@@ -56,7 +42,7 @@ class AnagraficaCaratteriStampa(Anagrafica):
         column.set_expand(True)
         treeview.append_column(column)
         
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str)
+        self._treeViewModel = gtk.ListStore(object, str)
         treeview.set_model(self._treeViewModel)
 
         treeview.set_search_column(1)
@@ -65,18 +51,16 @@ class AnagraficaCaratteriStampa(Anagrafica):
     def refresh(self):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
-        self.numRecords = promogest.modules.Stampalux.dao.CarattereStampa.count(Environment.connection,
-                                                                   denominazione=denominazione)
+        self.numRecords = CarattereStampa().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return promogest.modules.Stampalux.dao.CarattereStampa.select(Environment.connection,
-                                                             denominazione=denominazione,
-                                                             orderBy=self.orderBy,
-                                                             offset=self.offset,
-                                                             batchSize=self.batchSize)
+            return CarattereStampa().select(denominazione=denominazione,
+                                            orderBy=self.orderBy,
+                                            offset=self.offset,
+                                            batchSize=self.batchSize)
 
         self._filterClosure = filterClosure
 
@@ -117,7 +101,7 @@ class AnagraficaCaratteriStampaDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = CarattereStampa(Environment.connection)
+            self.dao = CarattereStampa()
             self._anagrafica._newRow((self.dao, ''))
             self._refresh()
         else:
@@ -125,7 +109,7 @@ class AnagraficaCaratteriStampaDetail(AnagraficaDetail):
 
 
     def updateDao(self):
-        self.dao = CarattereStampa(Environment.connection, self.dao.id)
+        self.dao = CarattereStampa().getRecord(id=self.dao.id)
         self._refresh()
 
 

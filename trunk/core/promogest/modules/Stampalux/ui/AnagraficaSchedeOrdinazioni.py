@@ -1,23 +1,10 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
 # Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
 # Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+# Author: M3nt0r3 <m3nt0r3@gmail.com>
 
 import pygtk
 import gobject, datetime
@@ -30,32 +17,19 @@ from promogest import Environment
 from promogest.dao.Dao import Dao
 from promogest.modules.Stampalux.dao import SchedaOrdinazione
 from promogest.modules.Stampalux.dao.SchedaOrdinazione import SchedaOrdinazione
-import promogest.modules.Stampalux.dao.RigaSchedaOrdinazione
 from promogest.modules.Stampalux.dao.RigaSchedaOrdinazione import RigaSchedaOrdinazione
-import promogest.modules.Stampalux.dao.ScontoSchedaOrdinazione
 from promogest.modules.Stampalux.dao.ScontoSchedaOrdinazione import ScontoSchedaOrdinazione
-import promogest.modules.Stampalux.dao.ColoreStampa
 from promogest.modules.Stampalux.dao.ColoreStampa import ColoreStampa
-import promogest.modules.Stampalux.dao.CarattereStampa
 from promogest.modules.Stampalux.dao.CarattereStampa import CarattereStampa
-import promogest.dao.Listino
 from promogest.dao.Listino import Listino
-import promogest.dao.ListinoArticolo
 from promogest.dao.ListinoArticolo import ListinoArticolo
-import promogest.dao.Pagamento
 from promogest.dao.Pagamento import Pagamento
-import promogest.modules.Stampalux.dao.ScontoRigaScheda
 from promogest.modules.Stampalux.dao.ScontoRigaScheda import ScontoRigaScheda
-import promogest.modules.Stampalux.dao.AssociazioneArticoli
 from promogest.modules.Stampalux.dao.AssociazioneArticoli import AssociazioneArticoli
-import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
-import promogest.dao.UnitaBase
 from promogest.dao.UnitaBase import UnitaBase
-import promogest.dao.Cliente
 from promogest.dao.Cliente import Cliente
 from promogest.modules.Stampalux.dao.PromemoriaSchedaOrdinazione import PromemoriaSchedaOrdinazione
-import promogest.dao.TestataDocumento
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
@@ -232,7 +206,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, str, str, str, str, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         fillComboboxColoreStampa(self.colore_stampa_filter_combobox, filter=True)
@@ -294,22 +268,21 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
         carattereStampa = findIdFromCombobox(self.carattere_stampa_filter_combobox)
 
         def filterCountClosure():
-            return promogest.modules.Stampalux.dao.SchedaOrdinazione.count(Environment.connection,
-                                                         daNumero=daNumero,
-                                                         aNumero=aNumero,
-                                                         daDataMatrimonio=daDataMatrimonio,
-                                                         aDataMatrimonio=aDataMatrimonio,
-                                                         daDataSpedizione=daDataSpedizione,
-                                                         aDataSpedizione=aDataSpedizione,
-                                                         daDataConsegna=daDataConsegna,
-                                                         aDataConsegna=aDataConsegna,
-                                                         codiceSpedizione=codiceSpedizione,
-                                                         coloreStampa=coloreStampa,
-                                                         carattereStampa=carattereStampa,
-                                                         nomiSposi = nomiSposi,
-                                                         referente=nomeReferente,
-                                                         ricevutaAssociata=numeroRicevuta,
-                                                         documentoSaldato=documentoSaldato)
+            return SchedaOrdinazione().count(daNumero=daNumero,
+                                                aNumero=aNumero,
+                                                daDataMatrimonio=daDataMatrimonio,
+                                                aDataMatrimonio=aDataMatrimonio,
+                                                daDataSpedizione=daDataSpedizione,
+                                                aDataSpedizione=aDataSpedizione,
+                                                daDataConsegna=daDataConsegna,
+                                                aDataConsegna=aDataConsegna,
+                                                codiceSpedizione=codiceSpedizione,
+                                                coloreStampa=coloreStampa,
+                                                carattereStampa=carattereStampa,
+                                                nomiSposi = nomiSposi,
+                                                referente=nomeReferente,
+                                                ricevutaAssociata=numeroRicevuta,
+                                                documentoSaldato=documentoSaldato)
 
         self._filterCountClosure = filterCountClosure
         self.numRecords = self.countFilterResults()
@@ -317,25 +290,24 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return promogest.modules.Stampalux.dao.SchedaOrdinazione.select(Environment.connection,
-                                                         orderBy=self.orderBy,
-                                                         daNumero=daNumero,
-                                                         aNumero=aNumero,
-                                                         daDataMatrimonio=daDataMatrimonio,
-                                                         aDataMatrimonio=aDataMatrimonio,
-                                                         daDataSpedizione=daDataSpedizione,
-                                                         aDataSpedizione=aDataSpedizione,
-                                                         daDataConsegna=daDataConsegna,
-                                                         aDataConsegna=aDataConsegna,
-                                                         codiceSpedizione=codiceSpedizione,
-                                                         coloreStampa=coloreStampa,
-                                                         carattereStampa=carattereStampa,
-                                                         nomiSposi = nomiSposi,
-                                                         referente=nomeReferente,
-                                                         ricevutaAssociata=numeroRicevuta,
-                                                         documentoSaldato=documentoSaldato,
-                                                         offset=offset,
-                                                         batchSize=batchSize)
+            return SchedaOrdinazione().select(  orderBy=self.orderBy,
+                                                daNumero=daNumero,
+                                                aNumero=aNumero,
+                                                daDataMatrimonio=daDataMatrimonio,
+                                                aDataMatrimonio=aDataMatrimonio,
+                                                daDataSpedizione=daDataSpedizione,
+                                                aDataSpedizione=aDataSpedizione,
+                                                daDataConsegna=daDataConsegna,
+                                                aDataConsegna=aDataConsegna,
+                                                codiceSpedizione=codiceSpedizione,
+                                                coloreStampa=coloreStampa,
+                                                carattereStampa=carattereStampa,
+                                                nomiSposi = nomiSposi,
+                                                referente=nomeReferente,
+                                                ricevutaAssociata=numeroRicevuta,
+                                                documentoSaldato=documentoSaldato,
+                                                offset=offset,
+                                                batchSize=batchSize)
 
         self._filterClosure = filterClosure
         tdos = self.runFilter()
@@ -345,15 +317,15 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
             data_matrimonio = dateToString(t.data_matrimonio)
             data_presa_in_carico = dateToString(t.data_presa_in_carico)
             self._treeViewModel.append((t,
-                                                            (t.numero or 0),
-                                                            (t.ricevuta_associata or ''),
-                                                            (t.nomi_sposi or ''),
-                                                            data_matrimonio,
-                                                            data_presa_in_carico,
-                                                            (t.referente or ''),
-                                                            (t.colore_stampa or ''),
-                                                            (t.carattere_stampa or ''),
-                                                            (t.note_final or '')))
+                                        (t.numero or 0),
+                                        (t.ricevuta_associata or ''),
+                                        (t.nomi_sposi or ''),
+                                        data_matrimonio,
+                                        data_presa_in_carico,
+                                        (t.referente or ''),
+                                        (t.colore_stampa or ''),
+                                        (t.carattere_stampa or ''),
+                                        (t.note_final or '')))
 
 class AnagraficaSchedeOrdinazioniHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
@@ -516,7 +488,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
     def setDao(self, dao):
 
         if dao is None:
-            self.dao = SchedaOrdinazione(Environment.connection)
+            self.dao = SchedaOrdinazione()
             self.dao.data_presa_in_carico = datetime.datetime.today()
             self._dataScheda = dateToString(self.dao.data_presa_in_carico)
             self._numeroScheda = 0
@@ -527,15 +499,15 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             self._numeroScheda=dao.numero
             self.dao = dao
             if self.dao.id_colore_stampa:
-                self.daoColoreStampa = ColoreStampa(Environment.connection, self.dao.id_colore_stampa)
+                self.daoColoreStampa = ColoreStampa().getRecord(id =self.dao.id_colore_stampa)
             if self.dao.id_carattere_stampa:
-                self.daoCarattereStampa = CarattereStampa(Environment.connection, self.dao.id_carattere_stampa)
+                self.daoCarattereStampa = CarattereStampa().getRecord(id=self.dao.id_carattere_stampa)
             if self.dao.id_cliente:
-                self.daoCliente = Cliente(Environment.connection, self.dao.id_cliente)
+                self.daoCliente = Cliente().getRecord(id=self.dao.id_cliente)
 
             if len(self.dao.righe) > 0:
                 self._id_listino = self.dao.righe[0].id_listino
-                self.daoListino = Listino(Environment.connection, self._id_listino)
+                self.daoListino = Listino().getRecord(id=self._id_listino)
             self.dettagli_scheda_notebook.set_current_page(0)
             self._refresh( firstLoad=True)
 
@@ -554,7 +526,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         fillComboboxColoreStampa(self.colore_stampa_combobox)
         if  self._id_listino is None and len(self.dao.righe) > 0:
             self._id_listino = self.dao.righe[0].id_listino
-            self.daoListino = Listino(Environment.connection, self._id_listino)
+            self.daoListino = Listino().getRecord(id=self._id_listino)
         _data_matrimonio = dateToString(self.dao.data_matrimonio)
         self.data_matrimonio_entry.set_text(_data_matrimonio)
         _data_ordine_al_fornitore = dateToString(self.dao.data_ordine_al_fornitore)
@@ -630,14 +602,21 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         if len(self.dao.righe) > 0:
             for riga_ in self.dao.righe:
                 riga=riga_
-                articoloRiga = Articolo(Environment.connection, riga.id_articolo)
-                unitaBaseRiga = UnitaBase(Environment.connection, articoloRiga.id_unita_base)
+                articoloRiga = Articolo().getRecord(riga.id_articolo)
+                unitaBaseRiga = UnitaBase().getRecord(id=articoloRiga.id_unita_base)
                 self.setScontiRiga(riga)
                 riga = getPrezzoNetto(riga)
                 self._parzialeLordo += Decimal(str(riga.valore_unitario_lordo))*riga.quantita
                 self._parzialeNetto += riga.valore_unitario_netto*riga.quantita
                 findComboboxRowFromId(self.listino_combobox, riga.id_listino)
-                ModelListContent = [riga, riga.id, articoloRiga.codice,riga.descrizione,unitaBaseRiga.denominazione_breve,riga.quantita,riga.valore_unitario_lordo,riga.valore_unitario_netto,riga.totaleRiga]
+                ModelListContent = [riga,
+                                    riga.id,
+                                    articoloRiga.codice,
+                                    riga.descrizione,
+                                    unitaBaseRiga.denominazione_breve,
+                                    riga.quantita,
+                                    riga.valore_unitario_lordo,
+                                    riga.valore_unitario_netto,riga.totaleRiga]
                 self._articoliTreeviewModel.append(ModelListContent)
         self.associazione_articoli_comboboxentry.set_active(-1)
         self.sconti_scheda_widget.setValues(self.dao.sconti, self.dao.applicazione_sconti)
@@ -652,13 +631,13 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         model = self._articoliTreeviewModel
         articolo = Articolo(Environment.connection, idArticolo)
         try:
-            listino = ListinoArticolo(Environment.connection, idListino, idArticolo)
+            listino = ListinoArticolo().getRecord(id=[idListino,idArticolo])
         except:
             msg = 'Nessun listino associato all\'articolo %s' % articolo.denominazione[:10]
             obligatoryField(None, self.listino_combobox, msg)
         lettura_articolo = leggiArticolo(idArticolo)
 
-        daoRiga = RigaSchedaOrdinazione(Environment.connection)
+        daoRiga = RigaSchedaOrdinazione()
         daoRiga.id_scheda = self.dao.id
         daoRiga.id_articolo = articolo.id
         daoRiga.id_magazzino = self.dao.id_magazzino
@@ -688,7 +667,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             for sconto in self.dao.sconti:
                 if tipo == 'documento':
                     from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
-                    scontoRiga = ScontoRigaDocumento(Environment.connection)
+                    scontoRiga = ScontoRigaDocumento()
                 else:
                     scontoRiga = ScontoRigaScheda(Environment.connection)
                     scontoRiga.valore = sconto.valore
@@ -714,7 +693,12 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         if self.dao.id is not None:
             inizio,fine = getDateRange(self.data_presa_in_carico_entry.get_text())
             if self.numero_scheda_entry.get_text() != str(self._numeroScheda) or dateToString(self.dao.data_presa_in_carico) != self._dataScheda:
-                result = promogest.dao.SchedaOrdinazione.select(Environment.connection, daNumero=int(self.numero_scheda_entry.get_text()), aNumero=str(self.numero_scheda_entry.get_text()), daDataScheda=inizio, aDataScheda=fine, offset=None, batchSize=None, immediate=True)
+                result = SchedaOrdinazione().select(daNumero=int(self.numero_scheda_entry.get_text()),
+                                                    aNumero=str(self.numero_scheda_entry.get_text()),
+                                                    daDataScheda=inizio,
+                                                    aDataScheda=fine,
+                                                    offset=None,
+                                                    batchSize=None)
                 if len(result) != 0:
                     if len(result) == 1 and result[0].id != self.dao.id:
                         response = self.advertise("E' gia' presente una scheda con questo numero. Continuare comunque?")
@@ -787,7 +771,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             if self.dao.data_spedizione is None:
                 for target in targets:
                     if target[0] == 'data_spedizione' and  self.dao.data_spedizione is not None:
-                        allarme = PromemoriaSchedaOrdinazione(Environment.connection)
+                        allarme = PromemoriaSchedaOrdinazione()
                         allarme.data_scadenza = self.dao.data_spedizione
                         allarme.descrizione = u'Scheda Lavorazione numero '+str(rif_num_scheda)+u' per promemoria impostato sulla data spedizione'
                         allarme.oggetto = 'Spedizione'
@@ -795,7 +779,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
                         setPromemoriaSchedaData()
                         allarmi.append(allarme)
                     elif target == 'data_ordine_al_fornitore'and self.dao.data_ordine_al_fornitore is not None :
-                        allarme = PromemoriaSchedaOrdinazione(Environment.connection)
+                        allarme = PromemoriaSchedaOrdinazione()
                         allarme.data_scadenza = self.dao.data_ordine_al_fornitore
                         allarme.descrizione = 'Scheda Lavorazione numero '+str(rif_num_scheda)+' per promemoria impostato sulla data ordine al fornitore'
                         allarme.oggetto = 'Ordine al Fornitore'
@@ -805,7 +789,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             else:
                 if self.dao.data_consegna is not None:
                     delta = datetime.timedelta(int(Environment.conf.Stampalux.intervallo_spedizione))
-                    allarme = PromemoriaSchedaOrdinazione(Environment.connection)
+                    allarme = PromemoriaSchedaOrdinazione()
                     allarme.data_scadenza = self.dao.data_spedizione + delta
                     allarme.descrizione = "Spedizione: codice "+self.dao.codice_spedizione+" Del "+dateToString(self.dao.data_spedizione)+" numero scheda: "+str(rif_num_scheda)+". Attenzione: la consegna non e' ancora avvenuta o non e' stata aggiornata la scheda"
                     allarme.oggetto  = 'Consegna Partecipazione in sospeso'
@@ -827,7 +811,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             return
 
         self._id_listino = findIdFromCombobox(combobox)
-        self.daoListino = Listino(Environment.connection, self._id_listino)
+        self.daoListino = Listino().getRecord(id=self._id_listino)
         for riga in self.dao.righe:
             riga.id_listino = self._id_listino
         self._refresh()
@@ -844,14 +828,14 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         if self._loading:
             return
         self.dao.id_colore_stampa = findIdFromCombobox(self.colore_stampa_combobox)
-        self.daoColoreStampa = ColoreStampa(Environment.connection, self.dao.id_colore_stampa)
+        self.daoColoreStampa = ColoreStampa().getRecord(id=self.dao.id_colore_stampa)
         self._refresh()
 
     def on_carattere_stampa_combobox_changed(self, combobox):
         if self._loading:
             return
         self.dao.id_carattere_stampa = findIdFromCombobox(self.carattere_stampa_combobox)
-        self.daoCarattereStampa = CarattereStampa(Environment.connection, self.dao.id_carattere_stampa)
+        self.daoCarattereStampa = CarattereStampa().getRecord(id=self.dao.id_carattere_stampa)
         self._refresh()
 
     def on_ricevuta_checkbutton_toggled(self, checkbutton):
@@ -922,8 +906,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             row = model[selected]
             if row[0] is not None:
             #this call will return a list of "AssociazioneArticoli" (In the future: "Distinta Base") Dao objects
-                articoli = promogest.modules.Stampalux.dao.AssociazioneArticoli.select(Environment.connection,\
-                                                                                        idPadre= row[1], immediate=True)
+                articoli = AssociazioneArticoli().select(idPadre= row[1])
                 for art in articoli:
                     if self._id_listino is not None:
                         self.setRigaTreeview(self._id_listino, art.id_articolo)
@@ -997,7 +980,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         res = self.sconti_scheda_widget.getSconti()
         if res is not None:
             for k in range(0, len(res)):
-                daoSconto = ScontoSchedaOrdinazione(Environment.connection)
+                daoSconto = ScontoSchedaOrdinazione()
                 daoSconto.valore = float(res[k]["valore"])
                 daoSconto.tipo_sconto = res[k]["tipo"]
                 scontiSuTotale.append(daoSconto)
@@ -1071,7 +1054,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
                 if not self.dao.fattura:
                     self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
                     idFattura = self.creaFatturaDaScheda()
-                    self.dao.ricevuta_associata = TestataDocumento(Environment.connection, idFattura).numero
+                    self.dao.ricevuta_associata = TestataDocumento().getRecord(id=idFattura).numero
                     self.n_documento_entry.set_text(str(self.dao.ricevuta_associata))
                     self.dao.fattura = True
                     self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
@@ -1087,7 +1070,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             if not self.dao.fattura:
                 self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
                 idFattura = self.creaFatturaDaScheda()
-                self.dao.ricevuta_associata = TestataDocumento(Environment.connection, idFattura).numero
+                self.dao.ricevuta_associata = TestataDocumento().getRecord(id=idFattura).numero
                 self.n_documento_entry.set_text(str(self.dao.ricevuta_associata))
                 self.dao.fattura = True
                 self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
@@ -1098,7 +1081,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
                     ricevuta_num = self.dao.ricevuta_associata
                     msg = "La presente scheda ha gia' generato una fattura (numero "+ricevuta_num+")."
                 else:
-                    msg = "La presente scheda ha gia' generato una fattura,\nma non � possibile stabilire il numero del documento."
+                    msg = "La presente scheda ha gia' generato una fattura,\nma non è possibile stabilire il numero del documento."
                 self.advertise(msg)
                 return
 
@@ -1111,10 +1094,9 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
     def on_cliente_changed(self):
         if self._loading:
             return
-        import promogest.dao.Cliente
         from promogest.dao.Cliente import Cliente
         self.dao.id_cliente = self.id_cliente_customcombobox.getId()
-        self.daoCliente = Cliente(Environment.connection,self.dao.id_cliente)
+        self.daoCliente = Cliente().getRecord(id=self.dao.id_cliente)
 
     def creaFatturaDaScheda(self):
         """
@@ -1122,24 +1104,20 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         degli articoli nella scheda ordinazione.
         """
 
-
-        import promogest.dao.RigaDocumento
         from promogest.dao.RigaDocumento import RigaDocumento
-        import promogest.dao.ScontoTestataDocumento
         from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
-        import promogest.dao.DestinazioneMerce
         from promogest.dao.DestinazioneMerce import DestinazioneMerce
-        daoTestataFattura = TestataDocumento(Environment.connection)
+        daoTestataFattura = TestataDocumento()
         daoTestataFattura.data_documento = datetime.datetime.today()
         daoTestataFattura.id_cliente = self.dao.id_cliente
         #controlla la creazione della destinazione merce secondo la scheda
         if self.dao.presso or self.dao.via_piazza or self.dao.num_civ or\
             self.dao.localita or self.dao.provincia:
-            dmt = promogest.dao.DestinazioneMerce.select(Environment.connection, idCliente=self.dao.id_cliente, immediate=True)
+            dmt = DestinazioneMerce().select(idCliente=self.dao.id_cliente)
             if len(dmt) == 1 or len(dmt) > 1:
                 daoTestataFattura.id_destinazione_merce = dmt[0].id
             elif len(dmt) == 0:
-                destinazione_merce_testata = DestinazioneMerce(Environment.connection)
+                destinazione_merce_testata = DestinazioneMerce()
                 destinazione_merce_testata.denominazione = self.dao.presso or self.dao.referente
                 destinazione_merce_testata.indirizzo = 'Via '+self.dao.via_piazza+' '+self.dao.num_civ
                 destinazione_merce_testata.localita = self.dao.localita
@@ -1177,7 +1155,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         righe_testata = []
 
         for riga in self.dao.righe:
-            riga_testata = RigaDocumento(Environment.connection)
+            riga_testata = RigaDocumento()
             riga_testata.id_articolo = riga.id_articolo
             riga_testata.id_magazzino = riga.id_magazzino
             riga_testata.descrizione = riga.descrizione

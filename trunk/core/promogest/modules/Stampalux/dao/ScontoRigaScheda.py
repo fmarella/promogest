@@ -1,60 +1,41 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+# Author: Francesco <francesco@promotux.it>
 
-import promogest.dao.Dao
-from promogest.dao.Dao import Dao
-from promogest import Environment
 """
-CREATE TABLE sconti_righe_schede (
+CREATE TABLE sconto_righa_scheda (
      id                         bigint          NOT NULL PRIMARY KEY REFERENCES sconto ( id ) ON UPDATE CASCADE ON DELETE CASCADE
     ,id_riga_scheda             bigint          NOT NULL REFERENCES righe_schede_ordinazioni ( id ) ON UPDATE CASCADE ON DELETE CASCADE
 );
 """
 
+from sqlalchemy import Table
+from sqlalchemy.orm import mapper, join
+from promogest.Environment import *
+from Dao import Dao
 
 class ScontoRigaScheda(Dao):
 
-    def __init__(self, connection, idScontoRigaScheda = None):
-        Dao.__init__(self, connection,
-                         'ScontoRigaSchedaGet', 'ScontoRigaSchedaSet', 'ScontoRigaSchedaDel',
-                         ('id', ), (idScontoRigaScheda, ))
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
+    def filter_values(self,k,v):
+        dic= {'id':scontorigascheda.c.id ==v,
+            'idRigaScheda':scontorigascheda.c.id_riga_scheda==v,}
+        return  dic[k]
 
+scontorigascheda=Table('sconto_riga_scheda',
+                            params['metadata'],
+                            schema = params['schema'],
+                            autoload=True)
 
-def select(connection, idRigaScheda=None, immediate=False):
-    """ Seleziona gli sconti relativi alla riga della scheda ordinazione"""
-    cursor = connection.execStoredProcedure('ScontoRigaSchedaSel',
-                                            ('id', idRigaScheda,
-                                             None, None),
-                                            returnCursor=True)
+sconto=Table('sconto', params['metadata'], schema = params['schema'], autoload=True)
 
-    if immediate:
-        return promogest.dao.Dao.select(cursor=cursor, daoClass=ScontoRigaScheda)
-    else:
-        return (cursor, ScontoRigaScheda)
+j = join(sconto, scontorigascheda)
 
-
-def count(connection, idRigaScheda=None):
-    """ Conta gli sconti relativi alla riga della scheda ordinazione"""
-    return connection.execStoredProcedure('ScontoRigaSchedaSel',
-                                          (None, idRigaScheda,
-                                           None, None),
-                                          countResults = True)
+std_mapper = mapper(ScontoRigaScheda,j, properties={
+    'id':[sconto.c.id, scontorigascheda.c.id],
+    }, order_by=scontorigascheda.c.id)

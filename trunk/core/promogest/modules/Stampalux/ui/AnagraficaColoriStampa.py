@@ -1,23 +1,10 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+# Author: vete <info@promotux.it>
 
 import gtk
 import gobject
@@ -26,7 +13,6 @@ from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, Anagra
 
 from promogest import Environment
 from promogest.dao.Dao import Dao
-import promogest.modules.Stampalux.dao.ColoreStampa
 from promogest.modules.Stampalux.dao.ColoreStampa import ColoreStampa
 
 from promogest.ui.utils import *
@@ -72,18 +58,16 @@ class AnagraficaColoriStampa(Anagrafica):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
 
-        self.numRecords = promogest.modules.Stampalux.dao.ColoreStampa.count(Environment.connection,
-                                                                    denominazione=denominazione)
+        self.numRecords = ColoreStampa().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return promogest.modules.Stampalux.dao.ColoreStampa.select(Environment.connection,
-                                                                denominazione=denominazione,
-                                                                orderBy=self.orderBy,
-                                                                offset=self.offset,
-                                                                batchSize=self.batchSize)
+            return ColoreStampa().select(denominazione=denominazione,
+                                        orderBy=self.orderBy,
+                                        offset=self.offset,
+                                        batchSize=self.batchSize)
 
         self._filterClosure = filterClosure
 
@@ -96,7 +80,6 @@ class AnagraficaColoriStampa(Anagrafica):
                                         (p.denominazione or '')))
 
 
-
 class AnagraficaColoriStampaFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei pagamenti """
 
@@ -106,13 +89,11 @@ class AnagraficaColoriStampaFilter(AnagraficaFilter):
                                   '_anagrafica_colori_stampa_filter_table', gladeFile='Stampalux/gui/stampalux_plugins.glade', module=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
-
     def clear(self):
         # Annullamento filtro
         self.denominazione_filter_entry.set_text('')
         self.denominazione_filter_entry.grab_focus()
         self._anagrafica.refresh()
-
 
 
 class AnagraficaColoriStampaDetail(AnagraficaDetail):
@@ -122,27 +103,23 @@ class AnagraficaColoriStampaDetail(AnagraficaDetail):
         AnagraficaDetail.__init__(self,
                                   anagrafica, gladeFile='Stampalux/gui/stampalux_plugins.glade',module=True)
 
-
     def setDao(self, dao):
         if dao is None:
-            self.dao = ColoreStampa(Environment.connection)
+            self.dao = ColoreStampa()
             self._anagrafica._newRow((self.dao, ''))
             self._refresh()
         else:
             self.dao = dao
 
-
     def updateDao(self):
-        self.dao = ColoreStampa(Environment.connection, self.dao.id)
+        self.dao = ColoreStampa().getRercord(id=self.dao.id)
         self._refresh()
-
 
     def _refresh(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
         model.set_value(iterator, 0, self.dao)
         model.set_value(iterator, 1, self.dao.denominazione)
-
 
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
@@ -152,7 +129,6 @@ class AnagraficaColoriStampaDetail(AnagraficaDetail):
             obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
         self.dao.denominazione = denominazione
         self.dao.persist()
-
 
     def deleteDao(self):
         self.dao.delete()

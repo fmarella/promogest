@@ -1,23 +1,11 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
 #
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
 
 import gobject, os
 import pygtk
@@ -67,9 +55,8 @@ def fillComboboxCarattereStampa(combobox, filter=False):
     """
     Crea l'elenco dei listini
     """
-    model = gtk.ListStore(gobject.TYPE_PYOBJECT, int, str)
-    liss = promogest.modules.Stampalux.dao.CarattereStampa.select(Environment.connection,
-                                        denominazione=None,
+    model = gtk.ListStore(object, int, str)
+    liss = CarattereStampa().select(    denominazione=None,
                                         orderBy = None,
                                         offset = None,
                                         batchSize = None,
@@ -95,12 +82,14 @@ def fillComboboxAssociazioneArticoli(combobox, search_string=None):
     Riempie la combobox di selezione delle associazioni di articoli.
     Se la lista risultante ha un solo elemento, questo viene automaticamente selezionato.
     """
-    model = gtk.ListStore(gobject.TYPE_PYOBJECT,str,str,str)
+    model = gtk.ListStore(object,str,str,str)
     model.clear()
-    liss = promogest.modules.Stampalux.dao.AssociazioneArticoli.select(Environment.connection,\
-            nodo=True, codice=search_string,
-            offset=None, batchSize=None, immediate=True)
-    # questa combobox mi sa che non pu� andare a finire in un filter widget
+    liss = AssociazioneArticoli().select( nodo=True,
+                                        codice=search_string,
+                                        offset=None,
+                                        batchSize=None,
+                                        immediate=True)
+    # questa combobox mi sa che non puo' andare a finire in un filter widget
     emptyRow = ''
     model.append((None, None, None, emptyRow))
     for l in liss:
@@ -131,7 +120,7 @@ def fetch_date(string):
                     return str(number)
             except:
                 #questa espressione regolare continua a matchare con la stringa "0" e "00"
-                #� necessario risolvere (potrebbe creare problemi)
+                # necessario risolvere (potrebbe creare problemi)
                 re_str = re.compile('(^[0-2]?[0-9]$|^30$|^31$){1}')
                 if re_str.match(str) and str != ('0'or '00'):
                     return str
@@ -222,19 +211,16 @@ def create_schede_ordinazioni(data):
         dao.data_presa_in_carico = datetime.date.today()
         dao.nomi_sposi = nomi_sposi
         dao.lui_e_lei = lui_e_lei
-        dao.id_carattere_stampa = promogest.modules.Stampalux.dao.CarattereStampa.select(Environment.connection,
-                                        denominazione= carattere,
-                                        orderBy = None,
-                                        offset = None,
-                                        batchSize = None,
-                                        immediate = True)[0].id
+        dao.id_carattere_stampa = CarattereStampa().select(denominazione= carattere,
+                                                            orderBy = None,
+                                                            offset = None,
+                                                            batchSize = None,
+                                                            immediate = True)[0].id
         
-        dao.id_colore_stampa = promogest.modules.Stampalux.dao.ColoreStampa.select(Environment.connection,
-                                        denominazione= colore,
-                                        orderBy = None,
-                                        offset = None,
-                                        batchSize = None,
-                                        immediate = True)[0].id
+        dao.id_colore_stampa = ColoreStampa().select(denominazione= colore,
+                                                        orderBy = None,
+                                                        offset = None,
+                                                        batchSize = None)[0].id
         
         dao.provenienza = citta_matrimonio
         dao.referente = referente
@@ -248,10 +234,10 @@ def create_schede_ordinazioni(data):
         dao.telefono = telefono
         dao.cellulare = cellulare
         art = articoli_scheda.iteritems()[0]
-        associazione = promogest.modules.Stampalux.dao.AssociazioneArticoli.select(\
-                                                                    Environment.connection, nodo=True,\
-                                                                    codice=art[0], offset=None, \
-                                                                    batchSize=None, immediate=True)
+        associazione = AssociazioneArticoli().select(nodo=True,
+                                                    codice=art[0],
+                                                    offset=None,
+                                                    batchSize=None)
         quantita = []
         _produttore = associazione[0].produttore
         if _produttore.lower() in Environment.conf.Stampalux.aziende_cliche.lower().strip().split(', '):
@@ -287,7 +273,7 @@ def create_schede_ordinazioni(data):
         dao.righe = []
         _parzialeNetto = Decimal('0')
         for i in range(len(associazione)):
-            daoRiga = RigaSchedaOrdinazione(Environment.connection)
+            daoRiga = RigaSchedaOrdinazione()
             daoRiga.id_scheda = dao.id or None
             daoRiga.id_articolo = associazione[i].id_articolo
             daoRiga.id_magazzino = id_magazzino

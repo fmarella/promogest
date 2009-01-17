@@ -1,23 +1,10 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
 # Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
 # Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
 
 import gtk
 import promogest.ui.widgets 
@@ -320,7 +307,7 @@ class SchedeOrdinazioniEditWidget():
 
 
         #collezione di labels.
-        self.label21 = gtk.Label(u'Scheda N°')
+        self.label21 = gtk.Label(u'Scheda Nï¿½')
         self.label22 = gtk.Label('Nomi degli sposi:')
         self.label70 = gtk.Label('Provenienza:')
         self.label24 = gtk.Label('Data matrimonio:')
@@ -343,7 +330,7 @@ class SchedeOrdinazioniEditWidget():
         self.label47 = gtk.Label('')
         self.label49 = gtk.Label('')
         self.label114 = gtk.Label('Articoli')# #1 page notebook
-        self.label118 = gtk.Label(u'Bomb. in cliché')
+        self.label118 = gtk.Label(u'Bomb. in clichï¿½')
         self.label117 = gtk.Label('Data consegna bozza:')
         self.label116 = gtk.Label('Colore')
         self.label115 = gtk.Label('Carattere')
@@ -360,7 +347,7 @@ class SchedeOrdinazioniEditWidget():
         
         self.label135 = gtk.Label('Stampa e Spedizione')# #2 page notebook
         self.label133 = gtk.Label('Data consegna:')
-        self.label132 = gtk.Label(u'N° documento')
+        self.label132 = gtk.Label(u'Nï¿½ documento')
         self.label131 = gtk.Label('Annotazioni finali')
         self.label130 = gtk.Label('Data ricevuta:')
         
@@ -370,11 +357,11 @@ class SchedeOrdinazioniEditWidget():
         self.label18.set_width_chars(15)
         self.label19 = gtk.Label('Via / Piazza')
         self.label19.set_width_chars(15)
-        self.label23 = gtk.Label(u'N°')
+        self.label23 = gtk.Label(u'Nï¿½')
         self.label23.set_width_chars(10)
         self.label26 = gtk.Label('C.A.P.')
         self.label26.set_width_chars(15)
-        self.label27 = gtk.Label(u'Località')
+        self.label27 = gtk.Label(u'Localitï¿½')
         self.label27.set_width_chars(15)
         self.label28 = gtk.Label('Provincia')
         self.label28.set_width_chars(15)
@@ -494,7 +481,7 @@ class SchedeOrdinazioniEditWidget():
         self.hbox45.pack_start(self.vbox38, expand=True, fill=True)
         
         #packing di bottoni.
-        #verificare che si possano impostare le proprietà dei bottoni da un'altra parte
+        #verificare che si possano impostare le proprietï¿½ dei bottoni da un'altra parte
         self.hbox46.pack_start(self.generazione_fattura_button, expand=True, fill=True)
         self.hbox46.pack_start(self.label52, expand=True, fill=True)
         self.hbox46.pack_start(self.aggiungi_articolo_button, expand=True, fill=True)
