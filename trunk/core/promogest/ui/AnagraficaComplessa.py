@@ -1055,6 +1055,7 @@ class AnagraficaHtml(object):
 
     def pdf(self, operationName):
         operationNameUnderscored = operationName.replace(' ' , '_').lower()
+        print "per la stampa", operationNameUnderscored, Environment.templatesDir + operationNameUnderscored + '.sla'
         if os.path.exists(Environment.templatesDir + operationNameUnderscored + '.sla'):
             self._slaTemplate = Environment.templatesDir + operationNameUnderscored + '.sla'
         else:

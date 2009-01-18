@@ -99,7 +99,7 @@ class RigaMovimento(Dao):
 
     codiceArticoloFornitore = property(_getCodiceArticoloFornitore, _setCodiceArticoloFornitore)
 
-    if "SuMisura" in Environment.modulesList:
+    if "SuMisura" in modulesList:
         def _getMisuraPezzo(self):
                     #if self.__dbMisuraPezzo is None:
             try:
