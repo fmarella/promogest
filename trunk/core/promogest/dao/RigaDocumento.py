@@ -109,41 +109,41 @@ class RigaDocumento(Dao):
             return a[0].codice
     codice_articolo= property(__codiceArticolo)
 
-    #if "SuMisura" in modulesList:
-    def _getMisuraPezzo(self):
-                #if self.__dbMisuraPezzo is None:
-        try:
-            self.__dbMisuraPezzo = MisuraPezzo().select(idRiga=self.id)
-            self.__misuraPezzo = self.__dbMisuraPezzo[:]
-        except:
-            self.__misuraPezzo = []
-        return self.__misuraPezzo
+    if "SuMisura" in modulesList:
+        def _getMisuraPezzo(self):
+                    #if self.__dbMisuraPezzo is None:
+            try:
+                self.__dbMisuraPezzo = MisuraPezzo().select(idRiga=self.id)
+                self.__misuraPezzo = self.__dbMisuraPezzo[:]
+            except:
+                self.__misuraPezzo = []
+            return self.__misuraPezzo
 
-    def _setMisuraPezzo(self, value):
-        self.__misuraPezzo = value
+        def _setMisuraPezzo(self, value):
+            self.__misuraPezzo = value
 
-    misura_pezzo = property(_getMisuraPezzo, _setMisuraPezzo)
+        misura_pezzo = property(_getMisuraPezzo, _setMisuraPezzo)
 
-    def _altezza(self):
-        if misura_pezzo:
-            return misura_pezzo[0].altezza
-        else:
-            return ""
-    altezza = property(_altezza)
+        def _altezza(self):
+            if self.misura_pezzo:
+                return misura_pezzo[0].altezza
+            else:
+                return ""
+        altezza = property(_altezza)
 
-    def _larghezza(self):
-        if misura_pezzo:
-            return misura_pezzo[0].larghezza
-        else:
-            return ""
-    larghezza = property(_larghezza)
+        def _larghezza(self):
+            if self.misura_pezzo:
+                return misura_pezzo[0].larghezza
+            else:
+                return ""
+        larghezza = property(_larghezza)
 
-    def _moltiplicatore(self):
-        if self.misura_pezzo:
-            return self.misura_pezzo[0].moltiplicatore
-        else:
-            return ""
-    pezzi_moltiplicatore = property(_moltiplicatore)
+        def _moltiplicatore(self):
+            if self.misura_pezzo:
+                return self.misura_pezzo[0].moltiplicatore
+            else:
+                return ""
+        pezzi_moltiplicatore = property(_moltiplicatore)
 
 
     def _getScontiRigaDocumento(self):
