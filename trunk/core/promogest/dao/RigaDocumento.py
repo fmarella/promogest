@@ -128,14 +128,14 @@ class RigaDocumento(Dao):
         if misura_pezzo:
             return misura_pezzo[0].altezza
         else:
-            return "5555"
+            return ""
     altezza = property(_altezza)
 
     def _larghezza(self):
         if misura_pezzo:
             return misura_pezzo[0].larghezza
         else:
-            return "4444"
+            return ""
     larghezza = property(_larghezza)
 
     def _moltiplicatore(self):
@@ -143,7 +143,7 @@ class RigaDocumento(Dao):
             return self.misura_pezzo[0].moltiplicatore
         else:
             return ""
-    moltiplicatore = property(_moltiplicatore)
+    pezzi_moltiplicatore = property(_moltiplicatore)
 
 
     def _getScontiRigaDocumento(self):
