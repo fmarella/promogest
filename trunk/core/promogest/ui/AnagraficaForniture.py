@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest
@@ -95,7 +95,9 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Articolo', rendererSx, text=4)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'articolo')
+        join= Fornitura.arti
+        orderBy = Environment.params["schema"]+".articolo.denominazione"
+        column.connect("clicked", self._changeOrderBy, orderBy)
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(150)
@@ -230,7 +232,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         self.refresh()
 
 
-    def refresh(self):
+    def refresh(self, join=None):
         # Aggiornamento TreeView
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         idFornitore = self.id_fornitore_filter_customcombobox.getId()
@@ -241,7 +243,8 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         codiceArticoloFornitore = prepareFilterString(self.codice_articolo_fornitore_filter_entry.get_text())
 
         def filterCountClosure():
-            return Fornitura().count( idArticolo=idArticolo,
+            return Fornitura().count(join = join,
+                                    idArticolo=idArticolo,
                                     idFornitore=idFornitore,
                                     daDataFornitura=daDataFornitura,
                                     aDataFornitura=aDataFornitura,
@@ -257,7 +260,8 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return Fornitura().select(orderBy=self.orderBy,
+            return Fornitura().select(join = join,
+                                        orderBy=self.orderBy,
                                         idArticolo=idArticolo,
                                         idFornitore=idFornitore,
                                         daDataFornitura=daDataFornitura,

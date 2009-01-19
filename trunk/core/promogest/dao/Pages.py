@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: iso-8859-15 -*-
 
 # Promogest
 #
@@ -12,8 +12,8 @@ from Dao import Dao
 
 class Page(Dao):
 
-    def __init__(self, arg=None):
-        Dao.__init__(self, entity=self)
+    def __init__(self, arg=None,isList=False, id=None):
+        Dao.__init__(self, entity=self.__class__, isList=isList, id=id)
 
     def filter_values(self,k,v):
         dic= {'denominazione' : page.c.title.ilike("%"+v+"%")}

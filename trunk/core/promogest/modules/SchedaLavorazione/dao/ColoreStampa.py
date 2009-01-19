@@ -26,7 +26,7 @@ class ColoreStampa(Dao):
         dic= {'id':coloristampa.c.id ==v}
         return  dic[k]
 
-coloristampa=Table('colori_stampa',
+coloristampa=Table('colore_stampa',
                         params['metadata'],
                         schema = params['schema'],
                         autoload=True)

@@ -5,18 +5,10 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 
-
-"""
-CREATE TABLE sconti_schede_ordinazioni (
-     id                         bigint          NOT NULL PRIMARY KEY REFERENCES sconto ( id ) ON UPDATE CASCADE ON DELETE CASCADE
-    ,id_scheda_ordinazione       bigint          NOT NULL REFERENCES schede_ordinazioni ( id ) ON UPDATE CASCADE ON DELETE CASCADE
-);
-"""
-
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, join
 from promogest.Environment import params
-from Dao import Dao
+from promogest.dao.Dao import Dao
 
 class ScontoSchedaOrdinazione(Dao):
 
@@ -36,6 +28,6 @@ scontoschedaordinazione=Table('sconto_scheda_ordinazione',params['metadata'],sch
                                         autoload=True)
 j = join(sconto, scontoschedaordinazione)
 
-std_mapper = mapper(ScontoTestataDocumento,j, properties={
-    'id':[sconto.c.id, scontoschedaordinazione.c.id],
-    }, order_by=scontoschedaordinazione.c.id)
+std_mapper = mapper(ScontoSchedaOrdinazione,j, properties={
+            'id':[sconto.c.id, scontoschedaordinazione.c.id],
+            }, order_by=scontoschedaordinazione.c.id)

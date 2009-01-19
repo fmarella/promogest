@@ -11,33 +11,33 @@ import gobject, datetime
 from decimal import *
 
 from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
-from promogest.modules.Stampalux.ui.AnagraficaCaratteriStampa import AnagraficaCaratteriStampa
-from promogest.modules.Stampalux.ui.AnagraficaColoriStampa import AnagraficaColoriStampa
+from promogest.modules.SchedaLavorazione.ui.AnagraficaCaratteriStampa import AnagraficaCaratteriStampa
+from promogest.modules.SchedaLavorazione.ui.AnagraficaColoriStampa import AnagraficaColoriStampa
 from promogest import Environment
 from promogest.dao.Dao import Dao
-from promogest.modules.Stampalux.dao import SchedaOrdinazione
-from promogest.modules.Stampalux.dao.SchedaOrdinazione import SchedaOrdinazione
-from promogest.modules.Stampalux.dao.RigaSchedaOrdinazione import RigaSchedaOrdinazione
-from promogest.modules.Stampalux.dao.ScontoSchedaOrdinazione import ScontoSchedaOrdinazione
-from promogest.modules.Stampalux.dao.ColoreStampa import ColoreStampa
-from promogest.modules.Stampalux.dao.CarattereStampa import CarattereStampa
+from promogest.modules.SchedaLavorazione.dao import SchedaOrdinazione
+from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
+from promogest.modules.SchedaLavorazione.dao.RigaSchedaOrdinazione import RigaSchedaOrdinazione
+from promogest.modules.SchedaLavorazione.dao.ScontoSchedaOrdinazione import ScontoSchedaOrdinazione
+from promogest.modules.SchedaLavorazione.dao.ColoreStampa import ColoreStampa
+from promogest.modules.SchedaLavorazione.dao.CarattereStampa import CarattereStampa
 from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.Pagamento import Pagamento
-from promogest.modules.Stampalux.dao.ScontoRigaScheda import ScontoRigaScheda
-from promogest.modules.Stampalux.dao.AssociazioneArticoli import AssociazioneArticoli
+from promogest.modules.SchedaLavorazione.dao.ScontoRigaScheda import ScontoRigaScheda
+from promogest.modules.SchedaLavorazione.dao.AssociazioneArticoli import AssociazioneArticoli
 from promogest.dao.Articolo import Articolo
 from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.Cliente import Cliente
-from promogest.modules.Stampalux.dao.PromemoriaSchedaOrdinazione import PromemoriaSchedaOrdinazione
+from promogest.modules.SchedaLavorazione.dao.PromemoriaSchedaOrdinazione import PromemoriaSchedaOrdinazione
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
-from StampaluxUtils import fillComboboxColoreStampa, fillComboboxCarattereStampa, fillComboboxAssociazioneArticoli, fetch_date, get_nomi_sposi, create_schede_ordinazioni, getPrezzoNetto
+from SchedaLavorazioneUtils import fillComboboxColoreStampa, fillComboboxCarattereStampa, fillComboboxAssociazioneArticoli, fetch_date, get_nomi_sposi, create_schede_ordinazioni, getPrezzoNetto
 from widgets.SchedeOrdinazioniEditWidget import SchedeOrdinazioniEditWidget
 
 class AnagraficaSchedeOrdinazioni(Anagrafica):
-    """ Anagrafica Schede Ordinazione (Modulo Stampalux) """
+    """ Anagrafica Schede Ordinazione (Modulo SchedaLavorazione) """
 
     def __init__(self, aziendaStr=None):
         Anagrafica.__init__(self,
@@ -106,7 +106,7 @@ class AnagraficaSchedeOrdinazioni(Anagrafica):
         self.editElement._refresh()
 
     def on_mail_import_button_clicked(self, button):
-        import promogest.modules.Stampalux.lib.PopReader
+        import promogest.modules.SchedaLavorazione.lib.PopReader
         thread = threading.Thread(target=PopReader.fetchMail)
         thread.start()
         thread.join(1.3)
@@ -118,7 +118,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_schede_ordinazioni_filter_table', gladeFile='Stampalux/gui/Stampalux.glade', module=True)
+                                  'anagrafica_schede_ordinazioni_filter_table', gladeFile='SchedaLavorazione/gui/SchedaLavorazione.glade', module=True)
         self._widgetFirstFocus = self.nome_sposi_filter_entry
         self.orderBy = 'id'
 
@@ -220,7 +220,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
         self.da_numero_filter_entry.set_text('')
         self.a_numero_filter_entry.set_text('')
         self.operatore_filter_entry.set_text('')
-        self.da_data_matrimonio_filter_entry.set_text('01/01/'+Environment.conf.workingYear)
+        self.da_data_matrimonio_filter_entry.set_text('01/01/'+Environment.workingYear)
         self.a_data_matrimonio_filter_entry.set_text('')
         self.da_data_spedizione_filter_entry.set_text('' )
         self.a_data_spedizione_filter_entry.set_text('')
@@ -753,7 +753,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         else:
             rif_num_scheda = self.dao.numero
 
-        if hasattr(Environment.conf.Stampalux,''):
+        if hasattr(Environment.conf.SchedaLavorazione,''):
             def setPromemoriaSchedaData():
                 allarme.data_inserimento = datetime.datetime.today()
                 allarme.incaricato = self.dao.operatore
@@ -761,12 +761,12 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
                 allarme.in_scadenza = False
                 allarme.scaduto=False
                 allarme.completato=False
-            target1 = getattr(Environment.conf.Stampalux,'target1')
-            target2 = getattr(Environment.conf.Stampalux,'target2')
-            target3 = getattr(Environment.conf.Stampalux,'target3')
-            soglia1 = getattr(Environment.conf.Stampalux,'soglia1')
-            soglia2 = getattr(Environment.conf.Stampalux,'soglia2')
-            soglia3 = getattr(Environment.conf.Stampalux,'soglia3')
+            target1 = getattr(Environment.conf.SchedaLavorazione,'target1')
+            target2 = getattr(Environment.conf.SchedaLavorazione,'target2')
+            target3 = getattr(Environment.conf.SchedaLavorazione,'target3')
+            soglia1 = getattr(Environment.conf.SchedaLavorazione,'soglia1')
+            soglia2 = getattr(Environment.conf.SchedaLavorazione,'soglia2')
+            soglia3 = getattr(Environment.conf.SchedaLavorazione,'soglia3')
             targets = [(target1,soglia1), (target2,soglia2), (target3,soglia3)]
             if self.dao.data_spedizione is None:
                 for target in targets:
@@ -788,12 +788,12 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
                         allarmi.append(allarme)
             else:
                 if self.dao.data_consegna is not None:
-                    delta = datetime.timedelta(int(Environment.conf.Stampalux.intervallo_spedizione))
+                    delta = datetime.timedelta(int(Environment.conf.SchedaLavorazione.intervallo_spedizione))
                     allarme = PromemoriaSchedaOrdinazione()
                     allarme.data_scadenza = self.dao.data_spedizione + delta
                     allarme.descrizione = "Spedizione: codice "+self.dao.codice_spedizione+" Del "+dateToString(self.dao.data_spedizione)+" numero scheda: "+str(rif_num_scheda)+". Attenzione: la consegna non e' ancora avvenuta o non e' stata aggiornata la scheda"
                     allarme.oggetto  = 'Consegna Partecipazione in sospeso'
-                    allarme.giorni_preavviso = int(getattr(Environment.conf.Stampalux, 'soglia4'))
+                    allarme.giorni_preavviso = int(getattr(Environment.conf.SchedaLavorazione, 'soglia4'))
                     setPromemoriaSchedaData()
                     allarmi.append(allarme)
         self.dao.promemoria = allarmi

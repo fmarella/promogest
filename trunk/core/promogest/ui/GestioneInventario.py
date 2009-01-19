@@ -6,7 +6,6 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 
-
 import gtk, gobject, os
 from datetime import datetime, timedelta
 from RicercaComplessaArticoli import RicercaComplessaArticoli
@@ -490,7 +489,7 @@ class GestioneInventario(RicercaComplessaArticoli):
                 #inv.persist()
             print "RICREA"
             Environment.params['session'].commit()
-            self.refreh()
+            self.refresh()
 
     def on_aggiorna_button_clicked(self, button):
         """ Aggiornamento inventario con gli articoli eventualmente non presenti """
@@ -511,7 +510,7 @@ class GestioneInventario(RicercaComplessaArticoli):
                 inv.id_articolo = s[1]
                 Environment.params['session'].add(inv)
         Environment.params['session'].commit()
-        self.refreh()
+        self.refresh()
 
     def on_esporta_button_clicked(self, button):
         """ Esportazione inventario in formato csv """
@@ -640,12 +639,6 @@ class GestioneInventario(RicercaComplessaArticoli):
         dialog.destroy()
 
 
-
-
-
-
-
-
     def on_buttonAcquistoUltimo_clicked(self, button):
         """ Valorizzazione a ultimo prezzo di acquisto
         sql_stateme nt:= \'CREATE TEMPORARY TABLE valorizzazione_tmp AS
@@ -663,9 +656,44 @@ class GestioneInventario(RicercaComplessaArticoli):
         sql_statement:= \'UPDATE inventario SET valore_unitario = (SELECT prezzo FROM valorizzazione_tmp T WHERE inventario.id_magazzino = T.id_magazzino AND inventario.id_articolo = T.id_articolo) WHERE anno = \' || _anno || \' AND (valore_unitario IS NULL OR valore_unitario = 0)\';
         EXECUTE sql_statement;"""
         if self.confermaValorizzazione():
-            idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox)
-            Environment.connection.execStoredProcedure('InventarioPrezzoAcquistoUltimoUpd', (int(Environment.conf.workingYear), idMagazzino))
+            idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
+            sel = Inventario().select(batchSize= None)
+            for s in sel:
+                righeArticoloMovimentate=  Environment.params["session"]\
+                    .query(RigaMovimento,TestataMovimento)\
+                    .filter(and_(func.date_part("year", TestataMovimento.data_movimento)==(int(Environment.workingYear)-1)))\
+                    .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                    .filter(Riga.id_articolo==s.id_articolo)\
+                    .filter(Riga.id_magazzino==idMagazzino)\
+                    .filter(Riga.valore_unitario_netto!=0)\
+                    .filter(Operazione.segno=="+")\
+                    .filter(Articolo.cancellato!=True)\
+                    .all()
+
+                print righeArticoloMovimentate,
+                date = []
+                for r in righeArticoloMovimentate:
+                    date.append(r[1].data_movimento)
+                if date:
+                    print "DATEEEEEEEEEEEEEEEEEEEEE", date
+                    k = max(date)
+                    print "KAAAAAAAAAAAAAAAAAAPPA", k
+                inv = Inventario().getRecord(id=s.id)
+                #inv.valore_unitario = 
+                #inv.anno = self.anno
+                #inv.id_magazzino = idMagazzino
+                #inv.quantita = giacenza
+                #inv.id_articolo = s.id_articolo
+                #Environment.params['session'].add(inv)
+
+                #inv.persist()
+            print "RICREA"
+            Environment.params['session'].commit()
             self.refresh()
+
+            #idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox)
+            #Environment.connection.execStoredProcedure('InventarioPrezzoAcquistoUltimoUpd', (int(Environment.conf.workingYear), idMagazzino))
+            #self.refresh()
             self.fineElaborazione()
 
 

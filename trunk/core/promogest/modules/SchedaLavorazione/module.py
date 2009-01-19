@@ -7,20 +7,19 @@
 import gtk, gobject
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
-import promogest.ui.Login
+from promogest.modules.SchedaLavorazione.data.SchedeLavorazioneDB import *
+#import promogest.modules.SchedaLavorazione.ui.AnagraficaAssociazioniArticoli
+from promogest.modules.SchedaLavorazione.ui.AnagraficaAssociazioniArticoli import AnagraficaAssociazioniArticoli
+import promogest.modules.SchedaLavorazione.ui.AnagraficaCaratteriStampa
+from promogest.modules.SchedaLavorazione.ui.AnagraficaCaratteriStampa import AnagraficaCaratteriStampa
+import promogest.modules.SchedaLavorazione.ui.AnagraficaColoriStampa
+from promogest.modules.SchedaLavorazione.ui.AnagraficaColoriStampa import AnagraficaColoriStampa
+from promogest.modules.SchedaLavorazione.ui.AnagraficaSchedeOrdinazioni import AnagraficaSchedeOrdinazioni
+from promogest.modules.SchedaLavorazione.ui.SchedaLavorazioneUtils import *
 
-import promogest.modules.Stampalux.ui.AnagraficaAssociazioniArticoli
-from promogest.modules.Stampalux.ui.AnagraficaAssociazioniArticoli import AnagraficaAssociazioniArticoli
-import promogest.modules.Stampalux.ui.AnagraficaCaratteriStampa
-from promogest.modules.Stampalux.ui.AnagraficaCaratteriStampa import AnagraficaCaratteriStampa
-import promogest.modules.Stampalux.ui.AnagraficaColoriStampa
-from promogest.modules.Stampalux.ui.AnagraficaColoriStampa import AnagraficaColoriStampa
-from promogest.modules.Stampalux.ui.AnagraficaSchedeOrdinazioni import AnagraficaSchedeOrdinazioni
-from promogest.modules.Stampalux.ui.StampaluxUtils import *
-
-MODULES_NAME = "Stampalux"
+MODULES_NAME = "SchedaLavorazione"
 MODULES_FOR_EXPORT = ['AssociazioniArticoli','CaratteriStampa','ColoriStampa','SchedeLavorazione']
-GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/Stampalux/gui/'
+GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/SchedaLavorazione/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
 

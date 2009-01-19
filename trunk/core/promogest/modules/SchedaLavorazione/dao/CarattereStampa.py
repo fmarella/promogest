@@ -1,18 +1,10 @@
 # -*- coding: utf-8 -*-
-
 # Promogest
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 
-"""
-CREATE TABLE caratteri_stampa (
-    id                      BIGSERIAL   NOT NULL PRIMARY KEY
-    ,denominazione          VARCHAR(50) NOT NULL
-    ,UNIQUE (id, denominazione)
-);
 
-"""
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
@@ -27,10 +19,8 @@ class CarattereStampa(Dao):
         dic= {'id':caratteristampa.c.id ==v}
         return  dic[k]
 
-caratteristampa=Table('caratteri_stampa',
-                        params['metadata'],
-                        schema = params['schema'],
-                        autoload=True)
+caratteristampa=Table('carattere_stampa', params['metadata'],schema = params['schema'],
+                                                                        autoload=True)
 
 std_mapper = mapper(CarattereStampa, caratteristampa, properties={},
-                        order_by=caratteristampa.c.id)
+                    order_by=caratteristampa.c.id)

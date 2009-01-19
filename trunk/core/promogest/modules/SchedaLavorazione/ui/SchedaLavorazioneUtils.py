@@ -14,11 +14,12 @@ import gtk
 import string, re, pprint, threading, time, datetime, decimal
 from decimal import *
 from promogest import Environment
-import promogest.ui.utils
-from promogest.modules.Stampalux.dao.SchedaOrdinazione import SchedaOrdinazione
-import promogest.modules.Stampalux.dao.ColoreStampa
-import promogest.modules.Stampalux.dao.CarattereStampa
-import promogest.modules.Stampalux.lib.PopReader
+from  promogest.ui.utils import *
+from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
+from promogest.modules.SchedaLavorazione.dao.ColoreStampa import ColoreStampa
+from promogest.modules.SchedaLavorazione.dao.CarattereStampa import CarattereStampa
+from promogest.modules.SchedaLavorazione.dao.AssociazioneArticoli import AssociazioneArticoli
+import promogest.modules.SchedaLavorazione.lib.PopReader
 from promogest.dao.ListinoArticolo import ListinoArticolo
 
 import xml.etree.cElementTree as ElementTree
@@ -29,12 +30,10 @@ def fillComboboxColoreStampa(combobox, filter=False):
     Crea l'elenco dei listini
     """
     model = gtk.ListStore(gobject.TYPE_PYOBJECT, int, str)
-    liss = promogest.modules.Stampalux.dao.ColoreStampa.select(Environment.connection,
-                                        denominazione=None,
+    liss = ColoreStampa().select(denominazione=None,
                                         orderBy = None,
                                         offset = None,
-                                        batchSize = None,
-                                        immediate = True)
+                                        batchSize = None)
     if not filter:
         emptyRow = ''
     else:
@@ -59,8 +58,7 @@ def fillComboboxCarattereStampa(combobox, filter=False):
     liss = CarattereStampa().select(    denominazione=None,
                                         orderBy = None,
                                         offset = None,
-                                        batchSize = None,
-                                        immediate = True)
+                                        batchSize = None)
     if not filter:
         emptyRow = ''
     else:
@@ -87,8 +85,8 @@ def fillComboboxAssociazioneArticoli(combobox, search_string=None):
     liss = AssociazioneArticoli().select( nodo=True,
                                         codice=search_string,
                                         offset=None,
-                                        batchSize=None,
-                                        immediate=True)
+                                        batchSize=None)
+                                       
     # questa combobox mi sa che non puo' andare a finire in un filter widget
     emptyRow = ''
     model.append((None, None, None, emptyRow))
@@ -214,8 +212,7 @@ def create_schede_ordinazioni(data):
         dao.id_carattere_stampa = CarattereStampa().select(denominazione= carattere,
                                                             orderBy = None,
                                                             offset = None,
-                                                            batchSize = None,
-                                                            immediate = True)[0].id
+                                                            batchSize = None)[0].id
         
         dao.id_colore_stampa = ColoreStampa().select(denominazione= colore,
                                                         orderBy = None,
@@ -240,7 +237,7 @@ def create_schede_ordinazioni(data):
                                                     batchSize=None)
         quantita = []
         _produttore = associazione[0].produttore
-        if _produttore.lower() in Environment.conf.Stampalux.aziende_cliche.lower().strip().split(', '):
+        if _produttore.lower() in Environment.conf.SchedaLavorazione.aziende_cliche.lower().strip().split(', '):
             dao.bomba_in_cliche = True
         else:
             dao.bomba_in_cliche = False

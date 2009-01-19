@@ -13,24 +13,21 @@ from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, Anagra
 
 from promogest import Environment
 from promogest.dao.Dao import Dao
-from promogest.modules.Stampalux.dao.ColoreStampa import ColoreStampa
+from promogest.modules.SchedaLavorazione.dao.CarattereStampa import CarattereStampa
 
 from promogest.ui.utils import *
 
-
-
-class AnagraficaColoriStampa(Anagrafica):
-    """ Anagrafica pagamenti """
+class AnagraficaCaratteriStampa(Anagrafica):
+    """ Anagrafica codici a barre """
 
     def __init__(self):
-        Anagrafica.__init__(self, 'Promogest - Anagrafica colori stampe',
-                            '_Colori stampe',
-                            AnagraficaColoriStampaFilter(self),
-                            AnagraficaColoriStampaDetail(self))
-
+        Anagrafica.__init__(self, 'Promogest - Anagrafica Caratteri per la stampa',
+                            '_Caratteri stampa',
+                            AnagraficaCaratteriStampaFilter(self),
+                            AnagraficaCaratteriStampaDetail(self))
 
     def draw(self):
-        # Colonne della Treeview per il filtro
+        # Colonne della Treeview per il filtro/modifica
         treeview = self.anagrafica_treeview
 
         renderer = gtk.CellRendererText()
@@ -41,52 +38,50 @@ class AnagraficaColoriStampa(Anagrafica):
         column = gtk.TreeViewColumn('Denominazione', renderer, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'denominazione')
         column.set_resizable(True)
         column.set_expand(True)
         treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str)
+        
+        self._treeViewModel = gtk.ListStore(object, str)
         treeview.set_model(self._treeViewModel)
 
+        treeview.set_search_column(1)
         self.refresh()
-
-
+    
     def refresh(self):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
-
-        self.numRecords = ColoreStampa().count(denominazione=denominazione)
+        self.numRecords = CarattereStampa().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return ColoreStampa().select(denominazione=denominazione,
-                                        orderBy=self.orderBy,
-                                        offset=self.offset,
-                                        batchSize=self.batchSize)
+            return CarattereStampa().select(denominazione=denominazione,
+                                            orderBy=self.orderBy,
+                                            offset=self.offset,
+                                            batchSize=self.batchSize)
 
         self._filterClosure = filterClosure
 
-        pags = self.runFilter()
+        bars = self.runFilter()
 
         self._treeViewModel.clear()
 
-        for p in pags:
-            self._treeViewModel.append((p,
-                                        (p.denominazione or '')))
+        for b in bars:
+            self._treeViewModel.append((b,
+                                        (b.denominazione or '')))
 
 
-class AnagraficaColoriStampaFilter(AnagraficaFilter):
-    """ Filtro per la ricerca nell'anagrafica dei pagamenti """
+class AnagraficaCaratteriStampaFilter(AnagraficaFilter):
+    """ Filtro per la ricerca nell'anagrafica dei Colori di Stampa """
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  '_anagrafica_colori_stampa_filter_table', gladeFile='Stampalux/gui/stampalux_plugins.glade', module=True)
+                                anagrafica,
+                                '_anagrafica_caratteri_stampa_filter_table', \
+                                gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade', \
+                                module=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def clear(self):
@@ -95,25 +90,28 @@ class AnagraficaColoriStampaFilter(AnagraficaFilter):
         self.denominazione_filter_entry.grab_focus()
         self._anagrafica.refresh()
 
-
-class AnagraficaColoriStampaDetail(AnagraficaDetail):
-    """ Dettaglio dell'anagrafica dei pagamenti """
+class AnagraficaCaratteriStampaDetail(AnagraficaDetail):
+    """ Dettaglio dell'anagrafica dei codici a barre """
 
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
-                                  anagrafica, gladeFile='Stampalux/gui/stampalux_plugins.glade',module=True)
+                                anagrafica, \
+                                gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade', \
+                                module=True)
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = ColoreStampa()
+            self.dao = CarattereStampa()
             self._anagrafica._newRow((self.dao, ''))
             self._refresh()
         else:
             self.dao = dao
 
+
     def updateDao(self):
-        self.dao = ColoreStampa().getRercord(id=self.dao.id)
+        self.dao = CarattereStampa().getRecord(id=self.dao.id)
         self._refresh()
+
 
     def _refresh(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
@@ -127,8 +125,10 @@ class AnagraficaColoriStampaDetail(AnagraficaDetail):
         denominazione = model.get_value(iterator, 1) or ''
         if (denominazione == ''):
             obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
-        self.dao.denominazione = denominazione
+
+        self.dao.denominazione= denominazione
         self.dao.persist()
+
 
     def deleteDao(self):
         self.dao.delete()

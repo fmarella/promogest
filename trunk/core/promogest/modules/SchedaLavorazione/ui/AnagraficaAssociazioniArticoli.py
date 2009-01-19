@@ -12,7 +12,7 @@ from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaEdit,Anagrafi
 
 from promogest import Environment
 from promogest.dao.Articolo import Articolo
-from promogest.modules.Stampalux.dao.AssociazioneArticoli import AssociazioneArticoli
+from promogest.modules.SchedaLavorazione.dao.AssociazioneArticoli import AssociazioneArticoli
 from promogest.ui.utils import *
 
 class AnagraficaAssociazioniArticoli(Anagrafica):
@@ -366,7 +366,7 @@ class AnagraficaAssociazioniArticoliEdit(AnagraficaEdit):
 
 
     def mostraArticoloPadre(self, id):
-        self.daoPadre = Articolo(.getRecord(id=id)
+        self.daoPadre = Articolo().getRecord(id=id)
         for articolo in self.articoliAssociatiList:
             articolo.id_associato = id
         self._refresh()

@@ -1,47 +1,23 @@
-# -*- coding: iso-8859-15 -*-
-
+# -*- coding: utf-8 -*-
 # Promogest
 #
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Dr astico (Marco Pinna) <zoccolodignu@gmail.com>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+# Copyright (C) 2005-2009 by Promotux Informatica - http://www.promotux.it/
 
-import promogest.dao.Dao
+
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.dao.Dao import Dao
-from promogest import Environment
+from promogest.Environment import *
 from decimal import *
-import promogest.modules.Stampalux.dao.ScontoRigaScheda
-from promogest.modules.Stampalux.dao.ScontoRigaScheda import ScontoRigaScheda
+from promogest.modules.SchedaLavorazione.dao.ScontoRigaScheda import ScontoRigaScheda
 
 from promogest.ui.utils import *
 
-"""
-CREATE TABLE righe_schede_ordinazioni (
-       id                       bigint          NOT NULL PRIMARY KEY REFERENCES riga ( id ) ON UPDATE CASCADE ON DELETE CASCADE
-      ,id_scheda                bigint          NOT NULL REFERENCES schede_ordinazioni ( id ) ON UPDATE CASCADE ON DELETE CASCADE
-);
-"""
 
 class RigaSchedaOrdinazione(Dao):
 
-    def __init__(self, connection, idRigaScheda=None):
-        Dao.__init__(self, connection,
-                         'RigaSchedaGet', 'RigaSchedaSet',
-                         'RigaSchedaDel',
-                         ('id', ), (idRigaScheda, ))
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
 
         self.__scontiRigaScheda = None
         self.__dbScontiRigaScheda = None
@@ -128,23 +104,16 @@ class RigaSchedaOrdinazione(Dao):
                 #salvataggio sconto
                 self.__scontiRigaScheda[i].persist(conn)
 
-def select(connection, idSchedaOrdinazione=None, immediate=False):
-    """ Seleziona le righe documento """
-    cursor = connection.execStoredProcedure('RigaSchedaSel',
-                                            (None, idSchedaOrdinazione,
-                                             None, None),
-                                            returnCursor=True)
-
-    if immediate:
-        return promogest.dao.Dao.select(cursor=cursor, daoClass=RigaSchedaOrdinazione)
-    else:
-        return (cursor, RigaSchedaOrdinazione)
+    def filter_values(self,k,v):
+        dic= {'id':rigaschedaordinazione.c.id ==v}
+        return  dic[k]
 
 
-def count(connection, idSchedaOrdinazione=None):
-    """ Conta le righe documenti """
-    return connection.execStoredProcedure('RigaSchedaSel',
-                                          (None, idSchedaOrdinazione,
-                                           None, None),
-                                          countResults = True)
+rigaschedaordinazione=Table('riga_scheda_ordinazione',
+                                    params['metadata'],
+                                    schema = params['schema'],
+                                    autoload=True)
+
+std_mapper = mapper(RigaSchedaOrdinazione, rigaschedaordinazione, properties={},
+                                    order_by=rigaschedaordinazione.c.id)
 
