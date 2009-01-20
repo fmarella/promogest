@@ -957,17 +957,6 @@ def on_typeComboBox_changed(combobox, dialogWidget, currentName, isEvent=True):
             _file_name = str(setFileName(file_string, value))
             return (value, _file_name)
 
-def getDateRange(string):
-    """
-    returns a set of two timestamps one at beginning and at the end of
-    the year indicated by string (it must be placed on the last 4 characters of the string) (01/01/YEAR, 31/12/YEAR)
-    """
-    capodanno = '01/01/'+string[-4:]
-    san_silvestro = '31/12/'+string[-4:]
-    begin_date = stringToDate(capodanno)
-    end_date = stringToDate(san_silvestro)
-    return (begin_date, end_date)
-
 
 def fillComboBoxNazione(combobox,default=None):
     """
