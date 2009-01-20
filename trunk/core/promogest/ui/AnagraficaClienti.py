@@ -9,7 +9,8 @@
  """
 
 import gtk
-
+from sqlalchemy.orm import join
+from sqlalchemy import or_
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 import promogest.dao.Cliente
 from promogest import Environment
@@ -32,6 +33,8 @@ class AnagraficaClienti(Anagrafica):
                             editElement=AnagraficaClientiEdit(self),
                             aziendaStr=aziendaStr)
 
+
+
 class AnagraficaClientiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei clienti """
 
@@ -42,6 +45,9 @@ class AnagraficaClientiFilter(AnagraficaFilter):
                                   gladeFile='_anagrafica_clienti_elements.glade')
         self._widgetFirstFocus = self.ragione_sociale_filter_entry
         self.orderBy = 'ragione_sociale'
+        persona_giuridica=Table('persona_giuridica', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
+        cliente=Table('cliente', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
+        self.joinT = join(cliente, persona_giuridica)
 
 
     def draw(self):
@@ -52,7 +58,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Codice', renderer, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'codice')
+        column.connect("clicked", self._changeOrderBy, (self.joinT,Cliente.codice))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -61,7 +67,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Ragione Sociale', renderer, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'ragione_sociale')
+        column.connect("clicked", self._changeOrderBy,(self.joinT,Cliente.ragione_sociale))
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(200)
@@ -70,7 +76,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Cognome - Nome', renderer, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'cognome, nome')
+        column.connect("clicked", self._changeOrderBy, (self.joinT,Cliente.cognome))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(200)
@@ -79,7 +85,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Localita''', renderer, text=4)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'sede_operativa_localita')
+        column.connect("clicked", self._changeOrderBy, (self.joinT,Cliente.sede_operativa_localita))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)

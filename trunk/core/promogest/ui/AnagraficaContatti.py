@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest
@@ -15,19 +15,12 @@ from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, An
 
 from promogest import Environment
 from promogest.dao.Dao import Dao
-import promogest.dao.Contatto
 from promogest.dao.Contatto import Contatto
-import promogest.dao.ContattoCliente
 from promogest.dao.ContattoCliente import ContattoCliente
-import promogest.dao.ContattoFornitore
 from promogest.dao.ContattoFornitore import ContattoFornitore
-import promogest.dao.ContattoMagazzino
 from promogest.dao.ContattoMagazzino import ContattoMagazzino
-import promogest.dao.ContattoAzienda
 from promogest.dao.ContattoAzienda import ContattoAzienda
-import promogest.dao.RecapitoContatto
 from promogest.dao.RecapitoContatto import RecapitoContatto
-import promogest.dao.ContattoCategoriaContatto
 from promogest.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
 
 from utils import *
@@ -76,7 +69,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Cognome - Nome', renderer,text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'cognome')
+        column.connect("clicked", self._changeOrderBy, (None, Contatto.cognome))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(300)
@@ -85,7 +78,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Ruolo', renderer,text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'ruolo')
+        column.connect("clicked", self._changeOrderBy, (None, Contatto.ruolo))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(150)
@@ -94,7 +87,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Descrizione', renderer,text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'descrizione')
+        column.connect("clicked", self._changeOrderBy, (None, Contatto.descrizione))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(150)
@@ -102,7 +95,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Relativo a', renderer,text=4)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
+        column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(200)
@@ -110,7 +103,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
 
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         self.clear()

@@ -14,12 +14,13 @@ import gobject
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Fornitura
+#from promogest.dao.Dao import Dao
+#import promogest.dao.Fornitura
 from promogest.dao.Fornitura import Fornitura
-import promogest.dao.ScontoFornitura
+from promogest.dao.Fornitore import Fornitore
+#import promogest.dao.ScontoFornitura
 from promogest.dao.ScontoFornitura import ScontoFornitura
-import promogest.dao.Articolo
+#import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
 from utils import *
 from utilsCombobox import *
@@ -56,10 +57,18 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
                                   'anagrafica_forniture_filter_table',
                                   gladeFile='_anagrafica_fornitura_articoli_elements.glade')
         self._widgetFirstFocus = self.id_articolo_filter_customcombobox
-
+        persona_giuridica=Table('persona_giuridica', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
+        #self.fornitore=Table('fornitore', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
+        #self.joinT = join(self.fornitore, persona_giuridica)
+        fornitura=Table('fornitura',Environment.params['metadata'],schema = Environment.params['schema'],autoload=True)
+        articolo=Table('articolo', Environment.params['metadata'],schema = Environment.params['schema'],autoload=True)
+        self.joinT2 = join(articolo, fornitura)
 
     def draw(self):
-        # Colonne della Treeview per il filtro
+        """Colonne della Treeview per il filtro
+            Attenzione, alcuni order_by non funzionano, indagare ...relazione con fornitura
+            non molto pulita
+        """
         treeview = self._anagrafica.anagrafica_filter_treeview
         rendererSx = gtk.CellRendererText()
         rendererDx = gtk.CellRendererText()
@@ -67,8 +76,8 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Fornitore', rendererSx, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'fornitore')
+        column.set_clickable(False)
+        column.connect("clicked", self._changeOrderBy, (self.joinT,Fornitore.ragione_sociale))
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(200)
@@ -77,7 +86,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Codice articolo fornitore', rendererSx, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'codice_articolo_fornitore')
+        column.connect("clicked", self._changeOrderBy, (None,Fornitura.codice_articolo_fornitore))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -85,8 +94,8 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'codice_articolo')
+        column.set_clickable(False)
+        column.connect("clicked", self._changeOrderBy, (self.joinT2,Articolo.codice))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -94,10 +103,8 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Articolo', rendererSx, text=4)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        join= Fornitura.arti
-        orderBy = Environment.params["schema"]+".articolo.denominazione"
-        column.connect("clicked", self._changeOrderBy, orderBy)
+        column.set_clickable(False)
+        column.connect("clicked", self._changeOrderBy,(self.joinT2,Articolo.denominazione))
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(150)
@@ -106,7 +113,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Data fornitura', rendererSx, text=5)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'data_fornitura')
+        column.connect("clicked", self._changeOrderBy, (None,Fornitura.data_fornitura))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -115,7 +122,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Prezzo lordo', rendererDx, text=6)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'prezzo_lordo')
+        column.connect("clicked", self._changeOrderBy, (None,Fornitura.prezzo_lordo))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -124,7 +131,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Prezzo netto', rendererDx, text=7)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'prezzo_netto')
+        column.connect("clicked", self._changeOrderBy, (None,Fornitura.prezzo_netto))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)

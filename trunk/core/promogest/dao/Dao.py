@@ -68,6 +68,7 @@ class Dao(object):
                 self.record = dao.first()
             elif isList == "noList":
                 self.record = dao
+            #print "SELF;DARECOOOOOOOOOOORD", self.record
             return self.record
         except Exception, e:
             self.raiseException(e)

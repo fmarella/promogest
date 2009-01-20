@@ -225,11 +225,12 @@ else:
                 "den_unita":relation(UnitaBase,primaryjoin= (articolo.c.id_unita_base==UnitaBase.id)),
                 "image":relation(Immagine,primaryjoin= (articolo.c.id_immagine==Immagine.id)),
                 "sa":relation(StatoArticolo,primaryjoin=(articolo.c.id_stato_articolo==StatoArticolo.id)),
-                "fornitur" : relation(Fornitura,primaryjoin=Fornitura.id_articolo==articolo.c.id, backref=backref("arti"),uselist=False),
-                "multi":relation(Multiplo,primaryjoin=Multiplo.id_articolo==articolo.c.id,backref=backref("arti"))
-                }, order_by=articolo.c.id)
+                "fornitur" : relation(Fornitura,primaryjoin=(Fornitura.id_articolo==articolo.c.id), backref="arti",uselist=False),
+                "multi":relation(Multiplo,primaryjoin=(Multiplo.id_articolo==articolo.c.id),backref="arti")
+                }, order_by=articolo.c.codice)
 
-
+##ciao = params['session'].query(Articolo).join(CodiceABarreArticolo).order_by(CodiceABarreArticolo.codice).all()[0:20]
+#print "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", ciao
 def isNuovoCodiceByFamiglia():
     """ Indica se un nuovo codice articolo dipende dalla famiglia o meno """
     dependsOn = False

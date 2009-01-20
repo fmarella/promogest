@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -44,6 +44,9 @@ class AnagraficaVettoriFilter(AnagraficaFilter):
                                   'anagrafica_vettori_filter_table',gladeFile='_anagrafica_vettori_elements.glade')
         self._widgetFirstFocus = self.ragione_sociale_filter_entry
         self.orderBy = 'ragione_sociale'
+        persona_giuridica=Table('persona_giuridica', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
+        vettore=Table('vettore', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
+        self.joinT = join(vettore, persona_giuridica)
 
 
     def draw(self):
@@ -54,7 +57,7 @@ class AnagraficaVettoriFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Codice', renderer, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'codice')
+        column.connect("clicked", self._changeOrderBy, (self.joinT,Vettore.codice))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -63,7 +66,7 @@ class AnagraficaVettoriFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Ragione Sociale', renderer, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'ragione_sociale')
+        column.connect("clicked", self._changeOrderBy, (self.joinT,Vettore.ragione_sociale))
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(200)
@@ -72,7 +75,7 @@ class AnagraficaVettoriFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Cognome - Nome', renderer, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'cognome, nome')
+        column.connect("clicked", self._changeOrderBy, (self.joinT,Vettore.cognome))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(200)
@@ -81,7 +84,7 @@ class AnagraficaVettoriFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Localita''', renderer, text=4)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'sede_operativa_localita')
+        column.connect("clicked", self._changeOrderBy, (self.joinT,Vettore.sede_operativa_localita))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
