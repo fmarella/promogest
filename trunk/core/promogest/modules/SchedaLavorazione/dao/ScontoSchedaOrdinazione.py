@@ -9,6 +9,8 @@ from sqlalchemy import Table
 from sqlalchemy.orm import mapper, join
 from promogest.Environment import params
 from promogest.dao.Dao import Dao
+#from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
+
 
 class ScontoSchedaOrdinazione(Dao):
 
@@ -30,4 +32,6 @@ j = join(sconto, scontoschedaordinazione)
 
 std_mapper = mapper(ScontoSchedaOrdinazione,j, properties={
             'id':[sconto.c.id, scontoschedaordinazione.c.id],
+            #"schedaOrd":relation(SchedaOrdinazione,primaryjoin=
+                #scontoschedaordinazione.c.id_scheda_ordinazione==SchedaOrdinazione.id, backref="sconto_scheda_ord")
             }, order_by=scontoschedaordinazione.c.id)

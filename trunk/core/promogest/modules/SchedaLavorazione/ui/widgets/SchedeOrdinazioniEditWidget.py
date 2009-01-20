@@ -307,7 +307,7 @@ class SchedeOrdinazioniEditWidget():
 
 
         #collezione di labels.
-        self.label21 = gtk.Label(u'Scheda N�')
+        self.label21 = gtk.Label(u'Scheda N°')
         self.label22 = gtk.Label('Nomi degli sposi:')
         self.label70 = gtk.Label('Provenienza:')
         self.label24 = gtk.Label('Data matrimonio:')
@@ -330,7 +330,7 @@ class SchedeOrdinazioniEditWidget():
         self.label47 = gtk.Label('')
         self.label49 = gtk.Label('')
         self.label114 = gtk.Label('Articoli')# #1 page notebook
-        self.label118 = gtk.Label(u'Bomb. in clich�')
+        self.label118 = gtk.Label(u'Bomb. in clichè')
         self.label117 = gtk.Label('Data consegna bozza:')
         self.label116 = gtk.Label('Colore')
         self.label115 = gtk.Label('Carattere')
@@ -347,7 +347,7 @@ class SchedeOrdinazioniEditWidget():
         
         self.label135 = gtk.Label('Stampa e Spedizione')# #2 page notebook
         self.label133 = gtk.Label('Data consegna:')
-        self.label132 = gtk.Label(u'N� documento')
+        self.label132 = gtk.Label('N° documento')
         self.label131 = gtk.Label('Annotazioni finali')
         self.label130 = gtk.Label('Data ricevuta:')
         
@@ -357,11 +357,11 @@ class SchedeOrdinazioniEditWidget():
         self.label18.set_width_chars(15)
         self.label19 = gtk.Label('Via / Piazza')
         self.label19.set_width_chars(15)
-        self.label23 = gtk.Label(u'N�')
+        self.label23 = gtk.Label(u'N°')
         self.label23.set_width_chars(10)
         self.label26 = gtk.Label('C.A.P.')
         self.label26.set_width_chars(15)
-        self.label27 = gtk.Label(u'Localit�')
+        self.label27 = gtk.Label('Località')
         self.label27.set_width_chars(15)
         self.label28 = gtk.Label('Provincia')
         self.label28.set_width_chars(15)

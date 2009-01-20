@@ -38,7 +38,7 @@ class AnagraficaAssociazioniArticoliFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   'anagrafica_associazioni_articoli_filter_table', \
-                                  gladeFile='Stampalux/gui/stampalux_plugins.glade', \
+                                  gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade', \
                                   module=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
         self.articoliprincipaliList = []
@@ -230,7 +230,7 @@ class AnagraficaAssociazioniArticoliEdit(AnagraficaEdit):
                                 anagrafica,
                                 'anagrafica_associazioni_articoli_detail_vbox',
                                 'Dati articolo',\
-                                gladeFile='Stampalux/gui/stampalux_plugins.glade', \
+                                gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade', \
                                 module=True)
         self._widgetFirstFocus = self.articolo_principale_button
         self.remove_article_button.set_sensitive(False)
@@ -271,7 +271,7 @@ class AnagraficaAssociazioniArticoliEdit(AnagraficaEdit):
             self.daoPadre = Articolo()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.daoPadre = Articolo(Environment.connection, dao.id_articolo)
+            self.daoPadre = Articolo().getRecord(id=dao.id_articolo)
             associatedArts = AssociazioneArticoli().select(nodo=False,
                                                             idPadre=self.daoPadre.id,
                                                             offset=None,

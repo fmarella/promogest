@@ -77,7 +77,6 @@ if hasattr(conf, 'SchedaLavorazione'):
         #CONSTRAINT schede_ordinazioni_id_key UNIQUE (id, numero));
         clienteTable = Table('cliente', params['metadata'], autoload=True, schema=params['schema'])
         schedaOrdinazioneTable = Table('scheda_ordinazione', params['metadata'],
-
                             Column('id',Integer,primary_key=True),
                             Column('numero',Integer,nullable=False),
                             Column('nomi_sposi',String(300),nullable=True),

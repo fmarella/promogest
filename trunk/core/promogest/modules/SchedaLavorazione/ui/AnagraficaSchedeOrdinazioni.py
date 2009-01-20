@@ -629,7 +629,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
 
     def setRigaTreeview(self, idListino, idArticolo):
         model = self._articoliTreeviewModel
-        articolo = Articolo(Environment.connection, idArticolo)
+        articolo = Articolo().getRecord(id=idArticolo)
         try:
             listino = ListinoArticolo().getRecord(id=[idListino,idArticolo])
         except:
@@ -811,7 +811,8 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             return
 
         self._id_listino = findIdFromCombobox(combobox)
-        self.daoListino = Listino().getRecord(id=self._id_listino)
+        print "MAAAJJJAAAAAAAAAAAAAAAAAAAAA2",self._id_listino
+        self.daoListino = Listino().select(id=self._id_listino)[0]
         for riga in self.dao.righe:
             riga.id_listino = self._id_listino
         self._refresh()

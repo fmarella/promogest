@@ -269,7 +269,6 @@ o tramite email all'indirizzo info@promotux.it
                 if hasattr(Environment.conf,m_str):
                     exec "mod_enable = getattr(Environment.conf.%s,'mod_enable','yes')" %m_str
                     if mod_enable=="yes":
-                        print "PPPPPPPPPPPPP", modules_dir, m_str
                         exec "import %s.%s.module as m" % (modules_dir.replace("/", "."), m_str)
                         Environment.modulesList.append(str(m.MODULES_NAME))
                         for class_name in m.MODULES_FOR_EXPORT:

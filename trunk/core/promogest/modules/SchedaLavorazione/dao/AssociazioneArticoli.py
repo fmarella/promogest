@@ -16,34 +16,6 @@ class AssociazioneArticoli(Dao):
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
 
-    def persist(self):
-        """
-        Salva l'associazione nel database
-        """
-        if connection is None:
-            if  self._connection is not None:
-                self._connection.execStoredProcedure('AssociazioneArticoloSet',
-                        (self.id ,self.id_associato, self.id_articolo, self.posizione))
-            else:
-                self.raiseException(NotImplementedError('Object is read-only '
-                                                        + '(no connection has '
-                                                        + 'been associated)'))
-        else:
-            connection.execStoredProcedure('AssociazioneArticoloSet',
-                            (self.id ,self.id_associato, self.id_articolo, self.posizione))
-
-    def delete(self, conn=None, son=False):
-        if conn is not None:
-            conn.execStoredProcedure(self._delSPName,
-                                     (self.id,))
-        else:
-            if self._connection is None:
-                self.raiseException(NotImplementedError('Object is read-only '
-                                                        + '(no connection has '
-                                                        + 'been associated)'))
-
-            self._connection.execStoredProcedure(self._delSPName,
-                                                 (self.id_articolo, son))
 
     def filter_values(self,k,v):
         if k == "id":
@@ -57,6 +29,14 @@ associazionearticolo=Table('associazione_articolo', params['metadata'],
                                                     schema = params['schema'],
                                                     autoload=True)
 
-std_mapper = mapper(AssociazioneArticoli, associazionearticolo, properties={},
+articolo = Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
+
+#j = join(associazionearticolo, articolo)
+
+std_mapper = mapper(AssociazioneArticoli, associazionearticolo, properties={
+                "arto_padre":relation(Articolo,primaryjoin=
+                    associazionearticolo.c.id_padre==Articolo.id, backref="asso_art_padre"),
+                "arto_figlio":relation(Articolo,primaryjoin=
+                    associazionearticolo.c.id_figlio==Articolo.id, backref="asso_art_figlio")},
                                             order_by=associazionearticolo.c.id)
 

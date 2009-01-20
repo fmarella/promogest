@@ -10,7 +10,7 @@ from promogest.dao.Dao import Dao
 from promogest.Environment import *
 from decimal import *
 from promogest.modules.SchedaLavorazione.dao.ScontoRigaScheda import ScontoRigaScheda
-
+#from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
 from promogest.ui.utils import *
 
 
@@ -114,6 +114,15 @@ rigaschedaordinazione=Table('riga_scheda_ordinazione',
                                     schema = params['schema'],
                                     autoload=True)
 
-std_mapper = mapper(RigaSchedaOrdinazione, rigaschedaordinazione, properties={},
+riga=Table('riga', params['metadata'],schema = params['schema'], autoload=True)
+
+
+j = join(rigaschedaordinazione, riga)
+
+std_mapper = mapper(RigaSchedaOrdinazione, j, properties={
+        'id':[rigaschedaordinazione.c.id, riga.c.id],
+        #"schedaOrd":relation(SchedaOrdinazione,primaryjoin=
+                #rigaschedaordinazione.c.id_riga_scheda==SchedaOrdinazione.id, backref="riga_scheda_ord")
+            },
                                     order_by=rigaschedaordinazione.c.id)
 

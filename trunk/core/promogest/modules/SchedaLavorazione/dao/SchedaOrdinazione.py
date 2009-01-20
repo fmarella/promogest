@@ -12,6 +12,10 @@ from promogest.Environment import *
 from promogest.ui.utils import *
 from promogest.modules.SchedaLavorazione.dao.RigaSchedaOrdinazione import RigaSchedaOrdinazione
 from promogest.modules.SchedaLavorazione.dao.ScontoSchedaOrdinazione import ScontoSchedaOrdinazione
+from promogest.modules.SchedaLavorazione.dao.ColoreStampa import ColoreStampa
+from promogest.modules.SchedaLavorazione.dao.CarattereStampa import CarattereStampa
+from promogest.dao.Cliente import Cliente
+from promogest.dao.Magazzino import Magazzino
 
 class SchedaOrdinazione(Dao):
     """ Fornisce nuove funzionalità abbinate alla personalizzazione"
@@ -145,6 +149,14 @@ schedaordinazione=Table('scheda_ordinazione',
                                     schema = params['schema'],
                                     autoload=True)
 
-std_mapper = mapper(SchedaOrdinazione, schedaordinazione, properties={},
-                                    order_by=schedaordinazione.c.id)
+std_mapper = mapper(SchedaOrdinazione, schedaordinazione, properties={
+                "cli":relation(Cliente,primaryjoin=
+                    schedaordinazione.c.id_cliente==Cliente.id, backref="sched_ord"),
+                "CARATTSTAM":relation(CarattereStampa,primaryjoin=
+                    schedaordinazione.c.id_carattere_stampa==CarattereStampa.id, backref="sched_ord"),
+                "COLOSTAMP":relation(ColoreStampa,primaryjoin=
+                    schedaordinazione.c.id_colore_stampa==ColoreStampa.id, backref="sched_ord"),
+                "magazz":relation(Magazzino,primaryjoin=
+                    schedaordinazione.c.id_magazzino==Magazzino.id, backref="sched_ord") },
+                order_by=schedaordinazione.c.id)
 

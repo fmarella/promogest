@@ -8,7 +8,8 @@ from sqlalchemy.orm import mapper, join
 import promogest.dao.Dao
 from promogest.dao.Dao import Dao
 from promogest.Environment import *
-
+from promogest.dao.Promemoria import Promemoria
+from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
 
 class PromemoriaSchedaOrdinazione(Dao):
 
@@ -24,5 +25,12 @@ promemoriaschedaordinazione=Table('promemoria_scheda_ordinazione',
                                     schema = params['schema'],
                                     autoload=True)
 
-std_mapper = mapper(PromemoriaSchedaOrdinazione, promemoriaschedaordinazione, properties={},
+promemoria=Table('promemoria', params['metadata'], schema = params['schema'], autoload=True)
+
+j = join(promemoriaschedaordinazione, promemoria)
+
+std_mapper = mapper(PromemoriaSchedaOrdinazione, j, properties={
+            'id':[promemoria.c.id, promemoriaschedaordinazione.c.id],
+            "schedaOrd":relation(SchedaOrdinazione,primaryjoin=
+                    promemoriaschedaordinazione.c.id_scheda==SchedaOrdinazione.id, backref="promemoriaschedaordinazione")},
                                 order_by=promemoriaschedaordinazione.c.id)
