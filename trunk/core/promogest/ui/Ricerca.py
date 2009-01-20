@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -68,21 +68,22 @@ class Ricerca(GladeWidget):
         self.bodyWidget.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
 
     def _setHtmlHandler(self, htmlHandler):
-        if htmlHandler is not None:
-            self.htmlHandler = htmlHandler
-        else:
-            self.ricerca_html.destroy()
-            return
+        return
+        #if htmlHandler is not None:
+            #self.htmlHandler = htmlHandler
+        ##else:
+            ##self.ricerca_html.destroy()
+            ##return
 
-        # Initial setup
-        document = gtkhtml2.Document()
-        document.open_stream('text/html')
-        document.write_stream('<html></html>')
-        document.close_stream()
+        ## Initial setup
+        #document = gtkhtml2.Document()
+        #document.open_stream('text/html')
+        #document.write_stream('<html></html>')
+        #document.close_stream()
 
-        self.ricerca_html.set_document(document)
-        (width, height) = self.getTopLevel().get_size()
-        self.ricerca_html.set_size_request(-1, height // 2)
+        ##self.ricerca_html.set_document(document)
+        #(width, height) = self.getTopLevel().get_size()
+        #self.ricerca_html.set_size_request(-1, height // 2)
 
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura della ricerca """
@@ -144,7 +145,8 @@ class Ricerca(GladeWidget):
 
 
     def getHtmlWidget(self):
-        return self.ricerca_html
+        #return self.ricerca_html
+        return
 
 class RicercaFilter(GladeWidget):
     """ Filtro per la ricerca """
@@ -212,6 +214,7 @@ class RicercaFilter(GladeWidget):
         """ Aggiorna la paginazione """
         self.bodyWidget.numRecords = self.numRecords
         self.bodyWidget._refreshPageCount()
+
 class RicercaHtml(object):
     """ Interfaccia HTML read-only per la lettura dell'anagrafica """
 

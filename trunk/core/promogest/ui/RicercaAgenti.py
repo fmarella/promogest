@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -24,7 +24,7 @@ class RicercaAgenti(Ricerca):
     def __init__(self):
         Ricerca.__init__(self, 'Promogest - Ricerca Agenti',
                          RicercaAgentiFilter(self))
-        self.ricerca_html.destroy()
+        #self.ricerca_html.destroy()
 
 
     def insert(self, toggleButton, returnWindow):

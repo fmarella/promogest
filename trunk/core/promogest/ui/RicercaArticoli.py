@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -47,7 +47,7 @@ class RicercaArticoli(Ricerca):
         self._idCategoria = idCategoria
         self._idStato = idStato
         self._cancellato = cancellato
-        self.ricerca_html.destroy()
+        #self.ricerca_html.destroy()
         Ricerca.__init__(self, 'Promogest - Ricerca articoli',
                          RicercaArticoliFilter(self))
 

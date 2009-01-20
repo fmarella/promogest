@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -23,7 +23,7 @@ class RicercaClienti(Ricerca):
     def __init__(self):
         Ricerca.__init__(self, 'Promogest - Ricerca clienti',
                          RicercaClientiFilter(self))
-        self.ricerca_html.destroy()
+        #self.ricerca_html.destroy()
 
     def insert(self, toggleButton, returnWindow):
         # Richiamo anagrafica di competenza

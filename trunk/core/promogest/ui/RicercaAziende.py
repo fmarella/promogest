@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -24,7 +24,7 @@ class RicercaAziende(Ricerca):
         Ricerca.__init__(self, 'Promogest - Ricerca aziende',
                          RicercaAziendeFilter(self))
         self.inserimento_togglebutton.set_sensitive(False)
-        self.ricerca_html.destroy()
+        #self.ricerca_html.destroy()
 
     def insert(self, toggleButton, returnWindow):
         # Richiamo anagrafica di competenza
