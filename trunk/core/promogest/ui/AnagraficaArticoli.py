@@ -13,7 +13,7 @@ import gobject
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 from AnagraficaArticoliEdit import AnagraficaArticoliEdit
 from promogest import Environment
-from promogest.dao.Dao import Dao
+#from promogest.dao.Dao import Dao
 import promogest.dao.Fornitura
 import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
@@ -153,7 +153,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Codice', renderer, text=2, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'codice')
+        column.connect("clicked", self._changeOrderBy, (None,Articolo.codice))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -162,7 +162,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Descrizione', renderer, text=3, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'denominazione')
+        column.connect("clicked", self._changeOrderBy, (None,Articolo.denominazione))
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(100)
@@ -171,7 +171,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Produttore', renderer, text=4, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'produttore')
+        column.connect("clicked", self._changeOrderBy, (None,Articolo.produttore))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -179,8 +179,9 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Codice a barre', renderer, text=5, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.connect("clicked", self._changeOrderBy, 'codice_a_barre')
+        column.set_clickable(True)
+        from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
+        column.connect("clicked", self._changeOrderBy, (CodiceABarreArticolo,CodiceABarreArticolo.codice))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -188,8 +189,9 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Codice articolo fornitore', renderer, text=6, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.connect("clicked", self._changeOrderBy, 'codice_articolo_fornitore')
+        column.set_clickable(True)
+        from promogest.dao.Fornitura import Fornitura
+        column.connect("clicked", self._changeOrderBy, (Fornitura,Fornitura.codice_articolo_fornitore))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -197,8 +199,9 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Famiglia', renderer, text=7, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.connect("clicked", self._changeOrderBy, 'denominazione_famiglia')
+        column.set_clickable(True)
+        from promogest.dao.FamigliaArticolo import FamigliaArticolo
+        column.connect("clicked", self._changeOrderBy, (FamigliaArticolo,FamigliaArticolo.denominazione))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -206,8 +209,9 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Categoria', renderer, text=8, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.connect("clicked", self._changeOrderBy, 'denominazione_categoria')
+        column.set_clickable(True)
+        from promogest.dao.CategoriaArticolo import CategoriaArticolo
+        column.connect("clicked", self._changeOrderBy, (CategoriaArticolo,CategoriaArticolo.denominazione))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -278,7 +282,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         self.refresh()
 
 
-    def refresh(self):
+    def refresh(self, join=None):
         # Aggiornamento TreeView
 
         denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
@@ -349,6 +353,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         def filterClosure(offset, batchSize):
             if "PromoWear" in Environment.modulesList:
                 return Articolo().select(orderBy=self.orderBy,
+                                        join=self.join,
                                         denominazione=denominazione,
                                         codice=codice,
                                         codiceABarre=codiceABarre,
@@ -371,6 +376,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
                                         batchSize=batchSize)
             else:
                 return Articolo().select(orderBy=self.orderBy,
+                                            join=self.join,
                                             denominazione=denominazione,
                                             codice=codice,
                                             codiceABarre=codiceABarre,

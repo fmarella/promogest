@@ -821,7 +821,6 @@ class AnagraficaFilter(GladeWidget):
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
         self._isSensitive = True
-
         self._treeViewModel = None
 
         # A closure that returns a list of Dao's that match the
@@ -846,6 +845,7 @@ class AnagraficaFilter(GladeWidget):
         # mapping fields and methods from bodyWidget to this class
         self._changeOrderBy = self.bodyWidget._changeOrderBy
         self.orderBy = self.bodyWidget.orderBy = None
+        self.join =self.bodyWidget.join =None
         self.batchSize =  Environment.conf.Numbers.batch_size
         self.offset = self.bodyWidget.offset = 0
         self.numRecords = self.bodyWidget.numRecords = 0

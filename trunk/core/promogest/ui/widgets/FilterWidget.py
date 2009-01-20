@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -249,7 +249,8 @@ class FilterWidget(GladeWidget):
         """
         Changes results order
         """
-        self.orderBy = fieldsString
+        self.orderBy = fieldsString[1]
+        self.join = fieldsString[0]
         self.refresh()
 
 
@@ -279,6 +280,7 @@ class FilterWidget(GladeWidget):
         self._owner.orderBy = self.orderBy
         self._owner.batchSize = self.batchSize
         self._owner.offset = self.offset
+        self._owner.join = self.join
         self._owner.refresh()
 
 
