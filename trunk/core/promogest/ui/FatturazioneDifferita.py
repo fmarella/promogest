@@ -1,46 +1,33 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
 # Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
 # Author: JJDaNiMoTh <jjdanimoth@gmail.com>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-#!/usr/local/bin/python
-# coding: UTF-8
+# Author: Francesco Meloni <francesco@promotux.it>
+
 
 import gobject, gtk
 from utils import *
 
 from GladeWidget import GladeWidget
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.TestataDocumento
+#from promogest.dao.Dao import Dao
+#import promogest.dao.TestataDocumento
 from promogest.dao.TestataDocumento import TestataDocumento
+from promogest.dao.Operazione import Operazione
 
 
 def newSingleDoc(data, operazione, note, daoDocumento, newDao = None):
     """
     Make a new document from existing one
     """
-    import promogest.dao.InformazioniFatturazioneDocumento
+    #import promogest.dao.InformazioniFatturazioneDocumento
     from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
 
-    import promogest.dao.ScontoRigaDocumento
+    #import promogest.dao.ScontoRigaDocumento
     from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
-    import promogest.dao.ScontoTestataDocumento
+    #import promogest.dao.ScontoTestataDocumento
     from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 
     fattura = False
@@ -59,7 +46,7 @@ def newSingleDoc(data, operazione, note, daoDocumento, newDao = None):
             return None
 
     if newDao is None:
-        newDao = TestataDocumento(Environment.connection)
+        newDao = TestataDocumento()
     newDao.data_documento = stringToDate(data)
     newDao.operazione = operazione
     newDao.id_cliente = daoDocumento.id_cliente
@@ -83,7 +70,7 @@ def newSingleDoc(data, operazione, note, daoDocumento, newDao = None):
     sconti = []
     sco = daoDocumento.sconti or []
     for s in sco:
-        daoSconto = ScontoTestataDocumento(Environment.connection)
+        daoSconto = ScontoTestataDocumento()
         daoSconto.valore = s.valore
         daoSconto.tipo_sconto = s.tipo_sconto
         sconti.append(daoSconto)
@@ -104,32 +91,28 @@ def registraInfoFatturazione(idFattura, idDdt):
     """
     Registra le informazioni relative alla fatturazione di un documento
     """
-    import promogest.dao.InformazioniFatturazioneDocumento
     from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
 
-    info = InformazioniFatturazioneDocumento(Environment.connection)
+    info = InformazioniFatturazioneDocumento()
     info.id_fattura = idFattura
     info.id_ddt = idDdt
-    info.persist(Environment.connection)
+    info.persist()
 
 def controllaInfoFatturazione(idDocumento):
-    import promogest.dao.InformazioniFatturazioneDocumento
     from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
 
-    res = promogest.dao.InformazioniFatturazioneDocumento.select(
-        Environment.connection, None, idDocumento, immediate=True)
-    if res != []:
+    res = InformazioniFatturazioneDocumento().select(idDocumento=idDocumento, batchSize=None)
+    if res:
         return res
     return True
 
 def registraRigheDocumento(riferimento, rig, newDao, vecchierighe):
-    import promogest.dao.RigaDocumento
     from promogest.dao.RigaDocumento import RigaDocumento
     from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
 
     righe = []
     for i in vecchierighe:
-        daoRiga = RigaDocumento(Environment.connection)
+        daoRiga = RigaDocumento()
         daoRiga.id_testata_documento = newDao.id
         daoRiga.id_articolo = i.id_articolo
         daoRiga.id_magazzino = i.id_magazzino
@@ -164,7 +147,7 @@ def registraRigheDocumento(riferimento, rig, newDao, vecchierighe):
     righe.append(daoRiga)
 
     for r in rig:
-        daoRiga = RigaDocumento(Environment.connection)
+        daoRiga = RigaDocumento()
         daoRiga.id_testata_documento = newDao.id
         daoRiga.id_articolo = r.id_articolo
         daoRiga.id_magazzino = r.id_magazzino
@@ -181,7 +164,7 @@ def registraRigheDocumento(riferimento, rig, newDao, vecchierighe):
         sconti = []
         sco = r.sconti
         for s in sco:
-            daoSconto = ScontoRigaDocumento(Environment.connection)
+            daoSconto = ScontoRigaDocumento()
             daoSconto.valore = s.valore
             daoSconto.tipo_sconto = s.tipo_sconto
             sconti.append(daoSconto)
@@ -204,13 +187,17 @@ class FatturazioneDifferita(GladeWidget):
         self.listdoc = self.sortDoc(self.nomi, self.listdoc)
 
     def draw(self):
-        queryString = ("SELECT * FROM promogest.operazione " +
-        "WHERE (tipo_operazione = 'documento') AND " +
-        "tipo_persona_giuridica = 'cliente' AND segno IS NULL")
-        argList = []
-        Environment.connection._cursor.execute(queryString, argList)
-        res = Environment.connection._cursor.fetchall()
-        model = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str)
+        #queryString = ("SELECT * FROM promogest.operazione " +
+        #"WHERE (tipo_operazione = 'documento') AND " +
+        #"tipo_persona_giuridica = 'cliente' AND segno IS NULL")
+        #argList = []
+        #Environment.connection._cursor.execute(queryString, argList)
+        #res = Environment.connection._cursor.fetchall()
+        res = Operazione().select(tipoOperazione = 'documento',
+                                    tipoPersonaGiuridica = 'cliente',
+                                    segno="NULL")
+
+        model = gtk.ListStore(object, str, str)
         for o in res:
             model.append((o, o['denominazione'], (o['denominazione'] or '')[0:30]))
         self.id_operazione_combobox.clear()
@@ -274,8 +261,8 @@ class FatturazioneDifferita(GladeWidget):
                             rifer, daoDaFatt.righe, fattura, righe)
                     registraInfoFatturazione(fattura.id, daoDaFatt.id)
                 else:
-                    daoFattura = TestataDocumento(Environment.connection, fatturato[0].id_fattura)
-                    daoDdt = TestataDocumento(Environment.connection, fatturato[0].id_ddt)
+                    daoFattura = TestataDocumento().getRecord(id=fatturato[0].id_fattura)
+                    daoDdt = TestataDocumento().getRecord(id=fatturato[0].id_ddt)
                     msg = "Il documento " + str(daoDdt.numero)
                     msg = msg + " e' gia' stato elaborato nel documento " + str(daoFattura.numero)+' ('+str(daoFattura.operazione)+').'
                     msg = msg + "\nPertanto non verra' elaborato in questa sessione"
@@ -286,7 +273,7 @@ class FatturazioneDifferita(GladeWidget):
 
         if len(righe) == 0:
             self.getTopLevel().destroy()
-            msg = u"Non � stato creato alcun documento in quanto non sono state trovate righe da inserire.\n\n)"
+            msg = "Non è stato creato alcun documento in quanto non sono state trovate righe da inserire.\n\n)"
             dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                       gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
             response = dialog.run()
@@ -355,7 +342,3 @@ class FatturazioneDifferita(GladeWidget):
                     newlist[nomi[j]].append(lista[i])
 
         return newlist
-
-
-
-
