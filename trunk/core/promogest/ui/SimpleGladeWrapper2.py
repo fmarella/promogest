@@ -76,10 +76,6 @@ class SimpleGladeWrapper2(object):
         builder = gtk.Builder()
         builder.add_from_file(self.glade_path)
         self.widgets = builder.get_objects()
-
-
-
-
         self.install_custom_handler(self.custom_handler)
         #self.glade = self.create_glade(self.glade_path, root, domain)
         if root:

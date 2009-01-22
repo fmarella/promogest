@@ -24,7 +24,7 @@ class FilterWidget(GladeWidget):
         self._owner = owner
         self.filtersElement = None
         self.resultsElement = None
-
+        self.join = None
         self.orderBy = None
         self.batchSize = int(Environment.conf.Numbers.batch_size)
         self.offset = 0

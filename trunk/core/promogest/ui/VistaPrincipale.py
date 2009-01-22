@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -120,10 +120,50 @@ class VistaPrincipale(GladeWidget):
                 self.renderPage(feedToHtml)
             else:
                 self.getfeedFromSite()
-
-
+        #gobject.idle_add(self.checkUpdate)
+        #thread = threading.Thread(target=self.checkUpdate)
+        #thread.start()
+        #thread.join(1.3)
+        #time.sleep(2)
+        #thread.stop()
         self.anno_lavoro_label.set_markup('<b>Anno di lavoro:   ' + Environment.workingYear + '</b>')
         self._refresh()
+
+    def checkUpdate(self):
+        self.rigasvn1 =0
+        self.rigasvn2 =0
+        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
+        command = 'svn info ~/pg2'
+        stdin, stdouterr = os.popen4(command)
+        print "INFO REPO LOCALE", stdouterr.read()
+        for r in stdouterr.readlines():
+            if "Revision" in str(r):
+                self.rigasvn1=r
+        commandremote = 'svn info http://svn.promotux.it/svn/promogest2/trunk/'
+        stdin, stdouterr = os.popen4(commandremote)
+        print "INFO REPO REMOTO",stdouterr.read()
+        for line in stdouterr.readlines():
+            if "Revision" in str(line):
+                self.rigasvn2=r
+        if self.rigasvn1 == self.rigasvn2:
+            print "aggiornamento da fare"
+            msg ="""ATTENZIONE!!
+Andate nella sezione "opzioni" ed aggiornare l'applicazione.
+E' presente una nuova versione disponibile"""
+            dialog = gtk.MessageDialog(None,
+                                    gtk.DIALOG_MODAL
+                                    | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                    gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
+                                    "pippo")
+            response = dialog.run()
+            #dialog.destroy()
+            dialog.hide()
+            #return False
+        else:
+            print "NON CI SONO NUOVE VERSIONI DEL PROMOGEST2 DISPONIBILI"
+        #return False
+        print "PPLLLLLLLLLLLLLLLLLLLLLLLLL", self.__a
+        gobject.source_remove(self.__a)
 
     def _refresh(self):
         """
@@ -142,6 +182,9 @@ class VistaPrincipale(GladeWidget):
                                 dao.oggetto, dao.descrizione,\
                                 dao.incaricato, dao.autore, dao.annotazione))
         self._loading=False
+        #self.checkUpdate()
+        #self.__a = gobject.idle_add(self.checkUpdate)
+
 
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura del frame """

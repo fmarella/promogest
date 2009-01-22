@@ -96,16 +96,7 @@ class Login(GladeApp):
         #self.username_comboxentry.set_active(0)
         data = datetime.datetime.now()
         self.anno_lavoro_spinbutton.set_value(data.year)
-        #widget.modify_fg(state, color)
-        #widget.modify_bg(state, color)
-        #widget.modify_base(state, color)
-        #widget.modify_text(state, red)
 
-
-        if Environment.feed == "True":
-            thread = threading.Thread(target=self.feddretreive)
-            thread.start()
-            #thread.join(1.3)
         self.getTopLevel().show_all()
 
 
@@ -116,10 +107,11 @@ class Login(GladeApp):
         return fileName
 
 
+
     def feddretreive(self):
         d = feedparser.parse("http://blog.promotux.it/?feed=rss2")
+        #self.checkUpdate()
         Environment.feedAll = d
-        #print d
         return
 
     def on_azienda_comboboxentry_changed(self, combo):
@@ -174,6 +166,10 @@ class Login(GladeApp):
                 Environment.workingYear = str(self.anno_lavoro_spinbutton.get_value_as_int())
                 Environment.azienda = self.azienda
                 Environment.set_configuration(Environment.azienda,Environment.workingYear)
+                if Environment.feed:
+                    thread = threading.Thread(target=self.feddretreive)
+                    thread.start()
+                    #thread.join(1.3)
                 Environment.params['usernameLoggedList'][0] = users[0].id
                 Environment.params['usernameLoggedList'][1] = users[0].username
                 Environment.params['usernameLoggedList'][2] = users[0].id_role
@@ -224,9 +220,9 @@ class Login(GladeApp):
             for line in stdouterr.readlines():
                 textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
             msg = """ Se è apparsa la dicitura "Estratta Revisione XXXX
-l'aggiornamento è riuscito, nel caso di messaggio fosse differente
-potete contattare l'assistenza tramite il numero verde 80034561
-o tramite email all'indirizzo info@promotux.it
+    l'aggiornamento è riuscito, nel caso di messaggio fosse differente
+    potete contattare l'assistenza tramite il numero verde 80034561
+    o tramite email all'indirizzo info@promotux.it
 
         Aggiornamento de|l Promogest2 terminato !!!
         Riavviare l'applicazione per rendere le modifiche effettive
@@ -279,8 +275,6 @@ o tramite email all'indirizzo info@promotux.it
                                 'module_dir': "%s" % (m_str),
                                 'guiDir':m.GUI_DIR}
                             if __debug__ :print "'%s' imported as a module" % str(class_name)
-                else:
-                    if __debug__: print "ATTENZIONE modulo %s presente in cartella moduli ma non settato nel configure" %m_str
             if __debug__: print "LISTA DEI MODULI CARICATI E FUNZIONANTI", repr(Environment.modulesList)
             self.groupModulesByType()
 
