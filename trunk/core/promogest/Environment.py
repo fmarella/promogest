@@ -219,28 +219,6 @@ def set_configuration(company=None, year = None):
     debugDao = True
 
 
-    # Promowear
-    #if hasattr(conf,'PromoWear'):
-        #mod_enable = getattr(
-            #conf.PromoWear,'mod_enable','yes')
-        #taglie_enable = getattr(
-        #conf.PromoWear,'taglie_colori','yes')
-        #if mod_enable == 'yes':
-            #conf.PromoWear = True
-        #else:
-            #conf.PromoWear = False
-        #if taglie_enable == 'yes':
-            #conf.taglia_colore = True
-            ###try:
-                ###from promogest.modules.PromoWear.ui.TaglieColori import GestioneTaglieColori, SelezioneTaglieColori
-            ###except ImportError:
-                ###print "Errore import di GestioneTaglieColori in Environment.py"
-                ###pass
-        #else:
-            #conf.taglia_colore = False
-    #else:
-        #conf.PromoWear = False
-
 
     #[Feed]
     try:
