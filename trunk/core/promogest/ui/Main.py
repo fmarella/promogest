@@ -11,7 +11,7 @@ import gtk, gobject
 import threading, os, signal, popen2, md5
 from promogest import Environment
 from GladeWidget import GladeWidget
-from AnagraficaAziende import AnagraficaAziende
+
 from ElencoMagazzini import ElencoMagazzini
 from ElencoListini import ElencoListini
 from VistaPrincipale import VistaPrincipale
@@ -102,8 +102,8 @@ class Main(GladeWidget):
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'promemoria48x48.png')
         model.append([5, "Promemoria", pbuf])
 
-        pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'azienda48x48.png')
-        model.append([6, "Anagrafica\nazienda", pbuf])
+        #pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'azienda48x48.png')
+        #model.append([6, "Anagrafica\nazienda", pbuf])
 
         self.main_iconview.set_model(model)
         self.main_iconview.set_text_column(1)
@@ -259,8 +259,6 @@ class Main(GladeWidget):
             showAnagrafica(self.getTopLevel(), anag, mainClass=self)
             icon_view.unselect_all()
             return
-        elif selection == 6:
-            self.currentFrame = self.create_azienda_frame()
         self._refresh()
 
     def on_main_iconview_right_select(self, icon_view, model=None):
@@ -343,9 +341,9 @@ class Main(GladeWidget):
     def create_azienda_frame(self):
         if self.currentFrame is not None:
             self.main_hbox.remove(self.currentFrame)
-        frame = AziendaFrame(self.main_window)
-        return frame.anagrafica_aziende_frame
-        #return frame.getTopLevel()
+        frame = AziendaFrame(self)
+        #return frame.anagrafica_aziende_frame
+        return frame.getTopLevel()
 
 
     def create_spam_frame(self):
@@ -450,6 +448,15 @@ class Main(GladeWidget):
         configuraWindow = ConfiguraWindow(self)
         showAnagrafica(self.getTopLevel(), configuraWindow)
 
+    def on_dati_azienda_activate(self, widget):
+        print "OOOOOOOOOOOOODDDDDDDDDDDDDDDDD"
+        from AnagraficaAziende import AnagraficaAziende
+            #self.mainWindow = mainWindow
+        anag =AnagraficaAziende(self) #.__init__(self, self.mainWindow)
+            #showAnagrafica(self.getTopLevel(), anag, mainClass=self)
+            #self.currentFrame = self.create_azienda_frame()
+        #icon_view.unselect_all()
+        return
 
     def on_credits_menu_activate(self, widget):
         from promogest.dao.Setting import Setting
@@ -749,7 +756,7 @@ class AnagrafichePrincipaliFrame(GladeWidget):
                 module_button.set_image(module_butt_image)
                 module_button.set_label(module[1]['module'].VIEW_TYPE[1])
                 module_button.connect('clicked', self.on_module_button_clicked)
-                self.vbox1.pack_start(module_button, False, False)
+                self.vbox4.pack_start(module_button, False, False)
             return
         else:
             return
@@ -1034,12 +1041,12 @@ class ParametriFrame(GladeWidget):
 
         showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
 
-class AziendaFrame(AnagraficaAziende):
-    """ Frame per la gestione delle aziende """
+#class AziendaFrame(AnagraficaAziende):
+    #""" Frame per la gestione delle aziende """
 
-    def __init__(self, mainWindow, mainClass=None):
-        self.mainWindow = mainWindow
-        AnagraficaAziende.__init__(self, self.mainWindow)
+    #def __init__(self, mainWindow, mainClass=None):
+        #self.mainWindow = mainWindow
+        #AnagraficaAziende.__init__(self, self.mainWindow)
 
 
 from ElencoListini import ElencoListini

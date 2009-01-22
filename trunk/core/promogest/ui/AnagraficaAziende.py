@@ -28,22 +28,24 @@ class AnagraficaAziende(GladeWidget):
     def __init__(self, mainWindow):
         self._mainWindow = mainWindow
         self.dao = Azienda()
-        #dialog = self.creazione_taglie_colore
-        GladeWidget.__init__(self, 'anagrafica_aziende_frame',fileName='_anagrafica_aziende_elements.glade')
+        GladeWidget.__init__(self, 'anagrafica_azienda',fileName='anagrafica_azienda.glade')
+        self.getTopLevel()
         self.placeWindow(self.getTopLevel())
-        #self.show_all()
+        self.getTopLevel().set_modal(modal=True)
+        self.getTopLevel().show_all()
         self.draw()
 
 
     def draw(self):
         # Popolamento campi in maschera dal dao
         self.setDao()
+        #self.show_all()
         self.denominazione_entry.grab_focus()
 
 
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura dell'anagrafica """
-        self._anagrafica_aziende_elements.show_all()
+        self.show()
 
     def setDao(self):
         # Creazione dao azienda corrente

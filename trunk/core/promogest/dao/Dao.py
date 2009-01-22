@@ -141,7 +141,8 @@ Qui sotto viene riportato l'errore di sistema:
         else:
             how = "E"
         pk = mapper.primary_key_from_instance(self)
-        if len(pk) ==1:
+
+        if len(pk) ==1 and type(pk)==int:
             value = pk[0]
             whatstr = None
         else:
