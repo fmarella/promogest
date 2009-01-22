@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest
@@ -44,14 +44,14 @@ class AnagraficaCategorieClienti(Anagrafica):
         column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'denominazione')
+        column.connect("clicked", self._changeOrderBy, (None,'denominazione'))
         column.set_resizable(True)
         column.set_expand(True)
         treeview.append_column(column)
 
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str)
+        self._treeViewModel = gtk.ListStore(object, str)
         treeview.set_model(self._treeViewModel)
 
         self.refresh()

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest
@@ -14,8 +14,6 @@ import gobject
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Stoccaggio
 from promogest.dao.Stoccaggio import Stoccaggio
 
 from utils import *
@@ -54,12 +52,13 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
 
     def draw(self):
         # Colonne della Treeview per il filtro
+        #TODO: FARE GLI ORDINAMENTI COLONNA
         treeview = self._anagrafica.anagrafica_filter_treeview
         rendererSx = gtk.CellRendererText()
 
         column = gtk.TreeViewColumn('Magazzino', rendererSx, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
+        column.set_clickable(False)
         column.connect("clicked", self._changeOrderBy, 'magazzino')
         column.set_resizable(True)
         column.set_expand(False)
@@ -68,7 +67,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
+        column.set_clickable(False)
         column.connect("clicked", self._changeOrderBy, 'codice_articolo')
         column.set_resizable(True)
         column.set_expand(False)
@@ -77,7 +76,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Articolo', rendererSx, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
+        column.set_clickable(False)
         column.connect("clicked", self._changeOrderBy, 'articolo')
         column.set_resizable(True)
         column.set_expand(True)
