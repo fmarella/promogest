@@ -25,6 +25,8 @@ class CodiceABarreArticolo(Dao):
             dic = {k:codice_barre_articolo.c.codice == v}
         elif k == 'idArticolo':
             dic = {k:codice_barre_articolo.c.id_articolo == v}
+        elif k == 'idArticoloNone':
+            dic = {k:codice_barre_articolo.c.id_articolo == None}
         elif k == 'primario':
             dic = {k:codice_barre_articolo.c.primario ==v}
         return  dic[k]

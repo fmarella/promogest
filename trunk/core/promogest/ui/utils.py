@@ -2031,3 +2031,11 @@ def generateRandomBarCode():
             return codice
         else:
             create()
+
+def removeCodBarorphan():
+    from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
+    bc = CodiceABarreArticolo().select(idArticoloNone=True, batchSize=None)
+    if bc:
+        for a in bc:
+            print "CODICE A BARRE ORFANO DI ARTICOLO, VERRA' ELIMINATO", a.codice
+            a.delete()

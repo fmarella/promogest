@@ -113,7 +113,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Listino', rendererSx, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'id_listino')
+        column.connect("clicked", self._changeOrderBy, (None,'id_listino'))
         column.set_resizable(False)
         column.set_expand(True)
         column.set_min_width(250)
