@@ -96,7 +96,7 @@ class Login(GladeApp):
         #self.username_comboxentry.set_active(0)
         data = datetime.datetime.now()
         self.anno_lavoro_spinbutton.set_value(data.year)
-
+        self.button_login.connect('clicked', self.on_button_login_clicked )
         self.getTopLevel().show_all()
 
 
@@ -122,7 +122,8 @@ class Login(GladeApp):
     def on_button_help_clicked(self, button):
         sendemail = SendEmail()
 
-    def on_button_login_clicked(self, button=None):
+    def on_button_login_clicked(self, button):
+        print "OOOOOOOOOOOOOOOOOIDECDCCCCD"
         username = self.username_comboxentry.child.get_text()
 
         password = self.password_entry.get_text()
