@@ -1,9 +1,7 @@
 <?xml version="1.0"?>
 <glade-interface>
-  <!-- interface-requires gtk+ 2.16 -->
-  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkDialog" id="login_window">
-    <property name="title" translatable="yes">Accesso a Promogest2 "MentoR" </property>
+    <property name="title" translatable="yes">Accesso a PromoGest2 "MentoR" </property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
     <property name="icon">promogest.png</property>
@@ -163,7 +161,7 @@ Inserite i dati:.</property>
                     <child>
                       <widget class="GtkComboBoxEntry" id="azienda_comboboxentry">
                         <property name="visible">True</property>
-                        <property name="has_focus">True</property>
+<!--                         <property name="has_focus">True</property> -->
                         <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
                         <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
                       </widget>
@@ -390,17 +388,18 @@ Inserite i dati:.</property>
             </child>
             <child>
               <widget class="GtkButton" id="button_login">
-                <property name="response_id">-5</property>
+<!--                <property name="response_id">-5</property>-->
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="has_focus">True</property>
+<!--                 <property name="can_focus">True</property> -->
+<!--                 <property name="has_focus">True</property> -->
                 <property name="can_default">True</property>
                 <property name="has_default">True</property>
                 <property name="receives_default">False</property>
                 <property name="tooltip" translatable="yes">Connessione al promogest</property>
+                <signal name="clicked" handler="on_button_login_clicked"/>
                 <accelerator key="KP_Enter" signal="clicked"/>
                 <accelerator key="Return" signal="clicked"/>
-                <signal name="clicked" handler="on_button_login_clicked"/>
+
                 <child>
                   <widget class="GtkAlignment" id="alignment3">
                     <property name="visible">True</property>

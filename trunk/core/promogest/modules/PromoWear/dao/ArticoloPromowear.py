@@ -506,7 +506,7 @@ articolotagliacolore = Table('articolo_taglia_colore',params['metadata'],schema 
 
 std_mapper = mapper(Articolo,articolo,properties={
             "cod_barre":relation(CodiceABarreArticolo,primaryjoin=
-                and_(articolo.c.id==CodiceABarreArticolo.id_articolo)),
+                (articolo.c.id==CodiceABarreArticolo.id_articolo),backref="articolo", cascade="all, delete"),
             "imba":relation(Imballaggio,primaryjoin=
                 and_(articolo.c.id_imballaggio==Imballaggio.id), backref="articolo"),
             #"stato_articolo":relation(StatoArticolo, backref="articolo"),

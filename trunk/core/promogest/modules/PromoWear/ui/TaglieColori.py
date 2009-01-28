@@ -158,11 +158,9 @@ class GestioneTaglieColori(GladeWidget):
 
         if self.order == "color":
             if self.filtered:
-                print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self._articoloBase.colori
                 if self._articoloBase.colori[0] != None:
                     for c in self._articoloBase.colori:
                         #oggetto Colore
-                        print "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", c
                         parent = self._treeViewModel.append(None,(c,
                                                     True,
                                                     c.denominazione,
@@ -374,7 +372,7 @@ class GestioneTaglieColori(GladeWidget):
                 daoTaglia = dat[2]
             codiceabarre = dat[3]
             articoloFiglio = dat[4]
-
+            print "codice_a_barre", codiceabarre
             if codiceabarre:
                 if articoloFiglio:
                 #verifico la correttezza del codice a barre della variante già esistente
@@ -404,6 +402,7 @@ Il codice a barre  %s è gia' presente nel Database, ricontrolla!""" % codiceaba
                     if not codici:
                         cba = CodiceABarreArticolo()
                         cba.codice = codiceabarre
+                        cba.id_articolo = articoloFiglio.id
                         cba.primario = True
                         cba.persist()
             else:
