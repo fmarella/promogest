@@ -2174,8 +2174,9 @@ magazzino</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <accelerator key="g" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                            <property name="focus_on_click">False</property>
                             <signal name="clicked" handler="on_generate_article_code_button_clicked"/>
+                            <accelerator key="g" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                           </widget>
                           <packing>
                             <property name="position">1</property>

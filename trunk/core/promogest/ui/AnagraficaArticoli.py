@@ -41,6 +41,7 @@ class AnagraficaArticoli(Anagrafica):
                             reportHandler=AnagraficaArticoliReport(self),
                             editElement=AnagraficaArticoliEdit(self),
                             aziendaStr=aziendaStr)
+        checkCodBarOrphan = removeCodBarorphan()
         self.record_duplicate_menu.set_property('visible', True)
 
     def on_record_edit_activate(self, widget, path=None, column=None):
@@ -282,7 +283,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         self.refresh()
 
 
-    def refresh(self, join=None):
+    def refresh(self):
         # Aggiornamento TreeView
 
         denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
