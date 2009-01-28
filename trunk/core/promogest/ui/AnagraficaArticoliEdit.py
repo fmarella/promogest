@@ -614,7 +614,8 @@ dei dati accessori. Continuare?"""
     def on_id_taglia_customcombobox_clicked(self, widget, button):
         articoliTagliaColore = self.dao.articoliTagliaColore
         idTaglie = set(a.id_taglia for a in articoliTagliaColore)
-        idTaglie.remove(self.dao.id_taglia)
+        if idTaglie:
+            idTaglie.remove(self.dao.id_taglia)
         on_id_taglia_customcombobox_clicked(widget,
                                             button,
                                             idGruppoTaglia=self.dao.id_gruppo_taglia,
@@ -623,7 +624,8 @@ dei dati accessori. Continuare?"""
     def on_id_colore_customcombobox_clicked(self, widget, button):
         articoliTagliaColore = self.dao.articoliTagliaColore
         idColori = set(a.id_colore for a in articoliTagliaColore)
-        idColori.remove(self.dao.id_colore)
+        if idColori:
+            idColori.remove(self.dao.id_colore)
         on_id_colore_customcombobox_clicked(widget,
                                             button,
                                             ignore=list(idColori))

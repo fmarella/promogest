@@ -72,7 +72,7 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
         self.refresh()
 
     def on_generic_button_clicked(self,button):
-        codice = self.generateRandomBarCode()
+        codice = generateRandomBarCode()
         #self.dao = CodiceABarreArticolo()
         self.dao = None
         self.row = ([self.dao,
@@ -86,31 +86,6 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
                                         ##(self.row[1] or ''),
                                         ##(self.row[2] or False)))
         #self.refresh()
-
-    def generateRandomBarCode(self):
-        import random
-        codice = ''
-        def create():
-            code=[8,0]
-            codice = ''
-            for a in xrange(10):
-                code.append(random.sample([1,2,3,4,5,6,7,8,9,0],1)[0])
-            dispari = (code[1] + code[3] +code[5] +code[7]+code[9]+code[11])*3
-            pari = code[0]+code[2]+code[4]+code[6]+code[8]+code[10]
-            tot = 10-((dispari+pari)%10)
-            code.append(tot)
-            b = ''
-            for d in code:
-                b =b+str(d)
-            return b
-        correct = False
-        while correct is False:
-            codice = create()
-            there= CodiceABarreArticolo().select(codice=codice)
-            if not there:
-                return codice
-            else:
-                create()
 
     def refresh(self):
         # Aggiornamento TreeView

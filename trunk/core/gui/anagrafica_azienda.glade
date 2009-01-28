@@ -1287,6 +1287,7 @@
           <widget class="GtkEntry" id="partita_iva_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="max_length">11</property>
             <property name="invisible_char">&#x25CF;</property>
             <property name="overwrite_mode">True</property>
           </widget>

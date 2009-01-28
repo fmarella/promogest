@@ -121,6 +121,8 @@ Inserite i dati:.</property>
                     <child>
                       <widget class="GtkComboBoxEntry" id="username_comboxentry">
                         <property name="visible">True</property>
+                        <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -162,6 +164,8 @@ Inserite i dati:.</property>
                       <widget class="GtkComboBoxEntry" id="azienda_comboboxentry">
                         <property name="visible">True</property>
                         <property name="has_focus">True</property>
+                        <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
