@@ -325,6 +325,9 @@ class FilterWidget(GladeWidget):
             raise 'filterCountClosure not specificated !!!'
         return filterCountClosure()
 
+    def genericButton(self):
+        button = gtk.Button()
+        return button
 
     def getTreeViewFilterResultsWidget(self):
         """ Return a treeview widget for filter results """

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -44,6 +44,8 @@ class Anagrafica(GladeWidget):
         self.anagrafica_viewport.add(self.bodyWidget.getTopLevel())
         self.bodyWidget.filter_body_label.set_no_show_all(True)
         self.bodyWidget.filter_body_label.set_property('visible', False)
+        self.bodyWidget.generic_button.set_no_show_all(True)
+        self.bodyWidget.generic_button.set_property('visible', False)
 
         self.filter = self.bodyWidget.filtersElement
         self.filterTopLevel = self.filter.getTopLevel()
@@ -214,11 +216,11 @@ class Anagrafica(GladeWidget):
     def on_record_save_activate(self, widget, path=None, column=None):
         """ Salvataggio record """
         self.anagrafica_treeview.grab_focus()
-        #try:
-        self.detail.saveDao()
-        #except Exception:
-            #self.anagrafica_treeview_set_edit(True)
-            #return
+        try:
+            self.detail.saveDao()
+        except Exception:
+            self.anagrafica_treeview_set_edit(True)
+            return
 
         self.filterTopLevel.set_sensitive(True)
         self.anagrafica_filter_navigation_hbox.set_sensitive(True)
@@ -569,7 +571,7 @@ class AnagraficaFilter(GladeWidget):
 
 
 
-class AnagraficaDetail:
+class AnagraficaDetail(object):
     """ Dettaglio dell'anagrafica """
 
     def __init__(self, anagrafica, gladeFile=None,module=False):

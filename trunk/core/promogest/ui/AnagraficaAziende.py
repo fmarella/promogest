@@ -67,7 +67,7 @@ class AnagraficaAziende(GladeWidget):
         self.cap_sede_legale_entry.set_text(self.dao.sede_legale_cap or '00000')
         self.provincia_sede_legale_entry.set_text(self.dao.sede_legale_provincia or '')
         self.codice_fiscale_entry.set_text(self.dao.codice_fiscale or '')
-        self.partita_iva_entry.set_text(self.dao.partita_iva or '00000000000')
+        self.partita_iva_entry.set_text(self.dao.partita_iva or '0000000000')
         self.data_iscrizione_cciaa_entry.set_text(dateToString(self.dao.iscrizione_cciaa_data or ''))
         self.numero_iscrizione_cciaa_entry.set_text(self.dao.iscrizione_cciaa_numero or '')
         self.data_iscrizione_tribunale_entry.set_text(dateToString(self.dao.iscrizione_tribunale_data or ''))
@@ -112,21 +112,27 @@ class AnagraficaAziende(GladeWidget):
         if self.dao.codice_fiscale != '':
             codfis = checkCodFisc(self.dao.codice_fiscale)
             if not codfis:
-                return
+                return False
         if self.dao.partita_iva != '':
             partiva = checkPartIva(self.dao.partita_iva)
             if not partiva:
-                return
-        self.dao.persist()
+                return False
+        return True
 
 
     def on_apply_button_clicked(self, button):
-        self.saveDao()
+        save = self.saveDao()
+        if save:
+            self.dao.persist()
+            self.destroy()
+        
 
 
     def on_cancel_button_clicked(self, button):
         self.setDao()
 
+    def on_close_button_clicked(self, button):
+        self.destroy()
 
     def on_contatti_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):

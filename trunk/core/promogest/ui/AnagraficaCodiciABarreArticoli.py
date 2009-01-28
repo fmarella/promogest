@@ -36,7 +36,7 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
     def draw(self):
         # Colonne della Treeview per il filtro/modifica
         treeview = self.anagrafica_treeview
-
+        self.row=None
         renderer = gtk.CellRendererText()
         renderer.set_property('editable', False)
         renderer.connect('edited', self.on_column_edited, treeview, False)
@@ -62,11 +62,55 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
 
         self._treeViewModel = gtk.ListStore(object, str, bool)
         treeview.set_model(self._treeViewModel)
-
+        self.bodyWidget.generic_button.set_no_show_all(False)
+        self.bodyWidget.generic_button.set_property('visible', True)
+        generaButton = self.bodyWidget.generic_button
+        generaButton.connect('clicked', self.on_generic_button_clicked )
+        generaButton.set_label("Genera codice a barre")
         treeview.set_search_column(1)
 
         self.refresh()
 
+    def on_generic_button_clicked(self,button):
+        codice = self.generateRandomBarCode()
+        #self.dao = CodiceABarreArticolo()
+        self.dao = None
+        self.row = ([self.dao,
+                    codice,
+                    True])
+        #if self.row:
+        self.dao = CodiceABarreArticolo()
+        self.dao.id_articolo = self._idArticolo
+        self._newRow((self.dao, self.row[1], self.row[2]))
+            ##self._treeViewModel.append((self.row[0],
+                                        ##(self.row[1] or ''),
+                                        ##(self.row[2] or False)))
+        #self.refresh()
+
+    def generateRandomBarCode(self):
+        import random
+        codice = ''
+        def create():
+            code=[8,0]
+            codice = ''
+            for a in xrange(10):
+                code.append(random.sample([1,2,3,4,5,6,7,8,9,0],1)[0])
+            dispari = (code[1] + code[3] +code[5] +code[7]+code[9]+code[11])*3
+            pari = code[0]+code[2]+code[4]+code[6]+code[8]+code[10]
+            tot = 10-((dispari+pari)%10)
+            code.append(tot)
+            b = ''
+            for d in code:
+                b =b+str(d)
+            return b
+        correct = False
+        while correct is False:
+            codice = create()
+            there= CodiceABarreArticolo().select(codice=codice)
+            if not there:
+                return codice
+            else:
+                create()
 
     def refresh(self):
         # Aggiornamento TreeView
@@ -91,10 +135,12 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
 
         self._treeViewModel.clear()
 
+
         for b in bars:
             self._treeViewModel.append((b,
                                         (b.codice or ''),
                                         (b.primario or False)))
+
 
 
 
@@ -122,7 +168,8 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
 
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
-                                  anagrafica,gladeFile='_anagrafica_codici_a_barre_articoli_elements.glade')
+                                anagrafica,
+                                gladeFile='_anagrafica_codici_a_barre_articoli_elements.glade')
 
 
     def setDao(self, dao):

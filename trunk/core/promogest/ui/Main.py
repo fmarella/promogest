@@ -123,14 +123,14 @@ class Main(GladeWidget):
             currModule = self.anagrafiche_dirette_modules[mod]
             pbuf = gtk.gdk.pixbuf_new_from_file(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
             row = (ind, currModule['module'].VIEW_TYPE[1], pbuf, currModule['module'])
-            print len(row)
+            #print len(row)
             model_right.append(row)
             ind += 1
         for mod in self.frame_modules.keys():
             currModule = self.frame_modules[mod]
             pbuf = gtk.gdk.pixbuf_new_from_file(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
             row =(ind, currModule['module'].VIEW_TYPE[1], pbuf, currModule['module'])
-            print len(row)
+            #print len(row)
             model_right.append(row)
             ind += 1
 
@@ -449,13 +449,8 @@ class Main(GladeWidget):
         showAnagrafica(self.getTopLevel(), configuraWindow)
 
     def on_dati_azienda_activate(self, widget):
-        print "OOOOOOOOOOOOODDDDDDDDDDDDDDDDD"
         from AnagraficaAziende import AnagraficaAziende
-            #self.mainWindow = mainWindow
         anag =AnagraficaAziende(self) #.__init__(self, self.mainWindow)
-            #showAnagrafica(self.getTopLevel(), anag, mainClass=self)
-            #self.currentFrame = self.create_azienda_frame()
-        #icon_view.unselect_all()
         return
 
     def on_credits_menu_activate(self, widget):
@@ -756,7 +751,7 @@ class AnagrafichePrincipaliFrame(GladeWidget):
                 module_button.set_image(module_butt_image)
                 module_button.set_label(module[1]['module'].VIEW_TYPE[1])
                 module_button.connect('clicked', self.on_module_button_clicked)
-                self.vbox4.pack_start(module_button, False, False)
+                self.vbox1.pack_start(module_button, False, False)
             return
         else:
             return
