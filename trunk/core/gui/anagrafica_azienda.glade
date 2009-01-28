@@ -3,15 +3,18 @@
   <!-- interface-requires gtk+ 2.16 -->
   <!-- interface-naming-policy project-wide -->
   <widget class="GtkWindow" id="anagrafica_azienda">
+    <property name="width_request">830</property>
+    <property name="height_request">610</property>
     <property name="title" translatable="yes">Dati Azienda</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
+    <property name="icon">promogest.png</property>
     <child>
       <widget class="GtkTable" id="anagrafica_aziende_detail_table">
         <property name="width_request">690</property>
         <property name="visible">True</property>
         <property name="border_width">6</property>
-        <property name="n_rows">24</property>
+        <property name="n_rows">25</property>
         <property name="n_columns">6</property>
         <property name="row_spacing">6</property>
         <child>
@@ -269,7 +272,7 @@
                         <child>
                           <widget class="GtkLabel" id="label3485">
                             <property name="visible">True</property>
-                            <property name="label">_Applica</property>
+                            <property name="label">_Ok</property>
                             <property name="use_underline">True</property>
                           </widget>
                           <packing>
@@ -284,6 +287,8 @@
                 </child>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -306,7 +311,7 @@
                         <child>
                           <widget class="GtkImage" id="image8">
                             <property name="visible">True</property>
-                            <property name="pixbuf">annulla2nd16x16.png</property>
+                            <property name="pixbuf">ripristina16x16.png</property>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
@@ -317,7 +322,7 @@
                         <child>
                           <widget class="GtkLabel" id="label73">
                             <property name="visible">True</property>
-                            <property name="label">A_nnulla</property>
+                            <property name="label">Ripristina</property>
                             <property name="use_underline">True</property>
                           </widget>
                           <packing>
@@ -332,7 +337,59 @@
                 </child>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkButton" id="close_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_close_button_clicked"/>
+                <child>
+                  <widget class="GtkAlignment" id="alignment1">
+                    <property name="visible">True</property>
+                    <property name="xscale">0</property>
+                    <property name="yscale">0</property>
+                    <child>
+                      <widget class="GtkHBox" id="hbox1">
+                        <property name="visible">True</property>
+                        <property name="spacing">2</property>
+                        <child>
+                          <widget class="GtkImage" id="image1">
+                            <property name="visible">True</property>
+                            <property name="pixbuf">annulla2nd16x16.png</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="label1">
+                            <property name="visible">True</property>
+                            <property name="label">Chiudi</property>
+                            <property name="use_underline">True</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </widget>
@@ -1146,18 +1203,6 @@
           </packing>
         </child>
         <child>
-          <widget class="Custom" id="partita_iva_entry">
-            <property name="visible">True</property>
-            <property name="creation_function">createUnsignedIntegerEntryField</property>
-          </widget>
-          <packing>
-            <property name="left_attach">3</property>
-            <property name="right_attach">4</property>
-            <property name="top_attach">12</property>
-            <property name="bottom_attach">13</property>
-          </packing>
-        </child>
-        <child>
           <widget class="GtkEntry" id="numero_iscrizione_cciaa_entry">
             <property name="width_request">30</property>
             <property name="visible">True</property>
@@ -1225,6 +1270,31 @@
             <property name="top_attach">20</property>
             <property name="bottom_attach">23</property>
             <property name="x_options">GTK_FILL</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkStatusbar" id="statusbar1">
+            <property name="visible">True</property>
+            <property name="spacing">2</property>
+          </widget>
+          <packing>
+            <property name="right_attach">6</property>
+            <property name="top_attach">24</property>
+            <property name="bottom_attach">25</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkEntry" id="partita_iva_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="invisible_char">&#x25CF;</property>
+            <property name="overwrite_mode">True</property>
+          </widget>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="right_attach">4</property>
+            <property name="top_attach">12</property>
+            <property name="bottom_attach">13</property>
           </packing>
         </child>
         <child>
