@@ -1,12 +1,13 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<!--Generated with glade3 3.4.5 on Thu Jan 29 02:21:46 2009 -->
 <glade-interface>
-  <!-- interface-requires gtk+ 2.16 -->
-  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="_filter_elements">
     <property name="title" translatable="yes">FIXME</property>
     <property name="modal">True</property>
-    <property name="window_position">center</property>
+    <property name="window_position">GTK_WIN_POS_CENTER</property>
     <property name="icon">promogest.png</property>
+    <signal name="key_press_event" handler="on__filter_elements_key_press_event"/>
     <signal name="destroy_event" handler="on_scontrini_window_close"/>
     <signal name="delete_event" handler="on_scontrini_window_close"/>
     <child>
@@ -34,17 +35,17 @@
                         <property name="visible">True</property>
                         <property name="border_width">6</property>
                         <property name="spacing">6</property>
-                        <property name="layout_style">end</property>
+                        <property name="layout_style">GTK_BUTTONBOX_END</property>
                         <child>
                           <widget class="GtkButton" id="filter_clear_button">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
-                            <property name="receives_default">False</property>
                             <property name="tooltip" translatable="yes">Ripulisci i parametri di selezione</property>
-                            <accelerator key="Escape" signal="clicked"/>
-                            <accelerator key="Escape" signal="clicked"/>
+                            <property name="response_id">0</property>
                             <signal name="clicked" handler="on_filter_clear_button_clicked"/>
+                            <accelerator key="Escape" modifiers="" signal="clicked"/>
+                            <accelerator key="Escape" modifiers="" signal="clicked"/>
                             <child>
                               <widget class="GtkAlignment" id="alignment506">
                                 <property name="visible">True</property>
@@ -62,7 +63,6 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">False</property>
-                                        <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -85,7 +85,6 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
-                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
@@ -94,11 +93,14 @@
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
                             <property name="has_default">True</property>
-                            <property name="receives_default">False</property>
+                            <property name="events">GDK_KEY_PRESS_MASK | GDK_STRUCTURE_MASK</property>
                             <property name="tooltip" translatable="yes">Seleziona in base ai parametri specificati</property>
-                            <accelerator key="KP_F3" signal="clicked"/>
-                            <accelerator key="F3" signal="clicked"/>
+                            <property name="response_id">0</property>
                             <signal name="clicked" handler="on_filter_search_button_clicked"/>
+                            <accelerator key="Return" modifiers="" signal="clicked"/>
+                            <accelerator key="KP_Enter" modifiers="" signal="clicked"/>
+                            <accelerator key="KP_F3" modifiers="" signal="clicked"/>
+                            <accelerator key="F3" modifiers="" signal="clicked"/>
                             <child>
                               <widget class="GtkAlignment" id="alignment507">
                                 <property name="visible">True</property>
@@ -116,7 +118,6 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">False</property>
-                                        <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -146,7 +147,7 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="pack_type">end</property>
+                        <property name="pack_type">GTK_PACK_END</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -158,7 +159,7 @@
               <widget class="GtkLabel" id="filter_frame_label">
                 <property name="visible">True</property>
                 <property name="xpad">5</property>
-                <property name="label" translatable="yes">Ricerca</property>
+                <property name="label" translatable="yes">&lt;b&gt;Ricerca&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
               </widget>
               <packing>
@@ -169,7 +170,6 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
-            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -177,15 +177,13 @@
             <property name="visible">True</property>
             <child>
               <widget class="GtkButton" id="generic_button">
-                <property name="label" translatable="yes">button</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="label" translatable="yes">button</property>
+                <property name="response_id">0</property>
                 <signal name="clicked" handler="on_generic_button_clicked"/>
               </widget>
-              <packing>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <widget class="GtkLabel" id="filter_body_label">
@@ -212,16 +210,13 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="border_width">3</property>
-                <property name="hscrollbar_policy">automatic</property>
-                <property name="vscrollbar_policy">automatic</property>
-                <property name="shadow_type">in</property>
+                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <property name="shadow_type">GTK_SHADOW_IN</property>
                 <child>
                   <placeholder/>
                 </child>
               </widget>
-              <packing>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <widget class="GtkHBox" id="filter_navigation_hbox">
@@ -230,7 +225,7 @@
                   <widget class="GtkButton" id="filter_first_button">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
+                    <property name="response_id">0</property>
                     <signal name="clicked" handler="on_filter_first_button_clicked"/>
                     <child>
                       <widget class="GtkAlignment" id="alignment15">
@@ -249,7 +244,6 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">0</property>
                               </packing>
                             </child>
                           </widget>
@@ -257,15 +251,12 @@
                       </widget>
                     </child>
                   </widget>
-                  <packing>
-                    <property name="position">0</property>
-                  </packing>
                 </child>
                 <child>
                   <widget class="GtkButton" id="filter_prev_button">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
+                    <property name="response_id">0</property>
                     <signal name="clicked" handler="on_filter_prev_button_clicked"/>
                     <child>
                       <widget class="GtkAlignment" id="alignment16">
@@ -284,7 +275,6 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">0</property>
                               </packing>
                             </child>
                           </widget>
@@ -305,9 +295,6 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Pag. </property>
                       </widget>
-                      <packing>
-                        <property name="position">0</property>
-                      </packing>
                     </child>
                     <child>
                       <widget class="GtkEntry" id="filter_current_page_entry">
@@ -316,6 +303,8 @@
                         <property name="has_frame">False</property>
                         <property name="width_chars">4</property>
                         <property name="text" translatable="yes">1</property>
+                        <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
+                        <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
                         <signal name="key_press_event" handler="on_current_page_filter_entry_key_press_event"/>
                       </widget>
                       <packing>
@@ -351,7 +340,7 @@
                   <widget class="GtkButton" id="filter_next_button">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
+                    <property name="response_id">0</property>
                     <signal name="clicked" handler="on_filter_next_button_clicked"/>
                     <child>
                       <widget class="GtkAlignment" id="alignment17">
@@ -370,7 +359,6 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">0</property>
                               </packing>
                             </child>
                           </widget>
@@ -386,7 +374,7 @@
                   <widget class="GtkButton" id="filter_last_button">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
+                    <property name="response_id">0</property>
                     <signal name="clicked" handler="on_filter_last_button_clicked"/>
                     <child>
                       <widget class="GtkAlignment" id="alignment18">
@@ -405,7 +393,6 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">0</property>
                               </packing>
                             </child>
                           </widget>

@@ -95,6 +95,8 @@ class Anagrafica(GladeWidget):
         self.getTopLevel().add_accel_group(accelGroup)
         self.bodyWidget.filter_clear_button.add_accelerator('clicked', accelGroup, gtk.keysyms.Escape, 0, gtk.ACCEL_VISIBLE)
         self.bodyWidget.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
+        self.bodyWidget.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.KP_Enter, 0, gtk.ACCEL_VISIBLE)
+        self.bodyWidget.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.Return, 0, gtk.ACCEL_VISIBLE)
 
     def _setHtmlHandler(self, htmlHandler):
         self.htmlHandler = htmlHandler
@@ -1054,6 +1056,8 @@ class AnagraficaHtml(object):
 
 
     def pdf(self, operationName):
+        self._slaTemplate = None
+        self._slaTemplateObj=None
         operationNameUnderscored = operationName.replace(' ' , '_').lower()
         print "per la stampa", operationNameUnderscored, Environment.templatesDir + operationNameUnderscored + '.sla'
         if os.path.exists(Environment.templatesDir + operationNameUnderscored + '.sla'):
