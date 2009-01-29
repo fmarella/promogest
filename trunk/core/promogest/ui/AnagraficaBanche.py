@@ -14,14 +14,11 @@ from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 
 from promogest import Environment
 from promogest.dao.Dao import Dao
-import promogest.dao.Banca
 from promogest.dao.Banca import Banca
 from promogest.lib.ControlloIBAN import *
 
 from utils import *
 from utilsCombobox import *
-
-
 
 class AnagraficaBanche(Anagrafica):
     """ Anagrafica banche """
@@ -45,7 +42,7 @@ class AnagraficaBanche(Anagrafica):
         column = gtk.TreeViewColumn('Denominazione', renderer, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'denominazione')
+        column.connect("clicked", self._changeOrderBy, (None,'denominazione'))
         column.set_resizable(True)
         column.set_expand(True)
         treeview.append_column(column)
@@ -58,7 +55,7 @@ class AnagraficaBanche(Anagrafica):
         column = gtk.TreeViewColumn('Agenzia', renderer, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'agenzia')
+        column.connect("clicked", self._changeOrderBy, (None,'agenzia'))
         column.set_resizable(True)
         column.set_expand(True)
         treeview.append_column(column)
@@ -71,7 +68,7 @@ class AnagraficaBanche(Anagrafica):
         column = gtk.TreeViewColumn('IBAN', renderer, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'iban')
+        column.connect("clicked", self._changeOrderBy, (None,'iban'))
         column.set_resizable(True)
         column.set_expand(True)
         treeview.append_column(column)
@@ -127,7 +124,7 @@ class AnagraficaBanche(Anagrafica):
 
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, str, str, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str)
         treeview.set_model(self._treeViewModel)
 
         self.refresh()
