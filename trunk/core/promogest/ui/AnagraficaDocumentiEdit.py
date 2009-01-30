@@ -29,12 +29,12 @@ from promogest import Environment
 
 class AnagraficaDocumentiEdit(AnagraficaEdit):
     """ Modifica un record dei documenti """
-    TARGETS = [
-           ('MY_TREE_MODEL_ROW', gtk.TARGET_SAME_WIDGET, 0),
-          ('text/plain', 0, 1),
-           ('TEXT', 0, 2),
-           ('STRING', 0, 3),
-          ]
+    #TARGETS = [
+           #('MY_TREE_MODEL_ROW', gtk.TARGET_SAME_WIDGET, 0),
+          #('text/plain', 0, 1),
+           #('TEXT', 0, 2),
+           #('STRING', 0, 3),
+          #]
 
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
@@ -1327,7 +1327,7 @@ del documento.
         self._righe[0]["molt_pezzi"] = self._righe[self._numRiga]["molt_pezzi"]
 
         findComboboxRowFromId(self.id_magazzino_combobox, self._righe[0]["idMagazzino"])
-        fillComboboxnoMultipli(self.id_multiplo_customcombobox.combobox, self._righe[0]["idArticolo"], True)
+        fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self._righe[0]["idArticolo"], True)
         findComboboxRowFromId(self.id_multiplo_customcombobox.combobox, self._righe[0]["idMultiplo"])
         self.refresh_combobox_listini()
         findComboboxRowFromId(self.id_listino_customcombobox.combobox, self._righe[0]["idListino"])
