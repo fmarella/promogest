@@ -21,6 +21,7 @@ from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.dao.Articolo import Articolo
 from utils import *
 from utilsCombobox import *
+from promogest.dao.DaoUtils import giacenzaSel
 #from promogest.lib.TreeViewTooltips import TreeViewTooltips
 #from promogest.ui.widgets.MultiLineEditor import MultiLineEditor
 from GladeWidget import GladeWidget
@@ -28,6 +29,12 @@ from promogest import Environment
 
 class AnagraficaDocumentiEdit(AnagraficaEdit):
     """ Modifica un record dei documenti """
+    TARGETS = [
+           ('MY_TREE_MODEL_ROW', gtk.TARGET_SAME_WIDGET, 0),
+          ('text/plain', 0, 1),
+           ('TEXT', 0, 2),
+           ('STRING', 0, 3),
+          ]
 
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
@@ -95,7 +102,20 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.promowear_manager_taglia_colore_image.hide()
             #self.promowear_manager_taglia_colore_togglebutton.set_property("visible", False)
             #self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
-            self.hbox9.destroy()
+            #self.hbox9.destroy()
+            self.anno_label.destroy()
+            self.label_anno.destroy()
+            self.stagione_label.destroy()
+            self.label15.destroy()
+            self.colore_label.destroy()
+            self.label14.destroy()
+            self.taglia_label.destroy()
+            self.label_taglia.destroy()
+            self.gruppo_taglia_label.destroy()
+            self.label_gruppo_taglia.destroy()
+            self.tipo_label.destroy()
+            self.label_tipo.destroy()
+
 
 
     def hideSuMisura(self):
@@ -207,6 +227,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.prezzo_netto_label.set_text('0')
         self.sconti_widget.clearValues()
         self.totale_riga_label.set_text('0')
+        self.giacenza_label.set_text('0')
         if "PromoWear" in Environment.modulesList:
             self.gruppo_taglia_label.set_markup('<span weight="bold">%s</span>' % ('',))
             self.taglia_label.set_markup('<span weight="bold">%s</span>' % ('',))
@@ -297,6 +318,19 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
+        #treeview.set_reorderable(True)
+
+        #treeview.enable_model_drag_source( gtk.gdk.BUTTON1_MASK,
+                                                   #self.TARGETS,
+                                                   #gtk.gdk.ACTION_DEFAULT|
+                                                   #gtk.gdk.ACTION_MOVE)
+        #treeview.enable_model_drag_dest(self.TARGETS,
+                                                #gtk.gdk.ACTION_DEFAULT)
+
+        #treeview.connect("drag_data_get", self.drag_data_get_data)
+        #treeview.connect("drag_data_received",
+                                 #self.drag_data_received_data)
+
 
         if "SuMisura" in Environment.modulesList:
             column = gtk.TreeViewColumn('H', rendererSx, text=5)
@@ -384,7 +418,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         fillComboboxCausaliTrasporto(self.causale_trasporto_comboboxentry)
         fillComboboxAspettoEsterioreBeni(self.aspetto_esteriore_beni_comboboxentry)
         self.id_operazione_combobox.set_wrap_width(Environment.conf.combo_columns)
-            
+
 
         self.porto_combobox.set_active(-1)
         self.porto_combobox.set_sensitive(False)
@@ -477,6 +511,15 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
         model = gtk.ListStore(str, str, str)
         self.riepiloghi_iva_treeview.set_model(model)
+
+    #def drag_data_received_data(self, treeview, context, x, y, selection,
+                                   #info, etime):
+        #print "SSSSSSSSSS", "drag_data_received_data",context, x,y,selection,info,etime
+
+    #def drag_data_get_data(self, treeview, context, selection, target_id,
+                              #etime):
+        #print "GGGGGGGGGG", "drag_data_get_data",context,selection ,target_id,etime
+
 
     def on_id_operazione_combobox_changed(self, combobox):
 
@@ -995,7 +1038,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             rigadoc= self._righe[j]
 
 
-            #riempimento della treeview righe 
+            #riempimento della treeview righe
             self.modelRiga.append((j,
                                     rigadoc["magazzino"],
                                     rigadoc["codiceArticolo"],
@@ -1017,7 +1060,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._loading = False
 
         self.calcolaTotale()
-        
+
         self.label_numero_righe.set_text(str(len(self.dao.righe)))
         #sesso il notebook sulla prima pagina principale
         self.notebook.set_current_page(0)
@@ -1044,7 +1087,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.dao.data_documento = datetime.datetime.today()
             self._oldDaoRicreato = False #il dao è nuovo il controllo sul nuovo codice è necessario
         else:
-            # Ricrea il Dao prendendolo dal DB 
+            # Ricrea il Dao prendendolo dal DB
             self.dao = TestataDocumento().getRecord(id=dao.id)
             Environment.tagliacoloretempdata = (False,[])
             self._controllo_data_documento = dateToString(self.dao.data_documento)
@@ -1243,6 +1286,9 @@ del documento.
             self.dao.removeDividedCost()
         self._refresh()
 
+    #def on_righe_treeview_drag_begin(self, treeview, path, column, value):
+        #print "DRAAAG"
+
     def on_righe_treeview_row_activated(self, treeview, path, column):
         """ riporta la riga selezionata in primo piano per la modifica"""
 
@@ -1281,11 +1327,11 @@ del documento.
         self._righe[0]["molt_pezzi"] = self._righe[self._numRiga]["molt_pezzi"]
 
         findComboboxRowFromId(self.id_magazzino_combobox, self._righe[0]["idMagazzino"])
-        fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self._righe[0]["idArticolo"], True)
+        fillComboboxnoMultipli(self.id_multiplo_customcombobox.combobox, self._righe[0]["idArticolo"], True)
         findComboboxRowFromId(self.id_multiplo_customcombobox.combobox, self._righe[0]["idMultiplo"])
         self.refresh_combobox_listini()
         findComboboxRowFromId(self.id_listino_customcombobox.combobox, self._righe[0]["idListino"])
-
+        self.giacenza_label.set_text(self._righe[0]["codiceArticolo"])
         self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
         self.descrizione_entry.set_text(self._righe[0]["descrizione"])
         self.codice_articolo_fornitore_entry.set_text(self._righe[0]["codiceArticoloFornitore"])
