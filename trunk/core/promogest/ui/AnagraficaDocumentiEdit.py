@@ -10,14 +10,10 @@
 
 from AnagraficaComplessa import AnagraficaEdit
 import gtk
-import promogest.dao.TestataDocumento
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.TestataMovimento import TestataMovimento
-import promogest.dao.RigaDocumento
 from promogest.dao.RigaDocumento import RigaDocumento
-import promogest.dao.ScontoRigaDocumento
 from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
-import promogest.dao.ScontoTestataDocumento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
@@ -61,7 +57,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         descrizione, percentuale iva, unita base, multiplo, listino,
         quantita, prezzo lordo, sconti, prezzo netto, totale, altezza, larghezza,molt_pezzi
         """
-        self.modelRiga = gtk.ListStore(str, str, str, str, str, str, str,
+        self.modelRiga = gtk.ListStore(int,str, str, str, str, str, str, str,
                                         str, str, str, str, str, str, str,str)
         # iteratore riga corrente
         self._iteratorRiga = None
@@ -267,28 +263,35 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         rendererDx = gtk.CellRendererText()
         rendererDx.set_property('xalign', 1)
 
-        column = gtk.TreeViewColumn('Magazzino', rendererSx, text=0)
+        column = gtk.TreeViewColumn('N°', rendererSx, text=0)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=1)
+        column = gtk.TreeViewColumn('Magazzino', rendererSx, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Descrizione', rendererSx, text=2)
+        column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=2)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(False)
+        column.set_resizable(True)
+        column.set_expand(False)
+        treeview.append_column(column)
+
+        column = gtk.TreeViewColumn('Descrizione', rendererSx, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(True)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('% IVA', rendererDx, text=3)
+        column = gtk.TreeViewColumn('% IVA', rendererDx, text=4)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -296,77 +299,77 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         treeview.append_column(column)
 
         if "SuMisura" in Environment.modulesList:
-            column = gtk.TreeViewColumn('H', rendererSx, text=4)
+            column = gtk.TreeViewColumn('H', rendererSx, text=5)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
             column.set_clickable(False)
             column.set_resizable(True)
             column.set_expand(False)
             treeview.append_column(column)
 
-            column = gtk.TreeViewColumn('L', rendererSx, text=5)
+            column = gtk.TreeViewColumn('L', rendererSx, text=6)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
             column.set_clickable(False)
             column.set_resizable(True)
             column.set_expand(False)
             treeview.append_column(column)
 
-            column = gtk.TreeViewColumn('Pezzi', rendererSx, text=6)
+            column = gtk.TreeViewColumn('Pezzi', rendererSx, text=7)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
             column.set_clickable(False)
             column.set_resizable(True)
             column.set_expand(False)
             treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Multiplo', rendererSx, text=7)
+        column = gtk.TreeViewColumn('Multiplo', rendererSx, text=8)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Listino', rendererSx, text=8)
+        column = gtk.TreeViewColumn('Listino', rendererSx, text=9)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('U.M.', rendererSx, text=9)
+        column = gtk.TreeViewColumn('U.M.', rendererSx, text=10)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Quantita''', rendererDx, text=10)
+        column = gtk.TreeViewColumn('Quantita''', rendererDx, text=11)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Prezzo lordo', rendererDx, text=11)
+        column = gtk.TreeViewColumn('Prezzo lordo', rendererDx, text=12)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Sconti', rendererSx, text=12)
+        column = gtk.TreeViewColumn('Sconti', rendererSx, text=13)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Prezzo netto', rendererDx, text=13)
+        column = gtk.TreeViewColumn('Prezzo netto', rendererDx, text=14)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Totale', rendererDx, text=14)
+        column = gtk.TreeViewColumn('Totale', rendererDx, text=15)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -691,7 +694,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 findComboboxRowFromId(self.id_listino_customcombobox.combobox, self._id_listino)
 
     def on_id_multiplo_customcombobox_button_clicked(self, widget, toggleButton):
-
         on_id_multiplo_customcombobox_clicked(widget, toggleButton, self._righe[0]["idArticolo"])
 
     def on_id_multiplo_customcombobox_changed(self, combobox):
@@ -931,7 +933,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.totale_colli_entry.set_text(str(self.dao.totale_colli or 0))
         self.totale_peso_entry.set_text(str(self.dao.totale_peso or 0))
         self.sconti_testata_widget.setValues(self.dao.sconti, self.dao.applicazione_sconti)
+
+        # gestione righe documento in visualizzazione
+
         self.clearRows()
+
         for riga in self.dao.righe:
             self.azzeraRiga(0)
             j = self.dao.righe.index(riga) + 1
@@ -979,6 +985,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["molt_pezzi"] = moltiplicatore_pezzi
 
             self.getTotaleRiga()
+
             self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
             if self._tipoPersonaGiuridica == "fornitore":
                 fornitura = leggiFornitura(riga.id_articolo, self.dao.id_fornitore, self.dao.data_documento, True)
@@ -986,7 +993,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
             self._righe.append(self._righe[0])
             rigadoc= self._righe[j]
-            self.modelRiga.append((rigadoc["magazzino"],
+
+
+            #riempimento della treeview righe 
+            self.modelRiga.append((j,
+                                    rigadoc["magazzino"],
                                     rigadoc["codiceArticolo"],
                                     rigadoc["descrizione"],
                                     mN(rigadoc["percentualeIva"]),
@@ -1004,10 +1015,15 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
             self.righe_treeview.set_model(self.modelRiga)
         self._loading = False
+
         self.calcolaTotale()
+        
         self.label_numero_righe.set_text(str(len(self.dao.righe)))
+        #sesso il notebook sulla prima pagina principale
         self.notebook.set_current_page(0)
+        #imposto una nuova riga
         self.nuovaRiga()
+
         if self.dao.id is None or self.numero_documento_entry.get_text() == '0':
             self.id_operazione_combobox.grab_focus()
         else:
@@ -1015,8 +1031,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if Environment.conf.hasPagamenti == True:
             self.Pagamenti.getScadenze()
 
-    def setDao(self, dao):
 
+    def setDao(self, dao):
+        """
+            imposta un nuovo dao Testata documenco
+        """
         if dao is None:
             # Crea un nuovo Dao vuoto
             Environment.tagliacoloretempdata = (False,[])
@@ -1025,7 +1044,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.dao.data_documento = datetime.datetime.today()
             self._oldDaoRicreato = False #il dao è nuovo il controllo sul nuovo codice è necessario
         else:
-            # Ricrea il Dao con una connessione al DBMS SQL
+            # Ricrea il Dao prendendolo dal DB 
             self.dao = TestataDocumento().getRecord(id=dao.id)
             Environment.tagliacoloretempdata = (False,[])
             self._controllo_data_documento = dateToString(self.dao.data_documento)
@@ -1036,11 +1055,12 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
 
     def saveDao(self):
+        """ Salvataggio del Dao
+        """
+
         scontiRigaDocumentoList = {}
         if not(len(self._righe) > 1):
-            #print "ATTENZIONE, TENTATIVO DI SALVATAGGIO SENZA RIGHE?????"
             raise Exception, "ATTENZIONE, TENTATIVO DI SALVATAGGIO SENZA RIGHE?????"
-            #return
 
         if (self.data_documento_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel,
@@ -1060,10 +1080,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.dao.data_documento = stringToDate(self.data_documento_entry.get_text())
         if self.dao.id is not None and self.numero_documento_entry.get_text() != '0':
 
-            #print "DATA DOCUMENTO :", self.data_documento_entry.get_text() == self._controllo_data_documento
-            #print "NUMERO DOCUMENTO:", str(self.numero_documento_entry.get_text()) == str(self._controllo_numero_documento)
-
-            if self.data_documento_entry.get_text() != self._controllo_data_documento or str(self.numero_documento_entry.get_text()) != str(self._controllo_numero_documento):
+            if self.data_documento_entry.get_text() != self._controllo_data_documento\
+                        or str(self.numero_documento_entry.get_text()) != str(self._controllo_numero_documento):
                 numero = self.numero_documento_entry.get_text()
                 idOperazione = findIdFromCombobox(self.id_operazione_combobox)
                 daData, aData = getDateRange(self.data_documento_entry.get_text())
@@ -1136,19 +1154,20 @@ del documento.
         self.dao.note_pie_pagina = self.note_pie_pagina_entry.get_text()
         self.dao.applicazione_sconti = self.sconti_testata_widget.getApplicazione()
 
-        scontiSuTotale = {}
+        scontiSuTotale = []#{}
+
         res = self.sconti_testata_widget.getSconti()
         if res is not None:
             for k in range(0, len(res)):
                 daoSconto = ScontoTestataDocumento()
                 daoSconto.valore = mN(res[k]["valore"])
                 daoSconto.tipo_sconto = res[k]["tipo"]
-                scontiSuTotale[self.dao]=daoSconto
-                #scontiSuTotale.append(daoSconto)
+                #scontiSuTotale[self.dao]=daoSconto
+                scontiSuTotale.append(daoSconto)
 
-        #self.dao.sconti = scontiSuTotale
-        scontiRigaDocumento={}
-        righe = {}
+        self.dao.scontiSuTotale = scontiSuTotale
+        scontiRigaDocumento=[]
+        righeDocumento = []
         for i in range(1, len(self._righe)):
             daoRiga = RigaDocumento()
             daoRiga.id_testata_documento = self.dao.id
@@ -1172,9 +1191,10 @@ del documento.
                     daoSconto = ScontoRigaDocumento()
                     daoSconto.valore = mN(scon["valore"])
                     daoSconto.tipo_sconto = scon["tipo"]
-                    sconti.append(daoSconto)
-            scontiRigaDocumento[daoRiga] = sconti
-            sconti =[]
+                    scontiRigaDocumento.append(daoSconto)
+            #scontiRigaDocumento[daoRiga] = sconti
+            daoRiga.scontiRigaDocumento = scontiRigaDocumento
+            scontiRigaDocumento =[]
             misure = []
             if self._righe[i]["altezza"] != '' and self._righe[i]["larghezza"] != '' and "SuMisura" in Environment.modulesList:
                 from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
@@ -1183,10 +1203,9 @@ del documento.
                 daoMisura.larghezza = float(self._righe[i]["larghezza"] or 0)
                 daoMisura.moltiplicatore = float(self._righe[i]["molt_pezzi"] or 0)
                 daoRiga.misura_pezzo2 = daoMisura
-            righe[i]=daoRiga
-            #righe.append(daoRiga)
-
-        #self.dao.righe = righe
+            #righe[i]=daoRiga
+            righeDocumento.append(daoRiga)
+        self.dao.righeDocumento = righeDocumento
         #FIXME : controllareee
         self.dao.removeDividedCost()
         self.dao.costo_da_ripartire = self.importo_da_ripartire_entry.get_text()
@@ -1202,9 +1221,7 @@ del documento.
             self.dao.numero = valori[0]
             self.dao.registro_numerazione= valori[1]
         #porto in persist tre dizionari: uno per gli sconti sul totale, l'altro per gli sconti sulle righe e le righe stesse
-        self.dao.persist(scontiRigaDocumento=scontiRigaDocumento,
-                        scontiSuTotale=scontiSuTotale,
-                        righe=righe)
+        self.dao.persist()
         self.label_numero_righe.hide()
         text = str(len(self.dao.righe))
         self.label_numero_righe.set_text(text)
@@ -1375,28 +1392,30 @@ del documento.
         if inserisci is False:
             if self._iteratorRiga is None:
                 return
-            self.modelRiga.set_value(self._iteratorRiga, 0, self._righe[self._numRiga]["magazzino"])
-            self.modelRiga.set_value(self._iteratorRiga, 1, self._righe[self._numRiga]["codiceArticolo"])
-            self.modelRiga.set_value(self._iteratorRiga, 2, self._righe[self._numRiga]["descrizione"])
-            self.modelRiga.set_value(self._iteratorRiga, 3, '%5.2f' % float(self._righe[self._numRiga]["percentualeIva"]))
+            #self.modelRiga.set_value(self._iteratorRiga, 0, self._righe[self._numRiga]["magazzino"])
+            self.modelRiga.set_value(self._iteratorRiga, 1, self._righe[self._numRiga]["magazzino"])
+            self.modelRiga.set_value(self._iteratorRiga, 2, self._righe[self._numRiga]["codiceArticolo"])
+            self.modelRiga.set_value(self._iteratorRiga, 3, self._righe[self._numRiga]["descrizione"])
+            self.modelRiga.set_value(self._iteratorRiga, 4, '%5.2f' % float(self._righe[self._numRiga]["percentualeIva"]))
             if "SuMisura" in Environment.modulesList:
-                self.modelRiga.set_value(self._iteratorRiga, 4, self._righe[self._numRiga][
-                   "altezza"])
                 self.modelRiga.set_value(self._iteratorRiga, 5, self._righe[self._numRiga][
-                    "larghezza"])
+                   "altezza"])
                 self.modelRiga.set_value(self._iteratorRiga, 6, self._righe[self._numRiga][
+                    "larghezza"])
+                self.modelRiga.set_value(self._iteratorRiga, 7, self._righe[self._numRiga][
                     "molt_pezzi"])
-            self.modelRiga.set_value(self._iteratorRiga, 7, self._righe[self._numRiga]["multiplo"])
-            self.modelRiga.set_value(self._iteratorRiga, 8, self._righe[self._numRiga]["listino"])
-            self.modelRiga.set_value(self._iteratorRiga, 9, self._righe[self._numRiga]["unitaBase"])
-            self.modelRiga.set_value(self._iteratorRiga, 10, '%9.3f' % float(self._righe[self._numRiga]["quantita"]))
-            self.modelRiga.set_value(self._iteratorRiga, 11, mN(self._righe[self._numRiga]["prezzoLordo"]))
-            self.modelRiga.set_value(self._iteratorRiga, 12, self._righe[self._numRiga]["applicazioneSconti"] + (
+            self.modelRiga.set_value(self._iteratorRiga, 8, self._righe[self._numRiga]["multiplo"])
+            self.modelRiga.set_value(self._iteratorRiga, 9, self._righe[self._numRiga]["listino"])
+            self.modelRiga.set_value(self._iteratorRiga, 10, self._righe[self._numRiga]["unitaBase"])
+            self.modelRiga.set_value(self._iteratorRiga, 11, '%9.3f' % float(self._righe[self._numRiga]["quantita"]))
+            self.modelRiga.set_value(self._iteratorRiga, 12, mN(self._righe[self._numRiga]["prezzoLordo"]))
+            self.modelRiga.set_value(self._iteratorRiga, 13, self._righe[self._numRiga]["applicazioneSconti"] + (
                 ' ' + getStringaSconti(self._righe[self._numRiga]["sconti"])))
-            self.modelRiga.set_value(self._iteratorRiga, 13, mN(self._righe[self._numRiga]["prezzoNetto"]))
-            self.modelRiga.set_value(self._iteratorRiga, 14, mN(self._righe[self._numRiga]["totale"]))
+            self.modelRiga.set_value(self._iteratorRiga, 14, mN(self._righe[self._numRiga]["prezzoNetto"]))
+            self.modelRiga.set_value(self._iteratorRiga, 15, mN(self._righe[self._numRiga]["totale"]))
         else:
-            self.modelRiga.append([self._righe[self._numRiga]["magazzino"],
+            self.modelRiga.append([self._numRiga,
+                            self._righe[self._numRiga]["magazzino"],
                             self._righe[self._numRiga]["codiceArticolo"],
                             self._righe[self._numRiga]["descrizione"],
                             '%5.2f' % float(self._righe[self._numRiga]["percentualeIva"]),

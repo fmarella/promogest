@@ -168,7 +168,7 @@ class RigaDocumento(Dao):
         dic= {  'idTestataDocumento' : riga_doc.c.id_testata_documento==v }
         return  dic[k]
 
-    def persist(self,scontiRigaDocumento=None ):
+    def persist(self):
 
         #salvataggio riga
         params["session"].add(self)
@@ -178,16 +178,13 @@ class RigaDocumento(Dao):
             #self.__misuraPezzo.id_riga = self.id
             #self.__misuraPezzo.persist()
 
-
-        if scontiRigaDocumento:
-            scontiRigaDocumentoDel(id=self.id)
-            for key,value in scontiRigaDocumento.items():
-                if key==self:
-                    for v in value:
-                        v.id_riga_documento = self.id
-                        params["session"].add(v)
+        print self.scontiRigaDocumento
+        scontiRigaDocumentoDel(id=self.id)
+        if self.scontiRigaDocumento:
+            for value in self.scontiRigaDocumento:
+                value.id_riga_documento = self.id
+                params["session"].add(value)
         params["session"].commit()
-        params["session"].flush()
 
 riga=Table('riga', params['metadata'],schema = params['schema'], autoload=True)
 riga_doc=Table('riga_documento',params['metadata'],schema = params['schema'],autoload=True)

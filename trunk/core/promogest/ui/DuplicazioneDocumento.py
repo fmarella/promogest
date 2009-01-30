@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 # Promogest
 #
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
@@ -120,7 +120,10 @@ class DuplicazioneDocumento(GladeWidget):
             daoRiga.moltiplicatore = r.moltiplicatore
             daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
             daoRiga.valore_unitario_netto = r.valore_unitario_netto
-            daoRiga.misura_pezzo = r.misura_pezzo
+            try:
+                daoRiga.misura_pezzo = r.misura_pezzo
+            except:
+                pass
             sconti = []
             sco = r.sconti
             for s in sco:

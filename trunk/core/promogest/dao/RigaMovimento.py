@@ -202,43 +202,39 @@ class RigaMovimento(Dao):
         genere = property(_genere)
 
 
-
     def filter_values(self,k,v):
         dic= {  'idTestataMovimento' :riga_mov.c.id_testata_movimento ==v,}
         return  dic[k]
 
-    def persist(self, scontiRigaMovimento=None):
+    def persist(self):
 
         params["session"].add(self)
         params["session"].commit()
-
         #creazione stoccaggio se non gia' presente
         stoccato = (Stoccaggio().count(idArticolo=self.id_articolo,
-                                                   idMagazzino=self.id_magazzino) > 0)
-        #import datetime
-        #print "stoccato", datetime.datetime.now()
+                                                idMagazzino=self.id_magazzino) > 0)
         if not(stoccato):
             daoStoccaggio = Stoccaggio()
             daoStoccaggio.id_articolo = self.id_articolo
             daoStoccaggio.id_magazzino = self.id_magazzino
             params["session"].add(daoStoccaggio)
             params["session"].commit()
-            #daoStoccaggio.persist()
 
         scontiRigaMovimentoDel(id=self.id)
-        if scontiRigaMovimento:
-            for key,value in scontiRigaMovimento.items():
-                if key==self:
-                    for v in value:
-                        v.id_riga_movimento = self.id
-                        params["session"].add(v)
-                        params["session"].commit()
+        if self.scontiRigheMovimento:
+            for value in self.scontiRigheMovimento:
+                value.id_riga_movimento = self.id
+                params["session"].add(value)
+            params["session"].commit()
 
         if "SuMisura" in modulesList:
-            if self.__misuraPezzo:
-                self.__misuraPezzo.id_riga = self.id
-                params["session"].add(self.__misuraPezzo)
-                params["session"].commit()
+            try:
+                if self.__misuraPezzo:
+                    self.__misuraPezzo.id_riga = self.id
+                    params["session"].add(self.__misuraPezzo)
+                    params["session"].commit()
+            except:
+                print "errore nel salvataggio di misura pezzo"
 
 
 riga=Table('riga', params['metadata'], schema = params['schema'], autoload=True)

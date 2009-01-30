@@ -86,31 +86,25 @@ class TestataMovimento(Dao):
         return  dic[k]
 
 
-    def persist(self, righeMovimento=None, scontiRigaMovimento=None):
+    def persist(self):
         """cancellazione righe associate alla testata
             conn.execStoredProcedure('RigheMovimentoDel',(self.id, ))"""
-        #import datetime
-        #print "testatamovimento", datetime.datetime.now()
         if not self.numero:
             valori = numeroRegistroGet(tipo="Movimento", date=self.data_movimento)
             self.numero = valori[0]
             self.registro_numerazione= valori[1]
         params["session"].add(self)
         params["session"].commit()
-        #import datetime
-        if righeMovimento:
+        #print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP", self.righeMovimento
+        if self.righeMovimento:
             righeMovimentoDel(id=self.id)
-            for key,riga in righeMovimento.items():
+            for riga in self.righeMovimento:
                 #annullamento id della riga
-                #riga._resetId()
+                riga._resetId()
                 #associazione alla riga della testata
                 riga.id_testata_movimento = self.id
-                params["session"].add(riga)
-                params["session"].commit()
-                #import datetime
-                #print "righedentro testata", datetime.datetime.now()
                 #salvataggio riga
-                riga.persist(scontiRigaMovimento=scontiRigaMovimento)
+                riga.persist()
                 if self.id_fornitore is not None:
                     """aggiornamento forniture cerca la fornitura relativa al fornitore
                         con data <= alla data del movimento"""
@@ -121,8 +115,6 @@ class TestataMovimento(Dao):
                                                 orderBy = 'data_prezzo DESC',
                                                 offset = None,
                                                 batchSize = None)
-                    #import datetime
-                    #print "fors", datetime.datetime.now()
                     daoFornitura = None
                     if len(fors) > 0:
                         if fors[0].data_prezzo == self.data_movimento:

@@ -920,9 +920,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
         textBuffer = self.note_interne_textview.get_buffer()
         self.dao.note_interne = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter())
-        righeMovimento = {}
-        scontiRigheMovimento= {}
-        righe = []
+        righeMovimento = []
+        scontiRigheMovimento= []
+        #righe = []
         for i in range(1, len(self._righe)):
             daoRiga = RigaMovimento()
             daoRiga.id_testata_movimento = self.dao.id
@@ -945,16 +945,16 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                     daoSconto = ScontoRigaMovimento()
                     daoSconto.valore = float(self._righe[i]["sconti"][j]["valore"])
                     daoSconto.tipo_sconto = self._righe[i]["sconti"][j]["tipo"]
-                    sconti.append(daoSconto)
-            scontiRigheMovimento[daoRiga] = sconti
+                    scontiRigheMovimento.append(daoSconto)
+            #scontiRigheMovimento[daoRiga] = sconti
 
-            daoRiga.sconti = sconti
-            righeMovimento[i] = daoRiga
-            righe.append(daoRiga)
+            daoRiga.scontiRigheMovimento = scontiRigheMovimento
+            #righeMovimento[i] = daoRiga
+            righeMovimento.append(daoRiga)
 
-        #self.dao.righe = righe
+        self.dao.righeMovimento = righeMovimento
 
-        self.dao.persist(scontiRigaMovimento= scontiRigheMovimento, righeMovimento=righeMovimento )
+        self.dao.persist()
         self.label_numero_righe.hide()
         text = str(len(self.dao.righe))
         self.label_numero_righe.set_text(text)
