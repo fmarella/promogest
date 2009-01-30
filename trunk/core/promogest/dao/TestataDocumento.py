@@ -375,6 +375,9 @@ class TestataDocumento(Dao):
                 DaoTestataMovimento.note_interne = self.note_interne
                 DaoTestataMovimento.note_interne = self.note_interne
                 DaoTestataMovimento.id_testata_documento = self.id
+                params['session'].add(DaoTestataMovimento)
+                params['session'].commit()
+                righeMovimentoDel(id=DaoTestataMovimento.id)
         elif len(res) == 1:
             #print "RES È UGUALE AD UNO.... ESITE UN MOVIMENTO USO RES"
             DaoTestataMovimento = res[0] #TestataMovimento().getRecord(id=res[0].id)
@@ -419,8 +422,9 @@ class TestataDocumento(Dao):
                     daoRigaMovimento.id_articolo = row.id_articolo
                     daoRigaMovimento.id_multiplo = row.id_multiplo
                     daoRigaMovimento.codiceArticoloFornitore = row.codiceArticoloFornitore
-                    if "SuMisura" in Environment.modulesList:
-                        daoRigaMovimento.misura_pezzo = row.misura_pezzo2
+
+                        #daoRigaMovimento.misura_pezzo = row.misura_pezzo2
+
                     params['session'].add(daoRigaMovimento)
                     params['session'].commit()
                     #gestione sconti in una riga documento
@@ -434,6 +438,11 @@ class TestataDocumento(Dao):
                             params["session"].commit()
                             #scontiRigaMovimento.append(daoScontoMovimento)
                             #scontiRigaMovimento[daoRigaMovimento] = lista
+                    if "SuMisura" in Environment.modulesList:
+                        if row.misura_pezzo2:
+                            row.misura_pezzo2.id_riga = daoRigaMovimento.id
+                            params["session"].add(row.misura_pezzo2)
+                            params["session"].commit()
                     #daoRigaMovimento.scontiRigaMovimento=scontiRigaMovimento
                     #righeMovimento.append(daoRigaMovimento)
                     #scontiRigaMovimento = []
@@ -450,10 +459,11 @@ class TestataDocumento(Dao):
                     #row.persist()
                     params["session"].add(row)
                     params["session"].commit()
-
-                    #if "SuMisura" in modulesList:
-                        #self.__misuraPezzo.id_riga = self.id
-                        #self.__misuraPezzo.persist()
+                    if "SuMisura" in Environment.modulesList:
+                        if row.misura_pezzo2:
+                            row.misura_pezzo2.id_riga = row.id
+                            params["session"].add(row.misura_pezzo2)
+                            params["session"].commit()
 
                     #print self.scontiRigaDocumento
                     scontiRigaDocumentoDel(id=row.id)

@@ -100,12 +100,20 @@ def TotaleFornitoreAperto(id_fornitore=None):
 def righeDocumentoDel(id=None):
     """Cancella le righe associate ad un documento"""
     from promogest.dao.RigaDocumento import RigaDocumento
+    if "SuMisura" in modulesList:
+        from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
     row = RigaDocumento().select(idTestataDocumento= id,
                                                 offset = None,
                                                 batchSize = None,
                                                 orderBy="id_testata_documento")
     if row:
         for r in row:
+            if "SuMisura" in modulesList:
+                mp = MisuraPezzo().select(idRiga=r.id)
+                if mp:
+                    for m in mp:
+                        params['session'].delete(m)
+                        params["session"].commit()
             params['session'].delete(r)
         params["session"].commit()
         return True
