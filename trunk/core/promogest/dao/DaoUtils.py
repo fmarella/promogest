@@ -52,6 +52,20 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None):
         lista.append(diz)
     return lista
 
+def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None):
+    if not idArticolo or not idMagazzino or not year:
+        return "0"
+    else:
+        lista = giacenzaSel(year=year, idMagazzino=idMagazzino, idArticolo=idArticolo)
+        totGiacenza = 0
+
+        for t in lista:
+            totGiacenza += (t['giacenza'] or 0)
+            #totGiacenza += (t[4] or 0)
+
+        return round(totGiacenza,2)
+
+
 def TotaleAnnualeCliente(id_cliente=None):
     """ Ritorna il totale avere da un cliente """
     from promogest.dao.TestataDocumento import TestataDocumento

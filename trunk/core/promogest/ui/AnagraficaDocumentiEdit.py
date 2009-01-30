@@ -21,7 +21,7 @@ from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.dao.Articolo import Articolo
 from utils import *
 from utilsCombobox import *
-from promogest.dao.DaoUtils import giacenzaSel
+from promogest.dao.DaoUtils import giacenzaArticolo
 #from promogest.lib.TreeViewTooltips import TreeViewTooltips
 #from promogest.ui.widgets.MultiLineEditor import MultiLineEditor
 from GladeWidget import GladeWidget
@@ -1325,13 +1325,14 @@ del documento.
         self._righe[0]["altezza"] = self._righe[self._numRiga]["altezza"]
         self._righe[0]["larghezza"] = self._righe[self._numRiga]["larghezza"]
         self._righe[0]["molt_pezzi"] = self._righe[self._numRiga]["molt_pezzi"]
-
+        self.giacenza_label.set_text(str(giacenzaArticolo(year=Environment.workingYear,
+                                                idMagazzino=self._righe[0]["idMagazzino"],
+                                                idArticolo=self._righe[0]["idArticolo"])))
         findComboboxRowFromId(self.id_magazzino_combobox, self._righe[0]["idMagazzino"])
         fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self._righe[0]["idArticolo"], True)
         findComboboxRowFromId(self.id_multiplo_customcombobox.combobox, self._righe[0]["idMultiplo"])
         self.refresh_combobox_listini()
         findComboboxRowFromId(self.id_listino_customcombobox.combobox, self._righe[0]["idListino"])
-        self.giacenza_label.set_text(self._righe[0]["codiceArticolo"])
         self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
         self.descrizione_entry.set_text(self._righe[0]["descrizione"])
         self.codice_articolo_fornitore_entry.set_text(self._righe[0]["codiceArticoloFornitore"])
@@ -1755,7 +1756,9 @@ del documento.
             self._righe[0]["sconti"] = []
             self._righe[0]["applicazioneSconti"] = 'scalare'
             self._righe[0]["codiceArticoloFornitore"] = ''
-
+            self.giacenza_label.set_text(str(giacenzaArticolo(year=Environment.workingYear,
+                                                idMagazzino=findIdFromCombobox(self.id_magazzino_combobox),
+                                                idArticolo=self._righe[0]["idArticolo"])))
             if ((self._fonteValore == "acquisto_iva") or  (self._fonteValore == "acquisto_senza_iva")):
                 fornitura = leggiFornitura(id, self.id_persona_giuridica_customcombobox.getId(), data)
                 costoLordo = fornitura["prezzoLordo"]
