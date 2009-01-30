@@ -7,28 +7,20 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni  <francesco@promotux.it>
 
-import sys
+
 import os
 
-import math
-#import datetime, time
 from reportlab.lib import colors, utils
-from reportlab.platypus import Table, TableStyle, Paragraph, Frame
+from reportlab.platypus import Table, TableStyle,Frame
 from reportlab.platypus import *
-from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT, TA_JUSTIFY
-from reportlab.lib.pagesizes import cm, inch, A4, landscape
-from reportlab.pdfgen.canvas import Canvas
-#from PIL import Image
 
-#from elementtree import ElementTree
-##from elementtree.ElementTree import *
-#import cElementTree as ElementTree
+from reportlab.pdfgen.canvas import Canvas
+
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment
 from promogest.lib import Sla2pdfUtils
 from promogest.lib import ColorDicTFull
-#from set import Set
+
 
 class Sla2Pdf_ng(object):
     """ sla to pdf format translation """

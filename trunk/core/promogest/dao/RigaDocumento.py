@@ -11,7 +11,6 @@ from sqlalchemy.orm import mapper, relation, join
 from promogest.Environment import params, modulesList
 from Dao import Dao
 from UnitaBase import UnitaBase
-import ScontoRigaDocumento
 from ScontoRigaDocumento import ScontoRigaDocumento
 from ScontoRigaMovimento import ScontoRigaMovimento
 from Articolo import Articolo

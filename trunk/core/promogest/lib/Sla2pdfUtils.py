@@ -9,23 +9,15 @@
 
 
 import datetime
-#from reportlab.lib import colors, utils
-from reportlab.platypus import Table, TableStyle, Paragraph, Frame
+from reportlab.platypus import  Paragraph
 from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT, TA_JUSTIFY
-from reportlab.lib.pagesizes import cm, inch, A4, landscape
-#from reportlab.pdfgen.canvas import Canvas
-#from PIL import Image
+from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
+from reportlab.lib.pagesizes import cm
 
-#from elementtree import ElementTree
-##from elementtree.ElementTree import *
-#import cElementTree as ElementTree
-#import xml.etree.cElementTree as ElementTree
-#from promogest import Environment
 try:
     from reportlab.graphics.barcode.common import *
     from reportlab.graphics.barcode.usps import *
-    from reportlab.graphics.barcode import getCodes, getCodeNames, createBarcodeDrawing
+    from reportlab.graphics.barcode import createBarcodeDrawing
 except:
     pass
 

@@ -7,7 +7,6 @@
 # Author: francesco Meloni <francesco@promotux.it>
 
 from Dao import Dao
-from promogest import Environment
 
 class MisuraPezzo(Dao):
 

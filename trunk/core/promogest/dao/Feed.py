@@ -10,8 +10,6 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 #from promogest.Environment import *
 from promoCMS.Environment import *
-from Role import Role
-from Language import Language
 from Dao import Dao
 
 

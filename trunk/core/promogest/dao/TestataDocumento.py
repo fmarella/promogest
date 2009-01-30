@@ -32,7 +32,7 @@ from DaoUtils import *
 from decimal import *
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
-import operator
+
 
 class TestataDocumento(Dao):
 
