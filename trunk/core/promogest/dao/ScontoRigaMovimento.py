@@ -22,10 +22,7 @@ class ScontoRigaMovimento(Dao):
             dic= {k:sconto_riga_movimento.c.id_riga_movimento==v}
         return  dic[k]
 
-sconto=Table('sconto',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
+sconto=Table('sconto',params['metadata'],schema=params['schema'],autoload=True)
 
 
 sconto_riga_movimento=Table('sconto_riga_movimento',
