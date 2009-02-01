@@ -37,14 +37,14 @@ class ArticoloTagliaColore(Dao):
         """ Restituisce il Dao Taglia collegato al Dao ArticoloTagliaColore """
         if self.id_taglia is None:
             return None
-        return Taglia(id=self.id_taglia).getREcord()
+        return Taglia().getRecord(id=self.id_taglia)
     taglia = property(_getTaglia)
 
     def _getModello(self):
         """ Restituisce il Dao Taglia collegato al Dao ArticoloTagliaColore """
         if self.id_modello is None:
             return None
-        return Modello(id=self.id_modello).getREcord()
+        return Modello().getRecord(id=self.id_modello)
     modello = property(_getModello)
 
     def _getColore(self):

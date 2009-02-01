@@ -409,6 +409,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
+        #reorderable = treeview.get_reorderable()
+        treeview.set_reorderable(True)
+
+        #treeview.reorderable(True)
 
         fillComboboxOperazioni(self.id_operazione_combobox, 'documento')
         fillComboboxMagazzini(self.id_magazzino_combobox)
