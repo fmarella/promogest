@@ -94,6 +94,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._controllo_numero_documento = None
         self.reuseDataRow = False
         self.NoRowUsableArticle = False
+        #self.noleggio_frame.destroy()
         if "PromoWear" in Environment.modulesList:
             self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
             self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
@@ -122,15 +123,16 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         """
         funzione per SuMisura .....rimuove dalla vista quando modulo è disattivato
         """
-        self.altezza_entry.destroy()
-        self.larghezza_entry.destroy()
-        self.moltiplicatore_entry.destroy()
-        self.label_moltiplicatore.hide()
-        self.altezza_label.hide()
-        self.lunghezza_label.hide()
-        self.cmLabel1_label.set_text('')
-        self.cmLabel_label.set_text('')
-        self.x_misure_label.hide()
+        self.sumisura_frame.destroy()
+        #self.altezza_entry.destroy()
+        #self.larghezza_entry.destroy()
+        #self.moltiplicatore_entry.destroy()
+        #self.label_moltiplicatore.hide()
+        #self.altezza_label.hide()
+        #self.lunghezza_label.hide()
+        #self.cmLabel1_label.set_text('')
+        #self.cmLabel_label.set_text('')
+        #self.x_misure_label.hide()
 
     def azzeraRiga(self, numero = 0):
         """
