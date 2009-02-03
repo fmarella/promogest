@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -12,12 +12,12 @@ import AnagraficaComplessa
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
+#from promogest.dao.Dao import Dao
 from AnagraficaDocumentiFilter import AnagraficaDocumentiFilter
 from AnagraficaDocumentiEdit import AnagraficaDocumentiEdit
 from promogest.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.dao.MisuraPezzo import MisuraPezzo
-import promogest.dao.TestataDocumento
+#import promogest.dao.TestataDocumento
 from promogest.dao.TestataDocumento import TestataDocumento
 from utils import *
 

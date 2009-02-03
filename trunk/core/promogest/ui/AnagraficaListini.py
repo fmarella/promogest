@@ -309,8 +309,13 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             #self.dao.id = provaaaaaaaaa
         self.dao.denominazione = self.denominazione_entry.get_text()
         listinoAtt = Listino().select(denominazione=self.dao.denominazione)
-        if listinoAtt ==[]:
-            self.dao.listino_attuale = False
+        if not listinoAtt:
+            self.dao.listino_attuale = True
+        else:
+            for l in listinoAtt:
+                l.listino_attuale = False
+                l.persist()
+            self.dao.listino_attuale = True
 
         self.dao.descrizione = self.descrizione_entry.get_text()
         self.dao.data_listino = stringToDate(self.data_listino_entry.get_text())

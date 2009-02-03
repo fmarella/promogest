@@ -288,3 +288,4 @@ def articleTypeGuiManage(anagrafica, dao, new):
         response = overDialog.run()
         overDialog.destroy()
         return
+

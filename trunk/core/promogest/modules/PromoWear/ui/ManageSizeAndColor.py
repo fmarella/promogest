@@ -12,23 +12,36 @@ from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import fillModelCombobox,fillComboboxListini
+from promogest.dao.Fornitura import Fornitura
+from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
 
 
 class ManageSizeAndColor(GladeWidget):
     """Does price-list importation"""
 
-    def __init__(self, mainWindow, data=None):
+    def __init__(self, mainWindow, articolo=None, data=None, idPerGiu=None, idListino=None, fonteValore=None):
         #GladeWidget.__init__(self, 'promogest/modules/PromoWear/gui/gestione_varianti_taglia_colore')
         GladeWidget.__init__(self, 'gestione_varianti_taglie_colore',
                                 fileName= 'promogest/modules/PromoWear/gui/gestione_varianti_taglia_colore.glade',
                                 isModule=True)
         self.placeWindow(self.getTopLevel())
         self.getTopLevel().set_modal(modal=True)
-        self.data= data
+        self.articoloPadre= articolo
+        self.idPerGiu = idPerGiu
+        self.data = data
+        self._id_listino = idListino
+        self._fornitura = None
+        self._listino = None
+        self._fonteValore=fonteValore
+        if ((self._fonteValore == "acquisto_iva") or  (self._fonteValore == "acquisto_senza_iva")):
+            self.TipoOperazione = "acquisto"
+        elif ((self._fonteValore == "vendita_iva") or (self._fonteValore == "vendita_senza_iva")):
+            self.TipoOperazione = "vendita"
+        self.articoloPadreDict = self.creDictFornitura()
         self._treeViewModel = None
         self._rowEditingPath = None
         self._tabPressed = False
-        self.denominazione_label.set_text(data['codice'] +" - "+data['denominazione'])
+        self.denominazione_label.set_text(self.articoloPadre.codice +" - "+self.articoloPadre.denominazione)
         self.mainWindow = mainWindow
         self.draw()
         #self.getTopLevel().show_all()
@@ -115,33 +128,85 @@ class ManageSizeAndColor(GladeWidget):
         self.treeview.set_model(self._treeViewModel)
         self.refresh()
 
+    def creaRiga(self, var):
+        if self.TipoOperazione == "acquisto":
+            megaDict[artvar]["fornitura"]=self._fornitura = leggiFornitura(self.articoloPadre.id, idFornitore=self.idPerGiu, data=self.data)
+        else:
+            megaDict[artvar]["listino"] = self._listino = leggiListino(self._id_listino,idArticolo=self.articoloPadre.id )
+
+
+    def creDictFornitura(self):
+        artiDict= {}
+        daoArticolo = self.articoloPadre
+        variantiList = []
+        varianti = daoArticolo.articoliVarianti
+        for varia in varianti:
+            variante=leggiArticoloPromoWear(varia.id, full=True)
+            if self.TipoOperazione =="acquisto":
+                variante['valori'] = leggiFornituraPromoWear(idArticolo=varia.id,
+                                                idFornitore=self.idPerGiu,
+                                                data=self.data)
+                variantiList.append(variante)
+            else:
+                variante['valori'] = leggiListino(self._id_listino,idArticolo=self.articoloPadre.id )
+                variante['valori']['prezzoDettaglioScontato'] = 0
+                variantiList.append(variante)
+        artiDict = leggiArticoloPromoWear(self.articoloPadre.id)
+        artiDict["varianti"] = variantiList
+        if self.TipoOperazione == "acquisto":
+            artiDict['valori'] = leggiFornitura(self.articoloPadre.id,idFornitore=self.idPerGiu, data=self.data)
+        else:
+            artiDict['valori'] = leggiListino(self._id_listino,idArticolo=self.articoloPadre.id )
+        return artiDict
+
+
+
     def refresh(self):
         # Aggiornamento TreeView
-        self.price_entry.set_text(str(self.data['fornitura']['prezzoLordo']))
-        self.discount_entry.set_text(str(self.formatSconti(self.data)))
-
         self._treeViewModel.clear()
-        varianti = self.data["varianti"]
+        if self.TipoOperazione == "acquisto":
+            self.price_entry.set_text(str(self.articoloPadreDict['valori']['prezzoLordo']))
+        else:
+            self.price_entry.set_text(str(self.articoloPadreDict['valori']['prezzoDettaglio']))
+        self.discount_entry.set_text(str(self.formatSconti(self.articoloPadreDict['valori'])))
+        varianti = self.articoloPadreDict["varianti"]
         for var in varianti:
             quantita =""
-            prezzo = ""
-            sconto = str(self.formatSconti(var))
+            if self.TipoOperazione == "acquisto":
+                prezzoLordo = str(var['valori']['prezzoLordo'])
+                prezzoNetto = str(var['valori']['prezzoNetto'])
+            else:
+                prezzoLordo = str(var['valori']['prezzoDettaglio'])
+                prezzoNetto = str(var['valori']['prezzoDettaglioScontato'])
+            
+            sconto = str(self.formatSconti(var['valori']))
             self._treeViewModel.append((var,
-                                        var['taglia']+" - "+var['colore'],
+                                        str(var['taglia']) +" - "+str(var['colore']),
                                         quantita,
-                                        str(var['fornitura']['prezzoLordo']),
+                                        prezzoLordo,
                                         sconto,
-                                        str(var['fornitura']['prezzoNetto']),
-                                        var['codice'] +" - "+var['denominazione']))
+                                        prezzoNetto,
+                                        str(var['codice']) +" - "+str(var['denominazione'])))
+
     def formatSconti(self, var):
-        if not var['fornitura']['sconti']:
-            sconto = ""
-        elif str(var['fornitura']['sconti'][0]['tipo']) == "valore":
-            sconto = str(var['fornitura']['sconti'][0]['valore'])+"€"
-        elif str(var['fornitura']['sconti'][0]['tipo']) == "percentuale":
-            sconto = str(var['fornitura']['sconti'][0]['valore'])+"%"
+        if self.TipoOperazione == "acquisto":
+            if not var['sconti']:
+                sconto = ""
+            elif str(var['sconti'][0]['tipo']) == "valore":
+                sconto = str(var['sconti'][0]['valore'])+"€"
+            elif str(var['sconti'][0]['tipo']) == "percentuale":
+                sconto = str(var['sconti'][0]['valore'])+"%"
+            else:
+                sconto = ""
         else:
-            sconto = ""
+            if not var['scontiDettaglio']:
+                sconto = ""
+            elif str(var['scontiDettaglio'][0]['tipo']) == "valore":
+                sconto = str(var['sconti'][0]['valore'])+"€"
+            elif str(var['scontiDettaglio'][0]['tipo']) == "percentuale":
+                sconto = str(var['scontiDettaglio'][0]['valore'])+"%"
+            else:
+                sconto = ""
         return sconto
 
     def _getRowEditingPath(self, model, iterator):
@@ -159,37 +224,64 @@ class ManageSizeAndColor(GladeWidget):
     def on_column_prezzo_edited(self, cell, path, value, treeview, editNext=True):
         """ Function ti set the value quantita edit in the cell"""
         model = treeview.get_model()
-        model[path][0]['fornitura']["prezzoLordo"] = value
+        if self.TipoOperazione == "acquisto":
+                model[path][0]['valori']["prezzoLordo"] = value
+        else:
+            model[path][0]['valori']["prezzoDettaglio"] = value
+        
         model[path][3] = value
-        print 
         if model[path][4] =="0" or model[path][4] == None or model[path][4]=="" :
             model[path][5] = model[path][3]
-            model[path][0]['fornitura']["prezzoNetto"] = model[path][3]
+        if self.TipoOperazione == "acquisto":
+            model[path][0]['valori']["prezzoNetto"] = model[path][3]
+        else:
+            model[path][0]['valori']["prezzoDettaglioScontato"] = model[path][3]
 
     def on_column_sconto_edited(self, cell, path, value, treeview, editNext=True):
         """ Function ti set the value quantita edit in the cell"""
         model = treeview.get_model()
-        model[path][0]['fornitura']["sconto"] = [value]
+        if self.TipoOperazione == "acquisto":
+            model[path][0]['valori']["sconto"] = [value]
+        else:
+            model[path][0]['valori']["scontiDettaglio"] = [value]
         model[path][4] = value
         if model[path][3] and "%" in value:
             value= int(value[0:-1].strip())
             prezzo = float(model[path][3]) * (1 - float(value) / 100)
             model[path][5] = prezzo
-            model[path][0]['fornitura']["sconti"] = [{'tipo':"percentuale",
+            model[path][0]['valori']["sconti"] = [{'tipo':"percentuale",
                                             'valore':float(value)},]
-            model[path][0]['fornitura']["prezzoNetto"]= model[path][5]
+            if self.TipoOperazione == "acquisto":
+                model[path][0]['valori']["sconti"] = [{'tipo':"percentuale",
+                                            'valore':float(value)},]
+                model[path][0]['valori']["prezzoNetto"] = model[path][5]
+            else:
+                model[path][0]['valori']["scontiDettaglio"] = [{'tipo':"percentuale",
+                                            'valore':float(value)},]
+                model[path][0]['valori']["prezzoDettaglioScontato"] = model[path][5]
         elif model[path][3] and value == "0" or value == "":
             model[path][5] = model[path][3]
-            model[path][0]['fornitura']["sconti"] = []
-            model[path][0]['fornitura']["prezzoNetto"]= model[path][5]
+            if self.TipoOperazione == "acquisto":
+                model[path][0]['valori']["sconti"] = []
+                model[path][0]['valori']["prezzoNetto"] = model[path][5]
+            else:
+                model[path][0]['valori']["scontiDettaglio"] = []
+                model[path][0]['valori']["prezzoDettaglioScontato"] = model[path][5]
         elif model[path][3] and "€" in value:
             value = str(value).strip()
             value = value.replace("€", '')
             value= int(value)
             model[path][5] = float(model[path][3]) - float(value)
-            model[path][0]['fornitura']["sconti"] = [{'tipo':"valore",
+
+            if self.TipoOperazione == "acquisto":
+                model[path][0]['valori']["sconti"] = [{'tipo':"valore",
                                             'valore':float(value)},]
-            model[path][3]['fornitura']["prezzoNetto"]= float(model[path][5])
+                model[path][3]['valori']["prezzoNetto"]= float(model[path][5])
+            else:
+                model[path][0]['valori']["scontiDettaglio"] = [{'tipo':"valore",
+                                            'valore':float(value)},]
+                model[path][3]['valori']["prezzoDettaglioScontato"]= float(model[path][5])
+            
         #if model[path][3] and "%" in value:
             #value= int(value[0:-1].strip())
             #model[path][5] = float(model[path][3]) * (1 - float(value) / 100)
@@ -198,14 +290,17 @@ class ManageSizeAndColor(GladeWidget):
         quantitagenerale = self.quantita_entry.get_text()
         #self._treeViewModel, quantitagenerale
         for row in self._treeViewModel:
-            row[0]["quantita"] = quantitagenerale
+            row[0]['quantita'] = quantitagenerale
             row[2] = quantitagenerale
 
     def on_price_entry_focus_out_event(self, entry, widget):
         prezzogenerale = self.price_entry.get_text()
         #self._treeViewModel, quantitagenerale
         for row in self._treeViewModel:
-            row[0]['fornitura']["prezzoLordo"] = prezzogenerale
+            if self.TipoOperazione == "acquisto":
+                row[0]['valori']["prezzoLordo"] = prezzogenerale
+            else:
+                model[path][0]['valori']["prezzoDettaglio"] = prezzogenerale
             row[3] = prezzogenerale
 
     def on_discount_entry_focus_out_event(self, entry, widget):
@@ -217,24 +312,44 @@ class ManageSizeAndColor(GladeWidget):
                 value= int(scontogenerale[0:-1].strip())
                 prezzo = float(row[3]) * (1 - float(value) / 100)
                 row[5] = prezzo
-                row[0]['fornitura']["sconti"] = [{'tipo':"percentuale",
+
+                if self.TipoOperazione == "acquisto":
+                    row[0]['valori']["sconti"] = [{'tipo':"percentuale",
                                                  'valore':float(value)},]
-                row[0]['fornitura']["prezzoNetto"]= row[5]
+                    row[0]['valori']["prezzoNetto"]= row[5]
+                else:
+                    row[0]['valori']["scontiDettaglio"] = [{'tipo':"percentuale",
+                                                 'valore':float(value)},]
+                    row[0]['valori']["prezzoDettaglioScontato"]= row[5]
             elif row[3] and scontogenerale == "0" or scontogenerale == "":
                 row[5] = row[3]
-                row[0]['fornitura']["sconti"] = []
-                row[0]['fornitura']["prezzoNetto"]= row[5]
+
+                if self.TipoOperazione == "acquisto":
+                    row[0]['valori']["sconti"] = []
+                    row[0]['valori']["prezzoNetto"]= row[5]
+                else:
+                    row[0]['valori']["sconti"] = []
+                    row[0]['valori']["prezzoDettaglioScontato"]= row[5]
             elif row[3] and "€" in scontogenerale:
                 value = str(scontogenerale).strip()
                 value = value.replace("€", '')
                 value= int(value)
                 row[5] = float(row[3]) - float(value)
-                row[0]['fornitura']["sconti"] = [{'tipo':"valore",
+                if self.TipoOperazione == "acquisto":
+                    row[0]['valori']["sconti"] = [{'tipo':"valore",
                                                 'valore':float(value)},]
-                row[0]['fornitura']["prezzoNetto"]= row[5]
+                    row[0]['valori']["prezzoNetto"]= row[5]
+                else:
+                    row[0]['valori']["sconti"] = [{'tipo':"valore",
+                                                'valore':float(value)},]
+                    row[0]['valori']["prezzoDettaglioScontato"]= row[5]
+
 
     def on_conferma_singolarmente_button_clicked(self,button):
-        self.data['fornitura']['prezzoLordo']=self.price_entry.get_text()
+        if self.TipoOperazione == "acquisto":
+            self.articoloPadreDict['valori']['prezzoLordo']=self.price_entry.get_text()
+        else:
+            self.articoloPadreDict['valori']['prezzoDettaglio']=self.price_entry.get_text()
         resultList= []
         for row in self._treeViewModel:
             if row[0]['quantita'] == "0" or row[0]['quantita'] == "":
@@ -246,7 +361,10 @@ class ManageSizeAndColor(GladeWidget):
         self.destroy()
 
     def on_conferma_direttamente_button_clicked(self,button):
-        self.data['fornitura']['prezzoLordo']=self.price_entry.get_text()
+        if self.TipoOperazione == "acquisto":
+            self.articoloPadreDict['valori']['prezzoLordo']=self.price_entry.get_text()
+        else:
+            self.articoloPadreDict['valori']['prezzoDettaglio']=self.price_entry.get_text()
         resultList = []
         for row in self._treeViewModel:
             if row[0]['quantita'] == "0" or row[0]['quantita'] == "" :

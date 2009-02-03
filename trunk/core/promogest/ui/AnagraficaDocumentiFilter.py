@@ -197,7 +197,6 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         if statoDocumento == -1:
             statoDocumento = None
         idArticolo = self.id_articolo_filter_customcombobox.getId()
-
         def filterCountClosure():
             return TestataDocumento().count(daNumero=daNumero,
                                             aNumero=aNumero,
@@ -218,7 +217,6 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.numRecords = self.countFilterResults()
         self._refreshPageCount()
 
-
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return TestataDocumento().select(orderBy=self.orderBy,
@@ -238,12 +236,10 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                                 idArticolo=idArticolo,
                                                 offset=offset,
                                                 batchSize=batchSize)
-
         self._filterClosure = filterClosure
         tdos = self.runFilter()
         self.xptDaoList = self.runFilter(offset=None, batchSize=None)
         self._treeViewModel.clear()
-
         for t in tdos:
             if Environment.totaliDict.has_key(t):
                 totali = Environment.totaliDict[t]
@@ -260,7 +256,6 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                 documento_saldato_filter = "No"
             else:
                 documento_saldato_filter = ''
-
             self._treeViewModel.append((t,
                                     dateToString(t.data_documento),
                                     (t.numero or 0),
@@ -273,6 +268,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                     (t.note_interne or ''),
                                     (documento_saldato_filter or '')
                                     ))
+
 
     def on_filter_radiobutton_toggled(self, widget=None):
         if self.cliente_filter_radiobutton.get_active():

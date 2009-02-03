@@ -488,8 +488,8 @@ def fillComboboxListiniFiltrati(combobox, idArticolo=None, idMagazzino=None, idC
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
+    #if combobox.__class__ is gtk.ComboBoxEntry:
+        #combobox.set_text_column(2)
 
 def fillComboboxFornitori(combobox,filter=False, noempty=False):
     """ Crea l'elenco dei fornitori in una combo """
@@ -685,9 +685,11 @@ def fillComboboxBanche(combobox, filter=False):
 def fillComboboxCausaliTrasporto(combobox, filter=False):
     """ Crea elenco delle causali di trasporto  """
     from promogest.dao.TestataDocumento import TestataDocumento
-    res = TestataDocumento().select(batchSize=None, offset=None,orderBy='causale_trasporto')
+    #res = TestataDocumento().select(batchSize=None, offset=None,orderBy='causale_trasporto')
+    #res = Environment.params['session'].query(TestataDocumento).distinct()
+    res = Environment.params['session'].query(TestataDocumento.causale_trasporto).distinct()
     model = gtk.ListStore(object, str)
-
+    #res = []
     if not filter:
         emptyRow = ''
     else:
@@ -707,9 +709,14 @@ def fillComboboxCausaliTrasporto(combobox, filter=False):
 def fillComboboxAspettoEsterioreBeni(combobox, filter=False):
     """ Crea elenco degli aspetti esteriori beni """
     from promogest.dao.TestataDocumento import TestataDocumento
-    res = TestataDocumento().select(batchSize=None, offset=None,orderBy='aspetto_esteriore_beni')
+    #res = TestataDocumento().select(batchSize=None, offset=None,orderBy='aspetto_esteriore_beni')
+    #queryString = ('SELECT DISTINCT aspetto_esteriore_beni FROM ' + Environment.connection._schemaAzienda + '.testata_documento ORDER BY aspetto_esteriore_beni')
+    #argList = []
+    #Environment.connection._cursor.execute(queryString, argList)
+    #res = Environment.connection._cursor.fetchall()
+    res = Environment.params['session'].query(TestataDocumento.aspetto_esteriore_beni).distinct()
     model = gtk.ListStore(object, str)
-
+    #res = []
     if not filter:
         emptyRow = ''
     else:
@@ -763,14 +770,15 @@ def fillComboboxDestinazioniMerce(combobox, idCliente=None, filter=False):
 def fillComboboxAutoriPromemoria(combobox):
     """ Crea l'elenco degli autori gia'inseriti """
     from promogest.dao.Promemoria import Promemoria
-    argList = []
-    autors = Promemoria().select(orderBy="autore")
+    #argList = []
+    #autors = Promemoria().select(orderBy="autore")
+    res = Environment.params['session'].query(Promemoria.autore).distinct()
     model = gtk.ListStore(str)
-    for a in autors:
-        argList.append(a.autore)
-    b = list(set(argList))
-    for c in b:
-        model.append([c])
+    #for a in autors:
+        #argList.append(a.autore)
+    #b = list(set(argList))
+    for c in res:
+        model.append([c.autore])
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)
@@ -784,14 +792,15 @@ def fillComboboxIncaricatiPromemoria(combobox):
     Crea l'elenco degli incaricati gia'inseriti
     """
     from promogest.dao.Promemoria import Promemoria
-    argList = []
+    #argList = []
     model = gtk.ListStore(str)
-    autors = Promemoria().select(orderBy="incaricato")
-    for a in autors:
-        argList.append(a.incaricato)
-    b = list(set(argList))
-    for  c in b:
-        model.append([c])
+    #autors = Promemoria().select(orderBy="incaricato")
+    res = Environment.params['session'].query(Promemoria.incaricato).distinct()
+    #for a in autors:
+        #argList.append(a.incaricato)
+    #b = list(set(argList))
+    for  c in res:
+        model.append([c.incaricato])
 
     combobox.clear()
     renderer = gtk.CellRendererText()

@@ -521,7 +521,7 @@ std_mapper = mapper(Articolo,articolo,properties={
             "fornitur" : relation(Fornitura,primaryjoin=Fornitura.id_articolo==articolo.c.id, backref=backref("arti"),uselist=False),
             "multi":relation(Multiplo,primaryjoin=Multiplo.id_articolo==articolo.c.id,backref=backref("arti")),
             #"articoloTagliaColore":relation(ArticoloTagliaColore),
-            "ATC":relation(ArticoloTagliaColore,primaryjoin=(articolo.c.id==ArticoloTagliaColore.id_articolo),uselist=False),
+            "ATC":relation(ArticoloTagliaColore,primaryjoin=(articolo.c.id==ArticoloTagliaColore.id_articolo),backref="ARTI",uselist=False),
             }, order_by=articolo.c.id)
 
 

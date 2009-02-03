@@ -181,6 +181,10 @@ articolotagliacolore=Table('articolo_taglia_colore',params['metadata'],schema = 
 #j = join(articolo, articolotagliacolore, onclause=articolo.c.id==articolotagliacolore.c.id_articolo)
 std_mapper = mapper(ArticoloTagliaColore, articolotagliacolore,properties={
     #'id':[articolo.c.id, articolotagliacolore.c.id_articolo],
+    #"ART":relation(Articolo,primaryjoin=
+                    #(Articolo.id==articolotagliacolore.c.id), backref="ATCA"),
+    #"ARTPADRE":relation(Articolo,primaryjoin=
+                    #(Articolo.id==articolotagliacolore.c.id_articolo_padre), backref="ATCAP"),
     "GT":relation(GruppoTaglia,primaryjoin=
                     (GruppoTaglia.id==articolotagliacolore.c.id_gruppo_taglia), backref="ATCGT"),
     "TA":relation(Taglia,primaryjoin=

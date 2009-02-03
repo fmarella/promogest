@@ -19,37 +19,31 @@ from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.dao.Articolo import Articolo
+from promogest.dao.Magazzino import Magazzino
+from promogest.dao.Operazione import Operazione
 from utils import *
 from utilsCombobox import *
 from promogest.dao.DaoUtils import giacenzaArticolo
-#from promogest.lib.TreeViewTooltips import TreeViewTooltips
-#from promogest.ui.widgets.MultiLineEditor import MultiLineEditor
 from GladeWidget import GladeWidget
 from promogest import Environment
+from promogest.modules.Pagamenti.Pagamenti import Pagamenti
+
+if "PromoWear" in Environment.modulesList:
+    from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
+if "SuMisura" in Environment.modulesList:
+    from promogest.modules.SuMisura.ui import AnagraficaDocumentiEditSuMisuraExt
 
 class AnagraficaDocumentiEdit(AnagraficaEdit):
     """ Modifica un record dei documenti """
-    #TARGETS = [
-           #('MY_TREE_MODEL_ROW', gtk.TARGET_SAME_WIDGET, 0),
-          #('text/plain', 0, 1),
-           #('TEXT', 0, 2),
-           #('STRING', 0, 3),
-          #]
 
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
                                 'anagrafica_documenti_detail_vbox', 'Dati Documento', 'anagrafica_documenti.glade')
 
-        if "SuMisura" not in Environment.modulesList:
-            self.hideSuMisura()
-        else:
-            import promogest.modules.SuMisura.dao.MisuraPezzo
-            from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
-
         #self.notebook.remove_page(3)
         #else:
-        from promogest.modules.Pagamenti.Pagamenti import Pagamenti
+
         self.Pagamenti = Pagamenti(self)
 
         self._widgetFirstFocus = self.data_documento_entry
@@ -94,45 +88,18 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._controllo_numero_documento = None
         self.reuseDataRow = False
         self.NoRowUsableArticle = False
-        #self.noleggio_frame.destroy()
+        self.noleggio_frame.destroy()
+
+        # Inizializziamo i moduli in interfaccia!
+
         if "PromoWear" in Environment.modulesList:
             self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
             self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
         else:
-            self.promowear_manager_taglia_colore_togglebutton.destroy()
-            self.promowear_manager_taglia_colore_image.hide()
-            #self.promowear_manager_taglia_colore_togglebutton.set_property("visible", False)
-            #self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
-            #self.hbox9.destroy()
-            self.anno_label.destroy()
-            self.label_anno.destroy()
-            self.stagione_label.destroy()
-            self.label15.destroy()
-            self.colore_label.destroy()
-            self.label14.destroy()
-            self.taglia_label.destroy()
-            self.label_taglia.destroy()
-            self.gruppo_taglia_label.destroy()
-            self.label_gruppo_taglia.destroy()
-            self.tipo_label.destroy()
-            self.label_tipo.destroy()
-
-
-
-    def hideSuMisura(self):
-        """
-        funzione per SuMisura .....rimuove dalla vista quando modulo è disattivato
-        """
-        self.sumisura_frame.destroy()
-        #self.altezza_entry.destroy()
-        #self.larghezza_entry.destroy()
-        #self.moltiplicatore_entry.destroy()
-        #self.label_moltiplicatore.hide()
-        #self.altezza_label.hide()
-        #self.lunghezza_label.hide()
-        #self.cmLabel1_label.set_text('')
-        #self.cmLabel_label.set_text('')
-        #self.x_misure_label.hide()
+            # è in utils semplice ....
+            hidePromoWear(self)
+        if "SuMisura" not in Environment.modulesList:
+            hideSuMisura(self)
 
     def azzeraRiga(self, numero = 0):
         """
@@ -185,30 +152,30 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         """
 
         self._righe[numero] = {"idRiga": None,
-                                "idMagazzino": rigatampone['idMagazzino'],
-                                "magazzino": rigatampone['magazzino'],
-                                "idArticolo": rigatampone['idArticolo'],
-                                "codiceArticolo": rigatampone['codiceArticolo'],
-                                "descrizione": rigatampone['descrizione'],
-                                "percentualeIva": rigatampone['percentualeIva'],
-                                "idUnitaBase": rigatampone['idUnitaBase'],
-                                "unitaBase": rigatampone['unitaBase'],
-                                "idMultiplo": rigatampone['idMultiplo'],
-                                "multiplo": rigatampone['multiplo'],
-                                "idListino": rigatampone['idListino'],
-                                "listino": rigatampone['listino'],
-                                "quantita": rigatampone['quantita'],
-                                "moltiplicatore": rigatampone['moltiplicatore'],
-                                "prezzoLordo": rigatampone['prezzoLordo'],
-                                "applicazioneSconti": 'scalare',
-                                "sconti": rigatampone['sconti'],
-                                "prezzoNetto": rigatampone['prezzoNetto'],
-                                "totale": rigatampone['totale'],
-                                "codiceArticoloFornitore": rigatampone['codiceArticoloFornitore'],
-                                "prezzoNettoUltimo": rigatampone['prezzoNettoUltimo'],
-                                "altezza": rigatampone['altezza'],
-                                "larghezza": rigatampone['larghezza'],
-                                "molt_pezzi": rigatampone['molt_pezzi']}
+                "idMagazzino": rigatampone['idMagazzino'],
+                "magazzino": rigatampone['magazzino'],
+                "idArticolo": rigatampone['idArticolo'],
+                "codiceArticolo": rigatampone['codiceArticolo'],
+                "descrizione": rigatampone['descrizione'],
+                "percentualeIva": rigatampone['percentualeIva'],
+                "idUnitaBase": rigatampone['idUnitaBase'],
+                "unitaBase": rigatampone['unitaBase'],
+                "idMultiplo": rigatampone['idMultiplo'],
+                "multiplo": rigatampone['multiplo'],
+                "idListino": rigatampone['idListino'],
+                "listino": rigatampone['listino'],
+                "quantita": rigatampone['quantita'],
+                "moltiplicatore": rigatampone['moltiplicatore'],
+                "prezzoLordo": rigatampone['prezzoLordo'],
+                "applicazioneSconti": 'scalare',
+                "sconti": rigatampone['sconti'],
+                "prezzoNetto": rigatampone['prezzoNetto'],
+                "totale": rigatampone['totale'],
+                "codiceArticoloFornitore": rigatampone['codiceArticoloFornitore'],
+                "prezzoNettoUltimo": rigatampone['prezzoNettoUltimo'],
+                "altezza": rigatampone['altezza'],
+                "larghezza": rigatampone['larghezza'],
+                "molt_pezzi": rigatampone['molt_pezzi']}
 
     def nuovaRiga(self):
         """
@@ -231,16 +198,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.totale_riga_label.set_text('0')
         self.giacenza_label.set_text('0')
         if "PromoWear" in Environment.modulesList:
-            self.gruppo_taglia_label.set_markup('<span weight="bold">%s</span>' % ('',))
-            self.taglia_label.set_markup('<span weight="bold">%s</span>' % ('',))
-            self.colore_label.set_markup('<span weight="bold">%s</span>' % ('',))
-            self.stagione_label.set_markup('<span weight="bold">%s</span>' % ('',))
-            self.anno_label.set_markup('<span weight="bold">%s</span>' % ('',))
-            self.tipo_label.set_markup('<span weight="bold">%s</span>' % ('',))
+            AnagraficaDocumentiEditPromoWearExt.setLabelInfo(self)
         if "SuMisura" in Environment.modulesList:
-            self.altezza_entry.set_text('')
-            self.larghezza_entry.set_text('')
-            self.moltiplicatore_entry.set_text('')
+            AnagraficaDocumentiEditSuMisuraExt.setLabels(self)
 
         if len(self._righe) > 1:
             self.data_documento_entry.set_sensitive(False)
@@ -280,7 +240,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.nuovaRiga()
 
     def draw(self):
-
         treeview = self.righe_treeview
         rendererSx = gtk.CellRendererText()
         rendererDx = gtk.CellRendererText()
@@ -321,40 +280,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         column.set_expand(False)
         treeview.append_column(column)
         #treeview.set_reorderable(True)
-
-        #treeview.enable_model_drag_source( gtk.gdk.BUTTON1_MASK,
-                                                   #self.TARGETS,
-                                                   #gtk.gdk.ACTION_DEFAULT|
-                                                   #gtk.gdk.ACTION_MOVE)
-        #treeview.enable_model_drag_dest(self.TARGETS,
-                                                #gtk.gdk.ACTION_DEFAULT)
-
-        #treeview.connect("drag_data_get", self.drag_data_get_data)
-        #treeview.connect("drag_data_received",
-                                 #self.drag_data_received_data)
-
-
         if "SuMisura" in Environment.modulesList:
-            column = gtk.TreeViewColumn('H', rendererSx, text=5)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(False)
-            column.set_resizable(True)
-            column.set_expand(False)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('L', rendererSx, text=6)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(False)
-            column.set_resizable(True)
-            column.set_expand(False)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('Pezzi', rendererSx, text=7)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(False)
-            column.set_resizable(True)
-            column.set_expand(False)
-            treeview.append_column(column)
+            AnagraficaDocumentiEditSuMisuraExt.setTreeview(treeview, rendererSx)
 
         column = gtk.TreeViewColumn('Multiplo', rendererSx, text=8)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
@@ -411,11 +338,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
-        #reorderable = treeview.get_reorderable()
-        treeview.set_reorderable(True)
-
-        #treeview.reorderable(True)
-
+        #treeview.set_reorderable(True)
         fillComboboxOperazioni(self.id_operazione_combobox, 'documento')
         fillComboboxMagazzini(self.id_magazzino_combobox)
         fillComboboxPagamenti(self.id_pagamento_customcombobox.combobox)
@@ -424,13 +347,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         fillComboboxCausaliTrasporto(self.causale_trasporto_comboboxentry)
         fillComboboxAspettoEsterioreBeni(self.aspetto_esteriore_beni_comboboxentry)
         self.id_operazione_combobox.set_wrap_width(Environment.conf.combo_columns)
-
-
         self.porto_combobox.set_active(-1)
         self.porto_combobox.set_sensitive(False)
 
         self.nuovaRiga()
-
         # preferenza ricerca articolo ?
         if hasattr(Environment.conf,'Documenti'):
             if hasattr(Environment.conf.Documenti,'ricerca_per'):
@@ -518,24 +438,27 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         model = gtk.ListStore(str, str, str)
         self.riepiloghi_iva_treeview.set_model(model)
 
-    #def drag_data_received_data(self, treeview, context, x, y, selection,
-                                   #info, etime):
-        #print "SSSSSSSSSS", "drag_data_received_data",context, x,y,selection,info,etime
-
-    #def drag_data_get_data(self, treeview, context, selection, target_id,
-                              #etime):
-        #print "GGGGGGGGGG", "drag_data_get_data",context,selection ,target_id,etime
 
 
     def on_id_operazione_combobox_changed(self, combobox):
 
         self._operazione = findIdFromCombobox(self.id_operazione_combobox)
-        operazione = leggiOperazione(self._operazione)
-        if self._tipoPersonaGiuridica != operazione["tipoPersonaGiuridica"]:
-            self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
-        self._tipoPersonaGiuridica = operazione["tipoPersonaGiuridica"]
-        self._fonteValore = operazione["fonteValore"]
-        self._segno = operazione["segno"]
+        #operazione = leggiOperazione(self._operazione)
+        operazione = Operazione().getRecord(id=self._operazione)
+        if operazione:
+            if self._tipoPersonaGiuridica != operazione.tipo_persona_giuridica:
+                self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
+            self._tipoPersonaGiuridica = operazione.tipo_persona_giuridica
+            self._fonteValore = operazione.fonte_valore
+            self._segno = operazione.segno
+
+        #if self._tipoPersonaGiuridica != operazione["tipoPersonaGiuridica"]:
+            #self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
+        #self._tipoPersonaGiuridica = operazione["tipoPersonaGiuridica"]
+        #self._fonteValore = operazione["fonteValore"]
+        #self._segno = operazione["segno"]
+
+
 
         if (self._tipoPersonaGiuridica == "fornitore"):
             self.persona_giuridica_label.set_text('Fornitore')
@@ -725,8 +648,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             return
 
         self._righe[0]["idMagazzino"] = findIdFromCombobox(self.id_magazzino_combobox)
-        magazzino = leggiMagazzino(self._righe[0]["idMagazzino"])
-        self._righe[0]["magazzino"] = magazzino["denominazione"]
+        #magazzino = leggiMagazzino(self._righe[0]["idMagazzino"])
+        magazzino = Magazzino().getRecord(id=self._righe[0]["idMagazzino"])
+        if magazzino:
+            self._righe[0]["magazzino"] = magazzino.denominazione
         self.refresh_combobox_listini()
 
 
@@ -735,7 +660,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if self._righe[0]["idArticolo"] is None:
             self.id_listino_customcombobox.combobox.clear
         else:
-            fillComboboxListiniFiltrati(self.id_listino_customcombobox.combobox,
+            a = fillComboboxListiniFiltrati(self.id_listino_customcombobox.combobox,
                     self._righe[0]["idArticolo"],
                     self._righe[0]["idMagazzino"],
                     self.id_persona_giuridica_customcombobox.getId())
@@ -745,14 +670,16 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def on_id_multiplo_customcombobox_button_clicked(self, widget, toggleButton):
         on_id_multiplo_customcombobox_clicked(widget, toggleButton, self._righe[0]["idArticolo"])
 
+
     def on_id_multiplo_customcombobox_changed(self, combobox):
 
         if self._loading:
             return
         self._righe[0]["idMultiplo"] = findIdFromCombobox(self.id_multiplo_customcombobox.combobox)
-        multiplo = leggiMultiplo(self._righe[0]["idMultiplo"])
-        self._righe[0]["multiplo"] = multiplo["denominazioneBreve"] + ' ( ' + str('%.2f' % multiplo["moltiplicatore"]) + ' X )'
-        self._righe[0]["moltiplicatore"] = multiplo["moltiplicatore"]
+        #multiplo = leggiMultiplo(self._righe[0]["idMultiplo"])
+        multiplo = Multiplo().getRecord(id=self._righe[0]["idMultiplo"])
+        self._righe[0]["multiplo"] = multiplo.denominazione_breve + ' ( ' + str('%.2f' % multiplo.moltiplicatore) + ' X )'
+        self._righe[0]["moltiplicatore"] = multiplo.moltiplicatore
         self.calcolaTotaleRiga()
 
     def on_id_listino_customcombobox_button_clicked(self, widget, toggleButton):
@@ -763,7 +690,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             return
         self.refresh_combobox_listini()
 
-    def on_id_listino_customcombobox_changed(self, combobox):
+    def on_id_listino_customcombobox_changed(self, combobox=None):
         """ """
         if self._loading:
             return
@@ -990,7 +917,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         for riga in self.dao.righe:
             self.azzeraRiga(0)
             j = self.dao.righe.index(riga) + 1
-            magazzino = leggiMagazzino(riga.id_magazzino)
+            #magazzino = leggiMagazzino(riga.id_magazzino)
+            magazzino = Magazzino().getRecord(id=riga.id_magazzino)
             articolo = leggiArticolo(riga.id_articolo)
             listino = leggiListino(riga.id_listino)
             multiplo = leggiMultiplo(riga.id_multiplo)
@@ -1006,7 +934,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 moltiplicatore_pezzi = ''
             self._righe[0]["idRiga"] = riga.id
             self._righe[0]["idMagazzino"] = riga.id_magazzino
-            self._righe[0]["magazzino"] = magazzino["denominazione"]
+            self._righe[0]["magazzino"] = magazzino.denominazione
             self._righe[0]["idArticolo"] = riga.id_articolo
             self._righe[0]["codiceArticolo"] = articolo["codice"]
             self._righe[0]["descrizione"] = riga.descrizione
@@ -1372,8 +1300,9 @@ del documento.
             return
 
         self._righe[0]["idMagazzino"] = findIdFromCombobox(self.id_magazzino_combobox)
-        magazzino = leggiMagazzino(self._righe[0]["idMagazzino"])
-        self._righe[0]["magazzino"] = magazzino["denominazione"]
+        #magazzino = leggiMagazzino(self._righe[0]["idMagazzino"])
+        magazzino = Magazzino().getRecord(id=self._righe[0]["idMagazzino"])
+        self._righe[0]["magazzino"] = magazzino.denominazione
 
         if (self.data_documento_entry.get_text() == ''):
             self.showMessage('Inserire la data del documento !')
@@ -1407,7 +1336,6 @@ del documento.
             inserisci = True
         else:
             inserisci = False
-        print "inserisciiiiiiiiiiiiiiiiiiiiiiii", inserisci
         # memorizzazione delle parti descrittive (liberamente modificabili)
         self._righe[0]["descrizione"] = self.descrizione_entry.get_text()
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
@@ -1451,12 +1379,9 @@ del documento.
             self.modelRiga.set_value(self._iteratorRiga, 3, self._righe[self._numRiga]["descrizione"])
             self.modelRiga.set_value(self._iteratorRiga, 4, '%5.2f' % float(self._righe[self._numRiga]["percentualeIva"]))
             if "SuMisura" in Environment.modulesList:
-                self.modelRiga.set_value(self._iteratorRiga, 5, self._righe[self._numRiga][
-                   "altezza"])
-                self.modelRiga.set_value(self._iteratorRiga, 6, self._righe[self._numRiga][
-                    "larghezza"])
-                self.modelRiga.set_value(self._iteratorRiga, 7, self._righe[self._numRiga][
-                    "molt_pezzi"])
+                self.modelRiga.set_value(self._iteratorRiga, 5, self._righe[self._numRiga]["altezza"])
+                self.modelRiga.set_value(self._iteratorRiga, 6, self._righe[self._numRiga]["larghezza"])
+                self.modelRiga.set_value(self._iteratorRiga, 7, self._righe[self._numRiga]["molt_pezzi"])
             self.modelRiga.set_value(self._iteratorRiga, 8, self._righe[self._numRiga]["multiplo"])
             self.modelRiga.set_value(self._iteratorRiga, 9, self._righe[self._numRiga]["listino"])
             self.modelRiga.set_value(self._iteratorRiga, 10, self._righe[self._numRiga]["unitaBase"])
@@ -1642,7 +1567,13 @@ del documento.
         active=self.promowear_manager_taglia_colore_togglebutton.get_active()
         if active:
             from promogest.modules.PromoWear.ui.ManageSizeAndColor import ManageSizeAndColor
-            manag = ManageSizeAndColor(self, data=self.idArticoloWithVarianti)
+            idPerGiu = self.id_persona_giuridica_customcombobox.getId()
+            data = stringToDate(self.data_documento_entry.get_text())
+            manag = ManageSizeAndColor(self, articolo=self.ArticoloPadre,
+                                        data=data,
+                                        idPerGiu=idPerGiu,
+                                        idListino=self._id_listino,
+                                        fonteValore=self._fonteValore)
             anagWindow = manag.getTopLevel()
             anagWindow.set_transient_for(self.dialogTopLevel)
         else:
@@ -1685,22 +1616,17 @@ del documento.
         fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, id, True)
 
         if id is not None:
-            #if "PromoWear" in Environment.modulesList:
-            articolo = leggiArticolo(id,
-                    idFornitore=self.id_persona_giuridica_customcombobox.getId(),
-                    data=data)
-            if articolo.has_key("varianti"):
+            articolo = leggiArticolo(id)
+            if "PromoWear" in Environment.modulesList:
+                AnagraficaDocumentiEditPromoWearExt.fillLabelInfo(self, articolo)
+            artic = Articolo().getRecord(id=id)
+            if articleType(artic) =="father" :
+                self.ArticoloPadre = artic
                 self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
                 self.promowear_manager_taglia_colore_togglebutton.set_sensitive(True)
-                self.idArticoloWithVarianti = articolo
-                self.gruppo_taglia_label.set_markup('<span weight="bold">%s</span>' % (articolo['gruppoTaglia']))
-                self.taglia_label.set_markup('<span weight="bold">%s</span>' % (articolo['taglia']))
-                self.colore_label.set_markup('<span weight="bold">%s</span>' % (articolo['colore']))
-                self.stagione_label.set_markup('<span weight="bold">%s</span>' % (articolo['stagione']))
-                self.anno_label.set_markup('<span weight="bold">%s</span>' % (articolo['anno']))
-                self.tipo_label.set_markup('<span weight="bold">%s</span>' % (""))
                 self.NoRowUsableArticle = True
             if art:
+                # articolo proveninente da finestra taglia e colore ...
                 self.NoRowUsableArticle = False
                 articolo = art
                 self._righe[0]["idArticolo"] = id
@@ -1714,9 +1640,9 @@ del documento.
                 self._righe[0]["unitaBase"] = articolo["unitaBase"]
                 self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
                 if ((self._fonteValore == "acquisto_iva") or  (self._fonteValore == "acquisto_senza_iva")):
-                    costoLordo = str(articolo['fornitura']["prezzoLordo"])
+                    costoLordo = str(articolo['valori']["prezzoLordo"])
                     if costoLordo:costoLordo = costoLordo.replace(',','.')
-                    costoNetto = str(articolo['fornitura']["prezzoNetto"])
+                    costoNetto = str(articolo['valori']["prezzoNetto"])
                     if costoNetto:costoNetto = costoNetto.replace(',','.')
                     if self._fonteValore == "acquisto_iva":
                         costoLordo = calcolaPrezzoIva(costoLordo, self._righe[0]["percentualeIva"])
@@ -1726,10 +1652,10 @@ del documento.
                     self._righe[0]["prezzoNetto"] = mN(costoNetto)
                     self.prezzo_netto_label.set_text(str(self._righe[0]["prezzoNetto"]))
                     self._righe[0]["prezzoNettoUltimo"] = float(costoNetto)
-                    self._righe[0]["sconti"] = articolo['fornitura']["sconti"]
-                    self._righe[0]["applicazioneSconti"] = articolo['fornitura']["applicazioneSconti"]
+                    self._righe[0]["sconti"] = articolo['valori']["sconti"]
+                    self._righe[0]["applicazioneSconti"] = articolo['valori']["applicazioneSconti"]
                     self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
-                    self._righe[0]["codiceArticoloFornitore"] = articolo['fornitura']["codiceArticoloFornitore"]
+                    self._righe[0]["codiceArticoloFornitore"] = articolo['valori']["codiceArticoloFornitore"]
                     self.codice_articolo_fornitore_entry.set_text(self._righe[0]["codiceArticoloFornitore"])
                     quantita =articolo["quantita"]
                     quantita = quantita.replace(',','.')
@@ -1738,13 +1664,26 @@ del documento.
                     if self._righe[0]["quantita"]:
                         self.calcolaTotaleRiga()
 
-                elif ((self._fonteValore == "vendita_iva") or
-                    (self._fonteValore == "vendita_senza_iva")):
-                    self.refresh_combobox_listini()
+                elif ((self._fonteValore == "vendita_iva") or (self._fonteValore == "vendita_senza_iva")):
+
+                    costoLordo = str(articolo['valori']["prezzoDettaglio"])
+                    if costoLordo:costoLordo = costoLordo.replace(',','.')
+                    self._righe[0]["prezzoLordo"] = mN(costoLordo)
+                    self.prezzo_lordo_entry.set_text(str(self._righe[0]["prezzoLordo"]))
+                    self._righe[0]["sconti"] = articolo['valori']["scontiDettaglio"]
+                    self._righe[0]["applicazioneSconti"] = articolo['valori']["applicazioneScontiDettaglio"]
+                    self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
+                    quantita =articolo["quantita"]
+                    quantita = quantita.replace(',','.')
+                    self._righe[0]["quantita"] = quantita
+                    self.quantita_entry.set_text(self._righe[0]["quantita"])
+                    if self._righe[0]["quantita"]:
+                        self.calcolaTotaleRiga()
+                    self.on_show_totali_riga()
+                    #self.refresh_combobox_listini()
                 self.on_confirm_row_button_clicked(self.dialogTopLevel)
                 return
             #else:
-            #articolo = leggiArticolo(id)
             self._righe[0]["idArticolo"] = id
             self._righe[0]["codiceArticolo"] = articolo["codice"]
             self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
@@ -1782,8 +1721,7 @@ del documento.
                 self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
                 self._righe[0]["codiceArticoloFornitore"] = fornitura["codiceArticoloFornitore"]
                 self.codice_articolo_fornitore_entry.set_text(self._righe[0]["codiceArticoloFornitore"])
-            elif ((self._fonteValore == "vendita_iva") or
-                  (self._fonteValore == "vendita_senza_iva")):
+            elif ((self._fonteValore == "vendita_iva") or (self._fonteValore == "vendita_senza_iva")):
                 self.refresh_combobox_listini()
 
         if self._tipoPersonaGiuridica == "cliente":
@@ -1829,7 +1767,6 @@ del documento.
 
     def calcolaTotale(self):
         """ calcola i totali documento """
-
 
         # FIXME: duplicated in TestataDocumenti.py
         totaleImponibile = Decimal(0)
@@ -1931,7 +1868,8 @@ del documento.
 
     def showMessage(self, msg):
 
-        dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+        dialog = gtk.MessageDialog(self.dialogTopLevel,
+                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
         dialog.run()
         dialog.destroy()
@@ -2016,7 +1954,7 @@ del documento.
             if larghezza != 0:
                 if self._righe[0]["unitaBase"] == "Metri Quadri":
                     quantita = CalcolaArea(altezza, larghezza)
-                    print "Ma cavolo " , quantita, altezza, larghezza
+
                 elif self._righe[0]["unitaBase"] == "Metri":
                     quantita = CalcolaPerimetro(altezza, larghezza)
                 else:

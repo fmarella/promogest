@@ -69,21 +69,21 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
         daoArticolo = Articolo().getRecord(id=id)
         variantiList = []
         if "PromoWear" in Environment.modulesList:
-            if articleType(daoArticolo)=="father":
-                varianti = daoArticolo.articoliVarianti
-                from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
-                for varia in varianti:
-                    variante=leggiArticoloPromoWear(varia.id, full=True)
-                    variante['fornitura'] = leggiFornituraPromoWear(idArticolo=varia.id,
-                                                    idFornitore=idFornitore,
-                                                    data=data)
-                    variantiList.append(variante)
-                artiDict = leggiArticoloPromoWear(id)
-                artiDict["varianti"] = variantiList
-                artiDict["fornitura"] = leggiFornituraPromoWear(idArticolo=varia.id,
-                                                    idFornitore=idFornitore,
-                                                    data=data)
-                return artiDict
+            #if articleType(daoArticolo)=="father":
+                #varianti = daoArticolo.articoliVarianti
+            from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
+                #for varia in varianti:
+                    #variante=leggiArticoloPromoWear(varia.id, full=True)
+                    #variante['fornitura'] = leggiFornituraPromoWear(idArticolo=varia.id,
+                                                    #idFornitore=idFornitore,
+                                                    #data=data)
+                    #variantiList.append(variante)
+            artiDict = leggiArticoloPromoWear(id)
+                #artiDict["varianti"] = variantiList
+                #artiDict["fornitura"] = leggiFornituraPromoWear(idArticolo=varia.id,
+                                                    #idFornitore=idFornitore,
+                                                    #data=data)
+            return artiDict
         if daoArticolo is not None:
             _id = id
             _denominazione = daoArticolo.denominazione or ''
@@ -272,20 +272,18 @@ def leggiContatto(id):
     _email = ''
 
     if id is not None:
-        daoContatto = Contatto().getRecord(id=id)
+        daoContatto = Contatto().select(id=id)
         if daoContatto is not None:
             try:
-                for i in range(0,len(daoContatto.recapiti)):
-                    if daoContatto.recapiti[i].tipo_recapito == "E-Mail":
-                        _email = daoContatto.recapiti[i].recapito
+                for i in range(0,len(daoContatto[0].recapiti)):
+                    if daoContatto[0].recapiti[i].tipo_recapito == "E-Mail":
+                        _email = daoContatto[0].recapiti[i].recapito
             except:
                 _email = ""
-
-
-                daoContatto.recapiti[0].tipo_recapito
+                daoContatto[0].recapiti[0].tipo_recapito
             _id = id
-            _nome = daoContatto.nome or ''
-            _cognome = daoContatto.cognome or ''
+            _nome = daoContatto[0].nome or ''
+            _cognome = daoContatto[0].cognome or ''
             _email = _email or ''
 
     return {"id": _id,
@@ -370,7 +368,7 @@ def leggiListino(idListino, idArticolo=None):
                                                             batchSize=None,
                                                             orderBy="id_listino")
                     if len(daoListinoArticolo1) >= 1:
-                        print "ATTENZIONEEEEEEEEEEEEEEEEEEE PIÙ DI UN LISTINO ARTICOLO ATTUALE"
+                        #print "ATTENZIONEEEEEEEEEEEEEEEEEEE PIÙ DI UN LISTINO ARTICOLO ATTUALE"
                         daoListinoArticolo= daoListinoArticolo1[0]
 
                 if daoListinoArticolo is not None:
@@ -413,7 +411,7 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
                                               daDataPrezzo=None,
                                               aDataPrezzo=data,
                                               codiceArticoloFornitore=None,
-                                              orderBy = 'data_prezzo DESC, fornitore_preferenziale DESC',
+                                              orderBy = 'data_prezzo',
                                               offset = None,
                                               batchSize = None)
 
@@ -1677,6 +1675,32 @@ def showComplexQuestion(parentWindow, message):
     result = dialog.run()
     dialog.destroy()
     return result
+
+def hidePromoWear(ui):
+    """ Hide and destroy labels and button if promowear is not present
+    """
+    ui.promowear_manager_taglia_colore_togglebutton.destroy()
+    ui.promowear_manager_taglia_colore_image.hide()
+    ui.anno_label.destroy()
+    ui.label_anno.destroy()
+    ui.stagione_label.destroy()
+    ui.label15.destroy()
+    ui.colore_label.destroy()
+    ui.label14.destroy()
+    ui.taglia_label.destroy()
+    ui.label_taglia.destroy()
+    ui.gruppo_taglia_label.destroy()
+    ui.label_gruppo_taglia.destroy()
+    ui.tipo_label.destroy()
+    ui.label_tipo.destroy()
+
+def hideSuMisura(ui):
+    """
+    funzione per SuMisura .....rimuove dalla vista quando modulo è disattivato
+    """
+    ui.sumisura_frame.destroy()
+    ui.moltiplicatore_entry.destroy()
+    ui.label_moltiplicatore.hide()
 
 
 def destroy_event(window):

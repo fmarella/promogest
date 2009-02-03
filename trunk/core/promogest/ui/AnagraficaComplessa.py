@@ -983,8 +983,9 @@ class AnagraficaHtml(object):
         self.dao = dao
 
         self._refresh()
+        #print "FFFFFFFFFFFFFFFF", 
         #if dao is not None and Environment.debugDao ==True:
-            # FIXME: add some logging level check here
+            #FIXME: add some logging level check here
         #import pprint
         #pp = pprint.PrettyPrinter(indent=4)
         #print ("\n\n=== DAO object dump ===\n\n"
