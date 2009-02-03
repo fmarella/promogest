@@ -103,6 +103,11 @@ class ListinoArticolo(Dao):
             if self.arti:return self.arti.denominazione_colore
         denominazione_colore = property(_denominazione_colore)
 
+        def _denominazione_modello(self):
+            """ esempio di funzione  unita alla property """
+            if self.arti:return self.arti.denominazione_modello
+        denominazione_modello = property(_denominazione_modello)
+
         def _anno(self):
             """ esempio di funzione  unita alla property """
             if self.arti:return self.arti.anno

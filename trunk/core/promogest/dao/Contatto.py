@@ -49,6 +49,8 @@ class Contatto(Dao):
     def filter_values(self,k,v):
         if k == 'cognomeNome':
             dic = {k:or_(contatto.c.cognome.ilike("%"+v+"%"),contatto.c.nome.ilike("%"+v+"%"))}
+        elif k == 'id':
+            dic = {k:contatto.c.id == v}
         elif k == 'ruolo':
             dic = {k:contatto.c.ruolo.ilike("%"+v+"%")}
         elif k=='descrizione':
