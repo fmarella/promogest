@@ -917,8 +917,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         for riga in self.dao.righe:
             self.azzeraRiga(0)
             j = self.dao.righe.index(riga) + 1
-            #magazzino = leggiMagazzino(riga.id_magazzino)
-            magazzino = Magazzino().getRecord(id=riga.id_magazzino)
+            magazzino = leggiMagazzino(riga.id_magazzino)
+            #magazzino = Magazzino().getRecord(id=riga.id_magazzino)
             articolo = leggiArticolo(riga.id_articolo)
             listino = leggiListino(riga.id_listino)
             multiplo = leggiMultiplo(riga.id_multiplo)
@@ -934,7 +934,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 moltiplicatore_pezzi = ''
             self._righe[0]["idRiga"] = riga.id
             self._righe[0]["idMagazzino"] = riga.id_magazzino
-            self._righe[0]["magazzino"] = magazzino.denominazione
+            self._righe[0]["magazzino"] = magazzino['denominazione']
             self._righe[0]["idArticolo"] = riga.id_articolo
             self._righe[0]["codiceArticolo"] = articolo["codice"]
             self._righe[0]["descrizione"] = riga.descrizione

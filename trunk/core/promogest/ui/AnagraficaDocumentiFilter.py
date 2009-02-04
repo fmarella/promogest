@@ -237,6 +237,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                                 offset=offset,
                                                 batchSize=batchSize)
         self._filterClosure = filterClosure
+        #self._allResultForHtml = self.runFilter(offset=None, batchSize=None)
         tdos = self.runFilter()
         self.xptDaoList = self.runFilter(offset=None, batchSize=None)
         self._treeViewModel.clear()

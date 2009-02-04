@@ -986,11 +986,11 @@ class AnagraficaHtml(object):
         #print "FFFFFFFFFFFFFFFF", 
         #if dao is not None and Environment.debugDao ==True:
             #FIXME: add some logging level check here
-        import pprint
-        pp = pprint.PrettyPrinter(indent=4)
-        print ("\n\n=== DAO object dump ===\n\n"
-                + pp.pformat(dao.dictionary(complete=True))
-                + "\n\n")
+        #import pprint
+        #pp = pprint.PrettyPrinter(indent=4)
+        #print ("\n\n=== DAO object dump ===\n\n"
+                #+ pp.pformat(dao.dictionary(complete=True))
+                #+ "\n\n")
 
     def refresh(self):
         """ Aggiorna la vista HTML """
@@ -1307,7 +1307,7 @@ class AnagraficaPrintPreview(GladeWidget):
         self.numRecords = self.bodyWidget.numRecords
         self._filterClosure = self._anagrafica.filter._filterClosure
         self._filterCountClosure = self._anagrafica.filter._filterCountClosure
-
+        #self._allResultForHtml = self._anagrafica.filter._allResultForHtml
         self.print_on_screen_dialog.set_transient_for(self._anagrafica.getTopLevel())
         self.placeWindow(self.print_on_screen_dialog)
         self.refresh()
@@ -1322,7 +1322,7 @@ class AnagraficaPrintPreview(GladeWidget):
     def refresh(self):
         """ show the html page in the custom widget"""
         self.bodyWidget.orderBy = self.orderBy
-        daos = self.bodyWidget.runFilter(offset=self.offset, batchSize=None,
+        daos = self.bodyWidget.runFilter(offset=None, batchSize=None,
                                          filterClosure=self._filterClosure)
         self.numRecords = self.bodyWidget.countFilterResults(self._filterCountClosure)
         self._refreshPageCount()
