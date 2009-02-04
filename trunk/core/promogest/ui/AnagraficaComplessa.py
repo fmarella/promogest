@@ -33,7 +33,7 @@ import genshi
 from genshi.template import TemplateLoader
 from promogest.dao import Dao
 import urllib2
-
+from PrintDialog import PrintDialogHandler
 
 class Anagrafica(GladeWidget):
     """ Classe base per le anagrafiche di Promogest """
@@ -1095,7 +1095,6 @@ class AnagraficaReport(object):
         self._slaTemplate = Environment.reportTemplatesDir + sxwTemplate + '.sla'
         #self.htmlName = htmlTemplate + '.html'
         self.objects = None
-
         self._slaTemplateObj = None
 
 
@@ -1287,7 +1286,7 @@ class AnagraficaPrintPreview(GladeWidget):
 
     def __init__(self, anagrafica, windowTitle, previewTemplate):
         GladeWidget.__init__(self, 'print_on_screen_dialog')
-
+        self.windowTitle = windowTitle
         self.print_on_screen_dialog.set_title(windowTitle)
         self._anagrafica = anagrafica
 
@@ -1310,6 +1309,11 @@ class AnagraficaPrintPreview(GladeWidget):
         #self._allResultForHtml = self._anagrafica.filter._allResultForHtml
         self.print_on_screen_dialog.set_transient_for(self._anagrafica.getTopLevel())
         self.placeWindow(self.print_on_screen_dialog)
+        self.bodyWidget.generic_button.set_no_show_all(False)
+        self.bodyWidget.generic_button.set_property('visible', True)
+        generaButton = self.bodyWidget.generic_button
+        generaButton.connect('clicked', self.on_generic_button_clicked )
+        generaButton.set_label("Genera Pdf Anteprima Html")
         self.refresh()
 
 
@@ -1342,12 +1346,22 @@ class AnagraficaPrintPreview(GladeWidget):
         loader = TemplateLoader([templates_dir])
         tmpl = loader.load(self._previewTemplate[1])
         stream = tmpl.generate(objects=daos)
-        html = stream.render('xhtml')
+        self.html = stream.render('xhtml')
         document.open_stream('text/html')
-        document.write_stream(html)
+        document.write_stream(self.html)
         document.close_stream()
         self.print_on_screen_html.set_document(document)
         self._currGtkHtmlDocument = currDocument
+
+    def on_generic_button_clicked(self, button=None):
+        import pisaLib.ho.pisa as pisa
+        f = self.html
+        g = file(".temp.pdf", "wb")
+        pdf = pisa.CreatePDF(f,g)
+        g .close()
+        #self._anagrafica.__pdfReport = g
+        #fil = file("temp.pdf", "r")
+        PrintDialogHandler(self.windowTitle)
 
     def on_html_request_url(self,document, url, stream):
         print "MAMAMAMAMAMA",link, stream
