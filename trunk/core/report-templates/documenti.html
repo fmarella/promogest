@@ -14,6 +14,11 @@
                 <th>Operazione</th>
                 <th>Data docum.</th>
                 <th>Cliente/Fornitore</th>
+                 <th>Totale Imponibile</th>
+                <th>Totale Imposta</th>
+                <th>Totale </th>
+                <th>Totale sospeso</th>
+                <th>Totale Saldato</th>
                 <th>Pagamento</th>
                 <th>Banca</th>
             </tr>
@@ -28,14 +33,47 @@
                     if fornitore == '':
                         fornitore = (dao.cognome_fornitore or '') + ' ' + (dao.nome_fornitore or '')
                 ?>
-
+               
                 <td class="detail">${str(dao.numero) + ' ' + (dao.parte or '')}</td>
-                <td class="detail">${dao.operazione}</td>
+                <td class="detail">${dao.operazione} ${fornitore}</td>
                 <td class="detail">${dao.data_documento.strftime('%d/%m/%Y')}</td>
                 <td class="detail">${dao.intestatario}</td>
+                <td class="detail">${dao._totaleImponibile}</td>
+                <td class="detail">${dao._totaleImposta}</td>
+                <td class="detail">${dao._totaleNonScontato}</td>
+                <td class="detail">${dao.totale_sospeso}</td>
+                <td class="detail">${dao.totale_pagato}</td>
                 <td class="detail">${dao.pagamento}</td>
-                <td class="detail">${dao.banca}</td>
+                <td class="detail">${dao.banca} </td>
             </tr>
+            <tr>
+                <th>TOTALE IMPONIBILE</th>
+                <th>TOTALE IMPOSTA</th>
+                <th>TOTALE GENERALE</th>
+                <th>SOSPESO</th>
+                <th>PAGATO</th>
+            </tr>
+                <?python
+                    totale_imponibile = 0
+                    totale_imposta = 0
+                    totale = 0
+                    sospeso = 0
+                    pagato = 0
+                    for tot in objects:
+                        totale_imponibile=totale_imponibile+tot._totaleImponibile
+                        totale_imposta=totale_imposta+tot._totaleImposta
+                        totale=totale+tot._totaleNonScontato
+                        sospeso=sospeso+tot.totale_sospeso
+                        pagato=pagato+tot.totale_pagato
+                ?>
+<tr>
+            <td class="detail">${totale_imponibile}</td>
+            <td class="detail">${totale_imposta}</td>
+            <td class="detail">${totale}</td>
+            <td class="detail">${sospeso}</td>
+            <td class="detail">${pagato}</td>
+</tr>
         </table>
+
     </body>
 </html>
