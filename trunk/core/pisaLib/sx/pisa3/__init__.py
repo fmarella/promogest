@@ -1,4 +1,4 @@
-# -*- coding: ISO-8859-1 -*-
+# -*- coding: utf-8 -*-
 #############################################
 ## (C)opyright by Dirk Holtwick, 2002-2007 ##
 ## All rights reserved                     ##
@@ -29,7 +29,7 @@ log = logging.getLogger(__name__)
 
 try:
     from pisa import *
-    if not REPORTLAB22:
+    if not REPORTLAB21:
         raise ImportError, "Reportlab Toolkit Version 2.2 or higher needed"
 except ImportError, e:
     import sys
