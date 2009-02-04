@@ -14,13 +14,9 @@ import datetime
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.TestataMovimento
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.TestataDocumento import TestataDocumento
-import promogest.dao.RigaMovimento
 from promogest.dao.RigaMovimento import RigaMovimento
-import promogest.dao.ScontoRigaMovimento
 from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.Articolo import Articolo
 from utils import *

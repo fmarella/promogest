@@ -2091,89 +2091,29 @@ class RicercaArticoliFilter(GladeWidget):
             figliTagliaColore = None
             #if self.complexFilter:
                 #self.complexFilter= and_(*self.complexFilter)
-        if (not denominazione and not codice and not codiceABarre) and ("AND" not in str(self.complexFilter)):
-            self.filter.numRecords = 0
+        #if (not denominazione and not codice and not codiceABarre) and ("AND" not in str(self.complexFilter)):
+            #self.filter.numRecords = 0
+        #else:
+        if "Promowear" in Environment.modulesList:
+            self.filter.numRecords = Articolo().count(denominazione=denominazione,
+                                                        codice=codice,
+                                                        codiceABarre=codiceABarre,
+                                                        codiceArticoloFornitore=codiceArticoloFornitore,
+                                                        produttore=produttore,
+                                                        idFamiglia=idFamiglia,
+                                                        idCategoria=idCategoria,
+                                                        idStato=idStato,
+                                                        cancellato=cancellato,
+                                                        idGruppoTaglia=idGruppoTaglia,
+                                                        idTaglia=idTaglia,
+                                                        idColore=idColore,
+                                                        idAnno=idAnno,
+                                                        idStagione=idStagione,
+                                                        idGenere=idGenere,
+                                                        padriTagliaColore=padriTagliaColore,
+                                                        figliTagliaColore=figliTagliaColore)
         else:
-            if "Promowear" in Environment.modulesList:
-                self.filter.numRecords = Articolo().count(denominazione=denominazione,
-                                                            codice=codice,
-                                                            codiceABarre=codiceABarre,
-                                                            codiceArticoloFornitore=codiceArticoloFornitore,
-                                                            produttore=produttore,
-                                                            idFamiglia=idFamiglia,
-                                                            idCategoria=idCategoria,
-                                                            idStato=idStato,
-                                                            cancellato=cancellato,
-                                                            idGruppoTaglia=idGruppoTaglia,
-                                                            idTaglia=idTaglia,
-                                                            idColore=idColore,
-                                                            idAnno=idAnno,
-                                                            idStagione=idStagione,
-                                                            idGenere=idGenere,
-                                                            padriTagliaColore=padriTagliaColore,
-                                                            figliTagliaColore=figliTagliaColore)
-            else:
-                self.filter.numRecords = Articolo().count(
-                                            denominazione=denominazione,
-                                            codice=codice,
-                                            codiceABarre=codiceABarre,
-                                            codiceArticoloFornitore=codiceArticoloFornitore,
-                                            produttore=produttore,
-                                            idFamiglia=idFamiglia,
-                                            idCategoria=idCategoria,
-                                            idStato=idStato,
-                                            cancellato=cancellato,
-                                            complexFilter=self.complexFilter)
-        self.resultsCount = self.filter.numRecords
-        self.filter._refreshPageCount()
-        if (not denominazione and not codice and not codiceABarre) and ("AND" not in str(self.complexFilter)):
-            arts = []
-            model.clear()
-        else:
-            if "PromoWear" in Environment.modulesList:
-                arts = Articolo().select(orderBy=self.filter.orderBy,
-                                                denominazione=denominazione,
-                                                codice=codice,
-                                                codiceABarre=codiceABarre,
-                                                codiceArticoloFornitore=codiceArticoloFornitore,
-                                                produttore=produttore,
-                                                idFamiglia=idFamiglia,
-                                                idCategoria=idCategoria,
-                                                idStato=idStato,
-                                                cancellato=cancellato,
-                                                idGruppoTaglia=idGruppoTaglia,
-                                                idTaglia=idTaglia,
-                                                idColore=idColore,
-                                                idAnno=idAnno,
-                                                idStagione=idStagione,
-                                                idGenere=idGenere,
-                                                padriTagliaColore=padriTagliaColore,
-                                                figliTagliaColore=figliTagliaColore,
-                                                offset=self.filter.offset,
-                                                batchSize=self.filter.batchSize)
-                model.clear()
-                for a in arts:
-                    bgCol = None
-                    if a.cancellato:
-                        bgCol = 'red'
-                    model.append((a,
-                                bgCol,
-                                (a.codice or ''),
-                                (a.denominazione or ''),
-                                (a.produttore or ''),
-                                (a.codice_a_barre or ''),
-                                (a.codice_articolo_fornitore or ''),
-                                (a.denominazione_famiglia or ''),
-                                (a.denominazione_categoria or ''),
-                                (a.denominazione_gruppo_taglia or ''),
-                                (a.denominazione_taglia or ''),
-                                (a.denominazione_colore or ''),
-                                (a.anno or ''),
-                                (a.stagione or ''),
-                                (a.genere or '')))
-            else:
-                arts = Articolo().select(
-                                        orderBy=self.filter.orderBy,
+            self.filter.numRecords = Articolo().count(
                                         denominazione=denominazione,
                                         codice=codice,
                                         codiceABarre=codiceABarre,
@@ -2183,38 +2123,97 @@ class RicercaArticoliFilter(GladeWidget):
                                         idCategoria=idCategoria,
                                         idStato=idStato,
                                         cancellato=cancellato,
-                                        offset=self.filter.offset,
-                                        batchSize=self.filter.batchSize,
                                         complexFilter=self.complexFilter)
-                model.clear()
+        self.resultsCount = self.filter.numRecords
+        self.filter._refreshPageCount()
+        #if (not denominazione and not codice and not codiceABarre) and ("AND" not in str(self.complexFilter)):
+            #arts = []
+            #model.clear()
+        #else:
+        if "PromoWear" in Environment.modulesList:
+            arts = Articolo().select(orderBy=self.filter.orderBy,
+                                            denominazione=denominazione,
+                                            codice=codice,
+                                            codiceABarre=codiceABarre,
+                                            codiceArticoloFornitore=codiceArticoloFornitore,
+                                            produttore=produttore,
+                                            idFamiglia=idFamiglia,
+                                            idCategoria=idCategoria,
+                                            idStato=idStato,
+                                            cancellato=cancellato,
+                                            idGruppoTaglia=idGruppoTaglia,
+                                            idTaglia=idTaglia,
+                                            idColore=idColore,
+                                            idAnno=idAnno,
+                                            idStagione=idStagione,
+                                            idGenere=idGenere,
+                                            padriTagliaColore=padriTagliaColore,
+                                            figliTagliaColore=figliTagliaColore,
+                                            offset=self.filter.offset,
+                                            batchSize=self.filter.batchSize)
+            model.clear()
+            for a in arts:
+                bgCol = None
+                if a.cancellato:
+                    bgCol = 'red'
+                model.append((a,
+                            bgCol,
+                            (a.codice or ''),
+                            (a.denominazione or ''),
+                            (a.produttore or ''),
+                            (a.codice_a_barre or ''),
+                            (a.codice_articolo_fornitore or ''),
+                            (a.denominazione_famiglia or ''),
+                            (a.denominazione_categoria or ''),
+                            (a.denominazione_gruppo_taglia or ''),
+                            (a.denominazione_taglia or ''),
+                            (a.denominazione_colore or ''),
+                            (a.anno or ''),
+                            (a.stagione or ''),
+                            (a.genere or '')))
+        else:
+            arts = Articolo().select(orderBy=self.filter.orderBy,
+                                    denominazione=denominazione,
+                                    codice=codice,
+                                    codiceABarre=codiceABarre,
+                                    codiceArticoloFornitore=codiceArticoloFornitore,
+                                    produttore=produttore,
+                                    idFamiglia=idFamiglia,
+                                    idCategoria=idCategoria,
+                                    idStato=idStato,
+                                    cancellato=cancellato,
+                                    offset=self.filter.offset,
+                                    batchSize=self.filter.batchSize,
+                                    complexFilter=self.complexFilter)
+            model.clear()
 
-                for a in arts:
-                    bgCol = None
-                    if a.cancellato:
-                        bgCol = 'red'
-                    model.append((a,
-                                bgCol,
-                                (a.codice or ''),
-                                (a.denominazione or ''),
-                                (a.produttore or ''),
-                                (a.codice_a_barre or ''),
-                                (a.codice_articolo_fornitore or ''),
-                                (a.denominazione_famiglia or ''),
-                                (str(a.denominazione_categoria) or '')))
+            for a in arts:
+                bgCol = None
+                if a.cancellato:
+                    bgCol = 'red'
+                model.append((a,
+                            bgCol,
+                            (a.codice or ''),
+                            (a.denominazione or ''),
+                            (a.produttore or ''),
+                            (a.codice_a_barre or ''),
+                            (a.codice_articolo_fornitore or ''),
+                            (a.denominazione_famiglia or ''),
+                            (str(a.denominazione_categoria) or '')))
 
-            self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
-                                                denominazione=denominazione,
-                                                codice=codice,
-                                                codiceABarre=codiceABarre,
-                                                codiceArticoloFornitore=codiceArticoloFornitore,
-                                                produttore=produttore,
-                                                idFamiglia=idFamiglia,
-                                                idCategoria=idCategoria,
-                                                idStato=idStato,
-                                                cancellato=cancellato,
-                                                offset=None,
-                                                batchSize=None,
-                                                complexFilter=self.complexFilter)
+        self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
+                                            denominazione=denominazione,
+                                            codice=codice,
+                                            codiceABarre=codiceABarre,
+                                            codiceArticoloFornitore=codiceArticoloFornitore,
+                                            produttore=produttore,
+                                            idFamiglia=idFamiglia,
+                                            idCategoria=idCategoria,
+                                            idStato=idStato,
+                                            cancellato=cancellato,
+                                            offset=None,
+                                            batchSize=None,
+                                            complexFilter=self.complexFilter)
 
     def _prepare(self):
         """
