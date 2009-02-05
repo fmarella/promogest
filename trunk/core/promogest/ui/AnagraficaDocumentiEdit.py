@@ -1300,8 +1300,8 @@ del documento.
             return
 
         self._righe[0]["idMagazzino"] = findIdFromCombobox(self.id_magazzino_combobox)
-        #magazzino = leggiMagazzino(self._righe[0]["idMagazzino"])
-        magazzino = Magazzino().getRecord(id=self._righe[0]["idMagazzino"])
+        magazzino = leggiMagazzino(self._righe[0]["idMagazzino"])
+        #magazzino = Magazzino().getRecord(id=self._righe[0]["idMagazzino"])
         self._righe[0]["magazzino"] = magazzino['denominazione']
 
         if (self.data_documento_entry.get_text() == ''):
