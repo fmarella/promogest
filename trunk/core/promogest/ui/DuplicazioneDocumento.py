@@ -11,14 +11,9 @@ import gtk
 from GladeWidget import GladeWidget
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.TestataDocumento
 from promogest.dao.TestataDocumento import TestataDocumento
-import promogest.dao.RigaDocumento
 from promogest.dao.RigaDocumento import RigaDocumento
-import promogest.dao.ScontoRigaDocumento
 from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
-import promogest.dao.ScontoTestataDocumento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.Operazione import Operazione
 if Environment.conf.hasPagamenti == True:
@@ -94,17 +89,18 @@ class DuplicazioneDocumento(GladeWidget):
         newDao.applicazione_sconti = self.dao.applicazione_sconti
         newDao.ripartire_importo = self.dao.ripartire_importo
         newDao.costo_da_ripartire = self.dao.costo_da_ripartire
-        sconti = []
+        #sconti = []
         sco = self.dao.sconti or []
-        scontiRigaDocumento={}
-        scontiSuTotale={}
-        righeDocumento={}
+        scontiRigaDocumento=[]
+        scontiSuTotale=[]
+        righeDocumento=[]
         for s in sco:
             daoSconto = ScontoTestataDocumento()
             daoSconto.valore = s.valore
             daoSconto.tipo_sconto = s.tipo_sconto
-            scontiSuTotale[s] = daoSconto
-        righe = []
+            scontiSuTotale.append(daoSconto)
+        newDao.scontiSuTotale = scontiSuTotale
+        #righe = []
         rig = self.dao.righe
         for r in rig:
             daoRiga = RigaDocumento()
@@ -130,8 +126,10 @@ class DuplicazioneDocumento(GladeWidget):
                 daoSconto = ScontoRigaDocumento()
                 daoSconto.valore = s.valore
                 daoSconto.tipo_sconto = s.tipo_sconto
-                scontiRigaDocumento[s] = daoSconto
-            righeDocumento[r] = daoRiga
+                scontiRigaDocumento.append(daoSconto)
+            righeDocumento.scontiRigaDocumento = scontiRigaDocumento
+            righeDocumento.append(daoRiga)
+        newDao.righeDocumento = righeDocumento
         scadenze = []
         if Environment.conf.hasPagamenti == True:
             scad = self.dao.scadenze
@@ -173,7 +171,8 @@ class DuplicazioneDocumento(GladeWidget):
             valori = numeroRegistroGet(tipo=tipo.denominazione, date=self.data_documento_entry.get_text())
             newDao.numero = valori[0]
             newDao.registro_numerazione= valori[1]
-        newDao.persist(righe=righeDocumento, scontiSuTotale=scontiSuTotale, scontiRigaDocumento=scontiRigaDocumento)
+
+        newDao.persist()
 
         res = TestataDocumento().getRecord(id=newDao.id)
 
