@@ -127,7 +127,7 @@ class DuplicazioneDocumento(GladeWidget):
                 daoSconto.valore = s.valore
                 daoSconto.tipo_sconto = s.tipo_sconto
                 scontiRigaDocumento.append(daoSconto)
-            righeDocumento.scontiRigaDocumento = scontiRigaDocumento
+            daoRiga.scontiRigaDocumento = scontiRigaDocumento
             righeDocumento.append(daoRiga)
         newDao.righeDocumento = righeDocumento
         scadenze = []
