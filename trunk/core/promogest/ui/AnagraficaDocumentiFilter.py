@@ -196,6 +196,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         statoDocumento = self.stato_documento_filter_combobox.get_active() or None
         if statoDocumento == -1:
             statoDocumento = None
+        else:
+            statoDocumento = True
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         def filterCountClosure():
             return TestataDocumento().count(daNumero=daNumero,
