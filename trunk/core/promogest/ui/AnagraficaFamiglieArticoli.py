@@ -88,7 +88,7 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
 
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.TreeStore(gobject.TYPE_PYOBJECT, str, str, str, gtk.gdk.Pixbuf)
+        self._treeViewModel = gtk.TreeStore(object, str, str, str, gtk.gdk.Pixbuf)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         self.refresh()
@@ -124,18 +124,31 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
 
         padri= FamigliaArticolo().fathers()
 
+
         def recurse(padre,f):
+            """ funzione di recursione per ogni figlio di ogni padre """
+            #figli= FamigliaArticolo().select(idPadre= f.id, batchSize=None)
+            #print "HHHHHHHHHHHHHHHH", f.children
+            #if figli:
+            for s in f.children:
+                figlio1 = self._treeViewModel.append(padre, (s,
+                                                    (s.codice or ''),
+                                                    (s.denominazione_breve or ''),
+                                                    (s.denominazione or ''),
+                                                    None))
+                recurse(figlio1,s)
 
-            figli= FamigliaArticolo().select(idPadre= f.id, batchSize=None)
-            if figli:
-                for s in figli:
-                    figlio1 = self._treeViewModel.append(padre, (s,
-                                                        (s.codice or ''),
-                                                        (s.denominazione_breve or ''),
-                                                        (s.denominazione or ''),
-                                                        None))
-                    recurse(figlio1,s)
 
+        #for f in FamigliaArticolo().select(batchSize=None):
+            ##print "LGLGLGLG", FamigliaArticolo.parents, FamigliaArticolo().parent
+            ##print "AHAHAHAH", FamigliaArticolo.childrens, FamigliaArticolo().children
+            #if f.parent:
+                #padre = self._treeViewModel.append(None, (f,
+                                                    #(f.codice or ''),
+                                                    #(f.denominazione_breve or ''),
+                                                    #(f.denominazione or ''),
+                                                    #None))
+            #recurse(padre,f)
 
         for f in padri:
             padre = self._treeViewModel.append(None, (f,

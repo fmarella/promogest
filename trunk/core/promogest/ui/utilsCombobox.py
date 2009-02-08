@@ -124,8 +124,7 @@ def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
 
     def recurse(padre,f):
 
-        figli= FamigliaArticolo().select(idPadre= f.id, batchSize=None)
-        for s in figli:
+        for s in f.children:
             figlio1 = model.append(padre, (s,
                                 (s.id ),
                                 (s.denominazione or ''),

@@ -51,7 +51,7 @@ class AnagraficaUtentiFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Username', renderer, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'username')
+        column.connect("clicked", self._changeOrderBy, (None,'username'))
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(100)
@@ -60,7 +60,7 @@ class AnagraficaUtentiFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('E-mail', renderer,text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect('clicked', self._changeOrderBy, 'email')
+        column.connect('clicked', self._changeOrderBy, (None,'email'))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -77,7 +77,7 @@ class AnagraficaUtentiFilter(AnagraficaFilter):
 
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         self.clear()

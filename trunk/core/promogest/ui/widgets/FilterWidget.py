@@ -10,7 +10,8 @@
 import gtk
 import gtkhtml2
 import math
-
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
 
@@ -26,6 +27,7 @@ class FilterWidget(GladeWidget):
         self.resultsElement = None
         self.join = None
         self.orderBy = None
+        self.flag = False
         self.batchSize = int(Environment.conf.Numbers.batch_size)
         self.offset = 0
         self.numRecords = 0
@@ -249,8 +251,19 @@ class FilterWidget(GladeWidget):
         """
         Changes results order
         """
-        self.orderBy = fieldsString[1]
-        self.join = fieldsString[0]
+        print "fieldsString[1]fieldsString[1]fieldsString[1]", fieldsString[1]
+
+        if self.orderBy == fieldsString[1]:
+            if self.flag == False:
+                self.orderBy = asc(fieldsString[1])
+                self.flag = True
+            else:
+                self.orderBy = desc(fieldsString[1])
+                self.flag = False
+        else:
+            self.orderBy = fieldsString[1]
+        if fieldsString[0]:
+            self.join = fieldsString[0]
         self.refresh()
 
 

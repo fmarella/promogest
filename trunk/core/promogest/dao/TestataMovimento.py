@@ -23,9 +23,17 @@ class TestataMovimento(Dao):
 
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
+        self.__righeMovimento = []
+        self.__dbRigheMovimento = []
+
+    @reconstructor
+    def init_on_load(self):
+        self.__righeMovimento = []
+        self.__dbRigheMovimento = []
 
     def _getRigheMovimento(self):
-        self.__dbRigheMovimento = params['session'].query(RigaMovimento)\
+        if not self.__righeMovimento:
+            self.__dbRigheMovimento = params['session'].query(RigaMovimento)\
                                             .with_parent(self)\
                                             .filter_by(id_testata_movimento=self.id)\
                                             .all()

@@ -56,7 +56,7 @@ class AnagraficaMagazziniFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'denominazione')
+        column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)

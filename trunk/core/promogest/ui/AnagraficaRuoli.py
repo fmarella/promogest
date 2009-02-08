@@ -41,7 +41,7 @@ class AnagraficaRuoli(Anagrafica):
         column = gtk.TreeViewColumn('Nome', renderer, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'denominazione')
+        column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
         column.set_resizable(True)
         column.set_expand(True)
         treeview.append_column(column)
@@ -61,7 +61,7 @@ class AnagraficaRuoli(Anagrafica):
 
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str)
+        self._treeViewModel = gtk.ListStore(object, str, str)
         treeview.set_model(self._treeViewModel)
 
         self.refresh()

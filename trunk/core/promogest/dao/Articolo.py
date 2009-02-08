@@ -30,18 +30,28 @@ else:
 
         def __init__(self, arg=None):
             Dao.__init__(self, entity=self)
+            #self.codibar = None
+
+        @reconstructor
+        def init_on_load(self):
+            self.codibar = None
+
+        def cod_bar(self):
+            if not self.codibar:
+                self.codibar = params["session"].query(CodiceABarreArticolo).with_parent(self).filter(articolo.c.id==CodiceABarreArticolo.id_articolo)
+            return self.codibar
 
         def _codice_a_barre(self):
             """ esempio di funzione  unita alla property """
+            que = self.cod_bar()
             try:
                 # cerco la situazione ottimale, un articolo ha un codice ed è primario
                 try:
-                    a =  params["session"].query(CodiceABarreArticolo.codice).with_parent(self).filter(and_(articolo.c.id==CodiceABarreArticolo.id_articolo,
-                                CodiceABarreArticolo.primario==True)).one()
-                    return a[0]
+                    a =  que.filter(CodiceABarreArticolo.primario==True).one()
+                    return a.codice
                 except:
-                    a =  params["session"].query(CodiceABarreArticolo.codice).with_parent(self).filter(articolo.c.id==CodiceABarreArticolo.id_articolo).one()
-                    return a[0]
+                    a =  self.cod_bar.one()
+                    return a.codice
             except:
                 return ""
         codice_a_barre = property(_codice_a_barre)
@@ -50,14 +60,6 @@ else:
             if self.fornitur: return self.fornitur.codice_articolo_fornitore or ""
         codice_articolo_fornitore= property(_codice_articolo_fornitore)
 
-        def _codice_a_barre_all(self):
-            """ esempio di funzione  unita alla property """
-            a =  params["session"].query(CodiceABarreArticolo).with_parent(self).filter(and_(articolo.c.id==CodiceABarreArticolo.id_articolo)).all()
-            if not a:
-                return a
-            else:
-                return a[0].codice
-        codice_a_barre_all = property(_codice_a_barre_all)
 
         def _imballaggio(self):
             if self.imba: return self.imba.denominazione
@@ -213,7 +215,7 @@ else:
     std_mapper = mapper(Articolo,articolo,
                 properties={
                 "cod_barre":relation(CodiceABarreArticolo,primaryjoin=
-                    articolo.c.id==CodiceABarreArticolo.id_articolo,backref="articolo", cascade="all, delete"),
+                    articolo.c.id==CodiceABarreArticolo.id_articolo, backref="articolo", cascade="all, delete"),
                 "imba":relation(Imballaggio,primaryjoin=
                     (articolo.c.id_imballaggio==Imballaggio.id), backref="articolo"),
                 #"stato_articolo":relation(StatoArticolo, backref="articolo"),

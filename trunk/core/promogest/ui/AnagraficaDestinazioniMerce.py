@@ -70,7 +70,7 @@ class AnagraficaDestinazioniMerceFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Denominazione', renderer, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'denominazione')
+        column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(250)
@@ -79,16 +79,16 @@ class AnagraficaDestinazioniMerceFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Indirizzo', renderer, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'indirizzo')
+        column.connect("clicked", self._changeOrderBy, (None, 'indirizzo'))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(200)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Localita''', renderer, text=3)
+        column = gtk.TreeViewColumn('Località', renderer, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'localita')
+        column.connect("clicked", self._changeOrderBy, (None, 'localita'))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(200)
@@ -96,7 +96,7 @@ class AnagraficaDestinazioniMerceFilter(AnagraficaFilter):
 
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         self.refresh()

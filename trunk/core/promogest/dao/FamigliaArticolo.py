@@ -27,21 +27,16 @@ class FamigliaArticolo(Dao):
         return  dic[k]
 
     def fathers(self):
-        ok = params['session'].query(FamigliaArticolo).filter(FamigliaArticolo.id_padre==None).all()
+        ok = params['session'].query(FamigliaArticolo).join('parent', aliased=True).filter(and_(FamigliaArticolo.id_padre==None)).all()
         return ok
 
-
-def get_node_depth(id):
-    ret_index = 0
-    dao = FamigliaArticolo().getRecord(id=id)
-    while dao.id_padre is not None:
-        dao = FamigliaArticolo().getRecord(id=dao.id_padre)
-        ret_index +=1
-    else:
-        return ret_index
-
 famiglia=Table('famiglia_articolo', params['metadata'], schema = params['schema'], autoload=True)
-std_mapper = mapper(FamigliaArticolo,famiglia,order_by=famiglia.c.id_padre)
+#std_mapper = mapper(FamigliaArticolo,famiglia,order_by=famiglia.c.id_padre)
+
+std_mapper = mapper(FamigliaArticolo, famiglia, properties={
+    'children': relation(FamigliaArticolo, backref=backref('parent', remote_side=[famiglia.c.id]))
+},order_by=famiglia.c.id_padre)
+
 
 
 

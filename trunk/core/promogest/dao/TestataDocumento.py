@@ -41,7 +41,12 @@ class TestataDocumento(Dao):
 
         self.__righeDocumento = None
         self.__operazione = None
-
+        self.__dbScadenzeDocumento = None
+        self.__dbScontiTestataDocumento = None
+        self.__scontiTestataDocumento = []
+        self.__dbRigheDocumentoPart = []
+        self.__dbRigheMovimentoPart = []
+        self.__righeDocumento = []
         self._totaleImponibile = 0
         self._totaleNonScontato = 0
         self._totaleScontato = 0
@@ -53,13 +58,24 @@ class TestataDocumento(Dao):
         self._castellettoIva = 0
 
 
+    @reconstructor
+    def init_on_load(self):
+        self.__dbScadenzeDocumento = []
+        self.__dbScontiTestataDocumento = []
+        self.__dbRigheDocumentoPart = []
+        self.__dbRigheMovimentoPart = []
+        self.__righeDocumento = []
+        self.__ScadenzeDocumento = []
+        self.__scontiTestataDocumento = []
+
     def _getScadenzeDocumento(self):
         #from promogest.plugins.pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-        self.__dbScadenzeDocumento = params['session']\
-                                .query(TestataDocumentoScadenza)\
-                                .with_parent(self)\
-                                .filter_by(id_testata_documento=self.id)\
-                                .all()
+        if not self.__ScadenzeDocumento:
+            self.__dbScadenzeDocumento = params['session']\
+                                    .query(TestataDocumentoScadenza)\
+                                    .with_parent(self)\
+                                    .filter_by(id_testata_documento=self.id)\
+                                    .all()
         self.__ScadenzeDocumento = self.__dbScadenzeDocumento[:]
         return self.__ScadenzeDocumento
 
@@ -80,32 +96,23 @@ class TestataDocumento(Dao):
         return [ tup[-1] for tup in intermed ]
 
     def _getRigheDocumento(self):
-        if not Environment.righeDocumentoDict.has_key(self):
-            if self.id:
-                self.__dbRigheDocumentoPart = params['session']\
-                                            .query(RigaDocumento )\
-                                            .filter(RigaDocumento.id_testata_documento == self.id).all()
-                self.__dbRigheMovimentoPart = params['session']\
-                                            .query(RigaMovimento )\
-                                            .join(RigaMovimento.testata_movimento)\
-                                            .filter(RigaMovimento.id_testata_movimento==select([TestataMovimento.id], \
-                                                    TestataMovimento.id_testata_documento==self.id)).all()
+        #if not Environment.righeDocumentoDict.has_key(self):
+        if not self.__righeDocumento and self.id:
+            self.__dbRigheDocumentoPart = params['session']\
+                                        .query(RigaDocumento )\
+                                        .filter(RigaDocumento.id_testata_documento == self.id).all()
+            self.__dbRigheMovimentoPart = params['session']\
+                                        .query(RigaMovimento )\
+                                        .join(RigaMovimento.testata_movimento)\
+                                        .filter(RigaMovimento.id_testata_movimento==select([TestataMovimento.id], \
+                                                TestataMovimento.id_testata_documento==self.id)).all()
 
-                self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
-                self.__dbRigheDocumento = self.sort_by_attr(self.__dbRigheDocumento,"id")
-                self.__righeDocumento = self.__dbRigheDocumento[:]
-                Environment.righeDocumentoDict[self] = self.__righeDocumento
-            else:
-                self.__righeDocumento = []
-                Environment.righeDocumentoDict[self] = self.__righeDocumento
-        else:
-            #print "111111111111111111111111111" , Environment.righeDocumentoDict[self]
-            self.__righeDocumento = Environment.righeDocumentoDict[self]
+        self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
+        self.__dbRigheDocumento = self.sort_by_attr(self.__dbRigheDocumento,"id")
+        self.__righeDocumento = self.__dbRigheDocumento[:]
         return self.__righeDocumento
 
     def _setRigheDocumento(self, value):
-        #print "SEEEEEEEEEEEEEEEEEETTTTTTTTTTTTTTTTTTTT", Environment.righeDocumentoDict[self], value
-        Environment.righeDocumentoDict[self] = value
         self.__righeDocumento =value
 
     righe = property(_getRigheDocumento, _setRigheDocumento)
@@ -153,19 +160,15 @@ class TestataDocumento(Dao):
 
 
     def _getScontiTestataDocumento(self):
-        if self.id:
+        if not self.__scontiTestataDocumento and self.id:
             self.__dbScontiTestataDocumento = ScontoTestataDocumento().select(join = ScontoTestataDocumento.TD,
                                                                                 idScontoTestataDocumento=self.id,
                                                                                 batchSize=None)
-            self.__scontiTestataDocumento = self.__dbScontiTestataDocumento
-        else:
-            self.__scontiTestataDocumento = []
+        self.__scontiTestataDocumento = self.__dbScontiTestataDocumento
         return self.__scontiTestataDocumento
 
     def _setScontiTestataDocumento(self, value):
         self.__scontiTestataDocumento = value
-        #self.rowScontiTestataToSave = value
-        #return self.rowScontiTestataToSave
     sconti = property(_getScontiTestataDocumento, _setScontiTestataDocumento)
 
     def _getStringaScontiTestataDocumento(self):
@@ -228,16 +231,16 @@ class TestataDocumento(Dao):
         totaleScontato = Decimal(0)
         castellettoIva = {}
         righeDocumento = self.righe
-        for i in range(0, len(righeDocumento)):
+        for riga in righeDocumento:
 
             # FIXME: added for supporting dumb rows when printing
-            if righeDocumento[i] is None:
+            if riga is None:
                 continue
 
-            totaleRiga = Decimal(str(righeDocumento[i].quantita)) * Decimal(str(righeDocumento[i].moltiplicatore)) * mN(righeDocumento[i].valore_unitario_netto)
-            percentualeIvaRiga = Decimal(str(righeDocumento[i].percentuale_iva))
+            totaleRiga = Decimal(str(riga.quantita)) * Decimal(str(riga.moltiplicatore)) * mN(riga.valore_unitario_netto)
+            percentualeIvaRiga = Decimal(str(riga.percentuale_iva))
             if percentualeIvaRiga != Environment.percentualeIvaRiga:
-                aliquotaIvaRiga = righeDocumento[i].aliquota
+                aliquotaIvaRiga = riga.aliquota
                 Environment.percentualeIvaRiga = percentualeIvaRiga
                 Environment.aliquotaIvaRiga = aliquotaIvaRiga
             else:
@@ -506,11 +509,6 @@ class TestataDocumento(Dao):
                 row.id_testata_documento = self.id
                 #salvataggio sconto
                 row.persist()
-
-        #params["session"].commit()
-        #params["session"].flush()
-        if Environment.righeDocumentoDict.has_key(self): del Environment.righeDocumentoDict[self]
-        if Environment.totaliDict.has_key(self): del Environment.totaliDict[self]
 
     def _al(self):
         if self.AL: return self.AL.denominazione
