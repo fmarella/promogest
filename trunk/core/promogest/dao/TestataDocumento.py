@@ -41,8 +41,9 @@ class TestataDocumento(Dao):
 
         self.__righeDocumento = None
         self.__operazione = None
-        self.__dbScadenzeDocumento = None
-        self.__dbScontiTestataDocumento = None
+        self.__dbScadenzeDocumento = []
+        self.__ScadenzeDocumento = []
+        self.__dbScontiTestataDocumento = []
         self.__scontiTestataDocumento = []
         self.__dbRigheDocumentoPart = []
         self.__dbRigheMovimentoPart = []
@@ -160,7 +161,7 @@ class TestataDocumento(Dao):
 
 
     def _getScontiTestataDocumento(self):
-        if not self.__scontiTestataDocumento and self.id:
+        if not self.__scontiTestataDocumento:
             self.__dbScontiTestataDocumento = ScontoTestataDocumento().select(join = ScontoTestataDocumento.TD,
                                                                                 idScontoTestataDocumento=self.id,
                                                                                 batchSize=None)
