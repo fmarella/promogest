@@ -128,7 +128,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
         column = gtk.TreeViewColumn('Codice', renderer, text=2, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self.filter._changeOrderBy, Environment.params["schema"]+".articolo.codice")
+        column.connect("clicked", self.filter._changeOrderBy, (None,"codice"))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
@@ -136,7 +136,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
         column = gtk.TreeViewColumn('Descrizione', renderer, text=3, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self.filter._changeOrderBy, Environment.params["schema"]+".articolo.denominazione")
+        column.connect("clicked", self.filter._changeOrderBy, (None,"denominazione"))
         column.set_resizable(True)
         column.set_expand(True)
         treeview.append_column(column)
@@ -144,7 +144,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
         column = gtk.TreeViewColumn('Produttore', renderer, text=4, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self.filter._changeOrderBy, Environment.params["schema"]+".articolo.produttore")
+        column.connect("clicked", self.filter._changeOrderBy, (None,"produttore"))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
@@ -152,7 +152,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
         column = gtk.TreeViewColumn('Codice a barre', renderer, text=5, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self.filter._changeOrderBy, Environment.params["schema"]+".codice_a_barre_articolo.codice")
+        column.connect("clicked", self.filter._changeOrderBy, (CodiceABarreArticolo,CodiceABarreArticolo.codice))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
@@ -160,7 +160,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
         column = gtk.TreeViewColumn('Codice articolo fornitore', renderer, text=6, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self.filter._changeOrderBy, Environment.params["schema"]+".fornitura.codice_articolo_fornitore")
+        column.connect("clicked", self.filter._changeOrderBy, (None, Environment.params["schema"]+".fornitura.codice_articolo_fornitore"))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
@@ -168,7 +168,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
         column = gtk.TreeViewColumn('Famiglia', renderer, text=7, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self.filter._changeOrderBy, Environment.params["schema"]+".famiglia_articolo.denominazione")
+        column.connect("clicked", self.filter._changeOrderBy, (FamigliaArticolo,FamigliaArticolo.denominazione))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -177,7 +177,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
         column = gtk.TreeViewColumn('Categoria', renderer, text=8, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self.filter._changeOrderBy, Environment.params["schema"]+".categoria_articolo.denominazione")
+        column.connect("clicked", self.filter._changeOrderBy, (CategoriaArticolo,CategoriaArticolo.denominazione))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -185,8 +185,8 @@ class RicercaComplessaArticoli(RicercaComplessa):
         if "PromoWear" in Environment.modulesList:
             column = gtk.TreeViewColumn('Gruppo taglia', renderer, text=9, background=1)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self.filter._changeOrderBy, 'denominazione_gruppo_taglia')
+            column.set_clickable(False)
+            column.connect("clicked", self.filter._changeOrderBy, (GruppoTaglia, GruppoTaglia.denominazione))
             column.set_resizable(True)
             column.set_expand(False)
             column.set_min_width(100)
@@ -194,8 +194,8 @@ class RicercaComplessaArticoli(RicercaComplessa):
 
             column = gtk.TreeViewColumn('Taglia', renderer, text=10, background=1)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self.filter._changeOrderBy, 'denominazione_taglia')
+            column.set_clickable(False)
+            column.connect("clicked", self.filter._changeOrderBy, (Taglia, Taglia.denominazione))
             column.set_resizable(True)
             column.set_expand(False)
             column.set_min_width(100)
@@ -203,8 +203,8 @@ class RicercaComplessaArticoli(RicercaComplessa):
 
             column = gtk.TreeViewColumn('Colore', renderer, text=11, background=1)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self.filter._changeOrderBy, 'denominazione_colore')
+            column.set_clickable(False)
+            column.connect("clicked", self.filter._changeOrderBy, (Colore, Colore.denominazione))
             column.set_resizable(True)
             column.set_expand(False)
             column.set_min_width(100)
@@ -212,8 +212,8 @@ class RicercaComplessaArticoli(RicercaComplessa):
 
             column = gtk.TreeViewColumn('Anno', renderer, text=12, background=1)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self.filter._changeOrderBy, 'anno')
+            column.set_clickable(False)
+            column.connect("clicked", self.filter._changeOrderBy, (AnnoAbbigliamento,AnnoAbbigliamento.denominazione))
             column.set_resizable(True)
             column.set_expand(False)
             column.set_min_width(100)
@@ -221,8 +221,8 @@ class RicercaComplessaArticoli(RicercaComplessa):
 
             column = gtk.TreeViewColumn('Stagione', renderer, text=13, background=1)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self.filter._changeOrderBy, 'stagione')
+            column.set_clickable(False)
+            column.connect("clicked", self.filter._changeOrderBy, (StagioneAbbigliamento,StagioneAbbigliamento.denominazione))
             column.set_resizable(True)
             column.set_expand(False)
             column.set_min_width(100)
@@ -230,8 +230,8 @@ class RicercaComplessaArticoli(RicercaComplessa):
 
             column = gtk.TreeViewColumn('Genere', renderer, text=14, background=1)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self.filter._changeOrderBy, 'genere')
+            column.set_clickable(False)
+            column.connect("clicked", self.filter._changeOrderBy, (None, "genere"))
             column.set_resizable(True)
             column.set_expand(False)
             column.set_min_width(100)
@@ -2132,6 +2132,7 @@ class RicercaArticoliFilter(GladeWidget):
         #else:
         if "PromoWear" in Environment.modulesList:
             arts = Articolo().select(orderBy=self.filter.orderBy,
+                                            join=self.filter.join,
                                             denominazione=denominazione,
                                             codice=codice,
                                             codiceABarre=codiceABarre,
@@ -2184,7 +2185,8 @@ class RicercaArticoliFilter(GladeWidget):
                                     cancellato=cancellato,
                                     offset=self.filter.offset,
                                     batchSize=self.filter.batchSize,
-                                    complexFilter=self.complexFilter)
+                                    complexFilter=self.complexFilter,
+                                    join=self.filter.join)
             model.clear()
 
             for a in arts:
@@ -2201,7 +2203,9 @@ class RicercaArticoliFilter(GladeWidget):
                             (a.denominazione_famiglia or ''),
                             (str(a.denominazione_categoria) or '')))
 
-        self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
+        if "PromoWear" in Environment.modulesList:
+            self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
+                                            join=self.filter.join,
                                             denominazione=denominazione,
                                             codice=codice,
                                             codiceABarre=codiceABarre,
@@ -2211,9 +2215,33 @@ class RicercaArticoliFilter(GladeWidget):
                                             idCategoria=idCategoria,
                                             idStato=idStato,
                                             cancellato=cancellato,
+                                            idGruppoTaglia=idGruppoTaglia,
+                                            idTaglia=idTaglia,
+                                            idColore=idColore,
+                                            idAnno=idAnno,
+                                            idStagione=idStagione,
+                                            idGenere=idGenere,
+                                            padriTagliaColore=padriTagliaColore,
+                                            figliTagliaColore=figliTagliaColore,
                                             offset=None,
                                             batchSize=None,
                                             complexFilter=self.complexFilter)
+
+        else:
+            self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
+                                                join = self.filter.join,
+                                                denominazione=denominazione,
+                                                codice=codice,
+                                                codiceABarre=codiceABarre,
+                                                codiceArticoloFornitore=codiceArticoloFornitore,
+                                                produttore=produttore,
+                                                idFamiglia=idFamiglia,
+                                                idCategoria=idCategoria,
+                                                idStato=idStato,
+                                                cancellato=cancellato,
+                                                offset=None,
+                                                batchSize=None,
+                                                complexFilter=self.complexFilter)
 
     def _prepare(self):
         """

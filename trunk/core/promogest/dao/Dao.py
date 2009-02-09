@@ -44,28 +44,22 @@ class Dao(object):
         else:
             filter= self.prepareFilter(kwargs)
         try:
-            dao = self.session.query(self.DaoModule)
-            if join:
-                dao = dao.join(join)
-            if filter:
-                dao = dao.filter(filter)
-            if orderBy:
-                dao = dao.order_by(orderBy)
-            if batchSize:
-                dao = dao.limit(batchSize)
-            if offset:
-                dao = dao.offset(offset)
-            if distinct:
-                dao = dao.distinct()
-            if isList == "all":
-                self.record = dao.all()
-            elif isList == "one":
-                self.record = dao.one()
-            elif isList =="first":
-                self.record = dao.first()
-            elif isList == "noList":
-                self.record = dao
-            #print "SELF;DARECOOOOOOOOOOORD", self.record
+            if join and filter and orderBy:
+                self.record= self.session.query(self.DaoModule).join(join).filter(filter).order_by(orderBy).limit(batchSize).offset(offset).all()
+            elif filter and orderBy:
+                self.record= self.session.query(self.DaoModule).filter(filter).order_by(orderBy).limit(batchSize).offset(offset).all()
+            elif join and orderBy:
+                self.record= self.session.query(self.DaoModule).join(join).order_by(orderBy).limit(batchSize).offset(offset).all()
+            elif filter and join:
+                self.record= self.session.query(self.DaoModule).join(join).filter(filter).limit(batchSize).offset(offset).all()
+            elif filter:
+                self.record= self.session.query(self.DaoModule).filter(filter).limit(batchSize).offset(offset).all()
+            elif join:
+                self.record= self.session.query(self.DaoModule).join(join).limit(batchSize).offset(offset).all()
+            elif orderBy:
+                self.record= self.session.query(self.DaoModule).order_by(orderBy).limit(batchSize).offset(offset).all()
+            else:
+                self.record= self.session.query(self.DaoModule).limit(batchSize).offset(offset).all()
             return self.record
         except Exception, e:
             self.raiseException(e)
