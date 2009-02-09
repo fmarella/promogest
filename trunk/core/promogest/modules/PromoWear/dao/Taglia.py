@@ -25,4 +25,4 @@ taglia=Table('taglia',
            autoload=True)
 
 std_mapper = mapper(Taglia, taglia, properties={},
-        order_by=taglia.c.id)
+        order_by=taglia.c.denominazione)

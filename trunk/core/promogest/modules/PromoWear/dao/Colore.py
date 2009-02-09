@@ -27,4 +27,4 @@ colore=Table('colore',
            autoload=True)
 
 std_mapper = mapper(Colore, colore, properties={},
-        order_by=colore.c.id)
+        order_by=colore.c.denominazione)

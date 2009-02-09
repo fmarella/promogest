@@ -257,7 +257,6 @@ class GestioneTaglieColori(GladeWidget):
                                                     codiceArticolo))
 
             else:
-                print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.sizes
                 selected = False
                 codice = ""
                 codiceArticolo = None

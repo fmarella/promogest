@@ -35,7 +35,7 @@ famiglia=Table('famiglia_articolo', params['metadata'], schema = params['schema'
 
 std_mapper = mapper(FamigliaArticolo, famiglia, properties={
     'children': relation(FamigliaArticolo, backref=backref('parent', remote_side=[famiglia.c.id]))
-},order_by=famiglia.c.id_padre)
+},order_by=famiglia.c.denominazione)
 
 
 

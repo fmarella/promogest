@@ -25,4 +25,4 @@ modello=Table('modello',
            autoload=True)
 
 std_mapper = mapper(Modello, modello, properties={},
-        order_by=modello.c.id)
+        order_by=modello.c.denominazione)
