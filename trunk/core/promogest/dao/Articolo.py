@@ -44,13 +44,14 @@ else:
         def _codice_a_barre(self):
             """ esempio di funzione  unita alla property """
             que = self.cod_bar()
+            print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
             try:
                 # cerco la situazione ottimale, un articolo ha un codice ed è primario
                 try:
                     a =  que.filter(CodiceABarreArticolo.primario==True).one()
                     return a.codice
                 except:
-                    a =  self.cod_bar.one()
+                    a =  que.one()
                     return a.codice
             except:
                 return ""

@@ -29,7 +29,9 @@ templates_dir = './promogest/modules/PromoWear/templates/'
 loader = TemplateLoader([templates_dir])
 
 class GestioneTaglieColori(GladeWidget):
-
+    """ questa interfaccia è importantissima per la gestione delle taglie e colore, permette
+        infatti di creare in maniera veloce ed automatica tutte le varianti articolo
+        necessarie per la gstione di una attività di abbigliamento o calzature"""
     def __init__(self, articolo):
         GladeWidget.__init__(self, 'creazione_taglie_colore',
                             './promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade', isModule=True)
@@ -155,7 +157,8 @@ class GestioneTaglieColori(GladeWidget):
         self._treeViewModel.clear()
         #varianti = self.data["varianti"]
         #print varianti
-
+        alreadyexist= ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
+                                                                batchSize=None)
         if self.order == "color":
             if self.filtered:
                 if self._articoloBase.colori[0] != None:
@@ -194,35 +197,33 @@ class GestioneTaglieColori(GladeWidget):
                 for c in self.colori:
                     #oggetto Colore
                     parent = self._treeViewModel.append(None,(c,
-                                                self.selected,
-                                                c.denominazione,
-                                                "",
-                                                self.rowBackGround,
-                                                self.rowBoldFont,
-                                                None))
-                    for g in self.sizes:
-                        alreadyexist= ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
-                                                                idColore=c.id,
-                                                                idTaglia=g.id_taglia,
-                                                                batchSize=None)
-                        if alreadyexist:
-                            selected = True
-                            codiceArticolo = Articolo().getRecord(id=alreadyexist[0].id_articolo)
-                            codice= codiceArticolo.codice_a_barre or ""
-                        else:
-                            selected = False
-                            codice = ""
-                            codiceArticolo = None
-                        # oggetto Gruppo Taglia Taglia
-                        s = Taglia().getRecord(id=g.id_taglia)
+                                                        self.selected,
+                                                        c.denominazione,
+                                                        "",
+                                                        self.rowBackGround,
+                                                        self.rowBoldFont,
+                                                        None))
 
+                    for g in self.sizes:
+                        for exist in alreadyexist:
+                            if exist.id_taglia == g.TAG.id and exist.id_colore == c.id:
+                                selected = True
+                                codiceArticolo = Articolo().getRecord(id=alreadyexist[0].id_articolo)
+                                codice= codiceArticolo.codice_a_barre or ""
+                            else:
+                                selected = False
+                                codice = ""
+                                codiceArticolo = None
+                        # oggetto Gruppo Taglia Taglia
+                        s = g.TAG
+                        #s = Taglia().getRecord(id=g.id_taglia)
                         self._treeViewModel.append(parent,(s,
-                                                selected,
-                                                s.denominazione,
-                                                codice,
-                                                None,
-                                                None,
-                                                codiceArticolo))
+                                                    selected,
+                                                    s.denominazione,
+                                                    codice,
+                                                    None,
+                                                    None,
+                                                    codiceArticolo))
         else:
             if self.filtered:
                 for s in self._articoloBase.taglie:
@@ -256,7 +257,8 @@ class GestioneTaglieColori(GladeWidget):
 
             else:
                 for s in self.sizes:
-                    h = Taglia().getRecord(id=s.id_taglia)
+                    h = s.TAG
+                    #h = Taglia().getRecord(id=s.id_taglia)
                     #oggetto GruppoTagliaTaglia
                     parent = self._treeViewModel.append(None,(h,
                                                             self.selected,
@@ -265,20 +267,24 @@ class GestioneTaglieColori(GladeWidget):
                                                             self.rowBackGround,
                                                             self.rowBoldFont,
                                                             None))
+
                     for c in self.colori:
                         #oggetto Colore
-                        alreadyexist= ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
-                                                                idColore=c.id,
-                                                                idTaglia=h.id,
-                                                                batchSize=None)
-                        if alreadyexist:
-                            selected = True
-                            codiceArticolo = Articolo().getRecord(id=alreadyexist[0].id_articolo)
-                            codice = codiceArticolo.codice_a_barre or ""
-                        else:
-                            selected = False
-                            codice = ""
-                            codiceArticolo = None
+                        #alreadyexist= ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
+                                                                #idColore=c.id,
+                                                                #idTaglia=h.id,
+                                                                #batchSize=None)
+                        for exist in alreadyexist:
+                            #if exist.id_taglia == g.TAG.id and exist.id_colore == c.id
+                            if exist.id_colore == c.id and exist.id_taglia == h.id:
+                        #if c in alreadyexist:
+                                selected = True
+                                codiceArticolo = Articolo().getRecord(id=alreadyexist[0].id_articolo)
+                                codice = codiceArticolo.codice_a_barre or ""
+                            else:
+                                selected = False
+                                codice = ""
+                                codiceArticolo = None
                         self._treeViewModel.append(parent,(c,
                                                     selected,
                                                     c.denominazione,
@@ -291,6 +297,7 @@ class GestioneTaglieColori(GladeWidget):
     def printModel(self):
         self.datas= []
         self._treeViewModel.foreach(self.selectFilter )
+        self._refreshHtml(data=self.datas)
 
     def selectFilter(self, model, path, iter):
         check = model.get_value(iter, 1)
@@ -305,7 +312,7 @@ class GestioneTaglieColori(GladeWidget):
             articolo = model.get_value(iter, 6)
             self.datas.append((self._articoloBase,oggettoFiglio,oggettoPadre,codice, articolo))
         #print self.datas
-        self._refreshHtml(data=self.datas)
+
 
 
     def on_column_selected_edited(self, cell, path, treeview,value, editNext=True):
@@ -372,7 +379,6 @@ class GestioneTaglieColori(GladeWidget):
                 daoTaglia = dat[2]
             codiceabarre = dat[3]
             articoloFiglio = dat[4]
-            print "codice_a_barre", codiceabarre
             if codiceabarre:
                 if articoloFiglio:
                 #verifico la correttezza del codice a barre della variante già esistente

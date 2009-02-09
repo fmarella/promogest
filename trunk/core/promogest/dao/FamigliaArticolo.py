@@ -27,7 +27,7 @@ class FamigliaArticolo(Dao):
         return  dic[k]
 
     def fathers(self):
-        ok = params['session'].query(FamigliaArticolo).join('parent', aliased=True).filter(and_(FamigliaArticolo.id_padre==None)).all()
+        ok = params['session'].query(FamigliaArticolo).filter(and_(FamigliaArticolo.id_padre==None)).all()
         return ok
 
 famiglia=Table('famiglia_articolo', params['metadata'], schema = params['schema'], autoload=True)

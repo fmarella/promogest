@@ -193,11 +193,12 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         idCliente = self.id_cliente_filter_customcombobox.getId()
         idFornitore = self.id_fornitore_filter_customcombobox.getId()
         idAgente = self.id_agente_filter_customcombobox._id
-        statoDocumento = self.stato_documento_filter_combobox.get_active() or None
-        if statoDocumento == -1:
-            statoDocumento = None
-        else:
-            statoDocumento = True
+        statoDocumento = self.stato_documento_filter_combobox.get_active()
+        if statoDocumento == -1:statoDocumento = None
+        elif statoDocumento == 0: statoDocumento = and_("FALSE", "TRUE")
+        elif statoDocumento == 1 : statoDocumento = "FALSE"
+        elif statoDocumento == 2: statoDocumento = "TRUE"
+
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         def filterCountClosure():
             return TestataDocumento().count(daNumero=daNumero,

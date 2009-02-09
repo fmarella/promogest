@@ -37,30 +37,31 @@ class Articolo(Dao):
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
         self.__articoloTagliaColore = None
+        self.codibar = None
 
-        @reconstructor
-        def init_on_load(self):
-            self.codibar = None
+    @reconstructor
+    def init_on_load(self):
+        self.codibar = None
 
-        def cod_bar(self):
-            if not self.codibar:
-                self.codibar = params["session"].query(CodiceABarreArticolo).with_parent(self).filter(articolo.c.id==CodiceABarreArticolo.id_articolo)
-            return self.codibar
+    def cod_bar(self):
+        if not self.codibar:
+            self.codibar = params["session"].query(CodiceABarreArticolo).with_parent(self).filter(articolo.c.id==CodiceABarreArticolo.id_articolo)
+        return self.codibar
 
-        def _codice_a_barre(self):
-            """ esempio di funzione  unita alla property """
-            que = self.cod_bar()
+    def _codice_a_barre(self):
+        """ esempio di funzione  unita alla property """
+        que = self.cod_bar()
+        try:
+            # cerco la situazione ottimale, un articolo ha un codice ed è primario
             try:
-                # cerco la situazione ottimale, un articolo ha un codice ed è primario
-                try:
-                    a =  que.filter(CodiceABarreArticolo.primario==True).one()
-                    return a.codice
-                except:
-                    a =  self.cod_bar.one()
-                    return a.codice
+                a =  que.filter(CodiceABarreArticolo.primario==True).one()
+                return a.codice
             except:
-                return ""
-        codice_a_barre = property(_codice_a_barre)
+                a =  que.one()
+                return a.codice
+        except:
+            return ""
+    codice_a_barre = property(_codice_a_barre)
 
     def _codice_articolo_fornitore(self):
         if self.fornitur: return self.fornitur.codice_articolo_fornitore or ""
