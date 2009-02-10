@@ -87,7 +87,6 @@ class GestioneTaglieColori(GladeWidget):
 
     def sizesAvailable(self):
         self.sizes = GruppoTagliaTaglia().select(idGruppoTaglia=self.idGruppoTaglia, batchSize=None)
-        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA2", self.sizes
         return self.sizes
 
     def _refreshHtml(self, data= None):

@@ -274,8 +274,7 @@ class Login(GladeApp):
                                 'type': module.VIEW_TYPE[0],
                                 'module_dir': "%s" % (m_str),
                                 'guiDir':m.GUI_DIR}
-                            if __debug__ :print "'%s' imported as a module" % str(class_name)
-            if __debug__: print "LISTA DEI MODULI CARICATI E FUNZIONANTI", repr(Environment.modulesList)
+            print "LISTA DEI MODULI CARICATI E FUNZIONANTI", repr(Environment.modulesList)
             self.groupModulesByType()
 
     def on_login_window_key_press_event(self, widget, event):
