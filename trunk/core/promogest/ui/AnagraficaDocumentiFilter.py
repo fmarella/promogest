@@ -245,11 +245,11 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.xptDaoList = self.runFilter(offset=None, batchSize=None)
         self._treeViewModel.clear()
         for t in tdos:
-            if Environment.totaliDict.has_key(t):
-                totali = Environment.totaliDict[t]
-            else:
-                Environment.totaliDict[t] = t.totali
-                totali = t.totali
+            #if Environment.totaliDict.has_key(t):
+                #totali = Environment.totaliDict[t]
+            #else:
+                #Environment.totaliDict[t] = t.totali
+            totali = t.totali
             totaleImponibile = mN(t._totaleImponibileScontato,2) or 0
             totaleImposta = mN(t._totaleImpostaScontata,2) or 0
             totale = mN(t._totaleScontato,2) or 0

@@ -67,10 +67,10 @@ if hasattr(conf, 'PromoWear'):
                 UniqueConstraint('denominazione', 'denominazione_breve'),
                 schema=params["schema"])
         coloreTable.create(checkfirst=True)
-        s= select([coloreTable.c.denominazione]).execute().fetchall()
-        if (u'n/a',) not in s or s==[]:
-            tipo = coloreTable.insert()
-            tipo.execute(denominazione='n/a', denominazione_breve='n/a')
+        #s= select([coloreTable.c.denominazione]).execute().fetchall()
+        #if (u'n/a',) not in s or s==[]:
+            #tipo = coloreTable.insert()
+            #tipo.execute(denominazione='n/a', denominazione_breve='n/a')
 
         #tabella GRUPPO TAGLIA
         gruppoTagliaTable = Table('gruppo_taglia', params['metadata'],
@@ -80,10 +80,10 @@ if hasattr(conf, 'PromoWear'):
                 UniqueConstraint('denominazione', 'denominazione_breve'),
                 schema=params["schema"])
         gruppoTagliaTable.create(checkfirst=True)
-        s= select([gruppoTagliaTable.c.denominazione]).execute().fetchall()
-        if (u'n/a',) not in s or s==[]:
-            tipo = gruppoTagliaTable.insert()
-            tipo.execute(denominazione='n/a', denominazione_breve='n/a')
+        #s= select([gruppoTagliaTable.c.denominazione]).execute().fetchall()
+        #if (u'n/a',) not in s or s==[]:
+            #tipo = gruppoTagliaTable.insert()
+            #tipo.execute(denominazione='n/a', denominazione_breve='n/a')
 
         #tabella TAGLIA
         tagliaTable = Table('taglia', params['metadata'],
@@ -93,10 +93,10 @@ if hasattr(conf, 'PromoWear'):
                 UniqueConstraint('denominazione_breve'),
                 schema=params["schema"])
         tagliaTable.create(checkfirst=True)
-        s= select([tagliaTable.c.denominazione]).execute().fetchall()
-        if (u'n/a',) not in s or s==[]:
-            tipo = tagliaTable.insert()
-            tipo.execute(denominazione='n/a', denominazione_breve='n/a')
+        #s= select([tagliaTable.c.denominazione]).execute().fetchall()
+        #if (u'n/a',) not in s or s==[]:
+            #tipo = tagliaTable.insert()
+            #tipo.execute(denominazione='n/a', denominazione_breve='n/a')
 
         #tabella TAGLIA
         gruppoTagliaTagliaTable = Table('gruppo_taglia_taglia', params['metadata'],
@@ -105,10 +105,10 @@ if hasattr(conf, 'PromoWear'):
                 Column('ordine',Integer,nullable=False),
                 schema=params["schema"])
         gruppoTagliaTagliaTable.create(checkfirst=True)
-        s= select([gruppoTagliaTagliaTable.c.ordine]).execute().fetchall()
-        if (1,) not in s or s==[]:
-            tipo = gruppoTagliaTagliaTable.insert()
-            tipo.execute(id_gruppo_taglia=1, id_taglia=1, ordine=1)
+        #s= select([gruppoTagliaTagliaTable.c.ordine]).execute().fetchall()
+        #if (1,) not in s or s==[]:
+            #tipo = gruppoTagliaTagliaTable.insert()
+            #tipo.execute(id_gruppo_taglia=1, id_taglia=1, ordine=1)
 
         # TABELLA modello
         modelloTable = Table('modello', params['metadata'],
@@ -118,10 +118,10 @@ if hasattr(conf, 'PromoWear'):
                 UniqueConstraint('denominazione', 'denominazione_breve'),
                 schema=params["schema"])
         modelloTable.create(checkfirst=True)
-        s= select([modelloTable.c.denominazione]).execute().fetchall()
-        if (u'n/a',) not in s or s==[]:
-            tipo = modelloTable.insert()
-            tipo.execute(denominazione='n/a', denominazione_breve='n/a')
+        #s= select([modelloTable.c.denominazione]).execute().fetchall()
+        #if (u'n/a',) not in s or s==[]:
+            #tipo = modelloTable.insert()
+            #tipo.execute(denominazione='n/a', denominazione_breve='n/a')
 
 
         #tabella articolo taglia colore

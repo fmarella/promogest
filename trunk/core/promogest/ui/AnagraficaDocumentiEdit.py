@@ -909,7 +909,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.totale_colli_entry.set_text(str(self.dao.totale_colli or 0))
         self.totale_peso_entry.set_text(str(self.dao.totale_peso or 0))
         self.sconti_testata_widget.setValues(self.dao.sconti, self.dao.applicazione_sconti)
-
+        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", self.dao.sconti
         # gestione righe documento in visualizzazione
 
         self.clearRows()
@@ -1818,7 +1818,6 @@ del documento.
         totaleScontato = totaleNonScontato
         scontiSuTotale = self.sconti_testata_widget.getSconti()
         applicazioneSconti = self.sconti_testata_widget.getApplicazione()
-
         if len(scontiSuTotale) > 0:
             for s in scontiSuTotale:
                 if s["tipo"] == 'percentuale':

@@ -71,7 +71,7 @@ class TestataDocumento(Dao):
 
     def _getScadenzeDocumento(self):
         #from promogest.plugins.pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-        if not self.__ScadenzeDocumento:
+        if not self.__ScadenzeDocumento and self.id:
             self.__dbScadenzeDocumento = params['session']\
                                     .query(TestataDocumentoScadenza)\
                                     .with_parent(self)\
@@ -98,7 +98,8 @@ class TestataDocumento(Dao):
 
     def _getRigheDocumento(self):
         #if not Environment.righeDocumentoDict.has_key(self):
-        if not self.__righeDocumento and self.id:
+        #if not self.__righeDocumento and self.id:
+        if self.id:
             self.__dbRigheDocumentoPart = params['session']\
                                         .query(RigaDocumento )\
                                         .filter(RigaDocumento.id_testata_documento == self.id).all()
@@ -108,9 +109,11 @@ class TestataDocumento(Dao):
                                         .filter(RigaMovimento.id_testata_movimento==select([TestataMovimento.id], \
                                                 TestataMovimento.id_testata_documento==self.id)).all()
 
-        self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
-        self.__dbRigheDocumento = self.sort_by_attr(self.__dbRigheDocumento,"id")
-        self.__righeDocumento = self.__dbRigheDocumento[:]
+            self.__dbRigheDocumento = self.__dbRigheDocumentoPart + self.__dbRigheMovimentoPart
+            self.__dbRigheDocumento = self.sort_by_attr(self.__dbRigheDocumento,"id")
+            self.__righeDocumento = self.__dbRigheDocumento[:]
+        else:
+            self.__righeDocumento = []
         return self.__righeDocumento
 
     def _setRigheDocumento(self, value):
@@ -161,7 +164,7 @@ class TestataDocumento(Dao):
 
 
     def _getScontiTestataDocumento(self):
-        if not self.__scontiTestataDocumento:
+        if not self.__scontiTestataDocumento and self.id:
             self.__dbScontiTestataDocumento = ScontoTestataDocumento().select(join = ScontoTestataDocumento.TD,
                                                                                 idScontoTestataDocumento=self.id,
                                                                                 batchSize=None)
