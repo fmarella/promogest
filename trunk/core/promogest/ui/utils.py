@@ -130,7 +130,7 @@ def leggiCliente(id):
         if daoCliente is not None:
             try:
                 for i in range(0,len(daoCliente.recapiti)):
-                    if daoCliente.recapiti[i].tipo_recapito == "E-Mail":
+                    if daoCliente.recapiti[i].tipo_recapito == "E-Mail" or daoCliente.recapiti[i].tipo_recapito == "Email":
                         _email = daoCliente.recapiti[i].recapito
             except:
                 _email = ""
@@ -204,7 +204,7 @@ def leggiFornitore(id):
         if daoFornitore is not None:
             try:
                 for i in range(0,len(daoFornitore.recapiti)):
-                    if daoFornitore.recapiti[i].tipo_recapito == "E-Mail":
+                    if daoFornitore.recapiti[i].tipo_recapito == "E-Mail" or daoFornitore.recapiti[i].tipo_recapito == "Email":
                         _email = daoFornitore.recapiti[i].recapito
             except:
                 _email = ""
@@ -276,7 +276,7 @@ def leggiContatto(id):
         if daoContatto is not None:
             try:
                 for i in range(0,len(daoContatto[0].recapiti)):
-                    if daoContatto[0].recapiti[i].tipo_recapito == "E-Mail":
+                    if daoContatto[0].recapiti[i].tipo_recapito == "E-Mail" or daoContatto[0].recapiti[i].tipo_recapito == "Email":
                         _email = daoContatto[0].recapiti[i].recapito
             except:
                 _email = ""

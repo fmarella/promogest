@@ -148,6 +148,7 @@ class AnagraficaAgentiFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return Agente().select(orderBy=self.orderBy,
+                                    join=self.join,
                                     codice=codice,
                                     ragioneSociale=ragioneSociale,
                                     insegna=insegna,

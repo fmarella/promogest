@@ -927,7 +927,6 @@ class AnagraficaContattiEdit(AnagraficaEdit):
 
         cleanContattoCategoriaContatto = ContattoCategoriaContatto()\
                                                     .select(idContatto=self.dao.id,
-                                                    orderBy="id_contatto",
                                                     batchSize=None)
         for contatto in cleanContattoCategoriaContatto:
             contatto.delete()
