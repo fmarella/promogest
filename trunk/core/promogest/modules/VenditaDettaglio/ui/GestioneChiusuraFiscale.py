@@ -71,8 +71,6 @@ class GestioneChiusuraFiscale(object):
     def close_day(self, idMagazzino, data):
         # Seleziono scontrini della giornata
         
-        #datefirst = datetime.date.today()
-        #aData= stringToDateBumped(datetime.date.today())
         datefirst = data
         OneDay = datetime.timedelta(days=1)
         aData= data+OneDay
@@ -87,8 +85,8 @@ class GestioneChiusuraFiscale(object):
         daoMovimento.data_movimento = datefirst
         daoMovimento.note_interne = 'Movimento chiusura fiscale'
         righeMovimento = []
-        righe = {}
-        scontiRighe= {}
+
+        scontiRigheMovimento= []
         for scontrino in scontrini:
             for riga in scontrino.righe:
                 # Istanzio articolo
@@ -105,20 +103,18 @@ class GestioneChiusuraFiscale(object):
                 daoRiga.id_magazzino = idMagazzino
                 daoRiga.id_articolo = riga.id_articolo
                 daoRiga.percentuale_iva = iva.percentuale
-                sconti = []
+                scontiRigheMovimento= []
                 if riga.sconti:
                     for s in riga.sconti:
                         daoScontoRigaMovimento = ScontoRigaMovimento()
                         daoScontoRigaMovimento.valore = s.valore
                         daoScontoRigaMovimento.tipo_sconto = s.tipo_sconto
-                        sconti.append(daoScontoRigaMovimento)
-                #righeMovimento.append(daoRiga)
-                    scontiRighe[daoRiga] = sconti
-                righe[riga]=daoRiga
+                        scontiRigheMovimento.append(daoScontoRigaMovimento)
+                daoRiga.scontiRigheMovimento = scontiRigheMovimento
+                righeMovimento.append(daoRiga)
 
-        #daoMovimento.righe = righeMovimento
-        daoMovimento.persist(righeMovimento = righe, scontiRigaMovimento = scontiRighe)
-        #daoMovimento.update()
+        daoMovimento.righeMovimento = righeMovimento
+        daoMovimento.persist()
 
         # Creo nuova chiusura
         daoChiusura = ChiusuraFiscale()
