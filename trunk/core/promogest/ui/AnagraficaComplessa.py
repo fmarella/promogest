@@ -615,7 +615,7 @@ class Anagrafica(GladeWidget):
             if ret==0:
                 toemail = " -compose to=%s" %self.email
             else:
-                emailAPP = "mozilla-"+Environment.emailcompose
+                emailAPP = "Thunderbird.exe"
 
 
             def applicationThread():
