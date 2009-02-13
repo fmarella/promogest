@@ -314,6 +314,8 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             idAnno = findIdFromCombobox(self.id_anno_articolo_filter_combobox)
             idStagione = findIdFromCombobox(self.id_stagione_articolo_filter_combobox)
             idGenere = findIdFromCombobox(self.id_genere_articolo_filter_combobox)
+        if "GestioneNoleggio" in Environment.modulesList:
+            divisoreNoleggio = prepareFilterString(self.codice_a_barre_filter_entry.get_text())
 
         def filterCountClosure():
             if "PromoWear" in Environment.modulesList:
@@ -395,36 +397,28 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         arts = self.runFilter()
         self._treeViewModel.clear()
         for a in arts:
+            modelRowPromoWear = []
+            modelRow = []
             col = None
             if a.cancellato:
                 col = 'red'
+            modelRow = [a,col,(a.codice or ''),(a.denominazione or ''),
+                        (a.produttore or ''),(a.codice_a_barre or ''),
+                        (a.codice_articolo_fornitore or ''),
+                        (a.denominazione_famiglia or ''),
+                        (a.denominazione_categoria or '')]
             if "PromoWear" in Environment.modulesList:
-                self._treeViewModel.append((a,
-                                        col,
-                                        (a.codice or ''),
-                                        (a.denominazione or ''),
-                                        (a.produttore or ''),
-                                        (a.codice_a_barre or ''),
-                                        (a.codice_articolo_fornitore or ''),
-                                        (a.denominazione_famiglia or ''),
-                                        (a.denominazione_categoria or ''),
-                                        (a.denominazione_gruppo_taglia or ''),
-                                        (a.denominazione_modello or ''),
-                                        (a.denominazione_taglia or ''),
-                                        (a.denominazione_colore or ''),
-                                        (a.anno or ''),
-                                        (a.stagione or ''),
-                                        (a.genere or '')))
+                modelRowPromoWear = [(a.denominazione_gruppo_taglia or ''),
+                                    (a.denominazione_modello or ''),
+                                    (a.denominazione_taglia or ''),
+                                    (a.denominazione_colore or ''),
+                                    (a.anno or ''),
+                                    (a.stagione or ''),
+                                    (a.genere or '')]
+            if modelRowPromoWear:
+                self._treeViewModel.append(modelRow +modelRowPromoWear)
             else:
-                self._treeViewModel.append((a,
-                                        col,
-                                        (a.codice or ''),
-                                        (a.denominazione or ''),
-                                        (a.produttore or ''),
-                                        (a.codice_a_barre or ''),
-                                        (a.codice_articolo_fornitore or ''),
-                                        (a.denominazione_famiglia or ''),
-                                        (a.denominazione_categoria or '')))
+                self._treeViewModel.append(modelRow)
 
 
     def on_taglie_colori_filter_combobox_changed(self, combobox):
@@ -445,7 +439,6 @@ class AnagraficaArticoliHtml(AnagraficaHtml):
                                 'Dettaglio articolo')
 
 
-
 class AnagraficaArticoliReport(AnagraficaReport):
     def __init__(self, anagrafica):
         AnagraficaReport.__init__(self, anagrafica=anagrafica,
@@ -453,8 +446,3 @@ class AnagraficaArticoliReport(AnagraficaReport):
                                   defaultFileName='articoli',
                                   htmlTemplate='articoli',
                                   sxwTemplate='articoli')
-
-
-
-
-

@@ -20,9 +20,7 @@ class Imballaggio(Dao):
         dic= {  'denominazione' : imballaggio.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
 
-imballaggio=Table('imballaggio',
-        params['metadata'],
-        schema = params['schema'],
-        autoload=True)
+imballaggio=Table('imballaggio',params['metadata'],schema = params['schema'],
+                                                                autoload=True)
 
 std_mapper = mapper(Imballaggio,imballaggio)

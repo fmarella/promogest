@@ -22,7 +22,8 @@ appLogTable = Table('application_log', params['metadata'], autoload=True, schema
 std_mapper = mapper(ApplicationLog, appLogTable, order_by=appLogTable.c.id_utente)
 
 class Dao(object):
-    """Astrazione generica di ciĂ˛ che fu il vecchio dao basata su sqlAlchemy"""
+    """Astrazione generica di ciò˛ che fu il vecchio dao basata su sqlAlchemy
+    """
     def __init__(self, entity=None, exceptionHandler=None):
         self.session = params["session"]
         self.metadata = params["metadata"]
@@ -31,6 +32,7 @@ class Dao(object):
         self._exceptionHandler = exceptionHandler
 
     def getRecord(self,id=None):
+        """ Restituisce un record ( necessita di un ID )"""
         if id:
             _record = self.session.query(self.DaoModule).get(id)
         else:
@@ -39,6 +41,10 @@ class Dao(object):
 
     def select(self, orderBy=None, distinct=False, groupBy=None,join=None, offset=0,
                 batchSize=20,complexFilter=None,isList = "all", **kwargs):
+        """ Funzione riscritta diverse volte, il vecchio sistema che
+            permetteva di aggiungere a cascata nuove opzioni sembrava rallentare
+            leggermente ...questo sistema meno elegante è invece più performante
+        """
         if complexFilter:
             filter = complexFilter
         else:
@@ -65,6 +71,7 @@ class Dao(object):
             self.raiseException(e)
 
     def count(self, complexFilter=None,distinct =None, **kwargs):
+        """ Restituisce il numero delle righe """
         _numRecords = 0
         if complexFilter:
             filter = complexFilter
@@ -84,6 +91,7 @@ class Dao(object):
             self.raiseException(e)
 
     def commit(self):
+        """ Salva i dati nel DB"""
         try:
             params["session"].commit()
             return True
@@ -164,6 +172,7 @@ Qui sotto viene riportato l'errore di sistema:
         #print "KKKKKKKKKKKKKKKK", pippo
 
     def _resetId(self):
+        """Riporta l'id a None"""
         self.id = None
 
     def sameRecord(self, dao):
@@ -238,6 +247,8 @@ Qui sotto viene riportato l'errore di sistema:
         #raise exception
 
     def prepareFilter(self, kwargs):
+        """ Take filter data from the gui and build the dictionary for the filter
+        """
         filter_parameters = []
         for key,value in kwargs.items():
             if value:
@@ -252,6 +263,7 @@ Qui sotto viene riportato l'errore di sistema:
         return
 
     def getFilter(self,filter_parameters):
+        """ Send the filter dict to the function """
         filters = []
         for elem in filter_parameters:
             if elem[0] and elem[2]=="Lista":

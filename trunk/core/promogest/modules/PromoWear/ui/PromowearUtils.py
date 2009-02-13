@@ -8,7 +8,7 @@
 
 from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.AliquotaIva import AliquotaIva
-from promogest.modules.PromoWear.dao.ArticoloPromowear import Articolo
+from promogest.dao.Articolo import Articolo
 from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
 from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
 from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTaglia

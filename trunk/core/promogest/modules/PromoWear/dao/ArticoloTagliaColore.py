@@ -3,7 +3,6 @@
 # Promogest
 #
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 
 from sqlalchemy import *
@@ -123,44 +122,6 @@ class ArticoloTagliaColore(Dao):
         if self.GA : return self.GA.denominazione or ""
     genere = property(_denominazione_genere)
 
-    #def delete(self, conn=None):
-        #""" Elimina fisicamente o logicamente un articolo """
-        #def isMovimentato(id):
-            #"""Verifica se l'articolo e' presente almeno una riga di movimento/documento"""
-            #queryString = ('SELECT COUNT(*) FROM ' +
-                           #Environment.connection._schemaAzienda + '.riga ' +
-                           #'WHERE id_articolo = ' + str(id_articolo))
-            #argList = []
-            #self._connection._cursor.execute(queryString, argList)
-            #res = Environment.connection._cursor.fetchall()
-
-            #return res[0][0] > 0
-
-
-        #conn = conn or self._connection
-
-        #if conn is None:
-        #    conn = Environment.connection
-
-        #if conn is None:
-            #self.raiseException(NotImplementedError('Object is read-only '
-                                                    #+ '(no connection has '
-                                                    #+ 'been associated)'))
-
-        # se l'articolo e' presente tra le righe di un movimento o documento
-        # si esegue la cancellazione logica, altrimenti fisica
-
-        #if self.id_articolo_padre is not None:
-            #articolo = self.articolo
-            #if articolo is not None:
-                #if isMovimentato(self.id_articolo):
-                    #articolo.cancellato = True
-                    #articolo.persist(conn=conn)
-                #else:
-                    #articolo.delete(self, conn=conn)
-
-
-
     def filter_values(self,k,v):
         if k =='idArticolo':
             dic= {k:articolotagliacolore.c.id_articolo ==v}
@@ -177,14 +138,8 @@ class ArticoloTagliaColore(Dao):
 articolo=Table('articolo',params['metadata'],schema = params['schema'],autoload=True)
 articolotagliacolore=Table('articolo_taglia_colore',params['metadata'],schema = params['schema'],autoload=True)
 
-#j = join(articolo, articolotagliacolore, onclause=articolo.c.id)
-#j = join(articolo, articolotagliacolore, onclause=articolo.c.id==articolotagliacolore.c.id_articolo)
 std_mapper = mapper(ArticoloTagliaColore, articolotagliacolore,properties={
-    #'id':[articolo.c.id, articolotagliacolore.c.id_articolo],
-    #"ART":relation(Articolo,primaryjoin=
-                    #(Articolo.id==articolotagliacolore.c.id), backref="ATCA"),
-    #"ARTPADRE":relation(Articolo,primaryjoin=
-                    #(Articolo.id==articolotagliacolore.c.id_articolo_padre), backref="ATCAP"),
+
     "GT":relation(GruppoTaglia,primaryjoin=
                     (GruppoTaglia.id==articolotagliacolore.c.id_gruppo_taglia), backref="ATCGT"),
     "TA":relation(Taglia,primaryjoin=

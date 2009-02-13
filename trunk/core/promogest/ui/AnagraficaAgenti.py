@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 
-"""
- Promogest
- Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
- Author: Andrea Argiolas <andrea@promotux.it>
- Author: Francesco Meloni <francesco@promotux.it>
- License: GNU GPLv2
-"""
+# Promogest
+# Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
+# Author: Andrea Argiolas <andrea@promotux.it>
+# Author: Francesco Meloni <francesco@promotux.it>
+# License: GNU GPLv2
 
 import gtk
 import gobject
@@ -35,7 +33,6 @@ class AnagraficaAgenti(Anagrafica):
                             aziendaStr=aziendaStr)
 
 
-
 class AnagraficaAgentiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica degli agenti """
 
@@ -51,7 +48,7 @@ class AnagraficaAgentiFilter(AnagraficaFilter):
         self.joinT = join(agenti, persona_giuridica)
 
     def draw(self):
-        # Colonne della Treeview per il filtro
+        """Colonne della Treeview per il filtro"""
         treeview = self._anagrafica.anagrafica_filter_treeview
         renderer = gtk.CellRendererText()
 
@@ -108,7 +105,7 @@ class AnagraficaAgentiFilter(AnagraficaFilter):
 
 
     def clear(self):
-        # Annullamento filtro
+        """ Annullamento filtro"""
         self.codice_filter_entry.set_text('')
         self.ragione_sociale_filter_entry.set_text('')
         self.insegna_filter_entry.set_text('')
@@ -121,7 +118,7 @@ class AnagraficaAgentiFilter(AnagraficaFilter):
 
 
     def refresh(self):
-        # Aggiornamento TreeView
+        """ Aggiornamento TreeView"""
         codice = prepareFilterString(self.codice_filter_entry.get_text())
         ragioneSociale = prepareFilterString(self.ragione_sociale_filter_entry.get_text())
         insegna = prepareFilterString(self.insegna_filter_entry.get_text())
@@ -181,6 +178,7 @@ class AnagraficaAgentiFilter(AnagraficaFilter):
 
 
 class AnagraficaAgentiHtml(AnagraficaHtml):
+    """ Anagrafica Agenti HTML widget di anteprima"""
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'agente',
                                 'Informazioni sull''agente')
@@ -188,6 +186,7 @@ class AnagraficaAgentiHtml(AnagraficaHtml):
 
 
 class AnagraficaAgentiReport(AnagraficaReport):
+    """ Anagrafica agenti Report pdf ..."""
     def __init__(self, anagrafica):
         AnagraficaReport.__init__(self, anagrafica=anagrafica,
                                   description='Elenco degli agenti',
@@ -214,6 +213,7 @@ class AnagraficaAgentiEdit(AnagraficaEdit):
 
 
     def setDao(self, dao):
+        """ Istanzia un  oggetto nuovo se non presente """
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = Agente()
@@ -225,6 +225,7 @@ class AnagraficaAgentiEdit(AnagraficaEdit):
 
 
     def _refresh(self):
+        """ Aggiorna gli oggetti della gui """
         self.codice_entry.set_text(self.dao.codice or '')
         self.ragione_sociale_entry.set_text(self.dao.ragione_sociale or '')
         self.insegna_entry.set_text(self.dao.insegna or '')
@@ -243,6 +244,7 @@ class AnagraficaAgentiEdit(AnagraficaEdit):
 
 
     def saveDao(self):
+        """ Save data to DB """
         self.dao.codice = self.codice_entry.get_text()
         self.dao.codice = omogeneousCode(section="Agenti", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()

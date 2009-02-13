@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -26,7 +26,6 @@ class AnagraficaGruppiTaglia(Anagrafica):
                             '_GruppiTaglia',
                             AnagraficaGruppoTagliaFilter(self),
                             AnagraficaGruppoTagliaDetail(self))
-
 
     def draw(self):
         # Colonne della Treeview per il filtro

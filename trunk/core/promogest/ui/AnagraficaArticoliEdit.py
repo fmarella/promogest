@@ -55,6 +55,9 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.taglie_colori_togglebutton.set_no_show_all(True)
             self.notebook1.remove_page(3)
             self.promowear_frame.destroy()
+        if "GestioneNoleggio" not in Environment.modulesList:
+            self.divisore_noleggio_entry.destroy()
+            self.divisore_noleggio_label.destroy()
 
 
     def draw(self):
@@ -140,6 +143,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         #else:
             #print " ERRORE BY_PASSATO PER ILARIA :) "
         self.denominazione_entry.set_text(self.dao.denominazione or '')
+
         findComboboxRowFromId(self.id_aliquota_iva_customcombobox.combobox,
                               self.dao.id_aliquota_iva)
         findComboboxRowFromId(self.id_famiglia_articolo_customcombobox.combobox,
@@ -183,6 +187,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
              #articolo ancora non salvato o articolo senza taglia e colore
             # Articolo in anagrafica già salvato con id_articolo_padre pieno quindi è una variante
             a = articleTypeGuiManage(self, self.dao, new=self.new)
+        if "GestioneNoleggio" in Environment.modulesList:
+            self.divisore_noleggio_entry.set_text(self.dao.divisore_noleggio)
         self._loading = False
 
     def saveDao(self):
@@ -266,6 +272,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if not cod:
             return
         self.dao.denominazione = self.denominazione_entry.get_text()
+        if "GestioneNoleggio" in Environment.modulesList:
+            self.dao.divisore_noleggio = self.divisore_noleggio_entry.get_text()
         self.dao.id_aliquota_iva = findIdFromCombobox(self.id_aliquota_iva_customcombobox.combobox)
         self.dao.id_famiglia_articolo = findIdFromCombobox(self.id_famiglia_articolo_customcombobox.combobox)
         self.dao.id_categoria_articolo = findIdFromCombobox(self.id_categoria_articolo_customcombobox.combobox)

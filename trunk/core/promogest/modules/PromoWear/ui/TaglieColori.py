@@ -13,7 +13,7 @@ from promogest.ui.GladeWidget import GladeWidget
 
 from promogest import Environment
 from promogest.dao.Dao import Dao
-from promogest.modules.PromoWear.dao.ArticoloPromowear import Articolo
+from promogest.dao.Articolo import Articolo
 from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
 from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
 from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTaglia
