@@ -277,9 +277,13 @@ class AnagraficaTaglieEdit(AnagraficaEdit):
         # Controllo se esiste gia' la taglia
         self.taglia.denominazione = self.denominazione_entry.get_text()
         self.taglia.denominazione_breve = self.denominazione_breve_entry.get_text()
-        self.taglia.persist()
-
+        tag = Taglia().select(denominazioneBreve = self.taglia.denominazione_breve)
+        if not tag:
+            self.taglia.persist()
+            tagliaid = self.taglia.id
+        else:
+            tagliaid = tag[0].id
         self.dao.id_gruppo_taglia = findIdFromCombobox(self.gruppo_taglia_combobox)
-        self.dao.id_taglia = self.taglia.id
+        self.dao.id_taglia = tagliaid
         self.dao.ordine = self.ordine_spinbutton.get_value_as_int()
         self.dao.persist()

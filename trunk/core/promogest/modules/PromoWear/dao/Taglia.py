@@ -16,13 +16,13 @@ class Taglia(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'id':colore.c.id ==v}
+        if k=="id":
+            dic= {k: taglia.c.id ==v}
+        elif k == "denominazioneBreve":
+            dic = {k:taglia.c.denominazione_breve == v }
         return  dic[k]
 
-taglia=Table('taglia',
-           params['metadata'],
-           schema = params['schema'],
-           autoload=True)
+taglia=Table('taglia', params['metadata'],schema = params['schema'],autoload=True)
 
-std_mapper = mapper(Taglia, taglia, properties={},
-        order_by=taglia.c.denominazione)
+
+std_mapper = mapper(Taglia, taglia,order_by=taglia.c.denominazione)
