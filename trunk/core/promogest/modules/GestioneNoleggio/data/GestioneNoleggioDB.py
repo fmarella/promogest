@@ -14,16 +14,16 @@ if hasattr(conf, 'GestioneNoleggio'):
     if conf.GestioneNoleggio.primoavvio=="yes":
         """ tabelle schema principale """
 
-        divisoreNoleggioTable = Table('divisore_noleggio', params['metadata'],
-                            Column('id',Integer,primary_key=True),
-                            Column('value',Integer, nullable=False),
-                            schema=params['schema'])
-        divisoreNoleggioTable.create(checkfirst=True)
+        #divisoreNoleggioTable = Table('divisore_noleggio', params['metadata'],
+                            #Column('id',Integer,primary_key=True),
+                            #Column('value',Numeric(4), nullable=False),
+                            #schema=params['schema'])
+        #divisoreNoleggioTable.create(checkfirst=True)
 
         articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
         articoloGestioneleggioTable = Table('articolo_gestione_noleggio', params['metadata'],
                             Column('id_articolo',Integer,ForeignKey(params['schema']+'.articolo.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-                            Column('id_divisore_noleggio',Integer,ForeignKey(params['schema']+'.divisore_noleggio.id',onupdate="CASCADE",ondelete="CASCADE")),
+                            Column('divisore_noleggio_value',Numeric(4), nullable=False),
                             schema=params['schema'])
         articoloGestioneleggioTable.create(checkfirst=True)
 

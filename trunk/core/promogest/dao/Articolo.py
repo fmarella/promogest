@@ -24,6 +24,7 @@ from Multiplo import Multiplo
 from promogest.ui.utils import codeIncrement
 #from promogest.modules.PromoWear.dao.ArticoloPromowear import Articolo
 
+
 class Articolo(Dao):
 
     def __init__(self, arg=None):
@@ -307,11 +308,12 @@ class Articolo(Dao):
                 return (articolo.id_articolo_padre is None)
             else:
                 return False
-    if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+    if "GestioneNoleggio" in Environment.modulesList:
+        
         @property
         def divisore_noleggio(self):
             """ esempio di funzione  unita alla property """
-            if self.APGN :return self.APGN.value
+            if self.APGN :return self.APGN.divisore_noleggio_value
             else: return ""
 
     def persist(self):
@@ -345,12 +347,18 @@ class Articolo(Dao):
                 img.delete()
         except:
             pass
-        if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
-            if self.divisore_noleggio_set:
-                pass
-            
-            #print "nessuna immagine associata all'articolo"
-        params["session"].flush()
+        if "GestioneNoleggio" in Environment.modulesList:
+            if self.divisore_noleggio_value_set and self.id:
+                div_nol = ArticoloPlusGN().getRecord(id=self.id)
+                if div_nol:
+                        div_nol.value = self.divisore_noleggio_value_set
+                        params["session"].add(div_nol)
+                else:
+                    div_nol = ArticoloPlusGN()
+                    div_nol.id_articolo = self.id
+                    div_nol.divisore_noleggio_value = self.divisore_noleggio_value_set
+                    params["session"].add(div_nol)
+        params["session"].commit()
 
     def delete(self):
         # se l'articolo e' presente tra le righe di un movimento o documento
