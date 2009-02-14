@@ -244,9 +244,9 @@ class Articolo(Dao):
             if self.ATC: return self.ATC.id_stagione or None
         id_stagione = property(_id_stagione)
 
-        def _id_anno(self):
+        @property
+        def id_anno(self):
             if self.ATC: return self.ATC.id_anno or ""
-        id_anno = property(_id_anno)
 
         @property
         def denominazione_gruppo_taglia(self):
@@ -411,10 +411,15 @@ class Articolo(Dao):
             daoArticolo = Articolo().getRecord(id=self.id)
             daoArticolo.cancellato = True
             params["session"].add(daoArticolo)
-            self.saveToAppLog(daoArticolo)
+            #self.saveToAppLog(daoArticolo)
         else:
+            if "PromoWear" in Environment.modulesList:
+                atc = ArticoloTagliaColore().getRecord(id=self.id)
+                if atc:
+                    atc.delete()
+                    
             params["session"].delete(self)
-            self.saveToAppLog(self)
+            #self.saveToAppLog(self)
 
     def filter_values(self,k,v):
         if k == "codice":
