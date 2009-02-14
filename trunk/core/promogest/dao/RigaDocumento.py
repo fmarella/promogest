@@ -124,15 +124,17 @@ class RigaDocumento(Dao):
         misura_pezzo = property(_getMisuraPezzo, _setMisuraPezzo)
 
         def _altezza(self):
-            if self.misura_pezzo:
-                return misura_pezzo[0].altezza
+            misure = self._getMisuraPezzo()
+            if misure:
+                return misure[0].altezza
             else:
                 return ""
         altezza = property(_altezza)
 
         def _larghezza(self):
-            if self.misura_pezzo:
-                return misura_pezzo[0].larghezza
+            misure = self._getMisuraPezzo()
+            if misure:
+                return misure[0].larghezza
             else:
                 return ""
         larghezza = property(_larghezza)
