@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 # -*- coding: iso-8859-15 -*-
 
@@ -5,6 +6,7 @@
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
+# Author: Francesco Meloni  <francesco@promotux.it>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,30 +25,26 @@
 import gtk
 import gobject
 
-from AnagraficaComplessa import Anagrafica, AnagraficaEdit,AnagraficaHtml, AnagraficaFilter, AnagraficaReport
+from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaEdit,AnagraficaHtml, AnagraficaFilter, AnagraficaReport
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
-import promogest.dao.DistintaBase
-from promogest.dao.DistintaBase import DistintaBase
+from promogest.modules.DistintaBase.dao.AssociazioneArticolo import AssociazioneArticolo
 
-from utils import *
+from promogest.ui.utils import *
 
 class AnagraficaDistintaBase(Anagrafica):
     """
     Visualizza le distinte base
     """
-    def __init__(self, aziendaStr):
+    def __init__(self):
         Anagrafica.__init__(self,
                             windowTitle='Promogest - Anagrafica distinte base',
                             recordMenuLabel='_Distinta Base',
                             filterElement=AnagraficaDistintaBaseFilter(self),
                             htmlHandler=AnagraficaDistintaBaseHtml(self),
                             reportHandler=AnagraficaDistintaBaseReport(self),
-                            editElement=AnagraficaDistintaBaseEdit(self),
-                            companyName=aziendaStr)
+                            editElement=AnagraficaDistintaBaseEdit(self))
         self.record_duplicate_menu.set_property('visible', True)
         
 
@@ -56,7 +54,9 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_distinta_base_filter_table', gladeFile='distinta_base_plugins.glade')
+                                  'anagrafica_associazioni_articoli_filter_table',
+                                    gladeFile='DistintaBase/gui/_distinta_base_plugins.glade',
+                                    module=True) 
         self._widgetFirstFocus = self.denominazione_filter_entry
         self.articoliprincipaliList = []
 
@@ -67,7 +67,7 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Codice', renderer, text=2, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'codice')
+        column.connect("clicked", self._changeOrderBy, (None,'codice'))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -76,7 +76,7 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Descrizione', renderer, text=3, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'denominazione')
+        column.connect("clicked", self._changeOrderBy, (None,'denominazione'))
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(100)
@@ -85,7 +85,7 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Produttore', renderer, text=4, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'produttore')
+        column.connect("clicked", self._changeOrderBy, (None, 'produttore'))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -94,7 +94,8 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Codice a barre', renderer, text=5, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'codice_a_barre')
+        from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
+        column.connect("clicked", self._changeOrderBy, (CodiceABarreArticolo,CodiceABarreArticolo.codice))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -112,7 +113,8 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Famiglia', renderer, text=7, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'denominazione_famiglia')
+        from promogest.dao.FamigliaArticolo import FamigliaArticolo
+        column.connect("clicked", self._changeOrderBy, (FamigliaArticolo,FamigliaArticolo.denominazione))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -121,7 +123,8 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Categoria', renderer, text=8, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'denominazione_categoria')
+        from promogest.dao.CategoriaArticolo import CategoriaArticolo
+        column.connect("clicked", self._changeOrderBy, (CategoriaArticolo,CategoriaArticolo.denominazione))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -129,7 +132,7 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
 
         treeview.set_search_column(2)
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, str, str, str, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         self.clear()
@@ -140,7 +143,7 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
 
 
     def clear(self):
-        # Annullamento filtro
+        """Annullamento filtro"""
         self.denominazione_filter_entry.set_text('')
         self.codice_filter_entry.set_text('')
         self.codice_a_barre_filter_entry.set_text('')
@@ -156,7 +159,7 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
 
 
     def refresh(self):
-        # Aggiornamento TreeView
+        """ Aggiornamento TreeView"""
         denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
         produttore = prepareFilterString(self.produttore_filter_entry.get_text())
         codice = prepareFilterString(self.codice_filter_entry.get_text())
@@ -171,16 +174,15 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
             cancellato = False
 
         def filterCountClosure():
-            return promogest.dao.DistintaBase.count(Environment.connection,
-                                                denominazione=denominazione,
-                                                codice=codice,
-                                                codiceABarre=codiceABarre,
-                                                codiceArticoloFornitore=codiceArticoloFornitore,
-                                                produttore=produttore,
-                                                idFamiglia=idFamiglia,
-                                                idCategoria=idCategoria,
-                                                idStato=idStato,
-                                                cancellato=cancellato)
+            return Articolo().count(denominazione=denominazione,
+                                    codice=codice,
+                                    codiceABarre=codiceABarre,
+                                    codiceArticoloFornitore=codiceArticoloFornitore,
+                                    produttore=produttore,
+                                    idFamiglia=idFamiglia,
+                                    idCategoria=idCategoria,
+                                    idStato=idStato,
+                                    cancellato=cancellato)
 
         self._filterCountClosure = filterCountClosure
 
@@ -190,20 +192,21 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return promogest.dao.DistintaBase.select(Environment.connection,
-                                                nodo=True,
-                                                 orderBy=self.orderBy,
-                                                 denominazione=denominazione,
-                                                 codice=codice,
-                                                 codiceABarre=codiceABarre,
-                                                 codiceArticoloFornitore=codiceArticoloFornitore,
-                                                 produttore=produttore,
-                                                 idFamiglia=idFamiglia,
-                                                 idCategoria=idCategoria,
-                                                 idStato=idStato,
-                                                 cancellato=cancellato,
-                                                 offset=offset,
-                                                 batchSize=batchSize)
+            return Articolo().select(
+                                    #nodo=True,
+                                    join=self.join,
+                                    orderBy=self.orderBy,
+                                    denominazione=denominazione,
+                                    codice=codice,
+                                    codiceABarre=codiceABarre,
+                                    codiceArticoloFornitore=codiceArticoloFornitore,
+                                    produttore=produttore,
+                                    idFamiglia=idFamiglia,
+                                    idCategoria=idCategoria,
+                                    idStato=idStato,
+                                    cancellato=cancellato,
+                                    offset=offset,
+                                    batchSize=batchSize)
 
         self._filterClosure = filterClosure
 
@@ -230,7 +233,8 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
 class AnagraficaDistintaBaseHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'distinta_base',
-                                'Dettaglio distinta base')
+                                'Dettaglio distinta base',
+                                templatesHTMLDir ="promogest/modules/DistintaBase/templates/" )
     
 
 class AnagraficaDistintaBaseReport(AnagraficaReport):
@@ -247,8 +251,10 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_distinta_base_detail_vbox',
-                                'Dati articolo', gladeFile='distinta_base_plugins.glade')
+                                'anagrafica_associazioni_articoli_detail_vbox',
+                                'Dati articolo',
+                                gladeFile='DistintaBase/gui/_distinta_base_plugins.glade',
+                                module=True)
         self._widgetFirstFocus = self.articolo_principale_button
         self.remove_article_button.set_sensitive(False)
         self._loading= False
@@ -274,28 +280,44 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
         column.set_expand(False)
         column.set_min_width(300)
         treeview.append_column(column)
-        
+
+        cellspin = gtk.CellRendererSpin()
+        cellspin.set_property("editable", True)
+        cellspin.set_property("visible", True)
+        adjustment = gtk.Adjustment(1, 1, 1000,1,2)
+        cellspin.set_property("adjustment", adjustment)
+        cellspin.set_property("digits",3)
+        cellspin.set_property("climb-rate",3)
+        cellspin.connect('edited', self.on_column_quantita_edited, treeview, True)
+        column = gtk.TreeViewColumn('Quantit√†', cellspin, text=4)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        #column.set_clickable(True)
+        #column.connect("clicked", self._changeOrderBy, 'denominazione')
+        column.set_resizable(True)
+        column.set_expand(True)
+        column.set_min_width(40)
+        treeview.append_column(column)
+
         treeview.set_search_column(2)
-        self._assTreeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, str,)
+        self._assTreeViewModel = gtk.ListStore(object, str, str, str,str)
         self.articoli_associati_treeview.set_model(self._assTreeViewModel)
-        
-        
+
+
+    def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
+        """ Function ti set the value quantita edit in the cell"""
+        model = treeview.get_model()
+        value = value.replace(",",".")
+        model[path][0].quantita = Decimal(value)
+        model[path][4] = value
+
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.daoPadre = Articolo(Environment.connection)
+            self.daoPadre = Articolo()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.daoPadre = Articolo(Environment.connection, dao.id_articolo)
-            associatedArts = promogest.dao.DistintaBase.select(Environment.connection,
-                                                                                                        nodo=False,
-                                                                                                        idPadre=self.daoPadre.id,
-                                                                                                        offset=None,
-                                                                                                        batchSize=None,
-                                                                                                        immediate=True)
-            self.articoliAssociatiList=[]
-            for ass in associatedArts:
-                self.articoliAssociatiList.append(ass)
+            self.daoPadre = Articolo().getRecord(id=dao.id)
+            self.articoliAssociatiList = self.daoPadre.articoliAss
         self._refresh()
 
     def _refresh(self):
@@ -307,12 +329,24 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
 
         for articolo in self.articoliAssociatiList:
             col = None
-            if articolo.cancellato:
-                col = 'red'
-            self._assTreeViewModel.append((articolo,
+            print "UUUUUUUUGUGUGGUGUG", articolo
+            if articolo.ARTIFIGLIO:
+                if articolo.ARTIFIGLIO.cancellato:
+                    col = 'red'
+                codice = articolo.ARTIFIGLIO.codice or ""
+                denominazione = articolo.ARTIFIGLIO.denominazione or ""
+
+            else:
+                if articolo.cancellato:
+                    col = 'red'
+                codice = articolo.codice
+                denominazione = articolo.denominazione
+            quantita = articolo.quantita or 0
+            self._assTreeViewModel.append([articolo,
                                         col,
-                                        (articolo.codice or ''),
-                                        (articolo.denominazione or ''),))
+                                        codice,
+                                        denominazione,
+                                        quantita])
 
         if self.daoPadre.id is None:
             string='Selezionare un articolo principale'
@@ -356,7 +390,7 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
         denominazione = None
         codiceArticoloFornitore = None
 
-        from RicercaComplessaArticoli import RicercaComplessaArticoli
+        from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
         anag = RicercaComplessaArticoli(denominazione=denominazione,
                                         codice=codice,
                                         codiceABarre=codiceABarre,
@@ -372,19 +406,20 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
 
 
     def mostraArticoloPadre(self, id):
-        self.daoPadre = Articolo(Environment.connection, id)
+        self.daoPadre = Articolo().getRecord(id=id)
         for articolo in self.articoliAssociatiList:
             articolo.id_associato = id
         self._refresh()
         
     def mostraArticoloFiglio(self,dao):
-        daoAssociazione= DistintaBase(Environment.connection)
-        # qui Ë sufficiente settare solo le propriet‡ dell'associazione che vengono poi visualizzate nella treeview
+        daoAssociazione= AssociazioneArticolo()
+        # qui √® sufficiente settare solo le propriet√† dell'associazione che vengono poi visualizzate nella treeview
         # nel salvataggio dellla stessa sono necessari solo id_articolo, e id_associato
-        daoAssociazione.id_articolo = dao.id
-        daoAssociazione.id_associato = self.daoPadre.id
+        daoAssociazione.id_figlio = dao.id
+        daoAssociazione.id_padre = self.daoPadre.id
         daoAssociazione.denominazione = dao.denominazione
         daoAssociazione.codice = dao.codice
+        daoAssociazione.cancellato = dao.cancellato
         self.articoliAssociatiList.append(daoAssociazione)
         self._refresh()
 
@@ -394,7 +429,7 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
             if model[iter][0] == dao:
                 self.articoliAssociatiList.remove(dao)
                 if dao.id is not None:
-                    dao.delete(Environment.connection, son=True)
+                    dao.delete()
         model.remove(iter)
 
     def on_articoli_associati_treeview_row_activated(self, widget):

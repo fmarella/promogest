@@ -200,23 +200,6 @@ if hasattr(conf, 'SchedaLavorazione'):
                             schema=params['schema'])
         noteSchedeTable.create(checkfirst=True)
 
-        #CREATE TABLE associazioni_articoli(
-            #id              BIGSERIAL   NOT NULL    PRIMARY KEY
-            #,id_padre       BIGINT          NULL    REFERENCES articolo ( id ) ON UPDATE CASCADE ON DELETE RESTRICT
-            #,id_figlio      BIGINT          NULL    REFERENCES articolo ( id ) ON UPDATE CASCADE ON DELETE RESTRICT
-            #,posizione      INTEGER         NULL
-            #-- sono tutti riferimenti esterni alla tabella articolo. Questa tabella associa
-            #-- ad n articoli, n altri articoli della stessa tabella
-            #,UNIQUE (id_padre,id_figlio));
-        associazioniArticoliTable = Table('associazione_articolo', params['metadata'],
-                            Column('id',Integer,primary_key=True),
-                            Column('id_padre',Integer,ForeignKey(params['schema']+'.articolo.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
-                            Column('id_figlio',Integer,ForeignKey(params['schema']+'.articolo.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
-                            Column('posizione',Integer,nullable=True),
-                            UniqueConstraint('id_padre', 'id_figlio'),
-                            schema=params['schema'])
-        associazioniArticoliTable.create(checkfirst=True)
-
         #CREATE TABLE promemoria_schede_ordinazioni (
         #id              bigint       NOT NULL PRIMARY KEY REFERENCES promemoria(id) ON UPDATE CASCADE ON DELETE CASCADE
         #,id_scheda      bigint       NOT NULL REFERENCES schede_ordinazioni(id) ON UPDATE CASCADE ON DELETE CASCADE);

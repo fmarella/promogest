@@ -251,7 +251,6 @@ class FilterWidget(GladeWidget):
         """
         Changes results order
         """
-        print "YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY", fieldsString
         if self.orderBy == fieldsString[1]:
             if self.flag == False:
                 self.orderBy = asc(fieldsString[1])

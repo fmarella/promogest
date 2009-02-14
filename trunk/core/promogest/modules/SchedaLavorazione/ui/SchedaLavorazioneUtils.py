@@ -29,7 +29,7 @@ def fillComboboxColoreStampa(combobox, filter=False):
     """
     Crea l'elenco dei listini
     """
-    model = gtk.ListStore(gobject.TYPE_PYOBJECT, int, str)
+    model = gtk.ListStore(object, int, str)
     liss = ColoreStampa().select(denominazione=None,
                                         orderBy = None,
                                         offset = None,

@@ -308,13 +308,25 @@ class Articolo(Dao):
                 return (articolo.id_articolo_padre is None)
             else:
                 return False
+
     if "GestioneNoleggio" in Environment.modulesList:
-        
+
         @property
         def divisore_noleggio(self):
             """ esempio di funzione  unita alla property """
             if self.APGN :return self.APGN.divisore_noleggio_value
             else: return ""
+
+
+    if hasattr(conf, "DistintaBase") and getattr(conf.DistintaBase,'mod_enable')=="yes":
+        """ necessario questo if"""
+        @property
+        def articoliAss(self):
+            """ esempio di funzione  unita alla property """
+            arts = AssociazioneArticolo().select(idPadre=self.id,
+                                                offset=None,
+                                                batchSize=None)
+            return arts
 
     def persist(self):
         params["session"].add(self)
@@ -399,7 +411,7 @@ class Articolo(Dao):
             dic = {k:or_(articolo.c.cancellato != v)}
         elif k == 'idArticolo':
             dic = {k:or_(articolo.c.id == v)}
-        elif hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
+        elif "PromoWear" in Environment.modulesList:
             if k == 'figliTagliaColore':
                 dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_articolo_padre==None)}
             elif k == 'idTaglia':
@@ -418,6 +430,10 @@ class Articolo(Dao):
                 dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_anno == v)}
             elif k == 'idGenere':
                 dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_genere ==v)}
+        elif "DistintaBase" in Environment.modulesList:
+            print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+            if k =="nodo":
+                dic = {}
         return  dic[k]
 
 fornitura=Table('fornitura',params['metadata'],schema = params['schema'],autoload=True)
@@ -443,9 +459,14 @@ std_mapper = mapper(Articolo,articolo,
 if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
     std_mapper.add_property("ATC",relation(ArticoloTagliaColore,primaryjoin=(articolo.c.id==ArticoloTagliaColore.id_articolo),backref="ARTI",uselist=False))
+if hasattr(conf, "DistintaBase") and getattr(conf.DistintaBase,'mod_enable')=="yes":
+    from promogest.modules.DistintaBase.dao.AssociazioneArticolo import AssociazioneArticolo
+    std_mapper.add_property("AAPadre",relation(AssociazioneArticolo,primaryjoin=(articolo.c.id==AssociazioneArticolo.id_padre),backref="ARTIPADRE"))
+    std_mapper.add_property("AAFiglio",relation(AssociazioneArticolo,primaryjoin=(articolo.c.id==AssociazioneArticolo.id_figlio),backref="ARTIFIGLIO"))
 if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
     from promogest.modules.GestioneNoleggio.dao.ArticoloPlusGN import ArticoloPlusGN
-    std_mapper.add_property("APGN",relation(ArticoloPlusGN,primaryjoin=(articolo.c.id==ArticoloPlusGN.id_articolo),backref="ARTI",uselist=False))
+    std_mapper.add_property("APGN",relation(ArticoloPlusGN,primaryjoin=(articolo.c.id==ArticoloPlusGN.id_articolo),backref="ARTI"))
+
 
 def isNuovoCodiceByFamiglia():
     """ Indica se un nuovo codice articolo dipende dalla famiglia o meno """

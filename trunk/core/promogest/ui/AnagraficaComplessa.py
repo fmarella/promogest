@@ -611,12 +611,6 @@ class Anagrafica(GladeWidget):
                 return
 
             emailAPP = conf.emailcompose
-            #ret = os.system('which ' + emailAPP + ' > /dev/null')
-            #if ret==0:
-                #toemail = " -compose to=%s" %self.email
-            #else:
-                #emailAPP = "Thunderbird.exe"
-
 
             def applicationThread():
                 toemail = " -compose to=%s" %self.email

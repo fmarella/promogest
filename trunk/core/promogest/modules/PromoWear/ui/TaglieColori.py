@@ -42,7 +42,6 @@ class GestioneTaglieColori(GladeWidget):
         self._articoloBase = articolo
         self._articoloPadre = articolo.articoloTagliaColore
         self.idGruppoTaglia = self._articoloBase.id_gruppo_taglia
-        print "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", self.idGruppoTaglia
         if self._articoloPadre is None:
             self._articoloPadre = ArticoloTagliaColore()
         self._articoliTagliaColore = self._articoloBase.articoliTagliaColore
