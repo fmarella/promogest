@@ -2177,7 +2177,6 @@ Solo varianti</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="focus_on_click">False</property>
-                            <accelerator key="g" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                             <signal name="clicked" handler="on_generate_article_code_button_clicked"/>
                           </widget>
                           <packing>
