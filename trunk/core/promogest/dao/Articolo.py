@@ -370,6 +370,25 @@ class Articolo(Dao):
                     div_nol.id_articolo = self.id
                     div_nol.divisore_noleggio_value = self.divisore_noleggio_value_set
                     params["session"].add(div_nol)
+        if "PromoWear" in Environment.modulesList:
+            try:
+                if self.__articoloTagliaColore:
+                    if ArticoloTagliaColore().getRecord(id=self.id):
+                        a = ArticoloTagliaColore().getRecord(id=self.id)
+                        a.delete()
+                    self.__articoloTagliaColore.id_articolo=self.id
+                    params["session"].add(self.__articoloTagliaColore)
+                    self.saveToAppLog(self.__articoloTagliaColore)
+                    if self.isArticoloPadre():
+                        for var in self.getArticoliTagliaColore():
+                            var.id_genere = self.__articoloTagliaColore.id_genere
+                            var.id_anno = self.__articoloTagliaColore.id_anno
+                            var.id_stagione = self.__articoloTagliaColore.id_stagione
+                            var.id_modello = self.__articoloTagliaColore.id_modello
+                            params["session"].add(var)
+                        #self.saveToAppLog(var)
+            except:
+                print "ARTICOLO NORMALE SENZA TAGLIE O COLORI"
         params["session"].commit()
 
     def delete(self):
