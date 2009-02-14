@@ -117,10 +117,12 @@ class DuplicazioneDocumento(GladeWidget):
             daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
             daoRiga.valore_unitario_netto = r.valore_unitario_netto
             try:
+                print "MISURA PEZZOOOOOOOOOOOOOOOOOOOOOOOOOOOO", r.misura_pezzo
                 daoRiga.misura_pezzo = r.misura_pezzo
             except:
                 pass
             sconti = []
+            scontiRigaDocumento = []
             sco = r.sconti
             for s in sco:
                 daoSconto = ScontoRigaDocumento()
