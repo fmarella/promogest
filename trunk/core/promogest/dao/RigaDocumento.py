@@ -119,8 +119,8 @@ class RigaDocumento(Dao):
             return self.__misuraPezzo
 
         def _setMisuraPezzo(self, value):
+            print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO2", value
             self.__misuraPezzo = value
-
         misura_pezzo = property(_getMisuraPezzo, _setMisuraPezzo)
 
         def _altezza(self):

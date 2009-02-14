@@ -116,11 +116,13 @@ class DuplicazioneDocumento(GladeWidget):
             daoRiga.moltiplicatore = r.moltiplicatore
             daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
             daoRiga.valore_unitario_netto = r.valore_unitario_netto
-            try:
-                print "MISURA PEZZOOOOOOOOOOOOOOOOOOOOOOOOOOOO", r.misura_pezzo
-                daoRiga.misura_pezzo = r.misura_pezzo
-            except:
-                pass
+            if "SuMisura" in Environment.modulesList:
+                from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
+                daoMisuraPezzo = MisuraPezzo()
+                daoMisuraPezzo.altezza = r.misura_pezzo[0].altezza
+                daoMisuraPezzo.larghezza = r.misura_pezzo[0].larghezza
+                daoMisuraPezzo.moltiplicatore = r.misura_pezzo[0].moltiplicatore
+                daoRiga.misura_pezzo2 = daoMisuraPezzo
             sconti = []
             scontiRigaDocumento = []
             sco = r.sconti

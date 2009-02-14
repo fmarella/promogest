@@ -111,7 +111,7 @@ class RigaMovimento(Dao):
                 return self.__misuraPezzo
 
         def _setMisuraPezzo(self, value):
-                self.__misuraPezzo = value
+            self.__misuraPezzo = value
         misura_pezzo = property(_getMisuraPezzo, _setMisuraPezzo)
 
         def _altezza(self):
@@ -228,13 +228,13 @@ class RigaMovimento(Dao):
             params["session"].commit()
 
         if "SuMisura" in modulesList:
-            try:
-                if self.__misuraPezzo:
-                    self.__misuraPezzo.id_riga = self.id
-                    params["session"].add(self.__misuraPezzo)
-                    params["session"].commit()
-            except:
-                print "errore nel salvataggio di misura pezzo"
+            #try:
+            if self.__misuraPezzo:
+                self.__misuraPezzo.id_riga = self.id
+                params["session"].add(self.__misuraPezzo)
+                params["session"].commit()
+            #except:
+                #print "errore nel salvataggio di misura pezzo"
 
 
 riga=Table('riga', params['metadata'], schema = params['schema'], autoload=True)

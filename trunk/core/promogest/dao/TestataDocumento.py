@@ -446,7 +446,10 @@ class TestataDocumento(Dao):
                             #scontiRigaMovimento.append(daoScontoMovimento)
                             #scontiRigaMovimento[daoRigaMovimento] = lista
                     if "SuMisura" in Environment.modulesList:
+                        print "OOOOOOOOOOOOOOOOOOOOOOOOOOGGGGGGGGGGGGGGGGGGGGGGGG", row.misura_pezzo2
                         if row.misura_pezzo2:
+                            #if row.misura_pezzo:
+                                #row.misura_pezzo2 = row.misura_pezzo[0]
                             row.misura_pezzo2.id_riga = daoRigaMovimento.id
                             params["session"].add(row.misura_pezzo2)
                             params["session"].commit()
