@@ -29,11 +29,13 @@ class Articolo(Dao):
 
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
-        #self.codibar = None
+        self.__articoloTagliaColore = None
+        self.codibar = None
 
     @reconstructor
     def init_on_load(self):
         self.codibar = None
+        self.__articoloTagliaColore = None
 
     def cod_bar(self):
         if not self.codibar:

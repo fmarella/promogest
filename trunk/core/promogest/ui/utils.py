@@ -767,7 +767,7 @@ def findIdFromCombobox(combobox):
     iterator = combobox.get_active_iter()
     if iterator is not None:
         id = model.get_value(iterator, 1)
-        if id == 0:
+        if id == 0 :
             return None
         else:
             return id

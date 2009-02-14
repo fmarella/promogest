@@ -215,7 +215,6 @@ class GestioneTaglieColori(GladeWidget):
                                 codice= codiceArticolo.codice_a_barre or ""
                         # oggetto Gruppo Taglia Taglia
                         s = g.TAG
-                        #s = Taglia().getRecord(id=g.id_taglia)
                         self._treeViewModel.append(parent,(s,
                                                     selected,
                                                     s.denominazione,
@@ -253,15 +252,12 @@ class GestioneTaglieColori(GladeWidget):
                                                     None,
                                                     None,
                                                     codiceArticolo))
-
             else:
                 selected = False
                 codice = ""
                 codiceArticolo = None
                 for s in self.sizes:
                     h = s.TAG
-                    #h = Taglia().getRecord(id=s.id_taglia)
-                    #oggetto GruppoTagliaTaglia
                     parent = self._treeViewModel.append(None,(h,
                                                             self.selected,
                                                             h.denominazione,
@@ -271,15 +267,9 @@ class GestioneTaglieColori(GladeWidget):
                                                             None))
 
                     for c in self.colori:
-                        #oggetto Colore
-                        #alreadyexist= ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
-                                                                #idColore=c.id,
-                                                                #idTaglia=h.id,
-                                                                #batchSize=None)
+
                         for exist in alreadyexist:
-                            #if exist.id_taglia == g.TAG.id and exist.id_colore == c.id
                             if exist.id_colore == c.id and exist.id_taglia == h.id:
-                        #if c in alreadyexist:
                                 selected = True
                                 codiceArticolo = Articolo().getRecord(id=alreadyexist[0].id_articolo)
                                 codice = codiceArticolo.codice_a_barre or ""
@@ -447,9 +437,18 @@ Il codice a barre  %s è gia' presente nel Database, ricontrolla!""" % codiceaba
                 articoloTagliaColore.id_gruppo_taglia = articoloPadre.id_gruppo_taglia
                 articoloTagliaColore.id_taglia = daoTaglia.id
                 articoloTagliaColore.id_colore = daoColore.id
-                articoloTagliaColore.id_anno = articoloPadre.id_anno
-                articoloTagliaColore.id_stagione = articoloPadre.id_stagione
-                articoloTagliaColore.id_genere = articoloPadre.id_genere
+                if articoloPadre.id_anno == "":
+                    articoloTagliaColore.id_anno = None
+                else:
+                    articoloTagliaColore.id_anno = articoloPadre.id_anno
+                if articoloPadre.id_stagione == "":
+                    articoloTagliaColore.id_stagione = None
+                else:
+                    articoloTagliaColore.id_stagione = articoloPadre.id_stagione
+                if articoloPadre.id_genere == "":
+                    articoloTagliaColore.id_genere = None
+                else:
+                    articoloTagliaColore.id_genere = articoloPadre.id_genere
                 articoloTagliaColore.persist()
                 if codiceabarre:
                     codici = CodiceABarreArticolo().select(codiceEM=codiceabarre,
