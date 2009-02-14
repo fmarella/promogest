@@ -23,6 +23,14 @@ from Fornitura import Fornitura
 from Multiplo import Multiplo
 from promogest.ui.utils import codeIncrement
 #from promogest.modules.PromoWear.dao.ArticoloPromowear import Articolo
+if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
+    from promogest.modules.PromoWear.dao.Colore import Colore
+    from promogest.modules.PromoWear.dao.Taglia import Taglia
+    from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
+    from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
+    from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
+    from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
+    from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
 
 
 class Articolo(Dao):
@@ -131,6 +139,7 @@ class Articolo(Dao):
         else: return ""
 
     if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
+
 
         def getArticoloTagliaColore(self):
             """ Restituisce il Dao ArticoloTagliaColore collegato al Dao Articolo #"""
