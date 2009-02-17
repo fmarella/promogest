@@ -206,13 +206,17 @@ class GestioneTaglieColori(GladeWidget):
                                                         self.rowBackGround,
                                                         self.rowBoldFont,
                                                         None))
-
                     for g in self.sizes:
                         for exist in alreadyexist:
                             if exist.id_taglia == g.TAG.id and exist.id_colore == c.id:
                                 selected = True
                                 codiceArticolo = Articolo().getRecord(id=alreadyexist[0].id_articolo)
                                 codice= codiceArticolo.codice_a_barre or ""
+                                break
+                            else:
+                                selected = False
+                                codice = ""
+                                codiceArticolo = None
                         # oggetto Gruppo Taglia Taglia
                         s = g.TAG
                         self._treeViewModel.append(parent,(s,
@@ -273,6 +277,11 @@ class GestioneTaglieColori(GladeWidget):
                                 selected = True
                                 codiceArticolo = Articolo().getRecord(id=alreadyexist[0].id_articolo)
                                 codice = codiceArticolo.codice_a_barre or ""
+                                break
+                            else:
+                                selected = False
+                                codice = ""
+                                codiceArticolo = None
                         self._treeViewModel.append(parent,(c,
                                                     selected,
                                                     c.denominazione,
