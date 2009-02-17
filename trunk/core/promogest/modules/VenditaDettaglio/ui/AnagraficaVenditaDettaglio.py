@@ -301,17 +301,49 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         scont = model[path][6]
         self.on_column_sconto_edited(cell, path, scont, treeview)
 
+
+
     def on_vendita_dettaglio_window_key_press_event(self,widget, event):
         """ jolly key è F9, richiama ed inserisce l'articolo definito nel configure"""
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'F9':
             try:
                 codice = Environment.conf.VenditaDettaglio.jolly
-                self.search_item(codice=codice)
+                self.search_item(codice=codice, fnove=True)
             except:
                 print "ARTICOLO JOLLY NON SETTATO NEL CONFIGURE NELLA SEZIONE [VenditaDettaglio]"
 
-    def search_item(self, codiceABarre=None, codice=None, descrizione=None):
+
+    def fnovewidget(self):
+        dialog = gtk.MessageDialog(self.getTopLevel(),
+                                   gtk.DIALOG_MODAL
+                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
+        dialog.set_markup("""<b>ARTICOLO GENERICO</b>: Inserire Quantità e Prezzo""")
+        hbox = gtk.HBox()
+        entry = self.createSignedDecimalEntryField(None,None,10,0)
+        entry1 = self.createSignedMoneyEntryField(None,None,10,0)
+        labelMoney = gtk.Label()
+        labelMoney.set_markup("<b>   Quantità</b>")
+        labelMoney1 = gtk.Label()
+        labelMoney1.set_markup("<b>   Prezzo  </b>")
+        hbox.pack_start(labelMoney, False, False, 0)
+        hbox.pack_start(entry, False, False, 0)
+        hbox1 = gtk.HBox()
+        hbox1.pack_start(labelMoney1, False, False, 0)
+        hbox1.pack_start(entry1, False, False, 0)
+        dialog.vbox.pack_start(hbox1, False, False, 0)
+        dialog.vbox.pack_start(hbox, False, False, 0)
+        dialog.show_all()
+        response = dialog.run()
+        dialog.destroy()
+        quantita = entry.get_text().strip()
+        prezzo =  mN(entry1.get_text())
+        return  ( quantita,prezzo ) 
+
+
+
+    def search_item(self, codiceABarre=None, codice=None, descrizione=None, fnove=False):
         # Ricerca articolo per barcode
         if codiceABarre is not None:
             arts = Articolo().select( codiceABarre = codiceABarre,
@@ -332,7 +364,13 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             descrizione = arts[0].descrizione_etichetta or arts[0].denominazione or ''
             # Ricerca listino_articolo
             listino = leggiListino(self.id_listino, idArticolo)
-            prezzo = mN(listino["prezzoDettaglio"])
+            if fnove:
+                valorigenerici = self.fnovewidget()
+                quantita = valorigenerici[0] or 1
+                prezzo = mN(valorigenerici[1]) or 0
+            else:
+                prezzo = mN(listino["prezzoDettaglio"])
+                quantita = 1
             listinoRiga = (self.id_listino,listino['denominazione'])
             prezzoScontato = prezzo
             valoreSconto = 0
@@ -349,7 +387,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                             prezzoScontato = mN(mN(prezzo) - (mN(prezzo) * mN(valoreSconto)) / 100)
                         else:
                             prezzoScontato = mN(mN(prezzo) -mN(valoreSconto))
-            quantita = 1
+
 
             self.codice_a_barre_entry.set_text(codiceABarre)
             self.codice_entry.set_text(codice)
@@ -357,6 +395,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                descrizione, prezzo, valoreSconto,tipoSconto,
                                prezzoScontato, quantita)
             #self.confirm_button.grab_focus()
+            #if not fnove:
             self.on_confirm_button_clicked(self.getTopLevel())
             self.refreshTotal()
         else:
