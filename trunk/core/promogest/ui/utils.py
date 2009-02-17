@@ -367,6 +367,15 @@ def leggiListino(idListino, idArticolo=None):
                                                             listinoAttuale = True,
                                                             batchSize=None,
                                                             orderBy="id_listino")
+                    if not daoListinoArticolo1 and "PromoWear" in Environment.modulesList:
+                        from promogest.dao.Articolo import Articolo
+                        father = Articolo().getRecord(id=idArticolo)
+                        idArticolo = father.id_articolo_padre
+                        daoListinoArticolo1 = ListinoArticolo().select(idListino=idListino,
+                                                            idArticolo = idArticolo,
+                                                            listinoAttuale = True,
+                                                            batchSize=None,
+                                                            orderBy="id_listino")
                     if len(daoListinoArticolo1) >= 1:
                         #print "ATTENZIONEEEEEEEEEEEEEEEEEEE PIÙ DI UN LISTINO ARTICOLO ATTUALE"
                         daoListinoArticolo= daoListinoArticolo1[0]
