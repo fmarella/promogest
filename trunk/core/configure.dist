@@ -97,3 +97,8 @@ cartella_moduli = ./promogest/modules
 # inserire anche il percorso completo C:\programmi\Thunderbird ....
 [Composer]
 emailcompose = thunderbird
+subject = "[ Invio Doc: %s ]"
+bodytemplate = """Testo da gestire come corpo template
+                permette anche di andare a capo se necessario
+                da modificare nel configure interno all'azienda"""
+signature = """ Invio elettronico di  %s   effettuato tramite software gestionale PromoGest """
