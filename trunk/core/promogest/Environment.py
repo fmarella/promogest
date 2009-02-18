@@ -230,9 +230,19 @@ def set_configuration(company=None, year = None):
     #[Composer]
     if hasattr(conf,'Composer'):
         conf.emailcompose = str(getattr(conf.Composer, 'emailcompose'))
-        conf.subject = conf.Composer.subject or "[ Invio Doc: %s ]"
-        conf.signature = conf.Composer.signature or """Invio elettronico di  %s   effettuato tramite software gestionale PromoGest """
-        conf.body = ",body="+ conf.Composer.bodytemplate + conf.signature
+        try:
+            conf.subject = conf.Composer.subject
+        except:
+            conf.subject = "[ Invio Doc: %s ]"
+        try:
+            conf.signature = conf.Composer.signature
+        except:
+            conf.signature = """Invio elettronico di  %s   effettuato tramite software gestionale PromoGest """
+        try :
+            conf.bodytemplate = conf.Composer.bodytemplate
+        except:
+            conf.bodytemplate = ""
+        conf.body = ",body="+ conf.bodytemplate + conf.signature
     else:
         emailcompose = None
 
