@@ -322,6 +322,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         dialog.set_markup("""<b>ARTICOLO GENERICO</b>: Inserire Quantità e Prezzo""")
         hbox = gtk.HBox()
         entry = self.createSignedDecimalEntryField(None,None,10,0)
+        entry.set_text("1.00")
         entry1 = self.createSignedMoneyEntryField(None,None,10,0)
         labelMoney = gtk.Label()
         labelMoney.set_markup("<b>   Quantità</b>")
