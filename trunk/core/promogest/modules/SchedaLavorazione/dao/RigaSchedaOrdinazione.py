@@ -10,6 +10,9 @@ from promogest.dao.Dao import Dao
 from promogest.Environment import *
 from decimal import *
 from promogest.modules.SchedaLavorazione.dao.ScontoRigaScheda import ScontoRigaScheda
+from promogest.dao.Articolo import Articolo
+from promogest.dao.AliquotaIva import AliquotaIva
+#from promogest.modules.SchedaLavorazione.ui.SchedaLavorazioneUtils import *
 #from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
 from promogest.ui.utils import *
 
@@ -25,10 +28,18 @@ class RigaSchedaOrdinazione(Dao):
         # documento o movimento di carico, per salvare la fornitura
         self.__codiceArticoloFornitore = None
 
+    @reconstructor
+    def init_on_load(self):
+        self.__scontiRigaScheda = None
+        self.__dbScontiRigaScheda = None
+        # usata per mantenere il valore del codice articolo fornitore proveniente da un
+        # documento o movimento di carico, per salvare la fornitura
+        self.__codiceArticoloFornitore = None
+
 
     def _getScontiRigaScheda(self):
         if self.__dbScontiRigaScheda is None:
-            self.__dbScontiRigaScheda = promogest.modules.Stampalux.dao.ScontoRigaScheda.select(Environment.connection, self.id, immediate=True)
+            self.__dbScontiRigaScheda = ScontoRigaScheda().select(idRigaScheda= self.id)
         if self.__scontiRigaScheda is None:
             self.__scontiRigaScheda = self.__dbScontiRigaScheda[:]
         return self.__scontiRigaScheda
@@ -70,11 +81,10 @@ class RigaSchedaOrdinazione(Dao):
     def _getAliquotaIva(self):
         # Restituisce la denominazione breve dell'aliquota iva
         _denominazioneBreveAliquotaIva = '%2.0f' % (self.percentuale_iva or 0)
-        daoArticolo = promogest.dao.Articolo.Articolo(Environment.connection, self.id_articolo)
+        daoArticolo = Articolo().getRecord(id=self.id_articolo)
         if daoArticolo is not None:
             if daoArticolo.id_aliquota_iva is not None:
-                daoAliquotaIva = promogest.dao.AliquotaIva.AliquotaIva(Environment.connection,
-                                                                       daoArticolo.id_aliquota_iva)
+                daoAliquotaIva = AliquotaIva().getRecord(id = daoArticolo.id_aliquota_iva)
                 if daoAliquotaIva is not None:
                     _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
         if (_denominazioneBreveAliquotaIva == '0' or _denominazioneBreveAliquotaIva == '00'):
@@ -84,30 +94,35 @@ class RigaSchedaOrdinazione(Dao):
 
     aliquota = property(_getAliquotaIva)
 
+    def scontiRigaSchedaDel(self,id=None):
+        """Cancella gli sconti legati ad una riga movimento"""
+        row = ScontoRigaScheda().select(idRigaScheda= id,
+                                        batchSize = None)
+        if row:
+            for r in row:
+                params['session'].delete(r)
+            params["session"].commit()
+            return True
 
-    def persist(self, conn):
-        if conn is None:
-            raise NotImplementedError, 'Connection must be passed'
-
-        #salvataggio riga
-        Dao.persist(self, conn)
-
-        #cancellazione sconti associati alla riga
-        conn.execStoredProcedure('ScontiRigaSchedaDel', (self.id, ))
-
+    def persist(self):
+        params["session"].add(self)
+        params["session"].commit()
+        #self.scontiRigaSchedaDel(self.id)
         if self.__scontiRigaScheda is not None:
-            for i in range(0, len(self.__scontiRigaScheda)):
+            for row in self.__scontiRigaScheda:
                 #annullamento id dello sconto
-                self.__scontiRigaScheda[i]._resetId()
+                #row._resetId()
                 #associazione allo sconto della riga
-                self.__scontiRigaScheda[i].id_riga_scheda = self.id
+                row.id_riga_scheda = self.id
                 #salvataggio sconto
-                self.__scontiRigaScheda[i].persist(conn)
+                row.persist()
 
     def filter_values(self,k,v):
-        dic= {'id':rigaschedaordinazione.c.id ==v}
+        if k =="id":
+            dic= {k:rigaschedaordinazione.c.id ==v}
+        elif k =="idSchedaOrdinazione":
+            dic = {k:rigaschedaordinazione.c.id_scheda == v}
         return  dic[k]
-
 
 rigaschedaordinazione=Table('riga_scheda_ordinazione',
                                     params['metadata'],
@@ -116,7 +131,6 @@ rigaschedaordinazione=Table('riga_scheda_ordinazione',
 
 riga=Table('riga', params['metadata'],schema = params['schema'], autoload=True)
 
-
 j = join(rigaschedaordinazione, riga)
 
 std_mapper = mapper(RigaSchedaOrdinazione, j, properties={
@@ -124,5 +138,5 @@ std_mapper = mapper(RigaSchedaOrdinazione, j, properties={
         #"schedaOrd":relation(SchedaOrdinazione,primaryjoin=
                 #rigaschedaordinazione.c.id_riga_scheda==SchedaOrdinazione.id, backref="riga_scheda_ord")
             },
-                                    order_by=rigaschedaordinazione.c.id)
+                    order_by=rigaschedaordinazione.c.id)
 

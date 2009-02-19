@@ -31,5 +31,4 @@ coloristampa=Table('colore_stampa',
                         schema = params['schema'],
                         autoload=True)
 
-std_mapper = mapper(ColoreStampa, coloristampa, properties={},
-                                order_by=coloristampa.c.id)
+std_mapper = mapper(ColoreStampa, coloristampa, order_by=coloristampa.c.id)

@@ -360,6 +360,7 @@ class TestataDocumento(Dao):
         params["session"].commit()
         scontiTestataDocumentoDel(id=self.id)
         testataDocumentoScadenzaDel(id=self.id)
+        print "-------------_------JJHHHH"
         righeDocumentoDel(id=self.id)
         #verifica se sono e devono essere presenti righe di movimentazione magazzino
         contieneMovimentazione = self.contieneMovimentazione(righe=self.righeDocumento)
@@ -430,8 +431,6 @@ class TestataDocumento(Dao):
                     daoRigaMovimento.id_multiplo = row.id_multiplo
                     daoRigaMovimento.codiceArticoloFornitore = row.codiceArticoloFornitore
 
-                        #daoRigaMovimento.misura_pezzo = row.misura_pezzo2
-
                     params['session'].add(daoRigaMovimento)
                     params['session'].commit()
                     #gestione sconti in una riga documento
@@ -446,19 +445,12 @@ class TestataDocumento(Dao):
                             #scontiRigaMovimento.append(daoScontoMovimento)
                             #scontiRigaMovimento[daoRigaMovimento] = lista
                     if "SuMisura" in Environment.modulesList:
-                        print "OOOOOOOOOOOOOOOOOOOOOOOOOOGGGGGGGGGGGGGGGGGGGGGGGG", row.misura_pezzo2
                         if row.misura_pezzo2:
                             #if row.misura_pezzo:
                                 #row.misura_pezzo2 = row.misura_pezzo[0]
                             row.misura_pezzo2.id_riga = daoRigaMovimento.id
                             params["session"].add(row.misura_pezzo2)
                             params["session"].commit()
-                    #daoRigaMovimento.scontiRigaMovimento=scontiRigaMovimento
-                    #righeMovimento.append(daoRigaMovimento)
-                    #scontiRigaMovimento = []
-                    #tipoRiga.append("mov")
-                    #params['session'].add(daoRigaMovimento)
-                    #params['session'].commit()
                 else:
                     print "RIGA SENZA RIFERMENTO ARTICOLO QUINDI DESCRITTIVA, SALVO IN RIGADOCUMENTO"
                     #annullamento id della riga

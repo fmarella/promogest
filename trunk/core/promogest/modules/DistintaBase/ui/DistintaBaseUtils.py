@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -33,11 +33,11 @@ def fillComboboxDistintaBase(combobox, search_string=None):
     Riempie la combobox di selezione delle associazioni di articoli.
     Se la lista risultante ha un solo elemento, questo viene automaticamente selezionato.
     """
-    model = gtk.ListStore(gobject.TYPE_PYOBJECT,str,str,str)
+    model = gtk.ListStore(object,str,str,str)
     model.clear()
     liss = promogest.dao.DistintaBase.select(Environment.connection, nodo=True, codice=search_string,
                                                                                                 offset=None, batchSize=None, immediate=True)
-    # questa combobox mi sa che non può andare a finire in un filter widget
+    # questa combobox mi sa che non puÃ² andare a finire in un filter widget
     emptyRow = ''
     model.append((None, None, None, emptyRow))
     for l in liss:

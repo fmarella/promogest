@@ -20,7 +20,7 @@ class ScontoSchedaOrdinazione(Dao):
     def filter_values(self,k,v):
         if k == 'id':
             dic= { k :scontoschedaordinazione.c.id == v}
-        elif k== 'idSchedaOrdinazione':
+        elif k== 'idSchedaOrdinazione' or k == "idScontoSchedaOrdinazione":
             dic ={k:scontoschedaordinazione.c.id_scheda_ordinazione==v}
         return  dic[k]
 

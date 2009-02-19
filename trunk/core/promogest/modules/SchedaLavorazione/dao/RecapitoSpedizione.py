@@ -7,7 +7,6 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
 
 class RecapitoSpedizione(Dao):
 
@@ -15,7 +14,10 @@ class RecapitoSpedizione(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'id':recapitospedizione.c.id ==v}
+        if k == "id":
+            dic= {k:recapitospedizione.c.id ==v}
+        elif k== "idScheda":
+            dic= {k:recapitospedizione.c.id_scheda==v}
         return  dic[k]
 
 recapitospedizione=Table('recapito_spedizione',
@@ -23,8 +25,4 @@ recapitospedizione=Table('recapito_spedizione',
                             schema = params['schema'],
                             autoload=True)
 
-std_mapper = mapper(RecapitoSpedizione, recapitospedizione, properties={
-                "schedaOrd":relation(SchedaOrdinazione,primaryjoin=
-                    contattoscheda.c.id_scheda==ContattoScheda.id, backref="cont_sched")
-},
-                                    order_by=recapitospedizione.c.id)
+std_mapper = mapper(RecapitoSpedizione, recapitospedizione, order_by=recapitospedizione.c.id)

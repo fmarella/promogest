@@ -216,7 +216,7 @@ if hasattr(conf, 'SchedaLavorazione'):
         rigaTable = Table('riga', params['metadata'], autoload=True, schema=params['schema'])
         scontiRigheSchedeTable = Table('riga_scheda_ordinazione', params['metadata'],
                             Column('id',Integer,ForeignKey(params['schema']+'.riga.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-                            Column('id_riga_scheda',Integer,ForeignKey(params['schema']+'.scheda_ordinazione.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
+                            Column('id_scheda',Integer,ForeignKey(params['schema']+'.scheda_ordinazione.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
                             schema=params['schema'])
         scontiRigheSchedeTable.create(checkfirst=True)
 

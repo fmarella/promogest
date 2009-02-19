@@ -1081,12 +1081,16 @@ class AnagraficaReport(object):
     """ Interfaccia HTML read-only per la lettura dell'anagrafica """
 
     def __init__(self, anagrafica, description, defaultFileName,
-                 htmlTemplate, sxwTemplate):
+                 htmlTemplate, sxwTemplate,
+                templatesDir =None):
         self._anagrafica = anagrafica
         self.description = description
         self.defaultFileName = defaultFileName
         self._htmlTemplate = [os.path.join('report-templates'),htmlTemplate + '.html']
-        self._slaTemplate = Environment.reportTemplatesDir + sxwTemplate + '.sla'
+        if templatesDir:
+            self._slaTemplate = templatesDir + sxwTemplate + '.sla'
+        else:
+            self._slaTemplate = Environment.reportTemplatesDir + sxwTemplate + '.sla'
         #self.htmlName = htmlTemplate + '.html'
         self.objects = None
         self._slaTemplateObj = None

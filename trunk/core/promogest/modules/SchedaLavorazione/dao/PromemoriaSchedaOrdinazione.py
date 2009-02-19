@@ -9,7 +9,7 @@ import promogest.dao.Dao
 from promogest.dao.Dao import Dao
 from promogest.Environment import *
 from promogest.dao.Promemoria import Promemoria
-from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
+#from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
 
 class PromemoriaSchedaOrdinazione(Dao):
 
@@ -17,7 +17,10 @@ class PromemoriaSchedaOrdinazione(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'id':promemoriaschedaordinazione.c.id ==v}
+        if k=="id" or k=="idPromemoria":
+            dic= {k : promemoriaschedaordinazione.c.id ==v}
+        elif k=="idScheda":
+            dic={k:promemoriaschedaordinazione.c.id_scheda ==v}
         return  dic[k]
 
 promemoriaschedaordinazione=Table('promemoria_scheda_ordinazione',
@@ -31,6 +34,5 @@ j = join(promemoriaschedaordinazione, promemoria)
 
 std_mapper = mapper(PromemoriaSchedaOrdinazione, j, properties={
             'id':[promemoria.c.id, promemoriaschedaordinazione.c.id],
-            "schedaOrd":relation(SchedaOrdinazione,primaryjoin=
-                    promemoriaschedaordinazione.c.id_scheda==SchedaOrdinazione.id, backref="promemoriaschedaordinazione")},
+                    },
                                 order_by=promemoriaschedaordinazione.c.id)

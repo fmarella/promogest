@@ -9,21 +9,20 @@
 
 import gobject, os
 import pygtk
-pygtk.require('2.0')
 import gtk
-import string, re, pprint, threading, time, datetime, decimal
+import string, re, time, datetime, decimal
 from decimal import *
 from promogest import Environment
 from  promogest.ui.utils import *
 from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
 from promogest.modules.SchedaLavorazione.dao.ColoreStampa import ColoreStampa
 from promogest.modules.SchedaLavorazione.dao.CarattereStampa import CarattereStampa
-from promogest.modules.SchedaLavorazione.dao.AssociazioneArticoli import AssociazioneArticoli
+from promogest.modules.DistintaBase.dao.AssociazioneArticolo import AssociazioneArticolo
+from promogest.modules.SchedaLavorazione.dao.ScontoRigaScheda import ScontoRigaScheda
+from promogest.modules.SchedaLavorazione.dao.ScontoSchedaOrdinazione import ScontoSchedaOrdinazione
+from promogest.modules.SchedaLavorazione.dao.PromemoriaSchedaOrdinazione import PromemoriaSchedaOrdinazione
 import promogest.modules.SchedaLavorazione.lib.PopReader
 from promogest.dao.ListinoArticolo import ListinoArticolo
-
-import xml.etree.cElementTree as ElementTree
-from xml.etree.cElementTree import *
 
 def fillComboboxColoreStampa(combobox, filter=False):
     """
@@ -82,8 +81,7 @@ def fillComboboxAssociazioneArticoli(combobox, search_string=None):
     """
     model = gtk.ListStore(object,str,str,str)
     model.clear()
-    liss = AssociazioneArticoli().select( nodo=True,
-                                        codice=search_string,
+    liss = AssociazioneArticolo().select(codice=search_string,
                                         offset=None,
                                         batchSize=None)
                                        
@@ -91,8 +89,8 @@ def fillComboboxAssociazioneArticoli(combobox, search_string=None):
     emptyRow = ''
     model.append((None, None, None, emptyRow))
     for l in liss:
-        model.append((l, l.id_articolo,l.codice, l.denominazione))
-    
+        model.append((l, l.id_padre,l.codice, l.denominazione))
+
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)

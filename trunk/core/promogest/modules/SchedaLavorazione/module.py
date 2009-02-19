@@ -9,7 +9,7 @@ from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.modules.SchedaLavorazione.data.SchedeLavorazioneDB import *
 #import promogest.modules.SchedaLavorazione.ui.AnagraficaAssociazioniArticoli
-from promogest.modules.SchedaLavorazione.ui.AnagraficaAssociazioniArticoli import AnagraficaAssociazioniArticoli
+#from promogest.modules.SchedaLavorazione.ui.AnagraficaAssociazioniArticoli import AnagraficaAssociazioniArticoli
 import promogest.modules.SchedaLavorazione.ui.AnagraficaCaratteriStampa
 from promogest.modules.SchedaLavorazione.ui.AnagraficaCaratteriStampa import AnagraficaCaratteriStampa
 import promogest.modules.SchedaLavorazione.ui.AnagraficaColoriStampa
@@ -18,17 +18,17 @@ from promogest.modules.SchedaLavorazione.ui.AnagraficaSchedeOrdinazioni import A
 from promogest.modules.SchedaLavorazione.ui.SchedaLavorazioneUtils import *
 
 MODULES_NAME = "SchedaLavorazione"
-MODULES_FOR_EXPORT = ['AssociazioniArticoli','CaratteriStampa','ColoriStampa','SchedeLavorazione']
+MODULES_FOR_EXPORT = ['CaratteriStampa','ColoriStampa','SchedeLavorazione']
 GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/SchedaLavorazione/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
 
 
-class AssociazioniArticoli(object):
-    VIEW_TYPE = ('anagrafica', 'Associazioni Articoli', 'associazione_articolo24x24.png')
-    def getApplication(self):
-        anag = AnagraficaAssociazioniArticoli()
-        return anag
+#class AssociazioniArticoli(object):
+    #VIEW_TYPE = ('anagrafica', 'Associazioni Articoli', 'associazione_articolo24x24.png')
+    #def getApplication(self):
+        #anag = AnagraficaAssociazioniArticoli()
+        #return anag
 
 class CaratteriStampa(object):
     VIEW_TYPE = ('parametro', 'Caratteri Stampa', 'caratteri_stampa24x24.png')

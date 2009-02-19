@@ -8,7 +8,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
+
 
 class Datario(Dao):
 
@@ -16,12 +16,13 @@ class Datario(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'id':datario.c.id ==v}
+        if k == "id":
+            dic= {k:datario.c.id ==v}
+        elif k== "idScheda":
+            dic= {k:datario.c.id_scheda==v}
         return  dic[k]
 
 datario=Table('datario',params['metadata'],schema = params['schema'],autoload=True)
 
 std_mapper = mapper(Datario, datario, properties={
-                "schedaOrd":relation(SchedaOrdinazione,primaryjoin=
-                    contattoscheda.c.id_scheda==SchedaOrdinazione.id, backref="datario")
                         }, order_by = datario.c.id)

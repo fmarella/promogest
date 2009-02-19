@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -59,6 +59,7 @@ class CustomLabel(gtk.HBox):
 
 
     def setCustomLabel(self, id=None, labelText='', buttonText='', container=None):
+        print "FFDSGDGDFGDFGDVDFVFVRVVSFDVSDFVDGFSGFDGTGSGGGSGTG", labelText, buttonText
         self._id = id
         self.label.set_text(self._labelText + labelText)
         self.buttonLabel.set_text(self._buttonText + buttonText)

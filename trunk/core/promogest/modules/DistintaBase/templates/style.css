@@ -1,0 +1,121 @@
+<style>
+
+    body {
+        font-family: monospace;
+    }
+
+    table {
+        width: 100%;
+    }
+
+/* da eliminare dopo la riconversione */
+    td.left {
+        text-align: left;
+    }
+/* */
+
+    td.odd-detail {
+        text-align: left;
+        color :black;
+        border-bottom : 1px solid #c0c0c0;
+    }
+
+    td.even-detail {
+        text-align: left;
+        color :black;
+        background: #efefef;
+        border-bottom : 1px solid #FFFFFF;
+    }
+
+    td.odd-number {
+        text-align: right;
+        color :black;
+        border-bottom : 1px solid #c0c0c0;
+    }
+
+    td.even-number {
+        text-align: right;
+        color :black;
+        background: #efefef;
+    }
+
+    tr.even-detail {
+        text-align: left;
+        color :black;
+        border : 1px solid #000000;
+    }
+
+    th {
+        padding-left: 0px;
+        font-weight: normal;
+        font-style: italic;
+        font-size: 1.1em;
+    }
+
+    th.left {
+        font-weight: normal;
+    }
+
+    li {
+        padding-left: 4px;
+/*         list-style: square; */
+    }
+
+    .table-header {
+        color: #FFFFFF;
+        font-weight : bold;
+        border-width: 1px 0px 1px 0px;
+        border-style: solid;
+        border-color: #777777;
+        padding: 0px;
+        margin: 0px;
+        font-size: 1.2em;
+        background : #c0c0c0;
+    }
+
+/* da eliminare dopo la riconversione */
+    .header {
+        font-style: italic;
+        color: black;
+        border-width: 1px 0px 1px 0px;
+        border-style: solid;
+        border-color: black;
+        padding: 4px;
+        margin: 4px;
+        font-size: 1.2em;
+    }
+
+    .report-header {
+        text-align: left;
+        color :black;
+        font-size: 1.2em;
+    }
+
+    .totale-number {
+        padding-top: 6px;
+        margin-top: 0px;
+        border-width: 1px 0px 0px 0px;
+        border-style: solid;
+        border-color: black;
+        text-align: right;
+    }
+
+    .totale-detail {
+        padding-top: 6px;
+        margin-top: 0px;
+        border-width: 1px 0px 0px 0px;
+        border-style: solid;
+        border-color: black;
+        text-align: left;
+    }
+
+
+    td.number {
+        text-align: right;
+    }
+
+    th.number {
+        text-align: right;
+    }
+
+</style>
