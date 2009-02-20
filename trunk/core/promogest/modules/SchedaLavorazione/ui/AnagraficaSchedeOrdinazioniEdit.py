@@ -120,12 +120,16 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         column.set_fixed_width(50)
         treeview.append_column(column)
 
-        renderer = gtk.CellRendererText()
+        renderer = gtk.CellRendererSpin()
         renderer.set_property('editable', True)
         renderer.set_property('xalign', 0.5)
-        renderer.connect('edited', self.on_column_edited, treeview, False)
-        renderer.set_data('column', 3)
-        renderer.set_data('min_length', 100)
+        adjustment = gtk.Adjustment(1, 1, 1000,1,2)
+        renderer.set_property("adjustment", adjustment)
+        renderer.set_property("digits",2)
+        renderer.set_property("climb-rate",3)
+        renderer.connect('edited', self.on_column_quantita_edited, treeview, False)
+        #renderer.set_data('column', 3)
+        #renderer.set_data('min_length', 100)
         column = gtk.TreeViewColumn('Q.ta', renderer, text=5)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
         column.set_clickable(False)
@@ -177,22 +181,44 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
 
         self._articoliTreeviewModel = gtk.ListStore(object, str, str, str, str, str, str,str,str)
         self.articoli_treeview.set_model(self._articoliTreeviewModel)
-
+        fillComboboxCarattereStampa(self.carattere_stampa_combobox)
+        fillComboboxColoreStampa(self.colore_stampa_combobox)
         self.sconti_scheda_widget.button.connect('toggled',self.on_sconti_scheda_widget_button_toggled)
 
     def setDao(self, dao):
-
-        if dao is None:
+        self.righeTEMP = []
+        print "DAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", dao
+        if not dao:
             self.dao = SchedaOrdinazione()
             self.dao.data_presa_in_carico = datetime.datetime.today()
             self._dataScheda = dateToString(self.dao.data_presa_in_carico)
             self._numeroScheda = 0
             self._clear()
-            #self._refresh()
+            self._refresh()
         else:
             self._dataScheda = dateToString(dao.data_presa_in_carico)
             self._numeroScheda=dao.numero
             self.dao = dao
+            self.dettagli_scheda_notebook.set_current_page(0)
+            self._refresh(firstLoad=True)
+
+    def _refresh(self, firstLoad=False):
+        """
+        Riempie  tutti i form della scheda con i relativi valori del dao (se impostati)
+        """
+
+        self._loading = True
+        self._parzialeLordo = int(0)
+        self._parzialeNetto = int(0)
+        # controlliamo se è il dao è fresco o no 
+        if not firstLoad:
+            self._getStrings()
+            self.righeTEMP = []
+            #self._articoliTreeviewModel.clear()
+            model = self.articoli_treeview.get_model()
+            for m in model:
+                self.setRigaTreeview(m)
+        else:
             if self.dao.colore_stampa:
                 self.daoColoreStampa = self.dao.colore_stampa
             if self.dao.carattere_stampa:
@@ -202,40 +228,52 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             if self.dao.righe:
                 self._id_listino = self.dao.righe[0].id_listino
                 self.daoListino = Listino().select(id=self._id_listino)[0]
+                #asswgno alla variabile temporanea il valore di righe
                 self.righeTEMP = self.dao.righe
-            self.dettagli_scheda_notebook.set_current_page(0)
-            self._refresh( firstLoad=True)
-
-    def _refresh(self, firstLoad=False):
-        """
-        Riempie  tutti i form della scheda con i relativi valori del dao (se impostati)
-        """
-
-        self._loading = True
-        self._parzialeLordo = Decimal(str(0))
-        self._parzialeNetto = Decimal(str(0))
-        if not firstLoad:
-            print "FIRST LOAAAAAAAAD ", firstLoad
-            self._getStrings()
+            # il dao è fresco per cui mi prendo le righe e le metto
+            self._articoliTreeviewModel.clear()
+            model = self.articoli_treeview.get_model()
+            for m in model:
+                self.setRigaTreeview(m)
+        #pulisco tutto
         self._clear()
-        fillComboboxCarattereStampa(self.carattere_stampa_combobox)
-        fillComboboxColoreStampa(self.colore_stampa_combobox)
-        if  self._id_listino is None and self.dao.righe:
-            self._id_listino = self.dao.righe[0].id_listino
-            self.daoListino = Listino().select(id=self._id_listino)
-        _data_matrimonio = dateToString(self.dao.data_matrimonio)
-        self.data_matrimonio_entry.set_text(_data_matrimonio)
-        _data_ordine_al_fornitore = dateToString(self.dao.data_ordine_al_fornitore)
-        self.data_ordine_al_fornitore_entry.set_text(_data_ordine_al_fornitore)
-        _data_consegna = dateToString(self.dao.data_consegna)
-        self.data_consegna_entry.set_text(_data_consegna)
-        _data_spedizione = dateToString(self.dao.data_spedizione)
-        self.data_spedizione_entry.set_text(_data_spedizione)
-        _data_consegna_bozza = dateToString(self.dao.data_consegna_bozza)
-        self.data_consegna_bozza_entry.set_text(_data_consegna_bozza)
-        _data_presa_in_carico = dateToString(self.dao.data_presa_in_carico)
-        self.data_presa_in_carico_entry.set_text(_data_presa_in_carico)
+        
+        #if  self._id_listino is None and self.righeTEMP:
+            #self._id_listino = self.righeTEMP[0].id_listino
+            #self.daoListino = Listino().select(id=self._id_listino)
 
+        #mi occupo delle righe articolo nella treeview pulendo
+        self._articoliTreeviewModel.clear()
+        #ciclo per riempire la treeview
+        for row in self.righeTEMP:
+            articoloRiga = Articolo().getRecord(id=row.id_articolo)
+            unitaBaseRiga = UnitaBase().getRecord(id=articoloRiga.id_unita_base)
+
+            self.setScontiRiga(row)
+            #riga = getPrezzoNetto(row)
+            self._parzialeLordo = self._parzialeLordo + mN(float(row.valore_unitario_lordo)*float(row.quantita))
+            self._parzialeNetto = self._parzialeNetto + mN(float(row.valore_unitario_netto)*float(row.quantita))
+            #findComboboxRowFromId(self.listino_combobox, row.id_listino)
+            self._articoliTreeviewModel.append([row,
+                                                row.id,
+                                                articoloRiga.codice,
+                                                row.descrizione,
+                                                unitaBaseRiga.denominazione_breve,
+                                                row.quantita,
+                                                row.valore_unitario_lordo,
+                                                row.valore_unitario_netto,
+                                                row.totaleRiga])
+
+
+
+
+        # questi dati sono a posto, 
+        self.data_matrimonio_entry.set_text(dateToString(self.dao.data_matrimonio))
+        self.data_ordine_al_fornitore_entry.set_text(dateToString(self.dao.data_ordine_al_fornitore))
+        self.data_consegna_entry.set_text(dateToString(self.dao.data_consegna))
+        self.data_spedizione_entry.set_text(dateToString(self.dao.data_spedizione))
+        self.data_consegna_bozza_entry.set_text(dateToString(self.dao.data_consegna_bozza))
+        self.data_presa_in_carico_entry.set_text(dateToString(self.dao.data_presa_in_carico or ""))
 
         self.provenienza_entry.set_text(self.dao.provenienza or '')
         self.materiale_disponibile_si_checkbutton.set_active(self.dao.disp_materiale or False)
@@ -243,7 +281,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             self.materiale_disponibile_no_checkbutton.set_active( not self.dao.disp_materiale)
         else:
             self.materiale_disponibile_no_checkbutton.set_active(False)
-        self.data_presa_in_carico_entry.set_text(dateToString(self.dao.data_presa_in_carico or ''))
+
         self.nomi_sposi_entry.set_text(self.dao.nomi_sposi or '')
         self.lui_e_lei_entry.set_text(self.dao.lui_e_lei or '')
         self.numero_scheda_entry.set_text(str(self.dao.numero or 0))
@@ -263,8 +301,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         self.ricevuta_checkbutton.set_active(not self.dao.fattura)
 
         self.n_documento_entry.set_text(self.dao.ricevuta_associata or '')
-        _data_ricevuta = dateToString(self.dao.data_ricevuta)
-        self.data_ricevuta_entry.set_text(_data_ricevuta)
+        self.data_ricevuta_entry.set_text(dateToString(self.dao.data_ricevuta))
         self.referente_entry.set_text(self.dao.referente or '')
         self.presso_entry.set_text(self.dao.presso or '')
         self.via_piazza_entry.set_text(self.dao.via_piazza or '')
@@ -290,33 +327,9 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             findComboboxRowFromId(self.colore_stampa_combobox, self.dao.id_colore_stampa)
         if self.dao.id_carattere_stampa is not None:
             findComboboxRowFromId(self.carattere_stampa_combobox, self.dao.id_carattere_stampa)
-
         if self.dao.id_magazzino is not None:
             findComboboxRowFromId(self.magazzino_combobox, self.dao.id_magazzino)
 
-        self._articoliTreeviewModel.clear()
-        #if not self.righeTEMP:
-            #self.righeTEMP = self.dao.righe
-
-        #for row in self.dao.righe:
-        for row in self.righeTEMP:
-            articoloRiga = Articolo().getRecord(id=row.id_articolo)
-            unitaBaseRiga = UnitaBase().getRecord(id=articoloRiga.id_unita_base)
-            self.setScontiRiga(row)
-            riga = getPrezzoNetto(row)
-            self._parzialeLordo += Decimal(str(row.valore_unitario_lordo))*row.quantita
-            self._parzialeNetto += row.valore_unitario_netto*row.quantita
-            #findComboboxRowFromId(self.listino_combobox, row.id_listino)
-            self._articoliTreeviewModel.append([row,
-                                                row.id,
-                                                articoloRiga.codice,
-                                                row.descrizione,
-                                                unitaBaseRiga.denominazione_breve,
-                                                row.quantita,
-                                                row.valore_unitario_lordo,
-                                                row.valore_unitario_netto,
-                                                row.totaleRiga])
-        #self._articoliTreeviewModel.set_model(self._articoliTreeviewModel)
         self.associazione_articoli_comboboxentry.set_active(-1)
         self.sconti_scheda_widget.setValues(self.dao.sconti, self.dao.applicazione_sconti)
         self.id_cliente_customcombobox.setId(self.dao.id_cliente)
@@ -326,18 +339,18 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
 
         return True
 
-    def setRigaTreeview(self, idListino, idArticolo):
-        model = self._articoliTreeviewModel
-        articolo = Articolo().getRecord(id=idArticolo)
+    def setRigaTreeview(self,modelRow):
+        #model = self._articoliTreeviewModel
+        articolo = Articolo().getRecord(id=modelRow[0].id_articolo)
         try:
-            listino = ListinoArticolo().select(idListino=idListino,
-                                                idArticolo=idArticolo,
+            listino = ListinoArticolo().select(idListino=modelRow[0].id_listino,
+                                                idArticolo=modelRow[0].id_articolo,
                                                 listinoAttuale=True,
                                                 batchSize=None)[0]
         except:
             msg = 'Nessun listino associato all\'articolo %s' % articolo.denominazione[:10]
             obligatoryField(None, self.listino_combobox, msg)
-        lettura_articolo = leggiArticolo(idArticolo)
+        lettura_articolo = leggiArticolo(modelRow[0].id_articolo)
 
         daoRiga = RigaSchedaOrdinazione()
         daoRiga.id_scheda = self.dao.id
@@ -345,17 +358,17 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         daoRiga.id_magazzino = self.dao.id_magazzino
         daoRiga.descrizione = articolo.denominazione
         daoRiga.codiceArticoloFornitore = None
-        daoRiga.id_listino = idListino
+        daoRiga.id_listino = modelRow[0].id_listino
         daoRiga.percentuale_iva = lettura_articolo['percentualeAliquotaIva']
         self.setScontiRiga(daoRiga)
-        daoRiga.quantita = 0
+        daoRiga.quantita = modelRow[5] or 0
         daoRiga.id_multiplo = None
         daoRiga.moltiplicatore = None
         daoRiga.valore_unitario_lordo = listino.prezzo_dettaglio
         daoRiga = getPrezzoNetto(daoRiga)
         self.righeTEMP.append(daoRiga)
         #self.dao.righe.append(daoRiga)
-        print "quando cazzo vi svuotate voi", self.dao.righe, self.righeTEMP
+
 
     def setScontiRiga(self, daoRiga, tipo=None):
         scontiRiga = []
@@ -496,97 +509,13 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         self.righeTEMP = []
         model = self.articoli_treeview.get_model()
         for m in model:
-            self.setRigaTreeview(m[0].id_listino, m[0].id_articolo)
+            self.setRigaTreeview(m)
         self.dao.numero = rif_num_scheda
         self._numeroScheda = rif_num_scheda
         self._dataScheda = dateToString(self.dao.data_presa_in_carico)
         self.dao.righe = self.righeTEMP
         self.dao.persist()
         self._refresh()
-
-
-    def on_listino_combobox_changed(self, combobox):
-        if self._loading:
-            return
-
-        self._id_listino = findIdFromCombobox(combobox)
-        self.daoListino = Listino().select(id=self._id_listino)[0]
-        for riga in self.dao.righe:
-            riga.id_listino = self._id_listino
-        self._refresh()
-
-    def on_magazzino_combobox_changed(self, combobox):
-        if self._loading:
-            return
-
-        self.dao.id_magazzino = findIdFromCombobox(combobox)
-
-        self._refresh()
-
-    def on_colore_stampa_combobox_changed(self, combobox):
-        if self._loading:
-            return
-        self.dao.id_colore_stampa = findIdFromCombobox(self.colore_stampa_combobox)
-        self.daoColoreStampa = ColoreStampa().getRecord(id=self.dao.id_colore_stampa)
-        self._refresh()
-
-    def on_carattere_stampa_combobox_changed(self, combobox):
-        if self._loading:
-            return
-        self.dao.id_carattere_stampa = findIdFromCombobox(self.carattere_stampa_combobox)
-        self.daoCarattereStampa = CarattereStampa().getRecord(id=self.dao.id_carattere_stampa)
-        self._refresh()
-
-    def on_ricevuta_checkbutton_toggled(self, checkbutton):
-        if self._loading:
-            return
-        #se a true allora fattura_checkbutton a false e viceversa
-        status = checkbutton.get_active()
-        self.dao.fattura = not status
-        self._refresh()
-
-
-    def on_fattura_checkbutton_toggled(self, checkbutton):
-        if self._loading:
-            return
-        status = checkbutton.get_active()
-        self.dao.fattura = status
-        self._refresh()
-
-    def on_bomba_si_checkbutton_toggled(self, checkbutton):
-        if self._loading:
-            return
-        status = checkbutton.get_active()
-        self.dao.bomba_in_cliche = status
-        self._refresh()
-
-    def on_bomba_no_checkbutton_toggled(self, checkbutton):
-        if self._loading:
-            return
-        status = checkbutton.get_active()
-        self.dao.bomba_in_cliche = not status
-        self._refresh()
-
-    def on_saldato_checkbutton_toggled(self, checkbutton):
-        if self._loading:
-            return
-        status = checkbutton.get_active()
-        self.dao.documento_saldato = status
-
-    def on_materiale_disponibile_si_checkbutton_toggled(self, checkbutton):
-        if self._loading:
-            return
-        status = checkbutton.get_active()
-        self.dao.disp_materiale = status
-        self._refresh()
-
-    def on_materiale_disponibile_no_checkbutton_toggled(self, checkbutton):
-        if self._loading:
-            return
-        status = checkbutton.get_active()
-        self.dao.disp_materiale = not status
-        self._refresh()
-
 
     def on_associazione_articoli_comboboxentry_changed(self, combobox):
         if self._loading:
@@ -605,11 +534,11 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             row = model[selected]
             if row[0] is not None:
             #this call will return a list of "AssociazioneArticoli" (In the future: "Distinta Base") Dao objects
-                self.setRigaTreeview(self._id_listino,row[1] )
+                self.setRigaTreeview(row)
                 articoli = AssociazioneArticolo().select(idPadre= row[1])
                 for art in articoli:
                     if self._id_listino is not None:
-                        self.setRigaTreeview(self._id_listino, art.ARTIFIGLIO.id)
+                        self.setRigaTreeview(row)
                 self._refresh()
             else:
                 msg="Nessuna Associazione di articoli e' stata ancora inserita"
@@ -621,11 +550,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
                 if self.associazione_articoli_comboboxentry.get_property("can-focus"):
                     self.associazione_articoli_comboboxentry.grab_focus()
         return
-
-
-
-
-
 
     def on_rimuovi_articolo_button_clicked(self, button):
         selection = self.articoli_treeview.get_selection()
@@ -642,6 +566,15 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         """ Gestisce la pressione del tab su una cella """
         if event.keyval == 65289:
             self._tabPressed = True
+
+    def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
+        """ Function ti set the value quantita edit in the cell """
+        model = treeview.get_model()
+        value=value.replace(",",".")
+        value = mN(value)
+        model[path][5] = value
+        model[path][0].quantita = value
+        self._refresh()
 
     def on_column_edited(self, cell, path, value, treeview, editNext=True):
         """ Gestisce l'immagazzinamento dei valori nelle celle """
@@ -726,8 +659,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         anagWindow.set_transient_for(self.dialogTopLevel)
         anag.show_all()
 
-
-
     def mostraArticolo(self, id):
         if self.daoListino:
             self.setRigaTreeview(self.daoListino.id, id)
@@ -754,13 +685,95 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         """
         totaleImponibile = calcolaPrezzoIva(self._parzialeNetto, (-1*20))
         totaleImposta = self._parzialeNetto* Decimal( str(0.20))
-        totaleNonScontato = self._parzialeLordo.quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
+        totaleNonScontato = self._parzialeLordo
 
-        totaleScontato = self._parzialeNetto.quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
+        totaleScontato = self._parzialeNetto
 
         self.tot_lordo_entry.set_text(str(totaleNonScontato or 0))
         self.tot_scontato_entry.set_text(str(totaleScontato or 0))
         self.dao.totale_lordo = totaleScontato or 0
+
+
+    def on_listino_combobox_changed(self, combobox):
+        if self._loading:
+            return
+
+        self._id_listino = findIdFromCombobox(combobox)
+        self.daoListino = Listino().select(id=self._id_listino)[0]
+        for riga in self.dao.righe:
+            riga.id_listino = self._id_listino
+        self._refresh()
+
+    def on_magazzino_combobox_changed(self, combobox):
+        if self._loading:
+            return
+
+        self.dao.id_magazzino = findIdFromCombobox(combobox)
+
+        self._refresh()
+
+    def on_colore_stampa_combobox_changed(self, combobox):
+        if self._loading:
+            return
+        self.dao.id_colore_stampa = findIdFromCombobox(self.colore_stampa_combobox)
+        self.daoColoreStampa = ColoreStampa().getRecord(id=self.dao.id_colore_stampa)
+        self._refresh()
+
+    def on_carattere_stampa_combobox_changed(self, combobox):
+        if self._loading:
+            return
+        self.dao.id_carattere_stampa = findIdFromCombobox(self.carattere_stampa_combobox)
+        self.daoCarattereStampa = CarattereStampa().getRecord(id=self.dao.id_carattere_stampa)
+        self._refresh()
+
+    def on_ricevuta_checkbutton_toggled(self, checkbutton):
+        if self._loading:
+            return
+        #se a true allora fattura_checkbutton a false e viceversa
+        status = checkbutton.get_active()
+        self.dao.fattura = not status
+        self._refresh()
+
+    def on_fattura_checkbutton_toggled(self, checkbutton):
+        if self._loading:
+            return
+        status = checkbutton.get_active()
+        self.dao.fattura = status
+        self._refresh()
+
+    def on_bomba_si_checkbutton_toggled(self, checkbutton):
+        if self._loading:
+            return
+        status = checkbutton.get_active()
+        self.dao.bomba_in_cliche = status
+        self._refresh()
+
+    def on_bomba_no_checkbutton_toggled(self, checkbutton):
+        if self._loading:
+            return
+        status = checkbutton.get_active()
+        self.dao.bomba_in_cliche = not status
+        self._refresh()
+
+    def on_saldato_checkbutton_toggled(self, checkbutton):
+        if self._loading:
+            return
+        status = checkbutton.get_active()
+        self.dao.documento_saldato = status
+
+    def on_materiale_disponibile_si_checkbutton_toggled(self, checkbutton):
+        if self._loading:
+            return
+        status = checkbutton.get_active()
+        self.dao.disp_materiale = status
+        self._refresh()
+
+    def on_materiale_disponibile_no_checkbutton_toggled(self, checkbutton):
+        if self._loading:
+            return
+        status = checkbutton.get_active()
+        self.dao.disp_materiale = not status
+        self._refresh()
 
 
 

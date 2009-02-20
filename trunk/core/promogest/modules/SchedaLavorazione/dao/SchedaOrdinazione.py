@@ -56,7 +56,7 @@ class SchedaOrdinazione(Dao):
         self._data_spedizione = None
 
     def _getRigheSchedaOrdinazione(self):
-        #if self.__dbRigheSchedaOrdinazione is None:
+        #if self.__dbRigheSchedaOrdinazione is None and self.id:
         if self.id:
             self.__dbRigheSchedaOrdinazione = RigaSchedaOrdinazione().select(idSchedaOrdinazione=self.id, batchSize=None)
         #if self.__righeSchedaOrdinazione is None:

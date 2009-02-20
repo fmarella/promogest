@@ -1243,21 +1243,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     #def on_prezzo_entry_focus_out_event(self, entry, event):
         #prezzo = mN(self.prezzo_entry.get_text().strip())
         #self._currentRow['prezzo'] = prezzo
