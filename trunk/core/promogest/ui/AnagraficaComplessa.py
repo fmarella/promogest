@@ -368,7 +368,6 @@ class Anagrafica(GladeWidget):
 
         self.setFocus()
 
-
     def on_record_duplicate_menu_activate(self, widget, path=None, column=None):
         dao = self.filter.getSelectedDao()
         self._selectedDao = dao
@@ -980,11 +979,11 @@ class AnagraficaHtml(object):
         #print "FFFFFFFFFFFFFFFF", 
         #if dao is not None and Environment.debugDao ==True:
             #FIXME: add some logging level check here
-        #import pprint
-        #pp = pprint.PrettyPrinter(indent=4)
-        #print ("\n\n=== DAO object dump ===\n\n"
-                #+ pp.pformat(dao.dictionary(complete=True))
-                #+ "\n\n")
+        import pprint
+        pp = pprint.PrettyPrinter(indent=4)
+        print ("\n\n=== DAO object dump ===\n\n"
+                + pp.pformat(dao.dictionary(complete=True))
+                + "\n\n")
 
     def refresh(self):
         """ Aggiorna la vista HTML """

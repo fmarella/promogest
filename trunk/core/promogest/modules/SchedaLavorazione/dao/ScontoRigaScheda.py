@@ -21,7 +21,7 @@ class ScontoRigaScheda(Dao):
             'idRigaScheda':scontorigascheda.c.id_riga_scheda==v,}
         return  dic[k]
 
-scontorigascheda=Table('sconto_riga_scheda',
+scontorigascheda=Table('sconti_righe_schede',
                             params['metadata'],
                             schema = params['schema'],
                             autoload=True)

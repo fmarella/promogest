@@ -20,7 +20,7 @@ class ContattoScheda(Dao):
             dic= {k:contattoscheda.c.id_scheda==v}
         return  dic[k]
 
-contattoscheda=Table('contatto_scheda',params['metadata'],schema = params['schema'],
+contattoscheda=Table('contatti_schede',params['metadata'],schema = params['schema'],
                                                                     autoload=True)
 
 std_mapper = mapper(ContattoScheda, contattoscheda, order_by=contattoscheda.c.id)

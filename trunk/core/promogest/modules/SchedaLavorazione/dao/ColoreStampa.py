@@ -26,9 +26,7 @@ class ColoreStampa(Dao):
         dic= {'id':coloristampa.c.id ==v}
         return  dic[k]
 
-coloristampa=Table('colore_stampa',
-                        params['metadata'],
-                        schema = params['schema'],
-                        autoload=True)
+coloristampa=Table('colori_stampa',params['metadata'],schema = params['schema'],
+                                                                autoload=True)
 
 std_mapper = mapper(ColoreStampa, coloristampa, order_by=coloristampa.c.id)

@@ -20,7 +20,7 @@ if hasattr(conf, 'SchedaLavorazione'):
             #id                      BIGSERIAL   NOT NULL PRIMARY KEY
             #,denominazione          VARCHAR(50) NOT NULL
             #,UNIQUE (id, denominazione));
-        coloriStampaTable = Table('colore_stampa', params['metadata'],
+        coloriStampaTable = Table('colori_stampa', params['metadata'],
                             Column('id',Integer,primary_key=True),
                             Column('denominazione',String(200),nullable=False),
                             UniqueConstraint('id', 'denominazione'),
@@ -31,7 +31,7 @@ if hasattr(conf, 'SchedaLavorazione'):
             #id                      BIGSERIAL   NOT NULL PRIMARY KEY
             #,denominazione          VARCHAR(50) NOT NULL
             #,UNIQUE (id, denominazione));
-        caratteriStampaTable = Table('carattere_stampa', params['metadata'],
+        caratteriStampaTable = Table('caratteri_stampa', params['metadata'],
                             Column('id',Integer,primary_key=True),
                             Column('denominazione',String(200),nullable=False),
                             UniqueConstraint('id', 'denominazione'),
@@ -76,7 +76,7 @@ if hasattr(conf, 'SchedaLavorazione'):
             #ON UPDATE CASCADE ON DELETE RESTRICT,
         #CONSTRAINT schede_ordinazioni_id_key UNIQUE (id, numero));
         clienteTable = Table('cliente', params['metadata'], autoload=True, schema=params['schema'])
-        schedaOrdinazioneTable = Table('scheda_ordinazione', params['metadata'],
+        schedaOrdinazioneTable = Table('schede_ordinazioni', params['metadata'],
                             Column('id',Integer,primary_key=True),
                             Column('numero',Integer,nullable=False),
                             Column('nomi_sposi',String(300),nullable=True),
@@ -95,8 +95,8 @@ if hasattr(conf, 'SchedaLavorazione'):
                             Column('userid_cliente',String(100),nullable=True),
                             Column('passwd_cliente',String(100),nullable=True),
                             Column('lui_e_lei',String(100),nullable=True),
-                            Column('id_colore_stampa',Integer, ForeignKey(params['schema']+'.colore_stampa.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
-                            Column('id_carattere_stampa',Integer, ForeignKey(params['schema']+'.carattere_stampa.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
+                            Column('id_colore_stampa',Integer, ForeignKey(params['schema']+'.colori_stampa.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
+                            Column('id_carattere_stampa',Integer, ForeignKey(params['schema']+'.caratteri_stampa.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
                             Column('id_cliente',Integer, ForeignKey(params['schema']+'.cliente.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
                             Column('id_magazzino',Integer, ForeignKey(params['schema']+'.magazzino.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
                             UniqueConstraint('id', 'numero'),
@@ -115,7 +115,7 @@ if hasattr(conf, 'SchedaLavorazione'):
             #,skype                  VARCHAR(30)         NULL
             #,id_scheda              BIGINT          NOT NULL REFERENCES schede_ordinazioni(id) ON UPDATE CASCADE ON DELETE CASCADE
             #,UNIQUE (id,id_scheda));
-        contattiSchedeTable = Table('contatto_scheda', params['metadata'],
+        contattiSchedeTable = Table('contatti_schede', params['metadata'],
                             Column('id',Integer,primary_key=True),
                             Column('referente',String,nullable=True),
                             Column('prima_email',String(300),nullable=True),
@@ -123,7 +123,7 @@ if hasattr(conf, 'SchedaLavorazione'):
                             Column('telefono',String(300),nullable=True),
                             Column('cellulare',String(300),nullable=True),
                             Column('skype',String(300),nullable=True),
-                            Column('id_scheda',Integer,ForeignKey(params['schema']+'.scheda_ordinazione.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
+                            Column('id_scheda',Integer,ForeignKey(params['schema']+'.schede_ordinazioni.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
                             UniqueConstraint('id', 'id_scheda'),
                             schema=params['schema'])
         contattiSchedeTable.create(checkfirst=True)
@@ -139,7 +139,7 @@ if hasattr(conf, 'SchedaLavorazione'):
             #,ricevuta               date            NULL
             #,id_scheda              BIGINT      NOT NULL REFERENCES schede_ordinazioni(id) ON UPDATE CASCADE ON DELETE CASCADE
             #,UNIQUE (id, id_scheda));
-        datariTable = Table('datario', params['metadata'],
+        datariTable = Table('datari', params['metadata'],
                 Column('id',Integer,primary_key=True),
                 Column('matrimonio',Date,nullable=False),
                 Column('presa_in_carico',Date,nullable=False),
@@ -148,7 +148,7 @@ if hasattr(conf, 'SchedaLavorazione'):
                 Column('spedizione',Date,nullable=True),
                 Column('consegna',Date,nullable=True),
                 Column('ricevuta',Date,nullable=True),
-                Column('id_scheda',Integer,ForeignKey(params['schema']+'.scheda_ordinazione.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
+                Column('id_scheda',Integer,ForeignKey(params['schema']+'.schede_ordinazioni.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
                 UniqueConstraint('id', 'id_scheda'),
                 schema=params['schema'])
         datariTable.create(checkfirst=True)
@@ -166,7 +166,7 @@ if hasattr(conf, 'SchedaLavorazione'):
             #,stato                  VARCHAR(50)         NULL
             #,id_scheda              BIGINT          NOT NULL REFERENCES schede_ordinazioni(id) ON UPDATE CASCADE ON DELETE CASCADE
             #,UNIQUE (id, id_scheda));
-        recapitiSpedizioniTable = Table('recapito_spedizione', params['metadata'],
+        recapitiSpedizioniTable = Table('recapiti_spedizioni', params['metadata'],
                             Column('id',Integer,primary_key=True),
                             Column('referente',String(200),nullable=True),
                             Column('presso',String(200),nullable=True),
@@ -176,7 +176,7 @@ if hasattr(conf, 'SchedaLavorazione'):
                             Column('localita',String(50),nullable=True),
                             Column('provincia',String(50),nullable=True),
                             Column('stato',String(50),nullable=True),
-                            Column('id_scheda',Integer,ForeignKey(params['schema']+'.scheda_ordinazione.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
+                            Column('id_scheda',Integer,ForeignKey(params['schema']+'.schede_ordinazioni.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
                             UniqueConstraint('id', 'id_scheda'),
                             schema=params['schema'])
         recapitiSpedizioniTable.create(checkfirst=True)
@@ -189,13 +189,13 @@ if hasattr(conf, 'SchedaLavorazione'):
             #,note_final             varchar(300)        NULL
             #,id_scheda              BIGINT          NOT NULL REFERENCES schede_ordinazioni(id) ON UPDATE CASCADE ON DELETE CASCADE
             #,UNIQUE (id, id_scheda));
-        noteSchedeTable = Table('nota_scheda', params['metadata'],
+        noteSchedeTable = Table('note_schede', params['metadata'],
                             Column('id',Integer,primary_key=True),
                             Column('note_text',String,nullable=True),
                             Column('note_spedizione',String(300),nullable=True),
                             Column('note_fornitore',String(300),nullable=True),
                             Column('note_final',String(300),nullable=True),
-                            Column('id_scheda',Integer,ForeignKey(params['schema']+'.scheda_ordinazione.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
+                            Column('id_scheda',Integer,ForeignKey(params['schema']+'.schede_ordinazioni.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
                             UniqueConstraint('id', 'id_scheda'),
                             schema=params['schema'])
         noteSchedeTable.create(checkfirst=True)
@@ -204,9 +204,9 @@ if hasattr(conf, 'SchedaLavorazione'):
         #id              bigint       NOT NULL PRIMARY KEY REFERENCES promemoria(id) ON UPDATE CASCADE ON DELETE CASCADE
         #,id_scheda      bigint       NOT NULL REFERENCES schede_ordinazioni(id) ON UPDATE CASCADE ON DELETE CASCADE);
         promemoriaTable = Table('promemoria', params['metadata'], autoload=True, schema=params['schema'])
-        promemoriaSchedeOrdinazioniTable = Table('promemoria_scheda_ordinazione', params['metadata'],
+        promemoriaSchedeOrdinazioniTable = Table('promemoria_schede_ordinazioni', params['metadata'],
                             Column('id',Integer,ForeignKey(params['schema']+'.promemoria.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-                            Column('id_scheda',Integer,ForeignKey(params['schema']+'.scheda_ordinazione.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
+                            Column('id_scheda',Integer,ForeignKey(params['schema']+'.schede_ordinazioni.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
                             schema=params['schema'])
         promemoriaSchedeOrdinazioniTable.create(checkfirst=True)
 
@@ -214,9 +214,9 @@ if hasattr(conf, 'SchedaLavorazione'):
         #id                       bigint          NOT NULL PRIMARY KEY REFERENCES riga ( id ) ON UPDATE CASCADE ON DELETE CASCADE
         #,id_scheda                bigint          NOT NULL REFERENCES schede_ordinazioni ( id ) ON UPDATE CASCADE ON DELETE CASCADE);
         rigaTable = Table('riga', params['metadata'], autoload=True, schema=params['schema'])
-        scontiRigheSchedeTable = Table('riga_scheda_ordinazione', params['metadata'],
+        scontiRigheSchedeTable = Table('righe_schede_ordinazioni', params['metadata'],
                             Column('id',Integer,ForeignKey(params['schema']+'.riga.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-                            Column('id_scheda',Integer,ForeignKey(params['schema']+'.scheda_ordinazione.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
+                            Column('id_scheda',Integer,ForeignKey(params['schema']+'.schede_ordinazioni.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
                             schema=params['schema'])
         scontiRigheSchedeTable.create(checkfirst=True)
 
@@ -224,9 +224,9 @@ if hasattr(conf, 'SchedaLavorazione'):
         #id          bigint          NOT NULL PRIMARY KEY REFERENCES sconto ( id ) ON UPDATE CASCADE ON DELETE CASCADE
         #,id_riga_scheda   bigint          NOT NULL REFERENCES righe_schede_ordinazioni ( id ) ON UPDATE CASCADE ON DELETE CASCADE);
         scontoTable = Table('sconto', params['metadata'], autoload=True, schema=params['schema'])
-        scontiRigheSchedeTable = Table('sconto_riga_scheda', params['metadata'],
+        scontiRigheSchedeTable = Table('sconti_righe_schede', params['metadata'],
                             Column('id',Integer,ForeignKey(params['schema']+'.sconto.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-                            Column('id_riga_scheda',Integer,ForeignKey(params['schema']+'.riga_scheda_ordinazione.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
+                            Column('id_riga_scheda',Integer,ForeignKey(params['schema']+'.righe_schede_ordinazioni.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
                             schema=params['schema'])
         scontiRigheSchedeTable.create(checkfirst=True)
 
@@ -234,9 +234,9 @@ if hasattr(conf, 'SchedaLavorazione'):
         #CREATE TABLE sconti_schede_ordinazioni (
         #id     bigint          NOT NULL PRIMARY KEY REFERENCES sconto ( id ) ON UPDATE CASCADE ON DELETE CASCADE
         #,id_scheda_ordinazione   bigint          NOT NULL REFERENCES schede_ordinazioni ( id ) ON UPDATE CASCADE ON DELETE CASCADE);
-        scontiSchedeOrdinazioniTable = Table('sconto_scheda_ordinazione', params['metadata'],
+        scontiSchedeOrdinazioniTable = Table('sconti_schede_ordinazioni', params['metadata'],
                             Column('id',Integer,ForeignKey(params['schema']+'.sconto.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-                            Column('id_scheda_ordinazione',Integer,ForeignKey(params['schema']+'.scheda_ordinazione.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
+                            Column('id_scheda_ordinazione',Integer,ForeignKey(params['schema']+'.schede_ordinazioni.id',onupdate="CASCADE",ondelete="CASCADE"),nullable=False),
                             schema=params['schema'])
         scontiSchedeOrdinazioniTable.create(checkfirst=True)
 

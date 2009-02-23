@@ -124,7 +124,7 @@ class RigaSchedaOrdinazione(Dao):
             dic = {k:rigaschedaordinazione.c.id_scheda == v}
         return  dic[k]
 
-rigaschedaordinazione=Table('riga_scheda_ordinazione',
+rigaschedaordinazione=Table('righe_schede_ordinazioni',
                                     params['metadata'],
                                     schema = params['schema'],
                                     autoload=True)
@@ -135,8 +135,6 @@ j = join(rigaschedaordinazione, riga)
 
 std_mapper = mapper(RigaSchedaOrdinazione, j, properties={
         'id':[rigaschedaordinazione.c.id, riga.c.id],
-        #"schedaOrd":relation(SchedaOrdinazione,primaryjoin=
-                #rigaschedaordinazione.c.id_riga_scheda==SchedaOrdinazione.id, backref="riga_scheda_ord")
             },
                     order_by=rigaschedaordinazione.c.id)
 

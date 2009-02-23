@@ -20,7 +20,7 @@ class NotaScheda(Dao):
             dic= {k:notascheda.c.id_scheda==v}
         return  dic[k]
 
-notascheda=Table('nota_scheda', params['metadata'], schema = params['schema'],
+notascheda=Table('note_schede', params['metadata'], schema = params['schema'],
                                                                     autoload=True)
 
 std_mapper = mapper(NotaScheda, notascheda, order_by=notascheda.c.id)

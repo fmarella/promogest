@@ -23,6 +23,7 @@ from promogest.modules.SchedaLavorazione.dao.ScontoSchedaOrdinazione import Scon
 from promogest.modules.SchedaLavorazione.dao.PromemoriaSchedaOrdinazione import PromemoriaSchedaOrdinazione
 import promogest.modules.SchedaLavorazione.lib.PopReader
 from promogest.dao.ListinoArticolo import ListinoArticolo
+from promogest.dao.Articolo import Articolo
 
 def fillComboboxColoreStampa(combobox, filter=False):
     """
@@ -79,29 +80,29 @@ def fillComboboxAssociazioneArticoli(combobox, search_string=None):
     Riempie la combobox di selezione delle associazioni di articoli.
     Se la lista risultante ha un solo elemento, questo viene automaticamente selezionato.
     """
-    model = gtk.ListStore(object,str,str,str)
+    model = gtk.ListStore(object,str,str)
     model.clear()
-    liss = AssociazioneArticolo().select(codice=search_string,
-                                        offset=None,
-                                        batchSize=None)
+    liss = Articolo().select(node =True,
+                            codice=search_string,
+                            offset=None,
+                            batchSize=None)
                                        
     # questa combobox mi sa che non puo' andare a finire in un filter widget
     emptyRow = ''
-    model.append((None, None, None, emptyRow))
+    model.append((None, None, emptyRow))
     for l in liss:
-        model.append((l, l.id_padre,l.codice, l.denominazione))
-
+        model.append([l,l.codice, l.denominazione])
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)
-    combobox.add_attribute(renderer, 'text', 2)
+    combobox.add_attribute(renderer, 'text', 1)
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)
-    combobox.add_attribute(renderer, 'text', 3)
+    combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
     if len(liss) == 1 and search_string is not None:
         combobox.set_active(1)
-    return
+    return True
 
 def fetch_date(string):
     """

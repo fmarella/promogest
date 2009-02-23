@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
     Promogest
@@ -24,7 +24,6 @@ class ScontiWidget(CustomLabel):
 
     def on_button_clicked(self, widget, button, windowTitle):
         #richiama la gestione degli sconti
-
         def on_richiamo_destroy(anagWindow):
             self.button.set_active(False)
 

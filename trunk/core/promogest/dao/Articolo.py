@@ -339,6 +339,16 @@ class Articolo(Dao):
                                                 batchSize=None)
             return arts
 
+        @property
+        def isNode(self):
+            art = AssociazioneArticolo().select(idPadre=self.id,
+                                                idFiglio = self.id,
+                                                offset=None,
+                                                batchSize=None)
+            if art:return True
+            else: return False
+            
+
     def persist(self):
         params["session"].add(self)
         self.saveToAppLog(self)
@@ -466,9 +476,9 @@ class Articolo(Dao):
             elif k == 'idGenere':
                 dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_genere ==v)}
         elif "DistintaBase" in Environment.modulesList:
-            print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
-            if k =="nodo":
-                dic = {}
+            if k =="node":
+                dic = {k: and_(AssociazioneArticolo.id_padre==articolo.c.id,
+                        AssociazioneArticolo.id_figlio ==articolo.c.id)}
         return  dic[k]
 
 fornitura=Table('fornitura',params['metadata'],schema = params['schema'],autoload=True)

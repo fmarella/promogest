@@ -22,7 +22,6 @@ class Datario(Dao):
             dic= {k:datario.c.id_scheda==v}
         return  dic[k]
 
-datario=Table('datario',params['metadata'],schema = params['schema'],autoload=True)
+datario=Table('datari',params['metadata'],schema = params['schema'],autoload=True)
 
-std_mapper = mapper(Datario, datario, properties={
-                        }, order_by = datario.c.id)
+std_mapper = mapper(Datario, datario, order_by = datario.c.id)

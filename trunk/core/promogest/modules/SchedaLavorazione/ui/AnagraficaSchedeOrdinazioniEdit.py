@@ -50,6 +50,8 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         self.window =  self.anagrafica_schede_ordinazioni_detail_vbox
         self._windowTitle ='Dettagli scheda lavorazione'
         self._anagrafica = anagrafica
+        #import pdb
+        #pdb.set_trace()
         self._widgetFirstFocus = self.nomi_sposi_entry
         self.rimuovi_articolo_button.set_sensitive(False)
         self._loading = False
@@ -65,6 +67,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         self._parzialeLordo = Decimal(str(0))
         self._parzialeNetto = Decimal(str(0))
         self.righeTEMP = []
+        self.scontiSuTotale = []
 
     def draw(self):
         """
@@ -187,7 +190,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
 
     def setDao(self, dao):
         self.righeTEMP = []
-        print "DAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", dao
+
         if not dao:
             self.dao = SchedaOrdinazione()
             self.dao.data_presa_in_carico = datetime.datetime.today()
@@ -213,11 +216,13 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         # controlliamo se è il dao è fresco o no 
         if not firstLoad:
             self._getStrings()
-            self.righeTEMP = []
+            #self.righeTEMP = []
+            #self.scontiSuTotale = []
             #self._articoliTreeviewModel.clear()
-            model = self.articoli_treeview.get_model()
-            for m in model:
-                self.setRigaTreeview(m)
+            #model = self.articoli_treeview.get_model()
+            #for m in model:
+                #print "EMMMEEEEEEEEEEEEEEEEEEEEEEEE", m
+                #self.setRigaTreeview(m)
         else:
             if self.dao.colore_stampa:
                 self.daoColoreStampa = self.dao.colore_stampa
@@ -237,15 +242,17 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
                 self.setRigaTreeview(m)
         #pulisco tutto
         self._clear()
+        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOKDOPOCLEAR"
         
-        #if  self._id_listino is None and self.righeTEMP:
-            #self._id_listino = self.righeTEMP[0].id_listino
-            #self.daoListino = Listino().select(id=self._id_listino)
+        if  self._id_listino is None and self.righeTEMP:
+            self._id_listino = self.righeTEMP[0].id_listino
+            self.daoListino = Listino().select(id=self._id_listino)
 
         #mi occupo delle righe articolo nella treeview pulendo
         self._articoliTreeviewModel.clear()
         #ciclo per riempire la treeview
         for row in self.righeTEMP:
+            print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOPRIBO FOR", self.righeTEMP
             articoloRiga = Articolo().getRecord(id=row.id_articolo)
             unitaBaseRiga = UnitaBase().getRecord(id=articoloRiga.id_unita_base)
 
@@ -267,14 +274,13 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
 
 
 
-        # questi dati sono a posto, 
+        # questi dati sono a posto,
         self.data_matrimonio_entry.set_text(dateToString(self.dao.data_matrimonio))
         self.data_ordine_al_fornitore_entry.set_text(dateToString(self.dao.data_ordine_al_fornitore))
         self.data_consegna_entry.set_text(dateToString(self.dao.data_consegna))
         self.data_spedizione_entry.set_text(dateToString(self.dao.data_spedizione))
         self.data_consegna_bozza_entry.set_text(dateToString(self.dao.data_consegna_bozza))
         self.data_presa_in_carico_entry.set_text(dateToString(self.dao.data_presa_in_carico or ""))
-
         self.provenienza_entry.set_text(self.dao.provenienza or '')
         self.materiale_disponibile_si_checkbutton.set_active(self.dao.disp_materiale or False)
         if self.dao.disp_materiale is not None:
@@ -329,45 +335,56 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             findComboboxRowFromId(self.carattere_stampa_combobox, self.dao.id_carattere_stampa)
         if self.dao.id_magazzino is not None:
             findComboboxRowFromId(self.magazzino_combobox, self.dao.id_magazzino)
-
+        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOVERSO FINE", self.dao.sconti
         self.associazione_articoli_comboboxentry.set_active(-1)
         self.sconti_scheda_widget.setValues(self.dao.sconti, self.dao.applicazione_sconti)
         self.id_cliente_customcombobox.setId(self.dao.id_cliente)
         self.calcolaTotaleScheda()
         findComboboxRowFromId(self.listino_combobox, self._id_listino)
         self._loading=False
-
         return True
 
-    def setRigaTreeview(self,modelRow):
+    def setRigaTreeview(self,modelRow=None,rowArticolo=None ):
         #model = self._articoliTreeviewModel
-        articolo = Articolo().getRecord(id=modelRow[0].id_articolo)
+        #articolo = Articolo().getRecord(id=modelRow[0].id_articolo)
+        #print "GGGGGGGGGGGGGGGGGGGGGGGGGG", modelRow[0].id_listino,modelRow[0].id_articolo
         try:
-            listino = ListinoArticolo().select(idListino=modelRow[0].id_listino,
-                                                idArticolo=modelRow[0].id_articolo,
-                                                listinoAttuale=True,
-                                                batchSize=None)[0]
+            print "GGGGGGGGGGGGGGGGGGGGGGGGGG", rowArticolo[0], self._id_listino
+            listino = ListinoArticolo().select(idListino=self._id_listino,
+                                            idArticolo=rowArticolo[0].id,
+                                            listinoAttuale=True,
+                                            batchSize=None)[0]
         except:
-            msg = 'Nessun listino associato all\'articolo %s' % articolo.denominazione[:10]
+            msg = 'Nessun listino associato all\'articolo %s' % rowArticolo[2][:10]
             obligatoryField(None, self.listino_combobox, msg)
-        lettura_articolo = leggiArticolo(modelRow[0].id_articolo)
+        lettura_articolo = leggiArticolo(rowArticolo[0].id)
+        print "MODELLLLLLLLL ROWWWWWWWW", modelRow
+        for a in modelRow:
+            print "AAAAAAAAAAAAAAAAAAAAAAA", a
+
+
+        if not modelRow:
+            quantita = 0
+        else:
+            modelRow[5]
 
         daoRiga = RigaSchedaOrdinazione()
         daoRiga.id_scheda = self.dao.id
-        daoRiga.id_articolo = articolo.id
+        daoRiga.id_articolo = rowArticolo[0].id
         daoRiga.id_magazzino = self.dao.id_magazzino
-        daoRiga.descrizione = articolo.denominazione
+        daoRiga.descrizione = rowArticolo[0].denominazione
         daoRiga.codiceArticoloFornitore = None
-        daoRiga.id_listino = modelRow[0].id_listino
+        daoRiga.id_listino = self._id_listino
         daoRiga.percentuale_iva = lettura_articolo['percentualeAliquotaIva']
         self.setScontiRiga(daoRiga)
-        daoRiga.quantita = modelRow[5] or 0
+        daoRiga.quantita = quantita
         daoRiga.id_multiplo = None
         daoRiga.moltiplicatore = None
         daoRiga.valore_unitario_lordo = listino.prezzo_dettaglio
         daoRiga = getPrezzoNetto(daoRiga)
         self.righeTEMP.append(daoRiga)
         #self.dao.righe.append(daoRiga)
+        print "RIGHEEEEEEEEEEEEEEEEEEEEEEEE", self.righeTEMP
 
 
     def setScontiRiga(self, daoRiga, tipo=None):
@@ -507,6 +524,21 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
                     allarmi.append(allarme)
         self.dao.promemoria = allarmi
         self.righeTEMP = []
+
+        scontiSuTotale = []#{}
+
+        res = self.sconti_scheda_widget.getSconti()
+        if res is not None:
+            for k in range(0, len(res)):
+                daoSconto = ScontoSchedaOrdinazione()
+                daoSconto.valore = mN(res[k]["valore"])
+                daoSconto.tipo_sconto = res[k]["tipo"]
+                #scontiSuTotale[self.dao]=daoSconto
+                scontiSuTotale.append(daoSconto)
+
+        self.dao.scontiSuTotale = scontiSuTotale
+
+
         model = self.articoli_treeview.get_model()
         for m in model:
             self.setRigaTreeview(m)
@@ -514,6 +546,8 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         self._numeroScheda = rif_num_scheda
         self._dataScheda = dateToString(self.dao.data_presa_in_carico)
         self.dao.righe = self.righeTEMP
+        self.dao.sconti = self.scontiSuTotale
+        #self.dao.scontiSuTotale = self.scontiSuTotale
         self.dao.persist()
         self._refresh()
 
@@ -532,13 +566,20 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             fillComboboxAssociazioneArticoli(self.associazione_articoli_comboboxentry, search_string)
         else:
             row = model[selected]
+            for r in row:
+                print "ERREEEEEEEEEEEEEEEEEE", r
             if row[0] is not None:
             #this call will return a list of "AssociazioneArticoli" (In the future: "Distinta Base") Dao objects
-                self.setRigaTreeview(row)
-                articoli = AssociazioneArticolo().select(idPadre= row[1])
+                self.setRigaTreeview(modelRow=[],rowArticolo=row)
+                #articoli = AssociazioneArticolo().select(idPadre= row[0].id)
+                articoli = row[0].articoliAss
                 for art in articoli:
                     if self._id_listino is not None:
-                        self.setRigaTreeview(row)
+                        a = Articolo().getRecord(id=art.id_figlio)
+                        row[0] = a
+                        row[1] = a.codice
+                        row[2] = a.denominazione
+                        self.setRigaTreeview(modelRow=[],rowArticolo=row)
                 self._refresh()
             else:
                 msg="Nessuna Associazione di articoli e' stata ancora inserita"
@@ -618,8 +659,8 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
                 daoSconto.valore = float(res[k]["valore"])
                 daoSconto.tipo_sconto = res[k]["tipo"]
                 scontiSuTotale.append(daoSconto)
-
-        self.dao.scontiSuTotale = scontiSuTotale
+        self.dao.sconti = scontiSuTotale
+        self.scontiSuTotale = scontiSuTotale
 
         self._refresh()
 
@@ -661,6 +702,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
 
     def mostraArticolo(self, id):
         if self.daoListino:
+            print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", id
             self.setRigaTreeview(self.daoListino.id, id)
         self._refresh()
 
@@ -697,10 +739,9 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
     def on_listino_combobox_changed(self, combobox):
         if self._loading:
             return
-
         self._id_listino = findIdFromCombobox(combobox)
         self.daoListino = Listino().select(id=self._id_listino)[0]
-        for riga in self.dao.righe:
+        for riga in self.righeTEMP:
             riga.id_listino = self._id_listino
         self._refresh()
 

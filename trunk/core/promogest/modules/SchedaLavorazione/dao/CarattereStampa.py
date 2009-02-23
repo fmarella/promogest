@@ -19,7 +19,7 @@ class CarattereStampa(Dao):
         dic= {'id':caratteristampa.c.id ==v}
         return  dic[k]
 
-caratteristampa=Table('carattere_stampa', params['metadata'],schema = params['schema'],
+caratteristampa=Table('caratteri_stampa', params['metadata'],schema = params['schema'],
                                                                         autoload=True)
 
 std_mapper = mapper(CarattereStampa, caratteristampa, properties={},

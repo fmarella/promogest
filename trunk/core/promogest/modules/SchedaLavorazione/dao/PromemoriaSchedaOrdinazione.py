@@ -23,7 +23,7 @@ class PromemoriaSchedaOrdinazione(Dao):
             dic={k:promemoriaschedaordinazione.c.id_scheda ==v}
         return  dic[k]
 
-promemoriaschedaordinazione=Table('promemoria_scheda_ordinazione',
+promemoriaschedaordinazione=Table('promemoria_schede_ordinazioni',
                                     params['metadata'],
                                     schema = params['schema'],
                                     autoload=True)

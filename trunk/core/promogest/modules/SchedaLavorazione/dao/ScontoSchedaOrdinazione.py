@@ -26,12 +26,10 @@ class ScontoSchedaOrdinazione(Dao):
 
 sconto=Table('sconto', params['metadata'], schema = params['schema'], autoload=True)
 
-scontoschedaordinazione=Table('sconto_scheda_ordinazione',params['metadata'],schema = params['schema'],
+scontoschedaordinazione=Table('sconti_schede_ordinazioni',params['metadata'],schema = params['schema'],
                                         autoload=True)
 j = join(sconto, scontoschedaordinazione)
 
 std_mapper = mapper(ScontoSchedaOrdinazione,j, properties={
             'id':[sconto.c.id, scontoschedaordinazione.c.id],
-            #"schedaOrd":relation(SchedaOrdinazione,primaryjoin=
-                #scontoschedaordinazione.c.id_scheda_ordinazione==SchedaOrdinazione.id, backref="sconto_scheda_ord")
             }, order_by=scontoschedaordinazione.c.id)

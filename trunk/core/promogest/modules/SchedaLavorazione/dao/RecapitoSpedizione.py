@@ -20,7 +20,7 @@ class RecapitoSpedizione(Dao):
             dic= {k:recapitospedizione.c.id_scheda==v}
         return  dic[k]
 
-recapitospedizione=Table('recapito_spedizione',
+recapitospedizione=Table('recapiti_spedizioni',
                             params['metadata'],
                             schema = params['schema'],
                             autoload=True)

@@ -59,7 +59,6 @@ class CustomLabel(gtk.HBox):
 
 
     def setCustomLabel(self, id=None, labelText='', buttonText='', container=None):
-        print "FFDSGDGDFGDFGDVDFVFVRVVSFDVSDFVDGFSGFDGTGSGGGSGTG", labelText, buttonText
         self._id = id
         self.label.set_text(self._labelText + labelText)
         self.buttonLabel.set_text(self._buttonText + buttonText)
@@ -67,12 +66,10 @@ class CustomLabel(gtk.HBox):
 
 
     def getContainer(self):
-        print "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
         return self._container
 
 
     def setContainer(self, container=None):
-        print "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
         self._container = container
 
 

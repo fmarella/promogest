@@ -27,6 +27,16 @@ class AssociazioneArticolo(Dao):
         else: return None
     denominazione = property(_denominazionePadre)
 
+    def _idArticoloPadre(self):
+        if self.ARTIFIGLIO: return self.ARTIFIGLIO.id
+        else: return None
+    id_articolo = property(_idArticoloPadre)
+
+    def _idListinoPadre(self):
+        if self.ARTIFIGLIO: return self.ARTIFIGLIO.id_listino
+        else: return None
+    id_listino = property(_idListinoPadre)
+
     def filter_values(self,k,v):
         if k =='idFiglio':
             dic= {k:associazionearticolo.c.id_figlio ==v}
@@ -34,6 +44,8 @@ class AssociazioneArticolo(Dao):
             dic = {k:associazionearticolo.c.id_padre ==v}
         elif k=="codice":
             dic = {k:and_(articolo.c.id == associazionearticolo.c.id_padre,articolo.c.codice.ilike("%"+v+"%"))}
+        elif k =="node":
+            dic={k:and_(associazionearticolo.c.id_padre == associazionearticolo.c.id_figlio)}
         return  dic[k]
 
 articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)

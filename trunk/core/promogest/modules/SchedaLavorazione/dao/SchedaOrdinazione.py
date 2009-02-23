@@ -71,10 +71,13 @@ class SchedaOrdinazione(Dao):
     righe = property(_getRigheSchedaOrdinazione, _setRigheSchedaOrdinazione)
 
     def _getScontiSchedaOrdinazione(self):
-        if self.__dbScontiSchedaOrdinazione is None:
-            self.__dbScontiSchedaOrdinazione = ScontoSchedaOrdinazione().select(id=self.id,batchSize=None)
-        if self.__scontiSchedaOrdinazione is None:
-            self.__scontiSchedaOrdinazione = self.__dbScontiSchedaOrdinazione
+        #if self.__dbScontiSchedaOrdinazione is None:
+        if self.id:
+            self.__dbScontiSchedaOrdinazione = ScontoSchedaOrdinazione().select(idSchedaOrdinazione=self.id,batchSize=None)
+        #if self.__scontiSchedaOrdinazione is None:
+            self.__scontiSchedaOrdinazione = self.__dbScontiSchedaOrdinazione[:]
+        else:
+            self.__scontiSchedaOrdinazione = []
         return self.__scontiSchedaOrdinazione
 
     def _setScontiSchedaOrdinazione(self, value):
@@ -448,8 +451,8 @@ class SchedaOrdinazione(Dao):
             riga.persist()
 
         #salvataggio degli sconti associati alla scheda
-        if self.__scontiSchedaOrdinazione is not None:
-            for scont in self.__scontiSchedaOrdinazione:
+        if self.scontiSuTotale is not None:
+            for scont in self.scontiSuTotale:
                 #annullamento id dello sconto
                 #scont._resetId()
                 #associazione allo sconto della testata
@@ -510,15 +513,7 @@ class SchedaOrdinazione(Dao):
             dic = {k:and_(SchedaOrdinazione.id==schedaordinazione.c.id,SchedaOrdinazione.documento_saldato ==v)}
         return  dic[k]
 
-                                                #ricevutaAssociata=numeroRicevuta,
-                                                #documentoSaldato=documentoSaldato,
-
-
-
-
-
-
-schedaordinazione=Table('scheda_ordinazione',
+schedaordinazione=Table('schede_ordinazioni',
                                     params['metadata'],
                                     schema = params['schema'],
                                     autoload=True)

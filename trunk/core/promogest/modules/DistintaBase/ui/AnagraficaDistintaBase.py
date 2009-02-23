@@ -1,26 +1,11 @@
 # -*- coding: utf-8 -*-
 
-# -*- coding: iso-8859-15 -*-
-
 # Promogest
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
 # Author: Francesco Meloni  <francesco@promotux.it>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
 
 import gtk
 import gobject
@@ -174,7 +159,8 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
             cancellato = False
 
         def filterCountClosure():
-            return Articolo().count(denominazione=denominazione,
+            return Articolo().count(node=True,
+                                    denominazione=denominazione,
                                     codice=codice,
                                     codiceABarre=codiceABarre,
                                     codiceArticoloFornitore=codiceArticoloFornitore,
@@ -193,7 +179,7 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return Articolo().select(
-                                    #nodo=True,
+                                    node=True,
                                     join=self.join,
                                     orderBy=self.orderBy,
                                     denominazione=denominazione,
@@ -211,13 +197,13 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         self._filterClosure = filterClosure
 
         arts = self.runFilter()
-
         self._treeViewModel.clear()
 
         for a in arts:
             col = None
             if a.cancellato:
                 col = 'red'
+            #if a.isNode:
             self._treeViewModel.append((a,
                                         col,
                                         (a.codice or ''),
@@ -329,7 +315,6 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
 
         for articolo in self.articoliAssociatiList:
             col = None
-            print "UUUUUUUUGUGUGGUGUG", articolo
             if articolo.ARTIFIGLIO:
                 if articolo.ARTIFIGLIO.cancellato:
                     col = 'red'
@@ -367,7 +352,7 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
         salva tutte le distinte base nel database
         """
         for articolo in self.articoliAssociatiList:
-            articolo.persist(Environment.connection)
+            articolo.persist()
     
     def on_articolo_principale_button_clicked(self, button):
         self.ricercaArticolo(isNode=True)

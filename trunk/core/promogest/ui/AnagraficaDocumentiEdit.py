@@ -1134,15 +1134,14 @@ del documento.
         scontiSuTotale = []#{}
 
         res = self.sconti_testata_widget.getSconti()
-        if res is not None:
-            for k in range(0, len(res)):
+        if res:
+            for scrow in res:
                 daoSconto = ScontoTestataDocumento()
-                daoSconto.valore = mN(res[k]["valore"])
-                daoSconto.tipo_sconto = res[k]["tipo"]
-                #scontiSuTotale[self.dao]=daoSconto
+                daoSconto.valore = mN(scrow["valore"])
+                daoSconto.tipo_sconto = scrow["tipo"]
                 scontiSuTotale.append(daoSconto)
-
         self.dao.scontiSuTotale = scontiSuTotale
+
         scontiRigaDocumento=[]
         righeDocumento = []
         for i in range(1, len(self._righe)):
