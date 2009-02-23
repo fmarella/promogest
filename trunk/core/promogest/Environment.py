@@ -37,7 +37,7 @@ from sqlalchemy.orm import *
                 #teeeeeees = logger.info("Query: %s" % statement)
                 #logger.info("Total Time: %f" % total)
 
-debugDao = True
+debugDao = False
 debugSQL = False
 reportTemplatesDir = None
 imagesDir = None
@@ -122,7 +122,7 @@ def set_configuration(company=None, year = None):
                 multilinelimit, mltext, sistemaColonnaFrontaline, sistemaRigaFrontaline,\
                 imagesDir, labelTemplatesDir, templatesDir, documentsDir, reportTemplatesDir,\
                 bordoDestro, bordoSinistro
-            
+
     try:
         dir = getConfigureDir(company)
         promogestDir = os.path.expanduser('~') + os.sep + dir + os.sep
@@ -216,7 +216,6 @@ def set_configuration(company=None, year = None):
     conf.workingYear = None
     workingYear = None
     # stampa il debug del Dao
-    debugDao = True
 
 
 

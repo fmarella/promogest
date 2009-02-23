@@ -56,12 +56,12 @@ class BigBang(object):
             debugDao=True
             debugSQL=True
         #print options.debugALL, options.debugSQL, debugDao
-        login = Login(debugALL=debugALL, debugDao=debugDao, debugSQL= debugSQL )
+        login = Login(debugALL=debugALL, debugSQL= debugSQL )
         login.run()
 
 if __name__ == '__main__':
     #login = Login()
     #login.run()
     BigBang()
-    
-    
+
+

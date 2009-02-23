@@ -56,13 +56,11 @@ statusIcon.connect('activate', on_activate)
 
 class Login(GladeApp):
 
-    def __init__(self, debugDao=None, debugSQL=None, debugALL=None):
+    def __init__(self, debugSQL=None, debugALL=None):
         self.azienda=None
         self._dbConnString = ''
         self.modules = {}
         Environment.exceptionHandler = GtkExceptionHandler()
-        Environment.debugSQL = debugSQL
-        Environment.debugDao = debugDao
 
         azs = Azienda().select(orderBy="schemaa")
         usrs = User().select()
