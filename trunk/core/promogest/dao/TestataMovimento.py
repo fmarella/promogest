@@ -60,6 +60,26 @@ class TestataMovimento(Dao):
         else: return ""
     ragione_sociale_cliente= property(_ragioneSocialeCliente)
 
+    def _cognome_cliente(self):
+        if self.cli: return self.cli.cognome
+        else: return ""
+    cognome_cliente= property(_cognome_cliente)
+
+    def _nome_cliente(self):
+        if self.cli: return self.cli.nome
+        else: return ""
+    nome_cliente= property(_nome_cliente)
+
+    def _cognome_fornitore(self):
+        if self.forni: return self.forni.cognome
+        else: return ""
+    cognome_fornitore= property(_cognome_fornitore)
+
+    def _nome_fornitore(self):
+        if self.forni: return self.forni.nome
+        else: return ""
+    nome_fornitore= property(_nome_fornitore)
+
     def filter_values(self,k,v):
         if k == 'daNumero':
             dic = {k:testata_mov.c.numero >= v}

@@ -19,6 +19,7 @@ from promogest.modules.SchedaLavorazione.dao.RigaSchedaOrdinazione import RigaSc
 from promogest.modules.SchedaLavorazione.dao.ScontoSchedaOrdinazione import ScontoSchedaOrdinazione
 from promogest.modules.SchedaLavorazione.dao.ColoreStampa import ColoreStampa
 from promogest.modules.SchedaLavorazione.dao.CarattereStampa import CarattereStampa
+from promogest.ui.AnagraficaClienti import AnagraficaClienti
 from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 #from promogest.dao.Pagamento import Pagamento
@@ -213,7 +214,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         self._loading = True
         self._parzialeLordo = int(0)
         self._parzialeNetto = int(0)
-        # controlliamo se è il dao è fresco o no 
+        # controlliamo se è il dao è fresco o no
         if not firstLoad:
             self._getStrings()
             #self.righeTEMP = []
@@ -242,8 +243,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
                 self.setRigaTreeview(m)
         #pulisco tutto
         self._clear()
-        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOKDOPOCLEAR"
-        
+
         if  self._id_listino is None and self.righeTEMP:
             self._id_listino = self.righeTEMP[0].id_listino
             self.daoListino = Listino().select(id=self._id_listino)
@@ -252,7 +252,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         self._articoliTreeviewModel.clear()
         #ciclo per riempire la treeview
         for row in self.righeTEMP:
-            print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOPRIBO FOR", self.righeTEMP
             articoloRiga = Articolo().getRecord(id=row.id_articolo)
             unitaBaseRiga = UnitaBase().getRecord(id=articoloRiga.id_unita_base)
 
@@ -335,7 +334,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             findComboboxRowFromId(self.carattere_stampa_combobox, self.dao.id_carattere_stampa)
         if self.dao.id_magazzino is not None:
             findComboboxRowFromId(self.magazzino_combobox, self.dao.id_magazzino)
-        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOVERSO FINE", self.dao.sconti
         self.associazione_articoli_comboboxentry.set_active(-1)
         self.sconti_scheda_widget.setValues(self.dao.sconti, self.dao.applicazione_sconti)
         self.id_cliente_customcombobox.setId(self.dao.id_cliente)
@@ -349,7 +347,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         #articolo = Articolo().getRecord(id=modelRow[0].id_articolo)
         #print "GGGGGGGGGGGGGGGGGGGGGGGGGG", modelRow[0].id_listino,modelRow[0].id_articolo
         try:
-            print "GGGGGGGGGGGGGGGGGGGGGGGGGG", rowArticolo[0], self._id_listino
             listino = ListinoArticolo().select(idListino=self._id_listino,
                                             idArticolo=rowArticolo[0].id,
                                             listinoAttuale=True,
@@ -358,11 +355,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             msg = 'Nessun listino associato all\'articolo %s' % rowArticolo[2][:10]
             obligatoryField(None, self.listino_combobox, msg)
         lettura_articolo = leggiArticolo(rowArticolo[0].id)
-        print "MODELLLLLLLLL ROWWWWWWWW", modelRow
-        for a in modelRow:
-            print "AAAAAAAAAAAAAAAAAAAAAAA", a
-
-
         if not modelRow:
             quantita = 0
         else:
@@ -384,15 +376,13 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         daoRiga = getPrezzoNetto(daoRiga)
         self.righeTEMP.append(daoRiga)
         #self.dao.righe.append(daoRiga)
-        print "RIGHEEEEEEEEEEEEEEEEEEEEEEEE", self.righeTEMP
 
 
     def setScontiRiga(self, daoRiga, tipo=None):
         scontiRiga = []
         _descrizione = daoRiga.descrizione[0:6]
         _descrizione1 = daoRiga.descrizione[0:12]
-        if (_descrizione.lower() == 'stampa') or\
-            (_descrizione1.lower() == 'contrassegno'):
+        if (_descrizione.lower() == 'stampa') or (_descrizione1.lower() == 'contrassegno'):
             daoRiga.applicazione_sconti = 'scalare'
             daoRiga.scontiRigaDocumento = []
         else:
@@ -566,8 +556,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             fillComboboxAssociazioneArticoli(self.associazione_articoli_comboboxentry, search_string)
         else:
             row = model[selected]
-            for r in row:
-                print "ERREEEEEEEEEEEEEEEEEE", r
             if row[0] is not None:
             #this call will return a list of "AssociazioneArticoli" (In the future: "Distinta Base") Dao objects
                 self.setRigaTreeview(modelRow=[],rowArticolo=row)
@@ -633,7 +621,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         dao.descrizione = model.get_value(iterator, 3)
         dao.quantita = Decimal(model.get_value(iterator, 5))
         valore_unitario_lordo = model.get_value(iterator, 6)
-        dao.valore_unitario_lordo = Decimal(str(valore_unitario_lordo)).quantize(Decimal('.0001'), rounding=ROUND_HALF_UP)
+        dao.valore_unitario_lordo = mN(str(valore_unitario_lordo))
         dao = getPrezzoNetto(dao)
         columns = treeview.get_columns()
         newColumn = column+1
@@ -702,17 +690,16 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
 
     def mostraArticolo(self, id):
         if self.daoListino:
-            print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", id
             self.setRigaTreeview(self.daoListino.id, id)
         self._refresh()
 
     def on_generazione_fattura_button_clicked(self, button):
         DuplicaInFattura(dao=self.dao, ui = self).checkField()
 
-    def on_anagrafica_clienti_button_clicked(self, button):
+    def on_anag_clienti_button_clicked(self, button):
         anag = AnagraficaClienti()
-        anag.getTopLevel()
-        showAnagraficaRichiamata(None, anag, self._refresh)
+        anagWindow = anag.getTopLevel()
+        showAnagraficaRichiamata(None, anagWindow, self._refresh)
 
     def on_cliente_changed(self):
         if self._loading:

@@ -7,16 +7,16 @@
 
 
 import gtk
-import promogest.ui.widgets 
+import promogest.ui.widgets
 from promogest import Environment
 from promogest.ui.widgets.DateWidget import DateWidget
 from promogest.ui.widgets.ScontiWidget import ScontiWidget
 from promogest.ui.widgets.PersonaGiuridicaSearchWidget import PersonaGiuridicaSearchWidget
 
 class SchedeOrdinazioniEditWidget():
-    
+
     def __init__(self):
-        
+
         self.anagrafica_schede_ordinazioni_detail_vbox = gtk.VBox()
         self.label20 = gtk.Label()
         self.label20.set_markup('<b>Dati generali</b>')
@@ -60,7 +60,7 @@ class SchedeOrdinazioniEditWidget():
         self.label152.set_markup('<b>Note</b>')
         self.note_text_frame = gtk.Frame()
         self.note_text_frame.set_label_widget(self.label152)
-        
+
         self.listino_combobox = gtk.ComboBox()
         self.magazzino_combobox = gtk.ComboBox()
         self.carattere_stampa_combobox = gtk.ComboBox()
@@ -88,7 +88,7 @@ class SchedeOrdinazioniEditWidget():
         self.note_text_textview.set_wrap_mode(gtk.WRAP_WORD)
         self.note_text_textview.set_left_margin(10)
         self.note_text_textview.set_right_margin(10)
-        
+
         self.note_text_alignment = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=1, yscale=1)
         self.note_text_alignment.set_border_width(5)
         self.articoli_treeview_alignment = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=1, yscale=1)
@@ -100,7 +100,7 @@ class SchedeOrdinazioniEditWidget():
         self.alignment35 = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=1, yscale=1)
         self.alignment5 = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=1, yscale=1)
         self.alignment1 = gtk.Alignment(xalign=0.5, yalign=0.5, xscale=1, yscale=1)
-        
+
         ##creazione scrolledwindows e settaggi proprieta
         self.scheda_views_scrolledwindow = gtk.ScrolledWindow()
         self.scheda_views_scrolledwindow.set_property('vscrollbar-policy', gtk.POLICY_ALWAYS)
@@ -110,11 +110,11 @@ class SchedeOrdinazioniEditWidget():
         self.scheda_views_scrolledwindow1.set_property('vscrollbar-policy', gtk.POLICY_ALWAYS)
         self.scheda_views_scrolledwindow1.set_property('hscrollbar-policy', gtk.POLICY_NEVER)
         self.scheda_views_scrolledwindow1.set_border_width(5)
-        
+
         #questi sono custom widgets
         self.sconti_scheda_widget = ScontiWidget(str1='Sconti su totale')
         self.id_cliente_customcombobox = PersonaGiuridicaSearchWidget()
-        
+
         self.data_matrimonio_entry = DateWidget(int1=10)
         self.data_spedizione_entry = DateWidget(int1=10)
         self.data_consegna_bozza_entry = DateWidget(int1=10)
@@ -122,7 +122,7 @@ class SchedeOrdinazioniEditWidget():
         self.data_ordine_al_fornitore_entry = DateWidget(int1=10)
         self.data_ricevuta_entry = DateWidget(int1=10)
         self.data_presa_in_carico_entry = DateWidget(int1=10)
-        
+
         #queste sono le vbox usate nella window
         self.articoli_scheda_vbox = gtk.VBox()
         self.articoli_scheda_vbox.set_spacing(5)
@@ -312,14 +312,14 @@ class SchedeOrdinazioniEditWidget():
         self.label70 = gtk.Label('Provenienza:')
         self.label24 = gtk.Label('Data matrimonio:')
         self.label25 = gtk.Label('Data ordine:')
-        
+
         self.label103 = gtk.Label('Listino di riferimento:')
         self.label53 = gtk.Label('Magazzino:')
         self.label104 = gtk.Label('Associazione di Articoli:')
 
         self.label52 = gtk.Label('')
 
-        
+
         self.label109 = gtk.Label('Totale lordo')
         self.label48 = gtk.Label('')
         self.label110 = gtk.Label('Totale scontato')
@@ -334,7 +334,7 @@ class SchedeOrdinazioniEditWidget():
         self.label117 = gtk.Label('Data consegna bozza:')
         self.label116 = gtk.Label('Colore')
         self.label115 = gtk.Label('Carattere')
-        
+
         self.label122 = gtk.Label('Data ordine\nal fornitore:')
         self.label121 = gtk.Label('Ordinato tramite:')
         self.label120 = gtk.Label('Disponibile')
@@ -344,13 +344,13 @@ class SchedeOrdinazioniEditWidget():
         self.label126 = gtk.Label('Spedito il:')
         self.label127 = gtk.Label('Tramite:')
         self.label128 = gtk.Label('Annotazioni sulla Spedizione')
-        
+
         self.label135 = gtk.Label('Stampa e Spedizione')# #2 page notebook
         self.label133 = gtk.Label('Data consegna:')
         self.label132 = gtk.Label('N° documento')
         self.label131 = gtk.Label('Annotazioni finali')
         self.label130 = gtk.Label('Data ricevuta:')
-        
+
         self.label17 = gtk.Label('Referente')
         self.label17.set_width_chars(15)
         self.label18 = gtk.Label('Presso')
@@ -371,7 +371,7 @@ class SchedeOrdinazioniEditWidget():
         self.label33 = gtk.Label('Password')
         self.label34 = gtk.Label('Cliente')
         self.label_lui_lei = gtk.Label('Lui & Lei')
-        
+
         self.label150 = gtk.Label('Indirizzo e-mail')
         self.label149 = gtk.Label('e-mail alternativa')
         self.label148 = gtk.Label('Telefono')
@@ -380,7 +380,7 @@ class SchedeOrdinazioniEditWidget():
         self.label145 = gtk.Label('Skype Name')
 
         self.label153 = gtk.Label('Contatti\ne Annotazioni')#Notebook 3rd page-label
-        
+
         #and here the buttons
         self.generazione_fattura_button = gtk.Button()
         self.duplicate_image = gtk.Image()
@@ -409,7 +409,7 @@ class SchedeOrdinazioniEditWidget():
         self.modify_image1 = gtk.Image()
         self.modify_image1.set_from_file(Environment.conf.guiDir +'modifica16x16.png')
         self.anagrafica_colori_button.set_image(self.modify_image1)
-        
+
         #here tables and each setting
         self.table9 = gtk.Table(rows=3,columns=2, homogeneous=False)
         self.table9.set_row_spacings(5)
@@ -468,8 +468,8 @@ class SchedeOrdinazioniEditWidget():
         self.hbox2.pack_start(self.vbox14, expand=True, fill=True, padding=5)
         self.hbox2.pack_start(self.vbox3, expand=True, fill=True, padding=5)
         self.frame1.add(self.hbox2)
-        
-        
+
+
         self.vbox37.pack_start(self.label103,expand=True, fill=True)
         self.vbox37.pack_start(self.listino_combobox, expand=True, fill=True)
         self.vbox5.pack_start(self.label53,expand=True, fill=True)
@@ -479,7 +479,7 @@ class SchedeOrdinazioniEditWidget():
         self.hbox45.pack_start(self.vbox37, expand=True, fill=True)
         self.hbox45.pack_start(self.vbox5, expand=True, fill=True)
         self.hbox45.pack_start(self.vbox38, expand=True, fill=True)
-        
+
         #packing di bottoni.
         #verificare che si possano impostare le propriet� dei bottoni da un'altra parte
         self.hbox46.pack_start(self.generazione_fattura_button, expand=True, fill=True)
@@ -490,11 +490,11 @@ class SchedeOrdinazioniEditWidget():
         self.vbox36.pack_start(self.hbox46, expand=True, fill=True, padding=5)
         self.alignment25.add(self.vbox36)
         self.frame17.add(self.alignment25)
-        
+
         self.scheda_views_scrolledwindow.add(self.articoli_treeview)
         self.articoli_treeview_alignment.add(self.scheda_views_scrolledwindow)
         self.articoli_treeview_frame.add(self.articoli_treeview_alignment)
-        
+
         self.hbox50.pack_start(self.label109, expand=False, fill=False)
         self.hbox50.pack_start(self.tot_lordo_entry, expand=True, fill=True)
         self.hbox50.pack_start(self.sconti_scheda_widget, expand=True, fill=False)
@@ -509,30 +509,30 @@ class SchedeOrdinazioniEditWidget():
         self.hbox51.pack_start(self.label49, expand=True, fill=True)
         self.vbox39.pack_start(self.hbox50,expand=True, fill=True)
         self.vbox39.pack_start(self.hbox51,expand=False, fill=False)
-        
+
         self.hbox18.pack_start(self.colore_stampa_combobox, expand=True, fill=True)
         self.hbox18.pack_start(self.anagrafica_colori_button, expand=False, fill=False)
         self.vbox42.pack_start(self.label116, expand=True, fill=True)
         self.vbox42.pack_start(self.hbox18, expand=True, fill=True)
-        
+
         self.hbox19.pack_start(self.carattere_stampa_combobox, expand=True, fill=True)
         self.hbox19.pack_start(self.anagrafica_caratteri_button, expand=False, fill=False)
         self.vbox41.pack_start(self.label115, expand=True, fill=True)
         self.vbox41.pack_start(self.hbox19, expand=True, fill=True)
-        
+
         self.hbox53.pack_start(self.bomba_si_checkbutton, expand=True, fill=True)
         self.hbox53.pack_start(self.bomba_no_checkbutton, expand=True, fill=True)
-        
+
         self.table9.attach(self.label118,0,1,1,2,xoptions=gtk.EXPAND|gtk.FILL)
         self.table9.attach(self.data_consegna_bozza_entry,1,2,2,3)
         self.table9.attach(self.label117,0,1,2,3,xoptions=gtk.EXPAND|gtk.FILL)
         self.table9.attach(self.vbox42,0,1,0,1,xoptions=gtk.EXPAND|gtk.FILL)
         self.table9.attach(self.vbox41,1,2,0,1,xoptions=gtk.EXPAND|gtk.FILL)
         self.table9.attach(self.hbox53,1,2,1,2,xoptions=gtk.EXPAND|gtk.FILL,yoptions=gtk.EXPAND|gtk.FILL)
-        
+
         self.alignment30.add(self.table9)
         self.frame18.add(self.alignment30)
-        
+
         self.hbox54.pack_start(self.materiale_disponibile_si_checkbutton, expand=True, fill=True)
         self.hbox54.pack_start(self.materiale_disponibile_no_checkbutton, expand=True, fill=True)
         self.table10.attach(self.label122,0,1,0,1,xoptions=gtk.EXPAND|gtk.FILL,yoptions=gtk.EXPAND|gtk.FILL)
@@ -566,18 +566,18 @@ class SchedeOrdinazioniEditWidget():
         self.vbox45.pack_start(self.vbox49, expand=False, fill=False)
         self.alignment32.add(self.vbox45)
         self.frame20.add(self.alignment32)
-        
+
         self.hbox59.pack_start(self.label130, expand=True, fill=True)
         self.hbox59.pack_start(self.data_ricevuta_entry, expand=False, fill=False)
         self.hbox58.pack_start(self.data_consegna_entry, expand=False, fill=False)
         self.hbox58.pack_start(self.saldato_checkbutton,  expand=True, fill=True)
         self.hbox58.pack_start(self.hbox59, expand=False, fill=True)
-        
+
         self.hbox57.pack_start(self.fattura_checkbutton, expand=False, fill=False)
         self.hbox57.pack_start(self.ricevuta_checkbutton, expand=False, fill=False)
         self.hbox56.pack_start(self.n_documento_entry, expand=False, fill=True)
         self.hbox56.pack_start(self.hbox57, expand=False, fill=True)
-        
+
         self.table11.attach(self.label133,0,1,0,1,yoptions=gtk.EXPAND|gtk.FILL)
         self.table11.attach(self.label132,0,1,1,2,yoptions=gtk.EXPAND|gtk.FILL)
         self.table11.attach(self.label131,0,1,2,3,yoptions=gtk.EXPAND|gtk.FILL)
@@ -628,7 +628,7 @@ class SchedeOrdinazioniEditWidget():
         self.hbox26.pack_start(self.hbox29, expand=True, fill=True)
         self.alignment5.add(self.hbox26)
         self.frame4.add(self.alignment5)
-        
+
         self.hbox66.pack_start(self.telefono_entry, expand=True, fill=True)
         self.hbox66.pack_start(self.label147, expand=True, fill=True)
         self.hbox66.pack_start(self.cellulare_entry, expand=True, fill=True)
@@ -645,34 +645,34 @@ class SchedeOrdinazioniEditWidget():
         self.table12.attach(self.label145,0,1,3,4, yoptions=gtk.EXPAND|gtk.FILL)
         self.alignment35.add(self.table12)
         self.frame23.add(self.alignment35)
-        
+
         self.scheda_views_scrolledwindow1.add(self.note_text_textview)
         self.note_text_alignment.add(self.scheda_views_scrolledwindow1)
         self.note_text_frame.add(self.note_text_alignment)
         #raccolta dei frame nelle rispettive v/hbox
-        
+
         self.articoli_scheda_vbox.pack_start(self.frame17, expand=False, fill=False)
         self.articoli_scheda_vbox.pack_start(self.articoli_treeview_frame, expand=True, fill=True)
         self.articoli_scheda_vbox.pack_start(self.vbox39, expand=False, fill=False)
-        
+
         self.dettagli_scheda_vbox.pack_start(self.hbox52, expand=False, fill=False)
         self.dettagli_scheda_vbox.pack_start(self.frame20, expand=False, fill=False)
         self.dettagli_scheda_vbox.pack_start(self.frame21, expand=False, fill=False)
-        
+
         self.riferimenti_scheda_vbox.pack_start(self.frame2, expand=False, fill=False)
         self.riferimenti_scheda_vbox.pack_start(self.frame4, expand=False, fill=True)
         self.riferimenti_scheda_vbox.pack_start(self.frame23, expand=False, fill=False)
         self.riferimenti_scheda_vbox.pack_start(self.note_text_frame, expand=True, fill=True)
-        
+
         #packing della notebook
         self.dettagli_scheda_notebook.append_page(self.articoli_scheda_vbox, tab_label=self.label114)
         self.dettagli_scheda_notebook.append_page(self.dettagli_scheda_vbox, tab_label=self.label135)
         self.dettagli_scheda_notebook.append_page(self.riferimenti_scheda_vbox, tab_label=self.label153)
-        
+
         #packing finale della vbox principale
         self.anagrafica_schede_ordinazioni_detail_vbox.pack_start(self.frame1, expand=False, fill=True)
         self.anagrafica_schede_ordinazioni_detail_vbox.pack_start(self.dettagli_scheda_notebook, expand=True, fill=True)
-        
+
     def on_materiale_disponibile_si_checkbutton_toggled(self, checkbutton):
         pass
     def on_materiale_disponibile_no_checkbutton_toggled(self, checkbutton):
@@ -682,7 +682,7 @@ class SchedeOrdinazioniEditWidget():
     def on_bomba_no_checkbutton_toggled(self, checkbutton):
         pass
     def on_bomba_si_checkbutton_toggled(self, checkbutton):
-        pass    
+        pass
     def on_fattura_checkbutton_toggled(self, checkbutton):
         pass
     def on_ricevuta_checkbutton_toggled(self, checkbutton):
@@ -697,6 +697,6 @@ class SchedeOrdinazioniEditWidget():
         pass
     def on_associazione_articoli_comboboxentry_changed(self, combobox):
         pass
-        
+
     def on_anag_clienti_button_clicked(self, button):
         pass
