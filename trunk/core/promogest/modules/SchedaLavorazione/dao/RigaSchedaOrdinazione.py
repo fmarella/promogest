@@ -38,10 +38,13 @@ class RigaSchedaOrdinazione(Dao):
 
 
     def _getScontiRigaScheda(self):
-        if self.__dbScontiRigaScheda is None:
+        #if self.__dbScontiRigaScheda is None:
+        if self.id:
             self.__dbScontiRigaScheda = ScontoRigaScheda().select(idRigaScheda= self.id)
-        if self.__scontiRigaScheda is None:
+            #if self.__scontiRigaScheda is None:
             self.__scontiRigaScheda = self.__dbScontiRigaScheda[:]
+        else:
+            self.__scontiRigaScheda = []
         return self.__scontiRigaScheda
 
 

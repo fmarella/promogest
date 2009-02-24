@@ -25,6 +25,7 @@ from promogest.dao.Magazzino import Magazzino
 from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.DestinazioneMerce import DestinazioneMerce
+from promogest.dao.TestataDocumento import TestataDocumento
 
 
 
@@ -33,13 +34,13 @@ class DuplicaInFattura(object):
     def __init__(self, dao=None, ui=None):
         self.dao = dao
         self.ui = ui
-        pass
 
 
     def checkField(self):
-        if self.dao.id_cliente == None:
+        if not self.dao.id_cliente:
             obligatoryField(None, msg='scegliere prima un cliente da associare al documento')
             return
+        else:
             if self.dao.id is None:
                 msg = "Prima di poter generare la fattura di questa scheda e' necessario salvarla .\n Salvare ?"
                 response = self.advertise(msg)
@@ -51,7 +52,7 @@ class DuplicaInFattura(object):
                         self.ui.n_documento_entry.set_text(str(self.dao.ricevuta_associata))
                         self.dao.fattura = True
                         self.ui.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
-                        self._refresh()
+                        self.ui._refresh()
                     else:
                         if self.dao.ricevuta_associata is not None:
                             ricevuta_num = self.dao.ricevuta_associata
@@ -60,14 +61,15 @@ class DuplicaInFattura(object):
                 else:
                     return
             else:
+                print "SIAMO QUIIIII", self.dao.fattura
                 if not self.dao.fattura:
                     self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
-                    #idFattura = self.creaFatturaDaScheda()
+                    idFattura = self.creaFatturaDaScheda()
                     self.dao.ricevuta_associata = TestataDocumento().getRecord(id=idFattura).numero
                     self.ui.n_documento_entry.set_text(str(self.dao.ricevuta_associata))
                     self.dao.fattura = True
                     self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
-                    self._refresh()
+                    self.ui._refresh()
                     return
                 else:
                     if self.dao.ricevuta_associata is not None:

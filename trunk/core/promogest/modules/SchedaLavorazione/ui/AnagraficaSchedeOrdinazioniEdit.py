@@ -253,18 +253,26 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         #ciclo per riempire la treeview
         for row in self.righeTEMP:
             articoloRiga = Articolo().getRecord(id=row.id_articolo)
-            unitaBaseRiga = UnitaBase().getRecord(id=articoloRiga.id_unita_base)
+            if not articoloRiga:
+                unitaBaseRiga = "Pezzi"
+                codice = ""
+                idArticolo = None
+            else:
+                unitaBaseRigaobgj = UnitaBase().getRecord(id=articoloRiga.id_unita_base)
+                unitaBaseRiga = unitaBaseRigaobgj.denominazione_breve
+                codice = articoloRiga.codice
+                idArticolo = articoloRiga.id
 
             self.setScontiRiga(row)
-            #riga = getPrezzoNetto(row)
+            row = getPrezzoNetto(row)
             self._parzialeLordo = self._parzialeLordo + mN(float(row.valore_unitario_lordo)*float(row.quantita))
-            self._parzialeNetto = self._parzialeNetto + mN(float(row.valore_unitario_netto)*float(row.quantita))
+            self._parzialeNetto = self._parzialeNetto + row.valore_unitario_netto * row.quantita
             #findComboboxRowFromId(self.listino_combobox, row.id_listino)
             self._articoliTreeviewModel.append([row,
-                                                row.id,
-                                                articoloRiga.codice,
+                                                idArticolo,
+                                                codice,
                                                 row.descrizione,
-                                                unitaBaseRiga.denominazione_breve,
+                                                unitaBaseRiga,
                                                 row.quantita,
                                                 row.valore_unitario_lordo,
                                                 row.valore_unitario_netto,
@@ -346,25 +354,37 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         #model = self._articoliTreeviewModel
         #articolo = Articolo().getRecord(id=modelRow[0].id_articolo)
         #print "GGGGGGGGGGGGGGGGGGGGGGGGGG", modelRow[0].id_listino,modelRow[0].id_articolo
-        try:
-            listino = ListinoArticolo().select(idListino=self._id_listino,
-                                            idArticolo=rowArticolo[0].id,
-                                            listinoAttuale=True,
-                                            batchSize=None)[0]
-        except:
-            msg = 'Nessun listino associato all\'articolo %s' % rowArticolo[2][:10]
-            obligatoryField(None, self.listino_combobox, msg)
-        lettura_articolo = leggiArticolo(rowArticolo[0].id)
-        if not modelRow:
+        #try:
+        if rowArticolo:
+            print "MAAAAAAAAAAAAAAAAAAAAA E TU ",rowArticolo
+            for a in rowArticolo:
+                print "EEEEEEE", a
+            idArticolo = rowArticolo[0].id
+            denArticolo = rowArticolo[0].denominazione
             quantita = 0
+        elif modelRow:
+            print "COSA SEIIIIII", modelRow
+            for a in modelRow:
+                print "FFFFFFFFFF", a
+            idArticolo = modelRow[1]
+            denArticolo = modelRow[3]
+            quantita = modelRow[5]
+        listinoSel = ListinoArticolo().select(idListino=self._id_listino,
+                                            idArticolo=idArticolo,
+                                            listinoAttuale=True,
+                                            batchSize=None)
+        if listinoSel:
+            listino = listinoSel[0]
         else:
-            modelRow[5]
-
+            msg = 'Nessun listino associato all\'articolo %s' % denArticolo
+            obligatoryField(None, self.listino_combobox, msg)
+        lettura_articolo = leggiArticolo(idArticolo)
+        print "ID ARTICOLOOOOOOOOOOOOOOOOOOOOOO", idArticolo
         daoRiga = RigaSchedaOrdinazione()
-        daoRiga.id_scheda = self.dao.id
-        daoRiga.id_articolo = rowArticolo[0].id
+        #daoRiga.id_scheda = self.dao.id
+        daoRiga.id_articolo = idArticolo
         daoRiga.id_magazzino = self.dao.id_magazzino
-        daoRiga.descrizione = rowArticolo[0].denominazione
+        daoRiga.descrizione = denArticolo
         daoRiga.codiceArticoloFornitore = None
         daoRiga.id_listino = self._id_listino
         daoRiga.percentuale_iva = lettura_articolo['percentualeAliquotaIva']
@@ -384,7 +404,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         _descrizione1 = daoRiga.descrizione[0:12]
         if (_descrizione.lower() == 'stampa') or (_descrizione1.lower() == 'contrassegno'):
             daoRiga.applicazione_sconti = 'scalare'
-            daoRiga.scontiRigaDocumento = []
+            daoRiga.sconti = []
         else:
             daoRiga.applicazione_sconti = self.dao.applicazione_sconti
             for sconto in self.dao.sconti:
@@ -396,8 +416,31 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
                 scontoRiga.valore = sconto.valore
                 scontoRiga.tipo_sconto = sconto.tipo_sconto
                 scontiRiga.append(scontoRiga)
-                daoRiga.scontiRigaDocumento = scontiRiga
-        return daoRiga
+                daoRiga.sconti = scontiRiga
+        #return daoRiga
+
+    #def setScontiRiga(self, daoRiga, tipo=None):
+        #daoRiga.sconti = []
+        #_descrizione = daoRiga.descrizione[0:6]
+        #_descrizione1 = daoRiga.descrizione[0:12]
+        #if (_descrizione.lower() == 'stampa') or\
+            #(_descrizione1.lower() == 'contrassegno'):
+            #daoRiga.applicazione_sconti = 'scalare'
+            #daoRiga.sconti = []
+        #else:
+            #daoRiga.applicazione_sconti = self.dao.applicazione_sconti
+            #for sconto in self.dao.sconti:
+                #if tipo == 'documento':
+                    #from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
+                    #scontoRiga = ScontoRigaDocumento(Environment.connection)
+                #else:
+                    #scontoRiga = ScontoRigaScheda(Environment.connection)
+                #scontoRiga.valore = sconto.valore
+                #scontoRiga.tipo_sconto = sconto.tipo_sconto
+                #daoRiga.sconti.append(scontoRiga)
+
+
+
 
 
     def  saveDao(self):
@@ -455,7 +498,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         if not self.dao.bomba_in_cliche :
             if not self.bomba_no_checkbutton.get_active():
                 obligatoryField(None, msg='Bomboniera nel cliché?')
-        if not (self.dao.righe or self.righeTEMP):
+        if not self.dao.righe and not self.righeTEMP:
             obligatoryField(None, msg='Si sta cercando di creare un documento vuoto.\nInserire le righe della scheda.')
 
 
@@ -531,7 +574,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
 
         model = self.articoli_treeview.get_model()
         for m in model:
-            self.setRigaTreeview(m)
+            self.setRigaTreeview(modelRow = m)
         self.dao.numero = rif_num_scheda
         self._numeroScheda = rif_num_scheda
         self._dataScheda = dateToString(self.dao.data_presa_in_carico)
@@ -584,7 +627,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         selection = self.articoli_treeview.get_selection()
         model, iter = selection.get_selected()
         index = model.get_path(iter)[0]
-        del self.dao.righe[index]
+        del self.righeTEMP[index]
         button.set_sensitive(False)
         self._refresh()
 
@@ -694,6 +737,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         self._refresh()
 
     def on_generazione_fattura_button_clicked(self, button):
+        print "DUPLICHIAMO IN FATTURA"
         DuplicaInFattura(dao=self.dao, ui = self).checkField()
 
     def on_anag_clienti_button_clicked(self, button):
