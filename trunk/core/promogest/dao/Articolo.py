@@ -347,7 +347,6 @@ class Articolo(Dao):
                                                 batchSize=None)
             if art:return True
             else: return False
-            
 
     def persist(self):
         params["session"].add(self)

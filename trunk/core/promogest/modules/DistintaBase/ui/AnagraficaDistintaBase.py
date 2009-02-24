@@ -315,17 +315,16 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
 
         for articolo in self.articoliAssociatiList:
             col = None
-            if articolo.ARTIFIGLIO:
-                if articolo.ARTIFIGLIO.cancellato:
-                    col = 'red'
-                codice = articolo.ARTIFIGLIO.codice or ""
-                denominazione = articolo.ARTIFIGLIO.denominazione or ""
+            if articolo.cancellato:
+                col = 'red'
+            codice = articolo.codice
+            denominazione = articolo.denominazione
 
-            else:
-                if articolo.cancellato:
-                    col = 'red'
-                codice = articolo.codice
-                denominazione = articolo.denominazione
+            #else:
+                #if articolo.cancellato:
+                    #col = 'red'
+                #codice = articolo.codice
+                #denominazione = articolo.denominazione
             quantita = articolo.quantita or 0
             self._assTreeViewModel.append([articolo,
                                         col,
@@ -334,15 +333,13 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
                                         quantita])
 
         if self.daoPadre.id is None:
-            string='Selezionare un articolo principale'
-            self.descrizione_label.set_use_markup(True)
-            self.descrizione_label.set_text(string)
+            string='<b>Selezionare un articolo principale</b>'
+            self.descrizione_label.set_markup(string)
         else:
-            self.descrizione_label.set_text(self.daoPadre.denominazione or '')
+            self.descrizione_label.set_text(self.daoPadre.denominazione)
         
         if self.daoPadre.codice is not None:
-            self.codice_label.set_use_markup(True)
-            self.codice_label.set_text(str(self.daoPadre.codice))
+            self.codice_label.set_markup(str(self.daoPadre.codice))
 
     def on_add_article_button_clicked(self, button):
         self.ricercaArticolo()
@@ -366,8 +363,10 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
 
             anagWindow.destroy()
             if isNode:
-                self.mostraArticoloPadre(anag.dao.id)
+                print "SEI PADREEEEEEEEEEEEEEEEEEEE"
+                self.mostraArticoloPadre(anag.dao)
             else:
+                print "SEI FIGLIOOOOOOOOOO"  
                 self.mostraArticoloFiglio(anag.dao)
         
         codice = None
@@ -390,8 +389,16 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
         anagWindow.show_all()
 
 
-    def mostraArticoloPadre(self, id):
-        self.daoPadre = Articolo().getRecord(id=id)
+    def mostraArticoloPadre(self, dao):
+        self.daoPadre = dao
+        daoAssociazione= AssociazioneArticolo()
+        daoAssociazione.id_figlio = dao.id
+        daoAssociazione.id_padre = self.daoPadre.id
+        daoAssociazione.denominazione = dao.denominazione
+        daoAssociazione.codice = dao.codice
+        daoAssociazione.posizione = 0
+        daoAssociazione.cancellato = dao.cancellato
+        self.articoliAssociatiList.append(daoAssociazione)
         for articolo in self.articoliAssociatiList:
             articolo.id_associato = id
         self._refresh()
@@ -405,6 +412,7 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
         daoAssociazione.denominazione = dao.denominazione
         daoAssociazione.codice = dao.codice
         daoAssociazione.cancellato = dao.cancellato
+        daoAssociazione.posizione = len(self.articoliAssociatiList)
         self.articoliAssociatiList.append(daoAssociazione)
         self._refresh()
 
@@ -416,6 +424,8 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
                 if dao.id is not None:
                     dao.delete()
         model.remove(iter)
+        for art in self.articoliAssociatiList:
+            art.posizione = self.articoliAssociatiList.index(art)
 
     def on_articoli_associati_treeview_row_activated(self, widget):
         self.remove_article_button.set_sensitive(True)

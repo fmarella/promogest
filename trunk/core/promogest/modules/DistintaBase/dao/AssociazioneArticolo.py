@@ -17,15 +17,53 @@ class AssociazioneArticolo(Dao):
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
 
+    @reconstructor
+    def init_on_load(self):
+        self.__cancellato = None
+        self.__codice = None
+        self.__denominazione = None
+
+
     def _codicePadre(self):
         if self.ARTIPADRE: return self.ARTIPADRE.codice
         else: return None
-    codice = property(_codicePadre)
+    codicePadre = property(_codicePadre)
+
+    def _getCodiceFiglio(self):
+        if not self.__codice:
+            if self.ARTIFIGLIO: return self.ARTIFIGLIO.codice
+            else: return None
+        else:
+            return self.__codice
+    def _setCodiceFiglio(self, value):
+        self.__codice= value
+    codice = property(_getCodiceFiglio, _setCodiceFiglio)
 
     def _denominazionePadre(self):
         if self.ARTIPADRE: return self.ARTIPADRE.denominazione
         else: return None
-    denominazione = property(_denominazionePadre)
+    denominazionePadre = property(_denominazionePadre)
+
+    def _getDenominazioneFiglio(self):
+        if not self.__denominazione:
+            if self.ARTIFIGLIO: return self.ARTIFIGLIO.denominazione
+            else:return None
+        else:
+            return self.__denominazione
+    def _setDenominazioneFiglio(self, value):
+        self.__denominazione= value
+    denominazione = property(_getDenominazioneFiglio, _setDenominazioneFiglio)
+
+    def _getCancellatoFiglio(self):
+        if not self.__cancellato:
+            if self.ARTIFIGLIO: return self.ARTIFIGLIO.cancellato
+            else: return None
+        else:
+            return self.__cancellato
+    def _setCancellatoFiglio(self, value):
+        self.__cancellato= value
+    cancellato = property(_getCancellatoFiglio, _setCancellatoFiglio)
+
 
     def _idArticoloPadre(self):
         if self.ARTIFIGLIO: return self.ARTIFIGLIO.id
