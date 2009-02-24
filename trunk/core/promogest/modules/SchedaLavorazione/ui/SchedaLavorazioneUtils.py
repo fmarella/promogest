@@ -49,7 +49,7 @@ def fillComboboxColoreStampa(combobox, filter=False):
     combobox.set_model(model)
     if combobox.__class__ is gtk.ComboBoxEntry:
         combobox.set_text_column(2)
-        
+
 def fillComboboxCarattereStampa(combobox, filter=False):
     """
     Crea l'elenco dei listini
@@ -86,7 +86,7 @@ def fillComboboxAssociazioneArticoli(combobox, search_string=None):
                             codice=search_string,
                             offset=None,
                             batchSize=None)
-                                       
+
     # questa combobox mi sa che non puo' andare a finire in un filter widget
     emptyRow = ''
     model.append((None, None, emptyRow))
@@ -106,7 +106,7 @@ def fillComboboxAssociazioneArticoli(combobox, search_string=None):
 
 def fetch_date(string):
     """
-    This should return a string indicating a date in italian format (dd/mm/YYYY) 
+    This should return a string indicating a date in italian format (dd/mm/YYYY)
     or None if some of the parts of the input string cant be translated into number format
     """
     def fetch_day(str):
@@ -212,12 +212,12 @@ def create_schede_ordinazioni(data):
                                                             orderBy = None,
                                                             offset = None,
                                                             batchSize = None)[0].id
-        
+
         dao.id_colore_stampa = ColoreStampa().select(denominazione= colore,
                                                         orderBy = None,
                                                         offset = None,
                                                         batchSize = None)[0].id
-        
+
         dao.provenienza = citta_matrimonio
         dao.referente = referente
         dao.presso = presso
@@ -281,11 +281,11 @@ def create_schede_ordinazioni(data):
             daoRiga.quantita = quantita[i]
             daoRiga.id_multiplo = None
             daoRiga.moltiplicatore = None
-            daoRiga.valore_unitario_lordo = listinoarticolo[i].prezzo_dettaglio 
+            daoRiga.valore_unitario_lordo = listinoarticolo[i].prezzo_dettaglio
             daoRiga, _parzialeNetto = getPrezzoNetto(daoRiga,_parzialeNetto)
             dao.righe.append(daoRiga)
         dao.totale_lordo = _parzialeNetto.quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
-        
+
 
 def getPrezzoNetto(dao, parzialeNetto=None):
     """ calcola il prezzo netto dal prezzo lordo e dagli sconti  in una riga """
@@ -294,7 +294,7 @@ def getPrezzoNetto(dao, parzialeNetto=None):
     prezzoNetto = prezzoLordo
     applicazione = dao.applicazione_sconti
     sconti = dao.sconti
-    if len(sconti) > 0:
+    if sconti:
         for s in sconti:
             if s.tipo_sconto == 'percentuale':
                 if applicazione == 'scalare':
@@ -304,9 +304,9 @@ def getPrezzoNetto(dao, parzialeNetto=None):
             elif s.tipo_sconto == 'valore':
                 prezzoNetto = prezzoNetto - Decimal(str(float(s.valore)))
     dao.valore_unitario_netto = prezzoNetto
-    if parzialeNetto is not None:
+    if parzialeNetto:
         parzialeNetto += prezzoNetto
         return dao, parzialeNetto
     else:
-        return dao 
+        return dao
 

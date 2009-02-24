@@ -68,6 +68,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         self._parzialeLordo = Decimal(str(0))
         self._parzialeNetto = Decimal(str(0))
         self.righeTEMP = []
+        self.scontiTEMP = []
         self.scontiSuTotale = []
 
     def draw(self):
@@ -217,13 +218,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         # controlliamo se è il dao è fresco o no
         if not firstLoad:
             self._getStrings()
-            #self.righeTEMP = []
-            #self.scontiSuTotale = []
-            #self._articoliTreeviewModel.clear()
-            #model = self.articoli_treeview.get_model()
-            #for m in model:
-                #print "EMMMEEEEEEEEEEEEEEEEEEEEEEEE", m
-                #self.setRigaTreeview(m)
         else:
             if self.dao.colore_stampa:
                 self.daoColoreStampa = self.dao.colore_stampa
@@ -236,6 +230,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
                 self.daoListino = Listino().select(id=self._id_listino)[0]
                 #asswgno alla variabile temporanea il valore di righe
                 self.righeTEMP = self.dao.righe
+                self.scontiTEMP = self.dao.sconti
             # il dao è fresco per cui mi prendo le righe e le metto
             self._articoliTreeviewModel.clear()
             model = self.articoli_treeview.get_model()
@@ -254,7 +249,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         for row in self.righeTEMP:
             articoloRiga = Articolo().getRecord(id=row.id_articolo)
             if not articoloRiga:
-                unitaBaseRiga = "Pezzi"
+                unitaBaseRiga = "pz"
                 codice = ""
                 idArticolo = None
             else:
@@ -263,7 +258,12 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
                 codice = articoloRiga.codice
                 idArticolo = articoloRiga.id
 
+
             self.setScontiRiga(row)
+            try:
+                print "FFFFFFFFFFFFFFFFFFFFFF3333333333FFFFFFFFFFFFF", row.scontiRiga
+            except:
+                print "PIPPO"
             row = getPrezzoNetto(row)
             self._parzialeLordo = self._parzialeLordo + mN(float(row.valore_unitario_lordo)*float(row.quantita))
             self._parzialeNetto = self._parzialeNetto + row.valore_unitario_netto * row.quantita
@@ -343,7 +343,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         if self.dao.id_magazzino is not None:
             findComboboxRowFromId(self.magazzino_combobox, self.dao.id_magazzino)
         self.associazione_articoli_comboboxentry.set_active(-1)
-        self.sconti_scheda_widget.setValues(self.dao.sconti, self.dao.applicazione_sconti)
+        self.sconti_scheda_widget.setValues(self.scontiTEMP, self.dao.applicazione_sconti)
         self.id_cliente_customcombobox.setId(self.dao.id_cliente)
         self.calcolaTotaleScheda()
         findComboboxRowFromId(self.listino_combobox, self._id_listino)
@@ -356,16 +356,10 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         #print "GGGGGGGGGGGGGGGGGGGGGGGGGG", modelRow[0].id_listino,modelRow[0].id_articolo
         #try:
         if rowArticolo:
-            print "MAAAAAAAAAAAAAAAAAAAAA E TU ",rowArticolo
-            for a in rowArticolo:
-                print "EEEEEEE", a
             idArticolo = rowArticolo[0].id
             denArticolo = rowArticolo[0].denominazione
             quantita = 0
         elif modelRow:
-            print "COSA SEIIIIII", modelRow
-            for a in modelRow:
-                print "FFFFFFFFFF", a
             idArticolo = modelRow[1]
             denArticolo = modelRow[3]
             quantita = modelRow[5]
@@ -379,7 +373,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             msg = 'Nessun listino associato all\'articolo %s' % denArticolo
             obligatoryField(None, self.listino_combobox, msg)
         lettura_articolo = leggiArticolo(idArticolo)
-        print "ID ARTICOLOOOOOOOOOOOOOOOOOOOOOO", idArticolo
+
         daoRiga = RigaSchedaOrdinazione()
         #daoRiga.id_scheda = self.dao.id
         daoRiga.id_articolo = idArticolo
@@ -403,45 +397,26 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         _descrizione = daoRiga.descrizione[0:6]
         _descrizione1 = daoRiga.descrizione[0:12]
         if (_descrizione.lower() == 'stampa') or (_descrizione1.lower() == 'contrassegno'):
+            print "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
             daoRiga.applicazione_sconti = 'scalare'
             daoRiga.sconti = []
         else:
             daoRiga.applicazione_sconti = self.dao.applicazione_sconti
-            for sconto in self.dao.sconti:
+            #for sconto in self.dao.sconti:
+            print "OLLELLLEELLELLLE", self.scontiTEMP
+            for sconto in self.scontiTEMP:
+                print "SCONTOOOOOOOOOOOOOOOOOOOOOOOOO", sconto.valore
                 if tipo == 'documento':
                     from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
                     scontoRiga = ScontoRigaDocumento()
                 else:
                     scontoRiga = ScontoRigaScheda()
+                print "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
                 scontoRiga.valore = sconto.valore
                 scontoRiga.tipo_sconto = sconto.tipo_sconto
                 scontiRiga.append(scontoRiga)
-                daoRiga.sconti = scontiRiga
-        #return daoRiga
-
-    #def setScontiRiga(self, daoRiga, tipo=None):
-        #daoRiga.sconti = []
-        #_descrizione = daoRiga.descrizione[0:6]
-        #_descrizione1 = daoRiga.descrizione[0:12]
-        #if (_descrizione.lower() == 'stampa') or\
-            #(_descrizione1.lower() == 'contrassegno'):
-            #daoRiga.applicazione_sconti = 'scalare'
-            #daoRiga.sconti = []
-        #else:
-            #daoRiga.applicazione_sconti = self.dao.applicazione_sconti
-            #for sconto in self.dao.sconti:
-                #if tipo == 'documento':
-                    #from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
-                    #scontoRiga = ScontoRigaDocumento(Environment.connection)
-                #else:
-                    #scontoRiga = ScontoRigaScheda(Environment.connection)
-                #scontoRiga.valore = sconto.valore
-                #scontoRiga.tipo_sconto = sconto.tipo_sconto
-                #daoRiga.sconti.append(scontoRiga)
-
-
-
-
+                daoRiga.scontiRiga = scontiRiga
+        return daoRiga
 
     def  saveDao(self):
         """
@@ -561,15 +536,16 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         scontiSuTotale = []#{}
 
         res = self.sconti_scheda_widget.getSconti()
-        if res is not None:
-            for k in range(0, len(res)):
+        if res:
+            for sc in res:
                 daoSconto = ScontoSchedaOrdinazione()
-                daoSconto.valore = mN(res[k]["valore"])
-                daoSconto.tipo_sconto = res[k]["tipo"]
+                daoSconto.valore = mN(sc["valore"])
+                daoSconto.tipo_sconto = sc["tipo"]
                 #scontiSuTotale[self.dao]=daoSconto
                 scontiSuTotale.append(daoSconto)
 
         self.dao.scontiSuTotale = scontiSuTotale
+        self.scontiTEMP = scontiSuTotale
 
 
         model = self.articoli_treeview.get_model()
@@ -601,7 +577,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
             row = model[selected]
             if row[0] is not None:
             #this call will return a list of "AssociazioneArticoli" (In the future: "Distinta Base") Dao objects
-                self.setRigaTreeview(modelRow=[],rowArticolo=row)
+                #self.setRigaTreeview(modelRow=[],rowArticolo=row)
                 #articoli = AssociazioneArticolo().select(idPadre= row[0].id)
                 articoli = row[0].articoliAss
                 for art in articoli:
@@ -684,15 +660,15 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         self.dao.applicazione_sconti = self.sconti_scheda_widget.getApplicazione()
         scontiSuTotale = []
         res = self.sconti_scheda_widget.getSconti()
-        if res is not None:
-            for k in range(0, len(res)):
+        if res:
+            for sc in res:
                 daoSconto = ScontoSchedaOrdinazione()
-                daoSconto.valore = float(res[k]["valore"])
-                daoSconto.tipo_sconto = res[k]["tipo"]
+                daoSconto.valore = float(sc["valore"])
+                daoSconto.tipo_sconto = sc["tipo"]
                 scontiSuTotale.append(daoSconto)
         self.dao.sconti = scontiSuTotale
         self.scontiSuTotale = scontiSuTotale
-
+        self.scontiTEMP=scontiSuTotale
         self._refresh()
 
     def on_aggiungi_articolo_button_clicked(self, button):
@@ -739,18 +715,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
     def on_generazione_fattura_button_clicked(self, button):
         print "DUPLICHIAMO IN FATTURA"
         DuplicaInFattura(dao=self.dao, ui = self).checkField()
-
-    def on_anag_clienti_button_clicked(self, button):
-        anag = AnagraficaClienti()
-        anagWindow = anag.getTopLevel()
-        showAnagraficaRichiamata(None, anagWindow, self._refresh)
-
-    def on_cliente_changed(self):
-        if self._loading:
-            return
-        from promogest.dao.Cliente import Cliente
-        self.dao.id_cliente = self.id_cliente_customcombobox.getId()
-        self.daoCliente = Cliente().getRecord(id=self.dao.id_cliente)
 
     def calcolaTotaleScheda(self):
         """
@@ -953,3 +917,15 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         response = dialog.run()
         dialog.destroy()
         return response
+
+    def on_anag_clienti_button_clicked(self, button):
+        anag = AnagraficaClienti()
+        anagWindow = anag.getTopLevel()
+        showAnagraficaRichiamata(None, anagWindow, self._refresh)
+
+    def on_cliente_changed(self):
+        if self._loading:
+            return
+        from promogest.dao.Cliente import Cliente
+        self.dao.id_cliente = self.id_cliente_customcombobox.getId()
+        self.daoCliente = Cliente().getRecord(id=self.dao.id_cliente)
