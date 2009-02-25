@@ -92,14 +92,11 @@ class RigaDocumento(Dao):
     multiplo = property(__multiplo)
 
     def __unita_base(self):
-        #a =  params["session"].query(UnitaBase).filter(and_(riga.c.id_articolo == Articolo.id,  Articolo.id_unita_base==UnitaBase.id)).all()
-        #if not a:
-            #return a
-        #else:
-            #return a[0].denominazione_breve
-
-        if self.arti:return self.arti.unita_base
-        else:return ""
+        a =  params["session"].query(UnitaBase).filter(and_(riga.c.id_articolo == Articolo.id,  Articolo.id_unita_base==UnitaBase.id)).all()
+        if not a:
+            return a
+        else:
+            return a[0].denominazione_breve
     unita_base = property(__unita_base)
 
     def __codiceArticolo(self):
