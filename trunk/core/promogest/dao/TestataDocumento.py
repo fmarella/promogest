@@ -360,7 +360,6 @@ class TestataDocumento(Dao):
         params["session"].commit()
         scontiTestataDocumentoDel(id=self.id)
         testataDocumentoScadenzaDel(id=self.id)
-        print "-------------_------JJHHHH"
         righeDocumentoDel(id=self.id)
         #verifica se sono e devono essere presenti righe di movimentazione magazzino
         contieneMovimentazione = self.contieneMovimentazione(righe=self.righeDocumento)
@@ -414,6 +413,7 @@ class TestataDocumento(Dao):
         #scontiRigaMovimento = []
         if self.righeDocumento:
             for row in self.righeDocumento:
+                print "RIGHEEEEEEEEEEEEEEEEEEEEEEEEE ID ARTICOLO", row.id_articolo,contieneMovimentazione
                 if (row.id_articolo is not None and contieneMovimentazione):
                     #salvo tra le righe movimenti
                     daoRigaMovimento = RigaMovimento()
@@ -498,16 +498,17 @@ class TestataDocumento(Dao):
 
 
         if self.scontiSuTotale:
+            print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", self.scontiSuTotale
             scontiTestataDocumentoDel(id=self.id)
             for scontisutot in self.scontiSuTotale:
             #for key,row in scontiSuTotale.items():
                 #annullamento id dello sconto
-                row._resetId()
+                #scontisutot._resetId()
                 #associazione allo sconto della testata
                 #ScontoTestataDocumento()
-                row.id_testata_documento = self.id
+                scontisutot.id_testata_documento = self.id
                 #salvataggio sconto
-                row.persist()
+                scontisutot.persist()
 
     def _al(self):
         if self.AL: return self.AL.denominazione

@@ -244,7 +244,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                 self.setRigaTreeview(m)
         #pulisco tutto
         self._clear()
-
+        print "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
         if  self._id_listino is None and self.righeTEMP:
             self._id_listino = self.righeTEMP[0].id_listino
             self.daoListino = Listino().select(id=self._id_listino)
@@ -264,7 +264,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                 codice = articoloRiga.codice
                 idArticolo = articoloRiga.id
 
-
             self.setScontiRiga(row)
             try:
                 row.scontiRiga
@@ -283,7 +282,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                                                 row.valore_unitario_lordo,
                                                 row.valore_unitario_netto,
                                                 row.totaleRiga])
-
 
 
 

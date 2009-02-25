@@ -176,12 +176,10 @@ class RigaDocumento(Dao):
         #salvataggio riga
         params["session"].add(self)
         params["session"].commit()
-
         #if "SuMisura" in modulesList:
             #self.__misuraPezzo.id_riga = self.id
             #self.__misuraPezzo.persist()
 
-        print self.scontiRigaDocumento
         scontiRigaDocumentoDel(id=self.id)
         if self.scontiRigaDocumento:
             for value in self.scontiRigaDocumento:

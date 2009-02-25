@@ -61,7 +61,6 @@ class DuplicaInFattura(object):
                 else:
                     return
             else:
-                print "SIAMO QUIIIII", self.dao.fattura
                 if not self.dao.fattura:
                     self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
                     idFattura = self.creaFatturaDaScheda()
@@ -134,9 +133,7 @@ class DuplicaInFattura(object):
         daoTestataFattura.id_banca = None
         righe_testata = []
 
-        print "PPPPPPPPPPPPPPPPPPP", self.ui.righeTEMP, self.dao.righe
-
-        for riga in self.ui.righeTEMP:
+        for riga in self.dao.righe:
             riga_testata = RigaDocumento()
             riga_testata.id_articolo = riga.id_articolo
             riga_testata.id_magazzino = riga.id_magazzino
@@ -147,9 +144,10 @@ class DuplicaInFattura(object):
             riga_testata.quantita = riga.quantita
             riga_testata.id_multiplo = riga.id_multiplo
             riga_testata.moltiplicatore = riga.moltiplicatore
-            riga_testata.scontiRigaDocumento = []
+            riga_testata.scontiRigaDocumento = riga.sconti
             print "FFFFFFFFFFFFFFFFFFFFAAAAAAAAAAAAAAAAAAAAAAAAAAA",riga.sconti
             if riga.sconti:
+                print "TADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
                 for sconto in riga.sconti:
                     self.ui.setScontiRiga(riga_testata, 'documento')
 
@@ -165,16 +163,16 @@ class DuplicaInFattura(object):
 ##            scontoTestata.tipo_sconto =sconto.tipo_sconto
 ##            scontoTestata.valore = sconto.valore
 ##            scontiTestata.append(scontoTestata)
-        scontiSuTotale = []
-        res = self.ui.sconti_scheda_widget.getSconti()
-        if res is not None:
-            for k in range(0, len(res)):
-                daoSconto = ScontoSchedaOrdinazione()
-                daoSconto.valore = float(res[k]["valore"])
-                daoSconto.tipo_sconto = res[k]["tipo"]
-                scontiSuTotale.append(daoSconto)
+        #scontiSuTotale = []
+        #res = self.ui.sconti_scheda_widget.getSconti()
+        #if res is not None:
+            #for k in range(0, len(res)):
+                #daoSconto = ScontoSchedaOrdinazione()
+                #daoSconto.valore = float(res[k]["valore"])
+                #daoSconto.tipo_sconto = res[k]["tipo"]
+                #scontiSuTotale.append(daoSconto)
 
-        daoTestataFattura.scontiSuTotale = scontiSuTotale
+        daoTestataFattura.scontiSuTotale = []
         if not daoTestataFattura.numero:
             valori = numeroRegistroGet(tipo=daoTestataFattura.operazione, date=daoTestataFattura.data_documento)
             daoTestataFattura.numero = valori[0]
