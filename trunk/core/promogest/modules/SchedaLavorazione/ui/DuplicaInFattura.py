@@ -134,8 +134,9 @@ class DuplicaInFattura(object):
         daoTestataFattura.id_banca = None
         righe_testata = []
 
+        print "PPPPPPPPPPPPPPPPPPP", self.ui.righeTEMP, self.dao.righe
 
-        for riga in self.dao.righe:
+        for riga in self.ui.righeTEMP:
             riga_testata = RigaDocumento()
             riga_testata.id_articolo = riga.id_articolo
             riga_testata.id_magazzino = riga.id_magazzino
@@ -147,9 +148,10 @@ class DuplicaInFattura(object):
             riga_testata.id_multiplo = riga.id_multiplo
             riga_testata.moltiplicatore = riga.moltiplicatore
             riga_testata.scontiRigaDocumento = []
-            if len(riga.sconti) > 0:
+            print "FFFFFFFFFFFFFFFFFFFFAAAAAAAAAAAAAAAAAAAAAAAAAAA",riga.sconti
+            if riga.sconti:
                 for sconto in riga.sconti:
-                    self.setScontiRiga(riga_testata, 'documento')
+                    self.ui.setScontiRiga(riga_testata, 'documento')
 
             riga_testata.valore_unitario_lordo = calcolaPrezzoIva(riga.valore_unitario_lordo, (-1*riga.percentuale_iva))
             riga_testata.valore_unitario_netto =calcolaPrezzoIva(riga.valore_unitario_netto, (-1*riga.percentuale_iva))
