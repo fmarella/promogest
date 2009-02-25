@@ -293,7 +293,7 @@ def getPrezzoNetto(dao, parzialeNetto=None):
     prezzoLordo = Decimal(str(dao.valore_unitario_lordo))
     prezzoNetto = prezzoLordo
     applicazione = dao.applicazione_sconti
-    sconti = dao.sconti
+    sconti = dao.scontiRiga
     if sconti:
         for s in sconti:
             if s.tipo_sconto == 'percentuale':

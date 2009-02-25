@@ -37,19 +37,25 @@ from SchedaLavorazioneUtils import fillComboboxColoreStampa, fillComboboxCaratte
 from widgets.SchedeOrdinazioniEditWidget import SchedeOrdinazioniEditWidget
 from DuplicaInFattura import DuplicaInFattura
 
-class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdit):
+class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit):
     """
     Modifica i dati relativi ad una scheda lavorazione
     """
 
     def __init__(self, anagrafica):
-        SchedeOrdinazioniEditWidget.__init__(self)
-        self.pack_widgets()
-        self.connect_callbacks()
-        self.main_widget = self.anagrafica_schede_ordinazioni_detail_vbox
+        #SchedeOrdinazioniEditWidget.__init__(self)
+        AnagraficaEdit.__init__(self,
+                                anagrafica,
+                                'anagrafica_schede_ordinazioni_detail_vbox',
+                                'Dettagli scheda lavorazione',
+                                gladeFile='./promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade',
+                                module=True)
+        #self.pack_widgets()
+        #self.connect_callbacks()
+        #self.main_widget = self.anagrafica_schede_ordinazioni_detail_vbox
         self._prepareWindowPlacement()
         self.window =  self.anagrafica_schede_ordinazioni_detail_vbox
-        self._windowTitle ='Dettagli scheda lavorazione'
+        #self._windowTitle ='Dettagli scheda lavorazione'
         self._anagrafica = anagrafica
         #import pdb
         #pdb.set_trace()
@@ -261,9 +267,9 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
 
             self.setScontiRiga(row)
             try:
-                print "FFFFFFFFFFFFFFFFFFFFFF3333333333FFFFFFFFFFFFF", row.scontiRiga
+                row.scontiRiga
             except:
-                print "PIPPO"
+                row.scontiRiga = []
             row = getPrezzoNetto(row)
             self._parzialeLordo = self._parzialeLordo + mN(float(row.valore_unitario_lordo)*float(row.quantita))
             self._parzialeNetto = self._parzialeNetto + row.valore_unitario_netto * row.quantita
@@ -351,10 +357,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         return True
 
     def setRigaTreeview(self,modelRow=None,rowArticolo=None ):
-        #model = self._articoliTreeviewModel
-        #articolo = Articolo().getRecord(id=modelRow[0].id_articolo)
-        #print "GGGGGGGGGGGGGGGGGGGGGGGGGG", modelRow[0].id_listino,modelRow[0].id_articolo
-        #try:
+
         if rowArticolo:
             idArticolo = rowArticolo[0].id
             denArticolo = rowArticolo[0].denominazione
@@ -383,6 +386,11 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         daoRiga.id_listino = self._id_listino
         daoRiga.percentuale_iva = lettura_articolo['percentualeAliquotaIva']
         self.setScontiRiga(daoRiga)
+        try:
+            daoRiga.scontiRiga
+        except:
+            daoRiga.scontiRiga = []
+
         daoRiga.quantita = quantita
         daoRiga.id_multiplo = None
         daoRiga.moltiplicatore = None
@@ -397,21 +405,17 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget, AnagraficaEdi
         _descrizione = daoRiga.descrizione[0:6]
         _descrizione1 = daoRiga.descrizione[0:12]
         if (_descrizione.lower() == 'stampa') or (_descrizione1.lower() == 'contrassegno'):
-            print "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
             daoRiga.applicazione_sconti = 'scalare'
-            daoRiga.sconti = []
+            daoRiga.scontiRiga = []
         else:
             daoRiga.applicazione_sconti = self.dao.applicazione_sconti
             #for sconto in self.dao.sconti:
-            print "OLLELLLEELLELLLE", self.scontiTEMP
             for sconto in self.scontiTEMP:
-                print "SCONTOOOOOOOOOOOOOOOOOOOOOOOOO", sconto.valore
                 if tipo == 'documento':
                     from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
                     scontoRiga = ScontoRigaDocumento()
                 else:
                     scontoRiga = ScontoRigaScheda()
-                print "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
                 scontoRiga.valore = sconto.valore
                 scontoRiga.tipo_sconto = sconto.tipo_sconto
                 scontiRiga.append(scontoRiga)

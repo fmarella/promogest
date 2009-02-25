@@ -92,20 +92,25 @@ class RigaDocumento(Dao):
     multiplo = property(__multiplo)
 
     def __unita_base(self):
-        a =  params["session"].query(UnitaBase).filter(and_(riga.c.id_articolo == Articolo.id,  Articolo.id_unita_base==UnitaBase.id)).all()
-        if not a:
-            return a
-        else:
-            return a[0].denominazione_breve
+        #a =  params["session"].query(UnitaBase).filter(and_(riga.c.id_articolo == Articolo.id,  Articolo.id_unita_base==UnitaBase.id)).all()
+        #if not a:
+            #return a
+        #else:
+            #return a[0].denominazione_breve
+
+        if self.arti:return self.arti.unita_base
+        else:return ""
     unita_base = property(__unita_base)
 
     def __codiceArticolo(self):
         """ esempio di funzione  unita alla property """
-        a =  params["session"].query(Articolo).with_parent(self).filter(RigaDocumento.id_articolo==Articolo.id).all()
-        if not a:
-            return a
-        else:
-            return a[0].codice
+        #a =  params["session"].query(Articolo).with_parent(self).filter(RigaDocumento.id_articolo==Articolo.id).all()
+        #if not a:
+            #return a
+        #else:
+            #return a[0].codice
+        if self.arti: return self.arti.codice
+        else: return ""
     codice_articolo= property(__codiceArticolo)
 
     if "SuMisura" in modulesList:

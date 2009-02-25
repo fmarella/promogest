@@ -77,9 +77,18 @@ class RigaSchedaOrdinazione(Dao):
         totaleRiga = self.valore_unitario_netto * Decimal(str(self.quantita)) * Decimal(str(self.moltiplicatore))
         return totaleRiga.quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
 
-
     totaleRiga = property(_getTotaleRiga)
 
+    def __codiceArticolo(self):
+        """ esempio di funzione  unita alla property """
+        #a =  params["session"].query(Articolo).with_parent(self).filter(RigaSchedaOrdinazione.id_articolo==Articolo.id).all()
+        #if not a:
+            #return a
+        #else:
+            #return a[0].codice
+        if self.arti: return self.arti.codice
+        else: return ""
+    codice_articolo= property(__codiceArticolo)
 
     def _getAliquotaIva(self):
         # Restituisce la denominazione breve dell'aliquota iva
@@ -138,6 +147,7 @@ j = join(rigaschedaordinazione, riga)
 
 std_mapper = mapper(RigaSchedaOrdinazione, j, properties={
         'id':[rigaschedaordinazione.c.id, riga.c.id],
+        "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
             },
                     order_by=rigaschedaordinazione.c.id)
 
