@@ -756,7 +756,7 @@ def fillComboboxDestinazioniMerce(combobox, idCliente=None, filter=False):
     """ Crea l'elenco delle destinazioni merce """
     from promogest.dao.DestinazioneMerce import DestinazioneMerce
     model = gtk.ListStore(object, int, str)
-    dems = DestinazioneMerce().select(batchSize=None,offset=None )
+    dems = DestinazioneMerce().select(idCliente=idCliente, batchSize=None,offset=None )
     if not filter:
         emptyRow = ''
     else:
