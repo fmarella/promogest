@@ -38,5 +38,5 @@ std_mapper = mapper(AssociazioneArticoli, associazionearticolo, properties={
                     associazionearticolo.c.id_padre==Articolo.id, backref="asso_art_padre"),
                 "arto_figlio":relation(Articolo,primaryjoin=
                     associazionearticolo.c.id_figlio==Articolo.id, backref="asso_art_figlio")},
-                                            order_by=associazionearticolo.c.id)
+                                            order_by=associazionearticolo.c.posizione)
 

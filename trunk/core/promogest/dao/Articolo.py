@@ -336,7 +336,8 @@ class Articolo(Dao):
             """ esempio di funzione  unita alla property """
             arts = AssociazioneArticolo().select(idPadre=self.id,
                                                 offset=None,
-                                                batchSize=None)
+                                                batchSize=None
+                                                )
             return arts
 
         @property
@@ -426,7 +427,7 @@ class Articolo(Dao):
                 atc = ArticoloTagliaColore().getRecord(id=self.id)
                 if atc:
                     atc.delete()
-                    
+
             params["session"].delete(self)
             #self.saveToAppLog(self)
 
