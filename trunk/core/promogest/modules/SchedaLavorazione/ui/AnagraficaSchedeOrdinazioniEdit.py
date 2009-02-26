@@ -730,9 +730,9 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
 
         totaleScontato = self._parzialeNetto
 
-        self.tot_lordo_entry.set_text(str(totaleNonScontato or 0))
-        self.tot_scontato_entry.set_text(str(totaleScontato or 0))
-        self.dao.totale_lordo = totaleScontato or 0
+        self.tot_lordo_entry.set_text(str(mN(str(totaleNonScontato),2) or 0))
+        self.tot_scontato_entry.set_text(str(mN(str(totaleScontato),2) or 0))
+        self.dao.totale_lordo = mN(totaleScontato,2) or 0
 
 
     def on_listino_combobox_changed(self, combobox):
