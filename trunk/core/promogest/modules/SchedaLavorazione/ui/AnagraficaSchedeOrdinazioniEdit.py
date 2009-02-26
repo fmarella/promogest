@@ -450,7 +450,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         if self.dao.referente == '':
             obligatoryField(None, self.referente_entry,
                                     msg='Indicare un referente per la lavorazione')
-        print "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL", self.dao.data_matrimonio
         if (self.dao.data_matrimonio is None):
             obligatoryField(None, self.data_matrimonio_entry,
                                     msg='Inserire la data del matrimonio.')
@@ -689,7 +688,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                 return
 
             anagWindow.destroy()
-            self.mostraArticolo(anag.dao.id)
+            self.mostraArticolo(anag.dao)
 
         codice = None
         codiceABarre = None
@@ -714,7 +713,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
 
     def mostraArticolo(self, id):
         if self.daoListino:
-            self.setRigaTreeview(self.daoListino.id, id)
+            self.setRigaTreeview(rowArticolo=[id])
         self._refresh()
 
     def on_generazione_fattura_button_clicked(self, button):
