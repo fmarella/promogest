@@ -225,6 +225,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self._parzialeLordo = int(0)
         self._parzialeNetto = int(0)
         # controlliamo se è il dao è fresco o no
+
         if not firstLoad:
             self._getStrings()
         else:
@@ -286,8 +287,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                                                 row.valore_unitario_netto,
                                                 row.totaleRiga])
 
-
-
         # questi dati sono a posto,
         self.data_matrimonio_entry.set_text(dateToString(self.dao.data_matrimonio))
         self.data_ordine_al_fornitore_entry.set_text(dateToString(self.dao.data_ordine_al_fornitore))
@@ -301,7 +300,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             self.materiale_disponibile_no_checkbutton.set_active( not self.dao.disp_materiale)
         else:
             self.materiale_disponibile_no_checkbutton.set_active(False)
-
         self.nomi_sposi_entry.set_text(self.dao.nomi_sposi or '')
         self.lui_e_lei_entry.set_text(self.dao.lui_e_lei or '')
         self.numero_scheda_entry.set_text(str(self.dao.numero or 0))
@@ -313,13 +311,11 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.mezzo_ordinazione_entry.set_text(self.dao.mezzo_ordinazione or '')
         self.mezzo_spedizione_entry.set_text(self.dao.mezzo_spedizione or '')
         self.codice_spedizione_entry.set_text(self.dao.codice_spedizione or '')
-
         self.saldato_checkbutton.set_active(self.dao.documento_saldato or False)
         if self.dao.fattura is None:
             self.dao.fattura = False
         self.fattura_checkbutton.set_active(self.dao.fattura)
         self.ricevuta_checkbutton.set_active(not self.dao.fattura)
-
         self.n_documento_entry.set_text(self.dao.ricevuta_associata or '')
         self.data_ricevuta_entry.set_text(dateToString(self.dao.data_ricevuta))
         self.referente_entry.set_text(self.dao.referente or '')
@@ -356,7 +352,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.calcolaTotaleScheda()
         findComboboxRowFromId(self.listino_combobox, self._id_listino)
         self._loading=False
-        return True
+        #return True
 
     def setRigaTreeview(self,modelRow=None,rowArticolo=None ):
 
@@ -581,7 +577,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             fillComboboxAssociazioneArticoli(self.associazione_articoli_comboboxentry, search_string)
         else:
             row = model[selected]
-            if row[0] is not None:
+            if row[0]:
             #this call will return a list of "AssociazioneArticoli" (In the future: "Distinta Base") Dao objects
                 #self.setRigaTreeview(modelRow=[],rowArticolo=row)
                 #articoli = AssociazioneArticolo().select(idPadre= row[0].id)
@@ -594,6 +590,8 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                         row[2] = a.denominazione
                         self.setRigaTreeview(modelRow=[],rowArticolo=row)
                 self._refresh()
+                return
+                #print "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
             else:
                 msg="Nessuna Associazione di articoli e' stata ancora inserita"
                 dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.
@@ -603,7 +601,8 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                 dialog.destroy()
                 if self.associazione_articoli_comboboxentry.get_property("can-focus"):
                     self.associazione_articoli_comboboxentry.grab_focus()
-        return
+        #import pdb
+        #pdb.set_trace()
 
     def on_rimuovi_articolo_button_clicked(self, button):
         selection = self.articoli_treeview.get_selection()

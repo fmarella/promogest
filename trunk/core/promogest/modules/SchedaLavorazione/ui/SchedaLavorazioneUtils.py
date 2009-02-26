@@ -83,7 +83,7 @@ def fillComboboxAssociazioneArticoli(combobox, search_string=None):
     model = gtk.ListStore(object,str,str)
     model.clear()
     liss = Articolo().select(node =True,
-                            codice=search_string,
+                            codiceEM=search_string,
                             offset=None,
                             batchSize=None)
 
