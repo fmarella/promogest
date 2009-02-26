@@ -6,6 +6,8 @@
 # Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
 # Author: Francesco <francesco@promotux.it>
 
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.dao.Dao import Dao
 from promogest.dao.Listino import Listino
 from promogest.Environment import *
@@ -241,7 +243,7 @@ class SchedaOrdinazione(Dao):
     def _set_presso(self, value):
         self._presso = value
     presso = property(_get_presso, _set_presso)
-    
+
     def _get_via_piazza(self):
         if self.recapito_sped: return self.recapito_sped.via_piazza
         else: return ""
@@ -348,7 +350,7 @@ class SchedaOrdinazione(Dao):
                     params["session"].commit()
                 params['session'].delete(r)
             params["session"].commit()
-            
+
             return True
 
     def scontiSchedaOrdinazioneDel(self, id=None):
@@ -397,7 +399,7 @@ class SchedaOrdinazione(Dao):
         dt.ricevuta =  self._data_ricevuta
         dt.id_scheda = self.id
         params["session"].add(dt)
-        params["session"].commit()
+        #params["session"].commit()
 
         nss = NotaScheda().select(idScheda=self.id)
         if not nss:
@@ -410,7 +412,7 @@ class SchedaOrdinazione(Dao):
         ns.note_text =self._note_text
         ns.id_scheda = self.id
         params["session"].add(ns)
-        params["session"].commit()
+        #params["session"].commit()
 
         rss = RecapitoSpedizione().select(idScheda=self.id)
         if not rss:
@@ -427,7 +429,7 @@ class SchedaOrdinazione(Dao):
         rs.stato = self._stato
         rs.id_scheda = self.id
         params["session"].add(rs)
-        params["session"].commit()
+        #params["session"].commit()
 
         css = ContattoScheda().select(idScheda=self.id)
         if not css:
@@ -442,7 +444,7 @@ class SchedaOrdinazione(Dao):
         cs.skype = self._skype
         cs.id_scheda = self.id
         params["session"].add(cs)
-        params["session"].commit()
+        #params["session"].commit()
 
         # salvataggio degli articoli associati alla scheda
         for riga in self.__righeSchedaOrdinazione:
@@ -530,12 +532,20 @@ std_mapper = mapper(SchedaOrdinazione, schedaordinazione, properties={
                 "promemo":relation(PromemoriaSchedaOrdinazione,primaryjoin=
                     schedaordinazione.c.id==PromemoriaSchedaOrdinazione.id_scheda, backref="sched_ord"),
                 "datar":relation(Datario,primaryjoin=
-                    Datario.id_scheda==schedaordinazione.c.id, backref="sched_ord", uselist=False),
+                    Datario.id_scheda==schedaordinazione.c.id,
+                    cascade="all, delete",
+                    backref="sched_ord", uselist=False),
                 "cont_sched":relation(ContattoScheda,primaryjoin=
-                    ContattoScheda.id_scheda==schedaordinazione.c.id, backref="sched_ord", uselist=False),
+                    ContattoScheda.id_scheda==schedaordinazione.c.id,
+                    cascade="all, delete",
+                    backref="sched_ord", uselist=False),
                "recapito_sped":relation(RecapitoSpedizione,primaryjoin=
-                    RecapitoSpedizione.id_scheda==schedaordinazione.c.id, backref="sched_ord", uselist=False),
+                    RecapitoSpedizione.id_scheda==schedaordinazione.c.id,
+                    cascade="all, delete",
+                    backref="sched_ord", uselist=False),
                 "nota_scheda":relation(NotaScheda,primaryjoin=
-                    NotaScheda.id_scheda==schedaordinazione.c.id, backref="sched_ord", uselist=False) },
-                order_by=schedaordinazione.c.id)
+                    NotaScheda.id_scheda==schedaordinazione.c.id,
+                    cascade="all, delete",
+                    backref="sched_ord", uselist=False) },
+                order_by=desc(schedaordinazione.c.numero))
 

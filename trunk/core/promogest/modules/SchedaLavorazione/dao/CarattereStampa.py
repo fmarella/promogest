@@ -23,4 +23,4 @@ caratteristampa=Table('caratteri_stampa', params['metadata'],schema = params['sc
                                                                         autoload=True)
 
 std_mapper = mapper(CarattereStampa, caratteristampa, properties={},
-                    order_by=caratteristampa.c.id)
+                    order_by=caratteristampa.c.denominazione)

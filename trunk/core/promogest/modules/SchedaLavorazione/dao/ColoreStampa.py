@@ -29,4 +29,4 @@ class ColoreStampa(Dao):
 coloristampa=Table('colori_stampa',params['metadata'],schema = params['schema'],
                                                                 autoload=True)
 
-std_mapper = mapper(ColoreStampa, coloristampa, order_by=coloristampa.c.id)
+std_mapper = mapper(ColoreStampa, coloristampa, order_by=coloristampa.c.denominazione)
