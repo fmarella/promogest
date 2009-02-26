@@ -144,12 +144,26 @@ class DuplicaInFattura(object):
             riga_testata.quantita = riga.quantita
             riga_testata.id_multiplo = riga.id_multiplo
             riga_testata.moltiplicatore = riga.moltiplicatore
-            riga_testata.scontiRigaDocumento = riga.sconti
-            print "FFFFFFFFFFFFFFFFFFFFAAAAAAAAAAAAAAAAAAAAAAAAAAA",riga.sconti
-            if riga.sconti:
-                print "TADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                for sconto in riga.sconti:
+            #print "FFFFFFFFFFFFFFFFFFFFAAAAAAAAAAAAAAAAAAAAAAAAAAA",riga.scontiRiga
+            #for sconto in self.scontiTEMP:
+                #if tipo == 'documento':
+                    #from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
+                    #scontoRiga = ScontoRigaDocumento()
+                #else:
+                    #scontoRiga = ScontoRigaScheda()
+                #scontoRiga.valore = sconto.valore
+                #scontoRiga.tipo_sconto = sconto.tipo_sconto
+                #scontiRiga.append(scontoRiga)
+                #daoRiga.scontiRiga = scontiRiga
+            if riga.scontiRiga:
+                #print "TADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                for sconto in riga.scontiRiga:
                     self.ui.setScontiRiga(riga_testata, 'documento')
+            #print "FFFFFFFFFFFFFFFFFFFFAAAAAAAAAAAAAAAAAAAAAAAAAAA",riga_testata.scontiRiga
+            try:
+                riga_testata.scontiRigaDocumento = riga_testata.scontiRiga
+            except:
+                riga_testata.scontiRigaDocumento = []
 
             riga_testata.valore_unitario_lordo = calcolaPrezzoIva(riga.valore_unitario_lordo, (-1*riga.percentuale_iva))
             riga_testata.valore_unitario_netto =calcolaPrezzoIva(riga.valore_unitario_netto, (-1*riga.percentuale_iva))

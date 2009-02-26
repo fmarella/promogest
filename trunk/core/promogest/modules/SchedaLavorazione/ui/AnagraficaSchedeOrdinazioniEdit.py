@@ -9,6 +9,8 @@
 import pygtk
 import gobject, datetime
 from decimal import *
+import string
+from random import Random
 from promogest import Environment
 from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 from promogest.modules.SchedaLavorazione.ui.AnagraficaCaratteriStampa import AnagraficaCaratteriStampa
@@ -244,7 +246,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                 self.setRigaTreeview(m)
         #pulisco tutto
         self._clear()
-        print "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
+
         if  self._id_listino is None and self.righeTEMP:
             self._id_listino = self.righeTEMP[0].id_listino
             self.daoListino = Listino().select(id=self._id_listino)
@@ -931,3 +933,17 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         from promogest.dao.Cliente import Cliente
         self.dao.id_cliente = self.id_cliente_customcombobox.getId()
         self.daoCliente = Cliente().getRecord(id=self.dao.id_cliente)
+
+
+    def on_genera_button_clicked(self, button):
+        username = self.nomi_sposi_entry.get_text().replace("-","").replace(" ","").strip()[0:8]+"Web"
+        self.userid_entry.set_text(username)
+        newpasswd = ''.join( Random().sample(string.letters+string.digits, 6) )
+        newpasswd1 = ''.join( Random().sample(string.letters+string.digits, 6) )
+        self.passwd_entry.set_text(newpasswd)
+        self.site_manager_entry.set_text(newpasswd1)
+        self._refresh()
+        print "GENERA I DATI PER L'EMAIL"
+
+    def on_email_send_button_clicked(self, button):
+        print "SPEDISCI I DATI PER L?EMAIL"
