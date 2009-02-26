@@ -206,6 +206,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             self.dao.data_presa_in_carico = datetime.datetime.today()
             self._dataScheda = dateToString(self.dao.data_presa_in_carico)
             self._numeroScheda = 0
+            self._articoliTreeviewModel.clear()
             self._clear()
             self._refresh()
         else:
@@ -336,6 +337,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.skype_entry.set_text(self.dao.skype or '')
         self.nome_contatto_entry.set_text(self.dao.operatore or '')
         buffer = self.note_text_textview.get_buffer()
+
         buffer.set_text(self.dao.note_text or '')
         self.note_final_entry.set_text(self.dao.note_final or '')
         self.note_fornitore_entry.set_text(self.dao.note_fornitore or '')
@@ -708,7 +710,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         anagWindow.connect("hide",
                            on_ricerca_articolo_hide,
                            anag)
-        anagWindow.set_transient_for(self.dialogTopLevel)
+        #anagWindow.set_transient_for(self.dialogTopLevel)
         anag.show_all()
 
     def mostraArticolo(self, id):
@@ -825,7 +827,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         """
         buffer = self.note_text_textview.get_buffer()
         start, end = buffer.get_bounds()
-        self.dao.note_text = buffer.get_text(start,end)
+        self.dao.note_text = buffer.get_text(start, end)
         self.dao.note_final = self.note_final_entry.get_text()
         self.dao.note_fornitore = self.note_fornitore_entry.get_text()
         self.dao.note_spedizione = self.note_spedizione_entry.get_text()
@@ -901,6 +903,8 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.n_documento_entry.set_text('')
         self.mezzo_ordinazione_entry.set_text('')
         self.mezzo_spedizione_entry.set_text('')
+        self.colore_stampa_combobox.set_active(-1)
+        self.carattere_stampa_combobox.set_active(-1)
 
     def on_anagrafica_colori_button_clicked(self, button):
         anag = AnagraficaColoriStampa()
