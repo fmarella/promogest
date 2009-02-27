@@ -56,7 +56,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         #self.connect_callbacks()
         #self.main_widget = self.anagrafica_schede_ordinazioni_detail_vbox
         self._prepareWindowPlacement()
-        self.window =  self.anagrafica_schede_ordinazioni_detail_vbox
+        #self.window =  self.anagrafica_schede_ordinazioni_detail_vbox
         #self._windowTitle ='Dettagli scheda lavorazione'
         self._anagrafica = anagrafica
         #import pdb
@@ -78,6 +78,9 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.righeTEMP = []
         self.scontiTEMP = []
         self.scontiSuTotale = []
+        #self._clear()
+        self.draw()
+
 
     def draw(self):
         """
@@ -89,7 +92,8 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.id_cliente_customcombobox.setSingleValue()
         self.id_cliente_customcombobox.setOnChangedCall(self.on_cliente_changed)
         self.id_cliente_customcombobox.setType(self._tipoPersonaGiuridica)
-
+        fillComboboxCarattereStampa(self.carattere_stampa_combobox)
+        fillComboboxColoreStampa(self.colore_stampa_combobox)
         #popolazione delle treeview
         treeview = self.articoli_treeview
 
@@ -194,8 +198,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
 
         self._articoliTreeviewModel = gtk.ListStore(object, str, str, str, str, str, str,str,str)
         self.articoli_treeview.set_model(self._articoliTreeviewModel)
-        fillComboboxCarattereStampa(self.carattere_stampa_combobox)
-        fillComboboxColoreStampa(self.colore_stampa_combobox)
+
         self.sconti_scheda_widget.button.connect('toggled',self.on_sconti_scheda_widget_button_toggled)
 
     def setDao(self, dao):
@@ -333,7 +336,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.skype_entry.set_text(self.dao.skype or '')
         self.nome_contatto_entry.set_text(self.dao.operatore or '')
         buffer = self.note_text_textview.get_buffer()
-
         buffer.set_text(self.dao.note_text or '')
         self.note_final_entry.set_text(self.dao.note_final or '')
         self.note_fornitore_entry.set_text(self.dao.note_fornitore or '')
@@ -538,6 +540,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         scontiSuTotale = []#{}
 
         res = self.sconti_scheda_widget.getSconti()
+        #res = []
         if res:
             for sc in res:
                 daoSconto = ScontoSchedaOrdinazione()
@@ -549,7 +552,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.dao.scontiSuTotale = scontiSuTotale
         self.scontiTEMP = scontiSuTotale
 
-
         model = self.articoli_treeview.get_model()
         for m in model:
             self.setRigaTreeview(modelRow = m)
@@ -560,7 +562,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.dao.sconti = self.scontiSuTotale
         #self.dao.scontiSuTotale = self.scontiSuTotale
         self.dao.persist()
-        self._refresh()
+        #self._refresh()
 
     def on_associazione_articoli_comboboxentry_changed(self, combobox):
         if self._loading:
@@ -709,7 +711,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         anagWindow.connect("hide",
                            on_ricerca_articolo_hide,
                            anag)
-        #anagWindow.set_transient_for(self.dialogTopLevel)
+        anagWindow.set_transient_for(self.dialogTopLevel)
         anag.show_all()
 
     def mostraArticolo(self, id):
@@ -751,21 +753,21 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
 
         self.dao.id_magazzino = findIdFromCombobox(combobox)
 
-        self._refresh()
+        #self._refresh()
 
     def on_colore_stampa_combobox_changed(self, combobox):
         if self._loading:
             return
         self.dao.id_colore_stampa = findIdFromCombobox(self.colore_stampa_combobox)
         self.daoColoreStampa = ColoreStampa().getRecord(id=self.dao.id_colore_stampa)
-        self._refresh()
+        #self._refresh()
 
     def on_carattere_stampa_combobox_changed(self, combobox):
         if self._loading:
             return
         self.dao.id_carattere_stampa = findIdFromCombobox(self.carattere_stampa_combobox)
         self.daoCarattereStampa = CarattereStampa().getRecord(id=self.dao.id_carattere_stampa)
-        self._refresh()
+        #self._refresh()
 
     def on_ricevuta_checkbutton_toggled(self, checkbutton):
         if self._loading:
@@ -773,28 +775,28 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         #se a true allora fattura_checkbutton a false e viceversa
         status = checkbutton.get_active()
         self.dao.fattura = not status
-        self._refresh()
+        #self._refresh()
 
     def on_fattura_checkbutton_toggled(self, checkbutton):
         if self._loading:
             return
         status = checkbutton.get_active()
         self.dao.fattura = status
-        self._refresh()
+        #self._refresh()
 
     def on_bomba_si_checkbutton_toggled(self, checkbutton):
         if self._loading:
             return
         status = checkbutton.get_active()
         self.dao.bomba_in_cliche = status
-        self._refresh()
+        #self._refresh()
 
     def on_bomba_no_checkbutton_toggled(self, checkbutton):
         if self._loading:
             return
         status = checkbutton.get_active()
         self.dao.bomba_in_cliche = not status
-        self._refresh()
+        #self._refresh()
 
     def on_saldato_checkbutton_toggled(self, checkbutton):
         if self._loading:
@@ -807,14 +809,14 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             return
         status = checkbutton.get_active()
         self.dao.disp_materiale = status
-        self._refresh()
+        #self._refresh()
 
     def on_materiale_disponibile_no_checkbutton_toggled(self, checkbutton):
         if self._loading:
             return
         status = checkbutton.get_active()
         self.dao.disp_materiale = not status
-        self._refresh()
+        #self._refresh()
 
 
 

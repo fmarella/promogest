@@ -495,6 +495,10 @@ class SchedaOrdinazione(Dao):
             dic = {k:and_(Datario.id_scheda==schedaordinazione.c.id,Datario.spedizione >= v)}
         elif k== 'aDataSpedizione':
             dic = {k:and_(Datario.id_scheda==schedaordinazione.c.id,Datario.spedizione <= v)}
+        elif k == 'daDataScheda':
+            dic = {k:and_(Datario.id_scheda==schedaordinazione.c.id,Datario.presa_in_carico >= v)}
+        elif k== 'aDataScheda':
+            dic = {k:and_(Datario.id_scheda==schedaordinazione.c.id,Datario.presa_in_carico <= v)}
         elif k == 'daDataConsegna':
             dic = {k:and_(Datario.id_scheda==schedaordinazione.c.id,Datario.consegna >= v)}
         elif k== 'aDataConsegna':

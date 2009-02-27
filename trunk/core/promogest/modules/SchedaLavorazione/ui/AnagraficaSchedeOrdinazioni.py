@@ -6,34 +6,19 @@
 # Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
 # Author: M3nt0r3 <m3nt0r3@gmail.com>
 
-import pygtk
-import gobject, datetime
+#import pygtk
+#import gobject,
+import datetime
 from decimal import *
 
-from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
-from promogest.modules.SchedaLavorazione.ui.AnagraficaCaratteriStampa import AnagraficaCaratteriStampa
-from promogest.modules.SchedaLavorazione.ui.AnagraficaColoriStampa import AnagraficaColoriStampa
+from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport
+#from promogest.modules.SchedaLavorazione.ui.AnagraficaCaratteriStampa import AnagraficaCaratteriStampa
+#from promogest.modules.SchedaLavorazione.ui.AnagraficaColoriStampa import AnagraficaColoriStampa
 from promogest import Environment
-from promogest.modules.SchedaLavorazione.dao import SchedaOrdinazione
+#from promogest.modules.SchedaLavorazione.dao import SchedaOrdinazione
 from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
-from promogest.modules.SchedaLavorazione.dao.RigaSchedaOrdinazione import RigaSchedaOrdinazione
-from promogest.modules.SchedaLavorazione.dao.ScontoSchedaOrdinazione import ScontoSchedaOrdinazione
-from promogest.modules.SchedaLavorazione.dao.ColoreStampa import ColoreStampa
-from promogest.modules.SchedaLavorazione.dao.CarattereStampa import CarattereStampa
-from promogest.dao.Listino import Listino
-from promogest.dao.ListinoArticolo import ListinoArticolo
-from promogest.dao.Pagamento import Pagamento
-from promogest.modules.SchedaLavorazione.dao.ScontoRigaScheda import ScontoRigaScheda
-from promogest.modules.DistintaBase.dao.AssociazioneArticolo import AssociazioneArticolo
-from promogest.dao.Articolo import Articolo
-from promogest.dao.UnitaBase import UnitaBase
-from promogest.dao.Cliente import Cliente
-from promogest.modules.SchedaLavorazione.dao.PromemoriaSchedaOrdinazione import PromemoriaSchedaOrdinazione
-from promogest.dao.TestataDocumento import TestataDocumento
-from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
 from SchedaLavorazioneUtils import fillComboboxColoreStampa, fillComboboxCarattereStampa, fillComboboxAssociazioneArticoli, fetch_date, get_nomi_sposi, create_schede_ordinazioni, getPrezzoNetto
-from widgets.SchedeOrdinazioniEditWidget import SchedeOrdinazioniEditWidget
 from AnagraficaSchedeOrdinazioniEdit import AnagraficaSchedeOrdinazioniEdit
 
 class AnagraficaSchedeOrdinazioni(Anagrafica):
@@ -56,61 +41,61 @@ class AnagraficaSchedeOrdinazioni(Anagrafica):
         #self.toolbar1.insert(separator,-1)
         #self.toolbar1.insert(button,-1)
 
-    def duplicate(self,dao):
-        """ Duplica le informazioni relative ad una scheda scelta su una nuova (a meno del numero) """
-        if dao is None:
-            return
+    #def duplicate(self,dao):
+        #""" Duplica le informazioni relative ad una scheda scelta su una nuova (a meno del numero) """
+        #if dao is None:
+            #return
 
-        self.editElement._duplicatedDaoId = dao.id
-        self.editElement.dao = SchedaOrdinazione(Environment.connection)
-##------------------------------------------------------------------------------
-        #copia dei dati della vecchia scheda Ordinazione in una nuova
-        self.editElement.dao.note_text = dao.note_text
-        self.editElement.dao.note_final = dao.note_final
-        self.editElement.dao.note_spedizione = dao.note_spedizione
-        self.editElement.dao.note_fornitore = dao.note_fornitore
-        self.editElement.dao.nomi_sposi = dao.nomi_sposi
-        self.editElement.dao.provenienza = dao.provenienza
-        self.editElement.dao.referente = dao.referente
-        self.editElement.dao.via = dao.via
-        self.editElement.dao.num_civ = dao.num_civ
-        self.editElement.dao.zip = dao.zip
-        self.editElement.dao.localita = dao.localita
-        self.editElement.dao.provincia = dao.provincia
-        self.editElement.dao.stato  = dao.stato
-        self.editElement.dao.id_colore_stampa = dao.id_colore_stampa
-        self.editElement.dao.id_carattere_stampa = dao.id_carattere_stampa
-        self.editElement.dao.id_listino = dao.id_listino
-        self.editElement.dao.data_matrimonio = dao.data_matrimonio
-        self.editElement.dao.data_presa_in_carico = dao.data_presa_in_carico
-        self.editElement.dao.data_ricevuta = dao.data_ricevuta
-        self.editElement.dao.data_spedizione = dao.data_spedizione
-        self.editElement.dao.data_ordine_al_fornitore = dao.data_ordine_al_fornitore
-        self.editElement.dao.data_consegna_bozza = dao.data_consegna_bozza
-        self.editElement.dao.data_consegna = dao.data_consegna
-        self.editElement.dao.nome_contatto = dao.nome_contatto
-        self.editElement.dao.prima_email = dao.prima_email
-        self.editElement.dao.seconda_email = dao.seconda_email
-        self.editElement.dao.telefono = dao.telefono
-        self.editElement.dao.cellulare = dao.cellulare
-        self.editElement.dao.skype = dao.skype
-        self.editElement.dao.operatore = dao.operatore
-        self.editElement.dao.applicazione_sconti = dao.applicazione_sconti
-        self.editElement.dao.righe = dao.righe
-        self.editElement.dao.documento_saldato = dao.documento_saldato
-        self.editElement.dao.ricevuta_associata = dao.ricevuta_associata
-        self.editElement.dao.fattura_associata = dao.fattura_associata
-        self.editElement.dao.totale_lordo = dao.totale_lordo
-        self.editElement.dao.disp_materiale = dao.disp_materiale
-        self.editElement.setVisible(True)
-        self.editElement._refresh()
+        #self.editElement._duplicatedDaoId = dao.id
+        #self.editElement.dao = SchedaOrdinazione(Environment.connection)
+###------------------------------------------------------------------------------
+        ##copia dei dati della vecchia scheda Ordinazione in una nuova
+        #self.editElement.dao.note_text = dao.note_text
+        #self.editElement.dao.note_final = dao.note_final
+        #self.editElement.dao.note_spedizione = dao.note_spedizione
+        #self.editElement.dao.note_fornitore = dao.note_fornitore
+        #self.editElement.dao.nomi_sposi = dao.nomi_sposi
+        #self.editElement.dao.provenienza = dao.provenienza
+        #self.editElement.dao.referente = dao.referente
+        #self.editElement.dao.via = dao.via
+        #self.editElement.dao.num_civ = dao.num_civ
+        #self.editElement.dao.zip = dao.zip
+        #self.editElement.dao.localita = dao.localita
+        #self.editElement.dao.provincia = dao.provincia
+        #self.editElement.dao.stato  = dao.stato
+        #self.editElement.dao.id_colore_stampa = dao.id_colore_stampa
+        #self.editElement.dao.id_carattere_stampa = dao.id_carattere_stampa
+        #self.editElement.dao.id_listino = dao.id_listino
+        #self.editElement.dao.data_matrimonio = dao.data_matrimonio
+        #self.editElement.dao.data_presa_in_carico = dao.data_presa_in_carico
+        #self.editElement.dao.data_ricevuta = dao.data_ricevuta
+        #self.editElement.dao.data_spedizione = dao.data_spedizione
+        #self.editElement.dao.data_ordine_al_fornitore = dao.data_ordine_al_fornitore
+        #self.editElement.dao.data_consegna_bozza = dao.data_consegna_bozza
+        #self.editElement.dao.data_consegna = dao.data_consegna
+        #self.editElement.dao.nome_contatto = dao.nome_contatto
+        #self.editElement.dao.prima_email = dao.prima_email
+        #self.editElement.dao.seconda_email = dao.seconda_email
+        #self.editElement.dao.telefono = dao.telefono
+        #self.editElement.dao.cellulare = dao.cellulare
+        #self.editElement.dao.skype = dao.skype
+        #self.editElement.dao.operatore = dao.operatore
+        #self.editElement.dao.applicazione_sconti = dao.applicazione_sconti
+        #self.editElement.dao.righe = dao.righe
+        #self.editElement.dao.documento_saldato = dao.documento_saldato
+        #self.editElement.dao.ricevuta_associata = dao.ricevuta_associata
+        #self.editElement.dao.fattura_associata = dao.fattura_associata
+        #self.editElement.dao.totale_lordo = dao.totale_lordo
+        #self.editElement.dao.disp_materiale = dao.disp_materiale
+        #self.editElement.setVisible(True)
+        #self.editElement._refresh()
 
-    def on_mail_import_button_clicked(self, button):
-        import promogest.modules.SchedaLavorazione.lib.PopReader
-        thread = threading.Thread(target=PopReader.fetchMail)
-        thread.start()
-        thread.join(1.3)
-        create_schede_ordinazioni(PopReader.returned_mail_list)
+    #def on_mail_import_button_clicked(self, button):
+        #import promogest.modules.SchedaLavorazione.lib.PopReader
+        #thread = threading.Thread(target=PopReader.fetchMail)
+        #thread.start()
+        #thread.join(1.3)
+        #create_schede_ordinazioni(PopReader.returned_mail_list)
 
 class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica degli articoli """
@@ -212,7 +197,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         fillComboboxColoreStampa(self.colore_stampa_filter_combobox, filter=True)
-        fillComboboxCarattereStampa(self.carattere_stampa_filter_combobox, True)
+        fillComboboxCarattereStampa(self.carattere_stampa_filter_combobox, filter=True)
         fillComboboxPagamenti(self.tipo_pagamento_filter_combobox, filter=True)
 
         self.clear()
