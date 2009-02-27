@@ -23,7 +23,6 @@ GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
 
-
 #class AssociazioniArticoli(object):
     #VIEW_TYPE = ('anagrafica', 'Associazioni Articoli', 'associazione_articolo24x24.png')
     #def getApplication(self):

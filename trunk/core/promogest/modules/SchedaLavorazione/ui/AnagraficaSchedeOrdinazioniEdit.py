@@ -11,6 +11,7 @@ import gobject, datetime
 from decimal import *
 import string
 from random import Random
+import threading
 from promogest import Environment
 from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 from promogest.modules.SchedaLavorazione.ui.AnagraficaCaratteriStampa import AnagraficaCaratteriStampa
@@ -304,7 +305,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         else:
             self.materiale_disponibile_no_checkbutton.set_active(False)
         self.nomi_sposi_entry.set_text(self.dao.nomi_sposi or '')
-        self.lui_e_lei_entry.set_text(self.dao.lui_e_lei or '')
         self.numero_scheda_entry.set_text(str(self.dao.numero or 0))
         self.bomba_si_checkbutton.set_active(self.dao.bomba_in_cliche or False)
         if self.dao.bomba_in_cliche is not None:
@@ -340,8 +340,15 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.note_final_entry.set_text(self.dao.note_final or '')
         self.note_fornitore_entry.set_text(self.dao.note_fornitore or '')
         self.note_spedizione_entry.set_text(self.dao.note_spedizione or '')
-        self.userid_entry.set_text(self.dao.userid_cliente or '')
-        self.passwd_entry.set_text(self.dao.passwd_cliente or '')
+
+        self.user_id_entry.set_text(self.dao.userid_cliente or '')
+        self.lui_e_lei_entry.set_text(self.dao.lui_e_lei or '')
+        self.password_sito_entry.set_text(self.dao.password_sito or "")
+        self.password_user_entry.set_text(self.dao.passwd_cliente or '')
+        self.password_amici_entry.set_text(self.dao.password_amici or "")
+
+
+
         if self.dao.id_colore_stampa is not None:
             findComboboxRowFromId(self.colore_stampa_combobox, self.dao.id_colore_stampa)
         if self.dao.id_carattere_stampa is not None:
@@ -833,9 +840,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.dao.note_fornitore = self.note_fornitore_entry.get_text()
         self.dao.note_spedizione = self.note_spedizione_entry.get_text()
         self.dao.referente = self.referente_entry.get_text()
-        self.dao.userid_cliente = self.userid_entry.get_text()
-        self.dao.passwd_cliente = self.passwd_entry.get_text()
-        self.dao.lui_e_lei = self.lui_e_lei_entry.get_text()
         self.dao.via_piazza = self.via_piazza_entry.get_text()
         self.dao.presso = self.presso_entry.get_text()
         self.dao.zip = self.zip_entry.get_text()
@@ -862,7 +866,11 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.dao.mezzo_ordinazione = self.mezzo_ordinazione_entry.get_text()
         self.dao.mezzo_spedizione = self.mezzo_spedizione_entry.get_text()
         self.dao.codice_spedizione = self.codice_spedizione_entry.get_text()
-
+        self.dao.userid_cliente = self.user_id_entry.get_text()
+        self.dao.passwd_cliente = self.password_user_entry.get_text()
+        self.dao.lui_e_lei = self.lui_e_lei_entry.get_text()
+        self.dao.password_sito = self.password_sito_entry.get_text()
+        self.dao.password_amici = self.password_amici_entry.get_text()
 
     def _clear(self):
         buffer = self.note_text_textview.get_buffer()
@@ -877,8 +885,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.note_fornitore_entry.set_text('')
         self.note_spedizione_entry.set_text('')
         self.referente_entry.set_text('')
-        self.userid_entry.set_text('')
-        self.passwd_entry.set_text('')
         self.via_piazza_entry.set_text('')
         self.presso_entry.set_text('')
         self.zip_entry.set_text('')
@@ -904,6 +910,11 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.n_documento_entry.set_text('')
         self.mezzo_ordinazione_entry.set_text('')
         self.mezzo_spedizione_entry.set_text('')
+        self.user_id_entry.set_text('')
+        self.lui_e_lei_entry.set_text('')
+        self.password_user_entry.set_text('')
+        self.password_sito_entry.set_text('')
+        self.password_amici_entry.set_text('')
         self.colore_stampa_combobox.set_active(-1)
         self.carattere_stampa_combobox.set_active(-1)
 
@@ -942,13 +953,64 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
 
     def on_genera_button_clicked(self, button):
         username = self.nomi_sposi_entry.get_text().replace("-","").replace(" ","").strip()[0:8]+"Web"
-        self.userid_entry.set_text(username)
-        newpasswd = ''.join( Random().sample(string.letters+string.digits, 6) )
-        newpasswd1 = ''.join( Random().sample(string.letters+string.digits, 6) )
-        self.passwd_entry.set_text(newpasswd)
-        self.site_manager_entry.set_text(newpasswd1)
-        self._refresh()
+        self.user_id_entry.set_text(username)
+        self.password_user_entry.set_text(str(''.join( Random().sample(string.letters+string.digits, 6))))
+        self.password_sito_entry.set_text(str(''.join( Random().sample(string.letters+string.digits, 6))))
+        self.password_amici_entry.set_text(str(''.join( Random().sample(string.letters+string.digits, 6))))
         print "GENERA I DATI PER L'EMAIL"
 
     def on_email_send_button_clicked(self, button):
+
+        if not Environment.conf.emailcompose:
+            msg = '\nErrore nella apertura del client di posta Thunderbird\n controllare il file configure, GRAZIE'
+            overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
+                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                                    gtk.MESSAGE_ERROR,
+                                                    gtk.BUTTONS_CANCEL, msg)
+            response = overDialog.run()
+            overDialog.destroy()
+            return
+            #self.printDialog.riferimento2_combobox_entry.child.set_text("")
+        else:
+            email = self.prima_email_entry.get_text()
+            userid_cliente = self.user_id_entry.get_text()
+            passwd_cliente = self.password_user_entry.get_text()
+            lui_e_lei = self.lui_e_lei_entry.get_text()
+            password_sito = self.password_sito_entry.get_text()
+            password_amici = self.password_amici_entry.get_text()
+
+            emailAPP = Environment.conf.emailcompose
+            soggetto = Environment.conf.SchedaLavorazione.soggetto
+            bodypart = ",body="+ Environment.conf.SchedaLavorazione.body %(lui_e_lei,
+                                                                userid_cliente,
+                                                                passwd_cliente,
+                                                                password_sito,
+                                                                password_amici)
+            bodypart2 = Environment.conf.SchedaLavorazione.signature
+            body = bodypart+bodypart2
+
+#def applicationThread():
+                #toemail = " -compose to=%s" %self.email
+                #fileName = self._pdfName +'.pdf'
+                #subject= ",subject="+conf.subject %fileName
+                #attachemail = ",attachment=file://%s" %pdfFile
+                #body = conf.body %fileName
+                #os.system(emailAPP + toemail+subject+body+ attachemail)
+                #self.email = ""
+
+
+
+            def applicationThread():
+                toemail = " -compose to=%s" %email
+                #fileName = self._pdfName +'.pdf'
+                subject= ",subject="+soggetto
+                #attachemail = ",attachment=file://%s" %pdfFile
+                os.system(emailAPP + toemail+subject+body)
+                
+            t = threading.Thread(group=None, target=applicationThread,\
+                                    name='email composer',\
+                                    args=(), kwargs={})
+            t.setDaemon(True) # FIXME: are we sure?
+            t.start()
+
         print "SPEDISCI I DATI PER L?EMAIL"

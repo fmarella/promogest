@@ -179,9 +179,7 @@ class Anagrafica(GladeWidget):
         xmlMarkup = data['XmlMarkup']
 
         data_export = self.filter.xptDaoList
-        #print "VEDIAMO UN PO?", data_export
-        #self.exporttoods(data_export)
-        #return
+
         values = self.set_data_list(data_export)
         saveDialog.show_all()
         response = saveDialog.run()
@@ -282,7 +280,7 @@ class Anagrafica(GladeWidget):
                 self.dao = None
         if self.dao is not None:
             self.htmlHandler.setDao(self.dao)
-        #print str(self.dao is not None)
+
         self.record_edit_button.set_sensitive(self.dao is not None)
         self.record_edit_menu.set_sensitive(self.dao is not None)
 
@@ -319,7 +317,7 @@ class Anagrafica(GladeWidget):
             return
         if self.dao is not None:
             self.htmlHandler.setDao(self.dao)
-        #print str(self.dao is not None)
+
         self.record_edit_button.set_sensitive(self.dao is not None)
         self.record_edit_menu.set_sensitive(self.dao is not None)
 
@@ -1240,7 +1238,6 @@ class AnagraficaEdit(GladeWidget):
     def on_anagrafica_complessa_detail_dialog_response(self, dialog, responseId):
         """ Main function connected with ok applica and cancel in Anagrafica Edit"""
         if responseId == gtk.RESPONSE_CANCEL:
-            #print "7777777777777777777777777777777777777777777777777777777777777777777777777777777777"
             #self.clearDao()
             self.setVisible(False)
         elif responseId == gtk.RESPONSE_OK:
@@ -1361,7 +1358,6 @@ class AnagraficaPrintPreview(GladeWidget):
         PrintDialogHandler(self.windowTitle)
 
     def on_html_request_url(self,document, url, stream):
-        print "MAMAMAMAMAMA",link, stream
         def render():
             f = open(url, 'rb')
             stream.write(f.read())

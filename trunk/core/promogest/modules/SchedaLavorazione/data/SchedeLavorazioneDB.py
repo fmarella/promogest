@@ -93,6 +93,8 @@ if hasattr(conf, 'SchedaLavorazione'):
                             Column('applicazione_sconti',String(20),nullable=True),
                             Column('totale_lordo',Numeric,nullable=True),
                             Column('userid_cliente',String(100),nullable=True),
+                            Column('password_amici',String(100),nullable=True),
+                            Column('password_sito',String(100),nullable=True),
                             Column('passwd_cliente',String(100),nullable=True),
                             Column('lui_e_lei',String(100),nullable=True),
                             Column('id_colore_stampa',Integer, ForeignKey(params['schema']+'.colori_stampa.id',onupdate="CASCADE",ondelete="RESTRICT"),nullable=False),
