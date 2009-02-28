@@ -39,6 +39,9 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 import threading
 from promogest.lib import feedparser
+#if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
+    #from promogest.modules.RuoliAzioni.data.RuoliAzioniDB import *
+
 
 windowGroup = []
 statusIcon = gtk.StatusIcon()
@@ -80,10 +83,16 @@ class Login(GladeApp):
         self.azienda_comboboxentry.set_model(model)
         self.azienda_comboboxentry.set_text_column(0)
         self.azienda_comboboxentry.set_active(0)
+
+        #ATTENZIONE METTO COME RUOLO ADMIN PER IL MOMENTO RICONTROLLARE
         model_usr = gtk.ListStore(str, str)
         model_usr.clear()
         for a in usrs:
-            model_usr.append((a.username, a.ruolo))
+            if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
+                model_usr.append((a.username, a.ruolo))
+            else:
+                model_usr.append((a.username, "Admin"))
+
         renderer_usr = gtk.CellRendererText()
         self.username_comboxentry.pack_start(renderer_usr, True)
         self.username_comboxentry.add_attribute(renderer_usr, 'text', 0)
@@ -170,7 +179,14 @@ class Login(GladeApp):
                     #thread.join(1.3)
                 Environment.params['usernameLoggedList'][0] = users[0].id
                 Environment.params['usernameLoggedList'][1] = users[0].username
-                Environment.params['usernameLoggedList'][2] = users[0].id_role
+                if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
+                    from promogest.modules.RuoliAzioni.dao.UserRole import UserRole
+                    idruolo = UserRole().select(idUser=users[0].id)
+                    if idruolo:
+                        Environment.params['usernameLoggedList'][2] = idruolo[0].id_role
+                else:
+                    Environment.params['usernameLoggedList'][2] = "Admin"
+
                 if hasAction(actionID=1):
                     Environment.params["schema"]=self.azienda
                     from promogest.lib.UpdateDB import *

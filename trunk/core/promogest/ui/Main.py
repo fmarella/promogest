@@ -16,7 +16,6 @@ from ElencoMagazzini import ElencoMagazzini
 from ElencoListini import ElencoListini
 from VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
-from promogest.ui.RoleAction import RuoloAzioni
 from utils import hasAction
 from utilsCombobox import *
 import Login
@@ -739,7 +738,8 @@ class AnagrafichePrincipaliFrame(GladeWidget):
         self.mainWindow = mainWindow
         self.aziendaStr = azs
         self.modules = modules
-        GladeWidget.__init__(self, 'anagrafiche_principali_select_frame', fileName='_anagrafiche_principali_select.glade' )
+        GladeWidget.__init__(self, 'anagrafiche_principali_select_frame',
+                            fileName='_anagrafiche_principali_select.glade' )
         self.setModulesButtons()
 
     def setModulesButtons(self):
@@ -872,14 +872,14 @@ class ParametriFrame(GladeWidget):
         self.mainWindow = mainWindow
         self.mainClass=parent
         self.modules = modules
-        GladeWidget.__init__(self, 'parametri_select_frame', \
-                                                fileName='_parametri_select.glade')
+        GladeWidget.__init__(self, 'parametri_select_frame', 
+                                    fileName='_parametri_select.glade')
         self.setModulesButtons()
 
     def setModulesButtons(self):
-        if self.modules is not None:
+        if self.modules:
             rows = self.table10.get_property('n_rows')
-            self.table10.resize(rows, 3)
+            #self.table10.resize(rows, 3)
             current_row = 0
             current_column = 2
             for module in self.modules.iteritems():
@@ -897,6 +897,7 @@ class ParametriFrame(GladeWidget):
                 self.table10.attach(module_button,current_column, current_column+1,\
                                                 current_row,current_row+1,xoptions=gtk.EXPAND|gtk.FILL,\
                                                 yoptions=gtk.FILL)
+                #self.vbox1.pack_start(module_button, False, False)
                 current_row += 1
             return
         else:
@@ -904,19 +905,12 @@ class ParametriFrame(GladeWidget):
 
     def on_module_button_clicked(self, button):
         label = button.get_label()
-        for mk in self.modules:
-            module = self.modules[mk]
+        for mk in self.modules.iteritems():
+            module = mk[1]['module']
             if label == module.VIEW_TYPE[1]:
+                #chiave di tutto il richiamo di passaggio alla classe in module.py che poi fa la vera istanza"
                 anag = module.getApplication()
                 showAnagrafica(self.mainWindow, anag, button=None)
-
-    def on_ruoli_azioni_button_clicked(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
-        role= RuoloAzioni()
-        toggleButton.set_active(False)
-
-
 
     def on_aliquote_iva_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
@@ -938,23 +932,23 @@ class ParametriFrame(GladeWidget):
         showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
 
 
-    def on_utenti_button_clicked(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
+    #def on_utenti_button_clicked(self, toggleButton):
+        #if toggleButton.get_property('active') is False:
+            #return
 
-        from AnagraficaUtenti import AnagraficaUtenti
-        anag = AnagraficaUtenti()
+        #from AnagraficaUtenti import AnagraficaUtenti
+        #anag = AnagraficaUtenti()
 
-        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+        #showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
 
-    def on_ruoli_button_clicked(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
+    #def on_ruoli_button_clicked(self, toggleButton):
+        #if toggleButton.get_property('active') is False:
+            #return
 
-        from AnagraficaRuoli import AnagraficaRuoli
-        anag = AnagraficaRuoli()
+        #from AnagraficaRuoli import AnagraficaRuoli
+        #anag = AnagraficaRuoli()
 
-        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+        #showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
 
 
     def on_multipli_button_clicked(self, toggleButton):

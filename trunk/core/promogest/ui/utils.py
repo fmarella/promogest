@@ -18,9 +18,6 @@ from promogest import Environment
 from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.Operazione import Operazione
 from promogest.dao.Azienda import Azienda
-from promogest.dao.RoleAction import RoleAction
-from promogest.dao.Role import Role
-from promogest.dao.Language import Language
 import string, re
 import xml.etree.cElementTree as ElementTree
 from xml.etree.cElementTree import *
@@ -1904,19 +1901,29 @@ def omogeneousCode(section=None, string = None):
         return string
 
 def hasAction(actionID=None):
-    idRole = Environment.params['usernameLoggedList'][2]
-    roleActions = RoleAction().select(id_role=idRole,id_action = actionID,orderBy="id_role")
-    for p in roleActions:
-        if int(p.id_action) == int(actionID):
-            return True
-    dialog = gtk.MessageDialog( None,
-                                gtk.DIALOG_MODAL |
-                                gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
-                                "Permesso negato! L'azione richiesta non è tra quelle che ti son consentite")
-    response = dialog.run()
-    dialog.destroy()
-    return False
+    """ La moduòlarizzazione richiede che
+        quando il modulo non è presente o non è attivato
+        la risposta sia sempre true perchè essendoci solo
+        admin ha de facto tutti i privilegi
+    """
+    if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
+        from promogest.dao.RoleAction import RoleAction
+        from promogest.dao.Role import Role
+        idRole = Environment.params['usernameLoggedList'][2]
+        roleActions = RoleAction().select(id_role=idRole,id_action = actionID,orderBy="id_role")
+        for p in roleActions:
+            if int(p.id_action) == int(actionID):
+                return True
+        dialog = gtk.MessageDialog( None,
+                                    gtk.DIALOG_MODAL |
+                                    gtk.DIALOG_DESTROY_WITH_PARENT,
+                                    gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
+                                    "Permesso negato! L'azione richiesta non è tra quelle che ti son consentite")
+        response = dialog.run()
+        dialog.destroy()
+        return False
+    else:
+        return True
 
 def numeroRegistroGet(tipo=None, date=None):
     """ Attenzione, funzione improvvisata, controllare meglio ed

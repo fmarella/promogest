@@ -9,10 +9,11 @@
 
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
-from promogest.Environment import params, host, database
+from promogest.Environment import params, host, database, conf
 from Dao import Dao
-from Role import Role
-from Language import Language
+#if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
+    #from promogest.modules.RuoliAzioni.dao.Role import Role
+#from Language import Language
 
 class User(Dao):
     """ User class provides to make a Users dao which include more used"""
@@ -29,16 +30,18 @@ class User(Dao):
             dic = {k:user.c.username.ilike("%"+v+"%")}
         elif k == 'email':
             dic = {k:user.c.email.ilike("%"+v+"%")}
-        elif k == 'role':
-            dic = {k:user.c.id_role == v}
+
         elif k == 'active':
             dic = {k:user.c.active == v}
+        if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
+            if k == 'idRole':
+                dic = {k:and_(user.c.id==UserRole.id_user,UserRole.id_role == v)}
         return  dic[k]
 
-    def _ruolo(self):
-        if self.role: return self.role.name
-        else: return ""
-    ruolo = property(_ruolo)
+    #def _ruolo(self):
+        #if self.role: return self.role.name
+        #else: return ""
+    #ruolo = property(_ruolo)
 
     def _language(self):
         if self.lang: return self.lang.denominazione
@@ -62,6 +65,14 @@ class User(Dao):
             params["session"].add(self)
             params["session"].commit()
             return True
+    if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
+
+        @property
+        def ruolo(self):
+            if self.useroles: return self.useroles.rol.name
+            else: return ""
+
+
 
 
 user=Table('utente', params['metadata'],
@@ -69,8 +80,10 @@ user=Table('utente', params['metadata'],
     autoload=True)
 
 std_mapper = mapper(User, user, properties={
-    "role":relation(Role,primaryjoin=
-            user.c.id_role==Role.id),
-    'lang':relation(Language, primaryjoin=
-            user.c.id_language==Language.id)
+    #'lang':relation(Language, primaryjoin=
+            #user.c.id_language==Language.id)
         }, order_by=user.c.username)
+if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
+    from promogest.modules.RuoliAzioni.dao.UserRole import UserRole
+    std_mapper.add_property("useroles",relation(UserRole,primaryjoin=(user.c.id==UserRole.id_user),backref="users",uselist=False))
+
