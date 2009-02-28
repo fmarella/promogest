@@ -89,7 +89,7 @@ class Login(GladeApp):
         model_usr.clear()
         for a in usrs:
             if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
-                model_usr.append((a.username, a.ruolo))
+                model_usr.append((a.username, a.user))
             else:
                 model_usr.append((a.username, "Admin"))
 
