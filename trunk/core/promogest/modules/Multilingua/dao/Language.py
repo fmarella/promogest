@@ -8,7 +8,7 @@
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper
 from promogest.Environment import *
-from Dao import Dao
+from promogest.dao.Dao import Dao
 
 class Language(Dao):
 

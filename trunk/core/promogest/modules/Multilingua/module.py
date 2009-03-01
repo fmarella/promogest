@@ -5,13 +5,13 @@
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 
 from promogest import Environment
-import promogest.ui.Login
+#import promogest.ui.Login
 from promogest.modules.VenditaDettaglio.data.VenditaDettaglioDB import *
-from promogest.modules.VenditaDettaglio.ui.AnagraficaVenditaDettaglio import AnagraficaVenditaDettaglio
 
-MODULES_NAME = "VenditaDettaglio"
-MODULES_FOR_EXPORT = ['VenditaDettaglio']
-GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/VenditaDettaglio/gui/'
+
+MODULES_NAME = "Multilingua"
+MODULES_FOR_EXPORT = []
+GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/Multilingua/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
 
@@ -26,9 +26,9 @@ START_CALL = None                              # of this call in a separated Thr
 """
 #testataMovimentoTable = Table('testata_movimento', params['metadata'], autoload=True, schema=params['schema'])
 
-class VenditaDettaglio(object):
-    VIEW_TYPE = ('anagrafica_diretta', 'Vendita Dettaglio', 'vendita_dettaglio48x48.png')
-    def getApplication(self):
-        anag = AnagraficaVenditaDettaglio()
-        return anag
+#class VenditaDettaglio(object):
+    #VIEW_TYPE = ('anagrafica_diretta', 'Vendita Dettaglio', 'vendita_dettaglio48x48.png')
+    #def getApplication(self):
+        #anag = AnagraficaVenditaDettaglio()
+        #return anag
 

@@ -235,9 +235,9 @@ def fillComboboxRole(combobox, filter=False):
 
 def fillComboboxLang(combobox, filter=False):
     """
-    Crea l'elenco dei ruoli
+    Crea l'elenco delle lingue
     """
-    from promogest.dao.Language import Language
+    from promogest.modules.Multilingua.dao.Language import Language
     res = Language().select(offset=None,batchSize=None)
     model = gtk.ListStore(object, int, str)
 

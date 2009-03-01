@@ -43,10 +43,10 @@ class User(Dao):
         #else: return ""
     #ruolo = property(_ruolo)
 
-    def _language(self):
-        if self.lang: return self.lang.denominazione
-        else: return ""
-    lingua = property(_language)
+    #def _language(self):
+        #if self.lang: return self.lang.denominazione
+        #else: return ""
+    #lingua = property(_language)
 
     def delete(self):
         if self.username == "admin":
@@ -65,13 +65,18 @@ class User(Dao):
             params["session"].add(self)
             params["session"].commit()
             return True
-    if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
 
+    if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
         @property
         def ruolo(self):
             if self.useroles: return self.useroles.rol.name
             else: return ""
 
+    if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
+        @property
+        def lingua(self):
+            if self.userlang: return self.userlang.lan.denominazione
+            else: return ""
 
 
 
@@ -79,11 +84,11 @@ user=Table('utente', params['metadata'],
     schema = params['mainSchema'],
     autoload=True)
 
-std_mapper = mapper(User, user, properties={
-    #'lang':relation(Language, primaryjoin=
-            #user.c.id_language==Language.id)
-        }, order_by=user.c.username)
+std_mapper = mapper(User, user, order_by=user.c.username)
 if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
     from promogest.modules.RuoliAzioni.dao.UserRole import UserRole
     std_mapper.add_property("useroles",relation(UserRole,primaryjoin=(user.c.id==UserRole.id_user),backref="users",uselist=False))
+if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
+    from promogest.modules.MultiLingua.dao.UserLanguage import UserLanguage
+    std_mapper.add_property("userlang",relation(UserLanguage,primaryjoin=(user.c.id==UserLanguage.id_user),backref="users",uselist=False))
 

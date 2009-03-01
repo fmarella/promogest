@@ -114,12 +114,12 @@ class AnagraficaUtentiFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return User().select(usern=username,
-                                                email=email,
-                                                role=idRole,
-                                                active=active,
-                                                orderBy=self.orderBy,
-                                                offset=offset,
-                                                batchSize=batchSize)
+                                email=email,
+                                role=idRole,
+                                active=active,
+                                orderBy=self.orderBy,
+                                offset=offset,
+                                batchSize=batchSize)
 
         self._filterClosure = filterClosure
 
