@@ -10,16 +10,8 @@ import gtk
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-import datetime
-
+from ApplicationLog import ApplicationLog
 from promogest.ui.GtkExceptionHandler import GtkExceptionHandler
-a = datetime.datetime
-
-
-class ApplicationLog(object):
-    pass
-appLogTable = Table('application_log', params['metadata'], autoload=True, schema=params['mainSchema'])
-std_mapper = mapper(ApplicationLog, appLogTable, order_by=appLogTable.c.id_utente)
 
 class Dao(object):
     """Astrazione generica di ciò˛ che fu il vecchio dao basata su sqlAlchemy
@@ -90,27 +82,11 @@ class Dao(object):
         except Exception, e:
             self.raiseException(e)
 
-    def commit(self):
-        """ Salva i dati nel DB"""
-        try:
-            params["session"].commit()
-            return True
-        except Exception,e:
-            msg = """ATTENZIONE ERRORE
-Qui sotto viene riportato l'errore di sistema:
-%s
-( normalmente il campo in errore Ă¨ tra "virgolette")
-""" %e
-            overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                    gtk.MESSAGE_ERROR,
-                                                    gtk.BUTTONS_CANCEL, msg)
-            response = overDialog.run()
-            overDialog.destroy()
-            params["session"].rollback()
-            return False
-
     def persist(self,multiple=False, record=True):
+        params["session"].add(self)
+        self.saveToAppLog(self)
+
+    def save_update(self,multiple=False, record=True):
         params["session"].add(self)
         self.saveToAppLog(self)
 
@@ -118,58 +94,11 @@ Qui sotto viene riportato l'errore di sistema:
         params['session'].delete(self)
         self.saveToAppLog(self)
 
-    def saveToAppLog(self, data):
-        when = datetime.datetime.now()
-        where = params['schema']
-        whoID = params['usernameLoggedList'][0]
-        utentedb = params['usernameLoggedList'][3]
-        utente = params['usernameLoggedList'][1]
-
-        if params["session"].dirty:
-            message = "UPDATE"
-        elif params["session"].new:
-            message = "INSERT"
-        elif params["session"].deleted:
-            message = "DELETE"
-        elif not params["session"].dirty and not params["session"].new and not params["session"].deleted:
-            message = "UNKNOWN"
-        mapper = object_mapper(self)
-        salvo = self.commit()
-        if salvo:
-            how = "I"
-        else:
-            how = "E"
-        pk = mapper.primary_key_from_instance(self)
-
-        if len(pk) ==1 and type(pk)==int:
-            value = pk[0]
-            whatstr = None
-        else:
-            whatstr = str(pk)
-            value = None
-
-        #app = ApplicationLog()
-        #app.id_utente=whoID
-        #app.utentedb = utentedb
-        #app.schema = where
-        #app.level=how
-        #app.object = str(data)[0:99]
-        #app.message = message
-        #app.value = value
-        #app.strvalue = whatstr
-        #params["session"].add(app)
+    def saveToAppLog(self,dao):
+        ApplicationLog().persist(self)
         #self.commit()
-        #print "%s : %s %s fatta su schema %s  da %s" %(str(when),message,str(data),str(where),utente)
-        #serialized = dumps(self.record)
-        #fh = open("pippo",'r')
-        #uf = fh.read()
-        #print "LLLLLLL", dir(fh), fh.readline(), uf
-        #fh.close()
-        ##fh.write(serialized)
 
-        ##fh.close()
-        #pippo  = loads(uf, self.metadata, self.session)
-        #print "KKKKKKKKKKKKKKKK", pippo
+
 
     def _resetId(self):
         """Riporta l'id a None"""
@@ -257,7 +186,7 @@ Qui sotto viene riportato l'errore di sistema:
                 else:
                     filter_parameters.append((value,key,"s"))
         if filter_parameters != []:
-            if __debug__: print "FILTER PARAMETERS:",self.DaoModule.__name__, filter_parameters
+            print "FILTER PARAMETERS:",self.DaoModule.__name__, filter_parameters
             filter = self.getFilter(filter_parameters)
             return filter
         return

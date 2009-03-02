@@ -452,8 +452,6 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                 daoClienteCategoriaCliente.id_categoria_cliente = c[0]
                 daoClienteCategoriaCliente.persist()
         #self.dao.categorieCliente = categorie
-
-        self.dao.persist()
         self._refreshCategorie()
 
     def on_scheda_contabile_togglebutton_clicked(self, toggleButton):

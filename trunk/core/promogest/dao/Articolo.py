@@ -351,7 +351,8 @@ class Articolo(Dao):
 
     def persist(self):
         params["session"].add(self)
-        self.saveToAppLog(self)
+        #params["session"].commit()
+        self.save_update()
         #salvataggio , immagine ....per il momento viene gestita una immagine per articolo ...
         #in seguito sarà l'immagine a comandare non l'articolo
         try:
@@ -361,9 +362,9 @@ class Articolo(Dao):
                 img.id_famiglia = self.id_famiglia_articolo
                 self.id_immagine = self.id
                 params["session"].add(img)
-                self.saveToAppLog(img)
+                self.save_update()
                 params["session"].add(self)
-                self.saveToAppLog(self)
+                self.save_update()
             elif self._url_immagine:
                 img = Immagine()
                 img.id=self.id
