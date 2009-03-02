@@ -95,7 +95,7 @@ class Dao(object):
         self.saveToAppLog(self)
 
     def saveToAppLog(self,dao):
-        ApplicationLog().persist(self)
+        ApplicationLog().store(self)
         #self.commit()
 
 

@@ -240,8 +240,10 @@ class TestataDocumento(Dao):
             # FIXME: added for supporting dumb rows when printing
             if riga is None:
                 continue
-
-            totaleRiga = Decimal(str(riga.quantita)) * Decimal(str(riga.moltiplicatore)) * mN(riga.valore_unitario_netto)
+            #print "VALORIIIIIIIIIIIIIIIII", riga.quantita, riga.moltiplicatore, riga.valore_unitario_netto
+            if not riga.moltiplicatore:
+                riga.moltiplicatore = 1
+            totaleRiga = Decimal(str(riga.quantita)) * Decimal(str(riga.moltiplicatore)) * mN(str(riga.valore_unitario_netto))
             percentualeIvaRiga = Decimal(str(riga.percentuale_iva))
             if percentualeIvaRiga != Environment.percentualeIvaRiga:
                 aliquotaIvaRiga = riga.aliquota

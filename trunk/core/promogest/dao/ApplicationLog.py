@@ -16,9 +16,11 @@ class ApplicationLog(object):
     def __init__(self, arg=None):
         pass
 
-
-    def persist(self, dao=None):
+    def store(self, dao=None,action=None,status=True,value=None ):
         self.dao = dao
+        self.action = action
+        self.status = status
+        self.value = value
         #print self.dao, dir(self.dao), self.dao.__repr__, self.dao.__class__.__name__,self.dao.__module__
         self.saveToAppLog()
 
@@ -47,30 +49,42 @@ Qui sotto viene riportato l'errore di sistema:
 
 
     def saveToAppLog(self):
+            if self.action:
+                if self.value:
+                    esito = " ERRATO"
+                    how = "E"
+                else:
+                    esito = " CORRETTO"
+                    how = "I"
+                message = self.action + esito
+            else:
+                if params["session"].dirty:
+                    message = "UPDATE "+ self.dao.__class__.__name__
+                elif params["session"].new:
+                    message = "INSERT " + self.dao.__class__.__name__
+                elif params["session"].deleted:
+                    message = "DELETE "+ self.dao.__class__.__name__
+                else:
+                    message = "UNKNOWN ACTION"
+
             when = datetime.datetime.now()
             where = params['schema']
             whoID = params['usernameLoggedList'][0]
             utentedb = params['usernameLoggedList'][3]
             utente = params['usernameLoggedList'][1]
 
-            if params["session"].dirty:
-                message = "UPDATE "+ self.dao.__class__.__name__
-            elif params["session"].new:
-                message = "INSERT " + self.dao.__class__.__name__
-            elif params["session"].deleted:
-                message = "DELETE "+ self.dao.__class__.__name__
+            if self.action:
+                whatstr= self.value
             else:
-                message = "UNKNOWN ACTION"
-            mapper = object_mapper(self.dao)
-            salvo = self.commit()
-            if salvo:
-                how = "I"
-            else:
-                how = "E"
+                salvo = self.commit()
+                if salvo:
+                    how = "I"
+                else:
+                    how = "E"
+                mapper = object_mapper(self.dao)
+                pk = mapper.primary_key_from_instance(self.dao)
+                whatstr = str(pk)
 
-            pk = mapper.primary_key_from_instance(self.dao)
-
-            whatstr = str(pk)
             app = ApplicationLog()
             app.schema = where
             app.message = message

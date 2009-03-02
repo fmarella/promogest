@@ -80,7 +80,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.scontiTEMP = []
         self.scontiSuTotale = []
         #self._clear()
-        self.draw()
+        #self.draw()
 
 
     def draw(self):
@@ -400,7 +400,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
 
         daoRiga.quantita = quantita
         daoRiga.id_multiplo = None
-        daoRiga.moltiplicatore = None
+        daoRiga.moltiplicatore = 1
         daoRiga.valore_unitario_lordo = listino.prezzo_dettaglio
         daoRiga = getPrezzoNetto(daoRiga)
         self.righeTEMP.append(daoRiga)
