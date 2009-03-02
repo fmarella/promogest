@@ -395,12 +395,12 @@ class Articolo(Dao):
         if "PromoWear" in Environment.modulesList:
             try:
                 if self.__articoloTagliaColore:
-                    if ArticoloTagliaColore().getRecord(id=self.id):
-                        a = ArticoloTagliaColore().getRecord(id=self.id)
-                        a.delete()
+                    isTc = ArticoloTagliaColore().getRecord(id=self.id)
+                    if isTc:
+                        isTc.delete()
                     self.__articoloTagliaColore.id_articolo=self.id
                     params["session"].add(self.__articoloTagliaColore)
-                    self.saveToAppLog(self.__articoloTagliaColore)
+                    self.save_update()
                     if self.isArticoloPadre():
                         for var in self.getArticoliTagliaColore():
                             var.id_genere = self.__articoloTagliaColore.id_genere

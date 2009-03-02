@@ -137,11 +137,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
     def _refresh(self):
         self._loading = True
         self.codice_entry.set_text(self.dao.codice or '')
-        #print "STAMPO IL NUOVO CODICE ARTICOLO IN _REFRESH ",self.dao.codice
-        #if self.dao.codice:
-            #self.dao.codice = omogeneousCode(section="Articoli", string=self.dao.codice )
-        #else:
-            #print " ERRORE BY_PASSATO PER ILARIA :) "
         self.denominazione_entry.set_text(self.dao.denominazione or '')
 
         findComboboxRowFromId(self.id_aliquota_iva_customcombobox.combobox,

@@ -180,7 +180,7 @@ def articleTypeGuiManage(anagrafica, dao, new):
         findComboboxRowFromId(gtkgui.id_colore_customcombobox.combobox, dao.id_colore)
         findComboboxRowFromId(gtkgui.id_taglia_customcombobox.combobox, dao.id_taglia)
         gtkgui.id_aliquota_iva_customcombobox.set_sensitive(False)
-        gtkgui.denominazione_entry.set_sensitive(False)
+        gtkgui.denominazione_entry.set_sensitive(True)
         #gtkgui.id_famiglia_articolo_customcombobox.set_sensitive(False)
         #gtkgui.id_categoria_articolo_customcombobox.set_sensitive(False)
         gtkgui.id_unita_base_combobox.set_sensitive(False)
