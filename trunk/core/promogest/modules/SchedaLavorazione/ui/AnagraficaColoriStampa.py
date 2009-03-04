@@ -112,7 +112,7 @@ class AnagraficaColoriStampaDetail(AnagraficaDetail):
             self.dao = dao
 
     def updateDao(self):
-        self.dao = ColoreStampa().getRercord(id=self.dao.id)
+        self.dao = ColoreStampa().getRecord(id=self.dao.id)
         self._refresh()
 
     def _refresh(self):
