@@ -195,7 +195,9 @@ testata_mov=Table('testata_movimento',
                     autoload=True)
 std_mapper = mapper(TestataMovimento, testata_mov,properties={
         "rigamov": relation(RigaMovimento,primaryjoin=
-                (testata_mov.c.id==RigaMovimento.id_testata_movimento), backref="testata_movimento"),
+                testata_mov.c.id==RigaMovimento.id_testata_movimento,
+                cascade="all, delete",
+                backref="testata_movimento"),
         #"fornitore": relation(Fornitore, backref="testata_movimento"),
         "forni":relation(Fornitore,primaryjoin=
                     (testata_mov.c.id_fornitore==Fornitore.id), backref="testata_movimento"),

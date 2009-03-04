@@ -10,6 +10,8 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import params
 import datetime
+from sqlalchemy.ext.serializer import loads, dumps
+
 
 class ApplicationLog(object):
 
@@ -89,12 +91,14 @@ Qui sotto viene riportato l'errore di sistema:
             app.schema = where
             app.message = message
             app.level = how
-            app.strvalue = whatstr
+            print dumps(whatstr)
+            app.strvalue = dumps(whatstr)
             app.registrazion_date = when
             app.utentedb = utentedb
             app.id_utente = whoID
-            app.pkid = whatstr
-            app.object = str(self.dao.__class__)
+            app.pkid = dumps(whatstr)
+            print dumps(self.dao)
+            app.object = dumps(self.dao)
             params["session"].add(app)
             self.commit()
             print "[LOG] %s id: %s da %s in %s in data %s" %(message, whatstr,utente, where ,when.strftime("%d/%m/%Y"))

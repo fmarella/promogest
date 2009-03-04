@@ -1,13 +1,13 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 
-
+import hashlib
 import gtk, gobject
-import os, popen2, md5
+import os
 import gtkhtml2
 from datetime import datetime, timedelta
 from promogest import Environment
@@ -48,7 +48,7 @@ class SendEmail(GladeWidget):
             f = open(fileName,'rb')
             content = f.read()
             f.close()
-            self.codec = 'Codice installazione: ' + str(md5.new(content).hexdigest().upper())
+            self.codec = 'Codice installazione: ' + str(hashlib.md5(content).hexdigest().upper())
         except:
             pass
             #msg = 'Impossibile generare il codice !!!'

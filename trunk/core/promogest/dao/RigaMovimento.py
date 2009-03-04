@@ -248,5 +248,7 @@ std_mapper = mapper(RigaMovimento, j,properties={
         "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
         "listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
         "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
-        "SCM":relation(ScontoRigaMovimento,primaryjoin = (riga_mov.c.id==ScontoRigaMovimento.id_riga_movimento), backref="RM"),
+        "SCM":relation(ScontoRigaMovimento,primaryjoin = riga_mov.c.id==ScontoRigaMovimento.id_riga_movimento,
+                        cascade="all, delete",
+                        backref="RM"),
         }, order_by=riga_mov.c.id)

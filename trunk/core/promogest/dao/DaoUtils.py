@@ -11,6 +11,9 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from sqlalchemy import and_
+import types
+import datetime
+from sqlalchemy.ext.serializer import loads, dumps
 
 
 def giacenzaSel(year=None, idMagazzino=None, idArticolo=None):
@@ -231,3 +234,98 @@ def scontiRigaMovimentoDel(id=None):
             params['session'].delete(r)
         params["session"].commit()
         return True
+
+def commit():
+    """ Salva i dati nel DB"""
+    try:
+        params["session"].commit()
+        return True
+    except Exception,e:
+        msg = """ATTENZIONE ERRORE
+Qui sotto viene riportato l'errore di sistema:
+%s
+( normalmente il campo in errore è tra "virgolette")
+""" %e
+        overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
+                                            | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                                gtk.MESSAGE_ERROR,
+                                                gtk.BUTTONS_CANCEL, msg)
+        response = overDialog.run()
+        overDialog.destroy()
+        print "ERRORE", e
+        params["session"].rollback()
+        return False
+
+
+def saveToAppLog(dao=None,status=True,action=None, value=None):
+    from AppLog import AppLog
+    from ChiaviPrimarieLog import ChiaviPrimarieLog
+    whatstr= None
+    if action:
+        if not value:
+            esito = " ERRATO " + value
+            how = "E"
+        else:
+            esito = " CORRETTO " + value
+            how = "I"
+        message = action + esito
+    else:
+        if params["session"].dirty:
+            message = "UPDATE "+ dao.__class__.__name__
+        elif params["session"].new:
+            message = "INSERT " + dao.__class__.__name__
+        elif params["session"].deleted:
+            message = "DELETE "+ dao.__class__.__name__
+        else:
+            message = "UNKNOWN ACTION"
+
+    when = datetime.datetime.now()
+    where = params['schema']
+    if not params['usernameLoggedList'][0]:
+        whoID = None
+    else:
+        whoID = params['usernameLoggedList'][0]
+    utentedb = params['usernameLoggedList'][3]
+    utente = params['usernameLoggedList'][1]
+    pk = []
+    if action:
+        whatstr= value
+    else:
+        salvo = commit()
+        if salvo:
+            how = "I"
+        else:
+            how = "E"
+        mapper = object_mapper(dao)
+        pk = mapper.primary_key_from_instance(dao)
+
+    app = AppLog()
+    app.schema_azienda = where
+    app.message = message
+    app.level = how
+    #print dumps(whatstr)
+    #app.value = whatstr
+    app.registration_date = when
+    app.utentedb = utentedb
+    app.id_utente = whoID 
+    #app.pkid = dumps(whatstr)
+    #print dumps(self.dao)
+    app.object = dumps(dao)
+    params["session"].add(app)
+    commit()
+    for p in pk:
+        print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP", p  , type( p ), type( p ).__name__ 
+        pks = ChiaviPrimarieLog()
+        if type(p) == types.IntType:
+            pks.pk_integer = p
+        elif type(p).__name__ == 'unicode':
+            pks.pk_string = p
+        elif type(p).__name__ == 'str':
+            pks.pk_string = p
+        elif type(p).__name__ == 'datetime':
+            pks.pk_datetime = p
+        pks.id_application_log2 = app.id
+        params["session"].add(pks)
+    params["session"].commit()
+    print "[LOG] %s da %s in %s in data %s" %(message,utente, where ,when.strftime("%d/%m/%Y"))
+

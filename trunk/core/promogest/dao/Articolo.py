@@ -497,7 +497,9 @@ std_mapper = mapper(Articolo,articolo,
                         den_categoria = relation(CategoriaArticolo,primaryjoin=
                                     (articolo.c.id_categoria_articolo==CategoriaArticolo.id)),
                         den_unita = relation(UnitaBase,primaryjoin= (articolo.c.id_unita_base==UnitaBase.id)),
-                        image = relation(Immagine,primaryjoin= (articolo.c.id_immagine==Immagine.id)),
+                        image = relation(Immagine,primaryjoin= articolo.c.id_immagine==Immagine.id,
+                                            cascade="all, delete",
+                                            backref="arti"),
                         sa = relation(StatoArticolo,primaryjoin=(articolo.c.id_stato_articolo==StatoArticolo.id)),
                         fornitur = relation(Fornitura,primaryjoin=(Fornitura.id_articolo==articolo.c.id), backref="arti",uselist=False),
                         multi = relation(Multiplo,primaryjoin=(Multiplo.id_articolo==articolo.c.id),backref="arti")

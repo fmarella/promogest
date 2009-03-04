@@ -20,8 +20,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-
-import os, md5
+import hashlib
+import os
 import gtk
 import datetime
 import locale
@@ -30,7 +30,8 @@ from GladeWidget import GladeWidget
 from promogest import Environment
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
-from promogest.dao.ApplicationLog import ApplicationLog
+from promogest.dao.AppLog import AppLog
+from promogest.dao.DaoUtils import saveToAppLog
 from GtkExceptionHandler import GtkExceptionHandler
 from utils import hasAction,on_status_activate
 from utilsCombobox import findComboboxRowFromStr
@@ -39,6 +40,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 import threading
 from promogest.lib import feedparser
+
 #if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
     #from promogest.modules.RuoliAzioni.data.RuoliAzioniDB import *
 
@@ -127,7 +129,21 @@ class Login(GladeApp):
             combo.child.set_text(combo.get_model()[index][0])
 
     def on_button_help_clicked(self, button):
-        sendemail = SendEmail()
+        from sqlalchemy.ext.serializer import loads, dumps
+
+        app = Environment.params["session"].query(AppLog).filter(and_(AppLog.schema_azienda =="aaaaa",AppLog.message=="INSERT Articolo")).all()
+        for a in app:
+            #print a.pkid
+            print a.pk[0].pk_integer
+            #print loads(a.object)
+            #dao = a.message.split(" ")[1]
+            #query= Environment.params["session"].query(Articolo).get(id=eval(a.pkid)[0])
+            #print query
+        #print "INIZIAMOOOO", app
+        #serialized = dumps(app)
+        #print serialized
+            
+        #sendemail = SendEmail()
 
     def on_button_login_clicked(self, button=None):
         username = self.username_comboxentry.child.get_text()
@@ -167,7 +183,7 @@ class Login(GladeApp):
                 do_login = False
         if do_login:
             users = User().select(username=username,
-                                    password=md5.new(username+password).hexdigest())
+                                    password=hashlib.md5(username+password).hexdigest())
 
             if len(users) ==1:
                 Environment.workingYear = str(self.anno_lavoro_spinbutton.get_value_as_int())
@@ -195,7 +211,7 @@ class Login(GladeApp):
                     global windowGroup
                     windowGroup.remove(self.getTopLevel())
                     self.importModulesFromDir('promogest/modules')
-                    ApplicationLog().store(action="login", status=True,value=username)
+                    saveToAppLog(action="login", status=True,value=username)
                     from Main import Main
                     main = Main(self.azienda,
                                 self.anagrafiche_modules,
@@ -216,7 +232,7 @@ class Login(GladeApp):
                                     'Nome utente o password Errati')
                 response = dialog.run()
                 dialog.destroy()
-                ApplicationLog().store(action="login", status=False,value=username)
+                saveToAppLog(action="login", status=False,value=username)
                 do_login = False
 
     def on_aggiorna_button_clicked(self, widget):
@@ -232,7 +248,8 @@ class Login(GladeApp):
         response = svndialog.svnupdate_dialog.run()
         if response == gtk.RESPONSE_OK:
             command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
-            stdin, stdouterr = os.popen4(command)
+            p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+            (stdin, stdouterr) = (p.stdin, p.stdout)
             for line in stdouterr.readlines():
                 textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
             msg = """ Se è apparsa la dicitura "Estratta Revisione XXXX

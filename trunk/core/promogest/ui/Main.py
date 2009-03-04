@@ -8,7 +8,9 @@
 
 import locale
 import gtk, gobject
-import threading, os, signal, popen2, md5
+import hashlib
+from  subprocess import *
+import threading, os, signal
 from promogest import Environment
 from GladeWidget import GladeWidget
 
@@ -469,7 +471,8 @@ class Main(GladeWidget):
         textBuffer = creditsDialog.svn_info_textview.get_buffer()
         textBuffer.set_text(licenseText)
         command = 'svn info ~/pg2'
-        stdin, stdouterr = os.popen4(command)
+        p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+        (stdin, stdouterr) = (p.stdin, p.stdout)
         for line in stdouterr.readlines():
             textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
         textBuffer.insert(textBuffer.get_end_iter(),"""I moduli installati sono :
@@ -513,7 +516,9 @@ class Main(GladeWidget):
         response = svndialog.svnupdate_dialog.run()
         if response == gtk.RESPONSE_OK:
             command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
-            stdin, stdouterr = os.popen4(command)
+            p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+            (stdin, stdouterr) = (p.stdin, p.stdout)
+            #stdin, stdouterr = os.popen4(command)
             for line in stdouterr.readlines():
                 textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
             msg = """ Se è apparsa la dicitura "Estratta Revisione XXXX
@@ -551,7 +556,9 @@ o tramite email all'indirizzo info@promotux.it
                                                             Environment.user,
                                                             Environment.database,
                                                             nameDump)
-            stdin, stdouterr = os.popen4(command)
+            p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+            (stdin, stdouterr) = (p.stdin, p.stdout)
+            #stdin, stdouterr = os.popen4(command)
             for line in stdouterr.readlines():
                 textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
             msg = """Se nella finestra NON è apparso alcun messaggio d'errore
@@ -578,7 +585,7 @@ Il file si chiama %s .
             f = open(fileName,'rb')
             content = f.read()
             f.close()
-            msg = 'Codice installazione:\n\n' + str(md5.new(content).hexdigest().upper())
+            msg = 'Codice installazione:\n\n' + str(hashlib.md5(content).hexdigest().upper())
         except:
             msg = 'Impossibile generare il codice !!!'
         dialog = gtk.MessageDialog(self.getTopLevel(),

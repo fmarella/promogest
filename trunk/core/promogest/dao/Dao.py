@@ -10,8 +10,9 @@ import gtk
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from ApplicationLog import ApplicationLog
+#from AppLog import AppLog
 from promogest.ui.GtkExceptionHandler import GtkExceptionHandler
+from DaoUtils import saveToAppLog
 
 class Dao(object):
     """Astrazione generica di ciò˛ che fu il vecchio dao basata su sqlAlchemy
@@ -84,18 +85,18 @@ class Dao(object):
 
     def persist(self,multiple=False, record=True):
         params["session"].add(self)
-        self.saveToAppLog(self)
+        self.saveAppLog(self)
 
     def save_update(self,multiple=False, record=True):
         params["session"].add(self)
-        self.saveToAppLog(self)
+        self.saveAppLog(self)
 
     def delete(self, multiple=False, record = True ):
         params['session'].delete(self)
-        self.saveToAppLog(self)
+        self.saveAppLog(self)
 
-    def saveToAppLog(self,dao):
-        ApplicationLog().store(self)
+    def saveAppLog(self,dao):
+        saveToAppLog(self)
         #self.commit()
 
 
