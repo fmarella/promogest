@@ -32,31 +32,31 @@ import datetime
 
         #schema=params['schema']
         #)
+try:
+    app_table = Table('app_log', params['metadata'],
+            Column('id', Integer, primary_key=True),
+            Column('id_utente', Integer),
+            Column('utentedb', String(100), nullable=False),
+            Column('schema_azienda', String(100), nullable=False),
+            Column('level', String(1)),
+            Column('object', PickleType, nullable=True),
+            Column('message', String(1000), nullable=True),
+            Column('value', Integer, nullable=True),
+            Column('registration_date', DateTime),
+            schema=params['mainSchema'])
 
-app_table = Table('app_log', params['metadata'],
-        Column('id', Integer, primary_key=True),
-        Column('id_utente', Integer),
-        Column('utentedb', String(100), nullable=False),
-        Column('schema_azienda', String(100), nullable=False),
-        Column('level', String(1)),
-        Column('object', PickleType, nullable=True),
-        Column('message', String(1000), nullable=True),
-        Column('value', Integer, nullable=True),
-        Column('registration_date', DateTime),
-        schema=params['mainSchema'],useexisting=True
-        )
+    app_table.create(checkfirst=True)
 
-app_table.create(checkfirst=True)
-
-primy_keyTable = Table('chiavi_primarie_log', params['metadata'],
-        Column('id', Integer, primary_key=True),
-        Column('pk_integer', Integer, nullable=True),
-        Column('pk_string', String(300), nullable=True),
-        Column('pk_datetime', DateTime,nullable=True),
-        Column('id_application_log2', Integer,ForeignKey(params['mainSchema']+'.app_log.id',onupdate="CASCADE",ondelete="CASCADE"), nullable=False),
-        schema=params['mainSchema'],useexisting=True
-        )
-primy_keyTable.create(checkfirst=True)
+    primy_keyTable = Table('chiavi_primarie_log', params['metadata'],
+            Column('id', Integer, primary_key=True),
+            Column('pk_integer', Integer, nullable=True),
+            Column('pk_string', String(300), nullable=True),
+            Column('pk_datetime', DateTime,nullable=True),
+            Column('id_application_log2', Integer,ForeignKey(params['mainSchema']+'.app_log.id',onupdate="CASCADE",ondelete="CASCADE"), nullable=False),
+            schema=params['mainSchema'])
+    primy_keyTable.create(checkfirst=True)
+except:
+    print "pppp"
 
 #scontiVenditaIngrossoTable.create(checkfirst=True)
 #print "CREATO sconti_vendita_ingrosso"
