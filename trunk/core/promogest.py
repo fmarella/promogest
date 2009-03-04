@@ -11,6 +11,7 @@
 from optparse import OptionParser
 #from promogest.Environment import debugDao, debugSQL
 from promogest.ui.Login import Login
+#from promogest.lib.UpdateDB import *
 
 class BigBang(object):
     def __init__(self, debugDao=None, debugSQL=None, debugALL=None):

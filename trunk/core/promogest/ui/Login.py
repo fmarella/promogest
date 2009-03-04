@@ -205,7 +205,7 @@ class Login(GladeApp):
 
                 if hasAction(actionID=1):
                     Environment.params["schema"]=self.azienda
-                    from promogest.lib.UpdateDB import *
+                    #from promogest.lib.UpdateDB import *
                     Environment.meta = MetaData().reflect(Environment.engine,schema=self.azienda )
                     self.login_window.hide()
                     global windowGroup
