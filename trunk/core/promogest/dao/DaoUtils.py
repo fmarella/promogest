@@ -314,7 +314,6 @@ def saveToAppLog(dao=None,status=True,action=None, value=None):
     params["session"].add(app)
     commit()
     for p in pk:
-        print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP", p  , type( p ), type( p ).__name__ 
         pks = ChiaviPrimarieLog()
         if type(p) == types.IntType:
             pks.pk_integer = p

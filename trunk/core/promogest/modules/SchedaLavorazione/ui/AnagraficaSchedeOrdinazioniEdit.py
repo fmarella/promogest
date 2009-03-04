@@ -212,6 +212,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             self._numeroScheda = 0
             self._articoliTreeviewModel.clear()
             self._clear()
+            self.scontiTEMP = []
             self._refresh()
         else:
             self._dataScheda = dateToString(dao.data_presa_in_carico)
@@ -543,7 +544,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                     allarmi.append(allarme)
         self.dao.promemoria = allarmi
         self.righeTEMP = []
-
         scontiSuTotale = []#{}
 
         res = self.sconti_scheda_widget.getSconti()
@@ -569,6 +569,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.dao.sconti = self.scontiSuTotale
         #self.dao.scontiSuTotale = self.scontiSuTotale
         self.dao.persist()
+
         #self._refresh()
 
     def on_associazione_articoli_comboboxentry_changed(self, combobox):
