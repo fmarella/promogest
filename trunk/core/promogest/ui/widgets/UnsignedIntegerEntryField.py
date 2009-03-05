@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -50,14 +50,16 @@ class UnsignedIntegerEntryField(CustomEntryField):
             else:
                 self.set_text(str(i))
         except Exception:
-            if self._default is None:
-                i = 0
-                self.set_text(str(i))
-            elif self._default == "<blank>":
-                # empty
-                self.set_text('')
-            else:
-                self.set_text(self._default)
+            self.set_text('')
+            #print "SELFDEFAULT ", self._default
+            #if self._default is None:
+                #i = 0
+                #self.set_text(str(i))
+            #elif self._default == "<blank>":
+                ## empty
+                #self.set_text('')
+            #else:
+                #self.set_text(self._default)
 
 
 #gobject.type_register(UnsignedIntegerEntryField)

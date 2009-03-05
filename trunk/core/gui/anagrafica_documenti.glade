@@ -28,6 +28,7 @@
                   <widget class="Custom" id="id_agente_filter_customcombobox">
                     <property name="visible">True</property>
                     <property name="creation_function">createCustomComboBoxSearch</property>
+                    <property name="string1">&lt;blank&gt;</property>
                   </widget>
                 </child>
               </widget>
@@ -110,7 +111,6 @@
                   <widget class="Custom" id="a_numero_filter_entry">
                     <property name="visible">True</property>
                     <property name="creation_function">createUnsignedIntegerEntryField</property>
-                    <property name="string1">;blank&gt;</property>
                     <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                   </widget>
                 </child>
@@ -134,7 +134,6 @@
                   <widget class="Custom" id="da_numero_filter_entry">
                     <property name="visible">True</property>
                     <property name="creation_function">createUnsignedIntegerEntryField</property>
-                    <property name="string1">;blank&gt;</property>
                     <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                   </widget>
                 </child>
