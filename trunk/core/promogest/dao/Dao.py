@@ -101,6 +101,7 @@ class Dao(object):
 
 
 
+
     def _resetId(self):
         """Riporta l'id a None"""
         self.id = None

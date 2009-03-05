@@ -9,7 +9,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import *
+from promogest.Environment import params
 from sqlalchemy import and_
 import types
 import datetime
@@ -307,7 +307,7 @@ def saveToAppLog(dao=None,status=True,action=None, value=None):
     #app.value = whatstr
     app.registration_date = when
     app.utentedb = utentedb
-    app.id_utente = whoID 
+    app.id_utente = whoID
     #app.pkid = dumps(whatstr)
     #print dumps(self.dao)
     app.object = dumps(dao)

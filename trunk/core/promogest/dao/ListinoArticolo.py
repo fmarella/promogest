@@ -9,7 +9,7 @@
 
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
-from promogest.Environment import params
+from promogest.Environment import *
 from Dao import Dao
 from DaoUtils import *
 from Listino import Listino
@@ -61,7 +61,11 @@ class ListinoArticolo(Dao):
     codice_a_barre= property(_codice_a_barre)
 
 
+
+
+
     if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
+
         def _denominazione_gruppo_taglia(self):
             #if self.ATC: return self.ATC.denominazione or ""
             if self.arti:return self.arti.denominazione_gruppo_taglia
@@ -205,13 +209,13 @@ class ListinoArticolo(Dao):
             for che in check:
                 che.listino_attuale = False
                 params["session"].add(che)
-                self.saveToAppLog(che)
+                self.saveAppLog(che)
         if not self.listino_attuale:
             self.listino_attuale = True
         else:
             self.listino_attuale = True
         params["session"].add(self)
-        self.saveToAppLog(self)
+        self.saveAppLog(self)
         scontiVenditaDettaglioDel(idListino=self.id_listino,
                                     idArticolo=self.id_articolo,
                                     dataListinoArticolo=self.data_listino_articolo)
@@ -226,20 +230,20 @@ class ListinoArticolo(Dao):
                         v.id_articolo = self.id_articolo
                         v.data_listino_articolo = self.data_listino_articolo
                         params["session"].add(v)
-                        self.saveToAppLog(v)
+                        self.saveAppLog(v)
                 elif (key=="ingrosso") and (value):
                     for u in value:
                         u.id_listino = self.id_listino
                         u.id_articolo = self.id_articolo
                         u.data_listino_articolo = self.data_listino_articolo
                         params["session"].add(u)
-                        self.saveToAppLog(u)
+                        self.saveAppLog(u)
         try:
             self.__scontiVenditaDett[0].id_listino=self.id_listino
             self.__scontiVenditaDett[0].id_articolo = self.id_articolo
             self.__scontiVenditaDett[0].data_listino_articolo = self.data_listino_articolo
             params["session"].add(self.__scontiVenditaDett[0])
-            self.saveToAppLog(self.__scontiVenditaDett[0])
+            self.saveAppLog(self.__scontiVenditaDett[0])
         except:
             pass
 
@@ -248,7 +252,7 @@ class ListinoArticolo(Dao):
             self.__scontiVenditaIngr[0].id_articolo = self.id_articolo
             self.__scontiVenditaIngr[0].data_listino_articolo = self.data_listino_articolo
             params["session"].add(self.__scontiVenditaIngr[0])
-            self.saveToAppLog(self.__scontiVenditaIngr[0])
+            self.saveAppLog(self.__scontiVenditaIngr[0])
         except:
             pass
 

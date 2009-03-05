@@ -138,6 +138,8 @@ class Articolo(Dao):
         if self.sa: return self.sa.denominazione
         else: return ""
 
+
+
     if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
 
 
@@ -514,6 +516,7 @@ if hasattr(conf, "DistintaBase") and getattr(conf.DistintaBase,'mod_enable')=="y
 if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
     from promogest.modules.GestioneNoleggio.dao.ArticoloPlusGN import ArticoloPlusGN
     std_mapper.add_property("APGN",relation(ArticoloPlusGN,primaryjoin=(articolo.c.id==ArticoloPlusGN.id_articolo),backref="ARTI"))
+
 
 
 def isNuovoCodiceByFamiglia():

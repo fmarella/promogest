@@ -24,8 +24,8 @@ import gobject
 from GladeWidget import GladeWidget
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Listino
+#from promogest.dao.Dao import Dao
+#import promogest.dao.Listino
 from promogest.dao.Listino import Listino
 
 from utils import *
@@ -142,7 +142,6 @@ class ElencoListini(GladeWidget):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
-
         idListino = None
         if self._currentDao is not None:
             idListino = self._currentDao.id

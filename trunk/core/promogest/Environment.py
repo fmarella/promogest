@@ -178,7 +178,6 @@ session.close()
 
 """ Sets configuration value """
 def set_configuration(company=None, year = None):
-
     global conf,connection, exceptionHandler, promogestDir, feed,  emailcompose,\
                 emailmittente, smtpServer, cliente_predefinito, tipo_documento_predefinito,\
                 multilinelimit, mltext, sistemaColonnaFrontaline, sistemaRigaFrontaline,\
@@ -186,8 +185,8 @@ def set_configuration(company=None, year = None):
                 bordoDestro, bordoSinistro
 
     try:
-        dir = getConfigureDir(company)
-        promogestDir = os.path.expanduser('~') + os.sep + dir + os.sep
+        dire = getConfigureDir(company)
+        promogestDir = os.path.expanduser('~') + os.sep + dire + os.sep
         if not (os.path.exists(promogestDir)):
             os.mkdir(promogestDir)
 
@@ -364,6 +363,7 @@ def set_configuration(company=None, year = None):
         conf.hasLabel = False
 
     importDebug = True
+
 
 mainSchema = "promogest2"
 

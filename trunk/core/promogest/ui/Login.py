@@ -31,7 +31,7 @@ from promogest import Environment
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from promogest.dao.AppLog import AppLog
-from promogest.dao.DaoUtils import saveToAppLog
+from promogest.dao.Dao import Dao
 from GtkExceptionHandler import GtkExceptionHandler
 from utils import hasAction,on_status_activate
 from utilsCombobox import findComboboxRowFromStr
@@ -212,7 +212,7 @@ class Login(GladeApp):
                     global windowGroup
                     windowGroup.remove(self.getTopLevel())
                     self.importModulesFromDir('promogest/modules')
-                    saveToAppLog(action="login", status=True,value=username)
+                    #saveAppLog(action="login", status=True,value=username)
                     from Main import Main
                     main = Main(self.azienda,
                                 self.anagrafiche_modules,
@@ -233,7 +233,7 @@ class Login(GladeApp):
                                     'Nome utente o password Errati')
                 response = dialog.run()
                 dialog.destroy()
-                saveToAppLog(action="login", status=False,value=username)
+                #saveAppLog(action="login", status=False,value=username)
                 do_login = False
 
     def on_aggiorna_button_clicked(self, widget):

@@ -16,10 +16,10 @@ import datetime
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport,  AnagraficaEdit, AnagraficaLabel
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Listino
-from promogest.dao.ListinoArticolo import ListinoArticolo
+#from promogest.dao.Dao import Dao
+#import promogest.dao.Listino
 from promogest.dao.Articolo import Articolo
+from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 from promogest.dao.ListinoComplessoListino import ListinoComplessoListino

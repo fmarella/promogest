@@ -5,7 +5,7 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
 
-import Dao
+from Dao import Dao
 from promogest.Environment import *
 from promogest import Environment
 from sqlalchemy import *
@@ -57,7 +57,7 @@ class TestataDocumento(Dao):
         self._totaleImpostaScontata = 0
         self._totaleScontato = 0
         self._castellettoIva = 0
-
+        print "TESTATAAAAAAAAAAAAAA", dir(conf)
 
     @reconstructor
     def init_on_load(self):

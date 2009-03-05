@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -14,7 +14,7 @@ from GladeWidget import GladeWidget
 
 from promogest import Environment
 from promogest.dao.Dao import Dao
-import promogest.dao.Listino
+#import promogest.dao.Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 
 from utils import *
