@@ -135,7 +135,8 @@ class Login(GladeApp):
         for a in app:
             #print a.pkid
             print a.pk[0].pk_integer
-            #print loads(a.object)
+            a =  loads(a.object)
+            print "GGGGGGGGGG", dir(a)
             #dao = a.message.split(" ")[1]
             #query= Environment.params["session"].query(Articolo).get(id=eval(a.pkid)[0])
             #print query

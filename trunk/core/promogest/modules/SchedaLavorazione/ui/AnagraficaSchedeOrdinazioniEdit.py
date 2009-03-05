@@ -25,6 +25,7 @@ from promogest.modules.SchedaLavorazione.dao.CarattereStampa import CarattereSta
 from promogest.ui.AnagraficaClienti import AnagraficaClienti
 from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
+from promogest.dao.Magazzino import Magazzino
 #from promogest.dao.Pagamento import Pagamento
 from promogest.modules.SchedaLavorazione.dao.ScontoRigaScheda import ScontoRigaScheda
 from promogest.modules.DistintaBase.dao.AssociazioneArticolo import AssociazioneArticolo
@@ -36,7 +37,7 @@ from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
-from SchedaLavorazioneUtils import fillComboboxColoreStampa, fillComboboxCarattereStampa, fillComboboxAssociazioneArticoli, fetch_date, get_nomi_sposi, create_schede_ordinazioni, getPrezzoNetto
+from SchedaLavorazioneUtils import *
 from widgets.SchedeOrdinazioniEditWidget import SchedeOrdinazioniEditWidget
 from DuplicaInFattura import DuplicaInFattura
 
@@ -543,6 +544,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                     setPromemoriaSchedaData()
                     allarmi.append(allarme)
         self.dao.promemoria = allarmi
+
         self.righeTEMP = []
         scontiSuTotale = []#{}
 
@@ -572,15 +574,18 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
 
         #self._refresh()
 
-    def on_associazione_articoli_comboboxentry_changed(self, combobox):
+    def on_associazione_articoli_comboboxentry_changed(self, combobox=None, codart=None):
         if self._loading:
             return
         #this combobox has been filled with "articolo" data such as "denominazione", "id"
         if self._id_listino is None:
             obligatoryField(None, self.listino_combobox,\
                                             msg='Selezionare prima un listino.')
-
-        search_string = combobox.child.get_text()
+        if codart:
+            print "CODAAAAAAAAAAAAAAAART", codart
+            search_string=codart
+        else:
+            search_string = combobox.child.get_text()
         model = combobox.get_model()
         selected = combobox.get_active()
         if selected < 0:
@@ -834,6 +839,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         Questo metodo viene chiamato per primo in refresh() per evitare di resettare tutte le modifiche
         apportate alla scheda quando viene generato un qualunque altro segnale da un widget che modifica il dao.
         """
+        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         buffer = self.note_text_textview.get_buffer()
         start, end = buffer.get_bounds()
         self.dao.note_text = buffer.get_text(start, end)
@@ -874,6 +880,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.dao.password_amici = self.password_amici_entry.get_text()
 
     def _clear(self):
+        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
         buffer = self.note_text_textview.get_buffer()
         start,end = buffer.get_bounds()
         buffer.delete(start,end)
@@ -952,9 +959,37 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.daoCliente = Cliente().getRecord(id=self.dao.id_cliente)
 
 
+    def on_email_import_button_clicked(self, button):
+        print "FILL THE DATA FROM EMAIL"
+        if self.dao:
+            altriDati= fillSchedaLavorazioneFromEmail(self)
+        else:
+            print "mettici un dialogo che avvisa"
+        self.nome_contatto_entry.set_text("ANTO")
+        self.stato_entry.set_text("Italia")
+        idColore = ColoreStampa().select(denominazione = altriDati["colore_stampa"])
+        if idColore:
+            findComboboxRowFromId(self.colore_stampa_combobox, idColore[0].id)
+        idCarattere = CarattereStampa().select(denominazione = altriDati["carattere_stampa"])
+        if idCarattere:
+            findComboboxRowFromId(self.carattere_stampa_combobox, idCarattere[0].id)
+        idMagazzino = Magazzino().select(denominazione = "PARTECIPAZIONI")
+        if idMagazzino:
+            findComboboxRowFromId(self.magazzino_combobox, idMagazzino[0].id)
+        idListino = Listino().select(denominazione = "WEB")
+        if idListino:
+            findComboboxRowFromId(self.listino_combobox, idListino[0].id)
+        codart = altriDati["codParte"]
+        self.on_associazione_articoli_comboboxentry_changed(self.associazione_articoli_comboboxentry,codart=codart)
+        self.materiale_disponibile_si_checkbutton.set_active(True)
+        #self.on_materiale_disponibile_si_checkbutton_toggled(self.materiale_disponibile_si_checkbutton)
+        #self.on_column_quantita_edited(cell, path, value, treeview, editNext=True):
+        #self._refresh(firstLoad=False)
+
     def on_genera_button_clicked(self, button):
         username = self.nomi_sposi_entry.get_text().replace("-","").replace(" ","").strip()[0:8]+"Web"
         self.user_id_entry.set_text(username)
+        self.lui_e_lei_entry.set_text(self.nome_sposo_entry.get_text().upper()+"&"+self.nome_sposa_entry.get_text().upper())
         self.password_user_entry.set_text(str(''.join( Random().sample(string.letters+string.digits, 6))))
         self.password_sito_entry.set_text(str(''.join( Random().sample(string.letters+string.digits, 6))))
         self.password_amici_entry.set_text(str(''.join( Random().sample(string.letters+string.digits, 6))))
@@ -989,16 +1024,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                                                                 password_amici)
             bodypart2 = Environment.conf.SchedaLavorazione.signature
             body = bodypart+bodypart2
-
-#def applicationThread():
-                #toemail = " -compose to=%s" %self.email
-                #fileName = self._pdfName +'.pdf'
-                #subject= ",subject="+conf.subject %fileName
-                #attachemail = ",attachment=file://%s" %pdfFile
-                #body = conf.body %fileName
-                #os.system(emailAPP + toemail+subject+body+ attachemail)
-                #self.email = ""
-
 
 
             def applicationThread():

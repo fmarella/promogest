@@ -76,6 +76,7 @@ righeDocumentoDict = {}
 totaliDict = {}
 percentualeIvaRiga = None
 aliquotaIvaRiga = None
+modulesList = []
 
 def getConfigureDir(company='__default__'):
     """ Tests if another configuration folder was indicated """

@@ -23,7 +23,12 @@ class ColoreStampa(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'id':coloristampa.c.id ==v}
+        if k == "id":
+            dic= {k:coloristampa.c.id ==v}
+        elif k == "denominazione":
+            dic={k:coloristampa.c.denominazione.ilike(v)}
+        
+
         return  dic[k]
 
 coloristampa=Table('colori_stampa',params['metadata'],schema = params['schema'],

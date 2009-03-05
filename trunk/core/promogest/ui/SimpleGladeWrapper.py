@@ -96,6 +96,7 @@ class SimpleGladeWrapper:
             sets two attributes (foo and bar) to glade_app.
         """
         if (path is None) or (path == './gui/'):
+            #gladeFile = "./gui/"+ root +".xml"
             gladeFile = "./gui/"+ root +".glade"
             if os.path.exists(gladeFile):
                 self.glade_path = gladeFile
@@ -103,6 +104,9 @@ class SimpleGladeWrapper:
                 self.glade_path = "./gui/promogest.glade"
             self.glade = None
         else:
+            #print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+            #if os.path.isfile(path+".xml"):
+                #self.glade_path = path+".xml"
             if os.path.isfile(path):
                 self.glade_path = path
             elif isModule:
@@ -115,6 +119,22 @@ class SimpleGladeWrapper:
                 setattr(self, key, weakref.proxy(value) )
             except TypeError:
                 setattr(self, key, value)
+
+        #self.glade = gtk.Builder()
+        #self.glade.add_from_file(self.glade_path)
+        #self.widgets = self.glade.get_objects()
+        #print self.widgets
+        #self.install_custom_handler(self.custom_handler)
+        #self.glade = self.create_glade(self.glade_path, root, domain)
+        #if root:
+            ##self.main_widget = self.widgets[0]
+            #self.main_widget = self.glade.get_object(root)
+        #else:
+            #self.main_widget = None
+        #self.normalize_names()
+        #self.glade.connect_signals(self)
+
+
         self.install_custom_handler(self.custom_handler)
         self.glade = self.create_glade(self.glade_path, root, domain)
         if root:
@@ -176,18 +196,21 @@ class SimpleGladeWrapper:
         prefixes a widget has for each widget.
         """
         for widget in self.get_widgets():
-            widget_name = gtk.Widget.get_name(widget)
-            prefixes_name_l = widget_name.split(":")
-            prefixes = prefixes_name_l[ : -1]
-            widget_api_name = prefixes_name_l[-1]
-            widget_api_name = "_".join( re.findall(tokenize.Name, widget_api_name) )
-            gtk.Widget.set_name(widget, widget_api_name)
-            if hasattr(self, widget_api_name):
-                raise AttributeError("instance %s already has an attribute %s" % (self,widget_api_name))
-            else:
-                setattr(self, widget_api_name, widget)
-                if prefixes:
-                    gtk.Widget.set_data(widget, "prefixes", prefixes)
+            try:
+                widget_name = gtk.Widget.get_name(widget)
+                prefixes_name_l = widget_name.split(":")
+                prefixes = prefixes_name_l[ : -1]
+                widget_api_name = prefixes_name_l[-1]
+                widget_api_name = "_".join( re.findall(tokenize.Name, widget_api_name) )
+                gtk.Widget.set_name(widget, widget_api_name)
+                if hasattr(self, widget_api_name):
+                    raise AttributeError("instance %s already has an attribute %s" % (self,widget_api_name))
+                else:
+                    setattr(self, widget_api_name, widget)
+                    if prefixes:
+                        gtk.Widget.set_data(widget, "prefixes", prefixes)
+            except:
+                print "widget", widget
 
 
     def add_prefix_actions(self, prefix_actions_proxy):
@@ -354,6 +377,7 @@ class SimpleGladeWrapper:
 
     def get_widgets(self):
         return self.glade.get_widget_prefix("")
+        #return self.glade.get_objects()
 
 
     def getTopLevel(self):

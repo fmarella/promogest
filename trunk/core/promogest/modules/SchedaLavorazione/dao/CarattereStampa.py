@@ -16,7 +16,10 @@ class CarattereStampa(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'id':caratteristampa.c.id ==v}
+        if k == "id":
+            dic= {k:caratteristampa.c.id ==v}
+        elif k == "denominazione":
+            dic={k:caratteristampa.c.denominazione.ilike(v)}
         return  dic[k]
 
 caratteristampa=Table('caratteri_stampa', params['metadata'],schema = params['schema'],

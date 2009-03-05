@@ -56,6 +56,25 @@ class SchedaOrdinazione(Dao):
         self._data_ordine_al_fornitore = None
         self._data_ricevuta = None
         self._data_spedizione = None
+        self._colore_stampa = None
+        self._carattere_stampa = None
+        self._note_final= None
+        self._note_fornitore = None
+        self._nome_contatto = None
+        self._note_spedizione = None
+        self._note_text = None
+        self._presso = None
+        self._via_piazza = None
+        self._num_civ = None
+        self._zip = None
+        self._localita = None
+        self._provincia = None
+        self._stato = None
+        self._telefono = None
+        self._cellulare = None
+        self._skype = None
+        self.seconda_email=None
+        
 
     def _getRigheSchedaOrdinazione(self):
         #if self.__dbRigheSchedaOrdinazione is None and self.id:
@@ -199,29 +218,41 @@ class SchedaOrdinazione(Dao):
     prima_email = property(_get_prima_email, _set_prima_email)
 
     def _get_seconda_email(self):
-        if self.cont_sched: return self.cont_sched.seconda_email
-        else: return ""
+        if self._seconda_email:
+            return self._seconda_email
+        else:
+            if self.cont_sched: return self.cont_sched.seconda_email
+            else: return ""
     def _set_seconda_email(self, value):
         self._seconda_email = value
     seconda_email = property(_get_seconda_email, _set_seconda_email)
 
     def _get_telefono(self):
-        if self.cont_sched: return self.cont_sched.telefono
-        else: return ""
+        if self._telefono:
+            return self._telefono
+        else:
+            if self.cont_sched: return self.cont_sched.telefono
+            else: return ""
     def _set_telefono(self, value):
         self._telefono = value
     telefono = property(_get_telefono, _set_telefono)
 
     def _get_cellulare(self):
-        if self.cont_sched: return self.cont_sched.cellulare
-        else: return ""
+        if self._cellulare:
+            return self._cellulare
+        else:
+            if self.cont_sched: return self.cont_sched.cellulare
+            else: return ""
     def _set_cellulare(self, value):
         self._cellulare = value
     cellulare = property(_get_cellulare, _set_cellulare)
 
     def _get_skype(self):
-        if self.cont_sched: return self.cont_sched.skype
-        else: return ""
+        if self._skype:
+            return self._skype
+        else:
+            if self.cont_sched: return self.cont_sched.skype
+            else: return ""
     def _set_skype(self, value):
         self._skype = value
     skype = property(_get_skype, _set_skype)
@@ -238,56 +269,80 @@ class SchedaOrdinazione(Dao):
     referente = property(_get_referente, _set_referente)
 
     def _get_presso(self):
-        if self.recapito_sped: return self.recapito_sped.presso
-        else: return ""
+        if self._presso:
+            return self._presso
+        else:
+            if self.recapito_sped: return self.recapito_sped.presso
+            else: return ""
     def _set_presso(self, value):
         self._presso = value
     presso = property(_get_presso, _set_presso)
 
     def _get_via_piazza(self):
-        if self.recapito_sped: return self.recapito_sped.via_piazza
-        else: return ""
+        if self._via_piazza:
+            return self._via_piazza
+        else:
+            if self.recapito_sped: return self.recapito_sped.via_piazza
+            else: return ""
     def _set_via_piazza(self, value):
         self._via_piazza = value
     via_piazza = property(_get_via_piazza, _set_via_piazza)
 
     def _get_num_civ(self):
-        if self.recapito_sped: return self.recapito_sped.num_civ
-        else: return ""
+        if self._num_civ:
+            return self._num_civ
+        else:
+            if self.recapito_sped: return self.recapito_sped.num_civ
+            else: return ""
     def _set_num_civ(self, value):
         self._num_civ = value
     num_civ = property(_get_num_civ, _set_num_civ)
 
     def _get_zip(self):
-        if self.recapito_sped: return self.recapito_sped.zip
-        else: return ""
+        if self._zip:
+            return self._zip
+        else:
+            if self.recapito_sped: return self.recapito_sped.zip
+            else: return ""
     def _set_zip(self, value):
         self._zip = value
     zip = property(_get_zip, _set_zip)
 
     def _get_localita(self):
-        if self.recapito_sped: return self.recapito_sped.localita
-        else: return ""
+        if self._localita:
+            return self._localita
+        else:
+            if self.recapito_sped: return self.recapito_sped.localita
+            else: return ""
     def _set_localita(self, value):
         self._localita = value
     localita = property(_get_localita, _set_localita)
 
     def _get_provincia(self):
-        if self.recapito_sped: return self.recapito_sped.provincia
-        else: return ""
+        if self._provincia:
+            return self._provincia
+        else:
+            if self.recapito_sped: return self.recapito_sped.provincia
+            else: return ""
     def _set_provincia(self, value):
         self._provincia = value
     provincia = property(_get_provincia, _set_provincia)
 
     def _get_stato(self):
-        if self.recapito_sped: return self.recapito_sped.stato
-        else: return ""
+        if self._stato:
+            return self._stato
+        else:
+            if self.recapito_sped: return self.recapito_sped.stato
+            else: return ""
     def _set_stato(self, value):
         self._stato = value
     stato = property(_get_stato, _set_stato)
 
     #property colore_stampa
     def _get_colore_stampa(self):
+        #if self._colore_stampa:
+            #return self._colore_stampa
+        #else:
         if self.COLOSTAMP: return self.COLOSTAMP.denominazione
         else: return ""
     def _set_colore_stampa(self, value):
@@ -295,6 +350,9 @@ class SchedaOrdinazione(Dao):
     colore_stampa = property(_get_colore_stampa, _set_colore_stampa)
     #property carattere_stampa
     def _get_carattere_stampa(self):
+        #if self._carattere_stampa:
+            #return self._carattere_stampa
+        #else:
         if self.CARATTSTAM: return self.CARATTSTAM.denominazione
         else: return ""
     def _set_carattere_stampa(self, value):
@@ -302,15 +360,21 @@ class SchedaOrdinazione(Dao):
     carattere_stampa = property(_get_carattere_stampa, _set_carattere_stampa)
     #property nota scheda
     def _get_note_final(self):
-        if self.nota_scheda: return self.nota_scheda.note_final
-        else: return ""
+        if self._note_final:
+            return self._note_final
+        else:
+            if self.nota_scheda: return self.nota_scheda.note_final
+            else: return ""
     def _set_note_final(self, value):
         self._note_final = value
     note_final = property(_get_note_final, _set_note_final)
 
     def _get_note_text(self):
-        if self.nota_scheda: return self.nota_scheda.note_text
-        else: return ""
+        if self._note_text:
+            return self._note_text
+        else:
+            if self.nota_scheda: return self.nota_scheda.note_text
+            else: return ""
     def _set_note_text(self, value):
         self._note_text = value
     note_text = property(_get_note_text, _set_note_text)
@@ -324,15 +388,21 @@ class SchedaOrdinazione(Dao):
 
 
     def _get_note_fornitore(self):
-        if self.nota_scheda: return self.nota_scheda.note_fornitore
-        else: return ""
+        if self._note_fornitore:
+            return self._note_fornitore
+        else:
+            if self.nota_scheda: return self.nota_scheda.note_fornitore
+            else: return ""
     def _set_note_fornitore(self, value):
         self._note_fornitore = value
     note_fornitore = property(_get_note_fornitore, _set_note_fornitore)
 
     def _get_note_spedizione(self):
-        if self.nota_scheda: return self.nota_scheda.note_spedizione
-        else: return ""
+        if self._note_spedizione:
+            return self._note_spedizione
+        else:
+            if self.nota_scheda: return self.nota_scheda.note_spedizione
+            else: return ""
     def _set_note_spedizione(self, value):
         self._note_spedizione = value
     note_spedizione = property(_get_note_spedizione, _set_note_spedizione)
