@@ -258,6 +258,8 @@ Qui sotto viene riportato l'errore di sistema:
 
 
 def saveToAppLog(dao=None,status=True,action=None, value=None):
+    commit()
+    return
     from AppLog import AppLog
     from ChiaviPrimarieLog import ChiaviPrimarieLog
     whatstr= None
