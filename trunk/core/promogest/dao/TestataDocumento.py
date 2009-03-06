@@ -57,7 +57,7 @@ class TestataDocumento(Dao):
         self._totaleImpostaScontata = 0
         self._totaleScontato = 0
         self._castellettoIva = 0
-        print "TESTATAAAAAAAAAAAAAA", dir(conf)
+        #print "TESTATAAAAAAAAAAAAAA", dir(conf)
 
     @reconstructor
     def init_on_load(self):

@@ -12,7 +12,7 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 #from AppLog import AppLog
 from promogest.ui.GtkExceptionHandler import GtkExceptionHandler
-from DaoUtils import saveToAppLog
+#from DaoUtils import saveToAppLog
 
 class Dao(object):
     """Astrazione generica di ciò˛ che fu il vecchio dao basata su sqlAlchemy
@@ -96,10 +96,29 @@ class Dao(object):
         self.saveAppLog(self)
 
     def saveAppLog(self,dao):
-        saveToAppLog(self)
-        #self.commit()
+        #saveToAppLog(self)
+        self.commit()
 
-
+    def commit(self):
+        """ Salva i dati nel DB"""
+        try:
+            params["session"].commit()
+            return True
+        except Exception,e:
+            msg = """ATTENZIONE ERRORE
+    Qui sotto viene riportato l'errore di sistema:
+    %s
+    ( normalmente il campo in errore è tra "virgolette")
+    """ %e
+            overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
+                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                                    gtk.MESSAGE_ERROR,
+                                                    gtk.BUTTONS_CANCEL, msg)
+            response = overDialog.run()
+            overDialog.destroy()
+            print "ERRORE", e
+            params["session"].rollback()
+            return False
 
 
     def _resetId(self):

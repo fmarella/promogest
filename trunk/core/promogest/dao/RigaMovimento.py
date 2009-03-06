@@ -20,10 +20,9 @@ from Multiplo import Multiplo
 from Stoccaggio import Stoccaggio
 from DaoUtils import scontiRigaMovimentoDel
 from promogest.ui.utils import getScontiFromDao, getStringaSconti
-if hasattr(conf, "SuMisura"):
-    if getattr(conf.SuMisura,'mod_enable') == "yes":
-        from promogest.modules.SuMisura.data.SuMisuraDb import *
-        from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
+if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
+    #from promogest.modules.SuMisura.data.SuMisuraDb import *
+    from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
 
 
 class RigaMovimento(Dao):
@@ -227,6 +226,7 @@ class RigaMovimento(Dao):
                 params["session"].add(value)
             params["session"].commit()
 
+        #print "MAAAAAAAAAAAAAAAAAAA",modulesList
         if "SuMisura" in modulesList:
             #try:
             if self.__misuraPezzo:
@@ -252,3 +252,11 @@ std_mapper = mapper(RigaMovimento, j,properties={
                         cascade="all, delete",
                         backref="RM"),
         }, order_by=riga_mov.c.id)
+
+#if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
+    ##from promogest.modules.SuMisura.data.SuMisuraDb import *
+    #from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
+    #std_mapper.add_property("sumi",relation(MisuraPezzo,primaryjoin=
+                    #MisuraPezzo.id_riga==riga_mov.c.id,
+                    #cascade="all, delete",
+                    #backref="riga_mov"))
