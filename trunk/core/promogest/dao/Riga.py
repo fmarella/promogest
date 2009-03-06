@@ -25,10 +25,3 @@ class Riga(Dao):
 
 riga=Table('riga', params['metadata'],schema = params['schema'],autoload=True)
 std_mapper = mapper(Riga, riga, properties={}, order_by=riga.c.id)
-if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
-    #from promogest.modules.SuMisura.data.SuMisuraDb import *
-    from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
-    std_mapper.add_property("sumi",relation(MisuraPezzo,primaryjoin=
-                    MisuraPezzo.id_riga==riga.c.id,
-                    cascade="all, delete",
-                    backref="riga_mov"))

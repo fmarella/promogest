@@ -16,7 +16,7 @@ from promogest import Environment
 from AnagraficaDocumentiFilter import AnagraficaDocumentiFilter
 from AnagraficaDocumentiEdit import AnagraficaDocumentiEdit
 from promogest.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-from promogest.dao.MisuraPezzo import MisuraPezzo
+#from promogest.dao.MisuraPezzo import MisuraPezzo
 #import promogest.dao.TestataDocumento
 from promogest.dao.TestataDocumento import TestataDocumento
 from utils import *

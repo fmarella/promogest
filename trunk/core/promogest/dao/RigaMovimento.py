@@ -19,6 +19,7 @@ from Listino import Listino
 from Multiplo import Multiplo
 from Stoccaggio import Stoccaggio
 from DaoUtils import scontiRigaMovimentoDel
+#from Riga import Riga
 from promogest.ui.utils import getScontiFromDao, getStringaSconti
 if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     #from promogest.modules.SuMisura.data.SuMisuraDb import *
@@ -244,6 +245,7 @@ j = join(riga_mov, riga)
 
 std_mapper = mapper(RigaMovimento, j,properties={
         'id':[riga_mov.c.id, riga.c.id],
+        #"rig":relation(Riga,primaryjoin = riga_mov.c.id==riga.c.id,cascade="all, delete", backref="RM"),
         "maga":relation(Magazzino,primaryjoin=riga.c.id_magazzino==Magazzino.id),
         "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
         "listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
@@ -252,6 +254,7 @@ std_mapper = mapper(RigaMovimento, j,properties={
                         cascade="all, delete",
                         backref="RM"),
         }, order_by=riga_mov.c.id)
+
 
 #if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     ##from promogest.modules.SuMisura.data.SuMisuraDb import *

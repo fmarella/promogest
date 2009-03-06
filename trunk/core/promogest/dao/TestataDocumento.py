@@ -725,7 +725,7 @@ testata_documento=Table('testata_documento',params['metadata'],schema = params['
 std_mapper = mapper(TestataDocumento, testata_documento, properties={
         "rigadoc": relation(RigaDocumento, backref="testata_documento"),
         "testata_documento_scadenza" :relation(TestataDocumentoScadenza, backref="testata_documento"),
-        "PG":relation(Pagamento,primaryjoin = (testata_documento.c.id_pagamento==Pagamento.id)),
+        "PG":relation(Pagamento,primaryjoin = testata_documento.c.id_pagamento==Pagamento.id),
         "BN":relation(Banca,primaryjoin = (testata_documento.c.id_banca==Banca.id)),
         "AL":relation(AliquotaIva,primaryjoin = (testata_documento.c.id_aliquota_iva_esenzione==AliquotaIva.id)),
         "PV":relation(Vettore,primaryjoin = (testata_documento.c.id_vettore==Vettore.id)),

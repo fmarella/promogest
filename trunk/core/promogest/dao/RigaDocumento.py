@@ -8,7 +8,7 @@
 
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation, join
-from promogest.Environment import params, modulesList
+from promogest.Environment import params, modulesList, conf
 from Dao import Dao
 from UnitaBase import UnitaBase
 from ScontoRigaDocumento import ScontoRigaDocumento
@@ -19,6 +19,7 @@ from Magazzino import Magazzino
 from Listino import Listino
 from Multiplo import Multiplo
 from DaoUtils import scontiRigaDocumentoDel
+#from Riga import Riga
 
 if "SuMisura" in modulesList:
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
@@ -194,11 +195,12 @@ j = join(riga_doc, riga)
 
 std_mapper = mapper(RigaDocumento, j,properties={
         'id':[riga_doc.c.id, riga.c.id],
+        #"rig":relation(Riga,primaryjoin = riga_doc.c.id==riga.c.id,cascade="all, delete", backref="RD"),
         "maga":relation(Magazzino,primaryjoin=riga.c.id_magazzino==Magazzino.id),
         "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
         "listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
         "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
-        "SCD":relation(ScontoRigaDocumento,primaryjoin = (riga_doc.c.id==ScontoRigaDocumento.id_riga_documento), backref="RD"),
+        "SCD":relation(ScontoRigaDocumento,primaryjoin = riga_doc.c.id==ScontoRigaDocumento.id_riga_documento, cascade="all, delete", backref="RD"),
             },order_by=riga_doc.c.id)
 
 

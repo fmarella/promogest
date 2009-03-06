@@ -121,19 +121,15 @@ def righeDocumentoDel(id=None):
         from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
     row = RigaDocumento().select(idTestataDocumento= id,
                                                 offset = None,
-                                                batchSize = None,
-                                                orderBy="id_testata_documento")
+                                                batchSize = None)
     if row:
         for r in row:
-            print "MODULESSSSSSSSSSSSSSSSSSSSSSSSS", modulesList
-            print hasattr(conf, "SuMisura") , getattr(conf.SuMisura,'mod_enable') == "yes"
-
             if "SuMisura" in modulesList:
                 mp = MisuraPezzo().select(idRiga=r.id)
                 if mp:
                     for m in mp:
                         params['session'].delete(m)
-                        params["session"].commit()
+                    params["session"].commit()
             params['session'].delete(r)
         params["session"].commit()
         return True
@@ -149,14 +145,12 @@ def righeMovimentoDel(id=None):
                                 orderBy="id_testata_movimento")
     if row:
         for r in row:
-            print "MODULESSSSSSSSSSSSSSSSSSSSSSSSS", modulesList
-            print hasattr(conf, "SuMisura") , getattr(conf.SuMisura,'mod_enable') == "yes"
             if "SuMisura" in modulesList:
                 mp = MisuraPezzo().select(idRiga=r.id)
                 if mp:
                     for m in mp:
                         params['session'].delete(m)
-                        params["session"].commit()
+                    params["session"].commit()
             params['session'].delete(r)
         params["session"].commit()
         return True
