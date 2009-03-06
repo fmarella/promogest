@@ -9,7 +9,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params
+from promogest.Environment import *
 from sqlalchemy import and_
 import types
 import datetime
