@@ -28,7 +28,7 @@ if hasattr(conf, 'VenditaDettaglio'):
     testataScontrinoTable.create(checkfirst=True)
 
     #testataScontrinoTable = Table('testata_scontrino', params['metadata'], autoload=True, schema=params['schema'])
-    #articoloTable = Table('articolo', params['metadata'], autoload=True, schema=params['schema'])
+    articoloTable = Table('articolo', params['metadata'], autoload=True, schema=params['schema'])
 
     rigaScontrinoTable = Table('riga_scontrino', params['metadata'],
             Column('id',Integer,primary_key=True),
@@ -44,7 +44,7 @@ if hasattr(conf, 'VenditaDettaglio'):
     rigaScontrinoTable.create(checkfirst=True)
 
     #rigaDocumentoTable = Table('riga_scontrino', params['metadata'], autoload=True, schema=params['schema'])
-    #rigaDotoTable = Table('sconto', params['metadata'], autoload=True, schema=params['schema'])
+    rigaDotoTable = Table('sconto', params['metadata'], autoload=True, schema=params['schema'])
 
     scontoRigaScontrinoTable = Table('sconto_riga_scontrino', params['metadata'],
             Column('id',Integer,ForeignKey(params['schema'] +'.sconto.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),

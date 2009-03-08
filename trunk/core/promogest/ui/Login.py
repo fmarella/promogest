@@ -25,6 +25,8 @@ import os
 import gtk
 import datetime
 import locale
+import threading
+from  subprocess import *
 from GladeApp import GladeApp
 from GladeWidget import GladeWidget
 from promogest import Environment
@@ -38,7 +40,7 @@ from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
 from sqlalchemy import *
 from sqlalchemy.orm import *
-import threading
+
 from promogest.lib import feedparser
 
 #if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
@@ -143,7 +145,7 @@ class Login(GladeApp):
         #print "INIZIAMOOOO", app
         #serialized = dumps(app)
         #print serialized
-            
+
         #sendemail = SendEmail()
 
     def on_button_login_clicked(self, button=None):
