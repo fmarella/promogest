@@ -187,7 +187,8 @@ class TestataMovimento(Dao):
                     daoFornitura.sconti = sconti
                     params["session"].add(daoFornitura)
                     params["session"].commit()
-        #params["session"].flush()
+        self.__righeMovimento = []
+        params["session"].flush()
 
 testata_mov=Table('testata_movimento',
                     params['metadata'],
