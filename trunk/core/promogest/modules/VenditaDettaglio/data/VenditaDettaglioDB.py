@@ -8,12 +8,17 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
+#from promogest.dao.Dao import Dao
 
 #def create()
 if hasattr(conf, 'VenditaDettaglio'):
     #if conf.VenditaDettaglio.primoavvio=="yes":
+
+    print "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
     testataMovimentoTable = Table('testata_movimento', params['metadata'], autoload=True, schema=params['schema'])
+
+    print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+
     testataScontrinoTable = Table('testata_scontrino', params['metadata'],
                 Column('id',Integer,primary_key=True),
                 Column('data_inserimento',DateTime,PassiveDefault(func.now()),nullable=False),
@@ -27,7 +32,8 @@ if hasattr(conf, 'VenditaDettaglio'):
                 )
     testataScontrinoTable.create(checkfirst=True)
 
-    testataScontrinoTable = Table('testata_scontrino', params['metadata'], autoload=True, schema=params['schema'])
+    print "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"
+    #testataScontrinoTable = Table('testata_scontrino', params['metadata'], autoload=True, schema=params['schema'])
     articoloTable = Table('articolo', params['metadata'], autoload=True, schema=params['schema'])
 
     rigaScontrinoTable = Table('riga_scontrino', params['metadata'],
@@ -43,7 +49,7 @@ if hasattr(conf, 'VenditaDettaglio'):
             )
     rigaScontrinoTable.create(checkfirst=True)
 
-    rigaDocumentoTable = Table('riga_scontrino', params['metadata'], autoload=True, schema=params['schema'])
+    #rigaDocumentoTable = Table('riga_scontrino', params['metadata'], autoload=True, schema=params['schema'])
     rigaDotoTable = Table('sconto', params['metadata'], autoload=True, schema=params['schema'])
 
     scontoRigaScontrinoTable = Table('sconto_riga_scontrino', params['metadata'],
@@ -63,11 +69,11 @@ if hasattr(conf, 'VenditaDettaglio'):
         #conf.VenditaDettaglio.primoavvio = "no"
         #conf.save()
 
-#testatascontrinoTable = Table('testata_scontrino', params['metadata'], autoload=True, schema=params['schema'])
-#testataDoctoTable = Table('sconto', params['metadata'], autoload=True, schema=params['schema'])
-#scontoTestataScontrinoTable = Table('sconto_testata_scontrino', params['metadata'],
-        #Column('id',Integer,ForeignKey(params['schema']+'.sconto.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-        #Column('id_testata_scontrino',Integer,ForeignKey(params['schema']+'.testata_scontrino.id',onupdate="CASCADE",ondelete="CASCADE")),
-        #schema=params['schema']
-        #)
-#scontoTestataScontrinoTable.create(checkfirst=True)
+    testatascontrinoTable = Table('testata_scontrino', params['metadata'], autoload=True, schema=params['schema'])
+    testataDoctoTable = Table('sconto', params['metadata'], autoload=True, schema=params['schema'])
+    scontoTestataScontrinoTable = Table('sconto_testata_scontrino', params['metadata'],
+            Column('id',Integer,ForeignKey(params['schema']+'.sconto.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
+            Column('id_testata_scontrino',Integer,ForeignKey(params['schema']+'.testata_scontrino.id',onupdate="CASCADE",ondelete="CASCADE")),
+            schema=params['schema']
+            )
+    scontoTestataScontrinoTable.create(checkfirst=True)
