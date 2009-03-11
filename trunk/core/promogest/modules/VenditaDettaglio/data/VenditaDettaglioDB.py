@@ -14,11 +14,7 @@ from promogest.Environment import *
 if hasattr(conf, 'VenditaDettaglio'):
     #if conf.VenditaDettaglio.primoavvio=="yes":
 
-    print "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
     testataMovimentoTable = Table('testata_movimento', params['metadata'], autoload=True, schema=params['schema'])
-
-    print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
-
     testataScontrinoTable = Table('testata_scontrino', params['metadata'],
                 Column('id',Integer,primary_key=True),
                 Column('data_inserimento',DateTime,PassiveDefault(func.now()),nullable=False),
@@ -32,7 +28,6 @@ if hasattr(conf, 'VenditaDettaglio'):
                 )
     testataScontrinoTable.create(checkfirst=True)
 
-    print "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"
     #testataScontrinoTable = Table('testata_scontrino', params['metadata'], autoload=True, schema=params['schema'])
     articoloTable = Table('articolo', params['metadata'], autoload=True, schema=params['schema'])
 
