@@ -1740,6 +1740,9 @@ Saldato</property>
                                                           <widget class="Custom" id="moltiplicatore_entry">
                                                             <property name="visible">True</property>
                                                             <property name="sensitive">False</property>
+                                                            <property name="creation_function">createSignedDecimalEntryField</property>
+                                                            <property name="int1">10</property>
+                                                            <property name="int2">3</property>
                                                             <signal name="key_press_event" handler="on_moltiplicatore_entry_key_press_event"/>
                                                           </widget>
                                                         </child>
