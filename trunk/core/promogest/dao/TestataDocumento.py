@@ -363,14 +363,15 @@ class TestataDocumento(Dao):
         scontiTestataDocumentoDel(id=self.id)
         testataDocumentoScadenzaDel(id=self.id)
         righeDocumentoDel(id=self.id)
-        #verifica se sono e devono essere presenti righe di movimentazione magazzino
+        #verifica se sono presenti righe di movimentazione magazzino
         contieneMovimentazione = self.contieneMovimentazione(righe=self.righeDocumento)
         #cerco le testate movimento associate al documento
         #FIXME: se ne trovo piu' di una ? (ad esempio se il documento e' in realta' un cappello)
         res = TestataMovimento().select(join=TestataMovimento.TD,idTestataDocumento = self.id,batchSize=None)
+        #Tutto nuovo non ci sono teste movimento relate a questa testata documento
         if len(res) == 0:
+            #se però c'è movimentazione vuol dire che ha un movimento abbinato
             if contieneMovimentazione:
-                #print "SIAMO DENTRO QUESTO IF, CREO UNA NUOVA TESTATA MOVIMENTO", contieneMovimentazione
                 #creo una nuova testata movimento
                 DaoTestataMovimento = TestataMovimento()
                 DaoTestataMovimento.data_movimento = self.data_documento
@@ -383,10 +384,13 @@ class TestataDocumento(Dao):
                 DaoTestataMovimento.id_fornitore = self.id_fornitore
                 DaoTestataMovimento.note_interne = self.note_interne
                 DaoTestataMovimento.note_interne = self.note_interne
-                DaoTestataMovimento.id_testata_documento = self.id
-                params['session'].add(DaoTestataMovimento)
-                params['session'].commit()
-                righeMovimentoDel(id=DaoTestataMovimento.id)
+                DaoTestataMovimento.id_testata_documento = self.id # abbino la testata alla testata movimento
+                #params['session'].add(DaoTestataMovimento)
+                #params['session'].commit()
+                #DaoTestataMovimento.persist()
+                #in teoria il resto dovrebbe proseguire da solo da qui
+                #ho una 
+                #righeMovimentoDel(id=DaoTestataMovimento.id)
         elif len(res) == 1:
             #print "RES È UGUALE AD UNO.... ESITE UN MOVIMENTO USO RES"
             DaoTestataMovimento = res[0] #TestataMovimento().getRecord(id=res[0].id)
@@ -403,23 +407,23 @@ class TestataDocumento(Dao):
                 DaoTestataMovimento.note_interne = self.note_interne
                 DaoTestataMovimento.note_interne = self.note_interne
                 DaoTestataMovimento.id_testata_documento = self.id
-                params['session'].add(DaoTestataMovimento)
-                params['session'].commit()
-                righeMovimentoDel(id=DaoTestataMovimento.id)
+                #params['session'].add(DaoTestataMovimento)
+                #params['session'].commit()
+                #DaoTestataMovimento.persist()
+                #righeMovimentoDel(id=DaoTestataMovimento.id)
         else:
             # ci sono piu' movimenti collegati al documento
             # FIXME: che fare ?
-            #print "ATTENZIONE CI SONO PIÙ DOCUMENTI LEGATI AD UN DOCUMENTO"
             raise Exception, "ATTENZIONE CI SONO PIU' MOVIMENTI LEGATI AD UN DOCUMENTO"
-        #righeMovimento = []
-        #scontiRigaMovimento = []
-        if self.righeDocumento:
+        righeMovimento = []
+        righeDocumento = []
+        scontiRigaMovimento = []
+        if self.righeDocumento:  #trattiamo le righe documento e movimento
             for row in self.righeDocumento:
-                print "RIGHEEEEEEEEEEEEEEEEEEEEEEEEE ID ARTICOLO", row.id_articolo,contieneMovimentazione
                 if (row.id_articolo is not None and contieneMovimentazione):
                     #salvo tra le righe movimenti
                     daoRigaMovimento = RigaMovimento()
-                    daoRigaMovimento.id_testata_movimento = DaoTestataMovimento.id
+                    #daoRigaMovimento.id_testata_movimento = DaoTestataMovimento.id
                     daoRigaMovimento.valore_unitario_netto = row.valore_unitario_netto
                     daoRigaMovimento.valore_unitario_lordo = row.valore_unitario_lordo
                     daoRigaMovimento.quantita = row.quantita
@@ -432,61 +436,75 @@ class TestataDocumento(Dao):
                     daoRigaMovimento.id_articolo = row.id_articolo
                     daoRigaMovimento.id_multiplo = row.id_multiplo
                     daoRigaMovimento.codiceArticoloFornitore = row.codiceArticoloFornitore
-
-                    params['session'].add(daoRigaMovimento)
-                    params['session'].commit()
+                    
+                    #params['session'].add(daoRigaMovimento)
+                    #params['session'].commit()
+                    #daoRigaMovimento.persist()
                     #gestione sconti in una riga documento
+                    scontiRigaMovimento = []
                     if row.scontiRigaDocumento:
                         for v in row.scontiRigaDocumento:
                             daoScontoMovimento = ScontoRigaMovimento()
                             daoScontoMovimento.valore = v.valore
                             daoScontoMovimento.tipo_sconto = v.tipo_sconto
-                            daoScontoMovimento.id_riga_movimento = daoRigaMovimento.id
-                            params["session"].add(daoScontoMovimento)
-                            params["session"].commit()
-                            #scontiRigaMovimento.append(daoScontoMovimento)
+                            #daoScontoMovimento.id_riga_movimento = daoRigaMovimento.id
+                            #params["session"].add(daoScontoMovimento)
+                            #params["session"].commit()
+                            #daoScontoMovimento.persist()
+                            scontiRigaMovimento.append(daoScontoMovimento)
                             #scontiRigaMovimento[daoRigaMovimento] = lista
-                    if "SuMisura" in Environment.modulesList:
-                        if row.misura_pezzo2:
-                            #if row.misura_pezzo:
-                                #row.misura_pezzo2 = row.misura_pezzo[0]
-                            row.misura_pezzo2.id_riga = daoRigaMovimento.id
-                            params["session"].add(row.misura_pezzo2)
-                            params["session"].commit()
+                    if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable')=="yes":
+                        if row.misura_pezzo:
+                                daoRigaMovimento.misura_pezzo = row.misura_pezzo
+                            #row.misura_pezzo2.id_riga = daoRigaMovimento.id
+                            #params["session"].add(row.misura_pezzo2)
+                            #params["session"].commit()
+                    daoRigaMovimento.scontiRigheMovimento = scontiRigaMovimento
+                    righeMovimento.append(daoRigaMovimento)
+                    #righeMovimento.scontiRigheMovimento = scontiRigaMovimento
                 else:
                     print "RIGA SENZA RIFERMENTO ARTICOLO QUINDI DESCRITTIVA, SALVO IN RIGADOCUMENTO"
                     #annullamento id della riga
                     #row._resetId()
                     #associazione alla riga della testata
                     row.id_testata_documento = self.id
+                    #if row.scontiRigaDocumento:
+                        #for v in row.scontiRigaDocumento:
                     #salvataggio riga
                     #row.persist()
-                    params["session"].add(row)
-                    params["session"].commit()
-                    if "SuMisura" in Environment.modulesList:
-                        if row.misura_pezzo2:
-                            row.misura_pezzo2.id_riga = row.id
-                            params["session"].add(row.misura_pezzo2)
-                            params["session"].commit()
+                    #params["session"].add(row)
+                    #params["session"].commit()
+                    #daoRigaMovimento.scontiRigheMovimento = row.scontiRigaDocumento
+                    #daoRigaMovimento.scontiRigaDocumento = row.scontiRigaDocumento
+                    righeMovimento.append(row)
+                    #row.persist()
+                    #if "SuMisura" in Environment.modulesList:
+                        #if row.misura_pezzo2:
+                            #row.misura_pezzo2.id_riga = row.id
+                            #params["session"].add(row.misura_pezzo2)
+                            #params["session"].commit()
 
                     #print self.scontiRigaDocumento
-                    scontiRigaDocumentoDel(id=row.id)
-                    if row.scontiRigaDocumento:
-                        for value in row.scontiRigaDocumento:
-                            value.id_riga_documento = row.id
-                            params["session"].add(value)
-                    params["session"].commit()
+                    #scontiRigaDocumentoDel(id=row.id)
+                    #if row.scontiRigaDocumento:
+                        #for value in row.scontiRigaDocumento:
+                            #print "RIGA SCONTO DOCUMENTO ", row, row.valore, row.tipo_sconto
+                            #value.id_riga_documento = row.id
+                            #params["session"].add(value)
+                    #params["session"].commit()
                     #tipoRiga.append("doc")
-        #if (DaoTestataMovimento is not None):
-            #if righeMovimento:
+        if (DaoTestataMovimento is not None):
+            if righeMovimento:
                 ##print "SE ARRIVI QUI DOVREBBE ANDARE TUTTO BENE" , righeMovimento
-                #DaoTestataMovimento.righeMovimento=righeMovimento
-                #DaoTestataMovimento.persist()
-            #else:
+                DaoTestataMovimento.righeMovimento=righeMovimento
+                DaoTestataMovimento.persist()
+        else:
+            for riga in righeMovimento:
+                riga.persist()
                 #row.id_testata_documento = self.id
                 ##salvataggio riga
                 #row.persist()
-                ##raise Exception, "MANCANO LE RIGHE?"
+                #raise Exception, "MANCANO LE RIGHE?"
         #else:
             #if len(righeMovimento) > 0:
                 #raise Exception , "ERRORE NELL'ASSEGNAZIONE RIGHEMOVIMENTO"
@@ -500,7 +518,6 @@ class TestataDocumento(Dao):
 
 
         if self.scontiSuTotale:
-            print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", self.scontiSuTotale
             scontiTestataDocumentoDel(id=self.id)
             for scontisutot in self.scontiSuTotale:
             #for key,row in scontiSuTotale.items():
@@ -739,6 +756,8 @@ std_mapper = mapper(TestataDocumento, testata_documento, properties={
         #'lang':relation(Language, backref='user')
         }, order_by=testata_documento.c.id)
 
-
+if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+    from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
+    std_mapper.add_property("TGN",relation(TestataGestioneNoleggio,primaryjoin=(testata_documento.c.id==TestataGestioneNoleggio.id_testata_documento),backref="TD"))
 
 

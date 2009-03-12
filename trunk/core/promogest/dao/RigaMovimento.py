@@ -6,8 +6,8 @@
 # Author: Francesco Meloni <francesco@promotux.it>
 
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper, relation, join
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import params, conf, modulesList
 from Dao import Dao
 from Magazzino import Magazzino
@@ -31,6 +31,14 @@ class RigaMovimento(Dao):
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
         self.__scontiRigaMovimento = None
+        self.__dbMisuraPezzo = None
+        self.__misuraPezzo = None
+
+    @reconstructor
+    def init_on_load(self):
+        self.__dbMisuraPezzo = None
+        self.__misuraPezzo = None
+
 
     def __magazzino(self):
         if self.maga: return self.maga.denominazione
@@ -99,16 +107,13 @@ class RigaMovimento(Dao):
 
     codiceArticoloFornitore = property(_getCodiceArticoloFornitore, _setCodiceArticoloFornitore)
 
-    if "SuMisura" in modulesList:
+    if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable')=="yes":
         def _getMisuraPezzo(self):
-                    #if self.__dbMisuraPezzo is None:
-            try:
+            if self.__misuraPezzo is None:
                 self.__dbMisuraPezzo = MisuraPezzo().select(idRiga=self.id)
                 self.__misuraPezzo = self.__dbMisuraPezzo[:]
                 return self.__misuraPezzo
-            except:
-                self.__misuraPezzo = []
-                return self.__misuraPezzo
+            return self.__misuraPezzo
 
         def _setMisuraPezzo(self, value):
             self.__misuraPezzo = value
@@ -224,18 +229,19 @@ class RigaMovimento(Dao):
         if self.scontiRigheMovimento:
             for value in self.scontiRigheMovimento:
                 value.id_riga_movimento = self.id
-                params["session"].add(value)
-            params["session"].commit()
+                value.persist()
+                #params["session"].add(value)
+            #params["session"].commit()
 
         #print "MAAAAAAAAAAAAAAAAAAA",modulesList
         if "SuMisura" in modulesList:
             #try:
             if self.__misuraPezzo:
-                self.__misuraPezzo.id_riga = self.id
-                params["session"].add(self.__misuraPezzo)
-                params["session"].commit()
+                self.__misuraPezzo[0].id_riga = self.id
+                self.__misuraPezzo[0].persist()
             #except:
                 #print "errore nel salvataggio di misura pezzo"
+            self.__misuraPezzo = []
 
 
 riga=Table('riga', params['metadata'], schema = params['schema'], autoload=True)

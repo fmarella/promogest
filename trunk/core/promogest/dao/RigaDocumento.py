@@ -6,8 +6,8 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper, relation, join
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import params, modulesList, conf
 from Dao import Dao
 from UnitaBase import UnitaBase
@@ -39,6 +39,13 @@ class RigaDocumento(Dao):
         # documento o movimento di carico, per salvare la fornitura
         self.__codiceArticoloFornitore = None
         #pass
+
+    @reconstructor
+    def init_on_load(self):
+        self.__dbMisuraPezzo = None
+        self.misura_pezzo2 = None
+        self.__misuraPezzo = None
+
 
     def _getAliquotaIva(self):
         # Restituisce la denominazione breve dell'aliquota iva
@@ -111,18 +118,14 @@ class RigaDocumento(Dao):
         else: return ""
     codice_articolo= property(__codiceArticolo)
 
-    if "SuMisura" in modulesList:
+    if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable')=="yes":
         def _getMisuraPezzo(self):
-                    #if self.__dbMisuraPezzo is None:
-            try:
+            if self.__misuraPezzo is None:
                 self.__dbMisuraPezzo = MisuraPezzo().select(idRiga=self.id)
                 self.__misuraPezzo = self.__dbMisuraPezzo[:]
-            except:
-                self.__misuraPezzo = []
             return self.__misuraPezzo
 
         def _setMisuraPezzo(self, value):
-            print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO2", value
             self.__misuraPezzo = value
         misura_pezzo = property(_getMisuraPezzo, _setMisuraPezzo)
 
@@ -177,9 +180,10 @@ class RigaDocumento(Dao):
         #salvataggio riga
         params["session"].add(self)
         params["session"].commit()
-        #if "SuMisura" in modulesList:
-            #self.__misuraPezzo.id_riga = self.id
-            #self.__misuraPezzo.persist()
+        if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable')=="yes":
+            if self.__misuraPezzo:
+                self.__misuraPezzo[0].id_riga = self.id
+                self.__misuraPezzo[0].persist()
 
         scontiRigaDocumentoDel(id=self.id)
         if self.scontiRigaDocumento:
@@ -187,7 +191,7 @@ class RigaDocumento(Dao):
                 value.id_riga_documento = self.id
                 params["session"].add(value)
         params["session"].commit()
-
+        self.__dbMisuraPezzo = []
 riga=Table('riga', params['metadata'],schema = params['schema'], autoload=True)
 riga_doc=Table('riga_documento',params['metadata'],schema = params['schema'],autoload=True)
 

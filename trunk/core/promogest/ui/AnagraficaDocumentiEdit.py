@@ -8,6 +8,7 @@
 # Author: Dr astico  (Marco Pinna)<marco@promotux.it>
 # Author: Francesco Meloni  <francesco@promotux.it>
 
+import datetime
 from AnagraficaComplessa import AnagraficaEdit
 import gtk
 from promogest.dao.TestataDocumento import TestataDocumento
@@ -32,6 +33,8 @@ if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
 if "SuMisura" in Environment.modulesList:
     from promogest.modules.SuMisura.ui import AnagraficaDocumentiEditSuMisuraExt
+if "GestioneNoleggio" in Environment.modulesList:
+    from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
 
 class AnagraficaDocumentiEdit(AnagraficaEdit):
     """ Modifica un record dei documenti """
@@ -39,7 +42,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
-                                'anagrafica_documenti_detail_vbox', 'Dati Documento', 'anagrafica_documenti.glade')
+                                'anagrafica_documenti_detail_vbox',
+                                'Dati Documento',
+                                'anagrafica_documenti.glade')
 
         #self.notebook.remove_page(3)
         #else:
@@ -54,12 +59,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._numRiga = 0
 
         self.noClean=False
-        """ modello righe: magazzino, codice articolo,
-        descrizione, percentuale iva, unita base, multiplo, listino,
-        quantita, prezzo lordo, sconti, prezzo netto, totale, altezza, larghezza,molt_pezzi
-        """
-        self.modelRiga = gtk.ListStore(int,str, str, str, str, str, str, str,
-                                        str, str, str, str, str, str, str,str)
+
         # iteratore riga corrente
         self._iteratorRiga = None
         # cliente o fornitore ?
@@ -100,6 +100,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             hidePromoWear(self)
         if "SuMisura" not in Environment.modulesList:
             hideSuMisura(self)
+        if "GestioneNoleggio" not in Environment.modulesList:
+            self.rent_checkbutton.destroy()
+            self.hbox29.destroy()
+            self.hbox30.destroy()
 
     def azzeraRiga(self, numero = 0):
         """
@@ -141,6 +145,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "anno": '',
                                 "idStagione": None,
                                 "stagione": '',
+                                "divisore_noleggio":1,
+                                "arco_temporale": 0,
                                 "idGenere": None,
                                 "genere": ''}
 
@@ -201,6 +207,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             AnagraficaDocumentiEditPromoWearExt.setLabelInfo(self)
         if "SuMisura" in Environment.modulesList:
             AnagraficaDocumentiEditSuMisuraExt.setLabels(self)
+        if "GestioneNoleggio" in Environment.modulesList:
+            AnagraficaDocumentiEditGestioneNoleggioExt.setLabels(self)
 
         if len(self._righe) > 1:
             self.data_documento_entry.set_sensitive(False)
@@ -332,7 +340,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Totale', rendererDx, text=15)
+        if "GestioneNoleggio" in Environment.modulesList:
+            AnagraficaDocumentiEditGestioneNoleggioExt.setTreeview(treeview, rendererSx)
+
+        column = gtk.TreeViewColumn('Totale', rendererDx, text=16)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -349,6 +360,15 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.id_operazione_combobox.set_wrap_width(Environment.conf.combo_columns)
         self.porto_combobox.set_active(-1)
         self.porto_combobox.set_sensitive(False)
+
+        """ modello righe: magazzino, codice articolo,
+        descrizione, percentuale iva, unita base, multiplo, listino,
+        quantita, prezzo lordo, sconti, prezzo netto, totale, altezza, larghezza,molt_pezzi
+        """
+        #columnList = int,str, str, str, str, str, str, str,str, str, str, str, str, str, str,str
+        self.modelRiga = gtk.ListStore(int,str, str, str, str, str, str, str,str, str, str, str, str, str,str, str,str)
+
+        self.righe_treeview.set_model(self.modelRiga)
 
         self.nuovaRiga()
         # preferenza ricerca articolo ?
@@ -501,6 +521,12 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
         self.persona_giuridica_changed()
         self.data_documento_entry.grab_focus()
+
+
+    def on_rent_checkbutton_toggled(self, checkbutton):
+        if self.rent_checkbutton.get_active() and (self.start_rent_entry.get_text()==""):
+            self.notebook.set_current_page(1)
+
 
     def on_pulisci_scadenza_button_clicked(self, button):
         """
@@ -709,6 +735,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         applicazione = "scalare"
         if idListino is not None and idArticolo is not None:
             listino = leggiListino(idListino, idArticolo)
+            print "LISTINNPPPPPPPPPPPPPPPPOOOOOOOOOOOO", listino
             self._righe[0]["listino"] = listino["denominazione"]
             if (self._fonteValore == "vendita_iva"):
                 prezzoLordo = listino["prezzoDettaglio"]
@@ -909,7 +936,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.totale_colli_entry.set_text(str(self.dao.totale_colli or 0))
         self.totale_peso_entry.set_text(str(self.dao.totale_peso or 0))
         self.sconti_testata_widget.setValues(self.dao.sconti, self.dao.applicazione_sconti)
-        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", self.dao.sconti
         # gestione righe documento in visualizzazione
 
         self.clearRows()
@@ -932,6 +958,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 altezza = ''
                 larghezza = ''
                 moltiplicatore_pezzi = ''
+
             self._righe[0]["idRiga"] = riga.id
             self._righe[0]["idMagazzino"] = riga.id_magazzino
             self._righe[0]["magazzino"] = magazzino['denominazione']
@@ -960,7 +987,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["altezza"] = altezza
                 self._righe[0]["larghezza"] = larghezza
                 self._righe[0]["molt_pezzi"] = moltiplicatore_pezzi
-
+            self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
             self.getTotaleRiga()
 
             self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
@@ -970,7 +997,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
             self._righe.append(self._righe[0])
             rigadoc= self._righe[j]
-
 
             #riempimento della treeview righe
             self.modelRiga.append((j,
@@ -988,15 +1014,16 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                     mN(rigadoc["prezzoLordo"]),
                                     rigadoc["applicazioneSconti"] + ' ' + getStringaSconti(rigadoc["sconti"]),
                                     mN(rigadoc["prezzoNetto"]),
+                                    rigadoc["arco_temporale"],
                                     mN(rigadoc["totale"])))
 
-            self.righe_treeview.set_model(self.modelRiga)
+
         self._loading = False
 
         self.calcolaTotale()
 
         self.label_numero_righe.set_text(str(len(self.dao.righe)))
-        #sesso il notebook sulla prima pagina principale
+        #setto il notebook sulla prima pagina principale
         self.notebook.set_current_page(0)
         #imposto una nuova riga
         self.nuovaRiga()
@@ -1173,12 +1200,13 @@ del documento.
             scontiRigaDocumento =[]
             misure = []
             if self._righe[i]["altezza"] != '' and self._righe[i]["larghezza"] != '' and "SuMisura" in Environment.modulesList:
+                print "VEDIAMO UN POOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
                 from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
                 daoMisura = MisuraPezzo()
                 daoMisura.altezza = float(self._righe[i]["altezza"] or 0)
                 daoMisura.larghezza = float(self._righe[i]["larghezza"] or 0)
                 daoMisura.moltiplicatore = float(self._righe[i]["molt_pezzi"] or 0)
-                daoRiga.misura_pezzo2 = daoMisura
+                daoRiga.misura_pezzo = [daoMisura]
             #righe[i]=daoRiga
             righeDocumento.append(daoRiga)
         self.dao.righeDocumento = righeDocumento
@@ -1280,6 +1308,9 @@ del documento.
             self.larghezza_entry.set_text(str(self._righe[0]["larghezza"]))
             self.moltiplicatore_entry.set_text(str(self._righe[0]["molt_pezzi"]))
 
+        if "GestioneNoleggio"in Environment.modulesList:
+            self.coeficente_noleggio_entry.set_text(str(self._righe[0]["arco_temporale"]))
+
         self._loading = False
         self.articolo_entry.grab_focus()
 
@@ -1339,6 +1370,10 @@ del documento.
         self._righe[0]["descrizione"] = self.descrizione_entry.get_text()
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
 
+        if "GestioneNoleggio" in Environment.modulesList:
+            self._righe[0]["divisore_noleggio"] = self.coeficente_noleggio_entry.get_text()
+            self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
+
         if "SuMisura" in Environment.modulesList:
             self._righe[0]["altezza"] = self.altezza_entry.get_text()
             self._righe[0]["larghezza"] = self.larghezza_entry.get_text()
@@ -1356,6 +1391,9 @@ del documento.
         self._righe[self._numRiga]["unitaBase"] = self._righe[0]["unitaBase"]
         self._righe[self._numRiga]["idMultiplo"] = self._righe[0]["idMultiplo"]
         self._righe[self._numRiga]["multiplo"] = self._righe[0]["multiplo"]
+        if "GestioneNoleggio" in Environment.modulesList:
+            self._righe[self._numRiga]["divisore_noleggio"] = self._righe[0]["divisore_noleggio"]
+            self._righe[self._numRiga]["arco_temporale"] = self._righe[0]["arco_temporale"]
         self._righe[self._numRiga]["idListino"] = self._righe[0]["idListino"]
         self._righe[self._numRiga]["listino"] = self._righe[0]["listino"]
         self._righe[self._numRiga]["quantita"] = Decimal(str(self._righe[0]["quantita"]))
@@ -1389,7 +1427,9 @@ del documento.
             self.modelRiga.set_value(self._iteratorRiga, 13, self._righe[self._numRiga]["applicazioneSconti"] + (
                 ' ' + getStringaSconti(self._righe[self._numRiga]["sconti"])))
             self.modelRiga.set_value(self._iteratorRiga, 14, mN(self._righe[self._numRiga]["prezzoNetto"]))
-            self.modelRiga.set_value(self._iteratorRiga, 15, mN(self._righe[self._numRiga]["totale"]))
+            if "GestioneNoleggio" in Environment.modulesList:
+                self.modelRiga.set_value(self._iteratorRiga, 15, self._righe[self._numRiga]["arco_temporale"])
+            self.modelRiga.set_value(self._iteratorRiga, 16, mN(self._righe[self._numRiga]["totale"]))
         else:
             self.modelRiga.append([self._numRiga,
                             self._righe[self._numRiga]["magazzino"],
@@ -1407,6 +1447,7 @@ del documento.
                             str(self._righe[self._numRiga]["applicazioneSconti"]) + ' ' + str(getStringaSconti(
                             self._righe[self._numRiga]["sconti"])),
                             mN(self._righe[self._numRiga]["prezzoNetto"]),
+                            self._righe[self._numRiga]["arco_temporale"],
                             mN(self._righe[self._numRiga]["totale"])])
         self.righe_treeview.set_model(self.modelRiga)
         self.calcolaTotale()
@@ -1607,6 +1648,7 @@ del documento.
         self._righe[0]["prezzoLordo"] = 0
         self._righe[0]["quantita"] = 0
         self._righe[0]["prezzoNetto"] = 0
+        self._righe[0]["divisore_noleggio"] = 0
         self._righe[0]["sconti"] = []
         self._righe[0]["applicazioneSconti"] = 'scalare'
         self._righe[0]["totale"] = 0
@@ -1695,6 +1737,8 @@ del documento.
             self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
             self._righe[0]["idMultiplo"] = None
             self._righe[0]["moltiplicatore"] = 1
+            self._righe[0]["divisore_noleggio"] = artic.divisore_noleggio
+            self.coeficente_noleggio_entry.set_text(str(self._righe[0]["divisore_noleggio"]))
             self._righe[0]["prezzoLordo"] = 0
             self._righe[0]["prezzoNetto"] = 0
             self._righe[0]["sconti"] = []
@@ -1969,11 +2013,9 @@ del documento.
         moltiplicatore = float(self.moltiplicatore_entry.get_text() or 1)
         if larghezza != 0:
             altezza = float(self.altezza_entry.get_text() or 0)
-            print "altezzaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", altezza, self._righe[0]["unitaBase"]
             if altezza != 0:
                 if self._righe[0]["unitaBase"] == "Metri Quadri":
                     quantita = CalcolaArea(altezza, larghezza)
-                    print "Ma cavolo222 " , quantita, altezza, larghezza
                 elif self._righe[0]["unitaBase"] == "Metri":
                     quantita = CalcolaPerimetro(altezza, larghezza)
                 else:
@@ -1998,3 +2040,10 @@ del documento.
         quantita_minima = float(articolo["quantita_minima"])
         if (quantita < quantita_minima) :
             self.quantita_entry.set_text(str(quantita_minima))
+
+    def on_end_rent_entry_focus_out_event(self, entry, event):
+        self._durataNoleggio = stringToDateTime(self.end_rent_entry.get_text())- stringToDateTime(self.start_rent_entry.get_text())
+        if self._durataNoleggio.days >0:
+            self.giorni_label.set_text(str(self._durataNoleggio.days) or "")
+        else:
+            print "ERRORE NELLA DURATA DEL NOLEGGIO"
