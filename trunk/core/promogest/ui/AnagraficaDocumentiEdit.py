@@ -28,6 +28,7 @@ from promogest.dao.DaoUtils import giacenzaArticolo
 from GladeWidget import GladeWidget
 from promogest import Environment
 from promogest.modules.Pagamenti.Pagamenti import Pagamenti
+#from promogest.modules.Pagamenti.ui.AnagraficadocumentiPagamentExt import *
 
 if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
@@ -35,6 +36,9 @@ if "SuMisura" in Environment.modulesList:
     from promogest.modules.SuMisura.ui import AnagraficaDocumentiEditSuMisuraExt
 if "GestioneNoleggio" in Environment.modulesList:
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
+
+
+
 
 class AnagraficaDocumentiEdit(AnagraficaEdit):
     """ Modifica un record dei documenti """
@@ -57,9 +61,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._righe.append({})
         # numero riga corrente
         self._numRiga = 0
-
         self.noClean=False
-
         # iteratore riga corrente
         self._iteratorRiga = None
         # cliente o fornitore ?
@@ -104,6 +106,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.rent_checkbutton.destroy()
             self.hbox29.destroy()
             self.hbox30.destroy()
+            self.arco_temporale_frame.destroy()
 
     def azzeraRiga(self, numero = 0):
         """
@@ -365,7 +368,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         descrizione, percentuale iva, unita base, multiplo, listino,
         quantita, prezzo lordo, sconti, prezzo netto, totale, altezza, larghezza,molt_pezzi
         """
-        #columnList = int,str, str, str, str, str, str, str,str, str, str, str, str, str, str,str
         self.modelRiga = gtk.ListStore(int,str, str, str, str, str, str, str,str, str, str, str, str, str,str, str,str)
 
         self.righe_treeview.set_model(self.modelRiga)
@@ -842,9 +844,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         mleditor.multi_line_editor_textview.connect("key-press-event", test)
 
     def on_notebook_switch_page(self, notebook, page, page_num):
-
         if page_num == 2:
             self.calcolaTotale()
+        #elif page_num ==3:
+            #from promogest.modules.Pagamenti.ui.AnagraficadocumentiPagamentExt import *
+            #AnagraficadocumentiPagamentExt(self)
 
     def _refresh(self):
         self._loading = True
@@ -987,7 +991,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["altezza"] = altezza
                 self._righe[0]["larghezza"] = larghezza
                 self._righe[0]["molt_pezzi"] = moltiplicatore_pezzi
-            self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
+            if "GestioneNoleggio" in  Environment.modulesList:
+                self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
             self.getTotaleRiga()
 
             self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
@@ -1200,7 +1205,6 @@ del documento.
             scontiRigaDocumento =[]
             misure = []
             if self._righe[i]["altezza"] != '' and self._righe[i]["larghezza"] != '' and "SuMisura" in Environment.modulesList:
-                print "VEDIAMO UN POOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
                 from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
                 daoMisura = MisuraPezzo()
                 daoMisura.altezza = float(self._righe[i]["altezza"] or 0)
@@ -2046,4 +2050,4 @@ del documento.
         if self._durataNoleggio.days >0:
             self.giorni_label.set_text(str(self._durataNoleggio.days) or "")
         else:
-            print "ERRORE NELLA DURATA DEL NOLEGGIO"
+            print "ERRORE NELLA DURATA DEL NOLEGGIO NON PUO' ESSERE NEGATIVA"
