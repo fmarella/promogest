@@ -253,9 +253,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def draw(self):
         drawPart (self)
 
-
-
-
     def on_id_operazione_combobox_changed(self, combobox):
 
         self._operazione = findIdFromCombobox(self.id_operazione_combobox)
@@ -441,7 +438,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         applicazione = "scalare"
         if idListino is not None and idArticolo is not None:
             listino = leggiListino(idListino, idArticolo)
-            print "LISTINNPPPPPPPPPPPPPPPPOOOOOOOOOOOO", listino
             self._righe[0]["listino"] = listino["denominazione"]
             if (self._fonteValore == "vendita_iva"):
                 prezzoLordo = listino["prezzoDettaglio"]
@@ -488,7 +484,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._righe[0]["totale"] = prezzoNetto * quantita * moltiplicatore
 
     def on_sconti_widget_button_toggled(self, button):
-
+        """ """
         if button.get_property('active') is True:
             return
 
@@ -497,55 +493,15 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.on_show_totali_riga()
 
     def on_sconti_testata_widget_button_toggled(self, button):
-
+        """ """
         if button.get_property('active') is True:
             return
 
         self.calcolaTotale()
 
     def on_multi_line_button_clicked(self, widget):
-        mleditor = GladeWidget('multi_linea_editor', callbacks_proxy=self)
-        mleditor.multi_linea_editor.set_modal(modal=True)#
-        #mleditor.multi_linea_editor.set_transient_for(self)
-        #self.placeWindow(mleditor.multi_linea_editor)
-        desc = self.descrizione_entry.get_text()
-        textBuffer = mleditor.multi_line_editor_textview.get_buffer()
-        textBuffer.set_text(desc)
-        mleditor.multi_line_editor_textview.set_buffer(textBuffer)
-        mleditor.multi_linea_editor.show_all()
-        self.a = 0
-        self.b = 0
-        def test(widget, event):
-            #print dir(textBuffer)
-            char_count = textBuffer.get_char_count()
-            line_count = textBuffer.get_line_count()
-            if char_count >= 500:
-                on_ok_button_clicked(button)
-            if self.b != line_count:
-                self.b = line_count
-                self.a = -1
-            self.a += 1
-            colonne = Environment.multilinelimit
-            if self.a <= (Environment.multilinelimit-1):
-                pass
-            else:
-                textBuffer.insert_at_cursor("\n")
-                self.a = -1
-            modified = textBuffer.get_modified()
-            textStatusBar = "Tot. Caratteri = %s , Righe = %s, Limite= %s, Colonna=%s" %(char_count,line_count, colonne, self.a)
-            context_id =  mleditor.multi_line_editor_statusbar.get_context_id("Multi Editor")
-            mleditor.multi_line_editor_statusbar.push(context_id,textStatusBar)
-
-        def on_ok_button_clicked(button):
-            text = textBuffer.get_text(textBuffer.get_start_iter(),
-                                    textBuffer.get_end_iter())
-
-            self.descrizione_entry.set_text(text)
-            vediamo = self.descrizione_entry.get_text()
-            mleditor.multi_linea_editor.hide()
-        button = mleditor.ok_button
-        button.connect("clicked", on_ok_button_clicked)
-        mleditor.multi_line_editor_textview.connect("key-press-event", test)
+        """ gestione multilinea in utils"""
+        on_multi_line_button_clickedPart(self, widget)
 
     def on_notebook_switch_page(self, notebook, page, page_num):
         if page_num == 2:
@@ -554,48 +510,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             print "passato al terzo tab"
             if "Pagamenti" in Environment.modulesList:
                 self.pagamenti_tab = AnagraficadocumentiPagamentExt(self, self.dao)
-
-    def on_pulisci_scadenza_button_clicked(self, button):
-        self.pagamenti_tab.on_pulisci_scadenza_button_clicked(self, button)
-
-    def on_controlla_rate_scadenza_button_clicked(self, button):
-        """ bottone che controlla le rate scadenza """
-        self.Pagamenti.controlla_rate_scadenza(True)
-
-    def on_calcola_importi_scadenza_button_clicked(self, button):
-        """calcola importi scadenza pagamenti """
-        self.Pagamenti.attiva_scadenze()
-        self.Pagamenti.dividi_importo()
-        self.Pagamenti.ricalcola_sospeso_e_pagato()
-
-    def on_seleziona_prima_nota_button_clicked(self, button):
-        """ Seleziona la prima nota da utilizzare come riferimento """
-        self.pagamenti_tab.on_seleziona_prima_nota_button_clicked(self, button)
-
-    def on_seleziona_seconda_nota_button_clicked(self, button):
-        """ Seleziona la seconda nota di credito da utilizzare come riferimento """
-        self.pagamenti_tab.on_seleziona_seconda_nota_button_clicked(self, button)
-
-    def on_data_pagamento_prima_scadenza_entry_changed(self, entry):
-        """ Reimposta i totali saldato e da saldare alla modifica della data
-            di pagamento della prima scadenza """
-        self.Pagamenti.ricalcola_sospeso_e_pagato()
-
-    def on_data_pagamento_seconda_scadenza_entry_changed(self, entry):
-        """ Reimposta i totali saldato e da saldare alla modifica della data di pagamento
-            della seconda scadenza """
-        self.Pagamenti.ricalcola_sospeso_e_pagato()
-
-    def on_data_pagamento_terza_scadenza_entry_changed(self, entry):
-        """ Reimposta i totali saldato e da saldare alla modifica della data di pagamento
-            della terza scadenza """
-        self.Pagamenti.ricalcola_sospeso_e_pagato()
-
-    def on_data_pagamento_quarta_scadenza_entry_changed(self, entry):
-        """ Reimposta i totali saldato e da saldare alla modifica della data di pagamento
-            della quarta scadenza """
-        self.Pagamenti.ricalcola_sospeso_e_pagato()
-
 
 
 
@@ -1504,17 +1418,7 @@ del documento.
         self.on_show_totali_riga()
 
     def on_quantita_entry_focus_out_event(self, entry, event):
-
-        id = self._righe[0]["idArticolo"]
-        if id is not None:
-            articolo = leggiArticolo(id)
-        else:
-            return
-
-        quantita = float(self.quantita_entry.get_text())
-        quantita_minima = float(articolo["quantita_minima"])
-        if (quantita < quantita_minima) :
-            self.quantita_entry.set_text(str(quantita_minima))
+        on_quantita_entry_focus_out_eventPart(self, entry, event)
 
     def on_end_rent_entry_focus_out_event(self, entry, event):
         self._durataNoleggio = stringToDateTime(self.end_rent_entry.get_text())- stringToDateTime(self.start_rent_entry.get_text())
@@ -1522,3 +1426,49 @@ del documento.
             self.giorni_label.set_text(str(self._durataNoleggio.days) or "")
         else:
             print "ERRORE NELLA DURATA DEL NOLEGGIO NON PUO' ESSERE NEGATIVA"
+
+
+    #INIZIO PAGAMENTI tab 3
+
+    def on_pulisci_scadenza_button_clicked(self, button):
+        self.pagamenti_tab.on_pulisci_scadenza_button_clicked(self, button)
+
+    def on_controlla_rate_scadenza_button_clicked(self, button):
+        """ bottone che controlla le rate scadenza """
+        self.Pagamenti.controlla_rate_scadenza(True)
+
+    def on_calcola_importi_scadenza_button_clicked(self, button):
+        """calcola importi scadenza pagamenti """
+        self.Pagamenti.attiva_scadenze()
+        self.Pagamenti.dividi_importo()
+        self.Pagamenti.ricalcola_sospeso_e_pagato()
+
+    def on_seleziona_prima_nota_button_clicked(self, button):
+        """ Seleziona la prima nota da utilizzare come riferimento """
+        self.pagamenti_tab.on_seleziona_prima_nota_button_clicked(self, button)
+
+    def on_seleziona_seconda_nota_button_clicked(self, button):
+        """ Seleziona la seconda nota di credito da utilizzare come riferimento """
+        self.pagamenti_tab.on_seleziona_seconda_nota_button_clicked(self, button)
+
+    def on_data_pagamento_prima_scadenza_entry_changed(self, entry):
+        """ Reimposta i totali saldato e da saldare alla modifica della data
+            di pagamento della prima scadenza """
+        self.Pagamenti.ricalcola_sospeso_e_pagato()
+
+    def on_data_pagamento_seconda_scadenza_entry_changed(self, entry):
+        """ Reimposta i totali saldato e da saldare alla modifica della data di pagamento
+            della seconda scadenza """
+        self.Pagamenti.ricalcola_sospeso_e_pagato()
+
+    def on_data_pagamento_terza_scadenza_entry_changed(self, entry):
+        """ Reimposta i totali saldato e da saldare alla modifica della data di pagamento
+            della terza scadenza """
+        self.Pagamenti.ricalcola_sospeso_e_pagato()
+
+    def on_data_pagamento_quarta_scadenza_entry_changed(self, entry):
+        """ Reimposta i totali saldato e da saldare alla modifica della data di pagamento
+            della quarta scadenza """
+        self.Pagamenti.ricalcola_sospeso_e_pagato()
+
+    # FINE PAGAMENTI TAB 3

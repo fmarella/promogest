@@ -485,3 +485,60 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit.codice_articolo_fornitore_entry.grab_focus()
     else:
         anaedit.descrizione_entry.grab_focus()
+
+def on_multi_line_button_clickedPart(anaedit, widget)
+    mleditor = GladeWidget('multi_linea_editor', callbacks_proxy=anaedit)
+    mleditor.multi_linea_editor.set_modal(modal=True)#
+    #mleditor.multi_linea_editor.set_transient_for(self)
+    #self.placeWindow(mleditor.multi_linea_editor)
+    desc = anaedit.descrizione_entry.get_text()
+    textBuffer = mleditor.multi_line_editor_textview.get_buffer()
+    textBuffer.set_text(desc)
+    mleditor.multi_line_editor_textview.set_buffer(textBuffer)
+    mleditor.multi_linea_editor.show_all()
+    anaedit.a = 0
+    anaedit.b = 0
+    def test(widget, event):
+        #print dir(textBuffer)
+        char_count = textBuffer.get_char_count()
+        line_count = textBuffer.get_line_count()
+        if char_count >= 500:
+            on_ok_button_clicked(button)
+        if anaedit.b != line_count:
+            anaedit.b = line_count
+            anaedit.a = -1
+        anaedit.a += 1
+        colonne = Environment.multilinelimit
+        if anaedit.a <= (Environment.multilinelimit-1):
+            pass
+        else:
+            textBuffer.insert_at_cursor("\n")
+            anaedit.a = -1
+        modified = textBuffer.get_modified()
+        textStatusBar = "Tot. Caratteri = %s , Righe = %s, Limite= %s, Colonna=%s" %(char_count,line_count, colonne, self.a)
+        context_id =  mleditor.multi_line_editor_statusbar.get_context_id("Multi Editor")
+        mleditor.multi_line_editor_statusbar.push(context_id,textStatusBar)
+
+    def on_ok_button_clicked(button):
+        text = textBuffer.get_text(textBuffer.get_start_iter(),
+                                    textBuffer.get_end_iter())
+
+        self.descrizione_entry.set_text(text)
+        vediamo = self.descrizione_entry.get_text()
+        mleditor.multi_linea_editor.hide()
+    button = mleditor.ok_button
+    button.connect("clicked", on_ok_button_clicked)
+    mleditor.multi_line_editor_textview.connect("key-press-event", test)
+
+
+def on_quantita_entry_focus_out_eventPart(anaedit, entry, event):
+
+    id = anaedit._righe[0]["idArticolo"]
+    if id is not None:
+        articolo = Articolo().getRecord(id=id)
+    else:return
+    quantita = float(anaedit.quantita_entry.get_text())
+    if articolo:
+        quantita_minima = float(articolo.quantita_minima)
+    if (quantita < quantita_minima) :
+        anaedit.quantita_entry.set_text(str(quantita_minima))
