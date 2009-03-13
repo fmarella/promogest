@@ -486,7 +486,7 @@ def mostraArticoloPart(anaedit, id, art=None):
     else:
         anaedit.descrizione_entry.grab_focus()
 
-def on_multi_line_button_clickedPart(anaedit, widget)
+def on_multi_line_button_clickedPart(anaedit, widget):
     mleditor = GladeWidget('multi_linea_editor', callbacks_proxy=anaedit)
     mleditor.multi_linea_editor.set_modal(modal=True)#
     #mleditor.multi_linea_editor.set_transient_for(self)
