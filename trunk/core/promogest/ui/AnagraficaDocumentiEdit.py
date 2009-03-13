@@ -151,6 +151,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "divisore_noleggio":1,
                                 "arco_temporale": 0,
                                 "idGenere": None,
+                                "quantita_minima": None,
                                 "genere": ''}
 
 
@@ -206,6 +207,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.sconti_widget.clearValues()
         self.totale_riga_label.set_text('0')
         self.giacenza_label.set_text('0')
+        self.quantitaMinima_label.set_text('0')
         if "PromoWear" in Environment.modulesList:
             AnagraficaDocumentiEditPromoWearExt.setLabelInfo(self)
         if "SuMisura" in Environment.modulesList:
@@ -967,6 +969,7 @@ del documento.
         self.percentuale_iva_entry.set_text('%-5.2f' % self._righe[0]["percentualeIva"])
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
         self.quantita_entry.set_text('%-9.3f' % float(self._righe[0]["quantita"]))
+        self.quantitaMinima_label.set_text(str(Articolo().getRecord(id=self._righe[0]["idArticolo"]).quantita_minima))
         self.prezzo_lordo_entry.set_text(str(mN(self._righe[0]["prezzoLordo"])))
         self.prezzo_netto_label.set_text(str(mN(self._righe[0]["prezzoNetto"])))
         self.totale_riga_label.set_text(str(mN(self._righe[0]["totale"])))

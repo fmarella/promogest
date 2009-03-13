@@ -449,8 +449,9 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit.unitaBaseLabel.set_text(anaedit._righe[0]["unitaBase"])
         anaedit._righe[0]["idMultiplo"] = None
         anaedit._righe[0]["moltiplicatore"] = 1
-        anaedit._righe[0]["divisore_noleggio"] = artic.divisore_noleggio
-        anaedit.coeficente_noleggio_entry.set_text(str(anaedit._righe[0]["divisore_noleggio"]))
+        if "GestioneNoleggio" in Environment.modulesList:
+            anaedit._righe[0]["divisore_noleggio"] = artic.divisore_noleggio
+            anaedit.coeficente_noleggio_entry.set_text(str(anaedit._righe[0]["divisore_noleggio"]))
         anaedit._righe[0]["prezzoLordo"] = 0
         anaedit._righe[0]["prezzoNetto"] = 0
         anaedit._righe[0]["sconti"] = []
@@ -459,6 +460,8 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit.giacenza_label.set_text(str(giacenzaArticolo(year=Environment.workingYear,
                                             idMagazzino=findIdFromCombobox(anaedit.id_magazzino_combobox),
                                             idArticolo=anaedit._righe[0]["idArticolo"])))
+
+        anaedit.quantitaMinima_label.set_text(str(artic.quantita_minima))
         if ((anaedit._fonteValore == "acquisto_iva") or  (anaedit._fonteValore == "acquisto_senza_iva")):
             fornitura = leggiFornitura(id, anaedit.id_persona_giuridica_customcombobox.getId(), data)
             costoLordo = fornitura["prezzoLordo"]
@@ -541,4 +544,17 @@ def on_quantita_entry_focus_out_eventPart(anaedit, entry, event):
     if articolo:
         quantita_minima = float(articolo.quantita_minima)
     if (quantita < quantita_minima) :
-        anaedit.quantita_entry.set_text(str(quantita_minima))
+        msg = """Attenzione!
+La quantità inserita:  %s è inferiore
+a %s definita come minima di default.
+Inserire comunque?""" % (str(quantita), str(quantita_minima))
+
+        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK_CANCEL, msg)
+        response = dialog.run()
+        dialog.destroy()
+        if response == gtk.RESPONSE_NONE or response == gtk.RESPONSE_CANCEL:
+            anaedit.quantita_entry.set_text(str(quantita_minima))
+                        #return
+        elif response == gtk.RESPONSE_OK:
+            anaedit.quantita_entry.set_text(str(quantita))

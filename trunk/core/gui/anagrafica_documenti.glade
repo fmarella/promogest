@@ -1282,6 +1282,29 @@ Saldato</property>
                                                 <property name="position">15</property>
                                               </packing>
                                             </child>
+                                            <child>
+                                              <widget class="GtkLabel" id="label37">
+                                                <property name="visible">True</property>
+                                                <property name="label" translatable="yes">Q. minima:</property>
+                                              </widget>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">False</property>
+                                                <property name="padding">2</property>
+                                                <property name="position">16</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <widget class="GtkLabel" id="quantitaMinima_label">
+                                                <property name="visible">True</property>
+                                                <property name="label" translatable="yes">-</property>
+                                              </widget>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">False</property>
+                                                <property name="position">17</property>
+                                              </packing>
+                                            </child>
                                           </widget>
                                         </child>
                                       </widget>
@@ -1673,6 +1696,7 @@ Saldato</property>
                                                             <property name="int1">10</property>
                                                             <property name="int2">3</property>
                                                             <signal name="focus_out_event" handler="on_show_totali_riga"/>
+                                                            <signal name="focus_out_event" handler="on_quantita_entry_focus_out_event"/>
                                                           </widget>
                                                         </child>
                                                       </widget>

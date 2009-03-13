@@ -86,7 +86,10 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
             _denominazione = daoArticolo.denominazione or ''
             _codice = daoArticolo.codice or ''
             _idUnitaBase = daoArticolo.id_unita_base
-            _quantita_minima = ''
+            try:
+                _quantita_minima = daoArticolo.quantita_minima
+            except:
+                _quantita_minima = ""
             if _idUnitaBase is not None:
                 res = UnitaBase().getRecord(id =_idUnitaBase)
                 if res is not None:
