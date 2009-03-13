@@ -7,6 +7,19 @@ import gtk
 from promogest import Environment
 from utils import *
 from utilsCombobox import *
+from promogest.dao.TestataDocumento import TestataDocumento
+from promogest.dao.TestataMovimento import TestataMovimento
+from promogest.dao.RigaDocumento import RigaDocumento
+from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
+from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
+from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
+from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
+from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
+from promogest.dao.Articolo import Articolo
+from promogest.dao.Magazzino import Magazzino
+from promogest.dao.Operazione import Operazione
+from promogest.dao.DaoUtils import giacenzaArticolo
+
 
 if "SuMisura" in Environment.modulesList:
     from promogest.modules.SuMisura.ui import AnagraficaDocumentiEditSuMisuraExt
@@ -322,5 +335,153 @@ def calcolaTotalePart(anaedit, dao=None):
                         (mN(castellettoIva[k]['imponibile'])),
                         (mN(castellettoIva[k]['imposta'])),))
 
+def mostraArticoloPart(anaedit, id, art=None):
+    anaedit.articolo_entry.set_text('')
+    anaedit.descrizione_entry.set_text('')
+    anaedit.codice_articolo_fornitore_entry.set_text('')
+    anaedit.percentuale_iva_entry.set_text('0')
+    anaedit.id_multiplo_customcombobox.combobox.clear()
+    anaedit.id_listino_customcombobox.combobox.clear()
+    anaedit.prezzo_lordo_entry.set_text('0')
+    anaedit.quantita_entry.set_text('0')
+    anaedit.prezzo_netto_label.set_text('0')
+    anaedit.sconti_widget.clearValues()
+    anaedit.totale_riga_label.set_text('0')
 
+    anaedit._righe[0]["idArticolo"] = None
+    anaedit._righe[0]["codiceArticolo"] = ''
+    anaedit._righe[0]["descrizione"] = ''
+    anaedit._righe[0]["codiceArticoloFornitore"] = ''
+    anaedit._righe[0]["percentualeIva"] = 0
+    anaedit._righe[0]["idUnitaBase"] = None
+    anaedit._righe[0]["idMultiplo"] = None
+    anaedit._righe[0]["moltiplicatore"] = 1
+    anaedit._righe[0]["idListino"] = None
+    anaedit._righe[0]["prezzoLordo"] = 0
+    anaedit._righe[0]["quantita"] = 0
+    anaedit._righe[0]["prezzoNetto"] = 0
+    anaedit._righe[0]["divisore_noleggio"] = 0
+    anaedit._righe[0]["sconti"] = []
+    anaedit._righe[0]["applicazioneSconti"] = 'scalare'
+    anaedit._righe[0]["totale"] = 0
+    data = stringToDate(anaedit.data_documento_entry.get_text())
 
+    fillComboboxMultipli(anaedit.id_multiplo_customcombobox.combobox, id, True)
+
+    if id is not None:
+        articolo = leggiArticolo(id)
+        if "PromoWear" in Environment.modulesList:
+            AnagraficaDocumentiEditPromoWearExt.fillLabelInfo(anaedit, articolo)
+        artic = Articolo().getRecord(id=id)
+        if articleType(artic) =="father" :
+            anaedit.ArticoloPadre = artic
+            anaedit.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
+            anaedit.promowear_manager_taglia_colore_togglebutton.set_sensitive(True)
+            anaedit.NoRowUsableArticle = True
+        if art:
+            # articolo proveninente da finestra taglia e colore ...
+            anaedit.NoRowUsableArticle = False
+            articolo = art
+            anaedit._righe[0]["idArticolo"] = id
+            anaedit._righe[0]["codiceArticolo"] = articolo["codice"]
+            anaedit.articolo_entry.set_text(anaedit._righe[0]["codiceArticolo"])
+            anaedit._righe[0]["descrizione"] = articolo["denominazione"]
+            anaedit.descrizione_entry.set_text(anaedit._righe[0]["descrizione"])
+            anaedit._righe[0]["percentualeIva"] = articolo["percentualeAliquotaIva"]
+            anaedit.percentuale_iva_entry.set_text('%-5.2f' % anaedit._righe[0]["percentualeIva"])
+            anaedit._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
+            anaedit._righe[0]["unitaBase"] = articolo["unitaBase"]
+            anaedit.unitaBaseLabel.set_text(anaedit._righe[0]["unitaBase"])
+            if ((anaedit._fonteValore == "acquisto_iva") or  (anaedit._fonteValore == "acquisto_senza_iva")):
+                costoLordo = str(articolo['valori']["prezzoLordo"])
+                if costoLordo:costoLordo = costoLordo.replace(',','.')
+                costoNetto = str(articolo['valori']["prezzoNetto"])
+                if costoNetto:costoNetto = costoNetto.replace(',','.')
+                if anaedit._fonteValore == "acquisto_iva":
+                    costoLordo = calcolaPrezzoIva(costoLordo, anaedit._righe[0]["percentualeIva"])
+                    costoNetto = calcolaPrezzoIva(costoNetto, anaedit._righe[0]["percentualeIva"])
+                anaedit._righe[0]["prezzoLordo"] = mN(costoLordo)
+                anaedit.prezzo_lordo_entry.set_text(str(anaedit._righe[0]["prezzoLordo"]))
+                anaedit._righe[0]["prezzoNetto"] = mN(costoNetto)
+                anaedit.prezzo_netto_label.set_text(str(anaedit._righe[0]["prezzoNetto"]))
+                anaedit._righe[0]["prezzoNettoUltimo"] = float(costoNetto)
+                anaedit._righe[0]["sconti"] = articolo['valori']["sconti"]
+                anaedit._righe[0]["applicazioneSconti"] = articolo['valori']["applicazioneSconti"]
+                anaedit.sconti_widget.setValues(anaedit._righe[0]["sconti"], anaedit._righe[0]["applicazioneSconti"], False)
+                anaedit._righe[0]["codiceArticoloFornitore"] = articolo['valori']["codiceArticoloFornitore"]
+                anaedit.codice_articolo_fornitore_entry.set_text(anaedit._righe[0]["codiceArticoloFornitore"])
+                quantita =articolo["quantita"]
+                quantita = quantita.replace(',','.')
+                anaedit._righe[0]["quantita"] = quantita
+                anaedit.quantita_entry.set_text(anaedit._righe[0]["quantita"])
+                if anaedit._righe[0]["quantita"]:
+                    anaedit.calcolaTotaleRiga()
+
+            elif ((anaedit._fonteValore == "vendita_iva") or (anaedit._fonteValore == "vendita_senza_iva")):
+
+                costoLordo = str(articolo['valori']["prezzoDettaglio"])
+                if costoLordo:costoLordo = costoLordo.replace(',','.')
+                anaedit._righe[0]["prezzoLordo"] = mN(costoLordo)
+                anaedit.prezzo_lordo_entry.set_text(str(anaedit._righe[0]["prezzoLordo"]))
+                anaedit._righe[0]["sconti"] = articolo['valori']["scontiDettaglio"]
+                anaedit._righe[0]["applicazioneSconti"] = articolo['valori']["applicazioneScontiDettaglio"]
+                anaedit.sconti_widget.setValues(anaedit._righe[0]["sconti"], anaedit._righe[0]["applicazioneSconti"], False)
+                quantita =articolo["quantita"]
+                quantita = quantita.replace(',','.')
+                anaedit._righe[0]["quantita"] = quantita
+                anaedit.quantita_entry.set_text(anaedit._righe[0]["quantita"])
+                if anaedit._righe[0]["quantita"]:
+                    anaedit.calcolaTotaleRiga()
+                anaedit.on_show_totali_riga()
+                #anaedit.refresh_combobox_listini()
+            anaedit.on_confirm_row_button_clicked(anaedit.dialogTopLevel)
+            return
+        #else:
+        anaedit._righe[0]["idArticolo"] = id
+        anaedit._righe[0]["codiceArticolo"] = articolo["codice"]
+        anaedit.articolo_entry.set_text(anaedit._righe[0]["codiceArticolo"])
+        anaedit._righe[0]["descrizione"] = articolo["denominazione"]
+        anaedit.descrizione_entry.set_text(anaedit._righe[0]["descrizione"])
+        anaedit._righe[0]["percentualeIva"] = articolo["percentualeAliquotaIva"]
+        anaedit.percentuale_iva_entry.set_text('%-5.2f' % anaedit._righe[0]["percentualeIva"])
+        anaedit._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
+        anaedit._righe[0]["unitaBase"] = articolo["unitaBase"]
+        anaedit.unitaBaseLabel.set_text(anaedit._righe[0]["unitaBase"])
+        anaedit._righe[0]["idMultiplo"] = None
+        anaedit._righe[0]["moltiplicatore"] = 1
+        anaedit._righe[0]["divisore_noleggio"] = artic.divisore_noleggio
+        anaedit.coeficente_noleggio_entry.set_text(str(anaedit._righe[0]["divisore_noleggio"]))
+        anaedit._righe[0]["prezzoLordo"] = 0
+        anaedit._righe[0]["prezzoNetto"] = 0
+        anaedit._righe[0]["sconti"] = []
+        anaedit._righe[0]["applicazioneSconti"] = 'scalare'
+        anaedit._righe[0]["codiceArticoloFornitore"] = ''
+        anaedit.giacenza_label.set_text(str(giacenzaArticolo(year=Environment.workingYear,
+                                            idMagazzino=findIdFromCombobox(anaedit.id_magazzino_combobox),
+                                            idArticolo=anaedit._righe[0]["idArticolo"])))
+        if ((anaedit._fonteValore == "acquisto_iva") or  (anaedit._fonteValore == "acquisto_senza_iva")):
+            fornitura = leggiFornitura(id, anaedit.id_persona_giuridica_customcombobox.getId(), data)
+            costoLordo = fornitura["prezzoLordo"]
+            costoNetto = fornitura["prezzoNetto"]
+            if anaedit._fonteValore == "acquisto_iva":
+                    costoLordo = calcolaPrezzoIva(costoLordo, anaedit._righe[0]["percentualeIva"])
+                    costoNetto = calcolaPrezzoIva(costoNetto, anaedit._righe[0]["percentualeIva"])
+            anaedit._righe[0]["prezzoLordo"] = mN(costoLordo)
+            anaedit.prezzo_lordo_entry.set_text(str(anaedit._righe[0]["prezzoLordo"]))
+            anaedit._righe[0]["prezzoNetto"] = mN(costoNetto)
+            anaedit.prezzo_netto_label.set_text(str(anaedit._righe[0]["prezzoNetto"]))
+            anaedit._righe[0]["prezzoNettoUltimo"] = mN(costoNetto)
+            anaedit._righe[0]["sconti"] = fornitura["sconti"]
+            anaedit._righe[0]["applicazioneSconti"] = fornitura["applicazioneSconti"]
+            anaedit.sconti_widget.setValues(anaedit._righe[0]["sconti"], anaedit._righe[0]["applicazioneSconti"], False)
+            anaedit._righe[0]["codiceArticoloFornitore"] = fornitura["codiceArticoloFornitore"]
+            anaedit.codice_articolo_fornitore_entry.set_text(anaedit._righe[0]["codiceArticoloFornitore"])
+        elif ((anaedit._fonteValore == "vendita_iva") or (anaedit._fonteValore == "vendita_senza_iva")):
+            anaedit.refresh_combobox_listini()
+
+    if anaedit._tipoPersonaGiuridica == "cliente":
+        anaedit.id_listino_customcombobox.combobox.grab_focus()
+    elif anaedit._tipoPersonaGiuridica == "fornitore":
+        anaedit.codice_articolo_fornitore_entry.grab_focus()
+    else:
+        anaedit.descrizione_entry.grab_focus()
