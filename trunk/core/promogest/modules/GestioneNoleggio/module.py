@@ -7,7 +7,7 @@
 #import gtk, gobject
 from promogest import Environment
 #from promogest.ui.GladeWidget import GladeWidget
-from promogest.modules.GestioneNoleggio.data.GestioneNoleggioDB import *
+#from promogest.modules.GestioneNoleggio.data.GestioneNoleggioDB import *
 #import promogest.modules.SchedaLavorazione.ui.AnagraficaAssociazioniArticoli
 #from promogest.modules.GestioneNoleggio.ui.AnagraficaAssociazioniArticoli import AnagraficaAssociazioniArticoli
 

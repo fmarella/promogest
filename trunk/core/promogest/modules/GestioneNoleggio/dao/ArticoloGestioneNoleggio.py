@@ -17,7 +17,6 @@ class ArticoloGestioneNoleggio(Dao):
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
 
-
     def filter_values(self,k,v):
         if k =='idArticolo':
             dic= {k:articologestionenoleggio.c.id_articolo ==v}
@@ -37,9 +36,8 @@ articoloGestioneleggioTable.create(checkfirst=True)
 
 articologestionenoleggio=Table('articolo_gestione_noleggio',params['metadata'],schema = params['schema'],autoload=True)
 
-std_mapper = mapper(ArticoloPlusGN, articologestionenoleggio,
+std_mapper = mapper(ArticoloGestioneNoleggio, articologestionenoleggio,
                     #properties=dict(
                     #DN =relation(DivisoreNoleggio,primaryjoin=
                         #(DivisoreNoleggio.id==articologestionenoleggio.c.id_divisore_noleggio), backref="APGNDN"),
-                       
                 order_by=articologestionenoleggio.c.id_articolo)

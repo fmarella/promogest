@@ -122,7 +122,7 @@ class DuplicazioneDocumento(GladeWidget):
                 daoMisuraPezzo.altezza = r.misura_pezzo[0].altezza
                 daoMisuraPezzo.larghezza = r.misura_pezzo[0].larghezza
                 daoMisuraPezzo.moltiplicatore = r.misura_pezzo[0].moltiplicatore
-                daoRiga.misura_pezzo2 = daoMisuraPezzo
+                daoRiga.misura_pezzo = daoMisuraPezzo
             sconti = []
             scontiRigaDocumento = []
             sco = r.sconti
