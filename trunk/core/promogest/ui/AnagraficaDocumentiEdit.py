@@ -10,6 +10,7 @@
 
 import datetime
 from AnagraficaComplessa import AnagraficaEdit
+from AnagraficaDocumentiEditUtils import *
 import gtk
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.TestataMovimento import TestataMovimento
@@ -27,18 +28,17 @@ from utilsCombobox import *
 from promogest.dao.DaoUtils import giacenzaArticolo
 from GladeWidget import GladeWidget
 from promogest import Environment
-from promogest.modules.Pagamenti.Pagamenti import Pagamenti
-#from promogest.modules.Pagamenti.ui.AnagraficadocumentiPagamentExt import *
+#from promogest.modules.Pagamenti.ui.AnagraficadocumentiPagamentExt import AnagraficaDocumentiEditGestioneNoleggioExt
 
 if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
 if "SuMisura" in Environment.modulesList:
-    from promogest.modules.SuMisura.ui import AnagraficaDocumentiEditSuMisuraExt
+    from promogest.modules.SuMisura.ui.AnagraficaDocumentiEditSuMisuraExt import *
 if "GestioneNoleggio" in Environment.modulesList:
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
-
-
-
+if "Pagamenti" in Environment.modulesList:
+    from promogest.modules.Pagamenti.Pagamenti import Pagamenti
+    from promogest.modules.Pagamenti.ui.AnagraficadocumentiPagamentExt import AnagraficadocumentiPagamentExt
 
 class AnagraficaDocumentiEdit(AnagraficaEdit):
     """ Modifica un record dei documenti """
@@ -49,6 +49,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 'anagrafica_documenti_detail_vbox',
                                 'Dati Documento',
                                 'anagrafica_documenti.glade')
+        AnagraficadocumentiPagamentExt(self)
 
         #self.notebook.remove_page(3)
         #else:
@@ -113,7 +114,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         Azzera i campi del dizionario privato delle righe, alla riga
         indicata (o alla 0-esima)
         """
-
         self._righe[numero] = {"idRiga": None,
                                 "idMagazzino": None,
                                 "magazzino": '',
@@ -251,214 +251,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.nuovaRiga()
 
     def draw(self):
-        treeview = self.righe_treeview
-        rendererSx = gtk.CellRendererText()
-        rendererDx = gtk.CellRendererText()
-        rendererDx.set_property('xalign', 1)
+        drawPart (self)
 
-        column = gtk.TreeViewColumn('N°', rendererSx, text=0)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Magazzino', rendererSx, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Descrizione', rendererSx, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('% IVA', rendererDx, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-        #treeview.set_reorderable(True)
-        if "SuMisura" in Environment.modulesList:
-            AnagraficaDocumentiEditSuMisuraExt.setTreeview(treeview, rendererSx)
-
-        column = gtk.TreeViewColumn('Multiplo', rendererSx, text=8)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Listino', rendererSx, text=9)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('U.M.', rendererSx, text=10)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Quantita''', rendererDx, text=11)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Prezzo lordo', rendererDx, text=12)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Sconti', rendererSx, text=13)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Prezzo netto', rendererDx, text=14)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        if "GestioneNoleggio" in Environment.modulesList:
-            AnagraficaDocumentiEditGestioneNoleggioExt.setTreeview(treeview, rendererSx)
-
-        column = gtk.TreeViewColumn('Totale', rendererDx, text=16)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-        #treeview.set_reorderable(True)
-        fillComboboxOperazioni(self.id_operazione_combobox, 'documento')
-        fillComboboxMagazzini(self.id_magazzino_combobox)
-        fillComboboxPagamenti(self.id_pagamento_customcombobox.combobox)
-        fillComboboxBanche(self.id_banca_customcombobox.combobox)
-        fillComboboxAliquoteIva(self.id_aliquota_iva_esenzione_customcombobox.combobox)
-        fillComboboxCausaliTrasporto(self.causale_trasporto_comboboxentry)
-        fillComboboxAspettoEsterioreBeni(self.aspetto_esteriore_beni_comboboxentry)
-        self.id_operazione_combobox.set_wrap_width(Environment.conf.combo_columns)
-        self.porto_combobox.set_active(-1)
-        self.porto_combobox.set_sensitive(False)
-
-        """ modello righe: magazzino, codice articolo,
-        descrizione, percentuale iva, unita base, multiplo, listino,
-        quantita, prezzo lordo, sconti, prezzo netto, totale, altezza, larghezza,molt_pezzi
-        """
-        self.modelRiga = gtk.ListStore(int,str, str, str, str, str, str, str,str, str, str, str, str, str,str, str,str)
-
-        self.righe_treeview.set_model(self.modelRiga)
-
-        self.nuovaRiga()
-        # preferenza ricerca articolo ?
-        if hasattr(Environment.conf,'Documenti'):
-            if hasattr(Environment.conf.Documenti,'ricerca_per'):
-                if Environment.conf.Documenti.ricerca_per == 'codice':
-                    self.ricerca_codice_button.set_active(True)
-                elif Environment.conf.Documenti.ricerca_per == 'codice_a_barre':
-                    self.ricerca_codice_a_barre_button.set_active(True)
-                elif Environment.conf.Documenti.ricerca_per == 'descrizione':
-                    self.ricerca_descrizione_button.set_active(True)
-                elif Environment.conf.Documenti.ricerca_per == 'codice_articolo_fornitore':
-                    self.ricerca_codice_articolo_fornitore_button.set_active(True)
-
-        self.id_operazione_combobox.connect('changed',
-                self.on_id_operazione_combobox_changed)
-        self.id_persona_giuridica_customcombobox.setSingleValue()
-        self.id_persona_giuridica_customcombobox.setOnChangedCall(self.persona_giuridica_changed)
-        self.id_magazzino_combobox.connect('changed',
-                self.on_id_magazzino_combobox_changed)
-        self.id_multiplo_customcombobox.connect('clicked',
-                self.on_id_multiplo_customcombobox_button_clicked)
-        self.id_multiplo_customcombobox.combobox.connect('changed',
-                self.on_id_multiplo_customcombobox_changed)
-        self.id_listino_customcombobox.connect('clicked',
-                self.on_id_listino_customcombobox_button_clicked)
-        self.id_listino_customcombobox.combobox.connect('changed',
-                self.on_id_listino_customcombobox_changed)
-        self.id_listino_customcombobox.button.connect('toggled',
-                self.on_id_listino_customcombobox_button_toggled)
-        self.sconti_widget.button.connect('toggled',
-                self.on_sconti_widget_button_toggled)
-        self.id_destinazione_merce_customcombobox.connect('clicked',
-                self.on_id_destinazione_merce_customcombobox_button_clicked)
-        idHandler = self.id_vettore_customcombobox.connect('changed',
-                on_combobox_vettore_search_clicked)
-        self.id_vettore_customcombobox.setChangedHandler(idHandler)
-        idHandler = self.id_agente_customcombobox.connect('changed',
-                on_combobox_agente_search_clicked)
-        self.id_agente_customcombobox.setChangedHandler(idHandler)
-        self.sconti_testata_widget.button.connect('toggled',
-                self.on_sconti_testata_widget_button_toggled)
-        self.id_pagamento_customcombobox.connect('clicked',
-                on_id_pagamento_customcombobox_clicked)
-        self.id_banca_customcombobox.connect('clicked',
-                on_id_banca_customcombobox_clicked)
-        self.id_aliquota_iva_esenzione_customcombobox.connect('clicked',
-                on_id_aliquota_iva_customcombobox_clicked)
-        self.ricerca_codice_button.connect('clicked',
-                self.on_ricerca_codice_button_clicked)
-        self.ricerca_codice_a_barre_button.connect('clicked',
-                self.on_ricerca_codice_a_barre_button_clicked)
-        self.ricerca_descrizione_button.connect('clicked',
-                self.on_ricerca_descrizione_button_clicked)
-        self.ricerca_codice_articolo_fornitore_button.connect('clicked',
-                self.on_ricerca_codice_articolo_fornitore_button_clicked)
-        if Environment.conf.hasPagamenti == True:
-            self.Pagamenti.connectEntryPag()
-
-        #Castelletto iva
-        rendererText = gtk.CellRendererText()
-
-        column = gtk.TreeViewColumn('Aliquota I.V.A.', rendererText, text=0)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        self.riepiloghi_iva_treeview.append_column(column)
-
-        rendererText = gtk.CellRendererText()
-        rendererText.set_property('xalign', 1)
-
-        column = gtk.TreeViewColumn('Imponibile', rendererText, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        self.riepiloghi_iva_treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Imposta', rendererText, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        self.riepiloghi_iva_treeview.append_column(column)
-
-        model = gtk.ListStore(str, str, str)
-        self.riepiloghi_iva_treeview.set_model(model)
 
 
 
@@ -479,8 +273,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         #self._tipoPersonaGiuridica = operazione["tipoPersonaGiuridica"]
         #self._fonteValore = operazione["fonteValore"]
         #self._segno = operazione["segno"]
-
-
 
         if (self._tipoPersonaGiuridica == "fornitore"):
             self.persona_giuridica_label.set_text('Fornitore')
@@ -530,95 +322,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.notebook.set_current_page(1)
 
 
-    def on_pulisci_scadenza_button_clicked(self, button):
-        """
-        Pulisce tutti i campi relativi alla tab pagamenti
-        """
-        self.Pagamenti.attiva_prima_scadenza(False,False)
-        self.Pagamenti.attiva_seconda_scadenza(False,False)
-        self.Pagamenti.attiva_terza_scadenza(False,False)
-        self.Pagamenti.attiva_quarta_scadenza(False,False)
-        self.numero_primo_documento_entry.set_text('')
-        self.numero_secondo_documento_entry.set_text('')
-        self.importo_primo_documento_entry.set_text('')
-        self.importo_secondo_documento_entry.set_text('')
 
-    def on_controlla_rate_scadenza_button_clicked(self, button):
-        """
-        bottone che controlla le rate scadenza"
-        """
-        self.Pagamenti.controlla_rate_scadenza(True)
-
-    def on_calcola_importi_scadenza_button_clicked(self, button):
-        """
-        calcola importi scadenza pagamenti
-        """
-        self.Pagamenti.attiva_scadenze()
-        self.Pagamenti.dividi_importo()
-        self.Pagamenti.ricalcola_sospeso_e_pagato()
-
-    def on_seleziona_prima_nota_button_clicked(self, button):
-        """
-        Seleziona la prima nota da utilizzare come riferimento
-        """
-        if self.numero_primo_documento_entry.get_text() != "":
-            response = self.Pagamenti.impostaDocumentoCollegato(
-                    int(self.numero_primo_documento_entry.get_text()))
-            if __debug__:
-                print "on_seleziona_prima_nota: response = ", response
-        else:
-            self.showMessage("Inserisci il numero del documento")
-            response = False
-
-        if response != False:
-            self.importo_primo_documento_entry.set_text(str(response))
-            self.Pagamenti.dividi_importo()
-            self.Pagamenti.ricalcola_sospeso_e_pagato()
-            self.numero_secondo_documento_entry.set_sensitive(True)
-            self.seleziona_seconda_nota_button.set_sensitive(True)
-            self.importo_secondo_documento_entry.set_sensitive(True)
-
-    def on_seleziona_seconda_nota_button_clicked(self, button):
-        """
-        Seleziona la seconda nota di credito da utilizzare come riferimento
-        """
-        if self.numero_secondo_documento_entry.get_text() != "":
-            response = self.Pagamenti.impostaDocumentoCollegato(
-                    int(self.numero_secondo_documento_entry.get_text()))
-        else:
-            self.showMessage("Inserisci il numero del documento")
-            response = False
-        if response != False:
-            self.Pagamenti.importo_primo_documento_entry.set_text(str(response))
-            self.Pagamenti.dividi_importo()
-            self.Pagamenti.ricalcola_sospeso_e_pagato()
-
-    def on_data_pagamento_prima_scadenza_entry_changed(self, entry):
-        """
-        Reimposta i totali saldato e da saldare alla modifica della data di pagamento
-        della prima scadenza
-        """
-        self.Pagamenti.ricalcola_sospeso_e_pagato()
-
-    def on_data_pagamento_seconda_scadenza_entry_changed(self, entry):
-        """ Reimposta i totali saldato e da saldare alla modifica della data di pagamento
-        della seconda scadenza
-        """
-        self.Pagamenti.ricalcola_sospeso_e_pagato()
-
-    def on_data_pagamento_terza_scadenza_entry_changed(self, entry):
-        """
-        Reimposta i totali saldato e da saldare alla modifica della data di pagamento
-        della terza scadenza
-        """
-        self.Pagamenti.ricalcola_sospeso_e_pagato()
-
-    def on_data_pagamento_quarta_scadenza_entry_changed(self, entry):
-        """
-        Reimposta i totali saldato e da saldare alla modifica della data di pagamento
-        della quarta scadenza
-        """
-        self.Pagamenti.ricalcola_sospeso_e_pagato()
 
     def persona_giuridica_changed(self):
         if self._loading:
@@ -846,9 +550,54 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def on_notebook_switch_page(self, notebook, page, page_num):
         if page_num == 2:
             self.calcolaTotale()
-        #elif page_num ==3:
-            #from promogest.modules.Pagamenti.ui.AnagraficadocumentiPagamentExt import *
-            #AnagraficadocumentiPagamentExt(self)
+        elif page_num ==3:
+            print "passato al terzo tab"
+            if "Pagamenti" in Environment.modulesList:
+                self.pagamenti_tab = AnagraficadocumentiPagamentExt(self, self.dao)
+
+    def on_pulisci_scadenza_button_clicked(self, button):
+        self.pagamenti_tab.on_pulisci_scadenza_button_clicked(self, button)
+
+    def on_controlla_rate_scadenza_button_clicked(self, button):
+        """ bottone che controlla le rate scadenza """
+        self.Pagamenti.controlla_rate_scadenza(True)
+
+    def on_calcola_importi_scadenza_button_clicked(self, button):
+        """calcola importi scadenza pagamenti """
+        self.Pagamenti.attiva_scadenze()
+        self.Pagamenti.dividi_importo()
+        self.Pagamenti.ricalcola_sospeso_e_pagato()
+
+    def on_seleziona_prima_nota_button_clicked(self, button):
+        """ Seleziona la prima nota da utilizzare come riferimento """
+        self.pagamenti_tab.on_seleziona_prima_nota_button_clicked(self, button)
+
+    def on_seleziona_seconda_nota_button_clicked(self, button):
+        """ Seleziona la seconda nota di credito da utilizzare come riferimento """
+        self.pagamenti_tab.on_seleziona_seconda_nota_button_clicked(self, button)
+
+    def on_data_pagamento_prima_scadenza_entry_changed(self, entry):
+        """ Reimposta i totali saldato e da saldare alla modifica della data
+            di pagamento della prima scadenza """
+        self.Pagamenti.ricalcola_sospeso_e_pagato()
+
+    def on_data_pagamento_seconda_scadenza_entry_changed(self, entry):
+        """ Reimposta i totali saldato e da saldare alla modifica della data di pagamento
+            della seconda scadenza """
+        self.Pagamenti.ricalcola_sospeso_e_pagato()
+
+    def on_data_pagamento_terza_scadenza_entry_changed(self, entry):
+        """ Reimposta i totali saldato e da saldare alla modifica della data di pagamento
+            della terza scadenza """
+        self.Pagamenti.ricalcola_sospeso_e_pagato()
+
+    def on_data_pagamento_quarta_scadenza_entry_changed(self, entry):
+        """ Reimposta i totali saldato e da saldare alla modifica della data di pagamento
+            della quarta scadenza """
+        self.Pagamenti.ricalcola_sospeso_e_pagato()
+
+
+
 
     def _refresh(self):
         self._loading = True
@@ -1541,7 +1290,6 @@ del documento.
             anagWindow.destroy()
             self.mostraArticolo(anag.dao.id)
 
-
         if (self.data_documento_entry.get_text() == ''):
             self.showMessage('Inserire la data del documento !')
             return
@@ -1813,107 +1561,10 @@ del documento.
 
 
     def calcolaTotale(self):
-        """ calcola i totali documento """
-
-        # FIXME: duplicated in TestataDocumenti.py
-        totaleImponibile = Decimal(0)
-        totaleImposta = Decimal(0)
-        totaleNonScontato = Decimal(0)
-        totaleImpostaScontata = Decimal(0)
-        totaleImponibileScontato = Decimal(0)
-        totaleScontato = Decimal(0)
-
-        castellettoIva = {}
-
-        for i in range(1, len(self._righe)):
-            prezzoNetto = mN(self._righe[i]["prezzoNetto"])
-            quantita = Decimal(self._righe[i]["quantita"])
-            moltiplicatore = Decimal(str(self._righe[i]["moltiplicatore"]))
-            percentualeIva = Decimal(str(self._righe[i]["percentualeIva"]))
-
-            totaleRiga = mN(prezzoNetto * quantita * moltiplicatore)
-            percentualeIvaRiga = percentualeIva
-
-            if (self._fonteValore == "vendita_iva" or self._fonteValore == "acquisto_iva"):
-                totaleImponibileRiga = mN(calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)) or 0
-            else:
-                totaleImponibileRiga = totaleRiga
-                totaleRiga = mN(calcolaPrezzoIva(totaleRiga, percentualeIvaRiga))
-
-            totaleImpostaRiga = totaleRiga - mN(totaleImponibileRiga)
-            totaleNonScontato += totaleRiga
-            totaleImponibile += totaleImponibileRiga
-            totaleImposta += totaleImpostaRiga
-
-            if percentualeIvaRiga not in castellettoIva.keys():
-                castellettoIva[percentualeIvaRiga] = {'imponibile': totaleImponibileRiga, 'imposta': totaleImpostaRiga, 'totale': totaleRiga}
-            else:
-                castellettoIva[percentualeIvaRiga]['imponibile'] += totaleImponibileRiga
-                castellettoIva[percentualeIvaRiga]['imposta'] += totaleImpostaRiga
-                castellettoIva[percentualeIvaRiga]['totale'] += mN(totaleRiga,2)
-
-        totaleNonScontato = mN(totaleNonScontato,2)
-        totaleImponibile = mN(totaleImponibile)
-        totaleImposta = totaleNonScontato - totaleImponibile
-        for percentualeIva in castellettoIva:
-            castellettoIva[percentualeIva]['imponibile'] = mN(castellettoIva[percentualeIva]['imponibile'])
-            castellettoIva[percentualeIva]['imposta'] = mN(castellettoIva[percentualeIva]['imposta'])
-            castellettoIva[percentualeIva]['totale'] = mN(castellettoIva[percentualeIva]['totale'],2)
-
-        totaleImponibileScontato = totaleImponibile
-        totaleImpostaScontata = totaleImposta
-        totaleScontato = totaleNonScontato
-        scontiSuTotale = self.sconti_testata_widget.getSconti()
-        applicazioneSconti = self.sconti_testata_widget.getApplicazione()
-        if len(scontiSuTotale) > 0:
-            for s in scontiSuTotale:
-                if s["tipo"] == 'percentuale':
-                    if applicazioneSconti == 'scalare':
-                        totaleScontato = mN(totaleScontato) * (1 - mN(s["valore"]) / 100)
-                    elif applicazioneSconti == 'non scalare':
-                        totaleScontato = mN(totaleScontato) - mN(totaleNonScontato) * mN(s["valore"]) / 100
-                    else:
-                        raise Exception, ('BUG! Tipo di applicazione sconto '
-                                          'sconosciuto: %s' % s['tipo'])
-                elif s["tipo"] == 'valore':
-                    totaleScontato = mN(totaleScontato) - mN(s["valore"])
-
-            # riporta l'insieme di sconti ad una percentuale globale
-            percentualeScontoGlobale = (1 - totaleScontato / totaleNonScontato) * 100
-            totaleImpostaScontata = 0
-            totaleImponibileScontato = 0
-            totaleScontato = 0
-            # riproporzione del totale, dell'imponibile e dell'imposta
-            for k in castellettoIva.keys():
-                castellettoIva[k]['totale'] = mN(castellettoIva[k]['totale']) * (1 - mN(percentualeScontoGlobale) / 100)
-                castellettoIva[k]['imponibile'] = mN(castellettoIva[k]['imponibile']) * (1 - mN(percentualeScontoGlobale) / 100)
-                castellettoIva[k]['imposta'] = castellettoIva[k]['totale'] - castellettoIva[k]['imponibile']
-
-                totaleImponibileScontato += mN(castellettoIva[k]['imponibile'])
-                totaleImpostaScontata += mN(castellettoIva[k]['imposta'])
-
-            totaleScontato = mN(mN(totaleImponibileScontato) + mN(totaleImpostaScontata),2)
-
-        self.totale_generale_label.set_text(str(totaleNonScontato))
-        self.totale_generale_riepiloghi_label.set_text(str(totaleNonScontato))
-        self.totale_imponibile_label.set_text(str(totaleImponibile))
-        self.totale_imponibile_riepiloghi_label.set_text(str(totaleImponibile))
-        self.totale_imposta_label.set_text(str(totaleImposta))
-        self.totale_imposta_riepiloghi_label.set_text(str(totaleImposta))
-        self.totale_imponibile_scontato_riepiloghi_label.set_text(str(totaleImponibileScontato))
-        self.totale_imposta_scontata_riepiloghi_label.set_text(str(totaleImpostaScontata))
-        self.totale_scontato_riepiloghi_label.set_text(str(totaleScontato))
-
-        model = self.riepiloghi_iva_treeview.get_model()
-        model.clear()
-        for k in castellettoIva.keys():
-            model.append((mN(k),
-                         (mN(castellettoIva[k]['imponibile'])),
-                         (mN(castellettoIva[k]['imposta'])),))
-
+        calcolaTotalePart(self)
 
     def showMessage(self, msg):
-
+        """ """
         dialog = gtk.MessageDialog(self.dialogTopLevel,
                                     gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
@@ -1922,7 +1573,7 @@ del documento.
 
 
     def on_storico_costi_button_clicked(self, toggleButton):
-
+        """ """
         from StoricoForniture import StoricoForniture
         idArticolo = self._righe[0]["idArticolo"]
         if self._tipoPersonaGiuridica == "fornitore":
@@ -1936,7 +1587,7 @@ del documento.
 
 
     def on_storico_listini_button_clicked(self, toggleButton):
-
+        """ """
         from StoricoListini import StoricoListini
         idArticolo = self._righe[0]["idArticolo"]
         anag = StoricoListini(idArticolo)
@@ -1946,7 +1597,7 @@ del documento.
 
 
     def on_variazione_listini_button_clicked(self, toggleButton):
-
+        """ """
         if self._righe[0]["idArticolo"] is None:
             self.showMessage('Selezionare un articolo !')
             return
@@ -1962,7 +1613,6 @@ del documento.
         anagWindow = anag.getTopLevel()
         anagWindow.set_transient_for(self.dialogTopLevel)
         anagWindow.show_all()
-
 
     def on_edit_date_and_number_button_clicked(self, toggleButton):
 
@@ -1989,44 +1639,12 @@ del documento.
         self.rif_movimento_label.set_text(stringLabel)
 
     def on_larghezza_entry_key_press_event(self, entry, event):
-
-        from promogest.modules.SuMisura.ui.SuMisura import CalcolaArea, CalcolaPerimetro
-
-        altezza = float(self.altezza_entry.get_text() or 0)
-        print "ALTEZZA!!!!!!!!!!!!!!!!!!!!!!!", altezza, self._righe[0]["unitaBase"]
-        moltiplicatore = float(self.moltiplicatore_entry.get_text() or 1)
-        if altezza != 0:
-            larghezza = float(self.larghezza_entry.get_text() or 0)
-            if larghezza != 0:
-                if self._righe[0]["unitaBase"] == "Metri Quadri":
-                    quantita = CalcolaArea(altezza, larghezza)
-
-                elif self._righe[0]["unitaBase"] == "Metri":
-                    quantita = CalcolaPerimetro(altezza, larghezza)
-                else:
-                    quantita = None
-                if quantita is not None:
-                    da_stamp = moltiplicatore * float(quantita)
-                    self.quantita_entry.set_text(str(da_stamp))
+        """ portata nel modulo su misura"""
+        on_larghezza_entry_key_press_eventPart(self, entry, event)
 
     def on_altezza_entry_key_press_event(self, entry, event):
-
-        from promogest.modules.SuMisura.ui.SuMisura import CalcolaArea, CalcolaPerimetro
-
-        larghezza = float(self.larghezza_entry.get_text() or 0)
-        moltiplicatore = float(self.moltiplicatore_entry.get_text() or 1)
-        if larghezza != 0:
-            altezza = float(self.altezza_entry.get_text() or 0)
-            if altezza != 0:
-                if self._righe[0]["unitaBase"] == "Metri Quadri":
-                    quantita = CalcolaArea(altezza, larghezza)
-                elif self._righe[0]["unitaBase"] == "Metri":
-                    quantita = CalcolaPerimetro(altezza, larghezza)
-                else:
-                    quantita = None
-                if quantita is not None:
-                    da_stamp = float(quantita) * moltiplicatore
-                    self.quantita_entry.set_text(str(da_stamp))
+        """ portata nel modulo su misura """
+        on_altezza_entry_key_press_eventPart(self, entry, event)
 
     def on_moltiplicatore_entry_key_press_event (self, entry, event):
         self.on_altezza_entry_key_press_event(entry, event)
