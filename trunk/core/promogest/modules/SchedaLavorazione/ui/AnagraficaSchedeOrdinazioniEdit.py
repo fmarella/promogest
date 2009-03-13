@@ -147,8 +147,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         renderer.set_property("digits",2)
         renderer.set_property("climb-rate",3)
         renderer.connect('edited', self.on_column_quantita_edited, treeview, False)
-        #renderer.set_data('column', 3)
-        #renderer.set_data('min_length', 100)
+
         column = gtk.TreeViewColumn('Q.ta', renderer, text=5)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
         column.set_clickable(False)
@@ -459,13 +458,13 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         if self.dao.referente == '':
             obligatoryField(None, self.referente_entry,
                                     msg='Indicare un referente per la lavorazione')
-        if (self.dao.data_matrimonio is None):
+        if not self.dao.data_matrimonio:
             obligatoryField(None, self.data_matrimonio_entry,
                                     msg='Inserire la data del matrimonio.')
-        if (self.dao.data_presa_in_carico is None):
+        if not self.dao.data_presa_in_carico:
             obligatoryField(None, self.data_presa_in_carico_entry,
                                     msg='Inserire la data dell\'ordine.')
-        if (self.dao.data_consegna_bozza is None):
+        if not self.dao.data_consegna_bozza:
             obligatoryField(None, self.data_consegna_bozza_entry,
                                     msg='Inserire la data prevista di consegna bozza.')
         if self.dao.nomi_sposi == '':
@@ -582,7 +581,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             obligatoryField(None, self.listino_combobox,\
                                             msg='Selezionare prima un listino.')
         if codart:
-            print "CODAAAAAAAAAAAAAAAART", codart
             search_string=codart
         else:
             search_string = combobox.child.get_text()
@@ -839,7 +837,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         Questo metodo viene chiamato per primo in refresh() per evitare di resettare tutte le modifiche
         apportate alla scheda quando viene generato un qualunque altro segnale da un widget che modifica il dao.
         """
-        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         buffer = self.note_text_textview.get_buffer()
         start, end = buffer.get_bounds()
         self.dao.note_text = buffer.get_text(start, end)
@@ -880,7 +877,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.dao.password_amici = self.password_amici_entry.get_text()
 
     def _clear(self):
-        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
         buffer = self.note_text_textview.get_buffer()
         start,end = buffer.get_bounds()
         buffer.delete(start,end)

@@ -316,10 +316,12 @@ def fillSchedaLavorazioneFromEmail(ui):
     try:
         email = file("/home/vete/Form ordine partecipazioni.eml","r")
         text = email.readlines()
+
         email.close()
     except:
         print "ATTENZIONEEEEEEEEEEEE!!!! FILE EMAIL NON PRESENTE"
     for line in text:
+        line = line.decode('iso-8859-1', 'replace').encode('utf8')
         lista = line.split(":")
         campo = lista[0].strip()
         #print "CAMPOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",campo
@@ -332,7 +334,6 @@ def fillSchedaLavorazioneFromEmail(ui):
         elif campo == "Date":
             #Tue, 3 Mar 2009 22:03:38 +0100
             a = lista[1].strip().split(",")[1][0:-2].strip()
-            print "AAAAAAAAAA",str(a) , len(a)
             ui.data_presa_in_carico_entry.set_text(dateToString(datetime.datetime.strptime(a, "%d %b %Y")))
         elif campo == "Nome_sposo":
             ui.nome_sposo_entry.set_text(lista[1].strip())
@@ -435,14 +436,16 @@ def fillSchedaLavorazioneFromEmail(ui):
         elif campo == "PRODOTTO":
             prodotto  = lista[1].strip()
         elif campo == "CODICE PARTECIPAZIONE":
-            codParte = lista[1].strip().split("(")[0].strip()[1:-1].replace("Art.",'')
+            print "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR", lista[1]
+            codParte = lista[1].strip().split("(")[0].strip()[1:-1].replace("Art.",'')[1:-1]
             quantitaParte = lista[2].strip().split("-")[0].strip()[1:-1]
+            print "CODICE PARTECIPAZIONE", codParte
         elif campo == "CODICE INVITO":
-            codInvito = lista[1].strip().split("(")[0].strip()[1:-1].replace("Art.",'')
+            codInvito = lista[1].strip().split("(")[0].strip()[1:-1].replace("Art.",'')[1:-1]
             quantitaInvito = lista[2].strip().split("-")[0].strip()[1:-1]
             print codInvito, quantitaInvito
         elif campo == "CODICE BOMBONIERA":
-            codBombo = lista[1].strip().split("(")[0].strip()[1:-1].replace("Art.",'')
+            codBombo = lista[1].strip().split("(")[0].strip()[1:-1].replace("Art.",'')[1:-1]
             quantitaBombo = lista[2].strip().split("-")[0].strip()[1:-1]
             print codBombo, quantitaBombo
         elif campo == "PERCENTUALE DI SCONTO APPLICATO":
