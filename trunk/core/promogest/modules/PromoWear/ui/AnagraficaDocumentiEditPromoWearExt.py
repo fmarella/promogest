@@ -31,3 +31,17 @@ def fillLabelInfo(ui, articolo):
     ui.stagione_label.set_markup('<span weight="bold">%s</span>' % (articolo['stagione']))
     ui.anno_label.set_markup('<span weight="bold">%s</span>' % (articolo['anno']))
     ui.tipo_label.set_markup('<span weight="bold">%s</span>' % (""))
+
+def azzeraRiga(anaedit, numero):
+    anaedit._righe[numero].update(idGruppoTaglia =  None,
+                    gruppoTaglia =  '',
+                    idTaglia = None,
+                    taglia = '',
+                    idColore = None,
+                    colore = '',
+                    idAnno = None,
+                    anno = '',
+                    idStagione = None,
+                    stagione = '',
+                    idGenere = None,
+                    genere = '')
