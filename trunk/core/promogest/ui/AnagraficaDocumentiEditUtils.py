@@ -20,7 +20,8 @@ from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Operazione import Operazione
 from promogest.dao.DaoUtils import giacenzaArticolo
 
-
+if "PromoWear" in Environment.modulesList:
+    from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
 if "SuMisura" in Environment.modulesList:
     from promogest.modules.SuMisura.ui import AnagraficaDocumentiEditSuMisuraExt
 if "GestioneNoleggio" in Environment.modulesList:
@@ -558,3 +559,29 @@ Inserire comunque?""" % (str(quantita), str(quantita_minima))
                         #return
         elif response == gtk.RESPONSE_OK:
             anaedit.quantita_entry.set_text(str(quantita))
+
+def hidePromoWear(ui):
+    """ Hide and destroy labels and button if promowear is not present
+    """
+    ui.promowear_manager_taglia_colore_togglebutton.destroy()
+    ui.promowear_manager_taglia_colore_image.hide()
+    ui.anno_label.destroy()
+    ui.label_anno.destroy()
+    ui.stagione_label.destroy()
+    ui.label15.destroy()
+    ui.colore_label.destroy()
+    ui.label14.destroy()
+    ui.taglia_label.destroy()
+    ui.label_taglia.destroy()
+    ui.gruppo_taglia_label.destroy()
+    ui.label_gruppo_taglia.destroy()
+    ui.tipo_label.destroy()
+    ui.label_tipo.destroy()
+
+def hideSuMisura(ui):
+    """
+    funzione per SuMisura .....rimuove dalla vista quando modulo è disattivato
+    """
+    ui.sumisura_frame.destroy()
+    ui.moltiplicatore_entry.destroy()
+    ui.label_moltiplicatore.hide()
