@@ -337,7 +337,6 @@ class TestataDocumento(Dao):
 
     totali = property(_getTotaliDocumento, )
 
-
     def contieneMovimentazione(self, righe=None):
         """
             Verifica se sono e devono essere presenti righe di movimentazione magazzino
@@ -605,24 +604,40 @@ class TestataDocumento(Dao):
         else: return ""
     indirizzo_cliente= property(_indirizzo_cliente)
 
+    def _indirizzo_cliente_operativa(self):
+        if self.CLI: return self.CLI.sede_operativa_indirizzo
+        else: return ""
+    indirizzo_cliente_operativa= property(_indirizzo_cliente_operativa)
+
     def _cap_cliente(self):
         if self.CLI: return self.CLI.sede_legale_cap
-        else:
-            try:
-                self.CLI.sede_operativa_cap
-            except:
-                return ""
+        else:return ""
     cap_cliente= property(_cap_cliente)
+
+    def _cap_cliente_operativa(self):
+        if self.CLI: return self.CLI.sede_operativa_cap
+        else:return ""
+    cap_cliente_operativa= property(_cap_cliente_operativa)
 
     def _localita_cliente(self):
         if self.CLI: return self.CLI.sede_legale_localita
         else: return ""
     localita_cliente= property(_localita_cliente)
 
+    def _localita_cliente_operativa(self):
+        if self.CLI: return self.CLI.sede_operativa_localita
+        else: return ""
+    localita_cliente_operativa= property(_localita_cliente_operativa)
+
     def _provincia_cliente(self):
         if self.CLI: return self.CLI.sede_legale_provincia
         else: return ""
     provincia_cliente= property(_provincia_cliente)
+
+    def _provincia_cliente_operativa(self):
+        if self.CLI: return self.CLI.sede_operativa_provincia
+        else: return ""
+    provincia_cliente_operativa= property(_provincia_cliente_operativa)
 
     def _partita_iva_cliente(self):
         if self.CLI: return self.CLI.partita_iva
@@ -657,20 +672,40 @@ class TestataDocumento(Dao):
         else: return ""
     indirizzo_fornitore= property(_indirizzo_fornitore)
 
+    def _indirizzo_fornitore_operativa(self):
+        if self.FORN: return self.FORN.sede_operativa_indirizzo
+        else: return ""
+    indirizzo_fornitore_operativa= property(_indirizzo_fornitore_operativa)
+
     def _cap_fornitore(self):
         if self.FORN: return self.FORN.sede_legale_cap
         else: return ""
     cap_fornitore= property(_cap_fornitore)
+
+    def _cap_fornitore_operativa(self):
+        if self.FORN: return self.FORN.sede_operativa_cap
+        else: return ""
+    cap_fornitore_operativa= property(_cap_fornitore_operativa)
 
     def _localita_fornitore(self):
         if self.FORN: return self.FORN.sede_legale_localita
         else: return ""
     localita_fornitore= property(_localita_fornitore)
 
+    def _localita_fornitore_operativa(self):
+        if self.FORN: return self.FORN.sede_operativa_localita
+        else: return ""
+    localita_fornitore_operativa = property(_localita_fornitore_operativa)
+
     def _provincia_fornitore(self):
         if self.FORN: return self.FORN.sede_legale_provincia
         else: return ""
     provincia_fornitore= property(_provincia_fornitore)
+
+    def _provincia_fornitore_operativa(self):
+        if self.FORN: return self.FORN.sede_operativa_provincia
+        else: return ""
+    provincia_fornitore_operativa= property(_provincia_fornitore_operativa)
 
     def _partita_iva_fornitore(self):
         if self.FORN: return self.FORN.partita_iva
@@ -697,6 +732,11 @@ class TestataDocumento(Dao):
         if self.AGE: return self.AGE.ragione_sociale
         else: return ""
     ragione_sociale_agente= property(_ragione_sociale_agente)
+
+
+    #if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+        #if self.TGN: return self.TGN
+
 
     def filter_values(self,k,v):
         if k == 'daNumero':
