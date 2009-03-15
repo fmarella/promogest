@@ -386,6 +386,7 @@ def mostraArticoloPart(anaedit, id, art=None):
             anaedit.promowear_manager_taglia_colore_togglebutton.set_sensitive(True)
             anaedit.NoRowUsableArticle = True
         if art:
+            print "ARRRRRRRTTTTT", art
             # articolo proveninente da finestra taglia e colore ...
             anaedit.NoRowUsableArticle = False
             articolo = art

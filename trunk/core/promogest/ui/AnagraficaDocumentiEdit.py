@@ -1291,7 +1291,7 @@ del documento.
             self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
 
     def mostraArticolo(self, id, art=None):
-        mostraArticoloPart(self, id, art=None)
+        mostraArticoloPart(self, id, art=art)
 
 
     def on_show_totali_riga(self, widget = None, event = None):
