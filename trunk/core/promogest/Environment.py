@@ -390,7 +390,10 @@ engine = create_engine('postgres:'+'//'+conf.Database.user+':'
 
 engine.echo = debugSQL
 meta = MetaData(engine)
-Session = scoped_session(sessionmaker(bind=engine))
+Session = scoped_session(sessionmaker(bind=engine,autoflush=True))
+
+
+#Session = scoped_session(sessionmaker(bind=engine))
 session = Session()
 params = {'db_pg': engine ,
         'mainSchema': mainSchema,

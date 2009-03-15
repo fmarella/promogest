@@ -38,7 +38,15 @@ def setTreeview(treeview, rendererSx):
     column.set_expand(False)
     treeview.append_column(column)
 
+def azzeraRiga(anaedit,numero):
+    anaedit._righe[numero].update(altezza = '',
+                            larghezza = "",
+                            molt_pezzi: 0)
 
+def azzeraRigaPartial(anaedit, numero,rigatampone):
+    anaedit._righe[numero].update(altezza= rigatampone['altezza'],
+                                larghezza = rigatampone['larghezza'],
+                                molt_pezzi = rigatampone['molt_pezzi'])
 
 def on_altezza_entry_key_press_eventPart(anaedit, entry, event):
     larghezza = float(anaedit.larghezza_entry.get_text() or 0)

@@ -9,10 +9,10 @@
 from promogest import Environment
 from promogest.ui.utils import *
 
-
-
-def setLabels(ui):
-    return
+def setLabels(anaedit):
+    anaedit.prezzo_aquisto_entry.set_text("0")
+    anaedit.giorni_label.set_text("1")
+    anaedit.totale_noleggio_label.set_text("0")
 
 def setTreeview(treeview, rendererSx):
     column = gtk.TreeViewColumn('Giorni', rendererSx, text=15)
@@ -21,3 +21,9 @@ def setTreeview(treeview, rendererSx):
     column.set_resizable(True)
     column.set_expand(False)
     treeview.append_column(column)
+
+def azzeraRiga(anaedit,numero):
+    anaedit._righe[numero].update(divisore_noleggio =1,
+                                arco_temporale = "GG",
+                                prezzo_acquisto = 0,
+                                totale_noleggio = 0)

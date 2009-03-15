@@ -385,15 +385,16 @@ class Articolo(Dao):
             pass
         if "GestioneNoleggio" in Environment.modulesList:
             if self.divisore_noleggio_value_set and self.id:
-                div_nol = ArticoloPlusGN().getRecord(id=self.id)
+                div_nol = ArticoloGestioneNoleggio().getRecord(id=self.id)
                 if div_nol:
                         div_nol.value = self.divisore_noleggio_value_set
                         params["session"].add(div_nol)
                 else:
-                    div_nol = ArticoloPlusGN()
+                    div_nol = ArticoloGestioneNoleggio()
                     div_nol.id_articolo = self.id
                     div_nol.divisore_noleggio_value = self.divisore_noleggio_value_set
                     params["session"].add(div_nol)
+
         if "PromoWear" in Environment.modulesList:
             try:
                 if self.__articoloTagliaColore:

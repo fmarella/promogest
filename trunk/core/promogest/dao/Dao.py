@@ -117,7 +117,8 @@ class Dao(object):
             response = overDialog.run()
             overDialog.destroy()
             print "ERRORE", e
-            params["session"].rollback()
+            ciccio= params["session"].rollback()
+            print "CICCIO", ciccio
             return False
 
 

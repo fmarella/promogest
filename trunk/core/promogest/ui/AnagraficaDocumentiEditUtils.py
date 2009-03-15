@@ -26,6 +26,8 @@ if "SuMisura" in Environment.modulesList:
     from promogest.modules.SuMisura.ui import AnagraficaDocumentiEditSuMisuraExt
 if "GestioneNoleggio" in Environment.modulesList:
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
+if "Pagamenti" in Environment.modulesList:
+    from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 
 def drawPart(anaedit):
 
@@ -205,8 +207,8 @@ def drawPart(anaedit):
             anaedit.on_ricerca_descrizione_button_clicked)
     anaedit.ricerca_codice_articolo_fornitore_button.connect('clicked',
             anaedit.on_ricerca_codice_articolo_fornitore_button_clicked)
-    if Environment.conf.hasPagamenti == True:
-        anaedit.Pagamenti.connectEntryPag()
+    if "Pagamenti" in Environment.modulesList:
+        AnagraficadocumentiPagamentExt.connectEntryPag(anaedit)
 
     #Castelletto iva
     rendererText = gtk.CellRendererText()
@@ -337,6 +339,9 @@ def calcolaTotalePart(anaedit, dao=None):
                         (mN(castellettoIva[k]['imposta'])),))
 
 def mostraArticoloPart(anaedit, id, art=None):
+    """questa funzione viene chiamata da ricerca articolo e si occupa di
+        riempire la riga[0] con i dati corretti
+    """
     anaedit.articolo_entry.set_text('')
     anaedit.descrizione_entry.set_text('')
     anaedit.codice_articolo_fornitore_entry.set_text('')
@@ -369,6 +374,7 @@ def mostraArticoloPart(anaedit, id, art=None):
 
     fillComboboxMultipli(anaedit.id_multiplo_customcombobox.combobox, id, True)
 
+    # articolo c'è 
     if id is not None:
         articolo = leggiArticolo(id)
         if "PromoWear" in Environment.modulesList:
@@ -417,11 +423,11 @@ def mostraArticoloPart(anaedit, id, art=None):
                 anaedit.quantita_entry.set_text(anaedit._righe[0]["quantita"])
                 if anaedit._righe[0]["quantita"]:
                     anaedit.calcolaTotaleRiga()
-
             elif ((anaedit._fonteValore == "vendita_iva") or (anaedit._fonteValore == "vendita_senza_iva")):
 
                 costoLordo = str(articolo['valori']["prezzoDettaglio"])
-                if costoLordo:costoLordo = costoLordo.replace(',','.')
+                if costoLordo:
+                    costoLordo = costoLordo.replace(',','.')
                 anaedit._righe[0]["prezzoLordo"] = mN(costoLordo)
                 anaedit.prezzo_lordo_entry.set_text(str(anaedit._righe[0]["prezzoLordo"]))
                 anaedit._righe[0]["sconti"] = articolo['valori']["scontiDettaglio"]
@@ -437,7 +443,7 @@ def mostraArticoloPart(anaedit, id, art=None):
                 #anaedit.refresh_combobox_listini()
             anaedit.on_confirm_row_button_clicked(anaedit.dialogTopLevel)
             return
-        #else:
+        #Eccoci all'articolo normale
         anaedit._righe[0]["idArticolo"] = id
         anaedit._righe[0]["codiceArticolo"] = articolo["codice"]
         anaedit.articolo_entry.set_text(anaedit._righe[0]["codiceArticolo"])
@@ -450,19 +456,24 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit.unitaBaseLabel.set_text(anaedit._righe[0]["unitaBase"])
         anaedit._righe[0]["idMultiplo"] = None
         anaedit._righe[0]["moltiplicatore"] = 1
+
         if "GestioneNoleggio" in Environment.modulesList:
             anaedit._righe[0]["divisore_noleggio"] = artic.divisore_noleggio
             anaedit.coeficente_noleggio_entry.set_text(str(anaedit._righe[0]["divisore_noleggio"]))
+            anaedit.getPrezzoAcquisto()
+
         anaedit._righe[0]["prezzoLordo"] = 0
         anaedit._righe[0]["prezzoNetto"] = 0
         anaedit._righe[0]["sconti"] = []
         anaedit._righe[0]["applicazioneSconti"] = 'scalare'
         anaedit._righe[0]["codiceArticoloFornitore"] = ''
+        #inserisco dei dati nel frame delle informazioni 
         anaedit.giacenza_label.set_text(str(giacenzaArticolo(year=Environment.workingYear,
                                             idMagazzino=findIdFromCombobox(anaedit.id_magazzino_combobox),
                                             idArticolo=anaedit._righe[0]["idArticolo"])))
 
         anaedit.quantitaMinima_label.set_text(str(artic.quantita_minima))
+        # Acquisto 
         if ((anaedit._fonteValore == "acquisto_iva") or  (anaedit._fonteValore == "acquisto_senza_iva")):
             fornitura = leggiFornitura(id, anaedit.id_persona_giuridica_customcombobox.getId(), data)
             costoLordo = fornitura["prezzoLordo"]
@@ -480,6 +491,7 @@ def mostraArticoloPart(anaedit, id, art=None):
             anaedit.sconti_widget.setValues(anaedit._righe[0]["sconti"], anaedit._righe[0]["applicazioneSconti"], False)
             anaedit._righe[0]["codiceArticoloFornitore"] = fornitura["codiceArticoloFornitore"]
             anaedit.codice_articolo_fornitore_entry.set_text(anaedit._righe[0]["codiceArticoloFornitore"])
+        #vendita
         elif ((anaedit._fonteValore == "vendita_iva") or (anaedit._fonteValore == "vendita_senza_iva")):
             anaedit.refresh_combobox_listini()
 
@@ -490,7 +502,9 @@ def mostraArticoloPart(anaedit, id, art=None):
     else:
         anaedit.descrizione_entry.grab_focus()
 
+
 def on_multi_line_button_clickedPart(anaedit, widget):
+    """ widget per l'inserimento di righe "multiriga" """
     mleditor = GladeWidget('multi_linea_editor', callbacks_proxy=anaedit)
     mleditor.multi_linea_editor.set_modal(modal=True)#
     #mleditor.multi_linea_editor.set_transient_for(self)
@@ -503,7 +517,6 @@ def on_multi_line_button_clickedPart(anaedit, widget):
     anaedit.a = 0
     anaedit.b = 0
     def test(widget, event):
-        #print dir(textBuffer)
         char_count = textBuffer.get_char_count()
         line_count = textBuffer.get_line_count()
         if char_count >= 500:
@@ -519,7 +532,7 @@ def on_multi_line_button_clickedPart(anaedit, widget):
             textBuffer.insert_at_cursor("\n")
             anaedit.a = -1
         modified = textBuffer.get_modified()
-        textStatusBar = "Tot. Caratteri = %s , Righe = %s, Limite= %s, Colonna=%s" %(char_count,line_count, colonne, self.a)
+        textStatusBar = "Tot. Caratteri = %s , Righe = %s, Limite= %s, Colonna=%s" %(char_count,line_count, colonne, anaedit.a)
         context_id =  mleditor.multi_line_editor_statusbar.get_context_id("Multi Editor")
         mleditor.multi_line_editor_statusbar.push(context_id,textStatusBar)
 
@@ -527,24 +540,27 @@ def on_multi_line_button_clickedPart(anaedit, widget):
         text = textBuffer.get_text(textBuffer.get_start_iter(),
                                     textBuffer.get_end_iter())
 
-        self.descrizione_entry.set_text(text)
-        vediamo = self.descrizione_entry.get_text()
+        anaedit.descrizione_entry.set_text(text)
+        vediamo = anaedit.descrizione_entry.get_text()
         mleditor.multi_linea_editor.hide()
     button = mleditor.ok_button
     button.connect("clicked", on_ok_button_clicked)
     mleditor.multi_line_editor_textview.connect("key-press-event", test)
 
-
 def on_quantita_entry_focus_out_eventPart(anaedit, entry, event):
-
+    """ Funzione di controllo della quantità minima con dialog """
     id = anaedit._righe[0]["idArticolo"]
     if id is not None:
         articolo = Articolo().getRecord(id=id)
-    else:return
+    else:
+        return
     quantita = float(anaedit.quantita_entry.get_text())
     if articolo:
-        quantita_minima = float(articolo.quantita_minima)
-    if (quantita < quantita_minima) :
+        try:
+            quantita_minima = float(articolo.quantita_minima)
+        except:
+            quantita_minima = None
+    if quantita_minima and quantita < quantita_minima :
         msg = """Attenzione!
 La quantità inserita:  %s è inferiore
 a %s definita come minima di default.
@@ -561,8 +577,7 @@ Inserire comunque?""" % (str(quantita), str(quantita_minima))
             anaedit.quantita_entry.set_text(str(quantita))
 
 def hidePromoWear(ui):
-    """ Hide and destroy labels and button if promowear is not present
-    """
+    """ Hide and destroy labels and button if promowear is not present """
     ui.promowear_manager_taglia_colore_togglebutton.destroy()
     ui.promowear_manager_taglia_colore_image.hide()
     ui.anno_label.destroy()

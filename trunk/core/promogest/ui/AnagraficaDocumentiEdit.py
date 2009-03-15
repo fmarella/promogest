@@ -8,10 +8,11 @@
 # Author: Dr astico  (Marco Pinna)<marco@promotux.it>
 # Author: Francesco Meloni  <francesco@promotux.it>
 
+import gtk
 import datetime
+from math import sqrt
 from AnagraficaComplessa import AnagraficaEdit
 from AnagraficaDocumentiEditUtils import *
-import gtk
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.RigaDocumento import RigaDocumento
@@ -28,17 +29,16 @@ from utilsCombobox import *
 from promogest.dao.DaoUtils import giacenzaArticolo
 from GladeWidget import GladeWidget
 from promogest import Environment
-#from promogest.modules.Pagamenti.ui.AnagraficadocumentiPagamentExt import AnagraficaDocumentiEditGestioneNoleggioExt
 
 if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
 if "SuMisura" in Environment.modulesList:
-    from promogest.modules.SuMisura.ui.AnagraficaDocumentiEditSuMisuraExt import *
+    from promogest.modules.SuMisura.ui import AnagraficaDocumentiEditSuMisuraExt
+    from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
 if "GestioneNoleggio" in Environment.modulesList:
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
 if "Pagamenti" in Environment.modulesList:
-    from promogest.modules.Pagamenti.Pagamenti import Pagamenti
-    from promogest.modules.Pagamenti.ui.AnagraficadocumentiPagamentExt import AnagraficadocumentiPagamentExt
+    from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 
 class AnagraficaDocumentiEdit(AnagraficaEdit):
     """ Modifica un record dei documenti """
@@ -49,12 +49,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 'anagrafica_documenti_detail_vbox',
                                 'Dati Documento',
                                 'anagrafica_documenti.glade')
-        AnagraficadocumentiPagamentExt(self)
-
-        #self.notebook.remove_page(3)
-        #else:
-
-        self.Pagamenti = Pagamenti(self)
 
         self._widgetFirstFocus = self.data_documento_entry
         # contenitore (dizionario) righe (riga 0 riservata per  variazioni in corso)
@@ -91,15 +85,14 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._controllo_numero_documento = None
         self.reuseDataRow = False
         self.NoRowUsableArticle = False
-        self.noleggio_frame.destroy()
-
         # Inizializziamo i moduli in interfaccia!
 
+        if "Pagamenti" not in Environment.modulesList:
+            self.notebook.remove_page(3)
         if "PromoWear" in Environment.modulesList:
             self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
             self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
         else:
-            # è in utils semplice ....
             hidePromoWear(self)
         if "SuMisura" not in Environment.modulesList:
             hideSuMisura(self)
@@ -108,8 +101,15 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.hbox29.destroy()
             self.hbox30.destroy()
             self.arco_temporale_frame.destroy()
+            self.noleggio_frame.destroy()
+            self.noleggio = False
+            self.prezzo_aquisto_entry.destroy()
+            self.label38.destroy()
 
-    def azzeraRiga(self, numero = 0):
+    def draw(self):
+        drawPart (self)
+
+    def azzeraRiga(self, numero=0):
         """
         Azzera i campi del dizionario privato delle righe, alla riga
         indicata (o alla 0-esima)
@@ -136,23 +136,13 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "totale": 0,
                                 "codiceArticoloFornitore": '',
                                 "prezzoNettoUltimo": 0,
-                                "altezza": '',
-                                "larghezza": '',
-                                "molt_pezzi": 0,"idGruppoTaglia": None,
-                                "gruppoTaglia": '',
-                                "idTaglia": None,
-                                "taglia": '',
-                                "idColore": None,
-                                "colore": '',
-                                "idAnno": None,
-                                "anno": '',
-                                "idStagione": None,
-                                "stagione": '',
-                                "divisore_noleggio":1,
-                                "arco_temporale": 0,
-                                "idGenere": None,
-                                "quantita_minima": None,
-                                "genere": ''}
+                                "quantita_minima": None}
+        if "SuMisura" in Environment.modulesList:
+            AnagraficaDocumentiEditSuMisuraExt.azzeraRiga(self,numero)
+        if "PromoWear" in Environment.modulesList:
+            AnagraficaDocumentiEditPromoWearExt.azzeraRiga(self,numero)
+        if "GestioneNoleggio" in Environment.modulesList:
+            AnagraficaDocumentiEditGestioneNoleggioExt.azzeraRiga(self,numero)
 
 
     def azzeraRigaPartial(self, numero = 0, rigatampone=None):
@@ -160,32 +150,32 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         Azzera i campi del dizionario privato delle righe, alla riga
         indicata (o alla 0-esima)
         """
-
         self._righe[numero] = {"idRiga": None,
-                "idMagazzino": rigatampone['idMagazzino'],
-                "magazzino": rigatampone['magazzino'],
-                "idArticolo": rigatampone['idArticolo'],
-                "codiceArticolo": rigatampone['codiceArticolo'],
-                "descrizione": rigatampone['descrizione'],
-                "percentualeIva": rigatampone['percentualeIva'],
-                "idUnitaBase": rigatampone['idUnitaBase'],
-                "unitaBase": rigatampone['unitaBase'],
-                "idMultiplo": rigatampone['idMultiplo'],
-                "multiplo": rigatampone['multiplo'],
-                "idListino": rigatampone['idListino'],
-                "listino": rigatampone['listino'],
-                "quantita": rigatampone['quantita'],
-                "moltiplicatore": rigatampone['moltiplicatore'],
-                "prezzoLordo": rigatampone['prezzoLordo'],
-                "applicazioneSconti": 'scalare',
-                "sconti": rigatampone['sconti'],
-                "prezzoNetto": rigatampone['prezzoNetto'],
-                "totale": rigatampone['totale'],
-                "codiceArticoloFornitore": rigatampone['codiceArticoloFornitore'],
-                "prezzoNettoUltimo": rigatampone['prezzoNettoUltimo'],
-                "altezza": rigatampone['altezza'],
-                "larghezza": rigatampone['larghezza'],
-                "molt_pezzi": rigatampone['molt_pezzi']}
+                                "idMagazzino": rigatampone['idMagazzino'],
+                                "magazzino": rigatampone['magazzino'],
+                                "idArticolo": rigatampone['idArticolo'],
+                                "codiceArticolo": rigatampone['codiceArticolo'],
+                                "descrizione": rigatampone['descrizione'],
+                                "percentualeIva": rigatampone['percentualeIva'],
+                                "idUnitaBase": rigatampone['idUnitaBase'],
+                                "unitaBase": rigatampone['unitaBase'],
+                                "idMultiplo": rigatampone['idMultiplo'],
+                                "multiplo": rigatampone['multiplo'],
+                                "idListino": rigatampone['idListino'],
+                                "listino": rigatampone['listino'],
+                                "quantita": rigatampone['quantita'],
+                                "moltiplicatore": rigatampone['moltiplicatore'],
+                                "prezzoLordo": rigatampone['prezzoLordo'],
+                                "applicazioneSconti": 'scalare',
+                                "sconti": rigatampone['sconti'],
+                                "prezzoNetto": rigatampone['prezzoNetto'],
+                                "totale": rigatampone['totale'],
+                                "codiceArticoloFornitore": rigatampone['codiceArticoloFornitore'],
+                                "prezzoNettoUltimo": rigatampone['prezzoNettoUltimo'],
+                                "quantita_minima": rigatampone['quantita_minima']}
+        if "SuMisura" in Environment.modulesList:
+            AnagraficaDocumentiEditSuMisuraExt.azzeraRigaPartial(self,numero, rigatampone)
+
 
     def nuovaRiga(self):
         """
@@ -214,6 +204,12 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             AnagraficaDocumentiEditSuMisuraExt.setLabels(self)
         if "GestioneNoleggio" in Environment.modulesList:
             AnagraficaDocumentiEditGestioneNoleggioExt.setLabels(self)
+        if "Pagamenti" in Environment.modulesList:
+            AnagraficadocumentiPagamentExt.nuovaRiga(self)
+            AnagraficadocumentiPagamentExt.attiva_prima_scadenza(self,False, True)
+            AnagraficadocumentiPagamentExt.attiva_seconda_scadenza(self,False, True)
+            AnagraficadocumentiPagamentExt.attiva_terza_scadenza(self,False, True)
+            AnagraficadocumentiPagamentExt.attiva_quarta_scadenza(self,False, True)
 
         if len(self._righe) > 1:
             self.data_documento_entry.set_sensitive(False)
@@ -229,11 +225,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             elif self._id_magazzino is not None:
                 findComboboxRowFromId(self.id_magazzino_combobox, self._id_magazzino)
             self.id_magazzino_combobox.grab_focus()
-        if Environment.conf.hasPagamenti == True:
-            self.Pagamenti.attiva_prima_scadenza(False, True)
-            self.Pagamenti.attiva_seconda_scadenza(False, True)
-            self.Pagamenti.attiva_terza_scadenza(False, True)
-            self.Pagamenti.attiva_quarta_scadenza(False, True)
+
 
     def nuovaRigaNoClean(self, rigatampone=None):
         """ Prepara per l'inserimento di una nuova riga seza cancellare i campi """
@@ -244,7 +236,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
     def clearRows(self):
         """ pulisce i campi per il trattamento e la conservazione delle righe """
-
         self._righe = []
         self._righe.append({})
         self._numRiga = 0
@@ -252,11 +243,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._iteratorRiga = None
         self.nuovaRiga()
 
-    def draw(self):
-        drawPart (self)
-
     def on_id_operazione_combobox_changed(self, combobox):
-
+        """ Funzione di gestione cambiamento combo operazione"""
         self._operazione = findIdFromCombobox(self.id_operazione_combobox)
         #operazione = leggiOperazione(self._operazione)
         operazione = Operazione().getRecord(id=self._operazione)
@@ -314,14 +302,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
         self.persona_giuridica_changed()
         self.data_documento_entry.grab_focus()
-
-
-    def on_rent_checkbutton_toggled(self, checkbutton):
-        if self.rent_checkbutton.get_active() and (self.start_rent_entry.get_text()==""):
-            self.notebook.set_current_page(1)
-
-
-
 
     def persona_giuridica_changed(self):
         if self._loading:
@@ -385,7 +365,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["magazzino"] = magazzino.denominazione
         self.refresh_combobox_listini()
 
-
     def refresh_combobox_listini(self):
 
         if self._righe[0]["idArticolo"] is None:
@@ -400,7 +379,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
     def on_id_multiplo_customcombobox_button_clicked(self, widget, toggleButton):
         on_id_multiplo_customcombobox_clicked(widget, toggleButton, self._righe[0]["idArticolo"])
-
 
     def on_id_multiplo_customcombobox_changed(self, combobox):
 
@@ -432,7 +410,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], True)
         self.on_show_totali_riga()
 
-
     def getPrezzoVenditaLordo(self, idListino, idArticolo):
         """ cerca il prezzo di vendita """
         prezzoLordo = 0
@@ -454,6 +431,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._righe[0]["sconti"] = sconti
         self._righe[0]["applicazioneSconti"] = applicazione
 
+    def getPrezzoAcquisto(self):
+        """ funzione di lettura del prezzo di acquisto netto che serve per i noleggi """
+        fornitura = leggiFornitura(self._righe[0]["idArticolo"], data=datetime.datetime.now())
+        prezzo = fornitura["prezzoNetto"]
+        self.prezzo_aquisto_entry.set_text(str(prezzo) or "0")
 
     def getPrezzoNetto(self):
         """ calcola il prezzo netto dal prezzo lordo e dagli sconti """
@@ -508,12 +490,15 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def on_notebook_switch_page(self, notebook, page, page_num):
         if page_num == 2:
             self.calcolaTotale()
-        elif page_num ==3:
-            print "passato al terzo tab"
-            if "Pagamenti" in Environment.modulesList:
-                self.pagamenti_tab = AnagraficadocumentiPagamentExt(self, self.dao)
+        #elif page_num ==3:
+            #print "passato al terzo tab"
 
-
+    def on_rent_checkbutton_toggled(self, checkbutton):
+        """ check button in schermata documenti """
+        print " PREPARIAMO L'ENV PER I NOLEGGI"
+        self.noleggio = True
+        #if self.rent_checkbutton.get_active() and (self.start_rent_entry.get_text()==""):
+            #self.notebook.set_current_page(1)
 
     def _refresh(self):
         self._loading = True
@@ -667,25 +652,33 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
             self._righe.append(self._righe[0])
             rigadoc= self._righe[j]
-
+            if "SuMisura" in Environment.modulesList:
+                    str1 =rigadoc["altezza"]
+                    str2 =rigadoc["larghezza"]
+                    str3 = rigadoc["molt_pezzi"]
+            else:
+                str1 = str2 = str3 = ""
             #riempimento della treeview righe
-            self.modelRiga.append((j,
-                                    rigadoc["magazzino"],
-                                    rigadoc["codiceArticolo"],
-                                    rigadoc["descrizione"],
-                                    mN(rigadoc["percentualeIva"]),
-                                    rigadoc["altezza"],
-                                    rigadoc["larghezza"],
-                                    rigadoc["molt_pezzi"],
-                                    rigadoc["multiplo"],
-                                    rigadoc["listino"],
-                                    rigadoc["unitaBase"],
-                                    (rigadoc["quantita"]),
-                                    mN(rigadoc["prezzoLordo"]),
-                                    rigadoc["applicazioneSconti"] + ' ' + getStringaSconti(rigadoc["sconti"]),
-                                    mN(rigadoc["prezzoNetto"]),
-                                    rigadoc["arco_temporale"],
-                                    mN(rigadoc["totale"])))
+            if "GestioneNoleggio" in Environment.modulesList:
+                arc_temp = rigadoc["arco_temporale"]
+            else:
+                arc_temp = ""
+            row = [j,
+                    rigadoc["magazzino"],
+                    rigadoc["codiceArticolo"],
+                    rigadoc["descrizione"],
+                    mN(rigadoc["percentualeIva"]),
+                    str1,str2,str3,
+                    rigadoc["multiplo"],
+                    rigadoc["listino"],
+                    rigadoc["unitaBase"],
+                    (rigadoc["quantita"]),
+                    mN(rigadoc["prezzoLordo"]),
+                    rigadoc["applicazioneSconti"] + ' ' + getStringaSconti(rigadoc["sconti"]),
+                    mN(rigadoc["prezzoNetto"]),
+                    arc_temp,
+                    mN(rigadoc["totale"])]
+            self.modelRiga.append(row)
 
 
         self._loading = False
@@ -702,8 +695,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.id_operazione_combobox.grab_focus()
         else:
             self.id_magazzino_combobox.grab_focus()
-        if Environment.conf.hasPagamenti == True:
-            self.Pagamenti.getScadenze()
+        if "Pagamenti" in Environment.modulesList:
+           AnagraficadocumentiPagamentExt.getScadenze(self)
 
 
     def setDao(self, dao):
@@ -729,8 +722,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
 
     def saveDao(self):
-        """ Salvataggio del Dao
-        """
+        """ Salvataggio del Dao """
 
         scontiRigaDocumentoList = {}
         if not(len(self._righe) > 1):
@@ -869,8 +861,9 @@ del documento.
             daoRiga.scontiRigaDocumento = scontiRigaDocumento
             scontiRigaDocumento =[]
             misure = []
-            if self._righe[i]["altezza"] != '' and self._righe[i]["larghezza"] != '' and "SuMisura" in Environment.modulesList:
-                from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
+            if "SuMisura" in Environment.modulesList and \
+                    self._righe[i]["altezza"] != '' and \
+                    self._righe[i]["larghezza"] != '':
                 daoMisura = MisuraPezzo()
                 daoMisura.altezza = float(self._righe[i]["altezza"] or 0)
                 daoMisura.larghezza = float(self._righe[i]["larghezza"] or 0)
@@ -884,8 +877,8 @@ del documento.
         self.dao.costo_da_ripartire = self.importo_da_ripartire_entry.get_text()
 
         self.dao.ripartire_importo = self.ripartire_importo_checkbutton.get_active()
-        if Environment.conf.hasPagamenti == True:
-            self.Pagamenti.saveScadenze()
+        if "Pagamenti" in Environment.modulesList:
+            AnagraficadocumentiPagamentExt.saveScadenze(self)
 
         tipoid = findIdFromCombobox(self.id_operazione_combobox)
         tipo = Operazione().getRecord(id=tipoid)
@@ -952,9 +945,10 @@ del documento.
         self._righe[0]["prezzoNetto"] = mN(self._righe[self._numRiga]["prezzoNetto"])
         self._righe[0]["totale"] = self._righe[self._numRiga]["totale"]
         self._righe[0]["prezzoNettoUltimo"] = self._righe[self._numRiga]["prezzoNettoUltimo"]
-        self._righe[0]["altezza"] = self._righe[self._numRiga]["altezza"]
-        self._righe[0]["larghezza"] = self._righe[self._numRiga]["larghezza"]
-        self._righe[0]["molt_pezzi"] = self._righe[self._numRiga]["molt_pezzi"]
+        if "SuMisura" in Environment.modulesList:
+            self._righe[0]["altezza"] = self._righe[self._numRiga]["altezza"]
+            self._righe[0]["larghezza"] = self._righe[self._numRiga]["larghezza"]
+            self._righe[0]["molt_pezzi"] = self._righe[self._numRiga]["molt_pezzi"]
         self.giacenza_label.set_text(str(giacenzaArticolo(year=Environment.workingYear,
                                                 idMagazzino=self._righe[0]["idMagazzino"],
                                                 idArticolo=self._righe[0]["idArticolo"])))
@@ -977,9 +971,9 @@ del documento.
             self.altezza_entry.set_text(str(self._righe[0]["altezza"]))
             self.larghezza_entry.set_text(str(self._righe[0]["larghezza"]))
             self.moltiplicatore_entry.set_text(str(self._righe[0]["molt_pezzi"]))
-
         if "GestioneNoleggio"in Environment.modulesList:
-            self.coeficente_noleggio_entry.set_text(str(self._righe[0]["arco_temporale"]))
+            self.coeficente_noleggio_entry.set_text(str(self._righe[0]["divisore_noleggio"]))
+            self.getPrezzoAcquisto()
 
         self._loading = False
         self.articolo_entry.grab_focus()
@@ -1039,10 +1033,12 @@ del documento.
         # memorizzazione delle parti descrittive (liberamente modificabili)
         self._righe[0]["descrizione"] = self.descrizione_entry.get_text()
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
+        totale = mN(self._righe[self._numRiga]["totale"])
 
         if "GestioneNoleggio" in Environment.modulesList:
             self._righe[0]["divisore_noleggio"] = self.coeficente_noleggio_entry.get_text()
             self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
+            totale = mN(self._righe[self._numRiga]["totale_periodo"])
 
         if "SuMisura" in Environment.modulesList:
             self._righe[0]["altezza"] = self.altezza_entry.get_text()
@@ -1061,9 +1057,6 @@ del documento.
         self._righe[self._numRiga]["unitaBase"] = self._righe[0]["unitaBase"]
         self._righe[self._numRiga]["idMultiplo"] = self._righe[0]["idMultiplo"]
         self._righe[self._numRiga]["multiplo"] = self._righe[0]["multiplo"]
-        if "GestioneNoleggio" in Environment.modulesList:
-            self._righe[self._numRiga]["divisore_noleggio"] = self._righe[0]["divisore_noleggio"]
-            self._righe[self._numRiga]["arco_temporale"] = self._righe[0]["arco_temporale"]
         self._righe[self._numRiga]["idListino"] = self._righe[0]["idListino"]
         self._righe[self._numRiga]["listino"] = self._righe[0]["listino"]
         self._righe[self._numRiga]["quantita"] = Decimal(str(self._righe[0]["quantita"]))
@@ -1072,11 +1065,17 @@ del documento.
         self._righe[self._numRiga]["applicazioneSconti"] = self._righe[0]["applicazioneSconti"]
         self._righe[self._numRiga]["sconti"] = self._righe[0]["sconti"]
         self._righe[self._numRiga]["prezzoNetto"] = mN(self._righe[0]["prezzoNetto"])
-        self._righe[self._numRiga]["totale"] = mN(self._righe[0]["totale"])
+        if "GestioneNoleggio" in Environment.modulesList:
+            self._righe[self._numRiga]["divisore_noleggio"] = self._righe[0]["divisore_noleggio"]
+            self._righe[self._numRiga]["arco_temporale"] = self._righe[0]["arco_temporale"]
+        else:
+            str4=""
         if "SuMisura" in Environment.modulesList:
-            self._righe[self._numRiga]["altezza"] = self._righe[0]["altezza"]
-            self._righe[self._numRiga]["larghezza"] = self._righe[0]["larghezza"]
-            self._righe[self._numRiga]["molt_pezzi"] = self._righe[0]["molt_pezzi"]
+            str1 =self._righe[self._numRiga]["altezza"] = self._righe[0]["altezza"]
+            str2=self._righe[self._numRiga]["larghezza"] = self._righe[0]["larghezza"]
+            str3=self._righe[self._numRiga]["molt_pezzi"] = self._righe[0]["molt_pezzi"]
+        else:
+            str1 = str2 = str3 = ""
         if inserisci is False:
             if self._iteratorRiga is None:
                 return
@@ -1097,6 +1096,7 @@ del documento.
             self.modelRiga.set_value(self._iteratorRiga, 13, self._righe[self._numRiga]["applicazioneSconti"] + (
                 ' ' + getStringaSconti(self._righe[self._numRiga]["sconti"])))
             self.modelRiga.set_value(self._iteratorRiga, 14, mN(self._righe[self._numRiga]["prezzoNetto"]))
+
             if "GestioneNoleggio" in Environment.modulesList:
                 self.modelRiga.set_value(self._iteratorRiga, 15, self._righe[self._numRiga]["arco_temporale"])
             self.modelRiga.set_value(self._iteratorRiga, 16, mN(self._righe[self._numRiga]["totale"]))
@@ -1106,9 +1106,7 @@ del documento.
                             self._righe[self._numRiga]["codiceArticolo"],
                             self._righe[self._numRiga]["descrizione"],
                             '%5.2f' % float(self._righe[self._numRiga]["percentualeIva"]),
-                            self._righe[self._numRiga]["altezza"],
-                            self._righe[self._numRiga]["larghezza"],
-                            self._righe[self._numRiga]["molt_pezzi"],
+                            str1,str2,str3,
                             self._righe[self._numRiga]["multiplo"],
                             self._righe[self._numRiga]["listino"],
                             self._righe[self._numRiga]["unitaBase"],
@@ -1117,8 +1115,8 @@ del documento.
                             str(self._righe[self._numRiga]["applicazioneSconti"]) + ' ' + str(getStringaSconti(
                             self._righe[self._numRiga]["sconti"])),
                             mN(self._righe[self._numRiga]["prezzoNetto"]),
-                            self._righe[self._numRiga]["arco_temporale"],
-                            mN(self._righe[self._numRiga]["totale"])])
+                            str4,
+                            totale])
         self.righe_treeview.set_model(self.modelRiga)
         self.calcolaTotale()
         if costoVariato:
@@ -1169,27 +1167,27 @@ del documento.
         self.nuovaRiga()
 
     def on_ricerca_codice_button_clicked(self, widget):
-
+        """ """
         if self.ricerca_codice_button.get_active():
             self.ricercaArticolo()
 
     def on_ricerca_codice_a_barre_button_clicked(self, widget):
-
+        """ """
         if self.ricerca_codice_a_barre_button.get_active():
             self.ricercaArticolo()
 
     def on_ricerca_descrizione_button_clicked(self, widget):
-
+        """ """
         if self.ricerca_descrizione_button.get_active():
             self.ricercaArticolo()
 
     def on_ricerca_codice_articolo_fornitore_button_clicked(self, widget):
-
+        """ """
         if self.ricerca_codice_articolo_fornitore_button.get_active():
             self.ricercaArticolo()
 
     def on_articolo_entry_key_press_event(self, widget, event):
-
+        """ """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.ricercaArticolo()
@@ -1296,7 +1294,6 @@ del documento.
         mostraArticoloPart(self, id, art=None)
 
 
-
     def on_show_totali_riga(self, widget = None, event = None):
         """ calcola il prezzo netto """
 
@@ -1307,9 +1304,17 @@ del documento.
         self._righe[0]["prezzoNetto"] = mN(self._righe[0]["prezzoLordo"]) or 0
         self._righe[0]["sconti"] = self.sconti_widget.getSconti()
         self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()
+        if "GestioneNoleggio" in Environment.modulesList:
+            self._righe[0]["arco_temporale"] = float(self.giorni_label.get_text() or 1)
+            self._righe[0]["divisore_noleggio"] = float(self.coeficente_noleggio_entry.get_text() or 1)
+            self._righe[0]["prezzo_acquisto"] = float(self.prezzo_aquisto_entry.get_text() or 0)
+            self._righe[0]["prezzoLordo"] = mN(self._righe[0]["prezzo_acquisto"]) /mN(self._righe[0]["divisore_noleggio"])
+            self.prezzo_lordo_entry.set_text(str(mN(self._righe[0]["prezzoLordo"])))
 
         self.getPrezzoNetto()
+        #if not "GestioneNoleggio" in Environment.modulesList:
         self.prezzo_netto_label.set_text(str(mN(self._righe[0]["prezzoNetto"])))
+
         self.calcolaTotaleRiga()
         return False
 
@@ -1328,19 +1333,16 @@ del documento.
 
         self.getTotaleRiga()
         self.totale_riga_label.set_text(str(mN(self._righe[0]["totale"])))
-
+        if "GestioneNoleggio" in Environment.modulesList:
+            if self._righe[0]["divisore_noleggio"] == "1":
+                self.totale_periodo_label.set_text(str(mN(float(self._righe[0]["totale"]) *self._righe[0]["arco_temporale"])))
+            else:
+                self.totale_periodo_label.set_text(str(mN(float(self._righe[0]["totale"]) *sqrt(self._righe[0]["arco_temporale"]))))
+            self._righe[0]["totale_periodo"] = self.totale_periodo_label.get_text()
+    # Da qui in poi soolo funzioni controllate
 
     def calcolaTotale(self):
         calcolaTotalePart(self)
-
-    def showMessage(self, msg):
-        """ """
-        dialog = gtk.MessageDialog(self.dialogTopLevel,
-                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-        dialog.run()
-        dialog.destroy()
-
 
     def on_storico_costi_button_clicked(self, toggleButton):
         """ """
@@ -1355,7 +1357,6 @@ del documento.
         anagWindow.set_transient_for(self.dialogTopLevel)
         anagWindow.show_all()
 
-
     def on_storico_listini_button_clicked(self, toggleButton):
         """ """
         from StoricoListini import StoricoListini
@@ -1364,7 +1365,6 @@ del documento.
         anagWindow = anag.getTopLevel()
         anagWindow.set_transient_for(self.dialogTopLevel)
         anagWindow.show_all()
-
 
     def on_variazione_listini_button_clicked(self, toggleButton):
         """ """
@@ -1385,7 +1385,7 @@ del documento.
         anagWindow.show_all()
 
     def on_edit_date_and_number_button_clicked(self, toggleButton):
-
+        """ This permit to change the date of the document """
         msg = 'Attenzione! Si sta per variare i riferimenti primari del documento.\n Continuare ?'
         dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
@@ -1397,24 +1397,22 @@ del documento.
             self.data_documento_entry.grab_focus()
             self.id_persona_giuridica_customcombobox.set_sensitive(True)
 
-
     def showDatiMovimento(self):
-
+        """ Show movimento related informations"""
         stringLabel = '-'
         if self.dao.id is not None:
             res = TestataMovimento().select(id_testata_documento= self.dao.id)
             if len(res) > 0:
                 stringLabel = 'N.' + str(res[0].numero) + ' del ' + dateToString(res[0].data_movimento)
-
         self.rif_movimento_label.set_text(stringLabel)
 
     def on_larghezza_entry_key_press_event(self, entry, event):
         """ portata nel modulo su misura"""
-        on_larghezza_entry_key_press_eventPart(self, entry, event)
+        AnagraficaDocumentiEditSuMisuraExt.on_larghezza_entry_key_press_eventPart(self, entry, event)
 
     def on_altezza_entry_key_press_event(self, entry, event):
         """ portata nel modulo su misura """
-        on_altezza_entry_key_press_eventPart(self, entry, event)
+        AnagraficaDocumentiEditSuMisuraExt.on_altezza_entry_key_press_eventPart(self, entry, event)
 
     def on_moltiplicatore_entry_key_press_event (self, entry, event):
         self.on_altezza_entry_key_press_event(entry, event)
@@ -1430,48 +1428,45 @@ del documento.
         else:
             print "ERRORE NELLA DURATA DEL NOLEGGIO NON PUO' ESSERE NEGATIVA"
 
-
-    #INIZIO PAGAMENTI tab 3
-
     def on_pulisci_scadenza_button_clicked(self, button):
-        self.pagamenti_tab.on_pulisci_scadenza_button_clicked(self, button)
+        AnagraficadocumentiPagamentExt.on_pulisci_scadenza_button_clicked(self, button)
 
     def on_controlla_rate_scadenza_button_clicked(self, button):
         """ bottone che controlla le rate scadenza """
-        self.Pagamenti.controlla_rate_scadenza(True)
+        AnagraficadocumentiPagamentExt.controlla_rate_scadenza(self,True)
 
     def on_calcola_importi_scadenza_button_clicked(self, button):
         """calcola importi scadenza pagamenti """
-        self.Pagamenti.attiva_scadenze()
-        self.Pagamenti.dividi_importo()
-        self.Pagamenti.ricalcola_sospeso_e_pagato()
+        AnagraficadocumentiPagamentExt.attiva_scadenze(self)
+        AnagraficadocumentiPagamentExt.dividi_importo(self)
+        AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self)
 
     def on_seleziona_prima_nota_button_clicked(self, button):
         """ Seleziona la prima nota da utilizzare come riferimento """
-        self.pagamenti_tab.on_seleziona_prima_nota_button_clicked(self, button)
+        AnagraficadocumentiPagamentExt.on_seleziona_prima_nota_button_clicked(self, button)
 
     def on_seleziona_seconda_nota_button_clicked(self, button):
         """ Seleziona la seconda nota di credito da utilizzare come riferimento """
-        self.pagamenti_tab.on_seleziona_seconda_nota_button_clicked(self, button)
+        AnagraficadocumentiPagamentExt.on_seleziona_seconda_nota_button_clicked(self, button)
 
     def on_data_pagamento_prima_scadenza_entry_changed(self, entry):
         """ Reimposta i totali saldato e da saldare alla modifica della data
             di pagamento della prima scadenza """
-        self.Pagamenti.ricalcola_sospeso_e_pagato()
+        AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self)
 
     def on_data_pagamento_seconda_scadenza_entry_changed(self, entry):
-        """ Reimposta i totali saldato e da saldare alla modifica della data di pagamento
-            della seconda scadenza """
-        self.Pagamenti.ricalcola_sospeso_e_pagato()
+        AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self)
 
     def on_data_pagamento_terza_scadenza_entry_changed(self, entry):
-        """ Reimposta i totali saldato e da saldare alla modifica della data di pagamento
-            della terza scadenza """
-        self.Pagamenti.ricalcola_sospeso_e_pagato()
+        AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self)
 
     def on_data_pagamento_quarta_scadenza_entry_changed(self, entry):
-        """ Reimposta i totali saldato e da saldare alla modifica della data di pagamento
-            della quarta scadenza """
-        self.Pagamenti.ricalcola_sospeso_e_pagato()
+        AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self)
 
-    # FINE PAGAMENTI TAB 3
+    def showMessage(self, msg):
+        """ Generic Show dialog func """
+        dialog = gtk.MessageDialog(self.dialogTopLevel,
+                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
+        dialog.run()
+        dialog.destroy()

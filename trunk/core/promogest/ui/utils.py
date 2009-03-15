@@ -414,15 +414,15 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
 
     if (idArticolo is not None):
         fors = Fornitura().select(idArticolo=idArticolo,
-                                              idFornitore=None,
-                                              daDataFornitura=None,
-                                              aDataFornitura=None,
-                                              daDataPrezzo=None,
-                                              aDataPrezzo=data,
-                                              codiceArticoloFornitore=None,
-                                              orderBy = 'data_prezzo',
-                                              offset = None,
-                                              batchSize = None)
+                                    idFornitore=None,
+                                    daDataFornitura=None,
+                                    aDataFornitura=None,
+                                    daDataPrezzo=None,
+                                    aDataPrezzo=data,
+                                    codiceArticoloFornitore=None,
+                                    orderBy = 'data_prezzo',
+                                    offset = None,
+                                    batchSize = None)
 
         fornitura = None
         if idFornitore is not None:
@@ -1684,32 +1684,6 @@ def showComplexQuestion(parentWindow, message):
     result = dialog.run()
     dialog.destroy()
     return result
-
-def hidePromoWear(ui):
-    """ Hide and destroy labels and button if promowear is not present
-    """
-    ui.promowear_manager_taglia_colore_togglebutton.destroy()
-    ui.promowear_manager_taglia_colore_image.hide()
-    ui.anno_label.destroy()
-    ui.label_anno.destroy()
-    ui.stagione_label.destroy()
-    ui.label15.destroy()
-    ui.colore_label.destroy()
-    ui.label14.destroy()
-    ui.taglia_label.destroy()
-    ui.label_taglia.destroy()
-    ui.gruppo_taglia_label.destroy()
-    ui.label_gruppo_taglia.destroy()
-    ui.tipo_label.destroy()
-    ui.label_tipo.destroy()
-
-def hideSuMisura(ui):
-    """
-    funzione per SuMisura .....rimuove dalla vista quando modulo è disattivato
-    """
-    ui.sumisura_frame.destroy()
-    ui.moltiplicatore_entry.destroy()
-    ui.label_moltiplicatore.hide()
 
 
 def destroy_event(window):
