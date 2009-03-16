@@ -19,7 +19,7 @@ from Magazzino import Magazzino
 from Listino import Listino
 from Multiplo import Multiplo
 from DaoUtils import scontiRigaDocumentoDel
-#from Riga import Riga
+from Riga import Riga
 
 if "SuMisura" in modulesList:
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
@@ -52,20 +52,26 @@ class RigaDocumento(Dao):
         self.__isrent = None
 
 
-    def _getAliquotaIva(self):
-        # Restituisce la denominazione breve dell'aliquota iva
-        _denominazioneBreveAliquotaIva = '%2.0f' % (self.percentuale_iva or 0)
-        daoArticolo = Articolo().getRecord(id=self.id_articolo)
-        if daoArticolo is not None:
-            if daoArticolo.id_aliquota_iva is not None:
-                daoAliquotaIva = AliquotaIva().getRecord(id=daoArticolo.id_aliquota_iva)
-                if daoAliquotaIva is not None:
-                    _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
-        if (_denominazioneBreveAliquotaIva == '0' or _denominazioneBreveAliquotaIva == '00'):
-            _denominazioneBreveAliquotaIva = ''
-        return _denominazioneBreveAliquotaIva
+    #def _getAliquotaIva(self):
+        ## Restituisce la denominazione breve dell'aliquota iva
+        #_denominazioneBreveAliquotaIva = '%2.0f' % (self.percentuale_iva or 0)
+        #daoArticolo = Articolo().getRecord(id=self.id_articolo)
+        #if daoArticolo is not None:
+            #if daoArticolo.id_aliquota_iva is not None:
+                #daoAliquotaIva = AliquotaIva().getRecord(id=daoArticolo.id_aliquota_iva)
+                #if daoAliquotaIva is not None:
+                    #_denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
+        #if (_denominazioneBreveAliquotaIva == '0' or _denominazioneBreveAliquotaIva == '00'):
+            #_denominazioneBreveAliquotaIva = ''
+        #return _denominazioneBreveAliquotaIva
 
-    aliquota = property(_getAliquotaIva, )
+    #aliquota = property(_getAliquotaIva, )
+
+
+    def __aliquota(self):
+        if self.rig: return self.rig.aliquota
+        else: return ""
+    aliquota= property(__aliquota)
 
     def _getStringaScontiRigaDocumento(self):
         (listSconti, applicazione) = getScontiFromDao(self._getScontiRigaDocumento(), self.applicazione_sconti)
@@ -90,17 +96,17 @@ class RigaDocumento(Dao):
     totaleRiga = property(_getTotaleRiga, )
 
     def __magazzino(self):
-        if self.maga: return self.maga.denominazione
+        if self.rig: return self.rig.magazzino
         else: return ""
     magazzino= property(__magazzino)
 
     def __listino(self):
-        if self.listi: return self.listi.denominazione
+        if self.rig: return self.rig.listino
         else: return ""
     listino= property(__listino)
 
     def __multiplo(self):
-        if self.multi: return self.multi.denominazione
+        if self.rig: return self.rig.multiplo
         else: return ""
     multiplo = property(__multiplo)
 
@@ -113,13 +119,7 @@ class RigaDocumento(Dao):
     unita_base = property(__unita_base)
 
     def __codiceArticolo(self):
-        """ esempio di funzione  unita alla property """
-        #a =  params["session"].query(Articolo).with_parent(self).filter(RigaDocumento.id_articolo==Articolo.id).all()
-        #if not a:
-            #return a
-        #else:
-            #return a[0].codice
-        if self.arti: return self.arti.codice
+        if self.rig:return self.rig.codice_articolo
         else: return ""
     codice_articolo= property(__codiceArticolo)
 
@@ -252,10 +252,10 @@ j = join(riga_doc, riga)
 
 std_mapper = mapper(RigaDocumento, j,properties={
         'id':[riga_doc.c.id, riga.c.id],
-        #"rig":relation(Riga,primaryjoin = riga_doc.c.id==riga.c.id,cascade="all, delete", backref="RD"),
-        "maga":relation(Magazzino,primaryjoin=riga.c.id_magazzino==Magazzino.id),
-        "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
-        "listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
+        "rig":relation(Riga,primaryjoin = riga_doc.c.id==riga.c.id,cascade="all, delete", backref="RD"),
+        #"maga":relation(Magazzino,primaryjoin=riga.c.id_magazzino==Magazzino.id),
+        #"arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
+        #"listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
         "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
         "SCD":relation(ScontoRigaDocumento,primaryjoin = riga_doc.c.id==ScontoRigaDocumento.id_riga_documento, cascade="all, delete", backref="RD"),
             },order_by=riga_doc.c.id)

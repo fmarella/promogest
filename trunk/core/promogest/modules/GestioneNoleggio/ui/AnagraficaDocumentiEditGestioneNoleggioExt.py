@@ -11,7 +11,6 @@ from promogest.ui.utils import *
 
 def setLabels(anaedit):
     anaedit.prezzo_aquisto_entry.set_text("0")
-    #anaedit.giorni_label.set_text("1")
     anaedit.coeficente_noleggio_entry.set_text("1")
     anaedit.totale_periodo_label.set_text("0")
 

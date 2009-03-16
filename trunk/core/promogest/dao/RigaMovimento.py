@@ -19,7 +19,7 @@ from Listino import Listino
 from Multiplo import Multiplo
 from Stoccaggio import Stoccaggio
 from DaoUtils import scontiRigaMovimentoDel
-#from Riga import Riga
+from Riga import Riga
 from promogest.ui.utils import getScontiFromDao, getStringaSconti
 if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     #from promogest.modules.SuMisura.data.SuMisuraDb import *
@@ -45,32 +45,35 @@ class RigaMovimento(Dao):
         self.__prezzo_acquisto_noleggio = None
         self.__isrent = None
 
+    #def _getAliquotaIva(self):
+        #_denominazioneBreveAliquotaIva = Articolo().getRecord(id=self.id_articolo).denominazione_breve_aliquota_iva
+        #return _denominazioneBreveAliquotaIva
+    #aliquota = property(_getAliquotaIva, )
+    def __aliquota(self):
+        if self.rig: return self.rig.aliquota
+        else: return ""
+    aliquota= property(__aliquota)
 
     def __magazzino(self):
-        if self.maga: return self.maga.denominazione
+        if self.rig: return self.rig.magazzino
         else: return ""
     magazzino= property(__magazzino)
 
-    def _getAliquotaIva(self):
-        _denominazioneBreveAliquotaIva = Articolo().getRecord(id=self.id_articolo).denominazione_breve_aliquota_iva
-        return _denominazioneBreveAliquotaIva
-
-    aliquota = property(_getAliquotaIva, )
-
     def __listino(self):
-        if self.listi: return self.listi.denominazione
+        if self.rig: return self.rig.listino
         else: return ""
     listino= property(__listino)
 
     def __multiplo(self):
-        if self.multi: return self.multi.denominazione
+        if self.rig: return self.rig.multiplo
         else: return ""
     multiplo = property(__multiplo)
 
     def __codiceArticolo(self):
-        if self.arti:return self.arti.codice
+        if self.rig:return self.rig.codice_articolo
         else: return ""
     codice_articolo= property(__codiceArticolo)
+
 
     def _getScontiRigaMovimento(self):
 
@@ -88,6 +91,7 @@ class RigaMovimento(Dao):
 
     sconti = property(_getScontiRigaMovimento, _setScontiRigaMovimento)
 
+
     def _getStringaScontiRigaMovimento(self):
         (listSconti, applicazione) = getScontiFromDao(self._getScontiRigaMovimento(), self.applicazione_sconti)
         return getStringaSconti(listSconti)
@@ -102,6 +106,7 @@ class RigaMovimento(Dao):
     totaleRiga = property(_getTotaleRiga, )
 
 
+
     def _getCodiceArticoloFornitore(self):
         #FIXME: controllare
         self.__codiceArticoloFornitore = None
@@ -112,6 +117,9 @@ class RigaMovimento(Dao):
         self.__codiceArticoloFornitore = value
 
     codiceArticoloFornitore = property(_getCodiceArticoloFornitore, _setCodiceArticoloFornitore)
+
+
+
 
     if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable')=="yes":
         def _getMisuraPezzo(self):
@@ -305,11 +313,10 @@ j = join(riga_mov, riga)
 
 std_mapper = mapper(RigaMovimento, j,properties={
         'id':[riga_mov.c.id, riga.c.id],
-        #"rig":relation(Riga,primaryjoin = riga_mov.c.id==riga.c.id,cascade="all, delete", backref="RM"),
-        "maga":relation(Magazzino,primaryjoin=riga.c.id_magazzino==Magazzino.id),
-        "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
-        "listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
-        "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
+        "rig":relation(Riga,primaryjoin = riga_mov.c.id==riga.c.id, backref="RM"),
+        #"arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
+        #"listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
+        #"multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
         "SCM":relation(ScontoRigaMovimento,primaryjoin = riga_mov.c.id==ScontoRigaMovimento.id_riga_movimento,
                         cascade="all, delete",
                         backref="RM"),

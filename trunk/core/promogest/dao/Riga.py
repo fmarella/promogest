@@ -9,6 +9,10 @@ from sqlalchemy import Table
 from sqlalchemy.orm import mapper
 from promogest.Environment import *
 from Dao import Dao
+from Magazzino import Magazzino
+from Listino import Listino
+from Multiplo import Multiplo
+from Articolo import Articolo
 
 class Riga(Dao):
     """ Mapper to handle the Row Table """
@@ -23,7 +27,40 @@ class Riga(Dao):
             dic={k:riga.c.id_articolo==v}
         return  dic[k]
 
+    def __magazzino(self):
+        if self.maga: return self.maga.denominazione
+        else: return ""
+    magazzino= property(__magazzino)
+
+    def __listino(self):
+        if self.listi: return self.listi.denominazione
+        else: return ""
+    listino= property(__listino)
+
+    def __multiplo(self):
+        if self.multi: return self.multi.denominazione
+        else: return ""
+    multiplo = property(__multiplo)
+
+    def __codiceArticolo(self):
+        if self.arti:return self.arti.codice
+        else: return ""
+    codice_articolo= property(__codiceArticolo)
+
+    def _getAliquotaIva(self):
+        #_denominazioneBreveAliquotaIva = Articolo().getRecord(id=self.id_articolo).denominazione_breve_aliquota_iva
+        #return _denominazioneBreveAliquotaIva
+        if self.arti:return self.arti.denominazione_breve_aliquota_iva
+        else: return ""
+    aliquota = property(_getAliquotaIva, )
+
+
+
 riga=Table('riga', params['metadata'],schema = params['schema'],autoload=True)
 std_mapper = mapper(Riga, riga, properties={
+            "maga":relation(Magazzino,primaryjoin=riga.c.id_magazzino==Magazzino.id),
+            "listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
+            "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
+            "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
 }, order_by=riga.c.id)
 
