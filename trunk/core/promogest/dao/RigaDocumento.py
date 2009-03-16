@@ -130,7 +130,7 @@ class RigaDocumento(Dao):
                 if self.NR:
                     self.__coeficente_noleggio =  self.NR.coeficente
                 else:
-                    self.__coeficente_noleggio =  ""
+                    self.__coeficente_noleggio =  0
             return self.__coeficente_noleggio
         def _set_coeficente_noleggio(self, value):
             self.__coeficente_noleggio = value
@@ -141,11 +141,10 @@ class RigaDocumento(Dao):
                 if self.NR:
                     self.__prezzo_acquisto_noleggio =  self.NR.prezzo_acquisto
                 else:
-                    self.__prezzo_acquisto_noleggio =  ""
+                    self.__prezzo_acquisto_noleggio =  0
             return self.__prezzo_acquisto_noleggio
         def _set_prezzo_acquisto_noleggio(self, value):
             self.__prezzo_acquisto_noleggio = value
-            print "ARRIVIAMO QUI", self.__prezzo_acquisto_noleggio
         prezzo_acquisto_noleggio = property(_get_prezzo_acquisto_noleggio, _set_prezzo_acquisto_noleggio)
 
         def _get_isrent(self):
@@ -227,11 +226,12 @@ class RigaDocumento(Dao):
                 self.__misuraPezzo[0].id_riga = self.id
                 self.__misuraPezzo[0].persist()
 
-        if self.__coeficente_noleggio and self.__prezzo_acquisto_noleggio:
+        if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+        #if self.__coeficente_noleggio and self.__prezzo_acquisto_noleggio:
             nr = NoleggioRiga()
-            nr.coeficente_noleggio = self.coeficente_noleggio
+            nr.coeficente = self.coeficente_noleggio
             nr.prezzo_acquisto = self.prezzo_acquisto_noleggio
-            if self.isrent == "True":
+            if str(self.isrent).upper().strip() == "True".upper().strip():
                 nr.isrent = True
             else:
                 nr.isrent = False

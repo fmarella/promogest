@@ -85,6 +85,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._controllo_numero_documento = None
         self.reuseDataRow = False
         self.NoRowUsableArticle = False
+        self.noleggio = True
         # Inizializziamo i moduli in interfaccia!
 
         if "Pagamenti" not in Environment.modulesList:
@@ -322,7 +323,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
     def on_rent_checkbutton_toggled(self, checkbutton=None):
         """ check button in schermata documenti """
-        print " PREPARIAMO L'ENV PER I NOLEGGI",self.rent_checkbutton.get_active()
         stato = self.rent_checkbutton.get_active()
         self.noleggio = stato
         if not self.noleggio:
@@ -489,14 +489,15 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["larghezza"] = larghezza
                 self._righe[0]["molt_pezzi"] = moltiplicatore_pezzi
             if "GestioneNoleggio" in  Environment.modulesList:
-                if riga.isrent:
+                print " ISRENT  ",riga.isrent 
+                if riga.isrent :
                     self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
                 else:
                     self._righe[0]["arco_temporale"] = "NO"
                 self._righe[0]["prezzo_acquisto"] = riga.prezzo_acquisto_noleggio
                 self._righe[0]["divisore_noleggio"] = riga.coeficente_noleggio
             self.getTotaleRiga()
-            if "GestioneNoleggio" in Environment.modulesList:
+            if "GestioneNoleggio" in Environment.modulesList and self._righe[0]["arco_temporale"] != "NO" :
                 totaleNoleggio = self.totaleNoleggio()
 
             self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
@@ -711,6 +712,7 @@ del documento.
 
             if "GestioneNoleggio" in Environment.modulesList:
                 daoRiga.prezzo_acquisto_noleggio = self._righe[i]["prezzo_acquisto"]
+                print " COEFICENTEEEEEEEEEEEEEEEEEEEE", self._righe[i]["divisore_noleggio"]
                 daoRiga.coeficente_noleggio = self._righe[i]["divisore_noleggio"]
                 if self._righe[i]["arco_temporale"] != "NO":
                     daoRiga.isrent =  "True"

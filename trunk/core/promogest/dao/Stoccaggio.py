@@ -8,8 +8,8 @@
  License: GNU GPLv2
 """
 
-from sqlalchemy import Table
-from sqlalchemy.orm import mapper, relation
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import params, workingYear, conf
 from Dao import Dao
 from Articolo import Articolo
@@ -132,6 +132,8 @@ class Stoccaggio(Dao):
     def filter_values(self,k,v):
         if k== 'idArticolo':
             dic= {k:stoc.c.id_articolo == v}
+        elif k == "idArticoloList":
+            dic = {k:stoc.c.id_articolo.in_(v)}
         elif k == 'idMagazzino':
             dic = {k:stoc.c.id_magazzino == v}
         return  dic[k]

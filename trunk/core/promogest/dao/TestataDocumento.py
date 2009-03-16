@@ -442,6 +442,7 @@ class TestataDocumento(Dao):
                     if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
                         daoRigaMovimento.prezzo_acquisto_noleggio = row.prezzo_acquisto_noleggio
                         daoRigaMovimento.coeficente_noleggio = row.coeficente_noleggio
+                        daoRigaMovimento.isrent = row.isrent
                     
                     #params['session'].add(daoRigaMovimento)
                     #params['session'].commit()
