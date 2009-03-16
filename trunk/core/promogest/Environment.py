@@ -366,7 +366,7 @@ def set_configuration(company=None, year = None):
 
 
 mainSchema = "promogest2"
-
+#mainSchema = None
 #try :
 azienda=conf.Database.azienda
 #except:
@@ -387,6 +387,7 @@ engine = create_engine('postgres:'+'//'+conf.Database.user+':'
                     + conf.Database.database,
                     encoding='utf-8',
                     convert_unicode=True )
+#engine =create_engine('sqlite:////home/vete/pg2_work/promogest_db.txt')
 
 engine.echo = debugSQL
 meta = MetaData(engine)

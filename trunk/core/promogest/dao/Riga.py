@@ -27,6 +27,3 @@ riga=Table('riga', params['metadata'],schema = params['schema'],autoload=True)
 std_mapper = mapper(Riga, riga, properties={
 }, order_by=riga.c.id)
 
-if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
-    from promogest.modules.GestioneNoleggio.dao.NoleggioRiga import NoleggioRiga
-    std_mapper.add_property("NR",relation(NoleggioRiga,primaryjoin=NoleggioRiga.id_riga==riga.c.id,cascade="all, delete",backref="RIGA",uselist=False))

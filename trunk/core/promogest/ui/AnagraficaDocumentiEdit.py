@@ -105,6 +105,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.noleggio = False
             self.prezzo_aquisto_entry.destroy()
             self.label38.destroy()
+            self.label40.destroy()
+            self.totale_periodo_label.destroy()
 
     def draw(self):
         drawPart (self)
@@ -243,128 +245,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._iteratorRiga = None
         self.nuovaRiga()
 
-    def on_id_operazione_combobox_changed(self, combobox):
-        """ Funzione di gestione cambiamento combo operazione"""
-        self._operazione = findIdFromCombobox(self.id_operazione_combobox)
-        #operazione = leggiOperazione(self._operazione)
-        operazione = Operazione().getRecord(id=self._operazione)
-        if operazione:
-            if self._tipoPersonaGiuridica != operazione.tipo_persona_giuridica:
-                self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
-            self._tipoPersonaGiuridica = operazione.tipo_persona_giuridica
-            self._fonteValore = operazione.fonte_valore
-            self._segno = operazione.segno
-
-        #if self._tipoPersonaGiuridica != operazione["tipoPersonaGiuridica"]:
-            #self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
-        #self._tipoPersonaGiuridica = operazione["tipoPersonaGiuridica"]
-        #self._fonteValore = operazione["fonteValore"]
-        #self._segno = operazione["segno"]
-
-        if (self._tipoPersonaGiuridica == "fornitore"):
-            self.persona_giuridica_label.set_text('Fornitore')
-            self.id_persona_giuridica_customcombobox.setType(self._tipoPersonaGiuridica)
-            self.id_persona_giuridica_customcombobox.set_sensitive(True)
-            self.label_listino.set_property('visible', False)
-            self.id_listino_customcombobox.set_property('visible', False)
-            self.prz_lordo_label.set_text('Costo')
-            self.prz_netto_label.set_text('Costo netto')
-            self.codice_articolo_fornitore_label.set_property('visible', True)
-            self.codice_articolo_fornitore_entry.set_property('visible', True)
-            self.protocollo_label.set_property('visible', True)
-            self.protocollo_entry1.set_property('visible', True)
-            self.numero_documento_label.set_text('N. reg.')
-        elif (self._tipoPersonaGiuridica == "cliente"):
-            self.persona_giuridica_label.set_text('Cliente')
-            self.id_persona_giuridica_customcombobox.setType(self._tipoPersonaGiuridica)
-            self.id_persona_giuridica_customcombobox.set_sensitive(True)
-            self.label_listino.set_property('visible', True)
-            self.id_listino_customcombobox.set_property('visible', True)
-            self.prz_lordo_label.set_text('Prezzo')
-            self.prz_netto_label.set_text('Prezzo netto')
-            self.codice_articolo_fornitore_label.set_property('visible', False)
-            self.codice_articolo_fornitore_entry.set_property('visible', False)
-            self.protocollo_label.set_property('visible', False)
-            self.protocollo_entry1.set_property('visible', False)
-            self.numero_documento_label.set_text('Numero')
-        else:
-            self.persona_giuridica_label.set_text('Cliente/Fornitore ?')
-            self.id_persona_giuridica_customcombobox.set_sensitive(False)
-            self.label_listino.set_property('visible', True)
-            self.id_listino_customcombobox.set_property('visible', True)
-            self.prz_lordo_label.set_text('Prezzo')
-            self.prz_netto_label.set_text('Prezzo netto')
-            self.codice_articolo_fornitore_label.set_property('visible', False)
-            self.codice_articolo_fornitore_entry.set_property('visible', False)
-            self.protocollo_label.set_property('visible', False)
-            self.protocollo_entry1.set_property('visible', False)
-            self.numero_documento_label.set_text('Numero')
-
-        self.persona_giuridica_changed()
-        self.data_documento_entry.grab_focus()
-
-    def persona_giuridica_changed(self):
-        if self._loading:
-            return
-
-        inseritoIntestatario = (self.id_persona_giuridica_customcombobox.getId() is not None)
-        if inseritoIntestatario:
-            datiIntestatario = self.id_persona_giuridica_customcombobox.getData()
-            self._id_pagamento = datiIntestatario["id_pagamento"]
-            self._id_magazzino = datiIntestatario["id_magazzino"]
-            if self._tipoPersonaGiuridica == "cliente":
-                self._id_listino = datiIntestatario["id_listino"]
-                self._id_banca = datiIntestatario["id_banca"]
-
-            if self.id_pagamento_customcombobox.combobox.get_active() == -1:
-                findComboboxRowFromId(self.id_pagamento_customcombobox.combobox, self._id_pagamento)
-            if self.id_magazzino_combobox.get_active() == -1:
-                findComboboxRowFromId(self.id_magazzino_combobox, self._id_magazzino)
-            if self.id_banca_customcombobox.combobox.get_active() == -1:
-                findComboboxRowFromId(self.id_banca_customcombobox.combobox, self._id_banca)
-
-        if self._tipoPersonaGiuridica == "cliente":
-            self.id_destinazione_merce_customcombobox.set_sensitive(True)
-            if self.id_persona_giuridica_customcombobox.getId() is None:
-                self.id_destinazione_merce_customcombobox.combobox.clear
-                self.id_destinazione_merce_customcombobox.set_sensitive(False)
-            else:
-                fillComboboxDestinazioniMerce(self.id_destinazione_merce_customcombobox.combobox,
-                        self.id_persona_giuridica_customcombobox.getId())
-                self.id_destinazione_merce_customcombobox.set_sensitive(True)
-            self.refresh_combobox_listini()
-        else:
-            self.id_destinazione_merce_customcombobox.set_sensitive(False)
-
-    def on_id_destinazione_merce_customcombobox_button_clicked(self, widget, toggleButton):
-        on_id_destinazione_merce_customcombobox_clicked(widget,
-                                                toggleButton,
-                                                self.id_persona_giuridica_customcombobox.getId())
-
-    def on_incaricato_trasporto_radiobutton_toggled(self, radiobutton):
-
-        self.id_vettore_customcombobox.set_sensitive(self.vettore_radiobutton.get_active())
-        self.porto_combobox.set_sensitive(self.vettore_radiobutton.get_active())
-        # Se e` selezionato mittente o destinatario, riempe automaticamente il campo porto
-        # con Franco o Assegnato.
-        if not self.vettore_radiobutton.get_active():
-            self.id_vettore_customcombobox.set_active(0)
-        if self.mittente_radiobutton.get_active():
-            self.porto_combobox.set_active(0)
-        elif self.destinatario_radiobutton.get_active():
-            self.porto_combobox.set_active(1)
-
-    def on_id_magazzino_combobox_changed(self, combobox):
-        if self._loading:
-            return
-
-        self._righe[0]["idMagazzino"] = findIdFromCombobox(self.id_magazzino_combobox)
-        #magazzino = leggiMagazzino(self._righe[0]["idMagazzino"])
-        magazzino = Magazzino().getRecord(id=self._righe[0]["idMagazzino"])
-        if magazzino:
-            self._righe[0]["magazzino"] = magazzino.denominazione
-        self.refresh_combobox_listini()
-
     def refresh_combobox_listini(self):
 
         if self._righe[0]["idArticolo"] is None:
@@ -390,25 +270,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._righe[0]["multiplo"] = multiplo.denominazione_breve + ' ( ' + str('%.2f' % multiplo.moltiplicatore) + ' X )'
         self._righe[0]["moltiplicatore"] = multiplo.moltiplicatore
         self.calcolaTotaleRiga()
-
-    def on_id_listino_customcombobox_button_clicked(self, widget, toggleButton):
-        on_id_listino_customcombobox_clicked(widget, toggleButton, self._righe[0]["idArticolo"], None)
-
-    def on_id_listino_customcombobox_button_toggled(self, button):
-        if button.get_property('active') is True:
-            return
-        self.refresh_combobox_listini()
-
-    def on_id_listino_customcombobox_changed(self, combobox=None):
-        """ """
-        if self._loading:
-            return
-        idListino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
-        idArticolo = self._righe[0]["idArticolo"]
-        self.getPrezzoVenditaLordo(idListino, idArticolo)
-        self.prezzo_lordo_entry.set_text(Environment.conf.number_format % float(self._righe[0]["prezzoLordo"]))
-        self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], True)
-        self.on_show_totali_riga()
 
     def getPrezzoVenditaLordo(self, idListino, idArticolo):
         """ cerca il prezzo di vendita """
@@ -437,36 +298,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         prezzo = fornitura["prezzoNetto"]
         self.prezzo_aquisto_entry.set_text(str(prezzo) or "0")
 
-    def getPrezzoNetto(self):
-        """ calcola il prezzo netto dal prezzo lordo e dagli sconti """
-        prezzoLordo = mN(self._righe[0]["prezzoLordo"])
-        prezzoNetto = mN(self._righe[0]["prezzoLordo"])
-        applicazione = self._righe[0]["applicazioneSconti"]
-        sconti = self._righe[0]["sconti"]
-        for s in sconti:
-            if s["tipo"] == 'percentuale':
-                if applicazione == 'scalare':
-                    prezzoNetto = prezzoNetto * mN(1 - mN(s["valore"]) / 100)
-                elif applicazione == 'non scalare':
-                    prezzoNetto = prezzoNetto - mN(prezzoLordo * mN(s["valore"]) / 100)
-            elif s["tipo"] == 'valore':
-                prezzoNetto = prezzoNetto - mN(s["valore"])
-        self._righe[0]["prezzoNetto"] = prezzoNetto
-
-    def getTotaleRiga(self):
-
-        segnoIva = 1
-        percentualeIva = mN(self._righe[0]["percentualeIva"])
-        prezzoNetto = mN(self._righe[0]["prezzoNetto"]) or 0
-        quantita = Decimal(str(self._righe[0]["quantita"]))
-        moltiplicatore = Decimal(str(self._righe[0]["moltiplicatore"]))
-        #il totale riga non e' sempre l'imponibile (dipende dal tipo di prezzo)
-        #if (self._fonteValore == "vendita_iva" or self._fonteValore == "acquisto_iva"):
-        #    segnoIva = -1
-        #    prezzoNetto = calcolaPrezzoIva(prezzoNetto, segnoIva * percentualeIva)
-
-        self._righe[0]["totale"] = prezzoNetto * quantita * moltiplicatore
-
     def on_sconti_widget_button_toggled(self, button):
         """ """
         if button.get_property('active') is True:
@@ -483,22 +314,33 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
         self.calcolaTotale()
 
-    def on_multi_line_button_clicked(self, widget):
-        """ gestione multilinea in utils"""
-        on_multi_line_button_clickedPart(self, widget)
-
     def on_notebook_switch_page(self, notebook, page, page_num):
         if page_num == 2:
             self.calcolaTotale()
         #elif page_num ==3:
             #print "passato al terzo tab"
 
-    def on_rent_checkbutton_toggled(self, checkbutton):
+    def on_rent_checkbutton_toggled(self, checkbutton=None):
         """ check button in schermata documenti """
-        print " PREPARIAMO L'ENV PER I NOLEGGI"
-        self.noleggio = True
-        #if self.rent_checkbutton.get_active() and (self.start_rent_entry.get_text()==""):
-            #self.notebook.set_current_page(1)
+        print " PREPARIAMO L'ENV PER I NOLEGGI",self.rent_checkbutton.get_active()
+        stato = self.rent_checkbutton.get_active()
+        self.noleggio = stato
+        if not self.noleggio:
+            self.prezzo_aquisto_entry.set_sensitive(False)
+            self.coeficente_noleggio_entry.set_sensitive(False)
+            self.totale_periodo_label.set_sensitive(False)
+            self.giorni_label.set_sensitive(False)
+            self.label40.set_sensitive(False)
+            self.label33.set_sensitive(False)
+            self.label31.set_sensitive(False)
+        else:
+            self.prezzo_aquisto_entry.set_sensitive(True)
+            self.coeficente_noleggio_entry.set_sensitive(True)
+            self.totale_periodo_label.set_sensitive(True)
+            self.giorni_label.set_sensitive(True)
+            self.label40.set_sensitive(True)
+            self.label33.set_sensitive(True)
+            self.label31.set_sensitive(True)
 
     def _refresh(self):
         self._loading = True
@@ -540,6 +382,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.data_documento_entry.set_text(dateToString(self.dao.data_documento))
         self.numero_documento_entry.set_text(str(self.dao.numero or '0'))
         self.showDatiMovimento()
+
+        if "GestioneNoleggio" in Environment.modulesList:
+            self.start_rent_entry.set_text(dateTimeToString(self.dao.data_inizio_noleggio))
+            self.end_rent_entry.set_text(dateTimeToString(self.dao.data_fine_noleggio))
+            self.on_end_rent_entry_focus_out_event()
 
         findComboboxRowFromId(self.id_pagamento_customcombobox.combobox, (self.dao.id_pagamento or -1))
         findComboboxRowFromId(self.id_banca_customcombobox.combobox, (self.dao.id_banca or -1) )
@@ -643,7 +490,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["molt_pezzi"] = moltiplicatore_pezzi
             if "GestioneNoleggio" in  Environment.modulesList:
                 self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
+                self._righe[0]["prezzo_acquisto"] = riga.prezzo_acquisto_noleggio
+                self._righe[0]["divisore_noleggio"] = riga.coeficente_noleggio
             self.getTotaleRiga()
+            if "GestioneNoleggio" in Environment.modulesList:
+                totaleNoleggio = self.totaleNoleggio()
 
             self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
             if self._tipoPersonaGiuridica == "fornitore":
@@ -652,12 +503,13 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
             self._righe.append(self._righe[0])
             rigadoc= self._righe[j]
+
             if "SuMisura" in Environment.modulesList:
-                    str1 =rigadoc["altezza"]
-                    str2 =rigadoc["larghezza"]
-                    str3 = rigadoc["molt_pezzi"]
+                    altezza=rigadoc["altezza"]
+                    larghezza =rigadoc["larghezza"]
+                    molt_pezzi = rigadoc["molt_pezzi"]
             else:
-                str1 = str2 = str3 = ""
+                altezza = larghezza= molt_pezzi= ""
             #riempimento della treeview righe
             if "GestioneNoleggio" in Environment.modulesList:
                 arc_temp = rigadoc["arco_temporale"]
@@ -668,7 +520,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     rigadoc["codiceArticolo"],
                     rigadoc["descrizione"],
                     mN(rigadoc["percentualeIva"]),
-                    str1,str2,str3,
+                    altezza,
+                    larghezza,
+                    molt_pezzi,
                     rigadoc["multiplo"],
                     rigadoc["listino"],
                     rigadoc["unitaBase"],
@@ -819,6 +673,9 @@ del documento.
         self.dao.note_interne = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter())
         self.dao.note_pie_pagina = self.note_pie_pagina_entry.get_text()
         self.dao.applicazione_sconti = self.sconti_testata_widget.getApplicazione()
+        if "GestioneNoleggio" in Environment.modulesList:
+            self.dao.data_inizio_noleggio= self.start_rent_entry.get_text()
+            self.dao.data_fine_noleggio = self.end_rent_entry.get_text()
 
         scontiSuTotale = []#{}
 
@@ -849,6 +706,9 @@ del documento.
             daoRiga.valore_unitario_lordo = self._righe[i]["prezzoLordo"]
             daoRiga.valore_unitario_netto = self._righe[i]["prezzoNetto"]
 
+            if "GestioneNoleggio" in Environment.modulesList:
+                daoRiga.prezzo_acquisto_noleggio = self._righe[i]["prezzo_acquisto"]
+                daoRiga.coeficente_noleggio = self._righe[i]["divisore_noleggio"]
             sconti =[]
             listsco=[]
             if self._righe[i]["sconti"] is not None:
@@ -909,9 +769,6 @@ del documento.
             self.dao.removeDividedCost()
         self._refresh()
 
-    #def on_righe_treeview_drag_begin(self, treeview, path, column, value):
-        #print "DRAAAG"
-
     def on_righe_treeview_row_activated(self, treeview, path, column):
         """ riporta la riga selezionata in primo piano per la modifica"""
 
@@ -949,6 +806,9 @@ del documento.
             self._righe[0]["altezza"] = self._righe[self._numRiga]["altezza"]
             self._righe[0]["larghezza"] = self._righe[self._numRiga]["larghezza"]
             self._righe[0]["molt_pezzi"] = self._righe[self._numRiga]["molt_pezzi"]
+        if "GestioneNoleggio"in Environment.modulesList:
+            self._righe[0]["divisore_noleggio"] = self._righe[self._numRiga]["divisore_noleggio"]
+            self._righe[0]["prezzo_acquisto"] = self._righe[self._numRiga]["prezzo_acquisto"]
         self.giacenza_label.set_text(str(giacenzaArticolo(year=Environment.workingYear,
                                                 idMagazzino=self._righe[0]["idMagazzino"],
                                                 idArticolo=self._righe[0]["idArticolo"])))
@@ -963,7 +823,10 @@ del documento.
         self.percentuale_iva_entry.set_text('%-5.2f' % self._righe[0]["percentualeIva"])
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
         self.quantita_entry.set_text('%-9.3f' % float(self._righe[0]["quantita"]))
-        self.quantitaMinima_label.set_text(str(Articolo().getRecord(id=self._righe[0]["idArticolo"]).quantita_minima))
+        try:
+            self.quantitaMinima_label.set_text(str(Articolo().getRecord(id=self._righe[0]["idArticolo"]).quantita_minima))
+        except:
+            print "QUANTITA MINIMA NON PRESENTE"
         self.prezzo_lordo_entry.set_text(str(mN(self._righe[0]["prezzoLordo"])))
         self.prezzo_netto_label.set_text(str(mN(self._righe[0]["prezzoNetto"])))
         self.totale_riga_label.set_text(str(mN(self._righe[0]["totale"])))
@@ -971,19 +834,16 @@ del documento.
             self.altezza_entry.set_text(str(self._righe[0]["altezza"]))
             self.larghezza_entry.set_text(str(self._righe[0]["larghezza"]))
             self.moltiplicatore_entry.set_text(str(self._righe[0]["molt_pezzi"]))
-        if "GestioneNoleggio"in Environment.modulesList:
+        if "GestioneNoleggio"in Environment.modulesList and self.noleggio:
             self.coeficente_noleggio_entry.set_text(str(self._righe[0]["divisore_noleggio"]))
-            self.getPrezzoAcquisto()
+            self.prezzo_aquisto_entry.set_text(str(self._righe[0]["prezzo_acquisto"]))
+            #self._righe[0]["totale"] = self._righe[self._numRiga]["totale_periodo"]
+            self.on_show_totali_riga()
+            #self.getPrezzoAcquisto()
 
         self._loading = False
         self.articolo_entry.grab_focus()
 
-    def on_new_row_button_clicked(self, widget):
-        self.nuovaRiga()
-
-    def on_confirm_row_withoutclean_button_clicked(self, widget):
-        self.reuseDataRow = True
-        self.on_confirm_row_button_clicked(widget)
 
     def on_confirm_row_button_clicked(self, widget,row=None):
         """
@@ -1033,13 +893,13 @@ del documento.
         # memorizzazione delle parti descrittive (liberamente modificabili)
         self._righe[0]["descrizione"] = self.descrizione_entry.get_text()
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
-        totale = mN(self._righe[self._numRiga]["totale"])
-
-        if "GestioneNoleggio" in Environment.modulesList:
+        totale = mN(self._righe[0]["totale"])
+        print "TOTALE IN CONFIRM"
+        if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
             self._righe[0]["divisore_noleggio"] = self.coeficente_noleggio_entry.get_text()
             self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
-            totale = mN(self._righe[self._numRiga]["totale_periodo"])
-
+            self._righe[0]["totale_periodo"] = self.totale_periodo_label.get_text()
+            totale = self.totaleNoleggio()
         if "SuMisura" in Environment.modulesList:
             self._righe[0]["altezza"] = self.altezza_entry.get_text()
             self._righe[0]["larghezza"] = self.larghezza_entry.get_text()
@@ -1065,29 +925,32 @@ del documento.
         self._righe[self._numRiga]["applicazioneSconti"] = self._righe[0]["applicazioneSconti"]
         self._righe[self._numRiga]["sconti"] = self._righe[0]["sconti"]
         self._righe[self._numRiga]["prezzoNetto"] = mN(self._righe[0]["prezzoNetto"])
-        if "GestioneNoleggio" in Environment.modulesList:
+        if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
             self._righe[self._numRiga]["divisore_noleggio"] = self._righe[0]["divisore_noleggio"]
-            self._righe[self._numRiga]["arco_temporale"] = self._righe[0]["arco_temporale"]
+            self._righe[self._numRiga]["prezzo_acquisto"] = self._righe[0]["prezzo_acquisto"]
+            arco_temporale = self._righe[self._numRiga]["arco_temporale"] = self._righe[0]["arco_temporale"]
         else:
-            str4=""
+            arco_temporale="NO"
         if "SuMisura" in Environment.modulesList:
-            str1 =self._righe[self._numRiga]["altezza"] = self._righe[0]["altezza"]
-            str2=self._righe[self._numRiga]["larghezza"] = self._righe[0]["larghezza"]
-            str3=self._righe[self._numRiga]["molt_pezzi"] = self._righe[0]["molt_pezzi"]
+            altezza =self._righe[self._numRiga]["altezza"] = self._righe[0]["altezza"]
+            larghezza=self._righe[self._numRiga]["larghezza"] = self._righe[0]["larghezza"]
+            molt_pezzi=self._righe[self._numRiga]["molt_pezzi"] = self._righe[0]["molt_pezzi"]
         else:
-            str1 = str2 = str3 = ""
+            altezza= larghezza= molt_pezzi= ""
+
         if inserisci is False:
             if self._iteratorRiga is None:
                 return
+            print " opporcaloca"
             #self.modelRiga.set_value(self._iteratorRiga, 0, self._righe[self._numRiga]["magazzino"])
             self.modelRiga.set_value(self._iteratorRiga, 1, self._righe[self._numRiga]["magazzino"])
             self.modelRiga.set_value(self._iteratorRiga, 2, self._righe[self._numRiga]["codiceArticolo"])
             self.modelRiga.set_value(self._iteratorRiga, 3, self._righe[self._numRiga]["descrizione"])
             self.modelRiga.set_value(self._iteratorRiga, 4, '%5.2f' % float(self._righe[self._numRiga]["percentualeIva"]))
             if "SuMisura" in Environment.modulesList:
-                self.modelRiga.set_value(self._iteratorRiga, 5, self._righe[self._numRiga]["altezza"])
-                self.modelRiga.set_value(self._iteratorRiga, 6, self._righe[self._numRiga]["larghezza"])
-                self.modelRiga.set_value(self._iteratorRiga, 7, self._righe[self._numRiga]["molt_pezzi"])
+                self.modelRiga.set_value(self._iteratorRiga, 5, altezza)
+                self.modelRiga.set_value(self._iteratorRiga, 6, larghezza)
+                self.modelRiga.set_value(self._iteratorRiga, 7, molt_pezzi)
             self.modelRiga.set_value(self._iteratorRiga, 8, self._righe[self._numRiga]["multiplo"])
             self.modelRiga.set_value(self._iteratorRiga, 9, self._righe[self._numRiga]["listino"])
             self.modelRiga.set_value(self._iteratorRiga, 10, self._righe[self._numRiga]["unitaBase"])
@@ -1097,16 +960,19 @@ del documento.
                 ' ' + getStringaSconti(self._righe[self._numRiga]["sconti"])))
             self.modelRiga.set_value(self._iteratorRiga, 14, mN(self._righe[self._numRiga]["prezzoNetto"]))
 
-            if "GestioneNoleggio" in Environment.modulesList:
-                self.modelRiga.set_value(self._iteratorRiga, 15, self._righe[self._numRiga]["arco_temporale"])
-            self.modelRiga.set_value(self._iteratorRiga, 16, mN(self._righe[self._numRiga]["totale"]))
+            if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
+                self.modelRiga.set_value(self._iteratorRiga, 15, arco_temporale)
+
+            self.modelRiga.set_value(self._iteratorRiga, 16, mN(totale))
         else:
             self.modelRiga.append([self._numRiga,
                             self._righe[self._numRiga]["magazzino"],
                             self._righe[self._numRiga]["codiceArticolo"],
                             self._righe[self._numRiga]["descrizione"],
                             '%5.2f' % float(self._righe[self._numRiga]["percentualeIva"]),
-                            str1,str2,str3,
+                            altezza,
+                            larghezza,
+                            molt_pezzi,
                             self._righe[self._numRiga]["multiplo"],
                             self._righe[self._numRiga]["listino"],
                             self._righe[self._numRiga]["unitaBase"],
@@ -1115,7 +981,7 @@ del documento.
                             str(self._righe[self._numRiga]["applicazioneSconti"]) + ' ' + str(getStringaSconti(
                             self._righe[self._numRiga]["sconti"])),
                             mN(self._righe[self._numRiga]["prezzoNetto"]),
-                            str4,
+                            arco_temporale,
                             totale])
         self.righe_treeview.set_model(self.modelRiga)
         self.calcolaTotale()
@@ -1152,48 +1018,6 @@ del documento.
             self.nuovaRigaNoClean(rigatampone=rigatampone)
         else:
             self.nuovaRiga()
-
-    def on_undo_row_button_clicked(self, widget):
-        """ annulla l'inserimento o la modifica della riga in primo piano """
-        self.nuovaRiga()
-
-    def on_delete_row_button_clicked(self, widget):
-        """ elimina la riga in primo piano """
-
-        if not(self._numRiga == 0):
-            del(self._righe[self._numRiga])
-            self.modelRiga.remove(self._iteratorRiga)
-        self.calcolaTotale()
-        self.nuovaRiga()
-
-    def on_ricerca_codice_button_clicked(self, widget):
-        """ """
-        if self.ricerca_codice_button.get_active():
-            self.ricercaArticolo()
-
-    def on_ricerca_codice_a_barre_button_clicked(self, widget):
-        """ """
-        if self.ricerca_codice_a_barre_button.get_active():
-            self.ricercaArticolo()
-
-    def on_ricerca_descrizione_button_clicked(self, widget):
-        """ """
-        if self.ricerca_descrizione_button.get_active():
-            self.ricercaArticolo()
-
-    def on_ricerca_codice_articolo_fornitore_button_clicked(self, widget):
-        """ """
-        if self.ricerca_codice_articolo_fornitore_button.get_active():
-            self.ricercaArticolo()
-
-    def on_articolo_entry_key_press_event(self, widget, event):
-        """ """
-        keyname = gtk.gdk.keyval_name(event.keyval)
-        if keyname == 'Return' or keyname == 'KP_Enter':
-            self.ricercaArticolo()
-
-    def on_search_row_button_clicked(self, widget):
-        self.ricercaArticolo()
 
     def ricercaArticolo(self):
 
@@ -1304,20 +1128,32 @@ del documento.
         self._righe[0]["prezzoNetto"] = mN(self._righe[0]["prezzoLordo"]) or 0
         self._righe[0]["sconti"] = self.sconti_widget.getSconti()
         self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()
-        if "GestioneNoleggio" in Environment.modulesList:
+        if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
+            # Setti le label "indirette" come prezzoLordo dreivato dalla divisione
             self._righe[0]["arco_temporale"] = float(self.giorni_label.get_text() or 1)
-            self._righe[0]["divisore_noleggio"] = float(self.coeficente_noleggio_entry.get_text() or 1)
+            self._righe[0]["divisore_noleggio"] = float(self.coeficente_noleggio_entry.get_text() or 0)
             self._righe[0]["prezzo_acquisto"] = float(self.prezzo_aquisto_entry.get_text() or 0)
-            self._righe[0]["prezzoLordo"] = mN(self._righe[0]["prezzo_acquisto"]) /mN(self._righe[0]["divisore_noleggio"])
-            self.prezzo_lordo_entry.set_text(str(mN(self._righe[0]["prezzoLordo"])))
+            if not (self._righe[0]["prezzo_acquisto"] == 0 and self._righe[0]["divisore_noleggio"] ==0):
+                self._righe[0]["prezzoLordo"] = mN(self._righe[0]["prezzo_acquisto"]) /mN(self._righe[0]["divisore_noleggio"])
+                self.prezzo_lordo_entry.set_text(str(mN(self._righe[0]["prezzoLordo"])))
 
         self.getPrezzoNetto()
-        #if not "GestioneNoleggio" in Environment.modulesList:
         self.prezzo_netto_label.set_text(str(mN(self._righe[0]["prezzoNetto"])))
 
         self.calcolaTotaleRiga()
         return False
 
+
+    def totaleNoleggio(self):
+        if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
+            if str(self._righe[0]["divisore_noleggio"]).strip() == "1":
+                totale = str(mN(float(self._righe[0]["totale"]) *float(self._righe[0]["arco_temporale"])))
+                self.totale_periodo_label.set_text(totale)
+            else:
+                totale = str(mN(float(self._righe[0]["totale"]) *sqrt(float(self._righe[0]["arco_temporale"]))))
+                self.totale_periodo_label.set_text(totale)
+            self._righe[0]["totale_periodo"] = self.totale_periodo_label.get_text()
+        return totale
 
     def calcolaTotaleRiga(self):
         """ calcola il totale riga """
@@ -1332,17 +1168,111 @@ del documento.
             self._righe[0]["moltiplicatore"] = 1
 
         self.getTotaleRiga()
+        # metto il totale riga nella label apposita"
         self.totale_riga_label.set_text(str(mN(self._righe[0]["totale"])))
-        if "GestioneNoleggio" in Environment.modulesList:
-            if self._righe[0]["divisore_noleggio"] == "1":
-                self.totale_periodo_label.set_text(str(mN(float(self._righe[0]["totale"]) *self._righe[0]["arco_temporale"])))
-            else:
-                self.totale_periodo_label.set_text(str(mN(float(self._righe[0]["totale"]) *sqrt(self._righe[0]["arco_temporale"]))))
-            self._righe[0]["totale_periodo"] = self.totale_periodo_label.get_text()
-    # Da qui in poi soolo funzioni controllate
+        if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
+            totaleNoleggio = self.totaleNoleggio()
+
+
+    def getTotaleRiga(self):
+        """ Questa funzione restituisce il valore del totale semplice della riga """
+        segnoIva = 1
+        percentualeIva = mN(self._righe[0]["percentualeIva"])
+        prezzoNetto = mN(self._righe[0]["prezzoNetto"]) or 0
+        quantita = Decimal(str(self._righe[0]["quantita"]))
+        moltiplicatore = Decimal(str(self._righe[0]["moltiplicatore"]))
+
+        self._righe[0]["totale"] = prezzoNetto * quantita * moltiplicatore
+
+
+    def getPrezzoNetto(self):
+        """ calcola il prezzo netto dal prezzo lordo e dagli sconti """
+        prezzoLordo = mN(self._righe[0]["prezzoLordo"])
+        prezzoNetto = mN(self._righe[0]["prezzoLordo"])
+        applicazione = self._righe[0]["applicazioneSconti"]
+        sconti = self._righe[0]["sconti"]
+        for s in sconti:
+            if s["tipo"] == 'percentuale':
+                if applicazione == 'scalare':
+                    prezzoNetto = prezzoNetto * mN(1 - mN(s["valore"]) / 100)
+                elif applicazione == 'non scalare':
+                    prezzoNetto = prezzoNetto - mN(prezzoLordo * mN(s["valore"]) / 100)
+            elif s["tipo"] == 'valore':
+                prezzoNetto = prezzoNetto - mN(s["valore"])
+        self._righe[0]["prezzoNetto"] = prezzoNetto
 
     def calcolaTotale(self):
         calcolaTotalePart(self)
+
+    def on_edit_date_and_number_button_clicked(self, toggleButton):
+        """ This permit to change the date of the document """
+        msg = 'Attenzione! Si sta per variare i riferimenti primari del documento.\n Continuare ?'
+        dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+        response = dialog.run()
+        dialog.destroy()
+        if response == gtk.RESPONSE_YES:
+            self.data_documento_entry.set_sensitive(True)
+            self.numero_documento_entry.set_sensitive(True)
+            self.data_documento_entry.grab_focus()
+            self.id_persona_giuridica_customcombobox.set_sensitive(True)
+
+    def showDatiMovimento(self):
+        """ Show movimento related informations"""
+        stringLabel = '-'
+        if self.dao.id is not None:
+            res = TestataMovimento().select(id_testata_documento= self.dao.id)
+            if len(res) > 0:
+                stringLabel = 'N.' + str(res[0].numero) + ' del ' + dateToString(res[0].data_movimento)
+        self.rif_movimento_label.set_text(stringLabel)
+
+
+    """ le ragioni per andare qui sotto non sono chiare, SONO segnali divisi per tab"""
+
+
+    #NOTEBOOK TAB 1
+
+    def on_undo_row_button_clicked(self, widget):
+        """ annulla l'inserimento o la modifica della riga in primo piano """
+        self.nuovaRiga()
+
+    def on_delete_row_button_clicked(self, widget):
+        """ elimina la riga in primo piano """
+
+        if not(self._numRiga == 0):
+            del(self._righe[self._numRiga])
+            self.modelRiga.remove(self._iteratorRiga)
+        self.calcolaTotale()
+        self.nuovaRiga()
+
+    def on_articolo_entry_key_press_event(self, widget, event):
+        """ """
+        keyname = gtk.gdk.keyval_name(event.keyval)
+        if keyname == 'Return' or keyname == 'KP_Enter':
+            self.ricercaArticolo()
+
+    def on_search_row_button_clicked(self, widget):
+        self.ricercaArticolo()
+
+    def on_ricerca_codice_button_clicked(self, widget):
+        """ """
+        if self.ricerca_codice_button.get_active():
+            self.ricercaArticolo()
+
+    def on_ricerca_codice_a_barre_button_clicked(self, widget):
+        """ """
+        if self.ricerca_codice_a_barre_button.get_active():
+            self.ricercaArticolo()
+
+    def on_ricerca_descrizione_button_clicked(self, widget):
+        """ """
+        if self.ricerca_descrizione_button.get_active():
+            self.ricercaArticolo()
+
+    def on_ricerca_codice_articolo_fornitore_button_clicked(self, widget):
+        """ """
+        if self.ricerca_codice_articolo_fornitore_button.get_active():
+            self.ricercaArticolo()
 
     def on_storico_costi_button_clicked(self, toggleButton):
         """ """
@@ -1384,27 +1314,141 @@ del documento.
         anagWindow.set_transient_for(self.dialogTopLevel)
         anagWindow.show_all()
 
-    def on_edit_date_and_number_button_clicked(self, toggleButton):
-        """ This permit to change the date of the document """
-        msg = 'Attenzione! Si sta per variare i riferimenti primari del documento.\n Continuare ?'
-        dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-        response = dialog.run()
-        dialog.destroy()
-        if response == gtk.RESPONSE_YES:
-            self.data_documento_entry.set_sensitive(True)
-            self.numero_documento_entry.set_sensitive(True)
-            self.data_documento_entry.grab_focus()
-            self.id_persona_giuridica_customcombobox.set_sensitive(True)
 
-    def showDatiMovimento(self):
-        """ Show movimento related informations"""
-        stringLabel = '-'
-        if self.dao.id is not None:
-            res = TestataMovimento().select(id_testata_documento= self.dao.id)
-            if len(res) > 0:
-                stringLabel = 'N.' + str(res[0].numero) + ' del ' + dateToString(res[0].data_movimento)
-        self.rif_movimento_label.set_text(stringLabel)
+    def on_multi_line_button_clicked(self, widget):
+        """ gestione multilinea in utils"""
+        on_multi_line_button_clickedPart(self, widget)
+
+    def on_id_operazione_combobox_changed(self, combobox):
+        """ Funzione di gestione cambiamento combo operazione"""
+        self._operazione = findIdFromCombobox(self.id_operazione_combobox)
+        #operazione = leggiOperazione(self._operazione)
+        operazione = Operazione().getRecord(id=self._operazione)
+        if operazione:
+            if self._tipoPersonaGiuridica != operazione.tipo_persona_giuridica:
+                self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
+            self._tipoPersonaGiuridica = operazione.tipo_persona_giuridica
+            self._fonteValore = operazione.fonte_valore
+            self._segno = operazione.segno
+
+        #if self._tipoPersonaGiuridica != operazione["tipoPersonaGiuridica"]:
+            #self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=False)
+        #self._tipoPersonaGiuridica = operazione["tipoPersonaGiuridica"]
+        #self._fonteValore = operazione["fonteValore"]
+        #self._segno = operazione["segno"]
+
+        if (self._tipoPersonaGiuridica == "fornitore"):
+            self.persona_giuridica_label.set_text('Fornitore')
+            self.id_persona_giuridica_customcombobox.setType(self._tipoPersonaGiuridica)
+            self.id_persona_giuridica_customcombobox.set_sensitive(True)
+            self.label_listino.set_property('visible', False)
+            self.id_listino_customcombobox.set_property('visible', False)
+            self.prz_lordo_label.set_text('Costo')
+            self.prz_netto_label.set_text('Costo netto')
+            self.codice_articolo_fornitore_label.set_property('visible', True)
+            self.codice_articolo_fornitore_entry.set_property('visible', True)
+            self.protocollo_label.set_property('visible', True)
+            self.protocollo_entry1.set_property('visible', True)
+            self.numero_documento_label.set_text('N. reg.')
+        elif (self._tipoPersonaGiuridica == "cliente"):
+            self.persona_giuridica_label.set_text('Cliente')
+            self.id_persona_giuridica_customcombobox.setType(self._tipoPersonaGiuridica)
+            self.id_persona_giuridica_customcombobox.set_sensitive(True)
+            self.label_listino.set_property('visible', True)
+            self.id_listino_customcombobox.set_property('visible', True)
+            self.prz_lordo_label.set_text('Prezzo')
+            self.prz_netto_label.set_text('Prezzo netto')
+            self.codice_articolo_fornitore_label.set_property('visible', False)
+            self.codice_articolo_fornitore_entry.set_property('visible', False)
+            self.protocollo_label.set_property('visible', False)
+            self.protocollo_entry1.set_property('visible', False)
+            self.numero_documento_label.set_text('Numero')
+        else:
+            self.persona_giuridica_label.set_text('Cliente/Fornitore ?')
+            self.id_persona_giuridica_customcombobox.set_sensitive(False)
+            self.label_listino.set_property('visible', True)
+            self.id_listino_customcombobox.set_property('visible', True)
+            self.prz_lordo_label.set_text('Prezzo')
+            self.prz_netto_label.set_text('Prezzo netto')
+            self.codice_articolo_fornitore_label.set_property('visible', False)
+            self.codice_articolo_fornitore_entry.set_property('visible', False)
+            self.protocollo_label.set_property('visible', False)
+            self.protocollo_entry1.set_property('visible', False)
+            self.numero_documento_label.set_text('Numero')
+
+        self.persona_giuridica_changed()
+        self.data_documento_entry.grab_focus()
+
+    def persona_giuridica_changed(self):
+        if self._loading:
+            return
+
+        inseritoIntestatario = (self.id_persona_giuridica_customcombobox.getId() is not None)
+        if inseritoIntestatario:
+            datiIntestatario = self.id_persona_giuridica_customcombobox.getData()
+            self._id_pagamento = datiIntestatario["id_pagamento"]
+            self._id_magazzino = datiIntestatario["id_magazzino"]
+            if self._tipoPersonaGiuridica == "cliente":
+                self._id_listino = datiIntestatario["id_listino"]
+                self._id_banca = datiIntestatario["id_banca"]
+
+            if self.id_pagamento_customcombobox.combobox.get_active() == -1:
+                findComboboxRowFromId(self.id_pagamento_customcombobox.combobox, self._id_pagamento)
+            if self.id_magazzino_combobox.get_active() == -1:
+                findComboboxRowFromId(self.id_magazzino_combobox, self._id_magazzino)
+            if self.id_banca_customcombobox.combobox.get_active() == -1:
+                findComboboxRowFromId(self.id_banca_customcombobox.combobox, self._id_banca)
+
+        if self._tipoPersonaGiuridica == "cliente":
+            self.id_destinazione_merce_customcombobox.set_sensitive(True)
+            if self.id_persona_giuridica_customcombobox.getId() is None:
+                self.id_destinazione_merce_customcombobox.combobox.clear
+                self.id_destinazione_merce_customcombobox.set_sensitive(False)
+            else:
+                fillComboboxDestinazioniMerce(self.id_destinazione_merce_customcombobox.combobox,
+                        self.id_persona_giuridica_customcombobox.getId())
+                self.id_destinazione_merce_customcombobox.set_sensitive(True)
+            self.refresh_combobox_listini()
+        else:
+            self.id_destinazione_merce_customcombobox.set_sensitive(False)
+
+    def on_id_magazzino_combobox_changed(self, combobox):
+        if self._loading:
+            return
+
+        self._righe[0]["idMagazzino"] = findIdFromCombobox(self.id_magazzino_combobox)
+        #magazzino = leggiMagazzino(self._righe[0]["idMagazzino"])
+        magazzino = Magazzino().getRecord(id=self._righe[0]["idMagazzino"])
+        if magazzino:
+            self._righe[0]["magazzino"] = magazzino.denominazione
+        self.refresh_combobox_listini()
+
+
+    def on_id_listino_customcombobox_button_clicked(self, widget, toggleButton):
+        on_id_listino_customcombobox_clicked(widget, toggleButton, self._righe[0]["idArticolo"], None)
+
+    def on_id_listino_customcombobox_button_toggled(self, button):
+        if button.get_property('active') is True:
+            return
+        self.refresh_combobox_listini()
+
+    def on_id_listino_customcombobox_changed(self, combobox=None):
+        """ """
+        if self._loading:
+            return
+        idListino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
+        idArticolo = self._righe[0]["idArticolo"]
+        self.getPrezzoVenditaLordo(idListino, idArticolo)
+        self.prezzo_lordo_entry.set_text(Environment.conf.number_format % float(self._righe[0]["prezzoLordo"]))
+        self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], True)
+        self.on_show_totali_riga()
+
+    def on_new_row_button_clicked(self, widget):
+        self.nuovaRiga()
+
+    def on_confirm_row_withoutclean_button_clicked(self, widget):
+        self.reuseDataRow = True
+        self.on_confirm_row_button_clicked(widget)
 
     def on_larghezza_entry_key_press_event(self, entry, event):
         """ portata nel modulo su misura"""
@@ -1421,12 +1465,42 @@ del documento.
     def on_quantita_entry_focus_out_event(self, entry, event):
         on_quantita_entry_focus_out_eventPart(self, entry, event)
 
-    def on_end_rent_entry_focus_out_event(self, entry, event):
-        self._durataNoleggio = stringToDateTime(self.end_rent_entry.get_text())- stringToDateTime(self.start_rent_entry.get_text())
-        if self._durataNoleggio.days >0:
-            self.giorni_label.set_text(str(self._durataNoleggio.days) or "")
-        else:
-            print "ERRORE NELLA DURATA DEL NOLEGGIO NON PUO' ESSERE NEGATIVA"
+    def on_end_rent_entry_focus_out_event(self, entry=None, event=None):
+        if self.end_rent_entry.get_text() and self.start_rent_entry.get_text():
+            self._durataNoleggio = stringToDateTime(self.end_rent_entry.get_text())- stringToDateTime(self.start_rent_entry.get_text())
+            if self._durataNoleggio.days >0:
+                self.giorni_label.set_text(str(self._durataNoleggio.days) or "")
+                self.rent_checkbutton.set_active(True)
+            else:
+                msg =  "ERRORE NELLA DURATA DEL NOLEGGIO\nNON PUO' ESSERE ZERO O NEGATIVA"
+                self.showMessage(msg)
+
+    #NOTEBOOK FINE TAB 3
+
+    #TAB 2
+    def on_incaricato_trasporto_radiobutton_toggled(self, radiobutton):
+
+        self.id_vettore_customcombobox.set_sensitive(self.vettore_radiobutton.get_active())
+        self.porto_combobox.set_sensitive(self.vettore_radiobutton.get_active())
+        # Se e` selezionato mittente o destinatario, riempe automaticamente il campo porto
+        # con Franco o Assegnato.
+        if not self.vettore_radiobutton.get_active():
+            self.id_vettore_customcombobox.set_active(0)
+        if self.mittente_radiobutton.get_active():
+            self.porto_combobox.set_active(0)
+        elif self.destinatario_radiobutton.get_active():
+            self.porto_combobox.set_active(1)
+
+    def on_id_destinazione_merce_customcombobox_button_clicked(self, widget, toggleButton):
+        on_id_destinazione_merce_customcombobox_clicked(widget,
+                                                toggleButton,
+                                                self.id_persona_giuridica_customcombobox.getId())
+
+    #END TAB 2
+
+
+
+    #NOTEBOOK TAB 3
 
     def on_pulisci_scadenza_button_clicked(self, button):
         AnagraficadocumentiPagamentExt.on_pulisci_scadenza_button_clicked(self, button)
@@ -1462,6 +1536,8 @@ del documento.
 
     def on_data_pagamento_quarta_scadenza_entry_changed(self, entry):
         AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self)
+
+    # NOTEBOOK FINE TAB 3
 
     def showMessage(self, msg):
         """ Generic Show dialog func """

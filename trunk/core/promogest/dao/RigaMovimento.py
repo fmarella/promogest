@@ -33,11 +33,15 @@ class RigaMovimento(Dao):
         self.__scontiRigaMovimento = None
         self.__dbMisuraPezzo = None
         self.__misuraPezzo = None
+        self.__coeficente_noleggio = None
+        self.__prezzo_acquisto_noleggio = None
 
     @reconstructor
     def init_on_load(self):
         self.__dbMisuraPezzo = None
         self.__misuraPezzo = None
+        self.__coeficente_noleggio = None
+        self.__prezzo_acquisto_noleggio = None
 
 
     def __magazzino(self):
@@ -149,6 +153,30 @@ class RigaMovimento(Dao):
             return a[0].den_unita.denominazione_breve
     unita_base = property(__unita_base)
 
+    if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+        def _get_coeficente_noleggio(self):
+            if not self.__coeficente_noleggio:
+                if self.NR:
+                    self.__coeficente_noleggio =  self.NR.coeficente
+                else:
+                    self.__coeficente_noleggio =  ""
+            return self.__coeficente_noleggio
+        def _set_coeficente_noleggio(self, value):
+            self.__coeficente_noleggio = value
+        coeficente_noleggio = property(_get_coeficente_noleggio, _set_coeficente_noleggio)
+
+        def _get_prezzo_acquisto_noleggio(self):
+            if not self.__prezzo_acquisto_noleggio:
+                if self.NR:
+                    self.__prezzo_acquisto_noleggio =  self.NR.prezzo_acquisto
+                else:
+                    self.__prezzo_acquisto_noleggio =  ""
+            return self.__prezzo_acquisto_noleggio
+        def _set_prezzo_acquisto_noleggio(self, value):
+            self.__prezzo_acquisto_noleggio = value
+        prezzo_acquisto_noleggio = property(_get_prezzo_acquisto_noleggio, _set_prezzo_acquisto_noleggio)
+
+
     if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
         def _denominazione_gruppo_taglia(self):
             #if self.ATC: return self.ATC.denominazione or ""
@@ -225,6 +253,14 @@ class RigaMovimento(Dao):
             params["session"].add(daoStoccaggio)
             params["session"].commit()
 
+
+        if self.__coeficente_noleggio and self.__prezzo_acquisto_noleggio:
+            nr = NoleggioRiga()
+            nr.coeficente = self.coeficente_noleggio
+            nr.prezzo_acquisto = self.prezzo_acquisto_noleggio
+            nr.id_riga = self.id
+            nr.persist()
+
         scontiRigaMovimentoDel(id=self.id)
         if self.scontiRigheMovimento:
             for value in self.scontiRigheMovimento:
@@ -260,6 +296,10 @@ std_mapper = mapper(RigaMovimento, j,properties={
                         cascade="all, delete",
                         backref="RM"),
         }, order_by=riga_mov.c.id)
+
+if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+    from promogest.modules.GestioneNoleggio.dao.NoleggioRiga import NoleggioRiga
+    std_mapper.add_property("NR",relation(NoleggioRiga,primaryjoin=NoleggioRiga.id_riga==riga.c.id,cascade="all, delete",backref="RM",uselist=False))
 
 
 #if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":

@@ -261,10 +261,10 @@ def calcolaTotalePart(anaedit, dao=None):
         percentualeIva = Decimal(str(anaedit._righe[i]["percentualeIva"]))
 
         totaleRiga = mN(prezzoNetto * quantita * moltiplicatore)
-        if "GestioneNoleggio" in Environment.modulesList and anaedit._righe[i]["arco_temporale"] != "GG":
+        if "GestioneNoleggio" in Environment.modulesList and anaedit.noleggio and str(anaedit._righe[i]["arco_temporale"]) != "NO" :
             arco_temporale = Decimal(anaedit.giorni_label.get_text())
-            if anaedit._righe[i]["divisore_noleggio"] == "1":
-                totaleRiga = mN(otaleRiga *anaedit._righe[i]["arco_temporale"])
+            if str(anaedit._righe[i]["divisore_noleggio"]) == "1":
+                totaleRiga = mN(totaleRiga *Decimal(anaedit._righe[i]["arco_temporale"]))
             else:
                 totaleRiga= mN(totaleRiga *Decimal(str(sqrt(int(anaedit._righe[i]["arco_temporale"])))))
 
@@ -466,7 +466,7 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit._righe[0]["idMultiplo"] = None
         anaedit._righe[0]["moltiplicatore"] = 1
 
-        if "GestioneNoleggio" in Environment.modulesList:
+        if "GestioneNoleggio" in Environment.modulesList and anaedit.noleggio:
             anaedit._righe[0]["divisore_noleggio"] = artic.divisore_noleggio
             anaedit.coeficente_noleggio_entry.set_text(str(anaedit._righe[0]["divisore_noleggio"]))
             anaedit.getPrezzoAcquisto()

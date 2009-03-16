@@ -31,20 +31,23 @@ class RigaDocumento(Dao):
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
         self.valueList = []
-        if "SuMisura" in modulesList:
-            self.__misuraPezzo = None
-            self.__dbMisuraPezzo = None
-            self.misura_pezzo2 = None
+        self.__misuraPezzo = None
+        self.__dbMisuraPezzo = None
+        self.misura_pezzo2 = None
         # usata per mantenere il valore del codice articolo fornitore proveniente da un
         # documento o movimento di carico, per salvare la fornitura
         self.__codiceArticoloFornitore = None
+        self.__coeficente_noleggio = None
+        self.__prezzo_acquisto_noleggio = None
         #pass
 
     @reconstructor
     def init_on_load(self):
         self.__dbMisuraPezzo = None
-        self.misura_pezzo2 = None
+        self.misura_pezzo = None
         self.__misuraPezzo = None
+        self.__coeficente_noleggio = None
+        self.__prezzo_acquisto_noleggio = None
 
 
     def _getAliquotaIva(self):
@@ -118,6 +121,33 @@ class RigaDocumento(Dao):
         else: return ""
     codice_articolo= property(__codiceArticolo)
 
+    if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+
+        def _get_coeficente_noleggio(self):
+            if not self.__coeficente_noleggio:
+                if self.NR:
+                    self.__coeficente_noleggio =  self.NR.coeficente
+                else:
+                    self.__coeficente_noleggio =  ""
+            return self.__coeficente_noleggio
+        def _set_coeficente_noleggio(self, value):
+            self.__coeficente_noleggio = value
+        coeficente_noleggio = property(_get_coeficente_noleggio, _set_coeficente_noleggio)
+
+        def _get_prezzo_acquisto_noleggio(self):
+            if not self.__prezzo_acquisto_noleggio:
+                if self.NR:
+                    self.__prezzo_acquisto_noleggio =  self.NR.prezzo_acquisto
+                else:
+                    self.__prezzo_acquisto_noleggio =  ""
+            return self.__prezzo_acquisto_noleggio
+        def _set_prezzo_acquisto_noleggio(self, value):
+            self.__prezzo_acquisto_noleggio = value
+            print "ARRIVIAMO QUI", self.__prezzo_acquisto_noleggio
+        prezzo_acquisto_noleggio = property(_get_prezzo_acquisto_noleggio, _set_prezzo_acquisto_noleggio)
+
+
+
     if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable')=="yes":
         def _getMisuraPezzo(self):
             if self.__misuraPezzo is None:
@@ -185,6 +215,13 @@ class RigaDocumento(Dao):
                 self.__misuraPezzo[0].id_riga = self.id
                 self.__misuraPezzo[0].persist()
 
+        if self.__coeficente_noleggio and self.__prezzo_acquisto_noleggio:
+            nr = NoleggioRiga()
+            nr.coeficente_noleggio = self.coeficente_noleggio
+            nr.prezzo_acquisto = self.prezzo_acquisto_noleggio
+            nr.id_riga = self.id
+            nr.persist()
+
         scontiRigaDocumentoDel(id=self.id)
         if self.scontiRigaDocumento:
             for value in self.scontiRigaDocumento:
@@ -206,5 +243,10 @@ std_mapper = mapper(RigaDocumento, j,properties={
         "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
         "SCD":relation(ScontoRigaDocumento,primaryjoin = riga_doc.c.id==ScontoRigaDocumento.id_riga_documento, cascade="all, delete", backref="RD"),
             },order_by=riga_doc.c.id)
+
+if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+    from promogest.modules.GestioneNoleggio.dao.NoleggioRiga import NoleggioRiga
+    std_mapper.add_property("NR",relation(NoleggioRiga,primaryjoin=NoleggioRiga.id_riga==riga.c.id,cascade="all, delete",backref="RD",uselist=False))
+
 
 

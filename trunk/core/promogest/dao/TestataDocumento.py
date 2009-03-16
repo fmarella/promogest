@@ -57,6 +57,8 @@ class TestataDocumento(Dao):
         self._totaleImpostaScontata = 0
         self._totaleScontato = 0
         self._castellettoIva = 0
+        self.__data_inizio_noleggio = None
+        self.__data_fine_noleggio = None
         #print "TESTATAAAAAAAAAAAAAA", dir(conf)
 
     @reconstructor
@@ -68,6 +70,8 @@ class TestataDocumento(Dao):
         self.__righeDocumento = []
         self.__ScadenzeDocumento = []
         self.__scontiTestataDocumento = []
+        self.__data_inizio_noleggio = None
+        self.__data_fine_noleggio = None
 
     def _getScadenzeDocumento(self):
         #from promogest.plugins.pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
@@ -435,6 +439,9 @@ class TestataDocumento(Dao):
                     daoRigaMovimento.id_articolo = row.id_articolo
                     daoRigaMovimento.id_multiplo = row.id_multiplo
                     daoRigaMovimento.codiceArticoloFornitore = row.codiceArticoloFornitore
+                    if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+                        daoRigaMovimento.prezzo_acquisto_noleggio = row.prezzo_acquisto_noleggio
+                        daoRigaMovimento.coeficente_noleggio = row.coeficente_noleggio
                     
                     #params['session'].add(daoRigaMovimento)
                     #params['session'].commit()
@@ -515,6 +522,13 @@ class TestataDocumento(Dao):
                 scad.id_testata_documento = self.id
                 scad.persist()
 
+        if self.__data_fine_noleggio and self.__data_inizio_noleggio:
+            tn = TestataGestioneNoleggio()
+            tn.id_testata_documento = self.id
+            tn.data_inizio_noleggio = self.data_inizio_noleggio
+            tn.data_fine_noleggio = self.data_fine_noleggio
+            tn.persist()
+            
 
         if self.scontiSuTotale:
             scontiTestataDocumentoDel(id=self.id)
@@ -734,8 +748,29 @@ class TestataDocumento(Dao):
     ragione_sociale_agente= property(_ragione_sociale_agente)
 
 
-    #if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
-        #if self.TGN: return self.TGN
+    if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+        def _get_data_inizio_noleggio(self):
+            if not self.__data_inizio_noleggio:
+                if self.TGN:
+                    self.__data_inizio_noleggio = self.TGN.data_inizio_noleggio
+                else:
+                    self.__data_inizio_noleggio =  ""
+            return self.__data_inizio_noleggio
+        def _set_data_inizio_noleggio(self, value):
+            self.__data_inizio_noleggio = value
+        data_inizio_noleggio = property(_get_data_inizio_noleggio, _set_data_inizio_noleggio)
+
+        def _get_data_fine_noleggio(self):
+            if not self.__data_fine_noleggio:
+                if self.TGN:
+                    self.__data_fine_noleggio = self.TGN.data_fine_noleggio
+                else:
+                    self.__data_fine_noleggio =  ""
+            return self.__data_fine_noleggio
+        def _set_data_fine_noleggio(self, value):
+            self.__data_fine_noleggio = value
+        data_fine_noleggio = property(_get_data_fine_noleggio, _set_data_fine_noleggio)
+
 
 
     def filter_values(self,k,v):
@@ -798,6 +833,6 @@ std_mapper = mapper(TestataDocumento, testata_documento, properties={
 
 if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
-    std_mapper.add_property("TGN",relation(TestataGestioneNoleggio,primaryjoin=(testata_documento.c.id==TestataGestioneNoleggio.id_testata_documento),backref="TD"))
+    std_mapper.add_property("TGN",relation(TestataGestioneNoleggio,primaryjoin=(testata_documento.c.id==TestataGestioneNoleggio.id_testata_documento),backref="TD",uselist = False))
 
 

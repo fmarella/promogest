@@ -413,15 +413,15 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
                         (scadenza.data_pagamento or ''))
 
         if self.anagrafica.importo_acconto_scadenza_entry.get_text() != '':
-            self.anagrafica.Pagamenti.attiva_prima_scadenza(True,True)
+            self.attiva_prima_scadenza(True,True)
         if self.anagrafica.importo_prima_scadenza_entry.get_text() != '':
-            self.anagrafica.Pagamenti.attiva_prima_scadenza(True,True)
+            self.attiva_prima_scadenza(True,True)
         if self.anagrafica.importo_seconda_scadenza_entry.get_text() != '':
-            self.anagrafica.Pagamenti.attiva_seconda_scadenza(True,True)
+            self.attiva_seconda_scadenza(True,True)
         if self.anagrafica.importo_terza_scadenza_entry.get_text() != '':
-            self.anagrafica.Pagamenti.attiva_terza_scadenza(True,True)
+            self.attiva_terza_scadenza(True,True)
         if self.anagrafica.importo_quarta_scadenza_entry.get_text() != '':
-            self.anagrafica.Pagamenti.attiva_quarta_scadenza(True,True)
+            self.attiva_quarta_scadenza(True,True)
         self.anagrafica.saldato_scadenza_checkbutton.set_active(
             self.anagrafica.dao.documento_saldato or 0)
         self.anagrafica.totale_pagato_scadenza_label.set_text(str(

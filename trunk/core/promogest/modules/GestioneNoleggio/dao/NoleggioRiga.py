@@ -99,7 +99,7 @@ class NoleggioRiga(Dao):
 rigaTable = Table('riga', params['metadata'], autoload=True, schema=params['schema'])
 rigaNoleggioTable = Table('riga_dati_noleggio', params['metadata'],
                     Column('id',Integer,primary_key=True),
-                    Column('giorni',Numeric(16,4),nullable=False),
+                    Column('prezzo_acquisto',Numeric(16,4),nullable=False),
                     Column('coeficente',Numeric(16,4),nullable=False),
                     Column('id_riga',Integer,ForeignKey(params['schema']+'.riga.id', onupdate="CASCADE", ondelete="RESTRICT")),
                     UniqueConstraint('id_riga'),
