@@ -35,6 +35,7 @@ class RigaMovimento(Dao):
         self.__misuraPezzo = None
         self.__coeficente_noleggio = None
         self.__prezzo_acquisto_noleggio = None
+        self.__isrent = None
 
     @reconstructor
     def init_on_load(self):
@@ -42,6 +43,7 @@ class RigaMovimento(Dao):
         self.__misuraPezzo = None
         self.__coeficente_noleggio = None
         self.__prezzo_acquisto_noleggio = None
+        self.__isrent = None
 
 
     def __magazzino(self):
@@ -176,6 +178,17 @@ class RigaMovimento(Dao):
             self.__prezzo_acquisto_noleggio = value
         prezzo_acquisto_noleggio = property(_get_prezzo_acquisto_noleggio, _set_prezzo_acquisto_noleggio)
 
+        def _get_isrent(self):
+            if not self.__isrent:
+                if self.NR:
+                    self.__isrent =  self.NR.isrent
+                else:
+                    self.__isrent =  True
+            return self.__isrent
+        def _set_isrent(self, value):
+            self.__isrent = value
+        isrent = property(_get_isrent, _set_isrent)
+
 
     if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
         def _denominazione_gruppo_taglia(self):
@@ -258,6 +271,10 @@ class RigaMovimento(Dao):
             nr = NoleggioRiga()
             nr.coeficente = self.coeficente_noleggio
             nr.prezzo_acquisto = self.prezzo_acquisto_noleggio
+            if self.isrent == "True":
+                nr.isrent = True
+            else:
+                nr.isrent = False
             nr.id_riga = self.id
             nr.persist()
 

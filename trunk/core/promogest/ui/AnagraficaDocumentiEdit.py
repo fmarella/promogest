@@ -489,7 +489,10 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["larghezza"] = larghezza
                 self._righe[0]["molt_pezzi"] = moltiplicatore_pezzi
             if "GestioneNoleggio" in  Environment.modulesList:
-                self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
+                if riga.isrent:
+                    self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
+                else:
+                    self._righe[0]["arco_temporale"] = "NO"
                 self._righe[0]["prezzo_acquisto"] = riga.prezzo_acquisto_noleggio
                 self._righe[0]["divisore_noleggio"] = riga.coeficente_noleggio
             self.getTotaleRiga()
@@ -709,6 +712,10 @@ del documento.
             if "GestioneNoleggio" in Environment.modulesList:
                 daoRiga.prezzo_acquisto_noleggio = self._righe[i]["prezzo_acquisto"]
                 daoRiga.coeficente_noleggio = self._righe[i]["divisore_noleggio"]
+                if self._righe[i]["arco_temporale"] != "NO":
+                    daoRiga.isrent =  "True"
+                else:
+                    daoRiga.isrent = "False"
             sconti =[]
             listsco=[]
             if self._righe[i]["sconti"] is not None:
@@ -1145,7 +1152,8 @@ del documento.
 
 
     def totaleNoleggio(self):
-        if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
+        totale = str(mN(float(self._righe[0]["totale"])))
+        if "GestioneNoleggio" in Environment.modulesList and self.noleggio and self._righe[0]["arco_temporale"] != "NO":
             if str(self._righe[0]["divisore_noleggio"]).strip() == "1":
                 totale = str(mN(float(self._righe[0]["totale"]) *float(self._righe[0]["arco_temporale"])))
                 self.totale_periodo_label.set_text(totale)

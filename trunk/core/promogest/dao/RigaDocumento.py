@@ -39,6 +39,7 @@ class RigaDocumento(Dao):
         self.__codiceArticoloFornitore = None
         self.__coeficente_noleggio = None
         self.__prezzo_acquisto_noleggio = None
+        self.__isrent = None
         #pass
 
     @reconstructor
@@ -48,6 +49,7 @@ class RigaDocumento(Dao):
         self.__misuraPezzo = None
         self.__coeficente_noleggio = None
         self.__prezzo_acquisto_noleggio = None
+        self.__isrent = None
 
 
     def _getAliquotaIva(self):
@@ -146,6 +148,16 @@ class RigaDocumento(Dao):
             print "ARRIVIAMO QUI", self.__prezzo_acquisto_noleggio
         prezzo_acquisto_noleggio = property(_get_prezzo_acquisto_noleggio, _set_prezzo_acquisto_noleggio)
 
+        def _get_isrent(self):
+            if not self.__isrent:
+                if self.NR:
+                    self.__isrent =  self.NR.isrent
+                else:
+                    self.__isrent =  True
+            return self.__isrent
+        def _set_isrent(self, value):
+            self.__isrent = value
+        isrent = property(_get_isrent, _set_isrent)
 
 
     if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable')=="yes":
@@ -219,6 +231,10 @@ class RigaDocumento(Dao):
             nr = NoleggioRiga()
             nr.coeficente_noleggio = self.coeficente_noleggio
             nr.prezzo_acquisto = self.prezzo_acquisto_noleggio
+            if self.isrent == "True":
+                nr.isrent = True
+            else:
+                nr.isrent = False
             nr.id_riga = self.id
             nr.persist()
 
