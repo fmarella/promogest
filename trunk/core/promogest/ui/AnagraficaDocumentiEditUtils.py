@@ -4,6 +4,8 @@
 #
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 import gtk
+from math import sqrt
+from GladeWidget import GladeWidget
 from promogest import Environment
 from utils import *
 from utilsCombobox import *
@@ -259,6 +261,13 @@ def calcolaTotalePart(anaedit, dao=None):
         percentualeIva = Decimal(str(anaedit._righe[i]["percentualeIva"]))
 
         totaleRiga = mN(prezzoNetto * quantita * moltiplicatore)
+        if "GestioneNoleggio" in Environment.modulesList and anaedit._righe[i]["arco_temporale"] != "GG":
+            arco_temporale = Decimal(anaedit.giorni_label.get_text())
+            if anaedit._righe[i]["divisore_noleggio"] == "1":
+                totaleRiga = mN(otaleRiga *anaedit._righe[i]["arco_temporale"])
+            else:
+                totaleRiga= mN(totaleRiga *Decimal(str(sqrt(int(anaedit._righe[i]["arco_temporale"])))))
+
         percentualeIvaRiga = percentualeIva
 
         if (anaedit._fonteValore == "vendita_iva" or anaedit._fonteValore == "acquisto_iva"):
@@ -386,7 +395,6 @@ def mostraArticoloPart(anaedit, id, art=None):
             anaedit.promowear_manager_taglia_colore_togglebutton.set_sensitive(True)
             anaedit.NoRowUsableArticle = True
         if art:
-            print "ARRRRRRRTTTTT", art
             # articolo proveninente da finestra taglia e colore ...
             anaedit.NoRowUsableArticle = False
             articolo = art
