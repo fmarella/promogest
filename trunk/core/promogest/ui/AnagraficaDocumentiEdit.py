@@ -102,7 +102,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.hbox29.destroy()
             self.hbox30.destroy()
             self.arco_temporale_frame.destroy()
-            #self.noleggio_frame.destroy()
+            self.noleggio_frame.destroy()
             self.noleggio = False
             self.prezzo_aquisto_entry.destroy()
             self.label38.destroy()

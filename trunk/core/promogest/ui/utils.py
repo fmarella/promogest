@@ -1437,6 +1437,8 @@ def dateToString(data):
     """
     if data is None:
         return ''
+    elif type(data) == str:
+        return data
     else:
         try:
             s = string.zfill(str(data.day),2) + '/' + string.zfill(str(data.month),2) + '/' + string.zfill(str(data.year),4)
@@ -1481,6 +1483,8 @@ def dateTimeToString(data):
     """
     if data is None:
         return ''
+    elif type(data) == str:
+        return data
     else:
         try:
             s = string.zfill(str(data.day), 2) + '/' + string.zfill(str(data.month),2) + '/' + string.zfill(str(data.year),4) + ' ' + string.zfill(str(data.hour),2) + ':' + string.zfill(str(data.minute),2)

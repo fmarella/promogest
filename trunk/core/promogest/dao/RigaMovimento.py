@@ -328,12 +328,3 @@ std_mapper = mapper(RigaMovimento, j,properties={
 if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
     from promogest.modules.GestioneNoleggio.dao.NoleggioRiga import NoleggioRiga
     std_mapper.add_property("NR",relation(NoleggioRiga,primaryjoin=NoleggioRiga.id_riga==riga.c.id,cascade="all, delete",backref="RM",uselist=False))
-
-
-#if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
-    ##from promogest.modules.SuMisura.data.SuMisuraDb import *
-    #from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
-    #std_mapper.add_property("sumi",relation(MisuraPezzo,primaryjoin=
-                    #MisuraPezzo.id_riga==riga_mov.c.id,
-                    #cascade="all, delete",
-                    #backref="riga_mov"))
