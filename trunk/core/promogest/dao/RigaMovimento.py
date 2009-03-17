@@ -21,6 +21,7 @@ from Stoccaggio import Stoccaggio
 from DaoUtils import scontiRigaMovimentoDel
 from Riga import Riga
 from promogest.ui.utils import getScontiFromDao, getStringaSconti
+
 if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     #from promogest.modules.SuMisura.data.SuMisuraDb import *
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
@@ -73,6 +74,17 @@ class RigaMovimento(Dao):
         if self.rig:return self.rig.codice_articolo
         else: return ""
     codice_articolo= property(__codiceArticolo)
+
+    def __unita_base(self):
+        #a =  params["session"].query(Articolo).with_parent(self).filter(self.arti.id_unita_base==UnitaBase.id).all()
+        #if not a:
+            #return a
+        #else:
+            #return a[0].den_unita.denominazione_breve
+        if self.rig : return self.rig.unita_base
+        else: return ""
+    unita_base = property(__unita_base)
+
 
 
     def _getScontiRigaMovimento(self):
@@ -153,15 +165,6 @@ class RigaMovimento(Dao):
             else:
                 return ""
         pezzi_moltiplicatore = property(_moltiplicatore)
-
-
-    def __unita_base(self):
-        a =  params["session"].query(Articolo).with_parent(self).filter(self.arti.id_unita_base==UnitaBase.id).all()
-        if not a:
-            return a
-        else:
-            return a[0].den_unita.denominazione_breve
-    unita_base = property(__unita_base)
 
     if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
         def _get_coeficente_noleggio(self):

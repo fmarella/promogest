@@ -13,6 +13,7 @@ from Magazzino import Magazzino
 from Listino import Listino
 from Multiplo import Multiplo
 from Articolo import Articolo
+from UnitaBase import UnitaBase
 
 class Riga(Dao):
     """ Mapper to handle the Row Table """
@@ -53,6 +54,14 @@ class Riga(Dao):
         if self.arti:return self.arti.denominazione_breve_aliquota_iva
         else: return ""
     aliquota = property(_getAliquotaIva, )
+
+    def __unita_base(self):
+        a =  params["session"].query(Articolo).with_parent(self).filter(self.arti.id_unita_base==UnitaBase.id).all()
+        if not a:
+            return a
+        else:
+            return a[0].den_unita.denominazione_breve
+    unita_base = property(__unita_base)
 
 
 
