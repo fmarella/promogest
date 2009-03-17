@@ -63,7 +63,7 @@ class Dao(object):
         except Exception, e:
             self.raiseException(e)
 
-    def count(self, complexFilter=None,distinct =None, **kwargs):
+    def count(self, complexFilter=None,distinct =None,**kwargs):
         """ Restituisce il numero delle righe """
         _numRecords = 0
         if complexFilter:
@@ -202,11 +202,19 @@ class Dao(object):
         """
         filter_parameters = []
         for key,value in kwargs.items():
-            if value:
-                if type(value)==list:
-                    filter_parameters.append((value,key,"Lista"))
-                else:
-                    filter_parameters.append((value,key,"s"))
+            if str(key).upper() =="filterDict".upper():
+                for k,v in value.items():
+                    if v:
+                        if type(v)==list:
+                            filter_parameters.append((v,k,"Lista"))
+                        else:
+                            filter_parameters.append((v,k,"s"))
+            else:
+                if value:
+                    if type(value)==list:
+                        filter_parameters.append((value,key,"Lista"))
+                    else:
+                        filter_parameters.append((value,key,"s"))
         if filter_parameters != []:
             print "FILTER PARAMETERS:",self.DaoModule.__name__, filter_parameters
             filter = self.getFilter(filter_parameters)

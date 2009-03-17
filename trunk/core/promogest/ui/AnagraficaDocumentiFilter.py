@@ -24,6 +24,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                   anagrafica,
                                   'anagrafica_documenti_filter_table', 'anagrafica_documenti.glade')
         self._widgetFirstFocus = self.da_data_filter_entry
+        if not "GestioneNoleggio" in Environment.modulesList:
+            self.noleggio_filter_frame.destroy()
         self.orderBy = 'id'
         self.xptDaoList = None
 
@@ -116,7 +118,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         column.set_expand(True)
         column.set_min_width(200)
         treeview.append_column(column)
-        if Environment.conf.hasPagamenti == True:
+        if "Pagamenti" in Environment.modulesList:
             column = gtk.TreeViewColumn('Saldato', rendererSx, text=10)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
             column.set_clickable(False)
@@ -137,11 +139,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
 
         self.id_operazione_filter_combobox.set_wrap_width(Environment.conf.combo_columns)
         self.id_magazzino_filter_combobox.set_wrap_width(Environment.conf.combo_columns)
-        #if self._anagrafica._magazzinoFissato:
-            #findComboboxRowFromId(self.id_magazzino_filter_combobox,
-                                  #self._anagrafica._idMagazzino)
-        #else:
-            #self.id_magazzino_filter_combobox.set_active(0)
+
         self.cliente_filter_radiobutton.connect('toggled',
                                                 self.on_filter_radiobutton_toggled)
         self.fornitore_filter_radiobutton.connect('toggled',
@@ -173,8 +171,11 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.id_cliente_filter_customcombobox.set_active(0)
         self.id_fornitore_filter_customcombobox.set_active(0)
         self.id_agente_filter_customcombobox.set_active(0)
-        if Environment.conf.hasPagamenti == True:
+        if "Pagamenti" in Environment.modulesList:
             self.stato_documento_filter_combobox.set_active(-1)
+        if "GestioneNoleggio" in Environment.modulesList:
+            self.a_data_noleggio_filter_entry.set_text('')
+            self.da_data_noleggio_filter_entry.set_text('')
         self.id_articolo_filter_customcombobox.set_active(0)
         self.refresh()
 
@@ -198,23 +199,25 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         elif statoDocumento == 0: statoDocumento = and_("FALSE", "TRUE")
         elif statoDocumento == 1 : statoDocumento = "FALSE"
         elif statoDocumento == 2: statoDocumento = "TRUE"
-
         idArticolo = self.id_articolo_filter_customcombobox.getId()
+        #genero il dizionario dei filtri
+        self.filterDict = {"daNumero":daNumero ,
+                            "aNumero":aNumero,
+                            "daData":daData,
+                            "aData":aData,
+                            "daParte":None,
+                            "aParte":None,
+                            "protocollo":protocollo,
+                            "idOperazione":idOperazione,
+                            "idMagazzino":idMagazzino,
+                            "idCliente":idCliente,
+                            "idFornitore":idFornitore,
+                            "idAgente":idAgente,
+                            "statoDocumento":statoDocumento,
+                            "idArticolo":idArticolo,}
+
         def filterCountClosure():
-            return TestataDocumento().count(daNumero=daNumero,
-                                            aNumero=aNumero,
-                                            daParte=None,
-                                            aParte=None,
-                                            daData=daData,
-                                            aData=aData,
-                                            protocollo=protocollo,
-                                            idOperazione=idOperazione,
-                                            idMagazzino=idMagazzino,
-                                            idCliente=idCliente,
-                                            idFornitore=idFornitore,
-                                            idAgente=idAgente,
-                                            statoDocumento=statoDocumento,
-                                            idArticolo = idArticolo)
+            return TestataDocumento().count(filterDict = self.filterDict)
 
         self._filterCountClosure = filterCountClosure
         self.numRecords = self.countFilterResults()
@@ -223,32 +226,15 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return TestataDocumento().select(orderBy=self.orderBy,
-                                                daNumero=daNumero,
-                                                aNumero=aNumero,
-                                                daParte=None,
-                                                aParte=None,
-                                                daData=daData,
-                                                aData=aData,
-                                                protocollo=protocollo,
-                                                idOperazione=idOperazione,
-                                                idMagazzino=idMagazzino,
-                                                idCliente=idCliente,
-                                                idFornitore=idFornitore,
-                                                idAgente=idAgente,
-                                                statoDocumento=statoDocumento,
-                                                idArticolo=idArticolo,
                                                 offset=offset,
-                                                batchSize=batchSize)
+                                                batchSize=batchSize,
+                                                filterDict = self.filterDict)
         self._filterClosure = filterClosure
         #self._allResultForHtml = self.runFilter(offset=None, batchSize=None)
         tdos = self.runFilter()
         self.xptDaoList = self.runFilter(offset=None, batchSize=None)
         self._treeViewModel.clear()
         for t in tdos:
-            #if Environment.totaliDict.has_key(t):
-                #totali = Environment.totaliDict[t]
-            #else:
-                #Environment.totaliDict[t] = t.totali
             totali = t.totali
             totaleImponibile = mN(t._totaleImponibileScontato,2) or 0
             totaleImposta = mN(t._totaleImpostaScontata,2) or 0
