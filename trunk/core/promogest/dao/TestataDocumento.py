@@ -809,6 +809,19 @@ class TestataDocumento(Dao):
                             TestataMovimento.id_testata_documento == testata_documento.c.id,
                             Articolo.id ==v),
                                 }
+        elif hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+            if k == 'daDataInizioNoleggio':
+                dic = {k:and_(testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
+                            TestataGestioneNoleggio.data_inizio_noleggio >= v)}
+            elif k== 'aDataInizioNoleggio':
+                dic = {k:and_(testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
+                            TestataGestioneNoleggio.data_inizio_noleggio <= v)}
+            if k == 'daDataFineNoleggio':
+                dic = {k:and_(testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
+                            TestataGestioneNoleggio.data_fine_noleggio >= v)}
+            elif k== 'aDataFineNoleggio':
+                dic = {k:and_(testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
+                            TestataGestioneNoleggio.data_fine_noleggio <= v)}
         return  dic[k]
 
 riga=Table('riga',params['metadata'],schema = params['schema'],autoload=True)

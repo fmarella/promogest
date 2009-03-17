@@ -25,7 +25,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                   'anagrafica_documenti_filter_table', 'anagrafica_documenti.glade')
         self._widgetFirstFocus = self.da_data_filter_entry
         if not "GestioneNoleggio" in Environment.modulesList:
-            self.noleggio_filter_frame.destroy()
+            self.noleggio_expander.destroy()
         self.orderBy = 'id'
         self.xptDaoList = None
 
@@ -174,8 +174,10 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         if "Pagamenti" in Environment.modulesList:
             self.stato_documento_filter_combobox.set_active(-1)
         if "GestioneNoleggio" in Environment.modulesList:
-            self.a_data_noleggio_filter_entry.set_text('')
-            self.da_data_noleggio_filter_entry.set_text('')
+            self.a_data_inizio_noleggio_filter_entry.set_text('')
+            self.da_data_inizio_noleggio_filter_entry.set_text('')
+            self.a_data_fine_noleggio_filter_entry.set_text('')
+            self.da_data_fine_noleggio_filter_entry.set_text('')
         self.id_articolo_filter_customcombobox.set_active(0)
         self.refresh()
 
@@ -214,7 +216,16 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                             "idFornitore":idFornitore,
                             "idAgente":idAgente,
                             "statoDocumento":statoDocumento,
-                            "idArticolo":idArticolo,}
+                            "idArticolo":idArticolo}
+        if "GestioneNoleggio" in Environment.modulesList:
+            daDataInizioNoleggio = stringToDate(self.da_data_inizio_noleggio_filter_entry.get_text())
+            aDataInizioNoleggio = stringToDate(self.a_data_inizio_noleggio_filter_entry.get_text())
+            daDataFineNoleggio = stringToDate(self.da_data_fine_noleggio_filter_entry.get_text())
+            aDataFineNoleggio = stringToDate(self.a_data_fine_noleggio_filter_entry.get_text())
+            self.filterDict.update(daDataInizioNoleggio = daDataInizioNoleggio,
+                                    aDataInizioNoleggio = aDataInizioNoleggio,
+                                    daDataFineNoleggio = daDataFineNoleggio,
+                                    aDataFineNoleggio = aDataFineNoleggio)
 
         def filterCountClosure():
             return TestataDocumento().count(filterDict = self.filterDict)

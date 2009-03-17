@@ -435,91 +435,177 @@ Saldato</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkFrame" id="noleggio_filter_frame">
+              <widget class="GtkExpander" id="noleggio_expander">
                 <property name="visible">True</property>
-                <property name="label_xalign">0</property>
-                <property name="shadow_type">in</property>
+                <property name="can_focus">True</property>
+                <property name="expanded">True</property>
+                <property name="use_markup">True</property>
                 <child>
-                  <widget class="GtkAlignment" id="alignment27">
+                  <widget class="GtkFrame" id="noleggio_filter_frame">
                     <property name="visible">True</property>
-                    <property name="left_padding">12</property>
+                    <property name="label_xalign">0</property>
+                    <property name="shadow_type">in</property>
                     <child>
-                      <widget class="GtkTable" id="table4">
+                      <widget class="GtkAlignment" id="alignment27">
                         <property name="visible">True</property>
-                        <property name="n_rows">2</property>
-                        <property name="n_columns">2</property>
+                        <property name="left_padding">12</property>
                         <child>
-                          <widget class="GtkLabel" id="label34">
+                          <widget class="GtkTable" id="table4">
                             <property name="visible">True</property>
-                            <property name="xalign">0</property>
-                            <property name="label" translatable="yes">DaData Noleggio</property>
-                          </widget>
-                          <packing>
-                            <property name="y_options"></property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkAlignment" id="alignment7">
-                            <property name="width_request">120</property>
-                            <property name="visible">True</property>
-                            <property name="xalign">0</property>
-                            <property name="xscale">0</property>
+                            <property name="n_rows">4</property>
+                            <property name="n_columns">2</property>
                             <child>
-                              <widget class="Custom" id="da_data_noleggio_filter_entry">
+                              <widget class="GtkLabel" id="label35">
                                 <property name="visible">True</property>
-                                <property name="creation_function">createDateWidget</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">DaData Inizio Noleggio</property>
                               </widget>
+                              <packing>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkAlignment" id="alignment7">
+                                <property name="width_request">120</property>
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="xscale">0</property>
+                                <child>
+                                  <widget class="Custom" id="da_data_inizio_noleggio_filter_entry">
+                                    <property name="visible">True</property>
+                                    <property name="creation_function">createDateWidget</property>
+                                  </widget>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="right_attach">2</property>
+                                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkLabel" id="label41">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">A data Inizio Noleggio</property>
+                              </widget>
+                              <packing>
+                                <property name="top_attach">1</property>
+                                <property name="bottom_attach">2</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkAlignment" id="alignment26">
+                                <property name="width_request">120</property>
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="xscale">0</property>
+                                <child>
+                                  <widget class="Custom" id="a_data_inizio_noleggio_filter_entry">
+                                    <property name="visible">True</property>
+                                    <property name="creation_function">createDateWidget</property>
+                                  </widget>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="right_attach">2</property>
+                                <property name="top_attach">1</property>
+                                <property name="bottom_attach">2</property>
+                                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkLabel" id="label42">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">DaData Fine Noleggio</property>
+                              </widget>
+                              <packing>
+                                <property name="top_attach">2</property>
+                                <property name="bottom_attach">3</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkLabel" id="label50">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">A data Fine Noleggio</property>
+                              </widget>
+                              <packing>
+                                <property name="top_attach">3</property>
+                                <property name="bottom_attach">4</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkAlignment" id="alignment28">
+                                <property name="width_request">120</property>
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="xscale">0</property>
+                                <child>
+                                  <widget class="Custom" id="da_data_fine_noleggio_filter_entry">
+                                    <property name="visible">True</property>
+                                    <property name="creation_function">createDateWidget</property>
+                                  </widget>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="right_attach">2</property>
+                                <property name="top_attach">2</property>
+                                <property name="bottom_attach">3</property>
+                                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkAlignment" id="alignment29">
+                                <property name="width_request">120</property>
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="xscale">0</property>
+                                <child>
+                                  <widget class="Custom" id="a_data_fine_noleggio_filter_entry">
+                                    <property name="visible">True</property>
+                                    <property name="creation_function">createDateWidget</property>
+                                  </widget>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="right_attach">2</property>
+                                <property name="top_attach">3</property>
+                                <property name="bottom_attach">4</property>
+                                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                                <property name="y_options"></property>
+                              </packing>
                             </child>
                           </widget>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="right_attach">2</property>
-                            <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                            <property name="y_options"></property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkLabel" id="label35">
-                            <property name="visible">True</property>
-                            <property name="xalign">0</property>
-                            <property name="label" translatable="yes">A data Noleggio</property>
-                          </widget>
-                          <packing>
-                            <property name="top_attach">1</property>
-                            <property name="bottom_attach">2</property>
-                            <property name="y_options"></property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkAlignment" id="alignment26">
-                            <property name="width_request">120</property>
-                            <property name="visible">True</property>
-                            <property name="xalign">0</property>
-                            <property name="xscale">0</property>
-                            <child>
-                              <widget class="Custom" id="a_data_noleggio_filter_entry">
-                                <property name="visible">True</property>
-                                <property name="creation_function">createDateWidget</property>
-                              </widget>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="right_attach">2</property>
-                            <property name="top_attach">1</property>
-                            <property name="bottom_attach">2</property>
-                            <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                            <property name="y_options"></property>
-                          </packing>
                         </child>
                       </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label52">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Filtri Gestione Noleggio&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                      </widget>
+                      <packing>
+                        <property name="type">label_item</property>
+                      </packing>
                     </child>
                   </widget>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label41">
+                  <widget class="GtkLabel" id="label34">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Filtri Gestione Noleggio&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Noleggio&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </widget>
                   <packing>
