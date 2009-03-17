@@ -1062,7 +1062,7 @@ class AnagraficaHtml(object):
                                            pdfFolder=self._anagrafica._folder,
                                            report=self._anagrafica._reportType)
 
-        self.dao.resolveProperties()
+        #self.dao.resolveProperties()
         param = [self.dao.dictionary(complete=True)]
         multilinedirtywork(param)
         #print "parammmmmmmmmmmm", param, dir(self.dao), self.dao
