@@ -12,6 +12,7 @@ from sqlalchemy.orm import mapper, join, relation
 from promogest.Environment import params, conf
 from Dao import Dao
 from ClienteCategoriaCliente import ClienteCategoriaCliente
+from PersonaGiuridica import PersonaGiuridica_
 from promogest.ui.utils import  codeIncrement
 
 class Cliente(Dao):
@@ -87,7 +88,8 @@ j = join(cliente, persona_giuridica)
 
 std_mapper = mapper(Cliente,j, properties={
         'id':[cliente.c.id, persona_giuridica.c.id],
-        'cliente_categoria_cliente':relation(ClienteCategoriaCliente, backref='cliente'),
+        "per_giu" :relation(PersonaGiuridica_, backref='cliente_'),
+        'cliente_categoria_cliente':relation(ClienteCategoriaCliente, backref='cliente_'),
         }, order_by=cliente.c.id)
 
 
