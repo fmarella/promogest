@@ -31,7 +31,6 @@ class AnagraficaCategorieClienti(Anagrafica):
                             AnagraficaCategorieClientiFilter(self),
                             AnagraficaCategorieClientiDetail(self))
 
-
     def draw(self):
         # Colonne della Treeview per il filtro/modifica
         treeview = self.anagrafica_treeview

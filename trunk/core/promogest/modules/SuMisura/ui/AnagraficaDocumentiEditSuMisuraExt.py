@@ -40,8 +40,8 @@ def setTreeview(treeview, rendererSx):
 
 def azzeraRiga(anaedit,numero):
     anaedit._righe[numero].update(altezza = '',
-                            larghezza = "",
-                            molt_pezzi: 0)
+                                larghezza = "",
+                                molt_pezzi = 0)
 
 def azzeraRigaPartial(anaedit, numero,rigatampone):
     anaedit._righe[numero].update(altezza= rigatampone['altezza'],
