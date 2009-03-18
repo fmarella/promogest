@@ -289,3 +289,74 @@ def articleTypeGuiManage(anagrafica, dao, new):
         overDialog.destroy()
         return
 
+
+def clear(anaarti):
+    fillComboboxGruppiTaglia(anaarti.id_gruppo_taglia_articolo_filter_combobox, True)
+    fillComboboxTaglie(anaarti.id_taglia_articolo_filter_combobox, True)
+    fillComboboxColori(anaarti.id_colore_articolo_filter_combobox, True)
+    fillComboboxModelli(anaarti.id_modello_filter_combobox, True)
+    fillComboboxAnniAbbigliamento(anaarti.id_anno_articolo_filter_combobox, True)
+    fillComboboxStagioniAbbigliamento(anaarti.id_stagione_articolo_filter_combobox, True)
+    fillComboboxGeneriAbbigliamento(anaarti.id_genere_articolo_filter_combobox, True)
+    anaarti.id_modello_filter_combobox.set_active(0)
+    anaarti.id_categoria_articolo_filter_combobox.set_active(0)
+    anaarti.id_gruppo_taglia_articolo_filter_combobox.set_active(0)
+    anaarti.id_taglia_articolo_filter_combobox.set_active(0)
+    anaarti.id_colore_articolo_filter_combobox.set_active(0)
+    #gestione anno abbigliamento con prelievo del dato di default dal configure
+    anaarti.id_anno_articolo_filter_combobox.set_active(0)
+    anno = getattr(Environment.conf.PromoWear,'anno_default', None)
+    if anno is not None:
+        try:
+            idAnno = AnnoAbbigliamento().select(denominazione = anno)[0].id
+            findComboboxRowFromId(anaarti.id_anno_articolo_filter_combobox, idAnno)
+        except:
+            pass
+    #gestione stagione abbigliamento con prelievo del dato di default dal configure ( nb da usare l'id)
+    anaarti.id_stagione_articolo_filter_combobox.set_active(0)
+    stagione = getattr(Environment.conf.PromoWear,'stagione_default', None)
+    if stagione is not None:
+        findComboboxRowFromId(anaarti.id_stagione_articolo_filter_combobox, int(stagione))
+    anaarti.id_genere_articolo_filter_combobox.set_active(0)
+    anaarti.taglie_colori_filter_combobox.set_active(0)
+
+def refresh(anaarti):
+    padriTagliaColore = ((anaarti.taglie_colori_filter_combobox.get_active() == 0) or
+                        (anaarti.taglie_colori_filter_combobox.get_active() == 1))
+    if padriTagliaColore:
+        padriTagliaColore = None
+    else:
+        padriTagliaColore = True
+    figliTagliaColore = ((anaarti.taglie_colori_filter_combobox.get_active() == 0) or
+                            (anaarti.taglie_colori_filter_combobox.get_active() == 2))
+    if figliTagliaColore:
+        figliTagliaColore = None
+    else:
+        figliTagliaColore = True
+    idGruppoTaglia = findIdFromCombobox(anaarti.id_gruppo_taglia_articolo_filter_combobox)
+    idModello = findIdFromCombobox(anaarti.id_modello_filter_combobox)
+    idTaglia = findIdFromCombobox(anaarti.id_taglia_articolo_filter_combobox)
+    idColore = findIdFromCombobox(anaarti.id_colore_articolo_filter_combobox)
+    idAnno = findIdFromCombobox(anaarti.id_anno_articolo_filter_combobox)
+    idStagione = findIdFromCombobox(anaarti.id_stagione_articolo_filter_combobox)
+    idGenere = findIdFromCombobox(anaarti.id_genere_articolo_filter_combobox)
+    anaarti.filterDict.update(idGruppoTaglia=idGruppoTaglia,
+                            idTaglia=idTaglia,
+                            idColore=idColore,
+                            idAnno=idAnno,
+                            idStagione=idStagione,
+                            idGenere=idGenere,
+                            padriTagliaColore=padriTagliaColore,
+                            figliTagliaColore=figliTagliaColore)
+
+def on_taglie_colori_filter_combobox_changed(anaarti, combobox):
+    selected = anaarti.taglie_colori_filter_combobox.get_active()
+    if selected == 1:
+        # solo principali
+        anaarti.id_taglia_articolo_filter_combo.set_active(0)
+        anaarti.id_taglia_articolo_filter_combo.set_sensitive(False)
+        anaarti.id_colore_articolo_filter_combobox.set_active(0)
+        anaarti.id_colore_articolo_filter_combobox.set_sensitive(False)
+    else:
+        anaarti.id_taglia_articolo_filter_combo.set_sensitive(True)
+        anaarti.id_colore_articolo_filter_combobox.set_sensitive(True)

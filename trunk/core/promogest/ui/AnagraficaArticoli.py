@@ -13,7 +13,6 @@ import gobject
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 from AnagraficaArticoliEdit import AnagraficaArticoliEdit
 from promogest import Environment
-#from promogest.dao.Dao import Dao
 import promogest.dao.Fornitura
 import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
@@ -27,7 +26,7 @@ if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.dao.Taglia import Taglia
     from promogest.modules.PromoWear.dao.Colore import Colore
     from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
-    from promogest.modules.PromoWear.ui.AnagraficaArticoliExpand import articleTypeGuiManage, treeViewExpand
+    from promogest.modules.PromoWear.ui import AnagraficaArticoliExpand
 
 class AnagraficaArticoli(Anagrafica):
     """ Anagrafica articoli """
@@ -146,7 +145,6 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
                                   gladeFile='_anagrafica_articoli_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
-
     def draw(self):
         treeview = self._anagrafica.anagrafica_filter_treeview
 
@@ -218,7 +216,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
         if "PromoWear" in Environment.modulesList:
-            treeViewExpand(self, treeview, renderer)
+            AnagraficaArticoliExpand.treeViewExpand(self, treeview, renderer)
         else:
             self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str)
         treeview.set_search_column(2)
@@ -251,35 +249,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         self.id_stato_articolo_filter_combobox.set_active(0)
         self.cancellato_filter_checkbutton.set_active(False)
         if "PromoWear" in Environment.modulesList:
-            fillComboboxGruppiTaglia(self.id_gruppo_taglia_articolo_filter_combobox, True)
-            fillComboboxTaglie(self.id_taglia_articolo_filter_combobox, True)
-            fillComboboxColori(self.id_colore_articolo_filter_combobox, True)
-            fillComboboxModelli(self.id_modello_filter_combobox, True)
-            fillComboboxAnniAbbigliamento(self.id_anno_articolo_filter_combobox, True)
-            fillComboboxStagioniAbbigliamento(self.id_stagione_articolo_filter_combobox, True)
-            fillComboboxGeneriAbbigliamento(self.id_genere_articolo_filter_combobox, True)
-            self.id_modello_filter_combobox.set_active(0)
-            self.id_categoria_articolo_filter_combobox.set_active(0)
-            self.id_gruppo_taglia_articolo_filter_combobox.set_active(0)
-            self.id_taglia_articolo_filter_combobox.set_active(0)
-            self.id_colore_articolo_filter_combobox.set_active(0)
-            #gestione anno abbigliamento con prelievo del dato di default dal configure
-            self.id_anno_articolo_filter_combobox.set_active(0)
-            anno = getattr(Environment.conf.PromoWear,'anno_default', None)
-            if anno is not None:
-                try:
-                    idAnno = AnnoAbbigliamento().select(denominazione = anno)[0].id
-                    findComboboxRowFromId(self.id_anno_articolo_filter_combobox, idAnno)
-                except:
-                    pass
-            #gestione stagione abbigliamento con prelievo del dato di default dal configure ( nb da usare l'id)
-            self.id_stagione_articolo_filter_combobox.set_active(0)
-            stagione = getattr(Environment.conf.PromoWear,'stagione_default', None)
-            if stagione is not None:
-                findComboboxRowFromId(self.id_stagione_articolo_filter_combobox, int(stagione))
-            self.id_genere_articolo_filter_combobox.set_active(0)
-            self.taglie_colori_filter_combobox.set_active(0)
-
+            AnagraficaArticoliExpand.clear(self)
         self.refresh()
 
 
@@ -298,54 +268,21 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             cancellato = False
         else:
             cancellato = True
-        if "PromoWear" in Environment.modulesList:
-            padriTagliaColore = ((self.taglie_colori_filter_combobox.get_active() == 0) or
-                                 (self.taglie_colori_filter_combobox.get_active() == 1))
-            if padriTagliaColore: padriTagliaColore = None
-            else:padriTagliaColore = True
-            figliTagliaColore = ((self.taglie_colori_filter_combobox.get_active() == 0) or
-                                 (self.taglie_colori_filter_combobox.get_active() == 2))
-            if figliTagliaColore:figliTagliaColore = None
-            else:figliTagliaColore = True
-            idGruppoTaglia = findIdFromCombobox(self.id_gruppo_taglia_articolo_filter_combobox)
-            idModello = findIdFromCombobox(self.id_modello_filter_combobox)
-            idTaglia = findIdFromCombobox(self.id_taglia_articolo_filter_combobox)
-            idColore = findIdFromCombobox(self.id_colore_articolo_filter_combobox)
-            idAnno = findIdFromCombobox(self.id_anno_articolo_filter_combobox)
-            idStagione = findIdFromCombobox(self.id_stagione_articolo_filter_combobox)
-            idGenere = findIdFromCombobox(self.id_genere_articolo_filter_combobox)
-        if "GestioneNoleggio" in Environment.modulesList:
-            divisoreNoleggio = prepareFilterString(self.codice_a_barre_filter_entry.get_text())
+        self.filterDict = { "denominazione":denominazione,
+                            "codice":codice,
+                            "codiceABarre":codiceABarre,
+                            "codiceArticoloFornitore":codiceArticoloFornitore,
+                            "produttore":produttore,
+                            "idFamiglia":idFamiglia,
+                            "idCategoria":idCategoria,
+                            "idStato":idStato,
+                            "cancellato":cancellato}
 
+        if "PromoWear" in Environment.modulesList:
+            AnagraficaArticoliExpand.refresh(self)
+        
         def filterCountClosure():
-            if "PromoWear" in Environment.modulesList:
-                return Articolo().count(denominazione=denominazione,
-                                            codice=codice,
-                                            codiceABarre=codiceABarre,
-                                            codiceArticoloFornitore=codiceArticoloFornitore,
-                                            produttore=produttore,
-                                            idFamiglia=idFamiglia,
-                                            idCategoria=idCategoria,
-                                            idStato=idStato,
-                                            cancellato=cancellato,
-                                            idGruppoTaglia=idGruppoTaglia,
-                                            idTaglia=idTaglia,
-                                            idColore=idColore,
-                                            idAnno=idAnno,
-                                            idStagione=idStagione,
-                                            idGenere=idGenere,
-                                            padriTagliaColore=padriTagliaColore,
-                                            figliTagliaColore=figliTagliaColore)
-            else:
-                return Articolo().count(denominazione=denominazione,
-                                        codice=codice,
-                                        codiceABarre=codiceABarre,
-                                        codiceArticoloFornitore=codiceArticoloFornitore,
-                                        produttore=produttore,
-                                        idFamiglia=idFamiglia,
-                                        idCategoria=idCategoria,
-                                        idStato=idStato,
-                                        cancellato=cancellato)
+            return Articolo().count(filterDict = self.filterDict)
 
         self._filterCountClosure = filterCountClosure
 
@@ -354,43 +291,11 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            if "PromoWear" in Environment.modulesList:
-                return Articolo().select(orderBy=self.orderBy,
+            return Articolo().select(orderBy=self.orderBy,
                                         join=self.join,
-                                        denominazione=denominazione,
-                                        codice=codice,
-                                        codiceABarre=codiceABarre,
-                                        codiceArticoloFornitore=codiceArticoloFornitore,
-                                        produttore=produttore,
-                                        idFamiglia=idFamiglia,
-                                        idCategoria=idCategoria,
-                                        idStato=idStato,
-                                        cancellato=cancellato,
-                                        idGruppoTaglia=idGruppoTaglia,
-                                        idTaglia=idTaglia,
-                                        idColore=idColore,
-                                        idAnno=idAnno,
-                                        idStagione=idStagione,
-                                        idModello = idModello,
-                                        idGenere=idGenere,
-                                        padriTagliaColore=padriTagliaColore,
-                                        figliTagliaColore=figliTagliaColore,
                                         offset=offset,
-                                        batchSize=batchSize)
-            else:
-                return Articolo().select(orderBy=self.orderBy,
-                                            join=self.join,
-                                            denominazione=denominazione,
-                                            codice=codice,
-                                            codiceABarre=codiceABarre,
-                                            codiceArticoloFornitore=codiceArticoloFornitore,
-                                            produttore=produttore,
-                                            idFamiglia=idFamiglia,
-                                            idCategoria=idCategoria,
-                                            idStato=idStato,
-                                            cancellato=cancellato,
-                                            offset=offset,
-                                            batchSize=batchSize)
+                                        batchSize=batchSize,
+                                        filterDict=self.filterDict)
 
         self._filterClosure = filterClosure
 
@@ -422,20 +327,13 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
 
 
     def on_taglie_colori_filter_combobox_changed(self, combobox):
-        selected = self.taglie_colori_filter_combobox.get_active()
-        if selected == 1:
-            # solo principali
-            self.id_taglia_articolo_filter_combo.set_active(0)
-            self.id_taglia_articolo_filter_combo.set_sensitive(False)
-            self.id_colore_articolo_filter_combobox.set_active(0)
-            self.id_colore_articolo_filter_combobox.set_sensitive(False)
-        else:
-            self.id_taglia_articolo_filter_combo.set_sensitive(True)
-            self.id_colore_articolo_filter_combobox.set_sensitive(True)
+        AnagraficaArticoliExpand.on_taglie_colori_filter_combobox_changed(self,combobox)
+
 
 class AnagraficaArticoliHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
-        AnagraficaHtml.__init__(self, anagrafica, 'articolo',
+        AnagraficaHtml.__init__(self, anagrafica,
+                                'articolo',
                                 'Dettaglio articolo')
 
 

@@ -55,25 +55,16 @@ class GestioneTaglieColori(GladeWidget):
         self._taglie = [] # Verra` aggiornato al refresh della combobox gruppi taglia
 
         # Colori attualmente presenti nella treeview
-        #colori = set(a.id_colore for a in self._articoliTagliaColore)
-        #self._colori = [Colore().getRecord(id= c) for c in colori]
         self.refreshColori()
         self.sizesAvailable()
         self.selected = False
         ## Dizionario che associa alla chiave (taglia,colore) l'id della variante
-        #for a in self._articoliTagliaColore:
-            #self._varianti[(a.id_taglia, a.id_colore)] = a.id_articolo
-
-        #self._ripetizione_taglie = 3 # Ogni quante colonne ripetere le taglie?
         self.group_size_label.set_markup('<span weight="bold">%s</span>'
                                        % (self._articoloBase.denominazione_gruppo_taglia,))
 
         self.father_label.set_markup('Articolo: ' + '<span weight="bold">%s %s</span>'
                                        % (self._articoloBase.codice,self._articoloBase.denominazione))
 
-        #self._drawColoriTreeView()
-        #self.refreshColoriTreeView()
-        #self.refreshTaglie()
         self._refreshHtml()
         self.rowBackGround = '#E6E6FF'
         self.rowBoldFont = 'arial bold 12'
@@ -150,13 +141,13 @@ class GestioneTaglieColori(GladeWidget):
         self.treeview.set_model(self._treeViewModel)
         self.head_color.set_active(True)
         self.only_variation.set_active(True)
+        if ("VenditaDettaglio" or "Label") not in Environment.modulesList:
+            self.genera_codice_a_barre_button.set_sensitive(False)
         self.refresh()
 
     def refresh(self,order="color",filtered =True):
         # Aggiornamento TreeView
         self._treeViewModel.clear()
-        #varianti = self.data["varianti"]
-        #print varianti
         alreadyexist= ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
                                                                 batchSize=None)
         if self.order == "color":
@@ -308,9 +299,6 @@ class GestioneTaglieColori(GladeWidget):
             codice = model.get_value(iter, 3)
             articolo = model.get_value(iter, 6)
             self.datas.append((self._articoloBase,oggettoFiglio,oggettoPadre,codice, articolo))
-        #print self.datas
-
-
 
     def on_column_selected_edited(self, cell, path, treeview,value, editNext=True):
         """ Function ti set the value quantita edit in the cell"""
@@ -343,7 +331,6 @@ class GestioneTaglieColori(GladeWidget):
     def on_cancel_button_clicked(self, button):
         self.destroy()
 
-
     def on_color_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
@@ -352,7 +339,6 @@ class GestioneTaglieColori(GladeWidget):
         anag = AnagraficaColori()
 
         showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), toggleButton, self.refresh)
-
 
     def on_size_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
@@ -363,10 +349,23 @@ class GestioneTaglieColori(GladeWidget):
 
         showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), toggleButton, self.refresh)
 
+    def on_genera_codice_a_barre_button_clicked(self, button):
+        """ funzione di creazione codice a barre random ed inserimento in treeview"""
+        codice = generateRandomBarCode()
+        sel = self.treeview.get_selection()
+        (model, iter) = sel.get_selected()
+        check = model.get_value(iter, 1)
+        fatherPath = model.get_path(iter)
+        if check:
+            if len(fatherPath) ==1:
+                return
+            else:
+                model[iter][3] = codice
+                self.printModel()
+
     def on_ok_button_clicked(self, button):
         for dat in self.datas:
             codici = None
-            print dat
             articoloPadre = dat[0]
             if dat[1].__module__ =="promogest.modules.PromoWear.dao.Taglia":
                 daoTaglia = dat[1]
