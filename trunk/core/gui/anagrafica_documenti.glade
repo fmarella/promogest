@@ -438,7 +438,6 @@ Saldato</property>
               <widget class="GtkExpander" id="noleggio_expander">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="expanded">True</property>
                 <property name="use_markup">True</property>
                 <child>
                   <widget class="GtkFrame" id="noleggio_filter_frame">

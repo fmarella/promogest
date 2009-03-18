@@ -53,7 +53,8 @@ class DuplicazioneDocumento(GladeWidget):
 
         self.data_documento_entry.set_text(dateToString(datetime.datetime.today()))
         self.data_documento_entry.grab_focus()
-        self.getTopLevel().show_all()
+        #self.getTopLevel().show_all()
+        #self.show_all()
 
 
     def on_confirm_button_clicked(self, button=None):
