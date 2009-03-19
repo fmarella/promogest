@@ -29,10 +29,9 @@ class AnagraficaAziende(GladeWidget):
         self._mainWindow = mainWindow
         self.dao = Azienda()
         GladeWidget.__init__(self, 'anagrafica_azienda',fileName='anagrafica_azienda.glade')
-        self.getTopLevel()
-        self.placeWindow(self.getTopLevel())
-        self.getTopLevel().set_modal(modal=True)
-        self.getTopLevel().show_all()
+        #self.getTopLevel()
+        #self.placeWindow(self.getTopLevel())
+        #self.getTopLevel().set_modal(modal=True)
         self.draw()
 
 
@@ -40,6 +39,7 @@ class AnagraficaAziende(GladeWidget):
         # Popolamento campi in maschera dal dao
         self.setDao()
         #self.show_all()
+        #self.getTopLevel().show_all()
         self.denominazione_entry.grab_focus()
 
 
@@ -124,7 +124,7 @@ class AnagraficaAziende(GladeWidget):
         save = self.saveDao()
         if save:
             self.dao.persist()
-            self.destroy()
+            self.getTopLevel().destroy()
         
 
 
@@ -132,7 +132,7 @@ class AnagraficaAziende(GladeWidget):
         self.setDao()
 
     def on_close_button_clicked(self, button):
-        self.destroy()
+        self.getTopLevel().self.destroy()
 
     def on_contatti_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):

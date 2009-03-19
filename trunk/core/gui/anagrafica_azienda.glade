@@ -40,12 +40,13 @@
             <property name="right_attach">6</property>
             <property name="top_attach">24</property>
             <property name="bottom_attach">25</property>
+            <property name="y_options"></property>
           </packing>
         </child>
         <child>
           <widget class="GtkImage" id="logo_azienda">
-            <property name="width_request">250</property>
-            <property name="height_request">150</property>
+            <property name="width_request">200</property>
+            <property name="height_request">110</property>
             <property name="visible">True</property>
             <property name="xpad">3</property>
             <property name="ypad">6</property>

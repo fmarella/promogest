@@ -451,8 +451,9 @@ class Main(GladeWidget):
 
     def on_dati_azienda_activate(self, widget):
         from AnagraficaAziende import AnagraficaAziende
-        anag =AnagraficaAziende(self) #.__init__(self, self.mainWindow)
-        return
+        anag =AnagraficaAziende(self)
+        showAnagrafica(self.getTopLevel(), anag)
+
 
     def on_credits_menu_activate(self, widget):
         from promogest.dao.Setting import Setting
