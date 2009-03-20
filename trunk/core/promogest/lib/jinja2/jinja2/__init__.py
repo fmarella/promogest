@@ -34,26 +34,26 @@ except:
     __version__ = 'unknown'
 
 # high level interface
-from jinja2.environment import Environment, Template
+from promogest.lib.jinja2.environment import Environment, Template
 
 # loaders
-from jinja2.loaders import BaseLoader, FileSystemLoader, PackageLoader, \
+from promogest.lib.jinja2.loaders import BaseLoader, FileSystemLoader, PackageLoader, \
      DictLoader, FunctionLoader, PrefixLoader, ChoiceLoader
 
 # bytecode caches
-from jinja2.bccache import BytecodeCache, FileSystemBytecodeCache, \
+from promogest.lib.jinja2.bccache import BytecodeCache, FileSystemBytecodeCache, \
      MemcachedBytecodeCache
 
 # undefined types
-from jinja2.runtime import Undefined, DebugUndefined, StrictUndefined
+from promogest.lib.jinja2.runtime import Undefined, DebugUndefined, StrictUndefined
 
 # exceptions
-from jinja2.exceptions import TemplateError, UndefinedError, \
+from promogest.lib.jinja2.exceptions import TemplateError, UndefinedError, \
      TemplateNotFound, TemplateSyntaxError, TemplateAssertionError
 
 # decorators and public utilities
-from jinja2.filters import environmentfilter, contextfilter
-from jinja2.utils import Markup, escape, clear_caches, \
+from promogest.lib.jinja2.filters import environmentfilter, contextfilter
+from promogest.lib.jinja2.utils import Markup, escape, clear_caches, \
      environmentfunction, contextfunction, is_undefined
 
 __all__ = [
