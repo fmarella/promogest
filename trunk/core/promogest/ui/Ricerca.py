@@ -28,8 +28,8 @@ from utils import *
 import webbrowser
 from promogest import Environment
 import utils
-from promogest.lib.jinja2.jinja2 import Environment  as Env
-from promogest.lib.jinja2.jinja2 import FileSystemLoader,FileSystemBytecodeCache
+from jinja2 import Environment  as Env
+from jinja2 import FileSystemLoader,FileSystemBytecodeCache
 
 
 class Ricerca(GladeWidget):

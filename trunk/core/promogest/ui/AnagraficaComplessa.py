@@ -32,8 +32,8 @@ except ImportError:
 
 from promogest import Environment
 
-from promogest.lib.jinja2.jinja2 import Environment  as Env
-from promogest.lib.jinja2.jinja2 import FileSystemLoader,FileSystemBytecodeCache
+from jinja2 import Environment  as Env
+from jinja2 import FileSystemLoader,FileSystemBytecodeCache
 
 
 from promogest.dao import Dao

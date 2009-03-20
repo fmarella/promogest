@@ -18,8 +18,8 @@ from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRig
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.ui.utils import *
 from promogest.ui import utils
-from promogest.lib.jinja2.jinja2 import Environment  as Env
-from promogest.lib.jinja2.jinja2 import FileSystemLoader,FileSystemBytecodeCache
+from jinja2 import Environment  as Env
+from jinja2 import FileSystemLoader,FileSystemBytecodeCache
 
 
 class GestioneScontrini(GladeWidget):
