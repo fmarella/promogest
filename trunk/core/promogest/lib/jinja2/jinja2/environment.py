@@ -354,7 +354,7 @@ class Environment(object):
         try:
             return Parser(self, source, name, filename).parse()
         except TemplateSyntaxError, e:
-            from jinja2.debug import translate_syntax_error
+            from promogest.lib.jinja2.jinja2.debug import translate_syntax_error
             exc_type, exc_value, tb = translate_syntax_error(e, source)
             raise exc_type, exc_value, tb
 
@@ -372,7 +372,7 @@ class Environment(object):
         try:
             return self.lexer.tokeniter(source, name, filename)
         except TemplateSyntaxError, e:
-            from jinja2.debug import translate_syntax_error
+            from promogest.lib.jinja2.jinja2.debug import translate_syntax_error
             exc_type, exc_value, tb = translate_syntax_error(e, source)
             raise exc_type, exc_value, tb
 
@@ -616,7 +616,7 @@ class Template(object):
         try:
             return concat(self.root_render_func(self.new_context(vars)))
         except:
-            from jinja2.debug import translate_exception
+            from promogest.lib.jinja2.jinja2.debug import translate_exception
             exc_type, exc_value, tb = translate_exception(sys.exc_info())
             raise exc_type, exc_value, tb
 
