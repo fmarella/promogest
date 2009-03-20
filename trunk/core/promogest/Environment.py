@@ -372,8 +372,10 @@ azienda=conf.Database.azienda
 #azienda = None
 #except:
     #azienda = "azienda_prova"
-
-tipodb = conf.Database.tipodb
+try:
+    tipodb = conf.Database.tipodb
+except:
+    tipodb = "postgresql"
 
 
 
