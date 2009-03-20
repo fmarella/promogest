@@ -682,7 +682,7 @@ class CodeGenerator(NodeVisitor):
 
     def visit_Template(self, node, frame=None):
         assert frame is None, 'no root frame allowed'
-        from jinja2.runtime import __all__ as exported
+        from promogest.lib.jinja2.jinja2.runtime import __all__ as exported
         self.writeline('from __future__ import division')
         self.writeline('from jinja2.runtime import ' + ', '.join(exported))
 
