@@ -9,7 +9,7 @@
     :license: BSD, see LICENSE for more details.
 """
 import re
-from jinja2.runtime import Undefined
+from promogest.lib.jinja2.jinja2.runtime import Undefined
 
 
 number_re = re.compile(r'^-?\d+(\.\d+)?$')

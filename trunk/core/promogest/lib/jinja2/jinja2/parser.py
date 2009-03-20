@@ -8,8 +8,8 @@
     :copyright: (c) 2009 by the Jinja Team.
     :license: BSD, see LICENSE for more details.
 """
-from jinja2 import nodes
-from jinja2.exceptions import TemplateSyntaxError, TemplateAssertionError
+from promogest.lib.jinja2.jinja2 import nodes
+from promogest.lib.jinja2.jinja2.exceptions import TemplateSyntaxError, TemplateAssertionError
 
 
 _statement_keywords = frozenset(['for', 'if', 'block', 'extends', 'print',

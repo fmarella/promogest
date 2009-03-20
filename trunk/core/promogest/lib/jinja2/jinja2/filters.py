@@ -13,9 +13,9 @@ import math
 from random import choice
 from operator import itemgetter
 from itertools import imap, groupby
-from jinja2.utils import Markup, escape, pformat, urlize, soft_unicode
-from jinja2.runtime import Undefined
-from jinja2.exceptions import FilterArgumentError, SecurityError
+from promogest.lib.jinja2.jinja2.utils import Markup, escape, pformat, urlize, soft_unicode
+from promogest.lib.jinja2.jinja2.runtime import Undefined
+from promogest.lib.jinja2.jinja2.exceptions import FilterArgumentError, SecurityError
 
 
 _word_re = re.compile(r'\w+')

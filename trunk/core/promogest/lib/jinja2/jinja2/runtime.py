@@ -10,9 +10,9 @@
 """
 import sys
 from itertools import chain, imap
-from jinja2.utils import Markup, partial, soft_unicode, escape, missing, \
+from promogest.lib.jinja2.jinja2.utils import Markup, partial, soft_unicode, escape, missing, \
      concat, MethodType, FunctionType, internalcode
-from jinja2.exceptions import UndefinedError, TemplateRuntimeError, \
+from promogest.lib.jinja2.jinja2.exceptions import UndefinedError, TemplateRuntimeError, \
      TemplateNotFound
 
 

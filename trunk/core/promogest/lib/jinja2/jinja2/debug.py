@@ -11,7 +11,7 @@
     :license: BSD.
 """
 import sys
-from jinja2.utils import CodeType, missing, internal_code
+from promogest.lib.jinja2.jinja2.utils import CodeType, missing, internal_code
 
 
 def translate_syntax_error(error, source=None):

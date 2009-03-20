@@ -13,10 +13,10 @@
     :license: BSD.
 """
 import operator
-from jinja2.runtime import Undefined
-from jinja2.environment import Environment
-from jinja2.exceptions import SecurityError
-from jinja2.utils import FunctionType, MethodType, TracebackType, CodeType, \
+from promogest.lib.jinja2.jinja2.runtime import Undefined
+from promogest.lib.jinja2.jinja2.environment import Environment
+from promogest.lib.jinja2.jinja2.exceptions import SecurityError
+from promogest.lib.jinja2.jinja2.utils import FunctionType, MethodType, TracebackType, CodeType, \
      FrameType, GeneratorType
 
 

@@ -15,7 +15,7 @@
 import operator
 from itertools import chain, izip
 from collections import deque
-from jinja2.utils import Markup
+from promogest.lib.jinja2.jinja2.utils import Markup
 
 
 _binop_to_func = {

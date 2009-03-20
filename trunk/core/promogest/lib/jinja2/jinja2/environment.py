@@ -9,15 +9,15 @@
     :license: BSD, see LICENSE for more details.
 """
 import sys
-from jinja2 import nodes
-from jinja2.defaults import *
-from jinja2.lexer import get_lexer, TokenStream
-from jinja2.parser import Parser
-from jinja2.optimizer import optimize
-from jinja2.compiler import generate
-from jinja2.runtime import Undefined, new_context
-from jinja2.exceptions import TemplateSyntaxError
-from jinja2.utils import import_string, LRUCache, Markup, missing, \
+from promogest.lib.jinja2.jinja2 import nodes
+from promogest.lib.jinja2.jinja2.defaults import *
+from promogest.lib.jinja2.jinja2.lexer import get_lexer, TokenStream
+from promogest.lib.jinja2.jinja2.parser import Parser
+from promogest.lib.jinja2.jinja2.optimizer import optimize
+from promogest.lib.jinja2.jinja2.compiler import generate
+from promogest.lib.jinja2.jinja2.runtime import Undefined, new_context
+from promogest.lib.jinja2.jinja2.exceptions import TemplateSyntaxError
+from promogest.lib.jinja2.jinja2.utils import import_string, LRUCache, Markup, missing, \
      concat, consume, internalcode
 
 

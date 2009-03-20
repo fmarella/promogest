@@ -8,7 +8,7 @@
     :copyright: (c) 2009 by the Jinja Team.
     :license: BSD, see LICENSE for more details.
 """
-from jinja2.utils import generate_lorem_ipsum, Cycler, Joiner
+from promogest.lib.jinja2.jinja2.utils import generate_lorem_ipsum, Cycler, Joiner
 
 
 # defaults for the parser / lexer

@@ -13,8 +13,8 @@ try:
     from hashlib import sha1
 except ImportError:
     from sha import new as sha1
-from jinja2.exceptions import TemplateNotFound
-from jinja2.utils import LRUCache, open_if_exists, internalcode
+from promogest.lib.jinja2.jinja2.exceptions import TemplateNotFound
+from promogest.lib.jinja2.jinja2.utils import LRUCache, open_if_exists, internalcode
 
 
 def split_template_path(template):

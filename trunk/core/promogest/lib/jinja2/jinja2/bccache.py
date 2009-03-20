@@ -24,7 +24,7 @@ try:
     from hashlib import sha1
 except ImportError:
     from sha import new as sha1
-from jinja2.utils import open_if_exists
+from promogest.lib.jinja2.jinja2.utils import open_if_exists
 
 
 bc_version = 1

@@ -8,7 +8,7 @@
     :copyright: (c) 2009 by the Jinja Team.
     :license: BSD.
 """
-from jinja2.nodes import Node
+from promogest.lib.jinja2.jinja2.nodes import Node
 
 
 class NodeVisitor(object):
