@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 #############################################
 ## (C)opyright by Dirk Holtwick, 2008      ##
 ## All rights reserved                     ##

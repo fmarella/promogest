@@ -902,7 +902,7 @@ del documento.
         self._righe[0]["descrizione"] = self.descrizione_entry.get_text()
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
         totale = self._righe[0]["totale"]
-        print "TOTALE IN CONFIRM", totale
+        #print "TOTALE IN CONFIRM", totale
         if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
             self._righe[0]["divisore_noleggio"] = self.coeficente_noleggio_entry.get_text()
             self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
@@ -1448,7 +1448,7 @@ del documento.
         idListino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
         idArticolo = self._righe[0]["idArticolo"]
         self.getPrezzoVenditaLordo(idListino, idArticolo)
-        self.prezzo_lordo_entry.set_text(self._righe[0]["prezzoLordo"])
+        self.prezzo_lordo_entry.set_text(str(self._righe[0]["prezzoLordo"]))
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], True)
         self.on_show_totali_riga()
 

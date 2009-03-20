@@ -20,12 +20,10 @@ from GladeWidget import GladeWidget
 
 class PrintDialogHandler(GladeWidget):
 
-    def __init__(self,nome, pdfGenerator=None, report=None, daos=None, label=None ):
-        self.printDialog = GladeWidget('records_print_dialog',
-                                    callbacks_proxy=self)
+    def __init__(self,anacomplex,nome, pdfGenerator=None, report=None, daos=None, label=None ):
+        GladeWidget.__init__(self, 'records_print_dialog',fileName='records_print_dialog.glade')
         self._pdfName = nome.replace(" ","_") + '_report_' + time.strftime('%d-%m-%Y')
-        self.printDialog.placeWindow(self.printDialog.getTopLevel())
-        self.printDialog.getTopLevel().show_all()
+
         if hasattr(Environment.conf,'Documenti'):
             self._folder = getattr(Environment.conf.Documenti,'cartella_predefinita','')
         if self._folder == '':
@@ -34,11 +32,11 @@ class PrintDialogHandler(GladeWidget):
             elif os.name == 'nt':
                 self._folder = os.environ['USERPROFILE']
         self.__pdfGenerator = pdfGenerator
-        ciccio= file(".temp.pdf","r")
-        self.__pdfReport= ciccio.read()
-        ciccio.close()
-        self.printDialog.records_print_dialog_size_label.set_markup('<span weight="bold">' + str(len(self.__pdfReport) / 1024) + ' Kb</span>')
-        self.printDialog.records_print_dialog_description_label.set_markup('<span weight="bold">' + self._pdfName + '</span>')
+        filetemp= file(".temp.pdf","r")
+        self.__pdfReport= filetemp.read()
+        filetemp.close()
+        self.records_print_dialog_size_label.set_markup('<span weight="bold">' + str(len(self.__pdfReport) / 1024) + ' Kb</span>')
+        self.records_print_dialog_description_label.set_markup('<span weight="bold">' + self._pdfName + '</span>')
         self._reportType = report
 
 
@@ -52,7 +50,7 @@ class PrintDialogHandler(GladeWidget):
             response = overDialog.run()
             overDialog.destroy()
             return
-            self.printDialog.riferimento2_combobox_entry.child.set_text("")
+            self.riferimento2_combobox_entry.child.set_text("")
         else:
             if self.email =="":
                 self.email = self.printDialog.riferimento2_combobox_entry.get_active_text()
@@ -96,21 +94,21 @@ class PrintDialogHandler(GladeWidget):
             #self.email = ""
 
     def on_close_button_clicked(self,widget):
-        self.on_records_print_dialog_close(self.printDialog)
+        self.on_records_print_dialog_close(self)
 
     def on_save_button_clicked(self, widget):
-        self.__handleSaveResponse(self.printDialog.getTopLevel())
+        self.__handleSaveResponse(self.getTopLevel())
         #self.on_records_print_dialog_close(self.printDialog)
 
     def on_open_button_clicked(self, widget):
-        self.__handleOpenResponse(self.printDialog.getTopLevel())
+        self.__handleOpenResponse(self.getTopLevel())
         #self.on_records_print_dialog_close(self.printDialog)
 
 
     def on_records_print_dialog_close(self, dialog, event=None):
-        self.printDialog.hide()
         del self.__pdfReport
         del self.__pdfGenerator
+        self.getTopLevel().destroy()
 
 
     def __handleOpenResponse(self, dialog):

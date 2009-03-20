@@ -1,4 +1,4 @@
-# -*- coding: ISO-8859-1 -*-
+# -*- coding: utf-8 -*-
 #############################################
 ## (C)opyright by Dirk Holtwick, 2002-2007 ##
 ## All rights reserved                     ##
@@ -24,6 +24,7 @@ from pisa_default import DEFAULT_CSS
 
 import logging
 log = logging.getLogger("ho.pisa")
+logging.basicConfig()
 
 __version__ = VERSION
 
@@ -229,7 +230,7 @@ def command():
             startviewer = 1
 
         if o in ("-q", "--quiet"):
-            # Output unterdrücken
+            # Output unterdrï¿½cken
             quiet = 1
 
         if o in ("-w", "--warn"):
@@ -246,7 +247,7 @@ def command():
                 log_level = int(a)
 
 #        if o in ("--multivalent", "--multivalent-path"):
-#            # Multivalent.jar für Booklet
+#            # Multivalent.jar fï¿½r Booklet
 #            multivalent_path = a
 
 #        if o in ("--booklet",):

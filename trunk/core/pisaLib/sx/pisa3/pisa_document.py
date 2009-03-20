@@ -1,4 +1,4 @@
-# -*- coding: ISO-8859-1 -*-
+# -*- coding: utf-8 -*-
 #############################################
 ## (C)opyright by Dirk Holtwick, 2002-2007 ##
 ## All rights reserved                     ##
@@ -20,6 +20,7 @@ import cgi
 
 import logging
 log = logging.getLogger("ho.pisa")
+logging.basicConfig()
 
 def pisaErrorDocument(dest, c):
     out = StringIO.StringIO()
@@ -179,7 +180,7 @@ def pisaDocument(
                         output.write(out)
                         # data = sout.getvalue()
                     except Exception:
-                        log.exception(c.error("pyPDF error"))   
+                        log.exception(c.error("pyPDF error"))
                         if raise_exception:
                             raise
                  

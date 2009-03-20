@@ -1360,25 +1360,38 @@ class AnagraficaPrintPreview(GladeWidget):
         g = file(".temp.pdf", "wb")
         pdf = pisa.CreatePDF(f,g)
         g .close()
-        #self._anagrafica.__pdfReport = g
-        #fil = file("temp.pdf", "r")
-        PrintDialogHandler(self.windowTitle)
+        anag = PrintDialogHandler(self,self.windowTitle)
+        anagWindow = anag.getTopLevel()
+        returnWindow = self.bodyWidget.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
+        anagWindow.show_all()
+        anagWindow.connect("destroy",
+                        on_records_print_dialog_close)
 
     def on_html_request_url(self,document, url, stream):
+
         def render():
-            f = open(url, 'rb')
-            stream.write(f.read())
-            f.close()
-            stream.close()
+            try:
+                f = open(url, 'rb')
+                stream.write(f.read())
+                f.close()
+                stream.close()
+            except:
+                req = urllib2.Request(url)
+                response = urllib2.urlopen(req)
+                html = response.read()
+                stream.write(html)
+                stream.close()
         gobject.idle_add(render)
 
 
-    def on_html_link_clicked(self, document, link):
-        print "MAMAMAMAGKFKFKDFKDKDKDDKMAMA",link, document
-        def link():
-            print "MAMAMAMAGKFKFKDFKDKDKDDKMAMA",link, document
-            print link
-        gobject.idle_add(link)
+    def on_html_link_clicked(self, url, link):
+        """ funzione di apertura dei link presenti nelle pagine html di anteprima"""
+        def linkOpen():
+            webbrowser.open_new_tab(link)
+            #print link
+        gobject.idle_add(linkOpen)
+
 
 
     def on_print_on_screen_dialog_response(self, dialog, responseId):
