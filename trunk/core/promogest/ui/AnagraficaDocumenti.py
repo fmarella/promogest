@@ -55,7 +55,7 @@ class AnagraficaDocumenti(Anagrafica):
 
     def set_export_data(self):
         """
-        Raccoglie informazioni specifiche per l'anagrafica restituite all'interno di un dizionario
+#         Raccoglie informazioni specifiche per l'anagrafica restituite all'interno di un dizionario
         """
         data_details = {}
         data = datetime.datetime.now()

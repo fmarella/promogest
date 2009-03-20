@@ -1,18 +1,5 @@
-<?python
-from promogest.ui.utils import *
-from promogest.Environment import *
-?>
-<html
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:py="http://genshi.edgewall.org/"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
-        lang="en">
-    <head>
-        <title>Dettaglio movimento di magazzino</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <xi:include href="style.css"><xi:fallback/></xi:include>
-    </head>
-    <body>
+{% extends 'index.html' %}
+{% block body %}
         <table cellpadding="0" cellspacing="3" border="0">
             <tr>
                 <th>Magazzino</th>
@@ -23,18 +10,23 @@ from promogest.Environment import *
                 <th>Data prossimo ordine</th>
             </tr>
             <tr><td colspan="6"><hr /></td></tr>
-            <tr py:for="dao in objects">
-                <td class="detail">${dao.magazzino}</td>
-                <td class="detail">${dao.articolo}</td>
-                <td class="number">${conf.number_format % ( dao.giacenza )}</td>
-                <td class="detail">${dao.scorta_minima}</td>
-
-                <td class="detail" py:if="dao.data_fine_scorte is not None">${dao.data_fine_scorte.strftime('%d/%m/%Y')}</td>
-                <td class="detail" py:if="dao.data_fine_scorte is None">-</td>
-
-                <td class="detail" py:if="dao.data_prossimo_ordine is not None">${dao.data_prossimo_ordine.strftime('%d/%m/%Y')}</td>
-                <td class="detail" py:if="dao.data_prossimo_ordine is None">-</td>
+            {% for dao in objects %}
+            <tr class="row">
+                <td class="detail">{{dao.magazzino}}</td>
+                <td class="detail">{{dao.articolo}}</td>
+                <td class="number">{{conf.number_format % ( dao.giacenza )}}</td>
+                <td class="detail">{{dao.scorta_minima}</td>
+                 {% if dao.data_fine_scorte %}
+                <td class="detail">{{utils.dateToString(dao.data_fine_scorte)}}</td>
+                {% else %}
+                <td class="detail">-</td>
+                {% endif %}
+                {% if dao.data_prossimo_ordine %}
+                <td class="detail">{{utils.dateToString(dao.data_prossimo_ordine)}}</td>
+                 {% else %}
+                <td class="detail">-</td>
+                {% endif %}
             </tr>
+            {% endfor %}
         </table>
-    </body>
-</html>
+{% endblock %}

@@ -1,13 +1,5 @@
-<html   xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:py="http://genshi.edgewall.org/"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
-        lang="en">
-    <head>
-        <title>Dettaglio Articolo</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <xi:include href="style.css"><xi:fallback/></xi:include>
-    </head>
-    <body>
+{% extends 'index.html' %}
+{% block body %}
         <table cellpadding="0" cellspacing="3" border="0">
             <tr>
                 <th>Listino</th>
@@ -15,11 +7,12 @@
                 <th>Data listino</th>
             </tr>
             <tr><td colspan="3"><hr /></td></tr>
-            <tr py:for="dao in objects">
-                <td class="detail">${dao.denominazione}</td>
-                <td class="detail">${dao.descrizione}</td>
-                <td class="detail">${dao.data_listino.strftime('%d/%m/%Y')}</td>
+            {% for dao in objects %}
+            <tr class="row">
+                <td class="detail">{{dao.denominazione}}</td>
+                <td class="detail">{{dao.descrizione}}</td>
+                <td class="detail">{{utils.dateToString(dao.data_listino)}</td>
             </tr>
+            {% endfor %}
         </table>
-    </body>
-</html>
+{% endblock %}

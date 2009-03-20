@@ -207,9 +207,11 @@ class Login(GladeApp):
                     Environment.params['usernameLoggedList'][2] = "Admin"
 
                 if hasAction(actionID=1):
-                    Environment.params["schema"]=self.azienda
+                    if Environment.tipodb !="sqlite":
+                        Environment.params["schema"]=self.azienda
                     #from promogest.lib.UpdateDB import *
-                    Environment.meta = MetaData().reflect(Environment.engine,schema=self.azienda )
+                        Environment.meta = MetaData().reflect(Environment.engine,schema=self.azienda )
+                    #Environment.meta = MetaData().reflect(Environment.engine)
                     self.login_window.hide()
                     global windowGroup
                     windowGroup.remove(self.getTopLevel())

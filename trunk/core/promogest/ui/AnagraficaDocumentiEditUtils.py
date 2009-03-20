@@ -403,8 +403,8 @@ def mostraArticoloPart(anaedit, id, art=None):
             anaedit.articolo_entry.set_text(anaedit._righe[0]["codiceArticolo"])
             anaedit._righe[0]["descrizione"] = articolo["denominazione"]
             anaedit.descrizione_entry.set_text(anaedit._righe[0]["descrizione"])
-            anaedit._righe[0]["percentualeIva"] = articolo["percentualeAliquotaIva"]
-            anaedit.percentuale_iva_entry.set_text('%-5.2f' % anaedit._righe[0]["percentualeIva"])
+            anaedit._righe[0]["percentualeIva"] = mN(articolo["percentualeAliquotaIva"],2)
+            anaedit.percentuale_iva_entry.set_text(str(anaedit._righe[0]["percentualeIva"]))
             anaedit._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
             anaedit._righe[0]["unitaBase"] = articolo["unitaBase"]
             anaedit.unitaBaseLabel.set_text(anaedit._righe[0]["unitaBase"])
@@ -458,8 +458,8 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit.articolo_entry.set_text(anaedit._righe[0]["codiceArticolo"])
         anaedit._righe[0]["descrizione"] = articolo["denominazione"]
         anaedit.descrizione_entry.set_text(anaedit._righe[0]["descrizione"])
-        anaedit._righe[0]["percentualeIva"] = articolo["percentualeAliquotaIva"]
-        anaedit.percentuale_iva_entry.set_text('%-5.2f' % anaedit._righe[0]["percentualeIva"])
+        anaedit._righe[0]["percentualeIva"] = mN(articolo["percentualeAliquotaIva"],2)
+        anaedit.percentuale_iva_entry.set_text(str(anaedit._righe[0]["percentualeIva"]))
         anaedit._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
         anaedit._righe[0]["unitaBase"] = articolo["unitaBase"]
         anaedit.unitaBaseLabel.set_text(anaedit._righe[0]["unitaBase"])
@@ -490,11 +490,11 @@ def mostraArticoloPart(anaedit, id, art=None):
             if anaedit._fonteValore == "acquisto_iva":
                     costoLordo = calcolaPrezzoIva(costoLordo, anaedit._righe[0]["percentualeIva"])
                     costoNetto = calcolaPrezzoIva(costoNetto, anaedit._righe[0]["percentualeIva"])
-            anaedit._righe[0]["prezzoLordo"] = mN(costoLordo)
+            anaedit._righe[0]["prezzoLordo"] = costoLordo
             anaedit.prezzo_lordo_entry.set_text(str(anaedit._righe[0]["prezzoLordo"]))
-            anaedit._righe[0]["prezzoNetto"] = mN(costoNetto)
+            anaedit._righe[0]["prezzoNetto"] = costoNetto
             anaedit.prezzo_netto_label.set_text(str(anaedit._righe[0]["prezzoNetto"]))
-            anaedit._righe[0]["prezzoNettoUltimo"] = mN(costoNetto)
+            anaedit._righe[0]["prezzoNettoUltimo"] = costoNetto
             anaedit._righe[0]["sconti"] = fornitura["sconti"]
             anaedit._righe[0]["applicazioneSconti"] = fornitura["applicazioneSconti"]
             anaedit.sconti_widget.setValues(anaedit._righe[0]["sconti"], anaedit._righe[0]["applicazioneSconti"], False)

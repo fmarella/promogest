@@ -271,7 +271,7 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkFrame" id="frame2">
+                      <widget class="GtkFrame" id="promowear_filter_frame">
                         <property name="visible">True</property>
                         <property name="label_xalign">0</property>
                         <property name="shadow_type">in</property>

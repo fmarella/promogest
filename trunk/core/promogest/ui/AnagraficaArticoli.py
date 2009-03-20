@@ -219,10 +219,10 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             AnagraficaArticoliExpand.treeViewExpand(self, treeview, renderer)
         else:
             self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str)
+            self.promowear_filter_frame.destroy()
         treeview.set_search_column(2)
 
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-        self.filter_promowear.set_property('visible', "PromoWear" in Environment.modulesList)
         self.id_famiglia_articolo_filter_combobox.set_wrap_width(Environment.conf.combo_columns)
         self.id_categoria_articolo_filter_combobox.set_wrap_width(Environment.conf.combo_columns)
 

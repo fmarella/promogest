@@ -25,9 +25,11 @@ from GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
 import Login
 from utils import *
-import genshi
-from genshi.template import TemplateLoader
-
+import webbrowser
+from promogest import Environment
+import utils
+from promogest.lib.jinja2.jinja2 import Environment  as Env
+from promogest.lib.jinja2.jinja2 import FileSystemLoader,FileSystemBytecodeCache
 
 
 class Ricerca(GladeWidget):
@@ -261,31 +263,47 @@ class RicercaHtml(object):
                 doc.connect('link_clicked', self.on_html_link_clicked)
 
             self._currGtkHtmlDocument = 0
+
+        templates_dir = self._htmlTemplate
+        jinja_env = Env(loader=FileSystemLoader(templates_dir),
+        bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
+        jinja_env.globals['environment'] = Environment
+        jinja_env.globals['utils'] = utils
+        currDocument = (self._currGtkHtmlDocument + 1) % 2
+        document = self._gtkHtmlDocuments[currDocument]
+        document.open_stream('text/html')
         if self.dao is None:
-            html = '<html></html>'
+            html = jinja_env.get_template("index.html").render()
         else:
-            currDocument = (self._currGtkHtmlDocument + 1) % 2
-            document = self._gtkHtmlDocuments[currDocument]
+            html = jinja_env.get_template(self.defaultFileName+".html").render(dao=self.dao)
 
-            #document =gtkhtml2.Document()
-            document.open_stream('text/html')
-            templates_dir = self._htmlTemplate
-            #print "TEMPPP", templates_dir
-            loader = TemplateLoader([templates_dir])
-            tmpl = loader.load(self.defaultFileName+".html")
-            stream = tmpl.generate(dao=self.dao)
-            html = stream.render('xhtml')
-            document.write_stream(html)
-            document.close_stream()
-            self._gtkHtml.set_document(document)
-            #self._refresh(html)
+        document.write_stream(html)
+        document.close_stream()
+        self._gtkHtml.set_document(document)
 
-    def on_html_request_url(self, document, url, stream):
-        print url
+    def on_html_request_url(self,document, url, stream):
+
+        def render():
+            try:
+                f = open(url, 'rb')
+                stream.write(f.read())
+                f.close()
+                stream.close()
+            except:
+                req = urllib2.Request(url)
+                response = urllib2.urlopen(req)
+                html = response.read()
+                stream.write(html)
+                stream.close()
+        gobject.idle_add(render)
 
 
-    def on_html_link_clicked(self, document, link):
-        print link
+    def on_html_link_clicked(self, url, link):
+        """ funzione di apertura dei link presenti nelle pagine html di anteprima"""
+        def linkOpen():
+            webbrowser.open_new_tab(link)
+            #print link
+        gobject.idle_add(linkOpen)
 
 
     def setObjects(self, objects):

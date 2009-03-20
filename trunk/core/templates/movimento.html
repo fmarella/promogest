@@ -1,72 +1,52 @@
-<?python
-from promogest.ui.utils import leggiCliente
-from promogest.ui.utils import leggiFornitore
-from promogest.Environment import conf
-?>
-<html
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:py="http://genshi.edgewall.org/"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
-        lang="en">
-    <head>
-        <title>Dettaglio movimento di magazzino</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <xi:include href="style.css"><xi:fallback/></xi:include>
-    </head>
-    <body>
+{% extends 'index.html' %}
+
+{% block body %}
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>
-		<td class= "report-header" colspan="2"><h3>Registro: <strong>${dao.registro_numerazione}</strong></h3></td>
-                <td class="report-header" colspan="2"><h3>Numero: <strong>${dao.numero}</strong> / <strong py:content="dao.parte"></strong></h3></td>
+        <td class= "report-header" colspan="2"><h3>Registro: <strong>{{dao.registro_numerazione}}</strong></h3></td>
+                <td class="report-header" colspan="2"><h3>Numero: <strong>{{dao.numero}}</strong> /
+                <strong>{{dao.parte}}</strong></h3></td>
             </tr>
-	</table>
+    </table>
 
-	<table cellpadding="0" cellspacing="0" border="0">
+    <table cellpadding="0" cellspacing="0" border="0">
             <tr><td colspan="4" class="table-header">Dati movimento</td></tr>
             <tr>
                 <td width="140px" class="odd-detail">Operazione</td>
-                <td class="odd-detail"><strong>${dao.operazione}</strong></td>
+                <td class="odd-detail"><strong>{{dao.operazione}}</strong></td>
             </tr>
-	   <tr>
-	        <td class="even-detail">Data movimento</td>
+        <tr>
+            <td class="even-detail">Data movimento</td>
                 <td class="even-detail">
-                    <strong py:if="dao.data_movimento is not None">
-                        <strong>${dao.data_movimento.strftime('%d/%m/%Y %H:%M')}</strong>
-                    </strong>
+                    {% if dao.data_movimento %}
+                        <strong>{{utils.dateTimeToString(dao.data_movimento)}}</strong>
+                    {% endif %}
                 </td>
-	</tr>
-
-            <tr py:if="dao.id_cliente is not None">
+    </tr>
+            {% if dao.id_cliente %}
+            <tr >
                 <td class="odd-detail">Cliente</td>
                 <td class="odd-detail">
-                    <strong py:if="dao.ragione_sociale_cliente is not None">
-                        <strong>${dao.ragione_sociale_cliente}</strong>
-                        <?python
-                        cliente = leggiCliente(dao.id_cliente)
-                        ?>
-			<strong> (</strong>
-                        <strong py:with="cliente = leggiCliente(dao.id_cliente)">${cliente['cognome'] + ' ' + cliente['nome']}</strong>
-			<strong> )</strong>
-                    </strong>
-                </td>
+                    {% if dao.ragione_sociale_cliente %}
+                        <strong>{{dao.ragione_sociale_cliente}}
+            ({{dao.cognome_cliente + ' ' + dao.nome_cliente}})</strong>
+                {% endif %}</td>
             </tr>
-            <tr py:if="dao.id_fornitore is not None">
+            {% else %}
+            <tr >
                 <td class="odd-detail">Fornitore</td>
                 <td class="odd-detail">
-                    <strong py:if="dao.ragione_sociale_fornitore is not None">
-                        <strong>${dao.ragione_sociale_fornitore}</strong>
-                        <?python
-                        fornitore = leggiFornitore(dao.id_fornitore)
-                        ?>
-			<strong> (</strong>
-                        <strong py:with="fornitore = leggiFornitore(dao.id_fornitore)">${fornitore['cognome'] + ' ' + fornitore['nome']}</strong>
-			<strong> )</strong>
+                    {%  if dao.ragione_sociale_fornitore %}
+                    <strong >{{dao.ragione_sociale_fornitore}}
+                            ({{dao.cognome_fornitore + ' ' + dao.nome_fornitore}})
                     </strong>
+                {% endif %}
                 </td>
             </tr>
+            {% endif %}
             <tr>
                 <td class="even-detail">Note interne</td>
-                <td class="even-detail"><strong>${dao.note_interne}</strong></td>
+                <td class="even-detail"><strong>{{dao.note_interne}}</strong></td>
             </tr>
         </table>
 
@@ -80,15 +60,19 @@ from promogest.Environment import conf
             <td class="even-number">Prezzo netto</td>
             <td class="even-number">Totale</td>
         </tr>
-        <tr py:for="riga in dao.righe">
-            <td width="16%" class="odd-detail" py:if="riga.id_magazzino is not None"><light>${riga.magazzino[:35]}</light></td>
-            <td width="16%" class="odd-detail" py:if="riga.id_magazzino is None"><light></light></td>
-            <td width="40%" class="odd-detail"><light>${riga.descrizione[:35]}</light></td>
-            <td width="10%" class="odd-number"><light>${'%14.2f' % riga.percentuale_iva}</light></td>
-            <td width="12%" class="odd-number"><light>${conf.number_format % ( riga.quantita * riga.moltiplicatore )}</light></td>
-            <td width="12%" class="odd-number"><light>${conf.number_format % riga.valore_unitario_netto}</light></td>
-            <td width="10%" class="odd-number"><strong>${conf.number_format % ( riga.quantita * riga.moltiplicatore * riga.valore_unitario_netto )}</strong></td>
+        {% for riga in dao.righe %}
+        <tr >
+            {% if riga.id_magazzino %}
+            <td width="16%" class="odd-detail" >{{riga.magazzino[:35]}}</td>
+            {% else %}
+            <td width="16%" class="odd-detail"></td>
+            {% endif %}
+            <td width="40%" class="odd-detail">{{riga.descrizione[:35]}}</td>
+            <td width="10%" class="odd-number">{{'%14.2f' % riga.percentuale_iva}}</td>
+            <td width="12%" class="odd-number">{{environment.conf.number_format % ( riga.quantita * riga.moltiplicatore)}}</td>
+            <td width="12%" class="odd-number">{{environment.conf.number_format % riga.valore_unitario_netto}}</td>
+            <td width="10%" class="odd-number"><strong>{{environment.conf.number_format % ( riga.quantita * riga.moltiplicatore * riga.valore_unitario_netto )}}</strong></td>
         </tr>
+        {% endfor %}
         </table>
-    </body>
-</html>
+{% endblock %}

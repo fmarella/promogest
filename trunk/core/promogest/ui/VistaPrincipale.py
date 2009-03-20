@@ -132,7 +132,7 @@ class VistaPrincipale(GladeWidget):
     def checkUpdate(self):
         self.rigasvn1 =0
         self.rigasvn2 =0
-        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
+
         command = 'svn info ~/pg2'
         stdin, stdouterr = os.popen4(command)
         print "INFO REPO LOCALE", stdouterr.read()

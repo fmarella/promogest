@@ -1,14 +1,5 @@
-<html
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:py="http://genshi.edgewall.org/"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
-        lang="en">
-    <head>
-        <title>Dettaglio movimento di magazzino</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <xi:include href="style.css"><xi:fallback/></xi:include>
-    </head>
-    <body>
+{% extends 'index.html' %}
+{% block body %}
         <table cellpadding="0" cellspacing="3" border="0">
             <tr>
                 <th>Multiplo</th>
@@ -17,12 +8,13 @@
                 <th>Moltiplicatore</th>
             </tr>
             <tr><td colspan="4"><hr /></td></tr>
-            <tr py:for="dao in objects">
-                <td class="detail">${dao.denominazione}</td>
-                <td class="detail">${dao.unita_base}</td>
-                <td class="detail">${dao.denominazione_breve}</td>
-                <td class="detail">${dao.moltiplicatore}</td>
+            {% for dao in objects %}
+            <tr class="row">
+                <td class="detail">{{dao.denominazione}}</td>
+                <td class="detail">{{dao.unita_base}}</td>
+                <td class="detail">{{dao.denominazione_breve}}</td>
+                <td class="detail">{{dao.moltiplicatore}}</td>
             </tr>
+            {% endfor %}
         </table>
-    </body>
-</html>
+{% endblock %}

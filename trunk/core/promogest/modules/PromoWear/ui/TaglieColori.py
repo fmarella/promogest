@@ -20,13 +20,21 @@ from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTagli
 from promogest.modules.PromoWear.dao.Taglia import Taglia
 from promogest.modules.PromoWear.dao.Colore import Colore
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-import genshi
-from genshi.template import TemplateLoader
+#import genshi
+#from genshi.template import TemplateLoader
 from promogest.ui.utils import *
+from promogest.ui import utils
+from promogest.lib.jinja2.jinja2 import Environment  as Env
+from promogest.lib.jinja2.jinja2 import FileSystemLoader,FileSystemBytecodeCache
 
 
 templates_dir = './promogest/modules/PromoWear/templates/'
-loader = TemplateLoader([templates_dir])
+jinja_env = Env(loader=FileSystemLoader(templates_dir),
+    bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
+jinja_env.globals['environment'] = Environment
+jinja_env.globals['utils'] = utils
+
+
 
 class GestioneTaglieColori(GladeWidget):
     """ questa interfaccia è importantissima per la gestione delle taglie e colore, permette
@@ -89,9 +97,7 @@ class GestioneTaglieColori(GladeWidget):
         if data is None:
             html = '<html></html>'
         else:
-            tmpl = loader.load("creazione_taglie_colori.html")
-            stream = tmpl.generate(datas=data)
-            html = stream.render('xhtml')
+            html = jinja_env.get_template("creazione_taglie_colori.html").render(datas=data)
         document.write_stream(html)
         document.close_stream()
         self._gtkHtml.set_document(document)
@@ -141,7 +147,7 @@ class GestioneTaglieColori(GladeWidget):
         self.treeview.set_model(self._treeViewModel)
         self.head_color.set_active(True)
         self.only_variation.set_active(True)
-        if ("VenditaDettaglio" or "Label") not in Environment.modulesList:
+        if ("VenditaDettaglio" and "Label" ) not in Environment.modulesList:
             self.genera_codice_a_barre_button.set_sensitive(False)
         self.refresh()
 

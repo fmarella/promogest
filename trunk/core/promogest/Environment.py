@@ -114,64 +114,64 @@ except IOError:
     conf = Config(configFile)
     conf.guiDir = '.' + os.sep + 'gui' + os.sep
 
-MAINSCHEMA = "promogest2"
-SCHEMA = "aaaaa" # da passare anche come primo parametri al lancio del comando
-USER = "promoadmin"
-PASSWORD = "admin"
-HOST = "localhost"
-PORT = 5432
-DATABASE = "promogest_db"
-VERSIONE_DB = "0.9.10"
-mainSchema = "promogest2"
+#MAINSCHEMA = "promogest2"
+#SCHEMA = "aaaaa" # da passare anche come primo parametri al lancio del comando
+#USER = "promoadmin"
+#PASSWORD = "admin"
+#HOST = "localhost"
+#PORT = 5432
+#DATABASE = "promogest_db"
+#VERSIONE_DB = "0.9.10"
+#mainSchema = "promogest2"
 
-#try :
-azienda=conf.Database.azienda
-#except:
-    #azienda = "azienda_prova"
-database = conf.Database.database
-port = conf.Database.port
-user = conf.Database.user
-password = conf.Database.password
-host = conf.Database.host
-userdata = ["","","",user]
-db = create_engine('postgres:'+'//'+conf.Database.user+':'
-                    + conf.Database.password+ '@'
-                    + conf.Database.host + ':'
-                    + conf.Database.port + '/'
-                    + conf.Database.database,
-                    encoding='utf-8',
-                    convert_unicode=True )
-#db = create_engine('postgres://'+USER + ':' + PASSWORD +'@'+ HOST +':'+ str(PORT) +'/'+ DATABASE,
+##try :
+#azienda=conf.Database.azienda
+##except:
+    ##azienda = "azienda_prova"
+#database = conf.Database.database
+#port = conf.Database.port
+#user = conf.Database.user
+#password = conf.Database.password
+#host = conf.Database.host
+#userdata = ["","","",user]
+#db = create_engine('postgres:'+'//'+conf.Database.user+':'
+                    #+ conf.Database.password+ '@'
+                    #+ conf.Database.host + ':'
+                    #+ conf.Database.port + '/'
+                    #+ conf.Database.database,
                     #encoding='utf-8',
                     #convert_unicode=True )
-db.echo = True
-meta = MetaData(db)
-session = create_session(db)
+##db = create_engine('postgres://'+USER + ':' + PASSWORD +'@'+ HOST +':'+ str(PORT) +'/'+ DATABASE,
+                    ##encoding='utf-8',
+                    ##convert_unicode=True )
+#db.echo = True
+#meta = MetaData(db)
+#session = create_session(db)
 
-app_table = Table('app_log', meta,
-        Column('id', Integer, primary_key=True),
-        Column('id_utente', Integer),
-        Column('utentedb', String(100), nullable=False),
-        Column('schema_azienda', String(100), nullable=False),
-        Column('level', String(1)),
-        Column('object', PickleType, nullable=True),
-        Column('message', String(1000), nullable=True),
-        Column('value', Integer, nullable=True),
-        Column('registration_date', DateTime),
-        schema=MAINSCHEMA)
+#app_table = Table('app_log', meta,
+        #Column('id', Integer, primary_key=True),
+        #Column('id_utente', Integer),
+        #Column('utentedb', String(100), nullable=False),
+        #Column('schema_azienda', String(100), nullable=False),
+        #Column('level', String(1)),
+        #Column('object', PickleType, nullable=True),
+        #Column('message', String(1000), nullable=True),
+        #Column('value', Integer, nullable=True),
+        #Column('registration_date', DateTime),
+        #schema=MAINSCHEMA)
 
-app_table.create(checkfirst=True)
+#app_table.create(checkfirst=True)
 
-primy_keyTable = Table('chiavi_primarie_log', meta,
-        Column('id', Integer, primary_key=True),
-        Column('pk_integer', Integer, nullable=True),
-        Column('pk_string', String(300), nullable=True),
-        Column('pk_datetime', DateTime,nullable=True),
-        Column('id_application_log2', Integer,ForeignKey(MAINSCHEMA+'.app_log.id',onupdate="CASCADE",ondelete="CASCADE"), nullable=False),
-        schema=MAINSCHEMA)
-primy_keyTable.create(checkfirst=True)
+#primy_keyTable = Table('chiavi_primarie_log', meta,
+        #Column('id', Integer, primary_key=True),
+        #Column('pk_integer', Integer, nullable=True),
+        #Column('pk_string', String(300), nullable=True),
+        #Column('pk_datetime', DateTime,nullable=True),
+        #Column('id_application_log2', Integer,ForeignKey(MAINSCHEMA+'.app_log.id',onupdate="CASCADE",ondelete="CASCADE"), nullable=False),
+        #schema=MAINSCHEMA)
+#primy_keyTable.create(checkfirst=True)
 
-session.close()
+#session.close()
 
 
 
@@ -365,12 +365,18 @@ def set_configuration(company=None, year = None):
     importDebug = True
 
 
-mainSchema = "promogest2"
+#mainSchema = "promogest2"
 #mainSchema = None
 #try :
 azienda=conf.Database.azienda
+#azienda = None
 #except:
     #azienda = "azienda_prova"
+
+tipodb = conf.Database.tipodb
+
+
+
 database = conf.Database.database
 port = conf.Database.port
 user = conf.Database.user
@@ -378,16 +384,20 @@ password = conf.Database.password
 host = conf.Database.host
 userdata = ["","","",user]
 
-
-
-engine = create_engine('postgres:'+'//'+conf.Database.user+':'
+if tipodb == "sqlite":
+    azienda = None
+    mainSchema = None
+    engine =create_engine('sqlite:////home/vete/pg2_work/promogest_db')
+else:
+    mainSchema = "promogest2"
+    azienda=conf.Database.azienda
+    engine = create_engine('postgres:'+'//'+conf.Database.user+':'
                     + conf.Database.password+ '@'
                     + conf.Database.host + ':'
                     + conf.Database.port + '/'
                     + conf.Database.database,
                     encoding='utf-8',
                     convert_unicode=True )
-#engine =create_engine('sqlite:////home/vete/pg2_work/promogest_db.txt')
 
 engine.echo = debugSQL
 meta = MetaData(engine)

@@ -21,7 +21,9 @@ from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.lib.XmlGenerator import XlsXmlGenerator
 from promogest.lib.CsvGenerator import CsvFileGenerator
 from utils import *
+import utils
 import Login
+import webbrowser
 from promogest.ui.SendEmail import SendEmail
 try:
     from cStringIO import StringIO
@@ -29,8 +31,11 @@ except ImportError:
     from StringIO import StringIO
 
 from promogest import Environment
-import genshi
-from genshi.template import TemplateLoader
+
+from promogest.lib.jinja2.jinja2 import Environment  as Env
+from promogest.lib.jinja2.jinja2 import FileSystemLoader,FileSystemBytecodeCache
+
+
 from promogest.dao import Dao
 import urllib2
 from PrintDialog import PrintDialogHandler
@@ -999,23 +1004,21 @@ class AnagraficaHtml(object):
                 doc.connect('link_clicked', self.on_html_link_clicked)
 
             self._currGtkHtmlDocument = 0
+        templates_dir = self._htmlTemplate
+        jinja_env = Env(loader=FileSystemLoader(templates_dir),
+        bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
+        jinja_env.globals['environment'] = Environment
+        jinja_env.globals['utils'] = utils
+        currDocument = (self._currGtkHtmlDocument + 1) % 2
+        document = self._gtkHtmlDocuments[currDocument]
+        document.open_stream('text/html')
         if self.dao is None:
-            html = '<html></html>'
+            html = jinja_env.get_template("index.html").render()
         else:
-            currDocument = (self._currGtkHtmlDocument + 1) % 2
-            document = self._gtkHtmlDocuments[currDocument]
-
-            #document =gtkhtml2.Document()
-            document.open_stream('text/html')
-            templates_dir = self._htmlTemplate
-            loader = TemplateLoader([templates_dir])
-            tmpl = loader.load(self.defaultFileName+".html")
-            stream = tmpl.generate(dao=self.dao)
-            html = stream.render('xhtml')
-            document.write_stream(html)
-            document.close_stream()
-            self._gtkHtml.set_document(document)
-            #self._refresh(html)
+            html = jinja_env.get_template(self.defaultFileName+".html").render(dao=self.dao)
+        document.write_stream(html)
+        document.close_stream()
+        self._gtkHtml.set_document(document)
 
     def on_html_request_url(self,document, url, stream):
 
@@ -1034,11 +1037,12 @@ class AnagraficaHtml(object):
         gobject.idle_add(render)
 
 
-    def on_html_link_clicked(self, document, link):
-
-        def link():
-            print link
-        gobject.idle_add(link)
+    def on_html_link_clicked(self, url, link):
+        """ funzione di apertura dei link presenti nelle pagine html di anteprima"""
+        def linkOpen():
+            webbrowser.open_new_tab(link)
+            #print link
+        gobject.idle_add(linkOpen)
 
 
     def setObjects(self, objects):
@@ -1337,10 +1341,13 @@ class AnagraficaPrintPreview(GladeWidget):
         currDocument = (self._currGtkHtmlDocument + 1) % 2
         document = self._gtkHtmlDocuments[currDocument]
         templates_dir = self._previewTemplate[0]
-        loader = TemplateLoader([templates_dir])
-        tmpl = loader.load(self._previewTemplate[1])
-        stream = tmpl.generate(objects=daos)
-        self.html = stream.render('xhtml')
+
+        jinja_env = Env(loader=FileSystemLoader(templates_dir),
+        bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
+        jinja_env.globals['environment'] = Environment
+        jinja_env.globals['utils'] = utils
+        self.html = jinja_env.get_template(self._previewTemplate[1]).render(objects=daos)
+
         document.open_stream('text/html')
         document.write_stream(self.html)
         document.close_stream()

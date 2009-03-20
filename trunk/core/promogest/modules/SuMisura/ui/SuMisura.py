@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -35,12 +35,15 @@ def CalcolaArea(altezza, larghezza):
     # funziona a dovere.
 
     metri_quadrati = (altezza * larghezza) * 0.0001
-
-    return ("%.5f" % metri_quadrati)
+    metri_qqq = altezza * larghezza
+    # ATTENZIONE inizialmente la funzione arrotondava a 4 cifre
+    # si è momentaneamente portata a due ....vediamo 
+    return ("%.2f" % metri_quadrati)
 
 def CalcolaPerimetro(altezza, larghezza):
     """
     Blabla
     """
     metri_lineari = ((altezza + larghezza) * 2) * 0.01
-    return ("%.5f" % metri_lineari)
+    metri_qqq = (altezza + larghezza) *2
+    return ("%.2f" % metri_lineari)

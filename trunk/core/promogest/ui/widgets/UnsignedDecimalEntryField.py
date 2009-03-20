@@ -1,9 +1,10 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
+# Author:Francesco Meloni <francesco@promotux.it>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,6 +22,7 @@
 
 import gtk
 from CustomEntryField import CustomEntryField
+from promogest import Environment
 
 class UnsignedDecimalEntryField(CustomEntryField):
 # Effettua la validazione per decimali senza segno
@@ -30,6 +32,8 @@ class UnsignedDecimalEntryField(CustomEntryField):
 
         self._lunghezza = int1
         self._precisione = int2
+        if self._precisione =="0":
+            self._precisione = Environment.conf.decimals
         self._default = str1
         self.acceptedKeys = self.controlKeys + self.numberKeys + self.delimiterKeys
 

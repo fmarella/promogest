@@ -1,24 +1,10 @@
-<?python
-from promogest.ui.utils import *
-from promogest.Environment import conf
-?>
-<html
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:py="http://genshi.edgewall.org/"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
-        lang="en">
-        <?python import string?>
-    <head>
-        <title>Dettaglio documento</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <xi:include href="style.css"><xi:fallback/></xi:include>
-    </head>
+{% extends 'index.html' %}
 
-    <body>
+{% block body %}
     <table>
         <tr>
-            <td class="report-header"><h3>Registro: <strong> ${(dao.registro_numerazione).replace("_"," ").capitalize()}</strong></h3></td>
-            <td class="report-header"><h3>Numero: <strong>${dao.numero} ${dao.parte}</strong></h3></td>
+            <td class="report-header"><h3>Registro: <strong> {{(dao.registro_numerazione).replace("_"," ").capitalize()}}</strong></h3></td>
+            <td class="report-header"><h3>Numero: <strong>{{dao.numero}} {{dao.parte}}</strong></h3></td>
 	</tr>
         <tr>
             <td width="50%">
@@ -28,24 +14,24 @@ from promogest.Environment import conf
                     <tr>
                         <td width="140px" class="even-detail">Operazione</td>
                         <td class="odd-detail">
-                            <strong> ${dao.operazione}</strong></td>
+                            <strong> {{dao.operazione}}</strong></td>
                     </tr>
                     <tr>
                         <td class="even-detail">Data documento</td>
                         <td class="odd-detail">
-                            <strong> ${dao.data_documento.strftime('%d/%m/%Y')}</strong>
+                            <strong> {{dao.data_documento.strftime('%d/%m/%Y')}}</strong>
                         </td>
                     </tr>
                     <tr py:if="dao.id_cliente">
                         <td class="even-detail">Cliente</td>
                         <td class="odd-detail">
-                            <strong> ${dao.intestatario}</strong>
+                            <strong>{{dao.intestatario}}</strong>
                         </td>
                     </tr>
                     <tr py:if="dao.id_fornitore">
                         <td class="even-detail">Fornitore</td>
                         <td class="odd-detail">
-                            <strong>${dao.intestatario}</strong>
+                            <strong>{{dao.intestatario}}</strong>
                         </td>
                     </tr>
 	       </table>
@@ -57,15 +43,15 @@ from promogest.Environment import conf
                 </tr>
                 <tr>
                     <td width="140px" class="even-detail">Totale Imponibile:</td>
-                    <td class="odd-detail"><strong> ${ '%10.2f' % dao._totaleImponibileScontato}</strong></td>
+                    <td class="odd-detail"><strong> {{ '%10.2f' % dao._totaleImponibileScontato}}</strong></td>
                 </tr>
                 <tr>
                     <td class="even-detail">Totale Imposta:</td>
-                    <td class="odd-detail"><strong>${ '%10.2f' % dao._totaleImpostaScontata}</strong></td>
+                    <td class="odd-detail"><strong>{{ '%10.2f' % dao._totaleImpostaScontata}}</strong></td>
                 </tr>
                 <tr>
                     <td class="even-detail">Totale:</td>
-                    <td class="odd-detail"><strong>${ '%10.2f' % dao._totaleScontato}</strong></td>
+                    <td class="odd-detail"><strong>{{ '%10.2f' % dao._totaleScontato}}</strong></td>
                 </tr>
 	       <tr>
                     <td></td>
@@ -80,9 +66,9 @@ from promogest.Environment import conf
             <tr>
                 <td colspan="2" class="even-detail">Magazzino</td>
                 <td class="even-detail">Articolo</td>
-		<td colspan="2" class="even-detail">Listino</td>
-		<td colspan="2" class="even-number">Prezzo</td>
-		<td colspan="2" class="even-number">Quantita'</td>
+        <td colspan="2" class="even-detail">Listino</td>
+        <td colspan="2" class="even-number">Prezzo</td>
+        <td colspan="2" class="even-number">Quantita'</td>
                 <td colspan="2" class="even-number">Multiplo</td>
                 <td colspan="2" class="even-number">% Iva</td>
                 <td colspan="3" class="even-number">Totale</td>
@@ -91,17 +77,19 @@ from promogest.Environment import conf
 
 <!--                TOTALI ${dao.totali} -->
 
-            <tr py:for="riga in dao.righe">
 
-		<td colspan="2" class="odd-detail"><light>${(riga.magazzino or '')[:25]}</light></td>
-		<td class="odd-detail"><light>${(riga.descrizione or '')[:45]}</light></td>
- 		<td class="odd-detail" colspan="2"><light>${riga.listino}</light></td>
-		<td class="odd-number" colspan="2"><light>${str(conf.number_format) % riga.valore_unitario_netto}</light></td>
-		<td class="odd-number" colspan="2" ><light>${conf.number_format % (riga.quantita * riga.moltiplicatore)}</light></td>
-		<td class="odd-number" colspan="2"><light>${riga.multiplo}</light></td>
-		<td class="odd-number" colspan="2"><light>${conf.number_format % riga.percentuale_iva}</light></td>
-		<td class="odd-number" colspan="3"><strong>${'%10.2f' % round(( riga.quantita*  riga.moltiplicatore * riga.valore_unitario_netto ), 2)}</strong></td>
+        {% for riga in dao.righe %}
+            <tr >
+                <td colspan="2" class="odd-detail">{{(riga.magazzino or '')[:25]}}</td>
+                <td class="odd-detail">{{(riga.descrizione or '')[:45]}}</td>
+                <td class="odd-detail" colspan="2">{{riga.listino}}</td>
+                <td class="odd-number" colspan="2">{{environment.conf.number_format % riga.valore_unitario_netto}}</td>
+                <td class="odd-number" colspan="2" >{{environment.conf.number_format % (riga.quantita * riga.moltiplicatore)}}</td>
+                <td class="odd-number" colspan="2">{{riga.multiplo}}</td>
+                <td class="odd-number" colspan="2">{{environment.conf.number_format % riga.percentuale_iva}}</td>
+                <td class="odd-number" colspan="3">{{utils.mN(( riga.quantita*  riga.moltiplicatore * riga.valore_unitario_netto ),2)}}</td>
             </tr>
+            {% endfor %}
         </table>
 
 <table>
@@ -110,15 +98,15 @@ from promogest.Environment import conf
         <tr><td colspan="6" class="table-header">Pagamento </td></tr>
             <tr>
                 <td width="140px" class="even-detail">Pagamento</td>
-                <td class="odd-detail"><strong>${dao.pagamento}</strong></td>
+                <td class="odd-detail"><strong>{{dao.pagamento}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Banca</td>
-                <td class="odd-detail"><strong>${dao.banca}</strong></td>
+                <td class="odd-detail"><strong>{{dao.banca}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Aliquota esenzione</td>
-                <td class="odd-detail"><strong>${dao.aliquota_iva_esenzione}</strong></td>
+                <td class="odd-detail"><strong>{{dao.aliquota_iva_esenzione}}</strong></td>
             </tr>
 	</table>
 </td><td width="50%">
@@ -126,15 +114,15 @@ from promogest.Environment import conf
             <tr><td colspan="6" class="table-header">Aspetto beni</td></tr>
             <tr>
                 <td width="175px" class="even-detail">Aspetto esteriore beni</td>
-                <td class="odd-detail"><strong>${dao.aspetto_esteriore_beni}</strong></td>
+                <td class="odd-detail"><strong>{{dao.aspetto_esteriore_beni}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Totale colli</td>
-                <td class="odd-detail"><strong>${dao.totale_colli}</strong></td>
+                <td class="odd-detail"><strong>{{dao.totale_colli}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Totale peso</td>
-                <td class="odd-detail"><strong>${dao.totale_peso}</strong></td>
+                <td class="odd-detail"><strong>{{dao.totale_peso}}</strong></td>
             </tr>
 	</table>
 </td></tr>
@@ -145,32 +133,32 @@ from promogest.Environment import conf
             <td class="even-detail" colspan="2">Totale Sospeso</td>
             <td class="odd-detail">
                 <strong py:if="conf.hasPagamenti == True">
-                    <strong>${dao.totale_sospeso}</strong></strong></td>
+                    <strong>{{dao.totale_sospeso}}</strong></strong></td>
             <td class="even-detail" colspan="2">Totale Pagato</td>
             <td class="odd-detail">
                 <strong py:if="conf.hasPagamenti == True">
-                    <strong>${dao.totale_pagato}</strong></strong></td>
+                    <strong>{{dao.totale_pagato}}</strong></strong></td>
         </tr>
     </table>
 	<table cellpadding="0" cellspacing="0" border="0">
             <tr><td colspan="6" class="table-header">Trasporto</td></tr>
             <tr>
                 <td class="even-detail">Incaricato trasporto</td>
-                <td class="odd-detail" width="150px"><strong> ${dao.incaricato_trasporto}</strong></td>
+                <td class="odd-detail" width="150px"><strong>{{dao.incaricato_trasporto}}</strong></td>
                 <td class="even-detail" colspan="2">Vettore</td>
-                <td class="odd-detail" colspan="2"><strong>${dao.ragione_sociale_vettore}</strong></td>
+                <td class="odd-detail" colspan="2"><strong>{{dao.ragione_sociale_vettore}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Inizio trasporto</td>
                 <td class="odd-detail">
                     <strong py:if="dao.inizio_trasporto is not None">
-                        <strong>${dao.inizio_trasporto.strftime('%d/%m/%Y %H:%M')}</strong>
+                        <strong>{{utils.dateTimeToString(dao.inizio_trasporto)}}</strong>
                     </strong>
                 </td>
     		<td class="even-detail" colspan="2">Fine trasporto</td>
                 <td class="odd-detail" colspan="2">
                     <strong py:if="dao.fine_trasporto is not None">
-                        <strong>${dao.fine_trasporto.strftime('%d/%m/%Y %H:%M')}</strong>
+                        <strong>{{utils.dateTimeToString(dao.fine_trasporto)}}</strong>
                     </strong>
                 </td>
             </tr>
@@ -180,19 +168,19 @@ from promogest.Environment import conf
             </tr>
             <tr>
                 <td class="even-detail" width="150px">Destinazione</td>
-                <td class="odd-detail"><strong>${dao.destinazione_merce}</strong></td>
+                <td class="odd-detail"><strong>{{dao.destinazione_merce}}</strong></td>
                 <td class="even-detail" width="80px">Indirizzo</td>
-                <td class="odd-detail" colspan="3"><strong>${dao.indirizzo_destinazione_merce}</strong></td>
+                <td class="odd-detail" colspan="3"><strong>{{dao.indirizzo_destinazione_merce}}</strong></td>
             </tr>
             <tr>
-                <td class="even-detail">Località</td>
+                <td class="even-detail">Localita'</td>
                 <td class="odd-detail">
-                    <strong>${dao.localita_destinazione_merce}</strong>
+                    <strong>{{dao.localita_destinazione_merce}}</strong>
                 </td>
                 <td class="even-detail">CAP</td>
-                <td class="odd-detail"><strong>${dao.cap_destinazione_merce}</strong></td>
+                <td class="odd-detail"><strong>{{dao.cap_destinazione_merce}}</strong></td>
                 <td class="even-detail">Provincia</td>
-                <td class="odd-detail" width="50px"><strong>${dao.provincia_destinazione_merce}</strong></td>
+                <td class="odd-detail" width="50px"><strong>{{dao.provincia_destinazione_merce}}</strong></td>
             </tr>
 
         </table>
@@ -202,20 +190,19 @@ from promogest.Environment import conf
             </tr>
             <tr>
                 <td width="50px" class="even-detail">Note interne</td>
-                <td width="150px" class="odd-detail"><strong>${dao.note_interne}</strong></td>
+                <td width="150px" class="odd-detail"><strong>{{dao.note_interne}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Note pie' pagina</td>
-                <td class="odd-detail"><strong>${dao.note_pie_pagina}</strong></td>
+                <td class="odd-detail"><strong>{{dao.note_pie_pagina}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Causale trasporto</td>
-                <td class="odd-detail"><strong>${dao.causale_trasporto}</strong></td>
+                <td class="odd-detail"><strong>{{dao.causale_trasporto}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Protocollo</td>
-                <td class="odd-detail"><strong>${dao.protocollo}</strong></td>
+                <td class="odd-detail"><strong>{{dao.protocollo}}</strong></td>
             </tr>
         </table>
-    </body>
-</html>
+{% endblock %}

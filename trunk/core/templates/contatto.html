@@ -1,16 +1,9 @@
-<html   xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:py="http://genshi.edgewall.org/"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
-        lang="en">
-    <head>
-        <title>Dettaglio Contatto</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <xi:include href="style.css"><xi:fallback/></xi:include>
-    </head>
-    <body>
+{% extends 'index.html' %}
+
+{% block body %}
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
-                <td class="report-header" colspan="4"><h3>Contatto: <strong>${dao.tipo_contatto}</strong></h3></td>
+                <td class="report-header" colspan="4"><h3>Contatto: <strong>{{dao.tipo_contatto}}</strong></h3></td>
             </tr>
 <tr><td width="60%">
         <table cellpadding="0" cellspacing="0" border="0">
@@ -18,55 +11,35 @@
             <tr><td colspan="2" class="table-header">Dati contatto</td></tr>
             <tr>
                 <td width="120px" class="odd-detail">Cognome</td>
-                <td class="odd-detail"><strong>${dao.cognome}</strong></td>
+                <td class="odd-detail"><strong>{{dao.cognome}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Nome</td>
-                <td class="even-detail"><strong>${dao.nome}</strong></td>
+                <td class="even-detail"><strong>{{dao.nome}}</strong></td>
             </tr>
             <tr>
                 <td class="odd-detail">Ruolo</td>
-                <td class="odd-detail"><strong>${dao.ruolo}</strong></td>
+                <td class="odd-detail"><strong>{{dao.ruolo}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Descrizione</td>
-                <td class="even-detail"><strong>${dao.descrizione}</strong></td>
+                <td class="even-detail"><strong>{{dao.descrizione}}</strong></td>
             </tr>
-            <!--<?python
-            try:
-                appartenenza = getattr(dao,dao.tipo_contatto)
-            except AttributeError:
-                appartenenza = getattr(dao,'appartenenza')
-            ?>-->
             <tr>
                 <td class="odd-detail">Appartenenza</td>
-                <td class="odd-detail"><strong>${dao.appartenenza}</strong></td>
+                <td class="odd-detail"><strong>{{dao.appartenenza}}</strong></td>
             </tr>
 	</table>
 </td>
 <td width="40%" rowspan="4">
 	<table  cellpadding="0" cellspacing="0" border="0">
             <tr><td colspan="2" class="table-header">Recapiti contatto</td></tr>
-
-            <?python
-            	odd = True
-            ?>
-            <tr py:for="recapito in dao.recapiti">
-
-<!--  ## use this to alternate detail colors in <td class> -->
-<!--		<?python
-		if odd:
-			currentClass="odd-detail"
-			odd = False
-		else:
-			currentClass="even-detail"
-			odd = True
-		?>-->
-
-               	<td class = "even-detail">${recapito.tipo_recapito}</td>
-                <td class = "even-detail"><strong>${recapito.recapito}</strong></td>
+            {% for recapito in dao.recapiti %}
+            <tr >
+               	<td class = "even-detail">{{recapito.tipo_recapito}}/td>
+                <td class = "even-detail"><strong>{{recapito.recapito}}</strong></td>
             </tr>
-
+            {% endfor %}
         </table>
 </td></tr>
 </table>
@@ -75,8 +48,7 @@
            	<td class="table-header">Note</td>
 	   </tr>
            <tr>
-		<td class="odd-detail"><strong>${dao.note}</strong></td>
+		<td class="odd-detail"><strong>{{dao.note}}</strong></td>
            </tr>
 	</table>
-    </body>
-</html>
+{% endblock %}

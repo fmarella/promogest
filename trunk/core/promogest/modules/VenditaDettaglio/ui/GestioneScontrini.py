@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -8,7 +8,6 @@
 import gtk, gobject
 import os, popen2
 import gtkhtml2
-from genshi.template import TemplateLoader
 from promogest.dao.DaoUtils import giacenzaSel
 from datetime import datetime, timedelta
 from promogest import Environment
@@ -18,6 +17,10 @@ from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.ui.utils import *
+from promogest.ui import utils
+from promogest.lib.jinja2.jinja2 import Environment  as Env
+from promogest.lib.jinja2.jinja2 import FileSystemLoader,FileSystemBytecodeCache
+
 
 class GestioneScontrini(GladeWidget):
     """ Classe per la gestione degli scontrini emessi """
@@ -217,10 +220,15 @@ class GestioneScontrini(GladeWidget):
             html = '<html></html>'
         else:
             templates_dir = self._htmlTemplate
-            loader = TemplateLoader([templates_dir])
-            tmpl = loader.load(self.defaultFileName)
-            stream = tmpl.generate(dao=self.dao)
-            html = stream.render('xhtml')
+            #loader = TemplateLoader([templates_dir])
+            jinja_env = Env(loader=FileSystemLoader(templates_dir),
+                bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
+            jinja_env.globals['environment'] = Environment
+            jinja_env.globals['utils'] = utils
+            #tmpl = loader.load(self.defaultFileName)
+            #stream = tmpl.generate(dao=self.dao)
+            #html = stream.render('xhtml')
+            html = jinja_env.get_template(self.defaultFileName).render(dao=self.dao)
         document.open_stream('text/html')
         document.write_stream(html)
         document.close_stream()

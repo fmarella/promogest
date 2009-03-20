@@ -1,13 +1,5 @@
-<html   xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:py="http://genshi.edgewall.org/"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
-        lang="en">
-    <head>
-        <title>Report Agenti</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <xi:include href="style.css"><xi:fallback/></xi:include>
-    </head>
-    <body>
+{% extends 'index.html' %}
+{% block body %}
         <table cellpadding="0" cellspacing="3" border="0">
             <tr>
                 <th>Codice</th>
@@ -15,11 +7,12 @@
                 <th>Descrizione</th>
             </tr>
             <tr><td colspan="3"><hr /></td></tr>
-            <tr py:for="dao in objects">
-                <td class="detail">${dao.codice}</td>
-                <td class="detail">${dao.denominazione_breve}</td>
-                <td class="detail">${dao.denominazione}</td>
+            {% for dao in objects %}
+            <tr class="row">
+                <td class="detail">{{dao.codice}}</td>
+                <td class="detail">{{dao.denominazione_breve}}</td>
+                <td class="detail">{{dao.denominazione}}</td>
             </tr>
+            {% endfor %}
         </table>
-    </body>
-</html>
+{% endblock %}

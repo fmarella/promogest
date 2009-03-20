@@ -1,12 +1,5 @@
-<html
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:py="http://genshi.edgewall.org/"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
-        lang="en">
-    <head>
-        <title>Dettaglio listino</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <xi:include href="style.css"><xi:fallback/></xi:include>
+<html>
+        {% include 'style.css' with context %}
     </head>
     <body>
         <table cellpadding="3" cellspacing="5" border="0">
@@ -18,18 +11,19 @@
                 <th>CODICE A BARRE</th>
             </tr>
             <tr><td colspan="5"><hr /></td></tr>
-            <tr py:for="dao in datas">
-                <td class="detail" py:content="dao[0].denominazione_gruppo_taglia"></td>
-                <td class="detail" py:content="dao[2].denominazione"></td>
-                <td class="detail" py:content="dao[1].denominazione"></td>
-                <py:if test="dao[4] !=None">
-                <td class="detail" py:content="dao[4].denominazione"></td>
-                </py:if>
-                <py:if test="dao[4] ==None">
-                <td class="detail" py:content="dao[4]"></td>
-                </py:if>
-                <td class="detail" py:content="dao[3]"></td>
+            {% for dao in datas %}
+            <tr>
+                <td class="detail" >{{dao[0].denominazione_gruppo_taglia }}</td>
+                <td class="detail" >{{dao[2].denominazione}}</td>
+                <td class="detail">{{dao[1].denominazione}}</td>
+                {% if dao[4] %}
+                <td class="detail">{{dao[4].denominazione}}</td>
+                {% else %}
+                <td class="detail">{{dao[4]}}</td>
+                {% endif %}
+                <td class="detail">{{dao[3]}}</td>
             </tr>
+            {% endfor %}
         </table>
     </body>
 </html>

@@ -1,13 +1,5 @@
-<html   xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:py="http://genshi.edgewall.org/"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
-        lang="en">
-    <head>
-        <title>Dettaglio movimento di magazzino</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <xi:include href="style.css"><xi:fallback/></xi:include>
-    </head>
-    <body>
+{% extends 'index.html' %}
+{% block body %}
         <table cellpadding="0" cellspacing="4" border="0">
             <tr>
                 <th>Data scadenza</th>
@@ -21,17 +13,18 @@
                 <th>Riferimento</th>
             </tr>
             <tr><td colspan="9"><hr /></td></tr>
-            <tr py:for="dao in objects">
-                <td class="detail">${dao.data_scadenza.strftime('%d/%m/%Y %H:%M')}</td>
-                <td class="detail">${dao.data_inserimento.strftime('%d/%m/%Y %H:%M')}</td>
-                <td class="detail">${dao.oggetto}</td>
-                <td class="detail">${dao.incaricato}</td>
-                <td class="detail">${dao.autore}</td>
-                <td class="detail">${dao.completato}</td>
-                <td class="detail">${dao.scaduto}</td>
-                <td class="detail">${dao.in_scadenza}</td>
-                <td class="detail">${dao.riferimento}</td>
+            {% for dao in objects %}
+            <tr class="row">
+                <td class="detail">{{utils.dateTimeToString(dao.data_scadenza)}}</td>
+                <td class="detail">{{utils.dateTimeToString(dao.data_inserimento)}}</td>
+                <td class="detail">{{dao.oggetto}}</td>
+                <td class="detail">{{dao.incaricato}}</td>
+                <td class="detail">{{dao.autore}}</td>
+                <td class="detail">{{dao.completato}}</td>
+                <td class="detail">{{dao.scaduto}}</td>
+                <td class="detail">{{dao.in_scadenza}}</td>
+                <td class="detail">{{dao.riferimento}}</td>
             </tr>
+            {% endfor %}
         </table>
-    </body>
-</html>
+{% endblock %}

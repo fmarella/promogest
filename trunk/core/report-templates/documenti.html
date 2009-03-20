@@ -1,19 +1,5 @@
-<html   xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:py="http://genshi.edgewall.org/"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
-        lang="en">
-    <head>
-        <title>Report Agenti</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <xi:include href="style.css"><xi:fallback/></xi:include>
-<style type='text/css'>
-@page {
-size: A4 landscape;
-margin: 1cm;
-}
-</style>
-    </head>
-    <body>
+{% extends 'index.html' %}
+{% block body %}
         <table cellpadding="0" cellspacing="3" border="0">
             <tr>
                 <th>Numero/Parte</th>
@@ -28,85 +14,43 @@ margin: 1cm;
                 <th>Pagamento</th>
                 <th>Banca</th>
             </tr>
-            <tr class="row" py:for="dao in objects">
-                <?python
-                    cliente = dao.ragione_sociale_cliente or ''
-                    if cliente == '':
-                        cliente = (dao.cognome_cliente or '') + ' ' + (dao.nome_cliente or '')
-                ?>
-                <?python
-                    fornitore = dao.ragione_sociale_fornitore or ''
-                    if fornitore == '':
-                        fornitore = (dao.cognome_fornitore or '') + ' ' + (dao.nome_fornitore or '')
-                    try:
-                        totale_imponibile = dao._totaleImponibile
-                    except:
-                        totale_imponibile = 0
-                    try:
-                        totale_imposta = dao._totaleImposta
-                    except:
-                        totale_imposta = 0
-                    try:
-                        totale = dao._totaleNonScontato
-                    except:
-                        totale = 0
-                ?>
-               
-                <td class="detail">${str(dao.numero) + ' ' + (dao.parte or '')}</td>
-                <td class="detail">${dao.operazione} ${fornitore}</td>
-                <td class="detail">${dao.data_documento.strftime('%d/%m/%Y')}</td>
-                <td class="detail">${dao.intestatario}</td>
-                <td class="detail">${totale_imponibile}</td>
-                <td class="detail">${totale_imposta}</td>
-                <td class="detail">${totale}</td>
-                <td class="detail">${dao.totale_sospeso}</td>
-                <td class="detail">${dao.totale_pagato}</td>
-                <td class="detail">${dao.pagamento}</td>
-                <td class="detail">${dao.banca} </td>
+            {% for dao in objects %}
+            <tr class="row">
+                <td class="detail">{{dao.numero|string + ' ' + (dao.parte or '')|string}}</td>
+
+                <td class="detail">{{dao.operazione}}</td>
+                <td class="detail">{{utils.dateToString(dao.data_documento)}}</td>
+                <td class="detail">{{dao.intestatario}}</td>
+                <td class="detail">{{dao._totaleImponibile}}</td>
+                <td class="detail">{{dao._totaleImposta}}</td>
+                <td class="detail">{{dao._totaleNonScontato}}</td>
+                <td class="detail">{{dao.totale_sospeso}}</td>
+                <td class="detail">{{dao.totale_pagato}}</td>
+                <td class="detail">{{dao.pagamento}}</td>
+                <td class="detail">{{dao.banca}}</td>
             </tr>
+            {% endfor %}
             <tr>
-                <th>TOTALE IMPONIBILE</th>
-                <th>TOTALE IMPOSTA</th>
-                <th>TOTALE GENERALE</th>
-                <th>SOSPESO</th>
-                <th>PAGATO</th>
+                <th>TOTALE IMPONIBILE NON SCONTATO</th>
+                <th>TOTALE IMPOSTA NON SCONTATA</th>
+                <th>TOTALE GENERALE NON SCONTATO </th>
+                <th>TOTALE IMPONIBILE SCONTATO</th>
+                <th>TOTALE IMPOSTA SCONTATA </th>
+                <th>TOTALE GENERALE SCONTATO</th>
+                <th>TOTALE SOSPESO</th>
+                <th>TOTALE PAGATO</th>
             </tr>
-                <?python
-                    totale_imponibile = 0
-                    totale_imposta = 0
-                    totale = 0
-                    sospeso = 0
-                    pagato = 0
-                    for tot in objects:
-                        try:
-                            totale_imponibile=totale_imponibile+tot._totaleImponibile
-                        except:
-                            pass
-                        try:
-                            totale_imposta=totale_imposta+tot._totaleImposta
-                        except:
-                            pass
-                        try:
-                            totale=totale+tot._totaleNonScontato
-                        except:
-                            pass
-                        try:
-                            sospeso=sospeso+tot.totale_sospeso
-                        except:
-                            pass
-                        try:
-                            pagato=pagato+tot.totale_pagato
-                        except:
-                            pass
-                ?>
+            {% set tot = utils.calcolaTotali(objects) %}
             <tr>
-            <td class="detail">${totale_imponibile}</td>
-            <td class="detail">${totale_imposta}</td>
-            <td class="detail">${totale}</td>
-            <td class="detail">${sospeso}</td>
-            <td class="detail">${pagato}</td>
+            <td class="detail">{{tot["totale_imponibile_non_scontato"]}}</td>
+            <td class="detail">{{tot["totale_imposta_non_scontata"]}}</td>
+            <td class="detail">{{tot["totale_non_scontato"]}}</td>
+            <td class="detail">{{tot["totale_imponibile_scontato"]}}</td>
+            <td class="detail">{{tot["totale_imposta_scontata"]}}</td>
+            <td class="detail">{{tot["totale_scontato"]}}</td>
+            <td class="detail">{{tot["totale_sospeso"]}}</td>
+            <td class="detail">{{tot["totale_pagato"]}}</td>
+
             </tr>
         </table>
-
-    </body>
-</html>
+{% endblock %}

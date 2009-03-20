@@ -1,47 +1,36 @@
-<html
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:py="http://genshi.edgewall.org/"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
-        lang="en">
-    <head>
-        <title>Dettaglio promemoria</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <xi:include href="style.css"><xi:fallback/></xi:include>
-    </head>
-    <body>        
+{% extends 'index.html' %}
+
+{% block body %}
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>
-                <td width="50%" class="report-header"><h3>Incaricato: <strong>${dao.incaricato}</strong></h3></td>
-    		<td class="report-header"><h3>Data scadenza: <strong>${dao.data_scadenza.strftime('%d/%m/%Y %H:%M')}</strong></h3></td>
+                <td width="50%" class="report-header"><h3>Incaricato: <strong>{{dao.incaricato}}</strong></h3></td>
+    		<td class="report-header"><h3>Data scadenza: <strong>{{utils.dateTimeToString(dao.data_scadenza)}}</strong></h3></td>
             </tr>
             <tr>
-                <td class="report-header" colspan="2"><h3>Oggetto: <strong py:content="dao.oggetto"></strong></h3></td>
+                <td class="report-header" colspan="2"><h3>Oggetto: <strong>{{dao.oggetto}}</strong></h3></td>
             </tr>
 </table>
   <table cellpadding="0" cellspacing="0" border="0">
             <tr><td class="table-header">Descrizione</td></tr>
-            <tr><td class="odd-detail"><strong>${dao.descrizione}</strong></td></tr>
+            <tr><td class="odd-detail"><strong>{{dao.descrizione}}</strong></td></tr>
 </table>
    <table cellpadding="0" cellspacing="0" border="0">
             <tr><td colspan="3" class="table-header">Informazioni promemoria</td></tr>
             <tr>
                 <td width="140px" class="odd-detail">Data inserimento</td>
-                <td colspan="2" class="odd-detail"><strong>${dao.data_inserimento.strftime('%d/%m/%Y %H:%M')}</strong></td>
+                <td colspan="2" class="odd-detail"><strong>{{utils.dateTimeToString(dao.data_inserimento)}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Autore</td>
-                <td colspan="2" class="even-detail"><strong>${dao.autore}</strong></td>
+                <td colspan="2" class="even-detail"><strong>{{dao.autore}}</strong></td>
             </tr>
             <tr>
                 <td class="odd-detail">Riferimento</td>
-                <td colspan="2" class="odd-detail"><strong>${dao.riferimento}</strong></td>
+                <td colspan="2" class="odd-detail"><strong>{{dao.riferimento}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Annotazioni</td>
-                <td colspan="2" class="even-detail"><strong>${dao.annotazione}</strong></td>
+                <td colspan="2" class="even-detail"><strong>{{dao.annotazione}}</strong></td>
             </tr>
-
         </table>
-
-    </body>
-</html>
+{% endblock %}

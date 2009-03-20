@@ -1,37 +1,27 @@
-<html
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:py="http://genshi.edgewall.org/"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
-        lang="en">
-    <head>
-        <title>Dettaglio multiplo</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <xi:include href="style.css"><xi:fallback/></xi:include>
-    </head>
-    <body>
+{% extends 'index.html' %}
+
+{% block body %}
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>
-                <td class="report-header" colspan="2"><h3>Multiplo: <strong>${dao.denominazione}</strong></h3></td>
+                <td class="report-header" colspan="2"><h3>Multiplo: <strong>{{dao.denominazione}}</strong></h3></td>
             </tr>
             <tr><td colspan="2" class="table-header">Caratteristiche</td></tr>
             <tr>
                 <td width="140px" class="odd-detail">Unità base</td>
-                <td class="odd-detail"><strong>${dao.unita_base}</strong></td>
+                <td class="odd-detail"><strong>{{dao.unita_base}}</strong></td>
             </tr>
 
             <tr>
                 <td class="even-detail">Descrizione breve</td>
-                <td class="even-detail"><strong>${dao.denominazione_breve}</strong></td>
+                <td class="even-detail"><strong>{{dao.denominazione_breve}}</strong></td>
             </tr>
             <tr>
                 <td class="odd-detail">Moltiplicatore</td>
-                <td class="odd-detail"><strong>${'%14.2f' % dao.moltiplicatore}</strong></td>
+                <td class="odd-detail"><strong>{{'%14.2f' % dao.moltiplicatore}}</strong></td>
             </tr>
             <tr py:if="dao.articolo is not None">
                 <td class="even-detail">Associato ad articolo</td>
-                <td class="even-detail"><strong>${dao.articolo}</strong></td>
+                <td class="even-detail"><strong>{{dao.articolo}}</strong></td>
             </tr>
         </table>
-
-    </body>
-</html>
+{% endblock %}

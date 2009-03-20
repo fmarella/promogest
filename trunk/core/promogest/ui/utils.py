@@ -2060,3 +2060,56 @@ def removeCodBarorphan():
         for a in bc:
             print "CODICE A BARRE ORFANO DI ARTICOLO, VERRA' ELIMINATO", a.codice
             a.delete()
+
+def calcolaTotali(daos):
+    totale_imponibile_non_scontato = 0
+    totale_imponibile_scontato = 0
+    totale_imposta_non_scontata = 0
+    totale_imposta_scontata = 0
+    totale_non_scontato = 0
+    totale_scontato = 0
+    totale_sospeso = 0
+    totale_pagato = 0
+    for tot in daos:
+        try:
+            totale_imponibile_non_scontato = totale_imponibile_non_scontato + tot._totaleImponibile
+        except:
+            pass
+        try:
+            totale_imposta_non_scontata=totale_imposta_non_scontata +tot._totaleImposta
+        except:
+            pass
+        try:
+            totale_non_scontato=totale_non_scontato+tot._totaleNonScontato
+        except:
+            pass
+        try:
+            totale_scontato=totale_scontato+tot._totaleScontato
+        except:
+            pass
+        try:
+            totale_imponibile_scontato=totale_imponibile_scontato+tot._totaleImponibileScontato
+        except:
+            pass
+        try:
+            totale_imposta_scontata=totale_imposta_scontata+tot._totaleImpostaScontata
+        except:
+            pass
+        try:
+            totale_sospeso=totale_sospeso+tot.totale_sospeso
+        except:
+            pass
+        try:
+            totale_pagato=totale_pagato+tot.totale_pagato
+        except:
+            pass
+    totaliGenerali = { "totale_imponibile_non_scontato":totale_imponibile_non_scontato,
+                        "totale_imponibile_scontato":totale_imponibile_scontato,
+                        "totale_imposta_scontata":totale_imposta_scontata,
+                        "totale_imposta_non_scontata":totale_imposta_non_scontata,
+                        "totale_non_scontato" :totale_non_scontato,
+                        "totale_scontato":totale_scontato,
+                        "totale_pagato":totale_pagato,
+                        "totale_sospeso": totale_sospeso}
+    return totaliGenerali
+
