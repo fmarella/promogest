@@ -129,13 +129,17 @@ def approxValue(value, decimals):
     return ((value != '' and value is not None) and (format % (value or 0.0)) or '')
 
 
-def itformatValue(value):
+def itformatValue(value,tronca=False):
     """
     Convert the dates of the element into strings with italian
     datetime format
     """
+    print "valueeeeeeeeeeeeeeeeeeeeeeeee",value
     if isinstance(value, datetime.datetime):
-        return value.strftime('%d/%m/%Y, ore %H:%M')
+        if tronca:
+            return value.strftime('%d/%m/%Y')
+        else:
+            return value.strftime('%d/%m/%Y, ore %H:%M')
     elif isinstance(value, datetime.date):
         return value.strftime('%d/%m/%Y')
     elif isinstance(value, datetime.time):

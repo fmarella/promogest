@@ -68,7 +68,7 @@ class SlaTpl2Sla(object):
         self.pdfFolder = pdfFolder
         self.pdfFileName = '_temp'
         self.slaTempFileName = '_temp.sla'
-        self.formatFunctions = ['trunc','approx','itformat', 'bcview']
+        self.formatFunctions = ['trunc','approx','itformat','itformatdataora','itformatdata', 'bcview']
         self.timeTags = ['date','time','datetime']
         self.positionTags = ['first','last']
         self.pageTags = ['currentPage','totalPage']
@@ -851,7 +851,6 @@ class SlaTpl2Sla(object):
         """
         value = value or ''
         parameter = parameter or ''
-
         if functionName == 'trunc':
             if value == '' or parameter == '':
                 return ''
@@ -862,11 +861,18 @@ class SlaTpl2Sla(object):
                 return ''
             else:
                 return Sla2pdfUtils.approxValue(value, int(parameter))
-        elif functionName == 'itformat':
+        elif functionName == 'itformat' or functionName == 'itformatdataora':
+            print "OOOOOOOOOOOOOOOOOOOOOOOOOPPPPPPPPPPPP"
             if value == '':
                 return ''
             else:
                 return Sla2pdfUtils.itformatValue(value)
+        elif functionName == 'itformatdata':
+            print "IIIIIIIIIIIIIIIIIIIIIIIIIIII"
+            if value == '':
+                return ''
+            else:
+                return Sla2pdfUtils.itformatValue(value,tronca=True)
         elif functionName == 'bcview':
             if value == '':
                 return ''
@@ -913,7 +919,7 @@ class SlaTpl2Sla(object):
 
     def scribusVersion(self):
         slaversion = self.root.get('Version')
-        if slaversion == "1.3.4":
+        if slaversion == "1.3.4" or "1.3.5svn":
             version=True
         else:
             version = False
