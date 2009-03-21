@@ -1056,21 +1056,33 @@ del documento.
         join = None
         if self.ricerca_codice_button.get_active():
             codice = self.articolo_entry.get_text()
-            orderBy = Environment.params["schema"]+".articolo.codice"
+            if Environment.tipo_eng =="sqlite":
+                orderBy = "articolo.codice"
+            else:
+                orderBy = Environment.params["schema"]+".articolo.codice"
             batchSize = Environment.conf.batch_size
         elif self.ricerca_codice_a_barre_button.get_active():
             codiceABarre = self.articolo_entry.get_text()
             join= Articolo.cod_barre
-            orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
+            if Environment.tipo_eng =="sqlite":
+                orderBy = "codice_a_barre_articolo.codice"
+            else:
+                orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
             batchSize = Environment.conf.batch_size
         elif self.ricerca_descrizione_button.get_active():
             denominazione = self.articolo_entry.get_text()
-            orderBy = Environment.params["schema"]+".articolo.denominazione"
+            if Environment.tipo_eng =="sqlite":
+                orderBy = "articolo.denominazione"
+            else:
+                orderBy = Environment.params["schema"]+".articolo.denominazione"
             batchSize = Environment.conf.batch_size
         elif self.ricerca_codice_articolo_fornitore_button.get_active():
             codiceArticoloFornitore = self.articolo_entry.get_text()
             join= Articolo.fornitur
-            orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
+            if Environment.tipo_eng =="sqlite":
+                orderBy = "fornitura.codice_articolo_fornitore"
+            else:
+                orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
             batchSize = Environment.conf.batch_size
 
         arts = Articolo().select(orderBy=orderBy,
@@ -1129,7 +1141,7 @@ del documento.
     def on_show_totali_riga(self, widget = None, event = None):
         """ calcola il prezzo netto """
 
-        self._righe[0]["quantita"] = Decimal(self.quantita_entry.get_text()) or 0
+        self._righe[0]["quantita"] = Decimal(self.quantita_entry.get_text().strip()) or 0
         self._righe[0]["prezzoLordo"] = Decimal(self.prezzo_lordo_entry.get_text()) or 0
         self._righe[0]["percentualeIva"] = Decimal(self.percentuale_iva_entry.get_text()) or 0
         self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()
