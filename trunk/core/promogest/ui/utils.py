@@ -1932,11 +1932,12 @@ def numeroRegistroGet(tipo=None, date=None):
                                 "giornaliera":"day"}
 
     if tipo == "Movimento":
-        numeroSEL = TestataMovimento().select(complexFilter=(and_(func.date_part("year", TestataMovimento.data_movimento)==date ,
+        numeroSEL = TestataMovimento()\
+            .select(complexFilter=(and_(TestataMovimento.data_movimento.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)) ,
                             TestataMovimento.registro_numerazione==registrovalue)), batchSize=None, orderBy="id")
 
     else:
-        numeroSEL = TestataDocumento().select(complexFilter=(and_(func.date_part("year", TestataDocumento.data_documento)==date ,
+        numeroSEL = TestataDocumento().select(complexFilter=(and_(TestataDocumento.data_documento.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)) ,
                         TestataDocumento.registro_numerazione==registrovalue)), batchSize=None, orderBy="id")
 
     if numeroSEL:

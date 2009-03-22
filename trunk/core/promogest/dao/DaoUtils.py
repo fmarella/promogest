@@ -20,10 +20,9 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None):
     from TestataMovimento import TestataMovimento
     from RigaMovimento import RigaMovimento
     from Riga import Riga
-
     righeArticoloMovimentate= params["session"]\
             .query(RigaMovimento,TestataMovimento)\
-            .filter(and_(func.date_part("year", TestataMovimento.data_movimento)==year))\
+            .filter(TestataMovimento.data_movimento.between(datetime.date(int(year), 1, 1), datetime.date(int(year) + 1, 1, 1)))\
             .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
             .filter(Riga.id_articolo==idArticolo)\
             .filter(Riga.id_magazzino==idMagazzino)\

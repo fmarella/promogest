@@ -1,17 +1,6 @@
-<?python
-from promogest.Environment import conf
-?>
-<html
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:py="http://genshi.edgewall.org/"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
-        lang="en">
-    <head>
-        <title>Dettaglio scontrino</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <xi:include href="style.css"><xi:fallback/></xi:include>
-    </head>
-    <body>
+{% extends 'index.html' %}
+
+{% block body %}
         <table cellpadding="0" cellspacing="4" border="0">
 <!-- 	<tr><td colspan="8" class="report-header">Dettaglio scontrino</td></tr> -->
 	<tr>
@@ -24,21 +13,25 @@ from promogest.Environment import conf
 		<td class="table-header">Prezzo Netto</td>
 		<td class="table-header">Totale</td>
         </tr>
-        <tr py:for="riga in dao.righe">
-            <td class="odd-detail">${riga.codice_articolo}</td>
-            <td class="odd-detail">${riga.codice_a_barre}</td>
-            <td class="odd-detail">${riga.descrizione[:20]}</td>
-            <td class="odd-number">${conf.number_format % (riga.quantita or 0)}</td>
-            <td class="odd-number">${conf.number_format % (riga.prezzo or 0)}</td>
-            <td class="odd-number" py:if="riga.tipo_sconto == 'percentuale'" py:with="tipoSconto = ' %'">
-                ${conf.number_format % (riga.valore_sconto or 0) + tipoSconto}
+            {% for riga in dao.righe %}
+            <tr class="row">
+            <td class="odd-detail">{{riga.codice_articolo}}</td>
+            <td class="odd-detail">{{riga.codice_a_barre}}</td>
+            <td class="odd-detail">{{riga.descrizione[:20]}}</td>
+            <td class="odd-number">{{environment.conf.number_format % (riga.quantita or 0)}}</td>
+            <td class="odd-number">{{environment.conf.number_format % (riga.prezzo or 0)}}</td>
+            {% if riga.tipo_sconto == 'percentuale' %}
+            <td class="odd-number">
+                {{environment.conf.number_format % (riga.valore_sconto or 0) + "%"}}
             </td>
-            <td class="odd-number" py:if="riga.tipo_sconto != 'percentuale'" py:with="tipoSconto = ''">
-                ${conf.number_format % (riga.valore_sconto or 0) + tipoSconto}
+            {% else%}
+            <td class="odd-number">
+                {{environment.conf.number_format % (riga.valore_sconto or 0) + " "}}
             </td>
-            <td class="odd-number">${conf.number_format % (riga.prezzo_scontato or 0)}</td>
-            <td class="odd-number"><strong>${conf.number_format % ( riga.quantita * riga.prezzo_scontato ) or 0}</strong></td>
+            {% endif %}
+            <td class="odd-number">{{environment.conf.number_format % (riga.prezzo_scontato or 0)}}</td>
+            <td class="odd-number"><strong>{{environment.conf.number_format % ( riga.quantita * riga.prezzo_scontato ) or 0}}</strong></td>
         </tr>
+            {% endfor %}
         </table>
-    </body>
-</html>
+{% endblock %}

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest
@@ -34,7 +34,6 @@ class AnagraficaMagazzini(Anagrafica):
                             reportHandler=AnagraficaMagazziniReport(self),
                             editElement=AnagraficaMagazziniEdit(self),
                             aziendaStr=aziendaStr)
-
 
 
 class AnagraficaMagazziniFilter(AnagraficaFilter):
@@ -74,12 +73,10 @@ class AnagraficaMagazziniFilter(AnagraficaFilter):
         if self._anagrafica._denominazione is not None:
             self._anagrafica.anagrafica_filter_treeview.grab_focus()
 
-
     def clear(self):
         # Annullamento filtro
         self.denominazione_filter_entry.set_text('')
         self.refresh()
-
 
     def refresh(self):
         # Aggiornamento TreeView
@@ -107,7 +104,9 @@ class AnagraficaMagazziniFilter(AnagraficaFilter):
         mags = self.runFilter()
 
         self._treeViewModel.clear()
-
+        if Environment.tipo_eng =="sqlite":
+            if len(mags) >1:
+                liss = mags[0]
         for m in mags:
             self._treeViewModel.append((m,
                                         (m.denominazione or '')))
@@ -150,12 +149,21 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = Magazzino()
+            if Environment.tipo_eng =="sqlite" and Magazzino().count() >=1:
+                self.destroy()
+                msg="STAI USANDO UNA VERSIONE BASE DI PROMOGEST2\n CHE GESTISCE UN SOLO MAGAZZINO"
+                dialog = gtk.MessageDialog(None,
+                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
+                dialog.run()
+                dialog.destroy()
+            else:
+                self.dao = Magazzino()
+                self._refresh()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Magazzino().getRecord(id=dao.id)
-        self._refresh()
-
+            self._refresh()
 
     def _refresh(self):
         self.denominazione_entry.set_text(self.dao.denominazione or '')
@@ -163,7 +171,6 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
         self.localita_entry.set_text(self.dao.localita or '')
         self.cap_entry.set_text(self.dao.cap or '')
         self.provincia_entry.set_text(self.dao.provincia or '')
-
 
     def saveDao(self):
         if (self.denominazione_entry.get_text() == ''):
@@ -174,6 +181,8 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
         self.dao.localita = self.localita_entry.get_text()
         self.dao.cap = self.cap_entry.get_text()
         self.dao.provincia = self.provincia_entry.get_text()
+        if Environment.tipo_eng =="sqlite" and Magazzino().count() >=1:
+            return
         self.dao.persist()
 
 

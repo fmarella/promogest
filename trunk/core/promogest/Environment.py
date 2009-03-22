@@ -39,7 +39,7 @@ from sqlalchemy.orm import *
 
 
 
-
+debugFilter = False
 debugDao = False
 debugSQL = False
 reportTemplatesDir = None
@@ -205,6 +205,13 @@ def set_configuration(company=None, year = None):
                 slas = glob.glob(os.path.join('.', 'templates', '*.sla'))
                 for s in slas:
                     shutil.copy(s, templatesDir)
+
+            #dataDir = promogestDir + 'data' + os.sep
+            #if not (os.path.exists(dataDir)):
+                #os.mkdir(dataDir)
+                #slas = glob.glob(os.path.join('.', 'data', '*.*'))
+                #for s in slas:
+                    #shutil.copy(s, dataDir)
 
             reportTemplatesDir = promogestDir + 'report-templates' + os.sep
             if not (os.path.exists(reportTemplatesDir)):
@@ -376,8 +383,9 @@ try:
     tipodb = conf.Database.tipodb
 except:
     tipodb = "postgresql"
-
-
+if tipodb == "sqlite" and not (os.path.exists("data/db")):
+    if os.path.exists("data/db.dist"):
+        shutil.copy("data/db.dist","data/db" )
 
 database = conf.Database.database
 port = conf.Database.port
@@ -389,18 +397,19 @@ userdata = ["","","",user]
 if tipodb == "sqlite":
     azienda = None
     mainSchema = None
-    engine =create_engine('sqlite:////home/vete/pg2_work/promogest_db')
+    engine =create_engine('sqlite:///data/db')
 else:
     mainSchema = "promogest2"
     azienda=conf.Database.azienda
-    engine = create_engine('postgres:'+'//'+conf.Database.user+':'
-                    + conf.Database.password+ '@'
-                    + conf.Database.host + ':'
-                    + conf.Database.port + '/'
-                    + conf.Database.database,
+    engine = create_engine('postgres:'+'//'
+                    +user+':'
+                    + password+ '@'
+                    + host + ':'
+                    + port + '/'
+                    + database,
                     encoding='utf-8',
                     convert_unicode=True )
-
+tipo_eng = engine.name
 engine.echo = debugSQL
 meta = MetaData(engine)
 Session = scoped_session(sessionmaker(bind=engine,autoflush=True))

@@ -354,7 +354,6 @@ class Anagrafica(GladeWidget):
             return
 
         dao = self.filter.getSelectedDao()
-        #dao.setConnection(Environment.connection)
         dao.delete()
         self.filter.refresh()
 
@@ -497,11 +496,14 @@ class Anagrafica(GladeWidget):
                     # dialog (going back to the main GTK loop)
                     gobject.idle_add(showPrintingDialog)
 
-                t = threading.Thread(group=None, target=renderingThread,
-                                     name='Data rendering thread', args=(),
-                                     kwargs={})
-                t.setDaemon(True) # FIXME: are we sure?
-                t.start()
+                if Environment.tipo_eng =="sqlite":
+                    renderingThread()
+                else:
+                    t = threading.Thread(group=None, target=renderingThread,
+                                        name='Data rendering thread', args=(),
+                                        kwargs={})
+                    t.setDaemon(True) # FIXME: are we sure?
+                    t.start()
 
 
         def fetchingThread(daos=None):
@@ -518,15 +520,15 @@ class Anagrafica(GladeWidget):
 
         # FIXME: unlocalized string!
         progressDialog.records_print_progress_bar.set_text('Lettura dati')
-        t = threading.Thread(group=None, target=fetchingThread,
-                             name='Data fetching thread', args=(),
-                             kwargs={'daos' : daos})
-        t.setDaemon(True) # FIXME: are we sure?
+        if Environment.tipo_eng =="sqlite":
+            fetchingThread(daos=daos)
+        else:
+            t = threading.Thread(group=None, target=fetchingThread,
+                                name='Data fetching thread', args=(),
+                                kwargs={'daos' : daos})
+            t.setDaemon(True) # FIXME: are we sure?
 
-        t.start()
-
-
-
+            t.start()
 
     def on_records_print_on_screen_activate(self, widget):
         previewDialog = self.reportHandler.buildPreviewWidget()
@@ -1365,8 +1367,6 @@ class AnagraficaPrintPreview(GladeWidget):
         returnWindow = self.bodyWidget.getTopLevel().get_toplevel()
         anagWindow.set_transient_for(returnWindow)
         anagWindow.show_all()
-        anagWindow.connect("destroy",
-                        on_records_print_dialog_close)
 
     def on_html_request_url(self,document, url, stream):
 

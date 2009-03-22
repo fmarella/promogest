@@ -85,7 +85,8 @@ class Listino(Dao):
         for mag in cleanMagazzini:
             mag.delete()
         params['session'].delete(self)
-        self.saveToLogApp(self)
+        params['session'].commit()
+        #self.saveToLogApp(self)
 
 
     def filter_values(self,k,v):

@@ -33,7 +33,7 @@ from promogest import Environment
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from promogest.dao.AppLog import AppLog
-from promogest.dao.Dao import Dao
+#from promogest.dao.Dao import Dao
 from GtkExceptionHandler import GtkExceptionHandler
 from utils import hasAction,on_status_activate
 from utilsCombobox import findComboboxRowFromStr
@@ -87,7 +87,6 @@ class Login(GladeApp):
         self.azienda_comboboxentry.set_model(model)
         self.azienda_comboboxentry.set_text_column(0)
         self.azienda_comboboxentry.set_active(0)
-
         #ATTENZIONE METTO COME RUOLO ADMIN PER IL MOMENTO RICONTROLLARE
         model_usr = gtk.ListStore(str, str)
         model_usr.clear()

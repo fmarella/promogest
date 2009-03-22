@@ -29,6 +29,7 @@ from promogest.dao.FamigliaArticolo import FamigliaArticolo
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
 from promogest.dao.StatoArticolo import StatoArticolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
+from promogest.dao.Fornitura import Fornitura
 if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.dao.Colore import Colore
     from promogest.modules.PromoWear.dao.Taglia import Taglia
@@ -160,7 +161,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
         column = gtk.TreeViewColumn('Codice articolo fornitore', renderer, text=6, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self.filter._changeOrderBy, (None, Environment.params["schema"]+".fornitura.codice_articolo_fornitore"))
+        column.connect("clicked", self.filter._changeOrderBy, (None, Fornitura.codice_articolo_fornitore))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)

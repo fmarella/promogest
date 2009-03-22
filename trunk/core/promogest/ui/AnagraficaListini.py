@@ -83,7 +83,7 @@ class AnagraficaListiniFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         if self._anagrafica._denominazione is not None:
@@ -126,7 +126,10 @@ class AnagraficaListiniFilter(AnagraficaFilter):
         liss = self.runFilter()
 
         self._treeViewModel.clear()
-
+        if Environment.tipo_eng =="sqlite":
+            if len(liss) >1:
+                print "SPARIAMO UN MESSAGGIO"
+                liss = liss[0]
         for l in liss:
             self._treeViewModel.append((l,
                                         (l.denominazione or ''),
@@ -149,8 +152,6 @@ class AnagraficaListiniReport(AnagraficaReport):
                                   defaultFileName='listini',
                                   htmlTemplate='listini',
                                   sxwTemplate='listini')
-
-
 
 class AnagraficaListiniEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica dei listini """
@@ -242,12 +243,22 @@ class AnagraficaListiniEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            self.dao = Listino()
-
+            if Environment.tipo_eng =="sqlite" and Listino().count() >=1:
+                self.hide()
+                msg="STAI USANDO UNA VERSIONE BASE DI PROMOGEST2\n CHE GESTISCE UN SOLO LISTINO"
+                dialog = gtk.MessageDialog(None,
+                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
+                dialog.run()
+                dialog.destroy()
+                
+            else:
+                self.dao = Listino()
+                self._refresh()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Listino().select(id=dao.id)[0]
-        self._refresh()
+            self._refresh()
 
 
     def _refresh(self):
@@ -307,6 +318,12 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             self.dao.id = Environment.params['session'].connection().execute(listino_sequence)
             #provaaaaaaaaa = (Listino().select(batchSize=None)[-1].id)+1
             #self.dao.id = provaaaaaaaaa
+        if Environment.tipo_eng =="sqlite" and not self.dao.id:
+            listini = Listino().select(orderBy="id")
+            if not listini:
+                self.dao.id = 1
+            else:
+                self.dao.id = (listini[:-1].id) +1
         self.dao.denominazione = self.denominazione_entry.get_text()
         listinoAtt = Listino().select(denominazione=self.dao.denominazione)
         if not listinoAtt:
@@ -319,7 +336,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
 
         self.dao.descrizione = self.descrizione_entry.get_text()
         self.dao.data_listino = stringToDate(self.data_listino_entry.get_text())
-
+        
         self.dao.persist()
         model = self.categorie_treeview.get_model()
         cleanListinoCategoriaCliente = ListinoCategoriaCliente()\
