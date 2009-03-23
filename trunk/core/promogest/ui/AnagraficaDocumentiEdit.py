@@ -315,10 +315,20 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
         self.calcolaTotale()
 
+
+    def on_notebook_select_page(self,notebook,page, page_num):
+        print notebook,page,page_num
+
     def on_notebook_switch_page(self, notebook, page, page_num):
         if page_num == 2:
             self.calcolaTotale()
-        #elif page_num ==3:
+        elif page_num ==3:
+            if "Pagamenti" in Environment.modulesList:
+                fenceDialog()
+                self.calcola_importi_scadenza_button.set_sensitive(False)
+                self.controlla_rate_scadenza_button.set_sensitive(False)
+                self.pulisci_scadenza_button.set_sensitive(False)
+                
             #print "passato al terzo tab"
 
     def on_rent_checkbutton_toggled(self, checkbutton=None):

@@ -576,13 +576,16 @@ class Anagrafica(GladeWidget):
             anagWindow.destroy()
 
         if self.printDialog.riferimento2_combobox_entry.get_active_text() == stringContatti:
-            from promogest.ui.RicercaContatti import RicercaContatti
-            anag = RicercaContatti()
-            anagWindow = anag.getTopLevel()
-            anagWindow.connect("hide", refresh_combobox, 'contatto')
-            returnWindow = combobox.get_toplevel()
-            anagWindow.set_transient_for(returnWindow)
-            anag.show_all()
+            if "Contatti" in Environment.modulesList:
+                from promogest.modules.Contatti.ui.RicercaContatti import RicercaContatti
+                anag = RicercaContatti()
+                anagWindow = anag.getTopLevel()
+                anagWindow.connect("hide", refresh_combobox, 'contatto')
+                returnWindow = combobox.get_toplevel()
+                anagWindow.set_transient_for(returnWindow)
+                anag.show_all()
+            else:
+                print "MESSAGGIO DI PAT"
 
     def on_send_email_button_clicked(self, widget):
         if not conf.emailcompose:

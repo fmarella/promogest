@@ -317,8 +317,8 @@ class Anagrafica(GladeWidget):
 class AnagraficaFilter(GladeWidget):
     """ Filtro per la ricerca nell'anagrafica articoli """
 
-    def __init__(self, anagrafica, rootWidget):
-        GladeWidget.__init__(self, rootWidget)
+    def __init__(self, anagrafica, rootWidget,isModule=False):
+        GladeWidget.__init__(self, rootWidget,isModule=isModule)
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
         self._isSensitive = True

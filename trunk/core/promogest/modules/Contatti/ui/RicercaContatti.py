@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -7,22 +7,16 @@
 
 import gtk
 import gobject
-from Ricerca import Ricerca, RicercaFilter, RicercaHtml
+from promogest.ui.Ricerca import Ricerca, RicercaFilter, RicercaHtml
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Contatto
 from promogest.dao.Contatto import Contatto
-import promogest.dao.ContattoCliente
 from promogest.dao.ContattoCliente import ContattoCliente
-import promogest.dao.ContattoFornitore
 from promogest.dao.ContattoFornitore import ContattoFornitore
-import promogest.dao.ContattoAzienda
 from promogest.dao.ContattoAzienda import ContattoAzienda
-import promogest.dao.ContattoMagazzino
 from promogest.dao.ContattoMagazzino import ContattoMagazzino
 
-from utils import *
+from promogest.ui.utils import *
 
 
 
@@ -40,15 +34,16 @@ class RicercaContatti(Ricerca):
         def refresh():
             self.filter.refresh()
             self.filter.cognome_nome_filter_entry.grab_focus()
+        if "Contatti" in Environment.modulesList:
+            from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
+            anag = AnagraficaContatti()
+            anagWindow = anag.getTopLevel()
 
-        from AnagraficaContatti import AnagraficaContatti
-        anag = AnagraficaContatti()
-        anagWindow = anag.getTopLevel()
+            showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)
 
-        showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)
-
-        anag.on_record_new_activate(anag.record_new_button)
-
+            anag.on_record_new_activate(anag.record_new_button)
+        else:
+            print "MESSAGGIO DI PAT"
 
 
 class RicercaContattiFilter(RicercaFilter):
@@ -57,7 +52,8 @@ class RicercaContattiFilter(RicercaFilter):
     def __init__(self, ricerca):
         RicercaFilter.__init__(self, ricerca,
                                'anagrafica_contatti_filter_table',
-                               fileName='_anagrafica_contatti_elements.glade')
+                               fileName='Contatti/gui/_anagrafica_contatti_elements.glade',
+                                isModule=True)
         self._ownerType = 'generico'
         self._widgetFirstFocus = self.cognome_nome_filter_entry
 

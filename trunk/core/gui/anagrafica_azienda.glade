@@ -171,10 +171,11 @@
             <property name="xalign">1</property>
             <property name="xscale">0</property>
             <child>
-              <widget class="GtkToggleButton" id="contatti_togglebutton3">
+              <widget class="GtkToggleButton" id="contatti_togglebutton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="toggled" handler="on_contatti_togglebutton_toggled"/>
                 <child>
                   <widget class="GtkAlignment" id="alignment57">
                     <property name="visible">True</property>

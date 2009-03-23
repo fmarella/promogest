@@ -151,12 +151,7 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
             # Crea un nuovo Dao vuoto
             if Environment.tipo_eng =="sqlite" and Magazzino().count() >=1:
                 self.destroy()
-                msg="STAI USANDO UNA VERSIONE BASE DI PROMOGEST2\n CHE GESTISCE UN SOLO MAGAZZINO"
-                dialog = gtk.MessageDialog(None,
-                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-                dialog.run()
-                dialog.destroy()
+                fenceDialog()
             else:
                 self.dao = Magazzino()
                 self._refresh()
@@ -187,24 +182,28 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
 
 
     def on_contatti_togglebutton_clicked(self, toggleButton):
-        if not(toggleButton.get_active()):
-            toggleButton.set_active(False)
-            return
-
-        if self.dao.id is None:
-            msg = 'Prima di poter inserire i contatti occorre salvare il magazzino.\n Salvare ?'
-            dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
-            else:
+        if "Contatti" in Environment.modulesList:
+            if not(toggleButton.get_active()):
                 toggleButton.set_active(False)
                 return
 
-        from AnagraficaContatti import AnagraficaContatti
-        anag = AnagraficaContatti(self.dao.id, 'magazzino')
-        anagWindow = anag.getTopLevel()
+            if self.dao.id is None:
+                msg = 'Prima di poter inserire i contatti occorre salvare il magazzino.\n Salvare ?'
+                dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                        gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+                response = dialog.run()
+                dialog.destroy()
+                if response == gtk.RESPONSE_YES:
+                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                else:
+                    toggleButton.set_active(False)
+                    return
 
-        showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+            from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
+            anag = AnagraficaContatti(self.dao.id, 'magazzino')
+            anagWindow = anag.getTopLevel()
+
+            showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+        else:
+            fenceDialog()
+            toggleButton.set_active(False)

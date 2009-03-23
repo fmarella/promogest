@@ -2113,4 +2113,24 @@ def calcolaTotali(daos):
                         "totale_pagato":totale_pagato,
                         "totale_sospeso": totale_sospeso}
     return totaliGenerali
+def fenceDialog():
+    def on_button_clicked(button):
+        from promogest.ui.SendEmail import SendEmail
+        sendemail = SendEmail()
 
+    dialog = gtk.MessageDialog(None,
+                                gtk.DIALOG_MODAL
+                                | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
+    image = gtk.Image()
+    image.set_from_file("./gui/messaggio_avviso.png")
+    image.show()
+    button = gtk.Button()
+    #button.set_image(button)
+    button.add(image)
+    button.show()
+    #dialog.vbox.pack_start(button)
+    button.connect('clicked', on_button_clicked)
+    dialog.set_image(button)
+    response = dialog.run()
+    dialog.destroy()

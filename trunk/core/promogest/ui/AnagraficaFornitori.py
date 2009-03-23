@@ -347,28 +347,31 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         anag.filter.refresh()
 
     def on_contatti_togglebutton_clicked(self, toggleButton):
-        if not(toggleButton.get_active()):
-            toggleButton.set_active(False)
-            return
-
-        if self.dao.id is None:
-            msg = 'Prima di poter inserire i contatti occorre salvare il fornitore.\n Salvare ?'
-            dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
-            else:
+        if "Contatti" in Environment.modulesList:
+            if not(toggleButton.get_active()):
                 toggleButton.set_active(False)
                 return
 
-        from AnagraficaContatti import AnagraficaContatti
-        anag = AnagraficaContatti(self.dao.id, 'fornitore')
-        anagWindow = anag.getTopLevel()
+            if self.dao.id is None:
+                msg = 'Prima di poter inserire i contatti occorre salvare il fornitore.\n Salvare ?'
+                dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                        gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+                response = dialog.run()
+                dialog.destroy()
+                if response == gtk.RESPONSE_YES:
+                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                else:
+                    toggleButton.set_active(False)
+                    return
 
-        showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+            from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
+            anag = AnagraficaContatti(self.dao.id, 'fornitore')
+            anagWindow = anag.getTopLevel()
 
+            showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+        else:
+            fenceDialog()
+            toggleButton.set_active(False)
 
     def on_forniture_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):

@@ -293,7 +293,6 @@ def set_configuration(company=None, year = None):
     except:
         feed = True
 
-
     #[Composer]
     if hasattr(conf,'Composer'):
         conf.emailcompose = str(getattr(conf.Composer, 'emailcompose'))

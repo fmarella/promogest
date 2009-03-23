@@ -19,21 +19,22 @@
                     <tr>
                         <td class="even-detail">Data documento</td>
                         <td class="odd-detail">
-                            <strong> {{dao.data_documento.strftime('%d/%m/%Y')}}</strong>
+                            <strong> {{utils.dateToString(dao.data_documento)}}</strong>
                         </td>
                     </tr>
-                    <tr py:if="dao.id_cliente">
+                    <tr >
                         <td class="even-detail">Cliente</td>
-                        <td class="odd-detail">
-                            <strong>{{dao.intestatario}}</strong>
-                        </td>
+                        {% if dao.id_cliente %}
+                        <td class="odd-detail"><strong>{{dao.intestatario}}</strong></td>
+                        {% endif %}
                     </tr>
-                    <tr py:if="dao.id_fornitore">
+                    <tr >
                         <td class="even-detail">Fornitore</td>
-                        <td class="odd-detail">
-                            <strong>{{dao.intestatario}}</strong>
-                        </td>
+                        {% if dao.id_fornitore %}
+                        <td class="odd-detail"><strong>{{dao.intestatario}}</strong></td>
+                        {% endif %}
                     </tr>
+                    
 	       </table>
         </td>
         <td width="50%">
@@ -43,15 +44,15 @@
                 </tr>
                 <tr>
                     <td width="140px" class="even-detail">Totale Imponibile:</td>
-                    <td class="odd-detail"><strong> {{ '%10.2f' % dao._totaleImponibileScontato}}</strong></td>
+                    <td class="odd-detail"><strong> {{ utils.mN(dao._totaleImponibileScontato,2)}}</strong></td>
                 </tr>
                 <tr>
                     <td class="even-detail">Totale Imposta:</td>
-                    <td class="odd-detail"><strong>{{ '%10.2f' % dao._totaleImpostaScontata}}</strong></td>
+                    <td class="odd-detail"><strong>{{ utils.mN(dao._totaleImpostaScontata,2)}}</strong></td>
                 </tr>
                 <tr>
                     <td class="even-detail">Totale:</td>
-                    <td class="odd-detail"><strong>{{ '%10.2f' % dao._totaleScontato}}</strong></td>
+                    <td class="odd-detail"><strong>{{utils.mN(dao._totaleScontato,2)}}</strong></td>
                 </tr>
 	       <tr>
                     <td></td>

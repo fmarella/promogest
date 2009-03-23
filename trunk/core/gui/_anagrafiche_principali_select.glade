@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--*- mode: xml -*-->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="_anagrafiche_principali_select">
     <property name="visible">True</property>
     <property name="title" translatable="yes">Finestra parametri</property>
@@ -23,7 +23,7 @@
                   <widget class="GtkToggleButton" id="articoli_button">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="response_id">0</property>
+                    <property name="receives_default">False</property>
                     <signal name="clicked" handler="on_articoli_button_clicked"/>
                     <child>
                       <widget class="GtkAlignment" id="alignment9">
@@ -42,6 +42,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
@@ -64,13 +65,14 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
                   <widget class="GtkToggleButton" id="forniture_button">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="response_id">0</property>
+                    <property name="receives_default">False</property>
                     <signal name="clicked" handler="on_forniture_button_clicked"/>
                     <child>
                       <widget class="GtkAlignment" id="alignment91">
@@ -89,6 +91,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
@@ -118,7 +121,7 @@
                   <widget class="GtkToggleButton" id="clienti_button">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="response_id">0</property>
+                    <property name="receives_default">False</property>
                     <signal name="clicked" handler="on_clienti_button_clicked"/>
                     <child>
                       <widget class="GtkAlignment" id="alignment42">
@@ -137,6 +140,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
@@ -166,7 +170,7 @@
                   <widget class="GtkToggleButton" id="fornitori_button">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="response_id">0</property>
+                    <property name="receives_default">False</property>
                     <signal name="clicked" handler="on_fornitori_button_clicked"/>
                     <child>
                       <widget class="GtkAlignment" id="alignment43">
@@ -185,6 +189,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
@@ -214,7 +219,7 @@
                   <widget class="GtkToggleButton" id="vettori_button">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="response_id">0</property>
+                    <property name="receives_default">False</property>
                     <signal name="clicked" handler="on_vettori_button_clicked"/>
                     <child>
                       <widget class="GtkAlignment" id="alignment175">
@@ -233,6 +238,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
@@ -262,7 +268,7 @@
                   <widget class="GtkToggleButton" id="agenti_button">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="response_id">0</property>
+                    <property name="receives_default">False</property>
                     <signal name="clicked" handler="on_agenti_button_clicked"/>
                     <child>
                       <widget class="GtkAlignment" id="alignment538">
@@ -281,6 +287,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
@@ -307,54 +314,12 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkToggleButton" id="contatti_button">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="response_id">0</property>
-                    <signal name="clicked" handler="on_contatti_button_clicked"/>
-                    <child>
-                      <widget class="GtkAlignment" id="alignment107">
-                        <property name="visible">True</property>
-                        <property name="xscale">0</property>
-                        <property name="yscale">0</property>
-                        <child>
-                          <widget class="GtkHBox" id="hbox105">
-                            <property name="visible">True</property>
-                            <property name="spacing">2</property>
-                            <child>
-                              <widget class="GtkImage" id="image69">
-                                <property name="visible">True</property>
-                                <property name="pixbuf">contatto48x48.png</property>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label212">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">C_ontatti</property>
-                                <property name="use_underline">True</property>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </widget>
-                        </child>
-                      </widget>
-                    </child>
-                  </widget>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">6</property>
-                  </packing>
+                  <placeholder/>
                 </child>
               </widget>
+              <packing>
+                <property name="position">0</property>
+              </packing>
             </child>
             <child>
               <widget class="GtkVBox" id="vbox1">

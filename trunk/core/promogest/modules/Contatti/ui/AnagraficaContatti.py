@@ -11,7 +11,7 @@
 import gtk
 import gobject
 
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
 from promogest.dao.Dao import Dao
@@ -23,8 +23,8 @@ from promogest.dao.ContattoAzienda import ContattoAzienda
 from promogest.dao.RecapitoContatto import RecapitoContatto
 from promogest.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
 
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
 
 
 
@@ -57,7 +57,8 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   'anagrafica_contatti_filter_table',
-                                  gladeFile='_anagrafica_contatti_elements.glade')
+                                  gladeFile='Contatti/gui/_anagrafica_contatti_elements.glade',
+                                   module=True )
         self._widgetFirstFocus = self.appartenenza_filter_entry
 
 
@@ -443,7 +444,8 @@ class AnagraficaContattiEdit(AnagraficaEdit):
                                   anagrafica,
                                   'anagrafica_contatti_detail_table',
                                   'Dati contatto',
-                                  gladeFile='_anagrafica_contatti_elements.glade')
+                                  gladeFile='Contatti/gui/_anagrafica_contatti_elements.glade',
+                                    module=True)
         self._widgetFirstFocus = self.cognome_entry
         self.dao = Contatto()
         self._tabPressed = False

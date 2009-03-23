@@ -294,7 +294,7 @@ class Login(GladeApp):
 
     def importModulesFromDir(self, modules_dir):
             """Check the modules directory and automatically try to load all available modules"""
-            Environment.modulesList=[]
+            Environment.modulesList=["Contatti","Promemoria","Pagamenti"]
             modules_folders = [folder for folder in os.listdir(modules_dir) \
                             if (os.path.isdir(os.path.join(modules_dir, folder)) \
                             and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]

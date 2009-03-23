@@ -88,8 +88,6 @@ emailmittente = cambia anche me
 [Multilinea]
 multilinealimite = 40
 
-[Pagamenti]
-mod_enable = yes
 
 [Moduli]
 cartella_moduli = ./promogest/modules

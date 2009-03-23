@@ -18,7 +18,7 @@ from ElencoMagazzini import ElencoMagazzini
 from ElencoListini import ElencoListini
 from VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
-from utils import hasAction
+from utils import hasAction,fenceDialog
 from utilsCombobox import *
 import Login
 
@@ -167,7 +167,6 @@ class Main(GladeWidget):
         """
         Update the window, setting the appropriate frame
         """
-
         self.main_iconview.unselect_all()
         if self.currentFrame is None:
             self.currentFrame = self.create_main_window_frame()
@@ -255,11 +254,14 @@ class Main(GladeWidget):
         #elif selection == 6:
             #self.currentFrame = self.create_spam_frame()
         elif selection == 5:
-            from AnagraficaPromemoria import AnagraficaPromemoria
-            anag = AnagraficaPromemoria(self.aziendaStr)
-            showAnagrafica(self.getTopLevel(), anag, mainClass=self)
-            icon_view.unselect_all()
-            return
+            if "Promemoria" not in Environment.modulesList:
+                from AnagraficaPromemoria import AnagraficaPromemoria
+                anag = AnagraficaPromemoria(self.aziendaStr)
+                showAnagrafica(self.getTopLevel(), anag, mainClass=self)
+                icon_view.unselect_all()
+                return
+            else:
+                fenceDialog()
         self._refresh()
 
     def on_main_iconview_right_select(self, icon_view, model=None):
@@ -833,14 +835,14 @@ class AnagrafichePrincipaliFrame(GladeWidget):
         showAnagrafica(self.mainWindow, anag, toggleButton)
 
 
-    def on_contatti_button_clicked(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
+    #def on_contatti_button_clicked(self, toggleButton):
+        #if toggleButton.get_property('active') is False:
+            #return
 
-        from AnagraficaContatti import AnagraficaContatti
-        anag = AnagraficaContatti(aziendaStr=self.aziendaStr)
+        #from AnagraficaContatti import AnagraficaContatti
+        #anag = AnagraficaContatti(aziendaStr=self.aziendaStr)
 
-        showAnagrafica(self.mainWindow, anag, toggleButton)
+        #showAnagrafica(self.mainWindow, anag, toggleButton)
 
 
 

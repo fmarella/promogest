@@ -15,6 +15,7 @@
                 <th>Banca</th>
             </tr>
             {% for dao in objects %}
+            {% set tota = dao.totali %}
             <tr class="row">
                 <td class="detail">{{dao.numero|string + ' ' + (dao.parte or '')|string}}</td>
 

@@ -244,14 +244,8 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         if dao is None:
             # Crea un nuovo Dao vuoto
             if Environment.tipo_eng =="sqlite" and Listino().count() >=1:
-                self.hide()
-                msg="STAI USANDO UNA VERSIONE BASE DI PROMOGEST2\n CHE GESTISCE UN SOLO LISTINO"
-                dialog = gtk.MessageDialog(None,
-                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-                dialog.run()
-                dialog.destroy()
-                
+                self.destroy()
+                fenceDialog()
             else:
                 self.dao = Listino()
                 self._refresh()

@@ -25,11 +25,9 @@ class SendEmail(GladeWidget):
         self.getTopLevel().show_all()
         self.title_label.set_markup("""
     Questo semplice form ti permette di inviare
-    tramite una <b>E-mail</b> una segnalazione,
-    un tracciato d'errore dell'applicazione
-    un consiglio originale, una richiesta commerciale o
-    qualsiasi altra informazione.
-    L'email verrà inviata A: <b>promogest@promotux.it</b>
+    <b>E-mail</b> al team di sviluppo o al settore commerciale,
+    L'email verrà inviata A: <b>info@promotux.it</b>
+
     Grazie per il tuo contributo
                                     """)
         if string != None:

@@ -153,8 +153,8 @@ class Ricerca(GladeWidget):
 class RicercaFilter(GladeWidget):
     """ Filtro per la ricerca """
 
-    def __init__(self, ricerca, rootWidget,fileName=None):
-        GladeWidget.__init__(self, rootWidget, fileName)
+    def __init__(self, ricerca, rootWidget,fileName=None,isModule=False):
+        GladeWidget.__init__(self, rootWidget, fileName,isModule=isModule)
         self._ricerca = ricerca
 
 

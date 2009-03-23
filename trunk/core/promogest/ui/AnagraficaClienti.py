@@ -494,27 +494,29 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
+        if "Contatti" in Environment.modulesList:
+            if self.dao.id is None:
+                msg = 'Prima di poter inserire i contatti occorre salvare il cliente.\n Salvare ?'
+                dialog = gtk.MessageDialog(self.dialogTopLevel,
+                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                        gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                        msg)
+                response = dialog.run()
+                dialog.destroy()
+                if response == gtk.RESPONSE_YES:
+                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                else:
+                    toggleButton.set_active(False)
+                    return
 
-        if self.dao.id is None:
-            msg = 'Prima di poter inserire i contatti occorre salvare il cliente.\n Salvare ?'
-            dialog = gtk.MessageDialog(self.dialogTopLevel,
-                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                    gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                    msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
-            else:
-                toggleButton.set_active(False)
-                return
+            from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
+            anag = AnagraficaContatti(self.dao.id, 'cliente')
+            anagWindow = anag.getTopLevel()
 
-        from AnagraficaContatti import AnagraficaContatti
-        anag = AnagraficaContatti(self.dao.id, 'cliente')
-        anagWindow = anag.getTopLevel()
-
-        showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
-
+            showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+        else:
+            fenceDialog()
+            toggleButton.set_active(False)
 
     def on_destinazioni_merce_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):

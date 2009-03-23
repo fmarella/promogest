@@ -17,7 +17,7 @@ from promogest.dao.Dao import Dao
 import promogest.dao.Azienda
 from promogest.dao.Azienda import Azienda
 
-from utils import dateToString, stringToDate, checkCodFisc, checkPartIva, showAnagraficaRichiamata
+from utils import dateToString, stringToDate, checkCodFisc, checkPartIva, showAnagraficaRichiamata, fenceDialog
 #from utilsCombobox import *
 
 
@@ -125,8 +125,6 @@ class AnagraficaAziende(GladeWidget):
         if save:
             self.dao.persist()
             self.getTopLevel().destroy()
-        
-
 
     def on_cancel_button_clicked(self, button):
         self.setDao()
@@ -134,13 +132,16 @@ class AnagraficaAziende(GladeWidget):
     def on_close_button_clicked(self, button):
         self.getTopLevel().self.destroy()
 
-    def on_contatti_togglebutton_clicked(self, toggleButton):
+    def on_contatti_togglebutton_toggled(self, toggleButton):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
+        if "Contatti" in Environment.modulesList:
+            from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
+            anag = AnagraficaContatti(self.dao.schemaa, 'azienda')
+            anagWindow = anag.getTopLevel()
 
-        from AnagraficaContatti import AnagraficaContatti
-        anag = AnagraficaContatti(self.dao.schemaa, 'azienda')
-        anagWindow = anag.getTopLevel()
-
-        showAnagraficaRichiamata(self._mainWindow.getTopLevel(), anagWindow, toggleButton)
+            showAnagraficaRichiamata(self._mainWindow.getTopLevel(), anagWindow, toggleButton)
+        else:
+            fenceDialog()
+            toggleButton.set_active(False)

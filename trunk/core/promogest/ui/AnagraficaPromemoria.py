@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -408,10 +408,13 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
             anagWindow.set_transient_for(returnWindow)
             anag.show_all()
         elif self.riferimento_combobox_entry.get_active_text() == stringContatti:
-            from promogest.ui.RicercaContatti import RicercaContatti
-            anag = RicercaContatti()
-            anagWindow = anag.getTopLevel()
-            anagWindow.connect("hide", refresh_combobox, 'contatto')
-            returnWindow = combobox.get_toplevel()
-            anagWindow.set_transient_for(returnWindow)
-            anag.show_all()
+            if "Contatti" in Environment.modulesList:
+                from promogest.modules.Contatti.ui.RicercaContatti import RicercaContatti
+                anag = RicercaContatti()
+                anagWindow = anag.getTopLevel()
+                anagWindow.connect("hide", refresh_combobox, 'contatto')
+                returnWindow = combobox.get_toplevel()
+                anagWindow.set_transient_for(returnWindow)
+                anag.show_all()
+            else:
+                fenceDialog()
