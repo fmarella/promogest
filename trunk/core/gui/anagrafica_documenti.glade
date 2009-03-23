@@ -1032,8 +1032,10 @@ Saldato</property>
                 <property name="tab_border">1</property>
                 <property name="tab_hborder">5</property>
                 <property name="tab_vborder">1</property>
+                <property name="enable_popup">True</property>
                 <property name="homogeneous">True</property>
                 <signal name="switch_page" handler="on_notebook_switch_page"/>
+                <signal name="select_page" handler="on_notebook_select_page"/>
                 <child>
                   <widget class="GtkVBox" id="vbox27">
                     <property name="visible">True</property>

@@ -386,7 +386,10 @@ class Anagrafica(GladeWidget):
 
 
     def on_Stampa_Frontaline_clicked(self, widget):
-        self._handlePrinting(pdfGenerator=self.labelHandler, report=True, label=True)
+        if "Labels" in Environment.modulesList:
+            self._handlePrinting(pdfGenerator=self.labelHandler, report=True, label=True)
+        else:
+            fenceDialog()
 
     def on_selected_record_print_activate(self, widget):
         self._handlePrinting(daos=[self.filter.getSelectedDao()],
