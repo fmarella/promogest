@@ -317,10 +317,14 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 
     def setDao(self, dao):
         if dao is None:
+            if Environment.engine.name =="sqlite" and Cliente().count() >= 10:
+                fenceDialog()
+                return
+            else:
             # Crea un nuovo Dao vuoto
-            self.dao = Cliente()
-            self.dao.codice = promogest.dao.Cliente.getNuovoCodiceCliente()
-            self._oldDaoRicreato = False
+                self.dao = Cliente()
+                self.dao.codice = promogest.dao.Cliente.getNuovoCodiceCliente()
+                self._oldDaoRicreato = False
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Cliente().getRecord(id=dao.id)

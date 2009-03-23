@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -13,7 +13,6 @@ import gobject
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
 from promogest.dao.Banca import Banca
 from promogest.lib.ControlloIBAN import *
 
@@ -201,9 +200,13 @@ class AnagraficaBancheDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = Banca()
-            self._anagrafica._newRow((self.dao, '', '', '', '', '', '', ''))
-            self._refresh()
+            if Environment.engine.name =="sqlite" and Banca().count() >= 1:
+                fenceDialog()
+                return
+            else:
+                self.dao = Banca()
+                self._anagrafica._newRow((self.dao, '', '', '', '', '', '', ''))
+                self._refresh()
         else:
             self.dao = dao
 

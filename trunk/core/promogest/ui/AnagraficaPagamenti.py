@@ -1,9 +1,10 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
+# Author: Francesco "M3nt0r3" Meloni  <francesco@promotux.it>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,12 +22,8 @@
 
 import gtk
 import gobject
-
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Pagamento
 from promogest.dao.Pagamento import Pagamento
 
 from utils import *
@@ -121,9 +118,13 @@ class AnagraficaPagamentiDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = Pagamento()
-            self._anagrafica._newRow((self.dao, ''))
-            self._refresh()
+            if Environment.engine.name =="sqlite" and Pagamento().count() >= 3:
+                fenceDialog()
+                return
+            else:
+                self.dao = Pagamento()
+                self._anagrafica._newRow((self.dao, ''))
+                self._refresh()
         else:
             self.dao = dao
 

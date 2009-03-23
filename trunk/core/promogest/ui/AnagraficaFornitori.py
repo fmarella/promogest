@@ -14,7 +14,6 @@ import gobject
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
 import promogest.dao.Fornitore
 from promogest.dao.Fornitore import Fornitore
 from promogest.dao.DaoUtils import *
@@ -227,9 +226,13 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
 
     def setDao(self, dao):
         if dao is None:
-            # Crea un nuovo Dao vuoto
-            self.dao = Fornitore()
-            self.dao.codice = promogest.dao.Fornitore.getNuovoCodiceFornitore()
+            if Environment.engine.name =="sqlite" and Fornitore().count() >= 10:
+                fenceDialog()
+                return
+            else:
+                # Crea un nuovo Dao vuoto
+                self.dao = Fornitore()
+                self.dao.codice = promogest.dao.Fornitore.getNuovoCodiceFornitore()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Fornitore().getRecord(id=dao.id)

@@ -14,8 +14,6 @@ import gobject
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.CategoriaCliente
 from promogest.dao.CategoriaCliente import CategoriaCliente
 
 from utils import *
@@ -105,9 +103,13 @@ class AnagraficaCategorieClientiDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = CategoriaCliente()
-            self._anagrafica._newRow((self.dao, ''))
-            self._refresh()
+            if Environment.engine.name =="sqlite" and CategoriaCliente().count() > 2:
+                fenceDialog()
+                return
+            else:
+                self.dao = CategoriaCliente()
+                self._anagrafica._newRow((self.dao, ''))
+                self._refresh()
         else:
             self.dao = dao
 
