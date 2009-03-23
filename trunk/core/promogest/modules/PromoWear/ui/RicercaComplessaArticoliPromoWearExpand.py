@@ -7,6 +7,7 @@
  Author: Francesco Meloni <francesco@promotux.it>
  License: GNU GPLv2
 """
+from promogest.ui.RicercaComplessa import parseModel, onColumnEdited, columnSelectAll
 from promogest.modules.PromoWear.dao.Colore import Colore
 from promogest.modules.PromoWear.dao.Taglia import Taglia
 from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
@@ -115,3 +116,524 @@ def drawRicercaSemplicePromoWearPart(anaarti):
     anaarti.taglie_colori_filter_combobox.set_active(0)
     anaarti.id_stato_articolo_filter_combobox.set_active(0)
     anaarti.id_modello_filter_combobox.set_active(0)
+
+
+def drawRicercaComplessaPromoWearPart(anaarti):
+    drawGruppoTagliaTreeView(anaarti)
+    drawTagliaTreeView(anaarti)
+    drawColoreTreeView(anaarti)
+    drawAnnoTreeView(anaarti)
+    drawStagioneTreeView(anaarti)
+    drawGenereTreeView(anaarti)
+    drawCutSizeTreeView(anaarti)
+
+
+def drawGruppoTagliaTreeView(anaarti):
+    treeview = anaarti.gruppo_taglia_articolo_filter_treeview
+    treeview.selectAllIncluded = False
+    treeview.selectAllExcluded = False
+    model = gtk.ListStore(bool, bool, int, str, str)
+    anaarti._gruppoTagliaTreeViewModel = model
+
+    for c in treeview.get_columns():
+        treeview.remove_column(c)
+
+    renderer = gtk.CellRendererToggle()
+    renderer.set_property('activatable', True)
+    renderer.connect('toggled', anaarti.onColumnEdited, None, treeview)
+    renderer.set_data('model_index', 0)
+    renderer.set_data('column', 1)
+    column = gtk.TreeViewColumn('Includi', renderer, active=0)
+    column.connect("clicked", anaarti.columnSelectAll, treeview)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(True)
+    column.set_resizable(True)
+    column.set_expand(False)
+    treeview.append_column(column)
+
+    renderer = gtk.CellRendererText()
+    column = gtk.TreeViewColumn('Descrizione breve', renderer, text=3)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(False)
+    column.set_resizable(True)
+    column.set_expand(False)
+    treeview.append_column(column)
+
+    renderer = gtk.CellRendererText()
+    column = gtk.TreeViewColumn('Descrizione', renderer, text=4)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(False)
+    column.set_resizable(True)
+    column.set_expand(True)
+    treeview.append_column(column)
+
+    treeview.set_search_column(4)
+
+    grts = GruppoTaglia().select(offset=None, batchSize=None)
+
+
+    for g in grts:
+        included = excluded = False
+        if anaarti._idGruppoTaglia is not None:
+            included = anaarti._idGruppoTaglia == g.id
+
+        model.append((included,
+                        excluded,
+                        g.id,
+                        g.denominazione_breve,
+                        g.denominazione))
+
+    treeview.set_model(model)
+
+
+def drawTagliaTreeView(anaarti):
+    treeview = anaarti.taglia_articolo_filter_treeview
+    treeview.selectAllIncluded = False
+    treeview.selectAllExcluded = False
+    model = gtk.ListStore(bool, bool, int, str, str)
+    anaarti._tagliaTreeViewModel = model
+
+    for c in treeview.get_columns():
+        treeview.remove_column(c)
+
+    renderer = gtk.CellRendererToggle()
+    renderer.set_property('activatable', True)
+    renderer.connect('toggled', anaarti.onColumnEdited, None, treeview)
+    renderer.set_data('model_index', 0)
+    renderer.set_data('column', 1)
+    column = gtk.TreeViewColumn('Includi', renderer, active=0)
+    column.connect("clicked", anaarti.columnSelectAll, treeview)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(True)
+    column.set_resizable(True)
+    column.set_expand(False)
+    treeview.append_column(column)
+
+    renderer = gtk.CellRendererText()
+    column = gtk.TreeViewColumn('Descrizione breve', renderer, text=3)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(False)
+    column.set_resizable(True)
+    column.set_expand(False)
+    treeview.append_column(column)
+
+    renderer = gtk.CellRendererText()
+    column = gtk.TreeViewColumn('Descrizione', renderer, text=4)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(False)
+    column.set_resizable(True)
+    column.set_expand(True)
+    treeview.append_column(column)
+
+    treeview.set_search_column(4)
+
+    tags = Taglia().select(offset=None, batchSize=None)
+
+    for t in tags:
+        included = excluded = False
+        if anaarti._idTaglia is not None:
+            included = anaarti._idTaglia == t.id
+
+        model.append((included,
+                        excluded,
+                        t.id,
+                        t.denominazione_breve,
+                        t.denominazione))
+
+    treeview.set_model(model)
+
+
+def drawColoreTreeView(anaarti):
+    treeview = anaarti.colore_articolo_filter_treeview
+    treeview.selectAllIncluded = False
+    treeview.selectAllExcluded = False
+    model = gtk.ListStore(bool, bool, int, str, str)
+    anaarti._coloreTreeViewModel = model
+
+    for c in treeview.get_columns():
+        treeview.remove_column(c)
+
+    renderer = gtk.CellRendererToggle()
+    renderer.set_property('activatable', True)
+    renderer.connect('toggled', anaarti.onColumnEdited, None, treeview)
+    renderer.set_data('model_index', 0)
+    renderer.set_data('column', 1)
+    column = gtk.TreeViewColumn('Includi', renderer, active=0)
+    column.connect("clicked", anaarti.columnSelectAll, treeview)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(True)
+    column.set_resizable(True)
+    column.set_expand(False)
+    treeview.append_column(column)
+
+    renderer = gtk.CellRendererText()
+    column = gtk.TreeViewColumn('Descrizione breve', renderer, text=3)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(False)
+    column.set_resizable(True)
+    column.set_expand(False)
+    treeview.append_column(column)
+
+    renderer = gtk.CellRendererText()
+    column = gtk.TreeViewColumn('Descrizione', renderer, text=4)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(False)
+    column.set_resizable(True)
+    column.set_expand(True)
+    treeview.append_column(column)
+
+    treeview.set_search_column(4)
+
+    cols = Colore().select(offset=None, batchSize=None)
+
+
+    for c in cols:
+        included = excluded = False
+        if anaarti._idColore is not None:
+            included = anaarti._idColore == c.id
+
+        model.append((included,
+                        excluded,
+                        c.id,
+                        c.denominazione_breve,
+                        c.denominazione))
+
+    treeview.set_model(model)
+
+
+def drawAnnoTreeView(anaarti):
+    treeview = anaarti.anno_articolo_filter_treeview
+    treeview.selectAllIncluded = False
+    treeview.selectAllExcluded = False
+    model = gtk.ListStore(bool, bool, int, str)
+    anaarti._annoTreeViewModel = model
+
+    for c in treeview.get_columns():
+        treeview.remove_column(c)
+
+    renderer = gtk.CellRendererToggle()
+    renderer.set_property('activatable', True)
+    renderer.connect('toggled', anaarti.onColumnEdited, None, treeview)
+    renderer.set_data('model_index', 0)
+    renderer.set_data('column', 1)
+    column = gtk.TreeViewColumn('Includi', renderer, active=0)
+    column.connect("clicked", anaarti.columnSelectAll, treeview)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(True)
+    column.set_resizable(True)
+    column.set_expand(False)
+    treeview.append_column(column)
+
+    renderer = gtk.CellRendererText()
+    column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(False)
+    column.set_resizable(True)
+    column.set_expand(True)
+    treeview.append_column(column)
+
+    treeview.set_search_column(3)
+
+    anno = anaarti._idAnno
+    if hasattr(Environment.conf.PromoWear,'TaglieColori'):
+        default = getattr(Environment.conf.PromoWear.TaglieColori,'anno_default', None)
+        if default is not None:
+            anno = int(default)
+
+
+    anns = AnnoAbbigliamento().select(offset=None, batchSize=None)
+    for a in anns:
+        included = excluded = False
+        if anno is not None:
+            included = anno == a['id']
+
+        model.append((included,
+                        excluded,
+                        a.id,
+                        a.denominazione))
+
+    treeview.set_model(model)
+
+def drawCutSizeTreeView(anaarti):
+    treeview = anaarti.cutsize_articolo_filter_treeview
+    treeview.selectAllIncluded = False
+    treeview.selectAllExcluded = False
+    model = gtk.ListStore(bool, bool, str)
+    anaarti._cutisizeTreeViewModel = model
+
+    for c in treeview.get_columns():
+        treeview.remove_column(c)
+
+    renderer = gtk.CellRendererToggle()
+    renderer.set_property('activatable', True)
+    renderer.connect('toggled', anaarti.onColumnEdited, None, treeview)
+    renderer.set_data('model_index', 0)
+    renderer.set_data('column', 1)
+    column = gtk.TreeViewColumn('Includi', renderer, active=0)
+    column.connect("clicked", anaarti.columnSelectAll, treeview)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(True)
+    column.set_resizable(True)
+    column.set_expand(False)
+    treeview.append_column(column)
+
+    renderer = gtk.CellRendererText()
+    column = gtk.TreeViewColumn('Descrizione', renderer, text=2)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(False)
+    column.set_resizable(True)
+    column.set_expand(True)
+    treeview.append_column(column)
+
+    treeview.set_search_column(2)
+
+    stas = [(True,False,"Tutti"),(False,True,"Solo principali"), (False,True,"Solo Varianti")]
+
+    for s in stas:
+        model.append((s[0],
+                        s[1],
+                        s[2]))
+
+    treeview.set_model(model)
+
+
+def drawStagioneTreeView(anaarti):
+    treeview = anaarti.stagione_articolo_filter_treeview
+    treeview.selectAllIncluded = False
+    treeview.selectAllExcluded = False
+    model = gtk.ListStore(bool, bool, int, str)
+    anaarti._stagioneTreeViewModel = model
+
+    for c in treeview.get_columns():
+        treeview.remove_column(c)
+
+    renderer = gtk.CellRendererToggle()
+    renderer.set_property('activatable', True)
+    renderer.connect('toggled', anaarti.onColumnEdited, None, treeview)
+    renderer.set_data('model_index', 0)
+    renderer.set_data('column', 1)
+    column = gtk.TreeViewColumn('Includi', renderer, active=0)
+    column.connect("clicked", anaarti.columnSelectAll, treeview)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(True)
+    column.set_resizable(True)
+    column.set_expand(False)
+    treeview.append_column(column)
+
+    renderer = gtk.CellRendererText()
+    column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(False)
+    column.set_resizable(True)
+    column.set_expand(True)
+    treeview.append_column(column)
+
+    treeview.set_search_column(3)
+
+    stagione = anaarti._idStagione
+    if hasattr(Environment.conf,'TaglieColori'):
+        default = getattr(Environment.conf.TaglieColori,'stagione_default', None)
+        if default is not None:
+            stagione = int(default)
+
+    stas = StagioneAbbigliamento().select(offset=None, batchSize=None)
+
+    for s in stas:
+        included = excluded = False
+        if stagione is not None:
+            included = stagione == s['id']
+
+        model.append((included,
+                        excluded,
+                        s.id,
+                        s.denominazione))
+
+    treeview.set_model(model)
+
+
+def drawGenereTreeView(anaarti):
+    treeview = anaarti.genere_articolo_filter_treeview
+    treeview.selectAllIncluded = False
+    treeview.selectAllExcluded = False
+    model = gtk.ListStore(bool, bool, int, str)
+    anaarti._genereTreeViewModel = model
+
+    for c in treeview.get_columns():
+        treeview.remove_column(c)
+
+    renderer = gtk.CellRendererToggle()
+    renderer.set_property('activatable', True)
+    renderer.connect('toggled', anaarti.onColumnEdited, None, treeview)
+    renderer.set_data('model_index', 0)
+    renderer.set_data('column', 1)
+    column = gtk.TreeViewColumn('Includi', renderer, active=0)
+    column.connect("clicked", anaarti.columnSelectAll, treeview)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(True)
+    column.set_resizable(True)
+    column.set_expand(False)
+    treeview.append_column(column)
+
+    renderer = gtk.CellRendererText()
+    column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
+    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+    column.set_clickable(False)
+    column.set_resizable(True)
+    column.set_expand(True)
+    treeview.append_column(column)
+
+    treeview.set_search_column(3)
+
+    gens = GenereAbbigliamento().select(offset=None, batchSize=None)
+
+    for g in gens:
+        included = excluded = False
+        if anaarti._idGenere is not None:
+            included = anaarti._idGenere == g['id']
+
+        model.append((included,
+                        excluded,
+                        g.id,
+                        g.denominazione))
+
+    treeview.set_model(model)
+
+def collapseAllExpandersPromoWearPart(anaarti):
+    anaarti.gruppo_taglia_articolo_filter_expander.set_expanded(False)
+    anaarti.taglia_articolo_filter_expander.set_expanded(False)
+    anaarti.colore_articolo_filter_expander.set_expanded(False)
+    anaarti.anno_articolo_filter_expander.set_expanded(False)
+    anaarti.stagione_articolo_filter_expander.set_expanded(False)
+    anaarti.genere_articolo_filter_expander.set_expanded(False)
+
+def setRiepilogoArticoloPromoWearPart(anaarti):
+
+    def buildIncludedString(row, index):
+        if row[0]:
+            anaarti._includedString += '     + ' + row[index] + '\n'
+
+    def buildExcludedString(row, index):
+        if row[1]:
+            anaarti._excludedString += '     - ' + row[index] + '\n'
+
+
+
+    model = anaarti._gruppoTagliaTreeViewModel
+    anaarti._includedString = ''
+    parseModel(model, buildIncludedString, 4)
+    if anaarti._includedString != '':
+        testo += '  Gruppo taglia:\n'
+        testo += anaarti._includedString
+
+    model = anaarti._tagliaTreeViewModel
+    anaarti._includedString = ''
+    parseModel(model, buildIncludedString, 4)
+    if anaarti._includedString != '':
+        testo += '  Taglia:\n'
+        testo += anaarti._includedString
+
+    model = anaarti._coloreTreeViewModel
+    anaarti._includedString = ''
+    parseModel(model, buildIncludedString, 4)
+    if anaarti._includedString != '':
+        testo += '  Colore:\n'
+        testo += anaarti._includedString
+
+    model = anaarti._annoTreeViewModel
+    anaarti._includedString = ''
+    parseModel(model, buildIncludedString, 3)
+    if anaarti._includedString != '':
+        testo += '  Anno:\n'
+        testo += anaarti._includedString
+
+    model = anaarti._stagioneTreeViewModel
+    anaarti._includedString = ''
+    parseModel(model, buildIncludedString, 3)
+    if anaarti._includedString != '':
+        testo += '  Stagione:\n'
+        testo += anaarti._includedString
+
+    model = anaarti._genereTreeViewModel
+    anaarti._includedString = ''
+    parseModel(model, buildIncludedString, 3)
+    if anaarti._includedString != '':
+        testo += '  Genere:\n'
+        testo += anaarti._includedString
+
+def refreshPromoWearPart(anaarti):
+
+    if anaarti._tipoRicerca == 'semplice':
+        idGruppoTaglia = findIdFromCombobox(anaarti.id_gruppo_taglia_articolo_filter_combobox)
+        idTaglia = findIdFromCombobox(anaarti.id_taglia_articolo_filter_combobox)
+        idColore = findIdFromCombobox(anaarti.id_colore_articolo_filter_combobox)
+        idAnno = findIdFromCombobox(anaarti.id_anno_articolo_filter_combobox)
+        idStagione = findIdFromCombobox(anaarti.id_stagione_articolo_filter_combobox)
+        idGenere = findIdFromCombobox(anaarti.id_genere_articolo_filter_combobox)
+        padriTagliaColore = ((anaarti.taglie_colori_filter_combobox.get_active() == 0) or
+                            (anaarti.taglie_colori_filter_combobox.get_active() == 1))
+        if padriTagliaColore:
+            padriTagliaColore = None
+        else:
+            padriTagliaColore = True
+        figliTagliaColore = ((anaarti.taglie_colori_filter_combobox.get_active() == 0) or
+                            (anaarti.taglie_colori_filter_combobox.get_active() == 2))
+        if figliTagliaColore:
+            figliTagliaColore = None
+        else:
+            figliTagliaColore = True
+    elif anaarti._tipoRicerca == 'avanzata':
+        idGruppoTaglia = None
+        idTaglia = None
+        idColore = None
+        idAnno = None
+        idStagione = None
+        idGenere = None
+        padriTagliaColore = None
+        figliTagliaColore = None
+
+    anaarti.filterDict.update(idGruppoTaglia=idGruppoTaglia,
+                                    idTaglia=idTaglia,
+                                    idColore=idColore,
+                                    idAnno=idAnno,
+                                    idStagione=idStagione,
+                                    idGenere=idGenere,
+                                    padriTagliaColore=padriTagliaColore,
+                                    figliTagliaColore=figliTagliaColore)
+
+def preparePromoWearPart(anaarti):
+    def getGruppiTagliaIn(row, index):
+        if row[0]:
+            anaarti._idGruppiTagliaIn.append(row[index])
+
+    def getTaglieIn(row, index):
+        if row[0]:
+            anaarti._idTaglieIn.append(row[index])
+
+    def getColoriIn(row, index):
+        if row[0]:
+            anaarti._idColoriIn.append(row[index])
+
+    def getAnniIn(row, index):
+        if row[0]:
+            anaarti._idAnniIn.append(row[index])
+
+    def getStagioniIn(row, index):
+        if row[0]:
+            anaarti._idStagioniIn.append(row[index])
+
+    def getGeneriIn(row, index):
+        if row[0]:
+            anaarti._idGeneriIn.append(row[index])
+
+    def getCutSizeIn(row, index):
+        if row[0]:
+            anaarti._idCutSizeIn.append(row[index])
+
+    parseModel(anaarti._gruppoTagliaTreeViewModel, getGruppiTagliaIn, 2)
+    parseModel(anaarti._tagliaTreeViewModel, getTaglieIn, 2)
+    parseModel(anaarti._coloreTreeViewModel, getColoriIn, 2)
+    parseModel(anaarti._annoTreeViewModel, getAnniIn, 2)
+    parseModel(anaarti._stagioneTreeViewModel, getStagioniIn, 2)
+    parseModel(anaarti._genereTreeViewModel, getGeneriIn, 2)
+    parseModel(anaarti._cutisizeTreeViewModel, getCutSizeIn, 2)
+

@@ -427,13 +427,7 @@ class RicercaArticoliFilter(GladeWidget):
         self.includi_eliminati_articolo_filter_checkbutton.set_active(self._cancellato or False)
         self.solo_eliminati_articolo_filter_checkbutton.set_active(False)
         if "PromoWear" in Environment.modulesList:
-            self.drawGruppoTagliaTreeView()
-            self.drawTagliaTreeView()
-            self.drawColoreTreeView()
-            self.drawAnnoTreeView()
-            self.drawStagioneTreeView()
-            self.drawGenereTreeView()
-            self.drawCutSizeTreeView()
+            RicercaComplessaArticoliPromoWearExpand.drawRicercaComplessaPromoWearPart(self)
             #FIXME: They are not present anywhere
             #self.includi_principali_articolo_filter_checkbutton.set_active(True)
             #self.includi_varianti_articolo_filter_checkbutton.set_active(True)
@@ -442,380 +436,9 @@ class RicercaArticoliFilter(GladeWidget):
         self._activeExpander = None
         self.setRiepilogoArticolo()
 
-    def drawGruppoTagliaTreeView(self):
-        treeview = self.gruppo_taglia_articolo_filter_treeview
-        treeview.selectAllIncluded = False
-        treeview.selectAllExcluded = False
-        model = gtk.ListStore(bool, bool, int, str, str)
-        self._gruppoTagliaTreeViewModel = model
-
-        for c in treeview.get_columns():
-            treeview.remove_column(c)
-
-        renderer = gtk.CellRendererToggle()
-        renderer.set_property('activatable', True)
-        renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
-        column = gtk.TreeViewColumn('Includi', renderer, active=0)
-        column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Descrizione breve', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        treeview.set_search_column(4)
-
-        grts = GruppoTaglia().select(offset=None, batchSize=None)
-
-
-        for g in grts:
-            included = excluded = False
-            if self._idGruppoTaglia is not None:
-                included = self._idGruppoTaglia == g.id
-
-            model.append((included,
-                          excluded,
-                          g.id,
-                          g.denominazione_breve,
-                          g.denominazione))
-
-        treeview.set_model(model)
-
-
-    def drawTagliaTreeView(self):
-        treeview = self.taglia_articolo_filter_treeview
-        treeview.selectAllIncluded = False
-        treeview.selectAllExcluded = False
-        model = gtk.ListStore(bool, bool, int, str, str)
-        self._tagliaTreeViewModel = model
-
-        for c in treeview.get_columns():
-            treeview.remove_column(c)
-
-        renderer = gtk.CellRendererToggle()
-        renderer.set_property('activatable', True)
-        renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
-        column = gtk.TreeViewColumn('Includi', renderer, active=0)
-        column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Descrizione breve', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        treeview.set_search_column(4)
-
-        tags = Taglia().select(offset=None, batchSize=None)
-
-        for t in tags:
-            included = excluded = False
-            if self._idTaglia is not None:
-                included = self._idTaglia == t.id
-
-            model.append((included,
-                          excluded,
-                          t.id,
-                          t.denominazione_breve,
-                          t.denominazione))
-
-        treeview.set_model(model)
-
-
-    def drawColoreTreeView(self):
-        treeview = self.colore_articolo_filter_treeview
-        treeview.selectAllIncluded = False
-        treeview.selectAllExcluded = False
-        model = gtk.ListStore(bool, bool, int, str, str)
-        self._coloreTreeViewModel = model
-
-        for c in treeview.get_columns():
-            treeview.remove_column(c)
-
-        renderer = gtk.CellRendererToggle()
-        renderer.set_property('activatable', True)
-        renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
-        column = gtk.TreeViewColumn('Includi', renderer, active=0)
-        column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Descrizione breve', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        treeview.set_search_column(4)
-
-        cols = Colore().select(offset=None, batchSize=None)
-
-
-        for c in cols:
-            included = excluded = False
-            if self._idColore is not None:
-                included = self._idColore == c.id
-
-            model.append((included,
-                          excluded,
-                          c.id,
-                          c.denominazione_breve,
-                          c.denominazione))
-
-        treeview.set_model(model)
-
-
-    def drawAnnoTreeView(self):
-        treeview = self.anno_articolo_filter_treeview
-        treeview.selectAllIncluded = False
-        treeview.selectAllExcluded = False
-        model = gtk.ListStore(bool, bool, int, str)
-        self._annoTreeViewModel = model
-
-        for c in treeview.get_columns():
-            treeview.remove_column(c)
-
-        renderer = gtk.CellRendererToggle()
-        renderer.set_property('activatable', True)
-        renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
-        column = gtk.TreeViewColumn('Includi', renderer, active=0)
-        column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        treeview.set_search_column(3)
-
-        anno = self._idAnno
-        if hasattr(Environment.conf.PromoWear,'TaglieColori'):
-            default = getattr(Environment.conf.PromoWear.TaglieColori,'anno_default', None)
-            if default is not None:
-                anno = int(default)
-
-
-        anns = AnnoAbbigliamento().select(offset=None, batchSize=None)
-        for a in anns:
-            included = excluded = False
-            if anno is not None:
-                included = anno == a['id']
-
-            model.append((included,
-                          excluded,
-                          a.id,
-                          a.denominazione))
-
-        treeview.set_model(model)
 
     def getArtsResult(self):
         return self.artsResult or None
-
-
-    def drawCutSizeTreeView(self):
-        treeview = self.cutsize_articolo_filter_treeview
-        treeview.selectAllIncluded = False
-        treeview.selectAllExcluded = False
-        model = gtk.ListStore(bool, bool, str)
-        self._cutisizeTreeViewModel = model
-
-        for c in treeview.get_columns():
-            treeview.remove_column(c)
-
-        renderer = gtk.CellRendererToggle()
-        renderer.set_property('activatable', True)
-        renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
-        column = gtk.TreeViewColumn('Includi', renderer, active=0)
-        column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        treeview.set_search_column(2)
-
-        stas = [(True,False,"Tutti"),(False,True,"Solo principali"), (False,True,"Solo Varianti")]
-
-        for s in stas:
-            model.append((s[0],
-                          s[1],
-                          s[2]))
-
-        treeview.set_model(model)
-
-
-    def drawStagioneTreeView(self):
-        treeview = self.stagione_articolo_filter_treeview
-        treeview.selectAllIncluded = False
-        treeview.selectAllExcluded = False
-        model = gtk.ListStore(bool, bool, int, str)
-        self._stagioneTreeViewModel = model
-
-        for c in treeview.get_columns():
-            treeview.remove_column(c)
-
-        renderer = gtk.CellRendererToggle()
-        renderer.set_property('activatable', True)
-        renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
-        column = gtk.TreeViewColumn('Includi', renderer, active=0)
-        column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        treeview.set_search_column(3)
-
-        stagione = self._idStagione
-        if hasattr(Environment.conf,'TaglieColori'):
-            default = getattr(Environment.conf.TaglieColori,'stagione_default', None)
-            if default is not None:
-                stagione = int(default)
-
-        stas = StagioneAbbigliamento().select(offset=None, batchSize=None)
-
-        for s in stas:
-            included = excluded = False
-            if stagione is not None:
-                included = stagione == s['id']
-
-            model.append((included,
-                          excluded,
-                          s.id,
-                          s.denominazione))
-
-        treeview.set_model(model)
-
-
-    def drawGenereTreeView(self):
-        treeview = self.genere_articolo_filter_treeview
-        treeview.selectAllIncluded = False
-        treeview.selectAllExcluded = False
-        model = gtk.ListStore(bool, bool, int, str)
-        self._genereTreeViewModel = model
-
-        for c in treeview.get_columns():
-            treeview.remove_column(c)
-
-        renderer = gtk.CellRendererToggle()
-        renderer.set_property('activatable', True)
-        renderer.connect('toggled', self.onColumnEdited, None, treeview)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
-        column = gtk.TreeViewColumn('Includi', renderer, active=0)
-        column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        treeview.set_search_column(3)
-
-        gens = GenereAbbigliamento().select(offset=None, batchSize=None)
-
-        for g in gens:
-            included = excluded = False
-            if self._idGenere is not None:
-                included = self._idGenere == g['id']
-
-            model.append((included,
-                          excluded,
-                          g.id,
-                          g.denominazione))
-
-        treeview.set_model(model)
-
 
     def drawStatoTreeView(self):
         treeview = self.stato_articolo_filter_treeview
@@ -1258,32 +881,6 @@ class RicercaArticoliFilter(GladeWidget):
                                         f.denominazione_breve,
                                         f.denominazione))
         nodes = []
-        #for f in fams:
-            #index_padre = int(f.depth - 1)
-            #if index_padre < 0:
-                #index_padre = 0
-
-            #if f.depth == 0:
-                #padre = None
-            #else:
-                #padre = nodes[index_padre]
-
-            #included = excluded = False
-            #if self._idFamiglia is not None:
-                #included = self._idFamiglia == f.id
-
-            #node = model.append(padre, (included,
-                                        #excluded,
-                                        #f.id,
-                                        #f.codice,
-                                        #f.denominazione_breve,
-                                        #f.denominazione))
-
-            #try:
-                #nodes[f.depth] = node
-            #except IndexError:
-                #nodes.insert(f.depth + 1, node)
-
         treeview.set_model(model)
 
 
@@ -1379,7 +976,6 @@ class RicercaArticoliFilter(GladeWidget):
 
         stas = StatoArticolo().select(offset=None, batchSize=None)
 
-
         for s in stas:
             included = excluded = False
             if self._idStato is not None:
@@ -1447,7 +1043,6 @@ class RicercaArticoliFilter(GladeWidget):
 
     def insertDescrizione(self, value=''):
         """ Inserimento nuova descrizione nella treeview """
-
         insertTreeViewRow(self.descrizione_articolo_filter_treeview, value)
 
     def deleteDescrizione(self):
@@ -1456,10 +1051,8 @@ class RicercaArticoliFilter(GladeWidget):
         self.setRiepilogoArticolo()
         self.complexFilter= clearWhereString(self.complexFilter)
 
-
     def on_nuova_descrizione_articolo_filter_button_clicked(self, button=None):
         self.insertDescrizione()
-
 
     def on_cancella_descrizione_articolo_filter_button_clicked(self, button=None):
         self.deleteDescrizione()
@@ -1478,7 +1071,6 @@ class RicercaArticoliFilter(GladeWidget):
     def on_nuovo_produttore_articolo_filter_button_clicked(self, button=None):
         self.insertProduttore()
 
-
     def on_cancella_produttore_articolo_filter_button_clicked(self, button=None):
         self.deleteProduttore()
         self.setRiepilogoArticolo()
@@ -1496,7 +1088,6 @@ class RicercaArticoliFilter(GladeWidget):
     def on_nuovo_codice_articolo_filter_button_clicked(self, button=None):
         self.insertCodice()
 
-
     def on_cancella_codice_articolo_filter_button_clicked(self, button=None):
         self.deleteCodice()
         self.setRiepilogoArticolo()
@@ -1504,7 +1095,6 @@ class RicercaArticoliFilter(GladeWidget):
     def insertCodiceABarre(self, value=''):
         """ Inserimento nuovo codice a barre nella treeview """
         insertTreeViewRow(self.codice_a_barre_articolo_filter_treeview, value)
-
 
     def deleteCodiceABarre(self):
         """ Eliminazione codice a barre dalla treeview """
@@ -1514,7 +1104,6 @@ class RicercaArticoliFilter(GladeWidget):
     def on_nuovo_codice_a_barre_articolo_filter_button_clicked(self, button=None):
         self.insertCodiceABarre()
 
-
     def on_cancella_codice_a_barre_articolo_filter_button_clicked(self, button=None):
         self.deleteCodiceABarre()
         self.setRiepilogoArticolo()
@@ -1523,7 +1112,6 @@ class RicercaArticoliFilter(GladeWidget):
         """ Inserimento nuovo codice articolo fornitore nella treeview """
         insertTreeViewRow(self.codice_articolo_fornitore_articolo_filter_treeview, value)
 
-
     def deleteCodiceArticoloFornitore(self):
         """ Eliminazione codice articolo fornitore dalla treeview """
         deleteTreeViewRow(self.codice_articolo_fornitore_articolo_filter_treeview)
@@ -1531,7 +1119,6 @@ class RicercaArticoliFilter(GladeWidget):
 
     def on_nuovo_codice_articolo_fornitore_articolo_filter_button_clicked(self, button=None):
         self.insertCodiceArticoloFornitore()
-
 
     def on_cancella_codice_articolo_fornitore_articolo_filter_button_clicked(self, button=None):
         self.deleteCodiceArticoloFornitore()
@@ -1660,12 +1247,7 @@ class RicercaArticoliFilter(GladeWidget):
         self.unita_base_articolo_filter_expander.set_expanded(False)
         self.varie_articolo_filter_expander.set_expanded(False)
         if "PromoWear" in Environment.modulesList:
-            self.gruppo_taglia_articolo_filter_expander.set_expanded(False)
-            self.taglia_articolo_filter_expander.set_expanded(False)
-            self.colore_articolo_filter_expander.set_expanded(False)
-            self.anno_articolo_filter_expander.set_expanded(False)
-            self.stagione_articolo_filter_expander.set_expanded(False)
-            self.genere_articolo_filter_expander.set_expanded(False)
+            RicercaComplessaArticoliPromoWearExpand.collapseAllExpandersPromoWearPart(self)
 
 
     def on_includi_principali_articolo_filter_checkbutton_toggled(self, widget):
@@ -1818,47 +1400,7 @@ class RicercaArticoliFilter(GladeWidget):
             testo += '  + Solo articoli eliminati\n'
 
         if "PromoWear" in Environment.modulesList:
-            model = self._gruppoTagliaTreeViewModel
-            self._includedString = ''
-            parseModel(model, buildIncludedString, 4)
-            if self._includedString != '':
-                testo += '  Gruppo taglia:\n'
-                testo += self._includedString
-
-            model = self._tagliaTreeViewModel
-            self._includedString = ''
-            parseModel(model, buildIncludedString, 4)
-            if self._includedString != '':
-                testo += '  Taglia:\n'
-                testo += self._includedString
-
-            model = self._coloreTreeViewModel
-            self._includedString = ''
-            parseModel(model, buildIncludedString, 4)
-            if self._includedString != '':
-                testo += '  Colore:\n'
-                testo += self._includedString
-
-            model = self._annoTreeViewModel
-            self._includedString = ''
-            parseModel(model, buildIncludedString, 3)
-            if self._includedString != '':
-                testo += '  Anno:\n'
-                testo += self._includedString
-
-            model = self._stagioneTreeViewModel
-            self._includedString = ''
-            parseModel(model, buildIncludedString, 3)
-            if self._includedString != '':
-                testo += '  Stagione:\n'
-                testo += self._includedString
-
-            model = self._genereTreeViewModel
-            self._includedString = ''
-            parseModel(model, buildIncludedString, 3)
-            if self._includedString != '':
-                testo += '  Genere:\n'
-                testo += self._includedString
+            RicercaComplessaArticoliPromoWearExpand.setRiepilogoArticoloPromoWearPart(self)
 
             #FIXME They are not present. check how to make this kinf of filter now
             #if self.includi_principali_articolo_filter_checkbutton.get_active():
@@ -1959,31 +1501,8 @@ class RicercaArticoliFilter(GladeWidget):
             idCategoria = findIdFromCombobox(self.id_categoria_articolo_filter_combobox)
             idStato = findIdFromCombobox(self.id_stato_articolo_filter_combobox)
             cancellato = False
-            if "PromoWear" in Environment.modulesList:
-                idGruppoTaglia = findIdFromCombobox(self.id_gruppo_taglia_articolo_filter_combobox)
-                idTaglia = findIdFromCombobox(self.id_taglia_articolo_filter_combobox)
-                idColore = findIdFromCombobox(self.id_colore_articolo_filter_combobox)
-                idAnno = findIdFromCombobox(self.id_anno_articolo_filter_combobox)
-                idStagione = findIdFromCombobox(self.id_stagione_articolo_filter_combobox)
-                idGenere = findIdFromCombobox(self.id_genere_articolo_filter_combobox)
-                padriTagliaColore = ((self.taglie_colori_filter_combobox.get_active() == 0) or
-                                    (self.taglie_colori_filter_combobox.get_active() == 1))
-                if padriTagliaColore: padriTagliaColore = None
-                else:padriTagliaColore = True
-                figliTagliaColore = ((self.taglie_colori_filter_combobox.get_active() == 0) or
-                                    (self.taglie_colori_filter_combobox.get_active() == 2))
-                if figliTagliaColore:figliTagliaColore = None
-                else:figliTagliaColore = True
-
-            else:
-                idGruppoTaglia = None
-                idTaglia = None
-                idColore = None
-                idAnno = None
-                idStagione = None
-                idGenere = None
-                padriTagliaColore = None
-                figliTagliaColore = None
+            #if "PromoWear" in Environment.modulesList:
+                #RicercaComplessaArticoliPromoWearExpand.refreshPromoWearPart(self)
         elif self._tipoRicerca == 'avanzata':
             self.complexFilter = self._prepare()
             # tutti i filtri vengono annullati in modo che nella stored procedure di select
@@ -1997,167 +1516,78 @@ class RicercaArticoliFilter(GladeWidget):
             idCategoria = None
             idStato = None
             cancellato = None
-            idGruppoTaglia = None
-            idTaglia = None
-            idColore = None
-            idAnno = None
-            idStagione = None
-            idGenere = None
-            padriTagliaColore = None
-            figliTagliaColore = None
+
             #if self.complexFilter:
                 #self.complexFilter= and_(*self.complexFilter)
         #if (not denominazione and not codice and not codiceABarre) and ("AND" not in str(self.complexFilter)):
             #self.filter.numRecords = 0
         #else:
+
+        self.filterDict = { "denominazione":denominazione,
+                            "codice":codice,
+                            "codiceABarre":codiceABarre,
+                            "codiceArticoloFornitore":codiceArticoloFornitore,
+                            "produttore":produttore,
+                            "idFamiglia":idFamiglia,
+                            "idCategoria":idCategoria,
+                            "idStato":idStato,
+                            "cancellato":cancellato}
+
+
         if "Promowear" in Environment.modulesList:
-            self.filter.numRecords = Articolo().count(denominazione=denominazione,
-                                                        codice=codice,
-                                                        codiceABarre=codiceABarre,
-                                                        codiceArticoloFornitore=codiceArticoloFornitore,
-                                                        produttore=produttore,
-                                                        idFamiglia=idFamiglia,
-                                                        idCategoria=idCategoria,
-                                                        idStato=idStato,
-                                                        cancellato=cancellato,
-                                                        idGruppoTaglia=idGruppoTaglia,
-                                                        idTaglia=idTaglia,
-                                                        idColore=idColore,
-                                                        idAnno=idAnno,
-                                                        idStagione=idStagione,
-                                                        idGenere=idGenere,
-                                                        padriTagliaColore=padriTagliaColore,
-                                                        figliTagliaColore=figliTagliaColore)
-        else:
-            self.filter.numRecords = Articolo().count(
-                                        denominazione=denominazione,
-                                        codice=codice,
-                                        codiceABarre=codiceABarre,
-                                        codiceArticoloFornitore=codiceArticoloFornitore,
-                                        produttore=produttore,
-                                        idFamiglia=idFamiglia,
-                                        idCategoria=idCategoria,
-                                        idStato=idStato,
-                                        cancellato=cancellato,
-                                        complexFilter=self.complexFilter)
+            RicercaComplessaArticoliPromoWearExpand.refreshPromoWearPart(self)
+
+        self.filter.numRecords = Articolo().count(filterDict = self.filterDict,complexFilter =self.complexFilter)
+
         self.resultsCount = self.filter.numRecords
         self.filter._refreshPageCount()
         #if (not denominazione and not codice and not codiceABarre) and ("AND" not in str(self.complexFilter)):
             #arts = []
             #model.clear()
         #else:
-        if "PromoWear" in Environment.modulesList:
-            arts = Articolo().select(orderBy=self.filter.orderBy,
+
+        arts = Articolo().select(orderBy=self.filter.orderBy,
                                             join=self.filter.join,
-                                            denominazione=denominazione,
-                                            codice=codice,
-                                            codiceABarre=codiceABarre,
-                                            codiceArticoloFornitore=codiceArticoloFornitore,
-                                            produttore=produttore,
-                                            idFamiglia=idFamiglia,
-                                            idCategoria=idCategoria,
-                                            idStato=idStato,
-                                            cancellato=cancellato,
-                                            idGruppoTaglia=idGruppoTaglia,
-                                            idTaglia=idTaglia,
-                                            idColore=idColore,
-                                            idAnno=idAnno,
-                                            idStagione=idStagione,
-                                            idGenere=idGenere,
-                                            padriTagliaColore=padriTagliaColore,
-                                            figliTagliaColore=figliTagliaColore,
                                             offset=self.filter.offset,
+                                            filterDict = self.filterDict,
+                                            complexFilter =self.complexFilter,
                                             batchSize=self.filter.batchSize)
-            model.clear()
-            for a in arts:
-                bgCol = None
-                if a.cancellato:
-                    bgCol = 'red'
-                model.append((a,
-                            bgCol,
-                            (a.codice or ''),
-                            (a.denominazione or ''),
-                            (a.produttore or ''),
-                            (a.codice_a_barre or ''),
-                            (a.codice_articolo_fornitore or ''),
-                            (a.denominazione_famiglia or ''),
-                            (a.denominazione_categoria or ''),
-                            (a.denominazione_gruppo_taglia or ''),
-                            (a.denominazione_taglia or ''),
-                            (a.denominazione_colore or ''),
-                            (a.anno or ''),
-                            (a.stagione or ''),
-                            (a.genere or '')))
-        else:
-            arts = Articolo().select(orderBy=self.filter.orderBy,
-                                    denominazione=denominazione,
-                                    codice=codice,
-                                    codiceABarre=codiceABarre,
-                                    codiceArticoloFornitore=codiceArticoloFornitore,
-                                    produttore=produttore,
-                                    idFamiglia=idFamiglia,
-                                    idCategoria=idCategoria,
-                                    idStato=idStato,
-                                    cancellato=cancellato,
-                                    offset=self.filter.offset,
-                                    batchSize=self.filter.batchSize,
-                                    complexFilter=self.complexFilter,
-                                    join=self.filter.join)
-            model.clear()
+        model.clear()
+        for a in arts:
+            modelRowPromoWear = []
+            modelRow = []
+            bgCol = None
+            if a.cancellato:
+                bgCol = 'red'
+            modelRow = [a,
+                        bgCol,
+                        (a.codice or ''),
+                        (a.denominazione or ''),
+                        (a.produttore or ''),
+                        (a.codice_a_barre or ''),
+                        (a.codice_articolo_fornitore or ''),
+                        (a.denominazione_famiglia or ''),
+                        (a.denominazione_categoria or '')]
 
-            for a in arts:
-                bgCol = None
-                if a.cancellato:
-                    bgCol = 'red'
-                model.append((a,
-                            bgCol,
-                            (a.codice or ''),
-                            (a.denominazione or ''),
-                            (a.produttore or ''),
-                            (a.codice_a_barre or ''),
-                            (a.codice_articolo_fornitore or ''),
-                            (a.denominazione_famiglia or ''),
-                            (str(a.denominazione_categoria) or '')))
+            if "PromoWear" in Environment.modulesList:
+                modelRowPromoWear = [(a.denominazione_gruppo_taglia or ''),
+                                    #(a.denominazione_modello or ''),
+                                    (a.denominazione_taglia or ''),
+                                    (a.denominazione_colore or ''),
+                                    (a.anno or ''),
+                                    (a.stagione or ''),
+                                    (a.genere or '')]
+            if modelRowPromoWear:
+                model.append(modelRow +modelRowPromoWear)
+            else:
+                model.append(modelRow)
 
-        if "PromoWear" in Environment.modulesList:
-            self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
-                                            join=self.filter.join,
-                                            denominazione=denominazione,
-                                            codice=codice,
-                                            codiceABarre=codiceABarre,
-                                            codiceArticoloFornitore=codiceArticoloFornitore,
-                                            produttore=produttore,
-                                            idFamiglia=idFamiglia,
-                                            idCategoria=idCategoria,
-                                            idStato=idStato,
-                                            cancellato=cancellato,
-                                            idGruppoTaglia=idGruppoTaglia,
-                                            idTaglia=idTaglia,
-                                            idColore=idColore,
-                                            idAnno=idAnno,
-                                            idStagione=idStagione,
-                                            idGenere=idGenere,
-                                            padriTagliaColore=padriTagliaColore,
-                                            figliTagliaColore=figliTagliaColore,
-                                            offset=None,
-                                            batchSize=None,
-                                            complexFilter=self.complexFilter)
+        self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
+                                        join=self.filter.join,
+                                        offset=None,
+                                        batchSize=None,
+                                        filterDict = self.filterDict)
 
-        else:
-            self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
-                                                join = self.filter.join,
-                                                denominazione=denominazione,
-                                                codice=codice,
-                                                codiceABarre=codiceABarre,
-                                                codiceArticoloFornitore=codiceArticoloFornitore,
-                                                produttore=produttore,
-                                                idFamiglia=idFamiglia,
-                                                idCategoria=idCategoria,
-                                                idStato=idStato,
-                                                cancellato=cancellato,
-                                                offset=None,
-                                                batchSize=None,
-                                                complexFilter=self.complexFilter)
 
     def _prepare(self):
         """
@@ -2222,35 +1652,6 @@ class RicercaArticoliFilter(GladeWidget):
             if row[0]:
                 self._idUnitaBaseIn.append(row[index])
 
-        def getGruppiTagliaIn(row, index):
-            if row[0]:
-                self._idGruppiTagliaIn.append(row[index])
-
-        def getTaglieIn(row, index):
-            if row[0]:
-                self._idTaglieIn.append(row[index])
-
-        def getColoriIn(row, index):
-            if row[0]:
-                self._idColoriIn.append(row[index])
-
-        def getAnniIn(row, index):
-            if row[0]:
-                self._idAnniIn.append(row[index])
-
-        def getStagioniIn(row, index):
-            if row[0]:
-                self._idStagioniIn.append(row[index])
-
-        def getGeneriIn(row, index):
-            if row[0]:
-                self._idGeneriIn.append(row[index])
-
-        def getCutSizeIn(row, index):
-            if row[0]:
-                self._idCutSizeIn.append(row[index])
-
-
         # eliminazione tabella articoli filtrati
 
         self.resultsCount = 0
@@ -2296,13 +1697,7 @@ class RicercaArticoliFilter(GladeWidget):
             parseModel(self._statoTreeViewModel, getStatiIn, 2)
             parseModel(self._unitaBaseTreeViewModel, getUnitaBaseIn, 2)
             if "PromoWear" in Environment.modulesList:
-                parseModel(self._gruppoTagliaTreeViewModel, getGruppiTagliaIn, 2)
-                parseModel(self._tagliaTreeViewModel, getTaglieIn, 2)
-                parseModel(self._coloreTreeViewModel, getColoriIn, 2)
-                parseModel(self._annoTreeViewModel, getAnniIn, 2)
-                parseModel(self._stagioneTreeViewModel, getStagioniIn, 2)
-                parseModel(self._genereTreeViewModel, getGeneriIn, 2)
-                parseModel(self._cutisizeTreeViewModel, getCutSizeIn, 2)
+                RicercaComplessaArticoliPromoWearExpand.preparePromoWearPart(self)
 
 
             if self.includi_eliminati_articolo_filter_checkbutton.get_active():
