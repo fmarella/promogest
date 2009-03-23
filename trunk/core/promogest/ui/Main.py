@@ -828,11 +828,13 @@ class AnagrafichePrincipaliFrame(GladeWidget):
     def on_agenti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-
-        from AnagraficaAgenti import AnagraficaAgenti
-        anag = AnagraficaAgenti(aziendaStr=self.aziendaStr)
-
-        showAnagrafica(self.mainWindow, anag, toggleButton)
+        if "Agenti" in Environment.modulesList:
+            from promogest.modules.Agenti.ui.AnagraficaAgenti import AnagraficaAgenti
+            anag = AnagraficaAgenti(aziendaStr=self.aziendaStr)
+            showAnagrafica(self.mainWindow, anag, toggleButton)
+        else:
+            fenceDialog()
+            toggleButton.set_active(False)
 
 
     #def on_contatti_button_clicked(self, toggleButton):

@@ -139,39 +139,48 @@ class ElencoMagazzini(GladeWidget):
 
 
     def on_inventario_togglebutton_clicked(self, toggleButton):
-        return
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
+        if "Inventario" in Environment.modulesList:
+            return
 
-        if self._currentDao is not None:
-            idMagazzino = self._currentDao.id
-            from GestioneInventario import GestioneInventario
-            anag = GestioneInventario(idMagazzino)
-            anagWindow = anag.getTopLevel()
 
-            showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
+            if self._currentDao is not None:
+                idMagazzino = self._currentDao.id
+                from promogest.modules.Inventario.ui.GestioneInventario import GestioneInventario
+                anag = GestioneInventario(idMagazzino)
+                anagWindow = anag.getTopLevel()
+
+                showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
+            else:
+                toggleButton.set_active(False)
+                obligatoryField(self._mainWindow,
+                                None,
+                                '\nSelezionare un magazzino !')
         else:
+            fenceDialog()
             toggleButton.set_active(False)
-            obligatoryField(self._mainWindow,
-                            None,
-                            '\nSelezionare un magazzino !')
 
     def on_statistiche_togglebutton_clicked(self, toggleButton):
-        return
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
+        if "Statistiche" in Environment.modulesList:
+            return
 
-        if self._currentDao is not None:
-            idMagazzino = self._currentDao.id
-            from StatisticheMagazzino import StatisticheMagazzino
-            anag = StatisticheMagazzino(idMagazzino)
-            anagWindow = anag.getTopLevel()
+            if self._currentDao is not None:
+                idMagazzino = self._currentDao.id
+                from promogest.modules.Statistiche.ui.StatisticheMagazzino import StatisticheMagazzino
+                anag = StatisticheMagazzino(idMagazzino)
+                anagWindow = anag.getTopLevel()
 
-            showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
+                showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
+            else:
+                toggleButton.set_active(False)
+                obligatoryField(self._mainWindow,
+                                None,
+                                '\nSelezionare un magazzino !')
         else:
+            fenceDialog()
             toggleButton.set_active(False)
-            obligatoryField(self._mainWindow,
-                            None,
-                            '\nSelezionare un magazzino !')

@@ -8,7 +8,7 @@
 
 import gtk, gobject, os
 from datetime import datetime, timedelta
-from RicercaComplessaArticoli import RicercaComplessaArticoli
+from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
 from promogest import Environment
 from promogest.dao.Inventario import Inventario
 from promogest.dao.TestataMovimento import TestataMovimento
@@ -17,7 +17,7 @@ from promogest.dao.Riga import Riga
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Articolo import Articolo
 from promogest.ui.GladeWidget import GladeWidget
-from utils import *
+from promogest.ui.utils import *
 
 
 class GestioneInventario(RicercaComplessaArticoli):

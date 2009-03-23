@@ -252,9 +252,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.id_listino_customcombobox.combobox.clear
         else:
             a = fillComboboxListiniFiltrati(self.id_listino_customcombobox.combobox,
-                    self._righe[0]["idArticolo"],
-                    self._righe[0]["idMagazzino"],
-                    self.id_persona_giuridica_customcombobox.getId())
+                                            self._righe[0]["idArticolo"],
+                                            self._righe[0]["idMagazzino"],
+                                            self.id_persona_giuridica_customcombobox.getId())
             if self._id_listino is not None:
                 findComboboxRowFromId(self.id_listino_customcombobox.combobox, self._id_listino)
 

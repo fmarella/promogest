@@ -300,17 +300,19 @@ class Login(GladeApp):
                             and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
             for m_str in modules_folders:
                 if hasattr(Environment.conf,m_str):
-                    exec "mod_enable = getattr(Environment.conf.%s,'mod_enable','yes')" %m_str
-                    if mod_enable=="yes":
-                        exec "import %s.%s.module as m" % (modules_dir.replace("/", "."), m_str)
-                        Environment.modulesList.append(str(m.MODULES_NAME))
-                        for class_name in m.MODULES_FOR_EXPORT:
-                            exec 'module = m.'+ class_name
-                            self.modules[class_name] = {
-                                'module': module(),
-                                'type': module.VIEW_TYPE[0],
-                                'module_dir': "%s" % (m_str),
-                                'guiDir':m.GUI_DIR}
+                    exec "mod_enable = hasattr(Environment.conf.%s,'mod_enable')" %m_str
+                    if mod_enable:
+                        exec "mod_enableyes = getattr(Environment.conf.%s,'mod_enable','yes')" %m_str
+                        if mod_enableyes=="yes":
+                            exec "import %s.%s.module as m" % (modules_dir.replace("/", "."), m_str)
+                            Environment.modulesList.append(str(m.MODULES_NAME))
+                            for class_name in m.MODULES_FOR_EXPORT:
+                                exec 'module = m.'+ class_name
+                                self.modules[class_name] = {
+                                    'module': module(),
+                                    'type': module.VIEW_TYPE[0],
+                                    'module_dir': "%s" % (m_str),
+                                    'guiDir':m.GUI_DIR}
             print "LISTA DEI MODULI CARICATI E FUNZIONANTI", repr(Environment.modulesList)
             self.groupModulesByType()
 

@@ -485,8 +485,9 @@ def fillComboboxListiniFiltrati(combobox, idArticolo=None, idMagazzino=None, idC
     else:
         emptyRow = '< Tutti >'
     model.append((None, 0, emptyRow))
-    for l in liss:
-        model.append((l, l.id, (l.denominazione or '')[0:20]))
+    if liss:
+        for l in liss:
+            model.append((l, l.id, (l.denominazione or '')[0:20]))
 
     combobox.clear()
     renderer = gtk.CellRendererText()
