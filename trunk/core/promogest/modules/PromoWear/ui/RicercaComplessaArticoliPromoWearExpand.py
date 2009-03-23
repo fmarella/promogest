@@ -85,6 +85,7 @@ def drawRicercaSemplicePromoWearPart(anaarti):
     fillComboboxColori(anaarti.id_colore_articolo_filter_combobox, True)
     fillComboboxAnniAbbigliamento(anaarti.id_anno_articolo_filter_combobox, True)
     fillComboboxStagioniAbbigliamento(anaarti.id_stagione_articolo_filter_combobox, True)
+    fillComboboxModelli(anaarti.id_modello_filter_combobox, True)
     fillComboboxGeneriAbbigliamento(anaarti.id_genere_articolo_filter_combobox, True)
     if anaarti._idGruppoTaglia is not None:
         findComboboxRowFromId(anaarti.id_gruppo_taglia_articolo_filter_combobox, anaarti._idGruppoTaglia)
@@ -113,3 +114,4 @@ def drawRicercaSemplicePromoWearPart(anaarti):
         findComboboxRowFromId(anaarti.id_colore_articolo_filter_combobox, anaarti._idGenere)
     anaarti.taglie_colori_filter_combobox.set_active(0)
     anaarti.id_stato_articolo_filter_combobox.set_active(0)
+    anaarti.id_modello_filter_combobox.set_active(0)
