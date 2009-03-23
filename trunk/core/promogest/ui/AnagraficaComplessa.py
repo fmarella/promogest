@@ -386,7 +386,7 @@ class Anagrafica(GladeWidget):
 
 
     def on_Stampa_Frontaline_clicked(self, widget):
-        if "Labels" in Environment.modulesList:
+        if "Label" in Environment.modulesList:
             self._handlePrinting(pdfGenerator=self.labelHandler, report=True, label=True)
         else:
             fenceDialog()
