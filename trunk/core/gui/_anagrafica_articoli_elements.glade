@@ -64,7 +64,7 @@
                       <widget class="GtkLabel" id="cancellato_filter_label">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Includi eliminati</property>
+                        <property name="label" translatable="yes">Incl eliminati</property>
                       </widget>
                       <packing>
                         <property name="top_attach">8</property>
@@ -190,7 +190,7 @@
                       <widget class="GtkLabel" id="label9">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Codice articolo fornitore</property>
+                        <property name="label" translatable="yes">Cod. Arti Forni.</property>
                       </widget>
                       <packing>
                         <property name="top_attach">4</property>
@@ -246,7 +246,7 @@
                       <widget class="GtkLabel" id="label84">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Famiglia merceologica</property>
+                        <property name="label" translatable="yes">Famiglia </property>
                       </widget>
                       <packing>
                         <property name="top_attach">5</property>
@@ -277,8 +277,8 @@
                         <property name="shadow_type">in</property>
                         <child>
                           <widget class="GtkTable" id="filter_promowear">
+                            <property name="visible">True</property>
                             <property name="app_paintable">True</property>
-                            <property name="no_show_all">True</property>
                             <property name="n_rows">8</property>
                             <property name="n_columns">2</property>
                             <child>
@@ -383,7 +383,7 @@ Solo varianti</property>
                               <widget class="GtkLabel" id="taglie_colori_filter_label">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">Taglie/Colori: includi</property>
+                                <property name="label" translatable="yes">T/C: Incl.</property>
                               </widget>
                               <packing>
                                 <property name="top_attach">1</property>
@@ -493,7 +493,7 @@ Solo varianti</property>
                               <widget class="GtkLabel" id="gruppo_taglia_filter_label">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">Gruppo taglia</property>
+                                <property name="label" translatable="yes">Gr Taglia</property>
                               </widget>
                               <packing>
                                 <property name="top_attach">2</property>

@@ -39,6 +39,7 @@ if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
     from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
     from promogest.modules.PromoWear.ui.PromowearUtils import *
+    from promogest.modules.PromoWear.ui import RicercaComplessaArticoliPromoWearExpand
 
 
 class RicercaComplessaArticoli(RicercaComplessa):
@@ -184,60 +185,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
         column.set_min_width(100)
         treeview.append_column(column)
         if "PromoWear" in Environment.modulesList:
-            column = gtk.TreeViewColumn('Gruppo taglia', renderer, text=9, background=1)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(False)
-            column.connect("clicked", self.filter._changeOrderBy, (GruppoTaglia, GruppoTaglia.denominazione))
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(100)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('Taglia', renderer, text=10, background=1)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(False)
-            column.connect("clicked", self.filter._changeOrderBy, (Taglia, Taglia.denominazione))
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(100)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('Colore', renderer, text=11, background=1)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(False)
-            column.connect("clicked", self.filter._changeOrderBy, (Colore, Colore.denominazione))
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(100)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('Anno', renderer, text=12, background=1)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(False)
-            column.connect("clicked", self.filter._changeOrderBy, (AnnoAbbigliamento,AnnoAbbigliamento.denominazione))
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(100)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('Stagione', renderer, text=13, background=1)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(False)
-            column.connect("clicked", self.filter._changeOrderBy, (StagioneAbbigliamento,StagioneAbbigliamento.denominazione))
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(100)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('Genere', renderer, text=14, background=1)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(False)
-            column.connect("clicked", self.filter._changeOrderBy, (None, "genere"))
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(100)
-            treeview.append_column(column)
-            model = gtk.ListStore(object, str, str, str, str, str, str, str, str, str, str, str, str, str, str)
+            model = RicercaComplessaArticoliPromoWearExpand.drawPromoWearPart(self, renderer)
         else:
             model = gtk.ListStore(object, str, str, str, str, str, str, str, str)
 
@@ -442,40 +390,7 @@ class RicercaArticoliFilter(GladeWidget):
         fillComboboxCategorieArticoli(self.id_categoria_articolo_filter_combobox, True)
         fillComboboxStatiArticoli(self.id_stato_articolo_filter_combobox, True)
         if "PromoWear" in Environment.modulesList:
-            self.filter_promowear.set_property('visible', True)
-            fillComboboxGruppiTaglia(self.id_gruppo_taglia_articolo_filter_combobox, True)
-            fillComboboxTaglie(self.id_taglia_articolo_filter_combobox, True)
-            fillComboboxColori(self.id_colore_articolo_filter_combobox, True)
-            fillComboboxAnniAbbigliamento(self.id_anno_articolo_filter_combobox, True)
-            fillComboboxStagioniAbbigliamento(self.id_stagione_articolo_filter_combobox, True)
-            fillComboboxGeneriAbbigliamento(self.id_genere_articolo_filter_combobox, True)
-            if self._idGruppoTaglia is not None:
-                findComboboxRowFromId(self.id_gruppo_taglia_articolo_filter_combobox, self._idGruppoTaglia)
-            self.id_taglia_articolo_filter_combobox.set_active(0)
-            if self._idTaglia is not None:
-                findComboboxRowFromId(self.id_taglia_articolo_filter_combobox, self._idTaglia)
-            self.id_colore_articolo_filter_combobox.set_active(0)
-            if self._idColore is not None:
-                findComboboxRowFromId(self.id_colore_articolo_filter_combobox, self._idColore)
-            self.id_anno_articolo_filter_combobox.set_active(0)
-            self.id_anno_articolo_filter_combobox.set_active(0)
-            anno = getattr(Environment.conf.PromoWear,'anno_default', None)
-            if anno is not None:
-                try:
-                    idAnno = AnnoAbbigliamento().select(denominazione = anno)[0].id
-                    findComboboxRowFromId(self.id_anno_articolo_filter_combobox, idAnno)
-                except:
-                    pass
-            #gestione stagione abbigliamento con prelievo del dato di default dal configure ( nb da usare l'id)
-            self.id_stagione_articolo_filter_combobox.set_active(0)
-            stagione = getattr(Environment.conf.PromoWear,'stagione_default', None)
-            if stagione is not None:
-                findComboboxRowFromId(self.id_stagione_articolo_filter_combobox, int(stagione))
-            self.id_genere_articolo_filter_combobox.set_active(0)
-            if self._idGenere is not None:
-                findComboboxRowFromId(self.id_colore_articolo_filter_combobox, self._idGenere)
-            self.taglie_colori_filter_combobox.set_active(0)
-            self.id_stato_articolo_filter_combobox.set_active(0)
+            RicercaComplessaArticoliPromoWearExpand.drawRicercaSemplicePromoWearPart(self)
 
         self.denominazione_filter_entry.set_text(self._denominazione or '')
         self.produttore_filter_entry.set_text(self._produttore or '')
