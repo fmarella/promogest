@@ -267,7 +267,7 @@ listinoarticolo=Table('listino_articolo',
 
 std_mapper=mapper(ListinoArticolo, listinoarticolo, properties={
             "arti" : relation(Articolo,primaryjoin=
-                and_(listinoarticolo.c.id_articolo==Articolo.id,Articolo.cancellato==False)),
+                and_(listinoarticolo.c.id_articolo==Articolo.id,Articolo.cancellato==False), backref="listinoarticolo"),
             "SVD": relation(ScontoVenditaDettaglio,primaryjoin=and_(
                 listinoarticolo.c.id_listino==ScontoVenditaDettaglio.id_listino,
                 listinoarticolo.c.id_articolo==ScontoVenditaDettaglio.id_articolo,

@@ -1,7 +1,12 @@
 {% extends 'index.html' %}
 
 {% block body %}
+<div id="head">
+        <div id="img" ><img src= "gui/articolo48x48.png"></div>
+    <div id="testo">{{ui|replace("_"," ")|capitalize()}}</div>
+  </div>  <div id="rigaheader"></div>
 <div>
+
 <table cellpadding="0" cellspacing="0" border="0">
             <tr>
                 <td class="report-header" width="50%"><h3>Articolo: <strong>{{dao.codice}}</strong></h3></td>
@@ -143,7 +148,7 @@
 <!--             <tr><td colspan="4" class="table-header" py:if="dao.url_immagine and conf.Articoli.immagini=='True'">Foto</td></tr> -->
         </table>
         <BR /><BR />
-        <img src="http://www.python.org/images/python-logo.gif"></img>
+<!--         <img src="http://www.python.org/images/python-logo.gif"></img> -->
 </div>
 {% endblock %}
 

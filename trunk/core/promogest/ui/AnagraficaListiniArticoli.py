@@ -255,6 +255,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                     column.set_property('visible', False)
         if self._anagrafica._listinoFissato:
             findComboboxRowFromId(self.id_listino_filter_combobox, self._anagrafica._idListino)
+            Environment.listinoFissato = self._anagrafica._idListino
             self.id_listino_filter_combobox.set_sensitive(False)
             if not (self._anagrafica._articoloFissato):
                 column = self._anagrafica.anagrafica_filter_treeview.get_column(0)

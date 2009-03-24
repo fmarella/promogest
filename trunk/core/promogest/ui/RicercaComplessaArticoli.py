@@ -22,7 +22,6 @@ import Login
 from utils import *
 from utilsCombobox import *
 from promogest import Environment
-from promogest.dao.Dao import Dao
 import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
 from promogest.dao.FamigliaArticolo import FamigliaArticolo
@@ -31,13 +30,6 @@ from promogest.dao.StatoArticolo import StatoArticolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.dao.Fornitura import Fornitura
 if "PromoWear" in Environment.modulesList:
-    from promogest.modules.PromoWear.dao.Colore import Colore
-    from promogest.modules.PromoWear.dao.Taglia import Taglia
-    from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
-    from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
-    from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
-    from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
-    from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
     from promogest.modules.PromoWear.ui.PromowearUtils import *
     from promogest.modules.PromoWear.ui import RicercaComplessaArticoliPromoWearExpand
 
@@ -49,8 +41,8 @@ class RicercaComplessaArticoli(RicercaComplessa):
                   codiceArticoloFornitore = None, produttore = None,
                   idFamiglia = None, idCategoria = None, idStato = None, cancellato = None,
                   idGruppoTaglia = None, idTaglia = None, idColore = None,
-                  idAnno = None, idStagione = None, idGenere = None):
-
+                  idAnno = None, idStagione = None, idGenere = None,listinoFissato = None):
+        self.listinoFissato = listinoFissato
         self._denominazione = denominazione
         self._codice = codice
         self._codiceABarre = codiceABarre
@@ -82,7 +74,8 @@ class RicercaComplessaArticoli(RicercaComplessa):
                                               idColore = idColore,
                                               idAnno = idAnno,
                                               idStagione = idStagione,
-                                              idGenere = idGenere)
+                                              idGenere = idGenere,
+                                               listinoFissato = listinoFissato)
         RicercaComplessa.__init__(self, 'Promogest - Ricerca articoli',
                                   self._ricerca)
 
@@ -119,7 +112,6 @@ class RicercaComplessaArticoli(RicercaComplessa):
         self.filter.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
 
         self.draw()
-
         self.setInitialSearch()
 
     def draw(self):
@@ -323,7 +315,8 @@ class RicercaArticoliFilter(GladeWidget):
                             idColore = None,
                             idAnno = None,
                             idStagione = None,
-                            idGenere = None):
+                            idGenere = None,
+                            listinoFissato = None):
 
         GladeWidget.__init__(self, 'anagrafica_articoli_filter_vbox',
                             fileName='_anagrafica_articoli_elements.glade')
@@ -344,6 +337,7 @@ class RicercaArticoliFilter(GladeWidget):
         self._idStagione = idStagione
         self._idGenere = idGenere
         self._parentObject = parentObject
+        self._listinoFissato = listinoFissato
         self.resultsCount = 0
         self.complexFilter=None
         self.textBefore = None
@@ -375,6 +369,8 @@ class RicercaArticoliFilter(GladeWidget):
         self.ricerca_semplice_articoli_filter_vbox.set_no_show_all(True)
         self.ricerca_semplice_articoli_filter_vbox.hide()
         self.ricerca_avanzata_articoli_filter_vbox.show()
+        if "PromoWear" not in Environment.modulesList:
+            self.promowear_filter_frame.destroy()
         self.descrizione_articolo_filter_expander.grab_focus()
         self._parentObject._changeTreeViewSelectionType()
         self._parentObject.refresh()
@@ -391,7 +387,8 @@ class RicercaArticoliFilter(GladeWidget):
         fillComboboxStatiArticoli(self.id_stato_articolo_filter_combobox, True)
         if "PromoWear" in Environment.modulesList:
             RicercaComplessaArticoliPromoWearExpand.drawRicercaSemplicePromoWearPart(self)
-
+        else:
+            self.promowear_filter_frame.destroy()
         self.denominazione_filter_entry.set_text(self._denominazione or '')
         self.produttore_filter_entry.set_text(self._produttore or '')
         self.codice_filter_entry.set_text(self._codice or '')
@@ -428,6 +425,8 @@ class RicercaArticoliFilter(GladeWidget):
         self.solo_eliminati_articolo_filter_checkbutton.set_active(False)
         if "PromoWear" in Environment.modulesList:
             RicercaComplessaArticoliPromoWearExpand.drawRicercaComplessaPromoWearPart(self)
+        else:
+            self.promowear_filter_frame.destroy()
             #FIXME: They are not present anywhere
             #self.includi_principali_articolo_filter_checkbutton.set_active(True)
             #self.includi_varianti_articolo_filter_checkbutton.set_active(True)
@@ -473,9 +472,7 @@ class RicercaArticoliFilter(GladeWidget):
 
         treeview.set_search_column(3)
 
-        stas = promogest.dao.StatoArticolo.select(Environment.connection,
-                                                  offset=None, batchSize=None,
-                                                  immediate=True)
+        stas = StatoArticolo().select(offset=None, batchSize=None)
 
         for s in stas:
             included = excluded = False
@@ -818,71 +815,37 @@ class RicercaArticoliFilter(GladeWidget):
 
         treeview.set_search_column(5)
 
-        fams = FamigliaArticolo().select()
-        def recurse_tree(id_padre, parent_iter=None, max_depth=None, ):
-            if parent_iter is None :
-                padre = None
-                path = 0
-                for row in self._famigliaTreeViewModel:
-                    if row[0].id == id_padre:
-                        padre = self._famigliaTreeViewModel.get_iter(path)
-                    else:
-                        iter = self._famigliaTreeViewModel.get_iter(path)
-                        if self._famigliaTreeViewModel.iter_has_child(iter):
-                            new_depth = self._famigliaTreeViewModel.iter_n_children(iter) or 0
-                            if new_depth > 0:
-                                padre = recurse_tree(id_padre, iter, new_depth)
-                    if padre is not None:
-                        break
-                    else:
-                        path += 1
-            else:
-                padre = None
-                child_index = 0
-                #if self._treeViewModel.iter_has_child(parent_iter):
-                while child_index < max_depth:
-                    child_iter = self._famigliaTreeViewModel.iter_nth_child(parent_iter, child_index)
-                    if self._famigliaTreeViewModel[child_iter][0].id == id_padre:
-                        padre = child_iter
-                        break
-                    else:
-                        if self._famigliaTreeViewModel.iter_has_child(child_iter):
-                            new_depth = self._famigliaTreeViewModel.iter_n_children(parent_iter) or 0
-                            if new_depth > 0:
-                                padre = recurse_tree(id_padre, child_iter, new_depth)
-                        if padre is not None:
-                            break
-                    child_index += 1
-            return padre
-        for f in fams:
-            if f.id_padre is None:
+        def recurse(padre,f):
+            for s in f.children:
+                included = excluded = False
+                if self._idFamiglia is not None:
+                    included = self._idFamiglia == s.id
+                figlio1 = model.append(padre, (
+                                    included,
+                                    excluded,
+                                    #s,
+                                    (s.id ),
+                                    (s.codice),
+                                    (s.denominazione_breve or ""),
+                                    (s.denominazione or ''),
+                                    ))
+                recurse(figlio1,s)
+
+        for f in FamigliaArticolo().select(batchSize=None):
+            if not f.parent:
                 included = excluded = False
                 if self._idFamiglia is not None:
                     included = self._idFamiglia == f.id
-
-                    node = model.append(padre, (included,
-                                        excluded,
-                                        f.id,
-                                        f.codice,
-                                        f.denominazione_breve,
-                                        f.denominazione))
-
-        for f in fams:
-            if f.id_padre is not None:
-                padre = recurse_tree(f.id_padre)
-                included = excluded = False
-                if self._idFamiglia is not None:
-                    included = self._idFamiglia == f.id
-
-                    node = model.append(padre, (included,
-                                        excluded,
-                                        f.id,
-                                        f.codice,
-                                        f.denominazione_breve,
-                                        f.denominazione))
-        nodes = []
+                padre = model.append(None, (included,
+                                    excluded,
+                                    (f.id ),
+                                    (f.codice),
+                                    (f.denominazione_breve or ''),
+                                    (f.denominazione or ''),
+                                    ))
+                if f.children:
+                    recurse(padre,f)
         treeview.set_model(model)
-
 
     def drawCategoriaTreeView(self):
         treeview = self.categoria_articolo_filter_treeview
@@ -1501,6 +1464,7 @@ class RicercaArticoliFilter(GladeWidget):
             idCategoria = findIdFromCombobox(self.id_categoria_articolo_filter_combobox)
             idStato = findIdFromCombobox(self.id_stato_articolo_filter_combobox)
             cancellato = False
+            listinoFissato = self._listinoFissato
             #if "PromoWear" in Environment.modulesList:
                 #RicercaComplessaArticoliPromoWearExpand.refreshPromoWearPart(self)
         elif self._tipoRicerca == 'avanzata':
@@ -1516,13 +1480,14 @@ class RicercaArticoliFilter(GladeWidget):
             idCategoria = None
             idStato = None
             cancellato = None
+            listinoFissato = self._listinoFissato
 
             #if self.complexFilter:
                 #self.complexFilter= and_(*self.complexFilter)
         #if (not denominazione and not codice and not codiceABarre) and ("AND" not in str(self.complexFilter)):
             #self.filter.numRecords = 0
         #else:
-
+        #print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP", listinoFissato
         self.filterDict = { "denominazione":denominazione,
                             "codice":codice,
                             "codiceABarre":codiceABarre,
@@ -1531,8 +1496,8 @@ class RicercaArticoliFilter(GladeWidget):
                             "idFamiglia":idFamiglia,
                             "idCategoria":idCategoria,
                             "idStato":idStato,
-                            "cancellato":cancellato}
-
+                            "cancellato":cancellato,
+                            "listinoFissato" :listinoFissato}
 
         if "Promowear" in Environment.modulesList:
             RicercaComplessaArticoliPromoWearExpand.refreshPromoWearPart(self)
@@ -1552,6 +1517,15 @@ class RicercaArticoliFilter(GladeWidget):
                                             filterDict = self.filterDict,
                                             complexFilter =self.complexFilter,
                                             batchSize=self.filter.batchSize)
+
+        self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
+                                        join=self.filter.join,
+                                        offset=None,
+                                        batchSize=None,
+                                        complexFilter =self.complexFilter,
+                                        filterDict = self.filterDict)
+
+
         model.clear()
         for a in arts:
             modelRowPromoWear = []
@@ -1581,13 +1555,6 @@ class RicercaArticoliFilter(GladeWidget):
                 model.append(modelRow +modelRowPromoWear)
             else:
                 model.append(modelRow)
-
-        self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
-                                        join=self.filter.join,
-                                        offset=None,
-                                        batchSize=None,
-                                        filterDict = self.filterDict)
-
 
     def _prepare(self):
         """
@@ -1670,16 +1637,6 @@ class RicercaArticoliFilter(GladeWidget):
             self._idCategorieIn = []
             self._idStatiIn = []
             self._idUnitaBaseIn = []
-            self._idGruppiTagliaIn = []
-            self._idTaglieIn = []
-            self._idColoriIn = []
-            self._idAnniIn = []
-            self._idStagioniIn = []
-            self._idGeneriIn = []
-            self._idCutSizeIn = []
-            self._principaliIn = None
-            self._variantiIn = None
-            self._normaliIn = None
             self._eliminatiIn = None
             self._soloEliminatiIn = None
             parseModel(self._descrizioneTreeViewModel, getDescrizioniIn, 2)

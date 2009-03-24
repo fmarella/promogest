@@ -1,6 +1,10 @@
 {% extends 'index.html' %}
 
 {% block body %}
+<div id="head">
+        <div id="img"><img src= "gui/documento48x48.png"></div>
+    <div id="testo">{{ui|replace("_"," ")|capitalize()}}</div>
+  </div>  <div id="rigaheader"></div>
     <table>
         <tr>
             <td class="report-header"><h3>Registro: <strong> {{(dao.registro_numerazione).replace("_"," ").capitalize()}}</strong></h3></td>

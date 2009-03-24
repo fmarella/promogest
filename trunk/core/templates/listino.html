@@ -1,6 +1,10 @@
 {% extends 'index.html' %}
 
 {% block body %}
+<div id="head">
+        <div id="img"><img src= "gui/listino48x48.png"></div>
+    <div id="testo">{{ui|replace("_"," ")|capitalize()}}</div>
+  </div>  <div id="rigaheader"></div>
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>
                 <td class="report-header" colspan="2"><h3>Listino: <strong>{{dao.denominazione}}</strong></h3></td>

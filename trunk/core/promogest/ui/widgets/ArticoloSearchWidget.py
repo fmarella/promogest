@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -7,9 +7,10 @@
 
 
 import gtk
-
+from promogest import Environment
 from CustomComboBoxSearch import CustomComboBoxSearch
 from promogest.ui.utils import leggiArticolo
+from promogest.ui.utilsCombobox import fillComboboxListini,findIdFromCombobox,findComboboxRowFromId
 
 class ArticoloSearchWidget(CustomComboBoxSearch):
     """ Classe base per la ricerca articoli """
@@ -20,7 +21,6 @@ class ArticoloSearchWidget(CustomComboBoxSearch):
         idHandler = self.connect('changed',
                                  self.on_combobox_articolo_search_clicked)
         self.setChangedHandler(idHandler)
-
         self._callName = None
         self._ricerca = None
         self._filter = True
@@ -57,8 +57,11 @@ class ArticoloSearchWidget(CustomComboBoxSearch):
 
         if combobox.on_selection_changed():
             if self._ricerca is None:
+                print "diiiiiiiiiiiiiiiiiiiiiiiiir",Environment.listinoFissato
+                #returnWindow = combobox.get_toplevel()
                 from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
-                self._ricerca = RicercaComplessaArticoli()
+                #print "OOOOOOOOOOOOOOOOOOOOOOOOOOOO", dir(self), findIdFromCombobox(self.id_listino_filter_combobox)
+                self._ricerca = RicercaComplessaArticoli(listinoFissato=Environment.listinoFissato)
                 if not self._filter:
                     self._ricerca.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
             else:

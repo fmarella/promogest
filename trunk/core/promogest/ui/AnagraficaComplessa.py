@@ -1017,6 +1017,7 @@ class AnagraficaHtml(object):
         bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
         jinja_env.globals['environment'] = Environment
         jinja_env.globals['utils'] = utils
+        jinja_env.globals['ui'] = self.defaultFileName
         currDocument = (self._currGtkHtmlDocument + 1) % 2
         document = self._gtkHtmlDocuments[currDocument]
         document.open_stream('text/html')
@@ -1354,6 +1355,7 @@ class AnagraficaPrintPreview(GladeWidget):
         bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
         jinja_env.globals['environment'] = Environment
         jinja_env.globals['utils'] = utils
+        jinja_env.globals['ui'] = self.defaultFileName
         self.html = jinja_env.get_template(self._previewTemplate[1]).render(objects=daos)
 
         document.open_stream('text/html')

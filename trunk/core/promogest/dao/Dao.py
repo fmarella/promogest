@@ -38,10 +38,13 @@ class Dao(object):
             permetteva di aggiungere a cascata nuove opzioni sembrava rallentare
             leggermente ...questo sistema meno elegante è invece più performante
         """
+        filter1 = filter2 = None
         if complexFilter:
-            filter = complexFilter
+            filter1 = complexFilter
         else:
-            filter= self.prepareFilter(kwargs)
+            filter2= self.prepareFilter(kwargs)
+        filter = and_(filter1,filter2)
+        #print filter
         try:
             if join and filter and orderBy:
                 self.record= self.session.query(self.DaoModule).join(join).filter(filter).order_by(orderBy).limit(batchSize).offset(offset).all()

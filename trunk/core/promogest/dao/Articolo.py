@@ -460,6 +460,9 @@ class Articolo(Dao):
             dic = {k:or_(articolo.c.cancellato != v)}
         elif k == 'idArticolo':
             dic = {k:or_(articolo.c.id == v)}
+        elif k == "listinoFissato":
+            print "PSSSPSPSSPSPSSSPPSPSPSSPSPSPSPSPSPSPSSP"
+            dic = {k:and_(listinoarticolo.c.id_articolo == articolo.c.id, listinoarticolo.c.id_listino == v)}
         elif "PromoWear" in Environment.modulesList:
             if k == 'figliTagliaColore':
                 dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_articolo_padre==None)}
@@ -485,6 +488,7 @@ class Articolo(Dao):
                         AssociazioneArticolo.id_figlio ==articolo.c.id)}
         return  dic[k]
 
+listinoarticolo=Table('listino_articolo',params['metadata'],schema = params['schema'],autoload=True)
 fornitura=Table('fornitura',params['metadata'],schema = params['schema'],autoload=True)
 articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
 

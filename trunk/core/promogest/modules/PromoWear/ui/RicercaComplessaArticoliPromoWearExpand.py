@@ -601,6 +601,17 @@ def refreshPromoWearPart(anaarti):
                                     figliTagliaColore=figliTagliaColore)
 
 def preparePromoWearPart(anaarti):
+    anaarti._idGruppiTagliaIn = []
+    anaarti._idTaglieIn = []
+    anaarti._idColoriIn = []
+    anaarti._idAnniIn = []
+    anaarti._idStagioniIn = []
+    anaarti._idGeneriIn = []
+    anaarti._idCutSizeIn = []
+    anaarti._principaliIn = None
+    anaarti._variantiIn = None
+    anaarti._normaliIn = None
+
     def getGruppiTagliaIn(row, index):
         if row[0]:
             anaarti._idGruppiTagliaIn.append(row[index])
