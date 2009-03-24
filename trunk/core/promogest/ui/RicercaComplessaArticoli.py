@@ -1890,5 +1890,13 @@ class RicercaArticoliFilter(GladeWidget):
                 variabili.append(stringa)
                 datus= and_(*variabili)
                 wherestring.append(datus)
-            self.complexFilter=and_(*wherestring)
+            if self._listinoFissato:
+                from promogest.dao.ListinoArticolo import ListinoArticolo
+                variabili = []
+                stringa = and_(ListinoArticolo.id_articolo == Articolo.id, ListinoArticolo.id_listino == self._listinoFissato)
+                variabili.append(stringa)
+                datus= and_(*variabili)
+                wherestring.append(datus)
+                self.complexFilter=and_(*wherestring)
+                #Environment.listinoFissato = self._listinoFissato = None
         return self.complexFilter

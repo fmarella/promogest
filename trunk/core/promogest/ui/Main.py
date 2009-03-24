@@ -254,7 +254,7 @@ class Main(GladeWidget):
         #elif selection == 6:
             #self.currentFrame = self.create_spam_frame()
         elif selection == 5:
-            if "Promemoria" not in Environment.modulesList:
+            if "Promemoria" in Environment.modulesList:
                 from AnagraficaPromemoria import AnagraficaPromemoria
                 anag = AnagraficaPromemoria(self.aziendaStr)
                 showAnagrafica(self.getTopLevel(), anag, mainClass=self)

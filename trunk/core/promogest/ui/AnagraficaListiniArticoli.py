@@ -342,7 +342,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                                         dateToString(l.data_listino_articolo),
                                         ('%14.' + Environment.conf.decimals + 'f') % float(l.prezzo_dettaglio or 0),
                                         ('%14.' + Environment.conf.decimals + 'f') % float(l.prezzo_ingrosso or 0)))
-
+        #Environment.listinoFissato =  None
 class AnagraficaListiniArticoliHtml(AnagraficaHtml):
 
     def __init__(self, anagrafica):

@@ -323,7 +323,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if page_num == 2:
             self.calcolaTotale()
         elif page_num ==3:
-            if "Pagamenti" in Environment.modulesList:
+            if "Pagamenti" not in Environment.modulesList:
                 fenceDialog()
                 self.calcola_importi_scadenza_button.set_sensitive(False)
                 self.controlla_rate_scadenza_button.set_sensitive(False)

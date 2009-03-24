@@ -461,7 +461,7 @@ class Articolo(Dao):
         elif k == 'idArticolo':
             dic = {k:or_(articolo.c.id == v)}
         elif k == "listinoFissato":
-            print "PSSSPSPSSPSPSSSPPSPSPSSPSPSPSPSPSPSPSSP"
+            #print "PSSSPSPSSPSPSSSPPSPSPSSPSPSPSPSPSPSPSSP"
             dic = {k:and_(listinoarticolo.c.id_articolo == articolo.c.id, listinoarticolo.c.id_listino == v)}
         elif "PromoWear" in Environment.modulesList:
             if k == 'figliTagliaColore':

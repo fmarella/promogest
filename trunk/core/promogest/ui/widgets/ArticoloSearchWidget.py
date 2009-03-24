@@ -57,11 +57,12 @@ class ArticoloSearchWidget(CustomComboBoxSearch):
 
         if combobox.on_selection_changed():
             if self._ricerca is None:
-                print "diiiiiiiiiiiiiiiiiiiiiiiiir",Environment.listinoFissato
+                #print "diiiiiiiiiiiiiiiiiiiiiiiiir",Environment.listinoFissato
                 #returnWindow = combobox.get_toplevel()
                 from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
                 #print "OOOOOOOOOOOOOOOOOOOOOOOOOOOO", dir(self), findIdFromCombobox(self.id_listino_filter_combobox)
                 self._ricerca = RicercaComplessaArticoli(listinoFissato=Environment.listinoFissato)
+                Environment.listinoFissato = None
                 if not self._filter:
                     self._ricerca.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
             else:
