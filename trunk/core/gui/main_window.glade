@@ -31,6 +31,7 @@
                         <property name="label">gtk-new</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_nuovo1_activate"/>
                         <child>
                           <widget class="GtkMenu" id="nuovo_menu_menu">
@@ -171,6 +172,7 @@
                         <property name="label">_Disconnetti</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_disconnect"/>
                       </widget>
                     </child>
@@ -179,6 +181,7 @@
                         <property name="label">gtk-quit</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_quit"/>
                       </widget>
                     </child>
@@ -202,6 +205,15 @@
                       </widget>
                     </child>
                     <child>
+                      <widget class="GtkMenuItem" id="importa_modulo">
+                        <property name="visible">True</property>
+                        <property name="tooltip" translatable="yes">Importa/attiva un modulo</property>
+                        <property name="label" translatable="yes">Importa Modulo</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_importa_modulo_activate"/>
+                      </widget>
+                    </child>
+                    <child>
                       <widget class="GtkMenuItem" id="dati_azienda">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">i dati della azienda</property>
@@ -220,7 +232,7 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkMenuItem" id="Back up Database">
+                      <widget class="GtkMenuItem" id="Back-Up Database">
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Se il Client &#xE8; nello stesso pc del database &#xE8; possibile effettuare una copia di sicurezza del database</property>
                         <property name="label" translatable="yes">Back up DB</property>
@@ -430,6 +442,8 @@
                 </child>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -524,6 +538,8 @@
                 </child>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="pack_type">end</property>
                 <property name="position">3</property>
               </packing>
@@ -573,6 +589,8 @@
                 </child>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="pack_type">end</property>
                 <property name="position">2</property>
               </packing>

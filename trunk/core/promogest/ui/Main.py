@@ -9,6 +9,7 @@
 import locale
 import gtk, gobject
 import hashlib
+import os
 from  subprocess import *
 import threading, os, signal
 from promogest import Environment
@@ -455,6 +456,62 @@ class Main(GladeWidget):
         from AnagraficaAziende import AnagraficaAziende
         anag =AnagraficaAziende(self)
         showAnagrafica(self.getTopLevel(), anag)
+
+    def on_importa_modulo_activate(self, widget):
+        fileDialog = gtk.FileChooserDialog(title='Importazione modulo',
+                                           parent=self.getTopLevel(),
+                                           action=gtk.FILE_CHOOSER_ACTION_OPEN,
+                                           buttons=(gtk.STOCK_CANCEL,
+                                                    gtk.RESPONSE_CANCEL,
+                                                    gtk.STOCK_OK,
+                                                    gtk.RESPONSE_OK),
+                                           backend=None)
+        fltr = gtk.FileFilter()
+        #fltr.add_mime_type('application/csv')
+        fltr.add_pattern('*.pg2')
+        fltr.set_name('File Pg2 (*.pg2)')
+        fileDialog.add_filter(fltr)
+        fltr = gtk.FileFilter()
+        fltr.add_pattern('*')
+        fltr.set_name('Tutti i file')
+        fileDialog.add_filter(fltr)
+
+        response = fileDialog.run()
+        if response == gtk.RESPONSE_OK:
+            filename = fileDialog.get_filename()
+            f = open(filename)
+            r = f.readline()
+            al = f.readlines()
+            for a in al:
+                if "MODULES_NAME" in a:
+                    n = a.split("=")[1].strip()[1:-1]
+                    break
+                else:
+                    continue
+            c = Environment.PRODOTTO.strip()
+            v = Environment.VERSIONE.strip()
+            p = hashlib.sha224(n+c+v).hexdigest()
+            print n,c,v, p, r, p.strip()==r.strip()
+            if p.strip()==r.strip():
+                print "MODULO CORRETTO"
+                pa = os.path.join(Environment.conf.Moduli.cartella_moduli,n+"/"+"module.py")
+                g = file(pa,"w")
+                for a in al:
+                    g.write(a)
+                g.close()
+                f.close()
+                msg = "MODULO CORRETTAMENTE INSTALLATO, CHIUDERE L'APPLICAZIONE\nED AGGIUNGERE I PARAMETRI NECESSARI\n"
+            else:
+                msg ="ATTENZIONE, MODULO NON INSTALLATO, CORROTTO O NON CORRETTO, CONTATTARE L'ASSISTENZA"
+            dialog = gtk.MessageDialog(self.getTopLevel(),
+                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_INFO,
+                                   gtk.BUTTONS_OK,
+                                   msg)
+            dialog.run()
+            dialog.destroy()
+                #self.path_file_entry.set_text(filename)
+            fileDialog.destroy()
 
 
     def on_credits_menu_activate(self, widget):

@@ -38,7 +38,8 @@ from sqlalchemy.orm import *
                 #logger.info("Total Time: %f" % total)
 
 
-
+PRODOTTO = "PromoTux - Virtual Company"
+VERSIONE = "PromoGest2"
 debugFilter = False
 debugDao = False
 debugSQL = False

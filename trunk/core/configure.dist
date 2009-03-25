@@ -5,7 +5,7 @@ host = db.promotux.it
 port = 5432
 database = promogest_demo
 azienda= azienda_mentor
-tipodb = postgresql
+tipodb = sqlite
 
 
 
