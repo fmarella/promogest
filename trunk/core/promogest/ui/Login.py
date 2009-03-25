@@ -78,7 +78,10 @@ class Login(GladeApp):
             model.append((a.schemaa, a.denominazione))
         global windowGroup
         windowGroup.append(self.getTopLevel())
-        fileSplashImage=self.randomSplash()
+        if Environment.engine.name == "sqlite":
+            fileSplashImage = "gui/splash_pg2_lite.png"
+        else:
+            fileSplashImage=self.randomSplash()
         self.splash_image.set_from_file(fileSplashImage)
         self.date_label.set_text(datetime.datetime.now().strftime('%d/%m/%Y  %H:%M'))
         renderer = gtk.CellRendererText()
