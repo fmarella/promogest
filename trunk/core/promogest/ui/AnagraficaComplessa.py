@@ -1355,7 +1355,7 @@ class AnagraficaPrintPreview(GladeWidget):
         bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
         jinja_env.globals['environment'] = Environment
         jinja_env.globals['utils'] = utils
-        jinja_env.globals['ui'] = self.defaultFileName
+        jinja_env.globals['ui'] = self._previewTemplate[1].split(".")[0]
         self.html = jinja_env.get_template(self._previewTemplate[1]).render(objects=daos)
 
         document.open_stream('text/html')
