@@ -301,22 +301,22 @@ class RicercaArticoliFilter(GladeWidget):
     """ Classe che gestisce la tipologia di ricerca articoli """
 
     def __init__(self, parentObject,
-                            denominazione = None,
-                            codice = None,
-                            codiceABarre = None,
-                            codiceArticoloFornitore = None,
-                            produttore = None,
-                            idFamiglia = None,
-                            idCategoria = None,
-                            idStato = None,
-                            cancellato = None,
-                            idGruppoTaglia = None,
-                            idTaglia = None,
-                            idColore = None,
-                            idAnno = None,
-                            idStagione = None,
-                            idGenere = None,
-                            listinoFissato = None):
+                denominazione = None,
+                codice = None,
+                codiceABarre = None,
+                codiceArticoloFornitore = None,
+                produttore = None,
+                idFamiglia = None,
+                idCategoria = None,
+                idStato = None,
+                cancellato = None,
+                idGruppoTaglia = None,
+                idTaglia = None,
+                idColore = None,
+                idAnno = None,
+                idStagione = None,
+                idGenere = None,
+                listinoFissato = None):
 
         GladeWidget.__init__(self, 'anagrafica_articoli_filter_vbox',
                             fileName='_anagrafica_articoli_elements.glade')

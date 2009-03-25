@@ -263,7 +263,6 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
 
         self.clear()
 
-
     def clear(self):
         # Annullamento filtro
         if not(self._anagrafica._articoloFissato):
@@ -629,6 +628,8 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = ListinoArticolo()
+            if Environment.listinoFissato and self._anagrafica._idListino:
+                Environment.listinoFissato = None
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = ListinoArticolo().select(idListino=dao.id_listino,
@@ -749,5 +750,4 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             sconti_ingrosso.append(daoSconto)
 
         #self.dao.sconto_vendita_ingrosso = sconti_ingrosso
-        print "MAAAAAAAADDJDJDDDEDWEFWFWEFWEFWEFWEFWFFW"
         self.dao.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})
