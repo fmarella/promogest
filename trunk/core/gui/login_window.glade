@@ -1,16 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Thu Jan 29 01:32:56 2009 -->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.14 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkDialog" id="login_window">
     <property name="title" translatable="yes">Accesso a PromoGest2 "MentoR" </property>
     <property name="resizable">False</property>
-    <property name="window_position">GTK_WIN_POS_CENTER</property>
+    <property name="window_position">center</property>
     <property name="icon">promogest.png</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
-    <signal name="close" handler="gtk_main_quit"/>
+    <property name="type_hint">dialog</property>
     <signal name="key_press_event" handler="on_login_window_key_press_event"/>
     <signal name="destroy_event" handler="gtk_main_quit"/>
+    <signal name="close" handler="gtk_main_quit"/>
     <signal name="delete_event" handler="gtk_main_quit"/>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox2">
@@ -36,11 +36,14 @@
               <widget class="GtkImage" id="logo_image">
                 <property name="visible">True</property>
                 <property name="yalign">0</property>
-                <property name="pixbuf">maschera.png</property>
+                <property name="xpad">5</property>
+                <property name="ypad">3</property>
+                <property name="pixbuf">promotux_oriz.png</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -62,6 +65,7 @@ Inserite i dati:.</property>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
@@ -95,6 +99,7 @@ Inserite i dati:.</property>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
@@ -118,12 +123,6 @@ Inserite i dati:.</property>
                     <child>
                       <widget class="GtkComboBoxEntry" id="username_comboxentry">
                         <property name="visible">True</property>
-                        <child internal-child="entry">
-                          <widget class="GtkEntry" id="comboboxentry-entry1">
-                            <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                            <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
-                          </widget>
-                        </child>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -164,12 +163,6 @@ Inserite i dati:.</property>
                     <child>
                       <widget class="GtkComboBoxEntry" id="azienda_comboboxentry">
                         <property name="visible">True</property>
-                        <child internal-child="entry">
-                          <widget class="GtkEntry" id="comboboxentry-entry2">
-                            <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                            <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
-                          </widget>
-                        </child>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -223,7 +216,7 @@ Inserite i dati:.</property>
                 </child>
               </widget>
               <packing>
-                <property name="pack_type">GTK_PACK_END</property>
+                <property name="pack_type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -231,19 +224,20 @@ Inserite i dati:.</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
             <property name="position">2</property>
           </packing>
         </child>
         <child internal-child="action_area">
           <widget class="GtkHButtonBox" id="dialog-action_area2">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="button_help">
+                <property name="response_id">-11</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="response_id">-11</property>
+                <property name="receives_default">False</property>
                 <signal name="clicked" handler="on_button_help_clicked"/>
                 <child>
                   <widget class="GtkAlignment" id="alignment504">
@@ -262,6 +256,7 @@ Inserite i dati:.</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
@@ -285,14 +280,16 @@ Inserite i dati:.</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
+                <property name="position">0</property>
                 <property name="secondary">True</property>
               </packing>
             </child>
             <child>
               <widget class="GtkButton" id="aggiorna_button">
+                <property name="response_id">-11</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="response_id">-11</property>
+                <property name="receives_default">False</property>
                 <signal name="clicked" handler="on_aggiorna_button_clicked"/>
                 <child>
                   <widget class="GtkAlignment" id="alignment1">
@@ -311,6 +308,7 @@ Inserite i dati:.</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
@@ -340,8 +338,9 @@ Inserite i dati:.</property>
             <child>
               <widget class="GtkButton" id="button_quit">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
                 <property name="tooltip" translatable="yes">Uscita</property>
-                <property name="response_id">0</property>
                 <signal name="clicked" handler="gtk_main_quit"/>
                 <child>
                   <widget class="GtkAlignment" id="alignment505">
@@ -360,6 +359,7 @@ Inserite i dati:.</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
@@ -388,13 +388,12 @@ Inserite i dati:.</property>
             <child>
               <widget class="GtkButton" id="button_login">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="can_default">True</property>
                 <property name="has_default">True</property>
+                <property name="receives_default">False</property>
                 <property name="tooltip" translatable="yes">Connessione al promogest</property>
-                <property name="response_id">0</property>
                 <signal name="clicked" handler="on_button_login_clicked"/>
-                <accelerator key="KP_Enter" modifiers="" signal="clicked"/>
-                <accelerator key="Return" modifiers="" signal="clicked"/>
                 <child>
                   <widget class="GtkAlignment" id="alignment3">
                     <property name="visible">True</property>
@@ -412,6 +411,7 @@ Inserite i dati:.</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
@@ -440,7 +440,8 @@ Inserite i dati:.</property>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>
