@@ -1229,7 +1229,7 @@ del documento.
                     prezzoNetto = prezzoNetto - prezzoLordo * s["valore"] / 100
             elif s["tipo"] == 'valore':
                 prezzoNetto = prezzoNetto - s["valore"]
-        print "PREZZO NETTTTO IN getPrezzoNetto", prezzoNetto
+        #print "PREZZO NETTTTO IN getPrezzoNetto", prezzoNetto
         self._righe[0]["prezzoNetto"] = prezzoNetto
 
     def calcolaTotale(self):

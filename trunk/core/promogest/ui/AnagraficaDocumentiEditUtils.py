@@ -595,6 +595,7 @@ Inserire comunque?""" % (str(quantita), str(quantita_minima))
                         #return
         elif response == gtk.RESPONSE_OK:
             anaedit.quantita_entry.set_text(str(quantita))
+        anaedit.on_show_totali_riga(anaedit)
 
 def hidePromoWear(ui):
     """ Hide and destroy labels and button if promowear is not present """
