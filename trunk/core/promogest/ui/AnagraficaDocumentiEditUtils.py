@@ -558,17 +558,28 @@ def on_multi_line_button_clickedPart(anaedit, widget):
 
 def on_quantita_entry_focus_out_eventPart(anaedit, entry, event):
     """ Funzione di controllo della quantità minima con dialog """
+    print "CALCOLO"
+    quantita = float(anaedit.quantita_entry.get_text())
     id = anaedit._righe[0]["idArticolo"]
     if id is not None:
         articolo = Articolo().getRecord(id=id)
     else:
         return
-    quantita = float(anaedit.quantita_entry.get_text())
-    if articolo:
-        try:
-            quantita_minima = float(articolo.quantita_minima)
-        except:
-            quantita_minima = None
+    if "SuMisura" in Environment.modulesList and float(moltiplicatore_entry.get_text()) ==0:
+        return
+    elif "SuMisura" in Environment.modulesList and float(moltiplicatore_entry.get_text()) >0:
+        pezzi = float(moltiplicatore_entry.get_text())
+        if articolo:
+            try:
+                quantita_minima = float(articolo.quantita_minima) *pezzi
+            except:
+                quantita_minima = None
+    else:
+        if articolo:
+            try:
+                quantita_minima = float(articolo.quantita_minima)
+            except:
+                quantita_minima = None
     if quantita_minima and quantita < quantita_minima :
         msg = """Attenzione!
 La quantità inserita:  %s è inferiore

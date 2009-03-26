@@ -1983,6 +1983,7 @@ Saldato</property>
                                                             <property name="int1">10</property>
                                                             <property name="int2">2</property>
                                                             <signal name="key_press_event" handler="on_moltiplicatore_entry_key_press_event"/>
+                                                            <signal name="focus_out_event" handler="on_quantita_entry_focus_out_event"/>
                                                           </widget>
                                                         </child>
                                                       </widget>
