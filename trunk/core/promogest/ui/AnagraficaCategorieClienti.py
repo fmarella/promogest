@@ -103,13 +103,9 @@ class AnagraficaCategorieClientiDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            if Environment.engine.name =="sqlite" and CategoriaCliente().count() > 2:
-                fenceDialog()
-                return
-            else:
-                self.dao = CategoriaCliente()
-                self._anagrafica._newRow((self.dao, ''))
-                self._refresh()
+            self.dao = CategoriaCliente()
+            self._anagrafica._newRow((self.dao, ''))
+            self._refresh()
         else:
             self.dao = dao
 

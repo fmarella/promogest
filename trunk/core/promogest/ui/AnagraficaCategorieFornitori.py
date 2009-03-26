@@ -107,13 +107,9 @@ class AnagraficaCategorieFornitoriDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            if Environment.engine.name =="sqlite" and CategoriaFornitore().count() >= 5:
-                fenceDialog()
-                return
-            else:
-                self.dao = CategoriaFornitore()
-                self._anagrafica._newRow((self.dao, ''))
-                self._refresh()
+            self.dao = CategoriaFornitore()
+            self._anagrafica._newRow((self.dao, ''))
+            self._refresh()
         else:
             self.dao = dao
 

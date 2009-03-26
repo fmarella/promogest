@@ -118,19 +118,15 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
     def setDao(self, dao):
         if dao is None:
-            if Environment.engine.name =="sqlite" and Articolo().count(batchSize=None) >= 1000:
-                fenceDialog()
-                return
-            else:
             # Crea un nuovo Dao vuoto
-                self.dao = Articolo()
+            self.dao = Articolo()
             # Assegna il codice se ne e' prevista la crazione automatica, ma non per famiglia
             #if not self._codiceByFamiglia:
                 #self.dao.codice = promogest.dao.Articolo.getNuovoCodiceArticolo(idFamiglia=None)
                 #print "STAMPO IL NUOVO CODICE ARTICOLO IN SETDAO GENERATO",self.dao.codice
             # Prova a impostare "pezzi" come unita' di misura base
-                self.dao.id_unita_base = 1
-                self.new=True
+            self.dao.id_unita_base = 1
+            self.new=True
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Articolo().getRecord(id=dao.id)
