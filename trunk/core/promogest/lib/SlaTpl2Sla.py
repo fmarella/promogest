@@ -919,7 +919,7 @@ class SlaTpl2Sla(object):
 
     def scribusVersion(self):
         slaversion = self.root.get('Version')
-        if slaversion == "1.3.4" or "1.3.5svn":
+        if slaversion == "1.3.4" or  slaversion == "1.3.5svn":
             version=True
         else:
             version = False
