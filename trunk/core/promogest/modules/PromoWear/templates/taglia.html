@@ -1,40 +1,23 @@
-<?python
-from promogest.ui.utils import *
-from promogest.Environment import conf
-import gtk
-w=gtk.Window()
-w.realize()
-style = w.get_style()
-def pc(c):
-	return '#%02x%02x%02x' % (c.red>>8, c.green>>8, c.blue>>8)
-gtkBg =  pc(style.copy().bg[gtk.STATE_NORMAL])
-w.destroy()
-?>
-
-<html
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:py="http://genshi.edgewall.org/"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
-        lang="en">
+<html>
     <head>
         <title>Dettaglio listino</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <xi:include href="style.css"><xi:fallback/></xi:include>
+        {% include 'style.css' with context %}
     </head>
     <body bgcolor ="${gtkBg}">        
         <table cellpadding="0" cellspacing="0" border="0">
             <tr><td colspan="4" class="table-header">Dati anagrafici</td></tr>
             <tr>
                 <td width="10%" class="odd-detail">Gruppo</td>
-                <td width="10%" class="odd-detail"><strong py:content="dao.denominazione_gruppo_taglia"></strong></td>
+                <td width="10%" class="odd-detail"><strong >{{dao.denominazione_gruppo_taglia}}</strong></td>
 		<td width="15%" class="odd-detail">Descrizione gruppo</td>
-                <td class="odd-detail"><strong py:content="dao.denominazione_breve_gruppo_taglia"></strong></td>
+                <td class="odd-detail"><strong >{{dao.denominazione_breve_gruppo_taglia}}</strong></td>
             </tr>                
             <tr>
                 <td width="10%" class="even-detail">Taglia</td>
-                <td width="10%" class="even-detail"><strong py:content="dao.denominazione_taglia"></strong></td>
+                <td width="10%" class="even-detail"><strong >{{dao.denominazione_taglia}}</strong></td>
 		<td width="15%" class="even-detail">Descrizione taglia</td>
-                <td class="even-detail"><strong py:content="dao.denominazione_breve_taglia"></strong></td>
+                <td class="even-detail"><strong >{{dao.denominazione_breve_taglia}}</strong></td>
             </tr>            
         </table>
     </body>
