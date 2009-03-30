@@ -26,23 +26,37 @@
                   <widget class="GtkMenu" id="record_menu_menu">
                     <child>
                       <widget class="GtkImageMenuItem" id="record_new_menu">
-                        <property name="label">_Nuovo</property>
+                        <property name="label" translatable="yes">_Nuovo</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="use_stock">False</property>
+                        <property name="always_show_image">True</property>
                         <accelerator key="N" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_record_new_activate"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image2">
+                            <property name="visible">True</property>
+                            <property name="icon_name">document-new</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="record_duplicate_menu">
-                        <property name="label">_Duplica</property>
+                        <property name="label" translatable="yes">_Duplica</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="use_stock">False</property>
+                        <property name="always_show_image">True</property>
                         <accelerator key="D" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_record_duplicate_menu_activate"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image1">
+                            <property name="visible">True</property>
+                            <property name="icon_name">edit-copy</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                     <child>
@@ -56,9 +70,15 @@
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="use_stock">False</property>
                         <accelerator key="M" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_record_edit_activate"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image3">
+                            <property name="visible">True</property>
+                            <property name="icon_name">edit-find-replace</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                     <child>
@@ -67,9 +87,15 @@
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="use_stock">False</property>
                         <accelerator key="E" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_record_delete_activate"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image4">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-delete</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                     <child>
@@ -79,7 +105,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="selected_record_print_menu">
-                        <property name="label">Stampa _selezione</property>
+                        <property name="label">gtk-print</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
@@ -94,12 +120,19 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="records_print_on_screen_menu">
-                        <property name="label">_Report a video</property>
+                        <property name="label">Stampa selezione</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="use_stock">False</property>
                         <accelerator key="R" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_records_print_on_screen_activate"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image5">
+                            <property name="visible">True</property>
+                            <property name="xpad">1</property>
+                            <property name="pixbuf">stampa_selezione16x16.png</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                     <child>
@@ -119,7 +152,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="record_menu_close">
-                        <property name="label">Chiudi</property>
+                        <property name="label">gtk-close</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
@@ -358,6 +391,17 @@
           </packing>
         </child>
         <child>
+          <widget class="GtkStatusbar" id="statusbar1">
+            <property name="visible">True</property>
+            <property name="has_resize_grip">False</property>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
           <widget class="GtkVPaned" id="anagrafica_vpaned">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -419,17 +463,6 @@
             </child>
           </widget>
           <packing>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkStatusbar" id="statusbar1">
-            <property name="visible">True</property>
-            <property name="has_resize_grip">False</property>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
             <property name="position">2</property>
           </packing>
         </child>

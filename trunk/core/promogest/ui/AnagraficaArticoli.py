@@ -26,7 +26,7 @@ if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.dao.Taglia import Taglia
     from promogest.modules.PromoWear.dao.Colore import Colore
     from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
-    from promogest.modules.PromoWear.ui import AnagraficaArticoliExpand
+    from promogest.modules.PromoWear.ui import AnagraficaArticoliPromoWearExpand
 
 class AnagraficaArticoli(Anagrafica):
     """ Anagrafica articoli """
@@ -216,7 +216,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
         if "PromoWear" in Environment.modulesList:
-            AnagraficaArticoliExpand.treeViewExpand(self, treeview, renderer)
+            AnagraficaArticoliPromoWearExpand.treeViewExpand(self, treeview, renderer)
         else:
             self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str)
             self.promowear_filter_frame.destroy()
@@ -249,7 +249,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         self.id_stato_articolo_filter_combobox.set_active(0)
         self.cancellato_filter_checkbutton.set_active(False)
         if "PromoWear" in Environment.modulesList:
-            AnagraficaArticoliExpand.clear(self)
+            AnagraficaArticoliPromoWearExpand.clear(self)
         self.refresh()
 
 
@@ -279,7 +279,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
                             "cancellato":cancellato}
 
         if "PromoWear" in Environment.modulesList:
-            AnagraficaArticoliExpand.refresh(self)
+            AnagraficaArticoliPromoWearExpand.refresh(self)
         
         def filterCountClosure():
             return Articolo().count(filterDict = self.filterDict)
@@ -327,7 +327,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
 
 
     def on_taglie_colori_filter_combobox_changed(self, combobox):
-        AnagraficaArticoliExpand.on_taglie_colori_filter_combobox_changed(self,combobox)
+        AnagraficaArticoliPromoWearExpand.on_taglie_colori_filter_combobox_changed(self,combobox)
 
 
 class AnagraficaArticoliHtml(AnagraficaHtml):

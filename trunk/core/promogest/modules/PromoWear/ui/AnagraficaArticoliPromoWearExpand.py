@@ -10,6 +10,8 @@ import gobject
 from promogest import Environment
 from promogest.ui.utils import *
 from promogest.modules.PromoWear.ui.PromowearUtils import *
+from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
+from promogest.dao.Articolo import Articolo
 
 def treeViewExpand(gtkgui, treeview, renderer):
     """ Expand the normal article treeview """
@@ -17,7 +19,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
         column = gtk.TreeViewColumn('Gruppo taglia', renderer, text=9, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", gtkgui._changeOrderBy, 'denominazione_gruppo_taglia')
+        column.connect("clicked", gtkgui._changeOrderBy, (ArticoloTagliaColore, ArticoloTagliaColore.id_gruppo_taglia))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -26,7 +28,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
         column = gtk.TreeViewColumn('Modello', renderer, text=10, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", gtkgui._changeOrderBy, 'denominazione_modello')
+        column.connect("clicked", gtkgui._changeOrderBy, (None, Articolo.denominazione_modello))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -35,7 +37,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
         column = gtk.TreeViewColumn('Taglia', renderer, text=11, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", gtkgui._changeOrderBy, 'denominazione_taglia')
+        column.connect("clicked", gtkgui._changeOrderBy, (None,Articolo.denominazione_taglia))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -347,6 +349,7 @@ def refresh(anaarti):
                             idAnno=idAnno,
                             idStagione=idStagione,
                             idGenere=idGenere,
+                            idModello=idModello,
                             padriTagliaColore=padriTagliaColore,
                             figliTagliaColore=figliTagliaColore)
 
