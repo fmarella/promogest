@@ -152,7 +152,6 @@ class Login(GladeApp):
 
     def on_button_login_clicked(self, button=None):
         username = self.username_comboxentry.child.get_text()
-
         password = self.password_entry.get_text()
         do_login = True
         if username=='' or password=='':
@@ -201,18 +200,19 @@ class Login(GladeApp):
                 Environment.params['usernameLoggedList'][0] = users[0].id
                 Environment.params['usernameLoggedList'][1] = users[0].username
                 if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
-                    from promogest.modules.RuoliAzioni.dao.UserRole import UserRole
-                    idruolo = UserRole().select(idUser=users[0].id)
-                    if idruolo:
-                        Environment.params['usernameLoggedList'][2] = idruolo[0].id_role
+                    #from promogest.modules.RuoliAzioni.dao.Role import Role
+                    #idruolo = Role().select(denominazione=users[0].id_role)
+                    #if idruolo:
+                    Environment.params['usernameLoggedList'][2] = users[0].id_role
                 else:
                     Environment.params['usernameLoggedList'][2] = "Admin"
-
                 if hasAction(actionID=1):
                     if Environment.tipodb !="sqlite":
                         Environment.params["schema"]=self.azienda
                     #from promogest.lib.UpdateDB import *
-                        Environment.meta = MetaData().reflect(Environment.engine,schema=self.azienda )
+                    #print "self.aziendaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" , self.azienda
+                    #Environment.meta.reflect(schema=self.azienda )
+                    #print "DOPOOOOOOOOOOOOOOOOOOOOO", Environment.meta
                     #Environment.meta = MetaData().reflect(Environment.engine)
                     self.login_window.hide()
                     global windowGroup

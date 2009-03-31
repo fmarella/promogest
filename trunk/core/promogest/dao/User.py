@@ -37,11 +37,11 @@ class User(Dao):
             if k == 'idRole':
                 dic = {k:and_(user.c.id==UserRole.id_user,UserRole.id_role == v)}
         return  dic[k]
-
-    #def _ruolo(self):
-        #if self.role: return self.role.name
-        #else: return ""
-    #ruolo = property(_ruolo)
+    #if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
+        #def _ruolo(self):
+            #if self.role: return self.role.name
+            #else: return ""
+        #ruolo = property(_ruolo)
 
     #def _language(self):
         #if self.lang: return self.lang.denominazione
@@ -67,9 +67,10 @@ class User(Dao):
             return True
 
     if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
+        print "POOOOOOOOOOOORCA ZOZZA"
         @property
         def ruolo(self):
-            if self.useroles: return self.useroles.rol.name
+            if self.role: return self.role.name
             else: return ""
 
     if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
@@ -86,8 +87,8 @@ user=Table('utente', params['metadata'],
 
 std_mapper = mapper(User, user, order_by=user.c.username)
 if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
-    from promogest.modules.RuoliAzioni.dao.UserRole import UserRole
-    std_mapper.add_property("useroles",relation(UserRole,primaryjoin=(user.c.id==UserRole.id_user),backref="users",uselist=False))
+    from promogest.modules.RuoliAzioni.dao.Role import Role
+    std_mapper.add_property("role",relation(Role,primaryjoin=(user.c.id_role==Role.id),backref="users",uselist=False))
 if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
     from promogest.modules.MultiLingua.dao.UserLanguage import UserLanguage
     std_mapper.add_property("userlang",relation(UserLanguage,primaryjoin=(user.c.id==UserLanguage.id_user),backref="users",uselist=False))

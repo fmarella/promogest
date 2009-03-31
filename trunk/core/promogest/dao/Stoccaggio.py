@@ -137,12 +137,12 @@ class Stoccaggio(Dao):
         elif k == 'idMagazzino':
             dic = {k:stoc.c.id_magazzino == v}
         return  dic[k]
-
+articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
 stoc=Table('stoccaggio',params['metadata'],schema = params['schema'],autoload=True)
 
 std_mapper = mapper(Stoccaggio, stoc, properties={
         "arti" : relation(Articolo,primaryjoin=
-                stoc.c.id_articolo==Articolo.id, backref="stoccaggio"),
+                stoc.c.id_articolo==articolo.c.id, backref="stoccaggio"),
         "maga" : relation(Magazzino,primaryjoin=
                 stoc.c.id_magazzino==Magazzino.id, backref="stoccaggio"),
         }, order_by=stoc.c.id)

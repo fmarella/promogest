@@ -174,6 +174,7 @@ class Inventario(Dao):
 
 inventario=Table('inventario',params['metadata'],schema = params['schema'],autoload=True)
 std_mapper = mapper(Inventario, inventario,properties={
-        "arti":relation(Articolo,primaryjoin=inventario.c.id_articolo==Articolo.id,backref=backref("inve"))}, order_by=inventario.c.id)
+        "arti":relation(Articolo,primaryjoin=inventario.c.id_articolo==Articolo.id,backref ="inve")
+        }, order_by=inventario.c.id)
 
 

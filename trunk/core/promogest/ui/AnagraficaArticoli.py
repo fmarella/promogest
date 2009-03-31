@@ -10,13 +10,15 @@
 
 import gtk
 import gobject
+from GladeWidget import GladeWidget
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 from AnagraficaArticoliEdit import AnagraficaArticoliEdit
 from promogest import Environment
-import promogest.dao.Fornitura
+
 import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
-from GladeWidget import GladeWidget
+import promogest.dao.Fornitura
+
 from utils import *
 from utilsCombobox import *
 if "PromoWear" in Environment.modulesList:

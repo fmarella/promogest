@@ -11,6 +11,7 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 from DaoUtils import *
+from Multiplo import Multiplo
 from RigaMovimento import RigaMovimento
 from promogest.ui.utils import numeroRegistroGet
 from Fornitore import Fornitore
@@ -192,19 +193,20 @@ class TestataMovimento(Dao):
             self.__righeMovimento = []
             params["session"].flush()
 
-testata_mov=Table('testata_movimento',
-                    params['metadata'],
-                    schema = params['schema'],
-                    autoload=True)
+testata_mov=Table('testata_movimento', params['metadata'],schema = params['schema'],autoload=True)
+clie = Table('cliente',params['metadata'],schema = params['schema'],autoload=True)
+rigamovi = Table('riga_movimento',params['metadata'],schema = params['schema'],autoload=True)
+operaz = Table('operazione',params['metadata'],schema = params['mainSchema'],autoload=True)
+
 std_mapper = mapper(TestataMovimento, testata_mov,properties={
         "rigamov": relation(RigaMovimento,primaryjoin=
-                testata_mov.c.id==RigaMovimento.id_testata_movimento,
+                testata_mov.c.id==rigamovi.c.id_testata_movimento,
                 cascade="all, delete",
                 backref="testata_movimento"),
         #"fornitore": relation(Fornitore, backref="testata_movimento"),
         "forni":relation(Fornitore,primaryjoin=
                     (testata_mov.c.id_fornitore==Fornitore.id), backref="testata_movimento"),
         "cli":relation(Cliente,primaryjoin=
-                    (testata_mov.c.id_cliente==Cliente.id), backref="testata_movimento"),
+                    (testata_mov.c.id_cliente==clie.c.id), backref="testata_movimento"),
         "opera": relation(Operazione, backref="testata_movimento"),
         }, order_by=testata_mov.c.id)

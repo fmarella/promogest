@@ -561,13 +561,13 @@ def setRiepilogoArticoloPromoWearPart(anaarti):
         testo += anaarti._includedString
 
 def refreshPromoWearPart(anaarti):
-
     if anaarti._tipoRicerca == 'semplice':
         idGruppoTaglia = findIdFromCombobox(anaarti.id_gruppo_taglia_articolo_filter_combobox)
         idTaglia = findIdFromCombobox(anaarti.id_taglia_articolo_filter_combobox)
         idColore = findIdFromCombobox(anaarti.id_colore_articolo_filter_combobox)
         idAnno = findIdFromCombobox(anaarti.id_anno_articolo_filter_combobox)
         idStagione = findIdFromCombobox(anaarti.id_stagione_articolo_filter_combobox)
+        idModello = findIdFromCombobox(anaarti.id_modello_filter_combobox)
         idGenere = findIdFromCombobox(anaarti.id_genere_articolo_filter_combobox)
         padriTagliaColore = ((anaarti.taglie_colori_filter_combobox.get_active() == 0) or
                             (anaarti.taglie_colori_filter_combobox.get_active() == 1))
@@ -587,6 +587,7 @@ def refreshPromoWearPart(anaarti):
         idColore = None
         idAnno = None
         idStagione = None
+        idModello = None
         idGenere = None
         padriTagliaColore = None
         figliTagliaColore = None
@@ -595,10 +596,14 @@ def refreshPromoWearPart(anaarti):
                                     idTaglia=idTaglia,
                                     idColore=idColore,
                                     idAnno=idAnno,
+                                    idModello = idModello,
                                     idStagione=idStagione,
                                     idGenere=idGenere,
                                     padriTagliaColore=padriTagliaColore,
                                     figliTagliaColore=figliTagliaColore)
+
+
+
 
 def preparePromoWearPart(anaarti):
     anaarti._idGruppiTagliaIn = []

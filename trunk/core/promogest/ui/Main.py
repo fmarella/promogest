@@ -24,24 +24,24 @@ from utilsCombobox import *
 import Login
 
 # Caricamento moduli
-try:
-    if hasattr(Environment.conf,'Promospam'):
-        mod_enable = getattr(Environment.conf.Promospam,'mod_enable','no')
-        if mod_enable == 'yes':
-            from promogest.ui.plus.plus003 import SpamFrame
-except ImportError:
-    print "\nATTENZIONE: Il modulo Spam non e` stato trovato\n"
-    raise SystemExit
+#try:
+    #if hasattr(Environment.conf,'Promospam'):
+        #mod_enable = getattr(Environment.conf.Promospam,'mod_enable','no')
+        #if mod_enable == 'yes':
+            #from promogest.ui.plus.plus003 import SpamFrame
+#except ImportError:
+    #print "\nATTENZIONE: Il modulo Spam non e` stato trovato\n"
+    #raise SystemExit
 
-# Caricamento moduli
-try:
-    if hasattr(Environment.conf,'Delfis'):
-        mod_enable = getattr(Environment.conf.Delfis,'mod_enable','no')
-        if mod_enable == 'yes':
-            from promogest.ui.plus.plus001 import CasseFrame
-except ImportError:
-    print "\nATTENZIONE: Il modulo di interfacciamento delfis non e` stato trovato\n"
-    raise SystemExit
+## Caricamento moduli
+#try:
+    #if hasattr(Environment.conf,'Delfis'):
+        #mod_enable = getattr(Environment.conf.Delfis,'mod_enable','no')
+        #if mod_enable == 'yes':
+            #from promogest.ui.plus.plus001 import CasseFrame
+#except ImportError:
+    #print "\nATTENZIONE: Il modulo di interfacciamento delfis non e` stato trovato\n"
+    #raise SystemExit
 
 
 
@@ -158,11 +158,12 @@ class Main(GladeWidget):
         """Aggiornamenti e controlli da fare all'avvio del programma"""
 
         #Aggiornamento scadenze promemoria
-        import promogest.dao.Promemoria
-        promogest.dao.Promemoria.updateScadenze()
+        #import promogest.dao.Promemoria
+        #promogest.dao.Promemoria.updateScadenze()
         #Verifica inventario  FIXME: DA SISTEMAREEEEEEEEEEEEEEEE ( FRANCESCO )
-        from promogest.dao.Inventario import Inventario
+        #from promogest.dao.Inventario import Inventario
         #Inventario().control(self.getTopLevel())
+        return
 
     def _refresh(self):
         """

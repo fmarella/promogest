@@ -31,7 +31,6 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
                         <property name="always_show_image">True</property>
-                        <accelerator key="N" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_record_new_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image2">
@@ -70,7 +69,6 @@
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
-                        <accelerator key="M" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_record_edit_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image3">
@@ -87,7 +85,6 @@
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
-                        <accelerator key="E" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_record_delete_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image4">
@@ -108,7 +105,6 @@
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="S" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_selected_record_print_activate"/>
                       </widget>
                     </child>
@@ -123,7 +119,6 @@
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">False</property>
-                        <accelerator key="R" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_records_print_on_screen_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image5">
@@ -136,12 +131,17 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="records_print_menu">
-                        <property name="label">Stam_pa</property>
+                        <property name="label">Stampa</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <accelerator key="P" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <property name="use_stock">False</property>
                         <signal name="activate" handler="on_records_print_activate"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image6">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-print</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                     <child>
@@ -155,7 +155,6 @@
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="Q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_anagrafica_window_close"/>
                       </widget>
                     </child>
@@ -390,6 +389,17 @@
           </packing>
         </child>
         <child>
+          <widget class="GtkStatusbar" id="statusbar1">
+            <property name="visible">True</property>
+            <property name="has_resize_grip">False</property>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
           <widget class="GtkVPaned" id="anagrafica_vpaned">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -451,17 +461,6 @@
             </child>
           </widget>
           <packing>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkStatusbar" id="statusbar1">
-            <property name="visible">True</property>
-            <property name="has_resize_grip">False</property>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
             <property name="position">2</property>
           </packing>
         </child>

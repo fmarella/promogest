@@ -32,9 +32,9 @@ listino_categoria_cliente=Table('listino_categoria_cliente',
 
 std_mapper = mapper(ListinoCategoriaCliente, listino_categoria_cliente, properties={
         #"listino" : relation(Listino, backref="listino_categoria_cliente"),
-        "catecli":relation(CategoriaCliente,primaryjoin=
-                        (listino_categoria_cliente.c.id_categoria_cliente==CategoriaCliente.id)),
-        #"catecli" : relation(CategoriaCliente, backref="listino_categoria_cliente")
+        #"catecli":relation(CategoriaCliente,primaryjoin=
+                        #(listino_categoria_cliente.c.id_categoria_cliente==CategoriaCliente.id)),
+        "catecli" : relation(CategoriaCliente, backref="listino_categoria_cliente")
         },
         order_by=listino_categoria_cliente.c.id_listino)
 

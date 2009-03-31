@@ -128,12 +128,13 @@ class Riga(Dao):
 
 
 
-
+artic = Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
 riga=Table('riga', params['metadata'],schema = params['schema'],autoload=True)
+
 std_mapper = mapper(Riga, riga, properties={
             "maga":relation(Magazzino,primaryjoin=riga.c.id_magazzino==Magazzino.id),
             "listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),
             "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
-            "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
+            "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==artic.c.id),
 }, order_by=riga.c.id)
 

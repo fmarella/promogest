@@ -21,6 +21,9 @@ class Listino(Dao):
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
 
+    #def __repr__(self):
+        #return "il modulo è %s" %self.denominazione
+
     def _getCategorieCliente(self):
         self.__dbCategorieCliente = ListinoCategoriaCliente().select(idListino=self.id, batchSize=None)
         self.__categorieCliente = self.__dbCategorieCliente[:]

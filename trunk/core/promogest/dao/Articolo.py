@@ -11,18 +11,18 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 from promogest import Environment
+from Imballaggio import Imballaggio
+from AliquotaIva import AliquotaIva
+from StatoArticolo import StatoArticolo
 from Immagine import Immagine
 from UnitaBase import UnitaBase
 from FamigliaArticolo import FamigliaArticolo
-from AliquotaIva import AliquotaIva
 from CategoriaArticolo import CategoriaArticolo
 from CodiceABarreArticolo import CodiceABarreArticolo
-from Imballaggio import Imballaggio
-from StatoArticolo import StatoArticolo
 from Fornitura import Fornitura
 from Multiplo import Multiplo
 from promogest.ui.utils import codeIncrement
-#from promogest.modules.PromoWear.dao.ArticoloPromowear import Articolo
+
 if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
     from promogest.modules.PromoWear.dao.Colore import Colore
     from promogest.modules.PromoWear.dao.Taglia import Taglia
@@ -491,24 +491,31 @@ class Articolo(Dao):
 listinoarticolo=Table('listino_articolo',params['metadata'],schema = params['schema'],autoload=True)
 fornitura=Table('fornitura',params['metadata'],schema = params['schema'],autoload=True)
 articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
+unita_b=Table('unita_base', params['metadata'],schema = params['mainSchema'],autoload=True)
+imballo=Table('imballaggio', params['metadata'],schema = params['schema'],autoload=True)
+codb=Table('codice_a_barre_articolo', params['metadata'],schema = params['schema'],autoload=True)
+aliva=Table('aliquota_iva', params['metadata'],schema = params['schema'],autoload=True)
+catearti=Table('categoria_articolo', params['metadata'],schema = params['schema'],autoload=True)
+famiarti=Table('famiglia_articolo', params['metadata'],schema = params['schema'],autoload=True)
+statoart=Table('stato_articolo', params['metadata'],schema = params['mainSchema'],autoload=True)
+img=Table('image', params['metadata'],schema = params['schema'],autoload=True)
 
 std_mapper = mapper(Articolo,articolo,
             properties=dict(
                         cod_barre = relation(CodiceABarreArticolo,primaryjoin=
-                                articolo.c.id==CodiceABarreArticolo.id_articolo, backref="arti", cascade="all, delete"),
-                        imba = relation(Imballaggio,primaryjoin=
-                                (articolo.c.id_imballaggio==Imballaggio.id), backref="arti"),
+                                articolo.c.id==codb.c.id_articolo, backref="arti", cascade="all, delete"),
+                        imba = relation(Imballaggio,primaryjoin=articolo.c.id_imballaggio==imballo.c.id),
                         ali_iva =  relation(AliquotaIva,primaryjoin=
-                                (articolo.c.id_aliquota_iva==AliquotaIva.id)),
-                        den_famiglia = relation(FamigliaArticolo,primaryjoin= articolo.c.id_famiglia_articolo==FamigliaArticolo.id),
+                                (articolo.c.id_aliquota_iva==aliva.c.id)),
+                        den_famiglia = relation(FamigliaArticolo,primaryjoin= articolo.c.id_famiglia_articolo==famiarti.c.id),
                         den_categoria = relation(CategoriaArticolo,primaryjoin=
-                                    (articolo.c.id_categoria_articolo==CategoriaArticolo.id)),
-                        den_unita = relation(UnitaBase,primaryjoin= (articolo.c.id_unita_base==UnitaBase.id)),
-                        image = relation(Immagine,primaryjoin= articolo.c.id_immagine==Immagine.id,
+                                    (articolo.c.id_categoria_articolo==catearti.c.id)),
+                        den_unita = relation(UnitaBase,primaryjoin=articolo.c.id_unita_base==unita_b.c.id),
+                        image = relation(Immagine,primaryjoin= articolo.c.id_immagine==img.c.id,
                                             cascade="all, delete",
                                             backref="arti"),
-                        sa = relation(StatoArticolo,primaryjoin=(articolo.c.id_stato_articolo==StatoArticolo.id)),
-                        fornitur = relation(Fornitura,primaryjoin=(Fornitura.id_articolo==articolo.c.id), backref="arti",uselist=False),
+                        sa = relation(StatoArticolo,primaryjoin=(articolo.c.id_stato_articolo==statoart.c.id)),
+                        fornitur = relation(Fornitura,primaryjoin=(fornitura.c.id_articolo==articolo.c.id), backref="arti",uselist=False),
                         multi = relation(Multiplo,primaryjoin=(Multiplo.id_articolo==articolo.c.id),backref="arti")
                         ), order_by=articolo.c.codice)
 if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
@@ -567,23 +574,3 @@ def getNuovoCodiceArticolo(idFamiglia=None):
     else:
         Environment.lastCode = codice
     return codice
-
-    def getArticoliAssociati(connection, id):
-        res = connection.execStoredProcedure('ArticoliAssociatiGet',(codice,))
-        if len(res) > 0:
-            article_list =[]
-            for r in res:
-                article_list.append(Articolo(connection,r['id']))
-            print 'Done. Found '+str(len(res))+' associated articles in databse.'
-            return (len(res))
-
-    def setArticoliAssociati(connection, article, data):
-        if len (data) > 0:
-            for article2 in data:
-                connection.execStoredProcedure('ArticoliAssociatiSet', (article1.id, article2.id))
-            return true
-        else:
-            return None
-
-    def delArticoliAssociati(connection, articolo1, articolo2):
-        connection.execStoredProcedure('ArticoliAssociatiDel', (article1.id,article2.id))

@@ -411,9 +411,10 @@ else:
                     encoding='utf-8',
                     convert_unicode=True )
 tipo_eng = engine.name
-engine.echo = debugSQL
+engine.echo = False
 meta = MetaData(engine)
-Session = scoped_session(sessionmaker(bind=engine,autoflush=True))
+    #Session = sessionmaker(bind=engine)
+Session = scoped_session(sessionmaker(bind=engine))
 
 
 #Session = scoped_session(sessionmaker(bind=engine))

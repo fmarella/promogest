@@ -155,14 +155,14 @@ class Fornitura(Dao):
                     #self.__scontiFornitura[i].persist(conn)
                     """
 
-fornitura=Table('fornitura',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
+fornitura=Table('fornitura', params['metadata'], schema = params['schema'], autoload=True)
+fornitor=Table('fornitore', params['metadata'], schema = params['schema'], autoload=True)
+multip=Table('multiplo', params['metadata'], schema = params['schema'], autoload=True)
+
 
 std_mapper = mapper(Fornitura,fornitura, properties={
-        "multi": relation(Multiplo,primaryjoin=fornitura.c.id_multiplo==Multiplo.id),
+        "multi": relation(Multiplo,primaryjoin=fornitura.c.id_multiplo==multip.c.id),
         "sconto_fornitura": relation(ScontoFornitura, backref="fornitura"),
-        "forni" : relation(Fornitore,primaryjoin=fornitura.c.id_fornitore==Fornitore.id),
+        "forni" : relation(Fornitore,primaryjoin=fornitura.c.id_fornitore==fornitor.c.id),
         #"arti" : relation(Articolo,primaryjoin=fornitura.c.id_articolo==Articolo.id, backref=backref("artic", uselist=False)),
                 }, order_by=fornitura.c.id)

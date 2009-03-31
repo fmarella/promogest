@@ -38,7 +38,7 @@ from jinja2 import FileSystemLoader,FileSystemBytecodeCache
 
 from promogest.dao import Dao
 import urllib2
-from PrintDialog import PrintDialogHandler
+
 
 class Anagrafica(GladeWidget):
     """ Classe base per le anagrafiche di Promogest """
@@ -1365,6 +1365,7 @@ class AnagraficaPrintPreview(GladeWidget):
         self._currGtkHtmlDocument = currDocument
 
     def on_generic_button_clicked(self, button=None):
+        from PrintDialog import PrintDialogHandler
         import pisaLib.ho.pisa as pisa
         f = self.html
         g = file(".temp.pdf", "wb")

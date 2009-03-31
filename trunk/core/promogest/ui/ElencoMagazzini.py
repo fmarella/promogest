@@ -13,8 +13,8 @@ import gobject
 from GladeWidget import GladeWidget
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Magazzino
+#from promogest.dao.Dao import Dao
+#import promogest.dao.Magazzino
 from promogest.dao.Magazzino import Magazzino
 
 from utils import *

@@ -321,7 +321,9 @@ def leggiListino(idListino, idArticolo=None):
     from promogest.dao.Listino import Listino
     from promogest.dao.ListinoArticolo import ListinoArticolo
     from promogest.dao.ListinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalente
+
     liss = Listino().select(batchSize=None)
+    # cos'è?
     for l in liss:
         if l.listino_attuale ==False:
             l.listino_attuale = True
@@ -333,16 +335,21 @@ def leggiListino(idListino, idArticolo=None):
     _complesso = False
     _sottoListiniID = []
 
+    _scontiDettaglio = []
+    _scontiIngrosso = []
+    _applicazioneDettaglio = None
+    _applicazioneIngrosso = None
+
     if idListino is not None:
         daoListino = Listino().select(idListino=idListino, listinoAttuale=True)[0]
         if daoListino:
             _denominazione = daoListino.denominazione
-            _complesso = daoListino.isComplex
+            _complesso = daoListino.isComplex  #verifico se il listino è complesso
             if _complesso:
                 _sottoListiniID = daoListino.sottoListiniID
             if idArticolo is not None:
                 daoListinoArticolo = None
-                if _complesso:
+                if _complesso:  #se il listino è complesso gestisco il suo listino articolo
                     daoListinoArticolo1 = ListinoArticolo().select(idListino=_sottoListiniID,
                                                                 idArticolo = idArticolo,
                                                                 listinoAttuale = True,
@@ -361,7 +368,7 @@ def leggiListino(idListino, idArticolo=None):
                     else:
                         daoListinoArticolo = daoListinoArticolo1[0]
 
-                else:
+                else:  #listino normale 
                     daoListinoArticolo1 = ListinoArticolo().select(idListino=idListino,
                                                             idArticolo = idArticolo,
                                                             listinoAttuale = True,
@@ -377,7 +384,7 @@ def leggiListino(idListino, idArticolo=None):
                                                             batchSize=None,
                                                             orderBy="id_listino")
                     if len(daoListinoArticolo1) >= 1:
-                        #print "ATTENZIONEEEEEEEEEEEEEEEEEEE PIÙ DI UN LISTINO ARTICOLO ATTUALE"
+                        #PIÙ DI UN LISTINO ARTICOLO ATTUALE" prendo il primo
                         daoListinoArticolo= daoListinoArticolo1[0]
 
                 if daoListinoArticolo is not None:
@@ -392,6 +399,7 @@ def leggiListino(idListino, idArticolo=None):
                             "prezzoIngrosso": _prezzoIngrosso,
                             "prezzoDettaglio": _prezzoDettaglio,
                             "scontiDettaglio":_scontiDettaglio,
+                            "complesso": _complesso,
                             "scontiIngrosso":_scontiIngrosso,
                             'applicazioneScontiDettaglio':_applicazioneDettaglio,
                             'applicazioneScontiIngrosso':_applicazioneIngrosso}
@@ -400,7 +408,11 @@ def leggiListino(idListino, idArticolo=None):
             "prezzoIngrosso": _prezzoIngrosso,
             "prezzoDettaglio": _prezzoDettaglio,
             "complesso": _complesso,
-            "sottoListiniID":_sottoListiniID}
+            "sottoListiniID":_sottoListiniID,
+            "scontiDettaglio":_scontiDettaglio,
+            "scontiIngrosso":_scontiIngrosso,
+            'applicazioneScontiDettaglio':_applicazioneDettaglio,
+            'applicazioneScontiIngrosso':_applicazioneIngrosso}
 
 def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=False):
     """ Restituisce un dizionario con le informazioni sulla fornitura letta """
@@ -1891,7 +1903,10 @@ def hasAction(actionID=None):
         from promogest.dao.RoleAction import RoleAction
         from promogest.dao.Role import Role
         idRole = Environment.params['usernameLoggedList'][2]
-        roleActions = RoleAction().select(id_role=idRole,id_action = actionID,orderBy="id_role")
+        print "IDROLEEEEEEEEEEEEEEEEEEE", idRole
+        roleActions = RoleAction().select(id_role=idRole,
+                                        id_action=actionID,
+                                        orderBy="id_role")
         for p in roleActions:
             if int(p.id_action) == int(actionID):
                 return True

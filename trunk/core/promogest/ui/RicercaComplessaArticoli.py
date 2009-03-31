@@ -58,7 +58,6 @@ class RicercaComplessaArticoli(RicercaComplessa):
         self._idAnno = idAnno
         self._idStagione = idStagione
         self._idGenere = idGenere
-        print "PARTIAMO DA QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
         self._ricerca = RicercaArticoliFilter(parentObject=self,
                                               denominazione=denominazione,
                                               codice=codice,
@@ -343,7 +342,6 @@ class RicercaArticoliFilter(GladeWidget):
         self.textBefore = None
         self.textAfter = None
         self.res = None
-        print "POI PASSIAMO QUIIIIIIIIIIIIIIIIIIIIIIIIII"
         self.draw()
 
     def on_ricerca_avanzata_articoli_button_clicked(self, button):
@@ -1500,7 +1498,7 @@ class RicercaArticoliFilter(GladeWidget):
         if listinoFissato:
             self.filterDict.update(listinoFissato =listinoFissato)
 
-        if "Promowear" in Environment.modulesList:
+        if "PromoWear" in Environment.modulesList:
             RicercaComplessaArticoliPromoWearExpand.refreshPromoWearPart(self)
 
         self.filter.numRecords = Articolo().count(filterDict = self.filterDict,complexFilter =self.complexFilter)
@@ -1511,7 +1509,6 @@ class RicercaArticoliFilter(GladeWidget):
             #arts = []
             #model.clear()
         #else:
-
         arts = Articolo().select(orderBy=self.filter.orderBy,
                                             join=self.filter.join,
                                             offset=self.filter.offset,

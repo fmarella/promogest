@@ -14,8 +14,8 @@ import gobject
 from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.modules.PromoWear.dao.Colore
+#from promogest.dao.Dao import Dao
+#import promogest.modules.PromoWear.dao.Colore
 from promogest.modules.PromoWear.dao.Colore import Colore
 
 from promogest.ui.utils import *

@@ -6,33 +6,38 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 
 from Dao import Dao
-from promogest.Environment import *
-from promogest import Environment
+
 from sqlalchemy import *
 from sqlalchemy.orm import *
-#import RigaDocumento
-from RigaDocumento import RigaDocumento
-from RigaDocumento import *
+from ScontoTestataDocumento import ScontoTestataDocumento
+from DestinazioneMerce import DestinazioneMerce
 from TestataMovimento import TestataMovimento
-from RigaMovimento import RigaMovimento
-from RigaMovimento import *
 from Pagamento import Pagamento
-from Banca import Banca
-from Riga import Riga
 from Vettore import Vettore
 from Agente import Agente
 from Fornitore import Fornitore
 from Cliente import Cliente
-from DestinazioneMerce import DestinazioneMerce
+#import RigaDocumento
+
+from RigaDocumento import RigaDocumento
+from RigaDocumento import *
+
 from AliquotaIva import AliquotaIva
-from ScontoTestataDocumento import ScontoTestataDocumento
+from RigaMovimento import RigaMovimento
+from RigaMovimento import *
+
+from Banca import Banca
+from Riga import Riga
+
+
 from ScontoRigaMovimento import ScontoRigaMovimento
 from TestataDocumentoScadenza import TestataDocumentoScadenza
 from DaoUtils import *
 from decimal import *
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
-
+from promogest.Environment import *
+from promogest import Environment
 
 class TestataDocumento(Dao):
 
@@ -827,19 +832,26 @@ class TestataDocumento(Dao):
 riga=Table('riga',params['metadata'],schema = params['schema'],autoload=True)
 riga_doc=Table('riga_documento',params['metadata'],schema = params['schema'],autoload=True)
 testata_documento=Table('testata_documento',params['metadata'],schema = params['schema'],autoload=True)
+vettore = Table('vettore',params['metadata'],schema = params['schema'],autoload=True)
+testata_movi=Table('testata_movimento',params['metadata'],schema = params['schema'],autoload=True)
+agen = Table('agente',params['metadata'],schema = params['schema'],autoload=True)
+paga = Table('pagamento',params['metadata'],schema = params['schema'],autoload=True)
+clie = Table('cliente',params['metadata'],schema = params['schema'],autoload=True)
+banc = Table('banca',params['metadata'],schema = params['schema'],autoload=True)
+fornitor=Table('fornitore', params['metadata'], schema = params['schema'], autoload=True)
 
 std_mapper = mapper(TestataDocumento, testata_documento, properties={
         "rigadoc": relation(RigaDocumento, backref="testata_documento"),
         "testata_documento_scadenza" :relation(TestataDocumentoScadenza, backref="testata_documento"),
-        "PG":relation(Pagamento,primaryjoin = testata_documento.c.id_pagamento==Pagamento.id),
-        "BN":relation(Banca,primaryjoin = (testata_documento.c.id_banca==Banca.id)),
+        "PG":relation(Pagamento,primaryjoin = testata_documento.c.id_pagamento==paga.c.id),
+        "BN":relation(Banca,primaryjoin = (testata_documento.c.id_banca==banc.c.id)),
         "AL":relation(AliquotaIva,primaryjoin = (testata_documento.c.id_aliquota_iva_esenzione==AliquotaIva.id)),
-        "PV":relation(Vettore,primaryjoin = (testata_documento.c.id_vettore==Vettore.id)),
+        "PV":relation(Vettore,primaryjoin = (testata_documento.c.id_vettore==vettore.c.id)),
         "DM":relation(DestinazioneMerce, primaryjoin=(testata_documento.c.id_destinazione_merce==DestinazioneMerce.id)),
-        "TM":relation(TestataMovimento,primaryjoin = (testata_documento.c.id==TestataMovimento.id_testata_documento), backref='TD'),
-        "CLI":relation(Cliente,primaryjoin = (testata_documento.c.id_cliente==Cliente.id)),
-        "FORN":relation(Fornitore,primaryjoin = (testata_documento.c.id_fornitore==Fornitore.id)),
-        "AGE":relation(Agente,primaryjoin = (testata_documento.c.id_agente==Agente.id)),
+        "TM":relation(TestataMovimento,primaryjoin = (testata_documento.c.id==testata_movi.c.id_testata_documento), backref='TD'),
+        "CLI":relation(Cliente,primaryjoin = (testata_documento.c.id_cliente==clie.c.id)),
+        "FORN":relation(Fornitore,primaryjoin = (testata_documento.c.id_fornitore==fornitor.c.id)),
+        "AGE":relation(Agente,primaryjoin = (testata_documento.c.id_agente==agen.c.id)),
         "OP":relation(Operazione,primaryjoin = (testata_documento.c.operazione==Operazione.denominazione), backref="TD"),
         "STD":relation(ScontoTestataDocumento,primaryjoin = (testata_documento.c.id==ScontoTestataDocumento.id_testata_documento), backref="TD"),
         #'lang':relation(Language, backref='user')

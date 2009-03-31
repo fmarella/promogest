@@ -6,7 +6,7 @@
 
 from promogest import Environment
 #import promogest.ui.Login
-from promogest.modules.VenditaDettaglio.data.VenditaDettaglioDB import *
+#from promogest.modules.VenditaDettaglio.data.VenditaDettaglioDB import *
 
 
 MODULES_NAME = "Multilingua"

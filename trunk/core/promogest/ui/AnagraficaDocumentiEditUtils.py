@@ -393,6 +393,7 @@ def mostraArticoloPart(anaedit, id, art=None):
             anaedit.ArticoloPadre = artic
             anaedit.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
             anaedit.promowear_manager_taglia_colore_togglebutton.set_sensitive(True)
+            #anaedit.on_promowear_manager_taglia_colore_togglebutton_toggled(anaedit)
             anaedit.NoRowUsableArticle = True
         if art:
             # articolo proveninente da finestra taglia e colore ...
