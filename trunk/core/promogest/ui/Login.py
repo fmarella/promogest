@@ -248,7 +248,7 @@ class Login(GladeApp):
         if response == gtk.RESPONSE_OK:
             source_dir = os.path.split(os.path.dirname(__file__))
             print "sourceDDDDDDDDDDDDDDDDDDDDD", source_dir
-            command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ %s' %source_dir
+            command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ %s' %("../../"+source_dir[0])
             p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
             (stdin, stdouterr) = (p.stdin, p.stdout)
             for line in stdouterr.readlines():
