@@ -246,10 +246,8 @@ class Login(GladeApp):
         svndialog.getTopLevel().show_all()
         response = svndialog.svnupdate_dialog.run()
         if response == gtk.RESPONSE_OK:
-            source_dir = os.path.split(os.path.dirname(__file__))
-            print "sourceDDDDDDDDDDDDDDDDDDDDD", source_dir
-            command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ %s' %("../../"+source_dir[0])
-            p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+            command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
+            p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT)
             (stdin, stdouterr) = (p.stdin, p.stdout)
             for line in stdouterr.readlines():
                 textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
