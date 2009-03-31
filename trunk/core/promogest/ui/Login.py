@@ -33,19 +33,13 @@ from promogest import Environment
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from promogest.dao.AppLog import AppLog
-#from promogest.dao.Dao import Dao
 from GtkExceptionHandler import GtkExceptionHandler
 from utils import hasAction,on_status_activate
 from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
 from sqlalchemy import *
 from sqlalchemy.orm import *
-
 from promogest.lib import feedparser
-
-#if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
-    #from promogest.modules.RuoliAzioni.data.RuoliAzioniDB import *
-
 
 windowGroup = []
 statusIcon = gtk.StatusIcon()
@@ -62,28 +56,30 @@ statusIcon.connect('activate', on_activate)
 
 
 class Login(GladeApp):
-
+    """
+        Login widget Class
+    """
     def __init__(self, debugSQL=None, debugALL=None):
         self.azienda=None
         self._dbConnString = ''
         self.modules = {}
-        Environment.exceptionHandler = GtkExceptionHandler()
-
-        azs = Azienda().select(orderBy="schemaa")
-        usrs = User().select()
         GladeApp.__init__(self, 'login_window')
+        Environment.exceptionHandler = GtkExceptionHandler()
         model = gtk.ListStore(str, str)
         model.clear()
+        azs = Azienda().select(batchSize = None,orderBy="schemaa") #lista aziende
+        usrs = User().select(batchSize = None)
         for a in azs:
             model.append((a.schemaa, a.denominazione))
         global windowGroup
         windowGroup.append(self.getTopLevel())
-        if Environment.engine.name == "sqlite":
+        if Environment.engine.name == "sqlite": #forzo lo splash per lite
             fileSplashImage = "gui/splash_pg2_lite.png"
         else:
-            fileSplashImage=self.randomSplash()
+            fileSplashImage=self.randomSplash() #splash random 
         self.splash_image.set_from_file(fileSplashImage)
-        self.date_label.set_text(datetime.datetime.now().strftime('%d/%m/%Y  %H:%M'))
+        dateTimeLabel = datetime.datetime.now().strftime('%d/%m/%Y  %H:%M')
+        self.date_label.set_text(dateTimeLabel)
         renderer = gtk.CellRendererText()
         self.azienda_comboboxentry.pack_start(renderer, True)
         self.azienda_comboboxentry.add_attribute(renderer, 'text', 0)
@@ -93,11 +89,11 @@ class Login(GladeApp):
         #ATTENZIONE METTO COME RUOLO ADMIN PER IL MOMENTO RICONTROLLARE
         model_usr = gtk.ListStore(str, str)
         model_usr.clear()
-        for a in usrs:
-            if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
+        if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
+            for a in usrs:
                 model_usr.append((a.username, a.user))
-            else:
-                model_usr.append((a.username, "Admin"))
+        else:
+            model_usr.append(("admin", "admin"))
 
         renderer_usr = gtk.CellRendererText()
         self.username_comboxentry.pack_start(renderer_usr, True)
@@ -106,20 +102,15 @@ class Login(GladeApp):
         self.username_comboxentry.set_model(model_usr)
         self.username_comboxentry.set_text_column(0)
         self.username_comboxentry.grab_focus()
-        #self.username_comboxentry.set_active(0)
         data = datetime.datetime.now()
         self.anno_lavoro_spinbutton.set_value(data.year)
-        #self.button_login.connect('clicked', self.on_button_login_clicked )
         self.getTopLevel().show_all()
-
 
     def randomSplash(self):
         import random
         randomFile = random.sample([1,2,3,4,5,6,7,8],1)[0]
         fileName = Environment.conf.guiDir + "splash["+str(randomFile)+"].png"
         return fileName
-
-
 
     def feddretreive(self):
         d = feedparser.parse("http://blog.promotux.it/?feed=rss2")
@@ -133,6 +124,9 @@ class Login(GladeApp):
             combo.child.set_text(combo.get_model()[index][0])
 
     def on_button_help_clicked(self, button):
+        """
+            Funzione di servizio, uso il bottone come test per SincroDB
+        """
         from sqlalchemy.ext.serializer import loads, dumps
 
         app = Environment.params["session"].query(AppLog).filter(and_(AppLog.schema_azienda =="aaaaa",AppLog.message=="INSERT Articolo")).all()
@@ -185,13 +179,14 @@ class Login(GladeApp):
                 response = dialog.run()
                 dialog.destroy()
                 do_login = False
-        if do_login:
+        if do_login: #superati i check di login
             users = User().select(username=username,
                                     password=hashlib.md5(username+password).hexdigest())
 
-            if len(users) ==1:
+            if len(users) ==1: 
                 Environment.workingYear = str(self.anno_lavoro_spinbutton.get_value_as_int())
                 Environment.azienda = self.azienda
+                # Lancio la funzione di generazione della dir di configurazione
                 Environment.set_configuration(Environment.azienda,Environment.workingYear)
                 if Environment.feed:
                     thread = threading.Thread(target=self.feddretreive)
@@ -210,10 +205,7 @@ class Login(GladeApp):
                     if Environment.tipodb !="sqlite":
                         Environment.params["schema"]=self.azienda
                     #from promogest.lib.UpdateDB import *
-                    #print "self.aziendaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" , self.azienda
                     #Environment.meta.reflect(schema=self.azienda )
-                    #print "DOPOOOOOOOOOOOOOOOOOOOOO", Environment.meta
-                    #Environment.meta = MetaData().reflect(Environment.engine)
                     self.login_window.hide()
                     global windowGroup
                     windowGroup.remove(self.getTopLevel())
@@ -236,7 +228,7 @@ class Login(GladeApp):
                                     gtk.DIALOG_MODAL
                                     | gtk.DIALOG_DESTROY_WITH_PARENT,
                                     gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
-                                    'Nome utente o password Errati')
+                                    'Nome utente o password errati')
                 response = dialog.run()
                 dialog.destroy()
                 #saveAppLog(action="login", status=False,value=username)
@@ -254,7 +246,9 @@ class Login(GladeApp):
         svndialog.getTopLevel().show_all()
         response = svndialog.svnupdate_dialog.run()
         if response == gtk.RESPONSE_OK:
-            command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
+            source_dir = os.path.split(os.path.dirname(__file__))
+            print "sourceDDDDDDDDDDDDDDDDDDDDD", source_dir
+            command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ %s' %source_dir
             p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
             (stdin, stdouterr) = (p.stdin, p.stdout)
             for line in stdouterr.readlines():
