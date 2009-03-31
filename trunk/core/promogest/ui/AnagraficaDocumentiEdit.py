@@ -1212,7 +1212,7 @@ del documento.
         prezzoNetto = self._righe[0]["prezzoNetto"]
         quantita = self._righe[0]["quantita"]
         moltiplicatore = self._righe[0]["moltiplicatore"]
-        self._righe[0]["totale"] = mN(prezzoNetto * quantita * moltiplicatore,2)
+        self._righe[0]["totale"] = mN(Decimal(str(prezzoNetto)) * Decimal(str(quantita)) * Decimal(str(moltiplicatore)),2)
 
 
     def getPrezzoNetto(self):
