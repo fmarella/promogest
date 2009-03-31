@@ -8,6 +8,7 @@
 
 from promogest.ui.utils import *
 import gtk, gobject
+from  subprocess import *
 import os, popen2
 import gtkhtml2
 from promogest.dao.DaoUtils import giacenzaSel

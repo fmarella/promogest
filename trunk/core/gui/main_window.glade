@@ -3,10 +3,8 @@
   <!-- interface-requires gtk+ 2.16 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkDialog" id="main_window">
-    <property name="title" translatable="yes">Promogest</property>
+    <property name="title" translatable="yes">PromoGest2</property>
     <property name="window_position">center</property>
-    <property name="default_width">800</property>
-    <property name="default_height">600</property>
     <property name="icon">promogest.png</property>
     <property name="type_hint">dialog</property>
     <signal name="destroy" handler="on_main_window_destroy"/>
@@ -24,168 +22,6 @@
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">_File</property>
                 <property name="use_underline">True</property>
-                <child>
-                  <widget class="GtkMenu" id="file_menu_menu">
-                    <child>
-                      <widget class="GtkImageMenuItem" id="nuovo_menu">
-                        <property name="label">gtk-new</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_nuovo1_activate"/>
-                        <child>
-                          <widget class="GtkMenu" id="nuovo_menu_menu">
-                            <child>
-                              <widget class="GtkMenuItem" id="nuovo_documento_menu">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">_Documento</property>
-                                <property name="use_underline">True</property>
-                                <child>
-                                  <widget class="GtkMenu" id="nuovo_documento_menu_menu">
-                                    <child>
-                                      <widget class="GtkMenuItem" id="fattura_vendita_menu">
-                                        <property name="visible">True</property>
-                                        <property name="label" translatable="yes">Fattura vendita</property>
-                                        <property name="use_underline">True</property>
-                                      </widget>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkMenuItem" id="fattura_acquisto_menu">
-                                        <property name="visible">True</property>
-                                        <property name="label" translatable="yes">Fattura acquisto</property>
-                                        <property name="use_underline">True</property>
-                                        <signal name="activate" handler="on_fattura_acquisto_menu_activate"/>
-                                      </widget>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkMenuItem" id="ddt_vendita_menu">
-                                        <property name="visible">True</property>
-                                        <property name="label" translatable="yes">D.D.T. vendita</property>
-                                        <property name="use_underline">True</property>
-                                        <signal name="activate" handler="on_ddt_vendita_menu_activate"/>
-                                      </widget>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkMenuItem" id="ddt_acquisto_menu">
-                                        <property name="visible">True</property>
-                                        <property name="label" translatable="yes">D.D.T. acquisto</property>
-                                        <property name="use_underline">True</property>
-                                        <signal name="activate" handler="on_ddt_acquisto_menu_activate"/>
-                                      </widget>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkMenuItem" id="ddt_reso_da_cliente_menu">
-                                        <property name="visible">True</property>
-                                        <property name="label" translatable="yes">D.D.T. reso da cliente</property>
-                                        <property name="use_underline">True</property>
-                                        <signal name="activate" handler="on_ddt_reso_da_cliente_menu_activate"/>
-                                      </widget>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkMenuItem" id="ddt_reso_a_fornitore_menu">
-                                        <property name="visible">True</property>
-                                        <property name="label" translatable="yes">D.D.T. reso a fornitore</property>
-                                        <property name="use_underline">True</property>
-                                        <signal name="activate" handler="on_ddt_reso_a_fornitore_menu_activate"/>
-                                      </widget>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkMenuItem" id="nota_di_credito_a_cliente_menu">
-                                        <property name="visible">True</property>
-                                        <property name="label" translatable="yes">Nota di credito a cliente</property>
-                                        <property name="use_underline">True</property>
-                                        <signal name="activate" handler="on_nota_di_credito_a_cliente_menu_activate"/>
-                                      </widget>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkMenuItem" id="nota_di_credito_a_fornitore_menu">
-                                        <property name="visible">True</property>
-                                        <property name="label" translatable="yes">Nota di credito a fornitore</property>
-                                        <property name="use_underline">True</property>
-                                        <signal name="activate" handler="on_nota_di_credito_a_fornitore_menu_activate"/>
-                                      </widget>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkMenuItem" id="fattura_accompagnatoria_menu">
-                                        <property name="visible">True</property>
-                                        <property name="label" translatable="yes">Fattura accompagnatoria</property>
-                                        <property name="use_underline">True</property>
-                                        <signal name="activate" handler="on_fattura_accompagnatoria_menu_activate"/>
-                                      </widget>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkMenuItem" id="preventivo_menu">
-                                        <property name="visible">True</property>
-                                        <property name="label" translatable="yes">Preventivo</property>
-                                        <property name="use_underline">True</property>
-                                        <signal name="activate" handler="on_preventivo_menu_activate"/>
-                                      </widget>
-                                    </child>
-                                    <child>
-                                      <widget class="GtkMenuItem" id="vendita_al_dettaglio_menu">
-                                        <property name="visible">True</property>
-                                        <property name="label" translatable="yes">Vendita al dettaglio</property>
-                                        <property name="use_underline">True</property>
-                                        <signal name="activate" handler="on_vendita_al_dettaglio_menu_activate"/>
-                                      </widget>
-                                    </child>
-                                  </widget>
-                                </child>
-                              </widget>
-                            </child>
-                            <child>
-                              <widget class="GtkMenuItem" id="nuovo_cliente_menu">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">_Cliente</property>
-                                <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_nuovo_cliente_menu_activate"/>
-                              </widget>
-                            </child>
-                            <child>
-                              <widget class="GtkMenuItem" id="nuovo_fornitore_menu">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">_Forinitore</property>
-                                <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_nuovo_fornitore_menu_activate"/>
-                              </widget>
-                            </child>
-                            <child>
-                              <widget class="GtkMenuItem" id="nuovo_articolo_menu">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">_Articolo</property>
-                                <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_nuovo_articolo_menu_activate"/>
-                              </widget>
-                            </child>
-                          </widget>
-                        </child>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem1">
-                        <property name="visible">True</property>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkImageMenuItem" id="disconnetti_menu">
-                        <property name="label">gtk-disconnect</property>
-                        <property name="visible">True</property>
-                        <property name="use_stock">True</property>
-                        <property name="always_show_image">True</property>
-                        <signal name="activate" handler="on_disconnect"/>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkImageMenuItem" id="esci_menu">
-                        <property name="label">gtk-quit</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_quit"/>
-                      </widget>
-                    </child>
-                  </widget>
-                </child>
               </widget>
             </child>
             <child>
@@ -296,6 +132,15 @@
           </packing>
         </child>
         <child>
+          <widget class="GtkToolbar" id="main_toolbar">
+            <property name="visible">True</property>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
           <widget class="GtkHBox" id="main_hbox">
             <property name="visible">True</property>
             <property name="border_width">6</property>
@@ -387,7 +232,7 @@
             </child>
           </widget>
           <packing>
-            <property name="position">3</property>
+            <property name="position">4</property>
           </packing>
         </child>
         <child internal-child="action_area">

@@ -289,7 +289,7 @@ class Login(GladeApp):
 
     def importModulesFromDir(self, modules_dir):
             """Check the modules directory and automatically try to load all available modules"""
-            Environment.modulesList=["Contatti","Promemoria","Pagamenti"]
+            Environment.modulesList=["Contatti","Pagamenti"]
             modules_folders = [folder for folder in os.listdir(modules_dir) \
                             if (os.path.isdir(os.path.join(modules_dir, folder)) \
                             and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
@@ -314,17 +314,11 @@ class Login(GladeApp):
     def on_login_window_key_press_event(self, widget, event):
         if event.type == gtk.gdk.KEY_PRESS:
             if event.state & gtk.gdk.CONTROL_MASK:
-                #try:
                 key = str(gtk.gdk.keyval_name(event.keyval))
                 if key.upper() == "L":
                     self.username_comboxentry.set_active(0)
-                    #self.username_comboxentry.set_text('admin')
                     self.password_entry.set_text('admin')
                     self.on_button_login_clicked()
-                #except:
-                    #print u'Trovato!! il login non è andato a buon fine. Spiacente.'
-                    #raise SystemExit
-
 
 def on_main_window_closed(main_window, login_window):
     login_window.show()

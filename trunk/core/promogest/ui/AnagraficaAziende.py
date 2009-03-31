@@ -130,7 +130,7 @@ class AnagraficaAziende(GladeWidget):
         self.setDao()
 
     def on_close_button_clicked(self, button):
-        self.getTopLevel().self.destroy()
+        self.getTopLevel().destroy()
 
     def on_contatti_togglebutton_toggled(self, toggleButton):
         if not(toggleButton.get_active()):

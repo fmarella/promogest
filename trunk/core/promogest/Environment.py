@@ -288,7 +288,6 @@ def set_configuration(company=None, year = None):
     # stampa il debug del Dao
 
 
-
     #[Feed]
     try:
         feed = str(getattr(conf.Feed, 'feed'))
@@ -401,7 +400,7 @@ if tipodb == "sqlite":
     engine =create_engine('sqlite:///data/db')
 else:
     mainSchema = "promogest2"
-    azienda=conf.Database.azienda
+    #azienda=conf.Database.azienda
     engine = create_engine('postgres:'+'//'
                     +user+':'
                     + password+ '@'
@@ -416,7 +415,7 @@ meta = MetaData(engine)
     #Session = sessionmaker(bind=engine)
 Session = scoped_session(sessionmaker(bind=engine))
 
-
+#meta = None
 #Session = scoped_session(sessionmaker(bind=engine))
 session = Session()
 params = {'db_pg': engine ,

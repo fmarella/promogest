@@ -14,44 +14,22 @@ from  subprocess import *
 import threading, os, signal
 from promogest import Environment
 from GladeWidget import GladeWidget
-
 from ElencoMagazzini import ElencoMagazzini
 from ElencoListini import ElencoListini
 from VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
 from utils import hasAction,fenceDialog
 from utilsCombobox import *
+from ParametriFrame import ParametriFrame
 import Login
-
-# Caricamento moduli
-#try:
-    #if hasattr(Environment.conf,'Promospam'):
-        #mod_enable = getattr(Environment.conf.Promospam,'mod_enable','no')
-        #if mod_enable == 'yes':
-            #from promogest.ui.plus.plus003 import SpamFrame
-#except ImportError:
-    #print "\nATTENZIONE: Il modulo Spam non e` stato trovato\n"
-    #raise SystemExit
-
-## Caricamento moduli
-#try:
-    #if hasattr(Environment.conf,'Delfis'):
-        #mod_enable = getattr(Environment.conf.Delfis,'mod_enable','no')
-        #if mod_enable == 'yes':
-            #from promogest.ui.plus.plus001 import CasseFrame
-#except ImportError:
-    #print "\nATTENZIONE: Il modulo di interfacciamento delfis non e` stato trovato\n"
-    #raise SystemExit
-
-
 
 class Main(GladeWidget):
 
-    def __init__(self,aziendaStr,anagrafiche_modules,parametri_modules,anagrafiche_dirette_modules,
-                frame_modules,permanent_frames):
+    def __init__(self,aziendaStr,anagrafiche_modules,parametri_modules,
+                    anagrafiche_dirette_modules,frame_modules,permanent_frames):
 
         GladeWidget.__init__(self, 'main_window')
-        self.main_window.set_title('*** Promogest *** Azienda : '+aziendaStr+'  *** Utente : '+Environment.params['usernameLoggedList'][1]+' ***')
+        self.main_window.set_title('*** PromoGest2 *** Azienda : '+aziendaStr+'  *** Utente : '+Environment.params['usernameLoggedList'][1]+' ***')
         self.aziendaStr = aziendaStr
         Login.windowGroup.append(self.getTopLevel())
         self.anagrafiche_modules = anagrafiche_modules
@@ -59,7 +37,6 @@ class Main(GladeWidget):
         self.anagrafiche_dirette_modules=anagrafiche_dirette_modules
         self.frame_modules = frame_modules
         self.permanent_frames = permanent_frames
-        #self.main_window = self.main2_window
         self.currentFrame = None
         self.alarmFrame = None
 
@@ -86,26 +63,8 @@ class Main(GladeWidget):
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'parametri48x48.png')
         model.append([4, "Parametri", pbuf])
 
-        # Carico opzione casse se esiste la configurazione apposita
-        if hasattr(Environment.conf,'Delfis'):
-            mod_enable = getattr(Environment.conf.Delfis,'mod_enable','no')
-            if mod_enable == 'yes':
-                pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'cassa48x48.png')
-                model.append([5, "Casse", pbuf])
-
-
-        # Carico opzione spedizione email & fax se esiste la configurazione apposita
-        if hasattr(Environment.conf,'Promospam'):
-            mod_enable = getattr(Environment.conf.Promospam,'mod_enable','no')
-            if mod_enable == 'yes':
-                pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'spam48x48.png')
-                model.append([6, "Mails & Faxes", pbuf])
-
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'promemoria48x48.png')
         model.append([5, "Promemoria", pbuf])
-
-        #pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'azienda48x48.png')
-        #model.append([6, "Anagrafica\nazienda", pbuf])
 
         self.main_iconview.set_model(model)
         self.main_iconview.set_text_column(1)
@@ -113,26 +72,23 @@ class Main(GladeWidget):
         self.main_iconview.connect('selection-changed',
                                    self.on_main_iconview_select, model)
 
-        # FIXME: si possono automatizzare queste impostazioni?
         self.main_iconview.set_columns(1)
-        self.main_iconview.set_item_width(130)
-        self.main_iconview.set_size_request(140, -1)
+        self.main_iconview.set_item_width(120)
+        self.main_iconview.set_size_request(130, -1)
 
-        # right vertical toolbar
-        model_right = gtk.ListStore(int, str, gtk.gdk.Pixbuf, gobject.TYPE_PYOBJECT)
+        # right vertical icon list  adding modules
+        model_right = gtk.ListStore(int, str, gtk.gdk.Pixbuf, object)
         ind = 0
         for mod in self.anagrafiche_dirette_modules.keys():
             currModule = self.anagrafiche_dirette_modules[mod]
             pbuf = gtk.gdk.pixbuf_new_from_file(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
             row = (ind, currModule['module'].VIEW_TYPE[1], pbuf, currModule['module'])
-            #print len(row)
             model_right.append(row)
             ind += 1
         for mod in self.frame_modules.keys():
             currModule = self.frame_modules[mod]
             pbuf = gtk.gdk.pixbuf_new_from_file(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
             row =(ind, currModule['module'].VIEW_TYPE[1], pbuf, currModule['module'])
-            #print len(row)
             model_right.append(row)
             ind += 1
 
@@ -142,10 +98,9 @@ class Main(GladeWidget):
         self.main_iconview_right.connect('selection-changed',
                                    self.on_main_iconview_right_select, model_right)
 
-        # FIXME: si possono automatizzare queste impostazioni?
         self.main_iconview_right.set_columns(1)
-        self.main_iconview_right.set_item_width(130)
-        self.main_iconview_right.set_size_request(140, -1)
+        self.main_iconview_right.set_item_width(120)
+        self.main_iconview_right.set_size_request(130, -1)
         #load the alarm notification frame (AKA MainWindowFrame)
         if self.currentFrame is None:
             self.main_hbox.remove(self.box_immagini_iniziali)
@@ -155,11 +110,13 @@ class Main(GladeWidget):
 
 
     def updates(self):
-        """Aggiornamenti e controlli da fare all'avvio del programma"""
-
+        """
+            Aggiornamenti e controlli da fare all'avvio del programma
+        """
         #Aggiornamento scadenze promemoria
-        #import promogest.dao.Promemoria
-        #promogest.dao.Promemoria.updateScadenze()
+        if "Promemoria" in Environment.modulesList:
+            import promogest.dao.Promemoria
+            promogest.dao.Promemoria.updateScadenze()
         #Verifica inventario  FIXME: DA SISTEMAREEEEEEEEEEEEEEEE ( FRANCESCO )
         #from promogest.dao.Inventario import Inventario
         #Inventario().control(self.getTopLevel())
@@ -203,7 +160,7 @@ class Main(GladeWidget):
                                    gtk.DIALOG_MODAL
                                    | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   'Confermi?')
+                                   'Confermi la chiusura?')
 
         response = dialog.run()
         dialog.destroy()
@@ -251,10 +208,6 @@ class Main(GladeWidget):
             return
         elif selection == 4:
             self.currentFrame = self.create_parametri_frame()
-        #elif selection == 5:
-            #self.currentFrame = self.create_casse_frame()
-        #elif selection == 6:
-            #self.currentFrame = self.create_spam_frame()
         elif selection == 5:
             if "Promemoria" in Environment.modulesList:
                 from AnagraficaPromemoria import AnagraficaPromemoria
@@ -303,14 +256,12 @@ class Main(GladeWidget):
         frame = AnagrafichePrincipaliFrame(self.main_window, self.aziendaStr, modules=self.anagrafiche_modules)
         return frame.getTopLevel()
 
-
     def create_magazzini_frame(self):
         if not hasAction(actionID=12):return
         if self.currentFrame is not None:
             self.main_hbox.remove(self.currentFrame)
         frame = MagazziniFrame(self.main_window, self.aziendaStr)
         return frame.getTopLevel()
-
 
     def create_listini_frame(self):
         if not hasAction(actionID=9):return
@@ -319,7 +270,6 @@ class Main(GladeWidget):
         frame = ListiniFrame(self.main_window, self.aziendaStr)
         return frame.getTopLevel()
 
-
     def create_registrazioni_frame(self):
         if not hasAction(actionID=2):return
         if self.currentFrame is not None:
@@ -327,33 +277,11 @@ class Main(GladeWidget):
         frame = RegistrazioniFrame(self.main_window, self.aziendaStr)
         return frame.getTopLevel()
 
-
     def create_parametri_frame(self):
         if not hasAction(actionID=6):return
         if self.currentFrame is not None:
             self.main_hbox.remove(self.currentFrame)
         frame = ParametriFrame(self.main_window, self.aziendaStr, modules=self.parametri_modules)
-        return frame.getTopLevel()
-
-
-    def create_casse_frame(self):
-        if self.currentFrame is not None:
-            self.main_hbox.remove(self.currentFrame)
-        frame = CasseFrame(self.main_window)
-        return frame.getTopLevel()
-
-
-    def create_azienda_frame(self):
-        if self.currentFrame is not None:
-            self.main_hbox.remove(self.currentFrame)
-        frame = AziendaFrame(self)
-        #return frame.anagrafica_aziende_frame
-        return frame.getTopLevel()
-
-
-    def create_spam_frame(self):
-        self.main_hbox.remove(self.currentFrame)
-        frame = SpamFrame(self)
         return frame.getTopLevel()
 
 
@@ -364,7 +292,6 @@ class Main(GladeWidget):
         showAnagrafica(self.getTopLevel(), anag)
         anag.on_record_new_activate()
 
-
     def on_nuovo_cliente_menu_activate(self, widget):
         if not hasAction(actionID=11):return
         from AnagraficaClienti import AnagraficaClienti
@@ -372,14 +299,12 @@ class Main(GladeWidget):
         showAnagrafica(self.getTopLevel(), anag)
         anag.on_record_new_activate()
 
-
     def on_nuovo_fornitore_menu_activate(self, widget):
         if not hasAction(actionID=11):return
         from AnagraficaFornitori import AnagraficaFornitori
         anag = AnagraficaFornitori(self.aziendaStr)
         showAnagrafica(self.getTopLevel(), anag)
         anag.on_record_new_activate()
-
 
     def on_fattura_vendita_menu_activate(self, widget):
         if not hasAction(actionID=2):return
@@ -435,7 +360,6 @@ class Main(GladeWidget):
         if not hasAction(actionID=2):return
         self.nuovoDocumento("Vendita dettaglio")
 
-
     def nuovoDocumento(self, kind):
         if not hasAction(actionID=2):return
         from AnagraficaDocumenti import AnagraficaDocumenti
@@ -446,7 +370,6 @@ class Main(GladeWidget):
         findComboboxRowFromStr(anag.editElement.id_operazione_combobox, kind, 1)
         anag.editElement.id_persona_giuridica_customcombobox.grab_focus()
         findComboboxRowFromStr(anag.editElement.id_persona_giuridica_customcombobox, "Altro", 1)
-
 
     def on_configurazione_menu_activate(self, widget):
         if not hasAction(actionID=14):return
@@ -468,7 +391,6 @@ class Main(GladeWidget):
                                                     gtk.RESPONSE_OK),
                                            backend=None)
         fltr = gtk.FileFilter()
-        #fltr.add_mime_type('application/csv')
         fltr.add_pattern('*.pg2')
         fltr.set_name('File Pg2 (*.pg2)')
         fileDialog.add_filter(fltr)
@@ -492,9 +414,7 @@ class Main(GladeWidget):
             c = Environment.PRODOTTO.strip()
             v = Environment.VERSIONE.strip()
             p = hashlib.sha224(n+c+v).hexdigest()
-            print n,c,v, p, r, p.strip()==r.strip()
             if p.strip()==r.strip():
-                print "MODULO CORRETTO"
                 pa = os.path.join(Environment.conf.Moduli.cartella_moduli,n+"/"+"module.py")
                 g = file(pa,"w")
                 for a in al:
@@ -520,12 +440,6 @@ class Main(GladeWidget):
         creditsDialog = GladeWidget('credits_dialog', callbacks_proxy=self)
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
         creditsDialog.getTopLevel().show_all()
-        #try:
-            #res = Setting().select(key="update_db_version")
-            #version = res[0].value
-        #except:
-            #version = "0.9.10"
-        #creditsDialog.label_db_version.set_text('Versione database  ' + version)
         encoding = locale.getlocale()[1]
         utf8conv = lambda x : unicode(x, encoding).encode('utf8')
         licenseText = ''
@@ -611,7 +525,7 @@ o tramite email all'indirizzo info@promotux.it
         bkdbdialog.getTopLevel().show_all()
         response = bkdbdialog.svnupdate_dialog.run()
         if response == gtk.RESPONSE_OK:
-            nameDump= "promogest2_dump_"+datetime.datetime.now().strftime('%d_%m_%Y_%H_%M')+".sql"
+            nameDump= "promoGest2_dump_"+self.aziendaStr+"_"+datetime.datetime.now().strftime('%d_%m_%Y_%H_%M')+".sql"
             command = 'pg_dump -h %s -p %s -U %s %s > ~/%s' %(Environment.host,
                                                             Environment.port,
                                                             Environment.user,
@@ -635,10 +549,6 @@ Il file si chiama %s .
             dialog.run()
             dialog.destroy()
             bkdbdialog.svnupdate_dialog.destroy()
-
-
-    #def on_main_window_window_state_event(self,widget, event):
-        #VistaPrincipale(self.main_window).setFeedLabel()
 
     def on_seriale_menu_activate(self, widget):
         try:
@@ -726,7 +636,6 @@ I Numeri:   %s
             return True
         else:
             return False
-
 
 
 class ConfiguraWindow(GladeWidget):
@@ -934,172 +843,6 @@ class RegistrazioniFrame(GladeWidget):
         showAnagrafica(self.mainWindow, anag, toggleButton)
 
 
-
-class ParametriFrame(GladeWidget):
-    """ Frame per la gestione delle anagrafiche minori """
-
-    def __init__(self, mainWindow, azs, parent=None, modules=None):
-        self.mainWindow = mainWindow
-        self.mainClass=parent
-        self.modules = modules
-        GladeWidget.__init__(self, 'parametri_select_frame', 
-                                    fileName='_parametri_select.glade')
-        self.setModulesButtons()
-
-    def setModulesButtons(self):
-        if self.modules:
-            rows = self.table10.get_property('n_rows')
-            #self.table10.resize(rows, 3)
-            current_row = 0
-            current_column = 2
-            for module in self.modules.iteritems():
-                if current_row > rows:
-                    print "Impossibile aggiungere altri bottoni al frame."
-                    print "Sono stati inseriti %s bottoni" % str(rows)
-                    print "ne restano %s" % str(len(self.modules) - rows)
-                    break
-                module_button = gtk.Button()
-                module_butt_image = gtk.Image()
-                module_butt_image.set_from_file(module[1]['guiDir']+'/'+module[1]['module'].VIEW_TYPE[2])
-                module_button.set_image(module_butt_image)
-                module_button.set_label(module[1]['module'].VIEW_TYPE[1])
-                module_button.connect('clicked', self.on_module_button_clicked)
-                self.table10.attach(module_button,current_column, current_column+1,\
-                                                current_row,current_row+1,xoptions=gtk.EXPAND|gtk.FILL,\
-                                                yoptions=gtk.FILL)
-                #self.vbox1.pack_start(module_button, False, False)
-                current_row += 1
-            return
-        else:
-            return
-
-    def on_module_button_clicked(self, button):
-        label = button.get_label()
-        for mk in self.modules.iteritems():
-            module = mk[1]['module']
-            if label == module.VIEW_TYPE[1]:
-                #chiave di tutto il richiamo di passaggio alla classe in module.py che poi fa la vera istanza"
-                anag = module.getApplication()
-                showAnagrafica(self.mainWindow, anag, button=None)
-
-    def on_aliquote_iva_button_clicked(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
-
-        from AnagraficaAliquoteIva import AnagraficaAliquoteIva
-        anag = AnagraficaAliquoteIva()
-
-        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
-
-
-    def on_imballaggi_button_clicked(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
-
-        from AnagraficaImballaggi import AnagraficaImballaggi
-        anag = AnagraficaImballaggi()
-
-        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
-
-
-    #def on_utenti_button_clicked(self, toggleButton):
-        #if toggleButton.get_property('active') is False:
-            #return
-
-        #from AnagraficaUtenti import AnagraficaUtenti
-        #anag = AnagraficaUtenti()
-
-        #showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
-
-    #def on_ruoli_button_clicked(self, toggleButton):
-        #if toggleButton.get_property('active') is False:
-            #return
-
-        #from AnagraficaRuoli import AnagraficaRuoli
-        #anag = AnagraficaRuoli()
-
-        #showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
-
-
-    def on_multipli_button_clicked(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
-
-        from AnagraficaMultipli import AnagraficaMultipli
-        anag = AnagraficaMultipli()
-
-        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
-
-
-    def on_categorie_articoli_button_clicked(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
-
-        from AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
-        anag = AnagraficaCategorieArticoli()
-
-        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
-
-
-    def on_famiglie_articoli_button_clicked(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
-
-        from AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
-        anag = AnagraficaFamiglieArticoli()
-
-        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
-
-
-    def on_categorie_clienti_button_clicked(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
-
-        from AnagraficaCategorieClienti import AnagraficaCategorieClienti
-        anag = AnagraficaCategorieClienti()
-
-        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
-
-
-    def on_categorie_fornitori_button_clicked(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
-
-        from AnagraficaCategorieFornitori import AnagraficaCategorieFornitori
-        anag = AnagraficaCategorieFornitori()
-
-        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
-
-
-    def on_pagamenti_button_clicked(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
-
-        from AnagraficaPagamenti import AnagraficaPagamenti
-        anag = AnagraficaPagamenti()
-
-        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
-
-
-    def on_banche_button_clicked(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
-
-        from AnagraficaBanche import AnagraficaBanche
-        anag = AnagraficaBanche()
-
-        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
-
-
-    def on_categorie_contatti_button_clicked(self, toggleButton):
-        if toggleButton.get_property('active') is False:
-            return
-
-        from AnagraficaCategorieContatti import AnagraficaCategorieContatti
-        anag = AnagraficaCategorieContatti()
-
-        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
-
 #class AziendaFrame(AnagraficaAziende):
     #""" Frame per la gestione delle aziende """
 
@@ -1107,15 +850,12 @@ class ParametriFrame(GladeWidget):
         #self.mainWindow = mainWindow
         #AnagraficaAziende.__init__(self, self.mainWindow)
 
-
-from ElencoListini import ElencoListini
 class ListiniFrame(ElencoListini):
     """ Frame per la gestione dei listini """
 
     def __init__(self, mainWindow,azs):
         self.mainWindow = mainWindow
         ElencoListini.__init__(self, self.mainWindow,azs)
-
 
 def on_anagrafica_destroyed(anagrafica_window, argList):
     mainWindow = argList[0]
@@ -1127,7 +867,6 @@ def on_anagrafica_destroyed(anagrafica_window, argList):
         anagraficaButton.set_active(False)
     if mainClass is not None:
         mainClass.on_button_refresh_clicked()
-
 
 def showAnagrafica(window, anag, button=None, mainClass=None):
     anagWindow = anag.getTopLevel()

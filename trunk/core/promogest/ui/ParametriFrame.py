@@ -1,0 +1,206 @@
+# -*- coding: utf-8 -*-
+
+# Promogest
+#
+# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
+# Author: Alceste Scalas <alceste@promotux.it>, Francesco Meloni <francesco@promotux.it>
+# License GNU Gplv2
+
+import locale
+import gtk, gobject
+import hashlib
+import os
+from  subprocess import *
+import threading, os, signal
+from promogest import Environment
+from GladeWidget import GladeWidget
+from ElencoMagazzini import ElencoMagazzini
+from ElencoListini import ElencoListini
+from VistaPrincipale import VistaPrincipale
+from promogest.ui.SendEmail import SendEmail
+from utils import hasAction,fenceDialog
+from utilsCombobox import *
+import Login
+
+
+class ParametriFrame(GladeWidget):
+    """ Frame per la gestione delle anagrafiche minori """
+
+    def __init__(self, mainWindow, azs, parent=None, modules=None):
+        self.mainWindow = mainWindow
+        self.mainClass=parent
+        self.modules = modules
+        GladeWidget.__init__(self, 'parametri_select_frame',
+                                    fileName='_parametri_select.glade')
+        self.setModulesButtons()
+
+    def setModulesButtons(self):
+        if self.modules:
+            rows = self.table10.get_property('n_rows')
+            #self.table10.resize(rows, 3)
+            current_row = 0
+            current_column = 2
+            for module in self.modules.iteritems():
+                if current_row > rows:
+                    print "Impossibile aggiungere altri bottoni al frame."
+                    print "Sono stati inseriti %s bottoni" % str(rows)
+                    print "ne restano %s" % str(len(self.modules) - rows)
+                    break
+                module_button = gtk.Button()
+                module_butt_image = gtk.Image()
+                module_butt_image.set_from_file(module[1]['guiDir']+'/'+module[1]['module'].VIEW_TYPE[2])
+                module_button.set_image(module_butt_image)
+                module_button.set_label(module[1]['module'].VIEW_TYPE[1])
+                module_button.connect('clicked', self.on_module_button_clicked)
+                self.table10.attach(module_button,current_column, current_column+1,\
+                                                current_row,current_row+1,xoptions=gtk.EXPAND|gtk.FILL,\
+                                                yoptions=gtk.FILL)
+                #self.vbox1.pack_start(module_button, False, False)
+                current_row += 1
+            return
+        else:
+            return
+
+    def on_module_button_clicked(self, button):
+        label = button.get_label()
+        for mk in self.modules.iteritems():
+            module = mk[1]['module']
+            if label == module.VIEW_TYPE[1]:
+                #chiave di tutto il richiamo di passaggio alla classe in module.py che poi fa la vera istanza"
+                anag = module.getApplication()
+                showAnagrafica(self.mainWindow, anag, button=None)
+
+    def on_aliquote_iva_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+
+        from AnagraficaAliquoteIva import AnagraficaAliquoteIva
+        anag = AnagraficaAliquoteIva()
+
+        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+
+    def on_imballaggi_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+
+        from AnagraficaImballaggi import AnagraficaImballaggi
+        anag = AnagraficaImballaggi()
+
+        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+
+
+    #def on_utenti_button_clicked(self, toggleButton):
+        #if toggleButton.get_property('active') is False:
+            #return
+
+        #from AnagraficaUtenti import AnagraficaUtenti
+        #anag = AnagraficaUtenti()
+
+        #showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+
+    #def on_ruoli_button_clicked(self, toggleButton):
+        #if toggleButton.get_property('active') is False:
+            #return
+
+        #from AnagraficaRuoli import AnagraficaRuoli
+        #anag = AnagraficaRuoli()
+
+        #showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+
+
+    def on_multipli_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+
+        from AnagraficaMultipli import AnagraficaMultipli
+        anag = AnagraficaMultipli()
+
+        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+
+
+    def on_categorie_articoli_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+
+        from AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
+        anag = AnagraficaCategorieArticoli()
+
+        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+
+
+    def on_famiglie_articoli_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+
+        from AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
+        anag = AnagraficaFamiglieArticoli()
+
+        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+
+
+    def on_categorie_clienti_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+
+        from AnagraficaCategorieClienti import AnagraficaCategorieClienti
+        anag = AnagraficaCategorieClienti()
+
+        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+
+
+    def on_categorie_fornitori_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+
+        from AnagraficaCategorieFornitori import AnagraficaCategorieFornitori
+        anag = AnagraficaCategorieFornitori()
+
+        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+
+
+    def on_pagamenti_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+
+        from AnagraficaPagamenti import AnagraficaPagamenti
+        anag = AnagraficaPagamenti()
+
+        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+
+
+    def on_banche_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+
+        from AnagraficaBanche import AnagraficaBanche
+        anag = AnagraficaBanche()
+
+        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+
+
+    def on_categorie_contatti_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+
+        from AnagraficaCategorieContatti import AnagraficaCategorieContatti
+        anag = AnagraficaCategorieContatti()
+
+        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+
+def on_anagrafica_destroyed(anagrafica_window, argList):
+    mainWindow = argList[0]
+    anagraficaButton= argList[1]
+    mainClass = argList[2]
+    if anagrafica_window in Login.windowGroup:
+        Login.windowGroup.remove(anagrafica_window)
+    if anagraficaButton is not None:
+        anagraficaButton.set_active(False)
+    if mainClass is not None:
+        mainClass.on_button_refresh_clicked()
+
+def showAnagrafica(window, anag, button=None, mainClass=None):
+    anagWindow = anag.getTopLevel()
+    anagWindow.connect("destroy", on_anagrafica_destroyed, [window, button,mainClass])
+    #anagWindow.connect("hide", on_anagrafica_destroyed, [window, button,mainClass])
+    anagWindow.set_transient_for(window)
+    anagWindow.show_all()
