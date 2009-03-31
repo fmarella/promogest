@@ -1224,11 +1224,11 @@ del documento.
         for s in sconti:
             if s["tipo"] == 'percentuale':
                 if applicazione == 'scalare':
-                    prezzoNetto = prezzoNetto * (1 - s["valore"] / 100)
+                    prezzoNetto = prezzoNetto * (1 - Decimal(str(s["valore"])) / 100)
                 elif applicazione == 'non scalare':
-                    prezzoNetto = prezzoNetto - prezzoLordo * s["valore"] / 100
+                    prezzoNetto = prezzoNetto - prezzoLordo * Decimal(str(s["valore"])) / 100
             elif s["tipo"] == 'valore':
-                prezzoNetto = prezzoNetto - s["valore"]
+                prezzoNetto = prezzoNetto - Decimal(str(s["valore"]))
         #print "PREZZO NETTTTO IN getPrezzoNetto", prezzoNetto
         self._righe[0]["prezzoNetto"] = prezzoNetto
 

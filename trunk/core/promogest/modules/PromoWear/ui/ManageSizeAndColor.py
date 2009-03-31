@@ -130,10 +130,14 @@ class ManageSizeAndColor(GladeWidget):
 
 
     def creDictFornitura(self):
+        """
+            Creo un dizionario delle forniture? ... Commenta Francè commentaaaaaaaaaaa
+        """
         artiDict= {}
-        daoArticolo = self.articoloPadre
         variantiList = []
+        daoArticolo = self.articoloPadre
         varianti = daoArticolo.articoliVarianti
+
         for varia in varianti:
             variante=leggiArticoloPromoWear(varia.id, full=True)
             if self.TipoOperazione =="acquisto":
@@ -141,15 +145,15 @@ class ManageSizeAndColor(GladeWidget):
                                                 idFornitore=self.idPerGiu,
                                                 data=self.data)
                 variantiList.append(variante)
-            else:
+            else:   # vendita
                 variante['valori'] = leggiListino(self._id_listino,idArticolo=self.articoloPadre.id )
                 variante['valori']['prezzoDettaglioScontato'] = 0
                 variantiList.append(variante)
         artiDict = leggiArticoloPromoWear(self.articoloPadre.id)
-        artiDict["varianti"] = variantiList
+        artiDict["varianti"] = variantiList #al dizionatio articolo dell'articolo padre aggancio la lista delle varianti 
         if self.TipoOperazione == "acquisto":
             artiDict['valori'] = leggiFornitura(self.articoloPadre.id,idFornitore=self.idPerGiu, data=self.data)
-        else:
+        else:  #operazione vendita
             artiDict['valori'] = leggiListino(self._id_listino,idArticolo=self.articoloPadre.id )
         return artiDict
 
@@ -294,7 +298,7 @@ class ManageSizeAndColor(GladeWidget):
             if self.TipoOperazione == "acquisto":
                 row[0]['valori']["prezzoLordo"] = prezzogenerale
             else:
-                model[path][0]['valori']["prezzoDettaglio"] = prezzogenerale
+                row[0]['valori']["prezzoDettaglio"] = prezzogenerale
             row[3] = prezzogenerale
 
     def on_discount_entry_focus_out_event(self, entry, widget):

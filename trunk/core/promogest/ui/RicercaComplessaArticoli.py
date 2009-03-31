@@ -58,7 +58,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
         self._idAnno = idAnno
         self._idStagione = idStagione
         self._idGenere = idGenere
-
+        print "PARTIAMO DA QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
         self._ricerca = RicercaArticoliFilter(parentObject=self,
                                               denominazione=denominazione,
                                               codice=codice,
@@ -343,6 +343,7 @@ class RicercaArticoliFilter(GladeWidget):
         self.textBefore = None
         self.textAfter = None
         self.res = None
+        print "POI PASSIAMO QUIIIIIIIIIIIIIIIIIIIIIIIIII"
         self.draw()
 
     def on_ricerca_avanzata_articoli_button_clicked(self, button):
@@ -1487,7 +1488,6 @@ class RicercaArticoliFilter(GladeWidget):
         #if (not denominazione and not codice and not codiceABarre) and ("AND" not in str(self.complexFilter)):
             #self.filter.numRecords = 0
         #else:
-        #print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP", listinoFissato
         self.filterDict = { "denominazione":denominazione,
                             "codice":codice,
                             "codiceABarre":codiceABarre,
@@ -1496,8 +1496,9 @@ class RicercaArticoliFilter(GladeWidget):
                             "idFamiglia":idFamiglia,
                             "idCategoria":idCategoria,
                             "idStato":idStato,
-                            "cancellato":cancellato,
-                            "listinoFissato" :listinoFissato}
+                            "cancellato":cancellato}
+        if listinoFissato:
+            self.filterDict.update(listinoFissato =listinoFissato)
 
         if "Promowear" in Environment.modulesList:
             RicercaComplessaArticoliPromoWearExpand.refreshPromoWearPart(self)
@@ -1524,7 +1525,6 @@ class RicercaArticoliFilter(GladeWidget):
                                         batchSize=None,
                                         complexFilter =self.complexFilter,
                                         filterDict = self.filterDict)
-
 
         model.clear()
         for a in arts:
@@ -1786,6 +1786,7 @@ class RicercaArticoliFilter(GladeWidget):
                         variabili.append(stringa)
                 datus= or_(*variabili)
                 wherestring.append(datus)
+
             #if self._principaliIn or self._variantiIn:
                 #if self._normaliIn:
                     #joinString += " LEFT OUTER"
@@ -1897,6 +1898,6 @@ class RicercaArticoliFilter(GladeWidget):
                 variabili.append(stringa)
                 datus= and_(*variabili)
                 wherestring.append(datus)
-                self.complexFilter=and_(*wherestring)
+            self.complexFilter=and_(*wherestring)
                 #Environment.listinoFissato = self._listinoFissato = None
         return self.complexFilter
