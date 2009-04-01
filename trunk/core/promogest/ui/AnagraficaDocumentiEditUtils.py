@@ -566,10 +566,11 @@ def on_quantita_entry_focus_out_eventPart(anaedit, entry, event):
         articolo = Articolo().getRecord(id=id)
     else:
         return
-    if "SuMisura" in Environment.modulesList and float(anaedit.moltiplicatore_entry.get_text()) ==0:
+    molti = anaedit.moltiplicatore_entry.get_text()
+    if "SuMisura" in Environment.modulesList and molti and float(molti) ==0:
         return
-    elif "SuMisura" in Environment.modulesList and float(anaedit.moltiplicatore_entry.get_text()) >0:
-        pezzi = float(anaedit.moltiplicatore_entry.get_text())
+    elif "SuMisura" in Environment.modulesList and molti and float(molti) >0:
+        pezzi = float(molti)
         if articolo:
             try:
                 quantita_minima = float(articolo.quantita_minima) *pezzi

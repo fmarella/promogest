@@ -1907,6 +1907,7 @@ Saldato</property>
                                                             <property name="sensitive">False</property>
                                                             <property name="creation_function">createSignedDecimalEntryField</property>
                                                             <property name="int1">10</property>
+                                                            <property name="int2">2</property>
                                                             <signal name="focus_out_event" handler="on_show_totali_riga"/>
                                                             <signal name="focus_out_event" handler="on_quantita_entry_focus_out_event"/>
                                                           </widget>
