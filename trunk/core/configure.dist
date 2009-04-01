@@ -31,8 +31,6 @@ pdf_reader = acroread,evince,okular,kghostview,xpdf
 #   (download http://ardownload.adobe.com/pub/adobe/reader/win/8.x/8.1.2/ita/AdbeRdr812_it_IT.exe )
 #pdf_reader = C:\Programmi\Adobe\Reader~1.0\Reader\AcroRd32.exe
 
-[Moduli]
-cartella_moduli=
 
 cliente_predefinito = ""
 tipo_documento_predefinito = ""
@@ -82,12 +80,17 @@ prefisso_codice = VE
 lunghezza_codice = 5
 struttura_codice = VE000000
 
+
 [SMTP]
 smtpserver = cambiami
 emailmittente = cambia anche me
 
 [Multilinea]
 multilinealimite = 40
+
+
+[Moduli]
+cartella_moduli = ./promogest/modules
 
 #in sistemi *nix inserire thunderbird -compose, in sistemi windows  è necessario
 # inserire anche il percorso completo C:\programmi\Thunderbird ....
