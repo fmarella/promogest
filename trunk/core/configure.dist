@@ -31,6 +31,8 @@ pdf_reader = acroread,evince,okular,kghostview,xpdf
 #   (download http://ardownload.adobe.com/pub/adobe/reader/win/8.x/8.1.2/ita/AdbeRdr812_it_IT.exe )
 #pdf_reader = C:\Programmi\Adobe\Reader~1.0\Reader\AcroRd32.exe
 
+[Moduli]
+cartella_moduli=
 
 cliente_predefinito = ""
 tipo_documento_predefinito = ""
