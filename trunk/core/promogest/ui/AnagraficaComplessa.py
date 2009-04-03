@@ -2,19 +2,29 @@
 
 # Promogest
 #
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
+# Copyright (C) 2005-2009 by Promotux Informatica - http://www.promotux.it/
 # Author: Alceste Scalas <alceste@promotux.it>
 # Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Simone Cossu <simone@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it
 
 
-# FIXME: don't swap these two lines, or kid will have issues importing
-# xml.parsers.expat (why? we'll see...)
-#from promogest.lib.Sla2Pdf import Sla2Pdf
-from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
-import time, gtk, gobject, gtkhtml2
-import math, os, shutil, sys, tempfile, threading, os.path
+import time
+import gtk
+import gobject
+import gtkhtml2
+import webbrowser
+import math
+import os
+import shutil
+import sys
+import tempfile
+import threading
+import os.path
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
+
 from promogest.Environment import conf
 from GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
@@ -23,20 +33,17 @@ from promogest.lib.CsvGenerator import CsvFileGenerator
 from utils import *
 import utils
 import Login
-import webbrowser
+
+from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
 from promogest.ui.SendEmail import SendEmail
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
 
 from promogest import Environment
 
 from jinja2 import Environment  as Env
 from jinja2 import FileSystemLoader,FileSystemBytecodeCache
 
-
-from promogest.dao import Dao
+#from promogest.dao import Dao
+from promogest.dao.Articolo import Articolo
 import urllib2
 
 
@@ -98,10 +105,14 @@ class Anagrafica(GladeWidget):
 
         accelGroup = gtk.AccelGroup()
         self.getTopLevel().add_accel_group(accelGroup)
-        self.bodyWidget.filter_clear_button.add_accelerator('clicked', accelGroup, gtk.keysyms.Escape, 0, gtk.ACCEL_VISIBLE)
-        self.bodyWidget.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
-        self.bodyWidget.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.KP_Enter, 0, gtk.ACCEL_VISIBLE)
-        self.bodyWidget.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.Return, 0, gtk.ACCEL_VISIBLE)
+        self.bodyWidget.filter_clear_button.add_accelerator('clicked',
+                            accelGroup, gtk.keysyms.Escape, 0, gtk.ACCEL_VISIBLE)
+        self.bodyWidget.filter_search_button.add_accelerator('clicked',
+                            accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
+        self.bodyWidget.filter_search_button.add_accelerator('clicked',
+                            accelGroup, gtk.keysyms.KP_Enter, 0, gtk.ACCEL_VISIBLE)
+        self.bodyWidget.filter_search_button.add_accelerator('clicked',
+                            accelGroup, gtk.keysyms.Return, 0, gtk.ACCEL_VISIBLE)
 
     def _setHtmlHandler(self, htmlHandler):
         self.htmlHandler = htmlHandler
@@ -143,12 +154,19 @@ class Anagrafica(GladeWidget):
 
     def on_records_file_export_clicked(self, widget):
         data = self.set_export_data()
-        saveDialog = gtk.FileChooserDialog("export in a file...", None, gtk.FILE_CHOOSER_ACTION_SAVE, (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+        saveDialog = gtk.FileChooserDialog("export in a file...",
+                                            None,
+                                            gtk.FILE_CHOOSER_ACTION_SAVE,
+                                            (gtk.STOCK_CANCEL,
+                                                gtk.RESPONSE_CANCEL,
+                                                gtk.STOCK_SAVE,
+                                            gtk.RESPONSE_OK))
         saveDialog.set_default_response(gtk.RESPONSE_OK)
 
         self.__homeFolder = ''
         if hasattr(Environment.conf,'Documenti'):
-            self.__homeFolder = getattr(Environment.conf.Documenti,'cartella_predefinita','')
+            self.__homeFolder = getattr(Environment.conf.Documenti,
+                                                    'cartella_predefinita','')
         if self.__homeFolder == '':
             if os.name == 'posix':
                 self.__homeFolder = os.environ['HOME']
@@ -177,9 +195,12 @@ class Anagrafica(GladeWidget):
         currentName = data['currentName']
         saveDialog.set_filter(filter1)
         saveDialog.set_current_name(currentName)
-        cb_typeList = [['CSV','Csv compatibile Excel'],['XML','MS Excel 2003 Xml format']]
-        typeComboBox = insertFileTypeChooser(filechooser=saveDialog, typeList=cb_typeList)
-        typeComboBox.connect('changed', on_typeComboBox_changed, saveDialog, currentName)
+        cb_typeList = [['CSV','Csv compatibile Excel'],
+                                            ['XML','MS Excel 2003 Xml format']]
+        typeComboBox = insertFileTypeChooser(filechooser=saveDialog,
+                                                            typeList=cb_typeList)
+        typeComboBox.connect('changed', on_typeComboBox_changed,
+                                                        saveDialog, currentName)
         typeComboBox.set_active(1)
         xmlMarkup = data['XmlMarkup']
 
@@ -189,10 +210,16 @@ class Anagrafica(GladeWidget):
         saveDialog.show_all()
         response = saveDialog.run()
         if response == gtk.RESPONSE_OK:
-            (fileType,file_name) = on_typeComboBox_changed(typeComboBox, saveDialog, currentName, isEvent=False)
+            (fileType,file_name) = on_typeComboBox_changed(typeComboBox,
+                                                            saveDialog,
+                                                            currentName,
+                                                            isEvent=False)
             if fileType == "CSV":
                 csvFile = CsvFileGenerator(file_name)
-                csvFile.setAttributes(head=xmlMarkup[0], cols=xmlMarkup[2], data=values, totColumns=xmlMarkup[1])
+                csvFile.setAttributes(head=xmlMarkup[0],
+                                        cols=xmlMarkup[2],
+                                        data=values,
+                                        totColumns=xmlMarkup[1])
                 csvFile.createFile(wtot=True)
             elif fileType == "XML":
                 xmlFile = XlsXmlGenerator(file_name)
@@ -387,7 +414,8 @@ class Anagrafica(GladeWidget):
 
     def on_Stampa_Frontaline_clicked(self, widget):
         if "Label" in Environment.modulesList:
-            self._handlePrinting(pdfGenerator=self.labelHandler, report=True, label=True)
+            self._handlePrinting(pdfGenerator=self.labelHandler,
+                                                        report=True, label=True)
         else:
             fenceDialog()
 
@@ -396,6 +424,15 @@ class Anagrafica(GladeWidget):
                              pdfGenerator=self.htmlHandler,
                              report=True)
 
+    def manageLabels(self, results):
+        print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+        from promogest.modules.Label.ui.ManageLabelsToPrint import ManageLabelsToPrint
+        a = ManageLabelsToPrint(mainWindow=self,daos=results)
+        #anag = PrintDialogHandler(self,self.windowTitle)
+        anagWindow = a.getTopLevel()
+        returnWindow = self.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
+        anagWindow.show_all()
 
     def _handlePrinting(self, pdfGenerator, report, daos=None, label=None):
         # FIXME: refactor this mess!!!
@@ -422,7 +459,6 @@ class Anagrafica(GladeWidget):
             elif os.name == 'nt':
                 self._folder = os.environ['USERPROFILE']
 
-
         def showPrintingDialog():
             if self.__cancelOperation:
                 # Operation has been cancelled, do nothing
@@ -435,8 +471,13 @@ class Anagrafica(GladeWidget):
                                       callbacks_proxy=self)
             printDialog.getTopLevel().set_transient_for(self.getTopLevel())
 
-            printDialog.records_print_dialog_description_label.set_markup('<span weight="bold">' + self._pdfName + '</span>')
-            printDialog.records_print_dialog_size_label.set_markup('<span weight="bold">' + str(len(self.__pdfReport) / 1024) + ' Kb</span>')
+            printDialog.records_print_dialog_description_label.\
+                                        set_markup('<span weight="bold">' +\
+                                        self._pdfName + '</span>')
+            printDialog.records_print_dialog_size_label.\
+                                        set_markup('<span weight="bold">' +\
+                                        str(len(self.__pdfReport) / 1024) +\
+                                        ' Kb</span>')
             printDialog.placeWindow(printDialog.getTopLevel())
             printDialog.getTopLevel().show_all()
             self.printDialog = printDialog
@@ -460,7 +501,7 @@ class Anagrafica(GladeWidget):
             if len(results) == totalLen:
                 # We're done: let's switch progress bar type from the
                 # main thread
-
+                
                 def renewProgressBarIdle():
                     pbar.set_pulse_step(0.07)
                     pbar.set_text('Creazione della stampa')
@@ -479,6 +520,7 @@ class Anagrafica(GladeWidget):
                 # thread
                 def renderingThread():
                     operationName = ""
+                    
                     pdfGenerator.setObjects(results)
 
                     self._pdfName = str(pdfGenerator.defaultFileName)
@@ -486,18 +528,31 @@ class Anagrafica(GladeWidget):
                         dao = self.filter.getSelectedDao()
                         data = dao.data_documento
                         operationName = dao.operazione
-                        self._pdfName = operationName + '_' + str(dao.numero) + '_' + data.strftime('%d-%m-%Y')
+                        self._pdfName = operationName + \
+                                        '_' +\
+                                        str(dao.numero) +\
+                                        '_' +\
+                                        data.strftime('%d-%m-%Y')
                     elif pdfGenerator.defaultFileName == 'promemoria':
                         dao = self.filter.getSelectedDao()
-                        self._pdfName = self.__pdfGenerator.defaultFileName + '_' + str(dao.id)
+                        self._pdfName = self.__pdfGenerator.defaultFileName +\
+                                        '_' + \
+                                        str(dao.id)
                     elif pdfGenerator.defaultFileName == 'label':
-                        self._pdfName = pdfGenerator.defaultFileName + '_' + time.strftime('%d-%m-%Y')
+                        self._pdfName = pdfGenerator.defaultFileName +\
+                                        '_' + \
+                                        time.strftime('%d-%m-%Y')
                         operationName = "label"
                     self.__pdfReport = pdfGenerator.pdf(operationName)
 
                     # When we're done, let's schedule the printing
                     # dialog (going back to the main GTK loop)
-                    gobject.idle_add(showPrintingDialog)
+                    if pdfGenerator.defaultFileName == 'label':
+                        progressDialog.getTopLevel().destroy()
+                        print("RESULTSSSSS",results)
+                        gobject.idle_add(self.manageLabels,results)
+                    else:
+                        gobject.idle_add(showPrintingDialog)
 
                 if Environment.tipo_eng =="sqlite":
                     renderingThread()
@@ -525,6 +580,7 @@ class Anagrafica(GladeWidget):
         progressDialog.records_print_progress_bar.set_text('Lettura dati')
         if Environment.tipo_eng =="sqlite":
             fetchingThread(daos=daos)
+            #else:
         else:
             t = threading.Thread(group=None, target=fetchingThread,
                                 name='Data fetching thread', args=(),
@@ -572,9 +628,13 @@ class Anagrafica(GladeWidget):
             elif tipo == 'contatto':
                 res = leggiContatto(id)
             if res.has_key("ragioneSociale") and res["ragioneSociale"] != '':
-                self.printDialog.riferimento2_combobox_entry.child.set_text(res["ragioneSociale"])
+                self.printDialog.riferimento2_combobox_entry.\
+                                            child.set_text(res["ragioneSociale"])
             else:
-                self.printDialog.riferimento2_combobox_entry.child.set_text(res["cognome"] + ' ' + res["nome"] +" ("+res["email"]+")")
+                self.printDialog.riferimento2_combobox_entry.\
+                                            child.set_text(res["cognome"] + \
+                                            ' ' + res["nome"] +\
+                                            " ("+res["email"]+")")
             self.email = res["email"]
             anagWindow.destroy()
 
@@ -592,7 +652,8 @@ class Anagrafica(GladeWidget):
 
     def on_send_email_button_clicked(self, widget):
         if not conf.emailcompose:
-            msg = '\nErrore nella apertura del client di posta Thunderbird\n controllare il file configure, GRAZIE'
+            msg ="""Errore nella apertura del client di posta Thunderbird
+    controllare il file configure, GRAZIE"""
             overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
                                                 | gtk.DIALOG_DESTROY_WITH_PARENT,
                                                     gtk.MESSAGE_ERROR,
@@ -603,7 +664,8 @@ class Anagrafica(GladeWidget):
             self.printDialog.riferimento2_combobox_entry.child.set_text("")
         else:
             if self.email =="":
-                self.email = self.printDialog.riferimento2_combobox_entry.get_active_text()
+                self.email = self.printDialog.riferimento2_combobox_entry.\
+                                                                get_active_text()
             pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
             try:
             ##trying to save the file with the right name
@@ -611,7 +673,8 @@ class Anagrafica(GladeWidget):
                 f.write(self.__pdfReport)
                 f.close()
             except:
-                msg = 'Errore nel salvataggio!\n Verificare i permessi della cartella'
+                msg = """Errore nel salvataggio!
+    Verificare i permessi della cartella"""
                 overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
                                                 | gtk.DIALOG_DESTROY_WITH_PARENT,
                                                     gtk.MESSAGE_ERROR,
@@ -747,9 +810,9 @@ class Anagrafica(GladeWidget):
                 if os.path.exists(filename):
                     msg = 'Il file "%s" esiste.  Sovrascrivere?' % filename
                     overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                            | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                            gtk.MESSAGE_QUESTION,
-                                                            gtk.BUTTONS_YES_NO, msg)
+                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                                gtk.MESSAGE_QUESTION,
+                                                gtk.BUTTONS_YES_NO, msg)
                     response = overDialog.run()
                     overDialog.destroy()
                     if response == gtk.RESPONSE_YES:
@@ -778,17 +841,20 @@ class Anagrafica(GladeWidget):
                             esci = True
                             break
                         except:
-                            msg = 'Errore nel salvataggio!\n Verificare i permessi della cartella'
+                            msg = """Errore nel salvataggio!
+    Verificare i permessi della cartella"""
                             overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                                gtk.MESSAGE_ERROR,
-                                                                gtk.BUTTONS_CANCEL, msg)
+                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                                gtk.MESSAGE_ERROR,
+                                                gtk.BUTTONS_CANCEL, msg)
                             response = overDialog.run()
                             #overDialog.destroy()
-                            if response == gtk.RESPONSE_CANCEL or response == gtk.RESPONSE_DELETE_EVENT:
+                            if response == gtk.RESPONSE_CANCEL or \
+                                            response == gtk.RESPONSE_DELETE_EVENT:
                                 overDialog.destroy()
                                 response = fileDialog.run()
-                                if response == gtk.RESPONSE_CANCEL or response == gtk.RESPONSE_DELETE_EVENT:
+                                if response == gtk.RESPONSE_CANCEL or \
+                                            response == gtk.RESPONSE_DELETE_EVENT:
                                     #exit but don't save the file
                                     esci  = True
                                     break
@@ -1143,10 +1209,12 @@ class AnagraficaReport(object):
                                       previewTemplate=self._htmlTemplate)
 
 class AnagraficaLabel(object):
-    """ Create labels """
-
+    
     def __init__(self, anagrafica, description, defaultFileName,
-                htmlTemplate,sxwTemplate):
+                                                    htmlTemplate,sxwTemplate):
+        """
+        Create labels
+        """
         self._anagrafica = anagrafica
         self.description = description
         self.defaultFileName = defaultFileName
@@ -1156,11 +1224,11 @@ class AnagraficaLabel(object):
         self._slaTemplateObj = None
 
     def setObjects(self, objects):
-        #""" Imposta gli oggetti che verranno inclusi nel report """
+        """ Imposta gli oggetti che verranno inclusi nel report """
+        print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII",objects
         self.objects = objects
 
     def pdf(self,operationName):
-        from promogest.dao.Articolo import Articolo, select
         """ Restituisce una stringa contenente il report in formato PDF """
         if self._slaTemplateObj is None:
             self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,

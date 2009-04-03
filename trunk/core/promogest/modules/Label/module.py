@@ -2,7 +2,7 @@
 
 # Promogest
 #
-# Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
+# Copyright (C) 2005-2009 by Promotux Informatica - http://www.promotux.it/
 
 from promogest import Environment
 

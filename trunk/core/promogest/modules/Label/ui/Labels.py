@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -68,7 +68,6 @@ class Labels(BaseDocTemplate):
 
 
     def createbarcode(self):
-        #self.story.append(Paragraph('vanilla{P}', styleN))
         bcd = createBarcodeDrawing('EAN13', value='4000417020000',width=4.8*cm,height=0.8*cm)
         return bcd
 

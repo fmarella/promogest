@@ -11,9 +11,10 @@
 
 import sys
 import os
-#import re
 import math
-import datetime, time
+import datetime
+import time
+import pprint
 from reportlab.lib import colors, utils
 from reportlab.platypus import Table, TableStyle, Paragraph, Frame
 from reportlab.lib.styles import ParagraphStyle
@@ -21,17 +22,10 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT, TA_JUSTIFY
 from reportlab.lib.pagesizes import cm, inch, A4, landscape
 from reportlab.pdfgen.canvas import Canvas
 from PIL import Image
-
-#from elementtree import ElementTree
-##from elementtree.ElementTree import *
-#import cElementTree as ElementTree
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment
 from promogest.lib import Sla2pdfUtils
-#from reportlab.graphics.barcode.common import *
-#from reportlab.graphics.barcode.usps import *
-#from reportlab.graphics.barcode import getCodes, getCodeNames, createBarcodeDrawing
-import pprint
+
 
 
 # KNOWN BUGS
