@@ -10,22 +10,26 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from sqlalchemy import and_
 import types
 import datetime
 from sqlalchemy.ext.serializer import loads, dumps
 
 
-def giacenzaSel(year=None, idMagazzino=None, idArticolo=None):
+def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     from TestataMovimento import TestataMovimento
     from RigaMovimento import RigaMovimento
     from Riga import Riga
+    from promogest.dao.Magazzino import Magazzino
+    if allMag:
+        magazzini = params["session"].query(Magazzino.id).all()[0]
+    else:
+        magazzini = [idMagazzino]
     righeArticoloMovimentate= params["session"]\
             .query(RigaMovimento,TestataMovimento)\
             .filter(TestataMovimento.data_movimento.between(datetime.date(int(year), 1, 1), datetime.date(int(year) + 1, 1, 1)))\
             .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
             .filter(Riga.id_articolo==idArticolo)\
-            .filter(Riga.id_magazzino==idMagazzino)\
+            .filter(Riga.id_magazzino.in_(magazzini))\
             .all()
 
     lista = []
@@ -54,11 +58,11 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None):
         lista.append(diz)
     return lista
 
-def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None):
-    if not idArticolo or not idMagazzino or not year:
+def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None, allMag=None):
+    if not idArticolo or not year or (not idMagazzino and not allMag):
         return "0"
     else:
-        lista = giacenzaSel(year=year, idMagazzino=idMagazzino, idArticolo=idArticolo)
+        lista = giacenzaSel(year=year, idMagazzino=idMagazzino, idArticolo=idArticolo, allMag=allMag)
         totGiacenza = 0
 
         for t in lista:

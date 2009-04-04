@@ -253,6 +253,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
                 selection.set_mode(mode)
 
     def getResultsElement(self):
+        
         """ Restituisce il risultato della ricerca se composto da un solo elemento """
         if self._ricerca._tipoRicerca == 'semplice':
             return self.dao
@@ -436,7 +437,10 @@ class RicercaArticoliFilter(GladeWidget):
 
 
     def getArtsResult(self):
-        return self.artsResult or None
+        try:
+            return self.artsResult
+        except:
+            return []
 
     def drawStatoTreeView(self):
         treeview = self.stato_articolo_filter_treeview
@@ -1480,23 +1484,27 @@ class RicercaArticoliFilter(GladeWidget):
             idStato = None
             cancellato = None
             listinoFissato = self._listinoFissato
-
-            #if self.complexFilter:
-                #self.complexFilter= and_(*self.complexFilter)
-        #if (not denominazione and not codice and not codiceABarre) and ("AND" not in str(self.complexFilter)):
-            #self.filter.numRecords = 0
-        #else:
-        self.filterDict = { "denominazione":denominazione,
-                            "codice":codice,
-                            "codiceABarre":codiceABarre,
-                            "codiceArticoloFornitore":codiceArticoloFornitore,
-                            "produttore":produttore,
-                            "idFamiglia":idFamiglia,
-                            "idCategoria":idCategoria,
-                            "idStato":idStato,
-                            "cancellato":cancellato}
+        self.filterDict = {}
         if listinoFissato:
             self.filterDict.update(listinoFissato =listinoFissato)
+        if denominazione:
+            self.filterDict.update(denominazione =denominazione)
+        if codice:
+            self.filterDict.update(codice =codice)
+        if codiceABarre:
+            self.filterDict.update(codiceABarre =codiceABarre)
+        if codiceArticoloFornitore:
+            self.filterDict.update(codiceArticoloFornitore = codiceArticoloFornitore)
+        if produttore:
+            self.filterDict.update(produttore = produttore)
+        if idFamiglia:
+            self.filterDict.update(idFamiglia = idFamiglia)
+        if idCategoria:
+            self.filterDict.update(idCategoria = idCategoria)
+        if idStato:
+            self.filterDict.update(idStato = idStato)
+        if cancellato:
+            self.filterDict.update(cancellato = cancellato)
 
         if "PromoWear" in Environment.modulesList:
             RicercaComplessaArticoliPromoWearExpand.refreshPromoWearPart(self)
@@ -1515,13 +1523,14 @@ class RicercaArticoliFilter(GladeWidget):
                                             filterDict = self.filterDict,
                                             complexFilter =self.complexFilter,
                                             batchSize=self.filter.batchSize)
-
-        self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
-                                        join=self.filter.join,
-                                        offset=None,
-                                        batchSize=None,
-                                        complexFilter =self.complexFilter,
-                                        filterDict = self.filterDict)
+        if ( self._tipoRicerca == 'avanzata' and self.complexFilter) or \
+                        ( self._tipoRicerca == 'semplice' and self.filterDict):
+            self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
+                                            join=self.filter.join,
+                                            offset=None,
+                                            batchSize=None,
+                                            complexFilter =self.complexFilter,
+                                            filterDict = self.filterDict)
 
         model.clear()
         for a in arts:

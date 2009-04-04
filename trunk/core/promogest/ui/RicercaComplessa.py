@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -70,6 +70,7 @@ class RicercaComplessa(GladeWidget):
 
     def on_confirm_button_clicked(self, widget):
         """ Riga confermata """
+        print "MAJAJAAJJAJDHFSDGGDFGSDFGSDGSDFGSDFGDFGSDFGDGSDGF"
         if self.ricerca_window in Login.windowGroup:
             Login.windowGroup.remove(self.ricerca_window)
         self.ricerca_window.hide()

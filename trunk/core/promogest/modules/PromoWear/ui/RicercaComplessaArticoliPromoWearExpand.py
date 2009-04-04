@@ -592,17 +592,24 @@ def refreshPromoWearPart(anaarti):
         padriTagliaColore = None
         figliTagliaColore = None
 
-    anaarti.filterDict.update(idGruppoTaglia=idGruppoTaglia,
-                                    idTaglia=idTaglia,
-                                    idColore=idColore,
-                                    idAnno=idAnno,
-                                    idModello = idModello,
-                                    idStagione=idStagione,
-                                    idGenere=idGenere,
-                                    padriTagliaColore=padriTagliaColore,
-                                    figliTagliaColore=figliTagliaColore)
-
-
+    if idGruppoTaglia:
+        anaarti.filterDict.update(idGruppoTaglia=idGruppoTaglia)
+    if idTaglia:
+        anaarti.filterDict.update(idTaglia=idTaglia)
+    if idColore:
+        anaarti.filterDict.update(idColore=idColore)
+    if idAnno:
+        anaarti.filterDict.update(idAnno=idAnno)
+    if idModello:
+        anaarti.filterDict.update(idModello=idModello)
+    if idStagione:
+        anaarti.filterDict.update(idStagione=idStagione)
+    if idGenere:
+        anaarti.filterDict.update(idGenere=idGenere)
+    if padriTagliaColore:
+        anaarti.filterDict.update(padriTagliaColore=padriTagliaColore)
+    if figliTagliaColore:
+        anaarti.filterDict.update(figliTagliaColore=figliTagliaColore)
 
 
 def preparePromoWearPart(anaarti):

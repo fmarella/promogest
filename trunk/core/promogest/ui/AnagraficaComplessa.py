@@ -415,7 +415,8 @@ class Anagrafica(GladeWidget):
     def on_Stampa_Frontaline_clicked(self, widget):
         if "Label" in Environment.modulesList:
             self._handlePrinting(pdfGenerator=self.labelHandler,
-                                                        report=True, label=True)
+                                report=True, label=True)
+            #self.returnResults=None
         else:
             fenceDialog()
 
@@ -434,7 +435,8 @@ class Anagrafica(GladeWidget):
         anagWindow.set_transient_for(returnWindow)
         anagWindow.show_all()
 
-    def _handlePrinting(self, pdfGenerator, report, daos=None, label=None):
+    def _handlePrinting(self, pdfGenerator, report, daos=None, label=None,
+                                                            returnResults=None):
         # FIXME: refactor this mess!!!
 
         progressDialog = GladeWidget('records_print_progress_dialog',
@@ -446,6 +448,7 @@ class Anagrafica(GladeWidget):
         self.__pulseSourceTag = None
         self.__cancelOperation = False
         self.__pdfGenerator = pdfGenerator
+        self.__returnResults = returnResults
         self.__pdfReport = None
         self._reportType = report
         self.label = label # tipo report ma anche opzione label
@@ -547,21 +550,21 @@ class Anagrafica(GladeWidget):
 
                     # When we're done, let's schedule the printing
                     # dialog (going back to the main GTK loop)
-                    if pdfGenerator.defaultFileName == 'label':
-                        progressDialog.getTopLevel().destroy()
-                        print("RESULTSSSSS",results)
-                        gobject.idle_add(self.manageLabels,results)
-                    else:
-                        gobject.idle_add(showPrintingDialog)
-
-                if Environment.tipo_eng =="sqlite":
-                    renderingThread()
+                    gobject.idle_add(showPrintingDialog)
+                if pdfGenerator.defaultFileName == 'label' and self.__returnResults == None:
+                    progressDialog.getTopLevel().destroy()
+                    #print "DFDFHFHHJDJDJJHGJHGJUYTUYTRTUTUEFASDASDASDASDa",results
+                    gobject.idle_add(self.manageLabels,results)
+                    #self.manageLabels(results)
                 else:
-                    t = threading.Thread(group=None, target=renderingThread,
-                                        name='Data rendering thread', args=(),
-                                        kwargs={})
-                    t.setDaemon(True) # FIXME: are we sure?
-                    t.start()
+                    if Environment.tipo_eng =="sqlite":
+                        renderingThread()
+                    else:
+                        t = threading.Thread(group=None, target=renderingThread,
+                                            name='Data rendering thread', args=(),
+                                            kwargs={})
+                        t.setDaemon(True) # FIXME: are we sure?
+                        t.start()
 
 
         def fetchingThread(daos=None):
@@ -1225,7 +1228,7 @@ class AnagraficaLabel(object):
 
     def setObjects(self, objects):
         """ Imposta gli oggetti che verranno inclusi nel report """
-        print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII",objects
+        #print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII",objects
         self.objects = objects
 
     def pdf(self,operationName):
