@@ -1577,3 +1577,29 @@ del documento.
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
         dialog.run()
         dialog.destroy()
+
+
+    def on_articolo_entry_icon_press(self,entry, position,event ):
+        print "bottone = ",event.button
+        #popup = gtk.Menu()
+        if position.real == 0:
+            builder = gtk.Builder()
+            builder.add_from_file("gui/menu_ricerca.xml")
+            menu_ricerca = builder.get_object("menu_ricerca")
+            #xml.autoconnect({
+                #'some_handler': some_handler
+                #})
+
+            #if event.button == 3:
+            x = int(event.x)
+            y = int(event.y)
+            time = event.time
+            menu_ricerca.popup( None, None, None, event.button, time)
+            print "CERCA"
+        else:                            #secondary
+            print "PULISCI"
+            self.articolo_entry.set_text("")
+
+    def on_descrizione_entry_icon_press(self,entry, position,event ):
+        if position.real == 1:
+            self.descrizione_entry.set_text("")
