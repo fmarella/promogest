@@ -17,13 +17,13 @@ from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear
 
 
 class ManageSizeAndColor(GladeWidget):
-        """Gestione e selezione taglie e colori da inserire come righe in doc"""
+    """Gestione e selezione taglie e colori da inserire come righe in doc"""
 
-    def __init__(self, mainWindow, articolo=None, data=None, idPerGiu=None, idListino=None, fonteValore=None):
-        #GladeWidget.__init__(self, 'promogest/modules/PromoWear/gui/gestione_varianti_taglia_colore')
+    def __init__(self, mainWindow, articolo=None, data=None, idPerGiu=None,
+                                            idListino=None, fonteValore=None):
         GladeWidget.__init__(self, 'gestione_varianti_taglie_colore',
-                                fileName= 'promogest/modules/PromoWear/gui/gestione_varianti_taglia_colore.glade',
-                                isModule=True)
+                    fileName= 'promogest/modules/PromoWear/gui/gestione_varianti_taglia_colore.glade',
+                    isModule=True)
         self.placeWindow(self.getTopLevel())
         self.getTopLevel().set_modal(modal=True)
         self.articoloPadre= articolo
@@ -236,7 +236,7 @@ class ManageSizeAndColor(GladeWidget):
         else:
             model[path][0]['valori']["prezzoDettaglio"] = value
         
-        model[path]4] = value
+        model[path][4] = value
         if model[path][5] =="0" or model[path][5] == None or model[path][5]=="" :
             model[path][6] = model[path][4]
         if self.TipoOperazione == "acquisto":
