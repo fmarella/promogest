@@ -6,7 +6,8 @@ port = 5432
 database = promogest_demo
 azienda= azienda_mentor
 tipodb = sqlite
-
+[RuoliAzioni]
+mod_enable=No
 
 
 #NON RIMUOVERE LE RIGHE VUOTE SOPRA QUESTA

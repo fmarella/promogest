@@ -6,15 +6,15 @@
 
 from promogest import Environment
 import promogest.ui.Login
-from promogest.modules.RuoliAzioni.ui.AnagraficaRuoli import AnagraficaRuoli
-from promogest.modules.RuoliAzioni.ui.AnagraficaUtenti import AnagraficaUtenti
-from promogest.modules.RuoliAzioni.ui.ManageRoleAction import ManageRuoloAzioni
+#from promogest.modules.RuoliAzioni.ui.AnagraficaRuoli import AnagraficaRuoli
+#from promogest.modules.RuoliAzioni.ui.AnagraficaUtenti import AnagraficaUtenti
+#from promogest.modules.RuoliAzioni.ui.ManageRoleAction import ManageRuoloAzioni
 
 
 
 
 MODULES_NAME = "RuoliAzioni"
-MODULES_FOR_EXPORT = ['Ruoli',"Utenti","RuoliAzioni"]
+MODULES_FOR_EXPORT = []
 GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/RuoliAzioni/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
@@ -30,21 +30,21 @@ START_CALL = None                              # of this call in a separated Thr
 """
 #testataMovimentoTable = Table('testata_movimento', params['metadata'], autoload=True, schema=params['schema'])
 
-class Ruoli(object):
-    VIEW_TYPE = ('parametro', 'Anagrafica Ruoli', 'ruori_48.png')
-    def getApplication(self):
-        anag = AnagraficaRuoli()
-        return anag
+#class Ruoli(object):
+    #VIEW_TYPE = ('parametro', 'Anagrafica Ruoli', 'ruori_48.png')
+    #def getApplication(self):
+        #anag = AnagraficaRuoli()
+        #return anag
 
-class Utenti(object):
-    VIEW_TYPE = ('parametro', 'Anagrafica Utenti', 'utenti_48.png')
-    def getApplication(self):
-        anag = AnagraficaUtenti()
-        return anag
+#class Utenti(object):
+    #VIEW_TYPE = ('parametro', 'Anagrafica Utenti', 'utenti_48.png')
+    #def getApplication(self):
+        #anag = AnagraficaUtenti()
+        #return anag
 
-class RuoliAzioni(object):
-    VIEW_TYPE = ('parametro', 'Anagrafica RuoliAzioni', 'utenti_ruoli_48.png')
-    def getApplication(self):
-        anag = ManageRuoloAzioni()
-        return anag
+#class RuoliAzioni(object):
+    #VIEW_TYPE = ('parametro', 'Anagrafica RuoliAzioni', 'utenti_ruoli_48.png')
+    #def getApplication(self):
+        #anag = ManageRuoloAzioni()
+        #return anag
 

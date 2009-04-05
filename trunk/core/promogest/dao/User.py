@@ -9,7 +9,7 @@
 
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
-from promogest.Environment import params, host, database, conf
+from promogest.Environment import params, host, database, conf, tipo_eng
 from Dao import Dao
 #if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
     #from promogest.modules.RuoliAzioni.dao.Role import Role
@@ -30,7 +30,6 @@ class User(Dao):
             dic = {k:user.c.username.ilike("%"+v+"%")}
         elif k == 'email':
             dic = {k:user.c.email.ilike("%"+v+"%")}
-
         elif k == 'active':
             dic = {k:user.c.active == v}
         if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
@@ -67,7 +66,6 @@ class User(Dao):
             return True
 
     if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
-        print "POOOOOOOOOOOORCA ZOZZA"
         @property
         def ruolo(self):
             if self.role: return self.role.name
@@ -82,11 +80,12 @@ class User(Dao):
 
 
 user=Table('utente', params['metadata'],
-    schema = params['mainSchema'],
-    autoload=True)
+            schema = params['mainSchema'],
+            autoload=True)
 
 std_mapper = mapper(User, user, order_by=user.c.username)
-if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
+
+if tipo_eng =="postgresql" and hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
     from promogest.modules.RuoliAzioni.dao.Role import Role
     std_mapper.add_property("role",relation(Role,primaryjoin=(user.c.id_role==Role.id),backref="users",uselist=False))
 if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":

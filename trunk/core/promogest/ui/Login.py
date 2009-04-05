@@ -67,8 +67,8 @@ class Login(GladeApp):
         Environment.exceptionHandler = GtkExceptionHandler()
         model = gtk.ListStore(str, str)
         model.clear()
-        azs = Azienda().select(batchSize = None,orderBy="schemaa") #lista aziende
         usrs = User().select(batchSize = None)
+        azs = Azienda().select(batchSize = None,orderBy="schemaa") #lista aziende
         for a in azs:
             model.append((a.schemaa, a.denominazione))
         global windowGroup
@@ -91,7 +91,7 @@ class Login(GladeApp):
         model_usr.clear()
         if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
             for a in usrs:
-                model_usr.append((a.username, a.user))
+                model_usr.append((a.username, a.email))
         else:
             model_usr.append(("admin", "admin"))
 
@@ -183,46 +183,57 @@ class Login(GladeApp):
             users = User().select(username=username,
                                     password=hashlib.md5(username+password).hexdigest())
 
-            if len(users) ==1: 
-                Environment.workingYear = str(self.anno_lavoro_spinbutton.get_value_as_int())
-                Environment.azienda = self.azienda
-                # Lancio la funzione di generazione della dir di configurazione
-                Environment.set_configuration(Environment.azienda,Environment.workingYear)
-                if Environment.feed:
-                    thread = threading.Thread(target=self.feddretreive)
-                    thread.start()
-                    #thread.join(1.3)
-                Environment.params['usernameLoggedList'][0] = users[0].id
-                Environment.params['usernameLoggedList'][1] = users[0].username
-                if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
-                    #from promogest.modules.RuoliAzioni.dao.Role import Role
-                    #idruolo = Role().select(denominazione=users[0].id_role)
-                    #if idruolo:
-                    Environment.params['usernameLoggedList'][2] = users[0].id_role
+            if len(users) ==1:
+                if users[0].active == False:
+                    dialog = gtk.MessageDialog(self.getTopLevel(),
+                                    gtk.DIALOG_MODAL
+                                    | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                    gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
+                                    'Utente Presente Ma non ATTIVO')
+                    response = dialog.run()
+                    dialog.destroy()
+                    #saveAppLog(action="login", status=False,value=username)
+                    do_login = False
                 else:
-                    Environment.params['usernameLoggedList'][2] = "Admin"
-                if hasAction(actionID=1):
-                    if Environment.tipodb !="sqlite":
-                        Environment.params["schema"]=self.azienda
-                    #from promogest.lib.UpdateDB import *
-                    #Environment.meta.reflect(schema=self.azienda )
-                    self.login_window.hide()
-                    global windowGroup
-                    windowGroup.remove(self.getTopLevel())
-                    self.importModulesFromDir('promogest/modules')
-                    #saveAppLog(action="login", status=True,value=username)
-                    from Main import Main
-                    main = Main(self.azienda,
-                                self.anagrafiche_modules,
-                                self.parametri_modules,
-                                self.anagrafiche_dirette_modules,
-                                self.frame_modules,
-                                self.permanent_frames)
-                    main.getTopLevel().connect("destroy", on_main_window_closed,
-                                        self.login_window)
-                    main.show()
-                else:
-                    do_login=False
+                    Environment.workingYear = str(self.anno_lavoro_spinbutton.get_value_as_int())
+                    Environment.azienda = self.azienda
+                    # Lancio la funzione di generazione della dir di configurazione
+                    Environment.set_configuration(Environment.azienda,Environment.workingYear)
+                    if Environment.feed:
+                        thread = threading.Thread(target=self.feddretreive)
+                        thread.start()
+                        #thread.join(1.3)
+                    Environment.params['usernameLoggedList'][0] = users[0].id
+                    Environment.params['usernameLoggedList'][1] = users[0].username
+                    if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
+                        #from promogest.modules.RuoliAzioni.dao.Role import Role
+                        #idruolo = Role().select(denominazione=users[0].id_role)
+                        #if idruolo:
+                        Environment.params['usernameLoggedList'][2] = users[0].id_role
+                    else:
+                        Environment.params['usernameLoggedList'][2] = "Admin"
+                    if hasAction(actionID=1):
+                        if Environment.tipodb !="sqlite":
+                            Environment.params["schema"]=self.azienda
+                        #from promogest.lib.UpdateDB import *
+                        #Environment.meta.reflect(schema=self.azienda )
+                        self.login_window.hide()
+                        global windowGroup
+                        windowGroup.remove(self.getTopLevel())
+                        self.importModulesFromDir('promogest/modules')
+                        #saveAppLog(action="login", status=True,value=username)
+                        from Main import Main
+                        main = Main(self.azienda,
+                                    self.anagrafiche_modules,
+                                    self.parametri_modules,
+                                    self.anagrafiche_dirette_modules,
+                                    self.frame_modules,
+                                    self.permanent_frames)
+                        main.getTopLevel().connect("destroy", on_main_window_closed,
+                                            self.login_window)
+                        main.show()
+                    else:
+                        do_login=False
             else:
                 dialog = gtk.MessageDialog(self.getTopLevel(),
                                     gtk.DIALOG_MODAL

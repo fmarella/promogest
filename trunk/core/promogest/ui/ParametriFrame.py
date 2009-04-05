@@ -89,23 +89,38 @@ class ParametriFrame(GladeWidget):
         showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
 
 
-    #def on_utenti_button_clicked(self, toggleButton):
-        #if toggleButton.get_property('active') is False:
-            #return
+    def on_utenti_button_toggled(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        if "RuoliAzioni" in Environment.modulesList:
+            from promogest.modules.RuoliAzioni.ui.AnagraficaUtenti import AnagraficaUtenti
+            anag = AnagraficaUtenti()
+            showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+        else:
+            fenceDialog()
+            toggleButton.set_property('active',False)
 
-        #from AnagraficaUtenti import AnagraficaUtenti
-        #anag = AnagraficaUtenti()
+    def on_ruoli_button_toggled(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        if "RuoliAzioni" in Environment.modulesList:
+            from promogest.modules.RuoliAzioni.ui.AnagraficaRuoli import AnagraficaRuoli
+            anag = AnagraficaRuoli()
+            showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+        else:
+            fenceDialog()
+            toggleButton.set_property('active',False)
 
-        #showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
-
-    #def on_ruoli_button_clicked(self, toggleButton):
-        #if toggleButton.get_property('active') is False:
-            #return
-
-        #from AnagraficaRuoli import AnagraficaRuoli
-        #anag = AnagraficaRuoli()
-
-        #showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+    def on_ruoli_azioni_button_toggled(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        if "RuoliAzioni" in Environment.modulesList:
+            from promogest.modules.RuoliAzioni.ui.ManageRoleAction import ManageRuoloAzioni
+            anag = ManageRuoloAzioni()
+            showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
+        else:
+            fenceDialog()
+            toggleButton.set_property('active',False)
 
 
     def on_multipli_button_clicked(self, toggleButton):

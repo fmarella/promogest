@@ -6,7 +6,7 @@
 
 import gtk
 import gobject
-import md5
+import hashlib
 from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
@@ -101,9 +101,9 @@ class AnagraficaUtentiFilter(AnagraficaFilter):
 
         def filterCountClosure():
             return User().count(usern=username,
-                                            email=email,
-                                            role=idRole,
-                                            active=active)
+                                email=email,
+                                role=idRole,
+                                active=active)
 
         self._filterCountClosure = filterCountClosure
 
@@ -116,7 +116,7 @@ class AnagraficaUtentiFilter(AnagraficaFilter):
             return User().select(usern=username,
                                 email=email,
                                 role=idRole,
-                                active=active,
+                                #active=active,
                                 orderBy=self.orderBy,
                                 offset=offset,
                                 batchSize=batchSize)
@@ -153,7 +153,7 @@ class AnagraficaUtentiReport(AnagraficaReport):
 
 
 class AnagraficaUtentiEdit(AnagraficaEdit):
-    """ Modifica un record dell'anagrafica delle aliquote IVA """
+    """ Modifica un record dell'anagrafica degli utenti  """
 
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
@@ -224,8 +224,7 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
             dialog.run()
             dialog.destroy()
             return
-        passwordmd5 = md5.new(username + \
-                    str(password)).hexdigest()
+        passwordmd5 = hashlib.md5(username + str(password)).hexdigest()
 
         self.dao.username = username
         if (self.password_entry.get_text() != '') or (self.password_entry.get_text() != '' and self.aggiornamento):

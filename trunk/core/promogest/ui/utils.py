@@ -1903,21 +1903,24 @@ def hasAction(actionID=None):
         from promogest.dao.RoleAction import RoleAction
         from promogest.dao.Role import Role
         idRole = Environment.params['usernameLoggedList'][2]
-        print "IDROLEEEEEEEEEEEEEEEEEEE", idRole
         roleActions = RoleAction().select(id_role=idRole,
-                                        id_action=actionID,
-                                        orderBy="id_role")
-        for p in roleActions:
-            if int(p.id_action) == int(actionID):
-                return True
-        dialog = gtk.MessageDialog( None,
+                                                id_action=actionID,
+                                                orderBy="id_role")
+        print "ROLEACTIONSSSSSSSSSSSSSSSSS", roleActions
+        #for p in roleActions:
+            #if int(p.id_action) == int(actionID):
+                #return True
+        if roleActions:
+            return True
+        else:
+            dialog = gtk.MessageDialog( None,
                                     gtk.DIALOG_MODAL |
                                     gtk.DIALOG_DESTROY_WITH_PARENT,
                                     gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
                                     "Permesso negato! L'azione richiesta non è tra quelle che ti son consentite")
-        response = dialog.run()
-        dialog.destroy()
-        return False
+            response = dialog.run()
+            dialog.destroy()
+            return False
     else:
         return True
 
