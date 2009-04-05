@@ -17,7 +17,7 @@ from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear
 
 
 class ManageSizeAndColor(GladeWidget):
-    """Does price-list importation"""
+        """Gestione e selezione taglie e colori da inserire come righe in doc"""
 
     def __init__(self, mainWindow, articolo=None, data=None, idPerGiu=None, idListino=None, fonteValore=None):
         #GladeWidget.__init__(self, 'promogest/modules/PromoWear/gui/gestione_varianti_taglia_colore')
@@ -53,7 +53,15 @@ class ManageSizeAndColor(GladeWidget):
         self.treeview = self.taglie_colori_treeview
         rendererSx = gtk.CellRendererText()
 
-        column = gtk.TreeViewColumn("Taglia / Colore", rendererSx, text=1)
+        column = gtk.TreeViewColumn("Taglia", rendererSx, text=1)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(False)
+        column.set_resizable(True)
+        #column.set_expand(False)
+        column.set_min_width(40)
+        self.treeview.append_column(column)
+
+        column = gtk.TreeViewColumn("Colore", rendererSx, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -69,7 +77,7 @@ class ManageSizeAndColor(GladeWidget):
         cellspin.set_property("digits",3)
         cellspin.set_property("climb-rate",3)
         cellspin.connect('edited', self.on_column_quantita_edited, self.treeview, True)
-        column = gtk.TreeViewColumn('Quantità', cellspin, text=2)
+        column = gtk.TreeViewColumn('Quantità', cellspin, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_resizable(True)
         column.set_expand(True)
@@ -85,7 +93,7 @@ class ManageSizeAndColor(GladeWidget):
         cellspin.set_property("digits",3)
         cellspin.set_property("climb-rate",3)
         cellspin.connect('edited', self.on_column_prezzo_edited, self.treeview, True)
-        column = gtk.TreeViewColumn('Prezzo', cellspin, text=3)
+        column = gtk.TreeViewColumn('Prezzo', cellspin, text=4)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_resizable(True)
         column.set_expand(True)
@@ -96,14 +104,14 @@ class ManageSizeAndColor(GladeWidget):
         celltext.set_property("editable", True)
         celltext.set_property("visible", True)
         celltext.connect('edited', self.on_column_sconto_edited, self.treeview, True)
-        column = gtk.TreeViewColumn('Sconto', celltext, text=4)
+        column = gtk.TreeViewColumn('Sconto', celltext, text=5)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(50)
         self.treeview.append_column(column)
 
-        column = gtk.TreeViewColumn("Prezzo Netto", rendererSx, text=5)
+        column = gtk.TreeViewColumn("Prezzo Netto", rendererSx, text=6)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_resizable(True)
         column.set_expand(True)
@@ -111,14 +119,14 @@ class ManageSizeAndColor(GladeWidget):
         self.treeview.append_column(column)
 
 
-        column = gtk.TreeViewColumn("Denominazione", rendererSx, text=6)
+        column = gtk.TreeViewColumn("Denominazione", rendererSx, text=7)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(80)
         self.treeview.append_column(column)
 
-        self._treeViewModel = gtk.ListStore(object,str,str,str,str,str,str)
+        self._treeViewModel = gtk.ListStore(object,str,str,str,str,str,str,str)
         self.treeview.set_model(self._treeViewModel)
         self.refresh()
 
@@ -179,7 +187,8 @@ class ManageSizeAndColor(GladeWidget):
             
             sconto = str(self.formatSconti(var['valori']))
             self._treeViewModel.append((var,
-                                        str(var['taglia']) +" - "+str(var['colore']),
+                                        str(var['taglia']),
+                                        str(var['colore']),
                                         quantita,
                                         prezzoLordo,
                                         sconto,
@@ -214,39 +223,39 @@ class ManageSizeAndColor(GladeWidget):
             self._rowEditingPath = row.path
 
     def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
-        """ Function ti set the value quantita edit in the cell"""
+        """ Function to set the value quantita edit in the cell"""
         model = treeview.get_model()
         model[path][0]["quantita"] = value
-        model[path][2] = value
+        model[path][3] = value
 
     def on_column_prezzo_edited(self, cell, path, value, treeview, editNext=True):
-        """ Function ti set the value quantita edit in the cell"""
+        """ Function to set the value quantita edit in the cell"""
         model = treeview.get_model()
         if self.TipoOperazione == "acquisto":
                 model[path][0]['valori']["prezzoLordo"] = value
         else:
             model[path][0]['valori']["prezzoDettaglio"] = value
         
-        model[path][3] = value
-        if model[path][4] =="0" or model[path][4] == None or model[path][4]=="" :
-            model[path][5] = model[path][3]
+        model[path]4] = value
+        if model[path][5] =="0" or model[path][5] == None or model[path][5]=="" :
+            model[path][6] = model[path][4]
         if self.TipoOperazione == "acquisto":
-            model[path][0]['valori']["prezzoNetto"] = model[path][3]
+            model[path][0]['valori']["prezzoNetto"] = model[path][4]
         else:
-            model[path][0]['valori']["prezzoDettaglioScontato"] = model[path][3]
+            model[path][0]['valori']["prezzoDettaglioScontato"] = model[path][4]
 
     def on_column_sconto_edited(self, cell, path, value, treeview, editNext=True):
-        """ Function ti set the value quantita edit in the cell"""
+        """ Function to set the value quantita edit in the cell"""
         model = treeview.get_model()
         if self.TipoOperazione == "acquisto":
             model[path][0]['valori']["sconto"] = [value]
         else:
             model[path][0]['valori']["scontiDettaglio"] = [value]
-        model[path][4] = value
-        if model[path][3] and "%" in value:
+        model[path][5] = value
+        if model[path][4] and "%" in value:
             value= int(value[0:-1].strip())
-            prezzo = float(model[path][3]) * (1 - float(value) / 100)
-            model[path][5] = prezzo
+            prezzo = float(model[path][4]) * (1 - float(value) / 100)
+            model[path][6] = prezzo
             model[path][0]['valori']["sconti"] = [{'tipo':"percentuale",
                                             'valore':float(value)},]
             if self.TipoOperazione == "acquisto":
@@ -257,90 +266,83 @@ class ManageSizeAndColor(GladeWidget):
                 model[path][0]['valori']["scontiDettaglio"] = [{'tipo':"percentuale",
                                             'valore':float(value)},]
                 model[path][0]['valori']["prezzoDettaglioScontato"] = model[path][5]
-        elif model[path][3] and value == "0" or value == "":
-            model[path][5] = model[path][3]
+        elif model[path][4] and value == "0" or value == "":
+            model[path][6] = model[path][4]
             if self.TipoOperazione == "acquisto":
                 model[path][0]['valori']["sconti"] = []
-                model[path][0]['valori']["prezzoNetto"] = model[path][5]
+                model[path][0]['valori']["prezzoNetto"] = model[path][6]
             else:
                 model[path][0]['valori']["scontiDettaglio"] = []
-                model[path][0]['valori']["prezzoDettaglioScontato"] = model[path][5]
-        elif model[path][3] and "€" in value:
+                model[path][0]['valori']["prezzoDettaglioScontato"] = model[path][6]
+        elif model[path][4] and "€" in value:
             value = str(value).strip()
             value = value.replace("€", '')
             value= int(value)
-            model[path][5] = float(model[path][3]) - float(value)
+            model[path][6] = float(model[path][3]) - float(value)
 
             if self.TipoOperazione == "acquisto":
                 model[path][0]['valori']["sconti"] = [{'tipo':"valore",
                                             'valore':float(value)},]
-                model[path][3]['valori']["prezzoNetto"]= float(model[path][5])
+                model[path][3]['valori']["prezzoNetto"]= float(model[path][6])
             else:
                 model[path][0]['valori']["scontiDettaglio"] = [{'tipo':"valore",
                                             'valore':float(value)},]
-                model[path][3]['valori']["prezzoDettaglioScontato"]= float(model[path][5])
-            
-        #if model[path][3] and "%" in value:
-            #value= int(value[0:-1].strip())
-            #model[path][5] = float(model[path][3]) * (1 - float(value) / 100)
+                model[path][3]['valori']["prezzoDettaglioScontato"]= float(model[path][6])
 
     def on_quantita_entry_focus_out_event(self, entry, widget):
         quantitagenerale = self.quantita_entry.get_text()
-        #self._treeViewModel, quantitagenerale
         for row in self._treeViewModel:
             row[0]['quantita'] = quantitagenerale
-            row[2] = quantitagenerale
+            row[3] = quantitagenerale
 
     def on_price_entry_focus_out_event(self, entry, widget):
         prezzogenerale = self.price_entry.get_text()
-        #self._treeViewModel, quantitagenerale
         for row in self._treeViewModel:
             if self.TipoOperazione == "acquisto":
                 row[0]['valori']["prezzoLordo"] = prezzogenerale
             else:
                 row[0]['valori']["prezzoDettaglio"] = prezzogenerale
-            row[3] = prezzogenerale
+            row[4] = prezzogenerale
 
     def on_discount_entry_focus_out_event(self, entry, widget):
         scontogenerale = self.discount_entry.get_text()
-        #self._treeViewModel, quantitagenerale
         for row in self._treeViewModel:
-            row[4] = scontogenerale
-            if row[3] and "%" in scontogenerale:
+            row[5] = scontogenerale
+            if row[4] and "%" in scontogenerale:
                 value= int(scontogenerale[0:-1].strip())
-                prezzo = float(row[3]) * (1 - float(value) / 100)
-                row[5] = prezzo
+                prezzo = float(row[4]) * (1 - float(value) / 100)
+                row[6] = prezzo
 
                 if self.TipoOperazione == "acquisto":
                     row[0]['valori']["sconti"] = [{'tipo':"percentuale",
                                                  'valore':float(value)},]
-                    row[0]['valori']["prezzoNetto"]= row[5]
+                    row[0]['valori']["prezzoNetto"]= row[6]
                 else:
                     row[0]['valori']["scontiDettaglio"] = [{'tipo':"percentuale",
                                                  'valore':float(value)},]
-                    row[0]['valori']["prezzoDettaglioScontato"]= row[5]
-            elif row[3] and scontogenerale == "0" or scontogenerale == "":
-                row[5] = row[3]
+                    row[0]['valori']["prezzoDettaglioScontato"]= row[6]
+            elif row[4] and scontogenerale == "0" or scontogenerale == "":
+                row[6] = row[4]
 
                 if self.TipoOperazione == "acquisto":
                     row[0]['valori']["sconti"] = []
                     row[0]['valori']["prezzoNetto"]= row[5]
                 else:
                     row[0]['valori']["sconti"] = []
-                    row[0]['valori']["prezzoDettaglioScontato"]= row[5]
-            elif row[3] and "€" in scontogenerale:
+                    row[0]['valori']["prezzoDettaglioScontato"]= row[6]
+            elif row[4] and "€" in scontogenerale:
                 value = str(scontogenerale).strip()
                 value = value.replace("€", '')
                 value= int(value)
-                row[5] = float(row[3]) - float(value)
+                row[6] = float(row[3]) - float(value)
                 if self.TipoOperazione == "acquisto":
                     row[0]['valori']["sconti"] = [{'tipo':"valore",
                                                 'valore':float(value)},]
-                    row[0]['valori']["prezzoNetto"]= row[5]
+                    row[0]['valori']["prezzoNetto"]= row[6]
                 else:
                     row[0]['valori']["sconti"] = [{'tipo':"valore",
                                                 'valore':float(value)},]
-                    row[0]['valori']["prezzoDettaglioScontato"]= row[5]
+                    row[0]['valori']["prezzoDettaglioScontato"]= row[6]
 
 
     def on_conferma_singolarmente_button_clicked(self,button):

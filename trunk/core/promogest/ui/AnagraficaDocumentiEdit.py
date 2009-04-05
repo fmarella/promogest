@@ -49,6 +49,13 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 'anagrafica_documenti_detail_vbox',
                                 'Dati Documento',
                                 'anagrafica_documenti.glade')
+        # Piccolo esperimento, file con gtk.builder, per il menu ricerca
+        builder = gtk.Builder()
+        builder.add_from_file("gui/menu_ricerca.xml")
+        builder.connect_signals(self)
+        oggetti = builder.get_objects()
+        for obj in oggetti:
+            setattr(self, gtk.Buildable.get_name(obj), obj)
 
         self._widgetFirstFocus = self.data_documento_entry
         # contenitore (dizionario) righe (riga 0 riservata per  variazioni in corso)
@@ -1580,26 +1587,34 @@ del documento.
 
 
     def on_articolo_entry_icon_press(self,entry, position,event ):
-        print "bottone = ",event.button
+        #print "bottone = ",event.button
         #popup = gtk.Menu()
         if position.real == 0:
-            builder = gtk.Builder()
-            builder.add_from_file("gui/menu_ricerca.xml")
-            menu_ricerca = builder.get_object("menu_ricerca")
             #xml.autoconnect({
                 #'some_handler': some_handler
                 #})
-
             #if event.button == 3:
             x = int(event.x)
             y = int(event.y)
             time = event.time
-            menu_ricerca.popup( None, None, None, event.button, time)
+            self.menu_ricerca.popup( None, None, None, event.button, time)
             print "CERCA"
         else:                            #secondary
-            print "PULISCI"
             self.articolo_entry.set_text("")
 
     def on_descrizione_entry_icon_press(self,entry, position,event ):
         if position.real == 1:
             self.descrizione_entry.set_text("")
+
+    def on_codice_articolo_menuitem_toggled(self,toggled):
+        #self.codice_articolo_menuitem.set_active(True)
+        print "CODICE ARTICOLO"
+
+    def on_codice_fornitore_menuitem_toggled(self,toggled):
+        print "FORNITORE"
+
+    def on_descrizione_menuitem_toggled(self,toggled):
+        print "DESCRIZIONE"
+
+    def on_codice_a_barre_menuitem_toggled(self, toggled):
+        print "CODICE A BARRE"

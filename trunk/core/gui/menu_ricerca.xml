@@ -5,36 +5,40 @@
   <object class="GtkMenu" id="menu_ricerca">
     <property name="visible">True</property>
     <child>
-      <object class="GtkRadioMenuItem" id="codice_articolo">
+      <object class="GtkRadioMenuItem" id="codice_articolo_menuitem">
         <property name="visible">True</property>
         <property name="label" translatable="yes">codice articolo</property>
         <property name="use_underline">True</property>
+        <signal name="toggled" handler="on_codice_articolo_menuitem_toggled"/>
       </object>
     </child>
     <child>
-      <object class="GtkRadioMenuItem" id="codice_a_barre">
+      <object class="GtkRadioMenuItem" id="codice_a_barre_menuitem">
         <property name="visible">True</property>
         <property name="label" translatable="yes">codice_a_barre</property>
         <property name="use_underline">True</property>
-        <property name="group">codice_articolo</property>
+        <property name="group">codice_articolo_menuitem</property>
+        <signal name="toggled" handler="on_codice_a_barre_menuitem_toggled"/>
       </object>
     </child>
     <child>
-      <object class="GtkRadioMenuItem" id="descrizione">
+      <object class="GtkRadioMenuItem" id="descrizione_menuitem">
         <property name="visible">True</property>
         <property name="label" translatable="yes">descrizione</property>
         <property name="use_underline">True</property>
         <property name="draw_as_radio">True</property>
-        <property name="group">codice_articolo</property>
+        <property name="group">codice_articolo_menuitem</property>
+        <signal name="toggled" handler="on_descrizione_menuitem_toggled"/>
       </object>
     </child>
     <child>
-      <object class="GtkRadioMenuItem" id="codice_fornitore">
+      <object class="GtkRadioMenuItem" id="codice_fornitore_menuitem">
         <property name="visible">True</property>
         <property name="label" translatable="yes">codice fornitore</property>
         <property name="use_underline">True</property>
         <property name="draw_as_radio">True</property>
-        <property name="group">codice_articolo</property>
+        <property name="group">codice_articolo_menuitem</property>
+        <signal name="toggled" handler="on_codice_fornitore_menuitem_toggled"/>
       </object>
     </child>
   </object>
