@@ -554,8 +554,8 @@ class Anagrafica(GladeWidget):
                 if pdfGenerator.defaultFileName == 'label' and self.__returnResults == None:
                     progressDialog.getTopLevel().destroy()
                     #print "DFDFHFHHJDJDJJHGJHGJUYTUYTRTUTUEFASDASDASDASDa",results
-                    gobject.idle_add(self.manageLabels,results)
-                    #self.manageLabels(results)
+                    #gobject.idle_add(self.manageLabels,results)
+                    self.manageLabels(results)
                 else:
                     if Environment.tipo_eng =="sqlite":
                         renderingThread()
