@@ -93,6 +93,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.reuseDataRow = False
         self.NoRowUsableArticle = False
         self.noleggio = True
+        self.tagliaColoreRigheList = None
         # Inizializziamo i moduli in interfaccia!
 
         if "Pagamenti" not in Environment.modulesList:
@@ -580,7 +581,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         """
         if dao is None:
             # Crea un nuovo Dao vuoto
-            Environment.tagliacoloretempdata = (False,[])
+            #Environment.tagliacoloretempdata = (False,[])
             self.dao = TestataDocumento()
             # Suggerisce la data odierna
             self.dao.data_documento = datetime.datetime.today()
@@ -588,7 +589,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         else:
             # Ricrea il Dao prendendolo dal DB
             self.dao = TestataDocumento().getRecord(id=dao.id)
-            Environment.tagliacoloretempdata = (False,[])
+            #Environment.tagliacoloretempdata = (False,[])
             self._controllo_data_documento = dateToString(self.dao.data_documento)
             self._controllo_numero_documento = self.dao.numero
             self._oldDaoRicreato = True #il dao è nuovo il controllo sul nuovo codice non  è necessario
@@ -1145,10 +1146,10 @@ del documento.
             anagWindow = manag.getTopLevel()
             anagWindow.set_transient_for(self.dialogTopLevel)
         else:
-            if Environment.tagliacoloretempdata[1]:
-                for var in Environment.tagliacoloretempdata[1]:
+            if self.tagliaColoreRigheList:
+                for var in self.tagliaColoreRigheList:
                     self.mostraArticolo(var['id'],art=var)
-            Environment.tagliacoloretempdata = (False,[])
+            self.tagliaColoreRigheList = None
             self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
 
     def mostraArticolo(self, id, art=None):

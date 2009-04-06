@@ -356,24 +356,26 @@ class ManageSizeAndColor(GladeWidget):
                 continue
             else:
                 resultList.append(row[0])
-        Environment.tagliacoloretempdata= (False, resultList)
+        #Environment.tagliacoloretempdata= (False, resultList)
+        self.mainWindow.tagliaColoreRigheList = resultList
         self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
         self.destroy()
 
-    def on_conferma_direttamente_button_clicked(self,button):
-        if self.TipoOperazione == "acquisto":
-            self.articoloPadreDict['valori']['prezzoLordo']=self.price_entry.get_text()
-        else:
-            self.articoloPadreDict['valori']['prezzoDettaglio']=self.price_entry.get_text()
-        resultList = []
-        for row in self._treeViewModel:
-            if row[0]['quantita'] == "0" or row[0]['quantita'] == "" :
-                continue
-            else:
-                resultList.append(row[0])
-        Environment.tagliacoloretempdata= (True, resultList)
-        self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
-        self.destroy()
+    #def on_conferma_direttamente_button_clicked(self,button):
+        #if self.TipoOperazione == "acquisto":
+            #self.articoloPadreDict['valori']['prezzoLordo']=self.price_entry.get_text()
+        #else:
+            #self.articoloPadreDict['valori']['prezzoDettaglio']=self.price_entry.get_text()
+        #resultList = []
+        #for row in self._treeViewModel:
+            #if row[0]['quantita'] == "0" or row[0]['quantita'] == "" :
+                #continue
+            #else:
+                #resultList.append(row[0])
+        ##Environment.tagliacoloretempdata= (True, resultList)
+        #self.mainWindow.tagliaColoreRigheList = resultList
+        #self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
+        #self.destroy()
 
     def on_cancel_button_clicked(self, button):
         self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)

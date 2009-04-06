@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sat Dec 13 03:35:25 2008 -->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkDialog" id="gestione_varianti_taglie_colore">
     <property name="width_request">755</property>
     <property name="height_request">500</property>
@@ -10,8 +10,8 @@
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Gestione Varianti Taglia Colore e Prezzo</property>
     <property name="modal">True</property>
-    <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
@@ -27,11 +27,12 @@
                   <widget class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">Dati Generali Articolo:</property>
-                    <property name="justify">GTK_JUSTIFY_CENTER</property>
+                    <property name="justify">center</property>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
                     <property name="padding">5</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
@@ -46,6 +47,7 @@
                         <property name="expand">False</property>
                         <property name="fill">False</property>
                         <property name="padding">5</property>
+                        <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
@@ -70,6 +72,7 @@
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="padding">3</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -78,20 +81,21 @@
                 <child>
                   <widget class="GtkLabel" id="quantita_label">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Quantità:</property>
+                    <property name="label" translatable="yes">Quantit&#xE0;:</property>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="padding">5</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
                   <widget class="GtkEntry" id="quantita_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <signal name="focus_out_event" handler="on_quantita_entry_focus_out_event"/>
                     <signal name="key_press_event" handler="on_quantita_entry_focus_out_event"/>
+                    <signal name="focus_out_event" handler="on_quantita_entry_focus_out_event"/>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
@@ -114,8 +118,8 @@
                   <widget class="GtkEntry" id="price_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <signal name="focus_out_event" handler="on_price_entry_focus_out_event"/>
                     <signal name="key_press_event" handler="on_price_entry_focus_out_event"/>
+                    <signal name="focus_out_event" handler="on_price_entry_focus_out_event"/>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
@@ -139,9 +143,8 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="has_tooltip">True</property>
-                    <property name="tooltip_text">Inserisci un valore di sconto di questo tipo 4% o 4€</property>
-                    <signal name="focus_out_event" handler="on_discount_entry_focus_out_event"/>
                     <signal name="key_press_event" handler="on_discount_entry_focus_out_event"/>
+                    <signal name="focus_out_event" handler="on_discount_entry_focus_out_event"/>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
@@ -164,11 +167,12 @@
                   <widget class="GtkLabel" id="label3">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">Dati varianti Taglia/colore Articolo:</property>
-                    <property name="justify">GTK_JUSTIFY_CENTER</property>
+                    <property name="justify">center</property>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
                     <property name="padding">5</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
@@ -189,15 +193,15 @@
               <widget class="GtkScrolledWindow" id="scrolledwindow1">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <property name="shadow_type">GTK_SHADOW_IN</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <property name="shadow_type">in</property>
                 <child>
                   <widget class="GtkTreeView" id="taglie_colori_treeview">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="reorderable">True</property>
-                    <property name="enable_grid_lines">GTK_TREE_VIEW_GRID_LINES_BOTH</property>
+                    <property name="enable_grid_lines">both</property>
                   </widget>
                 </child>
               </widget>
@@ -213,79 +217,21 @@
         <child internal-child="action_area">
           <widget class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
             <child>
-              <widget class="GtkButton" id="button1">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="label" translatable="yes">gtk-help</property>
-                <property name="use_stock">True</property>
-                <property name="response_id">0</property>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-              </packing>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
             </child>
             <child>
               <widget class="GtkButton" id="cancel_button">
+                <property name="label" translatable="yes">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="label" translatable="yes">gtk-cancel</property>
                 <property name="use_stock">True</property>
-                <property name="response_id">0</property>
                 <signal name="clicked" handler="on_cancel_button_clicked"/>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkButton" id="conferma_direttamente_button">
-                <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="response_id">-5</property>
-                <signal name="clicked" handler="on_conferma_direttamente_button_clicked"/>
-                <child>
-                  <widget class="GtkAlignment" id="alignment1">
-                    <property name="visible">True</property>
-                    <property name="xscale">0</property>
-                    <property name="yscale">0</property>
-                    <child>
-                      <widget class="GtkHBox" id="hbox4">
-                        <property name="visible">True</property>
-                        <property name="spacing">2</property>
-                        <child>
-                          <widget class="GtkImage" id="image1">
-                            <property name="visible">True</property>
-                            <property name="pixbuf">conferma16x16.png</property>
-                          </widget>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkLabel" id="label4">
-                            <property name="visible">True</property>
-                            <property name="label">_Conferma singolarmente</property>
-                            <property name="use_underline">True</property>
-                          </widget>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </widget>
-                    </child>
-                  </widget>
-                </child>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -295,10 +241,11 @@
             </child>
             <child>
               <widget class="GtkButton" id="conferma_singolarmente_button">
+                <property name="response_id">-5</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
-                <property name="response_id">-5</property>
+                <property name="receives_default">False</property>
                 <signal name="clicked" handler="on_conferma_singolarmente_button_clicked"/>
                 <child>
                   <widget class="GtkAlignment" id="alignment527">
@@ -317,6 +264,7 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
@@ -346,7 +294,8 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </widget>
