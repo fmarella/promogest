@@ -50,12 +50,12 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 'Dati Documento',
                                 'anagrafica_documenti.glade')
         # Piccolo esperimento, file con gtk.builder, per il menu ricerca
-        builder = gtk.Builder()
-        builder.add_from_file("gui/menu_ricerca.xml")
-        builder.connect_signals(self)
-        oggetti = builder.get_objects()
-        for obj in oggetti:
-            setattr(self, gtk.Buildable.get_name(obj), obj)
+        #builder = gtk.Builder()
+        #builder.add_from_file("gui/menu_ricerca.xml")
+        #builder.connect_signals(self)
+        #oggetti = builder.get_objects()
+        #for obj in oggetti:
+            #setattr(self, gtk.Buildable.get_name(obj), obj)
 
         self._widgetFirstFocus = self.data_documento_entry
         # contenitore (dizionario) righe (riga 0 riservata per  variazioni in corso)
@@ -1595,11 +1595,12 @@ del documento.
                 #'some_handler': some_handler
                 #})
             #if event.button == 3:
-            x = int(event.x)
-            y = int(event.y)
-            time = event.time
-            self.menu_ricerca.popup( None, None, None, event.button, time)
-            print "CERCA"
+            #x = int(event.x)
+            #y = int(event.y)
+            #time = event.time
+            #self.menu_ricerca.popup( None, None, None, event.button, time)
+            pass
+            #print "CERCA"
         else:                            #secondary
             self.articolo_entry.set_text("")
 
