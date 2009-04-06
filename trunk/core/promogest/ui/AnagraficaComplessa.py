@@ -414,8 +414,13 @@ class Anagrafica(GladeWidget):
 
     def on_Stampa_Frontaline_clicked(self, widget):
         if "Label" in Environment.modulesList:
-            self._handlePrinting(pdfGenerator=self.labelHandler,
-                                report=True, label=True)
+            results = self.filter.runFilter(offset=None, batchSize=None,
+                                            #progressCB=progressCB,
+                                            #progressBatchSize=5
+                                            )
+            self.manageLabels(results)
+            #self._handlePrinting(pdfGenerator=self.labelHandler,
+                                #report=True, label=True)
             #self.returnResults=None
         else:
             fenceDialog()
