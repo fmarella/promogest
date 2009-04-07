@@ -14,7 +14,7 @@
             <tr class="row">
                 <td class="detail">{{dao.magazzino}}</td>
                 <td class="detail">{{dao.articolo}}</td>
-                <td class="number">{{conf.number_format % ( dao.giacenza )}}</td>
+                <td class="number">{{environment.conf.number_format % ( dao.giacenza )}}</td>
                 <td class="detail">{{dao.scorta_minima}}</td>
                  {% if dao.data_fine_scorte %}
                 <td class="detail">{{utils.dateToString(dao.data_fine_scorte)}}</td>
