@@ -421,7 +421,7 @@ def mostraArticoloPart(anaedit, id, art=None):
                 anaedit.prezzo_lordo_entry.set_text(str(anaedit._righe[0]["prezzoLordo"]))
                 anaedit._righe[0]["prezzoNetto"] = mN(costoNetto)
                 anaedit.prezzo_netto_label.set_text(str(anaedit._righe[0]["prezzoNetto"]))
-                anaedit._righe[0]["prezzoNettoUltimo"] = float(costoNetto)
+                anaedit._righe[0]["prezzoNettoUltimo"] = mN(costoNetto)
                 anaedit._righe[0]["sconti"] = articolo['valori']["sconti"]
                 anaedit._righe[0]["applicazioneSconti"] = articolo['valori']["applicazioneSconti"]
                 anaedit.sconti_widget.setValues(anaedit._righe[0]["sconti"], anaedit._righe[0]["applicazioneSconti"], False)
