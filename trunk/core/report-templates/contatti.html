@@ -1,21 +1,73 @@
 {% extends 'index.html' %}
 {% block body %}
+<div id="head">
+        <div id="img">
+<img src= "gui/contatto48x48.png"></div>
+    <div id="testo">{{ui|replace("_"," ")|capitalize()}}</div>
+  </div>
+        <div id="rigaheader"></div>
         <table cellpadding="0" cellspacing="3" border="0">
-            <tr>
+            <tr >
                 <th>Cognome/nome</th>
+                <th>Tipo Recapito</th>
+                <th>Recapito</th>
                 <th>Ruolo</th>
                 <th>Descrizione</th>
                 <th>Note</th>
                 <th>Relativo a</th>
             </tr>
+            <tr><td>&nbsp;</td>
+                <td>&nbsp;</td><td>&nbsp;</td>
+                <td>&nbsp;</td><td>&nbsp;</td>
+                <td>&nbsp;</td><td>&nbsp;</td>
+                </tr>
             {% for dao in objects %}
-            <tr class="row">
-                <td class="detail">{{dao.cognome}} &nbsp; {{dao.nome}}</td>
-                <td class="detail">{{dao.ruolo}}</td>
-                <td class="detail">{{dao.descrizione}}</td>
-                <td class="detail">{{dao.note}}</td>
-                <td class="detail">{{dao.appartenenza}}</td>
+            <tr >
+                <td class="detail"><strong>{{dao.cognome}} &nbsp; {{dao.nome}}</strong></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                {% if dao.ruolo %}
+                    <td class="detail">{{dao.ruolo}}</td>
+                {% else %}
+                    <td class="detail">&nbsp;</td>
+                {% endif %}
+                {% if dao.descrizione %}
+                    <td class="detail">{{dao.descrizione}}</td>
+                {% else %}
+                    <td class="detail">&nbsp;</td>
+                {% endif %}
+                {% if dao.note %}
+                    <td class="detail">{{dao.note}}</td>
+                {% else %}
+                    <td class="detail">&nbsp;</td>
+                {% endif %}
+                {% if dao.appartenenza %}
+                    <td class="detail">{{dao.appartenenza}}</td>
+                {% else %}
+                    <td class="detail">&nbsp;</td>
+                {% endif %}
             </tr>
+                {% for recapito in dao.recapiti %}
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class = "even-detail">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{recapito.tipo_recapito}}:</td>
+                    <td class="detail" ><strong> {{recapito.recapito}}</strong></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                {% endfor %}
+            <tr class="row"><td>&nbsp;</td>
+                <td>&nbsp;</td><td>&nbsp;</td>
+                <td>&nbsp;</td><td>&nbsp;</td>
+                <td>&nbsp;</td><td>&nbsp;</td>
+                </tr>
+            <tr><td>&nbsp;</td>
+                <td>&nbsp;</td><td>&nbsp;</td>
+                <td>&nbsp;</td><td>&nbsp;</td>
+                <td>&nbsp;</td><td>&nbsp;</td>
+                </tr>
             {% endfor %}
         </table>
 {% endblock %}

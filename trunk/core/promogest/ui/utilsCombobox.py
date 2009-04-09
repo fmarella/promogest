@@ -436,16 +436,19 @@ def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=
     from promogest.dao.ListinoArticolo import ListinoArticolo
     from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
     from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
+
     def _dirtyWork(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=None):
         if idArticolo:
             filter1 = Listino.id.in_(select([ListinoArticolo.id_listino], ListinoArticolo.id_articolo == idArticolo))
         else:
             filter1 = None
+
         if idMagazzino:
             filter2 = or_(Listino.id.in_(select([ListinoMagazzino.id_listino], ListinoMagazzino.id_magazzino == idMagazzino)),
                         not_(Listino.id.in_(select([ListinoMagazzino.id_listino]).distinct())))
         else :
             filter2 = None
+
         if idCliente:
             filter3 = or_(Listino.id.in_(select([ListinoCategoriaCliente.id_listino] ,
                             ListinoCategoriaCliente.id_categoria_cliente.in_(select([ClienteCategoriaCliente.id_categoria_cliente] ,
@@ -453,18 +456,22 @@ def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=
                             not_(Listino.id.in_(select([ListinoCategoriaCliente.id_listino]).distinct())))
         else :
             filter3 = None
+
         filter4 = and_(Listino.listino_attuale == True)
+
         if not OrderBy:
             OrderBy= "denominazione"
 
         listinoSelezionato = Listino().select(complexFilter=and_(filter1,filter2,filter3, filter4), orderBy=OrderBy)
         return listinoSelezionato
-    listin = _dirtyWork(OrderBy=OrderBy,idArticolo=idArticolo,idMagazzino=idMagazzino,idCliente=idCliente)
+    listin = _dirtyWork(OrderBy=OrderBy,idArticolo=idArticolo,
+                                    idMagazzino=idMagazzino,idCliente=idCliente)
     if not listin and "PromoWear" in Environment.modulesList:
         from promogest.dao.Articolo import Articolo
         father = Articolo().getRecord(id=idArticolo)
         idArticolo = father.id_articolo_padre
-        listinPadre = _dirtyWork(OrderBy=OrderBy,idArticolo=idArticolo,idMagazzino=idMagazzino,idCliente=idCliente)
+        listinPadre = _dirtyWork(OrderBy=OrderBy,idArticolo=idArticolo,
+                                    idMagazzino=idMagazzino,idCliente=idCliente)
         if listinPadre:
             listin = listinPadre
             print "LISTINO ASSOCIATO AL PADRE IN QUANDO FIGLIO NON NE AVEVA UNO", listin

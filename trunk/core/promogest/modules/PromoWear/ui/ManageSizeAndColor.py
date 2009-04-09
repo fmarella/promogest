@@ -55,7 +55,8 @@ class ManageSizeAndColor(GladeWidget):
 
         column = gtk.TreeViewColumn("Taglia", rendererSx, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
+        column.set_clickable(True)
+        column.connect("clicked", self.refresh, 'Taglia')
         column.set_resizable(True)
         #column.set_expand(False)
         column.set_min_width(40)
@@ -63,7 +64,8 @@ class ManageSizeAndColor(GladeWidget):
 
         column = gtk.TreeViewColumn("Colore", rendererSx, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
+        column.set_clickable(True)
+        column.connect("clicked", self.refresh, 'Colore')
         column.set_resizable(True)
         #column.set_expand(False)
         column.set_min_width(40)
@@ -128,7 +130,7 @@ class ManageSizeAndColor(GladeWidget):
 
         self._treeViewModel = gtk.ListStore(object,str,str,str,str,str,str,str)
         self.treeview.set_model(self._treeViewModel)
-        self.refresh()
+        self.refresh(None)
 
     def creaRiga(self, var):
         if self.TipoOperazione == "acquisto":
@@ -144,7 +146,8 @@ class ManageSizeAndColor(GladeWidget):
         artiDict= {}
         variantiList = []
         daoArticolo = self.articoloPadre
-        varianti = daoArticolo.articoliVarianti
+        
+        varianti = daoArticolo.articoliVarianti 
 
         for varia in varianti:
             variante=leggiArticoloPromoWear(varia.id, full=True)
@@ -166,16 +169,18 @@ class ManageSizeAndColor(GladeWidget):
         return artiDict
 
 
-
-    def refresh(self):
-        # Aggiornamento TreeView
+    def refresh(self,treeview=None, order = "Taglia"):
+        """ Aggiornamento della principale treeview, si può ordinare? """
         self._treeViewModel.clear()
         if self.TipoOperazione == "acquisto":
             self.price_entry.set_text(str(self.articoloPadreDict['valori']['prezzoLordo']))
         else:
             self.price_entry.set_text(str(self.articoloPadreDict['valori']['prezzoDettaglio']))
         self.discount_entry.set_text(str(self.formatSconti(self.articoloPadreDict['valori'])))
+
         varianti = self.articoloPadreDict["varianti"]
+        #print varianti
+
         for var in varianti:
             quantita =""
             if self.TipoOperazione == "acquisto":

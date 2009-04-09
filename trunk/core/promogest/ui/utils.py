@@ -316,39 +316,41 @@ def leggiMagazzino(id):
             "denominazione": _denominazione,
             "email": _email}
 
-def leggiListino(idListino, idArticolo=None):
+def leggiListino(idListino=None, idArticolo=None):
     """ Restituisce un dizionario con le informazioni sul listino letto """
     from promogest.dao.Listino import Listino
     from promogest.dao.ListinoArticolo import ListinoArticolo
     from promogest.dao.ListinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalente
 
     liss = Listino().select(batchSize=None)
-    # cos'è?
+    # select dei listini 
     for l in liss:
         if l.listino_attuale ==False:
             l.listino_attuale = True
             l.persist()
+    #creo qui il dizionario invece di usare un return alla fine
+    listinoDict = {"denominazione": "",
+                    "prezzoIngrosso": 0,
+                    "prezzoDettaglio": 0,
+                    "complesso": False,
+                    "sottoListiniID": [],
+                    "scontiDettaglio":[],
+                    "scontiIngrosso":[],
+                    'applicazioneScontiDettaglio':None,
+                    'applicazioneScontiIngrosso':[]}
 
-    _denominazione = ''
-    _prezzoIngrosso = 0
-    _prezzoDettaglio = 0
-    _complesso = False
-    _sottoListiniID = []
-
-    _scontiDettaglio = []
-    _scontiIngrosso = []
-    _applicazioneDettaglio = None
-    _applicazioneIngrosso = None
-
-    if idListino is not None:
+    if idListino:
         daoListino = Listino().select(idListino=idListino, listinoAttuale=True)[0]
         if daoListino:
             _denominazione = daoListino.denominazione
             _complesso = daoListino.isComplex  #verifico se il listino è complesso
+            listinoDict["denominazione"] = _denominazione
+            listinoDict["complesso"] = _complesso
             if _complesso:
                 _sottoListiniID = daoListino.sottoListiniID
-            if idArticolo is not None:
-                daoListinoArticolo = None
+                listinoDict["sottoListiniID"] = _sottoListiniID
+        
+            if idArticolo:       #abbiamo anche un id Articolo daoListinoArticolo = None
                 if _complesso:  #se il listino è complesso gestisco il suo listino articolo
                     daoListinoArticolo1 = ListinoArticolo().select(idListino=_sottoListiniID,
                                                                 idArticolo = idArticolo,
@@ -356,17 +358,22 @@ def leggiListino(idListino, idArticolo=None):
                                                                 batchSize=None,
                                                                 orderBy="id_listino")
                     if len(daoListinoArticolo1)>1:
-                        daoListinoArticolo2 = ListinoComplessoArticoloPrevalente().select(idListinoComplesso = idListino,
-                                                                idArticolo = idArticolo, batchSize=None)
+                        daoListinoArticolo2 = ListinoComplessoArticoloPrevalente()\
+                                                .select(idListinoComplesso = idListino,
+                                                idArticolo = idArticolo,
+                                                batchSize=None)
                         if daoListinoArticolo2:
-                            daoListinoArticolo = ListinoArticolo().select(idListino=daoListinoArticolo2[0].id_listino,
-                                                                idArticolo = idArticolo,
-                                                                listinoAttuale = True,
-                                                                batchSize=None,
-                                                                orderBy="id_listino")[0]
+                            daoListinoArticolo = ListinoArticolo()\
+                                    .select(idListino=daoListinoArticolo2[0].id_listino,
+                                                        idArticolo = idArticolo,
+                                                        listinoAttuale = True,
+                                                        batchSize=None,
+                                                        orderBy="id_listino")[0]
 
-                    else:
+                    elif daoListinoArticolo1:
                         daoListinoArticolo = daoListinoArticolo1[0]
+                    else:
+                        daoListinoArticolo = None
 
                 else:  #listino normale 
                     daoListinoArticolo1 = ListinoArticolo().select(idListino=idListino,
@@ -378,6 +385,7 @@ def leggiListino(idListino, idArticolo=None):
                         from promogest.dao.Articolo import Articolo
                         father = Articolo().getRecord(id=idArticolo)
                         idArticolo = father.id_articolo_padre
+                        #riprovo la query con l'id del padre, potrebbe essere un figlio
                         daoListinoArticolo1 = ListinoArticolo().select(idListino=idListino,
                                                             idArticolo = idArticolo,
                                                             listinoAttuale = True,
@@ -387,7 +395,7 @@ def leggiListino(idListino, idArticolo=None):
                         #PIÙ DI UN LISTINO ARTICOLO ATTUALE" prendo il primo
                         daoListinoArticolo= daoListinoArticolo1[0]
 
-                if daoListinoArticolo is not None:
+                if daoListinoArticolo:
                     _prezzoIngrosso = daoListinoArticolo.prezzo_ingrosso
                     _prezzoDettaglio = daoListinoArticolo.prezzo_dettaglio
                     _scontiDettaglio = daoListinoArticolo.sconto_vendita_dettaglio
@@ -395,24 +403,14 @@ def leggiListino(idListino, idArticolo=None):
                     _applicazioneDettaglio = daoListinoArticolo.applicazione_sconti_dettaglio
                     _applicazioneIngrosso = daoListinoArticolo.applicazione_sconti_ingrosso
 
-                    return {"denominazione": _denominazione,
-                            "prezzoIngrosso": _prezzoIngrosso,
-                            "prezzoDettaglio": _prezzoDettaglio,
-                            "scontiDettaglio":_scontiDettaglio,
-                            "complesso": _complesso,
-                            "scontiIngrosso":_scontiIngrosso,
-                            'applicazioneScontiDettaglio':_applicazioneDettaglio,
-                            'applicazioneScontiIngrosso':_applicazioneIngrosso}
+                    listinoDict["prezzoIngrosso"] = _prezzoIngrosso,
+                    listinoDict["prezzoDettaglio"] = _prezzoDettaglio,
+                    listinoDict["scontiDettaglio"] = _scontiDettaglio,
+                    listinoDict["scontiIngrosso"] = _scontiIngrosso,
+                    listinoDict['applicazioneScontiDettaglio'] = _applicazioneDettaglio,
+                    listinoDict['applicazioneScontiIngrosso'] = _applicazioneIngrosso
 
-    return {"denominazione": _denominazione,
-            "prezzoIngrosso": _prezzoIngrosso,
-            "prezzoDettaglio": _prezzoDettaglio,
-            "complesso": _complesso,
-            "sottoListiniID":_sottoListiniID,
-            "scontiDettaglio":_scontiDettaglio,
-            "scontiIngrosso":_scontiIngrosso,
-            'applicazioneScontiDettaglio':_applicazioneDettaglio,
-            'applicazioneScontiIngrosso':_applicazioneIngrosso}
+    return listinoDict
 
 def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=False):
     """ Restituisce un dizionario con le informazioni sulla fornitura letta """
