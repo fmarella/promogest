@@ -24,6 +24,7 @@ from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Operazione import Operazione
+from promogest.dao.Cliente import Cliente
 from utils import *
 from utilsCombobox import *
 from promogest.dao.DaoUtils import giacenzaArticolo
@@ -558,7 +559,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
 
         self._loading = False
-
+        if self.oneshot : self.persona_giuridica_changed()
+        self.oneshot =False
         self.calcolaTotale()
 
         self.label_numero_righe.set_text(str(len(self.dao.righe)))
@@ -586,20 +588,21 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             # Suggerisce la data odierna
             self.dao.data_documento = datetime.datetime.today()
             self._oldDaoRicreato = False #il dao è nuovo il controllo sul nuovo codice è necessario
-            #try:
-                #if Environment.conf.Documenti.tipo_documento_predefinito:
-                    #op = Operazione().select(denominazioneEM= Environment.conf.Documenti.tipo_documento_predefinito)
-                    #if op:
-                        #findComboboxRowFromId(self.id_operazione_combobox, op[0].denominazione)
-            #except:
-                #print "tipo_documento_predefinito non settato"
-            #try:
-                #if Environment.conf.Documenti.cliente_predefinito:
-                    #cli = Cliente().select(codicesatto= Environment.conf.Documenti.cliente_predefinito)
-                    #if cli:
-                        #self.id_persona_giuridica_customcombobox.setId(cli[0].id)
-            #except:
-                #print "cliente_predefinito non settato"
+            try:
+                if Environment.conf.Documenti.tipo_documento_predefinito:
+                    op = Operazione().select(denominazioneEM= Environment.conf.Documenti.tipo_documento_predefinito)
+                    if op:
+                        self.dao.operazione = op[0].denominazione
+            except:
+                print "TIPO_DOCUMENTO_PREDEFINITO NON SETTATO"
+            try:
+                if Environment.conf.Documenti.cliente_predefinito:
+                    cli = Cliente().select(codicesatto= Environment.conf.Documenti.cliente_predefinito)
+                    if cli:
+                        self.dao.id_cliente = cli[0].id
+                        self.oneshot = True
+            except:
+                print "CLIENTE_PREDEFINITO NON SETTATO"
                 
         else:
             # Ricrea il Dao prendendolo dal DB
@@ -607,6 +610,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             #Environment.tagliacoloretempdata = (False,[])
             self._controllo_data_documento = dateToString(self.dao.data_documento)
             self._controllo_numero_documento = self.dao.numero
+            self.oneshot = False
             self._oldDaoRicreato = True #il dao è nuovo il controllo sul nuovo codice non  è necessario
 
         self._refresh()
@@ -664,8 +668,8 @@ del documento.
                     elif response == gtk.RESPONSE_OK:
                         #nothing to do about it.
                         print """si è deciso di salvare un documento il cui numero
-                        è già stato usato per un altro. questo comporterà
-                        l 'esistenza di due documenti con lo stesso numero!"""
+            è già stato usato per un altro. questo comporterà
+            l 'esistenza di due documenti con lo stesso numero!"""
 
 
                 self.dao.numero = numero
@@ -982,7 +986,6 @@ del documento.
         if inserisci is False:
             if self._iteratorRiga is None:
                 return
-            print " opporcaloca"
             #self.modelRiga.set_value(self._iteratorRiga, 0, self._righe[self._numRiga]["magazzino"])
             self.modelRiga.set_value(self._iteratorRiga, 1, self._righe[self._numRiga]["magazzino"])
             self.modelRiga.set_value(self._iteratorRiga, 2, self._righe[self._numRiga]["codiceArticolo"])
@@ -1252,7 +1255,7 @@ del documento.
                     prezzoNetto = prezzoNetto - prezzoLordo * Decimal(str(s["valore"])) / 100
             elif s["tipo"] == 'valore':
                 prezzoNetto = prezzoNetto - Decimal(str(s["valore"]))
-        #print "PREZZO NETTTTO IN getPrezzoNetto", prezzoNetto
+
         self._righe[0]["prezzoNetto"] = prezzoNetto
 
     def calcolaTotale(self):

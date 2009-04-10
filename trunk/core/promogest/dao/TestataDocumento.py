@@ -855,7 +855,7 @@ std_mapper = mapper(TestataDocumento, testata_documento, properties={
         "OP":relation(Operazione,primaryjoin = (testata_documento.c.operazione==Operazione.denominazione), backref="TD"),
         "STD":relation(ScontoTestataDocumento,primaryjoin = (testata_documento.c.id==ScontoTestataDocumento.id_testata_documento), backref="TD"),
         #'lang':relation(Language, backref='user')
-        }, order_by=testata_documento.c.id)
+        }, order_by=testata_documento.c.numero)
 
 if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio

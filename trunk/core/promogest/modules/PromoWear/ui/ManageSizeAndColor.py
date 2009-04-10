@@ -6,6 +6,7 @@
 # Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
 
 import string
+import operator
 from decimal import *
 import gtk, gobject, os
 from promogest import Environment
@@ -153,8 +154,7 @@ class ManageSizeAndColor(GladeWidget):
 
         for varia in varianti:
             variante=leggiArticoloPromoWear(varia.id, full=True)
-            print " stampa ordine taglia", variante["ordine"]
-            if self.TipoOperazione =="acquisto":
+             if self.TipoOperazione =="acquisto":
                 variante['valori'] = leggiFornituraPromoWear(idArticolo=varia.id,
                                                 idFornitore=self.idPerGiu,
                                                 data=self.data)
@@ -163,8 +163,17 @@ class ManageSizeAndColor(GladeWidget):
                 variante['valori'] = leggiListino(self._id_listino,idArticolo=self.articoloPadre.id )
                 variante['valori']['prezzoDettaglioScontato'] = 0
                 variantiList.append(variante)
+        out = []
+        for e in variantiList:
+            out.append((e['ordine'],e))
+        getcount = operator.itemgetter(0)
+        map(getcount, out)
+        out2 = sorted(out, key=getcount)
+        newlist = []
+        for a in out2:
+            newlist.append(a[1])
         artiDict = leggiArticoloPromoWear(self.articoloPadre.id)
-        artiDict["varianti"] = variantiList #al dizionatio articolo dell'articolo padre aggancio la lista delle varianti 
+        artiDict["varianti"] = newlist #al dizionatio articolo dell'articolo padre aggancio la lista delle varianti
         if self.TipoOperazione == "acquisto":
             artiDict['valori'] = leggiFornitura(self.articoloPadre.id,idFornitore=self.idPerGiu, data=self.data)
         else:  #operazione vendita
@@ -369,21 +378,6 @@ class ManageSizeAndColor(GladeWidget):
         self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
         self.destroy()
 
-    #def on_conferma_direttamente_button_clicked(self,button):
-        #if self.TipoOperazione == "acquisto":
-            #self.articoloPadreDict['valori']['prezzoLordo']=self.price_entry.get_text()
-        #else:
-            #self.articoloPadreDict['valori']['prezzoDettaglio']=self.price_entry.get_text()
-        #resultList = []
-        #for row in self._treeViewModel:
-            #if row[0]['quantita'] == "0" or row[0]['quantita'] == "" :
-                #continue
-            #else:
-                #resultList.append(row[0])
-        ##Environment.tagliacoloretempdata= (True, resultList)
-        #self.mainWindow.tagliaColoreRigheList = resultList
-        #self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
-        #self.destroy()
 
     def on_cancel_button_clicked(self, button):
         self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
