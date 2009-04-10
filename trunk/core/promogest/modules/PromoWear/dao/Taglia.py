@@ -22,6 +22,14 @@ class Taglia(Dao):
             dic = {k:taglia.c.denominazione_breve == v }
         return  dic[k]
 
+
+    #@property
+    #def numero_ordine(self):
+        #if self.GTTTAG:
+            #print "LISTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", self.GTTTAG
+            #return 1
+        #else: return 1
+
 taglia=Table('taglia', params['metadata'],schema = params['schema'],autoload=True)
 
 

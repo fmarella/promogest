@@ -856,13 +856,11 @@ class SlaTpl2Sla(object):
             else:
                 return Sla2pdfUtils.approxValue(value, int(parameter))
         elif functionName == 'itformat' or functionName == 'itformatdataora':
-            print "OOOOOOOOOOOOOOOOOOOOOOOOOPPPPPPPPPPPP"
             if value == '':
                 return ''
             else:
                 return Sla2pdfUtils.itformatValue(value)
         elif functionName == 'itformatdata':
-            print "IIIIIIIIIIIIIIIIIIIIIIIIIIII"
             if value == '':
                 return ''
             else:

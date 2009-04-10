@@ -102,6 +102,7 @@ def leggiArticoloPromoWear(id, full=False):
     _idGruppoTaglia = None
     _gruppoTaglia = ''
     _idTaglia = None
+    _ordine = 1
     _taglia = ''
     _idColore = None
     _colore = ''
@@ -111,6 +112,15 @@ def leggiArticoloPromoWear(id, full=False):
     _stagione = ''
     _idGenere = None
     _genere = ''
+
+    def numero_ordine(_idTaglia, _idGruppoTaglia):
+        if _idGruppoTaglia and _idTaglia:
+            gtt = GruppoTagliaTaglia().select(idGruppoTaglia = _idGruppoTaglia,
+                                                    idTaglia= _idTaglia)
+            if gtt:
+                return gtt[0].ordine
+            else:
+                return 1
 
     if id is not None:
         daoArticolo = Articolo().getRecord(id=id)
@@ -133,10 +143,11 @@ def leggiArticoloPromoWear(id, full=False):
                 if daoArticoloTagliaColore is not None:
                     _idGruppoTaglia = daoArticoloTagliaColore.id_gruppo_taglia
                     _gruppoTaglia = daoArticoloTagliaColore.denominazione_gruppo_taglia or '-'
-                    _idtaglia = daoArticoloTagliaColore.id_taglia
+                    _idTaglia = daoArticoloTagliaColore.id_taglia
                     _taglia = daoArticoloTagliaColore.denominazione_taglia or '-'
                     _idColore = daoArticoloTagliaColore.id_colore
                     _colore = daoArticoloTagliaColore.denominazione_colore or '-'
+                    _ordine = numero_ordine(_idTaglia, _idGruppoTaglia)
                     _idAnno = daoArticoloTagliaColore.id_anno
                     _anno = daoArticoloTagliaColore.anno or '-'
                     _idStagione = daoArticoloTagliaColore.id_stagione
@@ -144,23 +155,24 @@ def leggiArticoloPromoWear(id, full=False):
                     _idGenere = daoArticoloTagliaColore.id_genere
                     _genere = daoArticoloTagliaColore.genere or '-'
         articleDict= {"id": _id,
-                        "denominazione": _denominazione, "codice": _codice,
-                        "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
-                        "percentualeAliquotaIva": _percentualeAliquotaIva,
-                        "idUnitaBase": _idUnitaBase,
-                        "unitaBase": _unitaBase,
-                        "idGruppoTaglia": _idGruppoTaglia,
-                        "gruppoTaglia": _gruppoTaglia,
-                        "idTaglia": _idTaglia,
-                        "taglia": _taglia,
-                        "idColore": _idColore,
-                        "colore": _colore,
-                        "idAnno": _idAnno,
-                        "anno": _anno,
-                        "idStagione": _idStagione,
-                        "stagione": _stagione,
-                        "idGenere": _idGenere,
-                        "genere": _genere}
+                    "denominazione": _denominazione, "codice": _codice,
+                    "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
+                    "percentualeAliquotaIva": _percentualeAliquotaIva,
+                    "idUnitaBase": _idUnitaBase,
+                    "unitaBase": _unitaBase,
+                    "idGruppoTaglia": _idGruppoTaglia,
+                    "gruppoTaglia": _gruppoTaglia,
+                    "idTaglia": _idTaglia,
+                    "ordine":_ordine,
+                    "taglia": _taglia,
+                    "idColore": _idColore,
+                    "colore": _colore,
+                    "idAnno": _idAnno,
+                    "anno": _anno,
+                    "idStagione": _idStagione,
+                    "stagione": _stagione,
+                    "idGenere": _idGenere,
+                    "genere": _genere}
     return articleDict
 
 def leggiListino(idListino, idArticolo=None):

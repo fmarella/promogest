@@ -586,6 +586,21 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             # Suggerisce la data odierna
             self.dao.data_documento = datetime.datetime.today()
             self._oldDaoRicreato = False #il dao è nuovo il controllo sul nuovo codice è necessario
+            #try:
+                #if Environment.conf.Documenti.tipo_documento_predefinito:
+                    #op = Operazione().select(denominazioneEM= Environment.conf.Documenti.tipo_documento_predefinito)
+                    #if op:
+                        #findComboboxRowFromId(self.id_operazione_combobox, op[0].denominazione)
+            #except:
+                #print "tipo_documento_predefinito non settato"
+            #try:
+                #if Environment.conf.Documenti.cliente_predefinito:
+                    #cli = Cliente().select(codicesatto= Environment.conf.Documenti.cliente_predefinito)
+                    #if cli:
+                        #self.id_persona_giuridica_customcombobox.setId(cli[0].id)
+            #except:
+                #print "cliente_predefinito non settato"
+                
         else:
             # Ricrea il Dao prendendolo dal DB
             self.dao = TestataDocumento().getRecord(id=dao.id)
@@ -1472,11 +1487,12 @@ del documento.
         self.refresh_combobox_listini()
 
     def on_id_listino_customcombobox_changed(self, combobox=None):
-        """ """
+        """ funzione richiamata quando viene modificato o settato il listino """
         if self._loading:
             return
         idListino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
         idArticolo = self._righe[0]["idArticolo"]
+
         self.getPrezzoVenditaLordo(idListino, idArticolo)
         self.prezzo_lordo_entry.set_text(str(self._righe[0]["prezzoLordo"]))
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], True)

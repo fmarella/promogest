@@ -63,24 +63,11 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
     _quantita_minima = ''
     artiDict = {}
     if id is not None:
-        daoArticolo = Articolo().getRecord(id=id)
-        variantiList = []
         if "PromoWear" in Environment.modulesList:
-            #if articleType(daoArticolo)=="father":
-                #varianti = daoArticolo.articoliVarianti
             from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
-                #for varia in varianti:
-                    #variante=leggiArticoloPromoWear(varia.id, full=True)
-                    #variante['fornitura'] = leggiFornituraPromoWear(idArticolo=varia.id,
-                                                    #idFornitore=idFornitore,
-                                                    #data=data)
-                    #variantiList.append(variante)
             artiDict = leggiArticoloPromoWear(id)
-                #artiDict["varianti"] = variantiList
-                #artiDict["fornitura"] = leggiFornituraPromoWear(idArticolo=varia.id,
-                                                    #idFornitore=idFornitore,
-                                                    #data=data)
             return artiDict
+        daoArticolo = Articolo().getRecord(id=id)
         if daoArticolo is not None:
             _id = id
             _denominazione = daoArticolo.denominazione or ''
@@ -403,11 +390,11 @@ def leggiListino(idListino=None, idArticolo=None):
                     _applicazioneDettaglio = daoListinoArticolo.applicazione_sconti_dettaglio
                     _applicazioneIngrosso = daoListinoArticolo.applicazione_sconti_ingrosso
 
-                    listinoDict["prezzoIngrosso"] = _prezzoIngrosso,
-                    listinoDict["prezzoDettaglio"] = _prezzoDettaglio,
-                    listinoDict["scontiDettaglio"] = _scontiDettaglio,
-                    listinoDict["scontiIngrosso"] = _scontiIngrosso,
-                    listinoDict['applicazioneScontiDettaglio'] = _applicazioneDettaglio,
+                    listinoDict["prezzoIngrosso"] = _prezzoIngrosso
+                    listinoDict["prezzoDettaglio"] = _prezzoDettaglio
+                    listinoDict["scontiDettaglio"] = _scontiDettaglio
+                    listinoDict["scontiIngrosso"] = _scontiIngrosso
+                    listinoDict['applicazioneScontiDettaglio'] = _applicazioneDettaglio
                     listinoDict['applicazioneScontiIngrosso'] = _applicazioneIngrosso
 
     return listinoDict

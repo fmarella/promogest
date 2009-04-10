@@ -14,6 +14,7 @@ from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import fillModelCombobox,fillComboboxListini
 from promogest.dao.Fornitura import Fornitura
 from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
+from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTaglia
 
 
 class ManageSizeAndColor(GladeWidget):
@@ -139,6 +140,7 @@ class ManageSizeAndColor(GladeWidget):
             megaDict[artvar]["listino"] = self._listino = leggiListino(self._id_listino,idArticolo=self.articoloPadre.id )
 
 
+
     def creDictFornitura(self):
         """
             Creo un dizionario delle forniture? ... Commenta Francè commentaaaaaaaaaaa
@@ -151,6 +153,7 @@ class ManageSizeAndColor(GladeWidget):
 
         for varia in varianti:
             variante=leggiArticoloPromoWear(varia.id, full=True)
+            print " stampa ordine taglia", variante["ordine"]
             if self.TipoOperazione =="acquisto":
                 variante['valori'] = leggiFornituraPromoWear(idArticolo=varia.id,
                                                 idFornitore=self.idPerGiu,
@@ -210,7 +213,7 @@ class ManageSizeAndColor(GladeWidget):
                 sconto = str(var['sconti'][0]['valore'])+"%"
             else:
                 sconto = ""
-        else:
+        else: #tipo operazione vendita
             if not var['scontiDettaglio']:
                 sconto = ""
             elif str(var['scontiDettaglio'][0]['tipo']) == "valore":

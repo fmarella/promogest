@@ -66,9 +66,8 @@ class AnagraficaTaglie(Anagrafica):
                                            column=column)
 
 
-
 class AnagraficaTaglieFilter(AnagraficaFilter):
-    """ Filtro per la ricerca nell'anagrafica delle famiglie articoli """
+    """ Filtro per la ricerca nell'anagrafica delle taglie promoWear """
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
@@ -135,7 +134,7 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return GruppoTagliaTaglia().select(batchSize=None)
+            return GruppoTagliaTaglia().select(batchSize=None,orderBy="id_gruppo_taglia,ordine")
 
         self._filterClosure = filterClosure
 
@@ -156,6 +155,7 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
                                                          None))
                 parentNodes[gruppoTagliaTaglia.id_gruppo_taglia] = parentNode
             taglia = Taglia().getRecord(id=gruppoTagliaTaglia.id_taglia)
+            #print "TAGLIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", taglia.numero_ordine
             node = self._treeViewModel.append(parentNodes[gruppoTagliaTaglia.id_gruppo_taglia],
                                               (gruppoTagliaTaglia,
                                                taglia.denominazione,

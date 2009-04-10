@@ -50,4 +50,4 @@ std_mapper = mapper(GruppoTagliaTaglia, gruppotagliataglia, properties={
             "TAG":relation(Taglia,primaryjoin=
                 (Taglia.id==gruppotagliataglia.c.id_taglia), backref="GTTTAG"),
                     },
-        order_by=gruppotagliataglia.c.id_gruppo_taglia)
+        order_by=(gruppotagliataglia.c.id_gruppo_taglia,gruppotagliataglia.c.ordine))

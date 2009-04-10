@@ -1096,7 +1096,7 @@ class AnagraficaHtml(object):
         document = self._gtkHtmlDocuments[currDocument]
         document.open_stream('text/html')
         if self.dao is None:
-            html = jinja_env.get_template("index.html").render()
+            html = jinja_env.from_string("<html><body></body></html>").render()
         else:
             html = jinja_env.get_template(self.defaultFileName+".html").render(dao=self.dao)
         document.write_stream(html)
