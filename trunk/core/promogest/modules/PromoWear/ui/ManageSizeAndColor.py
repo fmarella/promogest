@@ -154,7 +154,7 @@ class ManageSizeAndColor(GladeWidget):
 
         for varia in varianti:
             variante=leggiArticoloPromoWear(varia.id, full=True)
-             if self.TipoOperazione =="acquisto":
+            if self.TipoOperazione =="acquisto":
                 variante['valori'] = leggiFornituraPromoWear(idArticolo=varia.id,
                                                 idFornitore=self.idPerGiu,
                                                 data=self.data)
