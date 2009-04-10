@@ -25,7 +25,7 @@ if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.dao.Colore import Colore
     from promogest.modules.PromoWear.dao.Modello import Modello
     from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
-    from promogest.modules.PromoWear.ui.AnagraficaArticoliExpand import articleTypeGuiManage, treeViewExpand
+    from promogest.modules.PromoWear.ui.AnagraficaArticoliPromoWearExpand import articleTypeGuiManage, treeViewExpand
 
 class AnagraficaArticoliEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica degli articoli """
