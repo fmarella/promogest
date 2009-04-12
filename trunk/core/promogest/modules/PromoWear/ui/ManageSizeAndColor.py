@@ -154,7 +154,7 @@ class ManageSizeAndColor(GladeWidget):
 
         for varia in varianti:
             variante=leggiArticoloPromoWear(varia.id, full=True)
-            if self.TipoOperazione =="acquisto":
+             if self.TipoOperazione =="acquisto":
                 variante['valori'] = leggiFornituraPromoWear(idArticolo=varia.id,
                                                 idFornitore=self.idPerGiu,
                                                 data=self.data)
@@ -163,15 +163,16 @@ class ManageSizeAndColor(GladeWidget):
                 variante['valori'] = leggiListino(self._id_listino,idArticolo=self.articoloPadre.id )
                 variante['valori']['prezzoDettaglioScontato'] = 0
                 variantiList.append(variante)
+        # uso della libreria operator per ordinare 
         out = []
         for e in variantiList:
-            out.append((e['ordine'],e))
-        getcount = operator.itemgetter(0)
-        map(getcount, out)
-        out2 = sorted(out, key=getcount)
+            out.append((e['ordine'],e)) #trasformo in tupla
+        getcount = operator.itemgetter(0)  #seleziono il primo elemento
+        map(getcount, out)  #mappo l'operator con la lista
+        out2 = sorted(out, key=getcount)  #ordino la lista
         newlist = []
         for a in out2:
-            newlist.append(a[1])
+            newlist.append(a[1]) #riporto ad una lista di dict
         artiDict = leggiArticoloPromoWear(self.articoloPadre.id)
         artiDict["varianti"] = newlist #al dizionatio articolo dell'articolo padre aggancio la lista delle varianti
         if self.TipoOperazione == "acquisto":

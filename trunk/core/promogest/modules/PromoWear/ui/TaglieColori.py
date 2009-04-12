@@ -74,6 +74,7 @@ class GestioneTaglieColori(GladeWidget):
 #        self._refreshHtml()
         self.rowBackGround = '#E6E6FF'
         self.rowBoldFont = 'arial bold 12'
+        self.document = gtkhtml2.Document()
         self.draw()
         self.__refresh()
 
@@ -91,15 +92,17 @@ class GestioneTaglieColori(GladeWidget):
         if self._gtkHtml is None:
             self._gtkHtml = gtkhtml2.View() 
             self.anteprima_scrolled.add(self._gtkHtml)
-        document =gtkhtml2.Document()
-        document.open_stream('text/html')
+            self._gtkHtml.set_document(self.document)
+
+        self.document.clear()
+        self.document.open_stream('text/html')
         if data is None:
             html = '<html></html>'
         else:
             html = jinja_env.get_template("creazione_taglie_colori.html").render(datas=data)
-        document.write_stream(html)
-        document.close_stream()
-        self._gtkHtml.set_document(document)
+        self.document.write_stream(html)
+        self.document.close_stream()
+
 
 #    def getHtmlWidget(self):
 #        return self.creazione_varianti_html
