@@ -6,21 +6,18 @@
 
 
 import gtk
+import threading
+import webbrowser
+import gtkhtml2
+
 from GladeWidget import GladeWidget
 from promogest import Environment
 import promogest.dao.Promemoria
 from promogest.dao.Promemoria import Promemoria
 from promogest.lib import feedparser
 from utils import *
-import threading
-#from genshi.template import TemplateLoader
-import webbrowser
 from promogest.ui.SendEmail import SendEmail
 
-#templates_dir = "./templates/"
-#loader = TemplateLoader([templates_dir])
-#tmpl = loader.load('feed.html')
-import gtkhtml2
 from jinja2 import Environment  as Env
 from jinja2 import FileSystemLoader,FileSystemBytecodeCache
 
@@ -35,13 +32,13 @@ class VistaPrincipale(GladeWidget):
         #self.cancel_alarm_button.set_sensitive(False)
         #self.alarm_notify_treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self._loading=None
-        document = gtkhtml2.Document()
-        document.open_stream('text/html')
-        document.write_stream('<html></html>')
-        document.close_stream()
-        self.feed_html.set_document(document)
-        #(width, height) = self.getTopLevel().get_size()
-        #self.feed_html.set_size_request(-1, height // 2)
+        self.feed_html = gtkhtml2.View()
+        self.feed_scrolled.add(self.feed_html)
+        self.document = gtkhtml2.Document()
+        self.document.connect('request_url', self.on_html_request_url)
+        self.document.connect('link_clicked', self.on_html_link_clicked)
+        self.feed_html.set_document(self.document)
+        self.refresh()
         self.draw()
 
     def draw(self):
@@ -170,7 +167,6 @@ E' presente una nuova versione disponibile"""
         else:
             print "NON CI SONO NUOVE VERSIONI DEL PROMOGEST2 DISPONIBILI"
         #return False
-        print "PPLLLLLLLLLLLLLLLLLLLLLLLLL", self.__a
         gobject.source_remove(self.__a)
 
     def _refresh(self):
@@ -248,20 +244,12 @@ E' presente una nuova versione disponibile"""
         self.refresh(body)
 
 
-    def refresh(self, body="<p></p>"):
-        document = gtkhtml2.Document()
-        document.open_stream('text/html')
-        document.write_stream(body)
-        document.close_stream()
-        document.connect('request_url', self.on_html_request_url)
-        document.connect('link_clicked', self.on_html_link_clicked)
-        self.feed_html.set_document(document)
-        #htmlview = self.html_main_window_custom_widget
-        #htmlview.connect("url-clicked", self.url_cb)
-        #htmlview.display_html(body)
-        #text_buffer = htmlview.get_buffer()
-        #mark = text_buffer.create_mark("start", text_buffer.get_start_iter(), False)
-        #htmlview.scroll_to_mark(mark, 0.0, True, 0.0, 1.0)
+    def refresh(self, body="<html><p></p></html>"):
+        self.document.clear()
+        self.document.open_stream('text/html')
+        self.document.write_stream(body)
+        self.document.close_stream()
+
     def on_html_request_url(self,document, url, stream):
 
         def render():
@@ -278,22 +266,11 @@ E' presente una nuova versione disponibile"""
                 stream.close()
         gobject.idle_add(render)
 
-
     def on_html_link_clicked(self, url, link):
         """ funzione di apertura dei link presenti nelle pagine html di anteprima"""
         def linkOpen():
             webbrowser.open_new_tab(link)
-            #print link
         gobject.idle_add(linkOpen)
-
-
-
-
-    #def url_cb(self,view, url, type_):
-
-        #webbrowser.open_new_tab(url)
-        ##webbrowser.open(url)
-
 
     def getfeedFromSite(self):
         string = ""

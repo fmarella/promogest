@@ -291,7 +291,7 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                             <property name="left_padding">2</property>
                             <property name="right_padding">2</property>
                             <child>
-                              <widget class="GtkScrolledWindow" id="scrolledwindow1">
+                              <widget class="GtkScrolledWindow" id="feed_scrolled">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
@@ -300,10 +300,7 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                                 <property name="vscrollbar_policy">automatic</property>
                                 <property name="window_placement_set">True</property>
                                 <child>
-                                  <widget class="Custom" id="feed_html">
-                                    <property name="visible">True</property>
-                                    <property name="creation_function">createGtkHtml2Widget</property>
-                                  </widget>
+                                  <placeholder/>
                                 </child>
                               </widget>
                             </child>
