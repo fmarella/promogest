@@ -11,7 +11,6 @@
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
-    <signal name="close" handler="on_creazione_taglie_colore_close"/>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
@@ -340,16 +339,13 @@
                     <property name="visible">True</property>
                     <property name="label_xalign">0</property>
                     <child>
-                      <widget class="GtkScrolledWindow" id="scrolledwindow1">
+                      <widget class="GtkScrolledWindow" id="anteprima_scrolled">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="hscrollbar_policy">automatic</property>
                         <property name="vscrollbar_policy">automatic</property>
                         <child>
-                          <widget class="Custom" id="creazione_varianti_html">
-                            <property name="visible">True</property>
-                            <property name="creation_function">createGtkHtml2Widget</property>
-                          </widget>
+                          <placeholder/>
                         </child>
                       </widget>
                     </child>

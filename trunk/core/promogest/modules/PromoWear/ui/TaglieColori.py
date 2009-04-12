@@ -89,8 +89,8 @@ class GestioneTaglieColori(GladeWidget):
     def _refreshHtml(self, data= None):
         """ show the html page in the custom widget"""
         if self._gtkHtml is None:
-            self._gtkHtml = self.getHtmlWidget()
-            self._currGtkHtmlDocument = 0
+            self._gtkHtml = gtkhtml2.View() 
+            self.anteprima_scrolled.add(self._gtkHtml)
         document =gtkhtml2.Document()
         document.open_stream('text/html')
         if data is None:
@@ -101,8 +101,8 @@ class GestioneTaglieColori(GladeWidget):
         document.close_stream()
         self._gtkHtml.set_document(document)
 
-    def getHtmlWidget(self):
-        return self.creazione_varianti_html
+#    def getHtmlWidget(self):
+#        return self.creazione_varianti_html
 
     def draw(self):
         """Creo una treeview che abbia come colonne i colori e come righe
@@ -289,6 +289,7 @@ class GestioneTaglieColori(GladeWidget):
         self.printModel()
 
     def printModel(self):
+#        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWW"
         self.datas= []
         self._treeViewModel.foreach(self.selectFilter )
         self._refreshHtml(data=self.datas)
@@ -312,6 +313,7 @@ class GestioneTaglieColori(GladeWidget):
         model[path][1] = not model[path][1]
         for a in  model[path].iterchildren():
              a[1] = model[path][1]
+#        print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
         self.printModel()
 
     def on_column_codice_edited(self, cell, path, value, treeview, editNext=True):
