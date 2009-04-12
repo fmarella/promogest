@@ -20,8 +20,6 @@ from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTagli
 from promogest.modules.PromoWear.dao.Taglia import Taglia
 from promogest.modules.PromoWear.dao.Colore import Colore
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-#import genshi
-#from genshi.template import TemplateLoader
 from promogest.ui.utils import *
 from promogest.ui import utils
 from jinja2 import Environment  as Env
@@ -43,8 +41,8 @@ class GestioneTaglieColori(GladeWidget):
     def __init__(self, articolo):
         GladeWidget.__init__(self, 'creazione_taglie_colore',
                             './promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade', isModule=True)
-
-        dialog = self.creazione_taglie_colore
+        self._loading = False
+#        dialog = self.creazione_taglie_colore
         self.placeWindow(self.getTopLevel())
         self._treeViewModel = None
         self._articoloBase = articolo
@@ -73,10 +71,11 @@ class GestioneTaglieColori(GladeWidget):
         self.father_label.set_markup('Articolo: ' + '<span weight="bold">%s %s</span>'
                                        % (self._articoloBase.codice,self._articoloBase.denominazione))
 
-        self._refreshHtml()
+#        self._refreshHtml()
         self.rowBackGround = '#E6E6FF'
         self.rowBoldFont = 'arial bold 12'
         self.draw()
+        self.__refresh()
 
 
     def refreshColori(self):
@@ -149,9 +148,10 @@ class GestioneTaglieColori(GladeWidget):
         self.only_variation.set_active(True)
         if ("VenditaDettaglio" and "Label" ) not in Environment.modulesList:
             self.genera_codice_a_barre_button.set_sensitive(False)
-        self.refresh()
+        self._loading = True
+        
 
-    def refresh(self,order="color",filtered =True):
+    def __refresh(self,order="color",filtered =True):
         # Aggiornamento TreeView
         self._treeViewModel.clear()
         alreadyexist= ArticoloTagliaColore().select(idArticoloPadre =self._articoloBase.id,
@@ -307,7 +307,7 @@ class GestioneTaglieColori(GladeWidget):
             self.datas.append((self._articoloBase,oggettoFiglio,oggettoPadre,codice, articolo))
 
     def on_column_selected_edited(self, cell, path, treeview,value, editNext=True):
-        """ Function ti set the value quantita edit in the cell"""
+        """ Function to set the value quantita edit in the cell"""
         model = treeview.get_model()
         model[path][1] = not model[path][1]
         for a in  model[path].iterchildren():
@@ -318,21 +318,26 @@ class GestioneTaglieColori(GladeWidget):
         """ Function ti set the value quantita edit in the cell"""
         model = treeview.get_model()
         model[path][3] = value
+        
         self.printModel()
 
     def on_head_color_toggled(self, radioButton):
+        if not self._loading:
+            return
         if self.head_color.get_active():
             self.order="color"
         elif self.head_size.get_active():
             self.order="size"
-        self.refresh(order=self.order)
+        self.__refresh(order=self.order)
 
     def on_only_variation_toggled(self, radioButton):
+        if not self._loading:
+            return
         if self.only_variation.get_active():
             self.filtered= True
         elif self.all_variation.get_active():
             self.filtered= False
-        self.refresh(filtered=self.filtered)
+        self.__refresh(filtered=self.filtered)
 
     def on_cancel_button_clicked(self, button):
         self.destroy()
@@ -344,7 +349,7 @@ class GestioneTaglieColori(GladeWidget):
         from AnagraficaColori import AnagraficaColori
         anag = AnagraficaColori()
 
-        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), toggleButton, self.refresh)
+        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), toggleButton, self.__refresh)
 
     def on_size_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
@@ -353,7 +358,7 @@ class GestioneTaglieColori(GladeWidget):
         from AnagraficaTaglie import AnagraficaTaglie
         anag = AnagraficaTaglie()
 
-        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), toggleButton, self.refresh)
+        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), toggleButton, self.__refresh)
 
     def on_genera_codice_a_barre_button_clicked(self, button):
         """ funzione di creazione codice a barre random ed inserimento in treeview"""

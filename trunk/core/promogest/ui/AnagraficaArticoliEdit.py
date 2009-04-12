@@ -26,6 +26,7 @@ if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.dao.Modello import Modello
     from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
     from promogest.modules.PromoWear.ui.AnagraficaArticoliPromoWearExpand import articleTypeGuiManage, treeViewExpand
+    from promogest.modules.PromoWear.ui.TaglieColori import GestioneTaglieColori
 
 class AnagraficaArticoliEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica degli articoli """
@@ -608,7 +609,7 @@ dei dati accessori. Continuare?"""
                 obligatoryField(self.dialogTopLevel,
                                 self.id_colore_customcombobox.combobox,
                                 msg='Campo obbligatorio !\nColore')
-        from promogest.modules.PromoWear.ui.TaglieColori import GestioneTaglieColori
+        
         tagcol = GestioneTaglieColori(articolo=self.dao)
         tagcolWindow = tagcol.getTopLevel()
 
