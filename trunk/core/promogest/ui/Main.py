@@ -202,6 +202,7 @@ class Main(GladeWidget):
             # Andrea
             # richiamo diretto dei documenti: evita di dover premere il
             # pulsante nel frame registrazioni
+            if not hasAction(actionID=2):return
             from AnagraficaDocumenti import AnagraficaDocumenti
             anag = AnagraficaDocumenti(aziendaStr=self.aziendaStr)
             showAnagrafica(self.getTopLevel(), anag, mainClass=self)
@@ -731,7 +732,7 @@ class RegistrazioniFrame(GladeWidget):
     def on_documenti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-
+        if not hasAction(actionID=2):return
         from AnagraficaDocumenti import AnagraficaDocumenti
         anag = AnagraficaDocumenti(aziendaStr=self.aziendaStr)
 

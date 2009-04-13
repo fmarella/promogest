@@ -127,14 +127,6 @@ class Login(GladeApp):
         """
             Funzione di servizio, uso il bottone come test per SincroDB
         """
-        from sqlalchemy.ext.serializer import loads, dumps
-
-        app = Environment.params["session"].query(AppLog).filter(and_(AppLog.schema_azienda =="aaaaa",AppLog.message=="INSERT Articolo")).all()
-        for a in app:
-            #print a.pkid
-            print a.pk[0].pk_integer
-            a =  loads(a.object)
-            print "GGGGGGGGGG", dir(a)
             #dao = a.message.split(" ")[1]
             #query= Environment.params["session"].query(Articolo).get(id=eval(a.pkid)[0])
             #print query
@@ -142,7 +134,7 @@ class Login(GladeApp):
         #serialized = dumps(app)
         #print serialized
 
-        #sendemail = SendEmail()
+        sendemail = SendEmail()
 
     def on_button_login_clicked(self, button=None):
         username = self.username_comboxentry.child.get_text()
