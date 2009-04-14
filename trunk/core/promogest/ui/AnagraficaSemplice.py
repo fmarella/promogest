@@ -145,7 +145,10 @@ class Anagrafica(GladeWidget):
 
     def on_record_new_activate(self, widget,codice=None):
         """ Nuovo record """
-        self.detail.setDao(None, codice=codice)
+        if codice:
+            self.detail.setDao(None, codice=codice)
+        else:
+            self.detail.setDao(None)
 
         self.filterTopLevel.set_sensitive(False)
         self.anagrafica_filter_navigation_hbox.set_sensitive(False)
