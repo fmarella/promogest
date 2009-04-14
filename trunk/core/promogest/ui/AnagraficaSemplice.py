@@ -143,9 +143,9 @@ class Anagrafica(GladeWidget):
         dialog.run()
         dialog.destroy()
 
-    def on_record_new_activate(self, widget):
+    def on_record_new_activate(self, widget,codice=None):
         """ Nuovo record """
-        self.detail.setDao(None)
+        self.detail.setDao(None, codice=codice)
 
         self.filterTopLevel.set_sensitive(False)
         self.anagrafica_filter_navigation_hbox.set_sensitive(False)

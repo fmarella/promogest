@@ -2025,7 +2025,7 @@ def mN(value,decimal=None):
     newvalue= Decimal(str(value).strip()).quantize(Decimal(decimal), rounding=ROUND_HALF_UP)
     return newvalue
 
-def generateRandomBarCode():
+def generateRandomBarCode(ean=13):
     """ funzione di generazione codice ean13 random
         utile per quei prodotti che non hanno un codice
         chiaramente solo per uso interno
@@ -2033,13 +2033,19 @@ def generateRandomBarCode():
     import random
     from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
     codice = ''
-    def create():
-        code=[8,0]
+    def create(ean):
         codice = ''
-        for a in xrange(10):
-            code.append(random.sample([1,2,3,4,5,6,7,8,9,0],1)[0])
-        dispari = (code[1] + code[3] +code[5] +code[7]+code[9]+code[11])*3
-        pari = code[0]+code[2]+code[4]+code[6]+code[8]+code[10]
+        code=[8,0]
+        if ean==13:
+            for a in xrange(10):
+                code.append(random.sample([1,2,3,4,5,6,7,8,9,0],1)[0])
+            dispari = (code[1] + code[3] +code[5] +code[7]+code[9]+code[11])*3
+            pari = code[0]+code[2]+code[4]+code[6]+code[8]+code[10]
+        elif ean==8:
+            for a in xrange(5):
+                code.append(random.sample([1,2,3,4,5,6,7,8,9,0],1)[0])
+            dispari = (code[0] + code[2] +code[4]+code[6])*3
+            pari = code[1]+code[3]+code[5]
         tot = 10-((dispari+pari)%10)
         if tot ==10:
             tot = 0
@@ -2050,12 +2056,12 @@ def generateRandomBarCode():
         return b
     correct = False
     while correct is False:
-        codice = create()
+        codice = create(ean)
         there= CodiceABarreArticolo().select(codice=codice)
         if not there:
             return codice
         else:
-            create()
+            create(ean)
 
 def removeCodBarorphan():
     from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo

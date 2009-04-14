@@ -9,18 +9,14 @@
 """
 
 import gtk
-import gobject
 
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.CodiceABarreArticolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 
 from utils import *
 from utilsCombobox import *
-
 
 class AnagraficaCodiciABarreArticoli(Anagrafica):
     """ Anagrafica codici a barre """
@@ -62,30 +58,28 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
 
         self._treeViewModel = gtk.ListStore(object, str, bool)
         treeview.set_model(self._treeViewModel)
-        self.bodyWidget.generic_button.set_no_show_all(False)
-        self.bodyWidget.generic_button.set_property('visible', True)
-        generaButton = self.bodyWidget.generic_button
-        generaButton.connect('clicked', self.on_generic_button_clicked )
-        generaButton.set_label("Genera codice a barre")
+
+        self.codBar_combo = gtk.combo_box_new_text()
+        self.codBar_combo.append_text("Crea Codice Random Ean13 ")
+        self.codBar_combo.append_text("Crea Codice Random Ean8 ")
+        self.bodyWidget.hbox1.pack_start(self.codBar_combo)
+        self.codBar_combo.connect('changed', self.on_generic_combobox_changed )
+
         treeview.set_search_column(1)
 
         self.refresh()
 
-    def on_generic_button_clicked(self,button):
-        codice = generateRandomBarCode()
-        #self.dao = CodiceABarreArticolo()
-        self.dao = None
-        self.row = ([self.dao,
-                    codice,
-                    True])
-        #if self.row:
-        self.dao = CodiceABarreArticolo()
-        self.dao.id_articolo = self._idArticolo
-        self._newRow((self.dao, self.row[1], self.row[2]))
-            ##self._treeViewModel.append((self.row[0],
-                                        ##(self.row[1] or ''),
-                                        ##(self.row[2] or False)))
-        #self.refresh()
+    def on_generic_combobox_changed(self,combobox):
+        print "VVVVVVVVVVVVVVVVVVVVVVVVVVVVV", self.codBar_combo.get_active()
+        if self.codBar_combo.get_active()==0:
+            codice = generateRandomBarCode(ean=13)
+            self.on_record_new_activate(self,codice=codice)
+            #self.codBar_combo.set_active(0)
+        elif self.codBar_combo.get_active()==1:
+            codice = generateRandomBarCode(ean=8)
+            self.on_record_new_activate(self,codice=codice)
+        else:
+            self.codBar_combo.set_active(-1)
 
     def refresh(self):
         # Aggiornamento TreeView
@@ -110,13 +104,10 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
 
         self._treeViewModel.clear()
 
-
         for b in bars:
             self._treeViewModel.append((b,
                                         (b.codice or ''),
                                         (b.primario or False)))
-
-
 
 
 class AnagraficaCodiciABarreArticoliFilter(AnagraficaFilter):
@@ -137,7 +128,6 @@ class AnagraficaCodiciABarreArticoliFilter(AnagraficaFilter):
         self._anagrafica.refresh()
 
 
-
 class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
     """ Dettaglio dell'anagrafica dei codici a barre """
 
@@ -147,11 +137,15 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
                                 gladeFile='_anagrafica_codici_a_barre_articoli_elements.glade')
 
 
-    def setDao(self, dao):
+    def setDao(self, dao, codice=None):
         if dao is None:
             self.dao = CodiceABarreArticolo()
             self.dao.id_articolo = self._anagrafica._idArticolo
-            self._anagrafica._newRow((self.dao, '', ''))
+            if codice:
+                self.dao.codice = codice
+                self._anagrafica._newRow((self.dao, codice, ''))
+            else:
+                self._anagrafica._newRow((self.dao, '', ''))
             self._refresh()
         else:
             self.dao = dao

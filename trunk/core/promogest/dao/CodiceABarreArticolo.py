@@ -11,7 +11,6 @@ from sqlalchemy import Table
 from sqlalchemy.orm import mapper
 from promogest.Environment import params
 from Dao import Dao
-#from promogest.dao.Articolo import Articolo
 
 class CodiceABarreArticolo(Dao):
 
@@ -36,9 +35,8 @@ codice_barre_articolo=Table('codice_a_barre_articolo',
                             schema = params['schema'],
                             autoload=True)
 
-std_mapper = mapper(CodiceABarreArticolo, codice_barre_articolo, properties={
-        #"articolo":relation(Articolo,backref="codice_a_barre_articolo")
-}, order_by=codice_barre_articolo.c.codice)
+std_mapper = mapper(CodiceABarreArticolo, codice_barre_articolo,
+                                        order_by=codice_barre_articolo.c.codice)
 
 
 

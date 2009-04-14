@@ -1392,13 +1392,39 @@ class AnagraficaPrintPreview(GladeWidget):
         #self._allResultForHtml = self._anagrafica.filter._allResultForHtml
         self.print_on_screen_dialog.set_transient_for(self._anagrafica.getTopLevel())
         self.placeWindow(self.print_on_screen_dialog)
-        self.bodyWidget.generic_button.set_no_show_all(False)
-        self.bodyWidget.generic_button.set_property('visible', True)
-        generaButton = self.bodyWidget.generic_button
-        generaButton.connect('clicked', self.on_generic_button_clicked )
-        generaButton.set_label("Genera Pdf Anteprima Html")
-        self.refresh()
 
+
+        self.codBar_combo = gtk.combo_box_new_text()
+        self.codBar_combo.append_text("Genera Pdf Anteprima Html")
+        self.codBar_combo.append_text("Genera CSV da Anteprima Html")
+        self.bodyWidget.hbox1.pack_start(self.codBar_combo)
+        self.codBar_combo.connect('changed', self.on_generic_combobox_changed )
+
+        self.bodyWidget.generic_button.set_no_show_all(True)
+        self.bodyWidget.generic_button.set_property('visible', False)
+        #generaButton = self.bodyWidget.generic_button
+        #generaButton.connect('clicked', self.on_generic_button_clicked )
+        #generaButton.set_label("Genera Pdf Anteprima Html")
+
+        self.refresh()
+    def on_generic_combobox_changed(self,combobox):
+        if self.codBar_combo.get_active()==0:
+            from PrintDialog import PrintDialogHandler
+            import pisaLib.ho.pisa as pisa
+            f = self.html
+            g = file(".temp.pdf", "wb")
+            pdf = pisa.CreatePDF(f,g)
+            g .close()
+            anag = PrintDialogHandler(self,self.windowTitle)
+            anagWindow = anag.getTopLevel()
+            returnWindow = self.bodyWidget.getTopLevel().get_toplevel()
+            anagWindow.set_transient_for(returnWindow)
+            anagWindow.show_all()
+            #self.codBar_combo.set_active(0)
+        elif self.codBar_combo.get_active()==1:
+            print "ANTEPRIMA CSV"
+        else:
+            self.codBar_combo.set_active(-1)
 
     def _refreshPageCount(self):
         """ Aggiorna la paginazione """
@@ -1440,18 +1466,6 @@ class AnagraficaPrintPreview(GladeWidget):
         self.print_on_screen_html.set_document(document)
         self._currGtkHtmlDocument = currDocument
 
-    def on_generic_button_clicked(self, button=None):
-        from PrintDialog import PrintDialogHandler
-        import pisaLib.ho.pisa as pisa
-        f = self.html
-        g = file(".temp.pdf", "wb")
-        pdf = pisa.CreatePDF(f,g)
-        g .close()
-        anag = PrintDialogHandler(self,self.windowTitle)
-        anagWindow = anag.getTopLevel()
-        returnWindow = self.bodyWidget.getTopLevel().get_toplevel()
-        anagWindow.set_transient_for(returnWindow)
-        anagWindow.show_all()
 
     def on_html_request_url(self,document, url, stream):
 

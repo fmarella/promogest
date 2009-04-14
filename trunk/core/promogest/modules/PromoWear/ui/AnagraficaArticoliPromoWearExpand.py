@@ -229,7 +229,7 @@ def articleTypeGuiManage(anagrafica, dao, new):
         gtkgui.on_normale_radiobutton_toggled(gtk.RadioButton())
         gtkgui.id_anno_combobox.set_active(-1)
         gtkgui.id_genere_combobox.set_active(-1)
-        gtkgui.id_modello_customcombobox.set_active(-1)
+        gtkgui.id_modello_customcombobox.combobox.set_active(-1)
         gtkgui.id_stagione_combobox.set_active(-1)
         gtkgui.id_gruppo_taglia_customcombobox.combobox.set_active(-1)
         gtkgui.id_taglia_customcombobox.combobox.set_active(-1)

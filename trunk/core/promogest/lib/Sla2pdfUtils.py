@@ -78,7 +78,13 @@ def alignment(slaAlignment,styleAlignment=None):
 def createbarcode(ch):
         data = ch.split(';')
         #print "DATA for Barcode", ch,data[1]
-        bcd = createBarcodeDrawing('EAN13', value=data[1], width=float(data[2])*cm,height=float(data[3])*cm)
+        #print "CODICE A BARRE " , data[1]
+        if len(data[1]) ==13:
+            bcd = createBarcodeDrawing('EAN13', value=data[1], width=float(data[2])*cm,height=float(data[3])*cm)
+        elif len(data[1]) == 8:
+            bcd = createBarcodeDrawing('EAN8', value=data[1], width=float(data[2])*cm,height=float(data[3])*cm)
+        else:
+            bcd = createBarcodeDrawing('EAN13', value=data[1], width=float(data[2])*cm,height=float(data[3])*cm)
         #bcd = createBarcodeDrawing('EAN13', value="8002705005009", width=float(data[2])*cm,height=float(data[3])*cm)
         return bcd
 
@@ -134,7 +140,6 @@ def itformatValue(value,tronca=False):
     Convert the dates of the element into strings with italian
     datetime format
     """
-    print "valueeeeeeeeeeeeeeeeeeeeeeeee",value
     if isinstance(value, datetime.datetime):
         if tronca:
             return value.strftime('%d/%m/%Y')
