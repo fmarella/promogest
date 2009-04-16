@@ -237,28 +237,6 @@ def scontiRigaMovimentoDel(id=None):
         params["session"].commit()
         return True
 
-#def commit():
-    #""" Salva i dati nel DB"""
-    #try:
-        #params["session"].commit()
-        #return True
-    #except Exception,e:
-        #msg = """ATTENZIONE ERRORE
-#Qui sotto viene riportato l'errore di sistema:
-#%s
-#( normalmente il campo in errore è tra "virgolette")
-#""" %e
-        #overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                            #| gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                #gtk.MESSAGE_ERROR,
-                                                #gtk.BUTTONS_CANCEL, msg)
-        #response = overDialog.run()
-        #overDialog.destroy()
-        #print "ERRORE", e
-        #params["session"].rollback()
-        #return False
-
-
 def saveToAppLog(dao=None,status=True,action=None, value=None):
     commit()
     return

@@ -4,6 +4,7 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="_anagrafica_movimenti_elements">
     <property name="visible">True</property>
+    <property name="border_width">1</property>
     <property name="title" translatable="yes">Movimentazione magazzino</property>
     <child>
       <widget class="GtkHBox" id="hbox22">
@@ -134,6 +135,8 @@
                     <property name="creation_function">createUnsignedIntegerEntryField</property>
                     <property name="string1">;blank&gt;</property>
                     <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
                   </widget>
                 </child>
               </widget>
@@ -158,6 +161,8 @@
                     <property name="creation_function">createUnsignedIntegerEntryField</property>
                     <property name="string1">;blank&gt;</property>
                     <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
                   </widget>
                 </child>
               </widget>
@@ -182,6 +187,8 @@
                     <property name="creation_function">createDateWidget</property>
                     <property name="int1">10</property>
                     <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
                   </widget>
                 </child>
               </widget>
@@ -206,6 +213,8 @@
                     <property name="creation_function">createDateWidget</property>
                     <property name="int1">10</property>
                     <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
                   </widget>
                 </child>
               </widget>
@@ -335,6 +344,8 @@
                                 <property name="visible">True</property>
                                 <property name="creation_function">createDateWidget</property>
                                 <property name="int1">10</property>
+                                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                <signal name="focus_out_event" handler="on_focus_out_event"/>
                               </widget>
                             </child>
                           </widget>
@@ -616,7 +627,13 @@
                                       <widget class="GtkEntry" id="articolo_entry">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="secondary_icon_stock">gtk-clear</property>
+                                        <property name="secondary_icon_activatable">True</property>
+                                        <property name="secondary_icon_sensitive">True</property>
                                         <signal name="key_press_event" handler="on_articolo_entry_key_press_event"/>
+                                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                        <signal name="icon_press" handler="on_icon_press"/>
                                       </widget>
                                       <packing>
                                         <property name="position">3</property>
@@ -799,6 +816,12 @@
                                       <widget class="GtkEntry" id="descrizione_entry">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="secondary_icon_stock">gtk-clear</property>
+                                        <property name="secondary_icon_activatable">True</property>
+                                        <property name="secondary_icon_sensitive">True</property>
+                                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                        <signal name="icon_press" handler="on_icon_press"/>
+                                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                                       </widget>
                                       <packing>
                                         <property name="position">1</property>
@@ -845,6 +868,8 @@
                                                 <property name="int1">5</property>
                                                 <property name="int2">2</property>
                                                 <signal name="focus_out_event" handler="on_show_totali_riga"/>
+                                                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                                <signal name="focus_in_event" handler="on_focus_in_event"/>
                                               </widget>
                                             </child>
                                           </widget>
@@ -871,6 +896,12 @@
                                             <property name="width_request">200</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="secondary_icon_stock">gtk-clear</property>
+                                            <property name="secondary_icon_activatable">True</property>
+                                            <property name="secondary_icon_sensitive">True</property>
+                                            <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                            <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                            <signal name="icon_press" handler="on_icon_press"/>
                                           </widget>
                                           <packing>
                                             <property name="padding">15</property>
@@ -934,7 +965,7 @@
                                               <widget class="GtkTable" id="table16">
                                                 <property name="visible">True</property>
                                                 <property name="border_width">5</property>
-                                                <property name="n_rows">3</property>
+                                                <property name="n_rows">4</property>
                                                 <property name="n_columns">2</property>
                                                 <property name="column_spacing">10</property>
                                                 <property name="row_spacing">5</property>
@@ -956,8 +987,8 @@
                                                   <packing>
                                                     <property name="left_attach">1</property>
                                                     <property name="right_attach">2</property>
-                                                    <property name="top_attach">1</property>
-                                                    <property name="bottom_attach">2</property>
+                                                    <property name="top_attach">2</property>
+                                                    <property name="bottom_attach">3</property>
                                                     <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
                                                     <property name="y_options"></property>
                                                   </packing>
@@ -976,13 +1007,17 @@
                                                         <property name="int1">10</property>
                                                         <property name="int2">2</property>
                                                         <signal name="focus_out_event" handler="on_show_totali_riga"/>
+                                                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                                        <signal name="focus_in_event" handler="on_focus_in_event"/>
                                                       </widget>
                                                     </child>
                                                   </widget>
                                                   <packing>
                                                     <property name="left_attach">1</property>
                                                     <property name="right_attach">2</property>
-                                                    <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                                                    <property name="top_attach">1</property>
+                                                    <property name="bottom_attach">2</property>
+                                                    <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
                                                     <property name="y_options"></property>
                                                   </packing>
                                                 </child>
@@ -1000,14 +1035,16 @@
                                                         <property name="int1">10</property>
                                                         <property name="int2">3</property>
                                                         <signal name="focus_out_event" handler="on_show_totali_riga"/>
+                                                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                                        <signal name="focus_in_event" handler="on_focus_in_event"/>
                                                       </widget>
                                                     </child>
                                                   </widget>
                                                   <packing>
                                                     <property name="left_attach">1</property>
                                                     <property name="right_attach">2</property>
-                                                    <property name="top_attach">2</property>
-                                                    <property name="bottom_attach">3</property>
+                                                    <property name="top_attach">3</property>
+                                                    <property name="bottom_attach">4</property>
                                                     <property name="x_options">GTK_SHRINK | GTK_FILL</property>
                                                     <property name="y_options"></property>
                                                   </packing>
@@ -1019,8 +1056,8 @@
                                                     <property name="label" translatable="yes">Quantita'</property>
                                                   </widget>
                                                   <packing>
-                                                    <property name="top_attach">2</property>
-                                                    <property name="bottom_attach">3</property>
+                                                    <property name="top_attach">3</property>
+                                                    <property name="bottom_attach">4</property>
                                                     <property name="x_options">GTK_FILL</property>
                                                     <property name="y_options"></property>
                                                   </packing>
@@ -1032,8 +1069,8 @@
                                                     <property name="label" translatable="yes">Unit&#xE0; derivate</property>
                                                   </widget>
                                                   <packing>
-                                                    <property name="top_attach">1</property>
-                                                    <property name="bottom_attach">2</property>
+                                                    <property name="top_attach">2</property>
+                                                    <property name="bottom_attach">3</property>
                                                     <property name="x_options">GTK_FILL</property>
                                                     <property name="y_options"></property>
                                                   </packing>
@@ -1045,8 +1082,48 @@
                                                     <property name="label" translatable="yes">Prezzo</property>
                                                   </widget>
                                                   <packing>
+                                                    <property name="top_attach">1</property>
+                                                    <property name="bottom_attach">2</property>
                                                     <property name="x_options">GTK_FILL</property>
                                                     <property name="y_options"></property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <widget class="GtkLabel" id="prz_lordo_label1">
+                                                    <property name="visible">True</property>
+                                                    <property name="xalign">0</property>
+                                                    <property name="label" translatable="yes">Totale</property>
+                                                  </widget>
+                                                  <packing>
+                                                    <property name="x_options">GTK_FILL</property>
+                                                    <property name="y_options"></property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <widget class="GtkSpinButton" id="totale_spinbutton">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="invisible_char">&#x25CF;</property>
+                                                    <property name="xalign">1</property>
+                                                    <property name="overwrite_mode">True</property>
+                                                    <property name="secondary_icon_stock">gtk-clear</property>
+                                                    <property name="secondary_icon_activatable">True</property>
+                                                    <property name="secondary_icon_sensitive">True</property>
+                                                    <property name="adjustment">0 0 1000000 1 100 100</property>
+                                                    <property name="climb_rate">2</property>
+                                                    <property name="digits">2</property>
+                                                    <property name="numeric">True</property>
+                                                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                                    <signal name="icon_press" handler="on_icon_press"/>
+                                                    <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                                    <signal name="focus_out_event" handler="on_totale_spinbutton_focus_out_event"/>
+                                                  </widget>
+                                                  <packing>
+                                                    <property name="left_attach">1</property>
+                                                    <property name="right_attach">2</property>
+                                                    <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                                                    <property name="y_options"></property>
+                                                    <property name="x_padding">1</property>
                                                   </packing>
                                                 </child>
                                               </widget>
@@ -1171,7 +1248,7 @@
                                             <property name="visible">True</property>
                                             <property name="border_width">5</property>
                                             <property name="label_xalign">0</property>
-                                            <property name="shadow_type">etched-out</property>
+                                            <property name="shadow_type">in</property>
                                             <child>
                                               <widget class="GtkVBox" id="vbox29">
                                                 <property name="visible">True</property>
@@ -1192,7 +1269,13 @@
                                                             <property name="visible">True</property>
                                                             <property name="spacing">2</property>
                                                             <child>
-                                                            <placeholder/>
+                                                            <widget class="GtkImage" id="image1">
+                                                            <property name="visible">True</property>
+                                                            <property name="pixbuf">anagrafica_listino24x24.png</property>
+                                                            </widget>
+                                                            <packing>
+                                                            <property name="position">0</property>
+                                                            </packing>
                                                             </child>
                                                             <child>
                                                             <widget class="GtkLabel" id="label416">
@@ -1232,7 +1315,13 @@
                                                             <property name="visible">True</property>
                                                             <property name="spacing">2</property>
                                                             <child>
-                                                            <placeholder/>
+                                                            <widget class="GtkImage" id="image3">
+                                                            <property name="visible">True</property>
+                                                            <property name="pixbuf">modello_listino24.png</property>
+                                                            </widget>
+                                                            <packing>
+                                                            <property name="position">0</property>
+                                                            </packing>
                                                             </child>
                                                             <child>
                                                             <widget class="GtkLabel" id="label394">
@@ -1272,7 +1361,13 @@
                                                             <property name="visible">True</property>
                                                             <property name="spacing">2</property>
                                                             <child>
-                                                            <placeholder/>
+                                                            <widget class="GtkImage" id="image4">
+                                                            <property name="visible">True</property>
+                                                            <property name="pixbuf">bancomat24x24.png</property>
+                                                            </widget>
+                                                            <packing>
+                                                            <property name="position">0</property>
+                                                            </packing>
                                                             </child>
                                                             <child>
                                                             <widget class="GtkLabel" id="label393">
@@ -1422,6 +1517,7 @@
                             <property name="visible">True</property>
                             <property name="xalign">0</property>
                             <property name="label" translatable="yes">-</property>
+                            <property name="selectable">True</property>
                           </widget>
                           <packing>
                             <property name="left_attach">5</property>

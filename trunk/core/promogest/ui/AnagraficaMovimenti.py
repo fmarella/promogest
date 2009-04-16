@@ -11,6 +11,7 @@ import os
 import gtk
 import gobject
 import datetime
+#from decimal import *
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
@@ -19,15 +20,22 @@ from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.Articolo import Articolo
+from promogest.dao.Fornitore import Fornitore
 from utils import *
 from utilsCombobox import *
 
 
 
 class AnagraficaMovimenti(Anagrafica):
-    """ Anagrafica movimenti """
 
     def __init__(self, idMagazzino=None, aziendaStr=None):
+        """
+        FIXME
+        @param idMagazzino=None:
+        @type idMagazzino=None:
+        @param aziendaStr=None:
+        @type aziendaStr=None:
+        """
         self._magazzinoFissato = (idMagazzino <> None)
         self._idMagazzino=idMagazzino
         Anagrafica.__init__(self,
@@ -42,13 +50,19 @@ class AnagraficaMovimenti(Anagrafica):
         self.records_file_export.set_sensitive(True)
 
     def LoadFieldsListData(self):
-        """Returns a tuple wich contains  a list of headers of the xls spreadsheet table fields,
+        """
+        Returns a tuple wich contains  a list of headers of the xls spreadsheet table fields,
         a flag that indicates what kind of source of data we are messing with and
-        width and alignment values to complete cells markup."""
-
+        width and alignment values to complete cells markup.
+        """
         return (FieldsList, colData, colWidth_Align)
 
     def set_data_list(self, data):
+        """
+        FIXME
+        @param data:
+        @type data:
+        """
         rowlist=[]
         for d in data:
             soggetto = ''
@@ -87,7 +101,11 @@ class AnagraficaMovimenti(Anagrafica):
                         sconti = ''
                     valore_unitario_lordo = ('%.2f') % float(riga.valore_unitario_lordo or 0)
                     valore_unitario_netto = ('%.2f') % float(riga.valore_unitario_netto or 0)
-                    datalist=[data,operazione,soggetto, codice_articolo, descrizione, magazzino, moltiplicatore, percentuale_iva, quantita, sconti, valore_unitario_lordo, valore_unitario_netto]#lista dei campi del dao da caricare. esempio: d.nome_campo
+                    datalist=[data,operazione,soggetto, codice_articolo,
+                             descrizione, magazzino, moltiplicatore, 
+                             percentuale_iva, quantita, sconti, 
+                             valore_unitario_lordo, valore_unitario_netto]
+                             #lista dei campi del dao da caricare. esempio: d.nome_campo
                     rowlist.append(datalist)
             else:
                 codice_articolo = ''
@@ -103,23 +121,35 @@ class AnagraficaMovimenti(Anagrafica):
                 sconti = ''
                 valore_unitario_lordo = 0
                 valore_unitario_netto = 0
-                datalist=[data,operazione,soggetto, codice_articolo, descrizione, magazzino, moltiplicatore, percentuale_iva, quantita, sconti, valore_unitario_lordo, valore_unitario_netto]#lista dei campi del dao da caricare. esempio: d.nome_campo
+                datalist=[data,operazione,soggetto, codice_articolo, descrizione,
+                         magazzino, moltiplicatore, percentuale_iva, quantita, 
+                         sconti, valore_unitario_lordo, valore_unitario_netto]
+                         #lista dei campi del dao da caricare. esempio: d.nome_campo
                 rowlist.append(datalist)
         return rowlist
 
     def set_export_data(self):
         """
-        Raccoglie informazioni specifiche per l'anagrafica restituite all'interno di un dizionario
+        Raccoglie informazioni specifiche per l'anagrafica 
+        restituite all'interno di un dizionario
         """
         data_details = {}
         data = datetime.datetime.now()
-        curr_date = string.zfill(str(data.day), 2) + '-' + string.zfill(str(data.month),2) + '-' + string.zfill(str(data.year),4)
+        curr_date = string.zfill(str(data.day), 2) + \
+                            '-' + string.zfill(str(data.month),2) + \
+                            '-' + string.zfill(str(data.year),4)
         data_details['curr_date'] = curr_date
         data_details['currentName'] = 'Lista_Movimenti_aggiornata_al_'+curr_date+'.xml'
 
-        FieldsList = ['Data Movimento','Causale Movimento','Cliente/Fornitore','Codice Articolo','Descrizione','Magazzino','Moltiplicatore','% IVA','Quantit�','Sconti','Valore Unitario Lordo','Valore Unitario Netto']
+        FieldsList = ['Data Movimento','Causale Movimento','Cliente/Fornitore',
+                        'Codice Articolo','Descrizione','Magazzino',
+                        'Moltiplicatore','% IVA','Quantità',
+                        'Sconti','Valore Unitario Lordo','Valore Unitario Netto']
         colData = [0,0,0,0,0,0,0,0,0,1,2,2]# 0=None, 1=Totali, 2=valore_somma
-        colWidth_Align = [('100','c'),('150','l'),('150','l'),('100','c'),('250','l'),('150','c'),('100','c'),('70','c'),('70','c'),('70','c'),('140','r'),('140','r')] # (larghezza colonna, allineamento)__c=center,l=left,r=right
+        colWidth_Align = [('100','c'),('150','l'),('150','l'),('100','c'),
+                            ('250','l'),('150','c'),('100','c'),('70','c'),
+                            ('70','c'),('70','c'),('140','r'),('140','r')]
+                             # (larghezza colonna, allineamento)__c=center,l=left,r=right
         data_details['XmlMarkup'] = (FieldsList, colData, colWidth_Align)
 
         return data_details
@@ -139,6 +169,11 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nei movimenti """
 
     def __init__(self, anagrafica):
+        """
+        FIXME
+        @param anagrafica:
+        @type anagrafica:
+        """
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   'anagrafica_movimenti_filter_table',
@@ -148,6 +183,9 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
 
 
     def draw(self):
+        """
+        FIXME
+        """
         # Colonne della Treeview per il filtro
         treeview = self._anagrafica.anagrafica_filter_treeview
         renderer = gtk.CellRendererText()
@@ -217,6 +255,9 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
 
 
     def clear(self):
+        """
+        FIXME
+        """
         # Annullamento filtro
         self.da_data_filter_entry.set_text('01/01/' + Environment.workingYear)
         self.a_data_filter_entry.set_text('')
@@ -232,6 +273,9 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
 
 
     def refresh(self):
+        """
+        FIXME
+        """
         # Aggiornamento TreeView
         daData = stringToDate(self.da_data_filter_entry.get_text())
         aData = stringToDate(self.a_data_filter_entry.get_text())
@@ -243,6 +287,11 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
         idFornitore = self.id_fornitore_filter_customcombobox.getId()
 
         def filterCountClosure():
+            """
+            FIXME
+            @param :
+            @type :
+            """
             return TestataMovimento().count(daNumero=daNumero,
                                                     aNumero=aNumero,
                                                     daParte=None,
@@ -255,13 +304,17 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
                                                     idFornitore=idFornitore)
 
         self._filterCountClosure = filterCountClosure
-
         self.numRecords = self.countFilterResults()
-
         self._refreshPageCount()
 
-        # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
+            """
+            FIXME
+            @param offset:
+            @type offset:
+            @param batchSize:
+            @type batchSize:
+            """
             return TestataMovimento().select(orderBy=self.orderBy,
                                                          daNumero=daNumero,
                                                          aNumero=aNumero,
@@ -301,6 +354,9 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
 
 
     def on_filter_radiobutton_toggled(self, widget=None):
+        """
+        FIXME
+        """
         if self.cliente_filter_radiobutton.get_active():
             self.id_cliente_filter_customcombobox.set_sensitive(True)
             self.id_cliente_filter_customcombobox.grab_focus()
@@ -316,6 +372,9 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
 
 class AnagraficaMovimentiHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
+        """
+        FIXME
+        """
         AnagraficaHtml.__init__(self, anagrafica, 'movimento',
                                 'Informazioni sul movimento merce')
 
@@ -323,24 +382,32 @@ class AnagraficaMovimentiHtml(AnagraficaHtml):
 
 class AnagraficaMovimentiReport(AnagraficaReport):
     def __init__(self, anagrafica):
+        """
+        FIXME
+        """
         AnagraficaReport.__init__(self, anagrafica=anagrafica,
                                   description='Elenco dei movimenti',
                                   defaultFileName='movimenti',
                                   htmlTemplate='movimenti',
                                   sxwTemplate='movimenti')
 
-
-
 class AnagraficaMovimentiEdit(AnagraficaEdit):
-    """ Modifica un record dei movimenti """
 
     def __init__(self, anagrafica):
+        """
+        Modifica un record dei movimenti 
+        """
         AnagraficaEdit.__init__(self,
                                 anagrafica,
                                 'anagrafica_movimenti_detail_vbox',
                                 'Dati movimento',
                                 gladeFile='_anagrafica_movimenti_elements.glade')
         self._widgetFirstFocus = self.data_movimento_entry
+        try:
+            if Environment.conf.Documenti.rosas =="yes":
+                pass
+        except:
+            self.totale_spinbutton.destroy()
 
         # contenitore (dizionario) righe (riga 0 riservata per
         # variazioni in corso)
@@ -396,7 +463,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def nuovaRiga(self):
-        """ prepara per l'inserimento di una nuova riga """
+        """ 
+        prepara per l'inserimento di una nuova riga 
+        """
         self._numRiga = 0
         self.azzeraRiga(0)
 
@@ -429,7 +498,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def clearRows(self):
-        """ pulisce i campi per il trattamento e la conservazione delle righe """
+        """ 
+        Pulisce i campi per il trattamento e la conservazione delle righe 
+        """
         self._righe = []
         self._righe.append({})
         self._numRiga = 0
@@ -439,6 +510,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def draw(self):
+        """
+        Costruisce la treevew e gli altri widget dell'interfaccia
+        """
         treeview = self.righe_treeview
         rendererSx = gtk.CellRendererText()
         rendererDx = gtk.CellRendererText()
@@ -612,6 +686,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def on_id_operazione_combobox_changed(self, combobox):
+        """
+        Setta l'operazione sul movimento corrente
+        """
         self._operazione = findIdFromCombobox(self.id_operazione_combobox)
         operazione = leggiOperazione(self._operazione)
         if self._tipoPersonaGiuridica != operazione["tipoPersonaGiuridica"]:
@@ -654,11 +731,17 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def persona_giuridica_changed(self):
+        """
+        Gestisce il cambiamento di persona giuridica
+        """
         if self._tipoPersonaGiuridica == "cliente":
             self.refresh_combobox_listini()
 
 
     def on_id_magazzino_combobox_changed(self, combobox):
+        """
+        Gestisce il cambiamento di magazzino nella combobox
+        """
         if self._loading:
             return
 
@@ -669,6 +752,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def refresh_combobox_listini(self):
+        """
+        Gestisce i listini nella combobox
+        """
         if self._righe[0]["idArticolo"] is None:
             self.id_listino_customcombobox.combobox.clear
         else:
@@ -679,10 +765,16 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def on_id_multiplo_customcombobox_button_clicked(self, widget, toggleButton):
+        """
+        FIXME
+        """
         on_id_multiplo_customcombobox_clicked(widget, toggleButton, self._righe[0]["idArticolo"])
 
 
     def on_id_multiplo_customcombobox_changed(self, combobox):
+        """
+        FIXME
+        """
         if self._loading:
             return
 
@@ -694,10 +786,16 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def on_id_listino_customcombobox_button_clicked(self, widget, toggleButton):
+        """
+        FIXME
+        """
         on_id_listino_customcombobox_clicked(widget, toggleButton, self._righe[0]["idArticolo"], None)
 
 
     def on_id_listino_customcombobox_button_toggled(self, button):
+        """
+        FIXME
+        """
         if button.get_property('active') is True:
             return
 
@@ -705,18 +803,23 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def on_id_listino_customcombobox_changed(self, combobox):
+        """
+        Gestisce la combo ( custom ) dei listini 
+        """
         if self._loading:
             return
 
         idListino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
         idArticolo = self._righe[0]["idArticolo"]
         self.getPrezzoVenditaLordo(idListino, idArticolo)
-        self.prezzo_lordo_entry.set_text(Environment.conf.number_format % float(self._righe[0]["prezzoLordo"]))
+        self.prezzo_lordo_entry.set_text(str(mN(self._righe[0]["prezzoLordo"])))
         self.on_show_totali_riga()
 
 
     def getPrezzoVenditaLordo(self, idListino, idArticolo):
-        """ cerca il prezzo di vendita """
+        """ 
+        Cerca il prezzo di vendita 
+        """
         prezzoLordo = 0
         if idListino is not None and idArticolo is not None:
             listino = leggiListino(idListino, idArticolo)
@@ -730,36 +833,40 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def getPrezzoNetto(self):
-        """ calcola il prezzo netto dal prezzo lordo e dagli sconti """
-        prezzoLordo = float(self._righe[0]["prezzoLordo"])
-        prezzoNetto = float(self._righe[0]["prezzoLordo"])
+        """ 
+        Calcola il prezzo netto dal prezzo lordo e dagli sconti 
+        """
+        prezzoLordo = Decimal(self._righe[0]["prezzoLordo"])
+        prezzoNetto = Decimal(self._righe[0]["prezzoLordo"])
         applicazione = self._righe[0]["applicazioneSconti"]
         sconti = self._righe[0]["sconti"]
         for s in sconti:
             if s["tipo"] == 'percentuale':
                 if applicazione == 'scalare':
-                    prezzoNetto = prezzoNetto * (1 - float(s["valore"]) / 100)
+                    prezzoNetto = prezzoNetto * (1 - Decimal(s["valore"]) / 100)
                 elif applicazione == 'non scalare':
-                    prezzoNetto = prezzoNetto - prezzoLordo * float(s["valore"]) / 100
+                    prezzoNetto = prezzoNetto - prezzoLordo * Decimal(s["valore"]) / 100
             elif s["tipo"] == 'valore':
-                prezzoNetto = prezzoNetto - float(s["valore"])
+                prezzoNetto = prezzoNetto - Decimal(s["valore"])
         self._righe[0]["prezzoNetto"] = prezzoNetto
 
-
     def getTotaleRiga(self):
+        """
+        Calcola il totale della riga
+        FIXME: verificare i float e portarlo ai Decimal
+        """
         segnoIva = 1
-        percentualeIva = float(self._righe[0]["percentualeIva"])
-        prezzoNetto = float(self._righe[0]["prezzoNetto"])
-        quantita = float(self._righe[0]["quantita"])
-        moltiplicatore = float(self._righe[0]["moltiplicatore"])
-        #if (self._fonteValore == "vendita_iva" or self._fonteValore == "acquisto_iva"):
-        #    segnoIva = -1
-        #    prezzoNetto = calcolaPrezzoIva(prezzoNetto, segnoIva * percentualeIva)
-
+        percentualeIva = Decimal(self._righe[0]["percentualeIva"])
+        prezzoNetto = Decimal(self._righe[0]["prezzoNetto"])
+        quantita = Decimal(self._righe[0]["quantita"])
+        moltiplicatore = Decimal(self._righe[0]["moltiplicatore"])
         self._righe[0]["totale"] = prezzoNetto * quantita * moltiplicatore
 
 
     def on_sconti_widget_button_toggled(self, button):
+        """
+        Apre il custom widget degli sconti
+        """
         if button.get_property('active') is True:
             return
 
@@ -769,11 +876,18 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def on_notebook_switch_page(self, notebook, page, page_num):
+        """
+        Gestisce il cambio di pagina nel notebook  
+        """
         if page_num == 2:
             self.calcolaTotale()
 
 
     def _refresh(self):
+        """
+        Riporta i valori corretti, carica all'inizio e rinfresca dopo alcune 
+        operazioni
+        """
         self._loading = True
 
         self._tipoPersonaGiuridica = None
@@ -855,15 +969,15 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             self.modelRiga.append((rigatomodel["magazzino"],
                                    rigatomodel["codiceArticolo"],
                                    rigatomodel["descrizione"],
-                                   '%5.2f' % float(rigatomodel["percentualeIva"]),
+                                   str(mN(rigatomodel["percentualeIva"],2)),
                                    rigatomodel["unitaBase"],
                                    rigatomodel["multiplo"],
                                    rigatomodel["listino"],
-                                   '%9.3f' % float(rigatomodel["quantita"]),
-                                   ('%14.' + Environment.conf.decimals + 'f') % float(rigatomodel["prezzoLordo"]),
+                                   str(mN(rigatomodel["quantita"],3)),
+                                   str(mN(rigatomodel["prezzoLordo"])),
                                    self._righe[j]["applicazioneSconti"] + ' ' + getStringaSconti(rigatomodel["sconti"]),
-                                   ('%14.' + Environment.conf.decimals + 'f') % float(rigatomodel["prezzoNetto"]),
-                                   ('%14.2f') % round(float(rigatomodel["totale"]), 2)))
+                                   str(mN((rigatomodel["prezzoNetto"]))),
+                                   str(mN(rigatomodel["totale"],2))))
         self.righe_treeview.set_model(self.modelRiga)
         self._loading = False
         self.calcolaTotale()
@@ -877,11 +991,22 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def setDao(self, dao):
+        """
+        Inizializza un Dao nuovo se None o usa quello passato Dalla anag Filter 
+        """
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = TestataMovimento()
             # Suggerisce la data odierna
             self.dao.data_movimento = datetime.datetime.today()
+            try:
+                if Environment.conf.Documenti.fornitore_predefinito:
+                    cli = Fornitore().select(codicesatto= Environment.conf.Documenti.fornitore_predefinito)
+                    if cli:
+                        self.dao.id_fornitore = cli[0].id
+                        self.oneshot = True
+            except:
+                print "FORNITORE_PREDEFINITO NON SETTATO"
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = TestataMovimento().getRecord(id=dao.id)
@@ -889,6 +1014,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def saveDao(self):
+        """
+        Salva il Dao nel Database
+        """
         if not(len(self._righe) > 1):
             return
 
@@ -939,7 +1067,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             if self._righe[i]["sconti"] is not None:
                 for j in range(0, len(self._righe[i]["sconti"])):
                     daoSconto = ScontoRigaMovimento()
-                    daoSconto.valore = float(self._righe[i]["sconti"][j]["valore"])
+                    daoSconto.valore = Decimal(self._righe[i]["sconti"][j]["valore"])
                     daoSconto.tipo_sconto = self._righe[i]["sconti"][j]["tipo"]
                     scontiRigheMovimento.append(daoSconto)
             #scontiRigheMovimento[daoRiga] = sconti
@@ -958,7 +1086,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def on_righe_treeview_row_activated(self, treeview, path, column):
-        """ riporta la rica selezionata in primo piano per la modifica """
+        """ 
+        Riporta la riga selezionata in primo piano per la modifica 
+        """
         sel = treeview.get_selection()
         (model, self._iteratorRiga) = sel.get_selected()
         (selRow, ) = path
@@ -980,42 +1110,46 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self._righe[0]["multiplo"] = self._righe[self._numRiga]["multiplo"]
         self._righe[0]["idListino"] = self._righe[self._numRiga]["idListino"]
         self._righe[0]["listino"] = self._righe[self._numRiga]["listino"]
-        self._righe[0]["quantita"] = self._righe[self._numRiga]["quantita"]
-        self._righe[0]["moltiplicatore"] = self._righe[self._numRiga]["moltiplicatore"]
-        self._righe[0]["prezzoLordo"] = self._righe[self._numRiga]["prezzoLordo"]
-        self._righe[0]["percentualeIva"] = self._righe[self._numRiga]["percentualeIva"]
+        self._righe[0]["quantita"] = mN(self._righe[self._numRiga]["quantita"],3)
+        self._righe[0]["moltiplicatore"] = mN(self._righe[self._numRiga]["moltiplicatore"],2)
+        self._righe[0]["prezzoLordo"] = mN(self._righe[self._numRiga]["prezzoLordo"])
+        self._righe[0]["percentualeIva"] = mN(self._righe[self._numRiga]["percentualeIva"],2)
         self._righe[0]["applicazioneSconti"] = self._righe[self._numRiga]["applicazioneSconti"]
         self._righe[0]["sconti"] = self._righe[self._numRiga]["sconti"]
-        self._righe[0]["prezzoNetto"] = float(self._righe[self._numRiga]["prezzoNetto"])
-        self._righe[0]["totale"] = self._righe[self._numRiga]["totale"]
-        self._righe[0]["prezzoNettoUltimo"] = self._righe[self._numRiga]["prezzoNettoUltimo"]
+        self._righe[0]["prezzoNetto"] = mN(self._righe[self._numRiga]["prezzoNetto"])
+        self._righe[0]["totale"] = mN(self._righe[self._numRiga]["totale"],2)
+        self._righe[0]["prezzoNettoUltimo"] = mN(self._righe[self._numRiga]["prezzoNettoUltimo"])
 
         findComboboxRowFromId(self.id_magazzino_combobox, self._righe[0]["idMagazzino"])
         fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self._righe[0]["idArticolo"], True)
         findComboboxRowFromId(self.id_multiplo_customcombobox.combobox, self._righe[0]["idMultiplo"])
         self.refresh_combobox_listini()
         findComboboxRowFromId(self.id_listino_customcombobox.combobox, self._righe[0]["idListino"])
-
         self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
         self.descrizione_entry.set_text(self._righe[0]["descrizione"])
         self.codice_articolo_fornitore_entry.set_text(self._righe[0]["codiceArticoloFornitore"])
-        self.percentuale_iva_entry.set_text('%-5.2f' % self._righe[0]["percentualeIva"])
+        self.percentuale_iva_entry.set_text(str(mN(self._righe[0]["percentualeIva"],2)))
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
-        self.quantita_entry.set_text('%-9.3f' % float(self._righe[0]["quantita"]))
-        self.prezzo_lordo_entry.set_text(Environment.conf.number_format % float(self._righe[0]["prezzoLordo"]))
-        self.prezzo_netto_label.set_text(('%14.' + Environment.conf.decimals + 'f') % float(self._righe[0]["prezzoNetto"]))
-        self.totale_riga_label.set_text(('%14.2f') % round(float(self._righe[0]["totale"]), 2))
+        self.quantita_entry.set_text(str(mN(self._righe[0]["quantita"],3)))
+        self.prezzo_lordo_entry.set_text(str(mN(self._righe[0]["prezzoLordo"])))
+        self.prezzo_netto_label.set_text(str(mN(self._righe[0]["prezzoNetto"])))
+        self.totale_riga_label.set_text(str(mN(self._righe[0]["totale"],2)))
 
         self._loading = False
         self.articolo_entry.grab_focus()
 
 
     def on_new_row_button_clicked(self, widget):
+        """
+        Gestisce l'evento di creazione di una nuova riga
+        """
         self.nuovaRiga()
 
 
     def on_confirm_row_button_clicked(self, widget):
-        """ memorizza la riga inserita o modificata """
+        """ 
+        Memorizza la riga inserita o modificata 
+        """
         self._righe[0]["idMagazzino"] = findIdFromCombobox(self.id_magazzino_combobox)
         magazzino = leggiMagazzino(self._righe[0]["idMagazzino"])
         self._righe[0]["magazzino"] = magazzino["denominazione"]
@@ -1039,7 +1173,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             return
 
         costoVariato = (self._tipoPersonaGiuridica == "fornitore" and self._righe[0]["idArticolo"] is not None and
-                        (float(self._righe[0]["prezzoNetto"]) != float(self._righe[0]["prezzoNettoUltimo"])))
+                        (Decimal(self._righe[0]["prezzoNetto"]) != Decimal(self._righe[0]["prezzoNettoUltimo"])))
 
         if self._numRiga == 0:
             self._numRiga = len(self._righe)
@@ -1059,48 +1193,48 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self._righe[self._numRiga]["codiceArticolo"] = self._righe[0]["codiceArticolo"]
         self._righe[self._numRiga]["descrizione"] = self._righe[0]["descrizione"]
         self._righe[self._numRiga]["codiceArticoloFornitore"] = self._righe[0]["codiceArticoloFornitore"]
-        self._righe[self._numRiga]["percentualeIva"] = self._righe[0]["percentualeIva"]
+        self._righe[self._numRiga]["percentualeIva"] = mN(self._righe[0]["percentualeIva"],2)
         self._righe[self._numRiga]["idUnitaBase"] = self._righe[0]["idUnitaBase"]
         self._righe[self._numRiga]["unitaBase"] = self._righe[0]["unitaBase"]
         self._righe[self._numRiga]["idMultiplo"] = self._righe[0]["idMultiplo"]
         self._righe[self._numRiga]["multiplo"] = self._righe[0]["multiplo"]
         self._righe[self._numRiga]["idListino"] = self._righe[0]["idListino"]
         self._righe[self._numRiga]["listino"] = self._righe[0]["listino"]
-        self._righe[self._numRiga]["quantita"] = float(self._righe[0]["quantita"])
-        self._righe[self._numRiga]["moltiplicatore"] = float(self._righe[0]["moltiplicatore"])
-        self._righe[self._numRiga]["prezzoLordo"] = float(self._righe[0]["prezzoLordo"])
+        self._righe[self._numRiga]["quantita"] = mN(self._righe[0]["quantita"],3)
+        self._righe[self._numRiga]["moltiplicatore"] = mN(self._righe[0]["moltiplicatore"],2)
+        self._righe[self._numRiga]["prezzoLordo"] = mN(self._righe[0]["prezzoLordo"])
         self._righe[self._numRiga]["applicazioneSconti"] = self._righe[0]["applicazioneSconti"]
         self._righe[self._numRiga]["sconti"] = self._righe[0]["sconti"]
-        self._righe[self._numRiga]["prezzoNetto"] = float(self._righe[0]["prezzoNetto"])
-        self._righe[self._numRiga]["totale"] = float(self._righe[0]["totale"])
+        self._righe[self._numRiga]["prezzoNetto"] = mN(self._righe[0]["prezzoNetto"])
+        self._righe[self._numRiga]["totale"] = mN(self._righe[0]["totale"],2)
         if not inserisci:
             if self._iteratorRiga is None:
                 return
             self.modelRiga.set_value(self._iteratorRiga, 0, self._righe[self._numRiga]["magazzino"])
             self.modelRiga.set_value(self._iteratorRiga, 1, self._righe[self._numRiga]["codiceArticolo"])
             self.modelRiga.set_value(self._iteratorRiga, 2, self._righe[self._numRiga]["descrizione"])
-            self.modelRiga.set_value(self._iteratorRiga, 3, '%5.2f' % float(self._righe[self._numRiga]["percentualeIva"]))
+            self.modelRiga.set_value(self._iteratorRiga, 3, mN(self._righe[self._numRiga]["percentualeIva"],2))
             self.modelRiga.set_value(self._iteratorRiga, 4, self._righe[self._numRiga]["unitaBase"])
             self.modelRiga.set_value(self._iteratorRiga, 5, self._righe[self._numRiga]["multiplo"])
             self.modelRiga.set_value(self._iteratorRiga, 6, self._righe[self._numRiga]["listino"])
-            self.modelRiga.set_value(self._iteratorRiga, 7, '%9.3f' % float(self._righe[self._numRiga]["quantita"]))
-            self.modelRiga.set_value(self._iteratorRiga, 8, ('%14.' + Environment.conf.decimals + 'f') % float(self._righe[self._numRiga]["prezzoLordo"]))
+            self.modelRiga.set_value(self._iteratorRiga, 7, mN(self._righe[self._numRiga]["quantita"],3))
+            self.modelRiga.set_value(self._iteratorRiga, 8, mN(self._righe[self._numRiga]["prezzoLordo"]))
             self.modelRiga.set_value(self._iteratorRiga, 9, self._righe[self._numRiga]["applicazioneSconti"] + ' ' + getStringaSconti(self._righe[self._numRiga]["sconti"]))
-            self.modelRiga.set_value(self._iteratorRiga, 10, ('%14.' + Environment.conf.decimals + 'f') % float(self._righe[self._numRiga]["prezzoNetto"]))
-            self.modelRiga.set_value(self._iteratorRiga, 11, ('%14.2f') % round(float(self._righe[self._numRiga]["totale"]), 2))
+            self.modelRiga.set_value(self._iteratorRiga, 10, mN(self._righe[self._numRiga]["prezzoNetto"]))
+            self.modelRiga.set_value(self._iteratorRiga, 11, mN(self._righe[self._numRiga]["totale"],2))
         else:
             self.modelRiga.append((self._righe[self._numRiga]["magazzino"],
                                    self._righe[self._numRiga]["codiceArticolo"],
                                    self._righe[self._numRiga]["descrizione"],
-                                   '%5.2f' % float(self._righe[self._numRiga]["percentualeIva"]),
+                                   str(mN(self._righe[self._numRiga]["percentualeIva"],2)),
                                    self._righe[self._numRiga]["unitaBase"],
                                    self._righe[self._numRiga]["multiplo"],
                                    self._righe[self._numRiga]["listino"],
-                                   '%9.3f' % float(self._righe[self._numRiga]["quantita"]),
-                                   ('%14.' + Environment.conf.decimals + 'f') % float(self._righe[self._numRiga]["prezzoLordo"]),
+                                   str(mN(self._righe[self._numRiga]["quantita"],3)),
+                                   str(mN(self._righe[self._numRiga]["prezzoLordo"])),
                                    self._righe[self._numRiga]["applicazioneSconti"] + ' ' + getStringaSconti(self._righe[self._numRiga]["sconti"]),
-                                   ('%14.' + Environment.conf.decimals + 'f') % float(self._righe[self._numRiga]["prezzoNetto"]),
-                                   ('%14.2f') % round(float(self._righe[self._numRiga]["totale"]), 2)))
+                                   str(mN(self._righe[self._numRiga]["prezzoNetto"])),
+                                   str(mN(self._righe[self._numRiga]["totale"],2))))
         self.calcolaTotale()
 
         if costoVariato:
@@ -1111,58 +1245,81 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             dialog.destroy()
             if response == gtk.RESPONSE_YES:
                 self.on_variazione_listini_button_clicked(self.variazione_listini_button)
-        self._righe[self._numRiga]["prezzoNettoUltimo"] = float(self._righe[0]["prezzoNetto"])
+        self._righe[self._numRiga]["prezzoNettoUltimo"] = mN(self._righe[0]["prezzoNetto"])
         self.nuovaRiga()
 
 
     def on_undo_row_button_clicked(self, widget):
-        """ annulla l'inserimento o la modifica della riga in primo piano """
+        """ 
+        Annulla l'inserimento o la modifica della riga in primo piano 
+        """
         self.nuovaRiga()
 
 
     def on_delete_row_button_clicked(self, widget):
-        """ elimina la riga in primo piano """
+        """     
+        Elimina la riga in primo piano 
+        """
         if not(self._numRiga == 0):
             del(self._righe[self._numRiga])
             self.modelRiga.remove(self._iteratorRiga)
         self.calcolaTotale()
         self.nuovaRiga()
 
-
-    # ---
-
-
     def on_ricerca_codice_button_clicked(self, widget):
+        """
+        Imposta la ricerca per codice Articolo
+        """
         if self.ricerca_codice_button.get_active():
             self.ricercaArticolo()
 
 
     def on_ricerca_codice_a_barre_button_clicked(self, widget):
+        """
+        Imposta la ricerca per codice a barre
+        """
         if self.ricerca_codice_a_barre_button.get_active():
             self.ricercaArticolo()
 
 
     def on_ricerca_descrizione_button_clicked(self, widget):
+        """
+        Imposta la ricerca per Descrizione
+        """
         if self.ricerca_descrizione_button.get_active():
             self.ricercaArticolo()
 
 
     def on_ricerca_codice_articolo_fornitore_button_clicked(self, widget):
+        """
+        Imposta la ricerca per codice Articolo fornitore
+        """
         if self.ricerca_codice_articolo_fornitore_button.get_active():
             self.ricercaArticolo()
 
 
     def on_articolo_entry_key_press_event(self, widget, event):
+        """
+        FIXME
+        """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.ricercaArticolo()
 
     def on_search_row_button_clicked(self, widget):
+        """
+        FIXME
+        """
         self.ricercaArticolo()
 
     def ricercaArticolo(self):
-
+        """
+        Gestisce la ricerca complessa Articolo secondo il parametro impostato
+        """
         def on_ricerca_articolo_hide(anagWindow, anag):
+            """
+            Gestisce la chiusura della finestra di ricerca
+            """
             if anag.dao is None:
                 anagWindow.destroy()
                 return
@@ -1237,6 +1394,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def mostraArticolo(self, id):
+        """
+        Riempie l'interfaccia con i dati relativi all'articolo
+        """
         self.articolo_entry.set_text('')
         self.descrizione_entry.set_text('')
         self.codice_articolo_fornitore_entry.set_text('')
@@ -1270,7 +1430,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             self._righe[0]["idArticolo"] = id
             self._righe[0]["codiceArticolo"] = articolo["codice"]
             self._righe[0]["descrizione"] = articolo["denominazione"]
-            self._righe[0]["percentualeIva"] = articolo["percentualeAliquotaIva"]
+            self._righe[0]["percentualeIva"] = mN(articolo["percentualeAliquotaIva"],2)
             self._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
             self._righe[0]["unitaBase"] = articolo["unitaBase"]
             self._righe[0]["idMultiplo"] = None
@@ -1300,9 +1460,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
         self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
         self.descrizione_entry.set_text(self._righe[0]["descrizione"])
-        self.percentuale_iva_entry.set_text('%-5.2f' % self._righe[0]["percentualeIva"])
+        self.percentuale_iva_entry.set_text(str(self._righe[0]["percentualeIva"]))
         self.codice_articolo_fornitore_entry.set_text(self._righe[0]["codiceArticoloFornitore"])
-        self.prezzo_lordo_entry.set_text(Environment.conf.number_format % float(self._righe[0]["prezzoLordo"]))
+        self.prezzo_lordo_entry.set_text(str(self._righe[0]["prezzoLordo"]))
         self.on_show_totali_riga()
         if self._tipoPersonaGiuridica == "cliente":
             self.id_listino_customcombobox.combobox.grab_focus()
@@ -1311,52 +1471,72 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         else:
             self.descrizione_entry.grab_focus()
 
-
+    def on_totale_spinbutton_focus_out_event(self, spinbutton, event):
+        """
+        Gestisce il totale Arbitrario per modifica "rosas"
+        """
+        self.quantita_entry.grab_focus()
+        self.quantita_entry.set_text("")
+        
     def on_show_totali_riga(self, widget = None, event = None):
-        """ calcola il prezzo netto """
-        self._righe[0]["quantita"] = float(self.quantita_entry.get_text() or 0)
-        self._righe[0]["prezzoLordo"] = float(self.prezzo_lordo_entry.get_text() or 0)
-        self._righe[0]["percentualeIva"] = float(self.percentuale_iva_entry.get_text() or 0)
+        """ 
+        Calcola il prezzo netto 
+        """
+        quantita = mN(self.quantita_entry.get_text(),3) or 0
+        self._righe[0]["quantita"] = quantita
+#        try:
+        if Environment.conf.Documenti.rosas == "yes":
+            prezzototale = Decimal(self.totale_spinbutton.get_text().strip().replace(",","."))
+            if prezzototale and quantita: prezzounitario = mN(prezzototale/quantita)
+            else: prezzounitario = 0
+            self._righe[0]["prezzoLordo"] = prezzounitario
+            self.prezzo_lordo_entry.set_text(str(prezzounitario))
+#        except:
+#            self._righe[0]["prezzoLordo"] = float(self.prezzo_lordo_entry.get_text() or 0)
+        self._righe[0]["percentualeIva"] = mN(self.percentuale_iva_entry.get_text(),2) or 0
         self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()
         self._righe[0]["prezzoNetto"] = self._righe[0]["prezzoLordo"]
         self._righe[0]["sconti"] = self.sconti_widget.getSconti()
         self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()
 
         self.getPrezzoNetto()
-        self.prezzo_netto_label.set_text(('%14.' + Environment.conf.decimals + 'f') % float(self._righe[0]["prezzoNetto"]))
+        self.prezzo_netto_label.set_text(str(mN(self._righe[0]["prezzoNetto"])))
         self.calcolaTotaleRiga()
         return False
 
 
     def calcolaTotaleRiga(self):
-        """ calcola il totale riga """
+        """ 
+        Calcola il totale riga 
+        """
         if self._righe[0]["prezzoNetto"] is None:
             self._righe[0]["prezzoNetto"] = 0
         if self._righe[0]["quantita"] is None:
             self._righe[0]["quantita"] = 0
         if self._righe[0]["moltiplicatore"] is None:
             self._righe[0]["moltiplicatore"] = 1
-        elif float(self._righe[0]["moltiplicatore"]) == 0:
+        elif mN(self._righe[0]["moltiplicatore"],2) == 0:
             self._righe[0]["moltiplicatore"] = 1
 
         self.getTotaleRiga()
-        self.totale_riga_label.set_text(('%14.2f') % round(float(self._righe[0]["totale"]), 2))
+        self.totale_riga_label.set_text(str(mN(self._righe[0]["totale"],2)))
 
 
     def calcolaTotale(self):
-        """ calcola i totali movimento """
-
-        totaleImponibile = float(0)
-        totaleImposta = float(0)
-        totaleNonScontato = float(0)
+        """ 
+        Calcola i totali movimento 
+        """
+        totaleImponibile = Decimal(0)
+        totaleImposta = Decimal(0)
+        totaleNonScontato = Decimal(0)
 
         castellettoIva = {}
 
         for i in range(1, len(self._righe)):
-            prezzoNetto = float(self._righe[i]["prezzoNetto"])
-            quantita = float(self._righe[i]["quantita"])
-            moltiplicatore = float(self._righe[i]["moltiplicatore"])
-            percentualeIva = float(self._righe[i]["percentualeIva"])
+            prezzoNetto = mN(self._righe[i]["prezzoNetto"])
+            quantita = mN(self._righe[i]["quantita"],3)
+            moltiplicatore = mN(self._righe[i]["moltiplicatore"],2)
+            percentualeIva = mN(self._righe[i]["percentualeIva"],2)
 
             totaleRiga = prezzoNetto * quantita * moltiplicatore
             percentualeIvaRiga = percentualeIva
@@ -1365,11 +1545,11 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                 self._fonteValore == "acquisto_iva"):
                 totaleImponibileRiga = calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)
             else:
-                totaleImponibileRiga = float(totaleRiga)
+                totaleImponibileRiga = mN(totaleRiga,2)
                 totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
 
-            totaleRiga = round(totaleRiga, 2)
-            totaleImponibileRiga = round(totaleImponibileRiga, 2)
+            totaleRiga = mN(totaleRiga, 2)
+            totaleImponibileRiga = mN(totaleImponibileRiga, 2)
 
             totaleImpostaRiga = totaleRiga - totaleImponibileRiga
             totaleNonScontato += totaleRiga
@@ -1383,25 +1563,25 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                 castellettoIva[percentualeIvaRiga]['imposta'] += totaleImpostaRiga
                 castellettoIva[percentualeIvaRiga]['totale'] += totaleRiga
 
-        self.totale_generale_label.set_text(('%14.2f') % float(totaleNonScontato))
-        self.totale_generale_riepiloghi_label.set_text(('%14.2f') % float(totaleNonScontato))
-        self.totale_imponibile_label.set_text(('%14.2f') % float(totaleImponibile))
-        self.totale_imponibile_riepiloghi_label.set_text(('%14.2f') % float(totaleImponibile))
-        self.totale_imposta_label.set_text(('%14.2f') % float(totaleImposta))
-        self.totale_imposta_riepiloghi_label.set_text(('%14.2f') % float(totaleImposta))
+        self.totale_generale_label.set_text(str(mN(totaleNonScontato,2)))
+        self.totale_generale_riepiloghi_label.set_text(str(mN(totaleNonScontato,2)))
+        self.totale_imponibile_label.set_text(str(mN(totaleImponibile,2)))
+        self.totale_imponibile_riepiloghi_label.set_text(str(mN(totaleImponibile,2)))
+        self.totale_imposta_label.set_text(str(mN(totaleImposta,2)))
+        self.totale_imposta_riepiloghi_label.set_text(str(mN(totaleImposta,2)))
 
         model = self.riepiloghi_iva_treeview.get_model()
         model.clear()
         for k in castellettoIva.keys():
-            model.append(('%5.2f' % float(k),
-                         ('%14.2f') % float(castellettoIva[k]['imponibile']),
-                         ('%14.2f') % float(castellettoIva[k]['imposta'])))
-
-
-    # ---
+            model.append((mN(k,2),
+                         str(mN(castellettoIva[k]['imponibile'],2)),
+                         str(mN(castellettoIva[k]['imposta'],2))))
 
 
     def showMessage(self, msg):
+        """
+        Generico dialog di messaggio 
+        """
         dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
         dialog.run()
@@ -1409,6 +1589,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def on_storico_costi_button_clicked(self, toggleButton):
+        """
+        FIXME
+        """
         from StoricoForniture import StoricoForniture
         idArticolo = self._righe[0]["idArticolo"]
         if self._tipoPersonaGiuridica == "fornitore":
@@ -1423,6 +1606,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def on_storico_listini_button_clicked(self, toggleButton):
+        """
+        FIXME
+        """
         from StoricoListini import StoricoListini
         idArticolo = self._righe[0]["idArticolo"]
 
@@ -1434,6 +1620,9 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def on_variazione_listini_button_clicked(self, toggleButton):
+        """
+        Apre l'interfaccia di variazione listino
+        """
         if self._righe[0]["idArticolo"] is None:
             self.showMessage('Selezionare un articolo !')
             return
@@ -1443,21 +1632,22 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         costoNuovo = None
         costoUltimo = None
         if self._tipoPersonaGiuridica == "fornitore":
-            costoNuovo = float(self._righe[0]["prezzoNetto"])
-            costoUltimo = float(self._righe[0]["prezzoNettoUltimo"])
+            costoNuovo = mN(self._righe[0]["prezzoNetto"])
+            costoUltimo = mN(self._righe[0]["prezzoNettoUltimo"])
         anag = VariazioneListini(idArticolo, costoUltimo, costoNuovo)
         anagWindow = anag.getTopLevel()
         anagWindow.set_transient_for(self.dialogTopLevel)
         anagWindow.show_all()
 
 
-    # ---
-
-
     def on_edit_date_and_number_button_clicked(self, toggleButton):
+        """
+        FIXME
+        """
         msg = 'Attenzione! Si sta per variare i riferimenti primari del movimento.\n Continuare ?'
-        dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+        dialog = gtk.MessageDialog(self.dialogTopLevel, 
+                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                    gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
         response = dialog.run()
         dialog.destroy()
         if response == gtk.RESPONSE_YES:
@@ -1466,16 +1656,12 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             self.data_movimento_entry.grab_focus()
             self.id_persona_giuridica_customcombobox.set_sensitive(True)
 
-
     def showDatiDocumento(self):
+        """
+        Mostra ', se presente una eventuale relazione con un Documento in archivio
+        """
         stringLabel = '-'
         if self.dao.id_testata_documento is not None:
-            #queryString = ('SELECT data_documento, numero, parte FROM ' +
-                           #Environment.connection._schemaAzienda +
-                           #'.testata_documento WHERE id = ' + str(self.dao.id_testata_documento))
-            #argList = []
-            #Environment.connection._cursor.execute(queryString, argList)
-            #res = Environment.connection._cursor.fetchall()
             res = TestataDocumento().getRecord(id = self.dao.id_testata_documento)
             if res:
                 stringLabel = 'N.' + str(res.numero) + ' del ' + dateToString(res.data_documento)

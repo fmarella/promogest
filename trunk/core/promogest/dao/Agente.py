@@ -15,9 +15,15 @@ from promogest.ui.utils import  codeIncrement
 class Agente(Dao):
 
     def __init__(self, arg=None):
+        """
+        Tabella Agente
+        """
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
+        """
+        Creazione dei parametri del filtro
+        """
         if k == 'codice':
             dic= {k : persona_giuridica.c.codice.ilike("%"+v+"%")}
         elif k == 'ragioneSociale':
@@ -25,9 +31,11 @@ class Agente(Dao):
         elif k == 'insegna':
             dic = {k:persona_giuridica.c.insegna.ilike("%"+v+"%")}
         elif k == 'cognomeNome':
-            dic = {k: or_(persona_giuridica.c.cognome.ilike("%"+v+"%"),persona_giuridica.c.cognome.ilike("%"+v+"%"))}
+            dic = {k: or_(persona_giuridica.c.cognome.ilike("%"+v+"%"),
+                                persona_giuridica.c.cognome.ilike("%"+v+"%"))}
         elif k == 'localita':
-            dic = {k:or_(persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"),persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
+            dic = {k:or_(persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"),
+                        persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
         elif k == 'partitaIva':
             dic = {k:persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
         elif k == 'codiceFiscale':
@@ -36,9 +44,8 @@ class Agente(Dao):
 
 def getNuovoCodiceAgente():
     """
-        Restituisce il codice progressivo per un nuovo agente
+    Restituisce il codice progressivo per un nuovo agente
     """
-
     codice = ''
     listacodici= []
     if hasattr(conf,'Agenti'):
@@ -58,7 +65,9 @@ def getNuovoCodiceAgente():
     return codice
 
 
-persona_giuridica=Table('persona_giuridica',params['metadata'],schema = params['schema'],autoload=True)
+persona_giuridica=Table('persona_giuridica',params['metadata'],
+                                                        schema=params['schema'],
+                                                        autoload=True)
 
 agent=Table('agente',params['metadata'],schema = params['schema'],autoload=True)
 

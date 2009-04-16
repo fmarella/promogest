@@ -5,13 +5,16 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francescoo@promotux.it>
 
-from promogest.ui.utils import *
-from promogest.ui.utilsCombobox import *
 import gtk
 import gobject
-from promogest.ui.GladeWidget import GladeWidget
+from sqlalchemy.ext.serializer import loads, dumps
 from promogest import Environment
+from promogest.dao.AppLog import AppLog
+from promogest.dao.Articolo import Articolo
 from promogest.dao.Magazzino import Magazzino
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
+from promogest.ui.GladeWidget import GladeWidget
 
 class SincroDB(GladeWidget):
     """ Finestra di gestione esdportazione variazioni Database """
@@ -20,6 +23,7 @@ class SincroDB(GladeWidget):
                         fileName='sincro_dialog.glade')
         self.placeWindow(self.getTopLevel())
         self.magazzini_treeview()
+        self.filename_entry.set_text("exportData")
 
     def on_tuttecose_checkbutton_toggled(self,toggled):
         """ check delle anag da esportare ...le seleziona tutte """
@@ -94,13 +98,40 @@ class SincroDB(GladeWidget):
                     pass
 
     def retreiveDir(self):
-        print "DDDDDD",self.destination_filechooserbutton.get_current_folder()
-        return self.destination_filechooserbutton.get_current_folder()
+        savetoDir = self.destination_filechooserbutton.get_current_folder()
+        return savetoDir
 
     def retreiveFileName(self):
-        return self.filename_entry.get_text()
+        saveToName = self.filename_entry.get_text()
+        return saveToName
+
+    def retreiveData(self):
+        Environment.meta.reflect(schema="latelier" )
+        app = Environment.params["session"].query(AppLog).filter(and_(AppLog.schema_azienda =="latelier",AppLog.message=="INSERT Articolo")).all()
+        #app = Environment.params["session"].query(Articolo).all()[:10]
+        print app
+        for a in app:
+            #print a.pkid
+            print a.id
+            #b = dumps(a)
+            #print a.object
+            c =  loads(a.object, Environment.params["metadata"],Environment.Session)
+            print "GGGGGGGGGG",c.codice
+
+    def retreiveWhat(self):
+        """
+        Vediamo cosa è stato selezionato per l'esportazione
+        """
+        articoli = self.articoli_togglebutton.set_active(True)
+        clienti = self.clienti_togglebutton.set_active(True)
+        parametri = self.parametri_togglebutton.set_active(True)
+        magazzini = self.magazzini_togglebutton.set_active(True)
+        fornitori = self.fornitori_togglebutton.set_active(True)
+        vettori = self.vettori_togglebutton.set_active(True)
+
 
     def on_run_button_clicked(self, button):
-        print "RUN"
+        print "RUN",  self.retreiveDir(), self.retreiveFileName()
         self.retreiveDir()
         self.retreiveFileName()
+        self.retreiveData()

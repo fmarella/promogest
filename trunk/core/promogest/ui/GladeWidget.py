@@ -229,6 +229,16 @@ class GladeWidget(SimpleGladeApp):
                 self.topLevelWindow.move(self.left, self.top)
 
 
+    def on_icon_press(self,entry,position,event):
+        """
+        scopettina agganciata ad un segnale generico
+        """
+        if position.real == 0:
+            pass
+            #print "CERCA"
+        else:                            #secondary
+            entry.set_text("") 
+
     def on_top_level_closed(self):
         """ Saving window's parameters """
 

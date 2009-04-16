@@ -50,16 +50,26 @@ blink = 0
 screens = []
 
 def on_activate(status):
+    """
+    Funzione per la gestione dell'icona nel sys tray
+    @param status:
+    @type status:
+    """
     global visible,blink, windowGroup, screens
     visible, blink,screens = on_status_activate(status, windowGroup, visible, blink, screens)
 statusIcon.connect('activate', on_activate)
 
 
 class Login(GladeApp):
-    """
-        Login widget Class
-    """
+
     def __init__(self, debugSQL=None, debugALL=None):
+        """
+        Login windows
+        @param debugSQL=None: not used at this moment
+        @type debugSQL=None: Boolean
+        @param debugALL=None: not used at this moment
+        @type debugALL=None: Boolean
+        """
         self.azienda=None
         self._dbConnString = ''
         self.modules = {}
@@ -107,36 +117,42 @@ class Login(GladeApp):
         self.getTopLevel().show_all()
 
     def randomSplash(self):
+        """
+        take a random splash for pg2 login window
+        """
         import random
         randomFile = random.sample([1,2,3,4,5,6,7,8],1)[0]
         fileName = Environment.conf.guiDir + "splash["+str(randomFile)+"].png"
         return fileName
 
     def feddretreive(self):
+        """
+        FIXME
+        """
         d = feedparser.parse("http://blog.promotux.it/?feed=rss2")
         #self.checkUpdate()
         Environment.feedAll = d
         return
 
     def on_azienda_comboboxentry_changed(self, combo):
+        """
+        company combobox manage
+        """
         index = combo.get_active()
         if index >= 0:
             combo.child.set_text(combo.get_model()[index][0])
 
     def on_button_help_clicked(self, button):
         """
-            Funzione di servizio, uso il bottone come test per SincroDB
+            Help button, open sendmail widget
         """
-            #dao = a.message.split(" ")[1]
-            #query= Environment.params["session"].query(Articolo).get(id=eval(a.pkid)[0])
-            #print query
-        #print "INIZIAMOOOO", app
-        #serialized = dumps(app)
-        #print serialized
-
         sendemail = SendEmail()
 
     def on_button_login_clicked(self, button=None):
+        """
+        Button login signal clicked
+        @type button=None: gtk.Button
+        """
         username = self.username_comboxentry.child.get_text()
         password = self.password_entry.get_text()
         do_login = True
@@ -238,6 +254,9 @@ class Login(GladeApp):
                 do_login = False
 
     def on_aggiorna_button_clicked(self, widget):
+        """
+        Upgrande button signal clicked
+        """
         svndialog = GladeWidget('svnupdate_dialog', callbacks_proxy=self)
         svndialog.getTopLevel().set_transient_for(self.getTopLevel())
         encoding = locale.getlocale()[1]
@@ -272,6 +291,14 @@ class Login(GladeApp):
             svndialog.svnupdate_dialog.destroy()
 
     def groupModulesByType(self):
+        """
+        There are different types od modules,:
+        anagrafica : add one of the principal list like customer,o sellers
+        parametro : add one parameter in the parametere frame
+        anagrafica_diretta : add a direct list, Vendita dettaglio is one of them
+        frame :add one frame like listini or stores
+        permanent_frame : ....
+        """
         self.anagrafiche_modules = {}
         self.parametri_modules = {}
         self.anagrafiche_dirette_modules = {}
@@ -291,8 +318,10 @@ class Login(GladeApp):
 
 
     def importModulesFromDir(self, modules_dir):
-            """Check the modules directory and automatically try to load all available modules"""
-            Environment.modulesList=["Contatti","Pagamenti"]
+            """
+            Check the modules directory and automatically try to load all available modules
+            """
+            Environment.modulesList=["Pagamenti"]
             modules_folders = [folder for folder in os.listdir(modules_dir) \
                             if (os.path.isdir(os.path.join(modules_dir, folder)) \
                             and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
@@ -315,6 +344,10 @@ class Login(GladeApp):
             self.groupModulesByType()
 
     def on_login_window_key_press_event(self, widget, event):
+        """
+        key press signal on login window
+        """
+
         if event.type == gtk.gdk.KEY_PRESS:
             if event.state & gtk.gdk.CONTROL_MASK:
                 key = str(gtk.gdk.keyval_name(event.keyval))
@@ -324,6 +357,9 @@ class Login(GladeApp):
                     self.on_button_login_clicked()
 
 def on_main_window_closed(main_window, login_window):
+    """
+    main windows close event in login windows   
+    """
     login_window.show()
     global windowGroup
     windowGroup.append(login_window)

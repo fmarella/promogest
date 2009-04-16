@@ -3,19 +3,19 @@
 # Promogest
 #
 # Copyright (C) 2008 by Promotux Informatica - http://www.promotux.it/
-# Author: Dr astico (Pinna Marco) <marco@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 
 import gtk
+import datetime
 from sqlalchemy import *
 from sqlalchemy.orm import *
+from sqlalchemy.ext.serializer import loads, dumps
 from promogest.Environment import *
-#from AppLog import AppLog
 from promogest.ui.GtkExceptionHandler import GtkExceptionHandler
-#from DaoUtils import saveToAppLog
 
 class Dao(object):
-    """Astrazione generica di ciò˛ che fu il vecchio dao basata su sqlAlchemy
+    """
+    Astrazione generica di ciò˛ che fu il vecchio dao basata su sqlAlchemy
     """
     def __init__(self, entity=None, exceptionHandler=None):
         self.session = params["session"]
@@ -34,9 +34,10 @@ class Dao(object):
 
     def select(self, orderBy=None, distinct=False, groupBy=None,join=None, offset=0,
                 batchSize=20,complexFilter=None,isList = "all", **kwargs):
-        """ Funzione riscritta diverse volte, il vecchio sistema che
-            permetteva di aggiungere a cascata nuove opzioni sembrava rallentare
-            leggermente ...questo sistema meno elegante è invece più performante
+        """ 
+        Funzione riscritta diverse volte, il vecchio sistema che
+        permetteva di aggiungere a cascata nuove opzioni sembrava rallentare
+        leggermente ...questo sistema meno elegante è invece più performante
         """
         filter1 = filter2 = None
         if complexFilter:
@@ -67,7 +68,9 @@ class Dao(object):
             self.raiseException(e)
 
     def count(self, complexFilter=None,distinct =None,**kwargs):
-        """ Restituisce il numero delle righe """
+        """
+        Restituisce il numero delle righe 
+        """
         _numRecords = 0
         if complexFilter:
             filter = complexFilter
@@ -99,14 +102,14 @@ class Dao(object):
         self.saveAppLog(self)
 
     def saveAppLog(self,dao):
-        #saveToAppLog(self)
-        self.commit()
+        self.saveToAppLog(self)
+#        self.commit()
 
     def commit(self):
         """ Salva i dati nel DB"""
         try:
             params["session"].commit()
-            return True
+            return 1
         except Exception,e:
             msg = """ATTENZIONE ERRORE
     Qui sotto viene riportato l'errore di sistema:
@@ -122,11 +125,53 @@ class Dao(object):
             print "ERRORE", e
             ciccio= params["session"].rollback()
             print "CICCIO", ciccio
-            return False
+            return 0
 
+    def saveToAppLog(self, status=True,action=None, value=None):
+        """
+        Salviamo l'operazione nella tabella di log con un oggetto 
+        pickeld 
+        """
+        if params["session"].dirty:
+            message = "UPDATE "+ self.__class__.__name__ 
+        elif params["session"].new:
+            message = "INSERT " + self.__class__.__name__
+        elif params["session"].deleted:
+            message = "DELETE "+ self.__class__.__name__ 
+        else:
+            message = "UNKNOWN ACTION"
+        level = self.commit()
+        if level:
+            result = " CORRETTO"
+        else:
+            result = " ERRATO"
+        registration_date = datetime.datetime.now()
+#        schema_azienda = params['schema']
+        id_utente = params['usernameLoggedList'][0]
+        utentedb = params['usernameLoggedList'][3]
+        utente = params['usernameLoggedList'][1]
+        mapper = object_mapper(self)
+        pk = mapper.primary_key_from_instance(self)
+        completeMessage= message + " " +str(pk)
+        appLogTable = Table('app_log', params['metadata'], autoload=True, schema=params['mainSchema'])
+        aplot = appLogTable.insert()
+#        print "OHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH",self
+        aplot.execute(
+                id_utente = params['usernameLoggedList'][0],
+                utentedb = params['usernameLoggedList'][1],
+                schema_azienda = params['schema'],
+                level = "I",
+                message = completeMessage,
+                value = level,
+                registration_date = datetime.datetime.now(),
+                object = dumps(self)
+                )
+        print "[LOG] %s da %s in %s in data %s" %(completeMessage,utente, params['schema'] ,registration_date.strftime("%d/%m/%Y"))
 
     def _resetId(self):
-        """Riporta l'id a None"""
+        """
+        Riporta l'id a None
+        """
         self.id = None
 
     def sameRecord(self, dao):
@@ -201,7 +246,8 @@ class Dao(object):
         #raise exception
 
     def prepareFilter(self, kwargs):
-        """ Take filter data from the gui and build the dictionary for the filter
+        """ 
+        Take filter data from the gui and build the dictionary for the filter
         """
         filter_parameters = []
         for key,value in kwargs.items():

@@ -15,7 +15,6 @@ class Azienda(Dao):
 
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
-        #pass
 
     def filter_values(self, k,v):
         dic= {  'denominazione' : azienda.c.denominazione.ilike("%"+v+"%")}

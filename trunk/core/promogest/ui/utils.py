@@ -28,6 +28,11 @@ from utilsCombobox import *
 
 
 def articleType(dao):
+    """
+    Che tipo di articolo è? Necessaria principalmente per taglie e Colore
+    @param dao: Dao articolo su cui fare le verifiche
+    @type dao: object
+    """
     if dao and "PromoWear" in Environment.modulesList:
         #print "AAAAAAA", dao.id, dao.id_articolo_taglia_colore, dao.id_articolo_padre_taglia_colore, dao.articoliTagliaColore, "AAAAAA"
         if (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre is None) and (dao.articoliTagliaColore):
@@ -99,10 +104,12 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
 
 
 def leggiCliente(id):
+    """
+    Legge un Dao restituisce un dizionario della tabella cliente con alcune 
+    property risolte
+    """
     from  promogest.dao.Cliente import Cliente
-    """
-    Restituisce un dizionario con le informazioni sul cliente letto
-    """
+
     _id = None
     _ragioneSociale = ''
     _nome = ''
@@ -304,7 +311,9 @@ def leggiMagazzino(id):
             "email": _email}
 
 def leggiListino(idListino=None, idArticolo=None):
-    """ Restituisce un dizionario con le informazioni sul listino letto """
+    """ 
+    Restituisce un dizionario con le informazioni sul listino letto 
+    """
     from promogest.dao.Listino import Listino
     from promogest.dao.ListinoArticolo import ListinoArticolo
     from promogest.dao.ListinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalente
@@ -400,7 +409,9 @@ def leggiListino(idListino=None, idArticolo=None):
     return listinoDict
 
 def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=False):
-    """ Restituisce un dizionario con le informazioni sulla fornitura letta """
+    """ 
+    Restituisce un dizionario con le informazioni sulla fornitura letta 
+    """
     from promogest.dao.Fornitura import Fornitura
     from promogest.dao.ScontoFornitura import ScontoFornitura
     _prezzoLordo = 0
@@ -566,6 +577,9 @@ def on_combobox_agente_search_clicked(combobox, callName=None):
     """
 
     def refresh_combobox_agente(anagWindow):
+        """
+        FIXME
+        """
         if anag.dao is None:
             id = None
         else:
@@ -600,6 +614,9 @@ def on_combobox_vettore_search_clicked(combobox, callName=None):
     """
 
     def refresh_combobox_vettore(anagWindow):
+        """
+        FIXME
+        """
         if anag.dao is None:
             id = None
         else:
@@ -635,6 +652,9 @@ def on_combobox_magazzino_search_clicked(combobox, callName=None):
     """
 
     def refresh_combobox_magazzino(anagWindow):
+        """
+        FIXME
+        """
         if anag.dao is None:
             id = None
         else:
@@ -655,8 +675,7 @@ def on_combobox_magazzino_search_clicked(combobox, callName=None):
         anagWindow.set_transient_for(returnWindow)
         anagWindow.show_all()
 
-        anagWindow.connect("hide",
-                           refresh_combobox_magazzino)
+        anagWindow.connect("hide", refresh_combobox_magazzino)
     elif callName is not None:
         callName()
 
@@ -667,6 +686,9 @@ def on_combobox_azienda_search_clicked(combobox, callName=None):
     """
 
     def refresh_combobox_azienda(anagWindow):
+        """
+        FIXME
+        """
         if anag.dao is None:
             schema = None
         else:
@@ -698,6 +720,9 @@ def on_combobox_cliente_search_clicked(combobox, callName=None):
     """
 
     def refresh_combobox_cliente(anagWindow):
+        """
+        FIXME
+        """
         if anag.dao is None:
             id = None
         else:
@@ -733,6 +758,11 @@ def on_combobox_fornitore_search_clicked(combobox, callName=None):
     """
 
     def refresh_combobox_fornitore(anagWindow):
+        """
+        FIXME
+        @param anagWindow:
+        @type anagWindow:
+        """
         if anag.dao is None:
             id = None
         else:
@@ -787,7 +817,7 @@ def on_id_aliquota_iva_customcombobox_clicked(widget, button):
 
     def on_anagrafica_aliquote_iva_destroyed(window):
         """
-        all'uscita dall'anagrafica richiamata, aggiorna l'elenco associato
+        All'uscita dall'anagrafica richiamata, aggiorna l'elenco associato
         """
         widget.button.set_active(False)
         id = findIdFromCombobox(widget.combobox)
@@ -811,10 +841,15 @@ def on_id_aliquota_iva_customcombobox_clicked(widget, button):
 
 def on_id_categoria_articolo_customcombobox_clicked(widget, button):
     """
-    richiama l'anagrafica delle categorie articoli
+    Richiama l'anagrafica delle categorie articoli
     """
 
     def on_anagrafica_categorie_articoli_destroyed(window):
+        """
+        FIXME
+        @param window:
+        @type window:
+        """
         # all'uscita dall'anagrafica richiamata, aggiorna l'elenco associato
         widget.button.set_active(False)
         id = findIdFromCombobox(widget.combobox)
@@ -1078,6 +1113,11 @@ def on_id_fornitura_customcombobox_clicked(widget, button, idArticolo, idFornito
     """
 
     def on_anagrafica_forniture_destroyed(window):
+        """
+        FIXME
+        @param window:
+        @type window:
+        """
         widget.button.set_active(False)
 
 
@@ -1091,8 +1131,7 @@ def on_id_fornitura_customcombobox_clicked(widget, button, idArticolo, idFornito
     returnWindow = widget.get_toplevel()
     anagWindow.set_transient_for(returnWindow)
     anagWindow.show_all()
-    anagWindow.connect("destroy",
-                        on_anagrafica_forniture_destroyed)
+    anagWindow.connect("destroy", on_anagrafica_forniture_destroyed)
 
 
 def on_id_pagamento_customcombobox_clicked(widget, button):
@@ -1120,8 +1159,7 @@ def on_id_pagamento_customcombobox_clicked(widget, button):
     returnWindow = widget.get_toplevel()
     anagWindow.set_transient_for(returnWindow)
     anagWindow.show_all()
-    anagWindow.connect("destroy",
-                        on_anagrafica_pagamenti_destroyed)
+    anagWindow.connect("destroy", on_anagrafica_pagamenti_destroyed)
 
 
 def on_id_banca_customcombobox_clicked(widget, button):
@@ -1188,11 +1226,33 @@ def on_id_destinazione_merce_customcombobox_clicked(widget, button, idCliente):
 
 
 def insertComboboxSearchArticolo(combobox, idArticolo, clear=False, filter=True):
+    """
+    FIXME
+    @param combobox:
+    @type combobox:
+    @param idArticolo:
+    @type idArticolo:
+    @param clear=False:
+    @type clear=False:
+    @param filter=True:
+    @type filter=True:
+    """
     res = leggiArticolo(idArticolo)
     combobox.refresh(idArticolo, res["denominazione"], res, clear, filter)
 
 
 def insertComboboxSearchFornitore(combobox, idFornitore, clear=False, filter=True):
+    """
+    FIXME
+    @param combobox:
+    @type combobox:
+    @param idFornitore:
+    @type idFornitore:
+    @param clear=False:
+    @type clear=False:
+    @param filter=True:
+    @type filter=True:
+    """
     res = leggiFornitore(idFornitore)
     if res["ragioneSociale"] != '':
         combobox.refresh(idFornitore, res["ragioneSociale"], res, clear, filter)
@@ -1201,6 +1261,17 @@ def insertComboboxSearchFornitore(combobox, idFornitore, clear=False, filter=Tru
 
 
 def insertComboboxSearchCliente(combobox, idCliente, clear=False, filter=True):
+    """
+    FIXME
+    @param combobox:
+    @type combobox:
+    @param idCliente:
+    @type idCliente:
+    @param clear=False:
+    @type clear=False:
+    @param filter=True:
+    @type filter=True:
+    """
     res = leggiCliente(idCliente)
     if res["ragioneSociale"] != '':
         combobox.refresh(idCliente, res["ragioneSociale"], res, clear, filter)
@@ -1209,6 +1280,17 @@ def insertComboboxSearchCliente(combobox, idCliente, clear=False, filter=True):
 
 
 def insertComboboxSearchVettore(combobox, idVettore, clear=False, filter=True):
+    """
+    FIXME
+    @param combobox:
+    @type combobox:
+    @param idVettore:
+    @type idVettore:
+    @param clear=False:
+    @type clear=False:
+    @param filter=True:
+    @type filter=True:
+    """
     res = leggiVettore(idVettore)
     if res["ragioneSociale"] != '':
         combobox.refresh(idVettore, res["ragioneSociale"], res, clear, filter)
@@ -1217,16 +1299,49 @@ def insertComboboxSearchVettore(combobox, idVettore, clear=False, filter=True):
 
 
 def insertComboboxSearchMagazzino(combobox, idMagazzino, clear=False, filter=True):
+    """
+    FIXME
+    @param combobox:
+    @type combobox:
+    @param idMagazzino:
+    @type idMagazzino:
+    @param clear=False:
+    @type clear=False:
+    @param filter=True:
+    @type filter=True:
+     """
     res = leggiMagazzino(idMagazzino)
     combobox.refresh(idMagazzino, res["denominazione"], res, clear, filter)
 
 
 def insertComboboxSearchAzienda(combobox, schemaAzienda, clear=False, filter=True):
+    """
+    FIXME
+    @param combobox:
+    @type combobox:
+    @param schemaAzienda:
+    @type schemaAzienda:
+    @param clear=False:
+    @type clear=False:
+    @param filter=True:
+    @type filter=True:
+    """
     res = leggiAzienda(schemaAzienda)
     combobox.refresh(schemaAzienda, res["denominazione"], res, clear, filter)
 
 
 def insertComboboxSearchAgente(combobox, idAgente, clear=False, filter=True):
+    """
+    FIXME
+    @param combobox:
+    @type combobox:
+    @param idAgente:
+    @type idAgente:
+    @param clear=False:
+    @type clear=False:
+    @param filter=True:
+    @type filter=True:
+    """
     res = leggiAgente(idAgente)
     if res["ragioneSociale"] != '':
         combobox.refresh(idAgente, res["ragioneSociale"], res, clear, filter)
@@ -1236,11 +1351,33 @@ def insertComboboxSearchAgente(combobox, idAgente, clear=False, filter=True):
 
 
 def insertComboboxSearchArticolo(combobox, idArticolo, clear=False, filter=True):
+    """
+    FIXME
+    @param combobox:
+    @type combobox:
+    @param idArticolo:
+    @type idArticolo:
+    @param clear=False:
+    @type clear=False:
+    @param filter=True:
+    @type filter=True:
+    """
     res = leggiArticolo(idArticolo)
     combobox.refresh(idArticolo, res["denominazione"], res, clear, filter)
 
 
 def insertComboboxSearchFornitore(combobox, idFornitore, clear=False, filter=True):
+    """
+    FIXME
+    @param combobox:
+    @type combobox:
+    @param idFornitore:
+    @type idFornitore:
+    @param clear=False:
+    @type clear=False:
+    @param filter=True:
+    @type filter=True:
+    """
     res = leggiFornitore(idFornitore)
     if res["ragioneSociale"] != '':
         combobox.refresh(idFornitore, res["ragioneSociale"], res, clear, filter)
@@ -1249,6 +1386,17 @@ def insertComboboxSearchFornitore(combobox, idFornitore, clear=False, filter=Tru
 
 
 def insertComboboxSearchCliente(combobox, idCliente, clear=False, filter=True):
+    """
+    FIXME
+    @param combobox:
+    @type combobox:
+    @param idCliente:
+    @type idCliente:
+    @param clear=False:
+    @type clear=False:
+    @param filter=True:
+    @type filter=True:
+    """
     res = leggiCliente(idCliente)
     if res["ragioneSociale"] != '':
         combobox.refresh(idCliente, res["ragioneSociale"], res, clear, filter)
@@ -1257,6 +1405,17 @@ def insertComboboxSearchCliente(combobox, idCliente, clear=False, filter=True):
 
 
 def insertComboboxSearchVettore(combobox, idVettore, clear=False, filter=True):
+    """
+    FIXME
+    @param combobox:
+    @type combobox:
+    @param idVettore:
+    @type idVettore:
+    @param clear=False:
+    @type clear=False:
+    @param filter=True:
+    @type filter=True:
+    """
     res = leggiVettore(idVettore)
     if res["ragioneSociale"] != '':
         combobox.refresh(idVettore, res["ragioneSociale"], res, clear, filter)
@@ -1265,16 +1424,49 @@ def insertComboboxSearchVettore(combobox, idVettore, clear=False, filter=True):
 
 
 def insertComboboxSearchMagazzino(combobox, idMagazzino, clear=False, filter=True):
+    """
+    FIXME
+    @param combobox:
+    @type combobox:
+    @param idMagazzino:
+    @type idMagazzino:
+    @param clear=False:
+    @type clear=False:
+    @param filter=True:
+    @type filter=True:
+    """
     res = leggiMagazzino(idMagazzino)
     combobox.refresh(idMagazzino, res["denominazione"], res, clear, filter)
 
 
 def insertComboboxSearchAzienda(combobox, schemaAzienda, clear=False, filter=True):
+    """
+    FIXME
+    @param combobox:
+    @type combobox:
+    @param schemaAzienda:
+    @type schemaAzienda:
+    @param clear=False:
+    @type clear=False:
+    @param filter=True:
+    @type filter=True:
+    """
     res = leggiAzienda(schemaAzienda)
     combobox.refresh(schemaAzienda, res["denominazione"], res, clear, filter)
 
 
 def insertComboboxSearchAgente(combobox, idAgente, clear=False, filter=True):
+    """
+    FIXME
+    @param combobox:
+    @type combobox:
+    @param idAgente:
+    @type idAgente:
+    @param clear=False:
+    @type clear=False:
+    @param filter=True:
+    @type filter=True:
+    """
     res = leggiAgente(idAgente)
     if res["ragioneSociale"] != '':
         combobox.refresh(idAgente, res["ragioneSociale"], res, clear, filter)
@@ -1526,6 +1718,13 @@ def getScadenza(data_documento, ngiorniscad, FM = True):
         return data_scadenza
 
 def getScontiFromDao(daoSconti = [], daoApplicazione = 'scalare'):
+    """
+    FIXME
+    @param daoSconti:
+    @type daoSconti:
+    @param daoApplicazione:
+    @type daoApplicazione:
+    """
     applicazione = 'scalare'
     sconti = []
 
@@ -1538,6 +1737,11 @@ def getScontiFromDao(daoSconti = [], daoApplicazione = 'scalare'):
     return (sconti, applicazione)
 
 def getMisureFromRiga(daoMisura = []):
+    """
+    FIXME
+    @param daoMisura:
+    @type daoMisura:
+    """
     misura = []
 
     for s in daoMisura:
@@ -1546,12 +1750,24 @@ def getMisureFromRiga(daoMisura = []):
     return (misura)
 
 def getDato(dictMisura, dato):
+    """
+    FIXME
+    @param dictMisura:
+    @type dictMisura:
+    @param dato:
+    @type dato:
+    """
     returned = ''
     for s in dictMisura:
         returned = s[dato]
     return returned
 
 def getStringaSconti(listSconti):
+    """
+    FIXME
+    @param listSconti:
+    @type listSconti:
+    """
     stringaSconti = ''
     for s in listSconti:
         decimals = '2'
@@ -1566,7 +1782,9 @@ def getStringaSconti(listSconti):
     return stringaSconti
 
 def getDynamicStrListStore(length):
-    """return a gtk.ListStore of the specified lenght"""
+    """
+    return a gtk.ListStore of the specified lenght
+    """
     string1 = 'list = gtk.ListStore(str'
     string2 = ', str' * (length -1)
     string3 = ')'
@@ -1576,9 +1794,10 @@ def getDynamicStrListStore(length):
 
 
 def setFileName(filename, ext, returnName = False):
-    """Verify that the filename have the extension "ext"
-
-    If not, it will append the extension to the end of the filename."""
+    """
+    Verify that the filename have the extension "ext"
+    If not, it will append the extension to the end of the filename.
+    """
     name = os.path.split(filename)
     _filename = os.path.splitext(name[1])
     _ext = _filename[1].upper()[1:]
@@ -1599,8 +1818,24 @@ def setFileName(filename, ext, returnName = False):
 
 
 def showAnagraficaRichiamata(returnWindow, anagWindow, button=None, callName=None):
+    """
+    FIXME
+    @param returnWindow:
+    @type returnWindow:
+    @param anagWindow:
+    @type anagWindow:
+    @param button=None:
+    @type button=None:
+    @param callName=None:
+    @type callName=None:
+    """
 
     def on_anagrafica_richiamata_destroy(anagWindow):
+        """
+        FIXME
+        @param anagWindow:
+        @type anagWindow:
+        """
         if anagWindow in Login.windowGroup:
             Login.windowGroup.remove(anagWindow)
 ##        Login.windowGroup.append(anagReturn)
@@ -1631,6 +1866,15 @@ def getDateRange(string):
     return (begin_date, end_date)
 
 def obligatoryField(window, widget=None, msg=None):
+    """
+    FIXME
+    @param window:
+    @type window:
+    @param widget=None:
+    @type widget=None:
+    @param msg=None:
+    @type msg=None:
+    """
     if msg is None:
         msg = 'Campo obbligatorio !'
     dialog = gtk.MessageDialog(window, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -1699,6 +1943,13 @@ def destroy_event(window):
     gtk.main_do_event(event)
 
 def insertFileTypeChooser(filechooser,typeList):
+    """
+    FIXME
+    @param filechooser:
+    @type filechooser:
+    @param typeList:
+    @type typeList:
+    """
     fc_vbox = gtk.VBox(True, spacing=5)
     hbox1 = gtk.HBox(False,10)
     label = gtk.Label()
@@ -1720,6 +1971,11 @@ def insertFileTypeChooser(filechooser,typeList):
     return combobox
 
 def multilinedirtywork( param):
+    """
+    FIXME
+    @param param:
+    @type param:
+    """
     for i in param:
         try:
             lista = i['righe']
@@ -1746,7 +2002,9 @@ def multilinedirtywork( param):
 
 
 def on_status_activate(status, windowGroup, visible, blink, screens):
-    """ on press systray icon widget hide or show """
+    """ 
+    on press systray icon widget hide or show 
+    """
     if visible == 1:
         visible = 0
         screens = []
@@ -1776,6 +2034,9 @@ def getDateRange(string):
     return (begin_date, end_date)
 
 def checkCodFisc(codfis):
+    """
+    Funzione di verifica e controllo del codice fiscale
+    """
     codfis.upper()
     a = re.compile('^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$')
     t = a.match(codfis)
@@ -1798,7 +2059,17 @@ def checkCodFisc(codfis):
         return False
 
 def checkPartIva(partitaIVA):
+    """
+    FIXME
+    @param partitaIVA:
+    @type partitaIVA:
+    """
     def dialog():
+        """
+        FIXME
+        @param :
+        @type :
+        """
         msg = 'Attenzione Partita Iva formalmente scorretto\nricontrolla!!!'
         dialog = gtk.MessageDialog(None,
                                 gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -1839,6 +2110,13 @@ def checkPartIva(partitaIVA):
         return False
 
 def omogeneousCode(section=None, string = None):
+    """
+    FIXME
+    @param section=None:
+    @type section=None:
+    @param string:
+    @type string:
+    """
     if section == "Clienti":
         try:
             function = Environment.conf.Clienti.omogeneus_codice
@@ -1879,10 +2157,11 @@ def omogeneousCode(section=None, string = None):
         return string
 
 def hasAction(actionID=None):
-    """ La moduòlarizzazione richiede che
-        quando il modulo non è presente o non è attivato
-        la risposta sia sempre true perchè essendoci solo
-        admin ha de facto tutti i privilegi
+    """ 
+    La moduòlarizzazione richiede che
+    quando il modulo non è presente o non è attivato
+    la risposta sia sempre true perchè essendoci solo
+    admin ha de facto tutti i privilegi
     """
     if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
         from promogest.dao.RoleAction import RoleAction
@@ -1891,10 +2170,6 @@ def hasAction(actionID=None):
         roleActions = RoleAction().select(id_role=idRole,
                                                 id_action=actionID,
                                                 orderBy="id_role")
-        print "ROLEACTIONSSSSSSSSSSSSSSSSS", roleActions
-        #for p in roleActions:
-            #if int(p.id_action) == int(actionID):
-                #return True
         if roleActions:
             return True
         else:
@@ -1910,14 +2185,15 @@ def hasAction(actionID=None):
         return True
 
 def numeroRegistroGet(tipo=None, date=None):
-    """ Attenzione, funzione improvvisata, controllare meglio ed
-        aggiungere i check sui diversi tipi di rotazione """
+    """ 
+    Attenzione, funzione improvvisata, controllare meglio ed
+    aggiungere i check sui diversi tipi di rotazione 
+    """
     from promogest.dao.TestataMovimento import TestataMovimento
     from promogest.dao.TestataDocumento import TestataDocumento
     from promogest.dao.Setting import Setting
     date = time.strftime("%Y")
     numeri = []
-    #datepart= string.split(date, "/")
 
     _key= str(tipo+".registro").strip()
     registro = Setting().getRecord(id=_key)
@@ -1952,26 +2228,48 @@ def numeroRegistroGet(tipo=None, date=None):
     return (numero, registrovalue)
 
 def idArticoloFromFornitura(k,v):
+    """
+    FIXME
+    @param k:
+    @type k:
+    @param v:
+    @type v:
+    """
     from promogest.dao.Fornitura import Fornitura
     codiciArtForFiltered =  Environment.params["session"]\
-                                        .query(Fornitura)\
-                                        .filter(and_(Fornitura.codice_articolo_fornitore.ilike("%"+v+"%")))\
-                                        .all()
+                        .query(Fornitura)\
+                        .filter(and_(Fornitura.codice_articolo_fornitore.ilike("%"+v+"%")))\
+                        .all()
     return codiciArtForFiltered
 
 def getCategorieContatto(id=None):
+    """
+    FIXME
+    @param id=None:
+    @type id=None:
+    """
     from promogest.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
     dbCategorieContatto = ContattoCategoriaContatto().select(id=id,
-                                                                    batchSize=None,
-                                                                    orderBy="id_contatto")
+                                                            batchSize=None,
+                                                            orderBy="id_contatto")
     return dbCategorieContatto
 
 def getRecapitiContatto(id=None):
+    """
+    FIXME
+    @param id=None:
+    @type id=None:
+    """
     from promogest.dao.RecapitoContatto import RecapitoContatto
     dbRecapitiContatto = RecapitoContatto().select(idContatto=id)
     return dbRecapitiContatto
 
 def codeIncrement(value):
+    """
+    FIXME
+    @param value:
+    @type value:
+    """
 
     lastNum = re.compile(r'(?:[^\d]*(\d+)[^\d]*)+')
 
@@ -1987,6 +2285,15 @@ def codeIncrement(value):
     return increment(value)
 
 def checkCodiceDuplicato(codice=None,id=None,tipo=None):
+    """
+    FIXME
+    @param codice=None:
+    @type codice=None:
+    @param id=None:
+    @type id=None:
+    @param tipo=None:
+    @type tipo=None:
+    """
     if tipo =="Articolo":
         from promogest.dao.Articolo import Articolo
         if not id:
@@ -2011,29 +2318,32 @@ def checkCodiceDuplicato(codice=None,id=None,tipo=None):
         return True
 
 def mN(value,decimal=None):
-    """ funzione importante perchè normalizza le valute, mettendo i decimali così
-        come settato nel configure e restituisce un arrotondamento corretto """
+    """ 
+    funzione importante perchè normalizza le valute, mettendo i decimali così
+    come settato nel configure e restituisce un arrotondamento corretto 
+    """
     if not value or value =='':
         return Decimal(0)
     precisione = decimal or int(Environment.conf.decimals)
-    if precisione >=1:
-        decimal = "0."
-        decimal += (precisione-1) * "0"
-        decimal += "1"
-    else:
-        decimal = "0.01"
-    newvalue= Decimal(str(value).strip()).quantize(Decimal(decimal), rounding=ROUND_HALF_UP)
+    decimals = Decimal(10) ** -(precisione) 
+    newvalue= Decimal(str(value).strip()).quantize(Decimal(decimals), rounding=ROUND_HALF_UP)
     return newvalue
 
 def generateRandomBarCode(ean=13):
-    """ funzione di generazione codice ean13 random
-        utile per quei prodotti che non hanno un codice
-        chiaramente solo per uso interno
+    """ 
+    funzione di generazione codice ean13 random
+    utile per quei prodotti che non hanno un codice
+    chiaramente solo per uso interno
     """
     import random
     from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
     codice = ''
     def create(ean):
+        """
+        crea un codice di tipo ean 
+        @param ean: tipo di codice ( al momento gestisce  ean8 ed ean13)
+        @type ean: int ( 8 o 13 )
+        """
         codice = ''
         code=[8,0]
         if ean==13:
@@ -2064,6 +2374,11 @@ def generateRandomBarCode(ean=13):
             create(ean)
 
 def removeCodBarorphan():
+    """
+    FIXME
+    @param :
+    @type :
+    """
     from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
     bc = CodiceABarreArticolo().select(idArticoloNone=True, batchSize=None)
     if bc:
@@ -2072,6 +2387,11 @@ def removeCodBarorphan():
             a.delete()
 
 def calcolaTotali(daos):
+    """
+    FIXME
+    @param daos:
+    @type daos:
+    """
     totale_imponibile_non_scontato = 0
     totale_imponibile_scontato = 0
     totale_imposta_non_scontata = 0
@@ -2123,7 +2443,13 @@ def calcolaTotali(daos):
                         "totale_sospeso": totale_sospeso}
     return totaliGenerali
 def fenceDialog():
+    """
+    FIXME
+    """
     def on_button_clicked(button):
+        """
+        FIXME
+        """
         from promogest.ui.SendEmail import SendEmail
         sendemail = SendEmail()
 
@@ -2135,10 +2461,8 @@ def fenceDialog():
     image.set_from_file("./gui/messaggio_avviso.png")
     image.show()
     button = gtk.Button()
-    #button.set_image(button)
     button.add(image)
     button.show()
-    #dialog.vbox.pack_start(button)
     button.connect('clicked', on_button_clicked)
     dialog.set_image(button)
     response = dialog.run()
