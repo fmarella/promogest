@@ -552,8 +552,8 @@ def fillComboboxOperazioni(combobox, tipo=None, filter=False):
     """ 
     Crea l'elenco delle operazioni per la movimentazione di magazzino """
     if tipo:
-        res = Environment.params['session'].query(Operazione).filter(Operazione.tipo_operazione==tipo).order_by(Operazione.denominazione).all()
-#        res = Environment.params['session'].query(Operazione).filter(or_(Operazione.tipo_operazione==None,Operazione.tipo_operazione==tipo)).order_by(Operazione.denominazione).all()
+#        res = Environment.params['session'].query(Operazione).filter(Operazione.tipo_operazione==tipo).order_by(Operazione.denominazione).all()
+        res = Environment.params['session'].query(Operazione).filter(or_(Operazione.tipo_operazione==None,Operazione.tipo_operazione==tipo)).order_by(Operazione.denominazione).all()
     else:
         res = Environment.params['session'].query(Operazione).filter(Operazione.tipo_operazione==None).order_by(Operazione.denominazione).all()
     model = gtk.ListStore(object, str, str)
