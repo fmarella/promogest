@@ -73,9 +73,9 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     return lista
 
 def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None, allMag=None):
-     """
-     Calcola la giacenza insieme a giacenzaSel
-     """
+    """
+    Calcola la giacenza insieme a giacenzaSel
+    """
     if not idArticolo or not year or (not idMagazzino and not allMag):
         return "0"
     else:
