@@ -52,8 +52,6 @@ screens = []
 def on_activate(status):
     """
     Funzione per la gestione dell'icona nel sys tray
-    @param status:
-    @type status:
     """
     global visible,blink, windowGroup, screens
     visible, blink,screens = on_status_activate(status, windowGroup, visible, blink, screens)
@@ -144,9 +142,11 @@ class Login(GladeApp):
 
     def on_button_help_clicked(self, button):
         """
-            Help button, open sendmail widget
+        Help button, open sendmail widget
         """
-        sendemail = SendEmail()
+        print dir(Environment.params["metadata"])
+        print Environment.params["metadata"].tables
+#        sendemail = SendEmail()
 
     def on_button_login_clicked(self, button=None):
         """
@@ -292,7 +292,7 @@ class Login(GladeApp):
 
     def groupModulesByType(self):
         """
-        There are different types od modules,:
+        There are different types of modules,:
         anagrafica : add one of the principal list like customer,o sellers
         parametro : add one parameter in the parametere frame
         anagrafica_diretta : add a direct list, Vendita dettaglio is one of them

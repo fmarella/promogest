@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 #Promogest
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
@@ -7,48 +9,41 @@
 import glob
 from distutils.core import setup
 
-setup(name='promogest',
-      version='1.9.9.9',
+setup(name='PromoGest2',
+      version='2.0.0-rev341',
       license="GNU GENERAL PUBLIC LICENSE (see LICENSE for details), Copyright (c) 2005, Promotux Informatica",
       description='PROMOGEST Gestionale Open Source',
-      author='Promotux Informatica',
+      author='PromoTux Informatica',
       author_email='info@promotux.it',
       url='http://promogest.promotux.it/',
-      package_dir = {'':'core'},                #stabilisce /python come dir dei packages
+      package_dir = {'':'core'},                #stabilisce /core come dir dei packages
       packages = [
                 'promogest',
                 'promogest.dao',
-                'promogest.db',
                 'promogest.lib',
                 'promogest.ui',
                 'promogest.modules',
-                'promogest.modules.Pagamenti',
-                'promogest.modules.Vetreria',
-                'promogest.ui.plus',
                 'promogest.ui.widgets',
                 ],
       scripts = ['core/promogest.py'],          #include gli scripts eseguibili
       py_modules = [                              #include i moduli fuori da un package
                     'config',
                    ],
-      data_files = [                              #include tutti i files non .py fuori dai packages
-                   ('.',['INSTALL']),
-                   #('data/app',glob.glob('data/app/*')),
-                   #('data/bin',glob.glob('data/bin/*')),
-                   #('data/reg/sp',glob.glob('data/reg/sp/*')),
-                   #('data/reg/tab/promogest',glob.glob('data/reg/tab/*.sql')),
-                   #('data/reg/tab/promogest',glob.glob('data/reg/tab/promogest/*')),
-                   #('data/reg/view',glob.glob('data/reg/view/*')),
-                   #('data/sys',glob.glob('data/sys/*.sql')),
-                   #('data/sys',glob.glob('data/sys/*.sh')),
-                   #('data/sys/sp',glob.glob('data/sys/sp/*')),
-                   ('doc',glob.glob('doc/*')),
-                   #('install_db',glob.glob('install_db/*')),
+      package_data = [                              #include tutti i files non .py fuori dai packages
+                   ('.',[
+                        'INSTALL',
+                        'reinstalla.sh',
+                        'installa.sh',
+                        'aggiornamentoPromoGest2.sh',
+                        'disinstalla.sh',
+                        ]
+                    ),
                    ('core',[
                                 'core/configure.dist',
                                 'core/LICENSE',
                              ]
                    ),
+                   ('core/data',glob.glob('core/data/*')),
                    ('core/desktop',glob.glob('core/desktop/promoGest')),
                    ('core/desktop/gnome/',glob.glob('core/desktop/gnome/promogest.desktop')),
                    ('core/desktop/kde/',glob.glob('core/desktop/kde/promogest.desktop')),

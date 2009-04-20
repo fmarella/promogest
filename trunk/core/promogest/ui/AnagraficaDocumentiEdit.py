@@ -11,8 +11,12 @@
 import gtk
 import datetime
 from math import sqrt
+
+from promogest import Environment
+from GladeWidget import GladeWidget
 from AnagraficaComplessa import AnagraficaEdit
 from AnagraficaDocumentiEditUtils import *
+
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.RigaDocumento import RigaDocumento
@@ -25,11 +29,10 @@ from promogest.dao.Articolo import Articolo
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Operazione import Operazione
 from promogest.dao.Cliente import Cliente
+
 from utils import *
 from utilsCombobox import *
 from promogest.dao.DaoUtils import giacenzaArticolo
-from GladeWidget import GladeWidget
-from promogest import Environment
 
 if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
@@ -617,8 +620,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
 
     def saveDao(self):
-        """ Salvataggio del Dao """
-
+        """ 
+        Salvataggio del Dao 
+        """
         scontiRigaDocumentoList = {}
         if not(len(self._righe) > 1):
             raise Exception, "ATTENZIONE, TENTATIVO DI SALVATAGGIO SENZA RIGHE?????"

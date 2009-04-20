@@ -135,3 +135,4 @@ class SincroDB(GladeWidget):
         self.retreiveDir()
         self.retreiveFileName()
         self.retreiveData()
+

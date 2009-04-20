@@ -16,6 +16,17 @@ from sqlalchemy.ext.serializer import loads, dumps
 
 
 def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
+    """
+    Calcola la quantità di oggetti presenti in magazzino    
+    @param year=None: Anno di riferimento 
+    @type year=None: Intero
+    @param idMagazzino=None: se c'è questo è l'id magazzino
+    @type idMagazzino=None: interno
+    @param idArticolo=None: Id Articolo da quantificare
+    @type idArticolo=None:
+    @param allMag=: Tutti i magazzini ( utile per l'html )
+    @type allMag=: bool
+    """
     from TestataMovimento import TestataMovimento
     from RigaMovimento import RigaMovimento
     from Riga import Riga
@@ -36,6 +47,9 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     for ram in righeArticoloMovimentate:
 
         def calcolaGiacenza(quantita=None, moltiplicatore=None, segno=None, valunine=None):
+            """
+            Effettua realmente il calcolo
+            """
             giacenza=0
             if segno =="-":
                 giacenza -= quantita*moltiplicatore
@@ -59,6 +73,9 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     return lista
 
 def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None, allMag=None):
+     """
+     Calcola la giacenza insieme a giacenzaSel
+     """
     if not idArticolo or not year or (not idMagazzino and not allMag):
         return "0"
     else:
@@ -73,7 +90,9 @@ def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None, allMag=None):
 
 
 def TotaleAnnualeCliente(id_cliente=None):
-    """ Ritorna il totale avere da un cliente """
+    """ 
+    Ritorna il totale avere da un cliente 
+    """
     from promogest.dao.TestataDocumento import TestataDocumento
     documentiCliente = TestataDocumento().select(idCliente=id_cliente,
                                                 batchSize=None)
@@ -85,7 +104,9 @@ def TotaleAnnualeCliente(id_cliente=None):
 
 
 def TotaleClienteAperto(id_cliente=None):
-    """ Ritorna il totale avere da un cliente """
+    """
+    Ritorna il totale avere da un cliente
+    """
     from promogest.dao.TestataDocumento import TestataDocumento
     documentiCliente = TestataDocumento().select(idCliente=id_cliente,
                                                     batchSize=None)
@@ -97,6 +118,9 @@ def TotaleClienteAperto(id_cliente=None):
 
 
 def TotaleAnnualeFornitore(id_fornitore=None):
+    """
+    Calcola i sospesi del fornitore
+    """
     from promogest.dao.TestataDocumento import TestataDocumento
     documentiFornitore = TestataDocumento().select(idFornitore=id_fornitore,
                                                     batchSize=None)
@@ -108,6 +132,9 @@ def TotaleAnnualeFornitore(id_fornitore=None):
 
 
 def TotaleFornitoreAperto(id_fornitore=None):
+    """
+    Calcola i sospesi del fornitore
+    """
     from promogest.dao.TestataDocumento import TestataDocumento
     documentiFornitore = TestataDocumento().select(idFornitore=id_fornitore,
                                                     batchSize=None)
@@ -118,7 +145,9 @@ def TotaleFornitoreAperto(id_fornitore=None):
     return totale
 
 def righeDocumentoDel(id=None):
-    """Cancella le righe associate ad un documento"""
+    """
+    Cancella le righe associate ad un documento
+    """
     from promogest.dao.RigaDocumento import RigaDocumento
     if "SuMisura" in modulesList:
         from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
@@ -138,7 +167,9 @@ def righeDocumentoDel(id=None):
         return True
 
 def righeMovimentoDel(id=None):
-    """Cancella le righe associate ad un documento"""
+    """
+    Cancella le righe associate ad un documento
+    """
     from promogest.dao.RigaMovimento import RigaMovimento
     if "SuMisura" in modulesList:
         from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
@@ -159,7 +190,9 @@ def righeMovimentoDel(id=None):
         return True
 
 def scontiTestataDocumentoDel(id=None):
-    """Cancella gli sconti associati ad un documento"""
+    """
+    Cancella gli sconti associati ad un documento
+    """
     from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
     row = ScontoTestataDocumento().select(idScontoTestataDocumento= id,
                                                     offset = None,
@@ -172,7 +205,9 @@ def scontiTestataDocumentoDel(id=None):
         return True
 
 def scontiVenditaDettaglioDel(idListino=None,idArticolo=None,dataListinoArticolo=None):
-    """cancella gli sconti associati al listino articolo"""
+    """
+    cancella gli sconti associati al listino articolo
+    """
     from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
     row = ScontoVenditaDettaglio().select(idListino=idListino,
                                             idArticolo=idArticolo,
@@ -187,7 +222,9 @@ def scontiVenditaDettaglioDel(idListino=None,idArticolo=None,dataListinoArticolo
         return True
 
 def scontiVenditaIngrossoDel(idListino=None,idArticolo=None,dataListinoArticolo=None):
-    """cancella gli sconti associati al listino articolo"""
+    """
+    cancella gli sconti associati al listino articolo
+    """
     from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
     row = ScontoVenditaIngrosso().select(idListino=idListino,
                                                     idArticolo=idArticolo,
@@ -202,7 +239,9 @@ def scontiVenditaIngrossoDel(idListino=None,idArticolo=None,dataListinoArticolo=
         return True
 
 def testataDocumentoScadenzaDel(id=None):
-    """Cancella la scadenza documento associato ad un documento"""
+    """
+    Cancella la scadenza documento associato ad un documento
+    """
     from promogest.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
     row = TestataDocumentoScadenza().select(idTestataDocumentoScadenza= id,
                                                                 offset = None,
@@ -214,7 +253,9 @@ def testataDocumentoScadenzaDel(id=None):
     return True
 
 def scontiRigaDocumentoDel(id=None):
-    """Cancella gli sconti legati ad una riga movimento"""
+    """
+    Cancella gli sconti legati ad una riga movimento
+    """
     from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
     row = ScontoRigaDocumento().select(idRigaDocumento= id,
                                                 offset = None,
@@ -226,7 +267,9 @@ def scontiRigaDocumentoDel(id=None):
         return True
 
 def scontiRigaMovimentoDel(id=None):
-    """Cancella gli sconti legati ad una riga movimento"""
+    """
+    Cancella gli sconti legati ad una riga movimento
+    """
     from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
     row = ScontoRigaMovimento().select(idRigaMovimento= id,
                                                         offset = None,
@@ -236,77 +279,4 @@ def scontiRigaMovimentoDel(id=None):
             params['session'].delete(r)
         params["session"].commit()
         return True
-
-def saveToAppLog(dao=None,status=True,action=None, value=None):
-    commit()
-    return
-    from AppLog import AppLog
-    from ChiaviPrimarieLog import ChiaviPrimarieLog
-    whatstr= None
-    if action:
-        if not value:
-            esito = " ERRATO " + value
-            how = "E"
-        else:
-            esito = " CORRETTO " + value
-            how = "I"
-        message = action + esito
-    else:
-        if params["session"].dirty:
-            message = "UPDATE "+ dao.__class__.__name__
-        elif params["session"].new:
-            message = "INSERT " + dao.__class__.__name__
-        elif params["session"].deleted:
-            message = "DELETE "+ dao.__class__.__name__
-        else:
-            message = "UNKNOWN ACTION"
-
-    when = datetime.datetime.now()
-    where = params['schema']
-    if not params['usernameLoggedList'][0]:
-        whoID = None
-    else:
-        whoID = params['usernameLoggedList'][0]
-    utentedb = params['usernameLoggedList'][3]
-    utente = params['usernameLoggedList'][1]
-    pk = []
-    if action:
-        whatstr= value
-    else:
-        salvo = commit()
-        if salvo:
-            how = "I"
-        else:
-            how = "E"
-        mapper = object_mapper(dao)
-        pk = mapper.primary_key_from_instance(dao)
-
-    app = AppLog()
-    app.schema_azienda = where
-    app.message = message
-    app.level = how
-    #print dumps(whatstr)
-    #app.value = whatstr
-    app.registration_date = when
-    app.utentedb = utentedb
-    app.id_utente = whoID
-    #app.pkid = dumps(whatstr)
-    #print dumps(self.dao)
-    app.object = dumps(dao)
-    params["session"].add(app)
-    commit()
-    for p in pk:
-        pks = ChiaviPrimarieLog()
-        if type(p) == types.IntType:
-            pks.pk_integer = p
-        elif type(p).__name__ == 'unicode':
-            pks.pk_string = p
-        elif type(p).__name__ == 'str':
-            pks.pk_string = p
-        elif type(p).__name__ == 'datetime':
-            pks.pk_datetime = p
-        pks.id_application_log2 = app.id
-        params["session"].add(pks)
-    params["session"].commit()
-    print "[LOG] %s da %s in %s in data %s" %(message,utente, where ,when.strftime("%d/%m/%Y"))
 
