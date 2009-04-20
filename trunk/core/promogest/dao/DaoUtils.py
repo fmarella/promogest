@@ -272,8 +272,8 @@ def scontiRigaMovimentoDel(id=None):
     """
     from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
     row = ScontoRigaMovimento().select(idRigaMovimento= id,
-                                                        offset = None,
-                                                        batchSize = None)
+                                        offset = None,
+                                        batchSize = None)
     if row:
         for r in row:
             params['session'].delete(r)

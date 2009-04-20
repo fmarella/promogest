@@ -1484,15 +1484,15 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         """
         quantita = mN(self.quantita_entry.get_text(),3) or 0
         self._righe[0]["quantita"] = quantita
-#        try:
-        if Environment.conf.Documenti.rosas == "yes":
-            prezzototale = Decimal(self.totale_spinbutton.get_text().strip().replace(",","."))
-            if prezzototale and quantita: prezzounitario = mN(prezzototale/quantita)
-            else: prezzounitario = 0
-            self._righe[0]["prezzoLordo"] = prezzounitario
-            self.prezzo_lordo_entry.set_text(str(prezzounitario))
-#        except:
-#            self._righe[0]["prezzoLordo"] = float(self.prezzo_lordo_entry.get_text() or 0)
+        try:
+            if Environment.conf.Documenti.rosas == "yes":
+                prezzototale = Decimal(self.totale_spinbutton.get_text().strip().replace(",","."))
+                if prezzototale and quantita: prezzounitario = mN(prezzototale/quantita)
+                else: prezzounitario = 0
+                self._righe[0]["prezzoLordo"] = prezzounitario
+                self.prezzo_lordo_entry.set_text(str(prezzounitario))
+        except:
+            self._righe[0]["prezzoLordo"] = float(self.prezzo_lordo_entry.get_text() or 0)
         self._righe[0]["percentualeIva"] = mN(self.percentuale_iva_entry.get_text(),2) or 0
         self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()
         self._righe[0]["prezzoNetto"] = self._righe[0]["prezzoLordo"]
