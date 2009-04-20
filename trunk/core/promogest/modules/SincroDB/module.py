@@ -6,7 +6,6 @@
 
 from promogest import Environment
 import promogest.ui.Login
-#from promogest.modules.SincroDB.data.SincroDB import *
 from promogest.modules.SincroDB.ui.SincroDB import SincroDB
 
 MODULES_NAME = "SincroDB"

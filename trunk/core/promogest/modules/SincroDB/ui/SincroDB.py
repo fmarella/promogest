@@ -97,6 +97,28 @@ class SincroDB(GladeWidget):
                 else:
                     pass
 
+    def createSchema(self):
+        """
+        Genera un bel db, aggiornato alla versione attualecd corpo
+        """
+        engine = create_engine('sqlite:////home/vete/pg2_work/ciccio_db')
+        # create MetaData
+        meta2 = MetaData()
+        # bind to an engine
+        meta2.bind = engine
+
+        prova = []
+        newmetadata = Environment.params['metadata']
+#        print newmetadata.tables
+        for t in newmetadata.table_iterator(reverse=False):
+            t.metadata = meta2
+        newmetadata.create_all()
+#            table.split('.')[1]
+#        prova.append
+#        newmetadata.create_all(bind=)
+        return
+
+
     def retreiveDir(self):
         savetoDir = self.destination_filechooserbutton.get_current_folder()
         return savetoDir
@@ -131,6 +153,7 @@ class SincroDB(GladeWidget):
 
 
     def on_run_button_clicked(self, button):
+        self.createSchema()
         print "RUN",  self.retreiveDir(), self.retreiveFileName()
         self.retreiveDir()
         self.retreiveFileName()

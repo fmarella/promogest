@@ -145,7 +145,7 @@ class Login(GladeApp):
         Help button, open sendmail widget
         """
         print dir(Environment.params["metadata"])
-        print Environment.params["metadata"].tables
+#        print Environment.params["metadata"].tables
 #        sendemail = SendEmail()
 
     def on_button_login_clicked(self, button=None):
