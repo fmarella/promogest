@@ -2,9 +2,8 @@
 
 # Promogest
 #
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
+# Copyright (C) 2005-2009 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Dr_astico <zoccolodignu@gmail.com>
 # Author: Francesco Meloni <francesco@promotux.it>
 
 
@@ -16,8 +15,6 @@ import datetime
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport,  AnagraficaEdit, AnagraficaLabel
 
 from promogest import Environment
-#from promogest.dao.Dao import Dao
-#import promogest.dao.Listino
 from promogest.dao.Articolo import Articolo
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
@@ -26,12 +23,16 @@ from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
 from utils import *
 from utilsCombobox import fillComboboxListini,findIdFromCombobox,findComboboxRowFromId
 
-
+if "PromoWear" in Environment.modulesList:
+    from promogest.modules.PromoWear.ui.AnagraficaListinoArticoliExpand import *
 
 class AnagraficaListiniArticoli(Anagrafica):
     """ Anagrafica listini vendita articoli """
 
     def __init__(self, idArticolo=None, idListino=None,aziendaStr=None):
+        """
+        FIXME
+        """
         self._articoloFissato = (idArticolo <> None)
         self._listinoFissato = (idListino <> None)
         self._idArticolo=idArticolo
@@ -54,6 +55,11 @@ class AnagraficaListiniArticoli(Anagrafica):
         self.records_file_export.set_sensitive(True)
 
     def set_data_list(self, data):
+        """
+        FIXME
+        @param data:
+        @type data:
+        """
         rowlist=[]
         for d in data:
             denominazione = d.denominazione or ''
@@ -96,6 +102,11 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei listini """
 
     def __init__(self, anagrafica):
+        """
+        FIXME
+        @param anagrafica:
+        @type anagrafica:
+        """
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   'anagrafica_listini_articoli_filter_table',
@@ -104,6 +115,9 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
 
 
     def draw(self):
+        """
+        FIXME
+        """
         # Colonne della Treeview per il filtro
         treeview = self._anagrafica.anagrafica_filter_treeview
         rendererSx = gtk.CellRendererText()
@@ -164,61 +178,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
         if "PromoWear" in Environment.modulesList:
-            column = gtk.TreeViewColumn('Gruppo taglia', rendererSx, text=7)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self._changeOrderBy, 'gruppo_taglia')
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(100)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('Taglia', rendererSx, text=8)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self._changeOrderBy, 'taglia')
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(70)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('Colore', rendererSx, text=9)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self._changeOrderBy, 'colore')
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(70)
-            treeview.append_column(column)
-
-
-            column = gtk.TreeViewColumn('Anno', rendererSx, text=10)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self._changeOrderBy, 'anno')
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(50)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('Stagione', rendererSx, text=11)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self._changeOrderBy, 'stagione')
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(100)
-            treeview.append_column(column)
-
-            column = gtk.TreeViewColumn('Genere', rendererSx, text=12)
-            column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-            column.set_clickable(True)
-            column.connect("clicked", self._changeOrderBy, 'genere')
-            column.set_resizable(True)
-            column.set_expand(False)
-            column.set_min_width(50)
-            treeview.append_column(column)
-            self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str, str, str, str)
+            drawPromoWearExpand1(self)
         else:
             self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
@@ -241,18 +201,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                 column = self._anagrafica.anagrafica_filter_treeview.get_column(2)
                 column.set_property('visible', False)
                 if "PromoWear" in Environment.modulesList:
-                    column = self._anagrafica.anagrafica_filter_treeview.get_column(6)
-                    column.set_property('visible', False)
-                    column = self._anagrafica.anagrafica_filter_treeview.get_column(7)
-                    column.set_property('visible', False)
-                    column = self._anagrafica.anagrafica_filter_treeview.get_column(8)
-                    column.set_property('visible', False)
-                    column = self._anagrafica.anagrafica_filter_treeview.get_column(9)
-                    column.set_property('visible', False)
-                    column = self._anagrafica.anagrafica_filter_treeview.get_column(10)
-                    column.set_property('visible', False)
-                    column = self._anagrafica.anagrafica_filter_treeview.get_column(11)
-                    column.set_property('visible', False)
+                    drawPromoWearExpand2(self)
         if self._anagrafica._listinoFissato:
             findComboboxRowFromId(self.id_listino_filter_combobox, self._anagrafica._idListino)
             Environment.listinoFissato = self._anagrafica._idListino
@@ -260,10 +209,12 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
             if not (self._anagrafica._articoloFissato):
                 column = self._anagrafica.anagrafica_filter_treeview.get_column(0)
                 column.set_property('visible', False)
-
         self.clear()
 
     def clear(self):
+        """
+        FIXME
+        """
         # Annullamento filtro
         if not(self._anagrafica._articoloFissato):
             self.id_articolo_filter_customcombobox.set_active(0)
@@ -275,10 +226,10 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
 
     def refresh(self):
         """
-            Allora, si è resa necessaria una soluzione tampone per la ricerca
-            avanzata, non avendo più la tabella d'appoggio come prima
-            viaggia una lista di id che deve essere gestita poi in una query
-            il risultato è minore pulizia ma maggiore velocità
+        Allora, si è resa necessaria una soluzione tampone per la ricerca
+        avanzata, non avendo più la tabella d'appoggio come prima
+        viaggia una lista di id che deve essere gestita poi in una query
+        il risultato è minore pulizia ma maggiore velocità
         """
         #if not self.isComplexPriceList:
         listcount = 0
@@ -296,6 +247,9 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
             idListino=idSottoListino
 
         def filterCountClosure():
+            """
+            FIXME
+            """
             return ListinoArticolo().count(idListino=idListino,
                                             idArticolo=idArticolo,
                                             listinoAttuale=True)
@@ -306,6 +260,8 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
+            """
+            """
             return ListinoArticolo().select(orderBy=self.orderBy,
                                             idListino=idListino,
                                             idArticolo=idArticolo,
@@ -316,35 +272,37 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         self._filterClosure = filterClosure
         self.liss = self.runFilter()
         self.xptDaoList = self.runFilter(offset=None, batchSize=None)
-
+        modelRow = []
+        modelRowPromoWear = []
         self._treeViewModel.clear()
         for l in self.liss:
+            modelRow = [l,
+                        (l.denominazione or ''),
+                        (l.codice_articolo or ''),
+                        (l.articolo or ''),
+                        dateToString(l.data_listino_articolo),
+                        str(mN(l.prezzo_dettaglio) or 0),
+                        str(mN(l.prezzo_ingrosso) or 0)]
+            
             if "PromoWear" in Environment.modulesList:
-                self._treeViewModel.append((l,
-                                        (l.denominazione or ''),
-                                        (l.codice_articolo or ''),
-                                        (l.articolo or ''),
-                                        dateToString(l.data_listino_articolo),
-                                        ('%14.' + Environment.conf.decimals + 'f') % float(l.prezzo_dettaglio),
-                                        ('%14.' + Environment.conf.decimals + 'f') % float(l.prezzo_ingrosso),
-                                        (l.denominazione_gruppo_taglia or ''),
+                modelRowPromoWear=[(l.denominazione_gruppo_taglia or ''),
                                         (l.denominazione_taglia or ''),
                                         (l.denominazione_colore or ''),
                                         (l.anno or ''),
                                         (l.stagione or ''),
-                                        (l.genere or '')))
+                                        (l.genere or '')]
+            
+            if modelRowPromoWear:
+                self._treeViewModel.append(modelRow +modelRowPromoWear)
             else:
-                self._treeViewModel.append((l,
-                                        (l.denominazione or ''),
-                                        (l.codice_articolo or ''),
-                                        (l.articolo or ''),
-                                        dateToString(l.data_listino_articolo),
-                                        ('%14.' + Environment.conf.decimals + 'f') % float(l.prezzo_dettaglio or 0),
-                                        ('%14.' + Environment.conf.decimals + 'f') % float(l.prezzo_ingrosso or 0)))
+                self._treeViewModel.append(modelRow)
         #Environment.listinoFissato =  None
 class AnagraficaListiniArticoliHtml(AnagraficaHtml):
 
     def __init__(self, anagrafica):
+        """
+        Gestisce l'anteprima html dei listini articolo
+        """
         AnagraficaHtml.__init__(self, anagrafica, 'listino_articolo',
                                 'Informazioni articolo/listino')
 
@@ -352,6 +310,9 @@ class AnagraficaListiniArticoliHtml(AnagraficaHtml):
 class AnagraficaListiniArticoliReport(AnagraficaReport):
 
     def __init__(self, anagrafica):
+        """
+        Gestisce i report dei listini articolo
+        """
         AnagraficaReport.__init__(self, anagrafica=anagrafica,
                                   description='Elenco dei listini',
                                   defaultFileName='listini_articolo',
@@ -362,6 +323,9 @@ class AnagraficaListiniArticoliReport(AnagraficaReport):
 class AnagraficaListiniArticoliLabel(AnagraficaLabel):
 
     def __init__(self, anagrafica):
+        """
+        Gestisce la creazione delle frontaline o label
+        """
         AnagraficaLabel.__init__(self, anagrafica=anagrafica,
                                   description='Elenco dei listini',
                                   htmlTemplate='label',
@@ -370,9 +334,13 @@ class AnagraficaListiniArticoliLabel(AnagraficaLabel):
 
 
 class AnagraficaListiniArticoliEdit(AnagraficaEdit):
-    """ Modifica un record dell'anagrafica degli articoli dei listini """
-
+    """
+    Modifica un record dell'anagrafica degli articoli dei listini 
+    """
     def __init__(self, anagrafica):
+        """
+        Gestione la modifica e l'editing dei listino articolo
+        """
         AnagraficaEdit.__init__(self,
                                 anagrafica,
                                 'anagrafica_listini_articoli_detail_table',
@@ -390,28 +358,28 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
 
     def on_sconti_dettaglio_widget_button_toggled(self, button):
+        """
+        Gestione sconti dettaglio  con custom Widget
+        FIXME: trovare alternativa a custom widget
+        """
         if button.get_property('active') is True:
             return
         _scontoDettaglio= self.sconti_dettaglio_widget.getSconti()
-        #print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", _scontoDettaglio
-        #for s in _scontoDettaglio:
-            #self.dao.sconto_vendita_dettaglio.append(ScontoVenditaDettaglio())
-            #self.dao.sconto_vendita_dettaglio[-1].tipo_sconto = s["tipo"]
-            #self.dao.sconto_vendita_dettaglio[-1].valore = float(s["valore"])
-##        self.dao.applicazione_sconti_dettaglio = self.sconti_dettaglio_widget.getApplicazione()
 
     def on_sconti_ingrosso_widget_button_toggled(self, button):
+        """
+        Gestione sconti dettaglio  con custom Widget
+        FIXME: trovare alternativa a custom widget
+        """
         if button.get_property('active') is True:
             return
 
         _scontoIngrosso= self.sconti_ingrosso_widget.getSconti()
-        #for s in _scontoIngrosso:
-            #self.dao.sconto_vendita_ingrosso.append(ScontoVenditaIngrosso())
-            #self.dao.sconto_vendita_ingrosso[-1].tipo_sconto = s["tipo"]
-            #self.dao.sconto_vendita_ingrosso[-1].valore = s["valore"]
-##        self.dao.applicazione_sconti_ingrosso = self.sconti_ingrosso_widget.getApplicazione()
 
     def calcolaPercentualiDettaglio(self, widget=None, event=None):
+        """
+        calcolaPercentualiDettaglio
+        """
         self.percentuale_ricarico_dettaglio_entry.set_text('%-6.3f' % calcolaRicarico(float(self.ultimo_costo_entry.get_text()),
                                                                                       float(self.prezzo_dettaglio_entry.get_text()),
                                                                                       float(self._percentualeIva)))
@@ -421,12 +389,18 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
 
     def confermaCalcolaPercentualiDettaglio(self, widget=None, event=None):
+        """
+        confermaCalcolaPercentualiDettaglio
+        """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaPercentualiDettaglio()
 
 
     def calcolaPercentualiIngrosso(self, widget=None, event=None):
+        """
+        calcolaPercentualiIngrosso
+        """
         self.percentuale_ricarico_ingrosso_entry.set_text('%-6.3f' % calcolaRicarico(float(self.ultimo_costo_entry.get_text()),
                                                                                      float(self.prezzo_ingrosso_entry.get_text())))
         self.percentuale_margine_ingrosso_entry.set_text('%-6.3f' % calcolaMargine(float(self.ultimo_costo_entry.get_text()),
@@ -434,27 +408,42 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
 
     def confermaCalcolaPercentualiIngrosso(self, widget=None, event=None):
+        """
+        FIXME
+        """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaPercentualiIngrosso()
 
 
     def aggiornaCostoIvato(self, widget=None, event=None):
+        """
+
+        """
         self.ultimo_costo_ivato_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(float(self.ultimo_costo_entry.get_text()),
                                                                                                  float(self._percentualeIva)))
         return False
 
 
     def aggiornaDaCosto(self, widget=None, event=None):
+        """
+        FIXME
+        """
         self.aggiornaCostoIvato()
 
 
     def confermaAggiornaDaCosto(self, widget=None, event=None):
+        """
+        FIXME
+        """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.aggiornaDaCosto()
 
     def calcolaDettaglioDaRicarico(self, widget=None, event=None):
+        """
+        FIXME
+        """
         prezzoDettaglio=Environment.conf.number_format % calcolaListinoDaRicarico(float(self.ultimo_costo_entry.get_text()),
                                                                                             float(self.percentuale_ricarico_dettaglio_entry.get_text()),
                                                                                             float(self._percentualeIva))
@@ -467,11 +456,17 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
 
     def confermaCalcolaDettaglioDaRicarico(self, widget=None, event=None):
+        """
+        FIXME
+        """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaDettaglioDaRicarico()
 
     def calcolaDettaglioDaMargine(self, widget=None, event=None):
+        """
+        FIXME
+        """
         self.prezzo_dettaglio_entry.set_text(Environment.conf.number_format % calcolaListinoDaMargine(float(self.ultimo_costo_entry.get_text()),
                                                                                                       float(self.percentuale_margine_dettaglio_entry.get_text()),
                                                                                                       float(self._percentualeIva)))
@@ -482,11 +477,17 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                                                                                       float(self._percentualeIva)))
 
     def confermaCalcolaDettaglioDaMargine(self, widget=None, event=None):
+        """
+        FIXME
+        """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaDettaglioDaMargine()
 
     def aggiornaDaDettaglio(self, widget=None, event=None):
+        """
+        FIXME
+        """
         self.prezzo_dettaglio_noiva_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(float(self.prezzo_dettaglio_entry.get_text()),
                                                                                                      float(- self._percentualeIva)))
         przD = float(self.prezzo_dettaglio_noiva_label.get_text())
@@ -507,6 +508,9 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         return False
 
     def calcolaIngrossoDaRicarico(self, widget=None, event=None):
+        """
+        FIXME
+        """
         self.prezzo_ingrosso_entry.set_text(Environment.conf.number_format % calcolaListinoDaRicarico(float(self.ultimo_costo_entry.get_text()),
                                                                                                       float(self.percentuale_ricarico_ingrosso_entry.get_text())))
         self.prezzo_ingrosso_ivato_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(float(self.prezzo_ingrosso_entry.get_text()),
@@ -515,11 +519,17 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                                                                                    float(self.prezzo_ingrosso_entry.get_text())))
 
     def confermaCalcolaIngrossoDaRicarico(self, widget=None, event=None):
+        """
+        FIXME
+        """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaIngrossoDaRicarico()
 
     def calcolaIngrossoDaMargine(self, widget=None, event=None):
+        """
+        FIXME
+        """
         self.prezzo_ingrosso_entry.set_text(Environment.conf.number_format % calcolaListinoDaMargine(float(self.ultimo_costo_entry.get_text()),
                                                                                                      float(self.percentuale_margine_ingrosso_entry.get_text())))
         self.prezzo_ingrosso_ivato_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(float(self.prezzo_ingrosso_entry.get_text()),
@@ -528,11 +538,17 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                                                                                      float(self.prezzo_ingrosso_entry.get_text())))
 
     def confermaCalcolaIngrossoDaMargine(self, widget=None, event=None):
+        """
+        FIXME
+        """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaIngrossoDaMargine()
 
     def aggiornaDaIngrosso(self, widget=None, event=None):
+        """
+        FIXME
+        """
         self.prezzo_ingrosso_ivato_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(float(self.prezzo_ingrosso_entry.get_text()),
                                                                                                     float(self._percentualeIva)))
         przI = float(self.prezzo_ingrosso_ivato_label.get_text())
@@ -554,6 +570,9 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
 
     def draw(self):
+        """
+        FIXME
+        """
         self.id_articolo_customcombobox.setSingleValue()
         self.id_articolo_customcombobox.setOnChangedCall(self.on_id_articolo_customcombobox_changed)
 
@@ -611,6 +630,9 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
 
     def on_id_articolo_customcombobox_changed(self):
+        """
+        FIXME
+        """
         res = self.id_articolo_customcombobox.getData()
         self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
         self._percentualeIva = res["percentualeAliquotaIva"]
@@ -625,6 +647,11 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
 
     def setDao(self, dao):
+        """
+        FIXME
+        @param dao:
+        @type dao:
+        """
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = ListinoArticolo()
@@ -639,6 +666,9 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
 
     def _refresh(self):
+        """
+        FIXME
+        """
         self.id_articolo_customcombobox.refresh(clear=True, filter=False)
         self.id_articolo_customcombobox.set_sensitive(True)
         if self.dao.id_articolo is None:
@@ -699,6 +729,11 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             self._refreshTagliaColore(self.dao.id_articolo)
 
     def _refreshTagliaColore(self, idArticolo):
+        """
+        FIXME
+        @param idArticolo:
+        @type idArticolo:
+        """
         articoloTagliaColore = Articolo().getRecord(id=idArticolo)
         self.taglia_colore_table.hide()
         if articoloTagliaColore is not None:
@@ -717,6 +752,9 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             self.taglia_colore_table.show()
 
     def saveDao(self):
+        """
+        FIXME
+        """
         if findIdFromCombobox(self.id_listino_customcombobox.combobox) is None:
             obligatoryField(self.dialogTopLevel, self.id_listino_customcombobox.combobox)
 
@@ -739,8 +777,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             daoSconto.tipo_sconto = s["tipo"]
             sconti_dettaglio.append(daoSconto)
 
-        #self.dao.sconto_vendita_dettaglio = sconti_dettaglio
-
         sconti_ingrosso = []
         self.dao.applicazione_sconti = "scalare"
         for s in self.sconti_ingrosso_widget.getSconti():
@@ -749,5 +785,4 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             daoSconto.tipo_sconto = s["tipo"]
             sconti_ingrosso.append(daoSconto)
 
-        #self.dao.sconto_vendita_ingrosso = sconti_ingrosso
         self.dao.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})

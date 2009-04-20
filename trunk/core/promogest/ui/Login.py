@@ -144,7 +144,25 @@ class Login(GladeApp):
         """
         Help button, open sendmail widget
         """
-        print dir(Environment.params["metadata"])
+        engine = create_engine('sqlite:////home/mentore/pg2_work/ciccio_db')
+        # create MetaData
+        meta2 = MetaData()
+        # bind to an engine
+        meta2.bind = engine
+
+        prova = []
+        newmetadata = Environment.params['metadata']
+#        print newmetadata.tables
+        for t in newmetadata.sorted_tables:
+            print t.__dict__
+            t.__dict__['metadata'] = meta2
+            t.__dict__['schema'] = ""
+            t.__dict__['fullname'] = t.__dict__['fullname'].split(".")[1]
+        for g in newmetadata.sorted_tables:
+            print g.__dict__
+            t.create_all(meta2, checkfirst=True)
+#        newmetadata.create_all(checkfirst=True)
+#        print dir(Environment.params["metadata"])
 #        print Environment.params["metadata"].tables
 #        sendemail = SendEmail()
 

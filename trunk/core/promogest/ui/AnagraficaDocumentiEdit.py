@@ -97,6 +97,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.reuseDataRow = False
         self.NoRowUsableArticle = False
         self.noleggio = True
+        self.oneshot = False
         self.tagliaColoreRigheList = None
         # Inizializziamo i moduli in interfaccia!
 

@@ -67,11 +67,11 @@
         {% for riga in dao.righe %}
         <tr >
             {% if riga.id_magazzino %}
-            <td width="16%" class="odd-detail" >{{riga.magazzino[:35]}}</td>
+            <td width="16%" class="odd-detail" >{{riga.magazzino}}</td>
             {% else %}
             <td width="16%" class="odd-detail"></td>
             {% endif %}
-            <td width="40%" class="odd-detail">{{riga.descrizione[:35]}}</td>
+            <td width="40%" class="odd-detail">{{riga.descrizione}}</td>
             <td width="10%" class="odd-number">{{'%14.2f' % riga.percentuale_iva}}</td>
             <td width="12%" class="odd-number">{{environment.conf.number_format % ( riga.quantita * riga.moltiplicatore)}}</td>
             <td width="12%" class="odd-number">{{environment.conf.number_format % riga.valore_unitario_netto}}</td>
