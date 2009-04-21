@@ -117,13 +117,22 @@ class DuplicazioneDocumento(GladeWidget):
             daoRiga.moltiplicatore = r.moltiplicatore
             daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
             daoRiga.valore_unitario_netto = r.valore_unitario_netto
+            #print "RIGA ARTICOLO", r.descrizione, r.id_articolo
             if "SuMisura" in Environment.modulesList:
                 from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
+                #try:
                 daoMisuraPezzo = MisuraPezzo()
-                daoMisuraPezzo.altezza = r.misura_pezzo[0].altezza
-                daoMisuraPezzo.larghezza = r.misura_pezzo[0].larghezza
-                daoMisuraPezzo.moltiplicatore = r.misura_pezzo[0].moltiplicatore
+                if r.misura_pezzo:
+                    daoMisuraPezzo.altezza = r.misura_pezzo[0].altezza
+                    daoMisuraPezzo.larghezza = r.misura_pezzo[0].larghezza
+                    daoMisuraPezzo.moltiplicatore = r.misura_pezzo[0].moltiplicatore
+                else:
+                    daoMisuraPezzo.altezza = 0
+                    daoMisuraPezzo.larghezza = 0
+                    daoMisuraPezzo.moltiplicatore = 0
                 daoRiga.misura_pezzo = [daoMisuraPezzo]
+                #except :
+                    #pass
             sconti = []
             scontiRigaDocumento = []
             sco = r.sconti

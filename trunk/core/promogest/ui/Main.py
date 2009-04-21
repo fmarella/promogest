@@ -516,6 +516,7 @@ o tramite email all'indirizzo info@promotux.it
             svndialog.svnupdate_dialog.destroy()
 
     def on_Back_up_Database_activate(self, widget):
+        import zipfile
         bkdbdialog = GladeWidget('svnupdate_dialog', callbacks_proxy=self)
         bkdbdialog.getTopLevel().set_transient_for(self.getTopLevel())
         encoding = locale.getlocale()[1]
@@ -535,6 +536,10 @@ o tramite email all'indirizzo info@promotux.it
                                                             nameDump)
             p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
             (stdin, stdouterr) = (p.stdin, p.stdout)
+            #zfilename = nameDump +".zip"
+            #zout = zipfile.ZipFile(zfilename, "w")
+            #zout.write(nameDump,os.path.basename(nameDump), zipfile.ZIP_DEFLATED)
+            #zout.close()
             #stdin, stdouterr = os.popen4(command)
             for line in stdouterr.readlines():
                 textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
