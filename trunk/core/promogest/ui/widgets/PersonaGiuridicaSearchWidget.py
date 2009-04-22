@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -74,17 +74,17 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
                 self._callName()
 
         if combobox.on_selection_changed():
-            if self._ricerca is None:
-                if self._type == 'cliente':
-                    from promogest.ui.RicercaComplessaClienti import RicercaComplessaClienti
-                    self._ricerca = RicercaComplessaClienti()
-                elif self._type == 'fornitore':
-                    from promogest.ui.RicercaComplessaFornitori import RicercaComplessaFornitori
-                    self._ricerca = RicercaComplessaFornitori()
-                if not self._filter:
-                    self._ricerca.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
-            else:
-                self._ricerca.refresh()
+            #if self._ricerca is None:
+            if self._type == 'cliente':
+                from promogest.ui.RicercaComplessaClienti import RicercaComplessaClienti
+                self._ricerca = RicercaComplessaClienti()
+            elif self._type == 'fornitore':
+                from promogest.ui.RicercaComplessaFornitori import RicercaComplessaFornitori
+                self._ricerca = RicercaComplessaFornitori()
+            if not self._filter:
+                self._ricerca.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
+            #else:
+                #self._ricerca.refresh()
             anagWindow = self._ricerca.getTopLevel()
             returnWindow = combobox.get_toplevel()
             anagWindow.set_transient_for(returnWindow)

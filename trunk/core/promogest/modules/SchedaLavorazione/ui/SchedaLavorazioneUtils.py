@@ -435,7 +435,6 @@ def fillSchedaLavorazioneFromEmail(ui):
         elif campo == "PRODOTTO":
             prodotto  = lista[1].strip().upper()
         elif campo == "CODICE PARTECIPAZIONE":
-            print "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR", lista[1]
             codParte = lista[1].strip().split("(")[0].strip()[1:-1].replace("Art.",'')[1:-1]
             quantitaParte = lista[2].strip().split("-")[0].strip()[1:-1]
             print "CODICE PARTECIPAZIONE", codParte

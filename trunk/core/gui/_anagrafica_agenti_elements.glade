@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--*- mode: xml -*-->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="_anagrafica_agenti_elements">
     <property name="visible">True</property>
     <property name="title" translatable="yes">Anagrafica agenti </property>
@@ -113,9 +113,9 @@
               <widget class="GtkEntry" id="ragione_sociale_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -128,9 +128,9 @@
               <widget class="GtkEntry" id="insegna_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -145,9 +145,9 @@
               <widget class="GtkEntry" id="cognome_nome_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                <signal name="focus_in_event" handler="on_filter_entry_focus_in_event"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -163,6 +163,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -177,9 +179,9 @@
               <widget class="GtkEntry" id="localita_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -194,9 +196,9 @@
               <widget class="GtkEntry" id="codice_fiscale_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -211,9 +213,9 @@
               <widget class="GtkEntry" id="partita_iva_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -228,6 +230,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -237,72 +240,6 @@
             <property name="n_rows">15</property>
             <property name="n_columns">6</property>
             <property name="row_spacing">6</property>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
             <child>
               <widget class="GtkLabel" id="label144">
                 <property name="visible">True</property>
@@ -483,6 +420,8 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">2</property>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
                   </widget>
                 </child>
               </widget>
@@ -601,6 +540,12 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">200</property>
+                <property name="secondary_icon_stock">gtk-clear</property>
+                <property name="secondary_icon_activatable">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                <signal name="icon_press" handler="on_icon_press"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -622,6 +567,8 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">2</property>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
                   </widget>
                 </child>
               </widget>
@@ -639,6 +586,12 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">100</property>
+                <property name="secondary_icon_stock">gtk-clear</property>
+                <property name="secondary_icon_activatable">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                <signal name="icon_press" handler="on_icon_press"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -654,6 +607,12 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">100</property>
+                <property name="secondary_icon_stock">gtk-clear</property>
+                <property name="secondary_icon_activatable">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                <signal name="icon_press" handler="on_icon_press"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -669,6 +628,10 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">200</property>
+                <property name="secondary_icon_stock">gtk-clear</property>
+                <property name="secondary_icon_activatable">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+                <signal name="icon_press" handler="on_icon_press"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -689,6 +652,8 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">16</property>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
                   </widget>
                 </child>
               </widget>
@@ -706,6 +671,10 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">100</property>
+                <property name="secondary_icon_stock">gtk-clear</property>
+                <property name="secondary_icon_activatable">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+                <signal name="icon_press" handler="on_icon_press"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -721,6 +690,12 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">100</property>
+                <property name="secondary_icon_stock">gtk-clear</property>
+                <property name="secondary_icon_activatable">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                <signal name="icon_press" handler="on_icon_press"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -736,6 +711,12 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">200</property>
+                <property name="secondary_icon_stock">gtk-clear</property>
+                <property name="secondary_icon_activatable">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                <signal name="icon_press" handler="on_icon_press"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -751,6 +732,12 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">200</property>
+                <property name="secondary_icon_stock">gtk-clear</property>
+                <property name="secondary_icon_activatable">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                <signal name="icon_press" handler="on_icon_press"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -771,6 +758,13 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">100</property>
+                    <property name="primary_icon_stock">gtk-new</property>
+                    <property name="secondary_icon_stock">gtk-clear</property>
+                    <property name="primary_icon_activatable">True</property>
+                    <property name="secondary_icon_activatable">True</property>
+                    <property name="primary_icon_sensitive">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
+                    <signal name="icon_press" handler="on_icon_press"/>
                   </widget>
                 </child>
               </widget>
@@ -792,6 +786,8 @@
                     <property name="visible">True</property>
                     <property name="creation_function">createUnsignedIntegerEntryField</property>
                     <property name="int1">5</property>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
                   </widget>
                 </child>
               </widget>
@@ -815,6 +811,8 @@
                     <property name="visible">True</property>
                     <property name="creation_function">createUnsignedIntegerEntryField</property>
                     <property name="int1">5</property>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
                   </widget>
                 </child>
               </widget>
@@ -839,6 +837,8 @@
                     <property name="creation_function">createUnsignedIntegerEntryField</property>
                     <property name="string1">&lt;blank&gt;</property>
                     <property name="int1">11</property>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
                   </widget>
                 </child>
               </widget>
@@ -850,6 +850,72 @@
                 <property name="x_options">GTK_SHRINK | GTK_FILL</property>
                 <property name="y_options"></property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
             </child>
           </widget>
           <packing>

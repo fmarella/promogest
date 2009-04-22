@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--*- mode: xml -*-->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="_anagrafica_magazzini_elements">
     <property name="visible">True</property>
     <property name="title" translatable="yes">Anagrafica Magazzini</property>
@@ -11,7 +11,6 @@
         <child>
           <widget class="GtkTable" id="anagrafica_magazzini_filter_table">
             <property name="visible">True</property>
-            <property name="n_rows">1</property>
             <property name="n_columns">2</property>
             <child>
               <widget class="GtkLabel" id="label34">
@@ -30,6 +29,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -42,6 +43,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -51,9 +53,6 @@
             <property name="n_rows">6</property>
             <property name="n_columns">2</property>
             <property name="row_spacing">6</property>
-            <child>
-              <placeholder/>
-            </child>
             <child>
               <widget class="GtkLabel" id="label35">
                 <property name="visible">True</property>
@@ -84,7 +83,7 @@
               <widget class="GtkLabel" id="label88">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">Località</property>
+                <property name="label" translatable="yes">Localit&#xE0;</property>
               </widget>
               <packing>
                 <property name="top_attach">2</property>
@@ -131,7 +130,7 @@
                   <widget class="GtkToggleButton" id="contatti_togglebutton">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="response_id">0</property>
+                    <property name="receives_default">False</property>
                     <signal name="clicked" handler="on_contatti_togglebutton_clicked"/>
                     <child>
                       <widget class="GtkAlignment" id="alignment112">
@@ -150,6 +149,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
@@ -185,6 +185,12 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">100</property>
+                <property name="secondary_icon_stock">gtk-clear</property>
+                <property name="secondary_icon_activatable">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                <signal name="icon_press" handler="on_icon_press"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -198,6 +204,12 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">100</property>
+                <property name="secondary_icon_stock">gtk-clear</property>
+                <property name="secondary_icon_activatable">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                <signal name="icon_press" handler="on_icon_press"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -213,6 +225,12 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">100</property>
+                <property name="secondary_icon_stock">gtk-clear</property>
+                <property name="secondary_icon_activatable">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                <signal name="icon_press" handler="on_icon_press"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -234,6 +252,8 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">5</property>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
                   </widget>
                 </child>
               </widget>
@@ -257,6 +277,12 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">2</property>
+                    <property name="secondary_icon_stock">gtk-clear</property>
+                    <property name="secondary_icon_activatable">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="icon_press" handler="on_icon_press"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
                   </widget>
                 </child>
               </widget>
@@ -268,6 +294,9 @@
                 <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
                 <property name="y_options"></property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
             </child>
           </widget>
           <packing>
