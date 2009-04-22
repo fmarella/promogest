@@ -528,7 +528,7 @@ o tramite email all'indirizzo info@promotux.it
         bkdbdialog.getTopLevel().show_all()
         response = bkdbdialog.svnupdate_dialog.run()
         if response == gtk.RESPONSE_OK:
-            nameDump= "promoGest2_dump_"+self.aziendaStr+"_"+datetime.datetime.now().strftime('%d_%m_%Y_%H_%M')+".sql"
+            nameDump= "promoGest2_dump_"+self.aziendaStr+"_"+datetime.datetime.now().strftime('%d_%m_%Y_%H_%M')
             command = 'pg_dump -h %s -p %s -U %s %s > ~/%s' %(Environment.host,
                                                             Environment.port,
                                                             Environment.user,
@@ -538,7 +538,7 @@ o tramite email all'indirizzo info@promotux.it
             (stdin, stdouterr) = (p.stdin, p.stdout)
             #zfilename = nameDump +".zip"
             #zout = zipfile.ZipFile(zfilename, "w")
-            #zout.write(nameDump,os.path.basename(nameDump), zipfile.ZIP_DEFLATED)
+            #zout.write(nameDump, zipfile.ZIP_DEFLATED)
             #zout.close()
             #stdin, stdouterr = os.popen4(command)
             for line in stdouterr.readlines():

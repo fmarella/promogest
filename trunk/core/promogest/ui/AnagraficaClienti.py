@@ -52,7 +52,9 @@ class AnagraficaClientiFilter(AnagraficaFilter):
 
 
     def draw(self):
-        # Colonne della Treeview per il filtro
+        """
+        Disegno la treeview e gli altri oggetti della gui
+        """
         treeview = self._anagrafica.anagrafica_filter_treeview
         renderer = gtk.CellRendererText()
 
@@ -124,7 +126,9 @@ class AnagraficaClientiFilter(AnagraficaFilter):
 
 
     def refresh(self):
-        # Aggiornamento TreeView
+        """
+        Aggiorno l'interfaccia con i dati filtrati
+        """
         codice = prepareFilterString(self.codice_filter_entry.get_text())
         ragioneSociale = prepareFilterString(self.ragione_sociale_filter_entry.get_text())
         insegna = prepareFilterString(self.insegna_filter_entry.get_text())
@@ -187,6 +191,9 @@ class AnagraficaClientiFilter(AnagraficaFilter):
 
 
 class AnagraficaClientiHtml(AnagraficaHtml):
+    """
+    Anteprima Html
+    """
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'cliente',
                                 'Informazioni sul cliente')
@@ -260,6 +267,9 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 
 
     def on_categorie_clienti_add_row_button_clicked(self, widget):
+        """
+        Aggiunge una categoria cliente al dao selezionato
+        """
         id = findIdFromCombobox(self.id_categoria_cliente_customcombobox.combobox)
         if id is not None:
             categoria = findStrFromCombobox(self.id_categoria_cliente_customcombobox.combobox, 2)
@@ -275,6 +285,9 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 
 
     def on_categorie_clienti_delete_row_button_clicked(self, widget):
+        """
+        Rimuove una categoria al dao selezionato
+        """
         id = findIdFromCombobox(self.id_categoria_cliente_customcombobox.combobox)
         if id is not None:
             image = gtk.Image()
@@ -364,19 +377,10 @@ class AnagraficaClientiEdit(AnagraficaEdit):
     def showTotaliPrimaNota(self):
 
         if self.dao.id:
-            # Calcoliamo il totale annuale:
-            #id = [ [] ]
-            #id[0] = self.dao.id
             totaleDareAnnuale = TotaleAnnualeCliente(id_cliente=self.dao.id)
-            #totaleDare = totaleDare.fetchone()
-            #totaleDareCalcolato = ((totaleDare[0] or 0) + (totaleDare[1] or 0) + (totaleDare[2] or 0) +
-                                    #(totaleDare[3] or 0))
             self.totale_annuale_dare_entry.set_text('%.2f' % totaleDareAnnuale)
             # Calcoliamo il totale sospeso:
             totaleDareAperto = TotaleClienteAperto(id_cliente=self.dao.id)
-            #totaleDare = totaleDare.fetchone()
-            #totaleDareCalcolato = ((totaleDare[0] or 0) + (totaleDare [1] or 0) + (totaleDare[2] or 0) +
-                                    #(totaleDare[3] or 0))
             self.totale_dare_entry.set_text('%.2f' % totaleDareAperto)
 
         self.anagrafica_clienti_detail_notebook.set_current_page(0)
@@ -398,10 +402,6 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 
         self.dao.codice = self.codice_entry.get_text()
         self.dao.codice = omogeneousCode(section="Clienti", string=self.dao.codice )
-        #if not self._oldDaoRicreato:
-            #cod=checkCodiceDuplicato(codice=self.dao.codice, tipo="Clienti")
-            #if not cod:
-                #return
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
         self.dao.insegna = self.insegna_entry.get_text()
         self.dao.cognome= self.cognome_entry.get_text()
@@ -414,7 +414,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
             dialog.run()
             dialog.destroy()
-            return
+            raise Exception, 'Operation aborted'
         self.dao.sede_operativa_indirizzo = self.indirizzo_sede_operativa_entry.get_text()
         self.dao.sede_operativa_cap = self.cap_sede_operativa_entry.get_text()
         self.dao.sede_operativa_localita = self.localita_sede_operativa_entry.get_text()
@@ -428,7 +428,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         if self.dao.partita_iva != '':
             partiva = checkPartIva(self.dao.partita_iva)
             if not partiva:
-                return
+                raise Exception, 'Operation aborted'
         self.dao.id_pagamento = findIdFromCombobox(self.id_pagamento_customcombobox.combobox)
         self.dao.id_magazzino = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)
         self.dao.id_listino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
@@ -437,7 +437,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         if self.dao.codice_fiscale != '':
             codfis = checkCodFisc(self.dao.codice_fiscale)
             if not codfis:
-                return
+                raise Exception, 'Operation aborted'
         self.dao.persist()
         model = self.categorie_treeview.get_model()
         cleanClienteCategoriaCliente = ClienteCategoriaCliente()\

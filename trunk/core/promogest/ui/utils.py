@@ -1820,14 +1820,6 @@ def setFileName(filename, ext, returnName = False):
 def showAnagraficaRichiamata(returnWindow, anagWindow, button=None, callName=None):
     """
     FIXME
-    @param returnWindow:
-    @type returnWindow:
-    @param anagWindow:
-    @type anagWindow:
-    @param button=None:
-    @type button=None:
-    @param callName=None:
-    @type callName=None:
     """
 
     def on_anagrafica_richiamata_destroy(anagWindow):
@@ -1867,13 +1859,7 @@ def getDateRange(string):
 
 def obligatoryField(window, widget=None, msg=None):
     """
-    FIXME
-    @param window:
-    @type window:
-    @param widget=None:
-    @type widget=None:
-    @param msg=None:
-    @type msg=None:
+    Gestisce un dialog di segnalazione campo obbligatorio
     """
     if msg is None:
         msg = 'Campo obbligatorio !'
