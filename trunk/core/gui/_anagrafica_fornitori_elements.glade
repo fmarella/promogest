@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--*- mode: xml -*-->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="_anagrafica_fornitori_elements">
     <property name="visible">True</property>
     <property name="title" translatable="yes">Fornitori </property>
@@ -134,6 +134,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -147,6 +149,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -162,6 +166,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -177,6 +183,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -192,6 +200,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -207,6 +217,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -222,6 +234,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -247,6 +261,9 @@
                       </packing>
                     </child>
                   </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
                 <child>
                   <widget class="GtkAlignment" id="alignment495">
@@ -261,15 +278,16 @@
                           </widget>
                           <packing>
                             <property name="padding">5</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
                           <widget class="GtkButton" id="ricerca_avanzata_fornitori_button">
+                            <property name="label" translatable="yes">Vai a Ricerca Complessa Multipla</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
                             <property name="tooltip" translatable="yes">Ricerca avanzata multipla permette di scremare su piu' criteri</property>
-                            <property name="label" translatable="yes">Vai a Ricerca Complessa Multipla</property>
-                            <property name="response_id">0</property>
                           </widget>
                           <packing>
                             <property name="expand">False</property>
@@ -288,6 +306,7 @@
               </widget>
               <packing>
                 <property name="expand">False</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -316,9 +335,9 @@
                                   <widget class="GtkScrolledWindow" id="scrolledwindow53">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="shadow_type">GTK_SHADOW_IN</property>
+                                    <property name="hscrollbar_policy">automatic</property>
+                                    <property name="vscrollbar_policy">automatic</property>
+                                    <property name="shadow_type">in</property>
                                     <child>
                                       <widget class="GtkTreeView" id="ragione_sociale_fornitore_filter_treeview">
                                         <property name="visible">True</property>
@@ -328,6 +347,9 @@
                                       </widget>
                                     </child>
                                   </widget>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
                                 </child>
                                 <child>
                                   <widget class="GtkVBox" id="vbox69">
@@ -337,8 +359,8 @@
                                       <widget class="GtkButton" id="nuova_ragione_sociale_fornitore_filter_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Nuova ragione sociale</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_nuova_ragione_sociale_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image341">
@@ -350,6 +372,7 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">False</property>
+                                        <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -357,8 +380,8 @@
                                         <property name="visible">True</property>
                                         <property name="sensitive">False</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Elimina ragione sociale</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_cancella_ragione_sociale_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image342">
@@ -394,6 +417,9 @@
                           </packing>
                         </child>
                       </widget>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
                     </child>
                     <child>
                       <widget class="GtkExpander" id="insegna_fornitore_filter_expander">
@@ -414,9 +440,9 @@
                                   <widget class="GtkScrolledWindow" id="scrolledwindow54">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="shadow_type">GTK_SHADOW_IN</property>
+                                    <property name="hscrollbar_policy">automatic</property>
+                                    <property name="vscrollbar_policy">automatic</property>
+                                    <property name="shadow_type">in</property>
                                     <child>
                                       <widget class="GtkTreeView" id="insegna_fornitore_filter_treeview">
                                         <property name="visible">True</property>
@@ -426,6 +452,9 @@
                                       </widget>
                                     </child>
                                   </widget>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
                                 </child>
                                 <child>
                                   <widget class="GtkVBox" id="vbox70">
@@ -435,8 +464,8 @@
                                       <widget class="GtkButton" id="nuova_insegna_fornitore_filter_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Nuova insegna</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_nuova_insegna_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image343">
@@ -448,6 +477,7 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">False</property>
+                                        <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -455,8 +485,8 @@
                                         <property name="visible">True</property>
                                         <property name="sensitive">False</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Elimina insegna</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_cancella_insegna_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image344">
@@ -515,9 +545,9 @@
                                   <widget class="GtkScrolledWindow" id="scrolledwindow55">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="shadow_type">GTK_SHADOW_IN</property>
+                                    <property name="hscrollbar_policy">automatic</property>
+                                    <property name="vscrollbar_policy">automatic</property>
+                                    <property name="shadow_type">in</property>
                                     <child>
                                       <widget class="GtkTreeView" id="cognome_nome_fornitore_filter_treeview">
                                         <property name="visible">True</property>
@@ -527,6 +557,9 @@
                                       </widget>
                                     </child>
                                   </widget>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
                                 </child>
                                 <child>
                                   <widget class="GtkVBox" id="vbox71">
@@ -536,8 +569,8 @@
                                       <widget class="GtkButton" id="nuovo_cognome_nome_fornitore_filter_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Nuovo cognome - nome</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_nuovo_cognome_nome_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image345">
@@ -549,6 +582,7 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">False</property>
+                                        <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -556,8 +590,8 @@
                                         <property name="visible">True</property>
                                         <property name="sensitive">False</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Elimina cognome - nome</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_cancella_cognome_nome_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image346">
@@ -616,9 +650,9 @@
                                   <widget class="GtkScrolledWindow" id="scrolledwindow52">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="shadow_type">GTK_SHADOW_IN</property>
+                                    <property name="hscrollbar_policy">automatic</property>
+                                    <property name="vscrollbar_policy">automatic</property>
+                                    <property name="shadow_type">in</property>
                                     <child>
                                       <widget class="GtkTreeView" id="codice_fornitore_filter_treeview">
                                         <property name="visible">True</property>
@@ -628,6 +662,9 @@
                                       </widget>
                                     </child>
                                   </widget>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
                                 </child>
                                 <child>
                                   <widget class="GtkVBox" id="vbox68">
@@ -637,8 +674,8 @@
                                       <widget class="GtkButton" id="nuovo_codice_fornitore_filter_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Nuovo codice</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_nuovo_codice_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image339">
@@ -650,6 +687,7 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">False</property>
+                                        <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -657,8 +695,8 @@
                                         <property name="visible">True</property>
                                         <property name="sensitive">False</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Elimina codice</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_cancella_codice_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image340">
@@ -717,9 +755,9 @@
                                   <widget class="GtkScrolledWindow" id="scrolledwindow64">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="shadow_type">GTK_SHADOW_IN</property>
+                                    <property name="hscrollbar_policy">automatic</property>
+                                    <property name="vscrollbar_policy">automatic</property>
+                                    <property name="shadow_type">in</property>
                                     <child>
                                       <widget class="GtkTreeView" id="localita_fornitore_filter_treeview">
                                         <property name="visible">True</property>
@@ -729,6 +767,9 @@
                                       </widget>
                                     </child>
                                   </widget>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
                                 </child>
                                 <child>
                                   <widget class="GtkVBox" id="vbox75">
@@ -738,8 +779,8 @@
                                       <widget class="GtkButton" id="nuova_localita_fornitore_filter_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Nuova localita'</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_nuova_localita_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image353">
@@ -751,6 +792,7 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">False</property>
+                                        <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -758,8 +800,8 @@
                                         <property name="visible">True</property>
                                         <property name="sensitive">False</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Elimina localita'</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_cancella_localita_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image354">
@@ -818,9 +860,9 @@
                                   <widget class="GtkScrolledWindow" id="scrolledwindow58">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="shadow_type">GTK_SHADOW_IN</property>
+                                    <property name="hscrollbar_policy">automatic</property>
+                                    <property name="vscrollbar_policy">automatic</property>
+                                    <property name="shadow_type">in</property>
                                     <child>
                                       <widget class="GtkTreeView" id="indirizzo_fornitore_filter_treeview">
                                         <property name="visible">True</property>
@@ -830,6 +872,9 @@
                                       </widget>
                                     </child>
                                   </widget>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
                                 </child>
                                 <child>
                                   <widget class="GtkVBox" id="vbox74">
@@ -839,8 +884,8 @@
                                       <widget class="GtkButton" id="nuovo_indirizzo_fornitore_filter_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Nuovo indirizzo</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_nuovo_indirizzo_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image351">
@@ -852,6 +897,7 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">False</property>
+                                        <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -859,8 +905,8 @@
                                         <property name="visible">True</property>
                                         <property name="sensitive">False</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Elimina indirizzo</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_cancella_indirizzo_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image352">
@@ -919,9 +965,9 @@
                                   <widget class="GtkScrolledWindow" id="scrolledwindow56">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="shadow_type">GTK_SHADOW_IN</property>
+                                    <property name="hscrollbar_policy">automatic</property>
+                                    <property name="vscrollbar_policy">automatic</property>
+                                    <property name="shadow_type">in</property>
                                     <child>
                                       <widget class="GtkTreeView" id="codice_fiscale_fornitore_filter_treeview">
                                         <property name="visible">True</property>
@@ -931,6 +977,9 @@
                                       </widget>
                                     </child>
                                   </widget>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
                                 </child>
                                 <child>
                                   <widget class="GtkVBox" id="vbox72">
@@ -940,8 +989,8 @@
                                       <widget class="GtkButton" id="nuovo_codice_fiscale_fornitore_filter_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Nuovo codice fiscale</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_nuovo_codice_fiscale_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image347">
@@ -953,6 +1002,7 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">False</property>
+                                        <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -960,8 +1010,8 @@
                                         <property name="visible">True</property>
                                         <property name="sensitive">False</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Elimina codice fiscale</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_cancella_codice_fiscale_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image348">
@@ -1020,9 +1070,9 @@
                                   <widget class="GtkScrolledWindow" id="scrolledwindow57">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="shadow_type">GTK_SHADOW_IN</property>
+                                    <property name="hscrollbar_policy">automatic</property>
+                                    <property name="vscrollbar_policy">automatic</property>
+                                    <property name="shadow_type">in</property>
                                     <child>
                                       <widget class="GtkTreeView" id="partita_iva_fornitore_filter_treeview">
                                         <property name="visible">True</property>
@@ -1032,6 +1082,9 @@
                                       </widget>
                                     </child>
                                   </widget>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
                                 </child>
                                 <child>
                                   <widget class="GtkVBox" id="vbox73">
@@ -1041,8 +1094,8 @@
                                       <widget class="GtkButton" id="nuova_partita_iva_fornitore_filter_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Nuova partita IVA</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_nuova_partita_iva_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image349">
@@ -1054,6 +1107,7 @@
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">False</property>
+                                        <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1061,8 +1115,8 @@
                                         <property name="visible">True</property>
                                         <property name="sensitive">False</property>
                                         <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
                                         <property name="tooltip" translatable="yes">Elimina partita IVA</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_cancella_partita_iva_fornitore_filter_button_clicked"/>
                                         <child>
                                           <widget class="GtkImage" id="image350">
@@ -1117,9 +1171,9 @@
                               <widget class="GtkScrolledWindow" id="scrolledwindow59">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                <property name="shadow_type">GTK_SHADOW_IN</property>
+                                <property name="hscrollbar_policy">automatic</property>
+                                <property name="vscrollbar_policy">automatic</property>
+                                <property name="shadow_type">in</property>
                                 <child>
                                   <widget class="GtkTreeView" id="categoria_fornitore_filter_treeview">
                                     <property name="visible">True</property>
@@ -1159,9 +1213,9 @@
                               <widget class="GtkScrolledWindow" id="scrolledwindow60">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                <property name="shadow_type">GTK_SHADOW_IN</property>
+                                <property name="hscrollbar_policy">automatic</property>
+                                <property name="vscrollbar_policy">automatic</property>
+                                <property name="shadow_type">in</property>
                                 <child>
                                   <widget class="GtkTreeView" id="pagamento_fornitore_filter_treeview">
                                     <property name="visible">True</property>
@@ -1201,9 +1255,9 @@
                               <widget class="GtkScrolledWindow" id="scrolledwindow61">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                <property name="shadow_type">GTK_SHADOW_IN</property>
+                                <property name="hscrollbar_policy">automatic</property>
+                                <property name="vscrollbar_policy">automatic</property>
+                                <property name="shadow_type">in</property>
                                 <child>
                                   <widget class="GtkTreeView" id="magazzino_fornitore_filter_treeview">
                                     <property name="visible">True</property>
@@ -1246,13 +1300,14 @@
                           </widget>
                           <packing>
                             <property name="padding">3</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
                           <widget class="GtkFrame" id="riepilogo_fornitore_filter_frame">
                             <property name="visible">True</property>
                             <property name="label_xalign">0</property>
-                            <property name="shadow_type">GTK_SHADOW_NONE</property>
+                            <property name="shadow_type">none</property>
                             <child>
                               <widget class="GtkAlignment" id="alignment499">
                                 <property name="visible">True</property>
@@ -1265,9 +1320,9 @@
                                     <property name="height_request">100</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                                    <property name="shadow_type">GTK_SHADOW_IN</property>
+                                    <property name="hscrollbar_policy">automatic</property>
+                                    <property name="vscrollbar_policy">automatic</property>
+                                    <property name="shadow_type">in</property>
                                     <child>
                                       <widget class="GtkTextView" id="riepilogo_fornitore_filter_textview">
                                         <property name="width_request">300</property>
@@ -1301,6 +1356,9 @@
                       </packing>
                     </child>
                   </widget>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
                 <child>
                   <widget class="GtkHBox" id="hbox367">
@@ -1311,15 +1369,16 @@
                       </widget>
                       <packing>
                         <property name="padding">5</property>
+                        <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
                       <widget class="GtkButton" id="ricerca_semplice_fornitori_button">
+                        <property name="label" translatable="yes">Vai a Ricerca Semplice Singola</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
                         <property name="tooltip" translatable="yes">Ricerca semplice singola, permette cercare un risultato</property>
-                        <property name="label" translatable="yes">Vai a Ricerca Semplice Singola</property>
-                        <property name="response_id">0</property>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
@@ -1342,6 +1401,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -1359,107 +1419,11 @@
                     <property name="n_columns">6</property>
                     <property name="row_spacing">6</property>
                     <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
                       <widget class="GtkLabel" id="label1">
                         <property name="visible">True</property>
                         <property name="xalign">0.89999997615814209</property>
                         <property name="label" translatable="yes">Nazione</property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                        <property name="justify">right</property>
                       </widget>
                       <packing>
                         <property name="left_attach">4</property>
@@ -1485,6 +1449,8 @@
                         <property name="can_focus">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="editable">False</property>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -1792,6 +1758,12 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="max_length">200</property>
+                        <property name="secondary_icon_stock">gtk-clear</property>
+                        <property name="secondary_icon_activatable">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="icon_press" handler="on_icon_press"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -1835,6 +1807,13 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="max_length">100</property>
+                            <property name="primary_icon_stock">gtk-new</property>
+                            <property name="secondary_icon_stock">gtk-clear</property>
+                            <property name="primary_icon_activatable">True</property>
+                            <property name="secondary_icon_activatable">True</property>
+                            <property name="primary_icon_sensitive">True</property>
+                            <property name="secondary_icon_sensitive">True</property>
+                            <signal name="icon_press" handler="on_icon_press"/>
                           </widget>
                         </child>
                       </widget>
@@ -1850,6 +1829,12 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="max_length">200</property>
+                        <property name="secondary_icon_stock">gtk-clear</property>
+                        <property name="secondary_icon_activatable">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="icon_press" handler="on_icon_press"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -1865,6 +1850,12 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="max_length">200</property>
+                        <property name="secondary_icon_stock">gtk-clear</property>
+                        <property name="secondary_icon_activatable">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="icon_press" handler="on_icon_press"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -1880,6 +1871,12 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="max_length">100</property>
+                        <property name="secondary_icon_stock">gtk-clear</property>
+                        <property name="secondary_icon_activatable">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="icon_press" handler="on_icon_press"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -1895,6 +1892,12 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="max_length">100</property>
+                        <property name="secondary_icon_stock">gtk-clear</property>
+                        <property name="secondary_icon_activatable">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="icon_press" handler="on_icon_press"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -1915,6 +1918,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="max_length">16</property>
+                            <signal name="focus_in_event" handler="on_focus_in_event"/>
+                            <signal name="focus_out_event" handler="on_focus_out_event"/>
                           </widget>
                         </child>
                       </widget>
@@ -1932,6 +1937,12 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="max_length">100</property>
+                        <property name="secondary_icon_stock">gtk-clear</property>
+                        <property name="secondary_icon_activatable">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="icon_press" handler="on_icon_press"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -1953,6 +1964,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="max_length">2</property>
+                            <signal name="focus_in_event" handler="on_focus_in_event"/>
+                            <signal name="focus_out_event" handler="on_focus_out_event"/>
                           </widget>
                         </child>
                       </widget>
@@ -1970,6 +1983,9 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="max_length">100</property>
+                        <property name="secondary_icon_stock">gtk-clear</property>
+                        <property name="secondary_icon_activatable">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -2008,6 +2024,12 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="max_length">200</property>
+                        <property name="secondary_icon_stock">gtk-clear</property>
+                        <property name="secondary_icon_activatable">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="icon_press" handler="on_entry_icon_press"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -2053,6 +2075,8 @@
                             <property name="creation_function">createUnsignedIntegerEntryField</property>
                             <property name="string1">&lt;blank&gt;</property>
                             <property name="int1">11</property>
+                            <signal name="focus_in_event" handler="on_focus_in_event"/>
+                            <signal name="focus_out_event" handler="on_focus_out_event"/>
                           </widget>
                         </child>
                       </widget>
@@ -2078,7 +2102,7 @@
                               <widget class="GtkToggleButton" id="contatti_togglebutton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="response_id">0</property>
+                                <property name="receives_default">False</property>
                                 <signal name="clicked" handler="on_contatti_togglebutton_clicked"/>
                                 <child>
                                   <widget class="GtkAlignment" id="alignment380">
@@ -2097,6 +2121,7 @@
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">False</property>
+                                            <property name="position">0</property>
                                           </packing>
                                         </child>
                                         <child>
@@ -2119,13 +2144,14 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
                               <widget class="GtkToggleButton" id="forniture_togglebutton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="response_id">0</property>
+                                <property name="receives_default">False</property>
                                 <signal name="clicked" handler="on_forniture_togglebutton_clicked"/>
                                 <child>
                                   <widget class="GtkAlignment" id="alignment381">
@@ -2144,6 +2170,7 @@
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">False</property>
+                                            <property name="position">0</property>
                                           </packing>
                                         </child>
                                         <child>
@@ -2173,7 +2200,7 @@
                               <widget class="GtkToggleButton" id="scheda_contabile_togglebutton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="response_id">0</property>
+                                <property name="receives_default">False</property>
                                 <signal name="clicked" handler="on_scheda_contabile_togglebutton_clicked"/>
                                 <child>
                                   <widget class="GtkAlignment" id="alignment12">
@@ -2192,6 +2219,7 @@
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">False</property>
+                                            <property name="position">0</property>
                                           </packing>
                                         </child>
                                         <child>
@@ -2248,6 +2276,8 @@
                         <property name="can_focus">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="editable">False</property>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -2255,6 +2285,102 @@
                         <property name="top_attach">18</property>
                         <property name="bottom_attach">19</property>
                       </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
                     </child>
                   </widget>
                 </child>
@@ -2265,8 +2391,8 @@
    principali</property>
                   </widget>
                   <packing>
-                    <property name="type">tab</property>
                     <property name="tab_fill">False</property>
+                    <property name="type">tab</property>
                   </packing>
                 </child>
                 <child>
@@ -2393,9 +2519,9 @@
                     <property name="label" translatable="yes">Altre</property>
                   </widget>
                   <packing>
-                    <property name="type">tab</property>
                     <property name="position">1</property>
                     <property name="tab_fill">False</property>
+                    <property name="type">tab</property>
                   </packing>
                 </child>
               </widget>

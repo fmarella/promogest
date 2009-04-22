@@ -134,6 +134,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -147,6 +149,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -162,6 +166,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -177,6 +183,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -192,6 +200,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -207,6 +217,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -222,6 +234,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
