@@ -6,16 +6,11 @@
 # Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
 # Author: M3nt0r3 <m3nt0r3@gmail.com>
 
-#import pygtk
-#import gobject,
 import datetime
 from decimal import *
 
 from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport
-#from promogest.modules.SchedaLavorazione.ui.AnagraficaCaratteriStampa import AnagraficaCaratteriStampa
-#from promogest.modules.SchedaLavorazione.ui.AnagraficaColoriStampa import AnagraficaColoriStampa
 from promogest import Environment
-#from promogest.modules.SchedaLavorazione.dao import SchedaOrdinazione
 from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
 from promogest.ui.utils import *
 from SchedaLavorazioneUtils import fillComboboxColoreStampa, fillComboboxCarattereStampa, fillComboboxAssociazioneArticoli, fetch_date, get_nomi_sposi, create_schede_ordinazioni, getPrezzoNetto

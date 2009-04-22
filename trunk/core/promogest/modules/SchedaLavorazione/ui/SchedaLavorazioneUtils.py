@@ -22,7 +22,6 @@ from promogest.modules.DistintaBase.dao.AssociazioneArticolo import Associazione
 from promogest.modules.SchedaLavorazione.dao.ScontoRigaScheda import ScontoRigaScheda
 from promogest.modules.SchedaLavorazione.dao.ScontoSchedaOrdinazione import ScontoSchedaOrdinazione
 from promogest.modules.SchedaLavorazione.dao.PromemoriaSchedaOrdinazione import PromemoriaSchedaOrdinazione
-#import promogest.modules.SchedaLavorazione.lib.PopReader
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.Articolo import Articolo
 
@@ -336,89 +335,89 @@ def fillSchedaLavorazioneFromEmail(ui):
             a = lista[1].strip().split(",")[1][0:-2].strip()
             ui.data_presa_in_carico_entry.set_text(dateToString(datetime.datetime.strptime(a, "%d %b %Y")))
         elif campo == "Nome_sposo":
-            ui.nome_sposo_entry.set_text(lista[1].strip())
+            ui.nome_sposo_entry.set_text(lista[1].strip().upper())
         elif campo == "Cognome_sposo":
-            cognome_sposo = lista[1].strip()
+            cognome_sposo = lista[1].strip().upper()
             ui.cognome_sposo_entry.set_text(cognome_sposo)
         elif campo == "Nome_sposa":
             ui.nome_sposa_entry.set_text(lista[1].strip())
         elif campo == "Cognome_sposa":
-            cognome_sposa = lista[1].strip()
+            cognome_sposa = lista[1].strip().upper()
             ui.cognome_sposa_entry.set_text(cognome_sposa)
         elif campo == "messaggio alternativo a annunciano...":
-            messaggio_alternativo  = lista[1].strip()
+            messaggio_alternativo  = lista[1].strip().upper()
         elif campo == "cerimonia":
-            cerimonia  = lista[1].strip()
+            cerimonia  = lista[1].strip().upper()
         elif campo == "nome_luogo_cerimonia":
-            nome_luogo_cerimonia  = lista[1].strip()
+            nome_luogo_cerimonia  = lista[1].strip().upper()
         elif campo == "localita_matrimonio":
-            localita_matrimonio  = lista[1].strip()
+            localita_matrimonio  = lista[1].strip().upper()
         elif campo == "Citta_matrimonio":
-            ui.provenienza_entry.set_text(lista[1].strip())
+            ui.provenienza_entry.set_text(lista[1].strip().upper())
         elif campo == "Data_matrimonio":
             print lista[1].strip()
             datamat=lista[1].strip()
             datamat=datamat[0:-2]+"20"+datamat[-2:]
             ui.data_matrimonio_entry.set_text(datamat)
         elif campo == "Ora_matrimonio":
-            ora_matrimonio  = lista[1].strip()
+            ora_matrimonio  = lista[1].strip().upper()
         elif campo == "Citta_sposo":
-            citta_sposo  = lista[1].strip()
+            citta_sposo  = lista[1].strip().upper()
         elif campo == "Via_e_num_sposo":
-            via_e_num_sposo  = lista[1].strip()
+            via_e_num_sposo  = lista[1].strip().upper()
         elif campo == "num_sposo":
-            num_sposo  = lista[1].strip()
+            num_sposo  = lista[1].strip().upper()
         elif campo == "Citta_sposa":
-            citta_sposa  = lista[1].strip()
+            citta_sposa  = lista[1].strip().upper()
         elif campo == "Via_e_num_sposa":
-            via_e_num_sposa  = lista[1].strip()
+            via_e_num_sposa  = lista[1].strip().upper()
         elif campo == "Num_sposa":
             num_sposa  = lista[1].strip()
         elif campo == "Indirizzo_coniugale":
-            indirizzo_coniugale  = lista[1].strip()
+            indirizzo_coniugale  = lista[1].strip().upper()
         elif campo == "Luogo_ricevimento":
             luogo_ricevimento  = lista[1].strip()
         elif campo == "biglietto_bomboniera":
-            biglietto_bomboniera  = lista[1].strip()
+            biglietto_bomboniera  = lista[1].strip().upper()
             if biglietto_bomboniera:
                 ui.bomba_si_checkbutton.set_active(True)
             else:
                 ui.bomba_no_checkbutton.set_active(True)
         elif campo == "gradita_conferma":
-            gradita_conferma  = lista[1].strip()
+            gradita_conferma  = lista[1].strip().upper()
         elif campo == "Commenti":
-            commenti  = lista[1].strip()
+            commenti  = lista[1].strip().upper()
         elif campo == "carattere":
-            carattere_stampa  = lista[1].strip()
+            carattere_stampa  = lista[1].strip().upper()
         elif campo == "colore":
-            colore_stampa  = lista[1].strip()
+            colore_stampa  = lista[1].strip().upper()
         elif campo == "sito_omaggio":
-            sito_omaggio  = lista[1].strip()
+            sito_omaggio  = lista[1].strip().upper()
         elif campo == "Luogo_spedizione":
-            luogo_spedizione  = lista[1].strip()
+            luogo_spedizione  = lista[1].strip().upper()
         elif campo == "nome":
-            ui.referente_entry.set_text(lista[1].strip())
+            ui.referente_entry.set_text(lista[1].strip().upper())
         elif campo == "Presso":
-            ui.presso_entry.set_text(lista[1].strip())
+            ui.presso_entry.set_text(lista[1].strip().upper())
         elif campo == "Via_e_num":
-            ui.via_piazza_entry.set_text(lista[1].strip())
+            ui.via_piazza_entry.set_text(lista[1].strip().upper())
             #dao.num_civ = ""
         elif campo == "Citta":
-            ui.localita_entry.set_text(lista[1].strip())
+            ui.localita_entry.set_text(lista[1].strip().upper())
         elif campo == "Provincia":
-            ui.provincia_entry.set_text(lista[1].strip())
+            ui.provincia_entry.set_text(lista[1].strip().upper())
         elif campo == "CAP":
-            ui.zip_entry.set_text(lista[1].strip())
+            ui.zip_entry.set_text(lista[1].strip().upper())
         elif campo == "telefono":
-            ui.telefono_entry.set_text(lista[1].strip())
+            ui.telefono_entry.set_text(lista[1].strip().upper())
         elif campo == "Cellulare":
-            ui.cellulare_entry.set_text(lista[1].strip())
+            ui.cellulare_entry.set_text(lista[1].strip().upper())
         elif campo == "codicefiscale":
-            codicefiscale  = lista[1].strip()
+            codicefiscale  = lista[1].strip().upper()
         elif campo == "Note_aggiuntive":
-            ui.note_final_entry.set_text(lista[1].strip())
+            ui.note_final_entry.set_text(lista[1].strip().upper())
         elif campo == "pagamento":
-            pagamento  = lista[1].strip()
+            pagamento  = lista[1].strip().upper()
         elif campo == "documento":
             if lista[1].strip() == "ricevuta":
                 ui.ricevuta_checkbutton.set_active(True)
@@ -426,15 +425,15 @@ def fillSchedaLavorazioneFromEmail(ui):
             #else:
                 #dao.fattura = True
         elif campo == "autorizzo_si":
-            autorizzo_si  = lista[1].strip()
+            autorizzo_si  = lista[1].strip().upper()
         elif campo == "privacy":
-            privacy  = lista[1].strip()
+            privacy  = lista[1].strip().upper()
         elif campo == "pagina":
-            pagina  = lista[1].strip()
+            pagina  = lista[1].strip().upper()
         elif campo == "spesa":
-            pagina  = lista[1].strip()
+            pagina  = lista[1].strip().upper()
         elif campo == "PRODOTTO":
-            prodotto  = lista[1].strip()
+            prodotto  = lista[1].strip().upper()
         elif campo == "CODICE PARTECIPAZIONE":
             print "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR", lista[1]
             codParte = lista[1].strip().split("(")[0].strip()[1:-1].replace("Art.",'')[1:-1]

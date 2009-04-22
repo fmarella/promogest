@@ -7,7 +7,8 @@
 # Author: M3nt0r3 <m3nt0r3@gmail.com>
 
 import pygtk
-import gobject, datetime
+import gobject
+import datetime
 from decimal import *
 import string
 from random import Random
@@ -54,15 +55,8 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                                 'Dettagli scheda lavorazione',
                                 gladeFile='./promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade',
                                 module=True)
-        #self.pack_widgets()
-        #self.connect_callbacks()
-        #self.main_widget = self.anagrafica_schede_ordinazioni_detail_vbox
         self._prepareWindowPlacement()
-        #self.window =  self.anagrafica_schede_ordinazioni_detail_vbox
-        #self._windowTitle ='Dettagli scheda lavorazione'
         self._anagrafica = anagrafica
-        #import pdb
-        #pdb.set_trace()
         self._widgetFirstFocus = self.nomi_sposi_entry
         self.rimuovi_articolo_button.set_sensitive(False)
         self._loading = False
@@ -80,9 +74,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.righeTEMP = []
         self.scontiTEMP = []
         self.scontiSuTotale = []
-        #self._clear()
-        #self.draw()
-
 
     def draw(self):
         """
@@ -96,7 +87,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.id_cliente_customcombobox.setType(self._tipoPersonaGiuridica)
         fillComboboxCarattereStampa(self.carattere_stampa_combobox)
         fillComboboxColoreStampa(self.colore_stampa_combobox)
-        #popolazione delle treeview
         treeview = self.articoli_treeview
 
         renderer = gtk.CellRendererText()
@@ -243,7 +233,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             if self.dao.righe:
                 self._id_listino = self.dao.righe[0].id_listino
                 self.daoListino = Listino().select(id=self._id_listino)[0]
-                #asswgno alla variabile temporanea il valore di righe
+                #assegno alla variabile temporanea il valore di righe
                 self.righeTEMP = self.dao.righe
                 self.scontiTEMP = self.dao.sconti
             # il dao è fresco per cui mi prendo le righe e le metto
