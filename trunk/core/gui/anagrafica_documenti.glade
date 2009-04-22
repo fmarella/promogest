@@ -112,6 +112,8 @@
                     <property name="visible">True</property>
                     <property name="creation_function">createUnsignedIntegerEntryField</property>
                     <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
                   </widget>
                 </child>
               </widget>
@@ -135,6 +137,8 @@
                     <property name="visible">True</property>
                     <property name="creation_function">createUnsignedIntegerEntryField</property>
                     <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
                   </widget>
                 </child>
               </widget>
@@ -261,6 +265,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -781,6 +787,12 @@ Saldato</property>
                       <widget class="GtkEntry" id="protocollo_entry1">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="secondary_icon_stock">gtk-clear</property>
+                        <property name="secondary_icon_activatable">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="icon_press" handler="on_icon_press"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">3</property>
@@ -1101,7 +1113,9 @@ Saldato</property>
                                         <property name="primary_icon_activatable">True</property>
                                         <property name="primary_icon_sensitive">True</property>
                                         <signal name="key_press_event" handler="on_articolo_entry_key_press_event"/>
+                                        <signal name="focus_in_event" handler="on_focus_in_event"/>
                                         <signal name="icon_press" handler="on_articolo_entry_icon_press"/>
+                                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                                       </widget>
                                       <packing>
                                         <property name="position">3</property>
@@ -1652,6 +1666,8 @@ Saldato</property>
                                                 <property name="int1">5</property>
                                                 <property name="int2">2</property>
                                                 <signal name="focus_out_event" handler="on_show_totali_riga"/>
+                                                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                                <signal name="focus_in_event" handler="on_focus_in_event"/>
                                               </widget>
                                             </child>
                                           </widget>
@@ -1678,6 +1694,12 @@ Saldato</property>
                                             <property name="width_request">200</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="secondary_icon_stock">gtk-clear</property>
+                                            <property name="secondary_icon_activatable">True</property>
+                                            <property name="secondary_icon_sensitive">True</property>
+                                            <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                            <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                            <signal name="icon_press" handler="on_icon_press"/>
                                           </widget>
                                           <packing>
                                             <property name="expand">False</property>
@@ -1751,6 +1773,8 @@ Saldato</property>
                                                         <property name="int1">10</property>
                                                         <property name="int2">4</property>
                                                         <signal name="key_press_event" handler="on_larghezza_entry_key_press_event"/>
+                                                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                                                       </widget>
                                                       <packing>
                                                         <property name="expand">False</property>
@@ -1777,6 +1801,8 @@ Saldato</property>
                                                         <property name="int1">10</property>
                                                         <property name="int2">4</property>
                                                         <signal name="key_press_event" handler="on_altezza_entry_key_press_event"/>
+                                                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                                                       </widget>
                                                       <packing>
                                                         <property name="expand">False</property>
@@ -1919,6 +1945,8 @@ Saldato</property>
                                                             <property name="int2">2</property>
                                                             <signal name="focus_out_event" handler="on_show_totali_riga"/>
                                                             <signal name="focus_out_event" handler="on_quantita_entry_focus_out_event"/>
+                                                            <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                                            <signal name="focus_in_event" handler="on_focus_in_event"/>
                                                           </widget>
                                                         </child>
                                                       </widget>
@@ -1945,6 +1973,8 @@ Saldato</property>
                                                             <property name="int1">10</property>
                                                             <property name="int2">2</property>
                                                             <signal name="focus_out_event" handler="on_show_totali_riga"/>
+                                                            <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                                            <signal name="focus_in_event" handler="on_focus_in_event"/>
                                                           </widget>
                                                         </child>
                                                       </widget>
@@ -3424,6 +3454,10 @@ Assegnato</property>
                       <widget class="GtkEntry" id="note_pie_pagina_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="secondary_icon_stock">gtk-clear</property>
+                        <property name="secondary_icon_activatable">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
+                        <signal name="icon_press" handler="on_icon_press"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
