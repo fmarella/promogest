@@ -13,8 +13,6 @@ import gobject
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Magazzino
 from promogest.dao.Magazzino import Magazzino
 
 from utils import *
@@ -112,7 +110,6 @@ class AnagraficaMagazziniFilter(AnagraficaFilter):
                                         (m.denominazione or '')))
 
 
-
 class AnagraficaMagazziniHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'magazzino',
@@ -127,7 +124,6 @@ class AnagraficaMagazziniReport(AnagraficaReport):
                                   defaultFileName='magazzini',
                                   htmlTemplate='magazzini',
                                   sxwTemplate='magazzini')
-
 
 
 class AnagraficaMagazziniEdit(AnagraficaEdit):
@@ -166,6 +162,7 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
         self.localita_entry.set_text(self.dao.localita or '')
         self.cap_entry.set_text(self.dao.cap or '')
         self.provincia_entry.set_text(self.dao.provincia or '')
+        self.pvcode_entry.set_text(self.dao.pvcode or '')
 
     def saveDao(self):
         if (self.denominazione_entry.get_text() == ''):
@@ -176,6 +173,7 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
         self.dao.localita = self.localita_entry.get_text()
         self.dao.cap = self.cap_entry.get_text()
         self.dao.provincia = self.provincia_entry.get_text()
+        self.dao.pvcode = self.pvcode_entry.get_text()
         if Environment.tipo_eng =="sqlite" and Magazzino().count() >=1:
             return
         self.dao.persist()

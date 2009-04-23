@@ -13,7 +13,7 @@ import gobject
 import datetime
 #from decimal import *
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
-
+from AnagraficaDocumentiEditUtils import *
 from promogest import Environment
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.TestataDocumento import TestataDocumento
@@ -24,17 +24,14 @@ from promogest.dao.Fornitore import Fornitore
 from utils import *
 from utilsCombobox import *
 
-
+if "PromoWear" in Environment.modulesList:
+    from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
 
 class AnagraficaMovimenti(Anagrafica):
 
     def __init__(self, idMagazzino=None, aziendaStr=None):
         """
         FIXME
-        @param idMagazzino=None:
-        @type idMagazzino=None:
-        @param aziendaStr=None:
-        @type aziendaStr=None:
         """
         self._magazzinoFissato = (idMagazzino <> None)
         self._idMagazzino=idMagazzino
@@ -431,6 +428,11 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self._segno = None
         # caricamento movimento (interrompe l'azione degli eventi on_changed nelle combobox)
         self._loading = False
+        if "PromoWear" in Environment.modulesList:
+            self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
+            self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
+        else:
+            hidePromoWear(self)
 
 
     def azzeraRiga(self, numero = 0):
@@ -836,8 +838,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         """ 
         Calcola il prezzo netto dal prezzo lordo e dagli sconti 
         """
-        prezzoLordo = Decimal(self._righe[0]["prezzoLordo"])
-        prezzoNetto = Decimal(self._righe[0]["prezzoLordo"])
+        prezzoLordo = Decimal(str(self._righe[0]["prezzoLordo"]))
+        prezzoNetto = Decimal(str(self._righe[0]["prezzoLordo"]))
         applicazione = self._righe[0]["applicazioneSconti"]
         sconti = self._righe[0]["sconti"]
         for s in sconti:

@@ -568,7 +568,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                     self.prezzo_dettaglio_noiva_label.set_text(self.prezzo_ingrosso_entry.get_text())
         return False
 
-
     def draw(self):
         """
         FIXME

@@ -101,7 +101,7 @@ class SincroDB(GladeWidget):
         """
         Genera un bel db, aggiornato alla versione attualecd corpo
         """
-        engine = create_engine('sqlite:////home/vete/pg2_work/ciccio_db')
+        engine = create_engine('sqlite:////home/mentore/pg2_work/ciccio_db')
         # create MetaData
         meta2 = MetaData()
         # bind to an engine
@@ -110,12 +110,17 @@ class SincroDB(GladeWidget):
         prova = []
         newmetadata = Environment.params['metadata']
 #        print newmetadata.tables
-        for t in newmetadata.table_iterator(reverse=False):
-            t.metadata = meta2
-        newmetadata.create_all()
+        for t in newmetadata.sorted_tables:
+            t.__dict__['metadata'] = meta2
+            t.__dict__['schema'] = ""
+            t.__dict__['fullname'] = t.__dict__['fullname'].split(".")[1]
+        for g in newmetadata.sorted_tables:
+            print g.__dict__
+#            t.create(meta2, checkfirst=True)
+        newmetadata.create_all(checkfirst=True)
 #            table.split('.')[1]
 #        prova.append
-#        newmetadata.create_all(bind=)
+#        newmetadata.create_all(bind=create_engine('sqlite:////home/mentore/pg2_work/ciccio_db'), checkfirst=True)
         return
 
 

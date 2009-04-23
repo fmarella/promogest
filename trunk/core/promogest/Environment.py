@@ -418,7 +418,7 @@ Session = scoped_session(sessionmaker(bind=engine))
 #meta = None
 #Session = scoped_session(sessionmaker(bind=engine))
 session = Session()
-params = {'db_pg': engine ,
+params = {'engine': engine ,
         'mainSchema': mainSchema,
         'schema': azienda,
         'metadata': meta,
