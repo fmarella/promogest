@@ -38,8 +38,9 @@
                     </child>
                     <child>
                       <widget class="GtkEntry" id="denominazione_filter_entry">
-                        <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                        <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -116,8 +117,9 @@
                     <child>
                       <widget class="GtkEntry" id="codice_articolo_fornitore_filter_entry">
                         <property name="can_focus">True</property>
-                        <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                        <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -131,8 +133,9 @@
                     <child>
                       <widget class="GtkEntry" id="codice_a_barre_filter_entry">
                         <property name="can_focus">True</property>
-                        <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                        <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -146,8 +149,9 @@
                     <child>
                       <widget class="GtkEntry" id="codice_filter_entry">
                         <property name="can_focus">True</property>
-                        <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                        <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -160,8 +164,9 @@
                     </child>
                     <child>
                       <widget class="GtkEntry" id="produttore_filter_entry">
-                        <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                        <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -1916,8 +1921,13 @@ Solo varianti</property>
                   <widget class="GtkEntry" id="denominazione_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                    <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                    <property name="secondary_icon_stock">gtk-clear</property>
+                    <property name="secondary_icon_activatable">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
+                    <signal name="button_press_event" handler="on_button_press_event"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="icon_press" handler="on_icon_press"/>
                   </widget>
                   <packing>
                     <property name="left_attach">1</property>
@@ -2003,8 +2013,13 @@ Solo varianti</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">149</property>
-                    <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                    <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                    <property name="secondary_icon_stock">gtk-clear</property>
+                    <property name="secondary_icon_activatable">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
+                    <signal name="button_press_event" handler="on_button_press_event"/>
+                    <signal name="focus_out_event" handler="on_focus_out_event"/>
+                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                    <signal name="icon_press" handler="on_icon_press"/>
                   </widget>
                   <packing>
                     <property name="left_attach">1</property>
@@ -2189,25 +2204,24 @@ Solo varianti</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="max_length">20</property>
-                            <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                            <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                            <property name="primary_icon_stock">gtk-new</property>
+                            <property name="secondary_icon_stock">gtk-clear</property>
+                            <property name="primary_icon_activatable">True</property>
+                            <property name="secondary_icon_activatable">True</property>
+                            <property name="primary_icon_sensitive">True</property>
+                            <property name="secondary_icon_sensitive">True</property>
+                            <signal name="button_press_event" handler="on_button_press_event"/>
+                            <signal name="focus_out_event" handler="on_focus_out_event"/>
+                            <signal name="focus_in_event" handler="on_focus_in_event"/>
+                            <signal name="icon_press" handler="on_icon_press"/>
+                            <signal name="icon_press" handler="on_icon_press_primary"/>
                           </widget>
                           <packing>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkButton" id="generate_article_code_button">
-                            <property name="label" translatable="yes">G</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="focus_on_click">False</property>
-                            <signal name="clicked" handler="on_generate_article_code_button_clicked"/>
-                          </widget>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
+                          <placeholder/>
                         </child>
                         <child>
                           <widget class="GtkToggleButton" id="codici_a_barre_togglebutton">
@@ -2727,6 +2741,9 @@ Solo varianti</property>
                     <child>
                       <widget class="GtkComboBoxEntry" id="unita_dimensioni_comboboxentry">
                         <property name="visible">True</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -2741,6 +2758,9 @@ Solo varianti</property>
                       <widget class="GtkComboBoxEntry" id="unita_volume_comboboxentry">
                         <property name="visible">True</property>
                         <property name="focus_on_click">False</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -2754,6 +2774,9 @@ Solo varianti</property>
                     <child>
                       <widget class="GtkComboBoxEntry" id="unita_peso_comboboxentry">
                         <property name="visible">True</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -3062,8 +3085,13 @@ Solo varianti</property>
                       <widget class="GtkEntry" id="descrizione_listino_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                        <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                        <property name="secondary_icon_stock">gtk-clear</property>
+                        <property name="secondary_icon_activatable">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="icon_press" handler="on_icon_press"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -3094,8 +3122,13 @@ Solo varianti</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="max_length">20</property>
-                        <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                        <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                        <property name="secondary_icon_stock">gtk-clear</property>
+                        <property name="secondary_icon_activatable">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="icon_press" handler="on_icon_press"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -3127,8 +3160,13 @@ Solo varianti</property>
                       <widget class="GtkEntry" id="descrizione_etichetta_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                        <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                        <property name="secondary_icon_stock">gtk-clear</property>
+                        <property name="secondary_icon_activatable">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="icon_press" handler="on_icon_press"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -3157,15 +3195,20 @@ Solo varianti</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip" translatable="yes">Inserisci un indirizzo in questa forma: http://indirizzo.jpg</property>
-                        <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                        <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                        <property name="secondary_icon_stock">gtk-clear</property>
+                        <property name="secondary_icon_activatable">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="icon_press" handler="on_icon_press"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">4</property>
                         <property name="top_attach">5</property>
                         <property name="bottom_attach">6</property>
-                        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                        <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
                         <property name="y_options"></property>
                       </packing>
                     </child>

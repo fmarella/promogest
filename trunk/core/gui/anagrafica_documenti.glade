@@ -790,6 +790,7 @@ Saldato</property>
                         <property name="secondary_icon_stock">gtk-clear</property>
                         <property name="secondary_icon_activatable">True</property>
                         <property name="secondary_icon_sensitive">True</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
                         <signal name="focus_in_event" handler="on_focus_in_event"/>
                         <signal name="icon_press" handler="on_icon_press"/>
                         <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -1112,6 +1113,7 @@ Saldato</property>
                                         <property name="secondary_icon_stock">gtk-clear</property>
                                         <property name="primary_icon_activatable">True</property>
                                         <property name="primary_icon_sensitive">True</property>
+                                        <signal name="button_press_event" handler="on_button_press_event"/>
                                         <signal name="key_press_event" handler="on_articolo_entry_key_press_event"/>
                                         <signal name="focus_in_event" handler="on_focus_in_event"/>
                                         <signal name="icon_press" handler="on_articolo_entry_icon_press"/>
@@ -1323,6 +1325,7 @@ Saldato</property>
                                         <property name="secondary_icon_stock">gtk-clear</property>
                                         <property name="secondary_icon_activatable">True</property>
                                         <property name="secondary_icon_sensitive">True</property>
+                                        <signal name="button_press_event" handler="on_button_press_event"/>
                                         <signal name="icon_press" handler="on_descrizione_entry_icon_press"/>
                                       </widget>
                                       <packing>
@@ -1697,6 +1700,7 @@ Saldato</property>
                                             <property name="secondary_icon_stock">gtk-clear</property>
                                             <property name="secondary_icon_activatable">True</property>
                                             <property name="secondary_icon_sensitive">True</property>
+                                            <signal name="button_press_event" handler="on_button_press_event"/>
                                             <signal name="focus_in_event" handler="on_focus_in_event"/>
                                             <signal name="focus_out_event" handler="on_focus_out_event"/>
                                             <signal name="icon_press" handler="on_icon_press"/>
@@ -2058,6 +2062,8 @@ Saldato</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="max_length">3</property>
                                                             <property name="invisible_char">&#x25CF;</property>
+                                                            <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                                            <signal name="focus_out_event" handler="on_focus_out_event"/>
                                                           </widget>
                                                           <packing>
                                                             <property name="expand">False</property>

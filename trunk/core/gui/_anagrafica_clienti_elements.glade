@@ -133,6 +133,7 @@
                       <widget class="GtkEntry" id="ragione_sociale_filter_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                         <signal name="focus_in_event" handler="on_focus_in_event"/>
                         <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -148,6 +149,7 @@
                       <widget class="GtkEntry" id="insegna_filter_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                         <signal name="focus_in_event" handler="on_focus_in_event"/>
                         <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -182,6 +184,7 @@
                       <widget class="GtkEntry" id="codice_filter_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                         <signal name="focus_in_event" handler="on_focus_in_event"/>
                         <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -199,6 +202,7 @@
                       <widget class="GtkEntry" id="localita_filter_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                         <signal name="focus_in_event" handler="on_focus_in_event"/>
                         <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -216,6 +220,7 @@
                       <widget class="GtkEntry" id="codice_fiscale_filter_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                         <signal name="focus_in_event" handler="on_focus_in_event"/>
                         <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -233,6 +238,7 @@
                       <widget class="GtkEntry" id="partita_iva_filter_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
                         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                         <signal name="focus_in_event" handler="on_focus_in_event"/>
                         <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -1773,6 +1779,7 @@
                     <property name="secondary_icon_stock">gtk-clear</property>
                     <property name="secondary_icon_activatable">True</property>
                     <property name="secondary_icon_sensitive">True</property>
+                    <signal name="button_press_event" handler="on_button_press_event"/>
                     <signal name="focus_in_event" handler="on_focus_in_event"/>
                     <signal name="icon_press" handler="on_icon_press"/>
                     <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -1808,6 +1815,7 @@
                     <property name="secondary_icon_stock">gtk-clear</property>
                     <property name="secondary_icon_activatable">True</property>
                     <property name="secondary_icon_sensitive">True</property>
+                    <signal name="button_press_event" handler="on_button_press_event"/>
                     <signal name="focus_in_event" handler="on_focus_in_event"/>
                     <signal name="icon_press" handler="on_icon_press"/>
                     <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -1908,6 +1916,7 @@
                         <property name="secondary_icon_activatable">True</property>
                         <property name="primary_icon_sensitive">True</property>
                         <property name="secondary_icon_sensitive">True</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
                         <signal name="focus_in_event" handler="on_focus_in_event"/>
                         <signal name="icon_press" handler="on_icon_press"/>
                         <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -1929,6 +1938,7 @@
                     <property name="secondary_icon_stock">gtk-clear</property>
                     <property name="secondary_icon_activatable">True</property>
                     <property name="secondary_icon_sensitive">True</property>
+                    <signal name="button_press_event" handler="on_button_press_event"/>
                     <signal name="focus_in_event" handler="on_focus_in_event"/>
                     <signal name="icon_press" handler="on_icon_press"/>
                     <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -1950,6 +1960,7 @@
                     <property name="secondary_icon_stock">gtk-clear</property>
                     <property name="secondary_icon_activatable">True</property>
                     <property name="secondary_icon_sensitive">True</property>
+                    <signal name="button_press_event" handler="on_button_press_event"/>
                     <signal name="focus_in_event" handler="on_focus_in_event"/>
                     <signal name="icon_press" handler="on_icon_press"/>
                     <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -1971,6 +1982,7 @@
                     <property name="secondary_icon_stock">gtk-clear</property>
                     <property name="secondary_icon_activatable">True</property>
                     <property name="secondary_icon_sensitive">True</property>
+                    <signal name="button_press_event" handler="on_button_press_event"/>
                     <signal name="focus_in_event" handler="on_focus_in_event"/>
                     <signal name="icon_press" handler="on_icon_press"/>
                     <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -1992,6 +2004,7 @@
                     <property name="secondary_icon_stock">gtk-clear</property>
                     <property name="secondary_icon_activatable">True</property>
                     <property name="secondary_icon_sensitive">True</property>
+                    <signal name="button_press_event" handler="on_button_press_event"/>
                     <signal name="focus_in_event" handler="on_focus_in_event"/>
                     <signal name="icon_press" handler="on_icon_press"/>
                     <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -2018,6 +2031,7 @@
                         <property name="secondary_icon_stock">gtk-clear</property>
                         <property name="secondary_icon_activatable">True</property>
                         <property name="secondary_icon_sensitive">True</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
                         <signal name="focus_in_event" handler="on_focus_in_event"/>
                         <signal name="icon_press" handler="on_icon_press"/>
                         <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -2041,6 +2055,7 @@
                     <property name="secondary_icon_stock">gtk-clear</property>
                     <property name="secondary_icon_activatable">True</property>
                     <property name="secondary_icon_sensitive">True</property>
+                    <signal name="button_press_event" handler="on_button_press_event"/>
                     <signal name="focus_in_event" handler="on_focus_in_event"/>
                     <signal name="icon_press" handler="on_entry_icon_press"/>
                     <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -2062,6 +2077,7 @@
                     <property name="secondary_icon_stock">gtk-clear</property>
                     <property name="secondary_icon_activatable">True</property>
                     <property name="secondary_icon_sensitive">True</property>
+                    <signal name="button_press_event" handler="on_button_press_event"/>
                     <signal name="focus_in_event" handler="on_focus_in_event"/>
                     <signal name="icon_press" handler="on_icon_press"/>
                     <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -2086,6 +2102,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="max_length">2</property>
+                        <signal name="button_press_event" handler="on_button_press_event"/>
                         <signal name="focus_in_event" handler="on_focus_in_event"/>
                         <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </widget>

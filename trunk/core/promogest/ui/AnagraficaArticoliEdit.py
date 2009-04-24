@@ -562,9 +562,10 @@ dei dati accessori. Continuare?"""
             self.id_modello_customcombobox.set_sensitive(True)
             self.frame_promowear.set_sensitive(True)
 
-    def on_generate_article_code_button_clicked(self, button):
-        codice = promogest.dao.Articolo.getNuovoCodiceArticolo(idFamiglia=None)
-        self.codice_entry.set_text(codice)
+    def on_icon_press_primary(self,entry,position,event):
+        if position.value_nick == "primary":
+            codice = promogest.dao.Articolo.getNuovoCodiceArticolo(idFamiglia=None)
+            self.codice_entry.set_text(codice)
 
     def on_taglie_colori_togglebutton_clicked(self, toggleButton):
         """ TogGLeButton delle taglie e colori, solo per la definizione delle varianti"""

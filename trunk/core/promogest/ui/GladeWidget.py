@@ -213,7 +213,6 @@ class GladeWidget(SimpleGladeApp):
         obj.set("height", str(self.height) or "")
         obj.set("left", str(self.left) or "")
         obj.set("top", str(self.top) or "")
-        #print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
         doc.write(self._defaultWindowAttributesFile)
 
 
@@ -229,13 +228,40 @@ class GladeWidget(SimpleGladeApp):
                 self.topLevelWindow.move(self.left, self.top)
 
 
+    def on_button_press_event(self, widget, event):
+        #if event.button == 1:
+            #print "left click"
+        #elif event.button == 2:
+            #print "middle click"
+        #elif event.button == 3:
+            #print "right click"
+
+        # was it a multiple click?
+        if event.type == gtk.gdk.BUTTON_PRESS:
+            pass
+            #print "single click"
+        elif event.type == gtk.gdk._2BUTTON_PRESS:
+            testo = widget.get_text()
+            if testo.isupper():
+                uppertext = testo.lower()
+            else:
+                uppertext = testo.upper()
+            widget.set_text(uppertext)
+            #print "double click"
+        elif event.type == gtk.gdk._3BUTTON_PRESS:
+            testo = widget.get_text()
+            capitalizetext = testo.capitalize()
+            widget.set_text(capitalizetext)
+            #print "triple click. ouch, you hurt your user."
+
+
     def on_icon_press(self,entry,position,event):
         """
         scopettina agganciata ad un segnale generico
         """
         if position.value_nick == "primary":
-            #pass
-            print "CERCA"
+            pass
+            #print "CERCA"
         else:                            #secondary
             entry.set_text("") 
 
