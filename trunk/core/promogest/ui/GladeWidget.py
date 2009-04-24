@@ -233,9 +233,9 @@ class GladeWidget(SimpleGladeApp):
         """
         scopettina agganciata ad un segnale generico
         """
-        if position.real == 0:
-            pass
-            #print "CERCA"
+        if position.value_nick == "primary":
+            #pass
+            print "CERCA"
         else:                            #secondary
             entry.set_text("") 
 
