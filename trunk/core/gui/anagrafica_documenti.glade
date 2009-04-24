@@ -1326,6 +1326,7 @@ Saldato</property>
                                         <property name="secondary_icon_activatable">True</property>
                                         <property name="secondary_icon_sensitive">True</property>
                                         <signal name="button_press_event" handler="on_button_press_event"/>
+                                        <signal name="insert_text" handler="on_number_insert_text"/>
                                         <signal name="icon_press" handler="on_descrizione_entry_icon_press"/>
                                       </widget>
                                       <packing>

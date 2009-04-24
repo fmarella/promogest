@@ -227,6 +227,10 @@ class GladeWidget(SimpleGladeApp):
             if self.left is not None and self.top is not None:
                 self.topLevelWindow.move(self.left, self.top)
 
+    def on_number_insert_text(self,editable, new_text, new_text_length, position):
+        #print new_text, new_text_length, new_text.isdigit()
+        pass
+
 
     def on_button_press_event(self, widget, event):
         #if event.button == 1:
