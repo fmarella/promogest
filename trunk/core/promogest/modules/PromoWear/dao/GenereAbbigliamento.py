@@ -10,6 +10,8 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
+
+
 class GenereAbbigliamento(Dao):
 
     def __init__(self, arg=None):

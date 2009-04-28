@@ -8,7 +8,10 @@
 from promogest import Environment
 #from promogest.ui.GladeWidget import GladeWidget
 #import promogest.ui.Login
-from promogest.modules.PromoWear.data.PromoWearDB import *
+if hasattr(conf, "PromoWear")\
+            and getattr(conf.PromoWear,'mod_enable')=="yes"\
+            and getattr(conf.PromoWear,'primoavvio')=="yes":
+    from promogest.modules.PromoWear.data.PromoWearDB import *
 from promogest.modules.PromoWear.ui.AnagraficaColori import AnagraficaColori
 from promogest.modules.PromoWear.ui.AnagraficaGruppiTaglia import AnagraficaGruppiTaglia
 from promogest.modules.PromoWear.ui.AnagraficaTaglie import AnagraficaTaglie

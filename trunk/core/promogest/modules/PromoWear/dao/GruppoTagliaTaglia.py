@@ -12,6 +12,7 @@ from promogest.dao.Dao import Dao
 #from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
 from promogest.modules.PromoWear.dao.Taglia import Taglia
 
+
 class GruppoTagliaTaglia(Dao):
 
     def __init__(self, arg=None):

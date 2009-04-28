@@ -18,7 +18,10 @@ if "magazzino.pvcode" not in str(magazzinoTable.columns):
     print "AGGIUNGO LA COLONNA PVCODE"
     conn = params["engine"].connect()
     trans = conn.begin()
-    conn.execute("ALTER TABLE "+ params['schema']+".magazzino"+" ADD COLUMN pvcode varchar(3);")
+    if tipodb == "sqlite":
+        conn.execute("ALTER TABLE magazzino ADD COLUMN pvcode varchar(3);")
+    else:
+        conn.execute("ALTER TABLE "+ params['schema']+".magazzino"+" ADD COLUMN pvcode varchar(3);")
     trans.commit()
 
 class Magazzino(Dao):

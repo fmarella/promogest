@@ -9,13 +9,14 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
-from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
 from promogest.modules.PromoWear.dao.Taglia import Taglia
+from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
 from promogest.modules.PromoWear.dao.Colore import Colore
 from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
 from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
 from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
 from promogest.modules.PromoWear.dao.Modello import Modello
+
 
 class ArticoloTagliaColore(Dao):
 

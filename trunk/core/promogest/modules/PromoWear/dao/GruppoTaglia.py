@@ -12,7 +12,8 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTaglia
-from Taglia import Taglia
+from promogest.modules.PromoWear.dao.Taglia import Taglia
+
 
 class GruppoTaglia(Dao):
 

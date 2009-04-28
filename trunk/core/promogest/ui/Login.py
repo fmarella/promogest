@@ -339,7 +339,7 @@ class Login(GladeApp):
             """
             Check the modules directory and automatically try to load all available modules
             """
-            Environment.modulesList=["Pagamenti"]
+            Environment.modulesList=[]
             modules_folders = [folder for folder in os.listdir(modules_dir) \
                             if (os.path.isdir(os.path.join(modules_dir, folder)) \
                             and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
