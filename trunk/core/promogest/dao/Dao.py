@@ -152,20 +152,20 @@ class Dao(object):
         utente = params['usernameLoggedList'][1]
         mapper = object_mapper(self)
         pk = mapper.primary_key_from_instance(self)
-        completeMessage= message + " " +str(pk)
+        completeMessage = message + " " +str(pk)
         appLogTable = Table('app_log', params['metadata'], autoload=True, schema=params['mainSchema'])
+        print "SEEEEEELF", self, self.__dict__, dumps(self)
         aplot = appLogTable.insert()
-#        print "OHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH",self
-        aplot.execute(
-                id_utente = params['usernameLoggedList'][0],
-                utentedb = params['usernameLoggedList'][1],
-                schema_azienda = params['schema'],
-                level = "I",
-                message = completeMessage,
-                value = level,
-                registration_date = datetime.datetime.now(),
-                object = dumps(self)
-                )
+        #aplot.execute(
+                    #id_utente = params['usernameLoggedList'][0],
+                    #utentedb = params['usernameLoggedList'][1],
+                    #schema_azienda = params['schema'],
+                    #level = "I",
+                    #message = completeMessage,
+                    #value = level,
+                    #registration_date = datetime.datetime.now(),
+                    #object = dumps(self)
+                #)
         print "[LOG] %s da %s in %s in data %s" %(completeMessage,utente, params['schema'] ,registration_date.strftime("%d/%m/%Y"))
 
     def _resetId(self):

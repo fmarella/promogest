@@ -13,13 +13,13 @@ from promogest.Environment import *
 from Dao import Dao
 
 
-#magazzinoTable=Table('magazzino',params['metadata'],schema = params['schema'],autoload=True)
-#if "magazzino.pvcode" not in str(magazzinoTable.columns):
-    #print "AGGIUNGO LA COLONNA PVCODE"
-    #conn = params["engine"].connect()
-    #trans = conn.begin()
-    #conn.execute("ALTER TABLE "+ params['schema']+".magazzino"+" ADD COLUMN pvcode varchar(3);")
-    #trans.commit()
+magazzinoTable=Table('magazzino',params['metadata'],schema = params['schema'],autoload=True)
+if "magazzino.pvcode" not in str(magazzinoTable.columns):
+    print "AGGIUNGO LA COLONNA PVCODE"
+    conn = params["engine"].connect()
+    trans = conn.begin()
+    conn.execute("ALTER TABLE "+ params['schema']+".magazzino"+" ADD COLUMN pvcode varchar(3);")
+    trans.commit()
 
 class Magazzino(Dao):
 
