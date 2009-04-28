@@ -154,7 +154,7 @@ class Dao(object):
         pk = mapper.primary_key_from_instance(self)
         completeMessage = message + " " +str(pk)
         appLogTable = Table('app_log', params['metadata'], autoload=True, schema=params['mainSchema'])
-        print "SEEEEEELF", self, self.__dict__, dumps(self)
+        #print "SEEEEEELF", self, self.__dict__, dumps(self)
         aplot = appLogTable.insert()
         #aplot.execute(
                     #id_utente = params['usernameLoggedList'][0],
