@@ -6,6 +6,7 @@ port = 5432
 database = promogest_demo
 azienda= azienda_mentor
 tipodb = sqlite
+pw = No
 [RuoliAzioni]
 mod_enable=No
 

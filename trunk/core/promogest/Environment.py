@@ -116,67 +116,6 @@ except IOError:
     conf = Config(configFile)
     conf.guiDir = '.' + os.sep + 'gui' + os.sep
 
-#MAINSCHEMA = "promogest2"
-#SCHEMA = "aaaaa" # da passare anche come primo parametri al lancio del comando
-#USER = "promoadmin"
-#PASSWORD = "admin"
-#HOST = "localhost"
-#PORT = 5432
-#DATABASE = "promogest_db"
-#VERSIONE_DB = "0.9.10"
-#mainSchema = "promogest2"
-
-##try :
-#azienda=conf.Database.azienda
-##except:
-    ##azienda = "azienda_prova"
-#database = conf.Database.database
-#port = conf.Database.port
-#user = conf.Database.user
-#password = conf.Database.password
-#host = conf.Database.host
-#userdata = ["","","",user]
-#db = create_engine('postgres:'+'//'+conf.Database.user+':'
-                    #+ conf.Database.password+ '@'
-                    #+ conf.Database.host + ':'
-                    #+ conf.Database.port + '/'
-                    #+ conf.Database.database,
-                    #encoding='utf-8',
-                    #convert_unicode=True )
-##db = create_engine('postgres://'+USER + ':' + PASSWORD +'@'+ HOST +':'+ str(PORT) +'/'+ DATABASE,
-                    ##encoding='utf-8',
-                    ##convert_unicode=True )
-#db.echo = True
-#meta = MetaData(db)
-#session = create_session(db)
-
-#app_table = Table('app_log', meta,
-        #Column('id', Integer, primary_key=True),
-        #Column('id_utente', Integer),
-        #Column('utentedb', String(100), nullable=False),
-        #Column('schema_azienda', String(100), nullable=False),
-        #Column('level', String(1)),
-        #Column('object', PickleType, nullable=True),
-        #Column('message', String(1000), nullable=True),
-        #Column('value', Integer, nullable=True),
-        #Column('registration_date', DateTime),
-        #schema=MAINSCHEMA)
-
-#app_table.create(checkfirst=True)
-
-#primy_keyTable = Table('chiavi_primarie_log', meta,
-        #Column('id', Integer, primary_key=True),
-        #Column('pk_integer', Integer, nullable=True),
-        #Column('pk_string', String(300), nullable=True),
-        #Column('pk_datetime', DateTime,nullable=True),
-        #Column('id_application_log2', Integer,ForeignKey(MAINSCHEMA+'.app_log.id',onupdate="CASCADE",ondelete="CASCADE"), nullable=False),
-        #schema=MAINSCHEMA)
-#primy_keyTable.create(checkfirst=True)
-
-#session.close()
-
-
-
 
 """ Sets configuration value """
 def set_configuration(company=None, year = None):
@@ -383,9 +322,18 @@ try:
     tipodb = conf.Database.tipodb
 except:
     tipodb = "postgresql"
+try:
+    pw = conf.Database.pw
+except:
+    pw = "No"
 if tipodb == "sqlite" and not (os.path.exists("data/db")):
-    if os.path.exists("data/db.dist"):
+    if os.path.exists("data/db_pw.dist")\
+            and pw.upper()=="YES":
+        shutil.copy("data/db_pw.dist","data/db" )
+    elif os.path.exists("data/db.dist"):
         shutil.copy("data/db.dist","data/db" )
+    else:
+        print("ERRORE NON RIESCO A CREARE IL DB")
 
 database = conf.Database.database
 port = conf.Database.port
