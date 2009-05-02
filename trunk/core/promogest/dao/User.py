@@ -65,7 +65,10 @@ class User(Dao):
             params["session"].commit()
             return True
 
-    if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
+    if (tipo_eng == "postgres") \
+        and hasattr(conf, "RuoliAzioni") \
+        and hasattr(conf.RuoliAzioni,"mod_enable") \
+        and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
         @property
         def ruolo(self):
             if self.role: return self.role.name
@@ -80,7 +83,10 @@ class User(Dao):
 
 user=Table('utente', params['metadata'],schema = params['mainSchema'],autoload=True)
 std_mapper = mapper(User, user, order_by=user.c.username)
-if (tipo_eng == "postgres") and hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
+if (tipo_eng == "postgres") \
+    and hasattr(conf, "RuoliAzioni") \
+    and hasattr(conf.RuoliAzioni,"mod_enable") \
+    and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
     from promogest.modules.RuoliAzioni.dao.Role import Role
     std_mapper.add_property("role",relation(Role,primaryjoin=(user.c.id_role==Role.id),backref="users",uselist=False))
 if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":

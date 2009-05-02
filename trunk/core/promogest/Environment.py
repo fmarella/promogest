@@ -109,7 +109,7 @@ except IOError:
     c = open('configure.dist','r')
     content = c.readlines()
     fileConfig = open(configFile,'w')
-    for row in content[0:10]:
+    for row in content[0:13]:
         fileConfig.write(row)
     c.close()
     fileConfig.close()
