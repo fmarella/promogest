@@ -339,7 +339,7 @@ class Login(GladeApp):
             """
             Check the modules directory and automatically try to load all available modules
             """
-            Environment.modulesList=["Promemoria"]
+            Environment.modulesList=[]
             modules_folders = [folder for folder in os.listdir(modules_dir) \
                             if (os.path.isdir(os.path.join(modules_dir, folder)) \
                             and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
@@ -349,7 +349,6 @@ class Login(GladeApp):
                     exec "mod_enable = hasattr(Environment.conf.%s,'mod_enable')" %m_str
                     print "MOOOOOOOOD2", mod_enable
                     if mod_enable:
-                        
                         exec "mod_enableyes = getattr(Environment.conf.%s,'mod_enable','yes')" %m_str
                         if mod_enableyes=="yes":
                             exec "import %s.%s.module as m" % (modules_dir.replace("/", "."), m_str)
@@ -357,10 +356,11 @@ class Login(GladeApp):
                             for class_name in m.MODULES_FOR_EXPORT:
                                 exec 'module = m.'+ class_name
                                 self.modules[class_name] = {
-                                    'module': module(),
-                                    'type': module.VIEW_TYPE[0],
-                                    'module_dir': "%s" % (m_str),
-                                    'guiDir':m.GUI_DIR}
+                                                    'module': module(),
+                                                    'type': module.VIEW_TYPE[0],
+                                                    'module_dir': "%s" % (m_str),
+                                                    'guiDir':m.GUI_DIR
+                                }
             print "LISTA DEI MODULI CARICATI E FUNZIONANTI", repr(Environment.modulesList)
             self.groupModulesByType()
 
@@ -368,7 +368,6 @@ class Login(GladeApp):
         """
         key press signal on login window
         """
-
         if event.type == gtk.gdk.KEY_PRESS:
             if event.state & gtk.gdk.CONTROL_MASK:
                 key = str(gtk.gdk.keyval_name(event.keyval))
