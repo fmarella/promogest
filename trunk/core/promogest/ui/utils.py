@@ -2150,8 +2150,8 @@ def hasAction(actionID=None):
     admin ha de facto tutti i privilegi
     """
     if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
-        from promogest.dao.RoleAction import RoleAction
-        from promogest.dao.Role import Role
+        from promogest.modules.RuoliAzioni.dao.RoleAction import RoleAction
+        from promogest.modules.RuoliAzioni.dao.Role import Role
         idRole = Environment.params['usernameLoggedList'][2]
         roleActions = RoleAction().select(id_role=idRole,
                                                 id_action=actionID,

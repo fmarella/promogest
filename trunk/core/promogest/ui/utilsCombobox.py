@@ -212,7 +212,7 @@ def fillComboboxRole(combobox, filter=False):
     """
     Crea l'elenco dei ruoli
     """
-    from promogest.dao.Role import Role
+    from promogest.modules.RuoliAzioni.dao.Role import Role
     res = Role().select(offset=None,batchSize=None)
     model = gtk.ListStore(object, int, str)
 
