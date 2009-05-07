@@ -42,21 +42,85 @@ from sqlalchemy.orm import *
 from promogest.lib import feedparser
 
 windowGroup = []
-statusIcon = gtk.StatusIcon()
-statusIcon.set_from_file(Environment.conf.guiDir + 'logo_promogest_piccolo.png')
-statusIcon.set_tooltip('Promogest, il Gestionale open source per la tua azienda')
+#statusIcon = gtk.StatusIcon()
+#statusIcon.set_from_file(Environment.conf.guiDir + 'logo_promogest_piccolo.png')
+#statusIcon.set_tooltip('Promogest, il Gestionale open source per la tua azienda')
 visible = 1
 blink = 0
 screens = []
 
-def on_activate(status):
-    """
-    Funzione per la gestione dell'icona nel sys tray
-    """
-    global visible,blink, windowGroup, screens
-    visible, blink,screens = on_status_activate(status, windowGroup, visible, blink, screens)
-statusIcon.connect('activate', on_activate)
+class Pg2StatusIcon(gtk.StatusIcon):
+    def __init__(self):
+        gtk.StatusIcon.__init__(self)
+        menu = '''
+            <ui>
+             <menubar name="Menubar">
+              <menu action="Menu">
+               <menuitem action="Preferences"/>
+               <separator/>
+               <menuitem action="About"/>
+               <menuitem action="Exit"/>
+              </menu>
+             </menubar>
+            </ui>
+        '''
 
+        actions = [
+            ('Menu',  None, 'Menu'),
+            ('Preferences', gtk.STOCK_PREFERENCES, '_Preferences...', None, 'tooltip preferences', self.on_preferences),
+            ('About', gtk.STOCK_ABOUT, '_About', None, 'tooltip About', self.on_about),
+            ('Exit', gtk.STOCK_QUIT, '_Exit', None, 'tooltip Exit', self.on_close)
+            ]
+        actionGroup = gtk.ActionGroup("Actions")
+        actionGroup.add_actions(actions)
+        self.manager = gtk.UIManager()
+        self.manager.insert_action_group(actionGroup, 0)
+        self.manager.add_ui_from_string(menu)
+        self.menu = self.manager.get_widget('/Menubar/Menu/About').props.parent
+
+        #self.set_from_file("image.svg"”)
+        #self.set_tooltip(”tooltip message”)
+        self.set_from_file(Environment.conf.guiDir + 'logo_promogest_piccolo.png')
+        self.set_tooltip('Promogest, il Gestionale open source per la tua azienda')
+        self.connect('activate', self.on_activate)
+        self.connect('popup-menu', self.on_popup_menu)
+
+    def on_activate(self, data):
+        """
+        Funzione per la gestione dell'icona nel sys tray
+        """
+        global visible,blink, windowGroup, screens
+        visible, blink,screens = on_status_activate(self, windowGroup, visible, blink, screens)
+                                #statusIcon.connect('activate', on_activate)
+
+    def on_popup_menu(self, status, button, time):
+        self.menu.popup(None, None, None, button, time)
+
+    def on_close(self, data):
+        gtk.main_quit()
+
+    def on_preferences(self, data):
+        #if not hasAction(actionID=14):return
+        configuraWindow = ConfiguraWindow(self)
+        showAnagrafica(self.getTopLevel(), configuraWindow)
+        print "clicked on preferences"
+
+    # and this one to show the about box
+    def on_about(self, data):
+        about = gtk.AboutDialog()
+        about.set_name("PromoGest2")
+        about.set_version("svn")
+        about.set_copyright("Promotux 2009")
+        about.set_license("license")
+        about.set_website("http://promogest.promotux.it")
+        about.set_authors(["Francesco <francesco@promtoux.it>"])
+        try:
+            about.set_logo(gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'logo_promogest_piccolo.png'))
+        except:
+            pass
+        about.set_comments("Gestionale multipiattaforma per la tua impresa")
+        about.run()
+        about.destroy()
 
 class Login(GladeApp):
 
@@ -68,6 +132,7 @@ class Login(GladeApp):
         @param debugALL=None: not used at this moment
         @type debugALL=None: Boolean
         """
+        statu = Pg2StatusIcon()
         self.azienda=None
         self._dbConnString = ''
         self.modules = {}
