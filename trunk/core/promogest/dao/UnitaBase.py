@@ -13,10 +13,17 @@ class UnitaBase(Dao):
 
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
-
+        self.addMC()
     def filter_values(self,k,v):
         dic= {'denominazione' : unitabase.c.denominazione.ilike("%"+v+"%")}
         return  dic[k]
+
+    def addMC(self):
+        mc = self.select(denominazione ="Metri Cubi")
+        if not mc:
+            self.denominazione_breve = "mc"
+            self.denominazione = "Metri Cubi"
+            self.persist()
 
 unitabase=Table('unita_base',
                 params['metadata'],
