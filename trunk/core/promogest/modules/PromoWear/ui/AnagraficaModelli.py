@@ -154,4 +154,7 @@ class AnagraficaModelliDetail(AnagraficaDetail):
         (model, iterator) = sel.get_selected()
         self.dao.denominazione = model.get_value(iterator, 1)
         self.dao.denominazione_breve = model.get_value(iterator, 2)
+        if Environment.tipo_eng == "sqlite":
+            if Modello().count() >= 5:
+                return
         self.dao.persist()
