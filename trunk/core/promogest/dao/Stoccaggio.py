@@ -76,7 +76,7 @@ class Stoccaggio(Dao):
         def _denominazione_gruppo_taglia(self):
             #if self.ATC: return self.ATC.denominazione or ""
             if self.arti:return self.arti.denominazione_gruppo_taglia
-            #else: return ""
+            else: return ""
         denominazione_gruppo_taglia = property(_denominazione_gruppo_taglia)
 
         def _id_articolo_padre(self):
