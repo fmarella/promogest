@@ -12,15 +12,12 @@ from Ricerca import Ricerca, RicercaFilter
 from promogest.dao.Vettore import Vettore
 from utils import *
 
-
-
 class RicercaVettori(Ricerca):
     """ Ricerca vettori """
 
     def __init__(self):
         Ricerca.__init__(self, 'Promogest - Ricerca Vettori',
                          RicercaVettoriFilter(self))
-        #self.ricerca_html.destroy()
 
     def insert(self, toggleButton, returnWindow):
         # Richiamo anagrafica di competenza
@@ -56,7 +53,7 @@ class RicercaVettoriFilter(RicercaFilter):
         column = gtk.TreeViewColumn('Codice', renderer,text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'codice')
+        column.connect("clicked", self._changeOrderBy, (None,'codice'))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
@@ -64,7 +61,7 @@ class RicercaVettoriFilter(RicercaFilter):
         column = gtk.TreeViewColumn('Ragione Sociale', renderer, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'ragione_sociale')
+        column.connect("clicked", self._changeOrderBy, (None,'ragione_sociale'))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
@@ -72,7 +69,7 @@ class RicercaVettoriFilter(RicercaFilter):
         column = gtk.TreeViewColumn('Cognome - Nome', renderer,text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'cognome, nome')
+        column.connect("clicked", self._changeOrderBy, (None,'cognome, nome'))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
@@ -80,7 +77,7 @@ class RicercaVettoriFilter(RicercaFilter):
         column = gtk.TreeViewColumn('Localita', renderer,text=4)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'localita')
+        column.connect("clicked", self._changeOrderBy, (None,'sede_operativa_localita'))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
