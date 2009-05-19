@@ -1255,7 +1255,6 @@ del documento.
         for s in sconti:
             if s["tipo"] == 'percentuale':
                 if applicazione == 'scalare':
-                    print "FFFFFFFFFFFFFFFFFFFF", str(s["valore"]), Decimal(str(s["valore"]))
                     discaunt = str(s["valore"]).strip().replace(",",".")
                     prezzoNetto = prezzoNetto * (1 - Decimal(discaunt) / 100)
                 elif applicazione == 'non scalare':
