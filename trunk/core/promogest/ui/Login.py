@@ -410,9 +410,7 @@ class Login(GladeApp):
                             and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
             for m_str in modules_folders:
                 if hasattr(Environment.conf,m_str):
-                    print "PPPPPPPPPPPPPP", m_str
                     exec "mod_enable = hasattr(Environment.conf.%s,'mod_enable')" %m_str
-                    print "MOOOOOOOOD2", mod_enable
                     if mod_enable:
                         exec "mod_enableyes = getattr(Environment.conf.%s,'mod_enable','yes')" %m_str
                         if mod_enableyes=="yes":

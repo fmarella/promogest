@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -7,6 +7,8 @@
 # Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
 
 # possibleFieldsKeys is a global module list containing all visible fields that is possible to import from a price list
+from promogest import Environment
+
 possibleFieldsKeys = ['Codice',
                       'Codice a barre',
                       'Codice articolo fornitore',
@@ -23,6 +25,16 @@ possibleFieldsKeys = ['Codice',
                       'Sconto Vendita Dettaglio',
                       'Sconto Vendita Ingrosso',
                       'Valore nullo']
+if "PromoWear" in Environment.modulesList:
+    possibleFieldsKeys.append("Gruppo Taglia")
+    possibleFieldsKeys.append("Taglia")
+    possibleFieldsKeys.append("Colore")
+    possibleFieldsKeys.append("Anno")
+    possibleFieldsKeys.append("Stagione")
+    possibleFieldsKeys.append("Genere")
+    possibleFieldsKeys.append("Modello")
+    possibleFieldsKeys.append("Codice Padre")
+                                
 # possibleFieldsValues is a global module list containing all real fields that is possible to import from a price list
 possibleFieldsValues = ['codice_articolo',
                         'codice_barre_articolo',
@@ -40,5 +52,14 @@ possibleFieldsValues = ['codice_articolo',
                         'sconto_vendita_dettaglio',
                         'sconto_vendita_ingrosso',
                         'chiave_nulla_']
+if "PromoWear" in Environment.modulesList:
+    possibleFieldsValues.append("gruppo_taglia")
+    possibleFieldsValues.append("taglia")
+    possibleFieldsValues.append("colore")
+    possibleFieldsValues.append("anno")
+    possibleFieldsValues.append("stagione")
+    possibleFieldsValues.append("genere")
+    possibleFieldsValues.append("modello")
+    possibleFieldsValues.append("codice_padre")
 # possibleFieldsDict is a global module dictionary containing all fields that is possible to import from a price list
 possibleFieldsDict = dict(zip(possibleFieldsKeys, possibleFieldsValues))

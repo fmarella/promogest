@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -6,13 +6,27 @@
 # Author:  Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
 # Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
 
-import re, string, decimal
+import re
+import string
+import decimal
 from decimal import *
-import gtk, gobject, os
+import gtk,os
 from datetime import datetime
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment
+import promogest.ui.AnagraficaListini
+import promogest.ui.Main
+import promogest.ui.Login
 from promogest.ui.GladeWidget import GladeWidget
+from promogest.ui.Main import *
+from promogest.ui.AnagraficaListini import AnagraficaListini
+from promogest.ui.AnagraficaAliquoteIva import AnagraficaAliquoteIva
+from promogest.ui.AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
+from promogest.ui.AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
+from promogest.ui.AnagraficaFornitori import AnagraficaFornitori
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import fillModelCombobox,fillComboboxListini
+
 from promogest.dao.Articolo import Articolo
 from promogest.dao.AliquotaIva import AliquotaIva
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
@@ -24,17 +38,7 @@ from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
-import promogest.ui.AnagraficaListini
-import promogest.ui.Main
-from promogest.ui.Main import *
-from promogest.ui.AnagraficaListini import AnagraficaListini
-from promogest.ui.AnagraficaAliquoteIva import AnagraficaAliquoteIva
-from promogest.ui.AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
-from promogest.ui.AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
-from promogest.ui.AnagraficaFornitori import AnagraficaFornitori
-from promogest.ui.utils import *
-from promogest.ui.utilsCombobox import fillModelCombobox,fillComboboxListini
-import promogest.ui.Login
+
 from fieldsDict import *
 from PriceListModel import PriceListModel
 
@@ -148,7 +152,24 @@ class ImportPriceListModels(GladeWidget):
                 self.sconto_vendita_dettaglio_cb.set_active(True)
             elif f == 'Sconto Vendita Ingrosso':
                 self.sconto_vendita_ingrosso_cb.set_active(True)
+            elif "PromoWear" in Environment.modulesList and f == "Anno":
+                self.anno_cb.set_active(True)
+            elif "PromoWear" in Environment.modulesList and f == "Modello":
+                self.modello_cb.set_active(True)
+            elif "PromoWear" in Environment.modulesList and f == "Genere":
+                self.genere_cb.set_active(True)
+            elif "PromoWear" in Environment.modulesList and f == "Taglia":
+                self.taglia_cb.set_active(True)
+            elif "PromoWear" in Environment.modulesList and f == "Colore":
+                self.colore_cb.set_active(True)
+            elif "PromoWear" in Environment.modulesList and f == "Codice Padre":
+                self.codice_padre_cb.set_active(True)
+            elif "PromoWear" in Environment.modulesList and f == "Stagione":
+                self.stagione_cb.set_active(True)
+            elif "PromoWear" in Environment.modulesList and f == "Gruppo Taglia":
+                self.gruppo_taglia_cb.set_active(True)
         def_list = ['Aliquota iva','Famiglia','Categoria','Unita base']
+
         self.default_unita_base_combobox.set_sensitive(False)
         self.default_categoria_combobox.set_sensitive(False)
         self.categoria_togglebutton.set_sensitive(False)
@@ -156,6 +177,7 @@ class ImportPriceListModels(GladeWidget):
         self.famiglia_togglebutton.set_sensitive(False)
         self.default_aliquotaiva_combobox.set_sensitive(False)
         self.aliquota_iva_togglebutton.set_sensitive(False)
+
         for k,val in defaults.iteritems():
             v =int(val or 0)
             if k == 'Unita base':
@@ -194,6 +216,15 @@ class ImportPriceListModels(GladeWidget):
         self.prezzo_acquisto_ivato_cb.set_active(False)
         self.sconto_vendita_dettaglio_cb.set_active(False)
         self.sconto_vendita_ingrosso_cb.set_active(False)
+        if "PromoWear" in Environment.modulesList:
+            self.modello_cb.set_active(False)
+            self.anno_cb.set_active(False)
+            self.taglia_cb.set_active(False)
+            self.gruppo_taglia_cb.set_active(False)
+            self.codice_padre_cb.set_active(False)
+            self.genere_cb.set_active(False)
+            self.stagione_cb.set_active(False)
+            self.colore_cb.set_active(False)
         self.draw()
 
     def on_field_checkbutton_checked(self, checkbutton):
@@ -260,7 +291,9 @@ class ImportPriceListModels(GladeWidget):
         self.refresh()
 
     def on_remove_null_field_button_clicked(self, button):
-        """Remove the selected null-field from treeview"""
+        """
+        Remove the selected null-field from treeview
+        """
 
         (model, iterator) = self.fields_treeview.get_selection().get_selected()
         nullFieldPattern= '^Valore nullo [0-9][0-9]?$'
@@ -272,6 +305,9 @@ class ImportPriceListModels(GladeWidget):
             self.refresh()
 
     def on_add_null_field_button_clicked(self, button):
+        """
+        aggiunge un valore nullo alla ricostruzione del modello
+        """
         ind = 1
         pos = 0
         for n in self.priceListModel._fields:
@@ -303,8 +339,9 @@ class ImportPriceListModels(GladeWidget):
             elif os.name == 'nt':
                 folder = os.environ['USERPROFILE']
         fileDialog.set_current_folder(folder)
-
-        f_name = self.model_name_comboboxentry_entry.get_text().replace(' ','_')
+        #print "FDFDFDSFSDFSDFSDFSDFSDFSD", dir(self.model_name_comboboxentry)
+        f_name = self.model_name_comboboxentry.child.get_text().replace(' ','_')
+        
         fileDialog.set_current_name(f_name+'.pgx')
 
         response = fileDialog.run()
@@ -416,6 +453,7 @@ class ImportPriceListModels(GladeWidget):
             return
         comboboxName = combobox.get_name()
         value = findStrFromCombobox(combobox,1) or ''
+
         if len(str(value)) > 0:
             if comboboxName == 'default_categoria_combobox':
                 if  'Categoria' in self.priceListModel._defaultAttributes.keys():
@@ -445,8 +483,8 @@ class ImportPriceListModels(GladeWidget):
         else:
             #FIXME:
             #we have to correct this mess
-            print 'non so che sta succedendo.\
-            segnalazione errori? per cosa? :D'
+            print """non so che sta succedendo.
+    segnalazione errori? per cosa? :D"""
             pass
 
     def on_famiglia_togglebutton_toggled(self, toggleButton):
@@ -467,6 +505,9 @@ class ImportPriceListModels(GladeWidget):
         showAnagraficaRichiamata(self.getTopLevel(), anagWindow, toggleButton, self.refresh)
 
     def on_aliquota_iva_togglebutton_toggled(self, toggleButton):
+        """
+        on_aliquota_iva_togglebutton_toggled
+        """
         if toggleButton.get_active():
             toggleButton.set_active(False)
             return
@@ -475,4 +516,7 @@ class ImportPriceListModels(GladeWidget):
         showAnagraficaRichiamata(self.getTopLevel(), anagWindow, toggleButton, self.refresh)
 
     def on_import_price_list_models_window_close(self, widget, event=None):
+        """
+        close the windows
+        """
         self.window.destroy()

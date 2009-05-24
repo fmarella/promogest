@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -6,9 +6,9 @@
 # Author:  Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
 # Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
 
-import re, string, decimal
+import decimal
 from decimal import *
-import gtk, gobject, os
+import gtk
 from datetime import datetime
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment
@@ -163,7 +163,7 @@ class ProductFromCsv(object):
         self.daoArticolo.id_categoria_articolo = id_categoria
 
 
-        #VATs
+        #IVA
         id_aliquota_iva = None
         if self.aliquota_iva is None:
             self.aliquota_iva_id = self.defaults['Aliquota iva']
@@ -187,7 +187,7 @@ class ProductFromCsv(object):
                 id_aliquota_iva = daoAliquotaIva.id
                 self._vats.append(daoAliquotaIva)
         self.daoArticolo.id_aliquota_iva = id_aliquota_iva
-
+        
 
         #base units
         id_unita_base = None
@@ -241,6 +241,57 @@ class ProductFromCsv(object):
                 daoBarCode.codice = self.codice_barre_articolo
                 daoBarCode.primario = True
                 daoBarCode.persist()
+
+        #Inseriamo qui la gestione "promoWear" del salvataggio articolo
+        if "PromoWear" in Environment.modulesList:
+            from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
+            #codice padre .....
+            #if self.codice_padre:
+                
+
+            #anno
+            #id_anno = None
+
+            #if self.anno:
+                #record = AnnoAbbigliamento().select(denominazione = self.anno)
+                #if record:
+                    #id_anno = record[0].id
+            #else:
+                ##devo prendere l'id anno dal padre ....
+                #print "DEVO PREDERE L?ID DAL PADRE::::"
+
+            #if self.anno is None:
+                ##self.aliquota_iva_id = self.defaults['Aliquota iva']
+                #self.id_anno = AliquotaIva().getRecord(id=self.aliquota_iva_id)
+                #id_aliquota_iva = self.aliquota_iva.id
+            #else:
+            #self._vats = AliquotaIva().select(batchSize=None)
+            #for v in self._vats:
+                #if self.aliquota_iva.lower() in (v.denominazione_breve.lower(),v.denominazione.lower()) or\
+                            #int(str(self.aliquota_iva).replace('%','')) == int(v.percentuale):
+                    #id_aliquota_iva = v.id
+                    #break
+            #if id_aliquota_iva is None:
+                #self.aliquota_iva = str(self.aliquota_iva).replace('%','')
+                #daoAliquotaIva = AliquotaIva()
+                #daoAliquotaIva.denominazione = 'ALIQUOTA '+ self.aliquota_iva +'%'
+                #daoAliquotaIva.denominazione_breve = self.aliquota_iva + '%'
+                #daoAliquotaIva.id_tipo = 1
+                #daoAliquotaIva.percentuale = Decimal(self.aliquota_iva)
+                #daoAliquotaIva.persist()
+                #id_aliquota_iva = daoAliquotaIva.id
+                #self._vats.append(daoAliquotaIva)
+        #self.daoArticolo.id_aliquota_iva = id_aliquota_iva
+
+
+
+            #modello
+            #genere
+            #colore
+            #gruppo taglia
+            #taglia
+            #stagione
+
 
         #price-list--> product
         decimalSymbol = self.PLModel._decimalSymbol
@@ -337,7 +388,10 @@ class ProductFromCsv(object):
             daoFornitura.prezzo_lordo = prezzo or 0
             daoFornitura.id_fornitore = self.fornitore
             daoFornitura.id_articolo = self.daoArticolo.id
-            daoFornitura.percentuale_iva = Decimal(str(self.aliquota_iva.percentuale))
+            try:
+                daoFornitura.percentuale_iva = Decimal(str(self.aliquota_iva.percentuale))
+            except:
+                daoFornitura.percentuale_iva = Decimal(str(self.aliquota_iva))
             daoFornitura.data_prezzo = self.dataListino
             daoFornitura.codice_articolo_fornitore = self.codice_fornitore
             daoFornitura.fornitore_preferenziale = True

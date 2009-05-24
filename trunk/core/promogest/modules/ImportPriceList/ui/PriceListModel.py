@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -6,9 +6,9 @@
 # Author:  Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
 # Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
 
-import re, string, decimal
+import re,decimal
 from decimal import *
-import gtk, gobject, os
+import gtk
 from datetime import datetime
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment

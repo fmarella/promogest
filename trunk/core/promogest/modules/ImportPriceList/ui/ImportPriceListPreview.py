@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -8,8 +8,7 @@
 
 import re, string, decimal
 from decimal import *
-import gtk, gobject, os
-from datetime import datetime
+import gtk
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
@@ -84,12 +83,17 @@ class ImportPreview(GladeWidget):
             remodel.append(row)
 
     def on_import_preview_confirm_clicked(self, button):
+        print "DFGDFGHFGHHHHFHCASTELELLELELELLE"
         import csv
         savedlines = 0
         err_count = 0
         csvErrorFile = csv.DictWriter(file(Environment.documentsDir+'/import_error_list.csv', 'wb'), fieldnames=self.PLModel._fields,dialect='excel')
         for product in self.productList:
-            productFromCsv = ProductFromCsv(product=product, PLModel=self.PLModel, promoPriceList=self.promoPriceList, idfornitore=self.fornitore, dataListino=self.data_listino)
+            productFromCsv = ProductFromCsv(product=product,
+                                            PLModel=self.PLModel,
+                                            promoPriceList=self.promoPriceList,
+                                            idfornitore=self.fornitore,
+                                            dataListino=self.data_listino)
             #try: #product data dictionary is transmitted to the method that will generate (or update) the corrispondent product
             productFromCsv.save()
             #except:
