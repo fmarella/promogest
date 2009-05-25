@@ -65,6 +65,11 @@ class ProductFromCsv(object):
             else:
                 setattr(self, possibleFieldsDict[key], self.product[key])
 
+        #if "PromoWear" in Environment.modulesList:
+            #from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
+            #if not self.codice_padre:
+
+
         if self.codice_articolo:
             try:
                 self.daoArticolo = Articolo().select(codiceEM=self.codice_articolo)[0]
@@ -82,6 +87,31 @@ class ProductFromCsv(object):
                 self.daoArticolo = Articolo().getRecord(id=daoFornitura[0].id_articolo)
         else:
             self.daoArticolo = None
+
+
+        ##Inseriamo qui la gestione "promoWear" del salvataggio articolo
+        #if "PromoWear" in Environment.modulesList:
+            #from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
+            ##codice padre .....
+            #print self.codice_articolo, self.codice_padre
+            #if not self.codice_padre:
+                ##padre devo inserire i dati in tabella taglia e colori
+                #print "devo inserire i dati in tabella taglia e colori"
+            #else:
+                #print "un figlio , verifico che abbia un padre, ed inserisco i dati necessari"
+
+            ##modello
+            ##genere
+            ##colore
+            ##gruppo taglia
+            ##taglia
+            ##stagione
+
+
+
+
+
+
         self.fillDaos()
 
     def fillDaos(self):
@@ -91,11 +121,10 @@ class ProductFromCsv(object):
         self.codice_articolo = str(self.codice_articolo)
         if self.codice_articolo is None or  self.codice_articolo == "None":
             self.codice_articolo = promogest.dao.Articolo.getNuovoCodiceArticolo()
+        self.daoArticolo.codice = self.codice_articolo
 
         self.denominazione_articolo = str(self.denominazione_articolo)
-        self.daoArticolo.codice = self.codice_articolo
         self.daoArticolo.denominazione = self.denominazione_articolo
-
 
         #families
         id_famiglia = None
@@ -241,57 +270,6 @@ class ProductFromCsv(object):
                 daoBarCode.codice = self.codice_barre_articolo
                 daoBarCode.primario = True
                 daoBarCode.persist()
-
-        #Inseriamo qui la gestione "promoWear" del salvataggio articolo
-        if "PromoWear" in Environment.modulesList:
-            from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
-            #codice padre .....
-            #if self.codice_padre:
-                
-
-            #anno
-            #id_anno = None
-
-            #if self.anno:
-                #record = AnnoAbbigliamento().select(denominazione = self.anno)
-                #if record:
-                    #id_anno = record[0].id
-            #else:
-                ##devo prendere l'id anno dal padre ....
-                #print "DEVO PREDERE L?ID DAL PADRE::::"
-
-            #if self.anno is None:
-                ##self.aliquota_iva_id = self.defaults['Aliquota iva']
-                #self.id_anno = AliquotaIva().getRecord(id=self.aliquota_iva_id)
-                #id_aliquota_iva = self.aliquota_iva.id
-            #else:
-            #self._vats = AliquotaIva().select(batchSize=None)
-            #for v in self._vats:
-                #if self.aliquota_iva.lower() in (v.denominazione_breve.lower(),v.denominazione.lower()) or\
-                            #int(str(self.aliquota_iva).replace('%','')) == int(v.percentuale):
-                    #id_aliquota_iva = v.id
-                    #break
-            #if id_aliquota_iva is None:
-                #self.aliquota_iva = str(self.aliquota_iva).replace('%','')
-                #daoAliquotaIva = AliquotaIva()
-                #daoAliquotaIva.denominazione = 'ALIQUOTA '+ self.aliquota_iva +'%'
-                #daoAliquotaIva.denominazione_breve = self.aliquota_iva + '%'
-                #daoAliquotaIva.id_tipo = 1
-                #daoAliquotaIva.percentuale = Decimal(self.aliquota_iva)
-                #daoAliquotaIva.persist()
-                #id_aliquota_iva = daoAliquotaIva.id
-                #self._vats.append(daoAliquotaIva)
-        #self.daoArticolo.id_aliquota_iva = id_aliquota_iva
-
-
-
-            #modello
-            #genere
-            #colore
-            #gruppo taglia
-            #taglia
-            #stagione
-
 
         #price-list--> product
         decimalSymbol = self.PLModel._decimalSymbol
