@@ -156,17 +156,20 @@ class Dao(object):
         appLogTable = Table('app_log', params['metadata'], autoload=True, schema=params['mainSchema'])
         #print "SEEEEEELF", self, self.__dict__, dumps(self)
         aplot = appLogTable.insert()
-        #aplot.execute(
-                    #id_utente = params['usernameLoggedList'][0],
-                    #utentedb = params['usernameLoggedList'][1],
-                    #schema_azienda = params['schema'],
-                    #level = "I",
-                    #message = completeMessage,
-                    #value = level,
-                    #registration_date = datetime.datetime.now(),
-                    #object = dumps(self)
-                #)
-        print "[LOG] %s da %s in %s in data %s" %(completeMessage,utente, params['schema'] ,registration_date.strftime("%d/%m/%Y"))
+        try:
+            aplot.execute(
+                        id_utente = params['usernameLoggedList'][0],
+                        utentedb = params['usernameLoggedList'][1],
+                        schema_azienda = params['schema'],
+                        level = "I",
+                        message = completeMessage,
+                        value = level,
+                        registration_date = datetime.datetime.now(),
+                        object = dumps(pk)
+                    )
+            print "[LOG] %s da %s in %s in data %s" %(completeMessage,utente, params['schema'] ,registration_date.strftime("%d/%m/%Y"))
+        except:
+            print "[LOG] %s da %s in %s in data %s NON RIUSCITO" %(completeMessage,utente, params['schema'] ,registration_date.strftime("%d/%m/%Y"))
 
     def _resetId(self):
         """
