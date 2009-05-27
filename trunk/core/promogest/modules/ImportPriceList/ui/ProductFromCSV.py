@@ -37,7 +37,14 @@ from promogest.ui.utilsCombobox import fillModelCombobox,fillComboboxListini
 import promogest.ui.Login
 #from ImportPriceListPreview import ImportPreview
 from fieldsDict import *
-
+if "PromoWear" in Environment.modulesList:
+    from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
+    from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
+    from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
+    from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
+    from promogest.modules.PromoWear.dao.Modello import Modello
+    from promogest.modules.PromoWear.dao.Taglia import Taglia
+    from promogest.modules.PromoWear.dao.Colore import Colore
 
 class ProductFromCsv(object):
     """Takes a product from a generic price list and "translates" it in a
@@ -59,17 +66,12 @@ class ProductFromCsv(object):
 
     def save(self):
         """Gets the existing Dao"""
+        self.articolopromoWear = ""
         for key in possibleFieldsDict.keys():
             if key not in self.product.keys():
                 setattr(self, possibleFieldsDict[key], None)
             else:
                 setattr(self, possibleFieldsDict[key], self.product[key])
-
-        #if "PromoWear" in Environment.modulesList:
-            #from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
-            #if not self.codice_padre:
-
-
         if self.codice_articolo:
             try:
                 self.daoArticolo = Articolo().select(codiceEM=self.codice_articolo)[0]
@@ -86,38 +88,68 @@ class ProductFromCsv(object):
             if len(daoFornitura) == 1:
                 self.daoArticolo = Articolo().getRecord(id=daoFornitura[0].id_articolo)
         else:
-            self.daoArticolo = None
-
-
-        ##Inseriamo qui la gestione "promoWear" del salvataggio articolo
-        #if "PromoWear" in Environment.modulesList:
-            #from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
-            ##codice padre .....
-            #print self.codice_articolo, self.codice_padre
-            #if not self.codice_padre:
-                ##padre devo inserire i dati in tabella taglia e colori
-                #print "devo inserire i dati in tabella taglia e colori"
-            #else:
-                #print "un figlio , verifico che abbia un padre, ed inserisco i dati necessari"
-
-            ##modello
-            ##genere
-            ##colore
-            ##gruppo taglia
-            ##taglia
-            ##stagione
-
-
-
-
-
-
+            self.daoArticolo = Articolo()
+        if "PromoWear" in Environment.modulesList:
+            if self.codice_padre and self.codice_articolo:
+                print "ARTICOLO PADRE"
+                self.articolopromoWear = "father"
+                self.addTagliaColoreData(self.daoArticolo[0])
+            elif self.codice_padre and not self.codice_articolo:
+                print "ARTICOLO FIGLIO"
+                self.articolopromoWear = "son"
+                self.daoArticolo = Articolo().select(codiceEM=self.codice_articolo)
+                if not self.daoArticolo:
+                    print "ERROREEEEEEEEE  non può essere caricato un figlio senza il padre"
+                else:
+                    self.addTagliaColoreData(self.daoArticolo[0])
+            elif not self.codice_padre and self.codice_articolo:
+                print "ARTICOLO NORMALE"
+                self.articolopromoWear = ""
         self.fillDaos()
+
+    def addTagliaColoreData(self, articolo):
+        """
+        modello, genere, colore, gruppo taglia, taglia, stagione, anno
+        """
+        artTC = ArticoloTagliaColore().select(idArticoloPadre = articolo.id)
+        if artTC:
+            artTC = artTC[0]
+        else:
+            artTC = ArticoloTagliaColore()
+
+        #modello
+        if self.modello:
+            mode = Modello().select(denominazione = self.modello)
+            if mode:
+                mode = mode[0]
+                artTC.id_modello = mode.id
+            else:
+                mode = Modello()
+                mode.denominazione_breve = self.modello
+                mode.denominazione = self.modello
+                mode.persist()
+                artTC.id_modello = mode.id
+        elif not self.modello:
+            artTC.id_modello = articolo.id_modello
+
+        #anno
+        if self.anno:
+            anno = AnnoAbbigliamento().select(denominazione = self.anno)
+            if anno:
+                anno = anno[0]
+                artTC.id_anno = anno.id
+            else:
+                anno = AnnoAbbigliamento()
+                anno.denominazione = self.anno
+                anno.persist()
+                artTC.id_anno = anno.id
+        elif not self.anno:
+            artTC.id_annno = articolo.id_anno
+
+
 
     def fillDaos(self):
         """fillDaos method fills all Dao related to daoArticolo"""
-        if self.daoArticolo is None:
-            self.daoArticolo = Articolo()
         self.codice_articolo = str(self.codice_articolo)
         if self.codice_articolo is None or  self.codice_articolo == "None":
             self.codice_articolo = promogest.dao.Articolo.getNuovoCodiceArticolo()
