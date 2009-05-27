@@ -101,27 +101,30 @@ class SincroDB(GladeWidget):
         """
         Genera un bel db, aggiornato alla versione attualecd corpo
         """
-        engine = create_engine('sqlite:////home/mentore/pg2_work/ciccio_db')
-        # create MetaData
-        meta2 = MetaData()
-        # bind to an engine
-        meta2.bind = engine
+        variazioni = AppLog().select(batchSize=None)
+        for v in variazioni:
+            print v 
+        #engine = create_engine('sqlite:////home/mentore/pg2_work/ciccio_db')
+        ## create MetaData
+        #meta2 = MetaData()
+        ## bind to an engine
+        #meta2.bind = engine
 
-        prova = []
-        newmetadata = Environment.params['metadata']
-#        print newmetadata.tables
-        for t in newmetadata.sorted_tables:
-            t.__dict__['metadata'] = meta2
-            t.__dict__['schema'] = ""
-            t.__dict__['fullname'] = t.__dict__['fullname'].split(".")[1]
-        for g in newmetadata.sorted_tables:
-            print g.__dict__
-#            t.create(meta2, checkfirst=True)
-        newmetadata.create_all(checkfirst=True)
-#            table.split('.')[1]
-#        prova.append
-#        newmetadata.create_all(bind=create_engine('sqlite:////home/mentore/pg2_work/ciccio_db'), checkfirst=True)
-        return
+        #prova = []
+        #newmetadata = Environment.params['metadata']
+##        print newmetadata.tables
+        #for t in newmetadata.sorted_tables:
+            #t.__dict__['metadata'] = meta2
+            #t.__dict__['schema'] = ""
+            #t.__dict__['fullname'] = t.__dict__['fullname'].split(".")[1]
+        #for g in newmetadata.sorted_tables:
+            #print g.__dict__
+##            t.create(meta2, checkfirst=True)
+        #newmetadata.create_all(checkfirst=True)
+##            table.split('.')[1]
+##        prova.append
+##        newmetadata.create_all(bind=create_engine('sqlite:////home/mentore/pg2_work/ciccio_db'), checkfirst=True)
+        #return
 
 
     def retreiveDir(self):
@@ -162,5 +165,5 @@ class SincroDB(GladeWidget):
         print "RUN",  self.retreiveDir(), self.retreiveFileName()
         self.retreiveDir()
         self.retreiveFileName()
-        self.retreiveData()
+        #self.retreiveData()
 
