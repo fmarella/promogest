@@ -77,7 +77,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="Custom" id="da_data_filter_entry1">
+                                  <widget class="Custom" id="a_data_filter_entry">
                                     <property name="visible">True</property>
                                     <property name="creation_function">createDateWidget</property>
                                   </widget>
@@ -90,6 +90,18 @@
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
                                 <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <widget class="GtkButton" id="genera_button">
+                                <property name="label" translatable="yes">Genera Data</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <signal name="clicked" handler="on_genera_button_clicked"/>
+                              </widget>
+                              <packing>
+                                <property name="position">2</property>
                               </packing>
                             </child>
                           </widget>
@@ -548,9 +560,17 @@
                         <property name="visible">True</property>
                         <property name="left_padding">12</property>
                         <child>
-                          <widget class="GtkLabel" id="label14">
+                          <widget class="GtkScrolledWindow" id="scrolledwindow1">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">label</property>
+                            <property name="can_focus">True</property>
+                            <property name="hscrollbar_policy">automatic</property>
+                            <property name="vscrollbar_policy">automatic</property>
+                            <child>
+                              <widget class="GtkTreeView" id="sincro_treeview">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                              </widget>
+                            </child>
                           </widget>
                         </child>
                       </widget>

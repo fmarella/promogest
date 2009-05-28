@@ -133,18 +133,18 @@ class Dao(object):
         pickeld 
         """
         if params["session"].dirty:
-            message = "UPDATE "+ self.__class__.__name__ 
+            message = "UPDATE;"+ self.__class__.__name__
         elif params["session"].new:
-            message = "INSERT " + self.__class__.__name__
+            message = "INSERT;" + self.__class__.__name__
         elif params["session"].deleted:
-            message = "DELETE "+ self.__class__.__name__ 
+            message = "DELETE;"+ self.__class__.__name__
         else:
-            message = "UNKNOWN ACTION"
+            message = "UNKNOWN ACTION;"
         level = self.commit()
         if level:
-            result = " CORRETTO"
+            result = "CORRETTO"
         else:
-            result = " ERRATO"
+            result = "ERRATO"
         registration_date = datetime.datetime.now()
 #        schema_azienda = params['schema']
         id_utente = params['usernameLoggedList'][0]
@@ -152,7 +152,7 @@ class Dao(object):
         utente = params['usernameLoggedList'][1]
         mapper = object_mapper(self)
         pk = mapper.primary_key_from_instance(self)
-        completeMessage = message + " " +str(pk)
+        completeMessage = message + ";" +str(pk)+";"+result
         appLogTable = Table('app_log', params['metadata'], autoload=True, schema=params['mainSchema'])
         aplot = appLogTable.insert()
         try:
@@ -160,7 +160,7 @@ class Dao(object):
                         id_utente = params['usernameLoggedList'][0],
                         utentedb = params['usernameLoggedList'][1],
                         schema_azienda = params['schema'],
-                        level = "I",
+                        level = "N",
                         message = completeMessage,
                         value = level,
                         registration_date = datetime.datetime.now(),
