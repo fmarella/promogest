@@ -5,11 +5,11 @@
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 
 from promogest import Environment
-import promogest.ui.Login
+#import promogest.ui.Login
 from promogest.modules.SincroDB.ui.SincroDB import SincroDB
 
 MODULES_NAME = "SincroDB"
-MODULES_FOR_EXPORT = ['Sincro']
+MODULES_FOR_EXPORT = []
 GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/SincroDB/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
@@ -25,9 +25,9 @@ START_CALL = None                              # of this call in a separated Thr
 """
 #testataMovimentoTable = Table('testata_movimento', params['metadata'], autoload=True, schema=params['schema'])
 
-class Sincro(object):
-    VIEW_TYPE = ('anagrafica_diretta', 'Sincro Data ', 'Icon-time48x48.png')
-    def getApplication(self):
-        anag = SincroDB()
-        return anag
+#class Sincro(object):
+    #VIEW_TYPE = ('anagrafica_diretta', 'Sincro Data ', 'Icon-time48x48.png')
+    #def getApplication(self):
+        #anag = SincroDB()
+        #return anag
 

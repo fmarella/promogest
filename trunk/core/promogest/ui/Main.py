@@ -577,6 +577,16 @@ Il file si chiama %s .
     def on_send_Email_activate(self, widget):
         sendemail = SendEmail()
 
+    def on_master_sincro_db_activate(self, widget):
+        print "DFGDFDHSDHSHFHF"
+        if "SincroDB" in Environment.modulesList:
+            from promogest.modules.SincroDB.ui.SincroDB import SincroDB
+            anag = SincroDB()
+            showAnagrafica(self.getTopLevel(), anag)
+        else:
+            print "PASSIQUI"
+            #return
+
     def on_main_window_key_press_event(self, widget, event):
         if event.type == gtk.gdk.KEY_PRESS:
             if event.state & gtk.gdk.CONTROL_MASK and (
@@ -643,6 +653,9 @@ I Numeri:   %s
             return True
         else:
             return False
+
+
+
 
 
 class ConfiguraWindow(GladeWidget):

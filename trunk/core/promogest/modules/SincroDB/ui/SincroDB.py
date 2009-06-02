@@ -8,13 +8,22 @@
 import gtk
 import gobject
 from sqlalchemy.ext.serializer import loads, dumps
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest import Environment
 from promogest.dao.AppLog import AppLog
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Magazzino import Magazzino
+from promogest.dao.Listino import Listino
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.GladeWidget import GladeWidget
+from sqlalchemy.ext.sqlsoup import SqlSoup
+from promogest.modules.SincroDB.data.listino_table import listino_table
+from promogest.modules.SincroDB.data.aliquota_iva_table import aliquota_iva_table
+from promogest.modules.SincroDB.data.listino_articolo_table import listino_articolo_table
+from promogest.modules.SincroDB.data.tipo_aliquota_iva_table import tipo_aliquota_iva_table
+from promogest.modules.SincroDB.data.articolo_table import articolo_table
 
 class SincroDB(GladeWidget):
     """ Finestra di gestione esdportazione variazioni Database """
@@ -88,10 +97,6 @@ class SincroDB(GladeWidget):
 
         treeview.set_model(self._sincroTreeViewModel)
 
-
-
-
-
     def magazzini_treeview(self):
         """ disegna la treeeview dei magazzini """
         treeview = self.magazzino_treeview
@@ -150,8 +155,6 @@ class SincroDB(GladeWidget):
             self.vettori_togglebutton.set_active(False)
 
 
-
-
     def on_perchi_checkbutton_toggled(self, toggle):
         print "FDHHDFHKGKGHDFHFHFHDF"
         model = self.magazzino_treeview.get_model()
@@ -174,6 +177,35 @@ class SincroDB(GladeWidget):
         """
         print "GENERA BUTTONE"
 
+    def connectDb(self):
+        self.mainSchema = "promogest2"
+        user = "promoadmin"
+        password = "admin"
+        host = "vete.homelinux.org"
+        port = "5432"
+        database = "promogest_db"
+
+        #azienda=conf.Database.azienda
+        engine = create_engine('postgres:'+'//'
+                        +user+':'
+                        + password+ '@'
+                        + host + ':'
+                        + port + '/'
+                        + database,
+                        encoding='utf-8',
+                        convert_unicode=True )
+        tipo_eng = engine.name
+        engine.echo = False
+        self.meta = MetaData(engine)
+        self.pg_db_server = SqlSoup(self.meta)
+        self.pg_db_server.schema = Environment.params["schema"]
+        self.pg_db_server_main = SqlSoup(self.meta)
+        self.pg_db_server_main.schema = "promogest2"
+            #Session = sessionmaker(bind=engine)
+        Session = scoped_session(sessionmaker(bind=engine))
+        self.session = Session()
+
+
 
     def createSchema(self):
         """
@@ -181,7 +213,13 @@ class SincroDB(GladeWidget):
         """
         variazioni = AppLog().select(batchSize=None)
         for v in variazioni:
-            print v.message, loads(v.object)
+            print v.message , loads(v.object)
+        try:
+            listino = Listino().getRecord(id=loads(v.object))
+        except:
+            print "pazienza"
+        print "listtiinonononono", listino
+
 
     def retreiveDir(self):
         savetoDir = self.destination_filechooserbutton.get_current_folder()
@@ -191,9 +229,31 @@ class SincroDB(GladeWidget):
         saveToName = self.filename_entry.get_text()
         return saveToName
 
-    def retreiveData(self):
-        Environment.meta.reflect(schema="latelier" )
-        app = Environment.params["session"].query(AppLog).filter(and_(AppLog.schema_azienda =="latelier",AppLog.message=="INSERT Articolo")).all()
+    #def daosMain(self):
+        #daosMain = ["azienda","operazione","tipo_aliquota_iva","stato_articolo",
+                    #"unita_base","role","language","tipo_recapito","user",
+                    #"app_log","action","roleaction"]
+        #return doaos
+
+        #daosScheme = ["magazzino","setting","aliquota_iva","categoria_articolo",
+                    #"famiglia_articolo","image","imballaggio","articolo","multiplo",
+                    #"listino","persona_giuridica","pagamento","banca","cliente",
+                    #"categoria_fornitore","CategoriaFornitoreDb","fornitore",
+                    #"destinazione_merce","vettore","agente","testata_documento",
+                    #"testata_movimento","riga","sconto" ,"riga_movimento",
+                    #"sconto_riga_movimento","static_page", "static_menu",
+                    #"contatto", "contatto_cliente","recapito","categoria_contatto",
+                    #"contatto_categoria_contatto","categoria_cliente", "codice_a_barre_articolo",
+                    #"listino_articolo", "cart","articolo_associato","access",
+                    #"listino_magazzino","listino_categoria_cliente",
+                    #"cliente_categoria_cliente","contatto_fornitore",
+                    #"contatto_magazzino","contatto_azienda","feed",
+                    #"fornitura", "sconto_fornitura","informazioni_contabili_documento",
+                    #"inventario","promemoria","riga_documento","listino_complesso_listino",
+                    #"listino_complesso_articolo_prevalente","sconto_riga_documento",
+                    #"sconto_testata_documento", "sconti_vendita_dettaglio",
+                    #"sconti_vendita_ingrosso","spesa","testata_documento_scadenza",
+                    #"stoccaggio"]
 
 
     def retreiveWhat(self):
@@ -212,7 +272,9 @@ class SincroDB(GladeWidget):
         toMagazziniId= []
         for m in model:
             if m[0]: toMagazziniId.append(m[1])
-        righe = AppLog().select(batchSize=None, level="N")
+        #righe = AppLog().select(batchSize=None, level="N")
+        app_log = Table('app_log', self.meta, autoload=True, schema=self.mainSchema)
+        righe = self.session.query(app_log).filter(app_log.c.schema_azienda == Environment.params["schema"]).all()
         modello = self.sincro_treeview.get_model()
         modello.clear()
         for r in righe:
@@ -226,7 +288,55 @@ class SincroDB(GladeWidget):
         self.sincro_treeview.set_model(modello)
 
 
+        if self.tuttecose_checkbutton.get_active():
+            daosMain = [
+                        #"azienda",
+                        #"operazione",
+                        "tipo_aliquota_iva",
+                        "stato_articolo",
+                        #"unita_base",
+                        #"role",
+                        #"language",
+                        #"tipo_recapito",
+                        #"user",
+                        #"app_log",
+                        #"action",
+                        #"roleaction"
+]
+            for dg in daosMain:
+                exec ("recremote=self.pg_db_server_main.%s.all()") %dg
+                print "PROVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", recremote
+
+                if dg == "stato_articolo":
+                    for r in recremote:
+                        stato_articolo_table(op="INSERT", rec=r)
+                elif dg == "tipo_aliquota_iva":
+                    for r in recremote:
+                        tipo_aliquota_iva_table(op="INSERT", rec=r)
+                #for r in records:
+                    
+                    
+
+                #if dao == "stato_articolo":
+                    #stato_articolo_table(soup=self.pg_db_server_main,dao=dao,all=True)
+
+
+        for g in righe:
+            messlist = g.message.split(";")
+            op = messlist[0]
+            dao = messlist[1]
+            if dao =="Listino":
+                listino_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
+            elif dao =="ListinoArticolo":
+                listino__articolo_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
+            elif dao =="AliquotaIva":
+                aliquota_iva_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
+            elif dao =="Articolo":
+                articolo_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
+                
+
     def on_run_button_clicked(self, button):
+        self.connectDb()
         #self.createSchema()
         print "RUN",  self.retreiveDir(), self.retreiveFileName()
         self.retreiveDir()

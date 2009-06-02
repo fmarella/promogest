@@ -80,6 +80,34 @@
               </widget>
             </child>
             <child>
+              <widget class="GtkMenuItem" id="sincro_db">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Sincronizzazione db</property>
+                <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="sincro_db_menu">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkMenuItem" id="master_sincro_db">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">server</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_master_sincro_db_activate"/>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="client_sincro_db">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">client</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_client_sincro_db_activate"/>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
               <widget class="GtkMenuItem" id="aiuto_menu">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">A_iuto</property>
