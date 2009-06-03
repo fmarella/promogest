@@ -11,7 +11,8 @@ from sqlalchemy.orm import *
 from promogest import Environment
 from promogest.dao.TipoAliquotaIva import TipoAliquotaIva
 
-def tipo_aliquota_iva_table(soup=None, op=None,rec=None, dao=None, row=None):
+def tipo_aliquota_iva_table(soup=None, op=None,dao=None, row=None):
+    d = None
     if op =="DELETE":
         d = TipoAliquotaIva().getRecord(id=loads(row.object))
         if d:
@@ -20,20 +21,19 @@ def tipo_aliquota_iva_table(soup=None, op=None,rec=None, dao=None, row=None):
         if soup:
             record = soup.tipo_aliquota_iva.get(loads(row.object))
         else:
-            record = rec 
-        if op == "INSERT" and row:
-            d = TipoAliquotaIva().getRecord(id=loads(row.object))
-            if not d:
-                d = TipoAliquotaIva()
-                d.id = record.id
-        elif op == "INSERT" and rec:
-            reclocale= Environment.params['session'].query(TipoAliquotaIva).all()
-            for r in reclocale:
-                r.delete()
-            d = TipoAliquotaIva()
-            d.id = record.id
+            record = row
+        if op == "INSERT":
+            try:
+                d = TipoAliquotaIva().getRecord(id=loads(row.object))
+            except:
+                if not d:
+                    d = TipoAliquotaIva()
+                    d.id = record.id
         elif op == "UPDATE":
-            d = TipoAliquotaIva().getRecord(id=loads(row.object))
+            try:
+                d = TipoAliquotaIva().getRecord(id=loads(row.object))
+            except:
+                d = TipoAliquotaIva().getRecord(id=row.id)
         d.denominazione = record.denominazione
         d.persist()
     return True

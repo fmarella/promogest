@@ -40,7 +40,8 @@ class Main(GladeWidget):
         self.permanent_frames = permanent_frames
         self.currentFrame = None
         self.alarmFrame = None
-
+        if "SincroDB" not in Environment.modulesList:
+            self.sincro_db.destroy()
         self.updates()
 
 

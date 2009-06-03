@@ -177,11 +177,11 @@ class SincroDB(GladeWidget):
         """
         print "GENERA BUTTONE"
 
-    def connectDb(self):
+    def connectDbRemote(self):
         self.mainSchema = "promogest2"
         user = "promoadmin"
         password = "admin"
-        host = "vete.homelinux.org"
+        host = "192.168.1.119"
         port = "5432"
         database = "promogest_db"
 
@@ -196,14 +196,42 @@ class SincroDB(GladeWidget):
                         convert_unicode=True )
         tipo_eng = engine.name
         engine.echo = False
-        self.meta = MetaData(engine)
-        self.pg_db_server = SqlSoup(self.meta)
-        self.pg_db_server.schema = Environment.params["schema"]
-        self.pg_db_server_main = SqlSoup(self.meta)
-        self.pg_db_server_main.schema = "promogest2"
+        self.metaRemote = MetaData(engine)
+        self.pg_db_server_remote = SqlSoup(self.metaRemote)
+        self.pg_db_server_remote.schema = Environment.params["schema"]
+        self.pg_db_server_main_remote = SqlSoup(self.metaRemote)
+        self.pg_db_server_main_remote.schema = "promogest2"
             #Session = sessionmaker(bind=engine)
-        Session = scoped_session(sessionmaker(bind=engine))
-        self.session = Session()
+        SessionRemote = scoped_session(sessionmaker(bind=engine))
+        self.sessionRemote = SessionRemote()
+
+    def connectDbLocale(self):
+        self.mainSchema = "promogest2"
+        user = "promoadmin"
+        password = "admin"
+        host = "localhost"
+        port = "5432"
+        database = "promogest_db"
+
+        #azienda=conf.Database.azienda
+        engine = create_engine('postgres:'+'//'
+                        +user+':'
+                        + password+ '@'
+                        + host + ':'
+                        + port + '/'
+                        + database,
+                        encoding='utf-8',
+                        convert_unicode=True )
+        tipo_eng = engine.name
+        engine.echo = False
+        self.metaLocale = MetaData(engine)
+        self.pg_db_server_locale = SqlSoup(self.metaLocale)
+        self.pg_db_server_locale.schema = Environment.params["schema"]
+        self.pg_db_server_main_locale = SqlSoup(self.metaLocale)
+        self.pg_db_server_main_locale.schema = "promogest2"
+            #Session = sessionmaker(bind=engine)
+        SessionLocale = scoped_session(sessionmaker(bind=engine))
+        self.sessionLocale = SessionLocale()
 
 
 
@@ -229,11 +257,6 @@ class SincroDB(GladeWidget):
         saveToName = self.filename_entry.get_text()
         return saveToName
 
-    #def daosMain(self):
-        #daosMain = ["azienda","operazione","tipo_aliquota_iva","stato_articolo",
-                    #"unita_base","role","language","tipo_recapito","user",
-                    #"app_log","action","roleaction"]
-        #return doaos
 
         #daosScheme = ["magazzino","setting","aliquota_iva","categoria_articolo",
                     #"famiglia_articolo","image","imballaggio","articolo","multiplo",
@@ -273,8 +296,8 @@ class SincroDB(GladeWidget):
         for m in model:
             if m[0]: toMagazziniId.append(m[1])
         #righe = AppLog().select(batchSize=None, level="N")
-        app_log = Table('app_log', self.meta, autoload=True, schema=self.mainSchema)
-        righe = self.session.query(app_log).filter(app_log.c.schema_azienda == Environment.params["schema"]).all()
+        app_log = Table('app_log', self.metaRemote, autoload=True, schema=self.mainSchema)
+        righe = self.sessionRemote.query(app_log).filter(app_log.c.schema_azienda == Environment.params["schema"]).all()
         modello = self.sincro_treeview.get_model()
         modello.clear()
         for r in righe:
@@ -291,52 +314,73 @@ class SincroDB(GladeWidget):
         if self.tuttecose_checkbutton.get_active():
             daosMain = [
                         #"azienda",
-                        #"operazione",
+                        "operazione",
                         "tipo_aliquota_iva",
                         "stato_articolo",
-                        #"unita_base",
+                        "unita_base",
                         #"role",
-                        #"language",
-                        #"tipo_recapito",
+                        "language",
+                        "tipo_recapito",
                         #"user",
                         #"app_log",
                         #"action",
                         #"roleaction"
 ]
             for dg in daosMain:
-                exec ("recremote=self.pg_db_server_main.%s.all()") %dg
-                print "PROVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", recremote
+                exec ("remote=self.pg_db_server_main_remote.%s.all()") %dg
+                remote.sort()
+                exec ("locale=self.pg_db_server_main_locale.%s.all()") %dg
+                locale.sort()
+                #print dg, "=",locale
+                self.logica(remote=remote, locale=locale)
 
-                if dg == "stato_articolo":
-                    for r in recremote:
-                        stato_articolo_table(op="INSERT", rec=r)
-                elif dg == "tipo_aliquota_iva":
-                    for r in recremote:
-                        tipo_aliquota_iva_table(op="INSERT", rec=r)
-                #for r in records:
-                    
-                    
+    def logica(remote=None, locale=None):
+        if remote == locale:
+            print "VEROOOOOO"
+            continue
+        else:
+            if len(remote) == len(locale):
+                print "STESSO NUMERO DI RECORD", len(remote)
+            elif len(remote) > len(locale):
+                print "IL DB REMOTO CONTIENE PIU' RECORD", len(remote), "vs", len(locale)
+            else:
+                print "IL DB LOCALE CONTIENE PIU' RECORD", len(remote), "vs", len(locale)
+            for i in range(0,len(remote)):
+                if i< len(locale):
+                    if  remote[i] == locale[i]:
+                        print "-> RIGHE UGUALI"
+                    else:
+                        print "QUESTA È LA RIGA DIVERSA NELLA TABELLA ", str(locale[i]._table).split(".")[1], "Operazione UPDATE"
+                        self.fixToTable(row=remote[i], op="UPDATE", dao=str(locale[i]._table).split(".")[1])
+                else:
+                    print "QUESTA È LA RIGA DA AGGIUNGERE NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione INSERT"
+                    self.fixToTable(row=remote[i], op="INSERT", dao=str(remote[i]._table).split(".")[1])
 
-                #if dao == "stato_articolo":
-                    #stato_articolo_table(soup=self.pg_db_server_main,dao=dao,all=True)
+                    #else:
+                        #print "DIVERSO NUMERO", len(remote)
 
-
-        for g in righe:
-            messlist = g.message.split(";")
-            op = messlist[0]
-            dao = messlist[1]
-            if dao =="Listino":
-                listino_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
-            elif dao =="ListinoArticolo":
-                listino__articolo_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
-            elif dao =="AliquotaIva":
-                aliquota_iva_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
-            elif dao =="Articolo":
-                articolo_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
+    def fixToTable(self, soup =None, op=None, row=None,dao=None):
+        if dao=="Listino" or dao=="listino":
+            listino_table(soup=soup,op=op, dao=dao, row=row)
+        elif dao=="TipoAliquotaIva" or dao=="tipo_aliquota_iva":
+            tipo_aliquota_iva_table(soup=soup,op=op, dao=dao, row=row)
+    #for g in righe:
+            #messlist = g.message.split(";")
+            #op = messlist[0]
+            #dao = messlist[1]
+            #if dao =="Listino":
+                #listino_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
+            #elif dao =="ListinoArticolo":
+                #listino__articolo_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
+            #elif dao =="AliquotaIva":
+                #aliquota_iva_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
+            #elif dao =="Articolo":
+                #articolo_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
                 
 
     def on_run_button_clicked(self, button):
-        self.connectDb()
+        self.connectDbRemote()
+        self.connectDbLocale()
         #self.createSchema()
         print "RUN",  self.retreiveDir(), self.retreiveFileName()
         self.retreiveDir()
