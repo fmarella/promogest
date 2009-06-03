@@ -25,6 +25,88 @@ from promogest.modules.SincroDB.data.listino_articolo_table import listino_artic
 from promogest.modules.SincroDB.data.tipo_aliquota_iva_table import tipo_aliquota_iva_table
 from promogest.modules.SincroDB.data.articolo_table import articolo_table
 
+tablesMain = [
+            #"azienda",
+            "operazione",
+            "tipo_aliquota_iva",
+            "stato_articolo",
+            "unita_base",
+            #"role",
+            "language",
+            "tipo_recapito",
+            #"user",
+            #"app_log",
+            #"action",
+            #"roleaction"
+]
+
+
+
+tablesScheme = [
+            "magazzino",
+            "setting",
+            "aliquota_iva",
+            "categoria_articolo",
+            "famiglia_articolo",
+            "image",
+            "imballaggio",
+            "articolo",
+            "multiplo",
+            "listino",
+            "persona_giuridica",
+            "pagamento",
+            "banca",
+            "cliente",
+            "categoria_fornitore",
+            "fornitore",
+            "destinazione_merce",
+            "vettore",
+            "agente",
+            "testata_documento",
+            "testata_movimento",
+            "riga",
+            "sconto" ,
+            "riga_movimento",
+            "sconto_riga_movimento",
+            "static_page",
+            "static_menu",
+            "contatto",
+            "contatto_cliente",
+            "recapito",
+            "categoria_contatto",
+            "contatto_categoria_contatto",
+            "categoria_cliente",
+            "codice_a_barre_articolo",
+            "listino_articolo",
+            "cart",
+            "articolo_associato",
+            "access",
+            "listino_magazzino",
+            "listino_categoria_cliente",
+            "cliente_categoria_cliente",
+            "contatto_fornitore",
+            "contatto_magazzino",
+            "contatto_azienda",
+            "feed",
+            "fornitura",
+            "sconto_fornitura",
+            "informazioni_contabili_documento",
+            "inventario",
+            "promemoria",
+            "riga_documento",
+            "listino_complesso_listino",
+            "listino_complesso_articolo_prevalente",
+            "sconto_riga_documento",
+            "sconto_testata_documento",
+            "sconti_vendita_dettaglio",
+            "sconti_vendita_ingrosso",
+            "spesa",
+            "testata_documento_scadenza",
+            "stoccaggio"
+]
+
+
+
 class SincroDB(GladeWidget):
     """ Finestra di gestione esdportazione variazioni Database """
     def __init__(self):
@@ -257,28 +339,6 @@ class SincroDB(GladeWidget):
         saveToName = self.filename_entry.get_text()
         return saveToName
 
-
-        #daosScheme = ["magazzino","setting","aliquota_iva","categoria_articolo",
-                    #"famiglia_articolo","image","imballaggio","articolo","multiplo",
-                    #"listino","persona_giuridica","pagamento","banca","cliente",
-                    #"categoria_fornitore","CategoriaFornitoreDb","fornitore",
-                    #"destinazione_merce","vettore","agente","testata_documento",
-                    #"testata_movimento","riga","sconto" ,"riga_movimento",
-                    #"sconto_riga_movimento","static_page", "static_menu",
-                    #"contatto", "contatto_cliente","recapito","categoria_contatto",
-                    #"contatto_categoria_contatto","categoria_cliente", "codice_a_barre_articolo",
-                    #"listino_articolo", "cart","articolo_associato","access",
-                    #"listino_magazzino","listino_categoria_cliente",
-                    #"cliente_categoria_cliente","contatto_fornitore",
-                    #"contatto_magazzino","contatto_azienda","feed",
-                    #"fornitura", "sconto_fornitura","informazioni_contabili_documento",
-                    #"inventario","promemoria","riga_documento","listino_complesso_listino",
-                    #"listino_complesso_articolo_prevalente","sconto_riga_documento",
-                    #"sconto_testata_documento", "sconti_vendita_dettaglio",
-                    #"sconti_vendita_ingrosso","spesa","testata_documento_scadenza",
-                    #"stoccaggio"]
-
-
     def retreiveWhat(self):
         """
         Vediamo cosa è stato selezionato per l'esportazione
@@ -296,49 +356,54 @@ class SincroDB(GladeWidget):
         for m in model:
             if m[0]: toMagazziniId.append(m[1])
         #righe = AppLog().select(batchSize=None, level="N")
-        app_log = Table('app_log', self.metaRemote, autoload=True, schema=self.mainSchema)
-        righe = self.sessionRemote.query(app_log).filter(app_log.c.schema_azienda == Environment.params["schema"]).all()
-        modello = self.sincro_treeview.get_model()
-        modello.clear()
-        for r in righe:
-            modello.append((True,
-                            r.utentedb,
-                            r.schema_azienda,
-                            r.level,
-                            r.message,
-                            r.value,
-                            r.registration_date))
-        self.sincro_treeview.set_model(modello)
+        #app_log = Table('app_log', self.metaRemote, autoload=True, schema=self.mainSchema)
+        #righe = self.sessionRemote.query(app_log).filter(app_log.c.schema_azienda == Environment.params["schema"]).all()
+        #modello = self.sincro_treeview.get_model()
+        #modello.clear()
+        #for r in righe:
+            #modello.append((True,
+                            #r.utentedb,
+                            #r.schema_azienda,
+                            #r.level,
+                            #r.message,
+                            #r.value,
+                            #r.registration_date))
+        #self.sincro_treeview.set_model(modello)
 
 
         if self.tuttecose_checkbutton.get_active():
-            daosMain = [
-                        #"azienda",
-                        "operazione",
-                        "tipo_aliquota_iva",
-                        "stato_articolo",
-                        "unita_base",
-                        #"role",
-                        "language",
-                        "tipo_recapito",
-                        #"user",
-                        #"app_log",
-                        #"action",
-                        #"roleaction"
-]
-            for dg in daosMain:
-                exec ("remote=self.pg_db_server_main_remote.%s.all()") %dg
-                remote.sort()
-                exec ("locale=self.pg_db_server_main_locale.%s.all()") %dg
-                locale.sort()
-                #print dg, "=",locale
-                self.logica(remote=remote, locale=locale)
+            self.daosMain(tables=tablesMain)
+            self.daosScheme(tables=tablesScheme)
 
-    def logica(remote=None, locale=None):
-        if remote == locale:
-            print "VEROOOOOO"
-            continue
-        else:
+    def daosMain(self, tables=None):
+        """
+        Crea le liste delle query ciclando nelle tabelle
+        """
+        for dg in tables:
+            exec ("remote=self.pg_db_server_main_remote.%s.all()") %dg
+            remote.sort()
+            exec ("locale=self.pg_db_server_main_locale.%s.all()") %dg
+            locale.sort()
+            #print "REMOTEEEEEEEEEEEEEEEEE", remote
+            ok = self.logica(remote=remote, locale=locale)
+
+            remote = locale = None
+
+    def daosScheme(self, tables=None):
+        """
+        Crea le liste delle query ciclando nelle tabelle 
+        """
+        for dg in tables:
+            exec ("remote=self.pg_db_server_remote.%s.all()") %dg
+            remote.sort()
+            exec ("locale=self.pg_db_server_locale.%s.all()") %dg
+            locale.sort()
+            #print "remoteeeeeeeeeeeeeeeeee", remote
+            self.logica(remote=remote, locale=locale)
+
+    def logica(self,remote=None, locale=None):
+        """ cicla le righe della tabella e decide cosa fare """
+        if remote != locale:
             if len(remote) == len(locale):
                 print "STESSO NUMERO DI RECORD", len(remote)
             elif len(remote) > len(locale):
@@ -348,22 +413,37 @@ class SincroDB(GladeWidget):
             for i in range(0,len(remote)):
                 if i< len(locale):
                     if  remote[i] == locale[i]:
-                        print "-> RIGHE UGUALI"
+                        print "-> RIGHE UGUALI PER LA TABELLA", str(remote[i]._table).split(".")[1]
                     else:
                         print "QUESTA È LA RIGA DIVERSA NELLA TABELLA ", str(locale[i]._table).split(".")[1], "Operazione UPDATE"
                         self.fixToTable(row=remote[i], op="UPDATE", dao=str(locale[i]._table).split(".")[1])
                 else:
                     print "QUESTA È LA RIGA DA AGGIUNGERE NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione INSERT"
                     self.fixToTable(row=remote[i], op="INSERT", dao=str(remote[i]._table).split(".")[1])
-
+        return 
                     #else:
                         #print "DIVERSO NUMERO", len(remote)
 
     def fixToTable(self, soup =None, op=None, row=None,dao=None):
+        """
+        rimanda alla gestione delle singole tabelle con le operazioni da fare
+        """
         if dao=="Listino" or dao=="listino":
-            listino_table(soup=soup,op=op, dao=dao, row=row)
+            #listino_table(soup=soup,op=op, dao=dao, row=row)
+            print "ok"
         elif dao=="TipoAliquotaIva" or dao=="tipo_aliquota_iva":
             tipo_aliquota_iva_table(soup=soup,op=op, dao=dao, row=row)
+        elif dao=="Operazione" or dao=="operazione":
+            operazione_table(soup=soup,op=op, dao=dao, row=row)
+        elif dao=="StatoArticolo" or dao=="stato_articolo":
+            stato_articolo_table(soup=soup,op=op, dao=dao, row=row)
+        elif dao=="UnitaBase" or dao=="unita_base":
+            unita_base_table(soup=soup,op=op, dao=dao, row=row)
+        elif dao=="Language" or dao=="language":
+            language_table(soup=soup,op=op, dao=dao, row=row)
+        elif dao=="TipoRecapito" or dao=="tipo_recapito":
+            tipo_recapito_table(soup=soup,op=op, dao=dao, row=row)
+        return
     #for g in righe:
             #messlist = g.message.split(";")
             #op = messlist[0]
