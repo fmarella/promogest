@@ -12,7 +12,7 @@ from promogest import Environment
 from promogest.dao.TipoAliquotaIva import TipoAliquotaIva
 
 
-def tipo_aliquota_iva_table(soup=None, op=None,dao=None, row=None):
+def tipo_aliquota_iva_table(soup=None, op=None,dao=None, row=None, all=False):
     d = None
     if soup and not all:
         record = soup.tipo_aliquota_iva.get(loads(row.object))

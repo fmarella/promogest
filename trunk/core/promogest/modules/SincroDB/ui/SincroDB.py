@@ -25,6 +25,15 @@ from promogest.modules.SincroDB.data.aliquota_iva_table import aliquota_iva_tabl
 from promogest.modules.SincroDB.data.listino_articolo_table import listino_articolo_table
 from promogest.modules.SincroDB.data.tipo_aliquota_iva_table import tipo_aliquota_iva_table
 from promogest.modules.SincroDB.data.articolo_table import articolo_table
+from promogest.modules.SincroDB.data.magazzino_table import magazzino_table
+from promogest.modules.SincroDB.data.categoria_articolo_table import categoria_articolo_table
+from promogest.modules.SincroDB.data.categoria_cliente_table import categoria_cliente_table
+from promogest.modules.SincroDB.data.listino_magazzino_table import listino_magazzino_table
+from promogest.modules.SincroDB.data.listino_categoria_cliente_table import listino_categoria_cliente_table
+from promogest.modules.SincroDB.data.fornitura_table import fornitura_table
+from promogest.modules.SincroDB.data.fornitore_table import fornitore_table
+from promogest.modules.SincroDB.data.stoccaggio_table import stoccaggio_table
+from promogest.modules.SincroDB.data.listino_complesso_listino_table import listino_complesso_listino_table
 
 tablesMain = [
             #"azienda",
@@ -44,66 +53,66 @@ tablesMain = [
 
 
 tablesScheme = [
-            "magazzino",
-            "setting",
-            "aliquota_iva",
-            "categoria_articolo",
-            "famiglia_articolo",
-            "image",
-            "imballaggio",
-            "articolo",
-            "multiplo",
-            "listino",
-            #"persona_giuridica",
-            "pagamento",
-            #"banca",
-            #"cliente",
-            #"categoria_fornitore",
-            #"fornitore",
-            #"destinazione_merce",
-            #"vettore",
-            #"agente",
-            #"testata_documento",
-            #"testata_movimento",
-            #"riga",
-            "sconto" ,
-            #"riga_movimento",
-            #"sconto_riga_movimento",
-            #"static_page",
-            #"static_menu",
-            #"contatto",
-            #"contatto_cliente",
-            #"recapito",
-            #"categoria_contatto",
-            #"contatto_categoria_contatto",
-            "categoria_cliente",
-            "codice_a_barre_articolo",
-            "listino_articolo",
-            #"cart",
-            "articolo_associato",
-            #"access",
-            "listino_magazzino",
-            "listino_categoria_cliente",
-            #"cliente_categoria_cliente",
-            #"contatto_fornitore",
-            #"contatto_magazzino",
-            #"contatto_azienda",
-            #"feed",
-            "fornitura",
-            "sconto_fornitura",
-            #"informazioni_contabili_documento",
-            #"inventario",
-            #"promemoria",
-            #"riga_documento",
-            "listino_complesso_listino",
-            "listino_complesso_articolo_prevalente",
-            #"sconto_riga_documento",
-            #"sconto_testata_documento",
-            "sconti_vendita_dettaglio",
-            "sconti_vendita_ingrosso",
-            #"spesa",
-            #"testata_documento_scadenza",
-            "stoccaggio"
+            ("magazzino","id"),
+            ("setting","key"),
+            ("aliquota_iva","id"),
+            ("categoria_articolo","id"),
+            ("famiglia_articolo","id"),
+            ("image","id"),
+            ("imballaggio","id"),
+            ("articolo","id"),
+            ("multiplo","id"),
+            ("listino","id"),
+            #("persona_giuridica","id"),
+            ("pagamento","id"),
+            #("banca","id"),
+            #("cliente","id"),
+            #("categoria_fornitore","id"),
+            ("fornitore","id"),
+            #("destinazione_merce","id"),
+            #("vettore","id"),
+            #("agente","id"),
+            #("testata_documento","id"),
+            #("testata_movimento","id"),
+            #("riga","id"),
+            ("sconto" ,"id"),
+            #("riga_movimento","id"),
+            #("sconto_riga_movimento","id"),
+            #("static_page","id"),
+            #("static_menu","id"),
+            #("contatto","id"),
+            #("contatto_cliente","id"),
+            #("recapito","id"),
+            #("categoria_contatto","id"),
+            #("contatto_categoria_contatto","id"),
+            ("categoria_cliente","id"),
+            ("codice_a_barre_articolo","id"),
+            ("listino_articolo","id_listino"),
+            #("cart","id"),
+            ("articolo_associato","id"),
+            #("access","id"),
+            ("listino_magazzino","id_listino"),
+            ("listino_categoria_cliente","id_listino"),
+            #("cliente_categoria_cliente","id"),
+            #("contatto_fornitore","id"),
+            #("contatto_magazzino","id"),
+            #("contatto_azienda","id"),
+            #("feed","id"),
+            ("fornitura","id"),
+            ("sconto_fornitura","id"),
+            #("informazioni_contabili_documento","id"),
+            #("inventario","id"),
+            #("promemoria","id"),
+            #("riga_documento","id"),
+            ("listino_complesso_listino","id_listino_complesso"),
+            ("listino_complesso_articolo_prevalente","id_listino_complesso"),
+            #("sconto_riga_documento","id"),
+            #("sconto_testata_documento","id"),
+            ("sconti_vendita_dettaglio","id"),
+            ("sconti_vendita_ingrosso","id"),
+            #("spesa","id"),
+            #("testata_documento_scadenza","id"),
+            ("stoccaggio","id")
 ]
 
 
@@ -383,9 +392,11 @@ class SincroDB(GladeWidget):
         """
         for dg in tables:
             exec ("remote=self.pg_db_server_main_remote.%s.all()") %dg
-            remote.sort()
+            if len(remote)!=1:
+                remote.sort()
             exec ("locale=self.pg_db_server_main_locale.%s.all()") %dg
-            locale.sort()
+            if len(locale)!=1:
+                locale.sort()
             self.logica(remote=remote, locale=locale, all=True)
         print "<<<<<<<< FINITO CON LO SCHEMA PRINCIPALE >>>>>>>>", datetime.datetime.now()
 
@@ -395,10 +406,13 @@ class SincroDB(GladeWidget):
         Crea le liste delle query ciclando nelle tabelle 
         """
         for dg in tables:
-            exec ("remote=self.pg_db_server_remote.%s.all()") %dg
-            remote.sort()
-            exec ("locale=self.pg_db_server_locale.%s.all()") %dg
-            locale.sort()
+            print "DGGGGGGGGGGGG", dg
+            exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).all()") %(dg[0],dg[0],dg[1])
+            #if len(remote)!=1:
+                #remote.sort()
+            exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).all()") %(dg[0],dg[0],dg[1])
+            #if len(locale)!=1:
+                #locale.sort()
             #print "remoteeeeeeeeeeeeeeeeee", remote
             self.logica(remote=remote, locale=locale, all=True)
         print "<<<<<<<< FINITO CON LO SCHEMA AZIENDA >>>>>>>>", datetime.datetime.now()
@@ -413,8 +427,11 @@ class SincroDB(GladeWidget):
                 print "IL DB REMOTO CONTIENE PIU' RECORD", len(remote), "vs", len(locale)
             else:
                 print "IL DB LOCALE CONTIENE PIU' RECORD", len(remote), "vs", len(locale)
-            for i in range(0,len(remote)):
-                if i< len(locale):
+            for i in range(0,(len(remote))):
+                print "III", i, len(locale)
+                print "remote" , remote[i]
+                print "locale",len(locale) #locale[i]
+                if i <= (len(locale)-1):
                     if  remote[i] == locale[i]:
                         print "-> RIGHE UGUALI PER LA TABELLA", str(remote[i]._table).split(".")[1]
                     else:

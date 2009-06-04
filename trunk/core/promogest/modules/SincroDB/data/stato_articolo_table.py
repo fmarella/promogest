@@ -12,7 +12,7 @@ from promogest import Environment
 from promogest.dao.StatoArticolo import StatoArticolo
 
 
-def stato_articolo_table(soup=None, op=None,dao=None, row=None):
+def stato_articolo_table(soup=None, op=None,dao=None, row=None, all=False):
     d = None
     if soup and not all:
         record = soup.stato_articolo.get(loads(row.object))
