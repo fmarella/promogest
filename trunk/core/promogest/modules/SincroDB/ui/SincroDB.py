@@ -27,6 +27,7 @@ from promogest.modules.SincroDB.data.tipo_aliquota_iva_table import tipo_aliquot
 from promogest.modules.SincroDB.data.articolo_table import articolo_table
 from promogest.modules.SincroDB.data.magazzino_table import magazzino_table
 from promogest.modules.SincroDB.data.categoria_articolo_table import categoria_articolo_table
+from promogest.modules.SincroDB.data.famiglia_articolo_table import famiglia_articolo_table
 from promogest.modules.SincroDB.data.categoria_cliente_table import categoria_cliente_table
 from promogest.modules.SincroDB.data.listino_magazzino_table import listino_magazzino_table
 from promogest.modules.SincroDB.data.listino_categoria_cliente_table import listino_categoria_cliente_table
