@@ -11,29 +11,32 @@ from sqlalchemy.orm import *
 from promogest import Environment
 from promogest.dao.StatoArticolo import StatoArticolo
 
-def stato_articolo_table(soup=None, op=None,rec=None, dao=None, row=None):
+
+def stato_articolo_table(soup=None, op=None,dao=None, row=None):
+    d = None
+    if soup and not all:
+        record = soup.stato_articolo.get(loads(row.object))
+    else:
+        record = row
     if op =="DELETE":
-        d = StatoArticolo().getRecord(id=loads(row.object))
+        if all:
+            d = StatoArticolo().getRecord(id=row.id)
+        else:
+            d = StatoArticolo().getRecord(id=loads(row.object))
         if d:
             d.delete()
-    else:
-        if soup:
-            record = soup.stato_articolo.get(loads(row.object))
-        else:
-            record = rec 
-        if op == "INSERT" and row:
-            d = StatoArticolo().getRecord(id=loads(row.object))
-            if not d:
-                d = StatoArticolo()
-                d.id = record.id
-        elif op == "INSERT" and rec:
-            reclocale= Environment.params['session'].query(StatoArticolo).all()
-            for r in reclocale:
-                r.delete()
+        return True
+    elif op == "INSERT":
+        if all:
             d = StatoArticolo()
             d.id = record.id
-        elif op == "UPDATE":
+        else:
             d = StatoArticolo().getRecord(id=loads(row.object))
-        d.denominazione = record.denominazione
-        d.persist()
+    elif op == "UPDATE":
+        if all:
+            d = StatoArticolo().getRecord(id=row.id)
+        else:
+            d = StatoArticolo().getRecord(id=loads(row.object))
+    d.denominazione= record.denominazione
+    d.persist()
     return True

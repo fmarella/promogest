@@ -7,6 +7,7 @@
 
 import gtk
 import gobject
+import datetime
 from sqlalchemy.ext.serializer import loads, dumps
 from sqlalchemy import *
 from sqlalchemy.orm import *
@@ -53,55 +54,55 @@ tablesScheme = [
             "articolo",
             "multiplo",
             "listino",
-            "persona_giuridica",
+            #"persona_giuridica",
             "pagamento",
-            "banca",
-            "cliente",
-            "categoria_fornitore",
-            "fornitore",
-            "destinazione_merce",
-            "vettore",
-            "agente",
-            "testata_documento",
-            "testata_movimento",
-            "riga",
+            #"banca",
+            #"cliente",
+            #"categoria_fornitore",
+            #"fornitore",
+            #"destinazione_merce",
+            #"vettore",
+            #"agente",
+            #"testata_documento",
+            #"testata_movimento",
+            #"riga",
             "sconto" ,
-            "riga_movimento",
-            "sconto_riga_movimento",
-            "static_page",
-            "static_menu",
-            "contatto",
-            "contatto_cliente",
-            "recapito",
-            "categoria_contatto",
-            "contatto_categoria_contatto",
+            #"riga_movimento",
+            #"sconto_riga_movimento",
+            #"static_page",
+            #"static_menu",
+            #"contatto",
+            #"contatto_cliente",
+            #"recapito",
+            #"categoria_contatto",
+            #"contatto_categoria_contatto",
             "categoria_cliente",
             "codice_a_barre_articolo",
             "listino_articolo",
-            "cart",
+            #"cart",
             "articolo_associato",
-            "access",
+            #"access",
             "listino_magazzino",
             "listino_categoria_cliente",
-            "cliente_categoria_cliente",
-            "contatto_fornitore",
-            "contatto_magazzino",
-            "contatto_azienda",
-            "feed",
+            #"cliente_categoria_cliente",
+            #"contatto_fornitore",
+            #"contatto_magazzino",
+            #"contatto_azienda",
+            #"feed",
             "fornitura",
             "sconto_fornitura",
-            "informazioni_contabili_documento",
-            "inventario",
-            "promemoria",
-            "riga_documento",
+            #"informazioni_contabili_documento",
+            #"inventario",
+            #"promemoria",
+            #"riga_documento",
             "listino_complesso_listino",
             "listino_complesso_articolo_prevalente",
-            "sconto_riga_documento",
-            "sconto_testata_documento",
+            #"sconto_riga_documento",
+            #"sconto_testata_documento",
             "sconti_vendita_dettaglio",
             "sconti_vendita_ingrosso",
-            "spesa",
-            "testata_documento_scadenza",
+            #"spesa",
+            #"testata_documento_scadenza",
             "stoccaggio"
 ]
 
@@ -263,7 +264,7 @@ class SincroDB(GladeWidget):
         self.mainSchema = "promogest2"
         user = "promoadmin"
         password = "admin"
-        host = "192.168.1.119"
+        host = "vete.homelinux.org"
         port = "5432"
         database = "promogest_db"
 
@@ -372,6 +373,7 @@ class SincroDB(GladeWidget):
 
 
         if self.tuttecose_checkbutton.get_active():
+            print datetime.datetime.now()
             self.daosMain(tables=tablesMain)
             self.daosScheme(tables=tablesScheme)
 
@@ -384,10 +386,9 @@ class SincroDB(GladeWidget):
             remote.sort()
             exec ("locale=self.pg_db_server_main_locale.%s.all()") %dg
             locale.sort()
-            #print "REMOTEEEEEEEEEEEEEEEEE", remote
-            ok = self.logica(remote=remote, locale=locale)
+            self.logica(remote=remote, locale=locale, all=True)
+        print "<<<<<<<< FINITO CON LO SCHEMA PRINCIPALE >>>>>>>>", datetime.datetime.now()
 
-            remote = locale = None
 
     def daosScheme(self, tables=None):
         """
@@ -399,9 +400,11 @@ class SincroDB(GladeWidget):
             exec ("locale=self.pg_db_server_locale.%s.all()") %dg
             locale.sort()
             #print "remoteeeeeeeeeeeeeeeeee", remote
-            self.logica(remote=remote, locale=locale)
+            self.logica(remote=remote, locale=locale, all=True)
+        print "<<<<<<<< FINITO CON LO SCHEMA AZIENDA >>>>>>>>", datetime.datetime.now()
 
-    def logica(self,remote=None, locale=None):
+
+    def logica(self,remote=None, locale=None, all=False):
         """ cicla le righe della tabella e decide cosa fare """
         if remote != locale:
             if len(remote) == len(locale):
@@ -416,33 +419,139 @@ class SincroDB(GladeWidget):
                         print "-> RIGHE UGUALI PER LA TABELLA", str(remote[i]._table).split(".")[1]
                     else:
                         print "QUESTA È LA RIGA DIVERSA NELLA TABELLA ", str(locale[i]._table).split(".")[1], "Operazione UPDATE"
-                        self.fixToTable(row=remote[i], op="UPDATE", dao=str(locale[i]._table).split(".")[1])
+                        self.fixToTable(row=remote[i], op="UPDATE", dao=str(locale[i]._table).split(".")[1], all=all)
                 else:
                     print "QUESTA È LA RIGA DA AGGIUNGERE NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione INSERT"
-                    self.fixToTable(row=remote[i], op="INSERT", dao=str(remote[i]._table).split(".")[1])
-        return 
-                    #else:
-                        #print "DIVERSO NUMERO", len(remote)
+                    self.fixToTable(row=remote[i], op="INSERT", dao=str(remote[i]._table).split(".")[1], all=all)
+         
+        else:
+            print "TABELLE UGUALI"
 
-    def fixToTable(self, soup =None, op=None, row=None,dao=None):
+    def fixToTable(self, soup =None, op=None, row=None,dao=None, all=False):
         """
         rimanda alla gestione delle singole tabelle con le operazioni da fare
         """
-        if dao=="Listino" or dao=="listino":
-            #listino_table(soup=soup,op=op, dao=dao, row=row)
-            print "ok"
-        elif dao=="TipoAliquotaIva" or dao=="tipo_aliquota_iva":
-            tipo_aliquota_iva_table(soup=soup,op=op, dao=dao, row=row)
+        if dao=="TipoAliquotaIva" or dao=="tipo_aliquota_iva":
+            tipo_aliquota_iva_table(soup=soup,op=op, dao=dao, row=row, all=all)
         elif dao=="Operazione" or dao=="operazione":
-            operazione_table(soup=soup,op=op, dao=dao, row=row)
+            operazione_table(soup=soup,op=op, dao=dao, row=row, all=all)
         elif dao=="StatoArticolo" or dao=="stato_articolo":
-            stato_articolo_table(soup=soup,op=op, dao=dao, row=row)
+            stato_articolo_table(soup=soup,op=op, dao=dao, row=row, all=all)
         elif dao=="UnitaBase" or dao=="unita_base":
-            unita_base_table(soup=soup,op=op, dao=dao, row=row)
+            unita_base_table(soup=soup,op=op, dao=dao, row=row, all=all)
         elif dao=="Language" or dao=="language":
-            language_table(soup=soup,op=op, dao=dao, row=row)
+            language_table(soup=soup,op=op, dao=dao, row=row, all=all)
         elif dao=="TipoRecapito" or dao=="tipo_recapito":
-            tipo_recapito_table(soup=soup,op=op, dao=dao, row=row)
+            tipo_recapito_table(soup=soup,op=op, dao=dao, row=row, all=all)
+
+        elif dao=="Magazzino" or dao=="magazzino":
+            magazzino_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="Setting" or dao=="setting":
+            #setting_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="AliquotaIva" or dao=="aliquota_iva":
+            aliquota_iva_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="CategoriaArticolo" or dao=="categoria_articolo":
+            categoria_articolo_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="FamigliaArticolo" or dao=="famiglia_articolo":
+            famiglia_articolo_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="Image" or dao=="image":
+            image_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="Imballaggio" or dao=="imballaggio":
+            imballaggio_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="Articolo" or dao=="articolo":
+            articolo_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="Multiplo" or dao=="multiplo":
+            multiplo_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="Listino" or dao=="listino":
+            listino_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="PersonaGiuridica" or dao=="persona_giuridica":
+            #persona_giuridica_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="Pagamento" or dao=="pagamento":
+            #pagamento_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="Banca" or dao=="banca":
+            #banca_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="Cliente" or dao=="cliente":
+            #cliente_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="CategoriaFornitore" or dao=="categoria_fornitore":
+            categoria_fornitore_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="Fornitore" or dao=="fornitore":
+            fornitore_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="DestinazioneMerce" or dao=="destinazione_merce":
+            #destinazione_merce_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="Vettore" or dao=="vettore":
+            #vettore_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="Agente" or dao=="agente":
+            #agente_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="TestataDocumento" or dao=="testata_documento":
+            #testata_documento_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="TestataMovimento" or dao=="testata_movimento":
+            #testata_movimento_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="Riga" or dao=="riga":
+            #riga_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="Sconto" or dao=="sconto":
+            sconto_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="RigaMovimento" or dao=="riga_movimento":
+            #riga_movimento_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="ScontoRigaMovimento" or dao=="sconto_riga_movimento":
+            #sconto_riga_movimento_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="Contatto" or dao=="contatto":
+            #contatto_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="ContattoCliente" or dao=="contatto_cliente":
+            #contatto_cliente_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="Recapito" or dao=="recapito":
+            #recapito_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="CategoriaContatto" or dao=="categoria_contatto":
+            #categoria_contatto_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="ContattoCategoriaContatto" or dao=="contatto_categoria_contatto":
+            #contatto_categoria_contatto_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="CategoriaCliente" or dao=="categoria_cliente":
+            categoria_cliente_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="CodiceABarreArticolo" or dao=="codice_a_barre_articolo":
+            codice_a_barre_articolo_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="ListinoArticolo" or dao=="listino_articolo_table":
+            listino__articolo_table_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="ArticoloAssociato" or dao=="articolo_associato":
+            articolo_associato_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="ListinoMagazzino" or dao=="listino_magazzino":
+            listino_magazzino_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="ListinoCategoriaCliente" or dao=="listino_categoria_cliente":
+            listino_categoria_cliente_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="ClienteCategoriaCliente" or dao=="cliente_categoria_cliente":
+            #cliente_categoria_cliente_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="ContattoFornitore" or dao=="contatto_fornitore":
+            #contatto_fornitore_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="ContattoMagazzino" or dao=="contatto_magazzino":
+            #contatto_magazzino_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="ContattoAzienda" or dao=="contatto_azienda":
+            #contatto_azienda_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="Fornitura" or dao=="fornitura":
+            fornitura_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="ScontoFornitura" or dao=="sconto_fornitura":
+            sconto_fornitura_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="InformazioniContabiliDocumento" or dao=="informazioni_contabili_documento":
+            #informazioni_contabili_documento_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="Inventario" or dao=="inventario":
+            #inventario_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="Promemoria" or dao=="promemoria":
+            #promemoria_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="RigaDocumento" or dao=="riga_documento":
+            #riga_documento_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="ListinoComplessoListino" or dao=="listino_complesso_listino":
+            listino_complesso_listino_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="ListinoComplessoArticoloPrevalente" or dao=="listino_complesso_articolo_prevalente":
+            listino_complesso_articolo_prevalente_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="ScontoRigaDocumento" or dao=="sconto_riga_documento":
+            #sconto_riga_documento_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="ScontoTestataDocumento" or dao=="sconto_testata_documento":
+            #sconto_testata_documento_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="ScontiVenditaDettaglio" or dao=="sconti_vendita_dettaglio":
+            sconti_vendita_dettaglio_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="ScontiVenditaIngrosso" or dao=="sconti_vendita_ingrosso":
+            sconti_vendita_ingrosso_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        #elif dao=="TestataDocumentoScadenza" or dao=="testata_documento_scadenza":
+            #testata_documento_scadenza_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        elif dao=="Stoccaggio" or dao=="stoccaggio":
+            stoccaggio_table(soup=soup,op=op, dao=dao, row=row, all=all)
         return
     #for g in righe:
             #messlist = g.message.split(";")
