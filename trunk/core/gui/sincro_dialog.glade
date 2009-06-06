@@ -33,7 +33,7 @@
                             <property name="visible">True</property>
                             <child>
                               <widget class="GtkCheckButton" id="tuttecose_checkbutton">
-                                <property name="label" translatable="yes">Tutti</property>
+                                <property name="label" translatable="yes">TUTTO IL DATABASE</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -288,6 +288,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
+                <property name="padding">5</property>
                 <property name="position">2</property>
               </packing>
             </child>

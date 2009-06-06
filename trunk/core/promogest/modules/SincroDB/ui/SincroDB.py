@@ -33,7 +33,7 @@ tablesMain = [
             #"roleaction"
 ]
 
-tablesScheme = [
+tablesSchemeArticolo = [
             ("magazzino","id"),
             #("setting","key"),
             ("aliquota_iva","id"),
@@ -43,29 +43,9 @@ tablesScheme = [
             ("imballaggio","id"),
             ("articolo","id"),
             ("multiplo","id"),
-
-            #("persona_giuridica","id"),
             ("pagamento","id"),
-            #("banca","id"),
-            #("cliente","id"),
-            #("categoria_fornitore","id"),
             ("fornitore","id"),
-            #("destinazione_merce","id"),
-            #("vettore","id"),
-            #("agente","id"),
-            #("testata_documento","id"),
-            #("testata_movimento","id"),
-            #("riga","id"),
             ("sconto" ,"id"),
-            #("riga_movimento","id"),
-            #("sconto_riga_movimento","id"),
-            #("static_page","id"),
-            #("static_menu","id"),
-            #("contatto","id"),
-            #("contatto_cliente","id"),
-            #("recapito","id"),
-            #("categoria_contatto","id"),
-            #("contatto_categoria_contatto","id"),
             ("categoria_cliente","id"),
             ("codice_a_barre_articolo","id"),
             ("listino_articolo","id_listino"),
@@ -75,28 +55,53 @@ tablesScheme = [
             ("listino_magazzino","id_listino"),
             ("listino_categoria_cliente","id_listino"),
             ("listino","id"),
-            #("cliente_categoria_cliente","id"),
-            #("contatto_fornitore","id"),
-            #("contatto_magazzino","id"),
-            #("contatto_azienda","id"),
             #("feed","id"),
             ("fornitura","id"),
             ("sconto_fornitura","id"),
-            #("informazioni_contabili_documento","id"),
             #("inventario","id"),
-            #("promemoria","id"),
-            #("riga_documento","id"),
             ("listino_complesso_listino","id_listino_complesso"),
             ("listino_complesso_articolo_prevalente","id_listino_complesso"),
-            #("sconto_riga_documento","id"),
-            #("sconto_testata_documento","id"),
             ("sconti_vendita_dettaglio","id"),
             ("sconti_vendita_ingrosso","id"),
             #("spesa","id"),
-            #("testata_documento_scadenza","id"),
             ("stoccaggio","id")
 ]
+tablesSchemeAnagrafiche = [
+            ("persona_giuridica","id"),
+            ("banca","id"),
+            ("cliente","id"),
+            ("categoria_fornitore","id"),
+            ("destinazione_merce","id"),
+            ("vettore","id"),
+            ("agente","id"),
+            ("cliente_categoria_cliente","id"),
+            ("contatto_fornitore","id"),
+            ("contatto_magazzino","id"),
+            ("contatto_azienda","id"),
+]
 
+tablesSchemePromemoria = [
+            ("promemoria","id"),
+            ("contatto","id"),
+            ("contatto_cliente","id"),
+            ("recapito","id"),
+            ("categoria_contatto","id"),
+            ("contatto_categoria_contatto","id"),
+]
+
+tablesSchemeDocumenti = [
+            ("testata_documento","id"),
+            ("testata_movimento","id"),
+            ("riga","id"),
+            ("riga_movimento","id"),
+            ("sconto_riga_movimento","id"),
+            ("informazioni_contabili_documento","id"),
+            ("inventario","id"),
+            ("riga_documento","id"),
+            ("sconto_riga_documento","id"),
+            ("sconto_testata_documento","id"),
+            ("testata_documento_scadenza","id"),
+]
 
 class SincroDB(GladeWidget):
     """ Finestra di gestione esdportazione variazioni Database """
@@ -182,17 +187,6 @@ class SincroDB(GladeWidget):
         self.sessionLocale = SessionLocale()
         #self.sessionLocale.autocommit
 
-
-    def retreiveWhat(self):
-        """
-        Vediamo cosa è stato selezionato per l'esportazione
-        """
-
-        if self.tuttecose_checkbutton.get_active():
-            print datetime.datetime.now()
-            self.daosMain(tables=tablesMain)
-            self.daosScheme(tables=tablesScheme)
-
     def daosMain(self, tables=None):
         """
         Crea le liste delle query ciclando nelle tabelle
@@ -216,7 +210,7 @@ class SincroDB(GladeWidget):
             #print "DGGGGGGGGGGGG", dg
             exec ( "conteggia = self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).count()")  %(dg[0],dg[0],dg[1])
             #print "CONTEGGIAAAAAAAAAAAA", conteggia
-            blocSize = 50
+            blocSize = 100
             if conteggia >= blocSize:
                 blocchi = abs(conteggia/blocSize)
                 for j in range(0,blocchi):
@@ -301,6 +295,20 @@ class SincroDB(GladeWidget):
     def on_run_button_clicked(self, button):
         self.connectDbRemote()
         self.connectDbLocale()
-        self.retreiveWhat()
+        print "INIZIO sincro",datetime.datetime.now()
+        self.daosMain(tables=tablesMain)
+        if self.tuttecose_checkbutton.get_active():
+            self.daosScheme(tables=tablesSchemeArticolo)
+            self.daosScheme(tables=tablesSchemeAnagrafiche)
+            self.daosScheme(tables= tablesSchemePromemoria)
+            self.daosScheme(tables=tablesSchemeDocumenti)
+        if self.articoli_togglebutton.get_active():
+            self.daosScheme(tables=tablesSchemeArticolo)
+        if self.clienti_togglebutton.get_active():
+            self.daosScheme(tables=tablesSchemeAnagrafiche)
+        if self.parametri_togglebutton.get_active():
+            self.daosScheme(tables= tablesSchemePromemoria)
+        if self.magazzini_togglebutton.get_active():
+            self.daosScheme(tables=tablesSchemeDocumenti)
 
 
