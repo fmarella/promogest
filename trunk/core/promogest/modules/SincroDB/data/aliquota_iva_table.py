@@ -5,44 +5,28 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francescoo@promotux.it>
 
+import sqlalchemy
 from sqlalchemy.ext.serializer import loads, dumps
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest import Environment
-from promogest.dao.AliquotaIva import AliquotaIva
 
-def aliquota_iva_table(soup=None, op=None, dao=None, row=None, all=False):
-    print "OPPPPPPPPPPPPPPPPPPP", op
-    d = None
-    if soup and not all:
-        record = soup.aliquota_iva.get(loads(row.object))
-    else:
-        record = row
+def aliquota_iva_table(soup=None,soupLocale=None, op=None,dao=None,rowLocale=None, row=None, all=False):
     if op =="DELETE":
-        if all:
-            d = AliquotaIva().getRecord(id=row.id)
-        else:
-            d = AliquotaIva().getRecord(id=loads(row.object))
-        if d:
-            d.delete()
-        return True
+        soupLocale.delete(rowLocale)
     elif op == "INSERT":
-        if all:
-            d = AliquotaIva()
-            d.id = record.id
-        else:
-            d = AliquotaIva().getRecord(id=loads(row.object))
+        soupLocale.aliquota_iva.insert(
+            id = row.id,
+            id_tipo = row.id_tipo,
+            denominazione_breve = row.denominazione_breve,
+            denominazione= row.denominazione,
+            percentuale= row.percentuale,
+            percentuale_detrazione= row.percentuale_detrazione,
+            descrizione_detrazione = row.descrizione_detrazione,
+)
     elif op == "UPDATE":
-        if all:
-            d = AliquotaIva().getRecord(id=row.id)
-            print "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", d
-        else:
-            d = AliquotaIva().getRecord(id=loads(row.object))
-    d.id_tipo = record.id_tipo
-    d.denominazione_breve = record.denominazione_breve
-    d.denominazione= record.denominazione
-    d.percentuale= record.percentuale
-    d.percentuale_detrazione= record.percentuale_detrazione
-    d.descrizione_detrazione = record.descrizione_detrazione
-    d.persist()
+        for i in rowLocale.c:
+            t = str(i).split(".")[1] #mi serve solo il nome tabella
+            setattr(rowLocale, t, getattr(row, t))
+    sqlalchemy.ext.sqlsoup.Session.commit()
     return True

@@ -8,33 +8,15 @@
 import gtk
 import gobject
 import datetime
+import sqlalchemy
 from sqlalchemy.ext.serializer import loads, dumps
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest import Environment
-from promogest.dao.AppLog import AppLog
-from promogest.dao.Articolo import Articolo
-from promogest.dao.Magazzino import Magazzino
-from promogest.dao.Listino import Listino
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.ui.GladeWidget import GladeWidget
 from sqlalchemy.ext.sqlsoup import SqlSoup
-from promogest.modules.SincroDB.data.listino_table import listino_table
-from promogest.modules.SincroDB.data.aliquota_iva_table import aliquota_iva_table
-from promogest.modules.SincroDB.data.listino_articolo_table import listino_articolo_table
-from promogest.modules.SincroDB.data.tipo_aliquota_iva_table import tipo_aliquota_iva_table
-from promogest.modules.SincroDB.data.articolo_table import articolo_table
-from promogest.modules.SincroDB.data.magazzino_table import magazzino_table
-from promogest.modules.SincroDB.data.categoria_articolo_table import categoria_articolo_table
-from promogest.modules.SincroDB.data.famiglia_articolo_table import famiglia_articolo_table
-from promogest.modules.SincroDB.data.categoria_cliente_table import categoria_cliente_table
-from promogest.modules.SincroDB.data.listino_magazzino_table import listino_magazzino_table
-from promogest.modules.SincroDB.data.listino_categoria_cliente_table import listino_categoria_cliente_table
-from promogest.modules.SincroDB.data.fornitura_table import fornitura_table
-from promogest.modules.SincroDB.data.fornitore_table import fornitore_table
-from promogest.modules.SincroDB.data.stoccaggio_table import stoccaggio_table
-from promogest.modules.SincroDB.data.listino_complesso_listino_table import listino_complesso_listino_table
 
 tablesMain = [
             #"azienda",
@@ -51,19 +33,17 @@ tablesMain = [
             #"roleaction"
 ]
 
-
-
 tablesScheme = [
             ("magazzino","id"),
-            ("setting","key"),
+            #("setting","key"),
             ("aliquota_iva","id"),
             ("categoria_articolo","id"),
-            ("famiglia_articolo","id"),
+            ("famiglia_articolo","id"),#########
             ("image","id"),
             ("imballaggio","id"),
             ("articolo","id"),
             ("multiplo","id"),
-            ("listino","id"),
+
             #("persona_giuridica","id"),
             ("pagamento","id"),
             #("banca","id"),
@@ -94,6 +74,7 @@ tablesScheme = [
             #("access","id"),
             ("listino_magazzino","id_listino"),
             ("listino_categoria_cliente","id_listino"),
+            ("listino","id"),
             #("cliente_categoria_cliente","id"),
             #("contatto_fornitore","id"),
             #("contatto_magazzino","id"),
@@ -117,118 +98,12 @@ tablesScheme = [
 ]
 
 
-
 class SincroDB(GladeWidget):
     """ Finestra di gestione esdportazione variazioni Database """
     def __init__(self):
         GladeWidget.__init__(self, 'sincro_dialog',
                         fileName='sincro_dialog.glade')
         self.placeWindow(self.getTopLevel())
-        self.magazzini_treeview()
-        self.filename_entry.set_text("exportData")
-        self.draw()
-
-    def draw(self):
-        treeview = self.sincro_treeview
-        self._sincroTreeViewModel = gtk.ListStore(bool, str, str, str,  str, str, str)
-        renderer = gtk.CellRendererToggle()
-        renderer.set_property('activatable', True)
-        renderer.connect('toggled', self.onColumnEdited, treeview, True)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
-
-        column = gtk.TreeViewColumn('Includi', renderer, active=0)
-        #column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Utente_DB', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Schema Azienda', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Operato?', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Message', renderer, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Valore', renderer, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Data Operazione', renderer, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        treeview.set_model(self._sincroTreeViewModel)
-
-    def magazzini_treeview(self):
-        """ disegna la treeeview dei magazzini """
-        treeview = self.magazzino_treeview
-        self._magazzinoTreeViewModel = gtk.ListStore(bool, int, str)
-
-        renderer = gtk.CellRendererToggle()
-        renderer.set_property('activatable', True)
-        renderer.connect('toggled', self.onColumnEdited, treeview, True)
-        renderer.set_data('model_index', 0)
-        renderer.set_data('column', 1)
-
-        column = gtk.TreeViewColumn('Includi', renderer, active=0)
-        #column.connect("clicked", self.columnSelectAll, treeview)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-        #treeview.set_search_column(3)
-
-        mag=Magazzino().select(batchSize=None)
-        for u in mag:
-            self._magazzinoTreeViewModel.append((False,
-                            u.id,
-                            u.denominazione))
-
-        treeview.set_model(self._magazzinoTreeViewModel)
-
-    def onColumnEdited(self, cell, path, treeview,value, editNext=True):
-        model = treeview.get_model()
-        model[path][0] = not model[path][0]
 
     def on_tuttecose_checkbutton_toggled(self,toggled):
         """ check delle anag da esportare ...le seleziona tutte """
@@ -237,32 +112,12 @@ class SincroDB(GladeWidget):
             self.clienti_togglebutton.set_active(True)
             self.parametri_togglebutton.set_active(True)
             self.magazzini_togglebutton.set_active(True)
-            self.fornitori_togglebutton.set_active(True)
-            self.vettori_togglebutton.set_active(True)
+
         else:
             self.articoli_togglebutton.set_active(False)
             self.clienti_togglebutton.set_active(False)
             self.parametri_togglebutton.set_active(False)
             self.magazzini_togglebutton.set_active(False)
-            self.fornitori_togglebutton.set_active(False)
-            self.vettori_togglebutton.set_active(False)
-
-
-    def on_perchi_checkbutton_toggled(self, toggle):
-        print "FDHHDFHKGKGHDFHFHFHDF"
-        model = self.magazzino_treeview.get_model()
-        if self.perchi_checkbutton.get_active():
-            for m in model:
-                if m[0]:
-                    pass
-                else:
-                    m[0] = not m[0]
-        else:
-            for m in model:
-                if m[0]:
-                    m[0] = not m[0]
-                else:
-                    pass
 
     def on_genera_button_clicked(self, button):
         """
@@ -325,62 +180,13 @@ class SincroDB(GladeWidget):
             #Session = sessionmaker(bind=engine)
         SessionLocale = scoped_session(sessionmaker(bind=engine))
         self.sessionLocale = SessionLocale()
+        #self.sessionLocale.autocommit
 
-
-
-    def createSchema(self):
-        """
-        Genera un bel db, aggiornato alla versione attualecd corpo
-        """
-        variazioni = AppLog().select(batchSize=None)
-        for v in variazioni:
-            print v.message , loads(v.object)
-        try:
-            listino = Listino().getRecord(id=loads(v.object))
-        except:
-            print "pazienza"
-        print "listtiinonononono", listino
-
-
-    def retreiveDir(self):
-        savetoDir = self.destination_filechooserbutton.get_current_folder()
-        return savetoDir
-
-    def retreiveFileName(self):
-        saveToName = self.filename_entry.get_text()
-        return saveToName
 
     def retreiveWhat(self):
         """
         Vediamo cosa è stato selezionato per l'esportazione
         """
-        articoli = self.articoli_togglebutton.get_active()
-        clienti= self.clienti_togglebutton.get_active()
-        parametri = self.parametri_togglebutton.get_active()
-        magazzini = self.magazzini_togglebutton.get_active()
-        fornitori = self.fornitori_togglebutton.get_active()
-        vettori = self.vettori_togglebutton.get_active()
-        daData = stringToDate(self.da_data_filter_entry.get_text())
-        adData = stringToDate(self.a_data_filter_entry.get_text())
-        model = self.magazzino_treeview.get_model()
-        toMagazziniId= []
-        for m in model:
-            if m[0]: toMagazziniId.append(m[1])
-        #righe = AppLog().select(batchSize=None, level="N")
-        #app_log = Table('app_log', self.metaRemote, autoload=True, schema=self.mainSchema)
-        #righe = self.sessionRemote.query(app_log).filter(app_log.c.schema_azienda == Environment.params["schema"]).all()
-        #modello = self.sincro_treeview.get_model()
-        #modello.clear()
-        #for r in righe:
-            #modello.append((True,
-                            #r.utentedb,
-                            #r.schema_azienda,
-                            #r.level,
-                            #r.message,
-                            #r.value,
-                            #r.registration_date))
-        #self.sincro_treeview.set_model(modello)
-
 
         if self.tuttecose_checkbutton.get_active():
             print datetime.datetime.now()
@@ -407,20 +213,27 @@ class SincroDB(GladeWidget):
         Crea le liste delle query ciclando nelle tabelle 
         """
         for dg in tables:
-            print "DGGGGGGGGGGGG", dg
-            exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).all()") %(dg[0],dg[0],dg[1])
-            #if len(remote)!=1:
-                #remote.sort()
-            exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).all()") %(dg[0],dg[0],dg[1])
-            #if len(locale)!=1:
-                #locale.sort()
-            #print "remoteeeeeeeeeeeeeeeeee", remote
-            self.logica(remote=remote, locale=locale, all=True)
+            #print "DGGGGGGGGGGGG", dg
+            exec ( "conteggia = self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).count()")  %(dg[0],dg[0],dg[1])
+            #print "CONTEGGIAAAAAAAAAAAA", conteggia
+            blocSize = 50
+            if conteggia >= blocSize:
+                blocchi = abs(conteggia/blocSize)
+                for j in range(0,blocchi):
+                    offset = j*blocSize
+                    exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
+                    exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
+                    self.logica(remote=remote, locale=locale, all=True)
+            elif conteggia < blocSize:
+                exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).all()") %(dg[0],dg[0],dg[1])
+                exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).all()") %(dg[0],dg[0],dg[1])
+                self.logica(remote=remote, locale=locale, all=True)
         print "<<<<<<<< FINITO CON LO SCHEMA AZIENDA >>>>>>>>", datetime.datetime.now()
 
 
     def logica(self,remote=None, locale=None, all=False):
         """ cicla le righe della tabella e decide cosa fare """
+        deleteRow=False
         if remote != locale:
             if len(remote) == len(locale):
                 print "STESSO NUMERO DI RECORD", len(remote)
@@ -428,170 +241,66 @@ class SincroDB(GladeWidget):
                 print "IL DB REMOTO CONTIENE PIU' RECORD", len(remote), "vs", len(locale)
             else:
                 print "IL DB LOCALE CONTIENE PIU' RECORD", len(remote), "vs", len(locale)
+                deleteRow=True
             for i in range(0,(len(remote))):
-                print "III", i, len(locale)
-                print "remote" , remote[i]
-                print "locale",len(locale) #locale[i]
+                if str(remote[i]._table).split(".")[1] in tablesMain:
+                    soupLocale = self.pg_db_server_main_locale
+                else:
+                    soupLocale = self.pg_db_server_locale
                 if i <= (len(locale)-1):
-                    if  remote[i] == locale[i]:
-                        print "-> RIGHE UGUALI PER LA TABELLA", str(remote[i]._table).split(".")[1]
-                    else:
-                        print "QUESTA È LA RIGA DIVERSA NELLA TABELLA ", str(locale[i]._table).split(".")[1], "Operazione UPDATE"
-                        self.fixToTable(row=remote[i], op="UPDATE", dao=str(locale[i]._table).split(".")[1], all=all)
+                    print "REMOTE", remote[i]
+                    print "LOCALE", locale[i]
+                    if  remote[i] != locale[i]:
+                        print "QUESTA È LA RIGA DIVERSA NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione UPDATE"
+                        #print " RIGA REMOTE", remote[i]
+                        #print " RIGA LOCALE", locale[i]
+                        self.fixToTable(soupLocale=soupLocale,
+                                        row=remote[i],
+                                        rowLocale=locale[i],
+                                        op="UPDATE",
+                                        dao=str(remote[i]._table).split(".")[1],
+                                        all=all)
                 else:
                     print "QUESTA È LA RIGA DA AGGIUNGERE NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione INSERT"
-                    self.fixToTable(row=remote[i], op="INSERT", dao=str(remote[i]._table).split(".")[1], all=all)
-         
+                    self.fixToTable(soupLocale=soupLocale,
+                                    row=remote[i],
+                                    op="INSERT",
+                                    dao=str(remote[i]._table).split(".")[1],
+                                    all=all)
+            if deleteRow:
+                for i in range(len(remote),len(locale)):
+                    print "QUESTA È LA RIGA DA rimuovere ", str(locale[i]._table).split(".")[1], "Operazione DELETE"
+                    self.fixToTable(soupLocale=soupLocale,
+                        #row=locale[i],
+                        rowLocale = locale[i],
+                        op="DELETE",
+                        dao=str(locale[i]._table).split(".")[1],
+                        all=all)
         else:
             print "TABELLE UGUALI"
 
-    def fixToTable(self, soup =None, op=None, row=None,dao=None, all=False):
+    def fixToTable(self, soup =None,soupLocale=None, op=None, row=None,rowLocale=None, dao=None, all=False):
         """
         rimanda alla gestione delle singole tabelle con le operazioni da fare
         """
-        if dao=="TipoAliquotaIva" or dao=="tipo_aliquota_iva":
-            tipo_aliquota_iva_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="Operazione" or dao=="operazione":
-            operazione_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="StatoArticolo" or dao=="stato_articolo":
-            stato_articolo_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="UnitaBase" or dao=="unita_base":
-            unita_base_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="Language" or dao=="language":
-            language_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="TipoRecapito" or dao=="tipo_recapito":
-            tipo_recapito_table(soup=soup,op=op, dao=dao, row=row, all=all)
+        if op =="DELETE":
+            soupLocale.delete(rowLocale)
+        elif op == "INSERT":
+            exec ( "rowLocale = soupLocale.%s.insert()" ) %dao
+            for i in rowLocale.c:
+                t = str(i).split(".")[1] #mi serve solo il nome tabella
+                setattr(rowLocale, t, getattr(row, t))
+        elif op == "UPDATE":
+            for i in rowLocale.c:
+                t = str(i).split(".")[1] #mi serve solo il nome tabella
+                setattr(rowLocale, t, getattr(row, t))
+        sqlalchemy.ext.sqlsoup.Session.commit()
+        return True
 
-        elif dao=="Magazzino" or dao=="magazzino":
-            magazzino_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="Setting" or dao=="setting":
-            #setting_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="AliquotaIva" or dao=="aliquota_iva":
-            aliquota_iva_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="CategoriaArticolo" or dao=="categoria_articolo":
-            categoria_articolo_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="FamigliaArticolo" or dao=="famiglia_articolo":
-            famiglia_articolo_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="Image" or dao=="image":
-            image_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="Imballaggio" or dao=="imballaggio":
-            imballaggio_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="Articolo" or dao=="articolo":
-            articolo_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="Multiplo" or dao=="multiplo":
-            multiplo_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="Listino" or dao=="listino":
-            listino_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="PersonaGiuridica" or dao=="persona_giuridica":
-            #persona_giuridica_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="Pagamento" or dao=="pagamento":
-            #pagamento_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="Banca" or dao=="banca":
-            #banca_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="Cliente" or dao=="cliente":
-            #cliente_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="CategoriaFornitore" or dao=="categoria_fornitore":
-            categoria_fornitore_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="Fornitore" or dao=="fornitore":
-            fornitore_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="DestinazioneMerce" or dao=="destinazione_merce":
-            #destinazione_merce_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="Vettore" or dao=="vettore":
-            #vettore_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="Agente" or dao=="agente":
-            #agente_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="TestataDocumento" or dao=="testata_documento":
-            #testata_documento_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="TestataMovimento" or dao=="testata_movimento":
-            #testata_movimento_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="Riga" or dao=="riga":
-            #riga_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="Sconto" or dao=="sconto":
-            sconto_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="RigaMovimento" or dao=="riga_movimento":
-            #riga_movimento_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="ScontoRigaMovimento" or dao=="sconto_riga_movimento":
-            #sconto_riga_movimento_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="Contatto" or dao=="contatto":
-            #contatto_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="ContattoCliente" or dao=="contatto_cliente":
-            #contatto_cliente_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="Recapito" or dao=="recapito":
-            #recapito_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="CategoriaContatto" or dao=="categoria_contatto":
-            #categoria_contatto_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="ContattoCategoriaContatto" or dao=="contatto_categoria_contatto":
-            #contatto_categoria_contatto_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="CategoriaCliente" or dao=="categoria_cliente":
-            categoria_cliente_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="CodiceABarreArticolo" or dao=="codice_a_barre_articolo":
-            codice_a_barre_articolo_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="ListinoArticolo" or dao=="listino_articolo_table":
-            listino__articolo_table_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="ArticoloAssociato" or dao=="articolo_associato":
-            articolo_associato_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="ListinoMagazzino" or dao=="listino_magazzino":
-            listino_magazzino_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="ListinoCategoriaCliente" or dao=="listino_categoria_cliente":
-            listino_categoria_cliente_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="ClienteCategoriaCliente" or dao=="cliente_categoria_cliente":
-            #cliente_categoria_cliente_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="ContattoFornitore" or dao=="contatto_fornitore":
-            #contatto_fornitore_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="ContattoMagazzino" or dao=="contatto_magazzino":
-            #contatto_magazzino_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="ContattoAzienda" or dao=="contatto_azienda":
-            #contatto_azienda_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="Fornitura" or dao=="fornitura":
-            fornitura_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="ScontoFornitura" or dao=="sconto_fornitura":
-            sconto_fornitura_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="InformazioniContabiliDocumento" or dao=="informazioni_contabili_documento":
-            #informazioni_contabili_documento_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="Inventario" or dao=="inventario":
-            #inventario_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="Promemoria" or dao=="promemoria":
-            #promemoria_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="RigaDocumento" or dao=="riga_documento":
-            #riga_documento_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="ListinoComplessoListino" or dao=="listino_complesso_listino":
-            listino_complesso_listino_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="ListinoComplessoArticoloPrevalente" or dao=="listino_complesso_articolo_prevalente":
-            listino_complesso_articolo_prevalente_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="ScontoRigaDocumento" or dao=="sconto_riga_documento":
-            #sconto_riga_documento_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="ScontoTestataDocumento" or dao=="sconto_testata_documento":
-            #sconto_testata_documento_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="ScontiVenditaDettaglio" or dao=="sconti_vendita_dettaglio":
-            sconti_vendita_dettaglio_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="ScontiVenditaIngrosso" or dao=="sconti_vendita_ingrosso":
-            sconti_vendita_ingrosso_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        #elif dao=="TestataDocumentoScadenza" or dao=="testata_documento_scadenza":
-            #testata_documento_scadenza_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        elif dao=="Stoccaggio" or dao=="stoccaggio":
-            stoccaggio_table(soup=soup,op=op, dao=dao, row=row, all=all)
-        return
-    #for g in righe:
-            #messlist = g.message.split(";")
-            #op = messlist[0]
-            #dao = messlist[1]
-            #if dao =="Listino":
-                #listino_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
-            #elif dao =="ListinoArticolo":
-                #listino__articolo_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
-            #elif dao =="AliquotaIva":
-                #aliquota_iva_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
-            #elif dao =="Articolo":
-                #articolo_table(soup=self.pg_db_server,op=op, dao=dao, row=g)
-                
 
     def on_run_button_clicked(self, button):
         self.connectDbRemote()
         self.connectDbLocale()
-        #self.createSchema()
-        print "RUN",  self.retreiveDir(), self.retreiveFileName()
-        self.retreiveDir()
-        self.retreiveFileName()
         self.retreiveWhat()
-        #self.retreiveData()
+
 

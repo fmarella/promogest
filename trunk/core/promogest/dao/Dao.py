@@ -111,10 +111,17 @@ class Dao(object):
             params["session"].commit()
             return 1
         except Exception,e:
-            msg = """ATTENZIONE ERRORE
+            msg = """ATTENZIONE ERRORE NEL SALVATAGGIO
     Qui sotto viene riportato l'errore di sistema:
-    %s
+
     ( normalmente il campo in errore è tra "virgolette")
+
+    %s
+
+    L'errore può venire causato da un campo fondamentale
+    mancante, da un codice già presente, si invita a
+    rincontrollare i campi e riprovare
+    Grazie! 
     """ %e
             overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
                                                 | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -123,8 +130,11 @@ class Dao(object):
             response = overDialog.run()
             overDialog.destroy()
             print "ERRORE", e
-            ciccio= params["session"].rollback()
-            print "CICCIO", ciccio
+            params["session"].rollback()
+            params["session"].clear()
+            Session = scoped_session(sessionmaker(bind=engine))
+            session = Session()
+            params["session"] = session
             return 0
 
     def saveToAppLog(self, status=True,action=None, value=None):
@@ -141,34 +151,34 @@ class Dao(object):
         else:
             message = "UNKNOWN ACTION;"
         level = self.commit()
-        if level:
-            result = "CORRETTO"
-        else:
-            result = "ERRATO"
-        registration_date = datetime.datetime.now()
-#        schema_azienda = params['schema']
-        id_utente = params['usernameLoggedList'][0]
-        utentedb = params['usernameLoggedList'][3]
-        utente = params['usernameLoggedList'][1]
-        mapper = object_mapper(self)
-        pk = mapper.primary_key_from_instance(self)
-        completeMessage = message + ";" +str(pk)+";"+result
-        appLogTable = Table('app_log', params['metadata'], autoload=True, schema=params['mainSchema'])
-        aplot = appLogTable.insert()
-        try:
-            aplot.execute(
-                        id_utente = params['usernameLoggedList'][0],
-                        utentedb = params['usernameLoggedList'][1],
-                        schema_azienda = params['schema'],
-                        level = "N",
-                        message = completeMessage,
-                        value = level,
-                        registration_date = datetime.datetime.now(),
-                        object = dumps(pk)
-                    )
-            print "[LOG] %s da %s in %s in data %s" %(completeMessage,utente, params['schema'] ,registration_date.strftime("%d/%m/%Y"))
-        except:
-            print "[LOG] %s da %s in %s in data %s NON RIUSCITO" %(completeMessage,utente, params['schema'] ,registration_date.strftime("%d/%m/%Y"))
+        #if level:
+            #result = "CORRETTO"
+        #else:
+            #result = "ERRATO"
+        #registration_date = datetime.datetime.now()
+##        schema_azienda = params['schema']
+        #id_utente = params['usernameLoggedList'][0]
+        #utentedb = params['usernameLoggedList'][3]
+        #utente = params['usernameLoggedList'][1]
+        #mapper = object_mapper(self)
+        #pk = mapper.primary_key_from_instance(self)
+        #completeMessage = message + ";" +str(pk)+";"+result
+        #appLogTable = Table('app_log', params['metadata'], autoload=True, schema=params['mainSchema'])
+        #aplot = appLogTable.insert()
+        #try:
+            #aplot.execute(
+                        #id_utente = params['usernameLoggedList'][0],
+                        #utentedb = params['usernameLoggedList'][1],
+                        #schema_azienda = params['schema'],
+                        #level = "N",
+                        #message = completeMessage,
+                        #value = level,
+                        #registration_date = datetime.datetime.now(),
+                        #object = dumps(pk)
+                    #)
+            #print "[LOG] %s da %s in %s in data %s" %(completeMessage,utente, params['schema'] ,registration_date.strftime("%d/%m/%Y"))
+        #except:
+            #print "[LOG] %s da %s in %s in data %s NON RIUSCITO" %(completeMessage,utente, params['schema'] ,registration_date.strftime("%d/%m/%Y"))
 
     def _resetId(self):
         """

@@ -5,38 +5,23 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francescoo@promotux.it>
 
+import sqlalchemy
 from sqlalchemy.ext.serializer import loads, dumps
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest import Environment
-from promogest.dao.TipoAliquotaIva import TipoAliquotaIva
 
-
-def tipo_aliquota_iva_table(soup=None, op=None,dao=None, row=None, all=False):
-    d = None
-    if soup and not all:
-        record = soup.tipo_aliquota_iva.get(loads(row.object))
-    else:
-        record = row
+def tipo_aliquota_iva_table(soup=None,soupLocale=None, op=None,dao=None,rowLocale=None, row=None, all=False):
     if op =="DELETE":
-        if all:
-            d = TipoAliquotaIva().getRecord(id=row.id)
-        else:
-            d = TipoAliquotaIva().getRecord(id=loads(row.object))
-        if d:
-            d.delete()
-        return True
+        soupLocale.delete(rowLocale)
     elif op == "INSERT":
-        if all:
-            d = TipoAliquotaIva()
-            d.id = record.id
-        else:
-            d = TipoAliquotaIva().getRecord(id=loads(row.object))
+        exec ( "rowLocale = soupLocale.%s.insert()" ) %dao
+        for i in rowLocale.c:
+            t = str(i).split(".")[1] #mi serve solo il nome tabella
+            setattr(rowLocale, t, getattr(row, t))
     elif op == "UPDATE":
-        if all:
-            d = TipoAliquotaIva().getRecord(id=row.id)
-        else:
-            d = TipoAliquotaIva().getRecord(id=loads(row.object))
-    d.denominazione= record.denominazione
-    d.persist()
+        for i in rowLocale.c:
+            t = str(i).split(".")[1] #mi serve solo il nome tabella
+            setattr(rowLocale, t, getattr(row, t))
+    sqlalchemy.ext.sqlsoup.Session.commit()
     return True

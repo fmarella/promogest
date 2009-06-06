@@ -5,38 +5,25 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francescoo@promotux.it>
 
+import sqlalchemy
 from sqlalchemy.ext.serializer import loads, dumps
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest import Environment
-from promogest.dao.CategoriaArticolo import CategoriaArticolo
 
-def categoria_articolo_table(soup=None, op=None, dao=None, row=None, all=False):
-    d = None
-    if soup and not all:
-        record = soup.categoria_articolo.get(loads(row.object))
-    else:
-        record = row
+
+def categoria_articolo_table(soup=None,soupLocale=None, op=None,dao=None,rowLocale=None, row=None, all=False):
     if op =="DELETE":
-        if all:
-            d = CategoriaArticolo().getRecord(id=row.id)
-        else:
-            d = CategoriaArticolo().getRecord(id=loads(row.object))
-        if d:
-            d.delete()
-        return True
+        soupLocale.delete(rowLocale)
     elif op == "INSERT":
-        if all:
-            d = CategoriaArticolo()
-            d.id = record.id
-        else:
-            d = CategoriaArticolo().getRecord(id=loads(row.object))
+        soupLocale.categoria_articolo.insert(
+                                id = row.id,
+                                denominazione_breve = row.denominazione_breve,
+                                denominazione= roe.denominazione,
+)
     elif op == "UPDATE":
-        if all:
-            d = CategoriaArticolo().getRecord(id=row.id)
-        else:
-            d = CategoriaArticolo().getRecord(id=loads(row.object))
-    d.denominazione_breve = record.denominazione_breve
-    d.denominazione= record.denominazione
-    d.persist()
+        for i in rowLocale.c:
+            t = str(i).split(".")[1] #mi serve solo il nome tabella
+            setattr(rowLocale, t, getattr(row, t))
+    sqlalchemy.ext.sqlsoup.Session.commit()
     return True

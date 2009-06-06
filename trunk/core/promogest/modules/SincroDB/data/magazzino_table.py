@@ -5,44 +5,30 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francescoo@promotux.it>
 
+import sqlalchemy
 from sqlalchemy.ext.serializer import loads, dumps
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest import Environment
-from promogest.dao.Magazzino import Magazzino
 
-def magazzino_table(soup=None, op=None,dao=None, row=None, all=False):
-    d = None
-    if soup and not all:
-        record = soup.magazzino.get(loads(row.object))
-    else:
-        record = row
+def magazzino_table(soup=None,soupLocale=None, op=None,dao=None,rowLocale=None, row=None, all=False):
     if op =="DELETE":
-        if all:
-            d = Magazzino().getRecord(id=row.id)
-        else:
-            d = Magazzino().getRecord(id=loads(row.object))
-        if d:
-            d.delete()
-        return True
+        soupLocale.delete(rowLocale)
     elif op == "INSERT":
-        if all:
-            d = Magazzino()
-            d.id = record.id
-        else:
-            d = Magazzino().getRecord(id=loads(row.object))
+        soupLocale.magazzino.insert(
+                    id = row.id,
+                    denominazione = row.denominazione,
+                    indirizzo = row.indirizzo,
+                    localita = row.localita,
+                    cap = row.cap,
+                    provincia = row.provincia,
+                    nazione = row.nazione,
+                    data_ultima_stampa_giornale = row.data_ultima_stampa_giornale,
+                    pvcode = row.pvcode,
+)
     elif op == "UPDATE":
-        if all:
-            d = Magazzino().getRecord(id=row.id)
-        else:
-            d = Magazzino().getRecord(id=loads(row.object))
-    d.denominazione = record.denominazione
-    d.indirizzo = record.indirizzo
-    d.localita = record.localita
-    d.cap = record.cap
-    d.provincia = record.provincia
-    d.nazione = record.nazione
-    d.data_ultima_stampa_giornale = record.data_ultima_stampa_giornale
-    d.pvcode = record.pvcode
-    d.persist()
+        for i in rowLocale.c:
+            t = str(i).split(".")[1] #mi serve solo il nome tabella
+            setattr(rowLocale, t, getattr(row, t))
+    sqlalchemy.ext.sqlsoup.Session.commit()
     return True

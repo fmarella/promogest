@@ -36,6 +36,9 @@ def articolo_table(soup=None, op=None, dao=None, row=None, all=False):
             d = Articolo().getRecord(id=row.id)
         else:
             d = Articolo().getRecord(id=loads(row.object))
+        if not d:
+            d = Articolo()
+            d.id = record.id
 
     d.codice = record.codice
     d.denominazione = record.denominazione
@@ -68,6 +71,14 @@ def articolo_table(soup=None, op=None, dao=None, row=None, all=False):
     d.cancellato = record.cancellato
     d.sospeso = record.sospeso
     d.quantita_minima = record.quantita_minima
-
-    d.persist()
+    a = d.persist()
+    if not a:
+        g = Articolo().select(codice=record.codice)
+        if g :
+            g=g[0]
+            g.codice = g.codice+"BIS"
+            b = g.persist()
+            if not b:
+                print "PROPRIO NON SO COSA FARE HO ANCHE  CAMBIATO IL CODICE"
+            articolo_table(soup=soup, op=op, dao=dao, row=row, all=all)
     return True
