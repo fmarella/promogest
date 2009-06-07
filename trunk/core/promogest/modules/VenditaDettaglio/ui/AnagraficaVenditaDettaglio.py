@@ -7,7 +7,8 @@
 # Author: Francesco Meloni <francescoo@promotux.it>
 
 from promogest.ui.utils import *
-import gtk, gobject
+import gtk
+import unicodedata
 from  subprocess import *
 import os, popen2
 import gtkhtml2
@@ -840,6 +841,13 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # Chiedo conferma
         GestioneChiusuraFiscale(self).chiusuraDialog(widget, self.id_magazzino)
 
+
+
+    def deaccenta(self,riga=None):
+        nkfd_form = unicodedata.normalize('NFKD', unicode(riga))
+        only_ascii = nkfd_form.encode('ASCII', 'ignore')
+        return only_ascii
+
     def create_export_file(self, daoScontrino):
         # Genero nome file
         filename = Environment.conf.VenditaDettaglio.export_path + str(daoScontrino.id) + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
@@ -872,7 +880,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             reparto = str(reparto).zfill(2)
 
             if not(riga.quantita < 0):
-                stringa = '01%-16s%09.2f%2s\r\n' % (riga.descrizione[:16], riga.prezzo, reparto)
+                stringa = '01%-16s%09.2f%2s\r\n' % (self.deaccenta(riga.descrizione[:16]), riga.prezzo, reparto)
                 f.write(stringa)
                 if riga.sconti:
                     for sconto in riga.sconti:
@@ -884,7 +892,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                             f.write(stringa)
             else:
                 # per i resi, nello scontrino, si scrive direttamente il prezzo scontato (limitazione cassa)
-                stringa = '01%-16s%09.2f%2s\r\n' % (riga.descrizione[:16], riga.prezzo_scontato, reparto)
+                stringa = '01%-16s%09.2f%2s\r\n' % (self.deaccenta(riga.descrizione[:16]), riga.prezzo_scontato, reparto)
                 f.write(stringa)
 
         if daoScontrino.totale_contanti is None or daoScontrino.totale_contanti == 0:
@@ -1241,109 +1249,3 @@ class AnagraficaVenditaDettaglio(GladeWidget):
     def on_sconti_scontrino_widget_button_toggled(self, button):
         pippo = self.sconti_scontrino_widget.getSconti()
         return
-
-
-
-    #def on_prezzo_entry_focus_out_event(self, entry, event):
-        #prezzo = mN(self.prezzo_entry.get_text().strip())
-        #self._currentRow['prezzo'] = prezzo
-        #if self._currentRow['valoreSconto'] == 0:
-            #self._currentRow['prezzoScontato'] = prezzo
-            #self.prezzo_scontato_entry.set_text(str(mN(self._currentRow['prezzoScontato'])).strip())
-            ##self.marginevalue_label.set_markup('<b>'+'%-6.3f' % calcolaMargine(float(self.fornitura["prezzoNetto"]),
-                                                                   ##float(self._currentRow['prezzoScontato']),
-                                                                   ##float(self.art["percentualeAliquotaIva"]))+ '</b>')
-            #self.marginevalue_label.set_text('')
-        #else:
-            #if self._currentRow['tipoSconto'] == self._simboloPercentuale:
-                #self._currentRow['prezzoScontato'] = prezzo - ((prezzo) * (mN(self._currentRow['valoreSconto']) / 100))
-                #self.prezzo_scontato_entry.set_text(str( self._currentRow['prezzoScontato']))
-                #self.marginevalue_label.set_text('')
-            #else:
-                #self._currentRow['prezzoScontato'] = prezzo - mN(self._currentRow['valoreSconto'])
-                #self.prezzo_scontato_entry.set_text(str(mN(self._currentRow['prezzoScontato'])))
-                #self.marginevalue_label.set_text('')
-
-    #def on_prezzo_entry_key_press_event(self, widget, event):
-        #keyname = gtk.gdk.keyval_name(event.keyval)
-        #if keyname == 'Return' or keyname == 'KP_Enter':
-            #self.quantita_entry.grab_focus()
-
-    #def on_prezzo_scontato_entry_focus_out_event(self, entry, event):
-        #prezzoScontato = mN(self.prezzo_scontato_entry.get_text())
-        #self._currentRow['prezzoScontato'] = prezzoScontato
-        #if abs(mN(self._currentRow['prezzo']) - self._currentRow['prezzoScontato']) > 0:
-            #if self._currentRow['tipoSconto'] == self._simboloPercentuale:
-                #self._currentRow['valoreSconto'] = 100 * (1 - mN(self._currentRow['prezzoScontato']) / mN(self._currentRow['prezzo']))
-                #self.sconto_entry.set_text(str(mN(self._currentRow['valoreSconto'])))
-                #self.sconto_entry.tipoSconto = 'percentuale'
-                #self.marginevalue_label.set_markup('<b>'+"%s" % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
-                                                                   #mN(self._currentRow['prezzoScontato']),
-                                                                   #mN(str(self.art["percentualeAliquotaIva"]))))+ '</b>')
-            #else:
-                #self._currentRow['valoreSconto'] = mN(self._currentRow['prezzo']) - mN(self._currentRow['prezzoScontato'])
-                #self.sconto_entry.set_text(str(mN(self._currentRow['valoreSconto'])))
-                #self.sconto_entry.tipoSconto = 'valore'
-                #self.marginevalue_label.set_markup('<b>'+'%s' % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
-                                                                   #mN(self._currentRow['prezzoScontato']),
-                                                                   #mN(self.art["percentualeAliquotaIva"])))+ '</b>')
-
-    #def on_prezzo_scontato_entry_key_press_event(self, widget, event):
-        #keyname = gtk.gdk.keyval_name(event.keyval)
-        #if keyname == 'Return' or keyname == 'KP_Enter':
-            #self.confirm_button.grab_focus()
-
-    #def on_sconto_entry_focus_out_event(self, entry, event):
-        #self._currentRow['valoreSconto'] = mN(self.sconto_entry.get_text())
-        #if self.sconto_entry.tipoSconto == 'percentuale':
-            #self._currentRow['tipoSconto'] = self._simboloPercentuale
-        #else:
-            #self._currentRow['tipoSconto'] = self._simboloEuro
-        #if self._currentRow['valoreSconto'] == 0:
-            #self._currentRow['tipoSconto'] = None
-            #self._currentRow['prezzoScontato'] = mN(self._currentRow['prezzo'])
-            #self.prezzo_scontato_entry.set_text(str(mN(self._currentRow['prezzoScontato'])))
-            #self.marginevalue_label.set_markup('<b>'+'%s' % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
-                                                                   #mN(self._currentRow['prezzoScontato']),
-                                                                   #mN(self.art["percentualeAliquotaIva"])))+ '</b>')
-        #else:
-            #if self._currentRow['tipoSconto'] == self._simboloPercentuale:
-                #self._currentRow['prezzoScontato'] = mN(self._currentRow['prezzo']) - (mN(self._currentRow['prezzo']) * mN(self._currentRow['valoreSconto'])) / 100
-                #self.prezzo_scontato_entry.set_text(str(mN(self._currentRow['prezzoScontato'])).strip())
-                #self.marginevalue_label.set_markup('<b>'+'%s' % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
-                                                                   #mN(self._currentRow['prezzoScontato']),
-                                                                   #Decimal(str(self.art["percentualeAliquotaIva"]))))+ '</b>')
-            #else:
-                #self._currentRow['prezzoScontato'] = mN(self._currentRow['prezzo']) - mN(self._currentRow['valoreSconto'])
-                #self.prezzo_scontato_entry.set_text(str(mN(self._currentRow['prezzoScontato'])))
-                #self.marginevalue_label.set_markup('<b>'+'%s' % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
-                                                                   #mN(self._currentRow['prezzoScontato']),
-                                                                   #Decimal(str(self.art["percentualeAliquotaIva"]))))+ '</b>')
-
-    #def on_quantita_entry_focus_out_event(self, entry, event):
-        #self._currentRow['quantita'] = Decimal(self.quantita_entry.get_text().strip())
-
-    #def on_quantita_entry_key_press_event(self, widget, event):
-        #keyname = gtk.gdk.keyval_name(event.keyval)
-        #if keyname == 'Return' or keyname == 'KP_Enter':
-            #self.confirm_button.grab_focus()
-
-
-        #listino = ListinoArticolo()
-        #self.art = leggiArticolo(idArticolo)
-        #if listino.ultimo_costo is None:
-            #self.fornitura = leggiFornitura(idArticolo)
-            #self.ultimocostovalue_label.set_markup('<b>' + str(mN(self.fornitura["prezzoNetto"])) + '</b>')
-        #else:
-            #self.ultimocostovalue_label.set_markup('<b>' + str(mN(listino.ultimo_costo or 0)) + '</b>')
-
-        #if prezzoScontato == prezzo:
-            #self.marginevalue_label.set_markup('<b>'+ "%s" % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
-                                                                   #mN(prezzo),
-                                                                   #mN(self.art["percentualeAliquotaIva"])))+ '</b>')
-        #else:
-            #self.marginevalue_label.set_markup('<b>'+"%s" % str(calcolaMargine(mN(self.fornitura["prezzoNetto"]),
-                                                                   #mN(prezzoScontato),
-                                                                   #mN(self.art["percentualeAliquotaIva"])))+ '</b>')
-        #giacenza = self.getGiacenzaArticolo(idArticolo=idArticolo)
-        #self.giacenza_label.set_markup('<b>' + str(mN(giacenza)) + '</b>')
