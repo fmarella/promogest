@@ -66,15 +66,15 @@ class AnagraficaListiniArticoli(Anagrafica):
             codice_articolo = d.codice_articolo or ''
             articolo = d.articolo or ''
             data = dateToString(d.data_listino_articolo)
-            prezzo_dettaglio = mN(d.prezzo_dettaglio) or 0
+            prezzo_dettaglio = mN(str(d.prezzo_dettaglio)) or 0
             sconto_dettaglio = []
             for sconto_det in d.sconto_vendita_dettaglio:
                 sconto_dettaglio.append(mN(sconto_det) or 0)
             #sconto_dettaglio = mN(d.sconto_vendita_dettaglio) or 0
-            prezzo_ingrosso = mN(d.prezzo_ingrosso) or 0
+            prezzo_ingrosso = mN(str(d.prezzo_ingrosso)) or 0
             sconto_ingrosso = []
             for sconto_ing in d.sconto_vendita_ingrosso:
-                sconto_ingrosso.append(mN(sconto_ing) or 0)
+                sconto_ingrosso.append(mN(str(sconto_ing)) or 0)
             #sconto_ingrosso = mN(d.sconto_vendita_ingrosso[0]) or 0
             datalist=[denominazione,codice_articolo,articolo,data,prezzo_dettaglio,sconto_dettaglio,prezzo_ingrosso,sconto_ingrosso]
             rowlist.append(datalist)
