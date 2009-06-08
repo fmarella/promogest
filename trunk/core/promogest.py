@@ -105,9 +105,16 @@ class BigBang(object):
         login = Login()
         login.run()
 
+#if __name__ == '__main__':
+    ##login = Login()
+    ##login.run()
 if __name__ == '__main__':
-    #login = Login()
-    #login.run()
-    BigBang()
+    # Import Psyco if available
+    try:
+        import psyco
+        psyco.full()
+    except ImportError:
+        print "PSYCO NON DISPONIBILE"
+        BigBang()
 
 
