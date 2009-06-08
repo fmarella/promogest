@@ -74,7 +74,7 @@ tablesSchemeAnagrafiche = [
             ("destinazione_merce","id"),
             ("vettore","id"),
             ("agente","id"),
-            ("cliente_categoria_cliente","id"),
+            ("cliente_categoria_cliente","id_cliente"),
             ("contatto_fornitore","id"),
             ("contatto_magazzino","id"),
             ("contatto_azienda","id"),
@@ -86,7 +86,7 @@ tablesSchemePromemoria = [
             ("contatto_cliente","id"),
             ("recapito","id"),
             ("categoria_contatto","id"),
-            ("contatto_categoria_contatto","id"),
+            ("contatto_categoria_contatto","id_contatto"),
 ]
 
 tablesSchemeDocumenti = [
@@ -95,12 +95,12 @@ tablesSchemeDocumenti = [
             ("riga","id"),
             ("riga_movimento","id"),
             ("sconto_riga_movimento","id"),
-            ("informazioni_contabili_documento","id"),
-            ("inventario","id"),
+            #("inventario","id"),
             ("riga_documento","id"),
             ("sconto_riga_documento","id"),
             ("sconto_testata_documento","id"),
             ("testata_documento_scadenza","id"),
+            ("informazioni_contabili_documento","id"),
 ]
 
 class SincroDB(GladeWidget):
@@ -135,6 +135,7 @@ class SincroDB(GladeWidget):
         user = "promoadmin"
         password = "admin"
         host = "vete.homelinux.org"
+        #host = "192.168.1.3"
         port = "5432"
         database = "promogest_db"
 
@@ -167,7 +168,7 @@ class SincroDB(GladeWidget):
         database = "promogest_db"
 
         #azienda=conf.Database.azienda
-        engine = create_engine('postgres:'+'//'
+        engineLocale = create_engine('postgres:'+'//'
                         +user+':'
                         + password+ '@'
                         + host + ':'
@@ -175,15 +176,16 @@ class SincroDB(GladeWidget):
                         + database,
                         encoding='utf-8',
                         convert_unicode=True )
-        tipo_eng = engine.name
-        engine.echo = False
-        self.metaLocale = MetaData(engine)
+        tipo_eng = engineLocale.name
+        engineLocale.echo = False
+        self.metaLocale = MetaData(engineLocale)
         self.pg_db_server_locale = SqlSoup(self.metaLocale)
         self.pg_db_server_locale.schema = Environment.params["schema"]
         self.pg_db_server_main_locale = SqlSoup(self.metaLocale)
         self.pg_db_server_main_locale.schema = "promogest2"
             #Session = sessionmaker(bind=engine)
-        SessionLocale = scoped_session(sessionmaker(bind=engine))
+        SessionLocale = scoped_session(sessionmaker(bind=engineLocale))
+        self.engineLocale = engineLocale
         self.sessionLocale = SessionLocale()
         #self.sessionLocale.autocommit
 
@@ -207,13 +209,14 @@ class SincroDB(GladeWidget):
         Crea le liste delle query ciclando nelle tabelle 
         """
         for dg in tables:
-            #print "DGGGGGGGGGGGG", dg
-            exec ( "conteggia = self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).count()")  %(dg[0],dg[0],dg[1])
-            #print "CONTEGGIAAAAAAAAAAAA", conteggia
+            print "DGGGGGGGGGGGG", dg
+            exec ( "conteggia = self.pg_db_server_remote.%s.count()")  %(dg[0])
+            exec ( "conteggialocale = self.pg_db_server_locale.%s.count()")  %(dg[0])
+            print "CONTEGGIAAAAAAAAAAAA", conteggia, conteggialocale
             blocSize = 100
             if conteggia >= blocSize:
                 blocchi = abs(conteggia/blocSize)
-                for j in range(0,blocchi):
+                for j in range(0,blocchi+1):
                     offset = j*blocSize
                     exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
                     exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
@@ -228,6 +231,7 @@ class SincroDB(GladeWidget):
     def logica(self,remote=None, locale=None, all=False):
         """ cicla le righe della tabella e decide cosa fare """
         deleteRow=False
+        print len(remote) , len(locale)
         if remote != locale:
             if len(remote) == len(locale):
                 print "STESSO NUMERO DI RECORD", len(remote)
@@ -246,8 +250,8 @@ class SincroDB(GladeWidget):
                     print "LOCALE", locale[i]
                     if  remote[i] != locale[i]:
                         print "QUESTA È LA RIGA DIVERSA NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione UPDATE"
-                        #print " RIGA REMOTE", remote[i]
-                        #print " RIGA LOCALE", locale[i]
+                        print " RIGA REMOTE", remote[i]
+                        print " RIGA LOCALE", locale[i]
                         self.fixToTable(soupLocale=soupLocale,
                                         row=remote[i],
                                         rowLocale=locale[i],
@@ -256,6 +260,7 @@ class SincroDB(GladeWidget):
                                         all=all)
                 else:
                     print "QUESTA È LA RIGA DA AGGIUNGERE NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione INSERT"
+                    print " RIGA REMOTE", remote[i]
                     self.fixToTable(soupLocale=soupLocale,
                                     row=remote[i],
                                     op="INSERT",
@@ -288,7 +293,37 @@ class SincroDB(GladeWidget):
             for i in rowLocale.c:
                 t = str(i).split(".")[1] #mi serve solo il nome tabella
                 setattr(rowLocale, t, getattr(row, t))
-        sqlalchemy.ext.sqlsoup.Session.commit()
+        try:
+            sqlalchemy.ext.sqlsoup.Session.commit()
+        except Exception,e :
+            msg = """ATTENZIONE ERRORE NEL SALVATAGGIO
+    Qui sotto viene riportato l'errore di sistema:
+
+    ( normalmente il campo in errore è tra "virgolette")
+
+    %s
+
+    L'errore può venire causato da un campo fondamentale
+    mancante, da un codice già presente, si invita a
+    rincontrollare i campi e riprovare
+    Grazie!
+    """ %e
+            overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
+                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                                    gtk.MESSAGE_ERROR,
+                                                    gtk.BUTTONS_CANCEL, msg)
+            response = overDialog.run()
+            overDialog.destroy()
+            sqlalchemy.ext.sqlsoup.Session.rollback()
+            sqlalchemy.ext.sqlsoup.Session.clear()
+            self.connectDbLocale()
+            #SessionLocale = scoped_session(sessionmaker(bind=self.engineLocale))
+            #self.sessionLocale = SessionLocale()
+            exec ("record = self.pg_db_server_locale.%s.get(id=rowLocale.id)") %dao
+            if record:
+                soupLocale.delete(record)
+                fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
+
         return True
 
 
