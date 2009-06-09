@@ -43,8 +43,9 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_stoccaggi_filter_table', gladeFile='_anagrafica_stoccaggi_articoli_elements.glade')
+                                anagrafica,
+                        'anagrafica_stoccaggi_filter_table',
+                        gladeFile='_anagrafica_stoccaggi_articoli_elements.glade')
         self._widgetFirstFocus = self.id_magazzino_filter_combobox
         self.orderBy=None
 
@@ -200,9 +201,11 @@ class AnagraficaStoccaggiEdit(AnagraficaEdit):
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = Stoccaggio()
+            self.newDao = True
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Stoccaggio().getRecord(id=dao.id)
+            self.newDao = False
         self._refresh()
 
 
@@ -246,7 +249,17 @@ class AnagraficaStoccaggiEdit(AnagraficaEdit):
 
         if self.id_articolo_customcombobox.getId() is None:
             obligatoryField(self.dialogTopLevel, self.id_articolo_customcombobox)
-
+        elif self.id_articolo_customcombobox.getId():
+            idArticoloTemp = self.id_articolo_customcombobox.getId()
+            a = Stoccaggio().select(idArticolo=idArticoloTemp)
+            if a and self.newDao:
+                msg = "Attenzione !\n\n L'Articolo è già presente nel magazzino!"
+                dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                            gtk.MESSAGE_QUESTION, gtk.BUTTONS_OK, msg)
+                response = dialog.run()
+                dialog.destroy()
+                raise Exception("Tentativo di inserimento di un articolo esistente")
+            
         self.dao.id_magazzino = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)
         self.dao.id_articolo = self.id_articolo_customcombobox.getId()
         self.dao.scorta_minima = int(self.scorta_minima_entry.get_text())
