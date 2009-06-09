@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--*- mode: xml -*-->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="vendita_dettaglio_window">
     <property name="title" translatable="yes">Vendita al dettaglio</property>
     <property name="icon">promogest.png</property>
     <signal name="key_press_event" handler="on_vendita_dettaglio_window_key_press_event"/>
-    <signal name="delete_event" handler="on_vendita_dettaglio_window_close"/>
     <signal name="destroy_event" handler="on_vendita_dettaglio_window_close"/>
+    <signal name="delete_event" handler="on_vendita_dettaglio_window_close"/>
     <child>
       <widget class="GtkVBox" id="vbox52">
         <property name="visible">True</property>
@@ -23,17 +23,11 @@
                   <widget class="GtkMenu" id="operazioni_di_fine_giornata_menu">
                     <child>
                       <widget class="GtkImageMenuItem" id="chiusura_fiscale">
+                        <property name="label">Chiusura fiscale</property>
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Chiusura fiscale</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_chiusura_fiscale_activate"/>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="image212">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-execute</property>
-                            <property name="icon_size">1</property>
-                          </widget>
-                        </child>
                       </widget>
                     </child>
                   </widget>
@@ -50,41 +44,26 @@
                     <property name="visible">True</property>
                     <child>
                       <widget class="GtkImageMenuItem" id="stampa_del_giornale_breve">
+                        <property name="label">Stampa del giornale breve</property>
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Stampa del giornale breve</property>
                         <property name="use_underline">True</property>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image3">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-justify-left</property>
-                          </widget>
-                        </child>
+                        <property name="use_stock">True</property>
                       </widget>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="stampa_del_periodico_cassa">
+                        <property name="label">Stampa del periodico cassa</property>
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Stampa del periodico cassa</property>
                         <property name="use_underline">True</property>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image4">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-justify-left</property>
-                          </widget>
-                        </child>
+                        <property name="use_stock">True</property>
                       </widget>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="stampa_del_periodico_reparti">
+                        <property name="label">Stampa del periodico reparti</property>
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Stampa del periodico reparti</property>
                         <property name="use_underline">True</property>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image5">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-justify-left</property>
-                          </widget>
-                        </child>
+                        <property name="use_stock">True</property>
                       </widget>
                     </child>
                     <child>
@@ -97,15 +76,10 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="stampa_della_affluenza_oraria">
+                        <property name="label">Stampa della affluenza oraria</property>
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Stampa della affluenza oraria</property>
                         <property name="use_underline">True</property>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="menu-item-image2">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-dialog-authentication</property>
-                          </widget>
-                        </child>
+                        <property name="use_stock">True</property>
                       </widget>
                     </child>
                   </widget>
@@ -116,6 +90,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -145,27 +120,6 @@
                             <property name="n_columns">7</property>
                             <property name="column_spacing">10</property>
                             <property name="row_spacing">1</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
                             <child>
                               <widget class="GtkImage" id="image3">
                                 <property name="visible">True</property>
@@ -218,7 +172,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
-                                <property name="response_id">0</property>
+                                <property name="receives_default">False</property>
                                 <signal name="clicked" handler="on_search_button_clicked"/>
                                 <child>
                                   <widget class="GtkAlignment" id="alignment266">
@@ -237,6 +191,7 @@
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">False</property>
+                                            <property name="position">0</property>
                                           </packing>
                                         </child>
                                         <child>
@@ -270,7 +225,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
-                                <property name="response_id">0</property>
+                                <property name="receives_default">False</property>
                                 <signal name="clicked" handler="on_new_button_clicked"/>
                                 <child>
                                   <widget class="GtkAlignment" id="alignment1">
@@ -289,6 +244,7 @@
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">False</property>
+                                            <property name="position">0</property>
                                           </packing>
                                         </child>
                                         <child>
@@ -321,8 +277,12 @@
                               <widget class="GtkEntry" id="codice_a_barre_entry">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                                <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                                <property name="secondary_icon_stock">gtk-clear</property>
+                                <property name="secondary_icon_activatable">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
+                                <signal name="icon_press" handler="on_icon_press"/>
+                                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                <signal name="focus_in_event" handler="on_focus_in_event"/>
                                 <signal name="activate" handler="on_codice_a_barre_entry_activate"/>
                               </widget>
                               <packing>
@@ -337,8 +297,12 @@
                               <widget class="GtkEntry" id="codice_entry">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                                <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                                <property name="secondary_icon_stock">gtk-clear</property>
+                                <property name="secondary_icon_activatable">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
+                                <signal name="icon_press" handler="on_icon_press"/>
+                                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                <signal name="focus_in_event" handler="on_focus_in_event"/>
                                 <signal name="activate" handler="on_codice_entry_activate"/>
                               </widget>
                               <packing>
@@ -365,7 +329,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="can_default">True</property>
                                         <property name="has_default">True</property>
-                                        <property name="response_id">0</property>
+                                        <property name="receives_default">False</property>
                                         <signal name="clicked" handler="on_cancel_button_clicked"/>
                                         <child>
                                           <widget class="GtkAlignment" id="alignment429">
@@ -384,6 +348,7 @@
                                                   <packing>
                                                     <property name="expand">False</property>
                                                     <property name="fill">False</property>
+                                                    <property name="position">0</property>
                                                   </packing>
                                                 </child>
                                                 <child>
@@ -405,6 +370,7 @@
                                       </widget>
                                       <packing>
                                         <property name="expand">False</property>
+                                        <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -413,7 +379,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="can_default">True</property>
                                         <property name="has_default">True</property>
-                                        <property name="response_id">0</property>
+                                        <property name="receives_default">False</property>
                                         <signal name="clicked" handler="on_rhesus_button_clicked"/>
                                         <child>
                                           <widget class="GtkAlignment" id="alignment427">
@@ -432,6 +398,7 @@
                                                   <packing>
                                                     <property name="expand">False</property>
                                                     <property name="fill">False</property>
+                                                    <property name="position">0</property>
                                                   </packing>
                                                 </child>
                                                 <child>
@@ -461,7 +428,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="can_default">True</property>
-                                        <property name="response_id">0</property>
+                                        <property name="receives_default">False</property>
                                         <signal name="clicked" handler="on_delete_button_clicked"/>
                                         <child>
                                           <widget class="GtkAlignment" id="alignment267">
@@ -480,6 +447,7 @@
                                                   <packing>
                                                     <property name="expand">False</property>
                                                     <property name="fill">False</property>
+                                                    <property name="position">0</property>
                                                   </packing>
                                                 </child>
                                                 <child>
@@ -506,11 +474,10 @@
                                     </child>
                                     <child>
                                       <widget class="GtkButton" id="tastiera_button">
+                                        <property name="label" translatable="yes">Tastiera</property>
                                         <property name="sensitive">False</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
-                                        <property name="label" translatable="yes">Tastiera</property>
-                                        <property name="response_id">0</property>
                                         <signal name="clicked" handler="on_tastiera_button_clicked"/>
                                       </widget>
                                       <packing>
@@ -725,6 +692,7 @@
                                                       <packing>
                                                         <property name="expand">False</property>
                                                         <property name="fill">False</property>
+                                                        <property name="position">0</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -774,7 +742,7 @@
                                                       <widget class="GtkLabel" id="giacenza_label">
                                                         <property name="visible">True</property>
                                                         <property name="label" translatable="yes">-</property>
-                                                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                                                        <property name="justify">right</property>
                                                       </widget>
                                                       <packing>
                                                         <property name="position">5</property>
@@ -840,8 +808,12 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="max_length">200</property>
-                                <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                                <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                                <property name="secondary_icon_stock">gtk-clear</property>
+                                <property name="secondary_icon_activatable">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
+                                <signal name="icon_press" handler="on_icon_press"/>
+                                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                <signal name="focus_in_event" handler="on_focus_in_event"/>
                                 <signal name="activate" handler="on_descrizione_entry_activate"/>
                               </widget>
                               <packing>
@@ -888,12 +860,37 @@
                                 <property name="y_padding">10</property>
                               </packing>
                             </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
                           </widget>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
                         </child>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
+                        <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
@@ -904,17 +901,17 @@
                           <widget class="GtkScrolledWindow" id="scrolledwindow23">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                            <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                            <property name="window_placement">GTK_CORNER_BOTTOM_LEFT</property>
-                            <property name="shadow_type">GTK_SHADOW_ETCHED_IN</property>
+                            <property name="hscrollbar_policy">automatic</property>
+                            <property name="vscrollbar_policy">automatic</property>
+                            <property name="window_placement">bottom-left</property>
+                            <property name="shadow_type">etched-in</property>
                             <child>
                               <widget class="GtkTreeView" id="scontrino_treeview">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="enable_grid_lines">GTK_TREE_VIEW_GRID_LINES_BOTH</property>
-                                <signal name="select_cursor_row" handler="on_scontrino_treeview_row_activated"/>
+                                <property name="enable_grid_lines">both</property>
                                 <signal name="button_press_event" handler="on_scontrino_treeview_button_press_event"/>
+                                <signal name="select_cursor_row" handler="on_scontrino_treeview_row_activated"/>
                                 <signal name="cursor_changed" handler="on_scontrino_treeview_cursor_changed"/>
                               </widget>
                             </child>
@@ -958,10 +955,11 @@
                                       <widget class="GtkRadioButton" id="assegni_radio_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="response_id">0</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="draw_indicator">False</property>
                                         <property name="group">contanti_radio_button</property>
                                         <signal name="clicked" handler="on_assegni_radio_button_clicked"/>
-                                        <accelerator key="F2" modifiers="" signal="clicked"/>
+                                        <accelerator key="F2" signal="clicked"/>
                                         <child>
                                           <widget class="GtkAlignment" id="alignment533">
                                             <property name="visible">True</property>
@@ -979,6 +977,7 @@
                                                   <packing>
                                                     <property name="expand">False</property>
                                                     <property name="fill">False</property>
+                                                    <property name="position">0</property>
                                                   </packing>
                                                 </child>
                                                 <child>
@@ -998,15 +997,19 @@
                                           </widget>
                                         </child>
                                       </widget>
+                                      <packing>
+                                        <property name="position">0</property>
+                                      </packing>
                                     </child>
                                     <child>
                                       <widget class="GtkRadioButton" id="carta_di_credito_radio_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="response_id">0</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="draw_indicator">False</property>
                                         <property name="group">contanti_radio_button</property>
                                         <signal name="clicked" handler="on_carta_di_credito_radio_button_clicked"/>
-                                        <accelerator key="F2" modifiers="" signal="clicked"/>
+                                        <accelerator key="F2" signal="clicked"/>
                                         <child>
                                           <widget class="GtkAlignment" id="alignment534">
                                             <property name="visible">True</property>
@@ -1024,6 +1027,7 @@
                                                   <packing>
                                                     <property name="expand">False</property>
                                                     <property name="fill">False</property>
+                                                    <property name="position">0</property>
                                                   </packing>
                                                 </child>
                                                 <child>
@@ -1059,9 +1063,10 @@
                                   <widget class="GtkRadioButton" id="contanti_radio_button">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="response_id">0</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="draw_indicator">False</property>
                                     <signal name="clicked" handler="on_contanti_radio_button_clicked" after="yes"/>
-                                    <accelerator key="F1" modifiers="" signal="clicked"/>
+                                    <accelerator key="F1" signal="clicked"/>
                                     <child>
                                       <widget class="GtkAlignment" id="alignment532">
                                         <property name="visible">True</property>
@@ -1079,6 +1084,7 @@
                                               <packing>
                                                 <property name="expand">False</property>
                                                 <property name="fill">False</property>
+                                                <property name="position">0</property>
                                               </packing>
                                             </child>
                                             <child>
@@ -1108,8 +1114,12 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="width_chars">50</property>
-                                    <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                                    <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+                                    <property name="secondary_icon_stock">gtk-clear</property>
+                                    <property name="secondary_icon_activatable">True</property>
+                                    <property name="secondary_icon_sensitive">True</property>
+                                    <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                    <signal name="icon_press" handler="on_icon_press"/>
                                   </widget>
                                   <packing>
                                     <property name="top_attach">3</property>
@@ -1123,9 +1133,13 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="width_chars">50</property>
-                                    <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                                    <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
-                                    <accelerator key="F10" modifiers="" signal="activate"/>
+                                    <property name="secondary_icon_stock">gtk-clear</property>
+                                    <property name="secondary_icon_activatable">True</property>
+                                    <property name="secondary_icon_sensitive">True</property>
+                                    <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                    <signal name="icon_press" handler="on_icon_press"/>
+                                    <accelerator key="F10" signal="activate"/>
                                   </widget>
                                   <packing>
                                     <property name="top_attach">1</property>
@@ -1151,6 +1165,7 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
@@ -1178,7 +1193,7 @@
                                         <property name="xalign">0</property>
                                         <property name="label" translatable="yes">&lt;b&gt;&lt;span foreground="black" size="38000"&gt;0.00&lt;/span&gt;&lt;/b&gt;</property>
                                         <property name="use_markup">True</property>
-                                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                                        <property name="justify">right</property>
                                       </widget>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -1190,7 +1205,7 @@
                                     <child>
                                       <widget class="GtkLabel" id="label498">
                                         <property name="visible">True</property>
-                                        <property name="label" translatable="yes">&lt;b&gt;TOTALE: &lt;span size="xx-large"&gt;€&lt;/span&gt;&lt;/b&gt;</property>
+                                        <property name="label" translatable="yes">&lt;b&gt;TOTALE: &lt;span size="xx-large"&gt;&#x20AC;&lt;/span&gt;&lt;/b&gt;</property>
                                         <property name="use_markup">True</property>
                                       </widget>
                                       <packing>
@@ -1204,7 +1219,7 @@
                                         <property name="xalign">0</property>
                                         <property name="label" translatable="yes">&lt;b&gt;&lt;span foreground="black" size="24000"&gt;0.00&lt;/span&gt;&lt;/b&gt;</property>
                                         <property name="use_markup">True</property>
-                                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                                        <property name="justify">right</property>
                                       </widget>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -1218,7 +1233,7 @@
                                     <child>
                                       <widget class="GtkLabel" id="label636">
                                         <property name="visible">True</property>
-                                        <property name="label" translatable="yes">&lt;b&gt;RESTO: &lt;span size="xx-large"&gt;€&lt;/span&gt;&lt;/b&gt;</property>
+                                        <property name="label" translatable="yes">&lt;b&gt;RESTO: &lt;span size="xx-large"&gt;&#x20AC;&lt;/span&gt;&lt;/b&gt;</property>
                                         <property name="use_markup">True</property>
                                       </widget>
                                       <packing>
@@ -1256,13 +1271,13 @@
                             <child>
                               <widget class="GtkVButtonBox" id="vbuttonbox2">
                                 <property name="visible">True</property>
-                                <property name="layout_style">GTK_BUTTONBOX_SPREAD</property>
+                                <property name="layout_style">spread</property>
                                 <child>
                                   <widget class="GtkButton" id="empty_button">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="can_default">True</property>
-                                    <property name="response_id">0</property>
+                                    <property name="receives_default">False</property>
                                     <signal name="clicked" handler="on_empty_button_clicked"/>
                                     <child>
                                       <widget class="GtkAlignment" id="alignment264">
@@ -1281,6 +1296,7 @@
                                               <packing>
                                                 <property name="expand">False</property>
                                                 <property name="fill">False</property>
+                                                <property name="position">0</property>
                                               </packing>
                                             </child>
                                             <child>
@@ -1301,16 +1317,21 @@ scontrino</property>
                                       </widget>
                                     </child>
                                   </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">0</property>
+                                  </packing>
                                 </child>
                                 <child>
                                   <widget class="GtkButton" id="total_button">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="can_default">True</property>
-                                    <property name="response_id">0</property>
+                                    <property name="receives_default">False</property>
                                     <signal name="grab_focus" handler="on_total_button_grab_focus"/>
                                     <signal name="clicked" handler="on_total_button_clicked"/>
-                                    <accelerator key="F5" modifiers="" signal="clicked"/>
+                                    <accelerator key="F5" signal="clicked"/>
                                     <child>
                                       <widget class="GtkAlignment" id="alignment265">
                                         <property name="visible">True</property>
@@ -1328,6 +1349,7 @@ scontrino</property>
                                               <packing>
                                                 <property name="expand">False</property>
                                                 <property name="fill">False</property>
+                                                <property name="position">0</property>
                                               </packing>
                                             </child>
                                             <child>
@@ -1349,6 +1371,8 @@ scontrino</property>
                                     </child>
                                   </widget>
                                   <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
@@ -1372,13 +1396,13 @@ scontrino</property>
                       <widget class="GtkHButtonBox" id="hbuttonbox11">
                         <property name="visible">True</property>
                         <property name="border_width">5</property>
-                        <property name="layout_style">GTK_BUTTONBOX_EDGE</property>
+                        <property name="layout_style">edge</property>
                         <child>
                           <widget class="GtkButton" id="list_button">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
-                            <property name="response_id">0</property>
+                            <property name="receives_default">False</property>
                             <signal name="clicked" handler="on_list_button_clicked"/>
                             <child>
                               <widget class="GtkAlignment" id="alignment414">
@@ -1397,6 +1421,7 @@ scontrino</property>
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">False</property>
+                                        <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1416,6 +1441,11 @@ scontrino</property>
                               </widget>
                             </child>
                           </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
                         </child>
                         <child>
                           <placeholder/>
@@ -1425,7 +1455,7 @@ scontrino</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
-                            <property name="response_id">0</property>
+                            <property name="receives_default">False</property>
                             <signal name="clicked" handler="on_vendita_dettaglio_window_close"/>
                             <child>
                               <widget class="GtkAlignment" id="alignment413">
@@ -1444,6 +1474,7 @@ scontrino</property>
                                       <packing>
                                         <property name="expand">False</property>
                                         <property name="fill">False</property>
+                                        <property name="position">0</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -1464,6 +1495,8 @@ scontrino</property>
                             </child>
                           </widget>
                           <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
                             <property name="position">2</property>
                           </packing>
                         </child>

@@ -75,6 +75,7 @@ j = join(contatto, contattoazienda)
 std_mapper = mapper(ContattoAzienda, j,properties={
                 'id':[contatto.c.id, contattoazienda.c.id],
                 'tipo_contatto':[contatto.c.tipo_contatto, contattoazienda.c.tipo_contatto],
-                "azienda":relation(Azienda, backref="contatto_azienda")},
+                "azienda":relation(Azienda, backref="contatto_azienda")
+                },
                 order_by=contatto.c.id)
 

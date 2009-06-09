@@ -125,9 +125,6 @@ class Riga(Dao):
         genere = property(_genere)
 
 
-
-
-
 artic = Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
 riga=Table('riga', params['metadata'],schema = params['schema'],autoload=True)
 

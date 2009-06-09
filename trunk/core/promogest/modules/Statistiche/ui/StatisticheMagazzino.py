@@ -1,15 +1,23 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
+# Author: Francesco Meloni  <francesco@promotux.it>
 
-
-import os, gtk, time, datetime
-from GladeWidget import GladeWidget
+import os
+import gtk
+import time
+import datetime
+from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
-
+from promogest.dao.TestataMovimento import TestataMovimento
+from promogest.dao.RigaMovimento import RigaMovimento
+from promogest.dao.Riga import Riga
+from promogest.dao.Magazzino import Magazzino
+from promogest.dao.Operazione import Operazione
+from sqlalchemy import or_
 
 
 class StatisticheMagazzino(GladeWidget):
@@ -17,7 +25,8 @@ class StatisticheMagazzino(GladeWidget):
     def __init__(self, idMagazzino=None):
 
         GladeWidget.__init__(self, 'statistiche_magazzino_dialog',
-                'statistiche_magazzino_elements.glade')
+                'Statistiche/gui/statistiche_magazzino_elements.glade',
+                isModule=True)
         self.placeWindow(self.getTopLevel())
 
         self._idMagazzino = idMagazzino
@@ -144,14 +153,25 @@ class StatisticheMagazzino(GladeWidget):
 
     def export(self, filename):
         intervallo = ''
+
         venduto = ('(SELECT R.id_articolo, ' +
-                    'SUM(R.quantita * R.moltiplicatore) AS quantita_ven, ' +
-                    'SUM(R.quantita * R.moltiplicatore * R.valore_unitario_netto) AS valore_ven ' +
-                    'FROM riga_movimento RM INNER JOIN riga R ON RM.id = R.id ' +
-                    'INNER JOIN testata_movimento TM ON RM.id_testata_movimento = TM.id ' +
-                    'INNER JOIN promogest.operazione O ON TM.operazione = O.denominazione ' +
-                    'WHERE O.segno = \'-\' AND (O.tipo_persona_giuridica IS NULL OR O.tipo_persona_giuridica <> \'fornitore\') %s ' +
-                    'GROUP BY R.id_articolo) VV ON A.id = VV.id_articolo ')
+            'SUM(R.quantita * R.moltiplicatore) AS quantita_ven, ' +
+            'SUM(R.quantita * R.moltiplicatore * R.valore_unitario_netto) AS valore_ven ' +
+            'FROM riga_movimento RM INNER JOIN riga R ON RM.id = R.id ' +
+            'INNER JOIN testata_movimento TM ON RM.id_testata_movimento = TM.id ' +
+            'INNER JOIN promogest.operazione O ON TM.operazione = O.denominazione ' +
+            'WHERE O.segno = \'-\' AND (O.tipo_persona_giuridica IS NULL OR O.tipo_persona_giuridica <> \'fornitore\') %s ' +
+            'GROUP BY R.id_articolo) VV ON A.id = VV.id_articolo ')
+
+        #venduto = Environment.params["session"]\
+                #.query(RigaMovimento)\
+                #.filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                #.filter(Operazione.denominazione == TestataMovimento.operazione)\
+                #.filter(Operazione.segno =="-")\
+                #.filter(or_(Operazione.tipo_persona_giuridica == None, Operazione.tipo_persona_giuridica !="fornitore"))\
+                #.all()
+
+        #print "venduto", venduto[0:10]
 
         acquistato = ('(SELECT R.id_articolo, ' +
                        'SUM(R.quantita * R.moltiplicatore) AS quantita_acq, ' +
@@ -162,43 +182,54 @@ class StatisticheMagazzino(GladeWidget):
                        'WHERE O.segno = \'+\' AND (O.tipo_persona_giuridica IS NULL OR O.tipo_persona_giuridica = \'fornitore\') %s ' +
                        'GROUP BY R.id_articolo) VA ON A.id = VA.id_articolo ')
 
+        #acquistato = Environment.params["session"]\
+                #.query(RigaMovimento)\
+                #.filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                #.filter(Operazione.denominazione == TestataMovimento.operazione)\
+                #.filter(Operazione.segno =="+")\
+                #.filter(or_(Operazione.tipo_persona_giuridica == None, Operazione.tipo_persona_giuridica !="fornitore"))\
+                #.all()
+
+        #print "acquistato", acquistato[0:10]
+
         if self.giacenze_radiobutton.get_active():
             if self.ultimo_prezzo_acquisto_radiobutton.get_active():
                 valorizzazione = ('LEFT OUTER JOIN (SELECT R.id_articolo, ' +
-                                                          'R.valore_unitario_netto AS prezzo, ' +
-                                                          'MAX(TM.data_movimento) ' +
-                                                          'FROM riga_movimento RM INNER JOIN riga R ON RM.id = R.id ' +
-                                                          'INNER JOIN testata_movimento TM ON RM.id_testata_movimento = TM.id ' +
-                                                          'INNER JOIN promogest.operazione O ON TM.operazione = O.denominazione ' +
-                                                          'WHERE R.valore_unitario_netto <> 0 AND O.segno = \'+\' ' +
-                                                          'GROUP BY R.id_articolo, R.valore_unitario_netto) P ON A.id = P.id_articolo ')
+                                        'R.valore_unitario_netto AS prezzo, ' +
+                                        'MAX(TM.data_movimento) ' +
+                                        'FROM riga_movimento RM INNER JOIN riga R ON RM.id = R.id ' +
+                                        'INNER JOIN testata_movimento TM ON RM.id_testata_movimento = TM.id ' +
+                                        'INNER JOIN promogest.operazione O ON TM.operazione = O.denominazione ' +
+                                        'WHERE R.valore_unitario_netto <> 0 AND O.segno = \'+\' ' +
+                                        'GROUP BY R.id_articolo, R.valore_unitario_netto) P ON A.id = P.id_articolo ')
+
             elif self.ultimo_prezzo_vendita_radiobutton.get_active():
                 valorizzazione = ('LEFT OUTER JOIN (SELECT R.id_articolo, ' +
-                                                          'R.valore_unitario_netto AS prezzo, ' +
-                                                          'MAX(TM.data_movimento) ' +
-                                                          'FROM riga_movimento RM INNER JOIN riga R ON RM.id = R.id ' +
-                                                          'INNER JOIN testata_movimento TM ON RM.id_testata_movimento = TM.id ' +
-                                                          'INNER JOIN promogest.operazione O ON TM.operazione = O.denominazione ' +
-                                                          'WHERE R.valore_unitario_netto <> 0 AND O.segno = \'-\' ' +
-                                                          'GROUP BY R.id_articolo, R.valore_unitario_netto) P ON A.id = P.id_articolo ')
+                                        'R.valore_unitario_netto AS prezzo, ' +
+                                        'MAX(TM.data_movimento) ' +
+                                        'FROM riga_movimento RM INNER JOIN riga R ON RM.id = R.id ' +
+                                        'INNER JOIN testata_movimento TM ON RM.id_testata_movimento = TM.id ' +
+                                        'INNER JOIN promogest.operazione O ON TM.operazione = O.denominazione ' +
+                                        'WHERE R.valore_unitario_netto <> 0 AND O.segno = \'-\' ' +
+                                        'GROUP BY R.id_articolo, R.valore_unitario_netto) P ON A.id = P.id_articolo ')
             elif self.prezzo_medio_acquisto_radiobutton.get_active():
                 valorizzazione = ('LEFT OUTER JOIN (SELECT R.id_articolo, ' +
-                                                          'AVG(R.valore_unitario_netto) AS prezzo, ' +
-                                                          'MAX(TM.data_movimento) ' +
-                                                          'FROM riga_movimento RM INNER JOIN riga R ON RM.id = R.id ' +
-                                                          'INNER JOIN testata_movimento TM ON RM.id_testata_movimento = TM.id ' +
-                                                          'INNER JOIN promogest.operazione O ON TM.operazione = O.denominazione ' +
-                                                          'WHERE R.valore_unitario_netto <> 0 AND O.segno = \'+\' ' +
-                                                          'GROUP BY R.id_articolo) P ON A.id = P.id_articolo ')
+                                        'AVG(R.valore_unitario_netto) AS prezzo, ' +
+                                        'MAX(TM.data_movimento) ' +
+                                        'FROM riga_movimento RM INNER JOIN riga R ON RM.id = R.id ' +
+                                        'INNER JOIN testata_movimento TM ON RM.id_testata_movimento = TM.id ' +
+                                        'INNER JOIN promogest.operazione O ON TM.operazione = O.denominazione ' +
+                                        'WHERE R.valore_unitario_netto <> 0 AND O.segno = \'+\' ' +
+                                        'GROUP BY R.id_articolo) P ON A.id = P.id_articolo ')
             elif self.prezzo_medio_vendita_radiobutton.get_active():
                 valorizzazione = ('LEFT OUTER JOIN (SELECT R.id_articolo, ' +
-                                                          'AVG(R.valore_unitario_netto) AS prezzo, ' +
-                                                          'MAX(TM.data_movimento) ' +
-                                                          'FROM riga_movimento RM INNER JOIN riga R ON RM.id = R.id ' +
-                                                          'INNER JOIN testata_movimento TM ON RM.id_testata_movimento = TM.id ' +
-                                                          'INNER JOIN promogest.operazione O ON TM.operazione = O.denominazione ' +
-                                                          'WHERE R.valore_unitario_netto <> 0 AND O.segno = \'-\' ' +
-                                                          'GROUP BY R.id_articolo) P ON A.id = P.id_articolo ')
+                                        'AVG(R.valore_unitario_netto) AS prezzo, ' +
+                                        'MAX(TM.data_movimento) ' +
+                                        'FROM riga_movimento RM INNER JOIN riga R ON RM.id = R.id ' +
+                                        'INNER JOIN testata_movimento TM ON RM.id_testata_movimento = TM.id ' +
+                                        'INNER JOIN promogest.operazione O ON TM.operazione = O.denominazione ' +
+                                        'WHERE R.valore_unitario_netto <> 0 AND O.segno = \'-\' ' +
+                                        'GROUP BY R.id_articolo) P ON A.id = P.id_articolo ')
 
             ordinamento = ''
             if len(self._orderingOrder) != 0:
@@ -218,7 +249,7 @@ class StatisticheMagazzino(GladeWidget):
             ordinamento += 'A.codice'
             ordinamento = 'ORDER BY ' + ordinamento
 
-            query = 'SET SEARCH_PATH TO ' + Environment.connection._schemaAzienda + ';\n\n'
+            query = 'SET SEARCH_PATH TO ' + "rudolf" + ';\n\n'
 
             query += ('SELECT A.codice AS "Codice", ' +
                       'A.denominazione AS "Descrizione", ' +
@@ -237,7 +268,7 @@ class StatisticheMagazzino(GladeWidget):
                       'PG.codice AS "Codice fornitore", ' +
                       'PG.ragione_sociale AS "Fornitore" ' +
                       'FROM articolo A INNER JOIN ' +
-                      '(SELECT id_articolo, SUM(giacenza) AS quantita FROM promogest.giacenzasel(\'' + Environment.connection._schemaAzienda + '\', 1, NULL, NULL, NULL) GROUP BY id_articolo) G ON A.id = G.id_articolo ' +
+                      '(SELECT id_articolo, SUM(giacenza) AS quantita FROM promogest.giacenzasel(\'' + "rudolf" + '\', 1, NULL, NULL, NULL) GROUP BY id_articolo) G ON A.id = G.id_articolo ' +
                       valorizzazione +
                       'LEFT OUTER JOIN' + (acquistato % '') +
                       'LEFT OUTER JOIN codice_a_barre_articolo CB ON CB.id_articolo = A.id AND CB.primario ' +
@@ -255,9 +286,10 @@ class StatisticheMagazzino(GladeWidget):
                       'LEFT OUTER JOIN persona_giuridica PG ON FO.id = PG.id ' +
                       ordinamento +
                       ';\n')
-            #print query
+            print "PRIMA QUERYYYYYYYYYYYYYYYYY", query
 
             argList = []
+
             Environment.connection._cursor.execute(query, argList)
             res = Environment.connection._cursor.fetchall()
 
