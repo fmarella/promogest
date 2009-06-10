@@ -86,6 +86,8 @@ class StatisticheMagazzino(GladeWidget):
 
         prezzo_ultimo_vendita = 0
         prezzo_ultimo_acquisto = 0
+        quantita_acquistata= 0
+        quantita_venduta = 0
         data_ultimo_acquisto = ""
         data_ultima_vendita = ""
         prezzo_vendita = []
@@ -108,9 +110,6 @@ class StatisticheMagazzino(GladeWidget):
                     prezzo_vendita.append(rm.valore_unitario_netto)
                 else:
                     prezzo_acquisto.append(rm.valore_unitario_netto)
-
-                quantita_acquistata= 0
-                quantita_venduta = 0
                 if tm.segnoOperazione == "-":
                     quantita_venduta += rm.quantita *rm.moltiplicatore
                 else:
@@ -193,7 +192,7 @@ class StatisticheMagazzino(GladeWidget):
             #print "IIIIIIIIIIIIIII", i
             id = i["id"][0]
             codice = i["codice"]
-            denominazione = i["denominazione"]
+            denominazione = str(i["denominazione"]).replace(";"," ")
             colore = i["colore"]
             anno = i["anno"]
             gruppoTaglia = i["gruppoTaglia"]
