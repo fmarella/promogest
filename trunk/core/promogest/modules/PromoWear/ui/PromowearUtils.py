@@ -172,7 +172,8 @@ def leggiArticoloPromoWear(id, full=False):
                     "idStagione": _idStagione,
                     "stagione": _stagione,
                     "idGenere": _idGenere,
-                    "genere": _genere}
+                    "genere": _genere,
+                    "daoArticolo":daoArticolo}
     return articleDict
 
 def leggiListino(idListino, idArticolo=None):

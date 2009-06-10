@@ -99,7 +99,8 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
                 "percentualeAliquotaIva": _percentualeAliquotaIva,
                 "idUnitaBase": _idUnitaBase,
                 "unitaBase": _unitaBase,
-                "quantita_minima": _quantita_minima}
+                "quantita_minima": _quantita_minima,
+                "daoArticolo":daoArticolo}
     return artiDict
 
 
