@@ -67,6 +67,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
     _unitaBase = ''
     _quantita_minima = ''
     artiDict = {}
+    daoArticolo = None
     if id is not None:
         if "PromoWear" in Environment.modulesList:
             from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
