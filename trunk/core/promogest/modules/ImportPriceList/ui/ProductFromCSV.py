@@ -76,7 +76,7 @@ class ProductFromCsv(object):
             try:
                 self.daoArticolo = Articolo().select(codiceEM=self.codice_articolo)[0]
             except:
-                pass
+                print "CODICE %s NON TROVATO" %self.codice_articolo
 
         elif self.codice_barre_articolo:
             daoCodiceABarre = CodiceABarreArticolo().select(codiceEM=self.codice_barre_articolo)
@@ -84,10 +84,10 @@ class ProductFromCsv(object):
                 self.daoArticolo = Articolo().getRecord(id=daoCodiceABarre[0].id_articolo)
 
         elif self.codice_fornitore:
-            daoFornitura =Fornitura().select(codiceArticoloFornitoreEM=self.codice_fornitore)
+            daoFornitura = Fornitura().select(codiceArticoloFornitoreEM=self.codice_fornitore)
             if len(daoFornitura) == 1:
                 self.daoArticolo = Articolo().getRecord(id=daoFornitura[0].id_articolo)
-        else:
+        if not self.daoArticolo:
             self.daoArticolo = Articolo()
         if "PromoWear" in Environment.modulesList:
             if self.codice_padre and self.codice_articolo:
@@ -105,6 +105,7 @@ class ProductFromCsv(object):
             elif not self.codice_padre and self.codice_articolo:
                 print "ARTICOLO NORMALE"
                 self.articolopromoWear = ""
+
         self.fillDaos()
 
     def addTagliaColoreData(self, articolo):

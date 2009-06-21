@@ -793,7 +793,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             program_launch = Environment.conf.VenditaDettaglio.driver_command
             program_params = (' ' + filescontrino + ' ' +
                               Environment.conf.VenditaDettaglio.serial_device)
-
+            print "SEITUTUTUTTUTUTTUTUUTTUTTUTUTUTTUTTUTU", filescontrino
             if os.name == 'nt':
                 exportingProcessPid = os.spawnl(os.P_NOWAIT, program_launch, program_params)
                 id, ret_value = os.waitpid(exportingProcessPid, 0)
@@ -808,6 +808,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         # Elimino il file
         os.remove(filescontrino)
+
         if ret_value != 0:
             string_message = ''
             for s in message:
@@ -863,6 +864,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         for riga in righe:
             quantita = abs(riga.quantita)
+            print "QUANTITA", quantita
             if quantita != 1:
                 # quantita' non unitaria
                 stringa = '000000000000000000%09d00\r\n' % (quantita * 1000)
@@ -889,6 +891,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                 stringa = '07%-16s%09.2f00\r\n' % ('sconto', sconto.valore)
                             else:
                                 stringa = '06%-16s%09.2f00\r\n' % ('sconto', sconto.valore * quantita)
+                            
                             f.write(stringa)
             else:
                 # per i resi, nello scontrino, si scrive direttamente il prezzo scontato (limitazione cassa)
@@ -984,6 +987,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         # Elimino il file
         os.remove(filesToSend)
+        #print "VEDIAMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", filesToSend
         if ret_value != 0:
             string_message = ''
             for s in message:
