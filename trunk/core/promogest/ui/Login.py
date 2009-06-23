@@ -42,9 +42,6 @@ from sqlalchemy.orm import *
 from promogest.lib import feedparser
 
 windowGroup = []
-#statusIcon = gtk.StatusIcon()
-#statusIcon.set_from_file(Environment.conf.guiDir + 'logo_promogest_piccolo.png')
-#statusIcon.set_tooltip('Promogest, il Gestionale open source per la tua azienda')
 visible = 1
 blink = 0
 screens = []
@@ -135,6 +132,12 @@ class Login(GladeApp):
         self.modules = {}
         GladeApp.__init__(self, 'login_window')
         Environment.exceptionHandler = GtkExceptionHandler()
+
+        self.draw()
+        self.getTopLevel().show_all()
+
+
+    def draw(self):
         model = gtk.ListStore(str, str)
         model.clear()
         usrs = User().select(batchSize = None)
@@ -146,7 +149,7 @@ class Login(GladeApp):
         if Environment.engine.name == "sqlite": #forzo lo splash per lite
             fileSplashImage = "gui/splash_pg2_lite.png"
         else:
-            fileSplashImage=self.randomSplash() #splash random 
+            fileSplashImage=self.randomSplash() #splash random
         self.splash_image.set_from_file(fileSplashImage)
         dateTimeLabel = datetime.datetime.now().strftime('%d/%m/%Y  %H:%M')
         self.date_label.set_text(dateTimeLabel)
@@ -174,7 +177,6 @@ class Login(GladeApp):
         self.username_comboxentry.grab_focus()
         data = datetime.datetime.now()
         self.anno_lavoro_spinbutton.set_value(data.year)
-        self.getTopLevel().show_all()
 
     def randomSplash(self):
         """
@@ -206,27 +208,7 @@ class Login(GladeApp):
         """
         Help button, open sendmail widget
         """
-        engine = create_engine('sqlite:////home/mentore/pg2_work/ciccio_db')
-        # create MetaData
-        meta2 = MetaData()
-        # bind to an engine
-        meta2.bind = engine
-
-        prova = []
-        newmetadata = Environment.params['metadata']
-#        print newmetadata.tables
-        for t in newmetadata.sorted_tables:
-            print t.__dict__
-            t.__dict__['metadata'] = meta2
-            t.__dict__['schema'] = ""
-            t.__dict__['fullname'] = t.__dict__['fullname'].split(".")[1]
-        for g in newmetadata.sorted_tables:
-            print g.__dict__
-            t.create_all(meta2, checkfirst=True)
-#        newmetadata.create_all(checkfirst=True)
-#        print dir(Environment.params["metadata"])
-#        print Environment.params["metadata"].tables
-#        sendemail = SendEmail()
+        sendemail = SendEmail()
 
     def on_button_login_clicked(self, button=None):
         """
@@ -420,7 +402,7 @@ class Login(GladeApp):
                                                     'type': module.VIEW_TYPE[0],
                                                     'module_dir': "%s" % (m_str),
                                                     'guiDir':m.GUI_DIR
-                                }
+}
             print "LISTA DEI MODULI CARICATI E FUNZIONANTI", repr(Environment.modulesList)
             self.groupModulesByType()
 
