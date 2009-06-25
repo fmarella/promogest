@@ -11,7 +11,7 @@ import os
 import gtk
 import gobject
 import datetime
-
+import string
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport,  AnagraficaEdit, AnagraficaLabel
 
 from promogest import Environment
@@ -69,14 +69,22 @@ class AnagraficaListiniArticoli(Anagrafica):
             prezzo_dettaglio = mN(str(d.prezzo_dettaglio)) or 0
             sconto_dettaglio = []
             for sconto_det in d.sconto_vendita_dettaglio:
-                sconto_dettaglio.append(mN(sconto_det) or 0)
+                sconto_dettaglio.append(str(mN(str(sconto_det.valore))) or 0)
+            sconto_dettagliostr = string.join( sconto_dettaglio, '' )
             #sconto_dettaglio = mN(d.sconto_vendita_dettaglio) or 0
             prezzo_ingrosso = mN(str(d.prezzo_ingrosso)) or 0
             sconto_ingrosso = []
             for sconto_ing in d.sconto_vendita_ingrosso:
-                sconto_ingrosso.append(mN(str(sconto_ing)) or 0)
+                sconto_ingrosso.append(str(mN(str(sconto_ing.valore))) or 0)
+            sconto_ingrossostr = string.join( sconto_ingrosso, '' )
+            if sconto_dettagliostr == "[]":
+                sconto_dettagliostr == ""
+            if sconto_ingrossostr == "[]":
+                sconto_ingrossostr = ""
+
             #sconto_ingrosso = mN(d.sconto_vendita_ingrosso[0]) or 0
-            datalist=[denominazione,codice_articolo,articolo,data,prezzo_dettaglio,sconto_dettaglio,prezzo_ingrosso,sconto_ingrosso]
+            datalist=[denominazione,codice_articolo,articolo,data,prezzo_dettaglio,
+                        sconto_dettagliostr,prezzo_ingrosso,sconto_ingrossostr]
             rowlist.append(datalist)
         return rowlist
 
