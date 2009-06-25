@@ -2455,3 +2455,7 @@ def fenceDialog():
     dialog.set_image(button)
     response = dialog.run()
     dialog.destroy()
+
+def tempo():
+    print datetime.datetime.now()
+    return ""

@@ -8,34 +8,12 @@
 import locale
 from config import Config
 import gtk
-#import pickle
 import os
 import shutil
 import glob
 import getopt, sys
 from sqlalchemy import *
 from sqlalchemy.orm import *
-
-#from sqlalchemy.interfaces import ConnectionProxy
-#import time
-#import logging
-
-#logging.basicConfig()
-#logger = logging.getLogger("myapp.sqltime")
-#logger.setLevel(logging.DEBUG)
-
-#class TimerProxy(ConnectionProxy):
-    #def cursor_execute(self, execute, cursor, statement, parameters, context, executemany):
-        #now = time.time()
-        #try:
-            #return execute(cursor, statement, parameters, context)
-        #finally:
-            #total = time.time() - now
-            #if "UPDATE" in statement or "INSERT" in statement or "DELETE" in statement:
-                ##print "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", statement
-                #logger.info("Query: %s" % statement)
-                #teeeeeees = logger.info("Query: %s" % statement)
-                #logger.info("Total Time: %f" % total)
 
 
 PRODOTTO = "PromoTux - Virtual Company"

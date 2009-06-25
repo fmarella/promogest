@@ -19,6 +19,7 @@ from Cliente import Cliente
 from Fornitura import Fornitura
 from Operazione import Operazione
 from ScontoFornitura import ScontoFornitura
+from promogest.ui.utils import *
 
 class TestataMovimento(Dao):
 
@@ -114,10 +115,35 @@ class TestataMovimento(Dao):
             #'idArticolo': testata_movimento.c.id_articolo == v  ARRIVANO QUI TRAMITE RIGA - RIGA DOCUMENTO
         return  dic[k]
 
+    def righeMovimentoDel(self,id=None):
+        """
+        Cancella le righe associate ad un documento
+        """
+        #from promogest.dao.RigaMovimento import RigaMovimento
+        if "SuMisura" in modulesList:
+            from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
+        row = RigaMovimento().select(idTestataMovimento= id,
+                                    offset = None,
+                                    batchSize = None,
+                                    orderBy="id_testata_movimento")
+        if row:
+            for r in row:
+                if "SuMisura" in modulesList:
+                    mp = MisuraPezzo().select(idRiga=r.id)
+                    if mp:
+                        for m in mp:
+                            params['session'].delete(m)
+                        params["session"].commit()
+                params['session'].delete(r)
+            params["session"].commit()
+            return True
+
+
 
     def persist(self):
         """cancellazione righe associate alla testata
             conn.execStoredProcedure('RigheMovimentoDel',(self.id, ))"""
+        print "DENTRO IL TESTATA MOVIMENTO", tempo()
         if not self.numero:
             valori = numeroRegistroGet(tipo="Movimento", date=self.data_movimento)
             self.numero = valori[0]
@@ -125,7 +151,9 @@ class TestataMovimento(Dao):
         params["session"].add(self)
         params["session"].commit()
         if self.righeMovimento:
-            righeMovimentoDel(id=self.id)
+            print "Prima del modivmentodel", tempo()
+            self.righeMovimentoDel(id=self.id)
+            print "DOPO modivmentodel", tempo()
             for riga in self.righeMovimento:
                 if "RigaDocumento" in str(riga.__module__):
                     riga.persist()
@@ -136,6 +164,7 @@ class TestataMovimento(Dao):
                     riga.id_testata_movimento = self.id
                     #salvataggio riga
                     riga.persist()
+                    print "DOPO il persist della riga", tempo()
                     if self.id_fornitore is not None and riga.id_articolo:
                         """aggiornamento forniture cerca la fornitura relativa al fornitore
                             con data <= alla data del movimento"""
@@ -146,6 +175,7 @@ class TestataMovimento(Dao):
                                                     orderBy = 'data_prezzo DESC',
                                                     offset = None,
                                                     batchSize = None)
+                        print "DOPO dopo FORS", tempo()
                         daoFornitura = None
                         if len(fors) > 0:
                             if fors[0].data_prezzo == self.data_movimento:
@@ -190,6 +220,7 @@ class TestataMovimento(Dao):
                         daoFornitura.sconti = sconti
                         params["session"].add(daoFornitura)
                         params["session"].commit()
+                print "DOPO il for generale di riga movimento", tempo()
             self.__righeMovimento = []
             params["session"].flush()
 

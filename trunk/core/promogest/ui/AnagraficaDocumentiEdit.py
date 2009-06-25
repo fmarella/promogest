@@ -452,11 +452,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.id_vettore_customcombobox.set_sensitive(False)
             self.porto_combobox.set_sensitive(False)
 
-        self.importo_da_ripartire_entry.set_text(str(self.dao.costo_da_ripartire or 0))
-        if (self.dao.ripartire_importo is not None):
-            self.ripartire_importo_checkbutton.set_active(self.dao.ripartire_importo)
-
-
         self.totale_colli_entry.set_text(str(self.dao.totale_colli or 0))
         self.totale_peso_entry.set_text(str(self.dao.totale_peso or 0))
         self.sconti_testata_widget.setValues(self.dao.sconti, self.dao.applicazione_sconti)
@@ -782,11 +777,7 @@ del documento.
             #righe[i]=daoRiga
             righeDocumento.append(daoRiga)
         self.dao.righeDocumento = righeDocumento
-        #FIXME : controllareee
-        self.dao.removeDividedCost()
-        self.dao.costo_da_ripartire = self.importo_da_ripartire_entry.get_text()
 
-        self.dao.ripartire_importo = self.ripartire_importo_checkbutton.get_active()
         if "Pagamenti" in Environment.modulesList:
             AnagraficadocumentiPagamentExt.saveScadenze(self)
 
@@ -810,14 +801,6 @@ del documento.
         self.dao.costo_da_ripartire = Decimal(self.importo_da_ripartire_entry.get_text())
 
         self.importo_sovrapprezzo_label.set_text(str((mN(self.dao.costo_da_ripartire) or 0)/self.dao.totalConfections))
-
-    def on_ripartire_importo_checkbutton_toggled(self, checkbutton):
-        self.dao.ripartire_importo = self.ripartire_importo_checkbutton.get_active()
-        if self.dao.ripartire_importo == True:
-            self.dao.addDividedCost()
-        else:
-            self.dao.removeDividedCost()
-        self._refresh()
 
     def on_righe_treeview_row_activated(self, treeview, path, column):
         """ riporta la riga selezionata in primo piano per la modifica"""

@@ -20,7 +20,7 @@ from Multiplo import Multiplo
 from Stoccaggio import Stoccaggio
 from DaoUtils import scontiRigaMovimentoDel
 from Riga import Riga
-from promogest.ui.utils import getScontiFromDao, getStringaSconti
+from promogest.ui.utils import getScontiFromDao, getStringaSconti, tempo
 
 if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     #from promogest.modules.SuMisura.data.SuMisuraDb import *
@@ -265,15 +265,16 @@ class RigaMovimento(Dao):
         params["session"].add(self)
         params["session"].commit()
         #creazione stoccaggio se non gia' presente
+        print "DOPO Commit Riga movimento", tempo()
         stoccato = (Stoccaggio().count(idArticolo=self.id_articolo,
                                                 idMagazzino=self.id_magazzino) > 0)
-        if not(stoccato):
+        if not stoccato:
             daoStoccaggio = Stoccaggio()
             daoStoccaggio.id_articolo = self.id_articolo
             daoStoccaggio.id_magazzino = self.id_magazzino
             params["session"].add(daoStoccaggio)
             params["session"].commit()
-
+        print "DOPO Stoccato", tempo()
         if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
         #if self.__coeficente_noleggio and self.__prezzo_acquisto_noleggio:
             nr = NoleggioRiga()
@@ -286,15 +287,16 @@ class RigaMovimento(Dao):
                 nr.isrent = False
             nr.id_riga = self.id
             nr.persist()
-
+        print "Prima di scontiRigaMovimentoDel", tempo()
         scontiRigaMovimentoDel(id=self.id)
+        print "Dopo di scontiRigaMovimentoDel", tempo()
         if self.scontiRigheMovimento:
             for value in self.scontiRigheMovimento:
                 value.id_riga_movimento = self.id
                 value.persist()
                 #params["session"].add(value)
             #params["session"].commit()
-
+        print "DOPO sconti riga movimento persist", tempo()
         #print "MAAAAAAAAAAAAAAAAAAA",modulesList
         if "SuMisura" in modulesList:
             #try:
