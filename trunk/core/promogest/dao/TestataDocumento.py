@@ -26,7 +26,7 @@ from Riga import Riga
 from ScontoRigaMovimento import ScontoRigaMovimento
 from TestataDocumentoScadenza import TestataDocumentoScadenza
 
-from DaoUtils import *
+#from DaoUtils import *
 from decimal import *
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
@@ -329,20 +329,20 @@ class TestataDocumento(Dao):
         params["session"].add(self)
         params["session"].commit()
 
-        print "INIZIO ",tempo()
-        scontiTestataDocumentoDel(id=self.id)
-        tempo()
-        testataDocumentoScadenzaDel(id=self.id)
-        tempo()
-        righeDocumentoDel(id=self.id)
-        tempo()
+        print "INIZIO SALVATAGGIO ",tempo()
+        self.scontiTestataDocumentoDel(id=self.id)
+        #tempo()
+        self.testataDocumentoScadenzaDel(id=self.id)
+        #tempo()
+        self.righeDocumentoDel(id=self.id)
+        #tempo()
         #verifica se sono presenti righe di movimentazione magazzino
         contieneMovimentazione = self.contieneMovimentazione(righe=self.righeDocumento)
-        tempo()
+        #tempo()
         #cerco le testate movimento associate al documento
         #FIXME: se ne trovo piu' di una ? (ad esempio se il documento e' in realta' un cappello)
         res = TestataMovimento().select(idTestataDocumento = self.id,batchSize=None)
-        print "DOPO RES ",res,  tempo()
+        #print "DOPO RES ",res,  tempo()
         #Tutto nuovo non ci sono teste movimento relate a questa testata documento
         if not res:
             #se però c'è movimentazione vuol dire che ha un movimento abbinato
@@ -365,7 +365,7 @@ class TestataDocumento(Dao):
             DaoTestataMovimento = res[0] #TestataMovimento().getRecord(id=res[0].id)
             if not contieneMovimentazione:
                 #devo eliminare il movimento interamente, visto che non ci sono righe movimento
-                righeMovimentoDel(id=DaoTestataMovimento.id)
+                #self.righeMovimentoDel(id=DaoTestataMovimento.id)
                 DaoTestataMovimento.delete()
                 DaoTestataMovimento = None
             else:
@@ -382,16 +382,16 @@ class TestataDocumento(Dao):
             # ci sono piu' movimenti collegati al documento
             # FIXME: che fare ?
             raise Exception, "ATTENZIONE CI SONO PIU' MOVIMENTI LEGATI AD UN DOCUMENTO"
-        print "DOPO if di check di RES ", tempo()
+        #print "DOPO if di check di RES ", tempo()
         righeMovimento = []
         righeDocumento = []
         scontiRigaMovimento = []
         if self.righeDocumento:  #trattiamo le righe documento e movimento
-            print "Prima del FOR delle RIGHE ", tempo()
+            #print "Prima del FOR delle RIGHE ", tempo()
             for row in self.righeDocumento:
                 if (row.id_articolo is not None and contieneMovimentazione):
                     #salvo tra le righe movimenti
-                    print "RIGHE ",row.id_articolo, tempo()
+                    #print "RIGHE ",row.id_articolo, tempo()
                     daoRigaMovimento = RigaMovimento()
                     #daoRigaMovimento.id_testata_movimento = DaoTestataMovimento.id
                     daoRigaMovimento.valore_unitario_netto = row.valore_unitario_netto
@@ -434,7 +434,7 @@ class TestataDocumento(Dao):
                     row.id_testata_documento = self.id
                     righeMovimento.append(row)
 
-        print "DOPO IL FOR", tempo()
+        #print "DOPO IL FOR", tempo()
         if (DaoTestataMovimento is not None):
             if righeMovimento:
                 ##print "SE ARRIVI QUI DOVREBBE ANDARE TUTTO BENE" , righeMovimento
@@ -443,14 +443,14 @@ class TestataDocumento(Dao):
         else:
             for riga in righeMovimento:
                 riga.persist()
-        print "DOPO IL PERSIST DI RIGA", tempo()
+        #print "DOPO IL PERSIST DI RIGA", tempo()
 
         if self.__ScadenzeDocumento:
             for scad in self.__ScadenzeDocumento:
                 scad._resetId()
                 scad.id_testata_documento = self.id
                 scad.persist()
-        print "DOPO SCADENZE", tempo()
+        #print "DOPO SCADENZE", tempo()
 
         if self.__data_fine_noleggio and self.__data_inizio_noleggio:
             tn = TestataGestioneNoleggio()
@@ -458,14 +458,79 @@ class TestataDocumento(Dao):
             tn.data_inizio_noleggio = self.data_inizio_noleggio
             tn.data_fine_noleggio = self.data_fine_noleggio
             tn.persist()
-        print "DOPO FINE NOLEGGIO", tempo()
+        #print "DOPO FINE NOLEGGIO", tempo()
 
         if self.scontiSuTotale:
-            scontiTestataDocumentoDel(id=self.id)
+            self.scontiTestataDocumentoDel(id=self.id)
             for scontisutot in self.scontiSuTotale:
                 scontisutot.id_testata_documento = self.id
                 scontisutot.persist()
-        print "FINE", tempo()
+        print "FINE SALVATAGGIO", tempo()
+
+
+    def righeDocumentoDel(self, id=None):
+        """
+        Cancella le righe associate ad un documento
+        """
+        row = RigaDocumento().select(idTestataDocumento= id,
+                                                    offset = None,
+                                                    batchSize = None)
+        if row:
+            for r in row:
+                if "SuMisura" in modulesList:
+                    mp = MisuraPezzo().select(idRiga=r.id)
+                    if mp:
+                        for m in mp:
+                            params['session'].delete(m)
+                        params["session"].commit()
+                params['session'].delete(r)
+            params["session"].commit()
+            return True
+
+
+
+    def scontiTestataDocumentoDel(self,id=None):
+        """
+        Cancella gli sconti associati ad un documento
+        """
+        row = ScontoTestataDocumento().select(idScontoTestataDocumento= id,
+                                                        offset = None,
+                                                        batchSize = None,
+                                                        orderBy="id_testata_documento")
+        if row:
+            for r in row:
+                params['session'].delete(r)
+            params["session"].commit()
+            return True
+
+
+    def testataDocumentoScadenzaDel(self,id=None):
+        """
+        Cancella la scadenza documento associato ad un documento
+        """
+        row = TestataDocumentoScadenza().select(idTestataDocumentoScadenza= id,
+                                                                    offset = None,
+                                                                    batchSize = None,
+                                                                    orderBy="id_testata_documento")
+        for r in row:
+            params['session'].delete(r)
+        params["session"].commit()
+        return True
+
+    def scontiRigaDocumentoDel(self,id=None):
+        """
+        Cancella gli sconti legati ad una riga movimento
+        """
+        row = ScontoRigaDocumento().select(idRigaDocumento= id,
+                                                    offset = None,
+                                                    batchSize = None)
+        if row:
+            for r in row:
+                params['session'].delete(r)
+            params["session"].commit()
+            return True
+
+
 
     def _al(self):
         if self.AL: return self.AL.denominazione

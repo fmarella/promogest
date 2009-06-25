@@ -72,6 +72,82 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
         lista.append(diz)
     return lista
 
+def articoloStatistiche(arti=None, righe=None):
+
+    prezzo_ultimo_vendita = 0
+    prezzo_ultimo_acquisto = 0
+    quantita_acquistata= 0
+    quantita_venduta = 0
+    data_ultimo_acquisto = ""
+    data_ultima_vendita = ""
+    prezzo_vendita = []
+    prezzo_acquisto = []
+    if arti:
+        arti = arti
+    else:
+        arti = {}
+    if righe:
+        new_data =datetime.datetime(2003, 7, 14, 12, 30)
+        for riga in righe:
+            rm = riga[0]
+            tm = riga[1]
+            data_movimento=tm.data_movimento
+            if data_movimento >= new_data:
+                new_data = data_movimento
+                if tm.segnoOperazione == "-":
+                    prezzo_ultimo_vendita = rm.valore_unitario_netto
+                    data_ultima_vendita = new_data
+                else:
+                    prezzo_ultimo_acquisto = rm.valore_unitario_netto
+                    data_ultimo_acquisto = new_data
+            if tm.segnoOperazione == "-":
+                prezzo_vendita.append(rm.valore_unitario_netto)
+            else:
+                prezzo_acquisto.append(rm.valore_unitario_netto)
+            if tm.segnoOperazione == "-":
+                quantita_venduta += rm.quantita *rm.moltiplicatore
+            else:
+                quantita_acquistata += rm.quantita *rm.moltiplicatore
+            giacenza = abs(quantita_acquistata-quantita_venduta)
+
+        if prezzo_acquisto:
+            media_acquisto = sum(prezzo_acquisto) / len(prezzo_acquisto)
+        else:
+            media_acquisto = 0
+        if prezzo_vendita:
+            media_vendita = sum(prezzo_vendita) / len(prezzo_vendita)
+        else:
+            media_vendita = 0
+        arti.update(prezzo_ultima_vendita = prezzo_ultimo_vendita,
+                    data_ultima_vendita = data_ultima_vendita,
+                    prezzo_ultimo_acquisto = prezzo_ultimo_acquisto,
+                    data_ultimo_acquisto = data_ultimo_acquisto,
+                    media_acquisto = media_acquisto,
+                    media_vendita = media_vendita,
+                    quantita_venduta = quantita_venduta,
+                    quantita_acquistata = quantita_acquistata,
+                    giacenza = giacenza,
+)
+    else:
+        arti.update(prezzo_ultima_vendita = 0,
+                data_ultima_vendita = data_ultima_vendita,
+                prezzo_ultimo_acquisto = 0,
+                data_ultimo_acquisto = data_ultimo_acquisto,
+                media_acquisto = 0,
+                media_vendita = 0,
+                quantita_venduta = 0,
+                quantita_acquistata = 0,
+                giacenza = 0,
+)
+    return arti
+
+
+
+
+
+
+
+
 def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None, allMag=None):
     """
     Calcola la giacenza insieme a giacenzaSel

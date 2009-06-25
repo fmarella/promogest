@@ -20,6 +20,8 @@ from Fornitura import Fornitura
 from Operazione import Operazione
 from ScontoFornitura import ScontoFornitura
 from promogest.ui.utils import *
+if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
+    from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
 
 class TestataMovimento(Dao):
 
@@ -120,12 +122,10 @@ class TestataMovimento(Dao):
         Cancella le righe associate ad un documento
         """
         #from promogest.dao.RigaMovimento import RigaMovimento
-        if "SuMisura" in modulesList:
-            from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
         row = RigaMovimento().select(idTestataMovimento= id,
                                     offset = None,
-                                    batchSize = None,
-                                    orderBy="id_testata_movimento")
+                                    batchSize = None
+)
         if row:
             for r in row:
                 if "SuMisura" in modulesList:
@@ -136,8 +136,7 @@ class TestataMovimento(Dao):
                         params["session"].commit()
                 params['session'].delete(r)
             params["session"].commit()
-            return True
-
+        return True
 
 
     def persist(self):
@@ -151,9 +150,9 @@ class TestataMovimento(Dao):
         params["session"].add(self)
         params["session"].commit()
         if self.righeMovimento:
-            print "Prima del modivmentodel", tempo()
+            print "PRIMA DI CANCELLA RIGHE MOV", tempo()
             self.righeMovimentoDel(id=self.id)
-            print "DOPO modivmentodel", tempo()
+            print "DOPO CANCELLA RIGHE MOV", tempo()
             for riga in self.righeMovimento:
                 if "RigaDocumento" in str(riga.__module__):
                     riga.persist()
@@ -164,7 +163,7 @@ class TestataMovimento(Dao):
                     riga.id_testata_movimento = self.id
                     #salvataggio riga
                     riga.persist()
-                    print "DOPO il persist della riga", tempo()
+                    #print "DOPO il persist della riga", tempo()
                     if self.id_fornitore is not None and riga.id_articolo:
                         """aggiornamento forniture cerca la fornitura relativa al fornitore
                             con data <= alla data del movimento"""
@@ -175,17 +174,17 @@ class TestataMovimento(Dao):
                                                     orderBy = 'data_prezzo DESC',
                                                     offset = None,
                                                     batchSize = None)
-                        print "DOPO dopo FORS", tempo()
+                        #print "DOPO dopo FORS", tempo()
                         daoFornitura = None
-                        if len(fors) > 0:
+                        if fors:
                             if fors[0].data_prezzo == self.data_movimento:
                                 # ha trovato una fornitura con stessa data: aggiorno questa fornitura
-                                print "trovato una fornitura con stessa data: aggiorno questa fornitura"
+                                print "TROVATO UNA FORNITURA CON STESSA DATA: AGGIORNO QUESTA FORNITURA"
                                 daoFornitura = Fornitura().getRecord(id=fors[0].id)
                             else:
                                 """creo una nuova fornitura con data_prezzo pari alla data del movimento
                                     copio alcuni dati dalla fornitura piu' prossima"""
-                                print "creo una nuova fornitura con data_prezzo pari alla data del movimento opio alcuni dati dalla fornitura piu' prossima"
+                                print "CREO UNA NUOVA FORNITURA CON DATA_PREZZO PARI ALLA DATA DEL MOVIMENTO COPIO ALCUNI DATI DALLA FORNITURA PIU' PROSSIMA"
                                 daoFornitura = Fornitura()
                                 daoFornitura.scorta_minima = fors[0].scorta_minima
                                 daoFornitura.id_multiplo = fors[0].id_multiplo
@@ -193,7 +192,7 @@ class TestataMovimento(Dao):
                                 daoFornitura.fornitore_preferenziale = fors[0].fornitore_preferenziale
                         else:
                             # nessuna fornitura utilizzabile, ne creo una nuova (alcuni dati mancheranno)
-                            print "nessuna fornitura utilizzabile, ne creo una nuova (alcuni dati mancheranno)"
+                            print "NESSUNA FORNITURA UTILIZZABILE, NE CREO UNA NUOVA (ALCUNI DATI MANCHERANNO)"
                             daoFornitura = Fornitura()
 
                         daoFornitura.id_fornitore = self.id_fornitore
@@ -219,10 +218,10 @@ class TestataMovimento(Dao):
 
                         daoFornitura.sconti = sconti
                         params["session"].add(daoFornitura)
-                        params["session"].commit()
-                print "DOPO il for generale di riga movimento", tempo()
+                    params["session"].commit()
+                #print "DOPO il for generale di riga movimento", tempo()
             self.__righeMovimento = []
-            params["session"].flush()
+            #params["session"].flush()
 
 testata_mov=Table('testata_movimento', params['metadata'],schema = params['schema'],autoload=True)
 clie = Table('cliente',params['metadata'],schema = params['schema'],autoload=True)

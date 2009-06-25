@@ -18,7 +18,6 @@ from UnitaBase import UnitaBase
 from Listino import Listino
 from Multiplo import Multiplo
 from Stoccaggio import Stoccaggio
-from DaoUtils import scontiRigaMovimentoDel
 from Riga import Riga
 from promogest.ui.utils import getScontiFromDao, getStringaSconti, tempo
 
@@ -260,12 +259,26 @@ class RigaMovimento(Dao):
         dic= {  'idTestataMovimento' :riga_mov.c.id_testata_movimento ==v,}
         return  dic[k]
 
+    def scontiRigaMovimentoDel(self,id=None):
+        """
+        Cancella gli sconti legati ad una riga movimento
+        """
+        row = ScontoRigaMovimento().select(idRigaMovimento= id,
+                                            offset = None,
+                                            batchSize = None)
+        if row:
+            for r in row:
+                params['session'].delete(r)
+            params["session"].commit()
+            return True
+
+
     def persist(self):
 
         params["session"].add(self)
         params["session"].commit()
         #creazione stoccaggio se non gia' presente
-        print "DOPO Commit Riga movimento", tempo()
+        #print "DOPO Commit Riga movimento", tempo()
         stoccato = (Stoccaggio().count(idArticolo=self.id_articolo,
                                                 idMagazzino=self.id_magazzino) > 0)
         if not stoccato:
@@ -274,7 +287,7 @@ class RigaMovimento(Dao):
             daoStoccaggio.id_magazzino = self.id_magazzino
             params["session"].add(daoStoccaggio)
             params["session"].commit()
-        print "DOPO Stoccato", tempo()
+        #print "DOPO Stoccato", tempo()
         if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
         #if self.__coeficente_noleggio and self.__prezzo_acquisto_noleggio:
             nr = NoleggioRiga()
@@ -287,16 +300,16 @@ class RigaMovimento(Dao):
                 nr.isrent = False
             nr.id_riga = self.id
             nr.persist()
-        print "Prima di scontiRigaMovimentoDel", tempo()
-        scontiRigaMovimentoDel(id=self.id)
-        print "Dopo di scontiRigaMovimentoDel", tempo()
+        #print "Prima di scontiRigaMovimentoDel", tempo()
+        self.scontiRigaMovimentoDel(id=self.id)
+        #print "Dopo di scontiRigaMovimentoDel", tempo()
         if self.scontiRigheMovimento:
             for value in self.scontiRigheMovimento:
                 value.id_riga_movimento = self.id
                 value.persist()
                 #params["session"].add(value)
             #params["session"].commit()
-        print "DOPO sconti riga movimento persist", tempo()
+        #print "DOPO sconti riga movimento persist", tempo()
         #print "MAAAAAAAAAAAAAAAAAAA",modulesList
         if "SuMisura" in modulesList:
             #try:
