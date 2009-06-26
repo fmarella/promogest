@@ -465,6 +465,7 @@ class TestataDocumento(Dao):
             for scontisutot in self.scontiSuTotale:
                 scontisutot.id_testata_documento = self.id
                 scontisutot.persist()
+        #params["session"].flush()
         print "FINE SALVATAGGIO", tempo()
 
 

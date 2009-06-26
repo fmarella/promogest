@@ -339,7 +339,7 @@ tipo_eng = engine.name
 engine.echo = False
 meta = MetaData(engine)
     #Session = sessionmaker(bind=engine)
-Session = scoped_session(sessionmaker(bind=engine))
+Session = scoped_session(sessionmaker(bind=engine, autoflush=True))
 
 #meta = None
 #Session = scoped_session(sessionmaker(bind=engine))

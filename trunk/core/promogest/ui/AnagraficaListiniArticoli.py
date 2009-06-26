@@ -62,6 +62,7 @@ class AnagraficaListiniArticoli(Anagrafica):
         """
         rowlist=[]
         for d in data:
+            #print "DDDDDDDDDDDD", dir(d.arti), 
             denominazione = d.denominazione or ''
             codice_articolo = d.codice_articolo or ''
             articolo = d.articolo or ''
@@ -81,10 +82,14 @@ class AnagraficaListiniArticoli(Anagrafica):
                 sconto_dettagliostr == ""
             if sconto_ingrossostr == "[]":
                 sconto_ingrossostr = ""
-
+            categoria = d.arti.denominazione_categoria
+            famiglia = d.arti.denominazione_famiglia
+            percentuale_iva = d.percentuale_iva
             #sconto_ingrosso = mN(d.sconto_vendita_ingrosso[0]) or 0
             datalist=[denominazione,codice_articolo,articolo,data,prezzo_dettaglio,
-                        sconto_dettagliostr,prezzo_ingrosso,sconto_ingrossostr]
+                        sconto_dettagliostr,prezzo_ingrosso,sconto_ingrossostr,
+                        categoria, famiglia, percentuale_iva
+]
             rowlist.append(datalist)
         return rowlist
 
@@ -99,9 +104,12 @@ class AnagraficaListiniArticoli(Anagrafica):
         data_details['currentName'] = 'Listino_Articoli_aggiornato_al_'+curr_date+'.xml'
 
         FieldsList = ['Listino','Codice Articolo','Articolo','Data Variazione','Prezzo Dettaglio', 'Sconto Dettaglio',
-                            'Prezzo Ingrosso', 'Sconto Ingrosso']
+                            'Prezzo Ingrosso', 'Sconto Ingrosso', "Categoria", "Famiglia", "Iva"
+]
         colData= [0,0,0,1,2,0,2,0]
-        colWidth_Align = [('130','l'),('100','c'),('250','l'),('100','c'),('100','r'),('100','r'),('100','r'),('100','r')]
+        colWidth_Align = [('130','l'),('100','c'),('250','l'),('100','c'),('100','r'),('100','r'),
+                            ('100','r'),('100','r'),('100','r'),('100','r'),('100','r')
+]
         data_details['XmlMarkup'] = (FieldsList, colData, colWidth_Align)
         return data_details
 
