@@ -82,9 +82,18 @@ class AnagraficaListiniArticoli(Anagrafica):
                 sconto_dettagliostr == ""
             if sconto_ingrossostr == "[]":
                 sconto_ingrossostr = ""
-            categoria = d.arti.denominazione_categoria
-            famiglia = d.arti.denominazione_famiglia
-            percentuale_iva = d.percentuale_iva
+            try:
+                categoria = d.arti.denominazione_categoria
+            except:
+                categoria = ""
+            try:
+                famiglia = d.arti.denominazione_famiglia
+            except:
+                famiglia =""
+            try:
+                percentuale_iva = d.percentuale_iva
+            except:
+                percentuale_iva =""
             #sconto_ingrosso = mN(d.sconto_vendita_ingrosso[0]) or 0
             datalist=[denominazione,codice_articolo,articolo,data,prezzo_dettaglio,
                         sconto_dettagliostr,prezzo_ingrosso,sconto_ingrossostr,
