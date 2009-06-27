@@ -323,38 +323,38 @@ class Login(GladeApp):
         client = pysvn.Client()
         client.update('./')
         return
-        #svndialog = GladeWidget('svnupdate_dialog', callbacks_proxy=self)
-        #svndialog.getTopLevel().set_transient_for(self.getTopLevel())
-        #encoding = locale.getlocale()[1]
-        #utf8conv = lambda x : unicode(x, encoding).encode('utf8')
-        #licenseText = ''
-        #textBuffer = svndialog.svn_textview.get_buffer()
-        #textBuffer.set_text(licenseText)
-        #svndialog.svn_textview.set_buffer(textBuffer)
-        #svndialog.getTopLevel().show_all()
-        #response = svndialog.svnupdate_dialog.run()
-        #if response == gtk.RESPONSE_OK:
-            #command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
-            #p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT)
-            #(stdin, stdouterr) = (p.stdin, p.stdout)
-            #for line in stdouterr.readlines():
-                #textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
-            #msg = """ Se è apparsa la dicitura "Estratta Revisione XXXX
-    #l'aggiornamento è riuscito, nel caso di messaggio fosse differente
-    #potete contattare l'assistenza tramite il numero verde 80034561
-    #o tramite email all'indirizzo info@promotux.it
+        svndialog = GladeWidget('svnupdate_dialog', callbacks_proxy=self)
+        svndialog.getTopLevel().set_transient_for(self.getTopLevel())
+        encoding = locale.getlocale()[1]
+        utf8conv = lambda x : unicode(x, encoding).encode('utf8')
+        licenseText = ''
+        textBuffer = svndialog.svn_textview.get_buffer()
+        textBuffer.set_text(licenseText)
+        svndialog.svn_textview.set_buffer(textBuffer)
+        svndialog.getTopLevel().show_all()
+        response = svndialog.svnupdate_dialog.run()
+        if response == gtk.RESPONSE_OK:
+            command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
+            p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+            (stdin, stdouterr) = (p.stdin, p.stdout)
+            for line in stdouterr.readlines():
+                textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
+            msg = """ Se è apparsa la dicitura "Estratta Revisione XXXX
+    l'aggiornamento è riuscito, nel caso di messaggio fosse differente
+    potete contattare l'assistenza tramite il numero verde 80034561
+    o tramite email all'indirizzo info@promotux.it
 
-        #Aggiornamento de|l Promogest2 terminato !!!
-        #Riavviare l'applicazione per rendere le modifiche effettive
-                    #"""
-            #dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   #gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   #gtk.MESSAGE_INFO,
-                                   #gtk.BUTTONS_OK,
-                                   #msg)
-            #dialog.run()
-            #dialog.destroy()
-            #svndialog.svnupdate_dialog.destroy()
+        Aggiornamento de|l Promogest2 terminato !!!
+        Riavviare l'applicazione per rendere le modifiche effettive
+                    """
+            dialog = gtk.MessageDialog(self.getTopLevel(),
+                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_INFO,
+                                   gtk.BUTTONS_OK,
+                                   msg)
+            dialog.run()
+            dialog.destroy()
+            svndialog.svnupdate_dialog.destroy()
 
     def groupModulesByType(self):
         """
