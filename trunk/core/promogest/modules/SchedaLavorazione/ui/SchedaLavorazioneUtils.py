@@ -313,7 +313,7 @@ def getPrezzoNetto(dao, parzialeNetto=None):
 def fillSchedaLavorazioneFromEmail(ui):
     text = []
     try:
-        email = file("/home/vete/Form ordine partecipazioni.eml","r")
+        email = file("/home/stampalux/Form ordine partecipazioni.eml","r")
         text = email.readlines()
 
         email.close()
@@ -333,7 +333,15 @@ def fillSchedaLavorazioneFromEmail(ui):
         elif campo == "Date":
             #Tue, 3 Mar 2009 22:03:38 +0100
             a = lista[1].strip().split(",")[1][0:-2].strip()
-            ui.data_presa_in_carico_entry.set_text(dateToString(datetime.datetime.strptime(a, "%d %b %Y")))
+            a = a.replace("May", "Mag")
+            a = a.replace("Jun", "Giu")
+            a = a.replace("Jul", "Lug")
+            a = a.replace("Aug", "Ago")
+            a = a.replace("Sep", "Set")
+            a = a.replace("Oct", "Ott")
+            a = a.replace("Dec", "Dic")
+            a = a.replace("Jan", "Gen")
+            ui.data_presa_in_carico_entry.set_text(dateToString(time.strptime(a, "%d %b %Y")))
         elif campo == "Nome_sposo":
             ui.nome_sposo_entry.set_text(lista[1].strip().upper())
         elif campo == "Cognome_sposo":

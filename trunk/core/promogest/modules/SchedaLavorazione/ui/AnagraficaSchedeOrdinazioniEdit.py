@@ -1006,8 +1006,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             bodypart = ",body="+ Environment.conf.SchedaLavorazione.body %(lui_e_lei,
                                                                 userid_cliente,
                                                                 passwd_cliente,
-                                                                password_sito,
-                                                                password_amici)
+                                                                password_sito)
             bodypart2 = Environment.conf.SchedaLavorazione.signature
             body = bodypart+bodypart2
 
