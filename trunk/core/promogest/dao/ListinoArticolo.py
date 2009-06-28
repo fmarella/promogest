@@ -149,9 +149,11 @@ class ListinoArticolo(Dao):
     applicazione_sconti_dettaglio = property(_getApplicazioneScontiDettaglio)
 
     def _getScontiVenditaIngrosso(self):
-        self.__dbScontiVenditaIngr = params['session'].query(ScontoVenditaIngrosso).filter_by(id_listino=self.id_listino,
-                                                                                            id_articolo=self.id_articolo,
-                                                                                            data_listino_articolo=self.data_listino_articolo).all()
+        self.__dbScontiVenditaIngr = params['session'].
+                                    query(ScontoVenditaIngrosso).
+                                    filter_by(id_listino=self.id_listino,
+                                            id_articolo=self.id_articolo,
+                                            data_listino_articolo=self.data_listino_articolo).all()
         self.__scontiVenditaIngr= self.__dbScontiVenditaIngr
         return self.__scontiVenditaIngr
 
