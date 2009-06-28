@@ -499,7 +499,7 @@ class Main(GladeWidget):
                 client.exception_style = 0
                 try:
                     client.update( '.' )
-                    msg = "TUTTO OK AGGIORNAMENTO EFFETTUATO"
+                    msg = "TUTTO OK AGGIORNAMENTO EFFETTUATO\n RIAVVIARE IL PROMOGEST"
                 except pysvn.ClientError, e:
                     # convert to a string
                     msg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
