@@ -375,6 +375,10 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             idArticolo = modelRow[1]
             denArticolo = modelRow[3]
             quantita = modelRow[5]
+            valore_unitario_lordo = mN(modelRow[6])
+            valore_unitario_netto = mN(modelRow[7])
+            totaleRiga = modelRow[8]
+            
         listinoSel = ListinoArticolo().select(idListino=self._id_listino,
                                             idArticolo=idArticolo,
                                             listinoAttuale=True,
@@ -403,8 +407,13 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         daoRiga.quantita = quantita
         daoRiga.id_multiplo = None
         daoRiga.moltiplicatore = 1
-        daoRiga.valore_unitario_lordo = listino.prezzo_dettaglio
-        daoRiga = getPrezzoNetto(daoRiga)
+        if rowArticolo:
+            daoRiga.valore_unitario_lordo = listino.prezzo_dettaglio
+            daoRiga = getPrezzoNetto(daoRiga)
+        elif modelRow:
+            daoRiga.valore_unitario_lordo = valore_unitario_lordo
+            daoRiga.valore_unitario_netto = valore_unitario_netto
+
         self.righeTEMP.append(daoRiga)
         #self.dao.righe.append(daoRiga)
 
@@ -425,6 +434,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             #if not self.scontiTEMP:
                 #self.scontiTEMP.append(self.altriDati["percentualeSconto"])
             for sconto in self.scontiTEMP:
+                print "TIPOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", tipo
                 if tipo == 'documento':
                     from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
                     scontoRiga = ScontoRigaDocumento()

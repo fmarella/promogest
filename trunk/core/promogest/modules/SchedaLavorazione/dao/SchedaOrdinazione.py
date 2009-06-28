@@ -198,15 +198,6 @@ class SchedaOrdinazione(Dao):
         self._data_ricevuta = value
     data_ricevuta = property(_get_data_ricevuta, _set_data_ricevuta)
 
-    #property da contatto scheda
-
-    #def _get_nome_contatto(self):
-        #if self.cont_sched: return self.cont_sched.referente
-        #else: return ""
-    #def _set_nome_contatto(self, value):
-        #self._nome_contatto = value
-    #nome_contatto = property(_get_nome_contatto, _set_nome_contatto)
-
     def _get_prima_email(self):
         if self._prima_email:
             return self._prima_email
@@ -531,22 +522,6 @@ class SchedaOrdinazione(Dao):
                 scont.id_scheda_ordinazione = self.id
                 #salvataggio sconto
                 scont.persist()
-
-        #if self.__promemoriaSchedaOrdinazione is not None:
-            #if self._data_consegna is None:
-                #for promemoria in self.__promemoriaSchedaOrdinazione:
-                    ##promemoria._resetId()
-                    #promemoria.id_scheda= self.id
-                    #promemoria.persist()
-            #else:
-                #print "DATA CONSEGNAAAAAAAAAAAAAAAAAAAAAAAAAAAA", str(datetime.date.today),self._data_consegna
-                #if str(datetime.date.today) <= self._data_consegna:
-                    #for promemoria in self.__promemoriaSchedaOrdinazione:
-                        ##promemoria._resetId()
-                        #promemoria.id_scheda= self.id
-                        #promemoria.persist()
-                #elif datetime.date.today > self._data_consegna:
-                    #self.__promemoriaSchedaOrdinazione = None
         params["session"].commit()
 
 
