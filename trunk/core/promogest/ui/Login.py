@@ -333,14 +333,20 @@ class Login(GladeApp):
             try:
                 import pysvn
                 client = pysvn.Client()
-                client.update('./')
+                client.exception_style = 0
+                try:
+                    client.update( '.' )
+                    msg = "TUTTO OK AGGIORNAMENTO EFFETTUATO"
+                except pysvn.ClientError, e:
+                # convert to a string
+                msg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
             except:
                 command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
                 p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT)
                 (stdin, stdouterr) = (p.stdin, p.stdout)
                 for line in stdouterr.readlines():
                     textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
-            msg = """ Se è apparsa la dicitura "Estratta Revisione XXXX
+                msg = """ Se è apparsa la dicitura "Estratta Revisione XXXX
     l'aggiornamento è riuscito, nel caso di messaggio fosse differente
     potete contattare l'assistenza tramite il numero verde 80034561
     o tramite email all'indirizzo info@promotux.it
