@@ -7,12 +7,10 @@
 # Author: vete <info@promotux.it>
 
 import gtk
-import gobject
 
 from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
 from promogest.modules.SchedaLavorazione.dao.ColoreStampa import ColoreStampa
 
 from promogest.ui.utils import *
@@ -48,7 +46,7 @@ class AnagraficaColoriStampa(Anagrafica):
 
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str)
+        self._treeViewModel = gtk.ListStore(object, str)
         treeview.set_model(self._treeViewModel)
 
         self.refresh()

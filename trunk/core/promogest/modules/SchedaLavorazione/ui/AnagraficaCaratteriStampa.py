@@ -7,12 +7,10 @@
 # Author: vete <info@promotux.it>
 
 import gtk
-import gobject
 
 from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
 from promogest.modules.SchedaLavorazione.dao.CarattereStampa import CarattereStampa
 
 from promogest.ui.utils import *
@@ -95,8 +93,8 @@ class AnagraficaCaratteriStampaDetail(AnagraficaDetail):
 
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
-                                anagrafica, \
-                                gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade', \
+                                anagrafica,
+                                gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade', 
                                 module=True)
 
     def setDao(self, dao):
@@ -128,7 +126,6 @@ class AnagraficaCaratteriStampaDetail(AnagraficaDetail):
 
         self.dao.denominazione= denominazione
         self.dao.persist()
-
 
     def deleteDao(self):
         self.dao.delete()

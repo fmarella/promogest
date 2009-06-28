@@ -7,9 +7,7 @@
 # Author:M3nt0r3  <m3nt0r3@gmail.com>
 #
 
-
-import gobject, os
-import pygtk
+import os
 import gtk
 import string, re, time, datetime, decimal
 from decimal import *
@@ -27,7 +25,7 @@ from promogest.dao.Articolo import Articolo
 
 def fillComboboxColoreStampa(combobox, filter=False):
     """
-    Crea l'elenco dei listini
+    Crea la combo dei colori per la stampa
     """
     model = gtk.ListStore(object, int, str)
     liss = ColoreStampa().select(denominazione=None,
@@ -52,13 +50,13 @@ def fillComboboxColoreStampa(combobox, filter=False):
 
 def fillComboboxCarattereStampa(combobox, filter=False):
     """
-    Crea l'elenco dei listini
+    Crea la combo dei caratteri per la stampa
     """
     model = gtk.ListStore(object, int, str)
-    liss = CarattereStampa().select(    denominazione=None,
-                                        orderBy = None,
-                                        offset = None,
-                                        batchSize = None)
+    liss = CarattereStampa().select(denominazione=None,
+                                    orderBy = None,
+                                    offset = None,
+                                    batchSize = None)
     if not filter:
         emptyRow = ''
     else:
@@ -74,6 +72,7 @@ def fillComboboxCarattereStampa(combobox, filter=False):
     combobox.set_model(model)
     if combobox.__class__ is gtk.ComboBoxEntry:
         combobox.set_text_column(2)
+
 
 def fillComboboxAssociazioneArticoli(combobox, search_string=None):
     """
@@ -104,6 +103,7 @@ def fillComboboxAssociazioneArticoli(combobox, search_string=None):
         combobox.set_active(1)
     return True
 
+
 def fetch_date(string):
     """
     This should return a string indicating a date in italian format (dd/mm/YYYY)
@@ -125,8 +125,8 @@ def fetch_date(string):
             return None
 
     def fetch_month(str):
-        monthList = ['gennaio','febraio','marzo','aprile','maggio',\
-                                'giugno','luglio','agosto','settembre','ottobre',\
+        monthList = ['gennaio','febraio','marzo','aprile','maggio',
+                                'giugno','luglio','agosto','settembre','ottobre',
                                 'novembre','dicembre']
         if len(str) <= 2:
             try:
@@ -310,12 +310,12 @@ def getPrezzoNetto(dao, parzialeNetto=None):
     else:
         return dao
 
+
 def fillSchedaLavorazioneFromEmail(ui):
     text = []
     try:
-        email = file("/home/stampalux/Form ordine partecipazioni.eml","r")
+        email = file(os.path.expanduser('~') +"/Form ordine partecipazioni.eml","r")
         text = email.readlines()
-
         email.close()
     except:
         print "ATTENZIONEEEEEEEEEEEE!!!! FILE EMAIL NON PRESENTE"
@@ -333,15 +333,20 @@ def fillSchedaLavorazioneFromEmail(ui):
         elif campo == "Date":
             #Tue, 3 Mar 2009 22:03:38 +0100
             a = lista[1].strip().split(",")[1][0:-2].strip()
-            a = a.replace("May", "Mag")
-            a = a.replace("Jun", "Giu")
-            a = a.replace("Jul", "Lug")
-            a = a.replace("Aug", "Ago")
-            a = a.replace("Sep", "Set")
-            a = a.replace("Oct", "Ott")
-            a = a.replace("Dec", "Dic")
-            a = a.replace("Jan", "Gen")
-            ui.data_presa_in_carico_entry.set_text(dateToString(time.strptime(a, "%d %b %Y")))
+            a = a.replace("May", "5")
+            a = a.replace("Apr", "4")
+            a = a.replace("Feb", "2")
+            a = a.replace("Mar", "3")
+            a = a.replace("Jun", "6")
+            a = a.replace("Jul", "7")
+            a = a.replace("Aug", "8")
+            a = a.replace("Sep", "9")
+            a = a.replace("Oct", "10")
+            a = a.replace("Dec", "12")
+            a = a.replace("Nov", "11")
+            a = a.replace("Jan", "1")
+            a = a.replace(" ", "/")
+            ui.data_presa_in_carico_entry.set_text(a)
         elif campo == "Nome_sposo":
             ui.nome_sposo_entry.set_text(lista[1].strip().upper())
         elif campo == "Cognome_sposo":
@@ -362,10 +367,11 @@ def fillSchedaLavorazioneFromEmail(ui):
             localita_matrimonio  = lista[1].strip().upper()
         elif campo == "Citta_matrimonio":
             ui.provenienza_entry.set_text(lista[1].strip().upper())
-        elif campo == "Data_matrimonio":
+        elif campo == "orderdate":
             print lista[1].strip()
             datamat=lista[1].strip()
-            datamat=datamat[0:-2]+"20"+datamat[-2:]
+            datamat=datamat.replace("-","/")
+            #datamat=datamat[0:-2]+"20"+datamat[-2:]
             ui.data_matrimonio_entry.set_text(datamat)
         elif campo == "Ora_matrimonio":
             ora_matrimonio  = lista[1].strip().upper()
@@ -386,11 +392,11 @@ def fillSchedaLavorazioneFromEmail(ui):
         elif campo == "Luogo_ricevimento":
             luogo_ricevimento  = lista[1].strip()
         elif campo == "biglietto_bomboniera":
-            biglietto_bomboniera  = lista[1].strip().upper()
-            if biglietto_bomboniera:
-                ui.bomba_si_checkbutton.set_active(True)
-            else:
-                ui.bomba_no_checkbutton.set_active(True)
+            #biglietto_bomboniera  = lista[1].strip().upper()
+            #if biglietto_bomboniera:
+                #ui.bomba_si_checkbutton.set_active(False)
+            #else:
+            ui.bomba_no_checkbutton.set_active(True)
         elif campo == "gradita_conferma":
             gradita_conferma  = lista[1].strip().upper()
         elif campo == "Commenti":
@@ -441,27 +447,28 @@ def fillSchedaLavorazioneFromEmail(ui):
         elif campo == "spesa":
             pagina  = lista[1].strip().upper()
         elif campo == "PRODOTTO":
-            prodotto  = lista[1].strip().upper()
+            prodotto  = lista[1].strip().upper()[3:]
         elif campo == "CODICE PARTECIPAZIONE":
             codParte = lista[1].strip().split("(")[0].strip()[1:-1].replace("Art.",'')[1:-1]
-            quantitaParte = lista[2].strip().split("-")[0].strip()[1:-1]
-            print "CODICE PARTECIPAZIONE", codParte
+            quantitaParte = lista[2].strip().split("-")[0].strip()[2:-2]
+            print "CODICE PARTECIPAZIONE", codParte, quantitaParte
         elif campo == "CODICE INVITO":
             codInvito = lista[1].strip().split("(")[0].strip()[1:-1].replace("Art.",'')[1:-1]
-            quantitaInvito = lista[2].strip().split("-")[0].strip()[1:-1]
-            print codInvito, quantitaInvito
+            quantitaInvito = lista[2].strip().split("-")[0].strip()[2:-2]
+            print "CODICE INVITO", codInvito, quantitaInvito
         elif campo == "CODICE BOMBONIERA":
             codBombo = lista[1].strip().split("(")[0].strip()[1:-1].replace("Art.",'')[1:-1]
-            quantitaBombo = lista[2].strip().split("-")[0].strip()[1:-1]
-            print codBombo, quantitaBombo
+            quantitaBombo = lista[2].strip().split("-")[0].strip()[2:-2]
+            print "CODICE BOMBONIERA", codBombo, quantitaBombo
         elif campo == "PERCENTUALE DI SCONTO APPLICATO":
             percentualeSconto = lista[1].strip()[0:-1]
-            print percentualeSconto
+            print "PERCENTUALE DI SCONTO APPLICATO", percentualeSconto
         elif campo == "COSTO STAMPA APPLICATO":
             costoStampa = lista[1].strip()
+            print "COSTO STAMPA APPLICATO", costoStampa
         elif campo == "TOTALE":
             totale = lista[1].strip()[1:].strip()
-            print totale
+            print "TOTALE", totale
 
     ordine = {"colore_stampa":colore_stampa,
                 "carattere_stampa":carattere_stampa,
@@ -470,10 +477,12 @@ def fillSchedaLavorazioneFromEmail(ui):
                 "quantitaParte":quantitaParte,
                 "codInvito":codInvito,
                 "quantitaInvito":quantitaInvito,
-                "codBombo":quantitaBombo,
+                "codBombo":codBombo,
+                "quantitaBombo": quantitaBombo,
                 "costoStampa":costoStampa,
                 "percentualeSconto": percentualeSconto,
-                "totale":totale}
+                "totale":totale
+}
 
     ui.nomi_sposi_entry.set_text(cognome_sposo.upper()+" - "+cognome_sposa.upper())
     return ordine

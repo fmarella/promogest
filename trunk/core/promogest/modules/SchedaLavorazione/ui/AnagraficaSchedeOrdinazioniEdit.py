@@ -6,7 +6,6 @@
 # Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
 # Author: M3nt0r3 <m3nt0r3@gmail.com>
 
-import pygtk
 import gobject
 import datetime
 from decimal import *
@@ -354,12 +353,24 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self._loading=False
         #return True
 
-    def setRigaTreeview(self,modelRow=None,rowArticolo=None ):
+    def fillquantita(self,codice=None):
+        #print "CODICEEEEEE", codice
+        quantita=0
+        if codice == self.altriDati["codBombo"]:
+            quantita= self.altriDati["quantitaBombo"]
+        elif codice == self.altriDati["codInvito"]:
+            quantita= self.altriDati["quantitaInvito"]
+        elif codice == self.altriDati["codParte"]:
+            quantita= self.altriDati["quantitaParte"]
+        elif codice == "Stampa":
+            quantita= "1"
+        return quantita
 
+    def setRigaTreeview(self,modelRow=None,rowArticolo=None ):
         if rowArticolo:
             idArticolo = rowArticolo[0].id
             denArticolo = rowArticolo[0].denominazione
-            quantita = 0
+            quantita = Decimal(self.fillquantita(codice= rowArticolo[0].codice))
         elif modelRow:
             idArticolo = modelRow[1]
             denArticolo = modelRow[3]
@@ -399,15 +410,20 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
 
 
     def setScontiRiga(self, daoRiga, tipo=None):
+        #print "SCONTIIIIIIIIIIIIIIIIIII" 
         scontiRiga = []
         _descrizione = daoRiga.descrizione[0:6]
         _descrizione1 = daoRiga.descrizione[0:12]
         if (_descrizione.lower() == 'stampa') or (_descrizione1.lower() == 'contrassegno'):
             daoRiga.applicazione_sconti = 'scalare'
             daoRiga.scontiRiga = []
+            #print "1111111111111111111111"
         else:
             daoRiga.applicazione_sconti = self.dao.applicazione_sconti
             #for sconto in self.dao.sconti:
+            #print "5555555555555555555555555555555", self.scontiTEMP
+            #if not self.scontiTEMP:
+                #self.scontiTEMP.append(self.altriDati["percentualeSconto"])
             for sconto in self.scontiTEMP:
                 if tipo == 'documento':
                     from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
@@ -594,7 +610,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                         self.setRigaTreeview(modelRow=[],rowArticolo=row)
                 self._refresh()
                 return
-                #print "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
             else:
                 msg="Nessuna Associazione di articoli e' stata ancora inserita"
                 dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.
@@ -604,8 +619,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                 dialog.destroy()
                 if self.associazione_articoli_comboboxentry.get_property("can-focus"):
                     self.associazione_articoli_comboboxentry.grab_focus()
-        #import pdb
-        #pdb.set_trace()
 
     def on_rimuovi_articolo_button_clicked(self, button):
         selection = self.articoli_treeview.get_selection()
@@ -949,6 +962,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         print "FILL THE DATA FROM EMAIL"
         if self.dao:
             altriDati= fillSchedaLavorazioneFromEmail(self)
+            self.altriDati = altriDati
         else:
             print "mettici un dialogo che avvisa"
         self.nome_contatto_entry.set_text("ANTO")

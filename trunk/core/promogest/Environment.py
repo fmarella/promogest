@@ -360,7 +360,7 @@ params = {'engine': engine ,
 
  # Parametri localizzazione formati
 loc = locale.setlocale(locale.LC_ALL, '')
-conf.windowsrc = os.path.expanduser('~') + os.sep + 'promogest/windowsrc.xml'
+conf.windowsrc = os.path.expanduser('~') + os.sep + 'promogest2/windowsrc.xml'
 conf.guiDir = '.' + os.sep + 'gui' + os.sep
 #conf.windowsrc = promogestDir + 'windowsrc.xml'
 #conf.guiDir = '.' + os.sep + 'gui' + os.sep

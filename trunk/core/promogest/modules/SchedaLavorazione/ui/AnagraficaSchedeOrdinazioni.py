@@ -28,13 +28,6 @@ class AnagraficaSchedeOrdinazioni(Anagrafica):
                             reportHandler=AnagraficaSchedeOrdinazioniReport(self),
                             editElement=AnagraficaSchedeOrdinazioniEdit(self),
                             aziendaStr=aziendaStr)
-        #self.record_duplicate_menu.set_property('visible', False)
-        #pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'leggi_mail24x24.png')
-        #button = gtk.ToolButton(icon_widget=pbuf, label='Importa da Mail')
-        #button.connect('clicked', self.on_mail_import_button_clicked)
-        #separator = gtk.SeparatorToolItem()
-        #self.toolbar1.insert(separator,-1)
-        #self.toolbar1.insert(button,-1)
 
 
 class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
@@ -267,5 +260,4 @@ class AnagraficaSchedeOrdinazioniReport(AnagraficaReport):
                                   defaultFileName='schede_ordinazioni',
                                   htmlTemplate='schede_ordinazioni',
                                   sxwTemplate='schede_ordinazioni',
-                                    templatesDir ="promogest/modules/SchedaLavorazione/templates/")
-
+                                  templatesDir ="promogest/modules/SchedaLavorazione/templates/")
