@@ -338,8 +338,8 @@ class Login(GladeApp):
                     client.update( '.' )
                     msg = "TUTTO OK AGGIORNAMENTO EFFETTUATO"
                 except pysvn.ClientError, e:
-                # convert to a string
-                msg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
+                    # convert to a string
+                    msg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
             except:
                 command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
                 p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT)
