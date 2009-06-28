@@ -493,20 +493,31 @@ class Main(GladeWidget):
         svndialog.getTopLevel().show_all()
         response = svndialog.svnupdate_dialog.run()
         if response == gtk.RESPONSE_OK:
-            command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
-            p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
-            (stdin, stdouterr) = (p.stdin, p.stdout)
-            #stdin, stdouterr = os.popen4(command)
-            for line in stdouterr.readlines():
-                textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
-            msg = """ Se è apparsa la dicitura "Estratta Revisione XXXX
-l'aggiornamento è riuscito, nel caso di messaggio fosse differente
-potete contattare l'assistenza tramite il numero verde 80034561
-o tramite email all'indirizzo info@promotux.it
+            try:
+                import pysvn
+                client = pysvn.Client()
+                client.exception_style = 0
+                try:
+                    client.update( '.' )
+                    msg = "TUTTO OK AGGIORNAMENTO EFFETTUATO"
+                except pysvn.ClientError, e:
+                    # convert to a string
+                    msg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
+            except:
+                command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
+                p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+                (stdin, stdouterr) = (p.stdin, p.stdout)
+                #stdin, stdouterr = os.popen4(command)
+                for line in stdouterr.readlines():
+                    textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
+                msg = """ Se è apparsa la dicitura "Estratta Revisione XXXX
+    l'aggiornamento è riuscito, nel caso di messaggio fosse differente
+    potete contattare l'assistenza tramite il numero verde 80034561
+    o tramite email all'indirizzo info@promotux.it
 
-        Aggiornamento de|l Promogest2 terminato !!!
-        Riavviare l'applicazione per rendere le modifiche effettive
-                    """
+            Aggiornamento de|l Promogest2 terminato !!!
+            Riavviare l'applicazione per rendere le modifiche effettive
+                        """
             dialog = gtk.MessageDialog(self.getTopLevel(),
                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_INFO,
