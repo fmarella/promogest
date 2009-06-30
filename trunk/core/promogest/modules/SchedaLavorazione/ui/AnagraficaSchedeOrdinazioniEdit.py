@@ -419,7 +419,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
 
 
     def setScontiRiga(self, daoRiga, tipo=None):
-        #print "SCONTIIIIIIIIIIIIIIIIIII" 
+        print "SCONTIIIIIIIIIIIIIIIIIII", self.altriDati
         scontiRiga = []
         _descrizione = daoRiga.descrizione[0:6]
         _descrizione1 = daoRiga.descrizione[0:12]
@@ -427,6 +427,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             daoRiga.applicazione_sconti = 'scalare'
             daoRiga.scontiRiga = []
             #print "1111111111111111111111"
+
         else:
             daoRiga.applicazione_sconti = self.dao.applicazione_sconti
             #for sconto in self.dao.sconti:
