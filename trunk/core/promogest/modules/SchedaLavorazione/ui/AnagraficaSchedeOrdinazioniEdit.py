@@ -419,7 +419,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
 
 
     def setScontiRiga(self, daoRiga, tipo=None):
-        print "SCONTIIIIIIIIIIIIIIIIIII", self.altriDati
         scontiRiga = []
         _descrizione = daoRiga.descrizione[0:6]
         _descrizione1 = daoRiga.descrizione[0:12]
@@ -435,7 +434,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             #if not self.scontiTEMP:
                 #self.scontiTEMP.append(self.altriDati["percentualeSconto"])
             for sconto in self.scontiTEMP:
-                print "TIPOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", tipo
+                #print "TIPOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", tipo
                 if tipo == 'documento':
                     from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
                     scontoRiga = ScontoRigaDocumento()
