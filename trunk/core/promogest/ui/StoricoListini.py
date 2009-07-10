@@ -113,19 +113,18 @@ class StoricoListiniFilter(VisualizzazioneFilter):
         self._visualizzazione.visualizzazione_filter_treeview.set_model(self._treeViewModel)
 
         returnWindow = self._visualizzazione.getTopLevel()
-
-        self.id_articolo_filter_customcombobox.setId(self._visualizzazione._idArticolo)
-        self.id_articolo_filter_customcombobox.setSingleValue()
-        fillComboboxListini(self.id_listino_filter_combobox, True)
-        self.id_listino_filter_combobox.set_active(0)
+        self.id_articolo_filter_customcombobox1.setId(self._visualizzazione._idArticolo)
+        self.id_articolo_filter_customcombobox1.setSingleValue()
+        fillComboboxListini(self.id_listino_filter_combobox1, True)
+        self.id_listino_filter_combobox1.set_active(0)
 
         self.refresh()
 
 
     def clear(self):
         # Annullamento filtro
-        #self.id_articolo_filter_customcombobox.set_active(0)
-        self.id_listino_filter_combobox.set_active(0)
+        self.id_articolo_filter_customcombobox1.set_active(0)
+        self.id_listino_filter_combobox1.set_active(0)
         self.da_data_listino_filter_entry.set_text('')
         self.a_data_listino_filter_entry.set_text('')
         self.refresh()
@@ -133,7 +132,7 @@ class StoricoListiniFilter(VisualizzazioneFilter):
 
     def refresh(self):
         # Aggiornamento TreeView
-        idArticolo = self.id_articolo_filter_customcombobox.getId()
+        idArticolo = self.id_articolo_filter_customcombobox1.getId()
         if idArticolo is None:
             self._treeViewModel.clear()
             dialog = gtk.MessageDialog(self._visualizzazione.getTopLevel(),
@@ -144,7 +143,7 @@ class StoricoListiniFilter(VisualizzazioneFilter):
             dialog.destroy()
             return
 
-        idListino = findIdFromCombobox(self.id_listino_filter_combobox)
+        idListino = findIdFromCombobox(self.id_listino_filter_combobox1)
         daDataListino = stringToDate(self.da_data_listino_filter_entry.get_text())
         aDataListino = stringToDate(self.a_data_listino_filter_entry.get_text())
 
