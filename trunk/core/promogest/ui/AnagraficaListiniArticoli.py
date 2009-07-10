@@ -779,6 +779,8 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         """
         FIXME
         """
+        creaentryvarianti = False
+        articolo = None
         if findIdFromCombobox(self.id_listino_customcombobox.combobox) is None:
             obligatoryField(self.dialogTopLevel, self.id_listino_customcombobox.combobox)
 
@@ -787,6 +789,49 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
         self.dao.id_listino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
         self.dao.id_articolo = self.id_articolo_customcombobox.getId()
+        if "PromoWear" in Environment.modulesList:
+            articolo = Articolo().getRecord(id=self.dao.id_articolo)
+            if articleType(articolo) == "father":
+                msg = 'Attenzione! So sta aggiungengo un Articolo Padre, creare le voci listino anche delle varianti?'
+                dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                           gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+                response = dialog.run()
+                dialog.destroy()
+                if response == gtk.RESPONSE_YES:
+                    print "CREO LE ENTRY DELLE VARIANTI DI LISTINO", dir(self.dao)
+                    for art in articolo.articoliVarianti:
+                        daoVariante = ListinoArticolo()
+                        if Environment.listinoFissato and self._anagrafica._idListino:
+                            Environment.listinoFissato = None
+                        daoVariante.id_articolo = art.id
+
+                        daoVariante.id_listino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
+                        daoVariante.listino_attuale = True
+                        daoVariante.ultimo_costo = float(self.ultimo_costo_entry.get_text())
+                        daoVariante.prezzo_dettaglio = float(self.prezzo_dettaglio_entry.get_text())
+                        daoVariante.prezzo_ingrosso = float(self.prezzo_ingrosso_entry.get_text())
+                        daoVariante.data_listino_articolo = datetime.datetime.now()
+
+
+                        sconti_dettaglio = []
+                        daoVariante.applicazione_sconti = "scalare"
+                        for s in self.sconti_dettaglio_widget.getSconti():
+                            daoSconto = ScontoVenditaDettaglio()
+                            daoSconto.valore = s["valore"]
+                            daoSconto.tipo_sconto = s["tipo"]
+                            sconti_dettaglio.append(daoSconto)
+
+                        sconti_ingrosso = []
+                        daoVariante.applicazione_sconti = "scalare"
+                        for s in self.sconti_ingrosso_widget.getSconti():
+                            daoSconto = ScontoVenditaIngrosso()
+                            daoSconto.valore = s["valore"]
+                            daoSconto.tipo_sconto = s["tipo"]
+                            sconti_ingrosso.append(daoSconto)
+                        daoVariante.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})
+                            #self.articolo_padre = articolo
+                            #creaentryvarianti = True
+
         self.dao.listino_attuale = True
         self.dao.ultimo_costo = float(self.ultimo_costo_entry.get_text())
         self.dao.prezzo_dettaglio = float(self.prezzo_dettaglio_entry.get_text())
@@ -808,5 +853,4 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             daoSconto.valore = s["valore"]
             daoSconto.tipo_sconto = s["tipo"]
             sconti_ingrosso.append(daoSconto)
-
         self.dao.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})

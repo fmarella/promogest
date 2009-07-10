@@ -61,9 +61,6 @@ class ListinoArticolo(Dao):
     codice_a_barre= property(_codice_a_barre)
 
 
-
-
-
     if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
 
         def _denominazione_gruppo_taglia(self):
@@ -211,13 +208,13 @@ class ListinoArticolo(Dao):
             for che in check:
                 che.listino_attuale = False
                 params["session"].add(che)
-                self.saveAppLog(che)
+                #self.saveAppLog(che)
         if not self.listino_attuale:
             self.listino_attuale = True
         else:
             self.listino_attuale = True
         params["session"].add(self)
-        self.saveAppLog(self)
+        #self.saveAppLog(self)
         scontiVenditaDettaglioDel(idListino=self.id_listino,
                                     idArticolo=self.id_articolo,
                                     dataListinoArticolo=self.data_listino_articolo)

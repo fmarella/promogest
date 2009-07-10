@@ -79,25 +79,49 @@ class ManageLabelsToPrint(GladeWidget):
         column.set_expand(True)
         column.set_min_width(40)
         treeview.append_column(column)
-
-        self._treeViewModel = gtk.ListStore(object,str,str,str,str,str)
+        if "PromoWear" in Environment.modulesList:
+            self._treeViewModel = gtk.TreeStore(object,str,str,str,str,str)
+        else:
+            self._treeViewModel = gtk.ListStore(object,str,str,str,str,str)
         treeview.set_model(self._treeViewModel)
         fillComboboxMagazzini(self.id_magazzino_label_combobox, True)
         self.id_magazzino_label_combobox.set_active(0)
         self.refresh()
 
 
+    def selectFilter(self, model, path, iter):
+        #lista = []
+        check = model.get_value(iter, 1)
+        fatherPath = model.get_path(iter)
+        if check:
+            if len(fatherPath) ==1:
+                return
+            oggetto = model.get_value(iter, 0)
+            quantita = model.get_value(iter, 5)
+            for ogg in range(0,int(quantita)):
+                oggetto.codice_a_barre = model.get_value(iter, 4)
+                self.resultList.append(oggetto)
+        #return lista
+
+
+
     def on_ok_button_clicked(self,button):
-        resultList= []
+        #self.scorritreeview()
+        self.resultList= []
+        #self.lista = []
+        #if "PromoWear" in Environment.modulesList:
+            #resultList= self._treeViewModel.foreach(self.selectFilter)
+            #print "PDPDPDPDPDDP", self.resultList
+        #else:
         for row in self._treeViewModel:
             if row[5] == "0" or row[5] == "":
                 continue
             else:
                 for v in range(0,int(row[5])):
-                    resultList.append(row[0])
+                    self.resultList.append(row[0])
 
         self.mainWindow._handlePrinting(pdfGenerator=self.mainWindow.labelHandler,
-                                report=True,daos=resultList,
+                                report=True,daos=self.resultList,
                                 label=True,returnResults=True)
         self.getTopLevel().destroy()
 
@@ -106,16 +130,34 @@ class ManageLabelsToPrint(GladeWidget):
         # Aggiornamento TreeView
         self._treeViewModel.clear()
         #print(dir(self.daos[0]))
+        quantita ="1"
         for dao in self.daos:
-            quantita ="1"
-            self._treeViewModel.append((dao,
-                                        dao.codice_articolo,
-                                        dao.articolo,
-                                        dao.codice_a_barre,
-                                        dao.prezzo_dettaglio,
-                                        quantita,
-
-                                        ))
+            if "PromoWear" in Environment.modulesList:
+                if articleType(dao.arti) == "father":
+                    parent = self._treeViewModel.append(None,(dao,
+                                                dao.codice_articolo,
+                                                dao.articolo,
+                                                dao.codice_a_barre,
+                                                dao.prezzo_dettaglio,
+                                                "0",
+                                                ))
+                else:
+                    ##for figlio in dao.arti.articoliVarianti:
+                    self._treeViewModel.append(None,(dao,
+                                            dao.codice_articolo,
+                                            dao.articolo,
+                                            dao.codice_a_barre,
+                                            dao.prezzo_dettaglio,
+                                            quantita,
+                                            ))
+            else:
+                self._treeViewModel.append((dao,
+                                            dao.codice_articolo,
+                                            dao.articolo,
+                                            dao.codice_a_barre,
+                                            dao.prezzo_dettaglio,
+                                            quantita,
+                                            ))
 
 
 

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -10,7 +10,7 @@ import gobject
 from Visualizzazione import Visualizzazione, VisualizzazioneFilter
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
+#from promogest.dao.Dao import Dao
 import promogest.dao.ListinoArticolo
 from promogest.dao.ListinoArticolo import ListinoArticolo
 
@@ -124,7 +124,7 @@ class StoricoListiniFilter(VisualizzazioneFilter):
 
     def clear(self):
         # Annullamento filtro
-        self.id_articolo_filter_customcombobox.set_active(0)
+        #self.id_articolo_filter_customcombobox.set_active(0)
         self.id_listino_filter_combobox.set_active(0)
         self.da_data_listino_filter_entry.set_text('')
         self.a_data_listino_filter_entry.set_text('')
