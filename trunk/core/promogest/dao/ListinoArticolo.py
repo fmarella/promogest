@@ -10,12 +10,12 @@
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
 from promogest.Environment import *
-from Dao import Dao
-from DaoUtils import *
-from Listino import Listino
-from Articolo import Articolo
-from ScontoVenditaDettaglio import ScontoVenditaDettaglio
-from ScontoVenditaIngrosso import ScontoVenditaIngrosso
+from promogest.dao.Dao import Dao
+from promogest.dao.DaoUtils import *
+from promogest.dao.Listino import Listino
+from promogest.dao.Articolo import Articolo
+from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
+from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 from promogest.ui.utils import *
 
 import datetime
@@ -24,6 +24,14 @@ class ListinoArticolo(Dao):
 
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
+
+    def cleann(self):
+        print "VERIFICO SE CI SONO ENTRY FALSE IN LISTINO ARTICOLO"
+        falsi = self.select(listinoAttuale=bool(0), batchSize=None)
+        if falsi:
+            for f in falsi:
+                f.delete()
+
 
     def _denominazione(self):
         if self.listi:return self.listi.denominazione
@@ -199,6 +207,41 @@ class ListinoArticolo(Dao):
             dic={ k: listinoarticolo.c.data_listino_articolo ==v}
         return  dic[k]
 
+    def scontiVenditaDettaglioDel(self, idListino=None,idArticolo=None,dataListinoArticolo=None):
+        """
+        cancella gli sconti associati al listino articolo
+        """
+        row = ScontoVenditaDettaglio().select(idListino=idListino,
+                                                idArticolo=idArticolo,
+                                                dataListinoArticolo=dataListinoArticolo,
+                                                offset = None,
+                                                batchSize = None,
+                                                orderBy="id_listino")
+        if row:
+            for r in row:
+                params['session'].delete(r)
+            params["session"].commit()
+            return True
+
+    def scontiVenditaIngrossoDel(self, idListino=None,idArticolo=None,dataListinoArticolo=None):
+        """
+        cancella gli sconti associati al listino articolo
+        """
+
+        row = ScontoVenditaIngrosso().select(idListino=idListino,
+                                                        idArticolo=idArticolo,
+                                                        dataListinoArticolo=dataListinoArticolo,
+                                                        offset = None,
+                                                        batchSize = None,
+                                                        orderBy="id_listino")
+        if row:
+            for r in row:
+                params['session'].delete(r)
+            params["session"].commit()
+            return True
+
+
+
     def persist(self,sconti=None):
 
         if not self.data_listino_articolo:
@@ -215,12 +258,12 @@ class ListinoArticolo(Dao):
             self.listino_attuale = True
         params["session"].add(self)
         #self.saveAppLog(self)
-        scontiVenditaDettaglioDel(idListino=self.id_listino,
+        self.scontiVenditaDettaglioDel(idListino=self.id_listino,
                                     idArticolo=self.id_articolo,
                                     dataListinoArticolo=self.data_listino_articolo)
-        scontiVenditaIngrossoDel(idListino=self.id_listino,
-                                            idArticolo=self.id_articolo,
-                                            dataListinoArticolo=self.data_listino_articolo)
+        self.scontiVenditaIngrossoDel(idListino=self.id_listino,
+                                    idArticolo=self.id_articolo,
+                                    dataListinoArticolo=self.data_listino_articolo)
         if sconti:
             for key,value in sconti.items():
                 if (key=="dettaglio") and (value):
@@ -229,20 +272,20 @@ class ListinoArticolo(Dao):
                         v.id_articolo = self.id_articolo
                         v.data_listino_articolo = self.data_listino_articolo
                         params["session"].add(v)
-                        self.saveAppLog(v)
+                        #self.saveAppLog(v)
                 elif (key=="ingrosso") and (value):
                     for u in value:
                         u.id_listino = self.id_listino
                         u.id_articolo = self.id_articolo
                         u.data_listino_articolo = self.data_listino_articolo
                         params["session"].add(u)
-                        self.saveAppLog(u)
+                        #self.saveAppLog(u)
         try:
             self.__scontiVenditaDett[0].id_listino=self.id_listino
             self.__scontiVenditaDett[0].id_articolo = self.id_articolo
             self.__scontiVenditaDett[0].data_listino_articolo = self.data_listino_articolo
             params["session"].add(self.__scontiVenditaDett[0])
-            self.saveAppLog(self.__scontiVenditaDett[0])
+            #self.saveAppLog(self.__scontiVenditaDett[0])
         except:
             pass
 
@@ -251,7 +294,7 @@ class ListinoArticolo(Dao):
             self.__scontiVenditaIngr[0].id_articolo = self.id_articolo
             self.__scontiVenditaIngr[0].data_listino_articolo = self.data_listino_articolo
             params["session"].add(self.__scontiVenditaIngr[0])
-            self.saveAppLog(self.__scontiVenditaIngr[0])
+            #self.saveAppLog(self.__scontiVenditaIngr[0])
         except:
             pass
 

@@ -271,11 +271,12 @@ class Dao(object):
                         else:
                             filter_parameters.append((v,k,"s"))
             else:
-                if value:
-                    if type(value)==list:
-                        filter_parameters.append((value,key,"Lista"))
-                    else:
-                        filter_parameters.append((value,key,"s"))
+                if type(value)==list:
+                    filter_parameters.append((value,key,"Lista"))
+                elif type(value) ==bool:
+                    filter_parameters.append((bool(value),key,"s"))
+                elif value:
+                    filter_parameters.append((value,key,"s"))
         if filter_parameters != []:
             if debugFilter:
                 print "FILTER PARAM:",self.DaoModule.__name__, filter_parameters
@@ -289,7 +290,7 @@ class Dao(object):
         for elem in filter_parameters:
             if elem[0] and elem[2]=="Lista":
                 arg= self.filter_values(str(elem[1]+"List"),elem[0])
-            elif elem[0]:
+            elif elem[0] or type(elem[0])==bool:
                 arg= self.filter_values(str(elem[1]),elem[0])
             filters.append(arg)
         return and_(*filters)

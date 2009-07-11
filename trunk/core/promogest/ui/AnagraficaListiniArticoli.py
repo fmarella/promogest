@@ -107,7 +107,7 @@ class AnagraficaListiniArticoli(Anagrafica):
         Raccoglie informazioni specifiche per l'anagrafica restituite all'interno di un dizionario
         """
         data_details = {}
-        data = datetime.datetime.now()
+        data = datetime.datetime.today()
         curr_date = string.zfill(str(data.day), 2) + '-' + string.zfill(str(data.month),2) + '-' + string.zfill(str(data.year),4)
         data_details['curr_date'] = curr_date
         data_details['currentName'] = 'Listino_Articoli_aggiornato_al_'+curr_date+'.xml'
@@ -380,6 +380,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                                         self.on_sconti_dettaglio_widget_button_toggled)
         self.sconti_ingrosso_widget.button.connect('toggled',
                                         self.on_sconti_ingrosso_widget_button_toggled)
+        #ListinoArticolo().cleann()
 
 
     def on_sconti_dettaglio_widget_button_toggled(self, button):
@@ -786,8 +787,8 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
         if self.id_articolo_customcombobox.getId() is None:
             obligatoryField(self.dialogTopLevel, self.id_articolo_customcombobox)
-
-        self.dao.id_listino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
+        listin = findIdFromCombobox(self.id_listino_customcombobox.combobox)
+        self.dao.id_listino = listin
         self.dao.id_articolo = self.id_articolo_customcombobox.getId()
         if "PromoWear" in Environment.modulesList:
             articolo = Articolo().getRecord(id=self.dao.id_articolo)
@@ -798,9 +799,17 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                 response = dialog.run()
                 dialog.destroy()
                 if response == gtk.RESPONSE_YES:
-                    print "CREO LE ENTRY DELLE VARIANTI DI LISTINO", dir(self.dao)
+                    print "CREO LE ENTRY DELLE VARIANTI DI LISTINO"
                     for art in articolo.articoliVarianti:
-                        daoVariante = ListinoArticolo()
+                        daoVariante = ListinoArticolo().select(idListino=listin,
+                                                        idArticolo=art.id)
+                        if daoVariante:
+                            #daoVariante[0].delete()
+                            daoVariante =daoVariante[0]
+                        else:
+                            daoVariante = ListinoArticolo()
+                        #else:
+                            #daoVariante = daoVariante[0]
                         if Environment.listinoFissato and self._anagrafica._idListino:
                             Environment.listinoFissato = None
                         daoVariante.id_articolo = art.id
@@ -810,7 +819,8 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                         daoVariante.ultimo_costo = float(self.ultimo_costo_entry.get_text())
                         daoVariante.prezzo_dettaglio = float(self.prezzo_dettaglio_entry.get_text())
                         daoVariante.prezzo_ingrosso = float(self.prezzo_ingrosso_entry.get_text())
-                        daoVariante.data_listino_articolo = datetime.datetime.now()
+                        #print "UFFAAAAAAAAAAAAAAA", datetime.datetime.today()
+                        daoVariante.data_listino_articolo = datetime.datetime.today()
 
 
                         sconti_dettaglio = []
@@ -828,6 +838,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                             daoSconto.valore = s["valore"]
                             daoSconto.tipo_sconto = s["tipo"]
                             sconti_ingrosso.append(daoSconto)
+                        #print "cosaseiiiiiiiiiiiii", daoVariante
                         daoVariante.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})
                             #self.articolo_padre = articolo
                             #creaentryvarianti = True
@@ -836,7 +847,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         self.dao.ultimo_costo = float(self.ultimo_costo_entry.get_text())
         self.dao.prezzo_dettaglio = float(self.prezzo_dettaglio_entry.get_text())
         self.dao.prezzo_ingrosso = float(self.prezzo_ingrosso_entry.get_text())
-        self.dao.data_listino_articolo = datetime.datetime.now()
+        self.dao.data_listino_articolo = datetime.datetime.today()
 
         sconti_dettaglio = []
         self.dao.applicazione_sconti = "scalare"

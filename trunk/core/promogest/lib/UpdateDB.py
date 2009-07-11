@@ -119,6 +119,18 @@ import datetime
     #comando = "ALTER TABLE %s ALTER COLUMN object TYPE varchar(300);" % table
     #params['session'].connection().execute(text(comando))
 
+#from promogest.dao.ListinoArticolo import ListinoArticolo
+
+
+#print "CANCELLATE LE VECCHIE ENTRY IN LISTINO ARTICOLO"
+#print "CERCO DI CONVERTIRE IL TIPO COLONNA IN DATETIME"
+#schema = params['schema']
+#tabella = schema+".sconti_vendita_dettaglio"
+#tabella2 = schema+".listino_articolo"
+#comando ="ALTER TABLE %s ALTER COLUMN data_listino_articolo TYPE time;" %tabella
+#comando ="ALTER TABLE %s ALTER COLUMN data_listino_articolo TYPE time;" %tabella2
+#params['session'].connection().execute(text(comando))
+#print "SE TUTTO E? ANDATO ENE BUON LAVORO"
 
 
 

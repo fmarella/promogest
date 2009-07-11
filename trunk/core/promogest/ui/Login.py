@@ -285,13 +285,14 @@ class Login(GladeApp):
                     if hasAction(actionID=1):
                         if Environment.tipodb !="sqlite":
                             Environment.params["schema"]=self.azienda
-                        #from promogest.lib.UpdateDB import *
+                        
                         #Environment.meta.reflect(schema=self.azienda )
                         self.login_window.hide()
                         global windowGroup
                         windowGroup.remove(self.getTopLevel())
                         self.importModulesFromDir('promogest/modules')
                         #saveAppLog(action="login", status=True,value=username)
+                        from promogest.lib.UpdateDB import *
                         from Main import Main
                         main = Main(self.azienda,
                                     self.anagrafiche_modules,

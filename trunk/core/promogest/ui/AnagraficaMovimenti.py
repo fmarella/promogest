@@ -131,7 +131,7 @@ class AnagraficaMovimenti(Anagrafica):
         restituite all'interno di un dizionario
         """
         data_details = {}
-        data = datetime.datetime.now()
+        data = datetime.datetime.today()
         curr_date = string.zfill(str(data.day), 2) + \
                             '-' + string.zfill(str(data.month),2) + \
                             '-' + string.zfill(str(data.year),4)
