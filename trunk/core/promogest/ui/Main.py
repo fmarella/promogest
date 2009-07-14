@@ -42,8 +42,8 @@ class Main(GladeWidget):
         self.alarmFrame = None
         if "SincroDB" not in Environment.modulesList:
             self.sincro_db.destroy()
-        if "SincroDB" in Environment.modulesList and Environment.conf.SincroDB.tipo =="client":
-            self.server_sincro_db.destroy()
+        elif "SincroDB" in Environment.modulesList and Environment.conf.SincroDB.tipo =="client":
+            self.master_sincro_db.destroy()
         elif "SincroDB" in Environment.modulesList and Environment.conf.SincroDB.tipo =="server":
             self.client_sincro_db.destroy()
         self.updates()
