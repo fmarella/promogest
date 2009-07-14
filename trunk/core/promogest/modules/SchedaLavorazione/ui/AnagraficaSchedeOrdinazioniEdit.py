@@ -370,7 +370,10 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         if rowArticolo:
             idArticolo = rowArticolo[0].id
             denArticolo = rowArticolo[0].denominazione
-            quantita = Decimal(self.fillquantita(codice= rowArticolo[0].codice))
+            try:
+                quantita = Decimal(self.fillquantita(codice= rowArticolo[0].codice))
+            except:
+                quantita = 1
         elif modelRow:
             idArticolo = modelRow[1]
             denArticolo = modelRow[3]
