@@ -128,7 +128,7 @@ class SincroDB(GladeWidget):
         """
         Ricerca l'ultima data utile e la suggferisce nella entry
         """
-        print "GENERA BUTTONE"
+        print "GENERA BOTTONE"
 
     def connectDbRemote(self):
         self.mainSchema = "promogest2"

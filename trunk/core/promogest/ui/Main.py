@@ -42,6 +42,10 @@ class Main(GladeWidget):
         self.alarmFrame = None
         if "SincroDB" not in Environment.modulesList:
             self.sincro_db.destroy()
+        if "SincroDB" in Environment.modulesList and Environment.conf.SincroDB.tipo =="client":
+            self.server_sincro_db.destroy()
+        elif "SincroDB" in Environment.modulesList and Environment.conf.SincroDB.tipo =="server":
+            self.client_sincro_db.destroy()
         self.updates()
 
 
@@ -590,8 +594,18 @@ Il file si chiama %s .
         sendemail = SendEmail()
 
     def on_master_sincro_db_activate(self, widget):
+        msg ="SERVER NON ANCORA IMPLEMENTATO"
+        dialog = gtk.MessageDialog(self.getTopLevel(),
+                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                gtk.MESSAGE_INFO,
+                                gtk.BUTTONS_OK,
+                                msg)
+        dialog.run()
+        dialog.destroy()
+
+    def on_client_sincro_db_activate(self, widget):
         print "DFGDFDHSDHSHFHF"
-        if "SincroDB" in Environment.modulesList:
+        if "SincroDB" in Environment.modulesList and Environment.conf.SincroDB.tipo =="client":
             from promogest.modules.SincroDB.ui.SincroDB import SincroDB
             anag = SincroDB()
             showAnagrafica(self.getTopLevel(), anag)
