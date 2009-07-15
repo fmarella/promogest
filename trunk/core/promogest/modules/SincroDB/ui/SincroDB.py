@@ -45,22 +45,26 @@ tablesSchemeArticolo = [
             ("multiplo","id"),
             ("pagamento","id"),
             ("fornitore","id"),
+            ("persona_giuridica","id"),
             ("sconto" ,"id"),
             ("categoria_cliente","id"),
             ("codice_a_barre_articolo","id"),
-            ("listino_articolo","id_listino"),
+
             #("cart","id"),
             ("articolo_associato","id"),
             #("access","id"),
+            ("listino","id"),
             ("listino_magazzino","id_listino"),
             ("listino_categoria_cliente","id_listino"),
-            ("listino","id"),
+
+            ("listino_articolo","id_listino"),
             #("feed","id"),
             ("fornitura","id"),
             ("sconto_fornitura","id"),
             #("inventario","id"),
-            ("listino_complesso_listino","id_listino_complesso"),
-            ("listino_complesso_articolo_prevalente","id_listino_complesso"),
+            #("listino_complesso_articolo_prevalente","id_articolo"),
+            #("listino_complesso_listino","id_listino"),
+
             ("sconti_vendita_dettaglio","id"),
             ("sconti_vendita_ingrosso","id"),
             #("spesa","id"),
@@ -75,6 +79,11 @@ tablesSchemeAnagrafiche = [
             ("vettore","id"),
             ("agente","id"),
             ("cliente_categoria_cliente","id_cliente"),
+            ("contatto","id"),
+            ("contatto_cliente","id"),
+            ("recapito","id"),
+            ("categoria_contatto","id"),
+            ("contatto_categoria_contatto","id_contatto"),
             ("contatto_fornitore","id"),
             ("contatto_magazzino","id"),
             ("contatto_azienda","id"),
@@ -82,11 +91,7 @@ tablesSchemeAnagrafiche = [
 
 tablesSchemePromemoria = [
             ("promemoria","id"),
-            ("contatto","id"),
-            ("contatto_cliente","id"),
-            ("recapito","id"),
-            ("categoria_contatto","id"),
-            ("contatto_categoria_contatto","id_contatto"),
+
 ]
 
 tablesSchemeDocumenti = [
@@ -205,26 +210,27 @@ class SincroDB(GladeWidget):
         """
         for dg in tables:
             print "TABELLA:", dg
-            conteggia = self.pg_db_server_remote.entity(dg[0]).count()
+            conteggia = self.pg_db_server_remote.entity(dg[0]).count() # serve per poter affettare le select
             conteggialocale = self.pg_db_server_remote.entity(dg[0]).count()
             #exec ( "conteggia = self.pg_db_server_remote.%s.count()")  %(dg[0])
             #exec ( "conteggialocale = self.pg_db_server_locale.%s.count()")  %(dg[0])
             print "CONTEGGIA:", conteggia, conteggialocale
-            blocSize = 100
+            blocSize = 500
             if conteggia >= blocSize:
                 blocchi = abs(conteggia/blocSize)
                 for j in range(0,blocchi+1):
                     offset = j*blocSize
-                    remote=self.pg_db_server_remote.entity(dg[0]).limit(blocSize).offset(offset).all()
-                    locale=self.pg_db_server_locale.entity(dg[0]).limit(blocSize).offset(offset).all()
-                    #exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
-                    #exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
+                    print "OFFFFFSET", offset , datetime.datetime.now()
+                    #remote=self.pg_db_server_remote.entity(dg[0]).limit(blocSize).offset(offset).all()
+                    #locale=self.pg_db_server_locale.entity(dg[0]).limit(blocSize).offset(offset).all()
+                    exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
+                    exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
                     self.logica(remote=remote, locale=locale, all=True)
             elif conteggia < blocSize:
-                remote=self.pg_db_server_remote.entity(dg[0]).all()
-                locale=self.pg_db_server_locale.entity(dg[0]).all()
-                #exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).all()") %(dg[0],dg[0],dg[1])
-                #exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).all()") %(dg[0],dg[0],dg[1])
+                #remote=self.pg_db_server_remote.entity(dg[0]).all()
+                #locale=self.pg_db_server_locale.entity(dg[0]).all()
+                exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).all()") %(dg[0],dg[0],dg[1])
+                exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).all()") %(dg[0],dg[0],dg[1])
                 self.logica(remote=remote, locale=locale, all=True)
         print "<<<<<<<< FINITO CON LO SCHEMA AZIENDA >>>>>>>>", datetime.datetime.now()
 
@@ -247,12 +253,12 @@ class SincroDB(GladeWidget):
                 else:
                     soupLocale = self.pg_db_server_locale
                 if i <= (len(locale)-1):
-                    print "REMOTE", remote[i]
-                    print "LOCALE", locale[i]
+                    #print "REMOTE", remote[i]
+                    #print "LOCALE", locale[i]
                     if  remote[i] != locale[i]:
                         print "QUESTA È LA RIGA DIVERSA NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione UPDATE"
-                        print " RIGA REMOTE", remote[i]
-                        print " RIGA LOCALE", locale[i]
+                        print " RIGA REMOTE", remote[i].id
+                        print " RIGA LOCALE", locale[i].id
                         self.fixToTable(soupLocale=soupLocale,
                                         row=remote[i],
                                         rowLocale=locale[i],
@@ -283,57 +289,84 @@ class SincroDB(GladeWidget):
         """
         rimanda alla gestione delle singole tabelle con le operazioni da fare
         """
+
         if op =="DELETE":
             soupLocale.delete(rowLocale)
         elif op == "INSERT":
-            #rowlocale = soupLocale.add(
+            #rowlocale_ = soupLocale.entity(dao).insert()
             exec ( "rowLocale = soupLocale.%s.insert()" ) %dao
-            #print "OOOOOOOOOOOOOOOOOOOOOOOOOOOO", dir(rowLocale._table), rowLocale._table.indexes
-            #print "DAOOOOOOOOOOOOOOOOOOOOOOOO", dao
-            #seq = Sequence("testing.articolo_id_seq")
             for i in rowLocale.c:
 
                 t = str(i).split(".")[1] #mi serve solo il nome tabella
-                #print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", i, t, str(i).split(".")[0]
-                if t =="id":
-                    pass
-                else:
-                    setattr(rowLocale, t, getattr(row, t))
+                setattr(rowLocale, t, getattr(row, t))
         elif op == "UPDATE":
+
             for i in rowLocale.c:
                 t = str(i).split(".")[1] #mi serve solo il nome tabella
+
                 setattr(rowLocale, t, getattr(row, t))
         try:
             sqlalchemy.ext.sqlsoup.Session.commit()
-            #sqlalchemy.ext.sqlsoup.Session.flush()
+            sqlalchemy.ext.sqlsoup.Session.flush()
         except Exception,e :
-            msg = """ATTENZIONE ERRORE NEL SALVATAGGIO
-    Qui sotto viene riportato l'errore di sistema:
-
-    ( normalmente il campo in errore è tra "virgolette")
-
-    %s
-
-    L'errore può venire causato da un campo fondamentale
-    mancante, da un codice già presente, si invita a
-    rincontrollare i campi e riprovare
-    Grazie!
-    """ %e
-            overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                    gtk.MESSAGE_ERROR,
-                                                    gtk.BUTTONS_CANCEL, msg)
-            response = overDialog.run()
-            overDialog.destroy()
+            print "ERRORE", e
+            #msg = """ATTENZIONE ERRORE NEL SALVATAGGIO
+    #Qui sotto viene riportato l'errore di sistema:
+#
+    #( normalmente il campo in errore è tra "virgolette")
+#
+    #%s
+#
+    #L'errore può venire causato da un campo fondamentale
+    #mancante, da un codice già presente, si invita a
+    #rincontrollare i campi e riprovare
+    #Grazie!
+    #""" %e
+            #overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
+                                                #| gtk.DIALOG_DESTROY_WITH_PARENT,
+                                                    #gtk.MESSAGE_ERROR,
+                                                    #gtk.BUTTONS_CANCEL, msg)
+            #response = overDialog.run()
+            #overDialog.destroy()
             sqlalchemy.ext.sqlsoup.Session.rollback()
-            sqlalchemy.ext.sqlsoup.Session.clear()
-            self.connectDbLocale()
+            #sqlalchemy.ext.sqlsoup.Session.clear()
+            #self.connectDbLocale()
             #SessionLocale = scoped_session(sessionmaker(bind=self.engineLocale))
             #self.sessionLocale = SessionLocale()
-            #exec ("record = self.pg_db_server_locale.%s.get(id=rowLocale.id)") %dao
+            #try:
+                #exec ("record = self.pg_db_server_locale.%s.get(rowLocale.id)") %dao
+            #except:
+                #pass
+            #print "QUIIIIIIIIIIIIIIIIIIIIIII", record
             #if record:
                 #soupLocale.delete(record)
-                #fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
+                #sqlalchemy.ext.sqlsoup.Session.commit()
+                #self.daosScheme(tables=tablesSchemeArticolo)
+                #self.fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
+            #print "UFFFFFFFFFFFFFFFFFFFF", row.codice
+            if dao=="articolo":
+                exec ("record = self.pg_db_server_locale.%s.filter_by(codice=row.codice)") %dao
+                if record:
+                    print "ECCOLOOOOOOOOOOOOOOOOOOOOOOO", record[0].id
+                    soupLocale.delete(record[0])
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+                    self.daosScheme(tables=tablesSchemeArticolo)
+            elif dao=="listino_articolo":
+                exec ("record = self.pg_db_server_locale.%s.filter_by(id_listino=row.id_listino, id_articolo=row.id_articolo)") %dao
+                if record:
+                    print "ECCOLOOOOOOOOOOOOOOOOOOOOOOO", record[0].id_articolo
+                    soupLocale.delete(record[0])
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+                    #self.daosScheme(tables=tablesSchemeArticolo)
+                    self.fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
+            elif dao=="listino_complesso_listino":
+                exec ("record = self.pg_db_server_locale.%s.filter_by(id_listino_complesso=row.id_listino_complesso, id_listino=row.id_listino)") %dao
+                if record:
+                    print "ECCOLOOOOOOOOOOOOOOOOOOOOOOO", record
+                    soupLocale.delete(record[0])
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+                    #self.daosScheme(tables=tablesSchemeArticolo)
+                    self.fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
 
         return True
 
@@ -346,15 +379,16 @@ class SincroDB(GladeWidget):
             self.daosScheme(tables=tablesSchemeArticolo)
             self.daosScheme(tables=tablesSchemeAnagrafiche)
             self.daosScheme(tables= tablesSchemePromemoria)
-            self.daosScheme(tables=tablesSchemeDocumenti)
+            #self.daosScheme(tables=tablesSchemeDocumenti)
+            return
         if self.articoli_togglebutton.get_active():
             self.daosScheme(tables=tablesSchemeArticolo)
         if self.clienti_togglebutton.get_active():
             self.daosScheme(tables=tablesSchemeAnagrafiche)
         if self.parametri_togglebutton.get_active():
             self.daosScheme(tables= tablesSchemePromemoria)
-        if self.magazzini_togglebutton.get_active():
-            self.daosScheme(tables=tablesSchemeDocumenti)
+        #if self.magazzini_togglebutton.get_active():
+            #self.daosScheme(tables=tablesSchemeDocumenti)
 
     def on_close_button_clicked(self, button):
         self.destroy()
