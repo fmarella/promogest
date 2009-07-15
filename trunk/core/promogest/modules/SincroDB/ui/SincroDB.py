@@ -288,10 +288,9 @@ class SincroDB(GladeWidget):
         elif op == "INSERT":
             #rowlocale = soupLocale.add(
             exec ( "rowLocale = soupLocale.%s.insert()" ) %dao
-            print "OOOOOOOOOOOOOOOOOOOOOOOOOOOO", dir(rowLocale._table), rowLocale._table.indexes
-            print "DAOOOOOOOOOOOOOOOOOOOOOOOO", dao
-            seq = Sequence("testing.articolo_id_seq")
-            print "SEEEEEEEQ", seq.start, dir(seq)
+            #print "OOOOOOOOOOOOOOOOOOOOOOOOOOOO", dir(rowLocale._table), rowLocale._table.indexes
+            #print "DAOOOOOOOOOOOOOOOOOOOOOOOO", dao
+            #seq = Sequence("testing.articolo_id_seq")
             for i in rowLocale.c:
 
                 t = str(i).split(".")[1] #mi serve solo il nome tabella
