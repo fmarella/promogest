@@ -124,28 +124,21 @@ class SincroDB(GladeWidget):
             self.parametri_togglebutton.set_active(False)
             self.magazzini_togglebutton.set_active(False)
 
-    def on_genera_button_clicked(self, button):
-        """
-        Ricerca l'ultima data utile e la suggferisce nella entry
-        """
-        print "GENERA BOTTONE"
-
     def connectDbRemote(self):
-        self.mainSchema = "promogest2"
-        user = "promoadmin"
-        password = "admin"
-        host = "vete.homelinux.org"
-        #host = "192.168.1.3"
-        port = "5432"
-        database = "promogest_db"
+        mainschema_remoto = Environment.conf.SincroDB.mainschema_remoto
+        user_remoto = Environment.conf.SincroDB.user_remoto
+        password_remoto = Environment.conf.SincroDB.password_remoto
+        host_remoto = Environment.conf.SincroDB.host_remoto
+        port_remoto = Environment.conf.SincroDB.port_remoto
+        database_remoto = Environment.conf.SincroDB.database_remoto
 
         #azienda=conf.Database.azienda
         engine = create_engine('postgres:'+'//'
-                        +user+':'
-                        + password+ '@'
-                        + host + ':'
-                        + port + '/'
-                        + database,
+                        +user_remoto+':'
+                        + password_remoto+ '@'
+                        + host_remoto + ':'
+                        + port_remoto + '/'
+                        + database_remoto,
                         encoding='utf-8',
                         convert_unicode=True )
         tipo_eng = engine.name
@@ -154,26 +147,26 @@ class SincroDB(GladeWidget):
         self.pg_db_server_remote = SqlSoup(self.metaRemote)
         self.pg_db_server_remote.schema = Environment.params["schema"]
         self.pg_db_server_main_remote = SqlSoup(self.metaRemote)
-        self.pg_db_server_main_remote.schema = "promogest2"
+        self.pg_db_server_main_remote.schema = mainschema_remoto
             #Session = sessionmaker(bind=engine)
         SessionRemote = scoped_session(sessionmaker(bind=engine))
         self.sessionRemote = SessionRemote()
 
     def connectDbLocale(self):
-        self.mainSchema = "promogest2"
-        user = "promoadmin"
-        password = "admin"
-        host = "localhost"
-        port = "5432"
-        database = "promogest_db"
+        mainschema_locale = Environment.conf.SincroDB.mainschema_locale
+        user_locale = Environment.conf.SincroDB.user_locale
+        password_locale = Environment.conf.SincroDB.password_locale
+        host_locale = Environment.conf.SincroDB.host_locale
+        port_locale = Environment.conf.SincroDB.port_locale
+        database_locale = Environment.conf.SincroDB.database_locale
 
         #azienda=conf.Database.azienda
         engineLocale = create_engine('postgres:'+'//'
-                        +user+':'
-                        + password+ '@'
-                        + host + ':'
-                        + port + '/'
-                        + database,
+                        +user_locale+':'
+                        + password_locale+ '@'
+                        + host_locale + ':'
+                        + port_locale + '/'
+                        + database_locale,
                         encoding='utf-8',
                         convert_unicode=True )
         tipo_eng = engineLocale.name
@@ -182,7 +175,7 @@ class SincroDB(GladeWidget):
         self.pg_db_server_locale = SqlSoup(self.metaLocale)
         self.pg_db_server_locale.schema = Environment.params["schema"]
         self.pg_db_server_main_locale = SqlSoup(self.metaLocale)
-        self.pg_db_server_main_locale.schema = "promogest2"
+        self.pg_db_server_main_locale.schema = mainschema_locale
             #Session = sessionmaker(bind=engine)
         SessionLocale = scoped_session(sessionmaker(bind=engineLocale))
         self.engineLocale = engineLocale
@@ -194,10 +187,12 @@ class SincroDB(GladeWidget):
         Crea le liste delle query ciclando nelle tabelle
         """
         for dg in tables:
-            exec ("remote=self.pg_db_server_main_remote.%s.all()") %dg
+            #exec ("remote=self.pg_db_server_main_remote.%s.all()") %dg
+            remote = self.pg_db_server_main_remote.entity(dg).all()
             if len(remote)!=1:
                 remote.sort()
-            exec ("locale=self.pg_db_server_main_locale.%s.all()") %dg
+            #exec ("locale=self.pg_db_server_main_locale.%s.all()") %dg
+            locale = self.pg_db_server_main_locale.entity(dg).all()
             if len(locale)!=1:
                 locale.sort()
             self.logica(remote=remote, locale=locale, all=True)
@@ -206,24 +201,30 @@ class SincroDB(GladeWidget):
 
     def daosScheme(self, tables=None):
         """
-        Crea le liste delle query ciclando nelle tabelle 
+        Crea le liste delle query ciclando nelle tabelle
         """
         for dg in tables:
-            print "DGGGGGGGGGGGG", dg
-            exec ( "conteggia = self.pg_db_server_remote.%s.count()")  %(dg[0])
-            exec ( "conteggialocale = self.pg_db_server_locale.%s.count()")  %(dg[0])
-            print "CONTEGGIAAAAAAAAAAAA", conteggia, conteggialocale
+            print "TABELLA:", dg
+            conteggia = self.pg_db_server_remote.entity(dg[0]).count()
+            conteggialocale = self.pg_db_server_remote.entity(dg[0]).count()
+            #exec ( "conteggia = self.pg_db_server_remote.%s.count()")  %(dg[0])
+            #exec ( "conteggialocale = self.pg_db_server_locale.%s.count()")  %(dg[0])
+            print "CONTEGGIA:", conteggia, conteggialocale
             blocSize = 100
             if conteggia >= blocSize:
                 blocchi = abs(conteggia/blocSize)
                 for j in range(0,blocchi+1):
                     offset = j*blocSize
-                    exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
-                    exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
+                    remote=self.pg_db_server_remote.entity(dg[0]).limit(blocSize).offset(offset).all()
+                    locale=self.pg_db_server_locale.entity(dg[0]).limit(blocSize).offset(offset).all()
+                    #exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
+                    #exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
                     self.logica(remote=remote, locale=locale, all=True)
             elif conteggia < blocSize:
-                exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).all()") %(dg[0],dg[0],dg[1])
-                exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).all()") %(dg[0],dg[0],dg[1])
+                remote=self.pg_db_server_remote.entity(dg[0]).all()
+                locale=self.pg_db_server_locale.entity(dg[0]).all()
+                #exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).all()") %(dg[0],dg[0],dg[1])
+                #exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).all()") %(dg[0],dg[0],dg[1])
                 self.logica(remote=remote, locale=locale, all=True)
         print "<<<<<<<< FINITO CON LO SCHEMA AZIENDA >>>>>>>>", datetime.datetime.now()
 
@@ -285,16 +286,27 @@ class SincroDB(GladeWidget):
         if op =="DELETE":
             soupLocale.delete(rowLocale)
         elif op == "INSERT":
+            #rowlocale = soupLocale.add(
             exec ( "rowLocale = soupLocale.%s.insert()" ) %dao
+            print "OOOOOOOOOOOOOOOOOOOOOOOOOOOO", dir(rowLocale._table), rowLocale._table.indexes
+            print "DAOOOOOOOOOOOOOOOOOOOOOOOO", dao
+            seq = Sequence("testing.articolo_id_seq")
+            print "SEEEEEEEQ", seq.start, dir(seq)
             for i in rowLocale.c:
+
                 t = str(i).split(".")[1] #mi serve solo il nome tabella
-                setattr(rowLocale, t, getattr(row, t))
+                #print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", i, t, str(i).split(".")[0]
+                if t =="id":
+                    pass
+                else:
+                    setattr(rowLocale, t, getattr(row, t))
         elif op == "UPDATE":
             for i in rowLocale.c:
                 t = str(i).split(".")[1] #mi serve solo il nome tabella
                 setattr(rowLocale, t, getattr(row, t))
         try:
             sqlalchemy.ext.sqlsoup.Session.commit()
+            #sqlalchemy.ext.sqlsoup.Session.flush()
         except Exception,e :
             msg = """ATTENZIONE ERRORE NEL SALVATAGGIO
     Qui sotto viene riportato l'errore di sistema:
@@ -319,13 +331,12 @@ class SincroDB(GladeWidget):
             self.connectDbLocale()
             #SessionLocale = scoped_session(sessionmaker(bind=self.engineLocale))
             #self.sessionLocale = SessionLocale()
-            exec ("record = self.pg_db_server_locale.%s.get(id=rowLocale.id)") %dao
-            if record:
-                soupLocale.delete(record)
-                fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
+            #exec ("record = self.pg_db_server_locale.%s.get(id=rowLocale.id)") %dao
+            #if record:
+                #soupLocale.delete(record)
+                #fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
 
         return True
-
 
     def on_run_button_clicked(self, button):
         self.connectDbRemote()
@@ -346,4 +357,11 @@ class SincroDB(GladeWidget):
         if self.magazzini_togglebutton.get_active():
             self.daosScheme(tables=tablesSchemeDocumenti)
 
+    def on_close_button_clicked(self, button):
+        self.destroy()
 
+#try:
+    #command = "SELECT setval( '%s',(SELECT max(id)+1 FROM %s));" %(schemadest+".caratteri_stampa_id_seq",schemadest +".caratterie_stampa")
+    #session.execute(text(command))
+#except:
+    #print "ERRORE carattere_stampa_id_seq"
