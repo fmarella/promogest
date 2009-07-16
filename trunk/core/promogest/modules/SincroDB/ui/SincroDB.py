@@ -63,9 +63,8 @@ tablesSchemeArticolo = [
             ("fornitura","id"),
             ("sconto_fornitura","id"),
             #("inventario","id"),
-            #("listino_complesso_articolo_prevalente","id_articolo"),
             #("listino_complesso_listino","id_listino"),
-
+            #("listino_complesso_articolo_prevalente","id_articolo"),
             ("sconti_vendita_dettaglio","id"),
             ("sconti_vendita_ingrosso","id"),
             #("spesa","id"),
@@ -236,7 +235,7 @@ class SincroDB(GladeWidget):
                 self.logica(remote=remote, locale=locale, all=True)
                 sqlalchemy.ext.sqlsoup.Session.commit()
         print "<<<<<<<< FINITO CON LO SCHEMA AZIENDA >>>>>>>>",
-        print "<<<<<<< INIZIATO :", self.tempo_inizio, " FINITO:," datetime.datetime.now() , ">>>>>>>>>>>>>"
+        print "<<<<<<< INIZIATO :", self.tempo_inizio, " FINITO:", datetime.datetime.now() , ">>>>>>>>>>>>>"
 
 
     def logica(self,remote=None, locale=None, all=False):
