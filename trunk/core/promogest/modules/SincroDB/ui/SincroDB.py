@@ -44,8 +44,9 @@ tablesSchemeArticolo = [
             ("articolo","id"),
             ("multiplo","id"),
             ("pagamento","id"),
-            ("fornitore","id"),
             ("persona_giuridica","id"),
+            ("fornitore","id"),
+
             ("sconto" ,"id"),
             ("categoria_cliente","id"),
             ("codice_a_barre_articolo","id"),
@@ -226,12 +227,14 @@ class SincroDB(GladeWidget):
                     exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
                     exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
                     self.logica(remote=remote, locale=locale, all=True)
+                sqlalchemy.ext.sqlsoup.Session.commit()
             elif conteggia < blocSize:
                 #remote=self.pg_db_server_remote.entity(dg[0]).all()
                 #locale=self.pg_db_server_locale.entity(dg[0]).all()
                 exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).all()") %(dg[0],dg[0],dg[1])
                 exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).all()") %(dg[0],dg[0],dg[1])
                 self.logica(remote=remote, locale=locale, all=True)
+                sqlalchemy.ext.sqlsoup.Session.commit()
         print "<<<<<<<< FINITO CON LO SCHEMA AZIENDA >>>>>>>>", datetime.datetime.now()
 
 
@@ -305,11 +308,11 @@ class SincroDB(GladeWidget):
                 t = str(i).split(".")[1] #mi serve solo il nome tabella
 
                 setattr(rowLocale, t, getattr(row, t))
-        try:
-            sqlalchemy.ext.sqlsoup.Session.commit()
-            sqlalchemy.ext.sqlsoup.Session.flush()
-        except Exception,e :
-            print "ERRORE", e
+        #try:
+            #sqlalchemy.ext.sqlsoup.Session.commit()
+            #sqlalchemy.ext.sqlsoup.Session.flush()
+        #except Exception,e :
+            #print "ERRORE", e
             #msg = """ATTENZIONE ERRORE NEL SALVATAGGIO
     #Qui sotto viene riportato l'errore di sistema:
 #
@@ -328,7 +331,7 @@ class SincroDB(GladeWidget):
                                                     #gtk.BUTTONS_CANCEL, msg)
             #response = overDialog.run()
             #overDialog.destroy()
-            sqlalchemy.ext.sqlsoup.Session.rollback()
+            #sqlalchemy.ext.sqlsoup.Session.rollback()
             #sqlalchemy.ext.sqlsoup.Session.clear()
             #self.connectDbLocale()
             #SessionLocale = scoped_session(sessionmaker(bind=self.engineLocale))
@@ -344,29 +347,29 @@ class SincroDB(GladeWidget):
                 #self.daosScheme(tables=tablesSchemeArticolo)
                 #self.fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
             #print "UFFFFFFFFFFFFFFFFFFFF", row.codice
-            if dao=="articolo":
-                exec ("record = self.pg_db_server_locale.%s.filter_by(codice=row.codice)") %dao
-                if record:
-                    print "ECCOLOOOOOOOOOOOOOOOOOOOOOOO", record[0].id
-                    soupLocale.delete(record[0])
-                    sqlalchemy.ext.sqlsoup.Session.commit()
-                    self.daosScheme(tables=tablesSchemeArticolo)
-            elif dao=="listino_articolo":
-                exec ("record = self.pg_db_server_locale.%s.filter_by(id_listino=row.id_listino, id_articolo=row.id_articolo)") %dao
-                if record:
-                    print "ECCOLOOOOOOOOOOOOOOOOOOOOOOO", record[0].id_articolo
-                    soupLocale.delete(record[0])
-                    sqlalchemy.ext.sqlsoup.Session.commit()
+            #if dao=="articolo":
+                #exec ("record = self.pg_db_server_locale.%s.filter_by(codice=row.codice)") %dao
+                #if record:
+                    #print "ECCOLOOOOOOOOOOOOOOOOOOOOOOO", record[0].id
+                    #soupLocale.delete(record[0])
+                    #sqlalchemy.ext.sqlsoup.Session.commit()
                     #self.daosScheme(tables=tablesSchemeArticolo)
-                    self.fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
-            elif dao=="listino_complesso_listino":
-                exec ("record = self.pg_db_server_locale.%s.filter_by(id_listino_complesso=row.id_listino_complesso, id_listino=row.id_listino)") %dao
-                if record:
-                    print "ECCOLOOOOOOOOOOOOOOOOOOOOOOO", record
-                    soupLocale.delete(record[0])
-                    sqlalchemy.ext.sqlsoup.Session.commit()
+            #elif dao=="listino_articolo":
+                #exec ("record = self.pg_db_server_locale.%s.filter_by(id_listino=row.id_listino, id_articolo=row.id_articolo)") %dao
+                #if record:
+                    #print "ECCOLOOOOOOOOOOOOOOOOOOOOOOO", record[0].id_articolo
+                    #soupLocale.delete(record[0])
+                    #sqlalchemy.ext.sqlsoup.Session.commit()
                     #self.daosScheme(tables=tablesSchemeArticolo)
-                    self.fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
+                    #self.fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
+            #elif dao=="listino_complesso_listino":
+                #exec ("record = self.pg_db_server_locale.%s.filter_by(id_listino_complesso=row.id_listino_complesso, id_listino=row.id_listino)") %dao
+                #if record:
+                    #print "ECCOLOOOOOOOOOOOOOOOOOOOOOOO", record
+                    #soupLocale.delete(record[0])
+                    #sqlalchemy.ext.sqlsoup.Session.commit()
+                    #self.daosScheme(tables=tablesSchemeArticolo)
+                    #self.fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
 
         return True
 
