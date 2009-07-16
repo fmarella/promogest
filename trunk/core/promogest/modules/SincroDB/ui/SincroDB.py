@@ -6,15 +6,14 @@
 # Author: Francesco Meloni <francescoo@promotux.it>
 
 import gtk
-import gobject
 import datetime
 import sqlalchemy
 from sqlalchemy.ext.serializer import loads, dumps
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest import Environment
-from promogest.ui.utils import *
-from promogest.ui.utilsCombobox import *
+#from promogest.ui.utils import *
+#from promogest.ui.utilsCombobox import *
 from promogest.ui.GladeWidget import GladeWidget
 from sqlalchemy.ext.sqlsoup import SqlSoup
 
@@ -63,8 +62,8 @@ tablesSchemeArticolo = [
             ("fornitura","id"),
             ("sconto_fornitura","id"),
             #("inventario","id"),
-            #("listino_complesso_listino","id_listino"),
-            #("listino_complesso_articolo_prevalente","id_articolo"),
+            ("listino_complesso_listino","id_listino"),
+            ("listino_complesso_articolo_prevalente","id_articolo"),
             ("sconti_vendita_dettaglio","id"),
             ("sconti_vendita_ingrosso","id"),
             #("spesa","id"),
@@ -215,7 +214,8 @@ class SincroDB(GladeWidget):
             #exec ( "conteggia = self.pg_db_server_remote.%s.count()")  %(dg[0])
             #exec ( "conteggialocale = self.pg_db_server_locale.%s.count()")  %(dg[0])
             print "CONTEGGIA:", conteggia, conteggialocale
-            blocSize = 500
+            blocSize = int(Environment.conf.SincroDB.offset)
+            #blocSize = 500
             if conteggia >= blocSize:
                 blocchi = abs(conteggia/blocSize)
                 for j in range(0,blocchi+1):
@@ -260,8 +260,8 @@ class SincroDB(GladeWidget):
                     #print "LOCALE", locale[i]
                     if  remote[i] != locale[i]:
                         print "QUESTA È LA RIGA DIVERSA NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione UPDATE"
-                        print " RIGA REMOTE", remote[i].id
-                        print " RIGA LOCALE", locale[i].id
+                        #print " RIGA REMOTE", remote[i].id
+                        #print " RIGA LOCALE", locale[i].id
                         self.fixToTable(soupLocale=soupLocale,
                                         row=remote[i],
                                         rowLocale=locale[i],
@@ -402,3 +402,8 @@ class SincroDB(GladeWidget):
     #session.execute(text(command))
 #except:
     #print "ERRORE carattere_stampa_id_seq"
+if __name__ == '__main__':
+    # Import Psyco if available
+    import Envir
+        #BigBang()
+
