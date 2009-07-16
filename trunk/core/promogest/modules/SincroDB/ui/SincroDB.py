@@ -235,7 +235,8 @@ class SincroDB(GladeWidget):
                 exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).all()") %(dg[0],dg[0],dg[1])
                 self.logica(remote=remote, locale=locale, all=True)
                 sqlalchemy.ext.sqlsoup.Session.commit()
-        print "<<<<<<<< FINITO CON LO SCHEMA AZIENDA >>>>>>>>", datetime.datetime.now()
+        print "<<<<<<<< FINITO CON LO SCHEMA AZIENDA >>>>>>>>",
+        print "<<<<<<< INIZIATO :", self.tempo_inizio, " FINITO:," datetime.datetime.now() , ">>>>>>>>>>>>>"
 
 
     def logica(self,remote=None, locale=None, all=False):
@@ -376,6 +377,7 @@ class SincroDB(GladeWidget):
     def on_run_button_clicked(self, button):
         self.connectDbRemote()
         self.connectDbLocale()
+        self.tempo_inizio = datetime.datetime.now()
         print "INIZIO sincro",datetime.datetime.now()
         self.daosMain(tables=tablesMain)
         if self.tuttecose_checkbutton.get_active():
