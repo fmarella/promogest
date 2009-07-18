@@ -381,7 +381,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             valore_unitario_lordo = mN(modelRow[6])
             valore_unitario_netto = mN(modelRow[7])
             totaleRiga = modelRow[8]
-            
+
         listinoSel = ListinoArticolo().select(idListino=self._id_listino,
                                             idArticolo=idArticolo,
                                             listinoAttuale=True,
@@ -449,7 +449,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                 daoRiga.scontiRiga = scontiRiga
         return daoRiga
 
-    def  saveDao(self):
+    def saveDao(self):
         """
         Recupera tutte le inforamzioni necessarie al salvataggio del Dao
         """
@@ -1044,7 +1044,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                 subject= ",subject="+soggetto
                 #attachemail = ",attachment=file://%s" %pdfFile
                 os.system(emailAPP + toemail+subject+body)
-                
+
             t = threading.Thread(group=None, target=applicationThread,\
                                     name='email composer',\
                                     args=(), kwargs={})

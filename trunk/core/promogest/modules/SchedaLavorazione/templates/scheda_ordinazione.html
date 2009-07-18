@@ -20,6 +20,31 @@
         <td class="report-header" width="50%"><h3>provenienza: <strong >{{dao.provenienza}}</strong></h3></td>
             </tr>
 </table>
+        <table cellpadding="0" cellspacing="4" border="0">
+        <tr><td colspan="9" class="table-header">Righe SCHEDA LAVORAZIONE</td></tr>
+        <tr>
+            <td class="even-detail">Codice</td>
+            <td class="even-detail">Descrizione</td>
+            <td class="even-number">Iva (%)</td>
+            <td class="even-number">Quantita'</td>
+            <td class="even-number">Prezzo netto</td>
+            <td class="even-number">Totale</td>
+        </tr>
+        {% for riga in dao.righe %}
+        <tr >
+            {% if riga.id_magazzino %}
+            <td width="16%" class="odd-detail" >{{riga.codice_articolo}}</td>
+            {% else %}
+            <td width="16%" class="odd-detail"></td>
+            {% endif %}
+            <td width="40%" class="odd-detail">{{riga.descrizione}}</td>
+            <td width="10%" class="odd-number">{{'%14.2f' % riga.percentuale_iva}}</td>
+            <td width="12%" class="odd-number">{{environment.conf.number_format % ( riga.quantita * riga.moltiplicatore)}}</td>
+            <td width="12%" class="odd-number">{{environment.conf.number_format % riga.valore_unitario_netto}}</td>
+            <td width="10%" class="odd-number"><strong>{{environment.conf.number_format % ( riga.quantita * riga.moltiplicatore * riga.valore_unitario_netto )}}</strong></td>
+        </tr>
+        {% endfor %}
+        </table>
 <table cellpadding="0" cellspacing="0" border="0">
 <tr>
     <td width="55%">
@@ -66,8 +91,14 @@
 </td></tr>
 </table>
 <br /><br />
+<!--
 <div id="container">
+-->
+<!--
     <div id="footer">&nbsp; PromoGest&nbsp;  By&nbsp;   PromoTUX&nbsp; &nbsp; &nbsp;    -&nbsp;www.promotux.it </div>
+-->
+<!--
 </div>
+-->
     </body>
 </html>

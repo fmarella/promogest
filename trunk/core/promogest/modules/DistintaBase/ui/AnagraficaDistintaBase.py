@@ -2,10 +2,8 @@
 
 # Promogest
 #
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
+# Copyright (C) 2009 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni  <francesco@promotux.it>
-
 
 import gtk
 import gobject
@@ -31,7 +29,7 @@ class AnagraficaDistintaBase(Anagrafica):
                             reportHandler=AnagraficaDistintaBaseReport(self),
                             editElement=AnagraficaDistintaBaseEdit(self))
         self.record_duplicate_menu.set_property('visible', True)
-        
+
 
 class AnagraficaDistintaBaseFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica delle distinte base """
@@ -41,11 +39,12 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
                                   anagrafica,
                                   'anagrafica_associazioni_articoli_filter_table',
                                     gladeFile='DistintaBase/gui/_distinta_base_plugins.glade',
-                                    module=True) 
+                                    module=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
         self.articoliprincipaliList = []
 
     def draw(self):
+
         treeview = self._anagrafica.anagrafica_filter_treeview
 
         renderer = gtk.CellRendererText()
@@ -122,7 +121,6 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
 
         self.clear()
 
-
     def _refresh_filter_comboboxes(self, widget=None):
         self.refresh()
 
@@ -141,7 +139,6 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         self.id_stato_articolo_filter_combobox.set_active(0)
         self.cancellato_filter_checkbutton.set_active(False)
         self.refresh()
-
 
     def refresh(self):
         """ Aggiornamento TreeView"""
@@ -221,7 +218,7 @@ class AnagraficaDistintaBaseHtml(AnagraficaHtml):
         AnagraficaHtml.__init__(self, anagrafica, 'distinta_base',
                                 'Dettaglio distinta base',
                                 templatesHTMLDir ="promogest/modules/DistintaBase/templates/" )
-    
+
 
 class AnagraficaDistintaBaseReport(AnagraficaReport):
     def __init__(self, anagrafica):
@@ -337,7 +334,7 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
             self.descrizione_label.set_markup(string)
         else:
             self.descrizione_label.set_text(self.daoPadre.denominazione)
-        
+
         if self.daoPadre.codice is not None:
             self.codice_label.set_markup(str(self.daoPadre.codice))
 
@@ -350,7 +347,7 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
         """
         for articolo in self.articoliAssociatiList:
             articolo.persist()
-    
+
     def on_articolo_principale_button_clicked(self, button):
         self.ricercaArticolo(isNode=True)
 
@@ -368,7 +365,7 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
             else:
                 print "SEI FIGLIO"
                 self.mostraArticoloFiglio(anag.dao)
-        
+
         codice = None
         codiceABarre = None
         denominazione = None
@@ -402,7 +399,7 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
         for articolo in self.articoliAssociatiList:
             articolo.id_associato = id
         self._refresh()
-        
+
     def mostraArticoloFiglio(self,dao):
         daoAssociazione= AssociazioneArticolo()
         # qui è sufficiente settare solo le proprietà dell'associazione che vengono poi visualizzate nella treeview
