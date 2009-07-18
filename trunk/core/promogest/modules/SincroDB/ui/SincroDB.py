@@ -6,7 +6,9 @@
 # Author: Francesco Meloni <francescoo@promotux.it>
 
 import gtk
+import gobject
 import datetime
+import threading
 import sqlalchemy
 from sqlalchemy.ext.serializer import loads, dumps
 from sqlalchemy import *
@@ -104,6 +106,45 @@ tablesSchemeDocumenti = [
             ("informazioni_contabili_documento","id"),
 ]
 
+#avanzamento_pgbar
+# Update the value of the progress bar so that we get
+# some movement
+def progress_timeout(pbobj):
+    #print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+    if pbobj.run:
+        pbobj.avanzamento_pgbar.pulse()
+        #if pbobj.th.isAlive():
+            #print "IL SINCRO PROCEDE"
+    #else:
+        # Calculate the value of the progress bar using the
+        # value range set in the adjustment object
+        #new_val = pbobj.avanzamento_pgbar.get_fraction() + 0.01
+        #if new_val > 1.0:
+            #new_val = 0.0
+        # Set the new value
+        #pbobj.avanzamento_pgbar.set_fraction(new_val)
+
+    # As this is a timeout function, return TRUE so that it
+    # continues to get called
+        return True
+    else:
+        return False
+
+def renewProgressBarIdle(pbobj):
+    #pbobj.avanzamento_pgbar.set_pulse_step(0.07)
+    pbobj.avanzamento_pgbar.set_text('Sincronizzazione dei DB')
+
+    # Let's also schedule the progress bar pulsing from
+    # the main thread
+    #def pulsePBar():
+        #pbobj.avanzamento_pgbar.pulse()
+        #return True
+    #pbobj.__pulseSourceTag = gobject.timeout_add(80, pulsePBar)
+
+    #return False
+
+
+
 class SincroDB(GladeWidget):
     """ Finestra di gestione esdportazione variazioni Database """
     def __init__(self):
@@ -188,6 +229,9 @@ class SincroDB(GladeWidget):
         Crea le liste delle query ciclando nelle tabelle
         """
         for dg in tables:
+            self.table_label.set_text(dg)
+            self.avanzamento_pgbar.pulse()
+            #gobject.idle_add (progress_timeout, self)
             #exec ("remote=self.pg_db_server_main_remote.%s.all()") %dg
             remote = self.pg_db_server_main_remote.entity(dg).all()
             if len(remote)!=1:
@@ -205,7 +249,9 @@ class SincroDB(GladeWidget):
         Crea le liste delle query ciclando nelle tabelle
         """
         for dg in tables:
-            print "TABELLA:", dg
+            self.table_label.set_text(dg[0])
+            self.avanzamento_pgbar.pulse()
+            print "TABELLA:", dg[0]
             conteggia = self.pg_db_server_remote.entity(dg[0]).count() # serve per poter affettare le select
             conteggialocale = self.pg_db_server_remote.entity(dg[0]).count()
             print "CONTEGGIA:", conteggia, conteggialocale
@@ -214,6 +260,7 @@ class SincroDB(GladeWidget):
             if conteggia >= blocSize:
                 blocchi = abs(conteggia/blocSize)
                 for j in range(0,blocchi+1):
+                    self.avanzamento_pgbar.pulse()
                     offset = j*blocSize
                     print "OFFFFFSETTTTTTTTTTTT", offset , datetime.datetime.now()
                     #remote=self.pg_db_server_remote.entity(dg[0]).limit(blocSize).offset(offset).all()
@@ -322,11 +369,6 @@ class SincroDB(GladeWidget):
             else:
                 print "TABELLE o BLOCCHI CON NUM DI RECORD UGUALI"
         except Exception,e :
-                #print "ERRORE",e # e.args, "FFFF", e.instance ,"MMM",  e.message, "ORIG", e.orig , "PRA", type(e.params), "STA", e.statement, e.params["codice"]
-                #sqlalchemy.ext.sqlsoup.Session.rollback()
-                #sqlalchemy.ext.sqlsoup.Session.clear()
-                #locale=self.pg_db_server_locale.entity(dao).all()
-                #exec ("locale=self.pg_db_server_locale.%s.all()") %(dao)
                 for l in locale:
                     self.pg_db_server_locale.delete(l)
                     print "cancello",  l
@@ -352,38 +394,7 @@ class SincroDB(GladeWidget):
             for i in rowLocale.c:
                 t = str(i).split(".")[1] #mi serve solo il nome tabella
                 setattr(rowLocale, t, getattr(row, t))
-        #try:
-            #sqlalchemy.ext.sqlsoup.Session.commit()
-            #sqlalchemy.ext.sqlsoup.Session.flush()
-        #except Exception,e :
-            #print "ERRORE", e
-            #sqlalchemy.ext.sqlsoup.Session.rollback()
-            #self.rimuoviRecord(soupLocale=soupLocale, dao=dao, row=row)
-            #msg = """ATTENZIONE ERRORE NEL SALVATAGGIO
-    #Qui sotto viene riportato l'errore di sistema:
-#
-    #( normalmente il campo in errore è tra "virgolette")
-#
-    #%s
-#
-    #L'errore può venire causato da un campo fondamentale
-    #mancante, da un codice già presente, si invita a
-    #rincontrollare i campi e riprovare
-    #Grazie!
-    #""" %e
-            #overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                #| gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                    #gtk.MESSAGE_ERROR,
-                                                    #gtk.BUTTONS_CANCEL, msg)
-            #response = overDialog.run()
-            #overDialog.destroy()
-            #sqlalchemy.ext.sqlsoup.Session.rollback()
-            #sqlalchemy.ext.sqlsoup.Session.clear()
-            #self.connectDbLocale()
-            #SessionLocale = scoped_session(sessionmaker(bind=self.engineLocale))
-            #self.sessionLocale = SessionLocale()
 
-#
     def rimuoviRecord(self, soupLocale=None, dao=None, row=None, codice=None):
         record = None
         try:
@@ -420,7 +431,7 @@ class SincroDB(GladeWidget):
 
                 #self.fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
 
-    def on_run_button_clicked(self, button):
+    def test(self):
         self.connectDbRemote()
         self.connectDbLocale()
         self.tempo_inizio = datetime.datetime.now()
@@ -440,6 +451,19 @@ class SincroDB(GladeWidget):
             self.daosScheme(tables= tablesSchemePromemoria)
         #if self.magazzini_togglebutton.get_active():
             #self.daosScheme(tables=tablesSchemeDocumenti)
+        #print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        self.run =False
+        gobject.source_remove(self.timer)
+        self.timer = 0
+
+    def on_run_button_clicked(self, button):
+        self.run = True
+        self.timer = gobject.timeout_add(80,progress_timeout, self)
+        #gobject.idle_add(self.test())
+        self.th = threading.Thread(target=self.test)
+        self.th.start()
+        #thread.join(1.3)
+
 
     def on_close_button_clicked(self, button):
         self.destroy()
