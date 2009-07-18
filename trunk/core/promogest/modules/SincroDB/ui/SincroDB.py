@@ -31,7 +31,6 @@ tablesMain = [
             #"action",
             #"roleaction"
 ]
-
 tablesSchemeArticolo = [
             ("magazzino","id"),
             #("setting","key"),
@@ -45,8 +44,8 @@ tablesSchemeArticolo = [
             ("pagamento","id"),
             ("persona_giuridica","id"),
             ("fornitore","id"),
-
-            ("sconto" ,"id"),
+#
+            #("sceonto" ,"id"),
             ("categoria_cliente","id"),
             ("codice_a_barre_articolo","id"),
 
@@ -56,7 +55,7 @@ tablesSchemeArticolo = [
             ("listino","id"),
             ("listino_magazzino","id_listino"),
             ("listino_categoria_cliente","id_listino"),
-
+#
             ("listino_articolo","id_listino"),
             #("feed","id"),
             ("fornitura","id"),
@@ -87,12 +86,10 @@ tablesSchemeAnagrafiche = [
             ("contatto_magazzino","id"),
             ("contatto_azienda","id"),
 ]
-
 tablesSchemePromemoria = [
             ("promemoria","id"),
 
 ]
-
 tablesSchemeDocumenti = [
             ("testata_documento","id"),
             ("testata_movimento","id"),
@@ -199,7 +196,7 @@ class SincroDB(GladeWidget):
             locale = self.pg_db_server_main_locale.entity(dg).all()
             if len(locale)!=1:
                 locale.sort()
-            self.logica(remote=remote, locale=locale, all=True)
+            self.logica(remote=remote, locale=locale, dao=dg, all=True)
         print "<<<<<<<< FINITO CON LO SCHEMA PRINCIPALE >>>>>>>>", datetime.datetime.now()
 
 
@@ -211,82 +208,130 @@ class SincroDB(GladeWidget):
             print "TABELLA:", dg
             conteggia = self.pg_db_server_remote.entity(dg[0]).count() # serve per poter affettare le select
             conteggialocale = self.pg_db_server_remote.entity(dg[0]).count()
-            #exec ( "conteggia = self.pg_db_server_remote.%s.count()")  %(dg[0])
-            #exec ( "conteggialocale = self.pg_db_server_locale.%s.count()")  %(dg[0])
             print "CONTEGGIA:", conteggia, conteggialocale
             blocSize = int(Environment.conf.SincroDB.offset)
-            #blocSize = 500
+            #blocSize = 10
             if conteggia >= blocSize:
                 blocchi = abs(conteggia/blocSize)
                 for j in range(0,blocchi+1):
                     offset = j*blocSize
-                    print "OFFFFFSET", offset , datetime.datetime.now()
+                    print "OFFFFFSETTTTTTTTTTTT", offset , datetime.datetime.now()
                     #remote=self.pg_db_server_remote.entity(dg[0]).limit(blocSize).offset(offset).all()
                     #locale=self.pg_db_server_locale.entity(dg[0]).limit(blocSize).offset(offset).all()
                     exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
                     exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
-                    self.logica(remote=remote, locale=locale, all=True)
-                sqlalchemy.ext.sqlsoup.Session.commit()
+                    self.logica(remote=remote, locale=locale,dao=dg[0], all=True)
+                    try:
+                        sqlalchemy.ext.sqlsoup.Session.commit()
+                        #sqlalchemy.ext.sqlsoup.Session.flush()
+                    except Exception,e :
+                        print "ERRORE",e # e.args, "FFFF", e.instance ,"MMM",  e.message, "ORIG", e.orig , "PRA", type(e.params), "STA", e.statement, e.params["codice"]
+                        sqlalchemy.ext.sqlsoup.Session.rollback()
+                        #sqlalchemy.ext.sqlsoup.Session.clear()
+                        exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
+                        for l in locale:
+                            self.pg_db_server_locale.delete(l)
+                            print "cancello",  l
+                        sqlalchemy.ext.sqlsoup.Session.commit()
+                        self.daosScheme(tables=tablesSchemeArticolo)
+
+                        #if dg[0] =="articolo":
+                            #self.rimuoviRecord(dao=dg[0], row=None, codice=e.params["codice"])
+                        #else:
+                            #raise e
+
+                        #self.rimuoviRecord(dao=dg[0])
             elif conteggia < blocSize:
                 #remote=self.pg_db_server_remote.entity(dg[0]).all()
                 #locale=self.pg_db_server_locale.entity(dg[0]).all()
                 exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).all()") %(dg[0],dg[0],dg[1])
                 exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).all()") %(dg[0],dg[0],dg[1])
-                self.logica(remote=remote, locale=locale, all=True)
-                sqlalchemy.ext.sqlsoup.Session.commit()
+                self.logica(remote=remote, locale=locale,dao=dg[0], all=True)
+                try:
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+                    #sqlalchemy.ext.sqlsoup.Session.flush()
+                except Exception,e :
+                    print "ERRORE",e # e.args, "FFFF", e.instance ,"MMM",  e.message, "ORIG", e.orig , "PRA", type(e.params), "STA", e.statement, e.params["codice"]
+                    sqlalchemy.ext.sqlsoup.Session.rollback()
+                    #sqlalchemy.ext.sqlsoup.Session.clear()
+                    exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).all()") %(dg[0],dg[0],dg[1])
+                    for l in locale:
+                        self.pg_db_server_locale.delete(l)
+                        print "cancello",  l
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+                    self.daosScheme(tables=tablesSchemeArticolo)
+            #try:
+                    #sqlalchemy.ext.sqlsoup.Session.commit()
+                    #sqlalchemy.ext.sqlsoup.Session.flush()
+                #except:
+                    #sqlalchemy.ext.sqlsoup.Session.rollback()
+                    #self.rimuoviRecord(dao=dg[0])
         print "<<<<<<<< FINITO CON LO SCHEMA AZIENDA >>>>>>>>",
         print "<<<<<<< INIZIATO :", self.tempo_inizio, " FINITO:", datetime.datetime.now() , ">>>>>>>>>>>>>"
 
 
-    def logica(self,remote=None, locale=None, all=False):
+    def logica(self,remote=None, locale=None,dao=None,all=False):
         """ cicla le righe della tabella e decide cosa fare """
+        if dao in tablesMain:
+            soupLocale = self.pg_db_server_main_locale
+        else:
+            soupLocale = self.pg_db_server_locale
         deleteRow=False
-        print len(remote) , len(locale)
-        if remote != locale:
-            if len(remote) == len(locale):
-                print "STESSO NUMERO DI RECORD", len(remote)
-            elif len(remote) > len(locale):
-                print "IL DB REMOTO CONTIENE PIU' RECORD", len(remote), "vs", len(locale)
-            else:
-                print "IL DB LOCALE CONTIENE PIU' RECORD", len(remote), "vs", len(locale)
-                deleteRow=True
-            for i in range(0,(len(remote))):
-                if str(remote[i]._table).split(".")[1] in tablesMain:
-                    soupLocale = self.pg_db_server_main_locale
+        if not remote and not locale:
+            return False
+        try:
+            if remote != locale:
+                if len(remote) == len(locale):
+                    print "STESSO NUMERO DI RECORD", len(remote)
+                elif len(remote) > len(locale):
+                    print "IL DB REMOTO CONTIENE PIU' RECORD", len(remote), "vs", len(locale)
                 else:
-                    soupLocale = self.pg_db_server_locale
-                if i <= (len(locale)-1):
-                    #print "REMOTE", remote[i]
-                    #print "LOCALE", locale[i]
-                    if  remote[i] != locale[i]:
-                        print "QUESTA È LA RIGA DIVERSA NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione UPDATE"
-                        #print " RIGA REMOTE", remote[i].id
-                        #print " RIGA LOCALE", locale[i].id
+                    print "IL DB LOCALE CONTIENE PIU' RECORD", len(remote), "vs", len(locale)
+                    deleteRow=True
+                for i in range(0,(len(remote))):
+                    if i <= (len(locale)-1):
+                        #print "REMOTE", remote[i]
+                        #print "LOCALE", locale[i]
+                        if  remote[i] != locale[i]:
+                            print "QUESTA È LA RIGA DIVERSA NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione UPDATE"
+                            #print " RIGA REMOTE", remote[i].id
+                            #print " RIGA LOCALE", locale[i].id
+                            self.fixToTable(soupLocale=soupLocale,
+                                            row=remote[i],
+                                            rowLocale=locale[i],
+                                            op="UPDATE",
+                                            dao=str(remote[i]._table).split(".")[1],
+                                            all=all)
+                    else:
+                        print "QUESTA È LA RIGA DA AGGIUNGERE NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione INSERT"
+                        print " RIGA REMOTE", remote[i]
                         self.fixToTable(soupLocale=soupLocale,
                                         row=remote[i],
-                                        rowLocale=locale[i],
-                                        op="UPDATE",
+                                        op="INSERT",
                                         dao=str(remote[i]._table).split(".")[1],
                                         all=all)
-                else:
-                    print "QUESTA È LA RIGA DA AGGIUNGERE NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione INSERT"
-                    print " RIGA REMOTE", remote[i]
-                    self.fixToTable(soupLocale=soupLocale,
-                                    row=remote[i],
-                                    op="INSERT",
-                                    dao=str(remote[i]._table).split(".")[1],
-                                    all=all)
-            if deleteRow:
-                for i in range(len(remote),len(locale)):
-                    print "QUESTA È LA RIGA DA rimuovere ", str(locale[i]._table).split(".")[1], "Operazione DELETE"
-                    self.fixToTable(soupLocale=soupLocale,
-                        #row=locale[i],
-                        rowLocale = locale[i],
-                        op="DELETE",
-                        dao=str(locale[i]._table).split(".")[1],
-                        all=all)
-        else:
-            print "TABELLE UGUALI"
+                if deleteRow:
+                    for i in range(len(remote),len(locale)):
+                        print "QUESTA È LA RIGA DA rimuovere ", str(locale[i]._table).split(".")[1], "Operazione DELETE"
+                        self.fixToTable(soupLocale=soupLocale,
+                            #row=locale[i],
+                            rowLocale = locale[i],
+                            op="DELETE",
+                            dao=str(locale[i]._table).split(".")[1],
+                            all=all)
+            else:
+                print "TABELLE o BLOCCHI CON NUM DI RECORD UGUALI"
+        except Exception,e :
+                #print "ERRORE",e # e.args, "FFFF", e.instance ,"MMM",  e.message, "ORIG", e.orig , "PRA", type(e.params), "STA", e.statement, e.params["codice"]
+                #sqlalchemy.ext.sqlsoup.Session.rollback()
+                #sqlalchemy.ext.sqlsoup.Session.clear()
+                #locale=self.pg_db_server_locale.entity(dao).all()
+                #exec ("locale=self.pg_db_server_locale.%s.all()") %(dao)
+                for l in locale:
+                    self.pg_db_server_locale.delete(l)
+                    print "cancello",  l
+                sqlalchemy.ext.sqlsoup.Session.commit()
+                self.daosScheme(tables=tablesSchemeArticolo)
 
     def fixToTable(self, soup =None,soupLocale=None, op=None, row=None,rowLocale=None, dao=None, all=False):
         """
@@ -306,13 +351,14 @@ class SincroDB(GladeWidget):
 
             for i in rowLocale.c:
                 t = str(i).split(".")[1] #mi serve solo il nome tabella
-
                 setattr(rowLocale, t, getattr(row, t))
         #try:
             #sqlalchemy.ext.sqlsoup.Session.commit()
             #sqlalchemy.ext.sqlsoup.Session.flush()
         #except Exception,e :
             #print "ERRORE", e
+            #sqlalchemy.ext.sqlsoup.Session.rollback()
+            #self.rimuoviRecord(soupLocale=soupLocale, dao=dao, row=row)
             #msg = """ATTENZIONE ERRORE NEL SALVATAGGIO
     #Qui sotto viene riportato l'errore di sistema:
 #
@@ -336,42 +382,43 @@ class SincroDB(GladeWidget):
             #self.connectDbLocale()
             #SessionLocale = scoped_session(sessionmaker(bind=self.engineLocale))
             #self.sessionLocale = SessionLocale()
-            #try:
-                #exec ("record = self.pg_db_server_locale.%s.get(rowLocale.id)") %dao
-            #except:
-                #pass
-            #print "QUIIIIIIIIIIIIIIIIIIIIIII", record
-            #if record:
-                #soupLocale.delete(record)
-                #sqlalchemy.ext.sqlsoup.Session.commit()
-                #self.daosScheme(tables=tablesSchemeArticolo)
-                #self.fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
-            #print "UFFFFFFFFFFFFFFFFFFFF", row.codice
-            #if dao=="articolo":
-                #exec ("record = self.pg_db_server_locale.%s.filter_by(codice=row.codice)") %dao
-                #if record:
-                    #print "ECCOLOOOOOOOOOOOOOOOOOOOOOOO", record[0].id
-                    #soupLocale.delete(record[0])
-                    #sqlalchemy.ext.sqlsoup.Session.commit()
-                    #self.daosScheme(tables=tablesSchemeArticolo)
-            #elif dao=="listino_articolo":
-                #exec ("record = self.pg_db_server_locale.%s.filter_by(id_listino=row.id_listino, id_articolo=row.id_articolo)") %dao
-                #if record:
-                    #print "ECCOLOOOOOOOOOOOOOOOOOOOOOOO", record[0].id_articolo
-                    #soupLocale.delete(record[0])
-                    #sqlalchemy.ext.sqlsoup.Session.commit()
-                    #self.daosScheme(tables=tablesSchemeArticolo)
-                    #self.fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
-            #elif dao=="listino_complesso_listino":
-                #exec ("record = self.pg_db_server_locale.%s.filter_by(id_listino_complesso=row.id_listino_complesso, id_listino=row.id_listino)") %dao
-                #if record:
-                    #print "ECCOLOOOOOOOOOOOOOOOOOOOOOOO", record
-                    #soupLocale.delete(record[0])
-                    #sqlalchemy.ext.sqlsoup.Session.commit()
-                    #self.daosScheme(tables=tablesSchemeArticolo)
-                    #self.fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
 
-        return True
+#
+    def rimuoviRecord(self, soupLocale=None, dao=None, row=None, codice=None):
+        record = None
+        try:
+            exec ("record = self.pg_db_server_locale.%s.get(rowLocale.id)") %dao
+        except:
+            print "RECORD PER ID NON ESISTENTE"
+        if record:
+            soupLocale.delete(record)
+            sqlalchemy.ext.sqlsoup.Session.commit()
+            self.daosScheme(tables=tablesSchemeArticolo)
+            self.fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
+        if dao=="articolo":
+            exec ("record = self.pg_db_server_locale.%s.filter_by(codice=codice)") %dao
+            if record:
+                print "ECCOLOOOOOOOOOOOOOOOOOOOOOOO", record[0].id
+                self.pg_db_server_locale.delete(record[0])
+                sqlalchemy.ext.sqlsoup.Session.commit()
+                self.daosScheme(tables=tablesSchemeArticolo)
+        elif dao=="listino_articolo":
+            exec ("record = self.pg_db_server_locale.%s.filter_by(id_listino=row.id_listino, id_articolo=row.id_articolo)") %dao
+            if record:
+                print "ECCOLOOOOOOOOOOOOOOOOOOOOOOO", record[0].id_articolo
+                self.pg_db_server_locale.delete(record[0])
+                sqlalchemy.ext.sqlsoup.Session.commit()
+                self.daosScheme(tables=tablesSchemeArticolo)
+                #self.fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
+        elif dao=="listino_complesso_listino":
+            exec ("record = self.pg_db_server_locale.%s.filter_by(id_listino_complesso=row.id_listino_complesso, id_listino=row.id_listino)") %dao
+            if record:
+                print "ECCOLOOOOOOOOOOOOOOOOOOOOOOO", record
+                self.pg_db_server_locale.delete(record[0])
+                sqlalchemy.ext.sqlsoup.Session.commit()
+                self.daosScheme(tables=tablesSchemeArticolo)
+
+                #self.fixToTable(soup=soup,soupLocale=soupLocale, op=op,rowLocale=rowLocale, dao=dao, row=row, all=all)
 
     def on_run_button_clicked(self, button):
         self.connectDbRemote()
