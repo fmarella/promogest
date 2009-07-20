@@ -285,6 +285,12 @@ class SincroDB(GladeWidget):
 
         print "<<<<<<<< FINITO CON LO SCHEMA AZIENDA >>>>>>>>",
         print "<<<<<<< INIZIATO :", self.tempo_inizio, " FINITO:", datetime.datetime.now() , ">>>>>>>>>>>>>"
+        self.run =False
+        gobject.source_remove(self.timer)
+        self.timer = 0
+        self.avanzamento_pgbar.destroy()
+        self.table_label.set_text("SINCRONIZZAZIONE TERMINATA CON SUCCESSO")
+
 
     def azzeraTable(self, table=None):
         if table in ["operazione","tipo_aliquota_iva","stato_articolo","unita_base",
@@ -389,7 +395,8 @@ class SincroDB(GladeWidget):
             for i in rowLocale.c:
                 t = str(i).split(".")[1] #mi serve solo il nome colonna
                 setattr(rowLocale, t, getattr(row, t))
-            #soupLocale.add(rowLocale)
+            print rowLocale
+            sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
         try:
             sqlalchemy.ext.sqlsoup.Session.commit()
             #sqlalchemy.ext.sqlsoup.Session.flush()
@@ -467,6 +474,11 @@ class SincroDB(GladeWidget):
         self.run =False
         gobject.source_remove(self.timer)
         self.timer = 0
+        #msg = ('Aggiornamento effettuato')
+        #dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+        #gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
+        #response = dialog.run()
+        #dialog.destroy()
 
     def on_run_button_clicked(self, button):
         self.run = True
