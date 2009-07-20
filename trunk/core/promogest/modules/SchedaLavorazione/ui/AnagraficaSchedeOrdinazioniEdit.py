@@ -26,6 +26,7 @@ from promogest.ui.AnagraficaClienti import AnagraficaClienti
 from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.Magazzino import Magazzino
+from promogest.dao.DaoUtils import giacenzaArticolo
 #from promogest.dao.Pagamento import Pagamento
 from promogest.modules.SchedaLavorazione.dao.ScontoRigaScheda import ScontoRigaScheda
 from promogest.modules.DistintaBase.dao.AssociazioneArticolo import AssociazioneArticolo
@@ -643,6 +644,18 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
 
     def on_articoli_treeview_cursor_changed(self, treeview):
         self.rimuovi_articolo_button.set_sensitive(True)
+        selection = self.articoli_treeview.get_selection()
+        model, iter = selection.get_selected()
+        index = model.get_path(iter)[0]
+        value = model[index][1]
+        #giace = value.giacenzaArticolo
+        if "Stampa" != model[index][2]:
+            giace =str(giacenzaArticolo(year=Environment.workingYear,
+                                        idMagazzino=self.dao.id_magazzino,
+                                        idArticolo=value))
+        else:
+            giace = "0"
+        self.giacenza_label.set_text(giace)
 
     def on_articoli_treeview_key_press_event(self, treeview, event):
         """ Gestisce la pressione del tab su una cella """
