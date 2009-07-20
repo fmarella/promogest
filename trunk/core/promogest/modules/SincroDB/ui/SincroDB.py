@@ -220,7 +220,7 @@ class SincroDB(GladeWidget):
             print "DAAOOOO", dg[0]
             self.logica(remote=remote, locale=locale, dao=dg[0], all=True)
             #try:
-            sqlalchemy.ext.sqlsoup.Session.commit()
+            #sqlalchemy.ext.sqlsoup.Session.commit()
                 #sqlalchemy.ext.sqlsoup.Session.flush()
             #except Exception,e :
                 ##print "ERRORE",e # e.args, "FFFF", e.instance ,"MMM",  e.message, "ORIG", e.orig , "PRA", type(e.params), "STA", e.statement, e.params["codice"]
@@ -300,7 +300,11 @@ class SincroDB(GladeWidget):
             #sqlalchemy.ext.sqlsoup.Session.flush()
             #self.pg_db_server_locale.commit()
             #self.pg_db_server_locale.flush()
-        self.daosScheme(tables=tablesSchemeArticolo)
+        if table in ["operazione","tipo_aliquota_iva","stato_articolo","unita_base",
+            "tipo_recapito","denominazione"]:
+            self.daosMain(tables=tablesMain)
+        else:
+            self.daosScheme(tables=tablesSchemeArticolo)
 
     def logica(self,remote=None, locale=None,dao=None,all=False):
         """ cicla le righe della tabella e decide cosa fare """
