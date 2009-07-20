@@ -330,7 +330,7 @@ class SincroDB(GladeWidget):
                     #print "REMOTE", remote[i]
                     #print "LOCALE", locale[i]
                     if  remote[i] != locale[i]:
-                        #print "QUESTA È LA RIGA DIVERSA NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione UPDATE"
+                        print "QUESTA È LA RIGA DIVERSA NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione UPDATE"
                         #print " RIGA REMOTE", remote[i]
                         #print " RIGA LOCALE", locale[i]
                         self.fixToTable(soupLocale=soupLocale,
@@ -340,7 +340,7 @@ class SincroDB(GladeWidget):
                                         dao=str(remote[i]._table).split(".")[1],
                                         save=True)
                 else:
-                    #print "QUESTA È LA RIGA DA AGGIUNGERE NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione INSERT"
+                    print "QUESTA È LA RIGA DA AGGIUNGERE NELLA TABELLA ", str(remote[i]._table).split(".")[1], "Operazione INSERT"
                     #print " RIGA REMOTE", remote[i]
                     self.fixToTable(soupLocale=soupLocale,
                                     row=remote[i],
