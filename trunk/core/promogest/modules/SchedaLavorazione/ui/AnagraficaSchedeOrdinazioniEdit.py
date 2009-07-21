@@ -27,7 +27,7 @@ from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.DaoUtils import giacenzaArticolo
-#from promogest.dao.Pagamento import Pagamento
+from promogest.dao.Riga import Riga
 from promogest.modules.SchedaLavorazione.dao.ScontoRigaScheda import ScontoRigaScheda
 from promogest.modules.DistintaBase.dao.AssociazioneArticolo import AssociazioneArticolo
 from promogest.dao.Articolo import Articolo
@@ -642,20 +642,44 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         button.set_sensitive(False)
         self._refresh()
 
+    def impegnatoSuSchedaLavorazione(self, idArticolo=None):
+        year = "2009"
+        t=0
+        part= Environment.params["session"]\
+            .query(Riga)\
+            .filter(and_(SchedaOrdinazione.fattura!=True,
+                        Riga.id==RigaSchedaOrdinazione.id,
+                            RigaSchedaOrdinazione.id_scheda == SchedaOrdinazione.id,
+                            Riga.id_articolo==idArticolo,
+                            Articolo.id==idArticolo)).all()
+        for r in part:
+            t +=r.quantita
+        return t
+
     def on_articoli_treeview_cursor_changed(self, treeview):
+        """
+            Aggiungo a questa funzione anche il riempimento delle info
+            sull'articolo come giacenza e impegnato su scheda lavorazione
+        """
         self.rimuovi_articolo_button.set_sensitive(True)
         selection = self.articoli_treeview.get_selection()
         model, iter = selection.get_selected()
         index = model.get_path(iter)[0]
         value = model[index][1]
-        #giace = value.giacenzaArticolo
         if "Stampa" != model[index][2]:
-            giace =str(giacenzaArticolo(year=Environment.workingYear,
+            giace =giacenzaArticolo(year=Environment.workingYear,
                                         idMagazzino=self.dao.id_magazzino,
-                                        idArticolo=value))
+                                        idArticolo=value)
+            imp= self.impegnatoSuSchedaLavorazione(idArticolo=value)
         else:
             giace = "0"
-        self.giacenza_label.set_text(giace)
+            imp = "0"
+        residuo = int(giace)+int(imp) or 0
+        valore= mN(residuo) *Decimal(str(model[index][6]))
+        self.giacenza_label.set_text(str(giace))
+        self.impegnato_label.set_text(str(imp))
+        self.residuo_label.set_text(str(residuo))
+        self.valore_label.set_text(str(mN(valore)))
 
     def on_articoli_treeview_key_press_event(self, treeview, event):
         """ Gestisce la pressione del tab su una cella """
@@ -777,7 +801,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.tot_scontato_entry.set_text(str(mN(str(totaleScontato),2) or 0))
         self.dao.totale_lordo = mN(totaleScontato,2) or 0
 
-
     def on_listino_combobox_changed(self, combobox):
         if self._loading:
             return
@@ -792,8 +815,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             return
 
         self.dao.id_magazzino = findIdFromCombobox(combobox)
-
-        #self._refresh()
 
     def on_colore_stampa_combobox_changed(self, combobox):
         if self._loading:
@@ -857,8 +878,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         status = checkbutton.get_active()
         self.dao.disp_materiale = not status
         #self._refresh()
-
-
 
     def _getStrings(self):
         """

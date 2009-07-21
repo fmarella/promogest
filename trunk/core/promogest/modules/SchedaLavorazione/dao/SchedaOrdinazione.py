@@ -24,6 +24,8 @@ from promogest.modules.SchedaLavorazione.dao.NotaScheda import NotaScheda
 from promogest.modules.SchedaLavorazione.dao.RecapitoSpedizione import RecapitoSpedizione
 from promogest.dao.Cliente import Cliente
 from promogest.dao.Magazzino import Magazzino
+from promogest.dao.Articolo import Articolo
+from promogest.dao.Riga import Riga
 
 class SchedaOrdinazione(Dao):
     """ Fornisce nuove funzionalità abbinate alla personalizzazione"
@@ -74,7 +76,7 @@ class SchedaOrdinazione(Dao):
         self._cellulare = None
         self._skype = None
         self.seconda_email=None
-        
+
 
     def _getRigheSchedaOrdinazione(self):
         #if self.__dbRigheSchedaOrdinazione is None and self.id:
@@ -562,6 +564,12 @@ class SchedaOrdinazione(Dao):
             dic = {k:and_(SchedaOrdinazione.id==schedaordinazione.c.id,SchedaOrdinazione.ricevuta_associata.ilike("%"+v+"%"))}
         elif k== 'documentoSaldato':
             dic = {k:and_(SchedaOrdinazione.id==schedaordinazione.c.id,SchedaOrdinazione.documento_saldato ==v)}
+        elif k == 'idArticolo':
+            dic = {k: and_(Articolo.id ==Riga.id_articolo,
+                            Riga.id==RigaSchedaOrdinazione.id,
+                            RigaSchedaOrdinazione.id_scheda == SchedaOrdinazione.id,
+                            Articolo.id ==v),
+                                }
         return  dic[k]
 
 schedaordinazione=Table('schede_ordinazioni',

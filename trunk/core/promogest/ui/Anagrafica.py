@@ -396,6 +396,7 @@ class AnagraficaFilter(GladeWidget):
                              / float(self.batchSize)))
 
 
+
     def _refreshCurrentPage(self):
         currPage = self._getCurrentPage()
         self._anagrafica.anagrafica_current_page_entry.set_sensitive(True)

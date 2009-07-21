@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--*- mode: xml -*-->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="anagrafica_semplice_window">
     <property name="width_request">480</property>
     <property name="title" translatable="yes">Anagrafica</property>
     <property name="modal">True</property>
-    <property name="window_position">GTK_WIN_POS_CENTER</property>
+    <property name="window_position">center</property>
     <property name="default_width">500</property>
     <property name="default_height">600</property>
     <property name="icon">promogest.png</property>
-    <signal name="delete_event" handler="on_anagrafica_window_close"/>
     <signal name="destroy_event" handler="on_anagrafica_window_close"/>
+    <signal name="delete_event" handler="on_anagrafica_window_close"/>
     <child>
       <widget class="GtkVBox" id="anagrafica_main_vbox">
         <property name="visible">True</property>
@@ -28,17 +28,12 @@
                   <widget class="GtkMenu" id="record_menu_menu">
                     <child>
                       <widget class="GtkImageMenuItem" id="record_new_menu">
+                        <property name="label">_Nuovo</property>
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Nuovo</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_record_new_activate"/>
-                        <accelerator key="N" modifiers="GDK_CONTROL_MASK" signal="activate"/>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="image430">
-                            <property name="visible">True</property>
-                            <property name="pixbuf">nuovo16x16.png</property>
-                          </widget>
-                        </child>
+                        <accelerator key="N" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </widget>
                     </child>
                     <child>
@@ -48,34 +43,24 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="record_edit_menu">
+                        <property name="label">_Modifica</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
-                        <property name="label" translatable="yes">_Modifica</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_record_edit_activate"/>
-                        <accelerator key="M" modifiers="GDK_CONTROL_MASK" signal="activate"/>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="image431">
-                            <property name="visible">True</property>
-                            <property name="pixbuf">modifica16x16.png</property>
-                          </widget>
-                        </child>
+                        <accelerator key="M" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </widget>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="record_delete_menu">
+                        <property name="label">_Elimina</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
-                        <property name="label" translatable="yes">_Elimina</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_record_delete_activate"/>
-                        <accelerator key="E" modifiers="GDK_CONTROL_MASK" signal="activate"/>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="image432">
-                            <property name="visible">True</property>
-                            <property name="pixbuf">elimina16x16.png</property>
-                          </widget>
-                        </child>
+                        <accelerator key="E" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </widget>
                     </child>
                     <child>
@@ -85,32 +70,22 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="record_save_menu">
+                        <property name="label">_Salva</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
-                        <property name="label" translatable="yes">_Salva</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_record_save_activate"/>
-                        <accelerator key="S" modifiers="GDK_CONTROL_MASK" signal="activate"/>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="image433">
-                            <property name="visible">True</property>
-                            <property name="pixbuf">salva16x16.png</property>
-                          </widget>
-                        </child>
+                        <accelerator key="S" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </widget>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="record_cancel_menu">
+                        <property name="label">Annulla</property>
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Annulla</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_record_cancel_activate"/>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="image434">
-                            <property name="visible">True</property>
-                            <property name="pixbuf">annulla16x16.png</property>
-                          </widget>
-                        </child>
                       </widget>
                     </child>
                     <child>
@@ -120,18 +95,13 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="record_undo_menu">
+                        <property name="label">Ripristina</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
-                        <property name="label" translatable="yes">Ripristina</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_record_undo_activate"/>
-                        <accelerator key="Z" modifiers="GDK_CONTROL_MASK" signal="activate"/>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="image435">
-                            <property name="visible">True</property>
-                            <property name="pixbuf">ripristina16x16.png</property>
-                          </widget>
-                        </child>
+                        <accelerator key="Z" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </widget>
                     </child>
                     <child>
@@ -141,17 +111,12 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="record_menu_close">
+                        <property name="label">Chiudi</property>
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Chiudi</property>
                         <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
                         <signal name="activate" handler="on_anagrafica_window_close"/>
-                        <accelerator key="Q" modifiers="GDK_CONTROL_MASK" signal="activate"/>
-                        <child internal-child="image">
-                          <widget class="GtkImage" id="image436">
-                            <property name="visible">True</property>
-                            <property name="pixbuf">chiudi16x16.png</property>
-                          </widget>
-                        </child>
+                        <accelerator key="Q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </widget>
                     </child>
                   </widget>
@@ -207,12 +172,13 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
           <widget class="GtkToolbar" id="toolbar1">
             <property name="visible">True</property>
-            <property name="toolbar_style">GTK_TOOLBAR_BOTH</property>
+            <property name="toolbar_style">both</property>
             <child>
               <widget class="GtkToolButton" id="record_new_button">
                 <property name="visible">True</property>
@@ -224,6 +190,7 @@
               </widget>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -232,7 +199,6 @@
               </widget>
               <packing>
                 <property name="expand">False</property>
-                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -247,6 +213,7 @@
               </widget>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -261,6 +228,7 @@
               </widget>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -269,7 +237,6 @@
               </widget>
               <packing>
                 <property name="expand">False</property>
-                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -284,6 +251,7 @@
               </widget>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -298,6 +266,7 @@
               </widget>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -306,7 +275,6 @@
               </widget>
               <packing>
                 <property name="expand">False</property>
-                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -321,6 +289,7 @@
               </widget>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
           </widget>
@@ -334,12 +303,12 @@
           <widget class="GtkScrolledWindow" id="scrolledwindow7">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-            <property name="vscrollbar_policy">GTK_POLICY_NEVER</property>
+            <property name="hscrollbar_policy">automatic</property>
+            <property name="vscrollbar_policy">never</property>
             <child>
               <widget class="GtkViewport" id="anagrafica_viewport">
                 <property name="visible">True</property>
-                <property name="shadow_type">GTK_SHADOW_NONE</property>
+                <property name="shadow_type">none</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -353,7 +322,6 @@
         <child>
           <widget class="GtkStatusbar" id="statusbar1">
             <property name="visible">True</property>
-            <property name="has_resize_grip">False</property>
           </widget>
           <packing>
             <property name="expand">False</property>

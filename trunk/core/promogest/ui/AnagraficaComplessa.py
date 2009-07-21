@@ -66,8 +66,10 @@ class Anagrafica(GladeWidget):
         self._setEditElement(editElement)
         self._setLabelHandler(labelHandler)
         self._selectedDao = None
-
         # Initial (in)sensitive widgets
+        textStatusBar = "     *****   PromoGest2 - 800 034561 - www.promotux.it - info@promotux.it  *****     "
+        context_id =  self.anagrafica_complessa_statusbar.get_context_id("anagrafica_complessa_windows")
+        self.anagrafica_complessa_statusbar.push(context_id,textStatusBar)
         self.record_delete_button.set_sensitive(False)
         self.record_delete_menu.set_sensitive(False)
         self.record_edit_button.set_sensitive(False)
@@ -509,7 +511,7 @@ class Anagrafica(GladeWidget):
             if len(results) == totalLen:
                 # We're done: let's switch progress bar type from the
                 # main thread
-                
+
                 def renewProgressBarIdle():
                     pbar.set_pulse_step(0.07)
                     pbar.set_text('Creazione della stampa')
@@ -528,7 +530,7 @@ class Anagrafica(GladeWidget):
                 # thread
                 def renderingThread():
                     operationName = ""
-                    
+
                     pdfGenerator.setObjects(results)
 
                     self._pdfName = str(pdfGenerator.defaultFileName)
@@ -1217,7 +1219,7 @@ class AnagraficaReport(object):
                                       previewTemplate=self._htmlTemplate)
 
 class AnagraficaLabel(object):
-    
+
     def __init__(self, anagrafica, description, defaultFileName,
                                                     htmlTemplate,sxwTemplate):
         """

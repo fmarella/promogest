@@ -134,6 +134,8 @@ class RigaSchedaOrdinazione(Dao):
             dic= {k:rigaschedaordinazione.c.id ==v}
         elif k =="idSchedaOrdinazione":
             dic = {k:rigaschedaordinazione.c.id_scheda == v}
+        elif k =="idArticolo":
+            dic = {k:rigaschedaordinazione.c.id_articolo == v}
         return  dic[k]
 
 rigaschedaordinazione=Table('righe_schede_ordinazioni',

@@ -152,6 +152,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
         self.colore_stampa_filter_combobox.set_active(0)
         self.carattere_stampa_filter_combobox.set_active(0)
         self.tipo_pagamento_filter_combobox.set_active(0)
+        self.id_articolo_filter_customcombobox.set_active(0)
 
         self.refresh()
 
@@ -186,6 +187,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
         documentoSaldato = self.documento_saldato_checkbutton.get_active() or None
         coloreStampa = findIdFromCombobox(self.colore_stampa_filter_combobox)
         carattereStampa = findIdFromCombobox(self.carattere_stampa_filter_combobox)
+        idArticolo = self.id_articolo_filter_customcombobox.getId()
 
         def filterCountClosure():
             return SchedaOrdinazione().count(daNumero=daNumero,
@@ -202,9 +204,11 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
                                                 nomiSposi = nomiSposi,
                                                 referente=nomeReferente,
                                                 ricevutaAssociata=numeroRicevuta,
-                                                documentoSaldato=documentoSaldato)
+                                                documentoSaldato=documentoSaldato,
+                                                idArticolo = idArticolo)
 
         self._filterCountClosure = filterCountClosure
+        #self.totaleRecords =
         self.numRecords = self.countFilterResults()
         self._refreshPageCount()
 
@@ -226,6 +230,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
                                                 referente=nomeReferente,
                                                 ricevutaAssociata=numeroRicevuta,
                                                 documentoSaldato=documentoSaldato,
+                                                idArticolo = idArticolo,
                                                 offset=offset,
                                                 batchSize=batchSize)
 
