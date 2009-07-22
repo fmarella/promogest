@@ -674,7 +674,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         else:
             giace = "0"
             imp = "0"
-        residuo = int(giace)+int(imp) or 0
+        residuo = int(giace)-int(imp) or 0
         valore= mN(residuo) *Decimal(str(model[index][6]))
         self.giacenza_label.set_text(str(giace))
         self.impegnato_label.set_text(str(imp))
