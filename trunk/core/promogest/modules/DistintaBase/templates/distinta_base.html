@@ -1,47 +1,44 @@
-<html   xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:py="http://genshi.edgewall.org/"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
-        lang="en">
+<html>
     <head>
         <title>Dettaglio Nodo Associazione Articoli</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <xi:include href="style.css"><xi:fallback/></xi:include>
+        {% include 'style.css' with context %}
     </head>
     <body>
 <table cellpadding="0" cellspacing="0" border="0">
             <tr>
-                <td class="report-header" width="50%"><h3>Articolo: <strong>${dao.codice}</strong></h3></td>
-		<td class="report-header" width="50%"><h3>Codice a barre principale:
-			<strong>${dao.codice_a_barre}</strong></h3></td>
+                <td class="report-header" width="50%"><h3>Articolo: <strong>{{dao.codice}}</strong></h3></td>
+        <td class="report-header" width="50%"><h3>Codice a barre principale:
+            <strong>{{dao.codice_a_barre}}</strong></h3></td>
             </tr>
 </table>
 <table cellpadding="0" cellspacing="0" border="0">
 <tr><td width="55%">
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>
-		<td colspan="2" class="table-header">Riepilogo</td>
-	    </tr>
+        <td colspan="2" class="table-header">Riepilogo</td>
+        </tr>
             <tr>
                 <td width="130px" class="odd-detail">Descrizione</td>
-                <td class="odd-detail"><strong>${dao.denominazione}</strong></td>
+                <td class="odd-detail"><strong>{{dao.denominazione}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Produttore</td>
-                <td class="even-detail"><strong>${dao.produttore}</strong></td>
+                <td class="even-detail"><strong>{{dao.produttore}}</strong></td>
             </tr>
             <tr>
                 <td class="odd-detail">Famiglia</td>
-                <td class="odd-detail"><strong>${dao.denominazione_famiglia}</strong></td>
+                <td class="odd-detail"><strong>{{dao.denominazione_famiglia}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Categoria</td>
-                <td class="even-detail"><strong>${dao.denominazione_categoria}</strong></td>
+                <td class="even-detail"><strong>{{dao.denominazione_categoria}}</strong></td>
             </tr>
             <tr>
                 <td class="odd-detail">Aliquota IVA</td>
                 <td class="odd-detail">
-                    <strong>${dao.denominazione_aliquota_iva}
-                    ( ${dao.denominazione_breve_aliquota_iva})</strong>
+                    <strong>{{dao.denominazione_aliquota_iva}}
+                    ( {{dao.denominazione_breve_aliquota_iva}})</strong>
                 </td>
             </tr>
         </table></td>
@@ -51,7 +48,7 @@
             <tr>
                 <td width="200px" class="odd-detail">Descrizione nel listino</td>
                 <td class="odd-detail">
-                    <strong>${dao.descrizione_listino}</strong>
+                    <strong>{{dao.descrizione_listino}}</strong>
                 </td>
             </tr>
             <tr>
@@ -71,13 +68,13 @@
             <tr>
                 <td class="odd-detail">Codice etichetta</td>
                 <td class="odd-detail">
-                    <strong>${dao.codice_etichetta}</strong>
+                    <strong>{{dao.codice_etichetta}}</strong>
                 </td>
             </tr>
             <tr>
                 <td class="even-detail">Descrizione etichetta</td>
                 <td class="even-detail">
-                    <strong>${dao.descrizione_etichetta}</strong>
+                    <strong>{{dao.descrizione_etichetta}}</strong>
                 </td>
             </tr>
             <tr>
@@ -102,15 +99,15 @@
             <tr><td colspan="4" class="table-header">Caratteristiche fisiche</td></tr>
             <tr>
                 <td width="20%" class="odd-detail">Unità di misura</td>
-                <td width="30%" class="odd-detail"><strong>${dao.denominazione_unita_base}</strong></td>
+                <td width="30%" class="odd-detail"><strong>{{dao.denominazione_unita_base}}</strong></td>
 
-		<td width="20%" class="odd-detail">Dimensioni</td>
+        <td width="20%" class="odd-detail">Dimensioni</td>
                 <td width="30%" colspan="2" class="odd-detail">
-			<strong>${dao.lunghezza}</strong> x
-			<strong>${dao.larghezza}</strong> x
-			<strong>${dao.altezza}</strong>
-			<strong>${dao.unita_dimensioni}</strong>
-		</td>
+            <strong>{{dao.lunghezza}}</strong> x
+            <strong>{{dao.larghezza}}</strong> x
+            <strong>{{dao.altezza}}</strong>
+            <strong>{{dao.unita_dimensioni}}</strong>
+        </td>
 
      <!--           <td class="odd-detail" colspan="2">Unità di misura dimensioni</td>
                 <td class="odd-detail" colspan="2"><strong py:content="dao.unita_dimensioni"></strong></td>-->
@@ -122,31 +119,31 @@
 <!--                <td class="odd-detail">Unità di misura volume</td>
                 <td class="odd-detail"><strong py:content="dao.unita_volume"></strong></td>            -->
                 <td class="even-detail">Volume</td>
-		<td class="even-detail">
-			<strong>${dao.volume}</strong>
-			<strong>${dao.unita_volume}</strong>
-		</td>
+        <td class="even-detail">
+            <strong>{{dao.volume}}</strong>
+            <strong>{{dao.unita_volume}}</strong>
+        </td>
 <!--                <td class="odd-detail">Unità di misura peso</td>
                 <td class="odd-detail"> <strong py:content="dao.unita_peso"></strong></td>            -->
                 <td class="even-detail">Peso</td>
                 <td class="even-detail">
-			<strong>${dao.peso_lordo}</strong>
-			<strong>${dao.unita_peso}</strong>
-		</td>
+            <strong>{{dao.peso_lordo}}</strong>
+            <strong>{{dao.unita_peso}}</strong>
+        </td>
             </tr>
             <tr>
                 <td class="odd-detail">Imballaggio</td>
-                <td class="odd-detail"><strong>${dao.imballaggio}</strong></td>
+                <td class="odd-detail"><strong>{{dao.imballaggio}}</strong></td>
                 <td class="odd-detail">Peso imballaggio</td>
                 <td class="odd-detail">
-			<strong>${dao.peso_imballaggio}</strong>
-			<strong>${dao.unita_peso}</strong>
-		</td>
+            <strong>{{dao.peso_imballaggio}}</strong>
+            <strong>{{dao.unita_peso}}</strong>
+        </td>
             </tr>
 
             <tr><td colspan="4" class="table-header">Note</td></tr>
             <tr>
-                <td class="odd-detail"><strong>${dao.note}</strong>
+                <td class="odd-detail"><strong>{{dao.note}}</strong>
                 </td>
             </tr>
         </table>

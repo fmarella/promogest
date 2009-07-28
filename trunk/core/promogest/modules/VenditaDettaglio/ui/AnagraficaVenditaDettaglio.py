@@ -342,8 +342,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         dialog.destroy()
         quantita = entry.get_text().strip()
         prezzo =  mN(entry1.get_text())
-        return  ( quantita,prezzo ) 
-
+        return  ( quantita,prezzo )
 
 
     def search_item(self, codiceABarre=None, codice=None, descrizione=None, fnove=False):
@@ -891,7 +890,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                 stringa = '07%-16s%09.2f00\r\n' % ('sconto', sconto.valore)
                             else:
                                 stringa = '06%-16s%09.2f00\r\n' % ('sconto', sconto.valore * quantita)
-                            
+
                             f.write(stringa)
             else:
                 # per i resi, nello scontrino, si scrive direttamente il prezzo scontato (limitazione cassa)

@@ -151,7 +151,7 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         idCategoria = findIdFromCombobox(self.id_categoria_articolo_filter_combobox)
         idStato = findIdFromCombobox(self.id_stato_articolo_filter_combobox)
         if self.cancellato_filter_checkbutton.get_active():
-            cancellato = None
+            cancellato = True
         else:
             cancellato = False
 
@@ -165,7 +165,8 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
                                     idFamiglia=idFamiglia,
                                     idCategoria=idCategoria,
                                     idStato=idStato,
-                                    cancellato=cancellato)
+                                    #cancellato=cancellato
+                                    )
 
         self._filterCountClosure = filterCountClosure
 
@@ -187,7 +188,7 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
                                     idFamiglia=idFamiglia,
                                     idCategoria=idCategoria,
                                     idStato=idStato,
-                                    cancellato=cancellato,
+                                    #cancellato=cancellato,
                                     offset=offset,
                                     batchSize=batchSize)
 
@@ -195,7 +196,6 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
 
         arts = self.runFilter()
         self._treeViewModel.clear()
-
         for a in arts:
             col = None
             if a.cancellato:
