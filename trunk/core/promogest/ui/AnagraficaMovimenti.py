@@ -99,8 +99,8 @@ class AnagraficaMovimenti(Anagrafica):
                     valore_unitario_lordo = ('%.2f') % float(riga.valore_unitario_lordo or 0)
                     valore_unitario_netto = ('%.2f') % float(riga.valore_unitario_netto or 0)
                     datalist=[data,operazione,soggetto, codice_articolo,
-                             descrizione, magazzino, moltiplicatore, 
-                             percentuale_iva, quantita, sconti, 
+                             descrizione, magazzino, moltiplicatore,
+                             percentuale_iva, quantita, sconti,
                              valore_unitario_lordo, valore_unitario_netto]
                              #lista dei campi del dao da caricare. esempio: d.nome_campo
                     rowlist.append(datalist)
@@ -119,7 +119,7 @@ class AnagraficaMovimenti(Anagrafica):
                 valore_unitario_lordo = 0
                 valore_unitario_netto = 0
                 datalist=[data,operazione,soggetto, codice_articolo, descrizione,
-                         magazzino, moltiplicatore, percentuale_iva, quantita, 
+                         magazzino, moltiplicatore, percentuale_iva, quantita,
                          sconti, valore_unitario_lordo, valore_unitario_netto]
                          #lista dei campi del dao da caricare. esempio: d.nome_campo
                 rowlist.append(datalist)
@@ -127,7 +127,7 @@ class AnagraficaMovimenti(Anagrafica):
 
     def set_export_data(self):
         """
-        Raccoglie informazioni specifiche per l'anagrafica 
+        Raccoglie informazioni specifiche per l'anagrafica
         restituite all'interno di un dizionario
         """
         data_details = {}
@@ -392,7 +392,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
     def __init__(self, anagrafica):
         """
-        Modifica un record dei movimenti 
+        Modifica un record dei movimenti
         """
         AnagraficaEdit.__init__(self,
                                 anagrafica,
@@ -465,8 +465,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def nuovaRiga(self):
-        """ 
-        prepara per l'inserimento di una nuova riga 
+        """
+        prepara per l'inserimento di una nuova riga
         """
         self._numRiga = 0
         self.azzeraRiga(0)
@@ -500,8 +500,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def clearRows(self):
-        """ 
-        Pulisce i campi per il trattamento e la conservazione delle righe 
+        """
+        Pulisce i campi per il trattamento e la conservazione delle righe
         """
         self._righe = []
         self._righe.append({})
@@ -806,7 +806,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
     def on_id_listino_customcombobox_changed(self, combobox):
         """
-        Gestisce la combo ( custom ) dei listini 
+        Gestisce la combo ( custom ) dei listini
         """
         if self._loading:
             return
@@ -819,8 +819,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def getPrezzoVenditaLordo(self, idListino, idArticolo):
-        """ 
-        Cerca il prezzo di vendita 
+        """
+        Cerca il prezzo di vendita
         """
         prezzoLordo = 0
         if idListino is not None and idArticolo is not None:
@@ -835,8 +835,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def getPrezzoNetto(self):
-        """ 
-        Calcola il prezzo netto dal prezzo lordo e dagli sconti 
+        """
+        Calcola il prezzo netto dal prezzo lordo e dagli sconti
         """
         prezzoLordo = Decimal(str(self._righe[0]["prezzoLordo"]))
         prezzoNetto = Decimal(str(self._righe[0]["prezzoLordo"]))
@@ -879,7 +879,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
     def on_notebook_switch_page(self, notebook, page, page_num):
         """
-        Gestisce il cambio di pagina nel notebook  
+        Gestisce il cambio di pagina nel notebook
         """
         if page_num == 2:
             self.calcolaTotale()
@@ -887,7 +887,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
     def _refresh(self):
         """
-        Riporta i valori corretti, carica all'inizio e rinfresca dopo alcune 
+        Riporta i valori corretti, carica all'inizio e rinfresca dopo alcune
         operazioni
         """
         self._loading = True
@@ -994,7 +994,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
     def setDao(self, dao):
         """
-        Inizializza un Dao nuovo se None o usa quello passato Dalla anag Filter 
+        Inizializza un Dao nuovo se None o usa quello passato Dalla anag Filter
         """
         if dao is None:
             # Crea un nuovo Dao vuoto
@@ -1088,8 +1088,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def on_righe_treeview_row_activated(self, treeview, path, column):
-        """ 
-        Riporta la riga selezionata in primo piano per la modifica 
+        """
+        Riporta la riga selezionata in primo piano per la modifica
         """
         sel = treeview.get_selection()
         (model, self._iteratorRiga) = sel.get_selected()
@@ -1149,8 +1149,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def on_confirm_row_button_clicked(self, widget):
-        """ 
-        Memorizza la riga inserita o modificata 
+        """
+        Memorizza la riga inserita o modificata
         """
         self._righe[0]["idMagazzino"] = findIdFromCombobox(self.id_magazzino_combobox)
         magazzino = leggiMagazzino(self._righe[0]["idMagazzino"])
@@ -1252,15 +1252,15 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def on_undo_row_button_clicked(self, widget):
-        """ 
-        Annulla l'inserimento o la modifica della riga in primo piano 
+        """
+        Annulla l'inserimento o la modifica della riga in primo piano
         """
         self.nuovaRiga()
 
 
     def on_delete_row_button_clicked(self, widget):
-        """     
-        Elimina la riga in primo piano 
+        """
+        Elimina la riga in primo piano
         """
         if not(self._numRiga == 0):
             del(self._righe[self._numRiga])
@@ -1349,20 +1349,32 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         join = None
         if self.ricerca_codice_button.get_active():
             codice = self.articolo_entry.get_text()
-            orderBy = Environment.params["schema"]+".articolo.codice"
+            if Environment.tipodb == "sqlite":
+                orderBy = "articolo.codice"
+            else:
+                orderBy = Environment.params["schema"]+".articolo.codice"
             batchSize = Environment.conf.batch_size
         elif self.ricerca_codice_a_barre_button.get_active():
             codiceABarre = self.articolo_entry.get_text()
             join= Articolo.cod_barre
-            orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
+            if Environment.tipodb == "sqlite":
+                orderBy = "codice_a_barre_articolo.codice"
+            else:
+                orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
             batchSize = Environment.conf.batch_size
         elif self.ricerca_descrizione_button.get_active():
             denominazione = self.articolo_entry.get_text()
-            orderBy = Environment.params["schema"]+".articolo.denominazione"
+            if Environment.tipodb == "sqlite":
+                orderBy = "articolo.denominazione"
+            else:
+                orderBy = Environment.params["schema"]+".articolo.denominazione"
         elif self.ricerca_codice_articolo_fornitore_button.get_active():
             codiceArticoloFornitore = self.articolo_entry.get_text()
             join= Articolo.fornitur
-            orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
+            if Environment.tipodb == "sqlite":
+                orderBy = "fornitura.codice_articolo_fornitore"
+            else:
+                orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
             batchSize = Environment.conf.batch_size
 
         arts = Articolo().select(orderBy=orderBy,
@@ -1479,10 +1491,10 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         """
         self.quantita_entry.grab_focus()
         self.quantita_entry.set_text("")
-        
+
     def on_show_totali_riga(self, widget = None, event = None):
-        """ 
-        Calcola il prezzo netto 
+        """
+        Calcola il prezzo netto
         """
         quantita = mN(self.quantita_entry.get_text(),3) or 0
         self._righe[0]["quantita"] = quantita
@@ -1508,8 +1520,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def calcolaTotaleRiga(self):
-        """ 
-        Calcola il totale riga 
+        """
+        Calcola il totale riga
         """
         if self._righe[0]["prezzoNetto"] is None:
             self._righe[0]["prezzoNetto"] = 0
@@ -1525,8 +1537,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
 
     def calcolaTotale(self):
-        """ 
-        Calcola i totali movimento 
+        """
+        Calcola i totali movimento
         """
         totaleImponibile = Decimal(0)
         totaleImposta = Decimal(0)
@@ -1582,7 +1594,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
 
     def showMessage(self, msg):
         """
-        Generico dialog di messaggio 
+        Generico dialog di messaggio
         """
         dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
@@ -1647,7 +1659,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         FIXME
         """
         msg = 'Attenzione! Si sta per variare i riferimenti primari del movimento.\n Continuare ?'
-        dialog = gtk.MessageDialog(self.dialogTopLevel, 
+        dialog = gtk.MessageDialog(self.dialogTopLevel,
                                     gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                     gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
         response = dialog.run()
