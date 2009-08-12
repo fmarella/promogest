@@ -75,6 +75,9 @@ class ElencoMagazzini(GladeWidget):
         model.clear()
 
         mags = Magazzino().select(offset=None, batchSize=None)
+        if Environment.tipo_eng =="sqlite" and not Environment.magazzini:
+            if len(mags) >1:
+                mags = [mags[0]]
         for m in mags:
             model.append((m,
                           (m.denominazione or ''),

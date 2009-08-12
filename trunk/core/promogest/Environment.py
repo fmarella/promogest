@@ -101,7 +101,7 @@ def set_configuration(company=None, year = None):
                 emailmittente, smtpServer, cliente_predefinito, tipo_documento_predefinito,\
                 multilinelimit, mltext, sistemaColonnaFrontaline, sistemaRigaFrontaline,\
                 imagesDir, labelTemplatesDir, templatesDir, documentsDir, reportTemplatesDir,\
-                bordoDestro, bordoSinistro
+                bordoDestro, bordoSinistro, magazzini
 
     try:
         dire = getConfigureDir(company)
@@ -267,6 +267,13 @@ def set_configuration(company=None, year = None):
             conf.hasPagamenti = False
     else:
         conf.hasPagamenti = False
+
+    #[Magazzini]
+    magazzini = False
+    if hasattr(conf, 'Magazzini'):
+        mod_enable = getattr( conf.Magazzini,'mod_enable','no')
+        if mod_enable == 'yes':
+            magazzini = True
 
     #[Label]
     if hasattr(conf,'Label'):

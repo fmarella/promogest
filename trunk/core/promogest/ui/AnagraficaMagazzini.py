@@ -102,9 +102,9 @@ class AnagraficaMagazziniFilter(AnagraficaFilter):
         mags = self.runFilter()
 
         self._treeViewModel.clear()
-        if Environment.tipo_eng =="sqlite":
+        if Environment.tipo_eng =="sqlite" and not Environment.magazzini:
             if len(mags) >1:
-                liss = mags[0]
+                mags = [mags[0]]
         for m in mags:
             self._treeViewModel.append((m,
                                         (m.denominazione or '')))
@@ -145,7 +145,7 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            if Environment.tipo_eng =="sqlite" and Magazzino().count() >=1:
+            if Environment.tipo_eng =="sqlite" and Magazzino().count() >=1 and not Environment.magazzini:
                 self.destroy()
                 fenceDialog()
             else:
@@ -174,7 +174,7 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
         self.dao.cap = self.cap_entry.get_text()
         self.dao.provincia = self.provincia_entry.get_text()
         self.dao.pvcode = self.pvcode_entry.get_text()
-        if Environment.tipo_eng =="sqlite" and Magazzino().count() >=1:
+        if Environment.tipo_eng =="sqlite" and Magazzino().count() >=1 and not Environment.magazzini:
             return
         self.dao.persist()
 
