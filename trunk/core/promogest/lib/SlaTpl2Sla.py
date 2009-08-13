@@ -31,8 +31,6 @@ from promogest.lib import Sla2pdfUtils
 # KNOWN BUGS
 # ****************************************************************
 # Fonts don't selectable
-# Images: the position may be incorrect                     fixed
-# Table's borderline, always present by default             fixed
 # Double itexts or more, don't work (see also Paragraph)
 # Tags live only in tables, at least 1x1
 # Wrong tags break the program
@@ -108,9 +106,9 @@ class SlaTpl2Sla(object):
         version=self.scribusVersion()
         if version ==True:
             from promogest.lib.Sla2Pdf_ng import Sla2Pdf_ng as Sla2Pdf
-            print "TEMPLATE CREATO O MODIFICATO CON SCRIBUS 1.3.4 ( NUOVA VERSIONE )"
+            #print "TEMPLATE CREATO O MODIFICATO CON SCRIBUS %s" %version
         else:
-            print "TEMPLATE CREATO O MODIFICATO CON SCRIBUS 1.3.3.xx ( VECCHIA VERSIONE )"
+            #print "TEMPLATE CREATO O MODIFICATO CON SCRIBUS %s" %version
             from promogest.lib.Sla2Pdf_classic import Sla2Pdf_classic
             slatopdf = Sla2Pdf_classic(pdfFolder = self.pdfFolder,
                                 slaFileName = self.slaFileName,
@@ -911,7 +909,8 @@ class SlaTpl2Sla(object):
 
     def scribusVersion(self):
         slaversion = self.root.get('Version')
-        if slaversion == "1.3.4" or  slaversion == "1.3.5svn":
+        print "VERSIONE FILE SLA", slaversion
+        if slaversion == "1.3.4" or  "1.3.5" in slaversion:
             version=True
         else:
             version = False
