@@ -2,9 +2,8 @@
 #-*- coding: utf-8 -*-
 #
 # Promogest
-# Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
+# Copyright (C) 2005-2009 by Promotux Informatica - http://www.promotux.it/
 # all rights reserver
-# LICENSE: See LICENSE for more detailsi.
 
 
 import os
@@ -100,7 +99,7 @@ class BigBang(object):
             Environment.debugFilter = True
             Environment.debugSQL = True
         #print options.debugALL, options.debugSQL, debugDao
-        
+
         from promogest.ui.Login import Login
         login = Login()
         login.run()
@@ -110,11 +109,6 @@ class BigBang(object):
     ##login.run()
 if __name__ == '__main__':
     # Import Psyco if available
-    try:
-        import psyco
-        psyco.full()
-    except ImportError:
-        print "PSYCO NON DISPONIBILE"
-        BigBang()
+    BigBang()
 
 
