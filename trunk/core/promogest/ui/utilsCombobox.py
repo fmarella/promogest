@@ -549,7 +549,7 @@ def fillComboboxMagazzini(combobox, filter=False, noempty=False):
 
 
 def fillComboboxOperazioni(combobox, tipo=None, filter=False):
-    """ 
+    """
     Crea l'elenco delle operazioni per la movimentazione di magazzino """
     if tipo:
 #        res = Environment.params['session'].query(Operazione).filter(Operazione.tipo_operazione==tipo).order_by(Operazione.denominazione).all()

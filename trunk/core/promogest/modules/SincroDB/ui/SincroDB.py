@@ -10,14 +10,13 @@ import gobject
 import datetime
 import threading
 import sqlalchemy
-from sqlalchemy.ext.serializer import loads, dumps
+#from sqlalchemy.ext.serializer import loads, dumps
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest import Environment
-#from promogest.ui.utils import *
-#from promogest.ui.utilsCombobox import *
-from promogest.ui.GladeWidget import GladeWidget
 from sqlalchemy.ext.sqlsoup import SqlSoup
+from promogest.ui.GladeWidget import GladeWidget
+from promogest import Environment
+
 
 tablesMain = [
             #"azienda",
@@ -132,10 +131,14 @@ def progress_timeout(pbobj):
 
 class SincroDB(GladeWidget):
     """ Finestra di gestione esdportazione variazioni Database """
-    def __init__(self):
+    def __init__(self,conf=None, batch=True, schema=None, fileconf=None):
         GladeWidget.__init__(self, 'sincro_dialog',
                         fileName='sincro_dialog.glade')
         self.placeWindow(self.getTopLevel())
+        if batch:
+            print " MI ACCINGO A CARICARE IL FILE configure dalla cartella '%s' ed usare lo schema '%s'" %(fileconf, schema)
+            Environment.conf = conf
+
 
     def on_tuttecose_checkbutton_toggled(self,toggled):
         """ check delle anag da esportare ...le seleziona tutte """
@@ -442,7 +445,7 @@ class SincroDB(GladeWidget):
         #response = dialog.run()
         #dialog.destroy()
 
-    def on_run_button_clicked(self, button):
+    def on_run_button_clicked(self, button=None):
         self.run = True
         self.timer = gobject.timeout_add(80,progress_timeout, self)
         #gobject.idle_add(self.test())
