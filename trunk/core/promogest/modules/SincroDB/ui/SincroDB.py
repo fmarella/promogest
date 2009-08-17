@@ -138,6 +138,8 @@ class SincroDB(GladeWidget):
         if batch:
             print " MI ACCINGO A CARICARE IL FILE configure dalla cartella '%s' ed usare lo schema '%s'" %(fileconf, schema)
             Environment.conf = conf
+            Environment.params["schema"] = schema
+            self.batch = batch
 
 
     def on_tuttecose_checkbutton_toggled(self,toggled):
@@ -180,6 +182,7 @@ class SincroDB(GladeWidget):
             #Session = sessionmaker(bind=engine)
         SessionRemote = scoped_session(sessionmaker(bind=engine))
         self.sessionRemote = SessionRemote()
+        print ">>>> CONNESSO AL DB REMOTO : %s IP: %s PORTA: %s SCHEMA %s <<<<< " %(database_remoto, host_remoto,port_remoto,Environment.params["schema"])
 
     def connectDbLocale(self):
         mainschema_locale = Environment.conf.SincroDB.mainschema_locale
@@ -209,6 +212,7 @@ class SincroDB(GladeWidget):
         SessionLocale = scoped_session(sessionmaker(bind=engineLocale))
         self.engineLocale = engineLocale
         self.sessionLocale = SessionLocale()
+        print ">>>> CONNESSO AL DB LOCALE : %s IP: %s PORTA: %s SCHEMA %s <<<<< " %(database_locale, host_locale,port_locale,Environment.params["schema"])
         #self.sessionLocale.autocommit
 
     def daosMain(self, tables=None):
@@ -421,7 +425,7 @@ class SincroDB(GladeWidget):
         self.tempo_inizio = datetime.datetime.now()
         print "INIZIO sincro",datetime.datetime.now()
         self.daosMain(tables=tablesMain)
-        if self.tuttecose_checkbutton.get_active():
+        if self.tuttecose_checkbutton.get_active() or self.batch:
             self.daosScheme(tables=tablesSchemeArticolo)
             self.daosScheme(tables=tablesSchemeAnagrafiche)
             self.daosScheme(tables= tablesSchemePromemoria)

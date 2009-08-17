@@ -30,9 +30,9 @@ class Pg2Sincro(object):
         if options.Schema:
             schema = options.Schema
         configure = options.Configure
-        conf = Config(configure)
-
-        sla22 = SincroDB(batch=True, conf=conf, fileconf=configure, schema=schema).on_run_button_clicked()
+        new_conf = Config(configure)
+        print "CONFFFFF", new_conf
+        sla22 = SincroDB(batch=True, conf=new_conf, fileconf=configure, schema=schema).on_run_button_clicked()
         #login.run()
 
 if __name__ == '__main__':
