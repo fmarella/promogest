@@ -9,19 +9,19 @@ class Pg2Sincro(object):
     def __init__(self):
         usage = """Uso: %prog [options]
             Opzioni disponibili sono :
-                -c   --configure  Quale configure utilizzare
-                -s   --schema Quale schema dev'essere utilizzato
+                -f   --fileconf  Quale configure utilizzare ( necessaria)
+                -s   --schema Quale schema dev'essere utilizzato ( necessaria)
                 """
         parser = OptionParser(usage=usage)
         parser.add_option("-f", "--fileconf",
                             #action="store_true",
-                            help="Necessario per definire quale configure utlizzare",
+                            help="NECESSARIO per definire quale configure utlizzare",
                             default="",
                             type="string",
                             dest="Configure")
         parser.add_option("-s", "--schema",
                             #action="store_true",
-                            help="definizione dello schema in uso",
+                            help="NECESSARIO definizione dello schema in uso",
                             default="",
                             type="string",
                             dest="Schema")
@@ -31,7 +31,6 @@ class Pg2Sincro(object):
             schema = options.Schema
         configure = options.Configure
         new_conf = Config(configure)
-        print "CONFFFFF", new_conf
         sla22 = SincroDB(batch=True, conf=new_conf, fileconf=configure, schema=schema).on_run_button_clicked()
         #login.run()
 
