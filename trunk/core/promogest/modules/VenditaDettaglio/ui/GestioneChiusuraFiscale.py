@@ -5,7 +5,7 @@
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francescoo@promotux.it>
 
-import gtk, gobject
+import gtk
 import os, popen2
 import gtkhtml2
 from promogest.dao.DaoUtils import giacenzaSel
@@ -69,15 +69,15 @@ class GestioneChiusuraFiscale(object):
 
     def close_day(self, idMagazzino, data):
         # Seleziono scontrini della giornata
-        
+
         datefirst = data
         OneDay = datetime.timedelta(days=1)
         aData= data+OneDay
-        scontrini = TestataScontrino().select( daData = datefirst,
+        scontrini = TestataScontrino().select(daData = datefirst,
                                             aData = aData,  # Scontrini prodotti nella giornata odierna
                                             offset = None,
                                             batchSize = None)
-
+        print "SCONTRINI PRODOTTI IN GIORNATA N°", len(scontrini), scontrini
         # Creo nuovo movimento
         daoMovimento = TestataMovimento()
         daoMovimento.operazione = Environment.conf.VenditaDettaglio.operazione
@@ -110,6 +110,7 @@ class GestioneChiusuraFiscale(object):
                         daoScontoRigaMovimento.tipo_sconto = s.tipo_sconto
                         scontiRigheMovimento.append(daoScontoRigaMovimento)
                 daoRiga.scontiRigheMovimento = scontiRigheMovimento
+                scontiRigheMovimento= []
                 righeMovimento.append(daoRiga)
 
         daoMovimento.righeMovimento = righeMovimento
