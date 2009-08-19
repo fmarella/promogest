@@ -20,6 +20,7 @@ import sys
 import tempfile
 import threading
 import os.path
+import urllib2
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -34,7 +35,7 @@ from utils import *
 import utils
 import Login
 
-from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
+from promogest.lib.sla2pdf.Sla2Pdf import Sla2Pdf
 from promogest.ui.SendEmail import SendEmail
 
 from promogest import Environment
@@ -44,7 +45,7 @@ from jinja2 import FileSystemLoader,FileSystemBytecodeCache
 
 #from promogest.dao import Dao
 from promogest.dao.Articolo import Articolo
-import urllib2
+
 
 
 class Anagrafica(GladeWidget):
@@ -1138,7 +1139,7 @@ class AnagraficaHtml(object):
 
     def pdf(self, operationName):
         self._slaTemplate = None
-        self._slaTemplateObj=None
+        #self._slaTemplateObj=None
         operationNameUnderscored = operationName.replace(' ' , '_').lower()
         print "per la stampa", operationNameUnderscored, Environment.templatesDir + operationNameUnderscored + '.sla'
         if os.path.exists(Environment.templatesDir + operationNameUnderscored + '.sla'):
@@ -1146,16 +1147,18 @@ class AnagraficaHtml(object):
         else:
             self._slaTemplate = Environment.templatesDir + self.defaultFileName + '.sla'
         """ Restituisce una stringa contenente il report in formato PDF """
-        if self._slaTemplateObj is None:
-            self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
-                                           pdfFolder=self._anagrafica._folder,
-                                           report=self._anagrafica._reportType)
+        #if self._slaTemplateObj is None:
+        #self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
+                                            #pdfFolder=self._anagrafica._folder,
+                                            #report=self._anagrafica._reportType)
 
-        #self.dao.resolveProperties()
         param = [self.dao.dictionary(complete=True)]
         multilinedirtywork(param)
-        #print "parammmmmmmmmmmm", param, dir(self.dao), self.dao
-        return self._slaTemplateObj.serialize(param, dao=self.dao)
+        #return self._slaTemplateObj.serialize(param, dao=self.dao)
+        return Sla2Pdf(slaFileName=self._slaTemplate,
+                        pdfFolder=self._anagrafica._folder,
+                        report=self._anagrafica._reportType,
+                        ).createPDF(objects=param, daos=self.dao)
 
 
     def cancelOperation(self):
@@ -1190,17 +1193,19 @@ class AnagraficaReport(object):
 
     def pdf(self,operationName):
         """ Restituisce una stringa contenente il report in formato PDF """
-        if self._slaTemplateObj is None:
-            self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
-                                           pdfFolder=self._anagrafica._folder,
-                                           report=self._anagrafica._reportType)
+        #if self._slaTemplateObj is None:
+            #self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
+                                           #pdfFolder=self._anagrafica._folder,
+                                           #report=self._anagrafica._reportType)
 
         param = []
         for d in self.objects:
             d.resolveProperties()
             param.append(d.dictionary(complete=True))
         multilinedirtywork(param)
-        return self._slaTemplateObj.serialize(param, self.objects)
+        return Sla2Pdf(slaFileName=self._slaTemplate,
+                       pdfFolder=self._anagrafica._folder,
+                       report=self._anagrafica._reportType).createPDF(objects=param, daos=self.objects)
 
 
     def cancelOperation(self):
@@ -1240,17 +1245,20 @@ class AnagraficaLabel(object):
 
     def pdf(self,operationName):
         """ Restituisce una stringa contenente il report in formato PDF """
-        if self._slaTemplateObj is None:
-            self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
-                                           pdfFolder=self._anagrafica._folder,
-                                           report=self._anagrafica._reportType,
-                                           label=True)
+        #if self._slaTemplateObj is None:
+            #self._slaTemplateObj = Sla2Pdf(slaFileName=self._slaTemplate,
+                                           #pdfFolder=self._anagrafica._folder,
+                                           #report=self._anagrafica._reportType,
+                                           #label=True).createPDF(objects=param)
         param = []
         for d in self.objects:
             d.resolveProperties()
             param.append(d.dictionary(complete=True))
         multilinedirtywork(param)
-        return self._slaTemplateObj.serialize(param, self.objects)
+        return Sla2Pdf(slaFileName=self._slaTemplate,
+                                           pdfFolder=self._anagrafica._folder,
+                                           report=self._anagrafica._reportType,
+                                           label=True).createPDF(objects=param, daos=self.objects)
 
 
 class AnagraficaEdit(GladeWidget):

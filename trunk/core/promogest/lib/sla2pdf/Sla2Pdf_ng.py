@@ -17,32 +17,57 @@ from reportlab.platypus import *
 from reportlab.pdfgen.canvas import Canvas
 
 import xml.etree.cElementTree as ElementTree
-from promogest import Environment
-from promogest.lib import Sla2pdfUtils
-from promogest.lib import ColorDicTFull
+try:
+    from promogest import Environment
+except:
+    print "NESSUN ENV "
+import Sla2pdfUtils
+import ColorDicTFull
+from SlaParser import SlaParser
 
-
-class Sla2Pdf_ng(object):
+class Sla2Pdf_ng(SlaParser):
     """ sla to pdf format translation """
 
-    def __init__(self, document,pdfFolder, version, tablesProperties,pgObjList, numPages,iteratableGroups  ):
+    def __init__(self,
+                    pdfFolder=None,
+                    slaFileName = None,
+                    fileName= None,
+                    slafile = None,
+                        ):
         """
         Build a template object based on the specified file-like
         object and sequence of objects
         """
+        print "PDFFOLDER", pdfFolder
+        print "SLAFFILE", slafile
+        print "SLAFFILENAME", slaFileName
+        print "FILLLNEOME", fileName
+        #self.main = main
         self.pdfFolder = pdfFolder
-        self.pdfFileName = '_temp'
-        self.version = version
-        self.tablesProperties = tablesProperties
-        self.document = document
-        self.pageObjects = self.document.findall('PAGEOBJECT')
-        self.pgObjList = pgObjList
-        self.numPages = numPages
-        self.iteratableGroups = iteratableGroups
+        #self.pdfFileName = '_temp'
+        #self.slaTempFileName = '_temp.sla'
+        self.slaFileName = slaFileName
+        self.document = None
+        SlaParser.__init__(self, slafile=slafile,
+                                #slaFileName = self.slaFileName,
+                                    #pdfFolder = self.pdfFolder,
+)
+        self.version = self.scribusVersion()
+        if not self.version:
+            print "DEVO RICHIAMARE LA CLASSICA"
+        #self.tablesProperties = selftablesProperties
+        #self.document = document
+        #self.pageObjects = self.document.findall('PAGEOBJECT')
+        #self.pgObjList = pgObjList
+        self.numPages = self.numPage()
+        #
+
         self.translate()
 
-
-
+    def numPage(self):
+        number = self.slaPage()
+        print "NUMERO DI PAGINE DA CONVERTIRE IN PDF", len(number)
+        return len(number)
 
     def drawImage(self,group):
         """ Drawing an image """
@@ -53,7 +78,15 @@ class Sla2Pdf_ng(object):
         height = self.tablesPropertie['heights'][0]
         xPos = self.tablesPropertie['xpos'][0]
         yPos = self.tablesPropertie['ypos'][0]
-        img = utils.ImageReader(Environment.imagesDir + imgFile)
+        print "IMAGE Path ", pfile
+        try:
+            img = utils.ImageReader(Environment.imagesDir + imgFile)
+        except:
+            if not imgPath:
+                imgPath = os.path.expanduser('~') + os.sep
+            else:
+                imgPath = os.path.expanduser('~') + os.sep+imgPath +"/"
+            img = utils.ImageReader(imgPath +imgFile)
         self.canvas.drawImage(img,
                             xPos - self.pageProperties[self.pdfPage][9],
                             self.pageProperties[0][7] - yPos - height + self.pageProperties[self.pdfPage][10],
@@ -86,6 +119,7 @@ class Sla2Pdf_ng(object):
         stile = TableStyle([])
         stile.add('VALIGN',(0,0),(-1,-1),'TOP')
         tblprop = self.tablesPropertie['cellProperties']
+        #print "NOTTEEEEEEEEE", "rows:",rows, "columns", columns, "cell", cells, len(heights), len(widths)
         if monocell==True:
             cells = 1
             columns=1
@@ -194,12 +228,14 @@ class Sla2Pdf_ng(object):
                 matrix.append(vector)
                 vector = []
                 cycle = False
-        if columns > 1 and not reiter:
-            #wid = []
-            hei = []
-            for h in range(0,len(heights),rows):
-                hei.append(heights[h])
-            heights = hei
+        #if columns > 1 and not reiter:
+            ##wid = []
+            #hei = []
+            #for h in range(0,len(heights),rows):
+                #hei.append(heights[h])
+            #heights = hei
+        #print rows, widths, heights
+        #print matrix,  widths[:columns],heights[:rows]
         table=Table(matrix,style=stile,  colWidths=widths[:columns], rowHeights=heights[:rows])
 
         lst.append(table)
@@ -219,23 +255,27 @@ class Sla2Pdf_ng(object):
 
     def translate(self):
         # begin translate
-        self.pageProperties = Sla2pdfUtils.pageProFunc(self.document)
+
+        self.pageProperties = Sla2pdfUtils.pageProFunc(self.slaDocumentTag())
         docPage = self.numPages
-        self.canvas = Canvas(filename = self.pdfFolder + self.pdfFileName + '.pdf', pagesize=(self.pageProperties[0][8],self.pageProperties[0][7]))
+        print "GENERO QUESTO FILE DOPO LA  CONVERSIONE", self.slafile + '.pdf'
+        self.canvas = Canvas(filename = self.slafile + '.pdf', pagesize=(self.pageProperties[0][8],self.pageProperties[0][7]))
         # Page's table
         reiter = False
         self.pdfPage = 0
         #docPage = docPage +docPage
+        self.findTablesAndTags()
+        tablepro = self.findTablesProperties()
         for e in xrange(0, docPage):
             self.pdfPage = e
-            for group in self.tablesProperties:
+            for group in tablepro:
                 self.group = group.keys()[0]
                 self.tablesPropertie = group.values()[0]
                 try:
                     self.group= self.group.strip().split('%%%')[0]
                 except:
                     self.group= self.group.strip()
-                if self.group in self.iteratableGroups:
+                if self.group in self.getIteratableGroups():
                     colu = int(self.tablesPropertie['columns'])
                     self.tablesPropertie['iterproper'] = self.tablesPropertie['parasobj'][colu:(colu*2)]
                     reiter = True
@@ -328,8 +368,6 @@ class Sla2Pdf_ng(object):
         else:
             itext = None
         return [ch, itext]
-
-
 
     def slaStyleDefault(self):
         styleTag = self.document.findall('STYLE')[0]

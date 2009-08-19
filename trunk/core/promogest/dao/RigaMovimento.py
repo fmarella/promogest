@@ -278,7 +278,7 @@ class RigaMovimento(Dao):
         params["session"].add(self)
         params["session"].commit()
         #creazione stoccaggio se non gia' presente
-        #print "DOPO Commit Riga movimento", tempo()
+        print "DOPO Commit Riga movimento", tempo()
         stoccato = (Stoccaggio().count(idArticolo=self.id_articolo,
                                                 idMagazzino=self.id_magazzino) > 0)
         if not stoccato:

@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
+# Author: Francesco Meloni <andrea@promotux.it>
 
 
 import gtk
@@ -57,10 +58,7 @@ class ArticoloSearchWidget(CustomComboBoxSearch):
 
         if combobox.on_selection_changed():
             if self._ricerca is None:
-                #print "diiiiiiiiiiiiiiiiiiiiiiiiir",Environment.listinoFissato
-                #returnWindow = combobox.get_toplevel()
                 from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
-                #print "OOOOOOOOOOOOOOOOOOOOOOOOOOOO", dir(self), findIdFromCombobox(self.id_listino_filter_combobox)
                 self._ricerca = RicercaComplessaArticoli(listinoFissato=Environment.listinoFissato)
                 Environment.listinoFissato = None
                 if not self._filter:
@@ -103,19 +101,14 @@ class ArticoloSearchWidget(CustomComboBoxSearch):
         res = leggiArticolo(idArticolo)
         combobox.refresh(idArticolo, res["denominazione"], res, clear, filter)
 
-
     def clear(self):
         self.set_active(0)
-
-
 
     def setOnChangedCall(self, callName=None):
         self._callName = callName
 
-
     def setSingleValue(self):
         self._filter = False
-
 
     def setMultipleValues(self):
         self._filter = True

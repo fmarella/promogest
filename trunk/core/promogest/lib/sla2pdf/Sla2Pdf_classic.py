@@ -31,11 +31,6 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 #from reportlab.lib.pagesizes import cm, inch, A4, landscape
 from reportlab.pdfgen.canvas import Canvas
-#from PIL import Image
-
-##from elementtree import ElementTree
-##from elementtree.ElementTree import *
-#import cElementTree as ElementTree
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment
 
@@ -96,12 +91,12 @@ class Sla2Pdf_classic(object):
         #finally:
 
         # temporary pdf file is removed immediately
-        filename = self.pdfFolder + self.pdfFileName + '.pdf'
-        f = file(filename, 'rb')
-        result = f.read()
-        f.close()
-        os.remove(filename)
-        return result
+        #filename = self.pdfFolder + self.pdfFileName + '.pdf'
+        #f = file(filename, 'rb')
+        #result = f.read()
+        #f.close()
+        #os.remove(filename)
+        #return result
 
 
     def initialize(self):
@@ -1061,7 +1056,7 @@ class Sla2Pdf_classic(object):
             self.pageProperties.append([size, num,
                                         borderTop, borderBottom, borderRight, borderLeft,
                                         orientation, pageHeight, pageWidth, pageXPos, pageYPos])
-
+        print "VEDIAMO CHE FILE CREA", self.pdfFolder + self.pdfFileName + '.pdf'
         self.canvas = Canvas(filename = self.pdfFolder + self.pdfFileName + '.pdf', pagesize=(pageWidth, pageHeight))
 
         # Analyzing elements
