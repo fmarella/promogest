@@ -76,9 +76,7 @@ class Sla2Pdf_classic(object):
     def serialize(self, objects, dao):
         """ Model parsing, values substitution and pdf creation """
         self.objects = objects
-        #~ print "[[[[[[[[[]]]]]]]]]]", objects
         result = None
-        #try:
         self.dao =dao
         self.initialize()
         self.findTablesAndTags()
@@ -88,15 +86,7 @@ class Sla2Pdf_classic(object):
         self.addEmptyPages()
         self.fillDocument()
         self.translate()
-        #finally:
 
-        # temporary pdf file is removed immediately
-        #filename = self.pdfFolder + self.pdfFileName + '.pdf'
-        #f = file(filename, 'rb')
-        #result = f.read()
-        #f.close()
-        #os.remove(filename)
-        #return result
 
 
     def initialize(self):
