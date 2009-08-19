@@ -41,7 +41,12 @@ class Sla2Pdf_ng(SlaParser):
 
         self.pdfFolder = pdfFolder
         self.slaFileName = slaFileName
+
+        SlaParser.__init__(self, slaFileName=slaFileName,
+                                    pdfFolder=pdfFolder,
+                                    slafile=slafile)
         self.document = None
+        self.version = self.scribusVersion()
         self.numPages = self.numPage()
         self.translate()
 
