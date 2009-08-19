@@ -32,7 +32,7 @@ class SlaParser(object):
         self.slaFileName = slaFileName
         self.pdfFolder = pdfFolder
         self.slafile = slafile
-        print "SELF SLAFILEEEEEEEE", self.slafile
+        print "FILE SLA", self.slafile
         #self.slaTempFileName = slaTempFileName
         ##print "FILETRANSLATEEEED", fileTranslated
         #if fileTranslated:
@@ -58,7 +58,6 @@ class SlaParser(object):
             f.write(text)
             f.close()
             self.doc = ElementTree.parse(tempFile)
-        print "RIPASSI QUIIIIIIIIIIIIIIIIIIIIII"
         self.slaRootTag()
         self.slaDocumentTag()
         #return tempFile
@@ -118,7 +117,7 @@ class SlaParser(object):
         #if self.tablesProperties:
             #return self.tablesProperties
         #else:
-        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", len(self.slaPageObjects())
+        print "IMPORTANTE ANALISI TABELLA", len(self.slaPageObjects())
         propertiesList = []
         tableList = []
         table= None

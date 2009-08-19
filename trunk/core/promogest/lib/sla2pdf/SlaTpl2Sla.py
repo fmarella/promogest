@@ -39,47 +39,24 @@ class SlaTpl2Sla(SlaParser):
         #self.slaTempFileName = '_temp.sla'
         self.slaFileName = slaFileName
         self.report = report
-        print "UNOOOOOOOOOOOOOOOOOO"
         SlaParser.__init__(self, slaFileName=slaFileName,
                                     pdfFolder=pdfFolder,
                                     slafile=slafile)
         self.objects = objects
         self.label = label
-        print "DUEEEEEEEEEEEEEEEEEE"
         self.formatFunctions = ['trunc','approx','itformat','itformatdataora','itformatdata', 'bcview']
         self.timeTags = ['date','time','datetime']
         self.positionTags = ['first','last']
         self.pageTags = ['currentPage','totalPage']
         self.cycle = 0
-        print "TREEEEEEEEEEEEEEEEEEE"
         self.findTablesAndTags()
-        print "QUATTROOOOOOOOOOOOOOOOOOOOOOOOO"
         self.tableProperties = self.findTablesProperties()
-        print "CINQUEEEEEEEEEEEEEEEEEEEEEEEEE"
         self.getIteratableGroups()
-        print "SEIIIIIIIIIIIIIIIIIIIIIIIII"
         self.getPagesNumber()
-        print "SETTEEEEEEEEEEEEEEEEEEEEE"
         if self.label:
-            #from SlaTpl2LabelSla import *
             self.duplicateElementLabel()
         self.addEmptyPages()
-        print "OTTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
         self.fillDocument()
-        print "NOOOOOOVEEEEEEEEE"
-
-        #self.iteratableGroups = iteratableGroups
-        #self.tablesTags = self.main.findTablesAndTags()[0]
-        #self.tablesTags = self.main.findTablesAndTags()[1]
-        #self.tablesProperties = tablesProperties
-        #self.getPagesNumber()
-
-        #if self.label:
-            #self.duplicateElementLabel()
-
-        #self.addEmptyPages()
-
-        #self.fillDocument()
 
     def toPdf(self, slafile=None):
         version=self.scribusVersion()
@@ -128,8 +105,6 @@ class SlaTpl2Sla(SlaParser):
                             rowsNumber = tableGroup['rows'] - 1
                         self.pagesNumber = int(math.ceil(float(valuesNumber) / float(rowsNumber)))
         print "NUMERO PAGINE", self.pagesNumber
-                        #return self.pagesNumber
-        #print "questo è il nuovo numero di pagine del template sla:", self.pagesNumber
 
 
     def createPageTag(self, pagesNumber=None):
@@ -137,7 +112,6 @@ class SlaTpl2Sla(SlaParser):
         self.pagesNumber = pagesNumber
         childrens = self.document.getchildren()
         Page = self.document.findall('PAGE')
-        #print "MASTERPAGEEEE", childrens
         index = ''
         for index in range(0, len(childrens)):
             childrens[index] = str(childrens[index])
@@ -145,14 +119,12 @@ class SlaTpl2Sla(SlaParser):
             if s!= -1:
                 break
         numPages = self.slaPage()
-        #print "TORNIAMO A BOMBA", self.pagesNumber
         for i in range(1, self.pagesNumber):
             attributes = numPages[0].items()
             dictionary =  {}
             for attr in attributes:
                 dictionary[attr[0]] = attr[1]
             app = numPages[0].makeelement('PAGE', dictionary)
-            #print "PASSO00000000000000000000000", dictionary
             self.slaDocumentTag().insert(index, app)
         print self.slaPage()
 
@@ -222,7 +194,7 @@ class SlaTpl2Sla(SlaParser):
 
     def getTagToPrint(self, string,tags=None,k=None, increment=True,column = False ):
         """
-        Questa fuinzione valuta quali tag riportare nel template definitivo
+        Questa funzione valuta quali tag riportare nel template definitivo
         TODO:da rivedere
         """
         if tags[k]['position'] in self.positionTags:
@@ -253,7 +225,7 @@ class SlaTpl2Sla(SlaParser):
 
 
     def duplicateTags(self):
-        print "BOOOOOOOOOOOOOOOOOOOOOOOOOOHH"
+
         self.pageObjects = self.slaPageObjects()
         for pageObject in self.pageObjects:
             isTableItem = pageObject.get('isTableItem') == "1"

@@ -38,30 +38,11 @@ class Sla2Pdf_ng(SlaParser):
         Build a template object based on the specified file-like
         object and sequence of objects
         """
-        print "PDFFOLDER", pdfFolder
-        print "SLAFFILE", slafile
-        print "SLAFFILENAME", slaFileName
-        print "FILLLNEOME", fileName
-        #self.main = main
+
         self.pdfFolder = pdfFolder
-        #self.pdfFileName = '_temp'
-        #self.slaTempFileName = '_temp.sla'
         self.slaFileName = slaFileName
         self.document = None
-        SlaParser.__init__(self, slafile=slafile,
-                                #slaFileName = self.slaFileName,
-                                    #pdfFolder = self.pdfFolder,
-)
-        self.version = self.scribusVersion()
-        if not self.version:
-            print "DEVO RICHIAMARE LA CLASSICA"
-        #self.tablesProperties = selftablesProperties
-        #self.document = document
-        #self.pageObjects = self.document.findall('PAGEOBJECT')
-        #self.pgObjList = pgObjList
         self.numPages = self.numPage()
-        #
-
         self.translate()
 
     def numPage(self):
