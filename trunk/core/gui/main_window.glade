@@ -14,6 +14,7 @@
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <widget class="GtkMenuBar" id="main_menubar">
             <property name="visible">True</property>
@@ -195,6 +196,7 @@
             <child>
               <widget class="GtkVBox" id="box_immagini_iniziali">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <child>
                   <widget class="GtkLabel" id="anno_lavoro_label">
                     <property name="visible">True</property>

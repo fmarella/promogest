@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <glade-interface>
-  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-requires gtk+ 2.14 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="anagrafica_complessa_window">
     <property name="title" translatable="yes">Anagrafica</property>
@@ -13,6 +13,7 @@
     <child>
       <widget class="GtkVBox" id="anagrafica_main_vbox">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <widget class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
@@ -222,9 +223,8 @@
               <widget class="GtkToolButton" id="record_new_button">
                 <property name="visible">True</property>
                 <property name="tooltip" translatable="yes">Nuovo record</property>
-                <property name="label" translatable="yes">Nuovo</property>
                 <property name="use_underline">True</property>
-                <property name="icon">nuovo24x24.png</property>
+                <property name="stock_id">gtk-new</property>
                 <signal name="clicked" handler="on_record_new_activate"/>
               </widget>
               <packing>
@@ -247,7 +247,7 @@
                 <property name="tooltip" translatable="yes">Modifica il record selezionato</property>
                 <property name="label" translatable="yes">Modifica</property>
                 <property name="use_underline">True</property>
-                <property name="icon">modifica24x24.png</property>
+                <property name="stock_id">gtk-edit</property>
                 <signal name="clicked" handler="on_record_edit_activate"/>
               </widget>
               <packing>
@@ -262,7 +262,7 @@
                 <property name="tooltip" translatable="yes">Elimina il record selezionato</property>
                 <property name="label" translatable="yes">Elimina</property>
                 <property name="use_underline">True</property>
-                <property name="icon">elimina24x24.png</property>
+                <property name="stock_id">gtk-delete</property>
                 <signal name="clicked" handler="on_record_delete_activate"/>
               </widget>
               <packing>
@@ -284,7 +284,7 @@
                 <property name="tooltip" translatable="yes">Genera un file PDF con il dettaglio del record selezionato</property>
                 <property name="label" translatable="yes">Stampa selezione</property>
                 <property name="use_underline">True</property>
-                <property name="icon">stampa_selezione24x24.png</property>
+                <property name="stock_id">gtk-print</property>
                 <signal name="clicked" handler="on_selected_record_print_activate"/>
               </widget>
               <packing>
@@ -392,6 +392,7 @@
           <widget class="GtkVPaned" id="anagrafica_vpaned">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="orientation">vertical</property>
             <child>
               <widget class="GtkHPaned" id="anagrafica_hpaned">
                 <property name="visible">True</property>

@@ -57,6 +57,7 @@ percentualeIvaRiga = None
 aliquotaIvaRiga = None
 modulesList = []
 listinoFissato = None
+new_print_enjine=False
 
 def getConfigureDir(company='__default__'):
     """ Tests if another configuration folder was indicated """

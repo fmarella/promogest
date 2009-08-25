@@ -169,4 +169,19 @@
     top: 5px;
     padding-top: 10px;
 }
+
+#dialog{
+/*    background-image: url("gui/aggiungi16x16.png");
+    background-repeat: no-repeat;
+    background-color:black;*/
+}
+table#calendar{width:160px;font: 12px "Trebuchet MS",sans-serif;
+    text-align:center;color:#444}
+table#calendar,table#calendar th,table#calendar td{
+    border: 1px solid #99A4C4;border-collapse:collapse}
+table#calendar th{background: #FEFEFE url(gui/thbk.png) repeat-x bottom}
+table#calendar td{background: #DBDFEB url(gui/tdbk.png) no-repeat}
+table#calendar a{text-decoration:none;color:#4A5576;font-weight:bold}
+table#calendar a:hover{color: #716F64}
+
 </style>

@@ -268,6 +268,7 @@ E' presente una nuova versione disponibile"""
 
     def on_html_link_clicked(self, url, link):
         """ funzione di apertura dei link presenti nelle pagine html di anteprima"""
+        print "URLLLLLLLLLLLLLLLLLLLLLLLLLL", url, link
         def linkOpen():
             webbrowser.open_new_tab(link)
         gobject.idle_add(linkOpen)

@@ -285,7 +285,7 @@ class Login(GladeApp):
                     if hasAction(actionID=1):
                         if Environment.tipodb !="sqlite":
                             Environment.params["schema"]=self.azienda
-                        
+
                         #Environment.meta.reflect(schema=self.azienda )
                         self.login_window.hide()
                         global windowGroup
@@ -405,7 +405,9 @@ class Login(GladeApp):
                     if mod_enable:
                         exec "mod_enableyes = getattr(Environment.conf.%s,'mod_enable','yes')" %m_str
                         if mod_enableyes=="yes":
-                            exec "import %s.%s.module as m" % (modules_dir.replace("/", "."), m_str)
+                            stringa= "%s.%s.module" % (modules_dir.replace("/", "."), m_str)
+                            m= __import__(stringa, globals(), locals(), ["m"], -1)
+                            #exec "import %s.%s.module as m" % (modules_dir.replace("/", "."), m_str)
                             Environment.modulesList.append(str(m.MODULES_NAME))
                             for class_name in m.MODULES_FOR_EXPORT:
                                 exec 'module = m.'+ class_name
@@ -432,7 +434,7 @@ class Login(GladeApp):
 
 def on_main_window_closed(main_window, login_window):
     """
-    main windows close event in login windows   
+    main windows close event in login windows
     """
     login_window.show()
     global windowGroup

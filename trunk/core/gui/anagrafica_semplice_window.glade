@@ -15,6 +15,7 @@
     <child>
       <widget class="GtkVBox" id="anagrafica_main_vbox">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <widget class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
@@ -183,9 +184,8 @@
               <widget class="GtkToolButton" id="record_new_button">
                 <property name="visible">True</property>
                 <property name="tooltip" translatable="yes">Nuovo record</property>
-                <property name="label" translatable="yes">Nuovo</property>
                 <property name="use_underline">True</property>
-                <property name="icon">nuovo24x24.png</property>
+                <property name="stock_id">gtk-new</property>
                 <signal name="clicked" handler="on_record_new_activate"/>
               </widget>
               <packing>
@@ -206,9 +206,8 @@
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="tooltip" translatable="yes">Modifica il record selezionato</property>
-                <property name="label" translatable="yes">Modifica</property>
                 <property name="use_underline">True</property>
-                <property name="icon">modifica24x24.png</property>
+                <property name="stock_id">gtk-edit</property>
                 <signal name="clicked" handler="on_record_edit_activate"/>
               </widget>
               <packing>
@@ -221,9 +220,8 @@
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="tooltip" translatable="yes">Elimina il record selezionato</property>
-                <property name="label" translatable="yes">Elimina</property>
                 <property name="use_underline">True</property>
-                <property name="icon">elimina24x24.png</property>
+                <property name="stock_id">gtk-delete</property>
                 <signal name="clicked" handler="on_record_delete_activate"/>
               </widget>
               <packing>
@@ -246,7 +244,7 @@
                 <property name="tooltip" translatable="yes">Salva le modifiche</property>
                 <property name="label" translatable="yes">Salva</property>
                 <property name="use_underline">True</property>
-                <property name="icon">salva24x24.png</property>
+                <property name="stock_id">gtk-save</property>
                 <signal name="clicked" handler="on_record_save_activate"/>
               </widget>
               <packing>
@@ -259,9 +257,8 @@
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="tooltip" translatable="yes">Non salva le modifiche</property>
-                <property name="label" translatable="yes">Annulla</property>
                 <property name="use_underline">True</property>
-                <property name="icon">annulla24x24.png</property>
+                <property name="stock_id">gtk-cancel</property>
                 <signal name="clicked" handler="on_record_cancel_activate"/>
               </widget>
               <packing>
@@ -282,9 +279,8 @@
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="tooltip" translatable="yes">Annulla i cambiamenti</property>
-                <property name="label" translatable="yes">Ripristina</property>
                 <property name="use_underline">True</property>
-                <property name="icon">ripristina24x24.png</property>
+                <property name="stock_id">gtk-revert-to-saved</property>
                 <signal name="clicked" handler="on_record_undo_activate"/>
               </widget>
               <packing>

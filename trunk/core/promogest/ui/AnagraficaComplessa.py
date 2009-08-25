@@ -26,7 +26,7 @@ try:
 except ImportError:
     from StringIO import StringIO
 
-from promogest.Environment import conf
+from promogest.Environment import conf, new_print_enjine
 from GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.lib.XmlGenerator import XlsXmlGenerator
@@ -35,7 +35,11 @@ from utils import *
 import utils
 import Login
 
-from promogest.lib.sla2pdf.Sla2Pdf import Sla2Pdf
+
+if new_print_enjine:
+    from promogest.lib.sla2pdf.Sla2Pdf import Sla2Pdf
+else:
+    from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
 from promogest.ui.SendEmail import SendEmail
 
 from promogest import Environment
@@ -1125,10 +1129,23 @@ class AnagraficaHtml(object):
 
     def on_html_link_clicked(self, url, link):
         """ funzione di apertura dei link presenti nelle pagine html di anteprima"""
-        def linkOpen():
-            webbrowser.open_new_tab(link)
-            #print link
-        gobject.idle_add(linkOpen)
+        print "URLLLLLLLLLLLLLLLLLLLLLLLLLL", dir(url)
+        if link =="/tt":
+            dialog = gtk.MessageDialog(None,
+                                   gtk.DIALOG_MODAL
+                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                                   'Confermi la chiusura ?')
+            response = dialog.run()
+            dialog.destroy()
+            if response ==  gtk.RESPONSE_YES:
+                self.setVisible(False)
+            else:
+                return True
+        #def linkOpen():
+            #webbrowser.open_new_tab(link)
+            ##print link
+        #gobject.idle_add(linkOpen)
 
 
     def setObjects(self, objects):
@@ -1139,26 +1156,47 @@ class AnagraficaHtml(object):
 
     def pdf(self, operationName):
         self._slaTemplate = None
-        #self._slaTemplateObj=None
-        operationNameUnderscored = operationName.replace(' ' , '_').lower()
-        print "per la stampa", operationNameUnderscored, Environment.templatesDir + operationNameUnderscored + '.sla'
-        if os.path.exists(Environment.templatesDir + operationNameUnderscored + '.sla'):
-            self._slaTemplate = Environment.templatesDir + operationNameUnderscored + '.sla'
-        else:
-            self._slaTemplate = Environment.templatesDir + self.defaultFileName + '.sla'
-        """ Restituisce una stringa contenente il report in formato PDF """
-        #if self._slaTemplateObj is None:
-        #self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
-                                            #pdfFolder=self._anagrafica._folder,
-                                            #report=self._anagrafica._reportType)
+        self._slaTemplateObj=None
 
-        param = [self.dao.dictionary(complete=True)]
-        multilinedirtywork(param)
-        #return self._slaTemplateObj.serialize(param, dao=self.dao)
-        return Sla2Pdf(slaFileName=self._slaTemplate,
-                        pdfFolder=self._anagrafica._folder,
-                        report=self._anagrafica._reportType,
-                        ).createPDF(objects=param, daos=self.dao)
+        if new_print_enjine:
+            operationNameUnderscored = operationName.replace(' ' , '_').lower()
+            print "per la stampa", operationNameUnderscored, Environment.templatesDir + operationNameUnderscored + '.sla'
+            if os.path.exists(Environment.templatesDir + operationNameUnderscored + '.sla'):
+                self._slaTemplate = Environment.templatesDir + operationNameUnderscored + '.sla'
+            else:
+                self._slaTemplate = Environment.templatesDir + self.defaultFileName + '.sla'
+            """ Restituisce una stringa contenente il report in formato PDF """
+            #if self._slaTemplateObj is None:
+            #self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
+                                                #pdfFolder=self._anagrafica._folder,
+                                                #report=self._anagrafica._reportType)
+
+            param = [self.dao.dictionary(complete=True)]
+            multilinedirtywork(param)
+            #return self._slaTemplateObj.serialize(param, dao=self.dao)
+            return Sla2Pdf(slaFileName=self._slaTemplate,
+                            pdfFolder=self._anagrafica._folder,
+                            report=self._anagrafica._reportType,
+                            ).createPDF(objects=param, daos=self.dao)
+
+        else:
+            operationNameUnderscored = operationName.replace(' ' , '_').lower()
+
+            if os.path.exists(Environment.templatesDir + operationNameUnderscored + '.sla'):
+                self._slaTemplate = Environment.templatesDir + operationNameUnderscored + '.sla'
+            else:
+                self._slaTemplate = Environment.templatesDir + self.defaultFileName + '.sla'
+            """ Restituisce una stringa contenente il report in formato PDF """
+            if self._slaTemplateObj is None:
+                self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
+                                            pdfFolder=self._anagrafica._folder,
+                                            report=self._anagrafica._reportType)
+
+            #self.dao.resolveProperties()
+            param = [self.dao.dictionary(complete=True)]
+            multilinedirtywork(param)
+            #print "parammmmmmmmmmmm", param, dir(self.dao), self.dao
+            return self._slaTemplateObj.serialize(param, dao=self.dao)
 
 
     def cancelOperation(self):
@@ -1193,19 +1231,23 @@ class AnagraficaReport(object):
 
     def pdf(self,operationName):
         """ Restituisce una stringa contenente il report in formato PDF """
-        #if self._slaTemplateObj is None:
-            #self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
-                                           #pdfFolder=self._anagrafica._folder,
-                                           #report=self._anagrafica._reportType)
+        if not new_print_enjine:
+            if self._slaTemplateObj is None:
+                self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
+                                            pdfFolder=self._anagrafica._folder,
+                                            report=self._anagrafica._reportType)
 
         param = []
         for d in self.objects:
             d.resolveProperties()
             param.append(d.dictionary(complete=True))
         multilinedirtywork(param)
-        return Sla2Pdf(slaFileName=self._slaTemplate,
-                       pdfFolder=self._anagrafica._folder,
-                       report=self._anagrafica._reportType).createPDF(objects=param, daos=self.objects)
+        if not new_print_enjine:
+            return self._slaTemplateObj.serialize(param, self.objects)
+        else:
+            return Sla2Pdf(slaFileName=self._slaTemplate,
+                        pdfFolder=self._anagrafica._folder,
+                        report=self._anagrafica._reportType).createPDF(objects=param, daos=self.objects)
 
 
     def cancelOperation(self):
@@ -1245,21 +1287,24 @@ class AnagraficaLabel(object):
 
     def pdf(self,operationName):
         """ Restituisce una stringa contenente il report in formato PDF """
-        #if self._slaTemplateObj is None:
-            #self._slaTemplateObj = Sla2Pdf(slaFileName=self._slaTemplate,
-                                           #pdfFolder=self._anagrafica._folder,
-                                           #report=self._anagrafica._reportType,
-                                           #label=True).createPDF(objects=param)
+        if not new_print_enjine:
+            if self._slaTemplateObj is None:
+                self._slaTemplateObj = Sla2Pdf(slaFileName=self._slaTemplate,
+                                            pdfFolder=self._anagrafica._folder,
+                                            report=self._anagrafica._reportType,
+                                            label=True).createPDF(objects=param)
         param = []
         for d in self.objects:
             d.resolveProperties()
             param.append(d.dictionary(complete=True))
         multilinedirtywork(param)
-        return Sla2Pdf(slaFileName=self._slaTemplate,
+        if not new_print_enjine:
+            return self._slaTemplateObj.serialize(param, self.objects)
+        else:
+            return Sla2Pdf(slaFileName=self._slaTemplate,
                                            pdfFolder=self._anagrafica._folder,
                                            report=self._anagrafica._reportType,
                                            label=True).createPDF(objects=param, daos=self.objects)
-
 
 class AnagraficaEdit(GladeWidget):
     """ Interfaccia di editing dell'anagrafica """
