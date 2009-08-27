@@ -699,8 +699,6 @@ def fillComboboxBanche(combobox, filter=False):
 def fillComboboxCausaliTrasporto(combobox, filter=False):
     """ Crea elenco delle causali di trasporto  """
     from promogest.dao.TestataDocumento import TestataDocumento
-    #res = TestataDocumento().select(batchSize=None, offset=None,orderBy='causale_trasporto')
-    #res = Environment.params['session'].query(TestataDocumento).distinct()
     res = Environment.params['session'].query(TestataDocumento.causale_trasporto).distinct()
     model = gtk.ListStore(object, str)
     #res = []
@@ -717,6 +715,7 @@ def fillComboboxCausaliTrasporto(combobox, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 1)
     combobox.set_model(model)
+    print "MODEL", len(model)
     if combobox.__class__ is gtk.ComboBoxEntry:
         combobox.set_text_column(1)
 

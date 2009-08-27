@@ -26,7 +26,7 @@ try:
 except ImportError:
     from StringIO import StringIO
 
-from promogest.Environment import conf, new_print_enjine
+from promogest.Environment import conf
 from GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.lib.XmlGenerator import XlsXmlGenerator
@@ -35,14 +35,14 @@ from utils import *
 import utils
 import Login
 
-
-if new_print_enjine:
+from promogest import Environment
+if Environment.new_print_enjine:
     from promogest.lib.sla2pdf.Sla2Pdf import Sla2Pdf
 else:
     from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
 from promogest.ui.SendEmail import SendEmail
 
-from promogest import Environment
+
 
 from jinja2 import Environment  as Env
 from jinja2 import FileSystemLoader,FileSystemBytecodeCache
@@ -120,6 +120,7 @@ class Anagrafica(GladeWidget):
                             accelGroup, gtk.keysyms.KP_Enter, 0, gtk.ACCEL_VISIBLE)
         self.bodyWidget.filter_search_button.add_accelerator('clicked',
                             accelGroup, gtk.keysyms.Return, 0, gtk.ACCEL_VISIBLE)
+
 
     def _setHtmlHandler(self, htmlHandler):
         self.htmlHandler = htmlHandler
@@ -1158,7 +1159,7 @@ class AnagraficaHtml(object):
         self._slaTemplate = None
         self._slaTemplateObj=None
 
-        if new_print_enjine:
+        if Environment.new_print_enjine:
             operationNameUnderscored = operationName.replace(' ' , '_').lower()
             print "per la stampa", operationNameUnderscored, Environment.templatesDir + operationNameUnderscored + '.sla'
             if os.path.exists(Environment.templatesDir + operationNameUnderscored + '.sla'):
@@ -1231,7 +1232,7 @@ class AnagraficaReport(object):
 
     def pdf(self,operationName):
         """ Restituisce una stringa contenente il report in formato PDF """
-        if not new_print_enjine:
+        if not Environment.new_print_enjine:
             if self._slaTemplateObj is None:
                 self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
                                             pdfFolder=self._anagrafica._folder,
@@ -1242,7 +1243,7 @@ class AnagraficaReport(object):
             d.resolveProperties()
             param.append(d.dictionary(complete=True))
         multilinedirtywork(param)
-        if not new_print_enjine:
+        if not Environement.new_print_enjine:
             return self._slaTemplateObj.serialize(param, self.objects)
         else:
             return Sla2Pdf(slaFileName=self._slaTemplate,
@@ -1287,7 +1288,7 @@ class AnagraficaLabel(object):
 
     def pdf(self,operationName):
         """ Restituisce una stringa contenente il report in formato PDF """
-        if not new_print_enjine:
+        if not Environment.new_print_enjine:
             if self._slaTemplateObj is None:
                 self._slaTemplateObj = Sla2Pdf(slaFileName=self._slaTemplate,
                                             pdfFolder=self._anagrafica._folder,
@@ -1298,7 +1299,7 @@ class AnagraficaLabel(object):
             d.resolveProperties()
             param.append(d.dictionary(complete=True))
         multilinedirtywork(param)
-        if not new_print_enjine:
+        if not Environment.new_print_enjine:
             return self._slaTemplateObj.serialize(param, self.objects)
         else:
             return Sla2Pdf(slaFileName=self._slaTemplate,
