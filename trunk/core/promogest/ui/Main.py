@@ -93,9 +93,6 @@ class Main(GladeWidget):
                 showAnagrafica(self.getTopLevel(), anag, mainClass=self)
                 #icon_view.unselect_all()
                 return
-                #from promoAnagraficaPromemoria import AnagraficaPromemoria
-                #anag = AnagraficaPromemoria(self.aziendaStr)
-                #showAnagrafica(self.getTopLevel(), anag, mainClass=self)
             pbuf = gtk.gdk.pixbuf_new_from_file(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
             row = (ind, currModule['module'].VIEW_TYPE[1], pbuf, currModule['module'])
             model_right.append(row)
