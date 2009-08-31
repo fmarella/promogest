@@ -275,6 +275,7 @@ class Login(GladeApp):
                         #thread.join(1.3)
                     Environment.params['usernameLoggedList'][0] = users[0].id
                     Environment.params['usernameLoggedList'][1] = users[0].username
+
                     if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
                         #from promogest.modules.RuoliAzioni.dao.Role import Role
                         #idruolo = Role().select(denominazione=users[0].id_role)
@@ -292,6 +293,7 @@ class Login(GladeApp):
                         windowGroup.remove(self.getTopLevel())
                         self.importModulesFromDir('promogest/modules')
                         #saveAppLog(action="login", status=True,value=username)
+                        Environment.pg2log.info("LOGIN  id, user, role azienda: %s, %s" %(repr(Environment.params['usernameLoggedList']),self.azienda) )
                         from promogest.lib.UpdateDB import *
                         from Main import Main
                         main = Main(self.azienda,
@@ -338,9 +340,11 @@ class Login(GladeApp):
                 try:
                     client.update( '.' )
                     msg = "TUTTO OK AGGIORNAMENTO EFFETTUATO\n RIAVVIARE IL PROMOGEST"
+                    Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO A BUON FINE")
                 except pysvn.ClientError, e:
                     # convert to a string
                     msg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
+                    Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO MALE")
             except:
                 command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
                 p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT)
@@ -417,7 +421,7 @@ class Login(GladeApp):
                                                     'module_dir': "%s" % (m_str),
                                                     'guiDir':m.GUI_DIR
 }
-            print "LISTA DEI MODULI CARICATI E FUNZIONANTI", repr(Environment.modulesList)
+            Environment.pg2log.info("LISTA DEI MODULI CARICATI E FUNZIONANTI %s" %(str(repr(Environment.modulesList))))
             self.groupModulesByType()
 
     def on_login_window_key_press_event(self, widget, event):

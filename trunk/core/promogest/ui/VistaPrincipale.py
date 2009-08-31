@@ -105,7 +105,8 @@ class VistaPrincipale(GladeWidget):
             feedAll = Environment.feedAll
             feedToHtml = Environment.feedCache
             if feedAll == "":
-                print "LEGGERO RITARDO NEL RECUPERO DEI FEED"
+                Environment.pg2log.debug("LEGGERO RITARDO NEL RECUPERO DEI FEED")
+
                 """apro un thread per il recupero dei feed , su piattaforma a 32 bit
                 tutto procede per il meglio tanne qualche warning, su 64 bit ci sono
                 invece dei crash core dump dovuti ad una asyncronia tra il textbuffer e la texview che

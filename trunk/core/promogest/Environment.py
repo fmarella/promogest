@@ -14,6 +14,8 @@ import glob
 import getopt, sys
 from sqlalchemy import *
 from sqlalchemy.orm import *
+import logging
+import logging.handlers
 
 
 PRODOTTO = "PromoTux - Virtual Company"
@@ -75,9 +77,15 @@ def getConfigureDir(company='__default__'):
     except getopt.GetoptError:
         return default
 
-try:
+
+
+def startdir():
     startDir = getConfigureDir()
     promogestStartDir = os.path.expanduser('~') + os.sep + startDir + os.sep
+    return promogestStartDir
+try:
+
+    promogestStartDir = startdir()
     if not (os.path.exists(promogestStartDir)):
         os.mkdir(promogestStartDir)
     configFile = promogestStartDir + 'configure'
@@ -372,3 +380,38 @@ conf.windowsrc = os.path.expanduser('~') + os.sep + 'promogest2/windowsrc.xml'
 conf.guiDir = '.' + os.sep + 'gui' + os.sep
 #conf.windowsrc = promogestDir + 'windowsrc.xml'
 #conf.guiDir = '.' + os.sep + 'gui' + os.sep
+
+LOG_FILENAME = startdir()+'pg2.log'
+
+# Set up a specific logger with our desired output level
+pg2log = logging.getLogger('PromoGest2')
+pg2log.setLevel(logging.DEBUG)
+
+# Add the log message handler to the logger
+handler = logging.handlers.RotatingFileHandler(
+              LOG_FILENAME, maxBytes=400000, backupCount=3)
+
+formatter = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(pathname)s - %(funcName)s - %(lineno)d")
+# add formatter to ch
+handler.setFormatter(formatter)
+pg2log.addHandler(handler)
+pg2log.debug("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
+
+
+def hook(et, ev, eb):
+    import traceback
+    pg2log.debug("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
+    print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE"
+sys.excepthook = hook
+
+import warnings
+
+#def fxn():
+#warnings.warn("deprecated", DeprecationWarning)
+#warnings.showwarning()
+#print "GFGFGFG", warnings.filterwarnings('default')
+#with warnings.catch_warnings():
+    ##print "GFGFGFGFG", warnings.catch_warnings()
+    #print warnings.simplefilter("always")
+    #fxn()

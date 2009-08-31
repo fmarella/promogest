@@ -7,11 +7,12 @@
 
 
 import os
+import sys
+
 from optparse import OptionParser
 from promogest import Environment
 #from promogest.lib.UpdateDB import *
 from config import Config
-
 
 class BigBang(object):
     def __init__(self, debugDao=None, debugSQL=None, debugALL=None):
@@ -104,11 +105,6 @@ class BigBang(object):
         login = Login()
         login.run()
 
-#if __name__ == '__main__':
-    ##login = Login()
-    ##login.run()
+
 if __name__ == '__main__':
-    # Import Psyco if available
     BigBang()
-
-

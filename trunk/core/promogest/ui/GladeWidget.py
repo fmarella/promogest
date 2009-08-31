@@ -267,7 +267,7 @@ class GladeWidget(SimpleGladeApp):
             pass
             #print "CERCA"
         else:                            #secondary
-            entry.set_text("") 
+            entry.set_text("")
 
     def on_top_level_closed(self):
         """ Saving window's parameters """
@@ -278,9 +278,9 @@ class GladeWidget(SimpleGladeApp):
 
     def destroy(self):
         """ Destroying window """
-
         self.on_top_level_closed()
         self.topLevelWindow.destroy()
+        #Environment.pg2log.info("<<<<<<<<<<  CHIUSURA PROMOGEST >>>>>>>>>>>>>")
 
 
     def hide(self):
