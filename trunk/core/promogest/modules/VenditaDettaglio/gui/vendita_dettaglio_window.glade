@@ -11,6 +11,7 @@
     <child>
       <widget class="GtkVBox" id="vbox52">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <widget class="GtkMenuBar" id="vendita_dettaglio_menubar">
             <property name="visible">True</property>
@@ -109,6 +110,7 @@
                 <child>
                   <widget class="GtkVBox" id="vbox33">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">1</property>
                     <child>
                       <widget class="GtkHBox" id="hbox234">
@@ -280,10 +282,10 @@
                                 <property name="secondary_icon_stock">gtk-clear</property>
                                 <property name="secondary_icon_activatable">True</property>
                                 <property name="secondary_icon_sensitive">True</property>
-                                <signal name="icon_press" handler="on_icon_press"/>
                                 <signal name="focus_out_event" handler="on_focus_out_event"/>
-                                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                <signal name="icon_press" handler="on_icon_press"/>
                                 <signal name="activate" handler="on_codice_a_barre_entry_activate"/>
+                                <signal name="focus_in_event" handler="on_focus_in_event"/>
                               </widget>
                               <packing>
                                 <property name="right_attach">3</property>
@@ -300,10 +302,10 @@
                                 <property name="secondary_icon_stock">gtk-clear</property>
                                 <property name="secondary_icon_activatable">True</property>
                                 <property name="secondary_icon_sensitive">True</property>
-                                <signal name="icon_press" handler="on_icon_press"/>
                                 <signal name="focus_out_event" handler="on_focus_out_event"/>
-                                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                <signal name="icon_press" handler="on_icon_press"/>
                                 <signal name="activate" handler="on_codice_entry_activate"/>
+                                <signal name="focus_in_event" handler="on_focus_in_event"/>
                               </widget>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -811,10 +813,10 @@
                                 <property name="secondary_icon_stock">gtk-clear</property>
                                 <property name="secondary_icon_activatable">True</property>
                                 <property name="secondary_icon_sensitive">True</property>
-                                <signal name="icon_press" handler="on_icon_press"/>
                                 <signal name="focus_out_event" handler="on_focus_out_event"/>
-                                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                <signal name="icon_press" handler="on_icon_press"/>
                                 <signal name="activate" handler="on_descrizione_entry_activate"/>
+                                <signal name="focus_in_event" handler="on_focus_in_event"/>
                               </widget>
                               <packing>
                                 <property name="left_attach">5</property>

@@ -118,7 +118,7 @@ class Pg2StatusIcon(gtk.StatusIcon):
 
 class Login(GladeApp):
 
-    def __init__(self, debugSQL=None, debugALL=None):
+    def __init__(self, debugSQL=None, debugALL=None, shop=False):
         """
         Login windows
         @param debugSQL=None: not used at this moment
@@ -130,6 +130,7 @@ class Login(GladeApp):
         self.azienda=None
         self._dbConnString = ''
         self.modules = {}
+        self.shop =shop
         GladeApp.__init__(self, 'login_window')
         Environment.exceptionHandler = GtkExceptionHandler()
 
@@ -301,10 +302,12 @@ class Login(GladeApp):
                                     self.parametri_modules,
                                     self.anagrafiche_dirette_modules,
                                     self.frame_modules,
-                                    self.permanent_frames)
+                                    self.permanent_frames,
+)
                         main.getTopLevel().connect("destroy", on_main_window_closed,
                                             self.login_window)
                         main.show()
+
                     else:
                         do_login=False
             else:

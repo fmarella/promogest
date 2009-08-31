@@ -100,7 +100,7 @@ class BigBang(object):
             Environment.debugFilter = True
             Environment.debugSQL = True
         #print options.debugALL, options.debugSQL, debugDao
-        
+        Environment.shop = False
         from promogest.ui.Login import Login
         login = Login()
         login.run()

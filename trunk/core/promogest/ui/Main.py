@@ -40,6 +40,7 @@ class Main(GladeWidget):
         self.permanent_frames = permanent_frames
         self.currentFrame = None
         self.alarmFrame = None
+        self.shop = Environment.shop
         if "SincroDB" not in Environment.modulesList:
             self.sincro_db.destroy()
         elif "SincroDB" in Environment.modulesList and Environment.conf.SincroDB.tipo =="client":
@@ -87,6 +88,14 @@ class Main(GladeWidget):
         ind = 0
         for mod in self.anagrafiche_dirette_modules.keys():
             currModule = self.anagrafiche_dirette_modules[mod]
+            if self.shop and currModule["module"].VIEW_TYPE[1] =="Vendita Dettaglio":
+                anag = currModule["module"].getApplication()
+                showAnagrafica(self.getTopLevel(), anag, mainClass=self)
+                #icon_view.unselect_all()
+                return
+                #from promoAnagraficaPromemoria import AnagraficaPromemoria
+                #anag = AnagraficaPromemoria(self.aziendaStr)
+                #showAnagrafica(self.getTopLevel(), anag, mainClass=self)
             pbuf = gtk.gdk.pixbuf_new_from_file(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
             row = (ind, currModule['module'].VIEW_TYPE[1], pbuf, currModule['module'])
             model_right.append(row)

@@ -60,6 +60,7 @@ aliquotaIvaRiga = None
 modulesList = []
 listinoFissato = None
 new_print_enjine=False
+shop = False
 
 def getConfigureDir(company='__default__'):
     """ Tests if another configuration folder was indicated """
@@ -83,6 +84,8 @@ def startdir():
     startDir = getConfigureDir()
     promogestStartDir = os.path.expanduser('~') + os.sep + startDir + os.sep
     return promogestStartDir
+
+
 try:
 
     promogestStartDir = startdir()
@@ -405,7 +408,7 @@ def hook(et, ev, eb):
     print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE"
 sys.excepthook = hook
 
-import warnings
+#import warnings
 
 #def fxn():
 #warnings.warn("deprecated", DeprecationWarning)

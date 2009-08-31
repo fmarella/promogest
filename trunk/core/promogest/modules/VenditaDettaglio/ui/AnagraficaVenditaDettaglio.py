@@ -52,6 +52,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.createPopupMenu()
         #nascondo i dati riga e le info aggiuntive
         self.dati_riga_frame.destroy()
+        self.shop = Environment.shop
         self.draw()
 
 
@@ -1145,8 +1146,23 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.contanti_entry.set_sensitive(enabled)
 
     def on_vendita_dettaglio_window_close(self, widget, event=None):
-        self.destroy()
-        return None
+        if self.shop:
+            dialog = gtk.MessageDialog(self.getTopLevel(),
+                                   gtk.DIALOG_MODAL
+                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                                   'Confermi la chiusura?')
+            response = dialog.run()
+            dialog.destroy()
+            if response ==  gtk.RESPONSE_YES:
+                self.hide()
+                Environment.pg2log.info("CHIUDO IL MODULO DI GESTIONE NEGOZIO APERTO CON SHOP")
+                gtk.main_quit()
+            else:
+                return
+        else:
+            self.destroy()
+            return None
 
     def on_list_button_clicked(self, widget):
         self.idRhesusSource = []
