@@ -1309,10 +1309,14 @@ class AnagraficaLabel(object):
         """ Restituisce una stringa contenente il report in formato PDF """
         if not Environment.new_print_enjine:
             if self._slaTemplateObj is None:
-                self._slaTemplateObj = Sla2Pdf(slaFileName=self._slaTemplate,
+                #self._slaTemplateObj = Sla2Pdf(slaFileName=self._slaTemplate,
+                                            #pdfFolder=self._anagrafica._folder,
+                                            #report=self._anagrafica._reportType,
+                                            #label=True).createPDF(objects=param)
+                self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
                                             pdfFolder=self._anagrafica._folder,
                                             report=self._anagrafica._reportType,
-                                            label=True).createPDF(objects=param)
+                                            label=True)
         param = []
         for d in self.objects:
             d.resolveProperties()
