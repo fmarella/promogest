@@ -74,7 +74,7 @@ class TestataDocumento(Dao):
         self.__data_fine_noleggio = None
 
     def _getScadenzeDocumento(self):
-        if not self.__ScadenzeDocumento and self.id:
+        if self.id:
             self.__dbScadenzeDocumento = params['session']\
                                     .query(TestataDocumentoScadenza)\
                                     .with_parent(self)\
@@ -329,20 +329,15 @@ class TestataDocumento(Dao):
         params["session"].add(self)
         params["session"].commit()
 
-        print "INIZIO SALVATAGGIO ",tempo()
+        Environment.pg2log.debug("INIZIO SALVATAGGIO DOCUMENTO")
         self.scontiTestataDocumentoDel(id=self.id)
-        #tempo()
         self.testataDocumentoScadenzaDel(id=self.id)
-        #tempo()
         self.righeDocumentoDel(id=self.id)
-        #tempo()
         #verifica se sono presenti righe di movimentazione magazzino
         contieneMovimentazione = self.contieneMovimentazione(righe=self.righeDocumento)
-        #tempo()
         #cerco le testate movimento associate al documento
         #FIXME: se ne trovo piu' di una ? (ad esempio se il documento e' in realta' un cappello)
         res = TestataMovimento().select(idTestataDocumento = self.id,batchSize=None)
-        #print "DOPO RES ",res,  tempo()
         #Tutto nuovo non ci sono teste movimento relate a questa testata documento
         if not res:
             #se però c'è movimentazione vuol dire che ha un movimento abbinato
@@ -427,7 +422,7 @@ class TestataDocumento(Dao):
                     righeMovimento.append(daoRigaMovimento)
                     #righeMovimento.scontiRigheMovimento = scontiRigaMovimento
                 else:
-                    print "RIGA SENZA RIFERMENTO ARTICOLO QUINDI DESCRITTIVA, SALVO IN RIGADOCUMENTO"
+                    Environment.pg2log.debug("RIGA SENZA RIFERMENTO ARTICOLO QUINDI DESCRITTIVA, SALVO IN RIGADOCUMENTO")
                     #annullamento id della riga
                     #row._resetId()
                     #associazione alla riga della testata
@@ -466,7 +461,7 @@ class TestataDocumento(Dao):
                 scontisutot.id_testata_documento = self.id
                 scontisutot.persist()
         #params["session"].flush()
-        print "FINE SALVATAGGIO", tempo()
+        Environment.pg2log.debug("FINE SALVATAGGIO DOCUMENTO")
 
 
     def righeDocumentoDel(self, id=None):

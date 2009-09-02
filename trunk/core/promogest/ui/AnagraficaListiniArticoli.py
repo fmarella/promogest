@@ -62,7 +62,7 @@ class AnagraficaListiniArticoli(Anagrafica):
         """
         rowlist=[]
         for d in data:
-            #print "DDDDDDDDDDDD", dir(d.arti), 
+            #print "DDDDDDDDDDDD", dir(d.arti),
             denominazione = d.denominazione or ''
             codice_articolo = d.codice_articolo or ''
             articolo = d.articolo or ''
@@ -308,7 +308,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                         dateToString(l.data_listino_articolo),
                         str(mN(l.prezzo_dettaglio) or 0),
                         str(mN(l.prezzo_ingrosso) or 0)]
-            
+
             if "PromoWear" in Environment.modulesList:
                 modelRowPromoWear=[(l.denominazione_gruppo_taglia or ''),
                                         (l.denominazione_taglia or ''),
@@ -316,7 +316,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                                         (l.anno or ''),
                                         (l.stagione or ''),
                                         (l.genere or '')]
-            
+
             if modelRowPromoWear:
                 self._treeViewModel.append(modelRow +modelRowPromoWear)
             else:
@@ -360,7 +360,7 @@ class AnagraficaListiniArticoliLabel(AnagraficaLabel):
 
 class AnagraficaListiniArticoliEdit(AnagraficaEdit):
     """
-    Modifica un record dell'anagrafica degli articoli dei listini 
+    Modifica un record dell'anagrafica degli articoli dei listini
     """
     def __init__(self, anagrafica):
         """
@@ -787,19 +787,21 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
         if self.id_articolo_customcombobox.getId() is None:
             obligatoryField(self.dialogTopLevel, self.id_articolo_customcombobox)
+
         listin = findIdFromCombobox(self.id_listino_customcombobox.combobox)
         self.dao.id_listino = listin
         self.dao.id_articolo = self.id_articolo_customcombobox.getId()
+
         if "PromoWear" in Environment.modulesList:
             articolo = Articolo().getRecord(id=self.dao.id_articolo)
             if articleType(articolo) == "father":
-                msg = 'Attenzione! So sta aggiungengo un Articolo Padre, creare le voci listino anche delle varianti?'
+                msg = 'Attenzione! Si sta aggiungengo un Articolo Padre, creare le voci listino anche delle varianti?'
                 dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                            gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
                 response = dialog.run()
                 dialog.destroy()
                 if response == gtk.RESPONSE_YES:
-                    print "CREO LE ENTRY DELLE VARIANTI DI LISTINO"
+                    Environment.pg2log.info("CREO LE ENTRY DELLE VARIANTI DI LISTINO PERCHE' SI STA INSERENDO UN PADRE")
                     for art in articolo.articoliVarianti:
                         daoVariante = ListinoArticolo().select(idListino=listin,
                                                         idArticolo=art.id)
@@ -808,8 +810,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                             daoVariante =daoVariante[0]
                         else:
                             daoVariante = ListinoArticolo()
-                        #else:
-                            #daoVariante = daoVariante[0]
                         if Environment.listinoFissato and self._anagrafica._idListino:
                             Environment.listinoFissato = None
                         daoVariante.id_articolo = art.id
@@ -819,7 +819,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                         daoVariante.ultimo_costo = float(self.ultimo_costo_entry.get_text())
                         daoVariante.prezzo_dettaglio = float(self.prezzo_dettaglio_entry.get_text())
                         daoVariante.prezzo_ingrosso = float(self.prezzo_ingrosso_entry.get_text())
-                        #print "UFFAAAAAAAAAAAAAAA", datetime.datetime.today()
                         daoVariante.data_listino_articolo = datetime.datetime.today()
 
 
@@ -838,7 +837,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                             daoSconto.valore = s["valore"]
                             daoSconto.tipo_sconto = s["tipo"]
                             sconti_ingrosso.append(daoSconto)
-                        #print "cosaseiiiiiiiiiiiii", daoVariante
                         daoVariante.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})
                             #self.articolo_padre = articolo
                             #creaentryvarianti = True
@@ -864,4 +862,5 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             daoSconto.valore = s["valore"]
             daoSconto.tipo_sconto = s["tipo"]
             sconti_ingrosso.append(daoSconto)
+        #TODO :riportarlo alle property , risulta molto più pulito
         self.dao.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})

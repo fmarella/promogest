@@ -370,27 +370,21 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
     def getScadenze(self):
         if  self.anagrafica.dao.scadenze:
             for scadenza in self.anagrafica.dao.scadenze:
+                print scadenza.__dict__
                 if scadenza.numero_scadenza == 0:
-                    self.anagrafica.data_acconto_entry.set_text(dateToString
-                        (scadenza.data) or '')
-                    self.anagrafica.importo_acconto_scadenza_entry.set_text(str
-                        (scadenza.importo or ''))
+                    self.anagrafica.data_acconto_entry.set_text(dateToString(scadenza.data) or '')
+                    self.anagrafica.importo_acconto_scadenza_entry.set_text(str(scadenza.importo or ''))
                 elif scadenza.numero_scadenza == 1:
-                    self.anagrafica.data_prima_scadenza_entry.set_text(dateToString
-                        (scadenza.data) or '')
-                    self.anagrafica.importo_prima_scadenza_entry.set_text(str
-                        (scadenza.importo or ''))
-                    self.anagrafica.primo_pagamento_entry.set_text(str
-                        (scadenza.pagamento or ''))
+                    self.anagrafica.data_prima_scadenza_entry.set_text(dateToString(scadenza.data) or '')
+                    self.anagrafica.importo_prima_scadenza_entry.set_text(str(scadenza.importo or ''))
+                    self.anagrafica.primo_pagamento_entry.set_text(str(scadenza.pagamento or ''))
                     self.anagrafica.data_pagamento_prima_scadenza_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
                 elif scadenza.numero_scadenza == 2:
                     self.anagrafica.data_seconda_scadenza_entry.set_text(dateToString
                         (scadenza.data or ''))
-                    self.anagrafica.importo_seconda_scadenza_entry.set_text(str
-                        (scadenza.importo or ''))
-                    self.anagrafica.secondo_pagamento_entry.set_text(str
-                        (scadenza.pagamento or ''))
+                    self.anagrafica.importo_seconda_scadenza_entry.set_text(str(scadenza.importo or ''))
+                    self.anagrafica.secondo_pagamento_entry.set_text(str(scadenza.pagamento or ''))
                     self.anagrafica.data_pagamento_seconda_scadenza_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
                 elif scadenza.numero_scadenza == 3:

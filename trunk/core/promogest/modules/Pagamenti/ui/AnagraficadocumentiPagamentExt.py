@@ -5,26 +5,6 @@
 
 # Author: Francesco Meloni  <francesco@promotux.it>
 
-#import datetime
-#from AnagraficaComplessa import AnagraficaEdit
-#from AnagraficaDocumentiEdit import AnagraficaDocumentiEdit
-#import gtk
-#from promogest.dao.TestataDocumento import TestataDocumento
-#from promogest.dao.TestataMovimento import TestataMovimento
-#from promogest.dao.RigaDocumento import RigaDocumento
-#from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
-#from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
-#from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
-#from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
-#from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-#from promogest.dao.Articolo import Articolo
-#from promogest.dao.Magazzino import Magazzino
-#from promogest.dao.Operazione import Operazione
-#from utils import *
-#from utilsCombobox import *
-#from promogest.dao.DaoUtils import giacenzaArticolo
-#from GladeWidget import GladeWidget
-#from promogest import Environment
 from PagamentiUtils import Pagamenti
 
 def on_pulisci_scadenza_button_clicked(anaedit,button):

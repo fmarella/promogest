@@ -416,11 +416,14 @@
                   <widget class="GtkScrolledWindow" id="anagrafica_detail_scrolledwindow">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="double_buffered">False</property>
                     <property name="hscrollbar_policy">automatic</property>
                     <property name="vscrollbar_policy">automatic</property>
+                    <property name="shadow_type">etched-in</property>
                     <child>
                       <widget class="Custom" id="anagrafica_complessa_html">
                         <property name="visible">True</property>
+                        <property name="double_buffered">False</property>
                         <property name="creation_function">createGtkHtml2Widget</property>
                       </widget>
                     </child>
