@@ -131,7 +131,7 @@ def progress_timeout(pbobj):
 
 class SincroDB(GladeWidget):
     """ Finestra di gestione esdportazione variazioni Database """
-    def __init__(self,conf=None, batch=True, schema=None, fileconf=None):
+    def __init__(self,conf=None, batch=False, schema=None, fileconf=None):
         GladeWidget.__init__(self, 'sincro_dialog',
                         fileName='sincro_dialog.glade')
         self.placeWindow(self.getTopLevel())
