@@ -16,6 +16,7 @@
           <widget class="GtkVBox" id="anagrafica_schede_ordinazione_filter_vbox">
             <property name="visible">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+            <property name="orientation">vertical</property>
             <child>
               <widget class="GtkTable" id="anagrafica_schede_ordinazioni_filter_table">
                 <property name="visible">True</property>
@@ -496,6 +497,7 @@
           <widget class="GtkVBox" id="anagrafica_schede_ordinazioni_detail_vbox">
             <property name="visible">True</property>
             <property name="border_width">10</property>
+            <property name="orientation">vertical</property>
             <child>
               <widget class="GtkFrame" id="frame1">
                 <property name="visible">True</property>
@@ -511,6 +513,7 @@
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="border_width">2</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <widget class="GtkLabel" id="label21">
                             <property name="visible">True</property>
@@ -573,6 +576,7 @@
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="border_width">2</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <widget class="GtkLabel" id="label22">
                             <property name="visible">True</property>
@@ -631,6 +635,7 @@
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="border_width">2</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <widget class="GtkLabel" id="label35">
                             <property name="visible">True</property>
@@ -689,6 +694,7 @@
                       <widget class="GtkVBox" id="vbox3">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <widget class="GtkHBox" id="hbox3">
                             <property name="visible">True</property>
@@ -971,6 +977,7 @@
                   <widget class="GtkVBox" id="vbox35">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">5</property>
                     <child>
                       <widget class="GtkFrame" id="frame17">
@@ -988,6 +995,7 @@
                               <widget class="GtkVBox" id="vbox36">
                                 <property name="visible">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                <property name="orientation">vertical</property>
                                 <property name="spacing">5</property>
                                 <property name="homogeneous">True</property>
                                 <child>
@@ -1000,6 +1008,7 @@
                                       <widget class="GtkVBox" id="vbox37">
                                         <property name="visible">True</property>
                                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                        <property name="orientation">vertical</property>
                                         <property name="spacing">5</property>
                                         <child>
                                           <widget class="GtkLabel" id="label103">
@@ -1033,6 +1042,7 @@
                                       <widget class="GtkVBox" id="vbox5">
                                         <property name="visible">True</property>
                                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                        <property name="orientation">vertical</property>
                                         <property name="spacing">5</property>
                                         <child>
                                           <widget class="GtkLabel" id="label53">
@@ -1066,6 +1076,7 @@
                                       <widget class="GtkVBox" id="vbox38">
                                         <property name="visible">True</property>
                                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                        <property name="orientation">vertical</property>
                                         <property name="spacing">5</property>
                                         <child>
                                           <widget class="GtkLabel" id="label104">
@@ -1320,6 +1331,7 @@
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="border_width">5</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">5</property>
                         <child>
                           <widget class="GtkHBox" id="hbox50">
@@ -1435,6 +1447,7 @@
                   <widget class="GtkVBox" id="vbox40">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">2</property>
                     <child>
                       <widget class="GtkHBox" id="hbox52">
@@ -1507,6 +1520,7 @@
                                       <widget class="GtkVBox" id="vbox42">
                                         <property name="visible">True</property>
                                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                        <property name="orientation">vertical</property>
                                         <child>
                                           <widget class="GtkLabel" id="label116">
                                             <property name="visible">True</property>
@@ -1567,6 +1581,7 @@
                                       <widget class="GtkVBox" id="vbox41">
                                         <property name="visible">True</property>
                                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                        <property name="orientation">vertical</property>
                                         <child>
                                           <widget class="GtkLabel" id="label115">
                                             <property name="visible">True</property>
@@ -1706,6 +1721,7 @@
                                     <property name="visible">True</property>
                                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                     <property name="border_width">5</property>
+                                    <property name="orientation">vertical</property>
                                     <property name="spacing">2</property>
                                     <child>
                                       <widget class="GtkTable" id="table10">
@@ -1820,6 +1836,7 @@
                                       <widget class="GtkVBox" id="vbox44">
                                         <property name="visible">True</property>
                                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                        <property name="orientation">vertical</property>
                                         <child>
                                           <widget class="GtkLabel" id="label123">
                                             <property name="visible">True</property>
@@ -1891,6 +1908,7 @@
                                 <property name="visible">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <property name="border_width">5</property>
+                                <property name="orientation">vertical</property>
                                 <property name="spacing">2</property>
                                 <child>
                                   <widget class="GtkHBox" id="hbox55">
@@ -1901,6 +1919,7 @@
                                       <widget class="GtkVBox" id="vbox46">
                                         <property name="visible">True</property>
                                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                        <property name="orientation">vertical</property>
                                         <property name="spacing">3</property>
                                         <child>
                                           <widget class="GtkLabel" id="label125">
@@ -1935,6 +1954,7 @@
                                       <widget class="GtkVBox" id="vbox47">
                                         <property name="visible">True</property>
                                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                        <property name="orientation">vertical</property>
                                         <property name="spacing">3</property>
                                         <child>
                                           <widget class="GtkLabel" id="label126">
@@ -1969,6 +1989,7 @@
                                       <widget class="GtkVBox" id="vbox48">
                                         <property name="visible">True</property>
                                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                        <property name="orientation">vertical</property>
                                         <property name="spacing">3</property>
                                         <child>
                                           <widget class="GtkLabel" id="label127">
@@ -2012,6 +2033,7 @@
                                   <widget class="GtkVBox" id="vbox49">
                                     <property name="visible">True</property>
                                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                    <property name="orientation">vertical</property>
                                     <property name="spacing">3</property>
                                     <child>
                                       <widget class="GtkLabel" id="label128">
@@ -2390,6 +2412,7 @@
                   <widget class="GtkVBox" id="vbox50">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">1</property>
                     <child>
                       <widget class="GtkHBox" id="hbox4">
@@ -2412,6 +2435,7 @@
                                     <property name="visible">True</property>
                                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                     <property name="border_width">5</property>
+                                    <property name="orientation">vertical</property>
                                     <property name="spacing">3</property>
                                     <child>
                                       <widget class="GtkHBox" id="hbox5">

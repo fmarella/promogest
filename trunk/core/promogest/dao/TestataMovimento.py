@@ -142,7 +142,7 @@ class TestataMovimento(Dao):
     def persist(self):
         """cancellazione righe associate alla testata
             conn.execStoredProcedure('RigheMovimentoDel',(self.id, ))"""
-        Environment.pg2Log.debug("DENTRO IL TESTATA MOVIMENTO")
+        pg2Log.debug("DENTRO IL TESTATA MOVIMENTO")
         if not self.numero:
             valori = numeroRegistroGet(tipo="Movimento", date=self.data_movimento)
             self.numero = valori[0]
@@ -179,12 +179,12 @@ class TestataMovimento(Dao):
                         if fors:
                             if fors[0].data_prezzo == self.data_movimento:
                                 # ha trovato una fornitura con stessa data: aggiorno questa fornitura
-                                Environment.pg2Log.info("TROVATO UNA FORNITURA CON STESSA DATA: AGGIORNO QUESTA FORNITURA")
+                                pg2Log.info("TROVATO UNA FORNITURA CON STESSA DATA: AGGIORNO QUESTA FORNITURA")
                                 daoFornitura = Fornitura().getRecord(id=fors[0].id)
                             else:
                                 """creo una nuova fornitura con data_prezzo pari alla data del movimento
                                     copio alcuni dati dalla fornitura piu' prossima"""
-                                Environment.pg2Log.info("CREO UNA NUOVA FORNITURA CON DATA_PREZZO PARI ALLA DATA DEL MOVIMENTO COPIO ALCUNI DATI DALLA FORNITURA PIU' PROSSIMA")
+                                pg2Log.info("CREO UNA NUOVA FORNITURA CON DATA_PREZZO PARI ALLA DATA DEL MOVIMENTO COPIO ALCUNI DATI DALLA FORNITURA PIU' PROSSIMA")
                                 daoFornitura = Fornitura()
                                 daoFornitura.scorta_minima = fors[0].scorta_minima
                                 daoFornitura.id_multiplo = fors[0].id_multiplo
@@ -192,7 +192,7 @@ class TestataMovimento(Dao):
                                 daoFornitura.fornitore_preferenziale = fors[0].fornitore_preferenziale
                         else:
                             # nessuna fornitura utilizzabile, ne creo una nuova (alcuni dati mancheranno)
-                            Environment.pg2Log.info("NESSUNA FORNITURA UTILIZZABILE, NE CREO UNA NUOVA (ALCUNI DATI MANCHERANNO)")
+                            pg2Log.info("NESSUNA FORNITURA UTILIZZABILE, NE CREO UNA NUOVA (ALCUNI DATI MANCHERANNO)")
                             daoFornitura = Fornitura()
 
                         daoFornitura.id_fornitore = self.id_fornitore
