@@ -9,6 +9,7 @@
 import locale
 import gtk, gobject
 import hashlib
+import zipfile
 import os
 from  subprocess import *
 import threading, os, signal
@@ -18,7 +19,7 @@ from ElencoMagazzini import ElencoMagazzini
 from ElencoListini import ElencoListini
 from VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
-from utils import hasAction,fenceDialog
+from utils import hasAction,fenceDialog, aggiorna
 from utilsCombobox import *
 from ParametriFrame import ParametriFrame
 from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
@@ -458,7 +459,7 @@ class Main(GladeWidget):
         licenseText = ''
         textBuffer = creditsDialog.svn_info_textview.get_buffer()
         textBuffer.set_text(licenseText)
-        command = 'svn info ~/pg2'
+        command = ' info ~/pg2'
         p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
         (stdin, stdouterr) = (p.stdin, p.stdout)
         for line in stdouterr.readlines():
@@ -492,92 +493,49 @@ class Main(GladeWidget):
             licenzaDialog.licenza_dialog.destroy()
 
     def on_aggiorna_activate(self, widget):
-        svndialog = GladeWidget('svnupdate_dialog', callbacks_proxy=self)
-        svndialog.getTopLevel().set_transient_for(self.getTopLevel())
-        encoding = locale.getlocale()[1]
-        utf8conv = lambda x : unicode(x, encoding).encode('utf8')
-        licenseText = ''
-        textBuffer = svndialog.svn_textview.get_buffer()
-        textBuffer.set_text(licenseText)
-        svndialog.svn_textview.set_buffer(textBuffer)
-        svndialog.getTopLevel().show_all()
-        response = svndialog.svnupdate_dialog.run()
-        if response == gtk.RESPONSE_OK:
-            try:
-                import pysvn
-                client = pysvn.Client()
-                client.exception_style = 0
-                try:
-                    client.update( '.' )
-                    msg = "TUTTO OK AGGIORNAMENTO EFFETTUATO\n RIAVVIARE IL PROMOGEST"
-                except pysvn.ClientError, e:
-                    # convert to a string
-                    msg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
-            except:
-                command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
-                p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
-                (stdin, stdouterr) = (p.stdin, p.stdout)
-                #stdin, stdouterr = os.popen4(command)
-                for line in stdouterr.readlines():
-                    textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
-                msg = """ Se è apparsa la dicitura "Estratta Revisione XXXX
-    l'aggiornamento è riuscito, nel caso di messaggio fosse differente
-    potete contattare l'assistenza tramite il numero verde 80034561
-    o tramite email all'indirizzo info@promotux.it
-
-            Aggiornamento de|l Promogest2 terminato !!!
-            Riavviare l'applicazione per rendere le modifiche effettive
-                        """
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO,
-                                   gtk.BUTTONS_OK,
-                                   msg)
-            dialog.run()
-            dialog.destroy()
-            svndialog.svnupdate_dialog.destroy()
+        aggiorna(self)
 
     def on_Back_up_Database_activate(self, widget):
-        import zipfile
-        bkdbdialog = GladeWidget('svnupdate_dialog', callbacks_proxy=self)
-        bkdbdialog.getTopLevel().set_transient_for(self.getTopLevel())
-        encoding = locale.getlocale()[1]
-        utf8conv = lambda x : unicode(x, encoding).encode('utf8')
-        licenseText = 'Il "dump" del database verrà salvato nella home utente'
-        textBuffer = bkdbdialog.svn_textview.get_buffer()
-        textBuffer.set_text(licenseText)
-        bkdbdialog.svn_textview.set_buffer(textBuffer)
-        bkdbdialog.getTopLevel().show_all()
-        response = bkdbdialog.svnupdate_dialog.run()
-        if response == gtk.RESPONSE_OK:
-            nameDump= "promoGest2_dump_"+self.aziendaStr+"_"+datetime.datetime.now().strftime('%d_%m_%Y_%H_%M')
-            command = 'pg_dump -h %s -p %s -U %s %s > ~/%s' %(Environment.host,
-                                                            Environment.port,
-                                                            Environment.user,
-                                                            Environment.database,
-                                                            nameDump)
-            p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
-            (stdin, stdouterr) = (p.stdin, p.stdout)
-            #zfilename = nameDump +".zip"
-            #zout = zipfile.ZipFile(zfilename, "w")
-            #zout.write(nameDump, zipfile.ZIP_DEFLATED)
-            #zout.close()
-            #stdin, stdouterr = os.popen4(command)
-            for line in stdouterr.readlines():
-                textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
-            msg = """Se nella finestra NON è apparso alcun messaggio d'errore
-il dump è stato effettuato correttamente.
+        """ Si prepara un file zip con il dump del DB """
 
-Il file si chiama %s .
-                    """ %(nameDump)
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO,
-                                   gtk.BUTTONS_OK,
-                                   msg)
-            dialog.run()
-            dialog.destroy()
-            bkdbdialog.svnupdate_dialog.destroy()
+        st= Environment.startdir()
+        nameDump = "promoGest2_dump_"+self.aziendaStr+"_"+datetime.datetime.now().strftime('%d_%m_%Y_%H_%M')
+        msgg = """Il "dump" del database verrà salvato in
+
+%s
+ed avrà il nome
+
+%s.zip
+
+ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDump)
+        dialogg = gtk.MessageDialog(self.getTopLevel(),
+                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                gtk.MESSAGE_INFO,
+                                gtk.BUTTONS_OK,
+                                msgg)
+        dialogg.run()
+        dialogg.destroy()
+        #if response == gtk.RESPONSE_OK:
+        st= Environment.startdir()
+
+        stname = st+nameDump
+        host = "-h"+Environment.host
+        port= "-p"+Environment.port
+        user= "-U"+Environment.user
+        filename= "-f"+stname
+        compres= "-Z 7"
+        retcode = call(["pg_dump",host,port,user,compres, filename,Environment.database])
+
+        Environment.pg2log.info("STO EFFETTUANDO UN BACKUP DEL FILE %s" %filename)
+        if not retcode:
+            zfilename = nameDump +".zip"
+            zout = zipfile.ZipFile(str(stname) +".zip", "w")
+            zout.write(stname,zfilename,zipfile.ZIP_DEFLATED)
+            zout.close()
+            Environment.pg2log.info("DUMP EFFETTUATO CON SUCCESSO")
+            os.remove(stname)
+        else:
+            Environment.pg2log.info("ATTENZIONE DUMP NON RIUSCITO")
 
     def on_seriale_menu_activate(self, widget):
         try:

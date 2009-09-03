@@ -107,7 +107,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
 
 def leggiCliente(id):
     """
-    Legge un Dao restituisce un dizionario della tabella cliente con alcune 
+    Legge un Dao restituisce un dizionario della tabella cliente con alcune
     property risolte
     """
     from  promogest.dao.Cliente import Cliente
@@ -313,15 +313,15 @@ def leggiMagazzino(id):
             "email": _email}
 
 def leggiListino(idListino=None, idArticolo=None):
-    """ 
-    Restituisce un dizionario con le informazioni sul listino letto 
+    """
+    Restituisce un dizionario con le informazioni sul listino letto
     """
     from promogest.dao.Listino import Listino
     from promogest.dao.ListinoArticolo import ListinoArticolo
     from promogest.dao.ListinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalente
 
     liss = Listino().select(batchSize=None)
-    # select dei listini 
+    # select dei listini
     for l in liss:
         if l.listino_attuale ==False:
             l.listino_attuale = True
@@ -347,7 +347,7 @@ def leggiListino(idListino=None, idArticolo=None):
             if _complesso:
                 _sottoListiniID = daoListino.sottoListiniID
                 listinoDict["sottoListiniID"] = _sottoListiniID
-        
+
             if idArticolo:       #abbiamo anche un id Articolo daoListinoArticolo = None
                 if _complesso:  #se il listino è complesso gestisco il suo listino articolo
                     daoListinoArticolo1 = ListinoArticolo().select(idListino=_sottoListiniID,
@@ -381,7 +381,7 @@ def leggiListino(idListino=None, idArticolo=None):
                     else:
                         daoListinoArticolo = None
 
-                else:  #listino normale 
+                else:  #listino normale
                     daoListinoArticolo1 = ListinoArticolo().select(idListino=idListino,
                                                             idArticolo = idArticolo,
                                                             listinoAttuale = True,
@@ -419,8 +419,8 @@ def leggiListino(idListino=None, idArticolo=None):
     return listinoDict
 
 def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=False):
-    """ 
-    Restituisce un dizionario con le informazioni sulla fornitura letta 
+    """
+    Restituisce un dizionario con le informazioni sulla fornitura letta
     """
     from promogest.dao.Fornitura import Fornitura
     from promogest.dao.ScontoFornitura import ScontoFornitura
@@ -1998,8 +1998,8 @@ def multilinedirtywork( param):
 
 
 def on_status_activate(status, windowGroup, visible, blink, screens):
-    """ 
-    on press systray icon widget hide or show 
+    """
+    on press systray icon widget hide or show
     """
     if visible == 1:
         visible = 0
@@ -2153,7 +2153,7 @@ def omogeneousCode(section=None, string = None):
         return string
 
 def hasAction(actionID=None):
-    """ 
+    """
     La moduòlarizzazione richiede che
     quando il modulo non è presente o non è attivato
     la risposta sia sempre true perchè essendoci solo
@@ -2181,9 +2181,9 @@ def hasAction(actionID=None):
         return True
 
 def numeroRegistroGet(tipo=None, date=None):
-    """ 
+    """
     Attenzione, funzione improvvisata, controllare meglio ed
-    aggiungere i check sui diversi tipi di rotazione 
+    aggiungere i check sui diversi tipi di rotazione
     """
     from promogest.dao.TestataMovimento import TestataMovimento
     from promogest.dao.TestataDocumento import TestataDocumento
@@ -2314,19 +2314,19 @@ def checkCodiceDuplicato(codice=None,id=None,tipo=None):
         return True
 
 def mN(value,decimal=None):
-    """ 
+    """
     funzione importante perchè normalizza le valute, mettendo i decimali così
-    come settato nel configure e restituisce un arrotondamento corretto 
+    come settato nel configure e restituisce un arrotondamento corretto
     """
     if not value or value =='':
         return Decimal(0)
     precisione = decimal or int(Environment.conf.decimals)
-    decimals = Decimal(10) ** -(precisione) 
+    decimals = Decimal(10) ** -(precisione)
     newvalue= Decimal(str(value).strip()).quantize(Decimal(decimals), rounding=ROUND_HALF_UP)
     return newvalue
 
 def generateRandomBarCode(ean=13):
-    """ 
+    """
     funzione di generazione codice ean13 random
     utile per quei prodotti che non hanno un codice
     chiaramente solo per uso interno
@@ -2336,7 +2336,7 @@ def generateRandomBarCode(ean=13):
     codice = ''
     def create(ean):
         """
-        crea un codice di tipo ean 
+        crea un codice di tipo ean
         @param ean: tipo di codice ( al momento gestisce  ean8 ed ean13)
         @type ean: int ( 8 o 13 )
         """
@@ -2467,3 +2467,98 @@ def fenceDialog():
 def tempo():
     print datetime.datetime.now()
     return ""
+
+def aggiorna(anag):
+
+    import pysvn
+
+    client = pysvn.Client()
+    client.exception_style = 0
+    rev_locale= client.info(".").revision.number
+    rev_remota= pysvn.Client().info2("http://svn.promotux.it/svn/promogest2/trunk/", recurse=False)[0][1]["rev"].number
+    if rev_remota > rev_locale:
+        msg = """ ATTENZIONE!!
+Ci sono degli aggiornamenti disponibili.
+La versione attuale è %s mentre quella remota è %s
+
+Volete aggiornare adesso? """ %(str(rev_locale), str(rev_remota))
+        dialog = gtk.MessageDialog(anag.getTopLevel(),
+                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+        response = dialog.run()
+        dialog.destroy()
+        if response == gtk.RESPONSE_YES:
+            try:
+                client.update( '.' )
+                msgg = "TUTTO OK AGGIORNAMENTO EFFETTUATO\n\n RIAVVIARE IL PROMOGEST"
+                Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO A BUON FINE")
+            except pysvn.ClientError, e:
+                # convert to a string
+                msgg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
+                Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO MALE")
+            dialogg = gtk.MessageDialog(anag.getTopLevel(),
+                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                gtk.MESSAGE_INFO,
+                                gtk.BUTTONS_OK,
+                                msgg)
+            dialogg.run()
+            dialogg.destroy()
+    else:
+        msggg = "Il PromoGest è già aggiornato all'ultima versione ( %s) \n Riprova in un altro momento\n\nGrazie" %(str(rev_locale))
+        dialoggg = gtk.MessageDialog(anag.getTopLevel(),
+                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                            gtk.MESSAGE_INFO,
+                            gtk.BUTTONS_OK,
+                            msggg)
+        dialoggg.run()
+        dialoggg.destroy()
+
+    #svndialog = GladeWidget('svnupdate_dialog', callbacks_proxy=self)
+    #svndialog.getTopLevel().set_transient_for(self.getTopLevel())
+    #encoding = locale.getlocale()[1]
+    #utf8conv = lambda x : unicode(x, encoding).encode('utf8')
+    #licenseText = ''
+    #textBuffer = svndialog.svn_textview.get_buffer()
+    #textBuffer.set_text(licenseText)
+    #svndialog.svn_textview.set_buffer(textBuffer)
+    #svndialog.getTopLevel().show_all()
+    #response = svndialog.svnupdate_dialog.run()
+    #if response == gtk.RESPONSE_OK:
+        #try:
+
+        #client = pysvn.Client()
+        #client.exception_style = 0
+        #rev_locale= client.info(".").revision.number
+        #rev_remota= pysvn.Client().info2("http://svn.promotux.it/svn/promogest2/trunk/", recurse=False)[0][1]["rev"].number
+        #textBuffer.insert(textBuffer.get_end_iter(), utf8conv("La revisione remota e':"+str(rev_remota)+"\n\n"))
+        #textBuffer.insert(textBuffer.get_end_iter(), utf8conv("La revisione locale e':"+str(rev_locale)+"\n\n"))
+        ##try:
+            #client.update( '.' )
+            #msg = "TUTTO OK AGGIORNAMENTO EFFETTUATO\n RIAVVIARE IL PROMOGEST"
+            #Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO A BUON FINE")
+        #except pysvn.ClientError, e:
+            ## convert to a string
+            #msg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
+            #Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO MALE")
+        #except:
+            #command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
+            #p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+            #(stdin, stdouterr) = (p.stdin, p.stdout)
+            #for line in stdouterr.readlines():
+                #textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
+            #msg = """ Se è apparsa la dicitura "Estratta Revisione XXXX
+#l'aggiornamento è riuscito, nel caso di messaggio fosse differente
+#potete contattare l'assistenza tramite il numero verde 80034561
+#o tramite email all'indirizzo info@promotux.it
+
+    #Aggiornamento de|l Promogest2 terminato !!!
+    #Riavviare l'applicazione per rendere le modifiche effettive
+                #"""
+        #dialog = gtk.MessageDialog(self.getTopLevel(),
+                            #gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                            #gtk.MESSAGE_INFO,
+                            #gtk.BUTTONS_OK,
+                            #msg)
+        #dialog.run()
+        #dialog.destroy()
+        #svndialog.svnupdate_dialog.destroy()
