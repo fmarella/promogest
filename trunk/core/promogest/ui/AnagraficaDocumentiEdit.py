@@ -293,6 +293,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if idListino is not None and idArticolo is not None:
             listino = leggiListino(idListino, idArticolo)
             self._righe[0]["listino"] = listino["denominazione"]
+            #print "TRYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY", self._fonteValore
             if (self._fonteValore == "vendita_iva"):
                     prezzoLordo = listino["prezzoDettaglio"]
                     sconti = listino["scontiDettaglio"]

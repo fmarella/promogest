@@ -433,7 +433,7 @@ def mostraArticoloPart(anaedit, id, art=None):
                 anaedit.quantita_entry.set_text(anaedit._righe[0]["quantita"])
                 if anaedit._righe[0]["quantita"]:
                     anaedit.calcolaTotaleRiga()
-            elif ((anaedit._fonteValore == "vendita_iva") or (anaedit._fonteValore == "vendita_senza_iva")):
+            elif anaedit._fonteValore == "vendita_iva" :
 
                 costoLordo = str(articolo['valori']["prezzoDettaglio"])
                 if costoLordo:
@@ -451,6 +451,23 @@ def mostraArticoloPart(anaedit, id, art=None):
                     anaedit.calcolaTotaleRiga()
                 anaedit.on_show_totali_riga()
                 #anaedit.refresh_combobox_listini()
+            elif anaedit._fonteValore == "vendita_senza_iva":
+                costoLordo = str(articolo['valori']["prezzoIngrosso"])
+                if costoLordo:
+                    costoLordo = costoLordo.replace(',','.')
+                anaedit._righe[0]["prezzoLordo"] = mN(costoLordo)
+                anaedit.prezzo_lordo_entry.set_text(str(anaedit._righe[0]["prezzoLordo"]))
+                anaedit._righe[0]["sconti"] = articolo['valori']["scontiIngrosso"]
+                anaedit._righe[0]["applicazioneSconti"] = articolo['valori']["applicazioneScontiIngrosso"]
+                anaedit.sconti_widget.setValues(anaedit._righe[0]["sconti"], anaedit._righe[0]["applicazioneSconti"], False)
+                quantita =articolo["quantita"]
+                quantita = quantita.replace(',','.')
+                anaedit._righe[0]["quantita"] = quantita
+                anaedit.quantita_entry.set_text(anaedit._righe[0]["quantita"])
+                if anaedit._righe[0]["quantita"]:
+                    anaedit.calcolaTotaleRiga()
+                anaedit.on_show_totali_riga()
+
             anaedit.on_confirm_row_button_clicked(anaedit.dialogTopLevel)
             return
         #Eccoci all'articolo normale
