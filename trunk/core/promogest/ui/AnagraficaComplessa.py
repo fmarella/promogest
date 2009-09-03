@@ -1262,7 +1262,7 @@ class AnagraficaReport(object):
                 azidict[k] = b
                 del azidict[a]
             param[0].update(azidict)
-        if not Environement.new_print_enjine:
+        if not Environment.new_print_enjine:
             return self._slaTemplateObj.serialize(param, self.objects)
         else:
             return Sla2Pdf(slaFileName=self._slaTemplate,
