@@ -74,8 +74,8 @@ class Anagrafica(GladeWidget):
         self._selectedDao = None
         # Initial (in)sensitive widgets
         textStatusBar = "     *****   PromoGest2 - 800 034561 - www.promotux.it - info@promotux.it  *****     "
-        context_id =  self.anagrafica_complessa_statusbar.get_context_id("anagrafica_complessa_windows")
-        self.anagrafica_complessa_statusbar.push(context_id,textStatusBar)
+        context_id =  self.pg2_statusbar.get_context_id("anagrafica_complessa_windows")
+        self.pg2_statusbar.push(context_id,textStatusBar)
         self.record_delete_button.set_sensitive(False)
         self.record_delete_menu.set_sensitive(False)
         self.record_edit_button.set_sensitive(False)

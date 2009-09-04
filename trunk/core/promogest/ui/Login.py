@@ -34,7 +34,7 @@ from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from promogest.dao.AppLog import AppLog
 from GtkExceptionHandler import GtkExceptionHandler
-from utils import hasAction,on_status_activate, aggiorna
+from utils import hasAction,on_status_activate, checkAggiorna, aggiorna
 from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
 from sqlalchemy import *
@@ -133,7 +133,7 @@ class Login(GladeApp):
         self.shop =shop
         GladeApp.__init__(self, 'login_window')
         Environment.exceptionHandler = GtkExceptionHandler()
-
+        checkAggiorna()
         self.draw()
         self.getTopLevel().show_all()
 

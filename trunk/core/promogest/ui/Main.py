@@ -33,6 +33,16 @@ class Main(GladeWidget):
         GladeWidget.__init__(self, 'main_window')
         self.main_window.set_title('*** PromoGest2 *** Azienda : '+aziendaStr+'  *** Utente : '+Environment.params['usernameLoggedList'][1]+' ***')
         self.aziendaStr = aziendaStr
+
+        textStatusBar = "    PromoGest2 - 800 034561 - www.promotux.it - info@promotux.it     "
+        context_id =  self.pg2_statusbar.get_context_id("main_window")
+        self.pg2_statusbar.push(context_id,textStatusBar)
+        if Environment.rev_locale < Environment.rev_remota:
+            self.active_img.set_from_file("gui/active_off.png")
+        else:
+            self.active_img.set_from_file("gui/active_on.png")
+
+
         Login.windowGroup.append(self.getTopLevel())
         self.anagrafiche_modules = anagrafiche_modules
         self.parametri_modules = parametri_modules

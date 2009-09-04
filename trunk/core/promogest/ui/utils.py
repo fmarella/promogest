@@ -19,6 +19,7 @@ from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.Operazione import Operazione
 from promogest.dao.Azienda import Azienda
 import string, re
+import pysvn
 import xml.etree.cElementTree as ElementTree
 from xml.etree.cElementTree import *
 import Login
@@ -2468,97 +2469,78 @@ def tempo():
     print datetime.datetime.now()
     return ""
 
-def aggiorna(anag):
 
-    import pysvn
+def checkAggiorna():
+
+    def agg():
+        client = pysvn.Client()
+        if not Environment.rev_locale:
+            Environment.rev_locale= client.info(".").revision.number
+        if not Environment.rev_remota:
+            Environment.rev_remota= pysvn.Client().info2("http://svn.promotux.it/svn/promogest2/trunk/", recurse=False)[0][1]["rev"].number
+    #if Environment.rev_remota > Environment.rev_locale:
+        #return (True, rev_locale, rev_remota)
+    #else:
+        #return (False,rev_locale, rev_remota)
+    gobject.idle_add(agg)
+
+
+def aggiorna(anag):
 
     client = pysvn.Client()
     client.exception_style = 0
-    rev_locale= client.info(".").revision.number
-    rev_remota= pysvn.Client().info2("http://svn.promotux.it/svn/promogest2/trunk/", recurse=False)[0][1]["rev"].number
-    if rev_remota > rev_locale:
-        msg = """ ATTENZIONE!!
-Ci sono degli aggiornamenti disponibili.
-La versione attuale è %s mentre quella remota è %s
+    #rev_locale= client.info(".").revision.number
+    #rev_remota= pysvn.Client().info2("http://svn.promotux.it/svn/promogest2/trunk/", recurse=False)[0][1]["rev"].number
+    if Environment.rev_locale and Environment.rev_remota:
+        rl = Environment.rev_locale
+        rr = Environment.rev_remota
+        if rl < rr:
+            msg = """ ATTENZIONE!!
+    Ci sono degli aggiornamenti disponibili.
+    La versione attuale è %s mentre quella remota è %s
 
-Volete aggiornare adesso? """ %(str(rev_locale), str(rev_remota))
-        dialog = gtk.MessageDialog(anag.getTopLevel(),
-                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-        response = dialog.run()
-        dialog.destroy()
-        if response == gtk.RESPONSE_YES:
-            try:
-                client.update( '.' )
-                msgg = "TUTTO OK AGGIORNAMENTO EFFETTUATO\n\n RIAVVIARE IL PROMOGEST"
-                Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO A BUON FINE")
-            except pysvn.ClientError, e:
-                # convert to a string
-                msgg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
-                Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO MALE")
-            dialogg = gtk.MessageDialog(anag.getTopLevel(),
+    Volete aggiornare adesso? """ %(str(rl), str(rr))
+            dialog = gtk.MessageDialog(anag.getTopLevel(),
+                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                    gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+            response = dialog.run()
+            dialog.destroy()
+            if response == gtk.RESPONSE_YES:
+                try:
+                    client.update( '.' )
+                    msgg = "TUTTO OK AGGIORNAMENTO EFFETTUATO\n\n RIAVVIARE IL PROMOGEST"
+                    Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO A BUON FINE")
+                    try:
+                        anag.active_img.set_from_file("gui/active_on.png")
+                    except:
+                        pass
+                except pysvn.ClientError, e:
+                    # convert to a string
+                    msgg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
+                    Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO MALE")
+                dialogg = gtk.MessageDialog(anag.getTopLevel(),
+                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                    gtk.MESSAGE_INFO,
+                                    gtk.BUTTONS_OK,
+                                    msgg)
+                dialogg.run()
+                dialogg.destroy()
+        else:
+            msggg = "Il PromoGest è già aggiornato all'ultima versione ( %s) \n Riprova in un altro momento\n\nGrazie" %(str(rl))
+            dialoggg = gtk.MessageDialog(anag.getTopLevel(),
                                 gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                 gtk.MESSAGE_INFO,
                                 gtk.BUTTONS_OK,
-                                msgg)
-            dialogg.run()
-            dialogg.destroy()
+                                msggg)
+            dialoggg.run()
+            dialoggg.destroy()
     else:
-        msggg = "Il PromoGest è già aggiornato all'ultima versione ( %s) \n Riprova in un altro momento\n\nGrazie" %(str(rev_locale))
-        dialoggg = gtk.MessageDialog(anag.getTopLevel(),
-                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                            gtk.MESSAGE_INFO,
-                            gtk.BUTTONS_OK,
-                            msggg)
-        dialoggg.run()
-        dialoggg.destroy()
-
-    #svndialog = GladeWidget('svnupdate_dialog', callbacks_proxy=self)
-    #svndialog.getTopLevel().set_transient_for(self.getTopLevel())
-    #encoding = locale.getlocale()[1]
-    #utf8conv = lambda x : unicode(x, encoding).encode('utf8')
-    #licenseText = ''
-    #textBuffer = svndialog.svn_textview.get_buffer()
-    #textBuffer.set_text(licenseText)
-    #svndialog.svn_textview.set_buffer(textBuffer)
-    #svndialog.getTopLevel().show_all()
-    #response = svndialog.svnupdate_dialog.run()
-    #if response == gtk.RESPONSE_OK:
-        #try:
-
-        #client = pysvn.Client()
-        #client.exception_style = 0
-        #rev_locale= client.info(".").revision.number
-        #rev_remota= pysvn.Client().info2("http://svn.promotux.it/svn/promogest2/trunk/", recurse=False)[0][1]["rev"].number
-        #textBuffer.insert(textBuffer.get_end_iter(), utf8conv("La revisione remota e':"+str(rev_remota)+"\n\n"))
-        #textBuffer.insert(textBuffer.get_end_iter(), utf8conv("La revisione locale e':"+str(rev_locale)+"\n\n"))
-        ##try:
-            #client.update( '.' )
-            #msg = "TUTTO OK AGGIORNAMENTO EFFETTUATO\n RIAVVIARE IL PROMOGEST"
-            #Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO A BUON FINE")
-        #except pysvn.ClientError, e:
-            ## convert to a string
-            #msg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
-            #Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO MALE")
-        #except:
-            #command = 'svn co http://svn.promotux.it/svn/promogest2/trunk/ ~/pg2'
-            #p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT)
-            #(stdin, stdouterr) = (p.stdin, p.stdout)
-            #for line in stdouterr.readlines():
-                #textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
-            #msg = """ Se è apparsa la dicitura "Estratta Revisione XXXX
-#l'aggiornamento è riuscito, nel caso di messaggio fosse differente
-#potete contattare l'assistenza tramite il numero verde 80034561
-#o tramite email all'indirizzo info@promotux.it
-
-    #Aggiornamento de|l Promogest2 terminato !!!
-    #Riavviare l'applicazione per rendere le modifiche effettive
-                #"""
-        #dialog = gtk.MessageDialog(self.getTopLevel(),
-                            #gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                            #gtk.MESSAGE_INFO,
-                            #gtk.BUTTONS_OK,
-                            #msg)
-        #dialog.run()
-        #dialog.destroy()
-        #svndialog.svnupdate_dialog.destroy()
+        msgg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
+        Environment.pg2log.info("SISTEMA  NON IN LINEA PER AGGIORNAMENTO")
+        dialogg = gtk.MessageDialog(anag.getTopLevel(),
+                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                        gtk.MESSAGE_INFO,
+                        gtk.BUTTONS_OK,
+                        msgg)
+        dialogg.run()
+        dialogg.destroy()

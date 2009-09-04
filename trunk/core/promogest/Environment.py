@@ -61,6 +61,8 @@ modulesList = []
 listinoFissato = None
 new_print_enjine=False
 shop = False
+rev_locale = None
+rev_remota = None
 
 def getConfigureDir(company='__default__'):
     """ Tests if another configuration folder was indicated """
