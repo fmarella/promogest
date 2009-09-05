@@ -161,15 +161,6 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkToolbar" id="main_toolbar">
-            <property name="visible">True</property>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
           <widget class="GtkHBox" id="main_hbox">
             <property name="visible">True</property>
             <property name="border_width">6</property>
@@ -185,6 +176,9 @@
                   <widget class="GtkIconView" id="main_iconview">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="row_spacing">2</property>
+                    <property name="column_spacing">2</property>
+                    <property name="margin">2</property>
                   </widget>
                 </child>
               </widget>
@@ -251,6 +245,9 @@
                   <widget class="GtkIconView" id="main_iconview_right">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="row_spacing">2</property>
+                    <property name="column_spacing">2</property>
+                    <property name="margin">2</property>
                   </widget>
                 </child>
               </widget>
@@ -262,14 +259,14 @@
             </child>
           </widget>
           <packing>
-            <property name="position">2</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
           <widget class="GtkHBox" id="hbox2">
             <property name="visible">True</property>
-            <property name="border_width">1</property>
-            <property name="spacing">4</property>
+            <property name="border_width">2</property>
+            <property name="spacing">2</property>
             <child>
               <widget class="GtkButton" id="button_help">
                 <property name="visible">True</property>
@@ -317,7 +314,55 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">0</property>
+                <property name="padding">5</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkButton" id="button_refresh">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                <signal name="clicked" handler="on_button_refresh_clicked"/>
+                <child>
+                  <widget class="GtkAlignment" id="alignment1">
+                    <property name="visible">True</property>
+                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <child>
+                      <widget class="GtkHBox" id="hbox1">
+                        <property name="visible">True</property>
+                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                        <child>
+                          <widget class="GtkImage" id="image1">
+                            <property name="visible">True</property>
+                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                            <property name="pixbuf">pulisci16x16.png</property>
+                          </widget>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="label1">
+                            <property name="visible">True</property>
+                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                            <property name="label" translatable="yes">Torna home</property>
+                          </widget>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child>
@@ -368,54 +413,7 @@
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="pack_type">end</property>
-                <property name="position">3</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkButton" id="button_refresh">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <signal name="clicked" handler="on_button_refresh_clicked"/>
-                <child>
-                  <widget class="GtkAlignment" id="alignment1">
-                    <property name="visible">True</property>
-                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                    <child>
-                      <widget class="GtkHBox" id="hbox1">
-                        <property name="visible">True</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                        <child>
-                          <widget class="GtkImage" id="image1">
-                            <property name="visible">True</property>
-                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="pixbuf">pulisci16x16.png</property>
-                          </widget>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkLabel" id="label1">
-                            <property name="visible">True</property>
-                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="label" translatable="yes">Torna home</property>
-                          </widget>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </widget>
-                    </child>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="pack_type">end</property>
-                <property name="position">3</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child>
@@ -467,6 +465,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
+                <property name="padding">5</property>
                 <property name="pack_type">end</property>
                 <property name="position">0</property>
               </packing>
@@ -476,7 +475,7 @@
             <property name="expand">False</property>
             <property name="fill">False</property>
             <property name="padding">1</property>
-            <property name="position">3</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child>
@@ -499,6 +498,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip" translatable="yes">Verde: PromoGest2 Aggiornato
+Rosso: PromoGest2 Da Aggiornare</property>
                 <property name="relief">half</property>
                 <signal name="clicked" handler="on_aggiorna_activate"/>
                 <child>
@@ -535,7 +536,7 @@
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="position">4</property>
+            <property name="position">3</property>
           </packing>
         </child>
       </widget>
