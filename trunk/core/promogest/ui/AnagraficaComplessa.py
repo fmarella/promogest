@@ -1159,7 +1159,7 @@ class AnagraficaHtml(object):
     def pdf(self, operationName):
         self._slaTemplate = None
         self._slaTemplateObj=None
-
+        azienda = Azienda().getRecord(id=Environment.azienda)
         if Environment.new_print_enjine:
             operationNameUnderscored = operationName.replace(' ' , '_').lower()
             print "per la stampa", operationNameUnderscored, Environment.templatesDir + operationNameUnderscored + '.sla'
@@ -1170,7 +1170,6 @@ class AnagraficaHtml(object):
             """ Restituisce una stringa contenente il report in formato PDF """
             param = [self.dao.dictionary(complete=True)]
             multilinedirtywork(param)
-            azienda = Azienda().select(denominazione=Environment.azienda)
             if azienda:
                 azidict = azienda.dictionary(complete=True)
                 for a,b in azidict.items():
@@ -1200,7 +1199,6 @@ class AnagraficaHtml(object):
             #self.dao.resolveProperties()
             param = [self.dao.dictionary(complete=True)]
             multilinedirtywork(param)
-            azienda = Azienda().select(denominazione=Environment.azienda)
             if azienda:
                 azidict = azienda.dictionary(complete=True)
                 for a,b in azidict.items():
@@ -1217,8 +1215,8 @@ class AnagraficaHtml(object):
 
 
 class AnagraficaReport(object):
-    """ Interfaccia HTML read-only per la lettura dell'anagrafica """
-
+    """ Interfaccia HTML read-only per la lettura dell'anagrafica
+    """
     def __init__(self, anagrafica, description, defaultFileName,
                  htmlTemplate, sxwTemplate,
                 templatesDir =None):
@@ -1242,7 +1240,9 @@ class AnagraficaReport(object):
 
 
     def pdf(self,operationName):
-        """ Restituisce una stringa contenente il report in formato PDF """
+        """ Restituisce una stringa contenente il report in formato PDF
+        """
+        azienda = Azienda().getRecord(id=Environment.azienda)
         if not Environment.new_print_enjine:
             if self._slaTemplateObj is None:
                 self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
@@ -1254,7 +1254,6 @@ class AnagraficaReport(object):
             d.resolveProperties()
             param.append(d.dictionary(complete=True))
         multilinedirtywork(param)
-        azienda = Azienda().select(denominazione=Environment.azienda)
         if azienda:
             azidict = azienda.dictionary(complete=True)
             for a,b in azidict.items():
@@ -1271,14 +1270,14 @@ class AnagraficaReport(object):
 
 
     def cancelOperation(self):
-        """ Cancel current operation """
+        """ Cancel current operation
+        """
         if self._slaTemplateObj is not None:
             self._slaTemplateObj.cancelOperation()
 
 
     def buildPreviewWidget(self):
-        """
-        Build and return GladeWidget-derived component for print
+        """Build and return GladeWidget-derived component for print
         preview
         """
         return AnagraficaPrintPreview(anagrafica=self._anagrafica,
@@ -1289,8 +1288,7 @@ class AnagraficaLabel(object):
 
     def __init__(self, anagrafica, description, defaultFileName,
                                                     htmlTemplate,sxwTemplate):
-        """
-        Create labels
+        """ Create labels
         """
         self._anagrafica = anagrafica
         self.description = description
@@ -1302,11 +1300,12 @@ class AnagraficaLabel(object):
 
     def setObjects(self, objects):
         """ Imposta gli oggetti che verranno inclusi nel report """
-        #print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII",objects
         self.objects = objects
 
     def pdf(self,operationName):
-        """ Restituisce una stringa contenente il report in formato PDF """
+        """ Restituisce una stringa contenente il report in formato PDF
+        """
+        azienda = Azienda().getRecord(id=Environment.azienda)
         if not Environment.new_print_enjine:
             if self._slaTemplateObj is None:
                 #self._slaTemplateObj = Sla2Pdf(slaFileName=self._slaTemplate,
@@ -1322,7 +1321,6 @@ class AnagraficaLabel(object):
             d.resolveProperties()
             param.append(d.dictionary(complete=True))
         multilinedirtywork(param)
-        azienda = Azienda().select(denominazione=Environment.azienda)
         if azienda:
             azidict = azienda.dictionary(complete=True)
             for a,b in azidict.items():
