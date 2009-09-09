@@ -24,11 +24,17 @@
                   <widget class="GtkMenu" id="operazioni_di_fine_giornata_menu">
                     <child>
                       <widget class="GtkImageMenuItem" id="chiusura_fiscale">
-                        <property name="label">Chiusura fiscale</property>
+                        <property name="label">Chiusura Fiscale</property>
                         <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="use_stock">False</property>
                         <signal name="activate" handler="on_chiusura_fiscale_activate"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image11">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-file</property>
+                            <property name="icon-size">1</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                   </widget>
@@ -47,40 +53,75 @@
                       <widget class="GtkImageMenuItem" id="stampa_del_giornale_breve">
                         <property name="label">Stampa del giornale breve</property>
                         <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="on_stampa_del_giornale_breve_activate"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image10">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-print</property>
+                            <property name="icon-size">1</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="stampa_del_periodico_cassa">
                         <property name="label">Stampa del periodico cassa</property>
                         <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="on_stampa_del_periodico_cassa_activate"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image9">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-print</property>
+                            <property name="icon-size">1</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="stampa_del_periodico_reparti">
                         <property name="label">Stampa del periodico reparti</property>
                         <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="on_stampa_del_periodico_reparti_activate"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image8">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-print</property>
+                            <property name="icon-size">1</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkMenuItem" id="stampa_del_periodico_articoli">
-                        <property name="visible">True</property>
+                      <widget class="GtkImageMenuItem" id="stampa_del_periodico_articoli">
                         <property name="label" translatable="yes">Stampa del periodico articoli</property>
-                        <property name="use_underline">True</property>
+                        <property name="visible">True</property>
+                        <property name="use_stock">False</property>
                         <signal name="activate" handler="on_stampa_del_periodico_articoli_activate"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image6">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-print</property>
+                            <property name="icon-size">1</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="stampa_della_affluenza_oraria">
                         <property name="label">Stampa della affluenza oraria</property>
                         <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="on_stampa_della_affluenza_oraria_activate"/>
+                        <child internal-child="image">
+                          <widget class="GtkImage" id="image7">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-print</property>
+                            <property name="icon-size">1</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                   </widget>
@@ -1114,6 +1155,7 @@
                                     <property name="secondary_icon_stock">gtk-clear</property>
                                     <property name="secondary_icon_activatable">True</property>
                                     <property name="secondary_icon_sensitive">True</property>
+                                    <signal name="insert_text" handler="insert_text_decimal"/>
                                     <signal name="focus_out_event" handler="on_focus_out_event"/>
                                     <signal name="focus_in_event" handler="on_focus_in_event"/>
                                     <signal name="icon_press" handler="on_icon_press"/>
@@ -1133,6 +1175,7 @@
                                     <property name="secondary_icon_stock">gtk-clear</property>
                                     <property name="secondary_icon_activatable">True</property>
                                     <property name="secondary_icon_sensitive">True</property>
+                                    <signal name="insert_text" handler="insert_text_decimal"/>
                                     <signal name="focus_out_event" handler="on_focus_out_event"/>
                                     <signal name="focus_in_event" handler="on_focus_in_event"/>
                                     <signal name="icon_press" handler="on_icon_press"/>

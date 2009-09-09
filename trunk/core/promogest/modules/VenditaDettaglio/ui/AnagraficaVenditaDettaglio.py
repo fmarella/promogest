@@ -324,26 +324,31 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
         dialog.set_markup("""<b>ARTICOLO GENERICO</b>: Inserire Quantità e Prezzo""")
         hbox = gtk.HBox()
-        entry = self.createSignedDecimalEntryField(None,None,10,0)
-        entry.set_text("1.00")
-        entry1 = self.createSignedMoneyEntryField(None,None,10,0)
+        #entry = self.createSignedDecimalEntryField(None,None,10,0)
+        quantita=gtk.Entry()
+        #entry.show()
+        quantita.set_text("1.00")
+        quantita.connect("insert_text", self.insert_text_decimal)
+        prezzo=gtk.Entry()
+        prezzo.connect("insert_text", self.insert_text_decimal)
+        #entry1 = self.createSignedMoneyEntryField(None,None,10,0)
         labelMoney = gtk.Label()
-        labelMoney.set_markup("<b>   Quantità</b>")
+        labelMoney.set_markup("<b>   Quantità  </b>")
         labelMoney1 = gtk.Label()
         labelMoney1.set_markup("<b>   Prezzo  </b>")
         hbox.pack_start(labelMoney, False, False, 0)
-        hbox.pack_start(entry, False, False, 0)
+        hbox.pack_start(quantita, False, False, 0)
         hbox1 = gtk.HBox()
         hbox1.pack_start(labelMoney1, False, False, 0)
-        hbox1.pack_start(entry1, False, False, 0)
+        hbox1.pack_start(prezzo, False, False, 0)
         dialog.vbox.pack_start(hbox1, False, False, 0)
         dialog.vbox.pack_start(hbox, False, False, 0)
         dialog.show_all()
         response = dialog.run()
         dialog.destroy()
-        quantita = entry.get_text().strip()
-        prezzo =  mN(entry1.get_text())
-        return  ( quantita,prezzo )
+        quantita1 = quantita.get_text().strip()
+        prezzo1 =  mN(prezzo.get_text())
+        return  ( quantita1,prezzo1 )
 
     def search_item(self, codiceABarre=None, codice=None, descrizione=None, fnove=False):
         # Ricerca articolo per barcode
@@ -916,7 +921,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         for riga in righe:
             quantita = abs(riga.quantita)
-            print "QUANTITA", quantita
             if quantita != 1:
                 # quantita' non unitaria
                 stringa = '000000000000000000%09d00\r\n' % (quantita * 1000)
@@ -1172,6 +1176,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
     def on_contanti_radio_button_clicked(self, button):
         #predisposizione per il pagamento con contanti
+
         if self.total_button.get_property('sensitive'):
             self.contanti_entry.set_sensitive(True)
             self.contanti_entry.grab_focus()
@@ -1180,6 +1185,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         else:
             self.contanti_entry.set_sensitive(False)
             self.non_contanti_entry.set_sensitive(False)
+        self.refreshTotal()
 
     def on_non_contanti_clicked(self):
         #predisposizione per il pagamento non in contanti
@@ -1192,6 +1198,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         else:
             self.contanti_entry.set_sensitive(False)
             self.non_contanti_entry.set_sensitive(False)
+        self.refreshTotal()
 
     def on_assegni_radio_button_clicked(self, button):
         #predisposizione per il pagamento con assegni
