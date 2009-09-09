@@ -704,6 +704,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 total = total + (prezzoScontato * quantita)
         if not total:
             total = "0.00"
+            totale_scontato = "0.00"
+            totale_sconto = "0.00"
         else:
             sconto = self.sconto_totale_entry.get_text()
             if self.tipo_sconto_euro.get_active():
