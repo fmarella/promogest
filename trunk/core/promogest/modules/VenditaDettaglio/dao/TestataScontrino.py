@@ -14,12 +14,19 @@ from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import rigaScontrinoDel
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
+from promogest.ui.utils import *
+
 
 class TestataScontrino(Dao):
 
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
 
+    @reconstructor
+    def init_on_load(self):
+        self.__dbScontiScontrino = []
+        self.__righeScontrino = []
+        self.__scontiTestataScontrino = []
 
     def _getRigheScontrino(self):
         self.__dbRigheScontrino = RigaScontrino().select(idTestataScontrino=self.id, batchSize=None)

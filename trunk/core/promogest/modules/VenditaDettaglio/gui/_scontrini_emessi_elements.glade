@@ -1,166 +1,125 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--*- mode: xml -*-->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="_scontrini_emessi_elements">
     <property name="visible">True</property>
     <property name="title" translatable="yes">scontrini_emessi_window</property>
+    <property name="focus_on_map">False</property>
     <child>
-      <widget class="GtkHBox" id="hbox331">
+      <widget class="GtkTable" id="scontrini_filter_table">
         <property name="visible">True</property>
+        <property name="n_rows">3</property>
+        <property name="n_columns">2</property>
+        <property name="row_spacing">3</property>
         <child>
-          <widget class="GtkTable" id="scontrini_filter_table">
+          <widget class="GtkLabel" id="label644">
             <property name="visible">True</property>
-            <property name="n_rows">3</property>
-            <property name="n_columns">2</property>
-            <property name="row_spacing">3</property>
-            <child>
-              <widget class="GtkLabel" id="label644">
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="yalign">0.5899999737739563</property>
-                <property name="label" translatable="yes">A data</property>
-              </widget>
-              <packing>
-                <property name="top_attach">2</property>
-                <property name="bottom_attach">3</property>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
-                <property name="x_padding">10</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="label642">
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="yalign">0.5899999737739563</property>
-                <property name="label" translatable="yes">Da data</property>
-              </widget>
-              <packing>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
-                <property name="x_padding">10</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkAlignment" id="alignment421">
-                <property name="width_request">200</property>
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="xscale">0</property>
-                <child>
-                  <widget class="Custom" id="id_articolo_filter_customcombobox">
-                    <property name="visible">True</property>
-                    <property name="creation_function">createArticoloSearchWidget</property>
-                    <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkAlignment" id="alignment418">
-                <property name="width_request">120</property>
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="xscale">0</property>
-                <child>
-                  <widget class="Custom" id="a_data_filter_entry">
-                    <property name="visible">True</property>
-                    <property name="creation_function">createDateWidget</property>
-                    <property name="int1">10</property>
-                    <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">2</property>
-                <property name="bottom_attach">3</property>
-                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkAlignment" id="alignment417">
-                <property name="width_request">120</property>
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="xscale">0</property>
-                <child>
-                  <widget class="Custom" id="da_data_filter_entry">
-                    <property name="visible">True</property>
-                    <property name="creation_function">createDateWidget</property>
-                    <property name="int1">10</property>
-                    <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="label640">
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">Articolo</property>
-              </widget>
-              <packing>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
-                <property name="x_padding">10</property>
-              </packing>
-            </child>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5899999737739563</property>
+            <property name="label" translatable="yes">A data</property>
           </widget>
+          <packing>
+            <property name="top_attach">2</property>
+            <property name="bottom_attach">3</property>
+            <property name="x_options">GTK_FILL</property>
+            <property name="y_options"></property>
+            <property name="x_padding">10</property>
+          </packing>
         </child>
         <child>
-          <widget class="GtkVBox" id="scontrini_detail_vbox">
+          <widget class="GtkLabel" id="label642">
             <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5899999737739563</property>
+            <property name="label" translatable="yes">Da data</property>
+          </widget>
+          <packing>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
+            <property name="x_options">GTK_FILL</property>
+            <property name="y_options"></property>
+            <property name="x_padding">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkAlignment" id="alignment421">
+            <property name="width_request">200</property>
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="xscale">0</property>
             <child>
-              <widget class="GtkLabel" id="label647">
+              <widget class="Custom" id="id_articolo_filter_customcombobox">
                 <property name="visible">True</property>
-                <property name="ypad">5</property>
-                <property name="label" translatable="yes">Dettaglio scontrino</property>
+                <property name="creation_function">createArticoloSearchWidget</property>
+                <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
               </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkScrolledWindow" id="scrolledwindow36">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <child>
-                  <widget class="Custom" id="detail_html">
-                    <property name="visible">True</property>
-                    <property name="creation_function">createGtkHtml2Widget</property>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="position">1</property>
-              </packing>
             </child>
           </widget>
           <packing>
-            <property name="position">1</property>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+            <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+            <property name="y_options"></property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkAlignment" id="alignment418">
+            <property name="width_request">120</property>
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="xscale">0</property>
+            <child>
+              <widget class="Custom" id="a_data_filter_entry">
+                <property name="visible">True</property>
+                <property name="creation_function">createDateWidget</property>
+                <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+            <property name="top_attach">2</property>
+            <property name="bottom_attach">3</property>
+            <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+            <property name="y_options"></property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkAlignment" id="alignment417">
+            <property name="width_request">120</property>
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="xscale">0</property>
+            <child>
+              <widget class="Custom" id="da_data_filter_entry">
+                <property name="visible">True</property>
+                <property name="creation_function">createDateWidget</property>
+                <property name="int1">10</property>
+                <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
+            <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+            <property name="y_options"></property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkLabel" id="label640">
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">Articolo</property>
+          </widget>
+          <packing>
+            <property name="x_options">GTK_FILL</property>
+            <property name="y_options"></property>
+            <property name="x_padding">10</property>
           </packing>
         </child>
       </widget>

@@ -36,42 +36,27 @@ class GestioneScontrini(GladeWidget):
         self._htmlTemplate = None
         self.dao = None
 
-        GladeWidget.__init__(self, 'generic_dialog',
-                fileName="promogest/modules/VenditaDettaglio/gui/generic_dialog.glade", isModule=True)
-        self._window = self.generic_dialog
+        GladeWidget.__init__(self, 'scontrini_emessi',
+                fileName="VenditaDettaglio/gui/scontrini_emessi.glade", isModule=True)
+        self._window = self.scontrini_emessi
 
         self.placeWindow(self._window)
         self.draw()
 
     def draw(self):
-        self._window.set_title('Scontrini emessi')
-        rhesus_button = gtk.Button(stock=gtk.STOCK_REDO)
-        alignment = rhesus_button.get_children()[0]
-        hbox = alignment.get_children()[0]
-        image, label = hbox.get_children()
-        label.set_text('_Reso')
-        label.set_use_underline(True)
-        quit_button = gtk.Button(stock=gtk.STOCK_QUIT)
-        self.main_hbuttonbox.pack_start(rhesus_button)
-        self.main_hbuttonbox.pack_end(quit_button)
-        #self._window.add_action_widget(rhesus_button, gtk.RESPONSE_APPLY)
-        #self._window.add_action_widget(quit_button, gtk.RESPONSE_CANCEL)
-
-        rhesus_button.connect('clicked', self.on_rhesus_button_clicked)
-        quit_button.connect('clicked', self.on_scontrini_window_close)
-
-        main_hpaned = gtk.HPaned()
-        self.main_vbox.add(main_hpaned)
 
         self.filterss = FilterWidget(owner=self, filtersElement=GladeWidget(rootWidget='scontrini_filter_table',
             fileName="VenditaDettaglio/gui/_scontrini_emessi_elements.glade", isModule=True))
         self.filters = self.filterss.filtersElement
         self.filterTopLevel = self.filterss.getTopLevel()
-        main_hpaned.pack1(self.filterTopLevel)
-        self.detail = GladeWidget(rootWidget = 'scontrini_detail_vbox',
-            fileName="VenditaDettaglio/gui/_scontrini_emessi_elements.glade", isModule=True)
-        self.detailTopLevel = self.detail.getTopLevel()
-        main_hpaned.pack2(self.detailTopLevel)
+        self.main_hpaned.pack1(self.filterTopLevel)
+
+        sw = gtk.ScrolledWindow()
+        sw.set_policy(hscrollbar_policy = gtk.POLICY_AUTOMATIC,
+                            vscrollbar_policy = gtk.POLICY_AUTOMATIC)
+        self.detail = gtkhtml2.View()
+        sw.add(self.detail)
+        self.main_hpaned.pack2(sw)
 
         self.filterss.filter_scrolledwindow.set_policy(hscrollbar_policy = gtk.POLICY_AUTOMATIC,
                                                      vscrollbar_policy = gtk.POLICY_AUTOMATIC)
@@ -153,6 +138,7 @@ class GestioneScontrini(GladeWidget):
             self.filters.a_data_filter_entry.set_text(self_aData)
         self.defaultFileName = "scontrino.html"
         self._htmlTemplate = "promogest/modules/VenditaDettaglio/templates"
+         #self.html_scrolledwindow.add(self.detail)
         self.refreshHtml()
 
 
@@ -205,9 +191,6 @@ class GestioneScontrini(GladeWidget):
         self.calcolaTotale(scos_no_batchSize)
 
     def calcolaTotale(self, scos_no_batchSize):
-        #print dir(self.filterss._treeViewModel)
-
-        #model = self.filterss.resultsElement.get_model()
         tot=0
         for m in scos_no_batchSize:
             #print m.totale_scontrino
@@ -238,7 +221,7 @@ class GestioneScontrini(GladeWidget):
     def refreshHtml(self, dao=None):
         document =gtkhtml2.Document()
         if self.dao is None:
-            html = '<html></html>'
+            html = '<html><body>ciao</body></html>'
         else:
             templates_dir = self._htmlTemplate
             jinja_env = Env(loader=FileSystemLoader(templates_dir),
@@ -249,9 +232,10 @@ class GestioneScontrini(GladeWidget):
         document.open_stream('text/html')
         document.write_stream(html)
         document.close_stream()
-        self.detail.detail_html.set_document(document)
+        #self.detail.detail_html.set_document(document)
+        self.detail.set_document(document)
 
-    def on_scontrini_window_close(self, widget, event=None):
+    def on_quit_button_clicked(self, widget, event=None):
         self.destroy()
         return None
 

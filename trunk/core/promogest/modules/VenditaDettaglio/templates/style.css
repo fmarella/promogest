@@ -6,66 +6,43 @@
 
     table {
         width: 100%;
-    }
-
-    td {
-/*         padding-left: 0px; */
-    }
-
-    td.detail {
-/*         padding-left: 2px; */
+        border : 1px solid #c0c0c0;
     }
 
 /* da eliminare dopo la riconversione */
     td.left {
         text-align: left;
-/*  width: 25%; */
     }
 /* */
 
     td.odd-detail {
         text-align: left;
         color :black;
-/*  color: #2B4F81; */
-/*  width: 25%; */
-/*  background-color: #F0F0F0    ; */
         border-bottom : 1px solid #c0c0c0;
     }
 
     td.even-detail {
         text-align: left;
         color :black;
-/*  color: #2B4F81; */
-/*  width: 25%; */
-/*  background-color: #EBEBEB; */
         background: #efefef;
         border-bottom : 1px solid #FFFFFF;
     }
 
     td.odd-number {
         text-align: right;
-color :black;
-/*  color: #2B4F81; */
-/*  width: 25%; */
-/*  background-color: #F0F0F0    ; */
+        color :black;
         border-bottom : 1px solid #c0c0c0;
     }
 
     td.even-number {
         text-align: right;
-color :black;
-/*  color: #2B4F81; */
-/*  width: 25%; */
-/*  background-color: #EBEBEB   ; */
+        color :black;
         background: #efefef;
     }
 
     tr.even-detail {
         text-align: left;
-color :black;
-/*  color: #2B4F81; */
-/*  width: 25%; */
-/*  background-color: #E8E8E8     ; */
+        color :black;
         border : 1px solid #000000;
     }
 
@@ -112,9 +89,6 @@ color :black;
     .report-header {
         text-align: left;
         color :black;
-/*  color: #2B4F81; */
-
-/*  background-color: #E8E8E8 */
         font-size: 1.2em;
     }
 
@@ -139,13 +113,76 @@ color :black;
 
     td.number {
         text-align: right;
-/*  color: #2B4F81; */
-/*  width: 25%; */
-/*  background-color: #E8E8E8    */
     }
 
     th.number {
         text-align: right;
     }
+#container {
+    width: auto;
+/*     height: 600px; */
+}
+#container #footer {
+/*     background-attachment: scroll; */
+    background-image: url("gui/bkg_footer.png");
+    background-repeat: repeat;
+/*     background-position: left top; */
+    position: relative;
+    width: auto;
+/*     top: 600px; */
+    font-family: Arial;
+    font-size: 10px;
+    color: #333333;
+    height: 21px;
+
+}
+#container #rigaheader {
+/*     background-attachment: scroll; */
+    background-image: url("gui/bkg_footer.png");
+    background-repeat: repeat;
+/*     background-position: left top; */
+    position: relative;
+    width: auto;
+    height: 15px;
+}
+#container #head {
+    height: 70px;
+}
+#container #head #testo {
+    position: relative;
+    top: -40px;
+    left: 80px;
+    width: 80%;
+    font-family: Arial;
+    font-size: 24px;
+    color: #666666;
+    font-weight: bold;
+}
+#container #head #img {
+    height: 48px;
+    width: 48px;
+/*     background-attachment: scroll; */
+/*     background-image: url("gui/articolo48x48.png"); */
+    background-repeat: no-repeat;
+/*     background-position: left center; */
+    position: relative;
+    left: 20px;
+    top: 5px;
+    padding-top: 10px;
+}
+
+#dialog{
+/*    background-image: url("gui/aggiungi16x16.png");
+    background-repeat: no-repeat;
+    background-color:black;*/
+}
+table#calendar{width:160px;font: 12px "Trebuchet MS",sans-serif;
+    text-align:center;color:#444}
+table#calendar,table#calendar th,table#calendar td{
+    border: 1px solid #99A4C4;border-collapse:collapse}
+table#calendar th{background: #FEFEFE url(gui/thbk.png) repeat-x bottom}
+table#calendar td{background: #DBDFEB url(gui/tdbk.png) no-repeat}
+table#calendar a{text-decoration:none;color:#4A5576;font-weight:bold}
+table#calendar a:hover{color: #716F64}
 
 </style>

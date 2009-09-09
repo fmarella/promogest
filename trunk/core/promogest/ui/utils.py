@@ -1792,6 +1792,13 @@ def getStringaSconti(listSconti):
         stringaSconti = stringaSconti + valore + tipo + '; '
     return stringaSconti
 
+def scontiTipo(stringa):
+    if stringa =="valore":
+        return " €"
+    else:
+        return " %"
+
+
 def getDynamicStrListStore(length):
     """
     return a gtk.ListStore of the specified lenght
