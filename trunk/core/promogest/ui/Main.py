@@ -583,7 +583,6 @@ ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDum
         dialog.destroy()
 
     def on_client_sincro_db_activate(self, widget):
-        print "DFGDFDHSDHSHFHF"
         if "SincroDB" in Environment.modulesList and Environment.conf.SincroDB.tipo =="client":
             from promogest.modules.SincroDB.ui.SincroDB import SincroDB
             anag = SincroDB()

@@ -8,6 +8,7 @@
 
 from promogest.ui.utils import *
 import gtk
+import gobject
 import unicodedata
 from  subprocess import *
 import os, popen2
@@ -23,6 +24,7 @@ from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScont
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
+from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
 from promogest.dao.Articolo import Articolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.dao.AliquotaIva import AliquotaIva
@@ -38,13 +40,13 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
     def __init__(self):
         GladeWidget.__init__(self, 'vendita_dettaglio_window',
-                        fileName='promogest/modules/VenditaDettaglio/gui/vendita_dettaglio_window.glade',
+                        fileName='VenditaDettaglio/gui/vendita_dettaglio_window.glade',
                         isModule=True)
         self.placeWindow(self.getTopLevel())
         self._currentRow = {}
         self._simboloPercentuale = '%'
         self._simboloEuro = '€'
-        textStatusBar = "     *****   PromoGest2 - Vendita Dettaglio - by PromoTUX Informatica - 800 034561 - www.PromoTUX.it - info@PromoTUX.it  *****     "
+        textStatusBar = "     PromoGest2 - Vendita Dettaglio - by PromoTUX Informatica - 800 034561 - www.PromoTUX.it - info@PromoTUX.it      "
         context_id =  self.vendita_dettaglio_statusbar.get_context_id("vendita_dettaglio_window")
         self.vendita_dettaglio_statusbar.push(context_id,textStatusBar)
         azienda = Azienda().getRecord(id=Environment.params["schema"])
@@ -54,7 +56,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.dati_riga_frame.destroy()
         self.shop = Environment.shop
         self.draw()
-
 
     def draw(self):
         accelGroup = gtk.AccelGroup()
@@ -205,8 +206,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.rhesus_button.set_sensitive(False)
         #self.annulling_button.set_sensitive(False)
         self.total_button.set_sensitive(False)
+        self.subtotal_button.set_sensitive(False)
         self.empty_button.set_sensitive(False)
-
+        self.sconto_hbox.set_sensitive(False)
         self.setPagamento(enabled = False)
 
         self.codice_a_barre_entry.grab_focus()
@@ -283,7 +285,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.on_column_prezzo_edited(cell, path, prez, treeview)
 
     def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
-        """ Function ti set the value quantita edit in the cell """
+        """ Set the value "quantita" edit in the cell """
         model = treeview.get_model()
         value=value.replace(",",".")
         value = mN(value)
@@ -292,19 +294,17 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.on_cancel_button_clicked(self.getTopLevel)
 
     def on_column_descrizione_edited(self, cell, path, value, treeview, editNext=True):
-        """ Function ti set the value quantita edit in the cell """
+        """ Set the value descrizione edit in the cell """
         model = treeview.get_model()
         model[path][4] = value
         self.on_cancel_button_clicked(self.getTopLevel)
 
     def on_column_tipo_edited(self, cell, path, value, treeview, editNext=True):
-        """ Function ti set the value quantita edit in the cell"""
+        """ Set the value tipo_sconto edit in the cell"""
         model = treeview.get_model()
         model[path][7] = value
         scont = model[path][6]
         self.on_column_sconto_edited(cell, path, scont, treeview)
-
-
 
     def on_vendita_dettaglio_window_key_press_event(self,widget, event):
         """ jolly key è F9, richiama ed inserisce l'articolo definito nel configure"""
@@ -314,7 +314,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 codice = Environment.conf.VenditaDettaglio.jolly
                 self.search_item(codice=codice, fnove=True)
             except:
-                print "ARTICOLO JOLLY NON SETTATO NEL CONFIGURE NELLA SEZIONE [VenditaDettaglio]"
+                Environment.pg2log.info("ARTICOLO JOLLY NON SETTATO NEL CONFIGURE NELLA SEZIONE [VenditaDettaglio]")
 
 
     def fnovewidget(self):
@@ -344,7 +344,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         quantita = entry.get_text().strip()
         prezzo =  mN(entry1.get_text())
         return  ( quantita,prezzo )
-
 
     def search_item(self, codiceABarre=None, codice=None, descrizione=None, fnove=False):
         # Ricerca articolo per barcode
@@ -605,8 +604,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # Abilito pulsante totale e annulla
         notEmpty = (len(model) > 0)
         self.total_button.set_sensitive(notEmpty)
+        self.subtotal_button.set_sensitive(notEmpty)
         self.empty_button.set_sensitive(notEmpty)
         self.setPagamento(enabled = notEmpty)
+        self.sconto_hbox.set_sensitive(notEmpty)
 
         # Calcolo totali
         self.refreshTotal()
@@ -636,8 +637,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # Abilito pulsante totale e annulla
         notEmpty = (len(model) > 0)
         self.total_button.set_sensitive(notEmpty)
+        self.subtotal_button.set_sensitive(notEmpty)
         self.empty_button.set_sensitive(notEmpty)
         self.setPagamento(enabled = notEmpty)
+        self.sconto_hbox.set_sensitive(notEmpty)
 
         treeview.get_selection().unselect_all()
 
@@ -661,8 +664,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # Se era l'ultima riga disabilito text box e pulsanti per totali
         notEmpty = (len(model) > 0)
         self.total_button.set_sensitive(notEmpty)
+        self.subtotal_button.set_sensitive(notEmpty)
         self.empty_button.set_sensitive(notEmpty)
         self.setPagamento(enabled = notEmpty)
+        self.sconto_hbox.set_sensitive(notEmpty)
 
         # Disabilito cancella e conferma e abilito ricerca barcode
         self.delete_button.set_sensitive(False)
@@ -682,8 +687,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self._state = 'search'
         self.codice_a_barre_entry.grab_focus()
 
-
     def refreshTotal(self):
+        """ Here we can calculate subTotals and Totals of the sales
+            TODO: Add a discount
+        """
         total = 0
         model = self.scontrino_treeview.get_model()
         for row in model:
@@ -697,22 +704,54 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 total = total + (prezzoScontato * quantita)
         if not total:
             total = "0.00"
-        self.label_totale.set_markup('<b><span foreground="black" size="38000">' + str(mN(total)) +'</span></b>')
-        return total
+        else:
+            sconto = self.sconto_totale_entry.get_text()
+            if self.tipo_sconto_euro.get_active():
+                self.tipo_sconto_scontrino = "valore"
+                totale_sconto = Decimal(sconto or 0)
+                totale_scontato = total-totale_sconto
+            else:
+                self.tipo_sconto_scontrino = "percentuale"
+                if not sconto:
+                    totale_scontato = total
+                else:
+                    totale_sconto = total*(Decimal(sconto)/100)
+                    totale_scontato = total-totale_sconto
+
+        self.label_totale.set_markup('<b><span foreground="black" size="40000">' + str(mN(totale_scontato)) +'</span></b>')
+        self.label_sconto.set_markup('<b><span foreground="#338000" size="24000">' + str(mN(totale_sconto)) +'</span></b>')
+        self.label_subtotale.set_markup('<b><span foreground="#338000" size="26000">' + str(mN(total)) +'</span></b>')
+
+        return (totale_scontato,total,totale_sconto)
 
     def on_empty_button_clicked(self, button):
         self.scontrino_treeview.get_model().clear()
         self.empty_current_row()
-        self.label_totale.set_markup('<b><span foreground="black" size="38000">0.00</span></b>')
+        self.label_totale.set_markup('<b><span foreground="black" size="40000">0.00</span></b>')
         self.label_resto.set_markup('<b><span foreground="black" size="24000">0.00</span></b>')
+        self.label_subtotale.set_markup('<b><span foreground="black" size="24000">0.00</span></b>')
+        self.label_sconto.set_markup('<b><span foreground="black" size="26000">0.00</span></b>')
         self.empty_button.set_sensitive(False)
         self.total_button.set_sensitive(False)
+        self.subtotal_button.set_sensitive(False)
         self.setPagamento(enabled = False)
+        self.sconto_totale_entry.set_text("")
+        self.sconto_hbox.set_sensitive(False)
         self.codice_a_barre_entry.grab_focus()
 
     def on_total_button_clicked(self, button):
-        totale_scontrino = mN(self.refreshTotal())
-        if totale_scontrino < 0:
+        self.refreshTotal()
+
+        dao = TestataScontrino()
+
+        dao.totale_scontrino = mN(self.label_totale.get_text())
+        dao.totale_sconto = mN(self.label_sconto.get_text())
+        dao.totale_subtotale = mN(self.label_subtotale.get_text())
+        dao.tipo_sconto_scontrino = self.tipo_sconto_scontrino
+
+        #print "TOTALI",totale_scontrino,  totale_sconto, totale_subtotale
+
+        if dao.totale_scontrino < 0:
             msg = 'Attenzione!\n\nIl totale non puo\' essere negativo !'
             dialog = gtk.MessageDialog(self.getTopLevel(),
                                        gtk.DIALOG_MODAL
@@ -724,9 +763,18 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             return
 
         # Creo dao testata_scontrino
-        dao = TestataScontrino()
 
-        dao.totale_scontrino = totale_scontrino
+
+        scontiSuTotale = []
+        #res = self.sconti_testata_widget.getSconti()
+        if dao.totale_sconto:
+            daoSconto = ScontoTestataScontrino()
+            daoSconto.valore = dao.totale_sconto
+            daoSconto.tipo_sconto = dao.tipo_sconto_scontrino
+            scontiSuTotale.append(daoSconto)
+        dao.scontiSuTotale = scontiSuTotale
+
+        #dao.totale_scontrino = totale_scontrino
         totale_contanti = 0
         totale_assegni = 0
         totale_carta_di_credito = 0
@@ -785,6 +833,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # Rileggo dao
         dao.update()
 
+        """ fine salvataggio  TODO: Spezzare questa funzione al più presto  """
+
         # Creo il file
         filescontrino = self.create_export_file(dao)
         # Mando comando alle casse
@@ -793,7 +843,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             program_launch = Environment.conf.VenditaDettaglio.driver_command
             program_params = (' ' + filescontrino + ' ' +
                               Environment.conf.VenditaDettaglio.serial_device)
-            print "SEITUTUTUTTUTUTTUTUUTTUTTUTUTUTTUTTUTU", filescontrino
             if os.name == 'nt':
                 exportingProcessPid = os.spawnl(os.P_NOWAIT, program_launch, program_params)
                 id, ret_value = os.waitpid(exportingProcessPid, 0)
@@ -803,6 +852,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 process = popen2.Popen3(command, True)
                 message = process.childerr.readlines()
                 ret_value = process.wait()
+                
         else:
             ret_value = 0
 
@@ -898,11 +948,25 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 stringa = '01%-16s%09.2f%2s\r\n' % (self.deaccenta(riga.descrizione[:16]), riga.prezzo_scontato, reparto)
                 f.write(stringa)
 
+        if daoScontrino.totale_scontrino < daoScontrino.totale_subtotale and daoScontrino.totale_sconto > 0:
+            stringa='15                000000.0000\r\n'
+            f.write(stringa)
+            if daoScontrino.tipo_sconto_scontrino =='percentuale':
+                stringa = '07%-16s%09.2f00\r\n' % ('sconto', daoScontrino.totale_sconto)
+                f.write(stringa)
+            else:
+                stringa = '06%-16s%09.2f00\r\n' % ('sconto', daoScontrino.totale_sconto)
+                f.write(stringa)
+
+
         if daoScontrino.totale_contanti is None or daoScontrino.totale_contanti == 0:
             totale_contanti = daoScontrino.totale_scontrino
+            #stringa = '10                %09.2f00\r\n' % (totale_contanti)
+            #f.write(stringa)
         else:
             totale_contanti = daoScontrino.totale_contanti
-
+            #stringa = '10                %09.2f00\r\n' % (totale_contanti)
+            #f.write(stringa)
         if daoScontrino.totale_assegni is not None and daoScontrino.totale_assegni != 0:
             stringa = '20                %09d00\r\n' % (daoScontrino.totale_assegni * 100)
             f.write(stringa)
@@ -911,9 +975,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             stringa = '30                %09d00\r\n' % (daoScontrino.totale_carta_credito * 100)
             f.write(stringa)
 
+
         #stringa = '10                %09.2f00\r\n' % (totale_contanti)
-        #f.write(stringa)
-        #stringa='70                00000000000..\r\n'
         #f.write(stringa)
         stringa = '10                %09.2f00\r\n' % (totale_contanti)
         f.write(stringa)
@@ -1071,8 +1134,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
 
     def on_new_button_clicked(self, button):
-        """
-            open the anagraficaArticolo Semplice to add a new article
+        """ open the anagraficaArticolo Semplice to add a new article
         """
         from promogest.ui.AnagraficaArticoliSemplice import AnagraficaArticoliSemplice
         anag = AnagraficaArticoliSemplice()
@@ -1080,8 +1142,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         showAnagraficaRichiamata(self.getTopLevel(), anagWindow, button)
 
     def ricercaListino(self):
-        """
-            check if there is a priceList like setted on configure file
+        """ check if there is a priceList like setted on configure file
         """
         pricelist = Listino().select(denominazione = Environment.conf.VenditaDettaglio.listino,
                                     offset = None,
@@ -1123,7 +1184,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         if self.total_button.get_property('sensitive'):
             self.non_contanti_entry.set_sensitive(True)
             self.non_contanti_entry.grab_focus()
-            self.non_contanti_entry.set_text(str(self.refreshTotal()))
+            self.non_contanti_entry.set_text(str(self.refreshTotal()[0]))
             self.contanti_entry.set_text('')
             self.contanti_entry.set_sensitive(False)
         else:
@@ -1163,12 +1224,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         else:
             self.destroy()
             return None
-
-    def on_list_button_clicked(self, widget):
-        self.idRhesusSource = []
-        gest = GestioneScontrini(daData=None, aData=None, righe=self.idRhesusSource)
-        gestWnd = gest.getTopLevel()
-        showAnagraficaRichiamata(self.getTopLevel(), gestWnd, None, self.creaScontrinoReso)
 
     def creaScontrinoReso(self):
         treeview = self.scontrino_treeview
@@ -1265,6 +1320,12 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         #save_item.show()
         quit_item.show()
 
-    def on_sconti_scontrino_widget_button_toggled(self, button):
-        pippo = self.sconti_scontrino_widget.getSconti()
-        return
+    def on_subtotal_button_clicked(self, button):
+        self.refreshTotal()
+        #print "subtotale"
+
+    def on_list_button_clicked(self, widget):
+        self.idRhesusSource = []
+        gest = GestioneScontrini(daData=None, aData=None, righe=self.idRhesusSource)
+        gestWnd = gest.getTopLevel()
+        showAnagraficaRichiamata(self.getTopLevel(), gestWnd, None, self.creaScontrinoReso)

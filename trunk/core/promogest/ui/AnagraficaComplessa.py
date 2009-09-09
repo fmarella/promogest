@@ -66,6 +66,8 @@ class Anagrafica(GladeWidget):
         self.record_menu.get_child().set_label(recordMenuLabel)
         if self.anagrafica_complessa_window not in Login.windowGroup:
             Login.windowGroup.append(self.anagrafica_complessa_window)
+        self.anagrafica_complessa_html = gtkhtml2.View()
+        self.anagrafica_detail_scrolledwindow.add(self.anagrafica_complessa_html)
         self._setFilterElement(filterElement)
         self._setHtmlHandler(htmlHandler)
         self._setReportHandler(reportHandler)
@@ -131,7 +133,6 @@ class Anagrafica(GladeWidget):
         document.open_stream('text/html')
         document.write_stream('<html></html>')
         document.close_stream()
-
         self.anagrafica_complessa_html.set_document(document)
         (width, height) = self.getTopLevel().get_size()
         self.anagrafica_complessa_html.set_size_request(-1, height // 2)

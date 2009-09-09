@@ -331,7 +331,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
 
     def on_notebook_select_page(self,notebook,page, page_num):
-        print notebook,page,page_num
+        return
+        #print notebook,page,page_num
 
     def on_notebook_switch_page(self, notebook, page, page_num):
         if page_num == 2:

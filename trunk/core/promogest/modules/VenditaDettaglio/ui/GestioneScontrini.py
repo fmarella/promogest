@@ -64,12 +64,12 @@ class GestioneScontrini(GladeWidget):
         self.main_vbox.add(main_hpaned)
 
         self.filterss = FilterWidget(owner=self, filtersElement=GladeWidget(rootWidget='scontrini_filter_table',
-            fileName="promogest/modules/VenditaDettaglio/gui/_scontrini_emessi_elements.glade", isModule=True))
+            fileName="VenditaDettaglio/gui/_scontrini_emessi_elements.glade", isModule=True))
         self.filters = self.filterss.filtersElement
         self.filterTopLevel = self.filterss.getTopLevel()
         main_hpaned.pack1(self.filterTopLevel)
         self.detail = GladeWidget(rootWidget = 'scontrini_detail_vbox',
-            fileName="promogest/modules/VenditaDettaglio/gui/_scontrini_emessi_elements.glade", isModule=True)
+            fileName="VenditaDettaglio/gui/_scontrini_emessi_elements.glade", isModule=True)
         self.detailTopLevel = self.detail.getTopLevel()
         main_hpaned.pack2(self.detailTopLevel)
 
@@ -155,13 +155,14 @@ class GestioneScontrini(GladeWidget):
         self._htmlTemplate = "promogest/modules/VenditaDettaglio/templates"
         self.refreshHtml()
 
+
         self.refresh()
 
     def clear(self):
         # Annullamento filtro
         self.filters.id_articolo_filter_customcombobox.set_active(0)
-        self.filters.da_data_filter_entry.set_text('')
-        self.filters.a_data_filter_entry.set_text('')
+        self.filters.da_data_filter_entry.setNow()
+        self.filters.a_data_filter_entry.setNow()
         self.refresh()
 
 
@@ -194,6 +195,26 @@ class GestioneScontrini(GladeWidget):
                                                contanti, assegni, carta,
                                                dateToString(s.data_movimento), str(s.numero_movimento or '')))
 
+        scos_no_batchSize = TestataScontrino().select( orderBy=self.filterss.orderBy,
+                                                     idArticolo=idArticolo,
+                                                     daData=daData,
+                                                     aData=aData,
+                                                     offset=None,
+                                                     batchSize=None)
+
+        self.calcolaTotale(scos_no_batchSize)
+
+    def calcolaTotale(self, scos_no_batchSize):
+        #print dir(self.filterss._treeViewModel)
+
+        #model = self.filterss.resultsElement.get_model()
+        tot=0
+        for m in scos_no_batchSize:
+            #print m.totale_scontrino
+            tot += m.totale_scontrino
+        self.filterss.label1.set_text("TOTALE SCONTRINI:")
+        self.filterss.info_label.set_text( str(mN(tot)))
+
 
     def on_filter_treeview_cursor_changed(self, treeview):
         sel = self.filterss.resultsElement.get_selection()
@@ -220,14 +241,10 @@ class GestioneScontrini(GladeWidget):
             html = '<html></html>'
         else:
             templates_dir = self._htmlTemplate
-            #loader = TemplateLoader([templates_dir])
             jinja_env = Env(loader=FileSystemLoader(templates_dir),
                 bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
             jinja_env.globals['environment'] = Environment
             jinja_env.globals['utils'] = utils
-            #tmpl = loader.load(self.defaultFileName)
-            #stream = tmpl.generate(dao=self.dao)
-            #html = stream.render('xhtml')
             html = jinja_env.get_template(self.defaultFileName).render(dao=self.dao)
         document.open_stream('text/html')
         document.write_stream(html)

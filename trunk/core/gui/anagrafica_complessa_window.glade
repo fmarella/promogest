@@ -420,10 +420,7 @@
                     <property name="vscrollbar_policy">automatic</property>
                     <property name="shadow_type">etched-in</property>
                     <child>
-                      <widget class="Custom" id="anagrafica_complessa_html">
-                        <property name="visible">True</property>
-                        <property name="creation_function">createGtkHtml2Widget</property>
-                      </widget>
+                      <placeholder/>
                     </child>
                   </widget>
                   <packing>

@@ -55,10 +55,10 @@ class TestataScontrino(Dao):
         self.__scontiTestataScontrino = value
     sconti = property(_getScontiTestataScontrino, _setScontiTestataScontrino)
 
-    def _getStringaScontiTestataDocumento(self):
-        (listSconti, applicazione) = getScontiFromDao(self._getScontiTestataDocumento(), self.applicazione_sconti)
+    def _getStringaScontiTestataScontrino(self):
+        (listSconti, applicazione) = getScontiFromDao(self._getScontiTestataScontrino(), self.applicazione_sconti)
         return getStringaSconti(listSconti)
-    stringaSconti = property(_getStringaScontiTestataDocumento)
+    stringaSconti = property(_getStringaScontiTestataScontrino)
 
     def filter_values(self,k,v):
         if k == 'id':
@@ -82,6 +82,8 @@ class TestataScontrino(Dao):
         params['session'].add(self)
         params['session'].commit()
 
+        #self.scontiTestataScontrinoDel(id=self.id)
+
         #se siamo in chiusura fiscale non serve che vengano toccati i dati delle righe
         if not chiusura:
             if self.__righeScontrino:
@@ -95,7 +97,28 @@ class TestataScontrino(Dao):
                     riga.id_testata_scontrino = self.id
                     #salvataggio riga
                     riga.persist()
+            if self.scontiSuTotale:
+                self.scontiTestataScontrinoDel(id=self.id)
+                for scontisutot in self.scontiSuTotale:
+                    scontisutot.id_testata_scontrino = self.id
+                    scontisutot.persist()
         params['session'].flush()
+
+    def scontiTestataScontrinoDel(self,id=None):
+        """
+        Cancella gli sconti associati ad un documento
+        """
+        row = ScontoTestataScontrino().select(idScontoTestataScontrino= id,
+                                                        offset = None,
+                                                        batchSize = None,
+                                                        orderBy="id_testata_scontrino")
+        if row:
+            for r in row:
+                params['session'].delete(r)
+            params["session"].commit()
+            return True
+
+
 
 riga_scontrinoo=Table('riga_scontrino',
                 params['metadata'],

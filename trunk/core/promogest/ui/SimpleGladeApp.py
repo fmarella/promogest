@@ -110,6 +110,14 @@ class SimpleGladeApp(SimpleGladeWrapper):
         widget.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse("white"))
         widget.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse("black"))
 
+    def insert_text_decimal(self,editable, new_text, new_text_length, position):
+        stringg = editable.get_text()
+        if (new_text != "." or "." in stringg.strip()) and not (new_text.replace(".","").isdigit()):
+            editable.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse("red"))
+            editable.emit_stop_by_name("insert_text")
+        else:
+            editable.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse("#F9FBA7"))
+
     def on_entry_focus_in_event(self, widget, event):
         try:
             color_base = Environment.conf.Documenti.color_base

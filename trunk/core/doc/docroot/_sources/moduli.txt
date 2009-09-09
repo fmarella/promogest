@@ -1,6 +1,9 @@
 ===========================
 Moduli
 ===========================
+Considerazioni generali di base sul modulo di Gestione Negozio:
+
+
 
 Gestione Negozio ( Vendita Dettaglio) 
 =====================================
@@ -13,10 +16,7 @@ Questa è interfaccia è preposta alla vendita al dettaglio
  * F3 Pagamento con Carta di credito
  * F9 Attiva un Articolo Generico ( jolly)
 
-#. Menu
-Questa è l'area dei menu con la descrizione delle diverse voci
 
-#. Icone
 Cosa Fanno le icone ?
 
 Area Promemoria e allarmi

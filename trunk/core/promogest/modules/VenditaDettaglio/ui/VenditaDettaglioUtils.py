@@ -1,15 +1,14 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
+# Copyright (C) 2005-2009 by Promotux Informatica - http://www.promotux.it/
 # Author: Alessandro Scano <alessandro@promotux.it>
-
+# Author: Francesco Meloni <francescoo@promotux.it>
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from promogest.dao.Dao import Dao
 
 def rigaScontrinoDel(id=None):
     """Cancella le righe associate ad un documento"""
