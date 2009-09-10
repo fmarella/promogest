@@ -1172,6 +1172,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="width_chars">50</property>
+                                    <property name="xalign">1</property>
                                     <property name="secondary_icon_stock">gtk-clear</property>
                                     <property name="secondary_icon_activatable">True</property>
                                     <property name="secondary_icon_sensitive">True</property>

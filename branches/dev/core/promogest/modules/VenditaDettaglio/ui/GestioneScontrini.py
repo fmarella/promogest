@@ -63,7 +63,7 @@ class GestioneScontrini(GladeWidget):
         self.filterss.filter_body_label.set_markup('<b>Elenco scontrini</b>')
         self.filterss.filter_body_label.set_property('visible', True)
 
-
+        self.filterss.hbox1.destroy()
         # Colonne della Treeview per il filtro
         treeview = self.filterss.resultsElement
         model = self.filterss._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str)
@@ -75,51 +75,55 @@ class GestioneScontrini(GladeWidget):
         column = gtk.TreeViewColumn('Data', rendererSx, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self.filterss._changeOrderBy, 'data_inserimento, id')
+        column.connect("clicked", self.filterss._changeOrderBy, (None, 'data_inserimento'))
         column.set_resizable(True)
         column.set_expand(True)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Totale', rendererDx, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
+        column.set_clickable(True)
+        column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_scontrino'))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Contanti', rendererDx, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
+        column.set_clickable(True)
+        column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_contanti'))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Assegni', rendererDx, text=4)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
+        column.set_clickable(True)
+        column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_assegni'))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('C di Cr', rendererDx, text=5)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
+        column.set_clickable(True)
+        column.connect("clicked", self.filterss._changeOrderBy, (None, 'totale_carta_credito'))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Data M.M.', rendererSx, text=6)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self.filterss._changeOrderBy, 'data_movimento')
+        column.set_clickable(False)
+        #column.connect("clicked", self.filterss._changeOrderBy, 'data_movimento')
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('N° M.M.', rendererSx, text=7)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self.filterss._changeOrderBy, 'numero_movimento')
+        column.set_clickable(False)
+        #column.connect("clicked", self.filterss._changeOrderBy, 'numero_movimento')
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
@@ -177,7 +181,7 @@ class GestioneScontrini(GladeWidget):
             contanti = mN(s.totale_contanti) or 0
             assegni = mN(s.totale_assegni) or 0
             carta = mN(s.totale_carta_credito) or 0
-            self.filterss._treeViewModel.append((s, dateToString(s.data_inserimento), totale,
+            self.filterss._treeViewModel.append((s, dateTimeToString(s.data_inserimento).replace(" "," Ore: "), totale,
                                                contanti, assegni, carta,
                                                dateToString(s.data_movimento), str(s.numero_movimento or '')))
 
@@ -190,13 +194,32 @@ class GestioneScontrini(GladeWidget):
 
         self.calcolaTotale(scos_no_batchSize)
 
+    def calcolasconto(self, dao):
+        if dao.sconti[0].tipo_sconto=="valore":
+            return dao.sconti[0].valore
+        else:
+            #print ((dao.totale_scontrino*100)/dao.sconti[0].valore), (dao.totale_scontrino)
+            return (100 * dao.totale_scontrino) / (100 - dao.sconti[0].valore) -(dao.totale_scontrino)
+            #totale_scontato = total-totale_sconto
+
     def calcolaTotale(self, scos_no_batchSize):
         tot=0
+        totccr = 0
+        totass = 0
+        totnum = 0
+        totcont = 0
+        tot_sconti = 0
         for m in scos_no_batchSize:
-            #print m.totale_scontrino
+            if m.sconti:
+                tot_sconti += self.calcolasconto(m)
             tot += m.totale_scontrino
-        self.filterss.label1.set_text("TOTALE SCONTRINI:")
-        self.filterss.info_label.set_text( str(mN(tot)))
+            totccr += m.totale_carta_credito
+            totass += m.totale_assegni
+            totcont += m.totale_contanti
+            totnum += 1
+        self.filterss.label1.set_text("T scontrini:")
+        stringa = "%s - T Contanti:%s - T Carta:%s - T Assegni:%s - T Sconti:%s - N°:%s" %(mN(tot),mN(totcont), mN(totccr), mN(totass),mN(tot_sconti), totnum )
+        self.filterss.info_label.set_text( str(stringa))
 
 
     def on_filter_treeview_cursor_changed(self, treeview):
@@ -221,7 +244,7 @@ class GestioneScontrini(GladeWidget):
     def refreshHtml(self, dao=None):
         document =gtkhtml2.Document()
         if self.dao is None:
-            html = '<html><body>ciao</body></html>'
+            html = '<html><body></body></html>'
         else:
             templates_dir = self._htmlTemplate
             jinja_env = Env(loader=FileSystemLoader(templates_dir),

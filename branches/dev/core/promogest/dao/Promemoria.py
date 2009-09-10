@@ -51,8 +51,9 @@ def getScadenze():
     """
     alarms = Promemoria().select(in_scadenza=True,offset=None, batchSize=None)
     returnList = []
-    for alarm in alarms:
-        returnList.append(alarm.id)
+    if alarms:
+        for alarm in alarms:
+            returnList.append(alarm.id)
     return returnList
 
 def updateScadenze():

@@ -29,7 +29,7 @@
                   <widget class="GtkMenu" id="record_menu_menu">
                     <child>
                       <widget class="GtkImageMenuItem" id="record_new_menu">
-                        <property name="label">_Nuovo</property>
+                        <property name="label">gtk-new</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
@@ -44,7 +44,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="record_edit_menu">
-                        <property name="label">_Modifica</property>
+                        <property name="label">gtk-edit</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
@@ -55,7 +55,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="record_delete_menu">
-                        <property name="label">_Elimina</property>
+                        <property name="label">gtk-delete</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
@@ -71,7 +71,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="record_save_menu">
-                        <property name="label">_Salva</property>
+                        <property name="label">gtk-save</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
@@ -82,7 +82,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="record_cancel_menu">
-                        <property name="label">Annulla</property>
+                        <property name="label">gtk-cancel</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
@@ -96,7 +96,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="record_undo_menu">
-                        <property name="label">Ripristina</property>
+                        <property name="label">gtk-revert-to-saved</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
@@ -112,7 +112,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="record_menu_close">
-                        <property name="label">Chiudi</property>
+                        <property name="label">gtk-close</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>

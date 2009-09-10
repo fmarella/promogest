@@ -183,9 +183,12 @@ E' presente una nuova versione disponibile"""
         #fill again the model of the treeview (a gtk.ListStore)
         for idAllarme in idAllarmi:
             dao = Promemoria().getRecord(id=idAllarme)
-            model.append((dao, dateToString(dao.data_scadenza),\
-                                dao.oggetto, dao.descrizione,\
-                                dao.incaricato, dao.autore, dao.annotazione))
+            model.append((dao, dateToString(dao.data_scadenza),
+                                dao.oggetto,
+                                dao.descrizione,
+                                dao.incaricato,
+                                dao.autore,
+                                dao.annotazione))
         self._loading=False
         #self.checkUpdate()
         #self.__a = gobject.idle_add(self.checkUpdate)

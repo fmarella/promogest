@@ -96,8 +96,9 @@ class Pg2StatusIcon(gtk.StatusIcon):
 
     def on_preferences(self, data):
         #if not hasAction(actionID=14):return
-        configuraWindow = ConfiguraWindow(self)
-        showAnagrafica(self.getTopLevel(), configuraWindow)
+        #from promogest.ui.Main import ConfiguraWindow
+        #configuraWindow = ConfiguraWindow(self)
+        #showAnagrafica(self.getTopLevel(), configuraWindow)
         print "clicked on preferences"
 
 

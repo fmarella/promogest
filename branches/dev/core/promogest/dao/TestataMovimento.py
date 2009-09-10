@@ -179,12 +179,12 @@ class TestataMovimento(Dao):
                         if fors:
                             if fors[0].data_prezzo == self.data_movimento:
                                 # ha trovato una fornitura con stessa data: aggiorno questa fornitura
-                                pg2log.info("TROVATO UNA FORNITURA CON STESSA DATA: AGGIORNO QUESTA FORNITURA")
+                                #pg2log.info("TROVATO UNA FORNITURA CON STESSA DATA: AGGIORNO QUESTA FORNITURA")
                                 daoFornitura = Fornitura().getRecord(id=fors[0].id)
                             else:
                                 """creo una nuova fornitura con data_prezzo pari alla data del movimento
                                     copio alcuni dati dalla fornitura piu' prossima"""
-                                pg2log.info("CREO UNA NUOVA FORNITURA CON DATA_PREZZO PARI ALLA DATA DEL MOVIMENTO COPIO ALCUNI DATI DALLA FORNITURA PIU' PROSSIMA")
+                                #pg2log.info("CREO UNA NUOVA FORNITURA CON DATA_PREZZO PARI ALLA DATA DEL MOVIMENTO COPIO ALCUNI DATI DALLA FORNITURA PIU' PROSSIMA")
                                 daoFornitura = Fornitura()
                                 daoFornitura.scorta_minima = fors[0].scorta_minima
                                 daoFornitura.id_multiplo = fors[0].id_multiplo
@@ -192,7 +192,7 @@ class TestataMovimento(Dao):
                                 daoFornitura.fornitore_preferenziale = fors[0].fornitore_preferenziale
                         else:
                             # nessuna fornitura utilizzabile, ne creo una nuova (alcuni dati mancheranno)
-                            pg2log.info("NESSUNA FORNITURA UTILIZZABILE, NE CREO UNA NUOVA (ALCUNI DATI MANCHERANNO)")
+                            #pg2log.info("NESSUNA FORNITURA UTILIZZABILE, NE CREO UNA NUOVA (ALCUNI DATI MANCHERANNO)")
                             daoFornitura = Fornitura()
 
                         daoFornitura.id_fornitore = self.id_fornitore
