@@ -867,7 +867,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             ret_value = 0
 
         # Elimino il file
-        #os.remove(filescontrino)
+        os.remove(filescontrino)
 
         if ret_value != 0:
             string_message = ''
