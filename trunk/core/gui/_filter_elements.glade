@@ -238,8 +238,8 @@
                   <widget class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="xalign">0.029999999329447746</property>
-                    <property name="xpad">2</property>
-                    <property name="ypad">2</property>
+                    <property name="xpad">1</property>
+                    <property name="ypad">3</property>
                     <property name="label" translatable="yes">&lt;b&gt;I:&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </widget>
@@ -254,7 +254,7 @@
                     <property name="visible">True</property>
                     <property name="xalign">0.019999999552965164</property>
                     <property name="xpad">1</property>
-                    <property name="ypad">2</property>
+                    <property name="ypad">3</property>
                   </widget>
                   <packing>
                     <property name="position">1</property>
