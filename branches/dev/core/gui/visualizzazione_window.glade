@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<!--*- mode: xml -*-->
+<glade-interface>
+  <widget class="GtkWindow" id="visualizzazione_window">
+    <property name="title" translatable="yes">Visualizzazione</property>
+    <property name="modal">True</property>
+    <property name="window_position">GTK_WIN_POS_CENTER</property>
+    <property name="default_width">900</property>
+    <property name="default_height">600</property>
+    <property name="icon">promogest.png</property>
+    <signal name="delete_event" handler="on_visualizzazione_window_close"/>
+    <signal name="destroy_event" handler="on_visualizzazione_window_close"/>
+    <child>
+      <widget class="GtkHBox" id="hbox80">
+        <property name="visible">True</property>
+        <property name="border_width">6</property>
+        <child>
+          <widget class="GtkVBox" id="visualizzazione_main_vbox">
+            <property name="visible">True</property>
+            <property name="spacing">6</property>
+            <child>
+              <widget class="GtkHBox" id="hbox82">
+                <property name="visible">True</property>
+                <child>
+                  <widget class="GtkImage" id="image48">
+                    <property name="visible">True</property>
+                    <property name="yalign">0</property>
+                    <property name="xpad">12</property>
+                    <property name="ypad">12</property>
+                    <property name="stock">gtk-directory</property>
+                    <property name="icon_size">6</property>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkScrolledWindow" id="scrolledwindow53">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                    <property name="vscrollbar_policy">GTK_POLICY_NEVER</property>
+                    <child>
+                      <widget class="GtkViewport" id="visualizzazione_viewport">
+                        <property name="visible">True</property>
+                        <property name="shadow_type">GTK_SHADOW_NONE</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </widget>
+                    </child>
+                  </widget>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkHSeparator" id="hseparator6">
+                <property name="visible">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkHBox" id="hbox150">
+                <property name="visible">True</property>
+                <child>
+                  <widget class="GtkHButtonBox" id="hbuttonbox2">
+                    <property name="visible">True</property>
+                    <property name="layout_style">GTK_BUTTONBOX_END</property>
+                    <child>
+                      <widget class="GtkButton" id="confirm_button">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="can_default">True</property>
+                        <property name="response_id">0</property>
+                        <signal name="clicked" handler="on_confirm_button_clicked"/>
+                        <accelerator key="F3" modifiers="" signal="clicked"/>
+                        <child>
+                          <widget class="GtkAlignment" id="alignment516">
+                            <property name="visible">True</property>
+                            <property name="xscale">0</property>
+                            <property name="yscale">0</property>
+                            <child>
+                              <widget class="GtkHBox" id="hbox384">
+                                <property name="visible">True</property>
+                                <property name="spacing">2</property>
+                                <child>
+                                  <widget class="GtkImage" id="image411">
+                                    <property name="visible">True</property>
+                                    <property name="pixbuf">conferma16x16.png</property>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <widget class="GtkLabel" id="label3471">
+                                    <property name="visible">True</property>
+                                    <property name="label">_OK</property>
+                                    <property name="use_underline">True</property>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </widget>
+                            </child>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </widget>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</glade-interface>

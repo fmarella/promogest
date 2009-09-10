@@ -1,0 +1,56 @@
+{% extends 'index.html' %}
+
+{% block body %}
+<div id="head">
+        <div id="img"><img src= "gui/listino48x48.png"></div>
+    <div id="testo">{{ui|replace("_"," ")|capitalize()}}</div>
+  </div>  <div id="rigaheader"></div>
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td class="report-header" colspan="2"><h3>Listino: <strong>{{dao.denominazione}}</strong></h3></td>
+            </tr>
+            <tr><td colspan="2" class="table-header">Dati listino</td></tr>
+            <tr>
+                <td width="140px" class="odd-detail">Descrizione</td>
+                <td class="odd-detail"><strong>{{dao.descrizione}}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Data listino</td>
+                <td class="even-detail">
+                    {% if dao.data_listino %}
+                        <strong>{{utils.dateToString(dao.data_listino)}}</strong>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr><td colspan="2" class="table-header">Composto Da Questi Listini:</td></tr>
+            <tr><td class="odd-detail" colspan="2">
+            <ul>
+                 {% for listino in dao.listiniComplessi %}
+                    <li>
+                    {{listino.listino_denominazione}}
+                    </li>
+                    {% endfor %}
+            </ul>
+            </td></tr>
+            <tr><td colspan="2" class="table-header">Categorie cliente associate</td></tr>
+            <tr><td class="odd-detail" colspan="2">
+            <ul>
+                {% for categoriaCliente in dao.categorieCliente %}
+                <li >
+                    {{categoriaCliente.categoria_cliente}}
+                </li>
+                {% endfor %}
+            </ul>
+            </td></tr>
+            <tr><td colspan="2" class="table-header">Magazzini associati</td></tr>
+            <tr><td class="odd-detail" colspan="2">
+            <ul>
+                {% for magazzino in dao.magazzini %}
+                <li >
+                    {{magazzino.magazzino}}
+                </li>
+                {% endfor %}
+            </ul>
+            </td></tr>
+        </table>
+{% endblock %}

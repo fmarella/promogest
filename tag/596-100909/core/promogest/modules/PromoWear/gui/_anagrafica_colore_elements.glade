@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<!--Generated with glade3 3.4.4 on Thu May  1 16:21:02 2008 -->
+<glade-interface>
+  <widget class="GtkWindow" id="_anagrafica_colore_elements">
+    <property name="visible">True</property>
+    <property name="title" translatable="yes">Anagrafica colori</property>
+    <child>
+      <widget class="GtkHBox" id="hbox272">
+        <property name="visible">True</property>
+        <child>
+          <widget class="GtkTable" id="anagrafica_colore_filter_table">
+            <property name="visible">True</property>
+            <property name="n_rows">1</property>
+            <property name="n_columns">2</property>
+            <child>
+              <widget class="GtkLabel" id="label497">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">Descrizione</property>
+              </widget>
+              <packing>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">10</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkEntry" id="denominazione_filter_entry">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+              </widget>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="y_options"></property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkTable" id="anagrafica_colore_detail_table">
+            <property name="visible">True</property>
+            <property name="border_width">6</property>
+            <property name="n_rows">2</property>
+            <property name="n_columns">2</property>
+            <property name="row_spacing">6</property>
+            <child>
+              <widget class="GtkLabel" id="label499">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">Descrizione</property>
+              </widget>
+              <packing>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">10</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkEntry" id="denominazione_entry">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+              </widget>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="label605">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">Descrizione breve</property>
+              </widget>
+              <packing>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">10</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkAlignment" id="alignment209">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="xscale">0</property>
+                <child>
+                  <widget class="GtkEntry" id="descrizione_breve_entry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="max_length">10</property>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</glade-interface>

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Promogest-2
+Comment=Gestionale Open Source
+GenericName=Gestionale
+Exec=/usr/bin/promoGest2
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=promogest.png
+Categories=Application;Office;
+

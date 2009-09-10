@@ -1,0 +1,99 @@
+Visione dell'utente:
+
+  * un articolo puo` essere associato a stagioni (autunno/inverno,
+    primavera/estate, quattro stagioni);
+
+  * un articolo puo` essere associato a un gruppo taglie
+
+  * un articolo puo` essere associato a dei colori
+
+  * i carichi di articoli con taglie e colori sono semplificati:
+    l'interfaccia consente di specificare in blocco quali taglie e
+    colori di un certo articolo sono state aggiunte al magazzino
+
+
+Implementazione:
+
+  * anagrafica taglie (L, M, 42...)
+
+  * anagrafica gruppi di taglie (americane, junior, donna...)
+
+  * scissione della tabella articoli:
+
+      - tabella articolo_base, che identifica il modello di capo
+        d'abbigliamento con gran parte dei dati anagrafici e
+        l'associazione al gruppo taglie;
+
+      - tabella articolo, coinvolta nei movimenti e nelle fatture, con
+        informazioni su taglie, colori e codici a barre
+
+  * diverse combinazioni articolo/taglia/colore individuano diversi
+    articoli sul database (sempre riferiti ad un articolo base aka
+    modello del capo d'abbigliamento)
+
+  * tutti gli articoli (base e "normali") hanno informazioni su taglie
+    e colori.  Eventualmente si puo` trattare di taglia e colore
+    unici.  In quest'ultimo caso e` eventualmente possibile nascondere
+    l'informazione per taglie/colori, e (in un secondo tempo)
+    rieseguire la fusione tra Promogest e Promowear.
+
+  * il Dao dell'articolo "normale" verra` popolato anche con i campi
+    spostati nell'articolo base.  In questo modo non sara` necessario
+    aggiornare in blocco tutto il codice per il nuovo schema del DB
+    SQL (ma la modifica potrebbe anche essere permanente, visto che si
+    tratta di una banale operazione di mapping tabelle <-> oggetti che
+    semplifica il codice senza introdurre ridondanza nel DB).
+
+  * i colori stanno in una tabella a parte
+
+  * tabella a parte per le stagioni del capo d'abbigliamento
+
+
+Casi d'uso:
+
+  * inserimento articoli: la finestra di modifica articolo utilizzata
+    per il promogest salvera` i propri dati sull'articolo base.  Viene
+    poi resa accessibile una finestra di dialogo con griglia per
+    l'associazione di taglie e colori all'articolo corrente.  Al
+    salvataggio, una "Polo modello Texas" della Levi's disponibile
+    nelle taglie S, M ed L e nei colori rosso, verde e blu causa la
+    creazione di:
+
+      - un articolo base;
+
+      - 3 (taglie) * 3 (colori) = 9 articoli su DB
+
+    Esempi:
+        Polo modello Texas S rossa
+        Polo modello Texas M verde
+        ...
+
+    Questi ultimi articoli saranno tutti associati all'articolo base
+    "Polo modello Texas" della Levi's.  Le rispettive descrizioni
+    possono essere generate automagicamente concatenando la
+    descrizione dell'articolo base, la taglia e il colore
+
+  * modifica articoli: se vengono aggiunte taglie o colori il
+    programma dovra` occuparsi di aggiungere le effettive combinazioni
+    al DB.  Se vengono rimosse, i vincoli "ON DELETE RESTRICT"
+    impediranno la perdita di informazioni p.es. per i movimenti gia`
+    effettuati.  In seguito si potranno aggiungere messaggi di errore
+    piu` esplicativi ("Attenzione: la taglia non puo` essere eliminata
+    perche` gia` utilizzata in fatturazione", ecc)
+
+  * eliminazione articoli: valide le precedenti considerazioni per "ON
+    DELETE RESTRICT"
+
+  * carico di magazzino: dopo la selezione dell'articolo base viene
+    presentata una griglia analoga a quella del punto precedente, che
+    consente di scegliere quali combinazioni di taglia/colore (ovvero
+    quali articoli "reali") finirnno nelle righe del movimento
+
+  * fatturazione: dopo la scelta dell'articolo base viene presentata
+    una griglia simile a quella dei punti precedenti, con cui
+    stabilire le giacenze e selezionare la taglia/colore da vendere
+    per ogni riga
+
+  * tutto il resto: ogni ricorrenza degli articoli dovra`
+    probabilmente essere aggiornata per comprendere informazioni su
+    taglie e colori

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<!--*- mode: xml -*-->
+<glade-interface>
+  <widget class="GtkWindow" id="configura_window">
+    <property name="width_request">500</property>
+    <property name="height_request">500</property>
+    <property name="title" translatable="yes">Finestra di configurazione</property>
+    <property name="modal">True</property>
+    <property name="icon">promogest.png</property>
+    <signal name="destroy_event" handler="on_quit"/>
+    <signal name="delete_event" handler="on_quit"/>
+    <child>
+      <widget class="GtkVBox" id="vbox56">
+        <property name="visible">True</property>
+        <child>
+          <widget class="GtkFrame" id="configura_frame">
+            <property name="visible">True</property>
+            <property name="border_width">3</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">GTK_SHADOW_ETCHED_OUT</property>
+            <child>
+              <widget class="GtkScrolledWindow" id="params_scrolled_window">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="border_width">2</property>
+                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="label402">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">&lt;b&gt;Configura Promogest&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+              </widget>
+              <packing>
+                <property name="type">label_item</property>
+              </packing>
+            </child>
+          </widget>
+        </child>
+        <child>
+          <widget class="GtkHButtonBox" id="hbuttonbox11">
+            <property name="visible">True</property>
+            <property name="border_width">5</property>
+            <property name="layout_style">GTK_BUTTONBOX_EDGE</property>
+            <child>
+              <widget class="GtkButton" id="salva_button">
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="response_id">0</property>
+                <signal name="clicked" handler="on_salva_button_clicked"/>
+                <child>
+                  <widget class="GtkAlignment" id="alignment525">
+                    <property name="visible">True</property>
+                    <property name="xscale">0</property>
+                    <property name="yscale">0</property>
+                    <child>
+                      <widget class="GtkHBox" id="hbox393">
+                        <property name="visible">True</property>
+                        <property name="spacing">2</property>
+                        <child>
+                          <widget class="GtkImage" id="image420">
+                            <property name="visible">True</property>
+                            <property name="pixbuf">salva16x16.png</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="label3480">
+                            <property name="visible">True</property>
+                            <property name="label">_Salva</property>
+                            <property name="use_underline">True</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkButton" id="esci_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="response_id">0</property>
+                <signal name="clicked" handler="on_quit"/>
+                <child>
+                  <widget class="GtkAlignment" id="alignment526">
+                    <property name="visible">True</property>
+                    <property name="xscale">0</property>
+                    <property name="yscale">0</property>
+                    <child>
+                      <widget class="GtkHBox" id="hbox394">
+                        <property name="visible">True</property>
+                        <property name="spacing">2</property>
+                        <child>
+                          <widget class="GtkImage" id="image421">
+                            <property name="visible">True</property>
+                            <property name="pixbuf">chiudi16x16.png</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="label3481">
+                            <property name="visible">True</property>
+                            <property name="label">C_hiudi</property>
+                            <property name="use_underline">True</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</glade-interface>
