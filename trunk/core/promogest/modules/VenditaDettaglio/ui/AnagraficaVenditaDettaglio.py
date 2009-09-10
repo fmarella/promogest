@@ -715,24 +715,25 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             totale_scontato = "0.00"
             totale_sconto = "0.00"
         else:
-            sconto = self.sconto_totale_entry.get_text()
+            self.sconto = self.sconto_totale_entry.get_text()
             if self.tipo_sconto_euro.get_active():
                 self.tipo_sconto_scontrino = "valore"
-                totale_sconto = Decimal(sconto or 0)
+                totale_sconto = Decimal(self.sconto or 0)
                 totale_scontato = total-totale_sconto
             else:
                 self.tipo_sconto_scontrino = "percentuale"
-                if not sconto:
+                if not self.sconto:
                     totale_scontato = total
                 else:
-                    totale_sconto = total*(Decimal(sconto)/100)
+                    totale_sconto = total*(Decimal(self.sconto)/100)
                     totale_scontato = total-totale_sconto
+
 
         self.label_totale.set_markup('<b><span foreground="black" size="40000">' + str(mN(totale_scontato)) +'</span></b>')
         self.label_sconto.set_markup('<b><span foreground="#338000" size="24000">' + str(mN(totale_sconto)) +'</span></b>')
         self.label_subtotale.set_markup('<b><span foreground="#338000" size="26000">' + str(mN(total)) +'</span></b>')
 
-        return (totale_scontato,total,totale_sconto)
+        return (totale_scontato,total,totale_sconto, self.sconto)
 
     def on_empty_button_clicked(self, button):
         self.scontrino_treeview.get_model().clear()
@@ -755,7 +756,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         dao = TestataScontrino()
 
         dao.totale_scontrino = mN(self.label_totale.get_text())
-        dao.totale_sconto = mN(self.label_sconto.get_text())
+        dao.totale_sconto = mN(self.sconto_totale_entry.get_text())
         dao.totale_subtotale = mN(self.label_subtotale.get_text())
         dao.tipo_sconto_scontrino = self.tipo_sconto_scontrino
 
@@ -773,7 +774,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             return
 
         # Creo dao testata_scontrino
-
 
         scontiSuTotale = []
         #res = self.sconti_testata_widget.getSconti()
@@ -867,7 +867,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             ret_value = 0
 
         # Elimino il file
-        os.remove(filescontrino)
+        #os.remove(filescontrino)
 
         if ret_value != 0:
             string_message = ''
@@ -961,7 +961,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             stringa='15                000000.0000\r\n'
             f.write(stringa)
             if daoScontrino.tipo_sconto_scontrino =='percentuale':
-                stringa = '07%-16s%09.2f00\r\n' % ('sconto', daoScontrino.totale_sconto)
+                stringa = '07%-16s%09.2f00\r\n' % ('sconto',daoScontrino.totale_sconto)
                 f.write(stringa)
             else:
                 stringa = '06%-16s%09.2f00\r\n' % ('sconto', daoScontrino.totale_sconto)
@@ -1002,7 +1002,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
 
     def on_stampa_del_giornale_breve_activate(self, widget):
-        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_giornale_breve_' + datetime.date.today().strftime('%d_%m_%Y_%H_%M_%S')
+        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_giornale_breve_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename,'w')
         stringa = '52                00000000002..\r\n'
         f.write(stringa)
@@ -1010,7 +1010,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.sendToPrint(filename)
 
     def on_stampa_del_periodico_cassa_activate(self, widget):
-        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_cassa_' + datetime.date.today().strftime('%d_%m_%Y_%H_%M_%S')
+        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_cassa_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename,'w')
         stringa = '52                00000000004..\r\n'
         f.write(stringa)
@@ -1018,7 +1018,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.sendToPrint(filename)
 
     def on_stampa_del_periodico_reparti_activate(self, widget):
-        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_reparti_' + datetime.date.today().strftime('%d_%m_%Y_%H_%M_%S')
+        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_reparti_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename,'w')
         stringa = '52                00000000006..\r\n'
         f.write(stringa)
@@ -1026,7 +1026,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.sendToPrint(filename)
 
     def on_stampa_del_periodico_articoli_activate(self, widget):
-        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_articoli_' + datetime.date.today().strftime('%d_%m_%Y_%H_%M_%S')
+        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_articoli_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename,'w')
         stringa = '52                00000000008..\r\n'
         f.write(stringa)
@@ -1034,7 +1034,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.sendToPrint(filename)
 
     def on_stampa_della_affluenza_oraria_activate(self, widget):
-        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_della_affluenza_oraria_' + datetime.date.today().strftime('%d_%m_%Y_%H_%M_%S')
+        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_della_affluenza_oraria_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename,'w')
         stringa = '52                00000000009..\r\n'
         f.write(stringa)
