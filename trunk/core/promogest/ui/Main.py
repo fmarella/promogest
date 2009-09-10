@@ -11,6 +11,7 @@ import gtk, gobject
 import hashlib
 import zipfile
 import os
+import webbrowser
 from  subprocess import *
 import threading, os, signal
 from promogest import Environment
@@ -506,6 +507,10 @@ class Main(GladeWidget):
         response = licenzaDialog.licenza_dialog.run()
         if response == gtk.RESPONSE_OK:
             licenzaDialog.licenza_dialog.destroy()
+
+    def on_manuale_online_activate(self, widget):
+        url ="http://help.promotux.it"
+        webbrowser.open_new_tab(url)
 
     def on_aggiorna_activate(self, widget):
         aggiorna(self)

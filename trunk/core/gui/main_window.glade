@@ -149,6 +149,14 @@
                         <signal name="activate" handler="on_seriale_menu_activate"/>
                       </widget>
                     </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="manuale_online">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Manuale online</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_manuale_online_activate"/>
+                      </widget>
+                    </child>
                   </widget>
                 </child>
               </widget>

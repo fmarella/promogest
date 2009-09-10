@@ -22,7 +22,7 @@
 
 import hashlib
 import os
-import gtk
+import gtk, gobject
 import datetime
 import locale
 import threading
@@ -37,6 +37,7 @@ from GtkExceptionHandler import GtkExceptionHandler
 from utils import hasAction,on_status_activate, checkAggiorna, aggiorna
 from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
+from promogest.ui.DocuView import DocuView
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.lib import feedparser
@@ -99,8 +100,9 @@ class Pg2StatusIcon(gtk.StatusIcon):
         showAnagrafica(self.getTopLevel(), configuraWindow)
         print "clicked on preferences"
 
-    # and this one to show the about box
+
     def on_about(self, data):
+        """ and this one to show the about box """
         about = gtk.AboutDialog()
         about.set_name("PromoGest2")
         about.set_version("svn")
@@ -189,9 +191,7 @@ class Login(GladeApp):
         return fileName
 
     def feddretreive(self):
-        """
-        FIXME
-        """
+        """ FIXME """
         d = feedparser.parse("http://blog.promotux.it/?feed=rss2")
         #self.checkUpdate()
         Environment.feedAll = d
@@ -205,11 +205,13 @@ class Login(GladeApp):
         if index >= 0:
             combo.child.set_text(combo.get_model()[index][0])
 
-    def on_button_help_clicked(self, button):
-        """
-        Help button, open sendmail widget
-        """
-        sendemail = SendEmail()
+    #def on_button_help_clicked(self, button):
+        #"""
+        #Help button, open sendmail widget
+        #"""
+        #docu = DocuView()
+        ##sendemail = SendEmail()
+        ##print "INIZIAMO MALE"
 
     def on_button_login_clicked(self, button=None):
         """
