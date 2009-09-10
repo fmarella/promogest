@@ -194,21 +194,31 @@ class GestioneScontrini(GladeWidget):
 
         self.calcolaTotale(scos_no_batchSize)
 
+    def calcolasconto(self, dao):
+        if dao.sconti[0].tipo_sconto=="valore":
+            return dao.sconti[0].valore
+        else:
+            #print ((dao.totale_scontrino*100)/dao.sconti[0].valore), (dao.totale_scontrino)
+            return (100 * dao.totale_scontrino) / (100 - dao.sconti[0].valore) -(dao.totale_scontrino)
+            #totale_scontato = total-totale_sconto
+
     def calcolaTotale(self, scos_no_batchSize):
         tot=0
         totccr = 0
         totass = 0
         totnum = 0
         totcont = 0
+        tot_sconti = 0
         for m in scos_no_batchSize:
-            #print m.totale_scontrino
+            if m.sconti:
+                tot_sconti += self.calcolasconto(m)
             tot += m.totale_scontrino
             totccr += m.totale_carta_credito
             totass += m.totale_assegni
             totcont += m.totale_contanti
             totnum += 1
-        self.filterss.label1.set_text("tot scontr:")
-        stringa = "%s,tot conta: %s, tot carta: %s, tot ass: %s, tot num: %s" %(mN(tot),mN(totcont), mN(totccr), mN(totass), totnum)
+        self.filterss.label1.set_text("T scontrini:")
+        stringa = "%s - T Contanti:%s - T Carta:%s - T Assegni:%s - T Sconti:%s - N°:%s" %(mN(tot),mN(totcont), mN(totccr), mN(totass),mN(tot_sconti), totnum )
         self.filterss.info_label.set_text( str(stringa))
 
 
