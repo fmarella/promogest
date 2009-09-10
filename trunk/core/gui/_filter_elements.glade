@@ -96,10 +96,10 @@
                             <property name="events">GDK_KEY_PRESS_MASK | GDK_STRUCTURE_MASK</property>
                             <property name="tooltip" translatable="yes">Seleziona in base ai parametri specificati</property>
                             <signal name="clicked" handler="on_filter_search_button_clicked"/>
-                            <accelerator key="F3" signal="clicked"/>
-                            <accelerator key="KP_F3" signal="clicked"/>
-                            <accelerator key="KP_Enter" signal="clicked"/>
                             <accelerator key="Return" signal="clicked"/>
+                            <accelerator key="KP_Enter" signal="clicked"/>
+                            <accelerator key="KP_F3" signal="clicked"/>
+                            <accelerator key="F3" signal="clicked"/>
                             <child>
                               <widget class="GtkAlignment" id="alignment507">
                                 <property name="visible">True</property>
@@ -233,11 +233,13 @@
             <child>
               <widget class="GtkHBox" id="hbox2">
                 <property name="visible">True</property>
+                <property name="spacing">4</property>
                 <child>
                   <widget class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="xalign">0.029999999329447746</property>
-                    <property name="xpad">1</property>
+                    <property name="xpad">2</property>
+                    <property name="ypad">2</property>
                     <property name="label" translatable="yes">&lt;b&gt;I:&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </widget>
@@ -251,6 +253,8 @@
                   <widget class="GtkLabel" id="info_label">
                     <property name="visible">True</property>
                     <property name="xalign">0.019999999552965164</property>
+                    <property name="xpad">1</property>
+                    <property name="ypad">2</property>
                   </widget>
                   <packing>
                     <property name="position">1</property>

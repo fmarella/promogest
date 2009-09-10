@@ -196,11 +196,20 @@ class GestioneScontrini(GladeWidget):
 
     def calcolaTotale(self, scos_no_batchSize):
         tot=0
+        totccr = 0
+        totass = 0
+        totnum = 0
+        totcont = 0
         for m in scos_no_batchSize:
             #print m.totale_scontrino
             tot += m.totale_scontrino
-        self.filterss.label1.set_text("TOTALE SCONTRINI:")
-        self.filterss.info_label.set_text( str(mN(tot)))
+            totccr += m.totale_carta_credito
+            totass += m.totale_assegni
+            totcont += m.totale_contanti
+            totnum += 1
+        self.filterss.label1.set_text("tot scontr:")
+        stringa = "%s,tot conta: %s, tot carta: %s, tot ass: %s, tot num: %s" %(mN(tot),mN(totcont), mN(totccr), mN(totass), totnum)
+        self.filterss.info_label.set_text( str(stringa))
 
 
     def on_filter_treeview_cursor_changed(self, treeview):
