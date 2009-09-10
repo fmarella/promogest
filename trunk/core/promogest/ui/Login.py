@@ -37,7 +37,7 @@ from GtkExceptionHandler import GtkExceptionHandler
 from utils import hasAction,on_status_activate, checkAggiorna, aggiorna
 from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
-from promogest.ui.DocuView import DocuView
+#from promogest.ui.DocuView import DocuView
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.lib import feedparser

@@ -11,6 +11,7 @@ from decimal import *
 import pygtk
 pygtk.require('2.0')
 import gtk
+import threading
 import time, datetime
 from sqlalchemy.orm import *
 from sqlalchemy import *
@@ -2485,11 +2486,15 @@ def checkAggiorna():
             Environment.rev_locale= client.info(".").revision.number
         if not Environment.rev_remota:
             Environment.rev_remota= pysvn.Client().info2("http://svn.promotux.it/svn/promogest2/trunk/", recurse=False)[0][1]["rev"].number
+
     #if Environment.rev_remota > Environment.rev_locale:
         #return (True, rev_locale, rev_remota)
     #else:
         #return (False,rev_locale, rev_remota)
-    gobject.idle_add(agg)
+    #gobject.threads_init()
+    #gobject.idle_add(agg)
+    thread = threading.Thread(target=agg)
+    thread.start()
 
 
 def aggiorna(anag):
@@ -2542,7 +2547,7 @@ def aggiorna(anag):
             dialoggg.run()
             dialoggg.destroy()
     else:
-        msgg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
+        msgg = "ERRORE AGGIORNAMENTO FORSE NON C'E' CONNESSIONE?"
         Environment.pg2log.info("SISTEMA  NON IN LINEA PER AGGIORNAMENTO")
         dialogg = gtk.MessageDialog(anag.getTopLevel(),
                         gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
