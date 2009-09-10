@@ -697,6 +697,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             TODO: Add a discount
         """
         total = 0
+        #total = "0.00"
+        totale_scontato = "0.00"
+        totale_sconto = "0.00"
         model = self.scontrino_treeview.get_model()
         for row in model:
             prezzo = mN(row[5]) or 0

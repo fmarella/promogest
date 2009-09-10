@@ -138,7 +138,7 @@ class AnagraficaColoreDetail(AnagraficaDetail):
 
 
     def updateDao(self):
-        if self.dao is not None:
+        if self.dao:
             self.dao = Colore().getRecord(id=self.dao.id)
             self._refresh()
         else:
