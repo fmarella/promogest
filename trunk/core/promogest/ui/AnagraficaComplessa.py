@@ -616,7 +616,7 @@ class Anagrafica(GladeWidget):
         if responseId == gtk.RESPONSE_CANCEL:
             self.__cancelOperation = True
 
-            self.__pdfGenerator.cancelOperation()
+            #self.__pdfGenerator.cancelOperation()
 
             if self.__pulseSourceTag is not None:
                 gobject.source_remove(self.__pulseSourceTag)
