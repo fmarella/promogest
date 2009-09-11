@@ -95,6 +95,33 @@ pygments_style = 'sphinx'
 # must exist either in Sphinx' static/ path, or in one of the custom paths
 # given in html_static_path.
 html_style = 'default.css'
+html_theme = "default"
+html_theme_options = {
+    "stickysidebar":"false",
+    "rightsidebar": "false",
+    "relbarbgcolor": "black",
+    "sidebarbgcolor": "#FF9900",
+    "sidebarlinkcolor": "#FFFFFF",
+    "sidebartextcolor" :"#552200",
+    "footerbgcolor": "#552200",
+    #"footertextcolor":"",
+    #"relbarbgcolor":"",
+    #"relbartextcolor":"",
+    #"relbarlinkcolor":"",
+    #"bgcolor":"",
+    #"textcolor":"",
+    "linkcolor":"#552200",
+    "headbgcolor":"#FFFFF0",
+    "headtextcolor":"#552200",
+    #"headlinkcolor":"",
+    #"codebgcolor":"",
+    #"codetextcolor":"",
+    #"bodyfont":"",
+    #"headfont":"",
+}
+
+
+
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
