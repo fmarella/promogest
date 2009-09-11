@@ -2,7 +2,11 @@
 Anagrafiche
 ============
 
+Screen:
+
+.. image:: finestra_anagrafiche_pg2.png
+
 primo capitolo
 ==============
 
-Questa è la pagina di intriduzione alla documentazione
+
