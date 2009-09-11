@@ -10,14 +10,14 @@
 body {
     font-family: sans-serif;
     font-size: 100%;
-    background-color: #000000;
+    background-color: #11303d;
     color: #000;
     margin: 0;
     padding: 0;
 }
 
 div.document {
-    background-color: #ff9900;
+    background-color: #1c4e63;
 }
 
 div.documentwrapper {
@@ -41,7 +41,6 @@ div.footer {
     padding: 9px 0 9px 0;
     text-align: center;
     font-size: 75%;
-	background-color: #ff9900;
 }
 
 div.footer a {
@@ -50,7 +49,7 @@ div.footer a {
 }
 
 div.related {
-    background-color: #a46200;
+    background-color: #133f52;
     line-height: 30px;
     color: #ffffff;
 }
@@ -60,12 +59,11 @@ div.related a {
 }
 
 div.sphinxsidebar {
-	background-color: #ff9900;
 }
 
 div.sphinxsidebar h3 {
     font-family: 'Trebuchet MS', sans-serif;
-    color: #553300;
+    color: #ffffff;
     font-size: 1.4em;
     font-weight: normal;
     margin: 0;
@@ -73,12 +71,12 @@ div.sphinxsidebar h3 {
 }
 
 div.sphinxsidebar h3 a {
-    color: #553300;
+    color: #ffffff;
 }
 
 div.sphinxsidebar h4 {
     font-family: 'Trebuchet MS', sans-serif;
-    color: #553300;
+    color: #ffffff;
     font-size: 1.3em;
     font-weight: normal;
     margin: 5px 0 0 0;
@@ -96,15 +94,15 @@ div.sphinxsidebar p.topless {
 div.sphinxsidebar ul {
     margin: 10px;
     padding: 0;
-    color: #553300;
+    color: #ffffff;
 }
 
 div.sphinxsidebar a {
-    color: #767676;
+    color: #98dbcc;
 }
 
 div.sphinxsidebar input {
-    border: 1px solid #553300;
+    border: 1px solid #98dbcc;
     font-family: sans-serif;
     font-size: 1em;
 }
@@ -112,7 +110,7 @@ div.sphinxsidebar input {
 /* -- body styles ----------------------------------------------------------- */
 
 a {
-    color: #4D534D;
+    color: #355f7c;
     text-decoration: none;
 }
 
@@ -132,23 +130,23 @@ div.body h4,
 div.body h5,
 div.body h6 {
     font-family: 'Trebuchet MS', sans-serif;
-    background-color: #ff9900;
-    font-weight: bold;
-    color: #553300;
+    background-color: #f2f2f2;
+    font-weight: normal;
+    color: #20435c;
     border-bottom: 1px solid #ccc;
     margin: 20px -20px 10px -20px;
     padding: 3px 0 3px 10px;
 }
 
-div.body h1 { margin-top: 0; font-size: 180%; }
-div.body h2 { font-size: 150%; }
-div.body h3 { font-size: 130%; }
-div.body h4 { font-size: 110%; }
-div.body h5 { font-size: 100%; }
-div.body h6 { font-size: 90%; }
+div.body h1 { margin-top: 0; font-size: 200%; }
+div.body h2 { font-size: 160%; }
+div.body h3 { font-size: 140%; }
+div.body h4 { font-size: 120%; }
+div.body h5 { font-size: 110%; }
+div.body h6 { font-size: 100%; }
 
 a.headerlink {
-    color: #a46200;
+    color: #c60f0f;
     font-size: 0.8em;
     padding: 0 4px 0 4px;
     text-decoration: none;
@@ -162,7 +160,6 @@ a.headerlink:hover {
 div.body p, div.body dd, div.body li {
     text-align: justify;
     line-height: 130%;
-	color: #000000;
 }
 
 div.admonition p.admonition-title + p {
