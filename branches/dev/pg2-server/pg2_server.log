@@ -1,0 +1,417 @@
+2009-09-14 15:06:23,670 - PromoGest2 - DEBUG - 
+
+<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>> - /home/vete/pg2_work/branches/dev/pg2-server/core/Environment.py - <module> - 143
+2009-09-14 15:06:24,473 - PromoGest2 - DEBUG - 
+
+<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>> - /home/vete/pg2_work/branches/dev/pg2-server/promogest/Environment.py - <module> - 143
+2009-09-14 15:06:24,473 - PromoGest2 - DEBUG - 
+
+<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>> - /home/vete/pg2_work/branches/dev/pg2-server/promogest/Environment.py - <module> - 143
+2009-09-14 15:06:24,585 - PromoGest2 - DEBUG - Error occurred: traceback follows
+  Traceback (most recent call last):
+
+    File "./janas.py", line 19, in <module>
+    app = make_app()
+
+    File "./janas.py", line 15, in make_app
+    from Main import Janas
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/Main.py", line 13, in <module>
+    from core.lib.page import Page
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/lib/page.py", line 14, in <module>
+    from core.lib.utils import *
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/lib/utils.py", line 24, in <module>
+    from core.dao.RoleAction import RoleAction
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/dao/RoleAction.py", line 31, in <module>
+    roleactionTable.create(checkfirst=True)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 386, in create
+    self.metadata.create_all(bind=bind, checkfirst=checkfirst, tables=[self])
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 1786, in create_all
+    bind.create(self, checkfirst=checkfirst, tables=tables)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/engine/base.py", line 1129, in create
+    self._run_visitor(self.dialect.schemagenerator, entity, connection=connection, **kwargs)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/engine/base.py", line 1158, in _run_visitor
+    visitorcallable(self.dialect, conn, **kwargs).traverse(element)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 89, in traverse
+    return traverse(obj, self.__traverse_options__, self._visitor_dict)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 200, in traverse
+    return traverse_using(iterate(obj, opts), obj, visitors)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 194, in traverse_using
+    meth(target)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/compiler.py", line 829, in visit_metadata
+    collection = [t for t in sql_util.sort_tables(tables) if self._can_create(t)]
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/util.py", line 21, in sort_tables
+    visitors.traverse(table, {'schema_visitor':True}, {'foreign_key':visit_foreign_key})
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 200, in traverse
+    return traverse_using(iterate(obj, opts), obj, visitors)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 194, in traverse_using
+    meth(target)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/util.py", line 15, in visit_foreign_key
+    parent_table = fkey.column.table
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/util.py", line 1332, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 914, in column
+    "foreign key" % tname)
+
+  NoReferencedTableError: Could not find table 'role' with which to generate a foreign key
+ - /home/vete/pg2_work/branches/dev/pg2-server/promogest/Environment.py - hook - 148
+2009-09-14 15:06:24,585 - PromoGest2 - DEBUG - Error occurred: traceback follows
+  Traceback (most recent call last):
+
+    File "./janas.py", line 19, in <module>
+    app = make_app()
+
+    File "./janas.py", line 15, in make_app
+    from Main import Janas
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/Main.py", line 13, in <module>
+    from core.lib.page import Page
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/lib/page.py", line 14, in <module>
+    from core.lib.utils import *
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/lib/utils.py", line 24, in <module>
+    from core.dao.RoleAction import RoleAction
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/dao/RoleAction.py", line 31, in <module>
+    roleactionTable.create(checkfirst=True)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 386, in create
+    self.metadata.create_all(bind=bind, checkfirst=checkfirst, tables=[self])
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 1786, in create_all
+    bind.create(self, checkfirst=checkfirst, tables=tables)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/engine/base.py", line 1129, in create
+    self._run_visitor(self.dialect.schemagenerator, entity, connection=connection, **kwargs)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/engine/base.py", line 1158, in _run_visitor
+    visitorcallable(self.dialect, conn, **kwargs).traverse(element)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 89, in traverse
+    return traverse(obj, self.__traverse_options__, self._visitor_dict)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 200, in traverse
+    return traverse_using(iterate(obj, opts), obj, visitors)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 194, in traverse_using
+    meth(target)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/compiler.py", line 829, in visit_metadata
+    collection = [t for t in sql_util.sort_tables(tables) if self._can_create(t)]
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/util.py", line 21, in sort_tables
+    visitors.traverse(table, {'schema_visitor':True}, {'foreign_key':visit_foreign_key})
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 200, in traverse
+    return traverse_using(iterate(obj, opts), obj, visitors)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 194, in traverse_using
+    meth(target)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/util.py", line 15, in visit_foreign_key
+    parent_table = fkey.column.table
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/util.py", line 1332, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 914, in column
+    "foreign key" % tname)
+
+  NoReferencedTableError: Could not find table 'role' with which to generate a foreign key
+ - /home/vete/pg2_work/branches/dev/pg2-server/promogest/Environment.py - hook - 148
+2009-09-14 15:10:13,472 - PromoGest2 - DEBUG - 
+
+<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>> - /home/vete/pg2_work/branches/dev/pg2-server/core/Environment.py - <module> - 143
+2009-09-14 15:10:14,401 - PromoGest2 - DEBUG - 
+
+<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>> - /home/vete/pg2_work/branches/dev/pg2-server/promogest/Environment.py - <module> - 143
+2009-09-14 15:10:14,401 - PromoGest2 - DEBUG - 
+
+<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>> - /home/vete/pg2_work/branches/dev/pg2-server/promogest/Environment.py - <module> - 143
+2009-09-14 15:10:14,549 - PromoGest2 - DEBUG - Error occurred: traceback follows
+  Traceback (most recent call last):
+
+    File "./janas.py", line 19, in <module>
+    app = make_app()
+
+    File "./janas.py", line 15, in make_app
+    from Main import Janas
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/Main.py", line 13, in <module>
+    from core.lib.page import Page
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/lib/page.py", line 14, in <module>
+    from core.lib.utils import *
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/lib/utils.py", line 24, in <module>
+    from core.dao.RoleAction import RoleAction
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/dao/RoleAction.py", line 31, in <module>
+    roleactionTable.create(checkfirst=True)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 386, in create
+    self.metadata.create_all(bind=bind, checkfirst=checkfirst, tables=[self])
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 1786, in create_all
+    bind.create(self, checkfirst=checkfirst, tables=tables)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/engine/base.py", line 1129, in create
+    self._run_visitor(self.dialect.schemagenerator, entity, connection=connection, **kwargs)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/engine/base.py", line 1158, in _run_visitor
+    visitorcallable(self.dialect, conn, **kwargs).traverse(element)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 89, in traverse
+    return traverse(obj, self.__traverse_options__, self._visitor_dict)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 200, in traverse
+    return traverse_using(iterate(obj, opts), obj, visitors)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 194, in traverse_using
+    meth(target)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/compiler.py", line 829, in visit_metadata
+    collection = [t for t in sql_util.sort_tables(tables) if self._can_create(t)]
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/util.py", line 21, in sort_tables
+    visitors.traverse(table, {'schema_visitor':True}, {'foreign_key':visit_foreign_key})
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 200, in traverse
+    return traverse_using(iterate(obj, opts), obj, visitors)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 194, in traverse_using
+    meth(target)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/util.py", line 15, in visit_foreign_key
+    parent_table = fkey.column.table
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/util.py", line 1332, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 914, in column
+    "foreign key" % tname)
+
+  NoReferencedTableError: Could not find table 'role' with which to generate a foreign key
+ - /home/vete/pg2_work/branches/dev/pg2-server/promogest/Environment.py - hook - 148
+2009-09-14 15:10:14,549 - PromoGest2 - DEBUG - Error occurred: traceback follows
+  Traceback (most recent call last):
+
+    File "./janas.py", line 19, in <module>
+    app = make_app()
+
+    File "./janas.py", line 15, in make_app
+    from Main import Janas
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/Main.py", line 13, in <module>
+    from core.lib.page import Page
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/lib/page.py", line 14, in <module>
+    from core.lib.utils import *
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/lib/utils.py", line 24, in <module>
+    from core.dao.RoleAction import RoleAction
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/dao/RoleAction.py", line 31, in <module>
+    roleactionTable.create(checkfirst=True)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 386, in create
+    self.metadata.create_all(bind=bind, checkfirst=checkfirst, tables=[self])
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 1786, in create_all
+    bind.create(self, checkfirst=checkfirst, tables=tables)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/engine/base.py", line 1129, in create
+    self._run_visitor(self.dialect.schemagenerator, entity, connection=connection, **kwargs)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/engine/base.py", line 1158, in _run_visitor
+    visitorcallable(self.dialect, conn, **kwargs).traverse(element)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 89, in traverse
+    return traverse(obj, self.__traverse_options__, self._visitor_dict)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 200, in traverse
+    return traverse_using(iterate(obj, opts), obj, visitors)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 194, in traverse_using
+    meth(target)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/compiler.py", line 829, in visit_metadata
+    collection = [t for t in sql_util.sort_tables(tables) if self._can_create(t)]
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/util.py", line 21, in sort_tables
+    visitors.traverse(table, {'schema_visitor':True}, {'foreign_key':visit_foreign_key})
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 200, in traverse
+    return traverse_using(iterate(obj, opts), obj, visitors)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 194, in traverse_using
+    meth(target)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/util.py", line 15, in visit_foreign_key
+    parent_table = fkey.column.table
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/util.py", line 1332, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 914, in column
+    "foreign key" % tname)
+
+  NoReferencedTableError: Could not find table 'role' with which to generate a foreign key
+ - /home/vete/pg2_work/branches/dev/pg2-server/promogest/Environment.py - hook - 148
+2009-09-14 15:16:07,522 - PromoGest2 - DEBUG - 
+
+<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>> - /home/vete/pg2_work/branches/dev/pg2-server/core/Environment.py - <module> - 143
+2009-09-14 15:16:08,496 - PromoGest2 - DEBUG - 
+
+<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>> - /home/vete/pg2_work/branches/dev/pg2-server/promogest/Environment.py - <module> - 143
+2009-09-14 15:16:08,496 - PromoGest2 - DEBUG - 
+
+<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>> - /home/vete/pg2_work/branches/dev/pg2-server/promogest/Environment.py - <module> - 143
+2009-09-14 15:16:08,635 - PromoGest2 - DEBUG - Error occurred: traceback follows
+  Traceback (most recent call last):
+
+    File "./janas.py", line 19, in <module>
+    app = make_app()
+
+    File "./janas.py", line 15, in make_app
+    from Main import Janas
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/Main.py", line 13, in <module>
+    from core.lib.page import Page
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/lib/page.py", line 14, in <module>
+    from core.lib.utils import *
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/lib/utils.py", line 24, in <module>
+    from core.dao.RoleAction import RoleAction
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/dao/RoleAction.py", line 31, in <module>
+    roleactionTable.create(checkfirst=True)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 386, in create
+    self.metadata.create_all(bind=bind, checkfirst=checkfirst, tables=[self])
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 1786, in create_all
+    bind.create(self, checkfirst=checkfirst, tables=tables)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/engine/base.py", line 1129, in create
+    self._run_visitor(self.dialect.schemagenerator, entity, connection=connection, **kwargs)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/engine/base.py", line 1158, in _run_visitor
+    visitorcallable(self.dialect, conn, **kwargs).traverse(element)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 89, in traverse
+    return traverse(obj, self.__traverse_options__, self._visitor_dict)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 200, in traverse
+    return traverse_using(iterate(obj, opts), obj, visitors)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 194, in traverse_using
+    meth(target)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/compiler.py", line 829, in visit_metadata
+    collection = [t for t in sql_util.sort_tables(tables) if self._can_create(t)]
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/util.py", line 21, in sort_tables
+    visitors.traverse(table, {'schema_visitor':True}, {'foreign_key':visit_foreign_key})
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 200, in traverse
+    return traverse_using(iterate(obj, opts), obj, visitors)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 194, in traverse_using
+    meth(target)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/util.py", line 15, in visit_foreign_key
+    parent_table = fkey.column.table
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/util.py", line 1332, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 914, in column
+    "foreign key" % tname)
+
+  NoReferencedTableError: Could not find table 'role' with which to generate a foreign key
+ - /home/vete/pg2_work/branches/dev/pg2-server/promogest/Environment.py - hook - 148
+2009-09-14 15:16:08,635 - PromoGest2 - DEBUG - Error occurred: traceback follows
+  Traceback (most recent call last):
+
+    File "./janas.py", line 19, in <module>
+    app = make_app()
+
+    File "./janas.py", line 15, in make_app
+    from Main import Janas
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/Main.py", line 13, in <module>
+    from core.lib.page import Page
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/lib/page.py", line 14, in <module>
+    from core.lib.utils import *
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/lib/utils.py", line 24, in <module>
+    from core.dao.RoleAction import RoleAction
+
+    File "/home/vete/pg2_work/branches/dev/pg2-server/core/dao/RoleAction.py", line 31, in <module>
+    roleactionTable.create(checkfirst=True)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 386, in create
+    self.metadata.create_all(bind=bind, checkfirst=checkfirst, tables=[self])
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 1786, in create_all
+    bind.create(self, checkfirst=checkfirst, tables=tables)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/engine/base.py", line 1129, in create
+    self._run_visitor(self.dialect.schemagenerator, entity, connection=connection, **kwargs)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/engine/base.py", line 1158, in _run_visitor
+    visitorcallable(self.dialect, conn, **kwargs).traverse(element)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 89, in traverse
+    return traverse(obj, self.__traverse_options__, self._visitor_dict)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 200, in traverse
+    return traverse_using(iterate(obj, opts), obj, visitors)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 194, in traverse_using
+    meth(target)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/compiler.py", line 829, in visit_metadata
+    collection = [t for t in sql_util.sort_tables(tables) if self._can_create(t)]
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/util.py", line 21, in sort_tables
+    visitors.traverse(table, {'schema_visitor':True}, {'foreign_key':visit_foreign_key})
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 200, in traverse
+    return traverse_using(iterate(obj, opts), obj, visitors)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/visitors.py", line 194, in traverse_using
+    meth(target)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/sql/util.py", line 15, in visit_foreign_key
+    parent_table = fkey.column.table
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/util.py", line 1332, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+
+    File "/usr/lib/python2.6/dist-packages/sqlalchemy/schema.py", line 914, in column
+    "foreign key" % tname)
+
+  NoReferencedTableError: Could not find table 'role' with which to generate a foreign key
+ - /home/vete/pg2_work/branches/dev/pg2-server/promogest/Environment.py - hook - 148
