@@ -151,34 +151,6 @@ class Dao(object):
         else:
             message = "UNKNOWN ACTION;"
         level = self.commit()
-        #if level:
-            #result = "CORRETTO"
-        #else:
-            #result = "ERRATO"
-        #registration_date = datetime.datetime.now()
-##        schema_azienda = params['schema']
-        #id_utente = params['usernameLoggedList'][0]
-        #utentedb = params['usernameLoggedList'][3]
-        #utente = params['usernameLoggedList'][1]
-        #mapper = object_mapper(self)
-        #pk = mapper.primary_key_from_instance(self)
-        #completeMessage = message + ";" +str(pk)+";"+result
-        #appLogTable = Table('app_log', params['metadata'], autoload=True, schema=params['mainSchema'])
-        #aplot = appLogTable.insert()
-        #try:
-            #aplot.execute(
-                        #id_utente = params['usernameLoggedList'][0],
-                        #utentedb = params['usernameLoggedList'][1],
-                        #schema_azienda = params['schema'],
-                        #level = "N",
-                        #message = completeMessage,
-                        #value = level,
-                        #registration_date = datetime.datetime.now(),
-                        #object = dumps(pk)
-                    #)
-            #print "[LOG] %s da %s in %s in data %s" %(completeMessage,utente, params['schema'] ,registration_date.strftime("%d/%m/%Y"))
-        #except:
-            #print "[LOG] %s da %s in %s in data %s NON RIUSCITO" %(completeMessage,utente, params['schema'] ,registration_date.strftime("%d/%m/%Y"))
 
     def _resetId(self):
         """

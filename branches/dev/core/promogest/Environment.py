@@ -317,6 +317,8 @@ azienda=conf.Database.azienda
 #azienda = None
 #except:
     #azienda = "azienda_prova"
+#print sys.path
+
 try:
     tipodb = conf.Database.tipodb
 except:

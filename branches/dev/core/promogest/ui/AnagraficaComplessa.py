@@ -11,7 +11,10 @@
 import time
 import gtk
 import gobject
-import gtkhtml2
+try:
+    from webkit import WebView
+except:
+    import gtkhtml2
 import webbrowser
 import math
 import os
@@ -66,7 +69,13 @@ class Anagrafica(GladeWidget):
         self.record_menu.get_child().set_label(recordMenuLabel)
         if self.anagrafica_complessa_window not in Login.windowGroup:
             Login.windowGroup.append(self.anagrafica_complessa_window)
-        self.anagrafica_complessa_html = gtkhtml2.View()
+        try:
+            self.anagrafica_complessa_html = WebView()
+            #print "DFDFDFFRGRGRTGGTG", dir(self.anagrafica_complessa_html.path())
+            self.webkit = True
+        except:
+            self.anagrafica_complessa_html = gtkhtml2.View()
+            self.webkit = False
         self.anagrafica_detail_scrolledwindow.add(self.anagrafica_complessa_html)
         self._setFilterElement(filterElement)
         self._setHtmlHandler(htmlHandler)
@@ -129,13 +138,17 @@ class Anagrafica(GladeWidget):
         self.htmlHandler = htmlHandler
 
         # Initial setup
-        document = gtkhtml2.Document()
-        document.open_stream('text/html')
-        document.write_stream('<html></html>')
-        document.close_stream()
-        self.anagrafica_complessa_html.set_document(document)
-        (width, height) = self.getTopLevel().get_size()
-        self.anagrafica_complessa_html.set_size_request(-1, height // 2)
+        if self.webkit:
+            about = """<html><body></body></html>"""
+            self.anagrafica_complessa_html.load_html_string(about, "iso-8859-15")
+        else:
+            document = gtkhtml2.Document()
+            document.open_stream('text/html')
+            document.write_stream('<html></html>')
+            document.close_stream()
+            self.anagrafica_complessa_html.set_document(document)
+            (width, height) = self.getTopLevel().get_size()
+            self.anagrafica_complessa_html.set_size_request(-1, height // 2)
 
 
     def _setLabelHandler(self, labelHandler):
@@ -1086,7 +1099,7 @@ class AnagraficaHtml(object):
 
     def _refresh(self):
         """ show the html page in the custom widget"""
-        if self._gtkHtml is None:
+        if not self._anagrafica.webkit and self._gtkHtml is None:
             self._gtkHtml = self._anagrafica.getHtmlWidget()
             # A bit of double buffering here
             self._gtkHtmlDocuments = (gtkhtml2.Document(),
@@ -1097,21 +1110,30 @@ class AnagraficaHtml(object):
 
             self._currGtkHtmlDocument = 0
         templates_dir = self._htmlTemplate
+
         jinja_env = Env(loader=FileSystemLoader(templates_dir),
-        bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
+                bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
         jinja_env.globals['environment'] = Environment
         jinja_env.globals['utils'] = utils
         jinja_env.globals['ui'] = self.defaultFileName
-        currDocument = (self._currGtkHtmlDocument + 1) % 2
-        document = self._gtkHtmlDocuments[currDocument]
-        document.open_stream('text/html')
+        #jinja_env.globals["templates_dir"] = templates_dir
+        if not self._anagrafica.webkit:
+            currDocument = (self._currGtkHtmlDocument + 1) % 2
+            document = self._gtkHtmlDocuments[currDocument]
+            document.open_stream('text/html')
         if self.dao is None:
             html = jinja_env.from_string("<html><body></body></html>").render()
         else:
             html = jinja_env.get_template(self.defaultFileName+".html").render(dao=self.dao)
-        document.write_stream(html)
-        document.close_stream()
-        self._gtkHtml.set_document(document)
+        if self._anagrafica.webkit:
+            #self._anagrafica.anagrafica_complessa_html.set_property("enable-developer-extras", True)
+
+            self._anagrafica.anagrafica_complessa_html.connect("navigation-requested", self.on_html_request_url)
+            self._anagrafica.anagrafica_complessa_html.load_string(html,"text/html","iso-8859-15", "file:///"+sys.path[0]+os.sep)
+        else:
+            document.write_stream(html)
+            document.close_stream()
+            self._gtkHtml.set_document(document)
 
     def on_html_request_url(self,document, url, stream):
 
@@ -1525,7 +1547,6 @@ class AnagraficaPrintPreview(GladeWidget):
                                          filterClosure=self._filterClosure)
         self.numRecords = self.bodyWidget.countFilterResults(self._filterCountClosure)
         self._refreshPageCount()
-
         if self._gtkHtmlDocuments is None:
             # A bit of double buffering here
             self._gtkHtmlDocuments = (gtkhtml2.Document(),
