@@ -289,6 +289,15 @@ def set_configuration(company=None, year = None):
         if mod_enable == 'yes':
             magazzini = True
 
+
+    #[Listini]
+    listini = False
+    if hasattr(conf, 'Listini'):
+        mod_enable = getattr( conf.Listini,'mod_enable','no')
+        if mod_enable == 'yes':
+            listini = True
+
+
     #[Label]
     if hasattr(conf,'Label'):
         mod_enable = getattr(conf.Label,'mod_enable')
