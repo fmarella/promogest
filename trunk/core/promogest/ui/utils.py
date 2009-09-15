@@ -2053,15 +2053,15 @@ def checkCodFisc(codfis):
         return True
     else:
 
-        msg = 'Attenzione Codice Fiscale formalmente scorretto\nricontrolla!!!'
-        dialog = gtk.MessageDialog(None,
-                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_INFO,
-                                gtk.BUTTONS_OK,
-                                msg)
-        dialog.run()
+        msg = 'Attenzione Codice Fiscale formalmente scorretto\nInserire comunque?!!!'
+        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK_CANCEL, msg)
+        response = dialog.run()
         dialog.destroy()
-        return False
+        if response == gtk.RESPONSE_NONE or response == gtk.RESPONSE_CANCEL:
+            return False
+        elif response == gtk.RESPONSE_OK:
+            return True
 
 def checkPartIva(partitaIVA):
     """
@@ -2075,14 +2075,16 @@ def checkPartIva(partitaIVA):
         @param :
         @type :
         """
-        msg = 'Attenzione Partita Iva formalmente scorretto\nricontrolla!!!'
-        dialog = gtk.MessageDialog(None,
-                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_INFO,
-                                gtk.BUTTONS_OK,
-                                msg)
-        dialog.run()
+        msg = 'Attenzione Partita Iva formalmente scorretto\nInserire comunque?!!!'
+        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK_CANCEL, msg)
+        response = dialog.run()
         dialog.destroy()
+        if response == gtk.RESPONSE_NONE or response == gtk.RESPONSE_CANCEL:
+            return False
+        elif response == gtk.RESPONSE_OK:
+            return True
+
     n_Val = 0
     n_Som1 = 0
     n_Som2 = 0
@@ -2111,8 +2113,8 @@ def checkPartIva(partitaIVA):
     if (n_Som2==n_Val):
         return True
     else:
-        dialog()
-        return False
+        allora = dialog()
+        return allora
 
 def omogeneousCode(section=None, string = None):
     """
