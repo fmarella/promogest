@@ -14,6 +14,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 from promogest import Environment
+
 #from promogest.dao.Dao import Dao
 from promogest.dao.Listino import Listino
 from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
@@ -243,7 +244,8 @@ class AnagraficaListiniEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            if Environment.tipo_eng =="sqlite" and Listino().count() >=1:
+            if Environment.tipo_eng =="sqlite" and Listino().count() >=1 and not Environment.listini:
+            #if Environment.tipo_eng =="sqlite" and Listino().count() >=1:
                 self.destroy()
                 fenceDialog()
             else:
@@ -314,10 +316,19 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             #self.dao.id = provaaaaaaaaa
         if Environment.tipo_eng =="sqlite" and not self.dao.id:
             listini = Listino().select(orderBy="id")
+            #print "LISTINI", listini[:-1], self.dao.id
             if not listini:
                 self.dao.id = 1
             else:
-                self.dao.id = (listini[:-1].id) +1
+                idss = []
+                for l in listini:
+                    idss.append(l.id)
+                self.dao.id = (max(idss)) +1
+            #elif len(listini)==1:
+                #self.dao.id = (listini[0].id) +1
+            #else:
+
+                #self.dao.id = (listini[:-1].id) +1
         self.dao.denominazione = self.denominazione_entry.get_text()
         listinoAtt = Listino().select(denominazione=self.dao.denominazione)
         if not listinoAtt:
