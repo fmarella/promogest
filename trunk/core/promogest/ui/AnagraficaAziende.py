@@ -29,9 +29,9 @@ class AnagraficaAziende(GladeWidget):
         self._mainWindow = mainWindow
         self.dao = Azienda()
         GladeWidget.__init__(self, 'anagrafica_azienda',fileName='anagrafica_azienda.glade')
-        #self.getTopLevel()
-        #self.placeWindow(self.getTopLevel())
-        #self.getTopLevel().set_modal(modal=True)
+        self.getTopLevel()
+        self.placeWindow(self.getTopLevel())
+        self.getTopLevel().set_modal(modal=True)
         self.draw()
 
 
@@ -50,6 +50,8 @@ class AnagraficaAziende(GladeWidget):
     def setDao(self):
         # Creazione dao azienda corrente
         self.dao = Azienda().getRecord(id=Environment.params["schema"])
+        if not self.dao:
+            self.dao = Azienda().getRecord(id="AziendaPromo")
         self._refresh()
 
 
