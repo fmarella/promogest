@@ -111,6 +111,8 @@ class SimpleGladeApp(SimpleGladeWrapper):
         widget.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse("black"))
 
     def insert_text_decimal(self,editable, new_text, new_text_length, position):
+        """Questa funzione permette di far inserire in una entry solo
+        numeri ed un punto """
         stringg = editable.get_text()
         if (new_text != "." or "." in stringg.strip()) and not (new_text.replace(".","").isdigit()):
             editable.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse("red"))
@@ -119,6 +121,7 @@ class SimpleGladeApp(SimpleGladeWrapper):
             editable.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse("#F9FBA7"))
 
     def insert_text_digits(self,editable, new_text, new_text_length, position):
+        """questa funzione permette di inserire SOLO numeri"""
         stringg = editable.get_text()
         if not new_text.isdigit():
             editable.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse("red"))
