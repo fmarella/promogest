@@ -754,7 +754,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.refreshTotal()
 
         dao = TestataScontrino()
-
+        dao.data_inserimento = datetime.now()
         dao.totale_scontrino = mN(self.label_totale.get_text())
         dao.totale_sconto = mN(self.sconto_totale_entry.get_text())
         dao.totale_subtotale = mN(self.label_subtotale.get_text())
