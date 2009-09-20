@@ -215,11 +215,12 @@ class GestioneScontrini(GladeWidget):
             tot += m.totale_scontrino
             totccr += m.totale_carta_credito
             totass += m.totale_assegni
-            totcont += m.totale_contanti
+            if m.totale_contanti:
+                totcont += m.totale_contanti - m.totale_scontrino
             totnum += 1
         self.filterss.label1.set_text("T scontrini:")
-        stringa = "%s - T Contanti:%s - T Carta:%s - T Assegni:%s - T Sconti:%s - N°:%s" %(mN(tot),mN(totcont), mN(totccr), mN(totass),mN(tot_sconti), totnum )
-        self.filterss.info_label.set_text( str(stringa))
+        stringa = """<b><span foreground="black" size="20000">%s</span></b> - Resto da contante:<b>%s</b> - T Carta:<b>%s</b> - T Assegni:<b>%s</b> - T Sconti:<b>%s</b> - N°:<b><span foreground="black" size="18000">%s</span></b>""" %(mN(tot),mN(totcont), mN(totccr), mN(totass),mN(tot_sconti), totnum )
+        self.filterss.info_label.set_markup(str(stringa))
 
 
     def on_filter_treeview_cursor_changed(self, treeview):
