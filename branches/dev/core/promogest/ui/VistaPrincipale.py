@@ -240,7 +240,7 @@ E' presente una nuova versione disponibile"""
 
     def renderPage(self, feedToHtml):
         """ show the html page in the custom widget"""
-        templates_dir = "./templates/"
+        templates_dir = "templates/"
         jinja_env = Env(loader=FileSystemLoader(templates_dir),
                 bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
         body = jinja_env.get_template("feed.html").render(feed=feedToHtml)

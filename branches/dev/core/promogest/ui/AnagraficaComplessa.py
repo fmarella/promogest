@@ -11,10 +11,10 @@
 import time
 import gtk
 import gobject
-try:
-    from webkit import WebView
-except:
-    import gtkhtml2
+#try:
+from webkit import WebView
+#except:
+import gtkhtml2
 import webbrowser
 import math
 import os
