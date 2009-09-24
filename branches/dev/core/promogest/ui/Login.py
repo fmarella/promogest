@@ -373,8 +373,9 @@ class Login(GladeApp):
                         if mod_enableyes=="yes":
                             stringa= "%s.%s.module" % (modules_dir.replace("/", "."), m_str)
                             m= __import__(stringa, globals(), locals(), ["m"], -1)
-                            #exec "import %s.%s.module as m" % (modules_dir.replace("/", "."), m_str)
                             Environment.modulesList.append(str(m.MODULES_NAME))
+                            if hasattr(m,"TEMPLATES") and m.TEMPLATES:
+                                Environment.templates_dir.append(m.TEMPLATES)
                             for class_name in m.MODULES_FOR_EXPORT:
                                 exec 'module = m.'+ class_name
                                 self.modules[class_name] = {

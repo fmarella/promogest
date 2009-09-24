@@ -22,6 +22,7 @@ MODULES_FOR_EXPORT = ['CaratteriStampa','ColoriStampa','SchedeLavorazione']
 GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/SchedaLavorazione/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
+TEMPLATES = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+"/SchedaLavorazione/templates/"
 
 #class AssociazioniArticoli(object):
     #VIEW_TYPE = ('anagrafica', 'Associazioni Articoli', 'associazione_articolo24x24.png')

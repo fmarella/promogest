@@ -11,10 +11,6 @@
 import time
 import gtk
 import gobject
-#try:
-from webkit import WebView
-#except:
-import gtkhtml2
 import webbrowser
 import math
 import os
@@ -45,10 +41,10 @@ else:
     from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
 from promogest.ui.SendEmail import SendEmail
 
+from promogest.lib.HtmlHandler import Pg2Html, renderTemplate, renderHTML
 
-
-from jinja2 import Environment  as Env
-from jinja2 import FileSystemLoader,FileSystemBytecodeCache
+#from jinja2 import Environment  as Env
+#from jinja2 import FileSystemLoader,FileSystemBytecodeCache
 
 #from promogest.dao import Dao
 from promogest.dao.Articolo import Articolo
@@ -69,14 +65,10 @@ class Anagrafica(GladeWidget):
         self.record_menu.get_child().set_label(recordMenuLabel)
         if self.anagrafica_complessa_window not in Login.windowGroup:
             Login.windowGroup.append(self.anagrafica_complessa_window)
-        try:
-            self.anagrafica_complessa_html = WebView()
-            #print "DFDFDFFRGRGRTGGTG", dir(self.anagrafica_complessa_html.path())
-            self.webkit = True
-        except:
-            self.anagrafica_complessa_html = gtkhtml2.View()
-            self.webkit = False
-        self.anagrafica_detail_scrolledwindow.add(self.anagrafica_complessa_html)
+
+        Pg2Html(self).htmlObj()
+        self.anagrafica_detail_scrolledwindow.add(self.html)
+
         self._setFilterElement(filterElement)
         self._setHtmlHandler(htmlHandler)
         self._setReportHandler(reportHandler)
@@ -136,39 +128,23 @@ class Anagrafica(GladeWidget):
 
     def _setHtmlHandler(self, htmlHandler):
         self.htmlHandler = htmlHandler
-
-        # Initial setup
-        if self.webkit:
-            about = """<html><body></body></html>"""
-            self.anagrafica_complessa_html.load_html_string(about, "iso-8859-15")
-        else:
-            document = gtkhtml2.Document()
-            document.open_stream('text/html')
-            document.write_stream('<html></html>')
-            document.close_stream()
-            self.anagrafica_complessa_html.set_document(document)
-            (width, height) = self.getTopLevel().get_size()
-            self.anagrafica_complessa_html.set_size_request(-1, height // 2)
-
+        html = """<html><body></body></html>"""
+        renderHTML(self.html,html)
 
     def _setLabelHandler(self, labelHandler):
         self.labelHandler = labelHandler
 
-
     def _setReportHandler(self, reportHandler):
         self.reportHandler = reportHandler
 
-
     def _setEditElement(self, gladeWidget):
         self.editElement = gladeWidget
-
 
     def placeWindow(self, window):
         GladeWidget.placeWindow(self, window)
         if (self.width is None and self.height is None and
             self.left is None and self.top is None):
             window.maximize()
-
 
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura dell'anagrafica """
@@ -908,7 +884,7 @@ class Anagrafica(GladeWidget):
 
 
     def getHtmlWidget(self):
-        return self.anagrafica_complessa_html
+        return self.html
 
 
     def hideNavigator(self):
@@ -1063,19 +1039,12 @@ class AnagraficaFilter(GladeWidget):
 class AnagraficaHtml(object):
     """ Interfaccia HTML read-only per la lettura dell'anagrafica """
 
-    def __init__(self, anagrafica, template, description,templatesHTMLDir=None):
+    def __init__(self, anagrafica, template, description):
         self._anagrafica = anagrafica
         self._gtkHtml = None # Will be filled later
-        #self._htmlTemplate = os.path.join('templates', template + '.kid')
-        if not templatesHTMLDir:
-            self._htmlTemplate = os.path.join('templates')
-        else:
-            self._htmlTemplate = templatesHTMLDir
         self.description = description
         self.defaultFileName = template
-
         self.dao = None
-
         self._slaTemplateObj = None
 
 
@@ -1084,7 +1053,6 @@ class AnagraficaHtml(object):
         self.dao = dao
 
         self._refresh()
-        #print "FFFFFFFFFFFFFFFF",
         if dao and Environment.debugDao:
             #FIXME: add some logging level check here
             import pprint
@@ -1099,79 +1067,17 @@ class AnagraficaHtml(object):
 
     def _refresh(self):
         """ show the html page in the custom widget"""
-        if not self._anagrafica.webkit and self._gtkHtml is None:
-            self._gtkHtml = self._anagrafica.getHtmlWidget()
-            # A bit of double buffering here
-            self._gtkHtmlDocuments = (gtkhtml2.Document(),
-                                      gtkhtml2.Document())
-            for doc in self._gtkHtmlDocuments:
-                doc.connect('request_url', self.on_html_request_url)
-                doc.connect('link_clicked', self.on_html_link_clicked)
-
-            self._currGtkHtmlDocument = 0
-        templates_dir = self._htmlTemplate
-
-        jinja_env = Env(loader=FileSystemLoader(templates_dir),
-                bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
-        jinja_env.globals['environment'] = Environment
-        jinja_env.globals['utils'] = utils
-        jinja_env.globals['ui'] = self.defaultFileName
-        #jinja_env.globals["templates_dir"] = templates_dir
-        if not self._anagrafica.webkit:
-            currDocument = (self._currGtkHtmlDocument + 1) % 2
-            document = self._gtkHtmlDocuments[currDocument]
-            document.open_stream('text/html')
-        if self.dao is None:
-            html = jinja_env.from_string("<html><body></body></html>").render()
-        else:
-            html = jinja_env.get_template(self.defaultFileName+".html").render(dao=self.dao)
-        if self._anagrafica.webkit:
-            #self._anagrafica.anagrafica_complessa_html.set_property("enable-developer-extras", True)
-
-            self._anagrafica.anagrafica_complessa_html.connect("navigation-requested", self.on_html_request_url)
-            self._anagrafica.anagrafica_complessa_html.load_string(html,"text/html","iso-8859-15", "file:///"+sys.path[0]+os.sep)
-        else:
-            document.write_stream(html)
-            document.close_stream()
-            self._gtkHtml.set_document(document)
-
-    def on_html_request_url(self,document, url, stream):
-
-        def render():
-            try:
-                f = open(url, 'rb')
-                stream.write(f.read())
-                f.close()
-                stream.close()
-            except:
-                req = urllib2.Request(url)
-                response = urllib2.urlopen(req)
-                html = response.read()
-                stream.write(html)
-                stream.close()
-        gobject.idle_add(render)
-
-
-    def on_html_link_clicked(self, url, link):
-        """ funzione di apertura dei link presenti nelle pagine html di anteprima"""
-        print "URLLLLLLLLLLLLLLLLLLLLLLLLLL", dir(url)
-        if link =="/tt":
-            dialog = gtk.MessageDialog(None,
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   'Confermi la chiusura ?')
-            response = dialog.run()
-            dialog.destroy()
-            if response ==  gtk.RESPONSE_YES:
-                self.setVisible(False)
-            else:
-                return True
-        #def linkOpen():
-            #webbrowser.open_new_tab(link)
-            ##print link
-        #gobject.idle_add(linkOpen)
-
+        pageData = {}
+        html = "<html><body></body></html>"
+        self._gtkHtml = self._anagrafica.getHtmlWidget()
+        if self.dao:
+            pageData = {
+                    "file" :self.defaultFileName+".html",
+                    "dao":self.dao,
+                    "objects":self.dao
+                    }
+            html = renderTemplate(pageData)
+        renderHTML(self._gtkHtml,html)
 
     def setObjects(self, objects):
         # FIXME: dummy function for API compatibility, refactoring(TM) needed!
@@ -1259,8 +1165,6 @@ class AnagraficaReport(object):
     def setObjects(self, objects):
         """ Imposta gli oggetti che verranno inclusi nel report """
         self.objects = objects
-
-
 
     def pdf(self,operationName):
         """ Restituisce una stringa contenente il report in formato PDF
@@ -1404,21 +1308,17 @@ class AnagraficaEdit(GladeWidget):
         """
         raise NotImplementedError
 
-
     def clear(self):
         """ Svuota tutti i campi di input del dettaglio anagrafica """
         raise NotImplementedError
-
 
     def setDao(self, dao):
         """ Visualizza il Dao specificato """
         raise NotImplementedError
 
-
     def saveDao(self):
         """ Salva il Dao attualmente selezionato """
         raise NotImplementedError
-
 
     def setFocus(self, widget=None):
         if widget is None:
@@ -1426,11 +1326,9 @@ class AnagraficaEdit(GladeWidget):
         else:
             widget.grab_focus()
 
-
     def on_ok_button_grab_focus(self, button):
         if self.dialog.ok_button.is_focus():
             self.on_anagrafica_complessa_detail_dialog_response(self.dialog, gtk.RESPONSE_OK)
-
 
     def on_anagrafica_complessa_detail_dialog_response(self, dialog, responseId):
         """ Main function connected with ok applica and cancel in Anagrafica Edit"""
@@ -1489,7 +1387,7 @@ class AnagraficaPrintPreview(GladeWidget):
         self.print_on_screen_html = self.bodyWidget.resultsElement
         self._gtkHtmlDocuments = None # Will be filled later
         self._previewTemplate = previewTemplate
-
+        Pg2Html(self).htmlObj()
         self._changeOrderBy = self.bodyWidget._changeOrderBy
         self.orderBy = self.bodyWidget.orderBy
         self.batchSize = self.bodyWidget.batchSize
@@ -1513,13 +1411,14 @@ class AnagraficaPrintPreview(GladeWidget):
         #generaButton = self.bodyWidget.generic_button
         #generaButton.connect('clicked', self.on_generic_button_clicked )
         #generaButton.set_label("Genera Pdf Anteprima Html")
-
         self.refresh()
+
+
     def on_generic_combobox_changed(self,combobox):
         if self.codBar_combo.get_active()==0:
             from PrintDialog import PrintDialogHandler
             import pisaLib.ho.pisa as pisa
-            f = self.html
+            f = self.html_code
             g = file(".temp.pdf", "wb")
             pdf = pisa.CreatePDF(f,g)
             g .close()
@@ -1539,7 +1438,6 @@ class AnagraficaPrintPreview(GladeWidget):
         self.bodyWidget.numRecords = self.numRecords
         self.bodyWidget._refreshPageCount()
 
-
     def refresh(self):
         """ show the html page in the custom widget"""
         self.bodyWidget.orderBy = self.orderBy
@@ -1547,63 +1445,20 @@ class AnagraficaPrintPreview(GladeWidget):
                                          filterClosure=self._filterClosure)
         self.numRecords = self.bodyWidget.countFilterResults(self._filterCountClosure)
         self._refreshPageCount()
-        if self._gtkHtmlDocuments is None:
-            # A bit of double buffering here
-            self._gtkHtmlDocuments = (gtkhtml2.Document(),
-                                      gtkhtml2.Document())
-            for doc in self._gtkHtmlDocuments:
-                doc.connect('request_url', self.on_html_request_url)
-                doc.connect('link_clicked', self.on_html_link_clicked)
-
-            self._currGtkHtmlDocument = 0
-        currDocument = (self._currGtkHtmlDocument + 1) % 2
-        document = self._gtkHtmlDocuments[currDocument]
-        templates_dir = self._previewTemplate[0]
-
-        jinja_env = Env(loader=FileSystemLoader(templates_dir),
-        bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
-        jinja_env.globals['environment'] = Environment
-        jinja_env.globals['utils'] = utils
-        jinja_env.globals['ui'] = self._previewTemplate[1].split(".")[0]
-        self.html = jinja_env.get_template(self._previewTemplate[1]).render(objects=daos)
-
-        document.open_stream('text/html')
-        document.write_stream(self.html)
-        document.close_stream()
-        self.print_on_screen_html.set_document(document)
-        self._currGtkHtmlDocument = currDocument
-
-
-    def on_html_request_url(self,document, url, stream):
-
-        def render():
-            try:
-                f = open(url, 'rb')
-                stream.write(f.read())
-                f.close()
-                stream.close()
-            except:
-                req = urllib2.Request(url)
-                response = urllib2.urlopen(req)
-                html = response.read()
-                stream.write(html)
-                stream.close()
-        gobject.idle_add(render)
-
-
-    def on_html_link_clicked(self, url, link):
-        """ funzione di apertura dei link presenti nelle pagine html di anteprima"""
-        def linkOpen():
-            webbrowser.open_new_tab(link)
-            #print link
-        gobject.idle_add(linkOpen)
-
-
+        pageData = {}
+        html = "<html><body></body></html>"
+        if daos:
+            pageData = {
+                    "file" :self._previewTemplate[1],
+                    "dao":daos,
+                    "objects":daos
+                    }
+            self.html_code = renderTemplate(pageData)
+        renderHTML(self.print_on_screen_html,self.html_code)
 
     def on_print_on_screen_dialog_response(self, dialog, responseId):
         if responseId == gtk.RESPONSE_CLOSE:
             self.on_print_on_screen_dialog_delete_event()
-
 
     def on_print_on_screen_dialog_delete_event(self, dialog=None, event=None):
         self.destroy()

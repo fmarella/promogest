@@ -14,6 +14,7 @@ MODULES_FOR_EXPORT = ['DistintaBase']
 GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/DistintaBase/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
+TEMPLATES = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+"/DistintaBase/templates/"
 
 """
     view_type è composto da:

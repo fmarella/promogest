@@ -216,8 +216,7 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
 class AnagraficaDistintaBaseHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'distinta_base',
-                                'Dettaglio distinta base',
-                                templatesHTMLDir ="promogest/modules/DistintaBase/templates/" )
+                                'Dettaglio distinta base')
 
 
 class AnagraficaDistintaBaseReport(AnagraficaReport):

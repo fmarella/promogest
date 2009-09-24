@@ -14,7 +14,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
-
+from promogest.lib.HtmlHandler import Pg2Html, renderHTML
 
 class FilterWidget(GladeWidget):
     """ Base Class for filter part of windows/dialogs """
@@ -365,18 +365,20 @@ class FilterWidget(GladeWidget):
 
     def getHtmlFilterResultsWidget(self):
         """ Return a treeview widget for filter results """
-
-        html = gtkhtml2.View()
+        Pg2Html(self).htmlObj()
+        html = """<html><body></body></html>"""
+        renderHTML(self.html,html)
+        #html = gtkhtml2.View()
 
         # some default settings
-        html._htmlTemplate = None
+        #html._htmlTemplate = None
 
-        document = gtkhtml2.Document()
-        document.open_stream('text/html')
-        document.write_stream('<html></html>')
-        document.close_stream()
-        html.set_document(document)
-        return html
+        #document = gtkhtml2.Document()
+        #document.open_stream('text/html')
+        #document.write_stream('<html></html>')
+        #document.close_stream()
+        #self.html.set_document(document)
+        return self.html
 
 
     def on_filter_treeview_row_activated(self, treeview, path, column):

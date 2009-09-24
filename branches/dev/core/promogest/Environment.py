@@ -309,7 +309,7 @@ def set_configuration(company=None, year = None):
 
     importDebug = True
 
-
+templates_dir = [os.path.join('templates'),os.path.join('report-templates')]
 #mainSchema = "promogest2"
 #mainSchema = None
 #try :
@@ -327,12 +327,15 @@ try:
     pw = conf.Database.pw
 except:
     pw = "No"
-if tipodb == "sqlite" and not (os.path.exists("data/db")):
-    if os.path.exists("data/db_pw.dist")\
-            and pw.upper()=="YES":
-        shutil.copy("data/db_pw.dist","data/db" )
+if tipodb == "sqlite" and not (os.path.exists(startdir()+"db")):
+    if os.path.exists("data/db"):
+         shutil.copy("data/db",startdir()+"db")
+         os.remove("data/db")
+    elif os.path.exists("data/db_pw.dist")\
+                        and pw.upper()=="YES":
+        shutil.copy("data/db_pw.dist",startdir()+"db" )
     elif os.path.exists("data/db.dist"):
-        shutil.copy("data/db.dist","data/db" )
+        shutil.copy("data/db.dist",startdir()+"db" )
     else:
         print("ERRORE NON RIESCO A CREARE IL DB")
 
@@ -346,7 +349,7 @@ userdata = ["","","",user]
 if tipodb == "sqlite":
     azienda = None
     mainSchema = None
-    engine =create_engine('sqlite:///data/db')
+    engine =create_engine("sqlite:///"+startdir()+"db")
 else:
     mainSchema = "promogest2"
     #azienda=conf.Database.azienda
