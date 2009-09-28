@@ -7,12 +7,11 @@
 # Author: Francesco Meloni <francesco@promotux.it>
 
 import gtk
-import gobject, gtkhtml2
+import gobject
 
 from promogest.ui.GladeWidget import GladeWidget
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
 from promogest.dao.Articolo import Articolo
 from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
 from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
@@ -22,25 +21,15 @@ from promogest.modules.PromoWear.dao.Colore import Colore
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.ui.utils import *
 from promogest.ui import utils
-from jinja2 import Environment  as Env
-from jinja2 import FileSystemLoader,FileSystemBytecodeCache
-
-
-templates_dir = './promogest/modules/PromoWear/templates/'
-jinja_env = Env(loader=FileSystemLoader(templates_dir),
-    bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
-jinja_env.globals['environment'] = Environment
-jinja_env.globals['utils'] = utils
-
-
+from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 
 class GestioneTaglieColori(GladeWidget):
     """ questa interfaccia è importantissima per la gestione delle taglie e colore, permette
         infatti di creare in maniera veloce ed automatica tutte le varianti articolo
-        necessarie per la gstione di una attività di abbigliamento o calzature"""
+        necessarie per la gestione di una attività di abbigliamento o calzature"""
     def __init__(self, articolo):
         GladeWidget.__init__(self, 'creazione_taglie_colore',
-                            './promogest/modules/PromoWear/gui/creazione_varianti_taglia_colore.glade', isModule=True)
+                            'PromoWear/gui/creazione_varianti_taglia_colore.glade', isModule=True)
         self._loading = False
 #        dialog = self.creazione_taglie_colore
         self.placeWindow(self.getTopLevel())
@@ -54,7 +43,7 @@ class GestioneTaglieColori(GladeWidget):
         self._noValue = 'n/a'
         self._varianti = {}
         self._gruppoTaglia = None
-        self._gtkHtml = None
+        #self._gtkHtml = None
         self.order="color"
         self.filtered = True
         # Taglie attualmente presenti nella treeview
@@ -72,40 +61,37 @@ class GestioneTaglieColori(GladeWidget):
                                        % (self._articoloBase.codice,self._articoloBase.denominazione))
 
 #        self._refreshHtml()
+        self.html = createHtmlObj(self)
+        self.anteprima_scrolled.add(self.html)
+        html = ""
+        renderHTML(self.html, html)
         self.rowBackGround = '#E6E6FF'
         self.rowBoldFont = 'arial bold 12'
-        self.document = gtkhtml2.Document()
+
         self.draw()
         self.__refresh()
 
 
     def refreshColori(self):
+        """ Preleva tutti i colori"""
         self.colori = Colore().select(batchSize=None)
         return self.colori
 
     def sizesAvailable(self):
+        """ Preleva tutte le taglie disponibili"""
         self.sizes = GruppoTagliaTaglia().select(idGruppoTaglia=self.idGruppoTaglia, batchSize=None)
         return self.sizes
 
     def _refreshHtml(self, data= None):
         """ show the html page in the custom widget"""
-        if self._gtkHtml is None:
-            self._gtkHtml = gtkhtml2.View() 
-            self.anteprima_scrolled.add(self._gtkHtml)
-            self._gtkHtml.set_document(self.document)
-
-        self.document.clear()
-        self.document.open_stream('text/html')
-        if data is None:
-            html = '<html></html>'
-        else:
-            html = jinja_env.get_template("creazione_taglie_colori.html").render(datas=data)
-        self.document.write_stream(html)
-        self.document.close_stream()
-
-
-#    def getHtmlWidget(self):
-#        return self.creazione_varianti_html
+        html = '<html></html>'
+        if data:
+            pageData= {
+                "file":"creazione_taglie_colori.html",
+                "datas": data
+                }
+            html = renderTemplate(pageData)
+        renderHTML(self.html, html)
 
     def draw(self):
         """Creo una treeview che abbia come colonne i colori e come righe
@@ -152,7 +138,7 @@ class GestioneTaglieColori(GladeWidget):
         if ("VenditaDettaglio" and "Label" ) not in Environment.modulesList:
             self.genera_codice_a_barre_button.set_sensitive(False)
         self._loading = True
-        
+
 
     def __refresh(self,order="color",filtered =True):
         # Aggiornamento TreeView
@@ -210,7 +196,7 @@ class GestioneTaglieColori(GladeWidget):
                         for exist in alreadyexist:
                             if exist.id_taglia == g.TAG.id and exist.id_colore == c.id:
                                 selected = True
-                                codiceArticolo = Articolo().getRecord(id=alreadyexist[0].id_articolo)
+                                codiceArticolo = Articolo().getRecord(id=exist.id_articolo)
                                 codice= codiceArticolo.codice_a_barre or ""
                                 break
                             else:
@@ -257,6 +243,7 @@ class GestioneTaglieColori(GladeWidget):
                                                     None,
                                                     codiceArticolo))
             else:
+                """sezione mostra tutte le taglie"""
                 selected = False
                 codice = ""
                 codiceArticolo = None
@@ -275,7 +262,7 @@ class GestioneTaglieColori(GladeWidget):
                         for exist in alreadyexist:
                             if exist.id_colore == c.id and exist.id_taglia == h.id:
                                 selected = True
-                                codiceArticolo = Articolo().getRecord(id=alreadyexist[0].id_articolo)
+                                codiceArticolo = Articolo().getRecord(id=exist.id_articolo)
                                 codice = codiceArticolo.codice_a_barre or ""
                                 break
                             else:
@@ -292,7 +279,6 @@ class GestioneTaglieColori(GladeWidget):
         self.printModel()
 
     def printModel(self):
-#        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWW"
         self.datas= []
         self._treeViewModel.foreach(self.selectFilter )
         self._refreshHtml(data=self.datas)
@@ -316,14 +302,13 @@ class GestioneTaglieColori(GladeWidget):
         model[path][1] = not model[path][1]
         for a in  model[path].iterchildren():
              a[1] = model[path][1]
-#        print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
         self.printModel()
 
     def on_column_codice_edited(self, cell, path, value, treeview, editNext=True):
-        """ Function ti set the value quantita edit in the cell"""
+        """ Function ti set the value codice edit in the cell"""
         model = treeview.get_model()
         model[path][3] = value
-        
+
         self.printModel()
 
     def on_head_color_toggled(self, radioButton):
@@ -485,4 +470,3 @@ Il codice a barre  %s è gia' presente nel Database, ricontrolla!""" % codiceaba
                         cba.primario = True
                         cba.persist()
         self.destroy()
-

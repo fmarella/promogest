@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -23,8 +23,10 @@ import gtk
 import time, datetime, string
 from CustomEntryField import CustomEntryField
 
+#class MyBox(CustomEntryField):
 class DateTimeEntryField(CustomEntryField):
 # Effettua la validazione delle date + ore
+    __gtype_name__ = 'DateTimeEntryField'
 
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
         CustomEntryField.__init__(self)

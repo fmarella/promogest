@@ -70,22 +70,10 @@ class Ricerca(GladeWidget):
         self.bodyWidget.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
 
     def _setHtmlHandler(self, htmlHandler):
+        #self.htmlHandler = htmlHandler
+        #html = """<html><body></body></html>"""
+        #renderHTML(self.html,html)
         return
-        #if htmlHandler is not None:
-            #self.htmlHandler = htmlHandler
-        ##else:
-            ##self.ricerca_html.destroy()
-            ##return
-
-        ## Initial setup
-        #document = gtkhtml2.Document()
-        #document.open_stream('text/html')
-        #document.write_stream('<html></html>')
-        #document.close_stream()
-
-        ##self.ricerca_html.set_document(document)
-        #(width, height) = self.getTopLevel().get_size()
-        #self.ricerca_html.set_size_request(-1, height // 2)
 
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura della ricerca """
@@ -227,7 +215,7 @@ class RicercaHtml(object):
         self._htmlTemplate = os.path.join('templates')
         self.description = description
         self.defaultFileName = template
-
+        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         self.dao = None
 
         self._slaTemplateObj = None
@@ -280,30 +268,6 @@ class RicercaHtml(object):
         document.write_stream(html)
         document.close_stream()
         self._gtkHtml.set_document(document)
-
-    def on_html_request_url(self,document, url, stream):
-
-        def render():
-            try:
-                f = open(url, 'rb')
-                stream.write(f.read())
-                f.close()
-                stream.close()
-            except:
-                req = urllib2.Request(url)
-                response = urllib2.urlopen(req)
-                html = response.read()
-                stream.write(html)
-                stream.close()
-        gobject.idle_add(render)
-
-
-    def on_html_link_clicked(self, url, link):
-        """ funzione di apertura dei link presenti nelle pagine html di anteprima"""
-        def linkOpen():
-            webbrowser.open_new_tab(link)
-            #print link
-        gobject.idle_add(linkOpen)
 
 
     def setObjects(self, objects):

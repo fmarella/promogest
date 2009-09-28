@@ -60,7 +60,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.divisore_noleggio_entry.destroy()
             self.divisore_noleggio_label.destroy()
 
-
     def draw(self):
         if "PromoWear" in Environment.modulesList:
             self.normale_radiobutton.set_active(True)
@@ -610,7 +609,7 @@ dei dati accessori. Continuare?"""
                 obligatoryField(self.dialogTopLevel,
                                 self.id_colore_customcombobox.combobox,
                                 msg='Campo obbligatorio !\nColore')
-        
+
         tagcol = GestioneTaglieColori(articolo=self.dao)
         tagcolWindow = tagcol.getTopLevel()
 

@@ -41,6 +41,9 @@ from promogest.ui.SendEmail import SendEmail
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.lib import feedparser
+from promogest.lib import HtmlHandler
+
+
 
 windowGroup = []
 visible = 1
@@ -361,6 +364,7 @@ class Login(GladeApp):
             """
             Check the modules directory and automatically try to load all available modules
             """
+            #global jinja_env
             Environment.modulesList=[]
             modules_folders = [folder for folder in os.listdir(modules_dir) \
                             if (os.path.isdir(os.path.join(modules_dir, folder)) \
@@ -374,8 +378,8 @@ class Login(GladeApp):
                             stringa= "%s.%s.module" % (modules_dir.replace("/", "."), m_str)
                             m= __import__(stringa, globals(), locals(), ["m"], -1)
                             Environment.modulesList.append(str(m.MODULES_NAME))
-                            if hasattr(m,"TEMPLATES") and m.TEMPLATES:
-                                Environment.templates_dir.append(m.TEMPLATES)
+                            if hasattr(m,"TEMPLATES"):
+                                HtmlHandler.templates_dir.append(m.TEMPLATES)
                             for class_name in m.MODULES_FOR_EXPORT:
                                 exec 'module = m.'+ class_name
                                 self.modules[class_name] = {
@@ -385,6 +389,8 @@ class Login(GladeApp):
                                                     'guiDir':m.GUI_DIR
 }
             Environment.pg2log.info("LISTA DEI MODULI CARICATI E FUNZIONANTI %s" %(str(repr(Environment.modulesList))))
+            HtmlHandler.jinja_env = HtmlHandler.env(HtmlHandler.templates_dir)
+
             self.groupModulesByType()
 
     def on_login_window_key_press_event(self, widget, event):

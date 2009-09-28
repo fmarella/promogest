@@ -41,7 +41,7 @@ else:
     from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
 from promogest.ui.SendEmail import SendEmail
 
-from promogest.lib.HtmlHandler import Pg2Html, renderTemplate, renderHTML
+from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 
 #from jinja2 import Environment  as Env
 #from jinja2 import FileSystemLoader,FileSystemBytecodeCache
@@ -66,7 +66,7 @@ class Anagrafica(GladeWidget):
         if self.anagrafica_complessa_window not in Login.windowGroup:
             Login.windowGroup.append(self.anagrafica_complessa_window)
 
-        Pg2Html(self).htmlObj()
+        self.html = createHtmlObj(self)
         self.anagrafica_detail_scrolledwindow.add(self.html)
 
         self._setFilterElement(filterElement)
@@ -605,7 +605,7 @@ class Anagrafica(GladeWidget):
         if responseId == gtk.RESPONSE_CANCEL:
             self.__cancelOperation = True
 
-            self.__pdfGenerator.cancelOperation()
+            #self.__pdfGenerator.cancelOperation()
 
             if self.__pulseSourceTag is not None:
                 gobject.source_remove(self.__pulseSourceTag)
@@ -1308,6 +1308,7 @@ class AnagraficaEdit(GladeWidget):
         """
         raise NotImplementedError
 
+
     def clear(self):
         """ Svuota tutti i campi di input del dettaglio anagrafica """
         raise NotImplementedError
@@ -1387,7 +1388,7 @@ class AnagraficaPrintPreview(GladeWidget):
         self.print_on_screen_html = self.bodyWidget.resultsElement
         self._gtkHtmlDocuments = None # Will be filled later
         self._previewTemplate = previewTemplate
-        Pg2Html(self).htmlObj()
+        self.html = createHtmlObj(self)
         self._changeOrderBy = self.bodyWidget._changeOrderBy
         self.orderBy = self.bodyWidget.orderBy
         self.batchSize = self.bodyWidget.batchSize
@@ -1412,7 +1413,6 @@ class AnagraficaPrintPreview(GladeWidget):
         #generaButton.connect('clicked', self.on_generic_button_clicked )
         #generaButton.set_label("Genera Pdf Anteprima Html")
         self.refresh()
-
 
     def on_generic_combobox_changed(self,combobox):
         if self.codBar_combo.get_active()==0:

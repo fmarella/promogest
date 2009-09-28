@@ -11,9 +11,11 @@
         <child>
           <widget class="GtkVBox" id="anagrafica_articoli_filter_vbox">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <child>
               <widget class="GtkVBox" id="ricerca_semplice_articoli_filter_vbox">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <child>
                   <widget class="GtkTable" id="anagrafica_articoli_filter_table">
                     <property name="visible">True</property>
@@ -593,9 +595,11 @@ Solo varianti</property>
             <child>
               <widget class="GtkVBox" id="ricerca_avanzata_articoli_filter_vbox">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <child>
                   <widget class="GtkVBox" id="ricerca_avanzata_articoli_filter_filters_vbox">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <child>
                       <widget class="GtkExpander" id="descrizione_articolo_filter_expander">
                         <property name="visible">True</property>
@@ -634,6 +638,7 @@ Solo varianti</property>
                                 <child>
                                   <widget class="GtkVBox" id="vbox59">
                                     <property name="visible">True</property>
+                                    <property name="orientation">vertical</property>
                                     <property name="spacing">3</property>
                                     <child>
                                       <widget class="GtkButton" id="nuova_descrizione_articolo_filter_button">
@@ -739,6 +744,7 @@ Solo varianti</property>
                                 <child>
                                   <widget class="GtkVBox" id="vbox60">
                                     <property name="visible">True</property>
+                                    <property name="orientation">vertical</property>
                                     <property name="spacing">3</property>
                                     <child>
                                       <widget class="GtkButton" id="nuovo_produttore_articolo_filter_button">
@@ -844,6 +850,7 @@ Solo varianti</property>
                                 <child>
                                   <widget class="GtkVBox" id="vbox61">
                                     <property name="visible">True</property>
+                                    <property name="orientation">vertical</property>
                                     <property name="spacing">3</property>
                                     <child>
                                       <widget class="GtkButton" id="nuovo_codice_articolo_filter_button">
@@ -949,6 +956,7 @@ Solo varianti</property>
                                 <child>
                                   <widget class="GtkVBox" id="vbox62">
                                     <property name="visible">True</property>
+                                    <property name="orientation">vertical</property>
                                     <property name="spacing">3</property>
                                     <child>
                                       <widget class="GtkButton" id="nuovo_codice_a_barre_articolo_filter_button">
@@ -1054,6 +1062,7 @@ Solo varianti</property>
                                 <child>
                                   <widget class="GtkVBox" id="vbox63">
                                     <property name="visible">True</property>
+                                    <property name="orientation">vertical</property>
                                     <property name="spacing">3</property>
                                     <child>
                                       <widget class="GtkButton" id="nuovo_codice_articolo_fornitore_articolo_filter_button">
@@ -1301,6 +1310,7 @@ Solo varianti</property>
                             <child>
                               <widget class="GtkVBox" id="vbox58">
                                 <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
                                 <child>
                                   <widget class="GtkCheckButton" id="includi_eliminati_articolo_filter_checkbutton">
                                     <property name="label" translatable="yes">Includi eliminati</property>
@@ -1370,6 +1380,7 @@ Solo varianti</property>
                                 <child>
                                   <widget class="GtkVBox" id="vbox1">
                                     <property name="visible">True</property>
+                                    <property name="orientation">vertical</property>
                                     <child>
                                       <widget class="GtkExpander" id="stagione_articolo_filter_expander">
                                         <property name="visible">True</property>
@@ -1686,6 +1697,7 @@ Solo varianti</property>
                     <child>
                       <widget class="GtkVBox" id="riepilogo_articolo_filter_vbox">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <widget class="GtkAlignment" id="alignment496">
                             <property name="visible">True</property>
@@ -1811,6 +1823,7 @@ Solo varianti</property>
         <child>
           <widget class="GtkVBox" id="anagrafica_articoli_detail_table">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <child>
               <widget class="GtkTable" id="table2">
                 <property name="visible">True</property>
@@ -2284,6 +2297,7 @@ Solo varianti</property>
                                 <child>
                                   <widget class="GtkVBox" id="vbox2">
                                     <property name="visible">True</property>
+                                    <property name="orientation">vertical</property>
                                     <property name="spacing">3</property>
                                     <child>
                                       <widget class="GtkHBox" id="hbox5">

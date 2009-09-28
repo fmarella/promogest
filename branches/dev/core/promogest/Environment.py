@@ -115,7 +115,7 @@ def set_configuration(company=None, year = None):
                 emailmittente, smtpServer, cliente_predefinito, tipo_documento_predefinito,\
                 multilinelimit, mltext, sistemaColonnaFrontaline, sistemaRigaFrontaline,\
                 imagesDir, labelTemplatesDir, templatesDir, documentsDir, reportTemplatesDir,\
-                bordoDestro, bordoSinistro, magazzini
+                bordoDestro, bordoSinistro, magazzini, listini
 
     try:
         dire = getConfigureDir(company)
@@ -289,6 +289,15 @@ def set_configuration(company=None, year = None):
         if mod_enable == 'yes':
             magazzini = True
 
+
+    #[Listini]
+    listini = False
+    if hasattr(conf, 'Listini'):
+        mod_enable = getattr( conf.Listini,'mod_enable','no')
+        if mod_enable == 'yes':
+            listini = True
+
+
     #[Label]
     if hasattr(conf,'Label'):
         mod_enable = getattr(conf.Label,'mod_enable')
@@ -309,7 +318,7 @@ def set_configuration(company=None, year = None):
 
     importDebug = True
 
-templates_dir = [os.path.join('templates'),os.path.join('report-templates')]
+
 #mainSchema = "promogest2"
 #mainSchema = None
 #try :

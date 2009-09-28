@@ -8,13 +8,12 @@
 
 
 import gtk
-import gtkhtml2
 import math
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
-from promogest.lib.HtmlHandler import Pg2Html, renderHTML
+from promogest.lib.HtmlHandler import createHtmlObj, renderHTML
 
 class FilterWidget(GladeWidget):
     """ Base Class for filter part of windows/dialogs """
@@ -365,19 +364,9 @@ class FilterWidget(GladeWidget):
 
     def getHtmlFilterResultsWidget(self):
         """ Return a treeview widget for filter results """
-        Pg2Html(self).htmlObj()
+        self.html = createHtmlObj(self)
         html = """<html><body></body></html>"""
         renderHTML(self.html,html)
-        #html = gtkhtml2.View()
-
-        # some default settings
-        #html._htmlTemplate = None
-
-        #document = gtkhtml2.Document()
-        #document.open_stream('text/html')
-        #document.write_stream('<html></html>')
-        #document.close_stream()
-        #self.html.set_document(document)
         return self.html
 
 

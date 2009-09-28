@@ -21,38 +21,39 @@ from  promogest.ui import utils
 from jinja2 import Environment  as Env
 from jinja2 import FileSystemLoader,FileSystemBytecodeCache
 
-templates_dir =Environment.templates_dir
+templates_dir = [os.path.join('templates'),os.path.join('report-templates')]
+jinja_env = None
 
-jinja_env = Env(loader=FileSystemLoader(templates_dir),
-        bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
-jinja_env.globals['environment'] = Environment
-jinja_env.globals['utils'] = utils
+def env(templates_dir):
+    jinja_env = Env(loader=FileSystemLoader(templates_dir),
+            bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
+    return jinja_env
 
-class Pg2Html(object):
-    def __init__(self,mainWidget,widget=None):
-        self.mainWidget = mainWidget
-        self.widget = widget
+"""
+    createHtmlObj = restituisce un oggetto del render html o gtkhtml2 o webkit
+    renderHTMLTemplate o renderTemplate = Restituiscono una stringa html dopo la
+                                            renderizzazione del template engine
+    renderHTML = inserisce il codice html dentro l'oggetto
+"""
 
-    def htmlObj(self):
-        try:
-            self.mainWidget.html = WebView()
-            return True
-        except:
-            self.mainWidget.html = gtkhtml2.View()
-            return False
+def createHtmlObj(mainWidget,widget=None):
+    try:
+        return WebView()
+    except:
+        return gtkhtml2.View()
 
 def renderTemplate(pageData):
-    jinja_env.globals['ui'] = pageData["file"].split(".")[0]
-    if "feed" not in pageData:
-        pageData["feed"] = []
-    if "dao" not in pageData:
-        pageData["dao"] = []
-    if "objects" not in pageData:
-        pageData["objects"] = []
-    html = jinja_env.get_template(pageData["file"]).render(dao=pageData["dao"],objects=pageData["objects"], feed=pageData["feed"])
+    if "feed" not in pageData: pageData["feed"] = []
+    if "dao" not in pageData:  pageData["dao"] = []
+    if "objects" not in pageData: pageData["objects"] = []
+    jinja_env.globals['environment'] = Environment
+    jinja_env.globals['utils'] = utils
+    pageData["titolo"] = pageData["file"].split(".")[0].capitalize()
+    html = jinja_env.get_template(pageData["file"]).render(pageData= pageData,dao=pageData["dao"],
+                    objects=pageData["objects"], feed=pageData["feed"])
     return html
 
-def on_html_request_url(document, url, stream):
+def _on_html_request_url(document, url, stream):
 
     def render():
         try:
@@ -68,34 +69,23 @@ def on_html_request_url(document, url, stream):
             stream.close()
     gobject.idle_add(render)
 
-
-def on_html_link_clicked(url, link):
+def _on_html_link_clicked(url, link):
     def linkOpen():
         webbrowser.open_new_tab(link)
         #print link
     gobject.idle_add(linkOpen)
-    """ funzione di apertura dei link presenti nelle pagine html di anteprima"""
-    #print "URLLLLLLLLLLLLLLLLLLLLLLLLLL", dir(url)
-    #if link =="/tt":
-        #dialog = gtk.MessageDialog(None,
-                                #gtk.DIALOG_MODAL
-                                #| gtk.DIALOG_DESTROY_WITH_PARENT,
-                                #gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                #'Confermi la chiusura ?')
-        #response = dialog.run()
-        #dialog.destroy()
-        #if response ==  gtk.RESPONSE_YES:
-            #self.setVisible(False)
-        #else:
     return True
+
+def renderHTMLTemplate(pageData):
+    return renderTemplate(pageData)
 
 def renderHTML(widget, html):
     if WEBKIT:
             widget.load_string(html,"text/html","utf-8", "file:///"+sys.path[0]+os.sep)
     else:
         document = gtkhtml2.Document()
-        document.connect('request_url', on_html_request_url)
-        document.connect('link_clicked', on_html_link_clicked)
+        document.connect('request_url', _on_html_request_url)
+        document.connect('link_clicked', _on_html_link_clicked)
         document.open_stream('text/html')
         document.write_stream(html)
         document.close_stream()

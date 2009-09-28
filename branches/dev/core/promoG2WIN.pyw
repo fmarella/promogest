@@ -8,6 +8,7 @@
 
 
 import os
+os.chdir(os.path.dirname(__file__))
 from optparse import OptionParser
 from promogest import Environment
 #from promogest.lib.UpdateDB import *

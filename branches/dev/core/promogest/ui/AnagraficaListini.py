@@ -125,7 +125,8 @@ class AnagraficaListiniFilter(AnagraficaFilter):
         liss = self.runFilter()
 
         self._treeViewModel.clear()
-        if Environment.tipo_eng =="sqlite":
+        if Environment.tipo_eng =="sqlite" and Listino().count() >=1 and not Environment.listini:
+        #if Environment.tipo_eng =="sqlite":
             if len(liss) >1:
                 print "SPARIAMO UN MESSAGGIO"
                 liss = liss[0]
@@ -242,7 +243,8 @@ class AnagraficaListiniEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            if Environment.tipo_eng =="sqlite" and Listino().count() >=1:
+            if Environment.tipo_eng =="sqlite" and Listino().count() >=1 and not Environment.listini:
+            #if Environment.tipo_eng =="sqlite" and Listino().count() >=1:
                 self.destroy()
                 fenceDialog()
             else:
@@ -313,10 +315,19 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             #self.dao.id = provaaaaaaaaa
         if Environment.tipo_eng =="sqlite" and not self.dao.id:
             listini = Listino().select(orderBy="id")
+            #print "LISTINI", listini[:-1], self.dao.id
             if not listini:
                 self.dao.id = 1
             else:
-                self.dao.id = (listini[:-1].id) +1
+                idss = []
+                for l in listini:
+                    idss.append(l.id)
+                self.dao.id = (max(idss)) +1
+            #elif len(listini)==1:
+                #self.dao.id = (listini[0].id) +1
+            #else:
+
+                #self.dao.id = (listini[:-1].id) +1
         self.dao.denominazione = self.denominazione_entry.get_text()
         listinoAtt = Listino().select(denominazione=self.dao.denominazione)
         if not listinoAtt:
@@ -329,7 +340,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
 
         self.dao.descrizione = self.descrizione_entry.get_text()
         self.dao.data_listino = stringToDate(self.data_listino_entry.get_text())
-        
+
         self.dao.persist()
         model = self.categorie_treeview.get_model()
         cleanListinoCategoriaCliente = ListinoCategoriaCliente()\

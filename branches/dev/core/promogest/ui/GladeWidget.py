@@ -24,7 +24,7 @@ from SimpleGladeWrapper import SimpleGladeWrapper
 
 import gtk
 import gobject
-import gtkhtml2
+#import gtkhtml2
 import xml.etree.cElementTree as ElementTree
 
 from promogest import Environment
@@ -43,7 +43,7 @@ from widgets.ScontoWidget import ScontoWidget
 
 
 
-from promogest.lib.HtmlTextView import HtmlTextView
+#from promogest.lib.HtmlTextView import HtmlTextView
 from SimpleGladeApp import SimpleGladeApp
 
 class GladeWidget(SimpleGladeApp):
@@ -116,13 +116,13 @@ class GladeWidget(SimpleGladeApp):
         """ Return an EntryField for discount input with selection of the discount type"""
         return ScontoWidget(str1, str2, int1, int2)
 
-    def createGtkHtml2Widget(self, str1, str2, int1, int2):
-        """ Return a GtkHtml2 widget """
-        return gtkhtml2.View()
+    #def createGtkHtml2Widget(self, str1, str2, int1, int2):
+        #""" Return a GtkHtml2 widget """
+        #return gtkhtml2.View()
 
-    def createHtmlWidget(self, str1, str2, int1, int2):
-        """ Return a HtmlTextView widget """
-        return HtmlTextView()
+    #def createHtmlWidget(self, str1, str2, int1, int2):
+        #""" Return a HtmlTextView widget """
+        #return HtmlTextView()
 
     def createDateWidget(self, str1, str2, int1, int2):
         """ Return a DateWidget widget """

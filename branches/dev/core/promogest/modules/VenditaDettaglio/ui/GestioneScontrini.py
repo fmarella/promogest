@@ -5,9 +5,9 @@
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francescoo@promotux.it>
 
-import gtk, gobject
+import gtk
 import os, popen2
-import gtkhtml2
+
 from promogest.dao.DaoUtils import giacenzaSel
 from datetime import datetime, timedelta
 from promogest import Environment
@@ -18,9 +18,8 @@ from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRig
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.ui.utils import *
 from promogest.ui import utils
-from jinja2 import Environment  as Env
-from jinja2 import FileSystemLoader,FileSystemBytecodeCache
 
+from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 
 class GestioneScontrini(GladeWidget):
     """ Classe per la gestione degli scontrini emessi """
@@ -54,7 +53,8 @@ class GestioneScontrini(GladeWidget):
         sw = gtk.ScrolledWindow()
         sw.set_policy(hscrollbar_policy = gtk.POLICY_AUTOMATIC,
                             vscrollbar_policy = gtk.POLICY_AUTOMATIC)
-        self.detail = gtkhtml2.View()
+        #createHtmlObj(self)
+        self.detail = createHtmlObj(self)
         sw.add(self.detail)
         self.main_hpaned.pack2(sw)
 
@@ -140,8 +140,8 @@ class GestioneScontrini(GladeWidget):
             self.filters.a_data_filter_entry.setNow()
         else:
             self.filters.a_data_filter_entry.set_text(self_aData)
-        self.defaultFileName = "scontrino.html"
-        self._htmlTemplate = "promogest/modules/VenditaDettaglio/templates"
+        #self.defaultFileName = "scontrino.html"
+        #self._htmlTemplate = "promogest/modules/VenditaDettaglio/templates"
          #self.html_scrolledwindow.add(self.detail)
         self.refreshHtml()
 
@@ -227,7 +227,7 @@ class GestioneScontrini(GladeWidget):
         (model, iterator) = sel.get_selected()
 
         if iterator is None:
-            print 'on_filter_treeview_cursor_changed(): FIXME: iterator is None!'
+            #print 'on_filter_treeview_cursor_changed(): FIXME: iterator is None!'
             return
 
         self.dao = model.get_value(iterator, 0)
@@ -242,21 +242,15 @@ class GestioneScontrini(GladeWidget):
         pass
 
     def refreshHtml(self, dao=None):
-        document =gtkhtml2.Document()
-        if self.dao is None:
-            html = '<html><body></body></html>'
-        else:
-            templates_dir = self._htmlTemplate
-            jinja_env = Env(loader=FileSystemLoader(templates_dir),
-                bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
-            jinja_env.globals['environment'] = Environment
-            jinja_env.globals['utils'] = utils
-            html = jinja_env.get_template(self.defaultFileName).render(dao=self.dao)
-        document.open_stream('text/html')
-        document.write_stream(html)
-        document.close_stream()
-        #self.detail.detail_html.set_document(document)
-        self.detail.set_document(document)
+        pageData = {}
+        html = '<html></html>'
+        if self.dao:
+            pageData = {
+                    "file": "scontrino.html",
+                    "dao" :self.dao
+                    }
+            html = renderTemplate(pageData)
+        renderHTML(self.detail,html)
 
     def on_quit_button_clicked(self, widget, event=None):
         self.destroy()

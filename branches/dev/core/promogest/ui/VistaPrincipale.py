@@ -15,7 +15,7 @@ from promogest.dao.Promemoria import Promemoria
 from promogest.lib import feedparser
 from utils import *
 from promogest.ui.SendEmail import SendEmail
-from promogest.lib.HtmlHandler import Pg2Html, renderTemplate, renderHTML
+from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 
 class VistaPrincipale(GladeWidget):
     """
@@ -28,7 +28,7 @@ class VistaPrincipale(GladeWidget):
         #self.cancel_alarm_button.set_sensitive(False)
         #self.alarm_notify_treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self._loading=None
-        Pg2Html(self).htmlObj()
+        self.html = createHtmlObj(self)
         self.feed_scrolled.add(self.html)
         html = """<html><body></body></html>"""
         renderHTML(self.html,html)

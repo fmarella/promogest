@@ -12,7 +12,6 @@ import gobject
 import unicodedata
 from  subprocess import *
 import os, popen2
-import gtkhtml2
 from promogest.dao.DaoUtils import giacenzaSel
 from datetime import datetime, timedelta
 from promogest import Environment
@@ -862,7 +861,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 process = popen2.Popen3(command, True)
                 message = process.childerr.readlines()
                 ret_value = process.wait()
-                
+
         else:
             ret_value = 0
 
