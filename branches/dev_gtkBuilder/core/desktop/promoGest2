@@ -1,0 +1,10 @@
+#!/bin/sh
+
+cd ~/pg2/core/
+chmod +x promogest.py
+if [ $# -ne 0 ]; then
+python promogest.py $*
+else
+python promogest.py
+fi;
+

@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
+<!--Generated with glade3 3.4.4 on Fri May  2 17:08:55 2008 -->
+<glade-interface>
+  <widget class="GtkDialog" id="statistiche_magazzino_dialog">
+    <property name="title" translatable="yes">Esportazione statistiche di magazzino</property>
+    <property name="resizable">False</property>
+    <property name="icon">promogest.png</property>
+    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <child internal-child="vbox">
+      <widget class="GtkVBox" id="dialog-vbox23">
+        <property name="visible">True</property>
+        <child>
+          <widget class="GtkTable" id="table33">
+            <property name="visible">True</property>
+            <property name="border_width">3</property>
+            <property name="n_rows">12</property>
+            <property name="n_columns">4</property>
+            <child>
+              <widget class="GtkRadioButton" id="ultimo_prezzo_acquisto_radiobutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Valorizzate all' ultimo prezzo di acquisto</property>
+                <property name="use_underline">True</property>
+                <property name="response_id">0</property>
+                <property name="draw_indicator">True</property>
+              </widget>
+              <packing>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">20</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkRadioButton" id="prezzo_medio_acquisto_radiobutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Valorizzate al prezzo medio di acquisto</property>
+                <property name="use_underline">True</property>
+                <property name="response_id">0</property>
+                <property name="draw_indicator">True</property>
+                <property name="group">ultimo_prezzo_acquisto_radiobutton</property>
+              </widget>
+              <packing>
+                <property name="right_attach">2</property>
+                <property name="top_attach">3</property>
+                <property name="bottom_attach">4</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">20</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkRadioButton" id="prezzo_medio_vendita_radiobutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Valorizzate al prezzo medio di vendita</property>
+                <property name="use_underline">True</property>
+                <property name="response_id">0</property>
+                <property name="draw_indicator">True</property>
+                <property name="group">ultimo_prezzo_acquisto_radiobutton</property>
+              </widget>
+              <packing>
+                <property name="right_attach">2</property>
+                <property name="top_attach">4</property>
+                <property name="bottom_attach">5</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">20</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkRadioButton" id="giacenze_radiobutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Giacenze</property>
+                <property name="use_underline">True</property>
+                <property name="response_id">0</property>
+                <property name="draw_indicator">True</property>
+                <signal name="clicked" handler="on_any_checkbutton_giacenze_clicked"/>
+              </widget>
+              <packing>
+                <property name="right_attach">4</property>
+                <property name="y_options"></property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkRadioButton" id="ultimo_prezzo_vendita_radiobutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Valorizzate all' ultimo prezzo di vendita</property>
+                <property name="use_underline">True</property>
+                <property name="response_id">0</property>
+                <property name="draw_indicator">True</property>
+                <property name="group">ultimo_prezzo_acquisto_radiobutton</property>
+              </widget>
+              <packing>
+                <property name="right_attach">2</property>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">20</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkRadioButton" id="venduto_radiobutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Venduto</property>
+                <property name="use_underline">True</property>
+                <property name="response_id">0</property>
+                <property name="draw_indicator">True</property>
+                <property name="group">giacenze_radiobutton</property>
+                <signal name="clicked" handler="set_radio_button_states"/>
+              </widget>
+              <packing>
+                <property name="right_attach">4</property>
+                <property name="top_attach">6</property>
+                <property name="bottom_attach">7</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="label675">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Da data</property>
+              </widget>
+              <packing>
+                <property name="top_attach">7</property>
+                <property name="bottom_attach">8</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">20</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkAlignment" id="alignment220">
+                <property name="width_request">120</property>
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="xscale">0</property>
+                <child>
+                  <widget class="Custom" id="da_data_entry">
+                    <property name="visible">True</property>
+                    <property name="creation_function">createDateWidget</property>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">7</property>
+                <property name="bottom_attach">8</property>
+                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkAlignment" id="alignment219">
+                <property name="width_request">120</property>
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="xscale">0</property>
+                <child>
+                  <widget class="Custom" id="a_data_entry">
+                    <property name="visible">True</property>
+                    <property name="creation_function">createDateWidget</property>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="left_attach">3</property>
+                <property name="right_attach">4</property>
+                <property name="top_attach">7</property>
+                <property name="bottom_attach">8</property>
+                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="label537">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">A data</property>
+              </widget>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">3</property>
+                <property name="top_attach">7</property>
+                <property name="bottom_attach">8</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">20</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkCheckButton" id="raggruppamento_fornitore_checkbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Raggruppamento per fornitore</property>
+                <property name="use_underline">True</property>
+                <property name="response_id">0</property>
+                <property name="draw_indicator">True</property>
+                <signal name="clicked" handler="on_any_checkbutton_venduto_clicked"/>
+              </widget>
+              <packing>
+                <property name="right_attach">4</property>
+                <property name="top_attach">11</property>
+                <property name="bottom_attach">12</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">20</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkCheckButton" id="raggruppamento_famiglia_checkbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Raggruppamento per famiglia</property>
+                <property name="use_underline">True</property>
+                <property name="response_id">0</property>
+                <property name="draw_indicator">True</property>
+                <signal name="clicked" handler="on_any_checkbutton_venduto_clicked"/>
+              </widget>
+              <packing>
+                <property name="right_attach">4</property>
+                <property name="top_attach">8</property>
+                <property name="bottom_attach">9</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">20</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkCheckButton" id="raggruppamento_categoria_checkbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Raggruppamento per categoria</property>
+                <property name="use_underline">True</property>
+                <property name="response_id">0</property>
+                <property name="draw_indicator">True</property>
+                <signal name="clicked" handler="on_any_checkbutton_venduto_clicked"/>
+              </widget>
+              <packing>
+                <property name="right_attach">4</property>
+                <property name="top_attach">9</property>
+                <property name="bottom_attach">10</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">20</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkCheckButton" id="raggruppamento_genere_checkbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Raggruppamento per genere</property>
+                <property name="use_underline">True</property>
+                <property name="response_id">0</property>
+                <property name="draw_indicator">True</property>
+                <signal name="clicked" handler="on_any_checkbutton_venduto_clicked"/>
+              </widget>
+              <packing>
+                <property name="right_attach">4</property>
+                <property name="top_attach">10</property>
+                <property name="bottom_attach">11</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">20</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkHSeparator" id="hseparator52">
+                <property name="visible">True</property>
+              </widget>
+              <packing>
+                <property name="right_attach">4</property>
+                <property name="top_attach">5</property>
+                <property name="bottom_attach">6</property>
+                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="y_padding">3</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkCheckButton" id="ordinamento_famiglia_checkbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Ordinamento per famiglia</property>
+                <property name="use_underline">True</property>
+                <property name="response_id">0</property>
+                <property name="draw_indicator">True</property>
+                <signal name="clicked" handler="on_any_checkbutton_giacenze_clicked"/>
+              </widget>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">4</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">20</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkCheckButton" id="ordinamento_categoria_checkbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Ordinamento per categoria</property>
+                <property name="use_underline">True</property>
+                <property name="response_id">0</property>
+                <property name="draw_indicator">True</property>
+                <signal name="clicked" handler="on_any_checkbutton_giacenze_clicked"/>
+              </widget>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">4</property>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">20</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkCheckButton" id="ordinamento_genere_checkbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Ordinamento per genere</property>
+                <property name="use_underline">True</property>
+                <property name="response_id">0</property>
+                <property name="draw_indicator">True</property>
+                <signal name="clicked" handler="on_any_checkbutton_giacenze_clicked"/>
+              </widget>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">4</property>
+                <property name="top_attach">3</property>
+                <property name="bottom_attach">4</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">20</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkCheckButton" id="ordinamento_fornitore_checkbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="label" translatable="yes">Ordinamento per fornitore</property>
+                <property name="use_underline">True</property>
+                <property name="response_id">0</property>
+                <property name="draw_indicator">True</property>
+                <signal name="clicked" handler="on_any_checkbutton_giacenze_clicked"/>
+              </widget>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">4</property>
+                <property name="top_attach">4</property>
+                <property name="bottom_attach">5</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+                <property name="x_padding">20</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child internal-child="action_area">
+          <widget class="GtkHButtonBox" id="dialog-action_area23">
+            <property name="visible">True</property>
+            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <child>
+              <widget class="GtkButton" id="ok_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="label">gtk-ok</property>
+                <property name="use_stock">True</property>
+                <property name="response_id">-5</property>
+                <signal name="clicked" handler="on_ok_button_clicked"/>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">GTK_PACK_END</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</glade-interface>

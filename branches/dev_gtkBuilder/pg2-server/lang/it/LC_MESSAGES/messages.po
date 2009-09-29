@@ -1,0 +1,1361 @@
+# Italian translations for PROJECT.
+# Copyright (C) 2008 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2008-05-26 01:22+0200\n"
+"PO-Revision-Date: 2008-05-26 01:25+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: it <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 1.0dev-r364\n"
+
+#: server.py:74
+msgid "PROVA DI TRADUZIONE"
+msgstr ""
+
+#: ngs-ng/NGS-index.html:3
+msgid "NGS"
+msgstr ""
+
+#: ngs-ng/NGS-prodotti.html:3
+msgid "NGS2"
+msgstr ""
+
+#: ngs-ng/NGS-servizi.html:3
+msgid "NGS3"
+msgstr ""
+
+#: style/footer.html:3
+msgid ""
+"PromoGEST Server, software gestionale per aziende -\n"
+"© 2007"
+msgstr ""
+
+#: style/head.html:15
+msgid ""
+"tinyMCE.init({\n"
+"\t\ttheme : \"advanced\",\n"
+"// \t\tmode : \"textareas\",\n"
+"                mode : \"exact\",\n"
+"\t\telements : \"pageBody,body,MyTextarea\",\n"
+"// \t\tsave_callback : \"customSave\",\n"
+"plugins : "
+"\"style,layer,table,save,advhr,advimage,advlink,emotions,iespell,insertdatetime,preview,zoom,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras\","
+"\n"
+"    theme_advanced_buttons1 : "
+"\"bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect\","
+"\n"
+"    theme_advanced_buttons2 : "
+"\"cut,copy,paste,pastetext,pasteword,|,strikethrough,search,replace,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|preview,|,forecolor,backcolor\","
+"\n"
+"    theme_advanced_buttons3 : "
+"\"save,newdocument,|,tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,iespell,media,|,print,|,ltr,rtl\","
+"\n"
+"    theme_advanced_buttons4 : "
+"\"insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking\","
+"\n"
+"    theme_advanced_toolbar_location : \"top\",\n"
+"    theme_advanced_toolbar_align : \"left\",\n"
+"    theme_advanced_path_location : \"bottom\",\n"
+"    extended_valid_elements : "
+"\"a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]\","
+"\n"
+"    template_external_list_url : \"example_template_list.js\"\n"
+"\t});"
+msgstr ""
+
+#: style/head.html:39
+msgid "Promogest Modulo e-commerce"
+msgstr ""
+
+#: style/index.html:26
+msgid "Seleziona il sito"
+msgstr ""
+
+#: style/index.html:33
+msgid "Default"
+msgstr ""
+
+#: style/index.html:34
+msgid "Promotux"
+msgstr ""
+
+#: style/common/buy.html:11 style/ngsresine/acquisto.html:11
+msgid "Acquisto - Step 1"
+msgstr ""
+
+#: style/common/buy.html:11 style/ngsresine/acquisto.html:11
+msgid "Autenticazione."
+msgstr ""
+
+#: style/common/buy.html:14 style/ngsresine/acquisto.html:14
+msgid "Non sei autenticato."
+msgstr ""
+
+#: style/common/buy.html:14 style/ngsresine/acquisto.html:14
+msgid ""
+"Affinchè l'acquisto possa essere perfezionato, è necessario che tu ti "
+"registri o se sei già registrato, che tu acceda con le tue credenziali."
+msgstr ""
+
+#: style/common/buy.html:20 style/ngsresine/acquisto.html:21
+#: style/ngsresine/login.html:14
+msgid "UserId"
+msgstr ""
+
+#: style/common/buy.html:26 style/ngsresine/acquisto.html:27
+#: style/ngsresine/login.html:20
+msgid "Passwd"
+msgstr ""
+
+#: style/common/buy.html:36 style/ngsresine/acquisto.html:37
+#: style/ngsresine/login.html:35
+msgid "Registrati ora"
+msgstr ""
+
+#: style/common/buy.html:39 style/ngsresine/acquisto.html:40
+#: style/ngsresine/login.html:36 style/ngsresine/recoveryPassword.html:5
+msgid "Recupera la Password"
+msgstr ""
+
+#: style/common/buy.html:50 style/ngsresine/acquisto.html:52
+msgid "Acquisto - Step 3"
+msgstr ""
+
+#: style/common/buy.html:50 style/ngsresine/acquisto.html:52
+msgid "Spese di spedizione."
+msgstr ""
+
+#: style/common/buy.html:56 style/ngsresine/acquisto.html:58
+msgid "Spese di spedizione e metodi di pagamento"
+msgstr ""
+
+#: style/common/buy.html:67 style/ngsresine/acquisto.html:69
+msgid "Metodi di pagamento"
+msgstr ""
+
+#: style/common/buy.html:84
+msgid "Acquisto - Step 5"
+msgstr ""
+
+#: style/common/buy.html:84
+msgid "Riepilogo."
+msgstr ""
+
+#: style/common/buy.html:88 style/ngsresine/acquisto.html:84
+msgid "Dati cliente"
+msgstr ""
+
+#: style/common/buy.html:89 style/ngsresine/acquisto.html:85
+msgid "Cognome :"
+msgstr ""
+
+#: style/common/buy.html:90 style/ngsresine/acquisto.html:86
+msgid "Nome :"
+msgstr ""
+
+#: style/common/buy.html:91 style/ngsresine/acquisto.html:87
+msgid "Codice Fiscale :"
+msgstr ""
+
+#: style/common/buy.html:93 style/ngsresine/acquisto.html:89
+msgid "Dati ordine"
+msgstr ""
+
+#: style/common/buy.html:97 style/ngsresine/acquisto.html:93
+msgid "N°"
+msgstr ""
+
+#: style/common/buy.html:100 style/ngsresine/acquisto.html:96
+msgid "TOT. €"
+msgstr ""
+
+#: style/common/buy.html:105 style/ngsresine/acquisto.html:101
+msgid "TOTALE :"
+msgstr ""
+
+#: style/common/buy.html:109 style/ngsresine/acquisto.html:105
+msgid ""
+"Lo step finale dell'acquisto (pagamento), non è possibile in quanto "
+"questa è una dimostrazione, verrete quindi rimandati alla home, grazie di"
+" aver provato l'applicazione."
+msgstr ""
+
+#: style/common/cart.html:8 style/ngsresine/cart.html:8
+msgid "Acquisto - Step 4"
+msgstr ""
+
+#: style/common/cart.html:8 style/ngsresine/cart.html:8
+msgid "Conferma prodotti e totale."
+msgstr ""
+
+#: style/common/cart.html:13 style/ngsresine/cart.html:13
+msgid "Carrello"
+msgstr ""
+
+#: style/common/cart.html:16 style/ngsresine/cart.html:17
+msgid "Prezzo unit.: €"
+msgstr ""
+
+#: style/common/cart.html:22 style/ngsresine/cart.html:23
+msgid "Qt."
+msgstr ""
+
+#: style/common/cart.html:25 style/ngsresine/cart.html:26
+msgid "Totale riga : €"
+msgstr ""
+
+#: style/common/cart.html:37 style/ngsresine/cart.html:39
+msgid "Totale carrello €"
+msgstr ""
+
+#: style/common/cart.html:58 style/ngsresine/cart.html:59
+msgid "Il carrello è vuoto."
+msgstr ""
+
+#: style/common/cart.html:62 style/ngsresine/cart.html:63
+msgid "ok"
+msgstr ""
+
+#: style/common/flags.html:6 style/common/flags.html:7
+#: style/common/flags.html:8 style/common/flags.html:9
+#: style/common/flags.html:10 style/common/flags.html:11
+#: style/ngsresine/flags.html:6 style/ngsresine/flags.html:7
+#: style/ngsresine/flags.html:8 style/ngsresine/flags.html:9
+#: style/ngsresine/flags.html:10 style/ngsresine/flags.html:11
+msgid "bandiera italiana"
+msgstr ""
+
+#: style/common/main.html:23 style/common/main.html:36
+msgid "Listino:"
+msgstr ""
+
+#: style/common/metodiDiPagamento.html:7 style/ngsresine/listino.html:7
+msgid "Seleziona le procedure di pagamento da Attivare"
+msgstr ""
+
+#: style/common/registerConfirmed.html:5
+#: style/ngsresine/registerConfirmed.html:5
+msgid "Registrazione avvenuta!"
+msgstr ""
+
+#: style/common/registerConfirmed.html:7
+msgid ""
+"Procedura di iscrizione avvenuta con successo, è stata inviata una email "
+"al recapito lasciato\n"
+"durante la registrazione. Successivamente è necessario completare il "
+"profilo con\n"
+"i dati necessari alla fatturazione. Per accedervi cliccare sul link "
+"apposito."
+msgstr ""
+
+#: style/common/registerConfirmed.html:11
+#: style/ngsresine/contactConfirmed.html:9
+#: style/ngsresine/recoveryConfirmed.html:14
+#: style/ngsresine/registerConfirmed.html:10
+msgid "Torna alla Home"
+msgstr ""
+
+#: style/common/registerForm.html:5
+msgid "Registrazione"
+msgstr ""
+
+#: style/common/registerForm.html:9 style/ngsresine/recoveryPassword.html:9
+#: style/ngsresine/registerForm.html:10
+msgid "Username (*)"
+msgstr ""
+
+#: style/common/registerForm.html:15 style/ngsresine/registerForm.html:16
+msgid "Password (*)"
+msgstr ""
+
+#: style/common/registerForm.html:21 style/ngsresine/registerForm.html:22
+msgid "Ripeti Password (*)"
+msgstr ""
+
+#: style/common/registerForm.html:27 style/ngsresine/contact.html:15
+#: style/ngsresine/registerForm.html:28
+msgid "E-mail (*)"
+msgstr ""
+
+#: style/common/registerForm.html:33
+msgid "Scegli il tuo ruolo (*)"
+msgstr ""
+
+#: style/common/registerForm.html:36
+msgid "Cliente"
+msgstr ""
+
+#: style/common/registerForm.html:36 style/ngsresine/articleDetail.html:116
+#: style/ngsresine/articleDetail.html:137
+#: style/ngsresine/articleDetail.html:147
+#: style/ngsresine/articleDetail.html:157
+#: style/ngsresine/articleDetail.html:167
+#: style/ngsresine/articleDetail.html:177
+#: style/ngsresine/articleDetail.html:187
+msgid "selected=\"selected\""
+msgstr ""
+
+#: style/common/registerForm.html:38
+msgid "Cliente Professionale o Azienda"
+msgstr ""
+
+#: style/common/registerForm.html:62 style/ngsresine/contact.html:66
+msgid ""
+"Tutti i campi contrassegnati con il simbolo (*) devono essere compilati "
+"obbligatoriamente."
+msgstr ""
+
+#: style/common/roleAction.html:6
+msgid "Gestione ruoli"
+msgstr ""
+
+#: style/common/roleAction.html:6
+msgid "(Admin, Cliente, ClientePRO e Guest non sono modificabili)"
+msgstr ""
+
+#: style/common/roleAction.html:10 style/common/roleAction.html:31
+msgid "aggiungi un ruolo"
+msgstr ""
+
+#: style/common/roleAction.html:10 style/common/roleAction.html:31
+#: style/common/userAction.html:10 style/common/userAction.html:45
+#: style/ngsresine/userAction.html:10 style/ngsresine/userAction.html:45
+msgid "aggiungi un utente"
+msgstr ""
+
+#: style/common/roleAction.html:16
+msgid "elimina ruolo"
+msgstr ""
+
+#: style/common/roleAction.html:18
+msgid "attiva ruolo"
+msgstr ""
+
+#: style/common/roleAction.html:21
+msgid "disattiva ruolo"
+msgstr ""
+
+#: style/common/roleAction.html:25
+msgid "modifica ruolo"
+msgstr ""
+
+#: style/common/roleAction.html:38
+msgid "Modifica il ruolo"
+msgstr ""
+
+#: style/common/roleAction.html:43 style/common/roleAction.html:90
+#: style/common/userAction.html:107 style/ngsresine/userAction.html:107
+msgid "Nome:"
+msgstr ""
+
+#: style/common/roleAction.html:49 style/ngsresine/unit.html:75
+msgid "Descrizione:"
+msgstr ""
+
+#: style/common/roleAction.html:86
+msgid "Aggiungi un ruolo"
+msgstr ""
+
+#: style/common/roleAction.html:93
+msgid "Descrizione::"
+msgstr ""
+
+#: style/common/speseDiSpedizione.html:7
+msgid "Seleziona le metodologie di spedizione da Attivare"
+msgstr ""
+
+#: style/common/staticMenuAction.html:6
+msgid "Aggiungi voce di menu"
+msgstr ""
+
+#: style/common/staticMenuAction.html:10 style/common/staticMenuAction.html:66
+msgid "voce"
+msgstr ""
+
+#: style/common/staticMenuAction.html:12 style/common/staticMenuAction.html:68
+msgid "u.r.l."
+msgstr ""
+
+#: style/common/staticMenuAction.html:13 style/common/staticMenuAction.html:69
+msgid "Scegli la pagina associata:"
+msgstr ""
+
+#: style/common/staticMenuAction.html:21 style/common/staticMenuAction.html:76
+msgid "Scegli il nome del menu padre:"
+msgstr ""
+
+#: style/common/staticMenuAction.html:36
+msgid "Gestione menu"
+msgstr ""
+
+#: style/common/staticMenuAction.html:40 style/common/staticMenuAction.html:54
+msgid "aggiungi una voce"
+msgstr ""
+
+#: style/common/staticMenuAction.html:46
+msgid "elimina voce"
+msgstr ""
+
+#: style/common/staticMenuAction.html:49 style/ngsresine/staticMenu.html:8
+msgid "modifica voce"
+msgstr ""
+
+#: style/common/staticMenuAction.html:61
+msgid "Modifica voce di menu"
+msgstr ""
+
+#: style/common/staticPagesAction.html:12
+#: style/common/staticPagesAction.html:45
+msgid "titolo"
+msgstr ""
+
+#: style/common/staticPagesAction.html:13
+#: style/common/staticPagesAction.html:47
+msgid "corpo"
+msgstr ""
+
+#: style/common/staticPagesAction.html:21
+msgid "Gestione contenuti statici"
+msgstr ""
+
+#: style/common/staticPagesAction.html:25
+#: style/common/staticPagesAction.html:36
+msgid "aggiungi una pagina"
+msgstr ""
+
+#: style/common/staticPagesAction.html:30
+msgid "elimina una pagina"
+msgstr ""
+
+#: style/common/staticPagesAction.html:31
+msgid "modifica una pagina"
+msgstr ""
+
+#: style/common/staticPagesAction.html:55
+msgid "Anteprima pagina"
+msgstr ""
+
+#: style/common/userAction.html:6 style/ngsresine/userAction.html:6
+msgid "Gestione utenti ( Admin non si può modificare )"
+msgstr ""
+
+#: style/common/userAction.html:23 style/ngsresine/userAction.html:23
+msgid "elimina utente"
+msgstr ""
+
+#: style/common/userAction.html:28 style/ngsresine/userAction.html:28
+msgid "disattiva utente"
+msgstr ""
+
+#: style/common/userAction.html:33 style/ngsresine/userAction.html:33
+msgid "attiva utente"
+msgstr ""
+
+#: style/common/userAction.html:38 style/ngsresine/userAction.html:38
+msgid "modifica utente"
+msgstr ""
+
+#: style/common/userAction.html:52
+msgid "_(Aggiungi un utente)"
+msgstr ""
+
+#: style/common/userAction.html:56 style/ngsresine/userAction.html:56
+msgid "Username:"
+msgstr ""
+
+#: style/common/userAction.html:62 style/common/userAction.html:101
+#: style/ngsresine/userAction.html:62 style/ngsresine/userAction.html:101
+msgid "Password:"
+msgstr ""
+
+#: style/common/userAction.html:68 style/common/userAction.html:119
+#: style/ngsresine/userAction.html:68 style/ngsresine/userAction.html:119
+msgid "Email:"
+msgstr ""
+
+#: style/common/userAction.html:74 style/common/userAction.html:125
+#: style/ngsresine/userAction.html:74 style/ngsresine/userAction.html:125
+msgid "Ruolo:"
+msgstr ""
+
+#: style/common/userAction.html:90 style/ngsresine/userAction.html:90
+msgid "Modifica l'utente"
+msgstr ""
+
+#: style/common/userAction.html:95 style/common/userAction.html:154
+#: style/common/userProfile.html:29 style/ngsresine/userAction.html:95
+#: style/ngsresine/userAction.html:154
+msgid "Username"
+msgstr ""
+
+#: style/common/userAction.html:113 style/ngsresine/userAction.html:113
+msgid "Cognome:"
+msgstr ""
+
+#: style/common/userAction.html:134 style/ngsresine/articleDetail.html:42
+#: style/ngsresine/unit.html:88
+msgid "Note:"
+msgstr ""
+
+#: style/common/userAction.html:151 style/common/userProfile.html:25
+#: style/ngsresine/userAction.html:151
+msgid "Dettagli anagrafici e account"
+msgstr ""
+
+#: style/common/userAction.html:158 style/ngsresine/userAction.html:158
+msgid "Cognome"
+msgstr ""
+
+#: style/common/userAction.html:162 style/ngsresine/userAction.html:162
+msgid "Nome"
+msgstr ""
+
+#: style/common/userAction.html:167 style/common/userProfile.html:63
+#: style/ngsresine/userAction.html:167
+msgid "Ragione Sociale"
+msgstr ""
+
+#: style/common/userAction.html:171 style/common/userProfile.html:71
+#: style/ngsresine/userAction.html:171
+msgid "Insegna"
+msgstr ""
+
+#: style/common/userAction.html:175 style/ngsresine/userAction.html:175
+msgid "Email"
+msgstr ""
+
+#: style/common/userAction.html:179 style/ngsresine/userAction.html:179
+msgid "Codice Fiscale"
+msgstr ""
+
+#: style/common/userAction.html:183 style/ngsresine/userAction.html:183
+msgid "Partita IVA"
+msgstr ""
+
+#: style/common/userAction.html:187 style/common/userProfile.html:104
+#: style/ngsresine/contact.html:21 style/ngsresine/userAction.html:187
+msgid "Telefono"
+msgstr ""
+
+#: style/common/userAction.html:191 style/common/userProfile.html:112
+#: style/ngsresine/userAction.html:191
+msgid "Fax"
+msgstr ""
+
+#: style/common/userAction.html:195 style/common/userProfile.html:120
+#: style/ngsresine/contact.html:40 style/ngsresine/userAction.html:195
+msgid "Note"
+msgstr ""
+
+#: style/common/userAction.html:201 style/common/userProfile.html:128
+#: style/ngsresine/userAction.html:199
+msgid "Sede legale"
+msgstr ""
+
+#: style/common/userAction.html:205 style/common/userAction.html:255
+#: style/common/userProfile.html:228 style/ngsresine/userAction.html:203
+#: style/ngsresine/userAction.html:252
+msgid "Indirizzo"
+msgstr ""
+
+#: style/common/userAction.html:209 style/common/userAction.html:259
+#: style/common/userProfile.html:236 style/ngsresine/userAction.html:207
+#: style/ngsresine/userAction.html:256
+msgid "Località"
+msgstr ""
+
+#: style/common/userAction.html:213 style/common/userAction.html:263
+#: style/common/userProfile.html:244 style/ngsresine/userAction.html:211
+#: style/ngsresine/userAction.html:260
+msgid "CAP"
+msgstr ""
+
+#: style/common/userAction.html:217 style/common/userAction.html:268
+#: style/common/userProfile.html:252 style/ngsresine/userAction.html:215
+#: style/ngsresine/userAction.html:265
+msgid "Provincia"
+msgstr ""
+
+#: style/common/userAction.html:221 style/common/userProfile.html:170
+#: style/ngsresine/userAction.html:219
+msgid "Nazione"
+msgstr ""
+
+#: style/common/userAction.html:227 style/common/userProfile.html:178
+#: style/ngsresine/userAction.html:224
+msgid "Sede operativa"
+msgstr ""
+
+#: style/common/userAction.html:230 style/common/userProfile.html:182
+#: style/ngsresine/userAction.html:227
+msgid "Indirizzo sede operativa"
+msgstr ""
+
+#: style/common/userAction.html:234 style/common/userProfile.html:190
+#: style/ngsresine/userAction.html:231
+msgid "CAP sede operativa"
+msgstr ""
+
+#: style/common/userAction.html:238 style/common/userProfile.html:198
+#: style/ngsresine/userAction.html:235
+msgid "Località sede operativa"
+msgstr ""
+
+#: style/common/userAction.html:242 style/common/userProfile.html:206
+#: style/ngsresine/userAction.html:239
+msgid "Provincia sede operativa"
+msgstr ""
+
+#: style/common/userAction.html:248 style/ngsresine/userAction.html:245
+msgid "Destinazione merce"
+msgstr ""
+
+#: style/common/userAction.html:251 style/common/userProfile.html:220
+#: style/ngsresine/userAction.html:248
+msgid "Denominazione"
+msgstr ""
+
+#: style/common/userProfile.html:11
+msgid "Acquisto - Step 2"
+msgstr ""
+
+#: style/common/userProfile.html:11
+msgid "Conferma o completa i tuoi dati per proseguire nell'acquisto."
+msgstr ""
+
+#: style/common/userProfile.html:15
+msgid "Profilo utente"
+msgstr ""
+
+#: style/common/userProfile.html:34
+msgid "Password"
+msgstr ""
+
+#: style/common/userProfile.html:41
+msgid "Ripeti Password"
+msgstr ""
+
+#: style/common/userProfile.html:48 style/ngsresine/contact.html:9
+msgid "Nome (*)"
+msgstr ""
+
+#: style/common/userProfile.html:56
+msgid "Cognome (*)"
+msgstr ""
+
+#: style/common/userProfile.html:79
+msgid "Email (*)"
+msgstr ""
+
+#: style/common/userProfile.html:86
+msgid "Codice Fiscale (*)"
+msgstr ""
+
+#: style/common/userProfile.html:95
+msgid "Partita IVA (*)"
+msgstr ""
+
+#: style/common/userProfile.html:129
+msgid "Residenza"
+msgstr ""
+
+#: style/common/userProfile.html:134
+msgid "Indirizzo (*)"
+msgstr ""
+
+#: style/common/userProfile.html:143
+msgid "Località (*)"
+msgstr ""
+
+#: style/common/userProfile.html:152
+msgid "CAP (*)"
+msgstr ""
+
+#: style/common/userProfile.html:161
+msgid "Provincia (*)"
+msgstr ""
+
+#: style/common/userProfile.html:215
+msgid ""
+"Destinazione merce (cliccare e indicare solo se diversa da Residenza o "
+"Sede Legale)"
+msgstr ""
+
+#: style/ngsresine/acquisto.html:82
+msgid "Riepilogo"
+msgstr ""
+
+#: style/ngsresine/article.html:5
+msgid "Modifica articoli"
+msgstr ""
+
+#: style/ngsresine/article.html:9 style/ngsresine/discount.html:10
+#: style/ngsresine/syncroDB.html:10
+msgid "Seleziona l'articolo da modificare"
+msgstr ""
+
+#: style/ngsresine/article.html:25 style/ngsresine/discount.html:26
+#: style/ngsresine/syncroDB.html:26
+msgid "sono stati trovati:"
+msgstr ""
+
+#: style/ngsresine/article.html:25 style/ngsresine/discount.html:26
+#: style/ngsresine/syncroDB.html:26
+msgid "risultati."
+msgstr ""
+
+#: style/ngsresine/article.html:29 style/ngsresine/article.html:72
+#: style/ngsresine/discount.html:30 style/ngsresine/discount.html:58
+#: style/ngsresine/syncroDB.html:30 style/ngsresine/syncroDB.html:58
+msgid "Pagine"
+msgstr ""
+
+#: style/ngsresine/article.html:40 style/ngsresine/article.html:71
+#: style/ngsresine/articleDetail.html:27 style/ngsresine/discount.html:35
+#: style/ngsresine/discount.html:57 style/ngsresine/syncroDB.html:35
+#: style/ngsresine/syncroDB.html:57
+msgid "aggiungi al carrello"
+msgstr ""
+
+#: style/ngsresine/article.html:51 style/ngsresine/discount.html:41
+#: style/ngsresine/syncroDB.html:41
+msgid "Art:"
+msgstr ""
+
+#: style/ngsresine/article.html:52 style/ngsresine/discount.html:42
+#: style/ngsresine/syncroDB.html:42
+msgid "Q.tà carrello"
+msgstr ""
+
+#: style/ngsresine/article.html:58 style/ngsresine/articleDetail.html:32
+#: style/ngsresine/discount.html:48 style/ngsresine/syncroDB.html:48
+msgid "Produttore:"
+msgstr ""
+
+#: style/ngsresine/article.html:59
+msgid "Disp."
+msgstr ""
+
+#: style/ngsresine/article.html:63 style/ngsresine/articleDetail.html:43
+#: style/ngsresine/discount.html:49 style/ngsresine/syncroDB.html:49
+msgid "Famiglia:"
+msgstr ""
+
+#: style/ngsresine/article.html:65 style/ngsresine/articleDetail.html:34
+#: style/ngsresine/discount.html:51 style/ngsresine/syncroDB.html:51
+msgid "Prezzo: €"
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:10 style/ngsresine/articleDetail.html:13
+msgid "articlePrice.articolo.denominazione"
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:19
+msgid "disp."
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:20
+msgid "carrello"
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:30
+msgid "Cod:"
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:37
+msgid "Lunghezza:"
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:38
+msgid "Larghezza:"
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:39
+msgid "Altezza:"
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:40
+msgid "Peso lordo:"
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:41
+msgid "Peso imballaggio:"
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:54
+msgid "Articolo associati"
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:99
+msgid "Gestione dettaglio articolo"
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:112
+msgid "Scegli una immagine per l'articolo che sia almeno 640X480:"
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:114
+msgid "Categoria associata :"
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:128
+msgid "visualizza galleria immagini"
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:128
+msgid "filtrate per la categoria di questo articolo"
+msgstr ""
+
+#: style/ngsresine/articleDetail.html:133
+msgid "Selezione articoli correlati"
+msgstr ""
+
+#: style/ngsresine/contact.html:5
+msgid "Contatti"
+msgstr ""
+
+#: style/ngsresine/contact.html:27
+msgid "Scegli l'argomento (*)"
+msgstr ""
+
+#: style/ngsresine/contact.html:42
+msgid "Inserire il testo"
+msgstr ""
+
+#: style/ngsresine/contact.html:46
+msgid "Sezione antispam"
+msgstr ""
+
+#: style/ngsresine/contactConfirmed.html:5
+msgid "Tutto a posto!"
+msgstr ""
+
+#: style/ngsresine/contactConfirmed.html:7
+msgid "L'email è stata inviata"
+msgstr ""
+
+#: style/ngsresine/discount.html:39 style/ngsresine/gallery.html:8
+#: style/ngsresine/syncroDB.html:39
+msgid "icons"
+msgstr ""
+
+#: style/ngsresine/errorSearch.html:2
+msgid ""
+"nessun risultato trovato o hai inserito meno di 3 caratteri riprovare "
+"...grazie"
+msgstr ""
+
+#: style/ngsresine/family.html:5
+msgid "Categorie"
+msgstr ""
+
+#: style/ngsresine/familySetup.html:5
+msgid "Gestione famiglie"
+msgstr ""
+
+#: style/ngsresine/fileUpload.html:5
+msgid "Please specify a file, or a set of files:"
+msgstr ""
+
+#: style/ngsresine/footer.html:5
+msgid ""
+"NGS RESINE -\n"
+"© 2007"
+msgstr ""
+
+#: style/ngsresine/footer.html:5
+msgid "- Powered by"
+msgstr ""
+
+#: style/ngsresine/footer.html:5
+msgid "Promotux informatica"
+msgstr ""
+
+#: style/ngsresine/gallery.html:10
+msgid "cancella"
+msgstr ""
+
+#: style/ngsresine/head.html:16
+msgid ""
+"tinyMCE.init({\n"
+"\t\ttheme : \"advanced\",\n"
+"// \t\tmode : \"textareas\",\n"
+"                mode : \"exact\",\n"
+"\t\telements : \"pageBody,body,MyTextarea\",\n"
+"// \t\tsave_callback : \"customSave\",\n"
+"// plugins : "
+"\"style,layer,table,save,advhr,advimage,advlink,emotions,iespell,insertdatetime,preview,zoom,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras\","
+"\n"
+"//     theme_advanced_buttons1 : "
+"\"bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect\","
+"\n"
+"//     theme_advanced_buttons2 : "
+"\"cut,copy,paste,pastetext,pasteword,|,strikethrough,search,replace,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|preview,|,forecolor,backcolor\","
+"\n"
+"//     theme_advanced_buttons3 : "
+"\"save,newdocument,|,tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,iespell,media,|,print,|,ltr,rtl\","
+"\n"
+"//     theme_advanced_buttons4 : "
+"\"insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking\","
+"\n"
+"    theme_advanced_toolbar_location : \"top\",\n"
+"//     theme_advanced_toolbar_align : \"left\",\n"
+"//     theme_advanced_path_location : \"bottom\",\n"
+"//     extended_valid_elements : "
+"\"a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]\","
+"\n"
+"//     template_external_list_url : \"example_template_list.js\"\n"
+"\t});"
+msgstr ""
+
+#: style/ngsresine/header.html:5
+msgid "Produzione Etichette Resinate"
+msgstr ""
+
+#: style/ngsresine/home.html:18
+msgid "_('Servizio riservato ai soli rivenditori')"
+msgstr ""
+
+#: style/ngsresine/home.html:19
+msgid "Preventivo on-line"
+msgstr ""
+
+#: style/ngsresine/login.html:45
+msgid "logout"
+msgstr ""
+
+#: style/ngsresine/login.html:46
+msgid "Profilo personale"
+msgstr ""
+
+#: style/ngsresine/login.html:47
+msgid "Area di gestione"
+msgstr ""
+
+#: style/ngsresine/menu.html:13
+msgid "Benvenuto"
+msgstr ""
+
+#: style/ngsresine/news.html:2
+msgid "NOVITA'"
+msgstr ""
+
+#: style/ngsresine/param.html:17
+msgid "Modifica i parametri del server"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:8
+msgid "PREVENTIVO ONLINE"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:15
+msgid "Spett.le"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:17
+msgid "E-mail"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:22
+msgid "Caratteristiche etichetta"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:23
+msgid ""
+"Inserire le misure dell'etichetta desiderata indicando larghezza e\n"
+"                            altezza o, se tonda, il diametro."
+msgstr ""
+
+#: style/ngsresine/preventivi.html:24
+msgid "Separare i decimali con il punto."
+msgstr ""
+
+#: style/ngsresine/preventivi.html:28
+msgid "Altezza cm"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:33
+msgid "Larghezza cm"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:38
+msgid "Diametro cm"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:43
+msgid "Materiale adesivo desiderato"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:44
+msgid "Selezionare il materiale desiderato tra quelli sotto indicati."
+msgstr ""
+
+#: style/ngsresine/preventivi.html:48
+msgid "PVC bianco/trasparente"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:53
+msgid "PVC cromo lucido"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:58
+msgid "PVC cromo opaco"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:63
+msgid "PVC oro lucido"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:68
+msgid "PVC oro opaco"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:73
+msgid "Quantità"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:74
+msgid "Indicare la quantità di etichette desiderate ("
+msgstr ""
+
+#: style/ngsresine/preventivi.html:74
+msgid "solo multipli di 100"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:78
+msgid "Pezzi"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:88 style/ngsresine/preventivi.html:168
+msgid "Per supporto contattaci a info@ngsresine.com oppure allo 070.8476051"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:97
+msgid "RIEPILOGO PREVENTIVO"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:101
+msgid ""
+"Questo è il preventivo determinato in base ai dati inseriti e di seguito "
+"riepilogati."
+msgstr ""
+
+#: style/ngsresine/preventivi.html:104
+msgid "Altezza etichette :"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:104 style/ngsresine/preventivi.html:107
+#: style/ngsresine/preventivi.html:110
+msgid "cm"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:107
+msgid "Larghezza etichette :"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:110
+msgid "Diametro :"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:113
+msgid "Area etichetta :"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:113
+msgid "cmq"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:116
+msgid "Quantità etichette :"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:116
+msgid "n."
+msgstr ""
+
+#: style/ngsresine/preventivi.html:120
+msgid "PREZZO UNITARIO etichetta"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:126
+msgid "PREZZO AL PUBBLICO"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:129 style/ngsresine/preventivi.html:153
+msgid "Prezzo totale :"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:132 style/ngsresine/preventivi.html:156
+msgid "Spese di trasporto :"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:135 style/ngsresine/preventivi.html:159
+msgid "Totale Imponibile :"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:138 style/ngsresine/preventivi.html:162
+msgid "IVA 20% :"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:141 style/ngsresine/preventivi.html:165
+msgid "Totale Fattura :"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:145
+msgid "DETTAGLI >>"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:150
+msgid "SCONTO"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:176
+msgid "Nuovo preventivo"
+msgstr ""
+
+#: style/ngsresine/preventivi.html:199
+msgid "Errore dati."
+msgstr ""
+
+#: style/ngsresine/preventivi.html:202
+msgid "I dati non sono stati inseriti correttamente."
+msgstr ""
+
+#: style/ngsresine/preventivi.html:203
+msgid "Torna alla pagina precendente"
+msgstr ""
+
+#: style/ngsresine/recoveryConfirmed.html:5
+msgid "Recupero avvenuto!"
+msgstr ""
+
+#: style/ngsresine/recoveryConfirmed.html:7
+msgid ""
+"Procedura di recupero password avvenuta con successo, è stata inviata una"
+" email al recapito indicato\n"
+"Al suo interno viene indicata una password di 10 caratteri creata da una "
+"funzione random.\n"
+"Per la vostra sicurezza vi consigliamo di mantenerla ma vi ricordiamo "
+"anche\n"
+"la possibilità di modificarla tramite il pannello di gestione profilo "
+"utente\n"
+"\n"
+"\n"
+"Grazie per aver scelto Promogest e Forpassion.net"
+msgstr ""
+
+#: style/ngsresine/recoveryPassword.html:15
+msgid "Inserisci la tua email"
+msgstr ""
+
+#: style/ngsresine/recoveryPassword.html:21
+msgid "Scrivi la parola promogest *"
+msgstr ""
+
+#: style/ngsresine/recoveryPassword.html:27
+msgid "scrivi il risultato di 7 per 3 *"
+msgstr ""
+
+#: style/ngsresine/registerConfirmed.html:7
+msgid ""
+"Procedura di iscrizione avvenuta con successo, é stata inviata una email "
+"al recapito lasciato\n"
+"durante la registrazione."
+msgstr ""
+
+#: style/ngsresine/registerForm.html:6
+msgid "Registrazione (solo per aziende)."
+msgstr ""
+
+#: style/ngsresine/registerForm.html:54
+msgid ""
+"Tutti i campi contrassegnati con (*) devono essere compilati "
+"obbligatoriamente."
+msgstr ""
+
+#: style/ngsresine/role.html:4 style/ngsresine/user.html:4
+msgid "Questa è la pagina di gestione degli utenti"
+msgstr ""
+
+#: style/ngsresine/role.html:4 style/ngsresine/user.html:4
+msgid ""
+"Qui hai la possibilita' di vedere, aggiungere, modificare e cancellare un"
+" utente."
+msgstr ""
+
+#: style/ngsresine/role.html:5 style/ngsresine/user.html:5
+msgid "Clicca una delle azioni sottostanti"
+msgstr ""
+
+#: style/ngsresine/role.html:7
+msgid "Visualizza i ruoli"
+msgstr ""
+
+#: style/ngsresine/role.html:8
+msgid "Aggiungi u ruolo"
+msgstr ""
+
+#: style/ngsresine/role.html:9
+msgid "Modifica un modifica"
+msgstr ""
+
+#: style/ngsresine/role.html:10
+msgid "Cancella un ruolo"
+msgstr ""
+
+#: style/ngsresine/search.html:7 style/ngsresine/searchAdvanced.html:6
+#: style/ngsresine/searchAdvancedForm.html:6
+msgid "Cerca"
+msgstr ""
+
+#: style/ngsresine/search.html:9
+msgid "Testo"
+msgstr ""
+
+#: style/ngsresine/searchAdvanced.html:7
+#: style/ngsresine/searchAdvancedForm.html:7
+msgid "Produttore"
+msgstr ""
+
+#: style/ngsresine/searchAdvanced.html:9
+#: style/ngsresine/searchAdvancedForm.html:9 style/ngsresine/unit.html:53
+msgid "Descrizione"
+msgstr ""
+
+#: style/ngsresine/searchAdvanced.html:11
+#: style/ngsresine/searchAdvancedForm.html:11
+msgid "Codice"
+msgstr ""
+
+#: style/ngsresine/searchAdvanced.html:13
+#: style/ngsresine/searchAdvancedForm.html:13
+msgid "Prezzo"
+msgstr ""
+
+#: style/ngsresine/searchAdvanced.html:15
+#: style/ngsresine/searchAdvancedForm.html:15
+msgid "Testo Libero"
+msgstr ""
+
+#: style/ngsresine/showroom.html:2
+msgid "SHOWROOM"
+msgstr ""
+
+#: style/ngsresine/siteAdmin.html:15
+msgid "Pannello di amministrazione"
+msgstr ""
+
+#: style/ngsresine/siteAdmin.html:20
+msgid "gestione utenti"
+msgstr ""
+
+#: style/ngsresine/siteAdmin.html:25
+msgid "gestione ruoli"
+msgstr ""
+
+#: style/ngsresine/siteAdmin.html:30
+msgid "gestione menu"
+msgstr ""
+
+#: style/ngsresine/siteAdmin.html:42
+msgid "gestione pagine"
+msgstr ""
+
+#: style/ngsresine/siteAdmin.html:64
+msgid "gestione spese spedizione"
+msgstr ""
+
+#: style/ngsresine/siteAdmin.html:71
+msgid "metodi di Pagamento"
+msgstr ""
+
+#: style/ngsresine/staticMenu.html:9
+msgid "cancella voce"
+msgstr ""
+
+#: style/ngsresine/staticMenu.html:13
+msgid "aggiungi voce"
+msgstr ""
+
+#: style/ngsresine/unit.html:26
+msgid ""
+"Questa è la pagina di gestione dei ruoli\n"
+"            Qui hai la possibilita' di vedere, aggiungere, modificare e "
+"cancellare un ruolo\n"
+"            Clicca una delle azioni sottostanti"
+msgstr ""
+
+#: style/ngsresine/unit.html:29
+msgid "Visualizza le unita'di misura"
+msgstr ""
+
+#: style/ngsresine/unit.html:30
+msgid "aggiungi una unita"
+msgstr ""
+
+#: style/ngsresine/unit.html:32
+msgid "modifica una unita"
+msgstr ""
+
+#: style/ngsresine/unit.html:33 style/ngsresine/unit.html:39
+msgid "Name:"
+msgstr ""
+
+#: style/ngsresine/unit.html:38 style/ngsresine/user.html:10
+msgid "Cancella un utente"
+msgstr ""
+
+#: style/ngsresine/unit.html:46
+msgid "Unità di base"
+msgstr ""
+
+#: style/ngsresine/unit.html:52
+msgid "Nome breve"
+msgstr ""
+
+#: style/ngsresine/unit.html:69
+msgid "Unita' di base Add"
+msgstr ""
+
+#: style/ngsresine/unit.html:71
+msgid "Dsecrizione breve:"
+msgstr ""
+
+#: style/ngsresine/unit.html:84
+msgid "Modifica l'unita' di misura:"
+msgstr ""
+
+#: style/ngsresine/unit.html:85
+msgid "Name"
+msgstr ""
+
+#: style/ngsresine/user.html:7
+msgid "Visualizza gli utenti"
+msgstr ""
+
+#: style/ngsresine/user.html:8 style/ngsresine/userAction.html:52
+msgid "Aggiungi un utente"
+msgstr ""
+
+#: style/ngsresine/user.html:9
+msgid "Modifica un utente"
+msgstr ""
+
+#: style/ngsresine/js/tinymce/jscripts/tiny_mce/plugins/preview/example.html:5
+msgid "Example of a custom preview page"
+msgstr ""
+
+#: style/ngsresine/js/tinymce/jscripts/tiny_mce/plugins/preview/example.html:8
+msgid "Editor contents:"
+msgstr ""
+

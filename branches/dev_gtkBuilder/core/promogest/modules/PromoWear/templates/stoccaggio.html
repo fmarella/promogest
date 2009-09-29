@@ -1,0 +1,79 @@
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:py="http://genshi.edgewall.org/"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        lang="en">
+    <head>
+        <title>Dettaglio listino</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <xi:include href="style.css"><xi:fallback/></xi:include>
+    </head>
+    <body>        
+        <table cellpadding="0" cellspacing="4" border="0">
+            <tr>
+                <td class = "report-header" colspan="4"><h3>Magazzino: <strong>${dao.magazzino}</strong></h3></td>
+            </tr>
+            <tr>
+                <td class = "report-header" colspan="4"><h3>Articolo: <strong>${dao.articolo}</strong></h3></td>
+            </tr>
+	<tr><TD></TD></tr>
+	</table>
+
+	<table cellpadding="0" cellspacing="0" border="0">
+            <tr><td colspan="4" class="table-header">Dati stoccaggio</td></tr>
+            <tr>
+                <td width="20%" class="odd-detail">Scorta minima</td>
+                <td width="30%" class="odd-detail"><strong>${dao.scorta_minima}</strong></td>
+                <td width="20%" class="odd-detail">Livello riordino</td>
+                <td width="30%" class="odd-detail"><strong>${dao.livello_riordino}</strong></td>
+            </tr>
+            <tr>
+                <td width="20%" class="even-detail" >Data fine scorte</td>
+                <td class="even-detail">
+                    <strong py:if="dao.data_fine_scorte is not None">
+                        <strong>${dao.data_fine_scorte.strftime('%d/%m/%Y')}</strong>
+                    </strong>
+                </td>
+                <td width="20%" class="even-detail" >Data prossimo ordine</td>
+                <td class="even-detail">
+                    <strong py:if="dao.data_prossimo_ordine is not None">
+                        <strong>${dao.data_prossimo_ordine.strftime('%d/%m/%Y')}</strong>
+                    </strong>
+                </td>
+            </tr>
+           <tr py:if="conf.taglia_colore">
+                <td width="40%" class="report-header"><h3>Taglia:
+            <strong py:content="dao.denominazione_taglia"></strong>
+            (<strong py:content="dao.denominazione_gruppo_taglia"></strong>)
+            <strong py:content="dao.genere"></strong></h3>
+        </td>
+        <td width="18%" class="report-header"><h3>Colore:
+            <strong py:content="dao.denominazione_colore"></strong></h3>
+        </td>
+               <td class="report-header"><h3>Stagione:
+            <strong py:content="dao.stagione"></strong>
+            (<strong py:content="dao.anno"></strong>)</h3>
+        </td>
+            </tr>
+
+</table>
+<table cellpadding="0" cellspacing="0" border="0">
+            <tr><td colspan="3" class="table-header">Situazione magazzino</td></tr>
+            <tr class="even-detail">
+                <td width="200px"></td>
+                <td class="even-number" width="50px">Quantita'</td>
+                <td class="even-number" width="50px">Valore</td>
+            </tr>
+            <tr py:for="item in dao.totaliOperazioniMovimento">
+                <td class="odd-detail"><strong>${item['operazione']}</strong></td>
+                <td class="odd-number" >${'%14.2f' % (item['giacenza'],)}</td>
+                <td class="odd-number" >${'%14.2f' % abs(item['valore'],)}</td>
+            </tr>
+            <tr>
+                <td class="totale-detail"><strong>Totali</strong></td>                
+                <td class="totale-number"><strong>${'%14.2f' % (dao.giacenza, )}</strong></td>
+                <td class="totale-number" text-align="right"><strong>${'%14.2f' % (dao.valoreGiacenza, )}</strong></td>
+            </tr>
+        </table>
+    </body>
+</html>

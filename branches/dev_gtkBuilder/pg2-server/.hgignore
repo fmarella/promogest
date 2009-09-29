@@ -1,0 +1,13 @@
+syntax: glob
+*.orig
+*.rej
+*~
+*.oi
+*.pyc
+*.sqlite
+session/
+cache/*.cache
+templates/news_img/*.jpg
+syntax: regexp
+.*\#.*\#$
+
