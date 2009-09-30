@@ -1,0 +1,39 @@
+{% include 'calendar.css' with context %}
+{% block center %}
+
+<div id="testata"><h1 ><< < {{pageData['cal'].month_name[pageData['meseCorrente']]}}  {{pageData['annoCorrente']}} > >></h1></div>
+<table id="month">
+ <thead>
+ <tr>
+ {% for rr in pageData['cal'].day_name %}
+  {% if rr!="Sunday" or rr!="Saturday" %}
+ <th class="weekend">{{rr}}</th>
+   {% else %}
+ <th>{{rr}}</th>
+  {% endif %}
+  {% endfor %}
+ </tr>
+ </thead>
+ <tbody>
+  {% for day in pageData['monthdatecalendar'] %}
+ <tr>
+ {% for d in day %}
+ {% if d.month == pageData['meseCorrente'] %}
+    {% if d == pageData['data'] %}
+        <td ><div class="today"> {{d.day}}</div><div class="day"><p>{{d.ctime()[0:3]}}</p></div></td>
+    {% elif d.ctime()[0:3]!="Sun" or d.ctime()[0:3]!="Sat" %}
+        <td ><div class="date">{{d.day}}</div><div class="day"><p>{{d.ctime()[0:3]}}</p></div></td>
+    {% else %}
+      <td ><div class="weekend">{{d.day}}</div><div class="day"><p>{{d.ctime()[0:3]}}</p></div></td>
+    {% endif %}
+  {% else %}
+ <td><div class="previous">{{d.day}}</div><div class="day"></div></td>
+
+ {% endif %}
+{% endfor %}
+ {% endfor %}
+ </tbody>
+</table>
+<!-- </div> -->
+</div>
+{% endblock %}
