@@ -30,8 +30,8 @@ class ElencoMagazzini(GladeWidget):
         self._currentDao = None
         GladeWidget.__init__(self, 'elenco_magazzini_frame', fileName='_elenco_magazzini_elements.glade')
         self.orderBy = 'denominazione'
-        #self.draw()
-        self.refresh()
+        self.draw()
+
 
     def draw(self):
         # Colonne della Treeview dell' elenco
@@ -71,23 +71,18 @@ class ElencoMagazzini(GladeWidget):
 
     def refresh(self):
         # Aggiornamento Treeview
-        #self.elenco_magazzini_treeview.show_all()
         model = self.elenco_magazzini_treeview.get_model()
-        #print dir(self.elenco_magazzini_treeview)
-        #print "model", model, dir(model), model.get_column_type(0).name,
-        #if model.get_column_type(0).name =="GObject":
-            #model.set_column_types(0) = gobject.TYPE_PYOBJECT
         model.clear()
 
         mags = Magazzino().select(offset=None, batchSize=None)
         if Environment.tipo_eng =="sqlite" and not Environment.magazzini:
             if len(mags) >1:
                 mags = [mags[0]]
-        #model.append([mags[0], "stringa1", "stringa2"])
         for m in mags:
-            model.append([m,
+            model.append((m,
                           (m.denominazione or ''),
-                          (m.localita or '')])
+                          (m.localita or '')))
+
 
     def _changeOrderBy(self, widget, campi):
         self.orderBy = campi
@@ -100,18 +95,19 @@ class ElencoMagazzini(GladeWidget):
         if iterator is not None:
             self._currentDao = model.get_value(iterator,0)
 
+
     def on_magazzini_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
-        print "BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOH2"
+
         denominazione = None
-        if self._currentDao:
+        if self._currentDao is not None:
             denominazione = self._currentDao.denominazione
         from AnagraficaMagazzini import AnagraficaMagazzini
         anag = AnagraficaMagazzini(denominazione, self.aziendaStr)
         anagWindow = anag.getTopLevel()
-        print "ANAGWINDOOOOOOOOOOOOOOOOOOOW", anagWindow
+
         showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
 
 

@@ -37,50 +37,16 @@
                         <property name="layout_style">end</property>
                         <child>
                           <object class="GtkButton" id="filter_clear_button">
+                            <property name="label">gtk-clear</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
                             <property name="receives_default">False</property>
                             <property name="tooltip_text" translatable="yes">Ripulisci i parametri di selezione</property>
+                            <property name="use_stock">True</property>
                             <accelerator key="Escape" signal="clicked"/>
                             <accelerator key="Escape" signal="clicked"/>
                             <signal name="clicked" handler="on_filter_clear_button_clicked"/>
-                            <child>
-                              <object class="GtkAlignment" id="alignment506">
-                                <property name="visible">True</property>
-                                <property name="xscale">0</property>
-                                <property name="yscale">0</property>
-                                <child>
-                                  <object class="GtkHBox" id="hbox374">
-                                    <property name="visible">True</property>
-                                    <property name="spacing">2</property>
-                                    <child>
-                                      <object class="GtkImage" id="image361">
-                                        <property name="visible">True</property>
-                                        <property name="pixbuf">pulisci24x24.png</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="label3461">
-                                        <property name="visible">True</property>
-                                        <property name="label">_Pulisci</property>
-                                        <property name="use_underline">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -90,6 +56,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="filter_search_button">
+                            <property name="label">gtk-find</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -97,47 +64,12 @@
                             <property name="receives_default">False</property>
                             <property name="events">GDK_KEY_PRESS_MASK | GDK_STRUCTURE_MASK</property>
                             <property name="tooltip_text" translatable="yes">Seleziona in base ai parametri specificati</property>
+                            <property name="use_stock">True</property>
                             <accelerator key="F3" signal="clicked"/>
                             <accelerator key="KP_F3" signal="clicked"/>
                             <accelerator key="KP_Enter" signal="clicked"/>
                             <accelerator key="Return" signal="clicked"/>
                             <signal name="clicked" handler="on_filter_search_button_clicked"/>
-                            <child>
-                              <object class="GtkAlignment" id="alignment507">
-                                <property name="visible">True</property>
-                                <property name="xscale">0</property>
-                                <property name="yscale">0</property>
-                                <child>
-                                  <object class="GtkHBox" id="hbox375">
-                                    <property name="visible">True</property>
-                                    <property name="spacing">2</property>
-                                    <child>
-                                      <object class="GtkImage" id="image362">
-                                        <property name="visible">True</property>
-                                        <property name="pixbuf">trova24x24.png</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="label3462">
-                                        <property name="visible">True</property>
-                                        <property name="label">Tr_ova</property>
-                                        <property name="use_underline">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -271,34 +203,12 @@
                 <property name="visible">True</property>
                 <child>
                   <object class="GtkButton" id="filter_first_button">
+                    <property name="label">gtk-goto-first</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_filter_first_button_clicked"/>
-                    <child>
-                      <object class="GtkAlignment" id="alignment15">
-                        <property name="visible">True</property>
-                        <property name="xscale">0</property>
-                        <property name="yscale">0</property>
-                        <child>
-                          <object class="GtkHBox" id="hbox28">
-                            <property name="visible">True</property>
-                            <property name="spacing">2</property>
-                            <child>
-                              <object class="GtkImage" id="image15">
-                                <property name="visible">True</property>
-                                <property name="pixbuf">primo24x24.png</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
                   </object>
                   <packing>
                     <property name="position">0</property>
@@ -306,34 +216,12 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="filter_prev_button">
+                    <property name="label">gtk-go-back</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_filter_prev_button_clicked"/>
-                    <child>
-                      <object class="GtkAlignment" id="alignment16">
-                        <property name="visible">True</property>
-                        <property name="xscale">0</property>
-                        <property name="yscale">0</property>
-                        <child>
-                          <object class="GtkHBox" id="hbox29">
-                            <property name="visible">True</property>
-                            <property name="spacing">2</property>
-                            <child>
-                              <object class="GtkImage" id="image16">
-                                <property name="visible">True</property>
-                                <property name="pixbuf">indietro24x24.png</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
                   </object>
                   <packing>
                     <property name="position">1</property>
@@ -394,34 +282,12 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="filter_next_button">
+                    <property name="label">gtk-go-forward</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_filter_next_button_clicked"/>
-                    <child>
-                      <object class="GtkAlignment" id="alignment17">
-                        <property name="visible">True</property>
-                        <property name="xscale">0</property>
-                        <property name="yscale">0</property>
-                        <child>
-                          <object class="GtkHBox" id="hbox30">
-                            <property name="visible">True</property>
-                            <property name="spacing">2</property>
-                            <child>
-                              <object class="GtkImage" id="image17">
-                                <property name="visible">True</property>
-                                <property name="pixbuf">avanti24x24.png</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
                   </object>
                   <packing>
                     <property name="position">3</property>
@@ -429,34 +295,12 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="filter_last_button">
+                    <property name="label">gtk-goto-last</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="use_stock">True</property>
                     <signal name="clicked" handler="on_filter_last_button_clicked"/>
-                    <child>
-                      <object class="GtkAlignment" id="alignment18">
-                        <property name="visible">True</property>
-                        <property name="xscale">0</property>
-                        <property name="yscale">0</property>
-                        <child>
-                          <object class="GtkHBox" id="hbox31">
-                            <property name="visible">True</property>
-                            <property name="spacing">2</property>
-                            <child>
-                              <object class="GtkImage" id="image18">
-                                <property name="visible">True</property>
-                                <property name="pixbuf">ultimo24x24.png</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
                   </object>
                   <packing>
                     <property name="position">4</property>

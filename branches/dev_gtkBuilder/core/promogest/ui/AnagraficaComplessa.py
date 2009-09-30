@@ -1285,15 +1285,7 @@ class AnagraficaEdit(GladeWidget):
                                       callbacks_proxy=self)
             self.dialogTopLevel = self.dialog.getTopLevel()
             self.dialogTopLevel.set_title(self._windowTitle)
-            print "VEDIAMOOOOOOOOOOOO", self.dialogTopLevel.name, self.getTopLevel().name
-            if self.getTopLevel().get_parent():
-                self.getTopLevel().get_parent().remove(self.getTopLevel())
-            #self.parameter.box_int.reparent(self.box)
-                self.dialogTopLevel.vbox.pack_start(self.getTopLevel())
-                self.getTopLevel().reparent(self.dialogTopLevel.vbox)
-            else:
-                self.dialogTopLevel.vbox.pack_start(self.getTopLevel())
-
+            self.dialogTopLevel.vbox.pack_start(self.getTopLevel())
             accelGroup = gtk.AccelGroup()
             self.dialogTopLevel.add_accel_group(accelGroup)
             self.dialog.ok_button.add_accelerator('grab_focus', accelGroup, gtk.keysyms.F5, 0, gtk.ACCEL_VISIBLE)

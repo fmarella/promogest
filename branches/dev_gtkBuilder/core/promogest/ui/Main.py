@@ -147,8 +147,6 @@ class Main(GladeWidget):
         self.main_iconview.unselect_all()
         if self.currentFrame is None:
             self.currentFrame = self.create_main_window_frame()
-        else:
-            self.main_hbox.remove(self.box_immagini_iniziali)
         self.main_notebook = gtk.Notebook()
         if len(self.permanent_frames) > 0:
             self.main_notebook.append_page(self.currentFrame, 'Home')
@@ -157,13 +155,7 @@ class Main(GladeWidget):
                 self.main_notebook.append_page(frame,module[1]['module'].VIEW_TYPE[1])
             self.main_hbox.pack_start(self.main_notebook, fill=True, expand=True)
         else:
-            print "DDIDIDDID", self.currentFrame
-            self.currentFrame.reparent(self.main_hbox)
-                    #else:
             self.main_hbox.pack_start(self.currentFrame, fill=True, expand=True)
-            #self.viewport1.add(self.currentFrame)
-            #self.main_hbox.add(self.currentFrame)
-            #self.box_immagini_iniziali.reorder_child(self.currentFrame, 1)
         self.main_hbox.show_all()
 
 
@@ -223,7 +215,7 @@ class Main(GladeWidget):
         i = selected[0][0]
         selection = model[i][0]
 
-        if self.currentFrame: #and self.currentFrame != self.alarmFrame:
+        if self.currentFrame is not None: #and self.currentFrame != self.alarmFrame:
             self.main_hbox.remove(self.currentFrame)
             self.currentFrame.destroy()
             self.currentFrame = None
@@ -285,7 +277,6 @@ class Main(GladeWidget):
         if self.currentFrame is not None:
             self.main_hbox.remove(self.currentFrame)
         frame = VistaPrincipale(self, self.aziendaStr)
-        #print "FRAMEEEEEEEE", frame.topLevel()
         return frame.vista_principale_frame
 
     def create_anagrafiche_principali_frame(self):

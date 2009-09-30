@@ -275,7 +275,7 @@
                 <property name="tooltip_text" translatable="yes">Mostra un report a partire dai risultati nella ricerca</property>
                 <property name="label" translatable="yes">Report a video</property>
                 <property name="use_underline">True</property>
-                <property name="icon_widget">image7</property>
+                <property name="stock_id">generated-icon-report24x24-png</property>
                 <signal name="clicked" handler="on_records_print_on_screen_activate"/>
               </object>
               <packing>
@@ -458,9 +458,5 @@
   <object class="GtkImage" id="image6">
     <property name="visible">True</property>
     <property name="stock">gtk-print</property>
-  </object>
-  <object class="GtkImage" id="image7">
-    <property name="visible">True</property>
-    <property name="pixbuf">report24x24.png</property>
   </object>
 </interface>
