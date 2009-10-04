@@ -59,7 +59,7 @@ class TestataDocumento(Dao):
         self._castellettoIva = 0
         self.__data_inizio_noleggio = None
         self.__data_fine_noleggio = None
-
+        self.__numeroMagazzini = 0
 
     @reconstructor
     def init_on_load(self):
@@ -130,6 +130,21 @@ class TestataDocumento(Dao):
 
     totalConfections = property(_getDocumentTotalConfections)
 
+    def _getNumeroMagazzini(self):
+        """
+        Restituisce il numero di magazzini presenti nel documento. Ci serve per poter effettuare
+        il trasferimento di articoli che partono tutti dallo stesso magazzino
+        """
+        __numeroMagazzini = 0
+        
+        if len(self.righe) > 0 and self.id:
+          mov_query = params['session'].query(RigaMovimento.id).filter(RigaMovimento.id_testata_movimento == self.id)
+          doc_query = params['session'].query(RigaDocumento.id).filter(RigaDocumento.id_testata_documento == self.id)
+          res = params['session'].query(Riga.id_magazzino).filter(or_(Riga.id.in_(mov_query),Riga.id.in_(doc_query))).distinct().count()
+          __numeroMagazzini = res
+        return __numeroMagazzini
+        
+    numeroMagazzini = property(_getNumeroMagazzini)
 
     def _getScontiTestataDocumento(self):
         if not self.__scontiTestataDocumento and self.id:
