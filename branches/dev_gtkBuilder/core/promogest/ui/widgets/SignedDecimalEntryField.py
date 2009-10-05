@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -23,7 +23,7 @@ from UnsignedDecimalEntryField import UnsignedDecimalEntryField
 
 class SignedDecimalEntryField(UnsignedDecimalEntryField):
 # Effettua la validazione per decimali con segno
-
+    __gtype_name__ = 'SignedDecimalEntryField'
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
         UnsignedDecimalEntryField.__init__(self, str1, str2, int1, int2)
 

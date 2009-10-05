@@ -1,0 +1,32 @@
+<glade-catalog name="pythonplugin" library="gladepython"
+domain="glade-3" depends="gtk+">
+ <init-function>glade_python_init</init-function>
+
+ <glade-widget-classes>
+   <glade-widget-class title="DateTimeEntryField" name="DateTimeEntryField" generic-name="datetimeentryfield"/>
+   <glade-widget-class title="DateTimeWidget" name="DateTimeWidget" generic-name="DateTimeWidget"/>
+   <glade-widget-class title="DateWidget" name="DateWidget" generic-name="DateWidget"/>
+    <glade-widget-class title="SignedIntegerEntryField" name="SignedIntegerEntryField" generic-name="SignedIntegerEntryField"/>
+    <glade-widget-class title="UnsignedIntegerEntryField" name="UnsignedIntegerEntryField" generic-name="UnsignedIntegerEntryField"/>
+    <glade-widget-class title="UnsignedDecimalEntryField" name="UnsignedDecimalEntryField" generic-name="UnsignedDecimalEntryField"/>
+    <glade-widget-class title="SignedDecimalEntryField" name="SignedDecimalEntryField" generic-name="SignedDecimalEntryField"/>
+    <glade-widget-class title="ArticoloSearchWidget" name="ArticoloSearchWidget" generic-name="ArticoloSearchWidget"/>
+    <glade-widget-class title="ClienteSearchWidget" name="ClienteSearchWidget" generic-name="ClienteSearchWidget"/>
+    <glade-widget-class title="FornitoreSearchWidget" name="FornitoreSearchWidget" generic-name="FornitoreSearchWidget"/>
+    <glade-widget-class title="PersonaGiuridicaSearchWidget" name="PersonaGiuridicaSearchWidget" generic-name="PersonaGiuridicaSearchWidget"/>
+ </glade-widget-classes>
+
+ <glade-widget-group name="python" title="PromoGest2">
+   <glade-widget-class-ref name="DateTimeEntryField"/>
+    <glade-widget-class-ref name="DateTimeWidget"/>
+    <glade-widget-class-ref name="DateWidget"/>
+    <glade-widget-class-ref name="UnsignedIntegerEntryField"/>
+    <glade-widget-class-ref name="SignedIntegerEntryField"/>
+    <glade-widget-class-ref name="UnsignedDecimalEntryField"/>
+    <glade-widget-class-ref name="SignedDecimalEntryField"/>
+    <glade-widget-class-ref name="ArticoloSearchWidget"/>
+    <glade-widget-class-ref name="ClienteSearchWidget"/>
+    <glade-widget-class-ref name="FornitoreSearchWidget"/>
+    <glade-widget-class-ref name="PersonaGiuridicaSearchWidget"/>
+ </glade-widget-group>
+</glade-catalog>

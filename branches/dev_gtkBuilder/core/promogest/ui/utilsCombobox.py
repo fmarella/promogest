@@ -27,8 +27,6 @@ from sqlalchemy import *
 import string, re
 import xml.etree.cElementTree as ElementTree
 from xml.etree.cElementTree import *
-import Login
-from promogest.dao.Dao import Dao
 
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
 

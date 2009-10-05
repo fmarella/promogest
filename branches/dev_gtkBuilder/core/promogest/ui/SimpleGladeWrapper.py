@@ -138,14 +138,14 @@ class SimpleGladeWrapper:
         #self.new()
 
 
-    def __repr__(self):
-        class_name = self.__class__.__name__
-        if self.main_widget:
-            root = gtk.Widget.get_name(self.main_widget)
-            repr = '%s(path="%s", root="%s")' % (class_name, self.glade_path, root)
-        else:
-            repr = '%s(path="%s")' % (class_name, self.glade_path)
-        return repr
+    #def __repr__(self):
+        #class_name = self.__class__.__name__
+        #if self.main_widget:
+            #root = gtk.Widget.get_name(self.main_widget)
+            #repr = '%s(path="%s", root="%s")' % (class_name, self.glade_path, root)
+        #else:
+            #repr = '%s(path="%s")' % (class_name, self.glade_path)
+        #return repr
 
 
     def new(self):
@@ -255,6 +255,7 @@ class SimpleGladeWrapper:
         method named create_foo is called with str1,str2,int1,int2 as arguments.
         """
         try:
+            print "VEDIAMO UN PO", function_name
             handler = getattr(self, function_name)
             return handler(str1, str2, int1, int2)
         except AttributeError:
@@ -352,6 +353,7 @@ class SimpleGladeWrapper:
 
 
     def install_custom_handler(self, custom_handler):
+        print "MA QUI CI PASSSSSSSIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", dir(custom_handler)
         gtk.glade.set_custom_handler(custom_handler)
 
 

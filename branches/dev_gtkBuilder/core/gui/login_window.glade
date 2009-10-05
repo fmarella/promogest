@@ -292,11 +292,12 @@ Inserite i dati:.</property>
             </child>
             <child>
               <object class="GtkButton" id="aggiorna_button">
-                <property name="label">gtk-refresh</property>
+                <property name="label">Aggiorna</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="use_stock">True</property>
+                <property name="image">image1</property>
+                <property name="use_underline">True</property>
                 <signal name="clicked" handler="on_aggiorna_button_clicked"/>
               </object>
               <packing>
@@ -326,5 +327,9 @@ Inserite i dati:.</property>
     <property name="value">1</property>
     <property name="upper">9999</property>
     <property name="step_increment">1</property>
+  </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="stock">gtk-execute</property>
   </object>
 </interface>

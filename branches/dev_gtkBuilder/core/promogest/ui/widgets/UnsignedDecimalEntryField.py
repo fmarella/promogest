@@ -26,7 +26,7 @@ from promogest import Environment
 
 class UnsignedDecimalEntryField(CustomEntryField):
 # Effettua la validazione per decimali senza segno
-
+    __gtype_name__ = 'UnsignedDecimalEntryField'
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
         CustomEntryField.__init__(self)
 
@@ -38,7 +38,7 @@ class UnsignedDecimalEntryField(CustomEntryField):
         self.acceptedKeys = self.controlKeys + self.numberKeys + self.delimiterKeys
 
 
-    def do_key_press_event(self, widget, event):
+    def my_key_press_event(self, widget, event):
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname not in self.acceptedKeys:
             return True
@@ -48,7 +48,7 @@ class UnsignedDecimalEntryField(CustomEntryField):
             return True
 
 
-    def do_focus_out_event(self, widget, event):
+    def my_focus_out_event(self, widget, event):
         try:
             f = "%-" + str(self._lunghezza) + "." + str(self._precisione) + "f"
             d = float(self.get_text())

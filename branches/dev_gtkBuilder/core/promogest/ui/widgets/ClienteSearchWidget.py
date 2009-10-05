@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -11,7 +11,7 @@ from promogest.ui.utils import leggiCliente
 
 class ClienteSearchWidget(CustomComboBoxSearch):
     """ Classe base per la ricerca clienti """
-
+    __gtype_name__ = 'ClienteSearchWidget'
     def __init__(self):
         CustomComboBoxSearch.__init__(self)
 

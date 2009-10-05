@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -25,21 +25,21 @@ class CustomEntryField(gtk.Entry):
 
     def __init__(self):
         gtk.Entry.__init__(self)
-        self.connect('key_press_event', self.do_key_press_event)
-        self.connect('focus_out_event', self.do_focus_out_event)
-        self.connect('paste_clipboard', self.do_paste_clipboard)
+        self.connect('key_press_event', self.my_key_press_event)
+        self.connect('focus_out_event', self.my_focus_out_event)
+        self.connect('paste_clipboard', self.my_paste_clipboard)
         self.connect("show", self.on_show)
 
 
-    def do_key_press_event(self, widget, event):
+    def my_key_press_event(self, widget, event):
         pass
 
 
-    def do_focus_out_event(self, widget, event):
+    def my_focus_out_event(self, widget, event):
         pass
 
 
-    def do_paste_clipboard(self, widget):
+    def my_paste_clipboard(self, widget):
         self.emit_stop_by_name('paste_clipboard')
 
 

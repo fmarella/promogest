@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -24,7 +24,6 @@ class Visualizzazione(GladeWidget):
 
         self.visualizzazione_window.set_title(windowTitle)
         self.dao = None
-        print "filerelememememememememememem",  filterElement
         self._setFilterElement(filterElement)
 
         self.placeWindow(self.visualizzazione_window)
@@ -32,7 +31,6 @@ class Visualizzazione(GladeWidget):
 
 
     def _setFilterElement(self, gladeWidget):
-        print "glade widgerrrrrrrrrrrrrttt", gladeWidget
         self.bodyWidget = FilterWidget(owner=gladeWidget, filtersElement=gladeWidget)
         self.visualizzazione_viewport.add(self.bodyWidget.getTopLevel())
         self.bodyWidget.filter_body_label.set_no_show_all(True)

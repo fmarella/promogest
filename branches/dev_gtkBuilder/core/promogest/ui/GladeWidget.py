@@ -60,61 +60,61 @@ class GladeWidget(SimpleGladeApp):
         self._prepareWindowPlacement()
 
     # Custom widget building methods (used by Glade)
-    def createUnsignedDecimalEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for no sign decimal numbers input """
-        return UnsignedDecimalEntryField(str1, str2, int1, int2)
+    #def createUnsignedDecimalEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for no sign decimal numbers input """
+        #return UnsignedDecimalEntryField(str1, str2, int1, int2)
 
 
-    def createUnsignedIntegerEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for no sign integer numbers input """
-        return UnsignedIntegerEntryField(str1, str2, int1, int2)
+    #def createUnsignedIntegerEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for no sign integer numbers input """
+        #return UnsignedIntegerEntryField(str1, str2, int1, int2)
 
 
-    def createSignedDecimalEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for signed decimal numbers input """
-        return SignedDecimalEntryField(str1, str2, int1, int2)
+    #def createSignedDecimalEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for signed decimal numbers input """
+        #return SignedDecimalEntryField(str1, str2, int1, int2)
 
 
-    def createSignedIntegerEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for signed integer numbers input """
-        return SignedIntegerEntryField(str1, str2, int1, int2)
+    #def createSignedIntegerEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for signed integer numbers input """
+        #return SignedIntegerEntryField(str1, str2, int1, int2)
 
 
-    def createUnsignedMoneyEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for no sign money values input """
-        return UnsignedDecimalEntryField(str1, str2, int1, Environment.conf.decimals)
+    #def createUnsignedMoneyEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for no sign money values input """
+        #return UnsignedDecimalEntryField(str1, str2, int1, Environment.conf.decimals)
 
 
-    def createSignedMoneyEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for signed money values input """
-        return SignedDecimalEntryField(str1, str2, int1, Environment.conf.decimals)
+    #def createSignedMoneyEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for signed money values input """
+        #return SignedDecimalEntryField(str1, str2, int1, Environment.conf.decimals)
 
 
-    def createDateEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for date input """
-        return DateEntryField(str1, str2, int1, int2)
+    #def createDateEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for date input """
+        #return DateEntryField(str1, str2, int1, int2)
 
 
-    def createDateTimeEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for date-time input """
-        return DateTimeEntryField(str1, str2, int1, int2)
+    #def createDateTimeEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for date-time input """
+        #return DateTimeEntryField(str1, str2, int1, int2)
 
 
-    def createCustomComboBoxModify(self, str1, str2, int1, int2):
-        """ Return a lookup ComboBox with changes possibility """
-        return CustomComboBoxModify()
+    #def createCustomComboBoxModify(self, str1, str2, int1, int2):
+        #""" Return a lookup ComboBox with changes possibility """
+        #return CustomComboBoxModify()
 
-    def createCustomComboBoxSearch(self, str1, str2, int1, int2):
-        """ Return a ComboBox with search & history possibility """
-        return CustomComboBoxSearch()
+    #def createCustomComboBoxSearch(self, str1, str2, int1, int2):
+        #""" Return a ComboBox with search & history possibility """
+        #return CustomComboBoxSearch()
 
-    def createScontiWidget(self, str1, str2, int1, int2):
-        """ Return a ScontiWidget widget """
-        return ScontiWidget(str1, str2)
+    #def createScontiWidget(self, str1, str2, int1, int2):
+        #""" Return a ScontiWidget widget """
+        #return ScontiWidget(str1, str2)
 
-    def createScontoWidget(self, str1, str2, int1, int2):
-        """ Return an EntryField for discount input with selection of the discount type"""
-        return ScontoWidget(str1, str2, int1, int2)
+    #def createScontoWidget(self, str1, str2, int1, int2):
+        #""" Return an EntryField for discount input with selection of the discount type"""
+        #return ScontoWidget(str1, str2, int1, int2)
 
     #def createGtkHtml2Widget(self, str1, str2, int1, int2):
         #""" Return a GtkHtml2 widget """
@@ -124,13 +124,13 @@ class GladeWidget(SimpleGladeApp):
         #""" Return a HtmlTextView widget """
         #return HtmlTextView()
 
-    def createDateWidget(self, str1, str2, int1, int2):
-        """ Return a DateWidget widget """
-        return DateWidget(str1, str2, int1, int2)
+    #def createDateWidget(self, str1, str2, int1, int2):
+        #""" Return a DateWidget widget """
+        #return DateWidget(str1, str2, int1, int2)
 
-    def createDateTimeWidget(self, str1, str2, int1, int2):
-        """ Return a DateTimeWidget widget """
-        return DateTimeWidget(str1, str2, int1, int2)
+    #def createDateTimeWidget(self, str1, str2, int1, int2):
+        #""" Return a DateTimeWidget widget """
+        #return DateTimeWidget(str1, str2, int1, int2)
 
     def createArticoloSearchWidget(self, str1, str2, int1, int2):
         """ Return an ArticoloSearchWidget widget """

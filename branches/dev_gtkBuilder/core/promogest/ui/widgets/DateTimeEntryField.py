@@ -23,20 +23,19 @@ import gtk
 import time, datetime, string
 from CustomEntryField import CustomEntryField
 
-#class MyBox(CustomEntryField):
+
 class DateTimeEntryField(CustomEntryField):
 # Effettua la validazione delle date + ore
     __gtype_name__ = 'DateTimeEntryField'
 
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
         CustomEntryField.__init__(self)
-
         self._lunghezza = 16
         self.acceptedKeys = self.controlKeys + self.numberKeys
         self.connect('changed', self.on_change)
 
 
-    def do_key_press_event(self, widget, event):
+    def my_key_press_event(self, widget, event):
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname not in self.acceptedKeys:
             return True
@@ -53,7 +52,7 @@ class DateTimeEntryField(CustomEntryField):
             widget.set_text(data)
 
 
-    def do_focus_out_event(self, widget, event):
+    def my_focus_out_event(self, widget, event):
         data=widget.get_text()
         for c in self.dateTimeChars:
             if c in data:

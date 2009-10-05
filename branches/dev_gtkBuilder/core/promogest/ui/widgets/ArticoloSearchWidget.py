@@ -15,7 +15,7 @@ from promogest.ui.utilsCombobox import fillComboboxListini,findIdFromCombobox,fi
 
 class ArticoloSearchWidget(CustomComboBoxSearch):
     """ Classe base per la ricerca articoli """
-
+    __gtype_name__ = 'ArticoloSearchWidget'
     def __init__(self):
         CustomComboBoxSearch.__init__(self)
 
