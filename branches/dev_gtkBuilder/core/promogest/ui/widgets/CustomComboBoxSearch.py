@@ -24,7 +24,7 @@ import gobject
 #from promogest.ui.utils import
 
 class CustomComboBoxSearch(gtk.ComboBox):
-
+    __gtype_name__ = 'CustomComboBoxSearch'
     def __init__(self):
         self._id = None
         self._container = None

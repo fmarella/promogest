@@ -24,7 +24,7 @@ import gobject
 from promogest import Environment
 
 class CustomComboBoxModify(gtk.HBox):
-
+    __gtype_name__ = 'CustomComboBoxModify'
     __gsignals__ = {'clicked' : (gobject.SIGNAL_RUN_LAST,
                                  gobject.TYPE_OBJECT,
                                  (gobject.TYPE_OBJECT, ) )}

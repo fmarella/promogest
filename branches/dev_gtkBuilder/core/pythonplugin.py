@@ -14,4 +14,23 @@ path = os.path.split(os.path.dirname(__file__))[0]
 from promogest import Environment
 Environment.conf.guiDir = path+"/core/gui/"
 from promogest.ui.GladeWidget import *
-from promogest.ui.widgets import PersonaGiuridicaSearchWidget, FornitoreSearchWidget,ClienteSearchWidget,ArticoloSearchWidget
+from promogest.ui.widgets import PersonaGiuridicaSearchWidget, FornitoreSearchWidget,\
+                    ClienteSearchWidget,ArticoloSearchWidget,CustomComboBoxModify,\
+                    CustomComboBoxSearch,ScontiWidget,ScontoWidget
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -14,6 +14,10 @@ domain="glade-3" depends="gtk+">
     <glade-widget-class title="ClienteSearchWidget" name="ClienteSearchWidget" generic-name="ClienteSearchWidget"/>
     <glade-widget-class title="FornitoreSearchWidget" name="FornitoreSearchWidget" generic-name="FornitoreSearchWidget"/>
     <glade-widget-class title="PersonaGiuridicaSearchWidget" name="PersonaGiuridicaSearchWidget" generic-name="PersonaGiuridicaSearchWidget"/>
+    <glade-widget-class title="CustomComboBoxModify" name="CustomComboBoxModify" generic-name="CustomComboBoxModify"/>
+    <glade-widget-class title="CustomComboBoxSearch" name="CustomComboBoxSearch" generic-name="CustomComboBoxSearch"/>
+    <glade-widget-class title="ScontiWidget" name="ScontiWidget" generic-name="ScontiWidget"/>
+    <glade-widget-class title="ScontoWidget" name="ScontoWidget" generic-name="ScontoWidget"/>
  </glade-widget-classes>
 
  <glade-widget-group name="python" title="PromoGest2">
@@ -28,5 +32,12 @@ domain="glade-3" depends="gtk+">
     <glade-widget-class-ref name="ClienteSearchWidget"/>
     <glade-widget-class-ref name="FornitoreSearchWidget"/>
     <glade-widget-class-ref name="PersonaGiuridicaSearchWidget"/>
+    <glade-widget-class-ref name="CustomComboBoxModify"/>
+    <glade-widget-class-ref name="CustomComboBoxSearch"/>
+    <glade-widget-class-ref name="ScontiWidget"/>
+    <glade-widget-class-ref name="ScontoWidget"/>
  </glade-widget-group>
 </glade-catalog>
+
+
+
