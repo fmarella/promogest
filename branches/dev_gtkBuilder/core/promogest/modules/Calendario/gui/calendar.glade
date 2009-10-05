@@ -261,9 +261,8 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="DateTimeWidget" id="DateTimeWidget1">
+                  <object class="DateWidget" id="DateWidget1">
                     <property name="visible">True</property>
-                    <signal name="key_press_event" handler="on_do_key_press_event"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
