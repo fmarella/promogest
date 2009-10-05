@@ -77,11 +77,8 @@ class DuplicazioneDocumento(GladeWidget):
         
         #controlla che nel documento ci sia un solo magazzino
         nMags = Environment.params['session'].query(Magazzino).count()
-        print 'nmags = ', nMags
         if nMags > 1:
-          print 'dao', self.dao.numeroMagazzini
           if self.dao.numeroMagazzini == 1:
-            
             mags = Environment.params['session'].query(Magazzino)#.filter(Magazzino.id != self.dao.righe[0].id_magazzino)
             model = gtk.ListStore(object, str)
             for m in mags:
@@ -127,7 +124,6 @@ class DuplicazioneDocumento(GladeWidget):
         newDao.id_pagamento = self.dao.id_pagamento
         newDao.id_banca = self.dao.id_banca
         newDao.numero = self.dao.numero
-        print dir(newDao)
         newDao.id_aliquota_iva_esenzione = self.dao.id_aliquota_iva_esenzione
         newDao.protocollo = self.dao.protocollo
         newDao.causale_trasporto = self.dao.causale_trasporto
@@ -160,7 +156,7 @@ class DuplicazioneDocumento(GladeWidget):
             daoRiga = RigaDocumento()
             daoRiga.id_testata_documento = newDao.id
             daoRiga.id_articolo = r.id_articolo
-            if self.id_magazzino_combobox.get_active_text() != '':
+            if self.id_magazzino_combobox.get_active() != -1:
                 magazzino_model = self.id_magazzino_combobox.get_model()
                 magazzino_active = self.id_magazzino_combobox.get_active()
                 daoRiga.id_magazzino = magazzino_model[magazzino_active][0].id
@@ -218,7 +214,6 @@ class DuplicazioneDocumento(GladeWidget):
                   scontiRigaDocumento.append(daoSconto)
             daoRiga.scontiRigaDocumento = scontiRigaDocumento
             righeDocumento.append(daoRiga)
-        print len(righeDocumento), 'aaaaaaaaaaaaaaaaaaaaaaaaaaaa'
             
         newDao.righeDocumento = righeDocumento
         scadenze = []

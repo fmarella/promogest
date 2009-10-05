@@ -135,7 +135,7 @@ class DuplicazioneMovimento(GladeWidget):
             daoRiga = RigaMovimento(Environment.connection)
             daoRiga.id_testata_movimento = newDao.id
             daoRiga.id_articolo = r.id_articolo
-            if self.id_magazzino_combobox.get_active_text() != '':
+            if self.id_magazzino_combobox.get_active() != -1:
                 magazzino_model = self.id_magazzino_combobox.get_model()
                 magazzino_active = self.id_magazzino_combobox.get_active()
                 daoRiga.id_magazzino = magazzino_model[magazzino_active][0].id
