@@ -7,7 +7,7 @@
 # Author: Francesco Meloni <francesco@promotux.it>
 
 import gtk
-import gobject, gtkhtml2
+import gobject
 from sets import Set
 
 from promogest.ui.GladeWidget import GladeWidget
@@ -283,7 +283,7 @@ class CrossFilterPriceList(GladeWidget):
                 pass
             else:
                 self.riempiTreeview(l,self._treeViewModel_duplicated)
- 
+
 
     def refreshOption(self, daos=None):
         """

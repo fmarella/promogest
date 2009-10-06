@@ -4,7 +4,7 @@
     <div>
     {% for f in feed %}
     <div style = "font-weight:bold">{{f.updated}}&nbsp;-&nbsp;<a href="{{f.links}}">{{f.title}}</a></div>
-    <div>{{f.body}}</div>
+    <div style = "font-size:10pt">{{f.body}}</div>
     <div style="color:#FCAF3E">Inserita da: <span style = "font-weight:bold;font-style:italic;color: #2B4F81">{{f.autore}}</span></div>
     <div><br/></div>
     {% endfor %}

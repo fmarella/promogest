@@ -13,6 +13,8 @@ from Dao import Dao
 from DaoUtils import *
 from Multiplo import Multiplo
 from RigaMovimento import RigaMovimento
+from RigaDocumento import RigaDocumento
+from Riga import Riga
 from promogest.ui.utils import numeroRegistroGet
 from Fornitore import Fornitore
 from Cliente import Cliente
@@ -83,6 +85,22 @@ class TestataMovimento(Dao):
         if self.forni: return self.forni.nome
         else: return ""
     nome_fornitore= property(_nome_fornitore)
+
+    def _getNumeroMagazzini(self):
+      """
+      Restituisce il numero di magazzini presenti nel documento. Ci serve per poter effettuare
+      il trasferimento di articoli che partono tutti dallo stesso magazzino
+      """
+      __numeroMagazzini = 0
+      
+      print len(self.righe), 'aaaaaaaa'
+      if len(self.righe) > 0 and self.id:
+        mov_query = params['session'].query(RigaMovimento.id).filter(RigaMovimento.id_testata_movimento == self.id)
+        doc_query = params['session'].query(RigaDocumento.id).filter(RigaDocumento.id_testata_documento == self.id)
+        res = params['session'].query(Riga.id_magazzino).filter(or_(Riga.id.in_(mov_query),Riga.id.in_(doc_query))).distinct().count()
+        return res
+        
+    numeroMagazzini = property(_getNumeroMagazzini)
 
     def filter_values(self,k,v):
         if k == 'daNumero':

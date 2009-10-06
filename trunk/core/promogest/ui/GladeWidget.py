@@ -43,7 +43,7 @@ from widgets.ScontoWidget import ScontoWidget
 
 
 
-from promogest.lib.HtmlTextView import HtmlTextView
+#from promogest.lib.HtmlTextView import HtmlTextView
 from SimpleGladeApp import SimpleGladeApp
 
 class GladeWidget(SimpleGladeApp):

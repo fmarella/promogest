@@ -4,7 +4,6 @@
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 
-
 import gtk
 import threading
 import webbrowser

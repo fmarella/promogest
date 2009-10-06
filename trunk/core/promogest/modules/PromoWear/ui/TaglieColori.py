@@ -12,7 +12,6 @@ import gobject, gtkhtml2
 from promogest.ui.GladeWidget import GladeWidget
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
 from promogest.dao.Articolo import Articolo
 from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
 from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <glade-interface>
-  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-requires gtk+ 2.14 -->
   <!-- interface-naming-policy project-wide -->
   <widget class="GtkWindow" id="anagrafica_complessa_window">
     <property name="title" translatable="yes">Anagrafica</property>

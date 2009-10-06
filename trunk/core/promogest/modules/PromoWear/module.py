@@ -27,6 +27,7 @@ GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules
 #COMPANY = Environment.conf.PromoWear.company_name
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None
+TEMPLATES = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+"/PromoWear/templates/"
 
 class Taglie(object):
     VIEW_TYPE = ('anagrafica', 'Taglie', 'taglia48x48.png')

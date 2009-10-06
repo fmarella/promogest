@@ -1071,7 +1071,6 @@ class AnagraficaHtml(object):
         self.dao = dao
 
         self._refresh()
-        #print "FFFFFFFFFFFFFFFF",
         if dao and Environment.debugDao:
             #FIXME: add some logging level check here
             import pprint
@@ -1387,16 +1386,13 @@ class AnagraficaEdit(GladeWidget):
         """ Svuota tutti i campi di input del dettaglio anagrafica """
         raise NotImplementedError
 
-
     def setDao(self, dao):
         """ Visualizza il Dao specificato """
         raise NotImplementedError
 
-
     def saveDao(self):
         """ Salva il Dao attualmente selezionato """
         raise NotImplementedError
-
 
     def setFocus(self, widget=None):
         if widget is None:
@@ -1404,11 +1400,9 @@ class AnagraficaEdit(GladeWidget):
         else:
             widget.grab_focus()
 
-
     def on_ok_button_grab_focus(self, button):
         if self.dialog.ok_button.is_focus():
             self.on_anagrafica_complessa_detail_dialog_response(self.dialog, gtk.RESPONSE_OK)
-
 
     def on_anagrafica_complessa_detail_dialog_response(self, dialog, responseId):
         """ Main function connected with ok applica and cancel in Anagrafica Edit"""
@@ -1491,8 +1485,8 @@ class AnagraficaPrintPreview(GladeWidget):
         #generaButton = self.bodyWidget.generic_button
         #generaButton.connect('clicked', self.on_generic_button_clicked )
         #generaButton.set_label("Genera Pdf Anteprima Html")
-
         self.refresh()
+
     def on_generic_combobox_changed(self,combobox):
         if self.codBar_combo.get_active()==0:
             from PrintDialog import PrintDialogHandler
@@ -1516,7 +1510,6 @@ class AnagraficaPrintPreview(GladeWidget):
         """ Aggiorna la paginazione """
         self.bodyWidget.numRecords = self.numRecords
         self.bodyWidget._refreshPageCount()
-
 
     def refresh(self):
         """ show the html page in the custom widget"""
@@ -1582,7 +1575,6 @@ class AnagraficaPrintPreview(GladeWidget):
     def on_print_on_screen_dialog_response(self, dialog, responseId):
         if responseId == gtk.RESPONSE_CLOSE:
             self.on_print_on_screen_dialog_delete_event()
-
 
     def on_print_on_screen_dialog_delete_event(self, dialog=None, event=None):
         self.destroy()

@@ -184,4 +184,11 @@ table#calendar td{background: #DBDFEB url(gui/tdbk.png) no-repeat}
 table#calendar a{text-decoration:none;color:#4A5576;font-weight:bold}
 table#calendar a:hover{color: #716F64}
 
+
+@page {
+    size: A4 landscape;
+    margin: 1cm;
+}
+
+
 </style>

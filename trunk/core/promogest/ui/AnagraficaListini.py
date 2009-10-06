@@ -14,7 +14,6 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 from promogest import Environment
-
 #from promogest.dao.Dao import Dao
 from promogest.dao.Listino import Listino
 from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente

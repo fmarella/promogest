@@ -12,7 +12,6 @@ import gobject
 import unicodedata
 from  subprocess import *
 import os, popen2
-import gtkhtml2
 from promogest.dao.DaoUtils import giacenzaSel
 from datetime import datetime, timedelta
 from promogest import Environment

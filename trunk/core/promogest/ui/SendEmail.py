@@ -8,7 +8,6 @@
 import hashlib
 import gtk, gobject
 import os
-import gtkhtml2
 from datetime import datetime, timedelta
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
