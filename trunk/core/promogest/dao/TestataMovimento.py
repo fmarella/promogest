@@ -87,18 +87,21 @@ class TestataMovimento(Dao):
     nome_fornitore= property(_nome_fornitore)
 
     def _getNumeroMagazzini(self):
-      """
-      Restituisce il numero di magazzini presenti nel documento. Ci serve per poter effettuare
-      il trasferimento di articoli che partono tutti dallo stesso magazzino
-      """
-      __numeroMagazzini = 0
-      
-      print len(self.righe), 'aaaaaaaa'
-      if len(self.righe) > 0 and self.id:
-        mov_query = params['session'].query(RigaMovimento.id).filter(RigaMovimento.id_testata_movimento == self.id)
-        doc_query = params['session'].query(RigaDocumento.id).filter(RigaDocumento.id_testata_documento == self.id)
-        res = params['session'].query(Riga.id_magazzino).filter(or_(Riga.id.in_(mov_query),Riga.id.in_(doc_query))).distinct().count()
-        return res
+        """
+        Restituisce il numero di magazzini presenti nel documento. Ci serve per poter effettuare
+        il trasferimento di articoli che partono tutti dallo stesso magazzino
+        """
+        __numeroMagazzini = []
+        for riga in self.righe:
+            if riga.id_magazzino not in __numeroMagazzini:
+                __numeroMagazzini.append(riga.id_magazzino)
+        return len(__numeroMagazzini)
+        #print len(self.righe), 'aaaaaaaa'
+        #if len(self.righe) > 0 and self.id:
+            #mov_query = params['session'].query(RigaMovimento.id).filter(RigaMovimento.id_testata_movimento == self.id)
+            #doc_query = params['session'].query(RigaDocumento.id).filter(RigaDocumento.id_testata_documento == self.id)
+            #res = params['session'].query(Riga.id_magazzino).filter(or_(Riga.id.in_(mov_query),Riga.id.in_(doc_query))).distinct().count()
+            #return res
         
     numeroMagazzini = property(_getNumeroMagazzini)
 
