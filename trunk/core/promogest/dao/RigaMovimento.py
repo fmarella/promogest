@@ -134,10 +134,9 @@ class RigaMovimento(Dao):
 
     if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable')=="yes":
         def _getMisuraPezzo(self):
-            if self.__misuraPezzo is None:
+            if not self.__misuraPezzo and self.id:
                 self.__dbMisuraPezzo = MisuraPezzo().select(idRiga=self.id)
                 self.__misuraPezzo = self.__dbMisuraPezzo[:]
-                return self.__misuraPezzo
             return self.__misuraPezzo
 
         def _setMisuraPezzo(self, value):

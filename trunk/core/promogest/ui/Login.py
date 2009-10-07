@@ -137,6 +137,9 @@ class Login(GladeApp):
         GladeApp.__init__(self, 'login_window')
         Environment.exceptionHandler = GtkExceptionHandler()
         checkAggiorna()
+        #watch = gtk.gdk.Cursor(gtk.gdk.WATCH)
+        #print dir(watch), dir(watch.type), watch.type.denominator
+        #print watch.get_display().get_pointer()
         self.draw()
         self.getTopLevel().show_all()
 

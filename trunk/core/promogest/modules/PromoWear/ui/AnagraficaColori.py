@@ -4,20 +4,14 @@
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Alessandro Scano <alessandro@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 
 
 import gtk
 import gobject
-
 from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-
 from promogest import Environment
-#from promogest.dao.Dao import Dao
-#import promogest.modules.PromoWear.dao.Colore
 from promogest.modules.PromoWear.dao.Colore import Colore
-
 from promogest.ui.utils import *
 
 
@@ -30,6 +24,7 @@ class AnagraficaColori(Anagrafica):
                             '_Colori',
                             AnagraficaColoreFilter(self),
                             AnagraficaColoreDetail(self))
+
 
 
     def draw(self):
@@ -61,6 +56,7 @@ class AnagraficaColori(Anagrafica):
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None,'denominazione_breve'))
+        #column.connect("clicked", self.ecciccia)
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
@@ -70,9 +66,27 @@ class AnagraficaColori(Anagrafica):
         # Model: Dao, denominazione, denominazione_breve, sensitive
         self._treeViewModel = gtk.ListStore(object, str, str, bool)
         treeview.set_model(self._treeViewModel)
+        treeview.connect("button_press_event", self.on_treeview_button_press_event)
+        """TEST DI GESTIONE VISIBILITA' colonne"""
+        #print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",treeview.get_column(1)
+        #colum = treeview.get_column(1)
+        #colum.set_visible(False)
 
         self.refresh()
 
+    def on_treeview_button_press_event(self, treeview, event):
+        popi = gtk.Menu()
+        if event.button == 3:
+            x = int(event.x)
+            y = int(event.y)
+            time = event.time
+            pthinfo = treeview.get_path_at_pos(x, y)
+            if pthinfo is not None:
+                path, col, cellx, celly = pthinfo
+                treeview.grab_focus()
+                treeview.set_cursor( path, col, 0)
+                popi.popup( None, None, None, event.button, time)
+        return True
 
     def refresh(self):
         # Aggiornamento TreeView
