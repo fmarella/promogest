@@ -1,6 +1,6 @@
 <style>
 
-    body {font-family: monospace; }
+    body {font-family: 'Lucida Casual', 'Comic Sans MS';}
 
     table { width: 100%; }
 
@@ -38,7 +38,7 @@
     th {
         padding-left: 0px;
         font-weight: normal;
-        font-style: italic;
+/*         font-style: italic; */
         font-size: 1.1em;
     }
 
@@ -60,7 +60,7 @@
             background : #585858;
     }
     .header {
-        font-style: italic;
+/*         font-style: italic; */
         color: black;
         border-width: 1px 0px 1px 0px;
         border-style: solid;
@@ -117,27 +117,27 @@
     height: 21px;
 
 }
-#container #rigaheader {
+/*#container #rigaheader {
 /*     background-attachment: scroll; */
-    background-image: url("templates/bkg_footer.png");
-    background-repeat: repeat;
+/*     background-image: url("templates/bkg_footer.png"); */
+/*     background-repeat: repeat; */
 /*     background-position: left top; */
-    position: relative;
-    width: auto;
-    height: 15px;
-}
+/*     position: relative; */
+/*     width: auto; */
+/*     height: 15px; */
+/* }*/ */
 #container #head {
-    height: 70px;
+    height: 30px;
 }
 #container #head #testo {
     position: relative;
     top: -40px;
     left: 80px;
-    width: 80%;
-    font-family: Arial;
-    font-size: 24px;
+/*     width: 80%; */
+/*     font-family: Arial; */
+/*     font-size: 24px; */
     color: #666666;
-    font-weight: bold;
+/*     font-weight: bold; */
 }
 #container #head #img {
     height: 48px;
@@ -146,10 +146,10 @@
 /*     background-image: url("gui/articolo48x48.png"); */
     background-repeat: no-repeat;
 /*     background-position: left center; */
-    position: relative;
+/*     position: relative; */
     left: 20px;
-    top: 5px;
-    padding-top: 10px;
+    top: 1px;
+    padding-top: 3px;
 }
 
 #dialog{

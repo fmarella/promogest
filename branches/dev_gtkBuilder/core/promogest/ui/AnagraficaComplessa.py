@@ -43,10 +43,6 @@ from promogest.ui.SendEmail import SendEmail
 
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 
-#from jinja2 import Environment  as Env
-#from jinja2 import FileSystemLoader,FileSystemBytecodeCache
-
-#from promogest.dao import Dao
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Azienda import Azienda
 

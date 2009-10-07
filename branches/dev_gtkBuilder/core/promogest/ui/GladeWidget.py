@@ -30,6 +30,8 @@ import xml.etree.cElementTree as ElementTree
 from promogest import Environment
 from widgets.UnsignedDecimalEntryField import UnsignedDecimalEntryField
 from widgets.SignedDecimalEntryField import SignedDecimalEntryField
+from widgets.UnsignedMoneyEntryField import UnsignedMoneyEntryField
+from widgets.SignedMoneyEntryField import SignedMoneyEntryField
 from widgets.UnsignedIntegerEntryField import UnsignedIntegerEntryField
 from widgets.SignedIntegerEntryField import SignedIntegerEntryField
 from widgets.DateEntryField import DateEntryField
@@ -40,7 +42,6 @@ from widgets.CustomComboBoxModify import CustomComboBoxModify
 from widgets.CustomComboBoxSearch import CustomComboBoxSearch
 from widgets.ScontiWidget import ScontiWidget
 from widgets.ScontoWidget import ScontoWidget
-
 
 
 #from promogest.lib.HtmlTextView import HtmlTextView
@@ -132,27 +133,27 @@ class GladeWidget(SimpleGladeApp):
         #""" Return a DateTimeWidget widget """
         #return DateTimeWidget(str1, str2, int1, int2)
 
-    def createArticoloSearchWidget(self, str1, str2, int1, int2):
-        """ Return an ArticoloSearchWidget widget """
-        from widgets.ArticoloSearchWidget import ArticoloSearchWidget
-        return ArticoloSearchWidget()
+    #def createArticoloSearchWidget(self, str1, str2, int1, int2):
+        #""" Return an ArticoloSearchWidget widget """
+        #from widgets.ArticoloSearchWidget import ArticoloSearchWidget
+        #return ArticoloSearchWidget()
 
-    def createClienteSearchWidget(self, str1, str2, int1, int2):
-        """ Return an ClienteSearchWidget widget """
-        from widgets.ClienteSearchWidget import ClienteSearchWidget
-        widget = ClienteSearchWidget()
-        #print widget.__class__
-        return widget
+    #def createClienteSearchWidget(self, str1, str2, int1, int2):
+        #""" Return an ClienteSearchWidget widget """
+        #from widgets.ClienteSearchWidget import ClienteSearchWidget
+        #widget = ClienteSearchWidget()
+        ##print widget.__class__
+        #return widget
 
-    def createFornitoreSearchWidget(self, str1, str2, int1, int2):
-        """ Return an FornitoreSearchWidget widget """
-        from widgets.FornitoreSearchWidget import FornitoreSearchWidget
-        return FornitoreSearchWidget()
+    #def createFornitoreSearchWidget(self, str1, str2, int1, int2):
+        #""" Return an FornitoreSearchWidget widget """
+        #from widgets.FornitoreSearchWidget import FornitoreSearchWidget
+        #return FornitoreSearchWidget()
 
-    def createPersonaGiuridicaSearchWidget(self, str1, str2, int1, int2):
-        """ Return an PersonaGiuridicaSearchWidget widget """
-        from widgets.PersonaGiuridicaSearchWidget import PersonaGiuridicaSearchWidget
-        return PersonaGiuridicaSearchWidget()
+    #def createPersonaGiuridicaSearchWidget(self, str1, str2, int1, int2):
+        #""" Return an PersonaGiuridicaSearchWidget widget """
+        #from widgets.PersonaGiuridicaSearchWidget import PersonaGiuridicaSearchWidget
+        #return PersonaGiuridicaSearchWidget()
 
     def _prepareWindowPlacement(self):
         """ Elements for the correct view of windows """

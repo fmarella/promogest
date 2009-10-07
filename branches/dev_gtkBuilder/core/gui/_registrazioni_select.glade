@@ -1,90 +1,84 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--*- mode: xml -*-->
-<glade-interface>
-  <widget class="GtkWindow" id="_registrazioni_select">
+<?xml version="1.0"?>
+<interface>
+  <!-- interface-requires gtk+ 2.6 -->
+  <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkFrame" id="registrazioni_select_frame">
     <property name="visible">True</property>
-    <property name="title" translatable="yes">registrazioni</property>
+    <property name="label_xalign">0</property>
     <child>
-      <widget class="GtkFrame" id="registrazioni_select_frame">
+      <object class="GtkAlignment" id="alignment23">
+        <property name="width_request">680</property>
         <property name="visible">True</property>
-        <property name="label_xalign">0</property>
+        <property name="xalign">0</property>
+        <property name="yalign">0</property>
+        <property name="xscale">0.25</property>
+        <property name="yscale">0</property>
+        <property name="left_padding">12</property>
         <child>
-          <widget class="GtkAlignment" id="alignment23">
-            <property name="width_request">680</property>
+          <object class="GtkVBox" id="vbox5">
             <property name="visible">True</property>
-            <property name="xalign">0</property>
-            <property name="yalign">0</property>
-            <property name="xscale">0.25</property>
-            <property name="yscale">0</property>
-            <property name="left_padding">12</property>
+            <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
+            <property name="homogeneous">True</property>
             <child>
-              <widget class="GtkVBox" id="vbox5">
+              <object class="GtkToggleButton" id="documenti_button">
                 <property name="visible">True</property>
-                <property name="border_width">6</property>
-                <property name="homogeneous">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_documenti_button_clicked"/>
                 <child>
-                  <widget class="GtkToggleButton" id="documenti_button">
+                  <object class="GtkAlignment" id="alignment20">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="response_id">0</property>
-                    <signal name="clicked" handler="on_documenti_button_clicked"/>
+                    <property name="xscale">0</property>
+                    <property name="yscale">0</property>
                     <child>
-                      <widget class="GtkAlignment" id="alignment20">
+                      <object class="GtkHBox" id="hbox34">
                         <property name="visible">True</property>
-                        <property name="xscale">0</property>
-                        <property name="yscale">0</property>
+                        <property name="spacing">2</property>
                         <child>
-                          <widget class="GtkHBox" id="hbox34">
+                          <object class="GtkImage" id="image20">
                             <property name="visible">True</property>
-                            <property name="spacing">2</property>
-                            <child>
-                              <widget class="GtkImage" id="image20">
-                                <property name="visible">True</property>
-                                <property name="pixbuf">documento48x48.png</property>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label42">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Documenti</property>
-                                <property name="use_underline">True</property>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </widget>
+                            <property name="pixbuf">documento48x48.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
                         </child>
-                      </widget>
+                        <child>
+                          <object class="GtkLabel" id="label42">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Documenti</property>
+                            <property name="use_underline">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
                     </child>
-                  </widget>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                  </packing>
+                  </object>
                 </child>
-              </widget>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
-          </widget>
+          </object>
         </child>
-        <child>
-          <widget class="GtkLabel" id="label81">
-            <property name="visible">True</property>
-            <property name="label" translatable="yes">Registrazioni</property>
-            <property name="use_markup">True</property>
-          </widget>
-          <packing>
-            <property name="type">label_item</property>
-          </packing>
-        </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+    <child type="label">
+      <object class="GtkLabel" id="label81">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Registrazioni</property>
+        <property name="use_markup">True</property>
+      </object>
+    </child>
+  </object>
+</interface>

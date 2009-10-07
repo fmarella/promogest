@@ -41,6 +41,7 @@ class Anagrafica(GladeWidget):
         self.record_menu.get_child().set_label(recordMenuLabel)
 
         self.bodyWidget = FilterWidget(owner=self, filtersElement=filterElement)
+        #self.anagrafica_scrolledwindow.add(self.bodyWidget.getTopLevel())
         self.anagrafica_viewport.add(self.bodyWidget.getTopLevel())
         self.bodyWidget.filter_body_label.set_no_show_all(True)
         self.bodyWidget.filter_body_label.set_property('visible', False)

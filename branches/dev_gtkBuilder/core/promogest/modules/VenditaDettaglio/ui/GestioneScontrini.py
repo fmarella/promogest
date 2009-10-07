@@ -140,12 +140,8 @@ class GestioneScontrini(GladeWidget):
             self.filters.a_data_filter_entry.setNow()
         else:
             self.filters.a_data_filter_entry.set_text(self_aData)
-        #self.defaultFileName = "scontrino.html"
-        #self._htmlTemplate = "promogest/modules/VenditaDettaglio/templates"
-         #self.html_scrolledwindow.add(self.detail)
+
         self.refreshHtml()
-
-
         self.refresh()
 
     def clear(self):

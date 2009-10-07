@@ -10,6 +10,10 @@ domain="glade-3" depends="gtk+">
     <glade-widget-class title="UnsignedIntegerEntryField" name="UnsignedIntegerEntryField" generic-name="UnsignedIntegerEntryField"/>
     <glade-widget-class title="UnsignedDecimalEntryField" name="UnsignedDecimalEntryField" generic-name="UnsignedDecimalEntryField"/>
     <glade-widget-class title="SignedDecimalEntryField" name="SignedDecimalEntryField" generic-name="SignedDecimalEntryField"/>
+
+    <glade-widget-class title="UnsignedMoneyEntryField" name="UnsignedMoneyEntryField" generic-name="UnsignedMoneyEntryField"/>
+    <glade-widget-class title="SignedMoneyEntryField" name="SignedMoneyEntryField" generic-name="SignedMoneyEntryField"/>
+    
     <glade-widget-class title="ArticoloSearchWidget" name="ArticoloSearchWidget" generic-name="ArticoloSearchWidget"/>
     <glade-widget-class title="ClienteSearchWidget" name="ClienteSearchWidget" generic-name="ClienteSearchWidget"/>
     <glade-widget-class title="FornitoreSearchWidget" name="FornitoreSearchWidget" generic-name="FornitoreSearchWidget"/>
@@ -27,6 +31,8 @@ domain="glade-3" depends="gtk+">
     <glade-widget-class-ref name="UnsignedIntegerEntryField"/>
     <glade-widget-class-ref name="SignedIntegerEntryField"/>
     <glade-widget-class-ref name="UnsignedDecimalEntryField"/>
+    <glade-widget-class-ref name="UnsignedMoneyEntryField"/>
+    <glade-widget-class-ref name="SignedMoneyEntryField"/>
     <glade-widget-class-ref name="SignedDecimalEntryField"/>
     <glade-widget-class-ref name="ArticoloSearchWidget"/>
     <glade-widget-class-ref name="ClienteSearchWidget"/>

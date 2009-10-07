@@ -1,86 +1,66 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--*- mode: xml -*-->
-<glade-interface>
-  <widget class="GtkWindow" id="_anagrafica_categorie_clienti_elements">
+<?xml version="1.0"?>
+<interface>
+  <!-- interface-requires gtk+ 2.6 -->
+  <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkTable" id="anagrafica_categorie_clienti_filter_table">
     <property name="visible">True</property>
-    <property name="title" translatable="yes">Anagrafica categoria clienti </property>
+    <property name="n_columns">2</property>
     <child>
-      <widget class="GtkHBox" id="hbox22">
+      <object class="GtkLabel" id="label34">
         <property name="visible">True</property>
-        <child>
-          <widget class="GtkTable" id="anagrafica_categorie_clienti_filter_table">
-            <property name="visible">True</property>
-            <property name="n_rows">1</property>
-            <property name="n_columns">2</property>
-            <child>
-              <widget class="GtkLabel" id="label34">
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">Descrizione</property>
-              </widget>
-              <packing>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
-                <property name="x_padding">10</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkEntry" id="denominazione_filter_entry">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
-              </widget>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
-              </packing>
-            </child>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkTable" id="anagrafica_categorie_clienti_detail_table">
-            <property name="visible">True</property>
-            <property name="border_width">6</property>
-            <property name="n_rows">1</property>
-            <property name="n_columns">2</property>
-            <property name="row_spacing">6</property>
-            <child>
-              <widget class="GtkLabel" id="label35">
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">Descrizione</property>
-              </widget>
-              <packing>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
-                <property name="x_padding">10</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkEntry" id="denominazione_entry">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-              </widget>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
-              </packing>
-            </child>
-          </widget>
-          <packing>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </widget>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">Descrizione</property>
+      </object>
+      <packing>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"></property>
+        <property name="x_padding">10</property>
+      </packing>
     </child>
-  </widget>
-</glade-interface>
+    <child>
+      <object class="GtkEntry" id="denominazione_filter_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">&#x25CF;</property>
+        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkTable" id="anagrafica_categorie_clienti_detail_table">
+    <property name="visible">True</property>
+    <property name="border_width">6</property>
+    <property name="n_columns">2</property>
+    <property name="row_spacing">6</property>
+    <child>
+      <object class="GtkLabel" id="label35">
+        <property name="visible">True</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">Descrizione</property>
+      </object>
+      <packing>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"></property>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkEntry" id="denominazione_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">&#x25CF;</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+  </object>
+</interface>

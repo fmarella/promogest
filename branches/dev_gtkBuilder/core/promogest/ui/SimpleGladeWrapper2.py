@@ -7,6 +7,20 @@
  Copyright (C) 2004 Sandino Flores Moreno
 """
 
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+# USA
 
 import os
 import sys
@@ -46,14 +60,43 @@ def bindtextdomain(app_name, locale_dir=None):
         __builtins__.__dict__["_"] = lambda x : x
 
 
-class SimpleGladeWrapper2(object):
+class SimpleGladeWrapper:
 
     def __init__(self, path=None, root=None, domain=None,\
                             callbacks_proxy=None, isModule=False, **kwargs):
         """
+        Load a glade file specified by glade_filename, using root as
+        root widget and domain as the domain for translations.
 
+        If it receives extra named arguments (argname=value), then they are used
+        as attributes of the instance.
+
+        path:
+            path to a glade filename.
+            If glade_filename cannot be found, then it will be searched in the
+            same directory of the program (sys.argv[0])
+
+        root:
+            the name of the widget that is the root of the user interface,
+            usually a window or dialog (a top level widget).
+            If None or ommited, the full user interface is loaded.
+
+        domain:
+            A domain to use for loading translations.
+            If None or ommited, no translation is loaded.
+
+        callbacks_proxy:
+            An object for binding callbacks.
+            If None or omitted, 'self' will be used
+
+        **kwargs:
+            a dictionary representing the named extra arguments.
+            It is useful to set attributes of new instances, for example:
+                glade_app = SimpleGladeApp("ui.glade", foo="some value", bar="another value")
+            sets two attributes (foo and bar) to glade_app.
         """
         if (path is None) or (path == './gui/'):
+            #gladeFile = "./gui/"+ root +".xml"
             gladeFile = "./gui/"+ root +".glade"
             if os.path.exists(gladeFile):
                 self.glade_path = gladeFile
@@ -61,6 +104,9 @@ class SimpleGladeWrapper2(object):
                 self.glade_path = "./gui/promogest.glade"
             self.glade = None
         else:
+            #print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+            #if os.path.isfile(path+".xml"):
+                #self.glade_path = path+".xml"
             if os.path.isfile(path):
                 self.glade_path = path
             elif isModule:
@@ -73,20 +119,33 @@ class SimpleGladeWrapper2(object):
                 setattr(self, key, weakref.proxy(value) )
             except TypeError:
                 setattr(self, key, value)
-        builder = gtk.Builder()
-        builder.add_from_file(self.glade_path)
-        self.widgets = builder.get_objects()
-        self.install_custom_handler(self.custom_handler)
+
+        #self.glade = gtk.Builder()
+        #self.glade.add_from_file(self.glade_path)
+        #self.widgets = self.glade.get_objects()
+        #print self.widgets
+        #self.install_custom_handler(self.custom_handler)
         #self.glade = self.create_glade(self.glade_path, root, domain)
+        #if root:
+            ##self.main_widget = self.widgets[0]
+            #self.main_widget = self.glade.get_object(root)
+        #else:
+            #self.main_widget = None
+        #self.normalize_names()
+        #self.glade.connect_signals(self)
+
+
+        self.install_custom_handler(self.custom_handler)
+        self.glade = self.create_glade(self.glade_path, root, domain)
         if root:
-            self.main_widget = builder.get_object(root)
+            self.main_widget = self.get_widget(root)
         else:
             self.main_widget = None
         self.normalize_names()
-        builder.connect_signals(self) 
-        #if callbacks_proxy is None:
-            #callbacks_proxy = self
-        #self.add_callbacks(callbacks_proxy)
+
+        if callbacks_proxy is None:
+            callbacks_proxy = self
+        self.add_callbacks(callbacks_proxy)
 
         self.new()
 
@@ -136,10 +195,9 @@ class SimpleGladeWrapper2(object):
         It also sets a data "prefixes" with the list of
         prefixes a widget has for each widget.
         """
-        for widget in self.widgets:
-            #print "IIIIIIIIIIIIIIIIIII", widget, dir(widget)
+        for widget in self.get_widgets():
             try:
-                widget_name = gtk.Buildable.get_name(widget)
+                widget_name = gtk.Widget.get_name(widget)
                 prefixes_name_l = widget_name.split(":")
                 prefixes = prefixes_name_l[ : -1]
                 widget_api_name = prefixes_name_l[-1]
@@ -152,7 +210,7 @@ class SimpleGladeWrapper2(object):
                     if prefixes:
                         gtk.Widget.set_data(widget, "prefixes", prefixes)
             except:
-                print "ERRORE", widget
+                print "widget", widget
 
 
     def add_prefix_actions(self, prefix_actions_proxy):
@@ -319,6 +377,7 @@ class SimpleGladeWrapper2(object):
 
     def get_widgets(self):
         return self.glade.get_widget_prefix("")
+        #return self.glade.get_objects()
 
 
     def getTopLevel(self):

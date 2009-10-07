@@ -1,40 +1,43 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.0 on Fri Nov  2 02:23:16 2007 -->
-<glade-interface>
-  <widget class="GtkDialog" id="spam_sending_dialog">
+<?xml version="1.0"?>
+<interface>
+  <!-- interface-requires gtk+ 2.6 -->
+  <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkDialog" id="spam_sending_dialog">
     <property name="title" translatable="yes">Spedizione mail</property>
     <property name="modal">True</property>
-    <property name="window_position">GTK_WIN_POS_CENTER</property>
+    <property name="window_position">center</property>
     <property name="icon">promogest.png</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="type_hint">dialog</property>
     <signal name="response" handler="on_sending_mail_progress_dialog_response"/>
     <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox19">
+      <object class="GtkVBox" id="dialog-vbox19">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
-          <widget class="GtkHBox" id="hbox288">
+          <object class="GtkHBox" id="hbox288">
             <property name="visible">True</property>
             <property name="border_width">6</property>
             <property name="spacing">12</property>
             <child>
-              <widget class="GtkImage" id="image201">
+              <object class="GtkImage" id="image201">
                 <property name="visible">True</property>
                 <property name="yalign">0</property>
                 <property name="stock">gtk-dialog-info</property>
-                <property name="icon_size">6</property>
-              </widget>
+                <property name="icon-size">6</property>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkVBox" id="vbox42">
+              <object class="GtkVBox" id="vbox42">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
-                  <widget class="GtkLabel" id="title_label">
+                  <object class="GtkLabel" id="title_label">
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
@@ -42,90 +45,66 @@
       size="larger"&gt;Spedizione mail in corso...&lt;/span&gt;</property>
                     <property name="use_markup">True</property>
                     <property name="wrap">True</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkProgressBar" id="export_progressbar">
+                  <object class="GtkProgressBar" id="export_progressbar">
                     <property name="visible">True</property>
                     <property name="pulse_step">0.10000000149</property>
-                    <property name="text" translatable="yes"></property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
-                <property name="pack_type">GTK_PACK_END</property>
+                <property name="pack_type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="position">2</property>
           </packing>
         </child>
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area19">
+          <object class="GtkHButtonBox" id="dialog-action_area19">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
+            <property name="layout_style">end</property>
             <child>
-              <widget class="GtkButton" id="button17">
+              <object class="GtkButton" id="button17">
+                <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="has_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="has_default">True</property>
-                <property name="response_id">-6</property>
-                <child>
-                  <widget class="GtkAlignment" id="alignment537">
-                    <property name="visible">True</property>
-                    <property name="xscale">0</property>
-                    <property name="yscale">0</property>
-                    <child>
-                      <widget class="GtkHBox" id="hbox405">
-                        <property name="visible">True</property>
-                        <property name="spacing">2</property>
-                        <child>
-                          <widget class="GtkImage" id="image446">
-                            <property name="visible">True</property>
-                            <property name="pixbuf">annulla2nd16x16.png</property>
-                          </widget>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkLabel" id="label3492">
-                            <property name="visible">True</property>
-                            <property name="label">_Annulla</property>
-                            <property name="use_underline">True</property>
-                          </widget>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </widget>
-                    </child>
-                  </widget>
-                </child>
-              </widget>
+                <property name="receives_default">False</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+    <action-widgets>
+      <action-widget response="-6">button17</action-widget>
+    </action-widgets>
+  </object>
+</interface>

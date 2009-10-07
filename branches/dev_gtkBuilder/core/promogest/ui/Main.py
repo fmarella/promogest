@@ -25,6 +25,10 @@ from utilsCombobox import *
 from ParametriFrame import ParametriFrame
 from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
 import Login
+from widgets.ArticoloSearchWidget import ArticoloSearchWidget
+from widgets.ClienteSearchWidget import ClienteSearchWidget
+from widgets.FornitoreSearchWidget import FornitoreSearchWidget
+from widgets.PersonaGiuridicaSearchWidget import PersonaGiuridicaSearchWidget
 
 class Main(GladeWidget):
 

@@ -20,7 +20,6 @@ class FilterWidget(GladeWidget):
 
     def __init__(self, owner, filtersElement=None, resultsElement='grid'):
         GladeWidget.__init__(self, 'filter_vbox', fileName='_filter_elements.glade')
-
         self._owner = owner
         self.filtersElement = None
         self.resultsElement = None
@@ -60,8 +59,6 @@ class FilterWidget(GladeWidget):
         """
         self.filtersElement = filtersElement
         self.filtersElementTopLevel = self.filtersElement.getTopLevel()
-        #self.filtersElementTopLevel.reparent(self.filter_frame_vbox)
-        #print "FIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", self.filtersElementTopLevel.name
         self.filter_frame_vbox.pack_start(self.filtersElementTopLevel)
         self.filtersElementTopLevel.set_sensitive(True)
 

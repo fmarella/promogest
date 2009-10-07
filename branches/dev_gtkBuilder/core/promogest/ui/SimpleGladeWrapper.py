@@ -96,18 +96,14 @@ class SimpleGladeWrapper:
             sets two attributes (foo and bar) to glade_app.
         """
         if (path is None) or (path == './gui/'):
-            #gladeFile = "./gui/"+ root +".xml"
             gladeFile = "./gui/"+ root +".glade"
             if os.path.exists(gladeFile):
                 self.glade_path = gladeFile
             else:
-                #self.glade_path = "./gui/promogest.xml"
                 self.glade_path = "./gui/promogest.glade"
             self.glade = None
         else:
-            #print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
-            #if os.path.isfile(path+".xml"):
-                #self.glade_path = path+".xml"
+
             if os.path.isfile(path):
                 self.glade_path = path
             elif isModule:
@@ -125,27 +121,25 @@ class SimpleGladeWrapper:
         print "SEEEELF", self.glade_path
         gl.add_from_file(self.glade_path)
         self.widgets = gl.get_objects()
-        #self.install_custom_handler(self.custom_handler)
-        #self.glade = self.create_glade(self.glade_path, root, domain)
         if root:
-            #self.main_widget = self.widgets[0]
             self.main_widget = gl.get_object(root)
         else:
             self.main_widget = None
         self.normalize_names()
-
-        gl.connect_signals(self)
+        if callbacks_proxy is None:
+            callbacks_proxy = self
+        gl.connect_signals(callbacks_proxy)
         #self.new()
 
 
-    #def __repr__(self):
-        #class_name = self.__class__.__name__
-        #if self.main_widget:
-            #root = gtk.Widget.get_name(self.main_widget)
-            #repr = '%s(path="%s", root="%s")' % (class_name, self.glade_path, root)
-        #else:
-            #repr = '%s(path="%s")' % (class_name, self.glade_path)
-        #return repr
+    def __repr__(self):
+        class_name = self.__class__.__name__
+        if self.main_widget:
+            root = gtk.Widget.get_name(self.main_widget)
+            repr = '%s(path="%s", root="%s")' % (class_name, self.glade_path, root)
+        else:
+            repr = '%s(path="%s")' % (class_name, self.glade_path)
+        return repr
 
 
     def new(self):

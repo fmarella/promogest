@@ -275,7 +275,7 @@
                 <property name="tooltip_text" translatable="yes">Mostra un report a partire dai risultati nella ricerca</property>
                 <property name="label" translatable="yes">Report a video</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">generated-icon-report24x24-png</property>
+                <property name="icon_widget">image7</property>
                 <signal name="clicked" handler="on_records_print_on_screen_activate"/>
               </object>
               <packing>
@@ -289,7 +289,7 @@
                 <property name="tooltip_text" translatable="yes">Genera un report in formato PDF per i risultati della ricerca</property>
                 <property name="label" translatable="yes">Stampa</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">generated-icon-stampa_report24x24-png</property>
+                <property name="stock_id">gtk-print</property>
                 <signal name="clicked" handler="on_records_print_activate"/>
               </object>
               <packing>
@@ -327,7 +327,7 @@
                 <property name="sensitive">False</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="label" translatable="yes">Esporta...</property>
-                <property name="stock_id">generated-icon-esporta_24-png</property>
+                <property name="icon_widget">image8</property>
                 <signal name="clicked" handler="on_records_file_export_clicked"/>
               </object>
               <packing>
@@ -342,7 +342,7 @@
                 <property name="app_paintable">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="label" translatable="yes">Fattura Differita</property>
-                <property name="stock_id">generated-icon-duplica24x24-png</property>
+                <property name="icon_widget">image9</property>
                 <signal name="clicked" handler="on_record_fattura_button_clicked"/>
               </object>
               <packing>
@@ -458,5 +458,17 @@
   <object class="GtkImage" id="image6">
     <property name="visible">True</property>
     <property name="stock">gtk-print</property>
+  </object>
+  <object class="GtkImage" id="image7">
+    <property name="visible">True</property>
+    <property name="pixbuf">report24x24.png</property>
+  </object>
+  <object class="GtkImage" id="image8">
+    <property name="visible">True</property>
+    <property name="pixbuf">esporta_24.png</property>
+  </object>
+  <object class="GtkImage" id="image9">
+    <property name="visible">True</property>
+    <property name="pixbuf">duplica24x24.png</property>
   </object>
 </interface>
