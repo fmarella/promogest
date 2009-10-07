@@ -225,7 +225,8 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             AnagraficaArticoliPromoWearExpand.treeViewExpand(self, treeview, renderer)
         else:
             self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str)
-            self.promowear_filter_frame.destroy()
+            #self.promowear_filter_frame.destroy()
+            self.promowear_expander_semplice.destroy()
         treeview.set_search_column(2)
 
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)

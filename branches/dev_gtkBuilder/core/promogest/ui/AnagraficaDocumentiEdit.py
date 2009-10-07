@@ -769,8 +769,8 @@ del documento.
             scontiRigaDocumento =[]
             misure = []
             if "SuMisura" in Environment.modulesList and \
-                    self._righe[i]["altezza"] != '' and \
-                    self._righe[i]["larghezza"] != '':
+                            self._righe[i]["altezza"] != '' and \
+                            self._righe[i]["larghezza"] != '':
                 daoMisura = MisuraPezzo()
                 daoMisura.altezza = float(self._righe[i]["altezza"] or 0)
                 daoMisura.larghezza = float(self._righe[i]["larghezza"] or 0)

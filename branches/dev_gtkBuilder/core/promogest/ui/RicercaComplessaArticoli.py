@@ -391,7 +391,8 @@ class RicercaArticoliFilter(GladeWidget):
         if "PromoWear" in Environment.modulesList:
             RicercaComplessaArticoliPromoWearExpand.drawRicercaSemplicePromoWearPart(self)
         else:
-            self.promowear_filter_frame.destroy()
+            self.promowear_expander_semplice.destroy()
+            #self.promowear_filter_frame.destroy()
         self.denominazione_filter_entry.set_text(self._denominazione or '')
         self.produttore_filter_entry.set_text(self._produttore or '')
         self.codice_filter_entry.set_text(self._codice or '')
@@ -429,7 +430,8 @@ class RicercaArticoliFilter(GladeWidget):
         if "PromoWear" in Environment.modulesList:
             RicercaComplessaArticoliPromoWearExpand.drawRicercaComplessaPromoWearPart(self)
         else:
-            self.promowear_filter_frame.destroy()
+            self.filter_promowear2.destroy()
+            #self.promowear_filter_frame.destroy()
             #FIXME: They are not present anywhere
             #self.includi_principali_articolo_filter_checkbutton.set_active(True)
             #self.includi_varianti_articolo_filter_checkbutton.set_active(True)

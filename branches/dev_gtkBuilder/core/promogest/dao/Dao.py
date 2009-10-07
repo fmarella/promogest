@@ -34,7 +34,7 @@ class Dao(object):
 
     def select(self, orderBy=None, distinct=False, groupBy=None,join=None, offset=0,
                 batchSize=20,complexFilter=None,isList = "all", **kwargs):
-        """ 
+        """
         Funzione riscritta diverse volte, il vecchio sistema che
         permetteva di aggiungere a cascata nuove opzioni sembrava rallentare
         leggermente ...questo sistema meno elegante è invece più performante
@@ -69,7 +69,7 @@ class Dao(object):
 
     def count(self, complexFilter=None,distinct =None,**kwargs):
         """
-        Restituisce il numero delle righe 
+        Restituisce il numero delle righe
         """
         _numRecords = 0
         if complexFilter:
@@ -121,7 +121,7 @@ class Dao(object):
     L'errore può venire causato da un campo fondamentale
     mancante, da un codice già presente, si invita a
     rincontrollare i campi e riprovare
-    Grazie! 
+    Grazie!
     """ %e
             overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
                                                 | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -139,8 +139,8 @@ class Dao(object):
 
     def saveToAppLog(self, status=True,action=None, value=None):
         """
-        Salviamo l'operazione nella tabella di log con un oggetto 
-        pickeld 
+        Salviamo l'operazione nella tabella di log con un oggetto
+        pickeld
         """
         if params["session"].dirty:
             message = "UPDATE;"+ self.__class__.__name__
@@ -230,7 +230,7 @@ class Dao(object):
         #raise exception
 
     def prepareFilter(self, kwargs):
-        """ 
+        """
         Take filter data from the gui and build the dictionary for the filter
         """
         filter_parameters = []

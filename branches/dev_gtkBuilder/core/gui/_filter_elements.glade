@@ -11,6 +11,7 @@
       <object class="GtkFrame" id="filter_frame">
         <property name="visible">True</property>
         <property name="label_xalign">0</property>
+        <property name="shadow_type">in</property>
         <child>
           <object class="GtkAlignment" id="filter_frame_alignment">
             <property name="visible">True</property>
@@ -58,10 +59,10 @@
                         <property name="receives_default">True</property>
                         <property name="events">GDK_KEY_PRESS_MASK | GDK_STRUCTURE_MASK</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="F3" signal="clicked"/>
-                        <accelerator key="KP_F3" signal="clicked"/>
-                        <accelerator key="KP_Enter" signal="clicked"/>
                         <accelerator key="Return" signal="clicked"/>
+                        <accelerator key="KP_Enter" signal="clicked"/>
+                        <accelerator key="KP_F3" signal="clicked"/>
+                        <accelerator key="F3" signal="clicked"/>
                         <signal name="clicked" handler="on_filter_search_button_clicked"/>
                       </object>
                       <packing>
@@ -92,6 +93,8 @@
         </child>
       </object>
       <packing>
+        <property name="expand">False</property>
+        <property name="fill">False</property>
         <property name="position">0</property>
       </packing>
     </child>
