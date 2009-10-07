@@ -136,7 +136,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "idArticolo": None,
                                 "codiceArticolo": '',
                                 "descrizione": '',
-                                "percentualeIva": 20,
+                                "percentualeIva": 0,
                                 "idUnitaBase": None,
                                 "unitaBase": '',
                                 "idMultiplo": None,
@@ -208,7 +208,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.id_multiplo_customcombobox.combobox.clear()
         self.id_listino_customcombobox.combobox.clear()
         self.prezzo_lordo_entry.set_text('0')
-        self.quantita_entry.set_text('0')
+        self.quantita_entry.set_text('1')
         self.prezzo_netto_label.set_text('0')
         self.sconti_widget.clearValues()
         self.totale_riga_label.set_text('0')
