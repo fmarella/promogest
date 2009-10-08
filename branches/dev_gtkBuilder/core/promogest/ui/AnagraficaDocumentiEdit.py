@@ -53,13 +53,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 'anagrafica_documenti_detail_vbox',
                                 'Dati Documento',
                                 'anagrafica_documenti.glade')
-        # Piccolo esperimento, file con gtk.builder, per il menu ricerca
-        #builder = gtk.Builder()
-        #builder.add_from_file("gui/menu_ricerca.xml")
-        #builder.connect_signals(self)
-        #oggetti = builder.get_objects()
-        #for obj in oggetti:
-            #setattr(self, gtk.Buildable.get_name(obj), obj)
 
         self._widgetFirstFocus = self.data_documento_entry
         # contenitore (dizionario) righe (riga 0 riservata per  variazioni in corso)
@@ -143,7 +136,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "multiplo": '',
                                 "idListino": None,
                                 "listino": '',
-                                "quantita": 0,
+                                "quantita": 1,
                                 "moltiplicatore": 0,
                                 "prezzoLordo": 0,
                                 "applicazioneSconti": 'scalare',
@@ -208,7 +201,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.id_multiplo_customcombobox.combobox.clear()
         self.id_listino_customcombobox.combobox.clear()
         self.prezzo_lordo_entry.set_text('0')
-        self.quantita_entry.set_text('0')
+        self.quantita_entry.set_text('1')
         self.prezzo_netto_label.set_text('0')
         self.sconti_widget.clearValues()
         self.totale_riga_label.set_text('0')

@@ -1,6 +1,6 @@
 <style>
 
-    body {font-family: 'Lucida Casual', 'Comic Sans MS';}
+    body {font-family: 'Lucida Casual';}
 
     table { width: 100%; }
 
@@ -71,9 +71,9 @@
     }
 
     .report-header {
-        text-align: left;
+/*         text-align: left; */
         color :black;
-        font-size: 1.2em;
+        font-size: 1.1em;
     }
 
     .totale-number {
@@ -127,7 +127,7 @@
 /*     height: 15px; */
 /* }*/ */
 #container #head {
-    height: 30px;
+    height: 130px;
 }
 #container #head #testo {
     position: relative;
@@ -135,7 +135,7 @@
     left: 80px;
 /*     width: 80%; */
 /*     font-family: Arial; */
-/*     font-size: 24px; */
+    font-size: 24px;
     color: #666666;
 /*     font-weight: bold; */
 }
@@ -151,7 +151,10 @@
     top: 1px;
     padding-top: 3px;
 }
+#container #head .testooo{
+color:red;
 
+}
 #dialog{
 /*    background-image: url("gui/aggiungi16x16.png");
     background-repeat: no-repeat;

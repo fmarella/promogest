@@ -49,7 +49,7 @@ def renderTemplate(pageData):
     jinja_env.globals['environment'] = Environment
     jinja_env.globals['utils'] = utils
     pageData["titolo"] = pageData["file"].split(".")[0].capitalize()
-    html = jinja_env.get_template(pageData["file"]).render(pageData= pageData,dao=pageData["dao"],
+    html = jinja_env.get_template("/"+ pageData["file"]).render(pageData= pageData,dao=pageData["dao"],
                     objects=pageData["objects"], feed=pageData["feed"])
     return html
 

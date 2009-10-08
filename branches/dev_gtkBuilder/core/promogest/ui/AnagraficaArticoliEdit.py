@@ -36,7 +36,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                                 anagrafica,
                                 'anagrafica_articoli_detail_table',
                                 'Dati articolo',
-                                gladeFile='_anagrafica_articoli_elements.glade')
+                                gladeFile='_anagrafica_articoli_detail.glade')
         self._widgetFirstFocus = self.codice_entry
         self._loading = False
         #FIXME: promogest.dao.Articolo.isNuovoCodiceByFamiglia()
