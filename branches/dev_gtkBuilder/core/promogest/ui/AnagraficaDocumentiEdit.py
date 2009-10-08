@@ -48,7 +48,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     """ Modifica un record dei documenti """
 
     def __init__(self, anagrafica):
-        AnagraficaEdit.__init__(self,
+        self. anapri=AnagraficaEdit.__init__(self,
                                 anagrafica,
                                 'anagrafica_documenti_detail_vbox',
                                 'Dati Documento',
@@ -114,6 +114,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.label38.destroy()
             self.label40.destroy()
             self.totale_periodo_label.destroy()
+            print "BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOH"
 
     def draw(self):
         drawPart (self)
@@ -877,6 +878,7 @@ del documento.
         """
         Memorizza la riga inserita o modificata
         """
+        print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
         if self.NoRowUsableArticle:
             self.showMessage('ARTICOLO NON USABILE IN UNA RIGA IN QUANTO ARTICOLO PRINCIPALE O PADRE!')
             return
@@ -1583,7 +1585,8 @@ del documento.
 
     def showMessage(self, msg):
         """ Generic Show dialog func """
-        dialog = gtk.MessageDialog(self.dialogTopLevel,
+        print "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG", self.anapri
+        dialog = gtk.MessageDialog(self.anapri,
                                     gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
         dialog.run()

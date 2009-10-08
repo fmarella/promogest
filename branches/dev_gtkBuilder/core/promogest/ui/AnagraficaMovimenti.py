@@ -174,7 +174,7 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   'anagrafica_movimenti_filter_table',
-                                  gladeFile='_anagrafica_movimenti_elements.glade')
+                                  gladeFile='_ricerca_semplice_movimenti.glade')
         self._widgetFirstFocus = self.da_data_filter_entry
         self.orderBy = 'id'
 

@@ -23,7 +23,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   'anagrafica_documenti_filter_table',
-                                    'anagrafica_documenti.glade')
+                                    '_ricerca_semplice_documenti.glade')
         self._widgetFirstFocus = self.da_data_filter_entry
         if not "GestioneNoleggio" in Environment.modulesList:
             self.noleggio_expander.destroy()

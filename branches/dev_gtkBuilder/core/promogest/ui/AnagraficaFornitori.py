@@ -42,13 +42,14 @@ class AnagraficaFornitoriFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_fornitori_filter_table',
-                                  gladeFile='_anagrafica_fornitori_elements.glade')
+                                  'ricerca_semplice_fornitori_filter_vbox',
+                                  gladeFile='_ricerca_semplice_fornitori.glade')
         self._widgetFirstFocus = self.ragione_sociale_filter_entry
         self.orderBy = 'ragione_sociale'
         persona_giuridica=Table('persona_giuridica', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
         fornitore=Table('fornitore', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
         self.joinT = join(fornitore, persona_giuridica)
+        self.ricerca_avanzata_fornitori_filter_hbox.destroy()
 
 
     def draw(self):

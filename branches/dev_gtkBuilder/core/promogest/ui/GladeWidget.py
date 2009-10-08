@@ -60,6 +60,10 @@ class GladeWidget(SimpleGladeApp):
                                     callbacks_proxy=callbacks_proxy, isModule=isModule)
         self._prepareWindowPlacement()
 
+    def on_generic_button_clicked(self, button):
+        print "generic button press "
+        return False
+
     # Custom widget building methods (used by Glade)
     #def createUnsignedDecimalEntryField(self, str1, str2, int1, int2):
         #""" Return an EntryField for no sign decimal numbers input """

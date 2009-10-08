@@ -53,7 +53,8 @@ class Anagrafica(GladeWidget):
 
     def __init__(self, windowTitle, recordMenuLabel,
                  filterElement, htmlHandler, reportHandler, editElement, labelHandler = None, gladeFile=None, aziendaStr=None):
-        GladeWidget.__init__(self, 'anagrafica_complessa_window', fileName=gladeFile)
+        GladeWidget.__init__(self, 'anagrafica_complessa_window',
+                            fileName=gladeFile)
         if aziendaStr is not None:
             self.anagrafica_complessa_window.set_title(windowTitle[:12]+' su ('+aziendaStr+') - '+windowTitle[11:])
         else:

@@ -46,7 +46,7 @@ class AnagraficaListiniFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   'anagrafica_listini_filter_table',
-                                  gladeFile='_anagrafica_listini_elements.glade')
+                                  gladeFile='_ricerca_semplice_listini.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
 

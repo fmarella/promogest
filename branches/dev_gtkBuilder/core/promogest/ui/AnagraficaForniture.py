@@ -55,7 +55,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   'anagrafica_forniture_filter_table',
-                                  gladeFile='_anagrafica_fornitura_articoli_elements.glade')
+                                  gladeFile='_ricerca_forniture.glade')
         self._widgetFirstFocus = self.id_articolo_filter_customcombobox
         persona_giuridica=Table('persona_giuridica', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
         #self.fornitore=Table('fornitore', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)

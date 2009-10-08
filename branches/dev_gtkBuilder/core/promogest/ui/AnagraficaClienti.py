@@ -42,10 +42,11 @@ class AnagraficaClientiFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_clienti_filter_table',
-                                  gladeFile='_anagrafica_clienti_elements.glade')
+                                  'ricerca_semplice_clienti_filter_vbox',
+                                  gladeFile='_ricerca_semplice_clienti.glade')
         self._widgetFirstFocus = self.ragione_sociale_filter_entry
         self.orderBy = 'ragione_sociale'
+        self.ricerca_avanzata_clienti_filter_hbox.destroy()
         #perso_giuri=Table('persona_giuridica', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
         #cliente=Table('cliente', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
         self.joinT = None # join(cliente, perso_giuri)

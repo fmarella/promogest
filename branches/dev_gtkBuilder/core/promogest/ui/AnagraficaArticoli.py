@@ -143,13 +143,13 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_articoli_filter_table',
+                                  'ricerca_semplice_articoli_filter_vbox',
                                   #'anagrafica_articoli_filter_vbox',
-                                  gladeFile='_anagrafica_articoli_elements.glade')
+                                  gladeFile='_ricerca_semplice_articoli.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
-        self.ricerca_avanzata_articoli_filter_vbox.set_no_show_all(True)
-        self.ricerca_avanzata_articoli_filter_vbox.hide()
-        self.ricerca_semplice_articoli_filter_vbox.show()
+        #self.ricerca_avanzata_articoli_filter_hbox.set_no_show_all(True)
+        self.ricerca_avanzata_button_alignment.destroy()
+        #self.ricerca_semplice_articoli_filter_vbox.show()
 
     def draw(self):
         treeview = self._anagrafica.anagrafica_filter_treeview
