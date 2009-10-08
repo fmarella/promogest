@@ -644,18 +644,18 @@
     <data>
       <row>
         <col id="0" translatable="yes">Tutti</col>
-        <col id="1" translatable="yes"/>
-        <col id="2" translatable="yes"/>
+        <col id="1" translatable="yes"></col>
+        <col id="2" translatable="yes"></col>
       </row>
       <row>
         <col id="0" translatable="yes">Aperto</col>
-        <col id="1" translatable="yes"/>
-        <col id="2" translatable="yes"/>
+        <col id="1" translatable="yes"></col>
+        <col id="2" translatable="yes"></col>
       </row>
       <row>
         <col id="0" translatable="yes">Saldato</col>
-        <col id="1" translatable="yes"/>
-        <col id="2" translatable="yes"/>
+        <col id="1" translatable="yes"></col>
+        <col id="2" translatable="yes"></col>
       </row>
     </data>
   </object>
@@ -988,6 +988,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </object>
                     </child>
                   </object>
@@ -1334,7 +1336,9 @@
                                 <property name="secondary_icon_sensitive">True</property>
                                 <signal name="button_press_event" handler="on_button_press_event"/>
                                 <signal name="insert_text" handler="on_number_insert_text"/>
+                                <signal name="focus_in_event" handler="on_focus_in_event"/>
                                 <signal name="icon_press" handler="on_descrizione_entry_icon_press"/>
+                                <signal name="focus_out_event" handler="on_focus_out_event"/>
                               </object>
                               <packing>
                                 <property name="position">1</property>
@@ -1670,6 +1674,9 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="invisible_char">&#x25CF;</property>
+                                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                        <signal name="focus_out_event" handler="on_show_totali_riga"/>
                                       </object>
                                     </child>
                                   </object>
@@ -1774,6 +1781,9 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="invisible_char">&#x25CF;</property>
+                                                <signal name="key_press_event" handler="on_larghezza_entry_key_press_event"/>
+                                                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                                <signal name="focus_out_event" handler="on_focus_out_event"/>
                                               </object>
                                               <packing>
                                                 <property name="position">1</property>
@@ -1795,6 +1805,9 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="invisible_char">&#x25CF;</property>
+                                                <signal name="key_press_event" handler="on_altezza_entry_key_press_event"/>
+                                                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                                <signal name="focus_out_event" handler="on_focus_out_event"/>
                                               </object>
                                               <packing>
                                                 <property name="position">3</property>
@@ -1928,6 +1941,10 @@
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="invisible_char">&#x25CF;</property>
+                                                    <signal name="focus_out_event" handler="on_quantita_entry_focus_out_event"/>
+                                                    <signal name="focus_out_event" handler="on_show_totali_riga"/>
+                                                    <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                                    <signal name="focus_in_event" handler="on_focus_in_event"/>
                                                   </object>
                                                 </child>
                                               </object>
@@ -1951,6 +1968,9 @@
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="invisible_char">&#x25CF;</property>
+                                                    <signal name="focus_out_event" handler="on_show_totali_riga"/>
+                                                    <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                                    <signal name="focus_in_event" handler="on_focus_in_event"/>
                                                   </object>
                                                 </child>
                                               </object>
@@ -1996,6 +2016,9 @@
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="invisible_char">&#x25CF;</property>
+                                                    <signal name="focus_out_event" handler="on_quantita_entry_focus_out_event"/>
+                                                    <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                                    <signal name="focus_in_event" handler="on_focus_in_event"/>
                                                   </object>
                                                 </child>
                                               </object>

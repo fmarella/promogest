@@ -30,7 +30,7 @@ class UnsignedMoneyEntryField(CustomEntryField):
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
         CustomEntryField.__init__(self)
 
-        self._lunghezza = int1
+        self._lunghezza = 10
         self._precisione = Environment.conf.decimals
         self._default = str1
         self.acceptedKeys = self.controlKeys + self.numberKeys + self.delimiterKeys

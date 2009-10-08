@@ -30,10 +30,10 @@ class UnsignedDecimalEntryField(CustomEntryField):
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
         CustomEntryField.__init__(self)
 
-        self._lunghezza = int1
-        self._precisione = int2
-        if self._precisione =="0":
-            self._precisione = Environment.conf.decimals
+        self._lunghezza = 10
+        #self._precisione = int2
+        #if self._precisione =="0":
+        self._precisione = Environment.conf.decimals
         self._default = str1
         self.acceptedKeys = self.controlKeys + self.numberKeys + self.delimiterKeys
 
@@ -51,7 +51,8 @@ class UnsignedDecimalEntryField(CustomEntryField):
     def my_focus_out_event(self, widget, event):
         try:
             f = "%-" + str(self._lunghezza) + "." + str(self._precisione) + "f"
-            d = float(self.get_text())
+            if self.get_text():
+                d = float(self.get_text())
             self.set_text(f % d)
         except Exception:
             if self._default is None:
