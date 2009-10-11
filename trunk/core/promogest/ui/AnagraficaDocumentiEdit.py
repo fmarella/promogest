@@ -696,7 +696,9 @@ del documento.
         self.dao.fine_trasporto = stringToDateTime(self.fine_trasporto_entry.get_text())
 
         if self.vettore_radiobutton.get_active():
+            print "INNANZITUTTO TU SEI SPUNTATO"
             self.dao.id_vettore = self.id_vettore_customcombobox._id
+            print " PRELEVO CON TUTTA CALMA IL MIO IDVETTORE",  self.dao.id_vettore, self.id_vettore_customcombobox._id
             self.dao.incaricato_trasporto = 'vettore'
             if self.porto_combobox.get_active() == 0:
                 self.dao.porto = 'Franco'
@@ -710,6 +712,8 @@ del documento.
             self.dao.id_vettore = None
             self.dao.incaricato_trasporto = 'destinatario'
             self.dao.porto = 'Assegnato'
+
+
         self.dao.totale_colli = self.totale_colli_entry.get_text()
         self.dao.totale_peso = self.totale_peso_entry.get_text()
         textBuffer = self.note_interne_textview.get_buffer()

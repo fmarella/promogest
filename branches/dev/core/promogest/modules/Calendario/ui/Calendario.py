@@ -103,6 +103,9 @@ class Calendario(GladeWidget):
         self.calendar1.select_day(day)
 
 
+    
+
+
     def on_quit_button_clicked(self, widget, event=None):
         self.destroy()
         return None

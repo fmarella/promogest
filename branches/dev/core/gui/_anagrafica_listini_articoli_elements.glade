@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--*- mode: xml -*-->
+<?xml version="1.0"?>
 <glade-interface>
+  <!-- interface-requires gtk+ 2.6 -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="_anagrafica_listini_articoli_elements">
     <property name="visible">True</property>
     <property name="title" translatable="yes">Listini vendita articoli</property>
@@ -108,6 +108,7 @@
               </widget>
               <packing>
                 <property name="expand">False</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -259,6 +260,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -278,12 +280,6 @@
                     <property name="n_columns">4</property>
                     <property name="column_spacing">40</property>
                     <property name="row_spacing">3</property>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
                     <child>
                       <widget class="GtkLabel" id="taglia_title_label">
                         <property name="visible">True</property>
@@ -366,6 +362,12 @@
                         <property name="y_options"></property>
                       </packing>
                     </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
                   </widget>
                   <packing>
                     <property name="right_attach">2</property>
@@ -389,6 +391,9 @@
                             <property name="xpad">5</property>
                             <property name="label" translatable="yes">-</property>
                           </widget>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
                         </child>
                         <child>
                           <widget class="GtkLabel" id="percentuale_aliquota_iva_label">
@@ -418,7 +423,7 @@
                     <property name="visible">True</property>
                     <property name="border_width">5</property>
                     <property name="label_xalign">0</property>
-                    <property name="shadow_type">GTK_SHADOW_ETCHED_OUT</property>
+                    <property name="shadow_type">etched-out</property>
                     <child>
                       <widget class="GtkAlignment" id="alignment197">
                         <property name="visible">True</property>
@@ -432,18 +437,6 @@
                             <property name="n_columns">4</property>
                             <property name="column_spacing">3</property>
                             <property name="homogeneous">True</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
                             <child>
                               <widget class="GtkAlignment" id="alignment76">
                                 <property name="width_request">80</property>
@@ -510,6 +503,18 @@
                                 <property name="y_options"></property>
                               </packing>
                             </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
                           </widget>
                         </child>
                       </widget>
@@ -539,7 +544,7 @@
                     <property name="visible">True</property>
                     <property name="border_width">5</property>
                     <property name="label_xalign">0</property>
-                    <property name="shadow_type">GTK_SHADOW_ETCHED_OUT</property>
+                    <property name="shadow_type">etched-out</property>
                     <child>
                       <widget class="GtkAlignment" id="alignment199">
                         <property name="visible">True</property>
@@ -554,21 +559,6 @@
                             <property name="n_columns">4</property>
                             <property name="column_spacing">3</property>
                             <property name="homogeneous">True</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
                             <child>
                               <widget class="GtkAlignment" id="alignment82">
                                 <property name="width_request">80</property>
@@ -651,12 +641,12 @@
                                 <property name="xscale">0</property>
                                 <child>
                                   <widget class="GtkButton" id="calcola_percentuali_ingrosso_button">
+                                    <property name="label" translatable="yes">Calcola percentuali</property>
                                     <property name="width_request">150</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="label" translatable="yes">Calcola percentuali</property>
+                                    <property name="receives_default">False</property>
                                     <property name="use_underline">True</property>
-                                    <property name="response_id">0</property>
                                   </widget>
                                 </child>
                               </widget>
@@ -680,6 +670,7 @@
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
+                                    <property name="position">0</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -711,12 +702,12 @@
                                 <property name="xscale">0</property>
                                 <child>
                                   <widget class="GtkButton" id="calcola_ingrosso_da_margine_button">
+                                    <property name="label" translatable="yes">Calcola prezzo</property>
                                     <property name="width_request">150</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="label" translatable="yes">Calcola prezzo</property>
+                                    <property name="receives_default">False</property>
                                     <property name="use_underline">True</property>
-                                    <property name="response_id">0</property>
                                   </widget>
                                 </child>
                               </widget>
@@ -736,12 +727,12 @@
                                 <property name="xscale">0</property>
                                 <child>
                                   <widget class="GtkButton" id="calcola_ingrosso_da_ricarico_button">
+                                    <property name="label" translatable="yes">Calcola prezzo</property>
                                     <property name="width_request">150</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="label" translatable="yes">Calcola prezzo</property>
+                                    <property name="receives_default">False</property>
                                     <property name="use_underline">True</property>
-                                    <property name="response_id">0</property>
                                   </widget>
                                 </child>
                               </widget>
@@ -805,6 +796,21 @@
                                 <property name="y_options"></property>
                               </packing>
                             </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
                           </widget>
                         </child>
                       </widget>
@@ -834,7 +840,7 @@
                     <property name="visible">True</property>
                     <property name="border_width">5</property>
                     <property name="label_xalign">0</property>
-                    <property name="shadow_type">GTK_SHADOW_ETCHED_OUT</property>
+                    <property name="shadow_type">etched-out</property>
                     <child>
                       <widget class="GtkAlignment" id="alignment286">
                         <property name="visible">True</property>
@@ -849,21 +855,6 @@
                             <property name="n_columns">4</property>
                             <property name="column_spacing">3</property>
                             <property name="homogeneous">True</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
                             <child>
                               <widget class="GtkAlignment" id="alignment77">
                                 <property name="width_request">80</property>
@@ -946,12 +937,12 @@
                                 <property name="xscale">0</property>
                                 <child>
                                   <widget class="GtkButton" id="calcola_percentuali_dettaglio_button">
+                                    <property name="label" translatable="yes">Calcola percentuali</property>
                                     <property name="width_request">150</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="label" translatable="yes">Calcola percentuali</property>
+                                    <property name="receives_default">False</property>
                                     <property name="use_underline">True</property>
-                                    <property name="response_id">0</property>
                                   </widget>
                                 </child>
                               </widget>
@@ -975,6 +966,7 @@
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
+                                    <property name="position">0</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -1004,12 +996,12 @@
                                 <property name="xscale">0</property>
                                 <child>
                                   <widget class="GtkButton" id="calcola_dettaglio_da_margine_button">
+                                    <property name="label" translatable="yes">Calcola prezzo</property>
                                     <property name="width_request">150</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="label" translatable="yes">Calcola prezzo</property>
+                                    <property name="receives_default">False</property>
                                     <property name="use_underline">True</property>
-                                    <property name="response_id">0</property>
                                   </widget>
                                 </child>
                               </widget>
@@ -1029,12 +1021,12 @@
                                 <property name="xscale">0</property>
                                 <child>
                                   <widget class="GtkButton" id="calcola_dettaglio_da_ricarico_button">
+                                    <property name="label" translatable="yes">Calcola prezzo</property>
                                     <property name="width_request">150</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="label" translatable="yes">Calcola prezzo</property>
+                                    <property name="receives_default">False</property>
                                     <property name="use_underline">True</property>
-                                    <property name="response_id">0</property>
                                   </widget>
                                 </child>
                               </widget>
@@ -1097,6 +1089,21 @@
                                 <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
                             </child>
                           </widget>
                         </child>

@@ -655,6 +655,7 @@ Saldato</property>
         <child>
           <widget class="GtkVBox" id="anagrafica_documenti_detail_vbox">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <child>
               <widget class="GtkHBox" id="hbox257">
                 <property name="visible">True</property>
@@ -1052,6 +1053,7 @@ Saldato</property>
                 <child>
                   <widget class="GtkVBox" id="vbox27">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <child>
                       <widget class="GtkFrame" id="frame12">
                         <property name="visible">True</property>
@@ -1300,6 +1302,7 @@ Saldato</property>
                             <child>
                               <widget class="GtkVBox" id="vbox28">
                                 <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
                                 <property name="spacing">5</property>
                                 <child>
                                   <widget class="GtkHBox" id="hbox242">
@@ -2382,6 +2385,7 @@ Saldato</property>
                                                   <widget class="GtkVBox" id="vbox29">
                                                     <property name="visible">True</property>
                                                     <property name="border_width">2</property>
+                                                    <property name="orientation">vertical</property>
                                                     <property name="homogeneous">True</property>
                                                     <child>
                                                       <widget class="GtkButton" id="variazione_listini_button">
@@ -4259,6 +4263,7 @@ Assegnato</property>
                             <child>
                               <widget class="GtkVBox" id="vbox3">
                                 <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
                                 <child>
                                   <widget class="GtkHBox" id="hbox21">
                                     <property name="visible">True</property>
@@ -4730,6 +4735,7 @@ Assegnato</property>
                             <child>
                               <widget class="GtkVBox" id="vbox2">
                                 <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
                                 <child>
                                   <widget class="GtkHBox" id="hbox18">
                                     <property name="visible">True</property>

@@ -63,11 +63,12 @@ class Ricerca(GladeWidget):
         self._treeViewModel = None
 
         gladeWidget.build()
-
+        print "PASSO O NON PASSOOOOO"
         accelGroup = gtk.AccelGroup()
         self.getTopLevel().add_accel_group(accelGroup)
         self.bodyWidget.filter_clear_button.add_accelerator('clicked', accelGroup, gtk.keysyms.Escape, 0, gtk.ACCEL_VISIBLE)
         self.bodyWidget.filter_search_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
+
 
     def _setHtmlHandler(self, htmlHandler):
         #self.htmlHandler = htmlHandler
