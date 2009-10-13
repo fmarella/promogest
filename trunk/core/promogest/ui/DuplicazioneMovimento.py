@@ -18,6 +18,7 @@ from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.Operazione import Operazione
+from promogest.dao.Fornitura import Fornitura
 from AnagraficaDocumenti import *
 if Environment.conf.hasPagamenti == True:
     import promogest.modules.Pagamenti.dao.TestataDocumentoScadenza
@@ -63,14 +64,18 @@ class DuplicazioneMovimento(GladeWidget):
         #self.show_all()
 
         listini = Environment.params['session'].query(Listino)
-        model = gtk.ListStore(object, str)
-        model.append((None, '<Invariato>'))
+        model = gtk.ListStore(object, int, str)
+        model.append((None, 0, '<Invariato>'))
+        model.append((None, 1, '<Azzera>'))
+        model.append((None, 2, '<Prezzo d\'acquisto>'))
+        indice_prezzo = 3;
         for l in listini:
-            model.append((l, (l.denominazione or '')[0:30]))                
+            model.append((l, indice_prezzo, (l.denominazione or '')[0:30]))
+            indice_prezzo += 1
         self.id_prezzo_combobox.clear()
         renderer = gtk.CellRendererText()
         self.id_prezzo_combobox.pack_start(renderer, True)
-        self.id_prezzo_combobox.add_attribute(renderer, 'text', 1)
+        self.id_prezzo_combobox.add_attribute(renderer, 'text', 2)
         self.id_prezzo_combobox.set_model(model)
         self.id_prezzo_combobox.set_active(0)
         
@@ -150,12 +155,25 @@ class DuplicazioneMovimento(GladeWidget):
             daoRiga.moltiplicatore = r.moltiplicatore
             #ricalcola prezzi
             listino = self.id_prezzo_combobox.get_model()[self.id_prezzo_combobox.get_active()][0]
-            if  listino is None:
+
+            #ricalcola prezzi
+            indice_prezzo_combobox = self.id_prezzo_combobox.get_model()[self.id_prezzo_combobox.get_active()][1]
+            if  indice_prezzo_combobox == 0:
               daoRiga.id_listino = r.id_listino
               daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
               daoRiga.valore_unitario_netto = r.valore_unitario_netto
+            elif indice_prezzo_combobox == 1:
+              daoRiga.id_listino = r.id_listino
+              daoRiga.valore_unitario_lordo = 0
+              daoRiga.valore_unitario_netto = 0
+            elif indice_prezzo_combobox == 2:
+              fornitura = Environment.params['session'].query(Fornitura).filter(Fornitura.id_articolo == r.id_articolo).order_by(Fornitura.data_prezzo.desc()).all()[0]
+              daoRiga.id_listino = r.id_listino
+              daoRiga.valore_unitario_lordo = fornitura.prezzo_lordo
+              daoRiga.valore_unitario_netto = fornitura.prezzo_netto
             else:
               #ricalcola prezzi
+              listino = self.id_prezzo_combobox.get_model()[indice_prezzo_combobox][0]
               listinoArticolo = Environment.params['session'].query(ListinoArticolo).filter(ListinoArticolo.id_listino == listino.id and r.id_articolo == ListinoArticolo.id_articolo).all()
               if len(listinoArticolo) > 0:
                 daoRiga.id_listino = listinoArticolo[0].id_listino
@@ -165,6 +183,23 @@ class DuplicazioneMovimento(GladeWidget):
                 daoRiga.id_listino = r.id_listino
                 daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
                 daoRiga.valore_unitario_netto = r.valore_unitario_netto
+            
+            #if  listino is None:
+              #daoRiga.id_listino = r.id_listino
+              #daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
+              #daoRiga.valore_unitario_netto = r.valore_unitario_netto
+            #else:
+              ##ricalcola prezzi
+              #listinoArticolo = Environment.params['session'].query(ListinoArticolo).filter(ListinoArticolo.id_listino == listino.id and r.id_articolo == ListinoArticolo.id_articolo).all()
+              #if len(listinoArticolo) > 0:
+                #daoRiga.id_listino = listinoArticolo[0].id_listino
+                #daoRiga.valore_unitario_lordo = listinoArticolo[0].prezzo_dettaglio
+                #daoRiga.valore_unitario_netto = listinoArticolo[0].prezzo_ingrosso
+              #else:
+                #daoRiga.id_listino = r.id_listino
+                #daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
+                #daoRiga.valore_unitario_netto = r.valore_unitario_netto
+            
             sconti = []
             scontiRigaMovimento = []
             sco = r.sconti

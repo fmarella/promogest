@@ -10,6 +10,8 @@ pw = No
 [RuoliAzioni]
 mod_enable=No
 
+[Magazzini]
+mod_enable=Yes
 
 #NON RIMUOVERE LE RIGHE VUOTE SOPRA QUESTA
 # L'opzione omogeneus_codice serve a stabilire come dev'essere trattato il codice.
