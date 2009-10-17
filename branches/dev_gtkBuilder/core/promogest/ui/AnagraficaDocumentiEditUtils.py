@@ -32,7 +32,6 @@ if "Pagamenti" in Environment.modulesList:
     from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 
 def drawPart(anaedit):
-
     treeview = anaedit.righe_treeview
     rendererSx = gtk.CellRendererText()
     rendererDx = gtk.CellRendererText()
@@ -166,8 +165,10 @@ def drawPart(anaedit):
                 anaedit.ricerca_descrizione_button.set_active(True)
             elif Environment.conf.Documenti.ricerca_per == 'codice_articolo_fornitore':
                 anaedit.ricerca_codice_articolo_fornitore_button.set_active(True)
+
     anaedit.id_persona_giuridica_customcombobox.setSingleValue()
     anaedit.id_persona_giuridica_customcombobox.setOnChangedCall(anaedit.persona_giuridica_changed)
+
     anaedit.id_multiplo_customcombobox.combobox.connect('changed',
             anaedit.on_id_multiplo_customcombobox_changed)
     anaedit.id_listino_customcombobox.combobox.connect('changed',

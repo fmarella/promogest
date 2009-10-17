@@ -71,7 +71,8 @@ class RicercaComplessaClienti(RicercaComplessa):
                                              idListino = idListino)
 
         RicercaComplessa.__init__(self, 'Promogest - Ricerca clienti',
-                                  self._ricerca)
+                                  self._ricerca,
+                                    )
 
         self.ricerca_hpaned = gtk.HPaned()
         self.ricerca_viewport.add(self.ricerca_hpaned)
@@ -309,8 +310,8 @@ class RicercaClientiFilter(GladeWidget):
                     idListino = None):
 
         GladeWidget.__init__(self, 'anagrafica_clienti_filter_vbox',
-                            fileName='_anagrafica_clienti_elements.glade')
-
+                            fileName='_ricerca_clienti.glade')
+        self.root= self.ricerca_semplice_clienti_filter_vbox
         self._ragioneSociale = ragioneSociale
         self._insegna = insegna
         self._cognomeNome = cognomeNome

@@ -29,7 +29,7 @@ class PersonaGiuridicaSearchWidget(CustomComboBoxSearch):
     def __init__(self):
         CustomComboBoxSearch.__init__(self)
         idHandler = self.connect('changed',
-                                 self.on_combobox_persona_giuridica_search_clicked)
+                                self.on_combobox_persona_giuridica_search_clicked)
         self.setChangedHandler(idHandler)
 
         self.connect("delete-event", self.on_widget_delete)

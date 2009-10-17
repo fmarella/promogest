@@ -108,7 +108,6 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
                                 'Documento')
 
 
-
 class AnagraficaDocumentiReport(AnagraficaReport):
     def __init__(self, anagrafica):
         AnagraficaReport.__init__(self, anagrafica=anagrafica,

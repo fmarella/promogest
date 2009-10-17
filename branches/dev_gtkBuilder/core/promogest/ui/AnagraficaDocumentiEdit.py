@@ -93,6 +93,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.oneshot = False
         self.tagliaColoreRigheList = None
         # Inizializziamo i moduli in interfaccia!
+        #self.draw()
 
         if "Pagamenti" not in Environment.modulesList:
             self.notebook.remove_page(3)
@@ -114,9 +115,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.label38.destroy()
             self.label40.destroy()
             self.totale_periodo_label.destroy()
-            print "BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOH"
 
-    def draw(self):
+    def draw(self, cplx=False):
+        self.cplx = cplx
         drawPart (self)
 
     def azzeraRiga(self, numero=0):
@@ -622,7 +623,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if (self.data_documento_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel,
                     self.data_documento_entry,
-                    'Inserire la data del documento !')
+                    'Inserire la data del documento !1')
 
         if (findIdFromCombobox(self.id_operazione_combobox) is None):
             obligatoryField(self.dialogTopLevel,
@@ -889,7 +890,7 @@ del documento.
         self._righe[0]["magazzino"] = magazzino['denominazione']
 
         if (self.data_documento_entry.get_text() == ''):
-            self.showMessage('Inserire la data del documento !')
+            self.showMessage('Inserire la data del documento !2')
             return
 
         if (findIdFromCombobox(self.id_operazione_combobox) is None):
@@ -1049,7 +1050,7 @@ del documento.
             self.nuovaRiga()
 
     def ricercaArticolo(self):
-
+        print "AAAAAAAAAAAAAAAAAA"
         def on_ricerca_articolo_hide(anagWindow, anag):
             if anag.dao is None:
                 anagWindow.destroy()
@@ -1059,7 +1060,7 @@ del documento.
             self.mostraArticolo(anag.dao.id)
 
         if (self.data_documento_entry.get_text() == ''):
-            self.showMessage('Inserire la data del documento !')
+            self.showMessage('Inserire la data del documento !3')
             return
 
         if (findIdFromCombobox(self.id_operazione_combobox) is None):
@@ -1134,6 +1135,7 @@ del documento.
                                anag)
             anagWindow.set_transient_for(self.dialogTopLevel)
             anag.show_all()
+        self.cplx=False
 
     def on_promowear_manager_taglia_colore_togglebutton_toggled(self, togglebutton):
         active=self.promowear_manager_taglia_colore_togglebutton.get_active()
@@ -1295,26 +1297,32 @@ del documento.
             self.ricercaArticolo()
 
     def on_search_row_button_clicked(self, widget):
-        self.ricercaArticolo()
+        if self.cplx:
+            self.cplx=False
+            self.ricercaArticolo()
 
     def on_ricerca_codice_button_clicked(self, widget):
         """ """
-        if self.ricerca_codice_button.get_active():
+        if self.ricerca_codice_button.get_active()  and not self.cplx:
+            self.cplx=False
             self.ricercaArticolo()
 
     def on_ricerca_codice_a_barre_button_clicked(self, widget):
         """ """
-        if self.ricerca_codice_a_barre_button.get_active():
+        if self.ricerca_codice_a_barre_button.get_active()  and not self.cplx:
+            self.cplx=False
             self.ricercaArticolo()
 
     def on_ricerca_descrizione_button_clicked(self, widget):
         """ """
-        if self.ricerca_descrizione_button.get_active():
+        if self.ricerca_descrizione_button.get_active()  and not self.cplx:
+            self.cplx=False
             self.ricercaArticolo()
 
     def on_ricerca_codice_articolo_fornitore_button_clicked(self, widget):
         """ """
-        if self.ricerca_codice_articolo_fornitore_button.get_active():
+        if self.ricerca_codice_articolo_fornitore_button.get_active() and self.cplx:
+            self.cplx=False
             self.ricercaArticolo()
 
     def on_storico_costi_button_clicked(self, toggleButton):
@@ -1585,7 +1593,6 @@ del documento.
 
     def showMessage(self, msg):
         """ Generic Show dialog func """
-        print "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG", self.anapri
         dialog = gtk.MessageDialog(self.anapri,
                                     gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)

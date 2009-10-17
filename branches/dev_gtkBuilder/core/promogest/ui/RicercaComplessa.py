@@ -26,7 +26,6 @@ class RicercaComplessa(GladeWidget):
         self.dao = None
         self.window = self.ricerca_window
 
-
         self.filter = FilterWidget(owner=self, filtersElement=filtersElement)
         filtersElement.filter = self.filter
 
@@ -70,7 +69,6 @@ class RicercaComplessa(GladeWidget):
 
     def on_confirm_button_clicked(self, widget):
         """ Riga confermata """
-        print "MAJAJAAJJAJDHFSDGGDFGSDFGSDGSDFGSDFGDFGSDFGDGSDGF"
         if self.ricerca_window in Login.windowGroup:
             Login.windowGroup.remove(self.ricerca_window)
         self.ricerca_window.hide()

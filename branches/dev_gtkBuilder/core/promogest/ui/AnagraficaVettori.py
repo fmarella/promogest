@@ -205,7 +205,7 @@ class AnagraficaVettoriEdit(AnagraficaEdit):
         self._widgetFirstFocus = self.codice_entry
 
 
-    def draw(self):
+    def draw(self,cplx=False):
         pass
 
 

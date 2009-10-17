@@ -209,7 +209,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         self._widgetFirstFocus = self.codice_entry
 
 
-    def draw(self):
+    def draw(self,cplx=False):
         fillComboBoxNazione(self.nazione_combobox, default="Italia")
         #Popola combobox categorie fornitori
         fillComboboxCategorieFornitori(self.id_categoria_fornitore_customcombobox.combobox)

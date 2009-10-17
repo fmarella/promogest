@@ -59,7 +59,7 @@ class AnagraficaPromemoriaFilter(AnagraficaFilter):
         self.orderBy = 'data_scadenza'
 
 
-    def draw(self):
+    def draw(self,cplx=False):
         # Colonne della Treeview per il filtro
         treeview = self._anagrafica.anagrafica_filter_treeview
         renderer = gtk.CellRendererText()
@@ -292,7 +292,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
         self._widgetFirstFocus = self.data_scadenza_entry
 
 
-    def draw(self):
+    def draw(self,cplx=False):
         textBuffer = gtk.TextBuffer()
         self.descrizione_textview.set_buffer(textBuffer)
         textBuffer = gtk.TextBuffer()

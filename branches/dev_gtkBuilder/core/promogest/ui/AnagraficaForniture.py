@@ -342,7 +342,7 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         self.taglia_colore_table.set_no_show_all(True)
 
 
-    def draw(self):
+    def draw(self,cplx=False):
         self.id_articolo_customcombobox.setSingleValue()
         self.id_articolo_customcombobox.setOnChangedCall(self.on_id_articolo_customcombobox_changed)
         self.id_fornitore_customcombobox.setSingleValue()

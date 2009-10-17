@@ -451,7 +451,9 @@
         <property name="secondary_icon_stock">gtk-clear</property>
         <property name="secondary_icon_activatable">True</property>
         <property name="secondary_icon_sensitive">True</property>
+        <signal name="focus_in_event" handler="on_focus_in_event"/>
         <signal name="icon_press" handler="on_icon_press"/>
+        <signal name="focus_out_event" handler="on_focus_out_event"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -545,7 +547,10 @@
             <property name="secondary_icon_activatable">True</property>
             <property name="primary_icon_sensitive">True</property>
             <property name="secondary_icon_sensitive">True</property>
+            <signal name="focus_in_event" handler="on_focus_in_event"/>
             <signal name="icon_press" handler="on_icon_press"/>
+            <signal name="icon_press" handler="on_codice_entry_icon_press"/>
+            <signal name="focus_out_event" handler="on_focus_out_event"/>
           </object>
         </child>
       </object>
@@ -563,7 +568,7 @@
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
-          <object class="UnsignedIntegerEntryField" id="UnsignedIntegerEntryField2">
+          <object class="UnsignedIntegerEntryField" id="cap_sede_operativa_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="invisible_char">&#x2022;</property>
@@ -586,7 +591,7 @@
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
-          <object class="UnsignedIntegerEntryField" id="UnsignedIntegerEntryField3">
+          <object class="UnsignedIntegerEntryField" id="cap_sede_legale_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="invisible_char">&#x2022;</property>
@@ -609,7 +614,7 @@
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
-          <object class="UnsignedIntegerEntryField" id="UnsignedIntegerEntryField1">
+          <object class="UnsignedIntegerEntryField" id="partita_iva_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="invisible_char">&#x2022;</property>

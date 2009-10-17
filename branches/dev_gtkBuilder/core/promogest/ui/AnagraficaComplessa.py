@@ -87,7 +87,7 @@ class Anagrafica(GladeWidget):
         self.selected_record_print_menu.set_sensitive(False)
         self.placeWindow(self.anagrafica_complessa_window)
         self.filter.draw()
-        self.editElement.draw()
+        self.editElement.draw(cplx=True)
         self.email = ""
         self.setFocus()
 
