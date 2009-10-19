@@ -554,15 +554,16 @@ ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDum
                         Environment.database])
 
         Environment.pg2log.info("STO EFFETTUANDO UN BACKUP DEL FILE %s" %stname)
-        #if not retcode:
+        #print "YYYYYYYYYYYYYYYYYY", retcode
+        if not retcode:
             #zfilename = nameDump +".zip"
             #zout = zipfile.ZipFile(str(stname) +".zip", "w")
             #zout.write(stname,zfilename,zipfile.ZIP_DEFLATED)
             #zout.close()
-            #Environment.pg2log.info("DUMP EFFETTUATO CON SUCCESSO")
+            Environment.pg2log.info("DUMP EFFETTUATO CON SUCCESSO")
             #os.remove(stname)
-        #else:
-            #Environment.pg2log.info("ATTENZIONE DUMP NON RIUSCITO")
+        else:
+            Environment.pg2log.info("ATTENZIONE DUMP NON RIUSCITO")
 
     def on_seriale_menu_activate(self, widget):
         try:
