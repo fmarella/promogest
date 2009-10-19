@@ -25,6 +25,10 @@ from utilsCombobox import *
 from ParametriFrame import ParametriFrame
 from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
 import Login
+from widgets.ArticoloSearchWidget import ArticoloSearchWidget
+from widgets.ClienteSearchWidget import ClienteSearchWidget
+from widgets.FornitoreSearchWidget import FornitoreSearchWidget
+from widgets.PersonaGiuridicaSearchWidget import PersonaGiuridicaSearchWidget
 
 class Main(GladeWidget):
 
@@ -539,23 +543,26 @@ ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDum
         st= Environment.startdir()
 
         stname = st+nameDump
-        host = "-h"+Environment.host
-        port= "-p"+Environment.port
-        user= "-U"+Environment.user
-        filename= "-f"+stname
-        compres= "-Z 7"
-        retcode = call(["pg_dump",host,port,user,compres, filename,Environment.database])
+        os.environ["PGPASSWORD"]=Environment.password
 
-        Environment.pg2log.info("STO EFFETTUANDO UN BACKUP DEL FILE %s" %filename)
-        if not retcode:
-            zfilename = nameDump +".zip"
-            zout = zipfile.ZipFile(str(stname) +".zip", "w")
-            zout.write(stname,zfilename,zipfile.ZIP_DEFLATED)
-            zout.close()
-            Environment.pg2log.info("DUMP EFFETTUATO CON SUCCESSO")
-            os.remove(stname)
-        else:
-            Environment.pg2log.info("ATTENZIONE DUMP NON RIUSCITO")
+        retcode = call(["pg_dump",
+                        "-h",Environment.host,
+                        "-p",Environment.port,
+                        "-U",Environment.user,
+                        "-Z","7",
+                        "-f",stname,
+                        Environment.database])
+
+        Environment.pg2log.info("STO EFFETTUANDO UN BACKUP DEL FILE %s" %stname)
+        #if not retcode:
+            #zfilename = nameDump +".zip"
+            #zout = zipfile.ZipFile(str(stname) +".zip", "w")
+            #zout.write(stname,zfilename,zipfile.ZIP_DEFLATED)
+            #zout.close()
+            #Environment.pg2log.info("DUMP EFFETTUATO CON SUCCESSO")
+            #os.remove(stname)
+        #else:
+            #Environment.pg2log.info("ATTENZIONE DUMP NON RIUSCITO")
 
     def on_seriale_menu_activate(self, widget):
         try:
