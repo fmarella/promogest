@@ -160,11 +160,11 @@ class SybaseTypeError(sqltypes.TypeEngine):
 
     def bind_processor(self, dialect):
         def process(value):
-            raise exc.NotSupportedError("Data type not supported", [value])
+            raise exc.InvalidRequestError("Data type not supported", [value])
         return process
 
     def get_col_spec(self):
-        raise exc.NotSupportedError("Data type not supported")
+        raise exc.CompileError("Data type not supported")
 
 class SybaseNumeric(sqltypes.Numeric):
     def get_col_spec(self):
@@ -455,7 +455,8 @@ class SybaseSQLDialect(default.DefaultDialect):
     supports_unicode_statements = False
     supports_sane_rowcount = False
     supports_sane_multi_rowcount = False
-
+    execution_ctx_cls = SybaseSQLExecutionContext
+    
     def __new__(cls, dbapi=None, *args, **kwargs):
         if cls != SybaseSQLDialect:
             return super(SybaseSQLDialect, cls).__new__(cls, *args, **kwargs)
@@ -488,9 +489,6 @@ class SybaseSQLDialect(default.DefaultDialect):
             else:
                 raise ImportError('No DBAPI module detected for SybaseSQL - please install mxodbc')
     dbapi = classmethod(dbapi)
-
-    def create_execution_context(self, *args, **kwargs):
-        return SybaseSQLExecutionContext(self, *args, **kwargs)
 
     def type_descriptor(self, typeobj):
         newobj = sqltypes.adapt_type(typeobj, self.colspecs)
@@ -621,13 +619,15 @@ class SybaseSQLDialect(default.DefaultDialect):
                 foreignKeys[primary_table][1].append('%s.%s'%(primary_table, primary_column))
         for primary_table in foreignKeys.keys():
             #table.append_constraint(schema.ForeignKeyConstraint(['%s.%s'%(foreign_table, foreign_column)], ['%s.%s'%(primary_table,primary_column)]))
-            table.append_constraint(schema.ForeignKeyConstraint(foreignKeys[primary_table][0], foreignKeys[primary_table][1]))
+            table.append_constraint(schema.ForeignKeyConstraint(foreignKeys[primary_table][0], foreignKeys[primary_table][1], link_to_name=True))
 
         if not found_table:
             raise exc.NoSuchTableError(table.name)
 
 
 class SybaseSQLDialect_mxodbc(SybaseSQLDialect):
+    execution_ctx_cls = SybaseSQLExecutionContext_mxodbc
+    
     def __init__(self, **params):
         super(SybaseSQLDialect_mxodbc, self).__init__(**params)
 
@@ -656,9 +656,6 @@ class SybaseSQLDialect_mxodbc(SybaseSQLDialect):
         #return True
         return False
 
-    def create_execution_context(self, *args, **kwargs):
-        return SybaseSQLExecutionContext_mxodbc(self, *args, **kwargs)
-
     def do_execute(self, cursor, statement, parameters, context=None, **kwargs):
         super(SybaseSQLDialect_mxodbc, self).do_execute(cursor, statement, parameters, context=context, **kwargs)
 
@@ -675,6 +672,8 @@ class SybaseSQLDialect_mxodbc(SybaseSQLDialect):
 
 
 class SybaseSQLDialect_pyodbc(SybaseSQLDialect):
+    execution_ctx_cls = SybaseSQLExecutionContext_pyodbc
+    
     def __init__(self, **params):
         super(SybaseSQLDialect_pyodbc, self).__init__(**params)
         self.dbapi_type_map = {'getdate' : SybaseDate_pyodbc()}
@@ -700,9 +699,6 @@ class SybaseSQLDialect_pyodbc(SybaseSQLDialect):
         #return isinstance(e, self.dbapi.Error) and '[08S01]' in str(e)
         #return True
         return False
-
-    def create_execution_context(self, *args, **kwargs):
-        return SybaseSQLExecutionContext_pyodbc(self, *args, **kwargs)
 
     def do_execute(self, cursor, statement, parameters, context=None, **kwargs):
         super(SybaseSQLDialect_pyodbc, self).do_execute(cursor, statement, parameters, context=context, **kwargs)
@@ -736,6 +732,14 @@ class SybaseSQLCompiler(compiler.DefaultCompiler):
     operators.update({
         sql_operators.mod: lambda x, y: "MOD(%s, %s)" % (x, y),
     })
+
+    extract_map = compiler.DefaultCompiler.extract_map.copy()
+    extract_map.update ({
+        'doy': 'dayofyear',
+        'dow': 'weekday',
+        'milliseconds': 'millisecond'
+    })
+
 
     def bindparam_string(self, name):
         res = super(SybaseSQLCompiler, self).bindparam_string(name)
@@ -771,7 +775,7 @@ class SybaseSQLCompiler(compiler.DefaultCompiler):
             return super(SybaseSQLCompiler, self).visit_binary(binary)
 
     def label_select_column(self, select, column, asfrom):
-        if isinstance(column, expression._Function):
+        if isinstance(column, expression.Function):
             return column.label(None)
         else:
             return super(SybaseSQLCompiler, self).label_select_column(select, column, asfrom)
@@ -789,6 +793,10 @@ class SybaseSQLCompiler(compiler.DefaultCompiler):
             # res = self.visit_cast(cast)
             res = "CAST(%s AS %s)" % (res, self.process(cast.typeclause))
         return res
+
+    def visit_extract(self, extract):
+        field = self.extract_map.get(extract.field, extract.field)
+        return 'DATEPART("%s", %s)' % (field, self.process(extract.expr))
 
     def for_update_clause(self, select):
         # "FOR UPDATE" is only allowed on "DECLARE CURSOR" which SQLAlchemy doesn't use

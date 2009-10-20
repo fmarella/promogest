@@ -209,9 +209,6 @@ class AccessDialect(default.DefaultDialect):
             connectors.append("PWD=%s" % opts.get("password", ""))
         return [[";".join(connectors)], {}]
 
-    def create_execution_context(self, *args, **kwargs):
-        return AccessExecutionContext(self, *args, **kwargs)
-
     def last_inserted_ids(self):
         return self.context.last_inserted_ids
 
@@ -315,7 +312,7 @@ class AccessDialect(default.DefaultDialect):
                     continue
                 scols = [c.ForeignName for c in fk.Fields]
                 rcols = ['%s.%s' % (fk.Table, c.Name) for c in fk.Fields]
-                table.append_constraint(schema.ForeignKeyConstraint(scols, rcols))
+                table.append_constraint(schema.ForeignKeyConstraint(scols, rcols, link_to_name=True))
 
         finally:
             dtbs.Close()
@@ -331,6 +328,20 @@ class AccessDialect(default.DefaultDialect):
 
 
 class AccessCompiler(compiler.DefaultCompiler):
+    extract_map = compiler.DefaultCompiler.extract_map.copy()
+    extract_map.update ({
+            'month': 'm',
+            'day': 'd',
+            'year': 'yyyy',
+            'second': 's',
+            'hour': 'h',
+            'doy': 'y',
+            'minute': 'n',
+            'quarter': 'q',
+            'dow': 'w',
+            'week': 'ww'
+    })
+
     def visit_select_precolumns(self, select):
         """Access puts TOP, it's version of LIMIT here """
         s = select.distinct and "DISTINCT " or ""
@@ -349,7 +360,7 @@ class AccessCompiler(compiler.DefaultCompiler):
         return binary.operator == '%' and 'mod' or binary.operator
 
     def label_select_column(self, select, column, asfrom):
-        if isinstance(column, expression._Function):
+        if isinstance(column, expression.Function):
             return column.label()
         else:
             return super(AccessCompiler, self).label_select_column(select, column, asfrom)
@@ -377,6 +388,10 @@ class AccessCompiler(compiler.DefaultCompiler):
     def visit_join(self, join, asfrom=False, **kwargs):
         return (self.process(join.left, asfrom=True) + (join.isouter and " LEFT OUTER JOIN " or " INNER JOIN ") + \
             self.process(join.right, asfrom=True) + " ON " + self.process(join.onclause))
+
+    def visit_extract(self, extract):
+        field = self.extract_map.get(extract.field, extract.field)
+        return 'DATEPART("%s", %s)' % (field, self.process(extract.expr))
 
 
 class AccessSchemaGenerator(compiler.SchemaGenerator):
@@ -425,3 +440,4 @@ dialect.schemagenerator = AccessSchemaGenerator
 dialect.schemadropper = AccessSchemaDropper
 dialect.preparer = AccessIdentifierPreparer
 dialect.defaultrunner = AccessDefaultRunner
+dialect.execution_ctx_cls = AccessExecutionContext

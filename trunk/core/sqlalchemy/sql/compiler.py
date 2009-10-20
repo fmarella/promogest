@@ -1,18 +1,18 @@
 # compiler.py
-# Copyright (C) 2005, 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2005, 2006, 2007, 2008, 2009 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of SQLAlchemy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
 """Base SQL and DDL compiler implementations.
 
-Provides the [sqlalchemy.sql.compiler#DefaultCompiler] class, which is
+Provides the :class:`~sqlalchemy.sql.compiler.DefaultCompiler` class, which is
 responsible for generating all SQL query strings, as well as
-[sqlalchemy.sql.compiler#SchemaGenerator] and [sqlalchemy.sql.compiler#SchemaDropper]
+:class:`~sqlalchemy.sql.compiler.SchemaGenerator` and :class:`~sqlalchemy.sql.compiler.SchemaDropper`
 which issue CREATE and DROP DDL for tables, sequences, and indexes.
 
 The elements in this module are used by public-facing constructs like
-[sqlalchemy.sql.expression#ClauseElement] and [sqlalchemy.engine#Engine].
+:class:`~sqlalchemy.sql.expression.ClauseElement` and :class:`~sqlalchemy.engine.Engine`.
 While dialect authors will want to be familiar with this module for the purpose of
 creating database-specific compilers and schema generators, the module
 is otherwise internal to SQLAlchemy.
@@ -108,6 +108,23 @@ FUNCTIONS = {
     functions.user: 'USER'
 }
 
+EXTRACT_MAP = {
+    'month': 'month',
+    'day': 'day',
+    'year': 'year',
+    'second': 'second',
+    'hour': 'hour',
+    'doy': 'doy',
+    'minute': 'minute',
+    'quarter': 'quarter',
+    'dow': 'dow',
+    'week': 'week',
+    'epoch': 'epoch',
+    'milliseconds': 'milliseconds',
+    'microseconds': 'microseconds',
+    'timezone_hour': 'timezone_hour',
+    'timezone_minute': 'timezone_minute'
+}
 
 class _CompileLabel(visitors.Visitable):
     """lightweight label object which acts as an expression._Label."""
@@ -133,6 +150,7 @@ class DefaultCompiler(engine.Compiled):
 
     operators = OPERATORS
     functions = FUNCTIONS
+    extract_map = EXTRACT_MAP
 
     # if we are insert/update/delete. 
     # set to true when we visit an INSERT, UPDATE or DELETE
@@ -162,7 +180,7 @@ class DefaultCompiler(engine.Compiled):
 
         # a dictionary of _BindParamClause instances to "compiled" names that are
         # actually present in the generated SQL
-        self.bind_names = {}
+        self.bind_names = util.column_dict()
 
         # stack which keeps track of nested SELECT statements
         self.stack = []
@@ -205,14 +223,15 @@ class DefaultCompiler(engine.Compiled):
         """return a dictionary of bind parameter keys and values"""
 
         if params:
+            params = util.column_dict(params)
             pd = {}
             for bindparam, name in self.bind_names.iteritems():
-                for paramname in (bindparam, bindparam.key, bindparam.shortname, name):
+                for paramname in (bindparam.key, bindparam.shortname, name):
                     if paramname in params:
                         pd[name] = params[paramname]
                         break
                 else:
-                    if callable(bindparam.value):
+                    if util.callable(bindparam.value):
                         pd[name] = bindparam.value()
                     else:
                         pd[name] = bindparam.value
@@ -220,7 +239,7 @@ class DefaultCompiler(engine.Compiled):
         else:
             pd = {}
             for bindparam in self.bind_names:
-                if callable(bindparam.value):
+                if util.callable(bindparam.value):
                     pd[self.bind_names[bindparam]] = bindparam.value()
                 else:
                     pd[self.bind_names[bindparam]] = bindparam.value
@@ -273,10 +292,14 @@ class DefaultCompiler(engine.Compiled):
             return name
         else:
             if column.table.schema:
-                schema_prefix = self.preparer.quote(column.table.schema, column.table.quote_schema) + '.'
+                schema_prefix = self.preparer.quote_schema(column.table.schema, column.table.quote_schema) + '.'
             else:
                 schema_prefix = ''
-            return schema_prefix + self.preparer.quote(column.table.name % self.anon_map, column.table.quote) + "." + name
+            tablename = column.table.name
+            tablename = isinstance(tablename, sql._generated_label) and \
+                            self._truncated_identifier("alias", tablename) or tablename
+            
+            return schema_prefix + self.preparer.quote(tablename, column.table.quote) + "." + name
 
     def escape_literal_column(self, text):
         """provide escaping for the literal_column() construct."""
@@ -293,6 +316,9 @@ class DefaultCompiler(engine.Compiled):
     def visit_typeclause(self, typeclause, **kwargs):
         return typeclause.type.dialect_impl(self.dialect).get_col_spec()
 
+    def post_process_text(self, text):
+        return text
+        
     def visit_textclause(self, textclause, **kwargs):
         if textclause.typemap is not None:
             for colname, type_ in textclause.typemap.iteritems():
@@ -307,7 +333,7 @@ class DefaultCompiler(engine.Compiled):
 
         # un-escape any \:params
         return BIND_PARAMS_ESC.sub(lambda m: m.group(1),
-            BIND_PARAMS.sub(do_bindparam, textclause.text)
+            BIND_PARAMS.sub(do_bindparam, self.post_process_text(textclause.text))
         )
 
     def visit_null(self, null, **kwargs):
@@ -317,18 +343,30 @@ class DefaultCompiler(engine.Compiled):
         sep = clauselist.operator
         if sep is None:
             sep = " "
-        elif sep == operators.comma_op:
+        elif sep is operators.comma_op:
             sep = ', '
         else:
             sep = " " + self.operator_string(clauselist.operator) + " "
         return sep.join(s for s in (self.process(c) for c in clauselist.clauses)
                         if s is not None)
 
-    def visit_calculatedclause(self, clause, **kwargs):
-        return self.process(clause.clause_expr)
+    def visit_case(self, clause, **kwargs):
+        x = "CASE "
+        if clause.value:
+            x += self.process(clause.value) + " "
+        for cond, result in clause.whens:
+            x += "WHEN " + self.process(cond) + " THEN " + self.process(result) + " "
+        if clause.else_:
+            x += "ELSE " + self.process(clause.else_) + " "
+        x += "END"
+        return x
 
     def visit_cast(self, cast, **kwargs):
         return "CAST(%s AS %s)" % (self.process(cast.clause), self.process(cast.typeclause))
+
+    def visit_extract(self, extract, **kwargs):
+        field = self.extract_map.get(extract.field, extract.field)
+        return "EXTRACT(%s FROM %s)" % (field, self.process(extract.expr))
 
     def visit_function(self, func, result_map=None, **kwargs):
         if result_map is not None:
@@ -336,7 +374,7 @@ class DefaultCompiler(engine.Compiled):
 
         name = self.function_string(func)
 
-        if callable(name):
+        if util.callable(name):
             return name(*[self.process(x) for x in func.clauses])
         else:
             return ".".join(func.packagenames + [name]) % {'expr':self.function_argspec(func)}
@@ -367,8 +405,8 @@ class DefaultCompiler(engine.Compiled):
         else:
             return text
 
-    def visit_unary(self, unary, **kwargs):
-        s = self.process(unary.element)
+    def visit_unary(self, unary, **kw):
+        s = self.process(unary.element, **kw)
         if unary.operator:
             s = self.operator_string(unary.operator) + " " + s
         if unary.modifier:
@@ -377,7 +415,7 @@ class DefaultCompiler(engine.Compiled):
 
     def visit_binary(self, binary, **kwargs):
         op = self.operator_string(binary.operator)
-        if callable(op):
+        if util.callable(op):
             return op(self.process(binary.left), self.process(binary.right), **binary.modifiers)
         else:
             return self.process(binary.left) + " " + op + " " + self.process(binary.right)
@@ -409,8 +447,8 @@ class DefaultCompiler(engine.Compiled):
     def _truncated_identifier(self, ident_class, name):
         if (ident_class, name) in self.truncated_names:
             return self.truncated_names[(ident_class, name)]
-        
-        anonname = name % self.anon_map
+
+        anonname = name % self.anon_map 
 
         if len(anonname) > self.label_length:
             counter = self.truncated_names.get(ident_class, 1)
@@ -425,8 +463,7 @@ class DefaultCompiler(engine.Compiled):
         return name % self.anon_map
         
     def _process_anon(self, key):
-        (ident, derived) = key.split(' ')
-
+        (ident, derived) = key.split(' ', 1)
         anonymous_counter = self.anon_map.get(derived, 1)
         self.anon_map[derived] = anonymous_counter + 1
         return derived + "_" + str(anonymous_counter)
@@ -440,7 +477,11 @@ class DefaultCompiler(engine.Compiled):
 
     def visit_alias(self, alias, asfrom=False, **kwargs):
         if asfrom:
-            return self.process(alias.original, asfrom=True, **kwargs) + " AS " + self.preparer.format_alias(alias, alias.name % self.anon_map)
+            alias_name = isinstance(alias.name, sql._generated_label) and \
+                            self._truncated_identifier("alias", alias.name) or alias.name
+            
+            return self.process(alias.original, asfrom=True, **kwargs) + " AS " + \
+                    self.preparer.format_alias(alias, alias_name)
         else:
             return self.process(alias.original, **kwargs)
 
@@ -455,13 +496,13 @@ class DefaultCompiler(engine.Compiled):
 
         if \
             asfrom and \
-            isinstance(column, sql._ColumnClause) and \
+            isinstance(column, sql.ColumnClause) and \
             not column.is_literal and \
             column.table is not None and \
             not isinstance(column.table, sql.Select):
             return _CompileLabel(column, sql._generated_label(column.name))
         elif not isinstance(column, (sql._UnaryExpression, sql._TextClause, sql._BindParamClause)) \
-                and (not hasattr(column, 'name') or isinstance(column, sql._Function)):
+                and (not hasattr(column, 'name') or isinstance(column, sql.Function)):
             return _CompileLabel(column, column.anon_label)
         else:
             return column
@@ -572,7 +613,7 @@ class DefaultCompiler(engine.Compiled):
     def visit_table(self, table, asfrom=False, **kwargs):
         if asfrom:
             if getattr(table, "schema", None):
-                return self.preparer.quote(table.schema, table.quote_schema) + "." + self.preparer.quote(table.name, table.quote)
+                return self.preparer.quote_schema(table.schema, table.quote_schema) + "." + self.preparer.quote(table.name, table.quote)
             else:
                 return self.preparer.quote(table.name, table.quote)
         else:
@@ -594,7 +635,7 @@ class DefaultCompiler(engine.Compiled):
                           [self.process(x) for x in insert_stmt._prefixes])
 
         if not colparams and not self.dialect.supports_default_values and not self.dialect.supports_empty_insert:
-            raise exc.NotSupportedError(
+            raise exc.CompileError(
                 "The version of %s you are using does not support empty inserts." % self.dialect.name)
         elif not colparams and self.dialect.supports_default_values:
             return (insert + " INTO %s DEFAULT VALUES" % (
@@ -651,12 +692,12 @@ class DefaultCompiler(engine.Compiled):
         if self.column_keys is None:
             parameters = {}
         else:
-            parameters = dict((getattr(key, 'key', key), None)
+            parameters = dict((sql._column_as_key(key), None)
                               for key in self.column_keys)
 
         if stmt.parameters is not None:
             for k, v in stmt.parameters.iteritems():
-                parameters.setdefault(getattr(k, 'key', k), v)
+                parameters.setdefault(sql._column_as_key(k), v)
 
         # create a list of column assignment clauses as tuples
         values = []
@@ -1053,7 +1094,15 @@ class IdentifierPreparer(object):
                 or self.illegal_initial_characters.match(value[0])
                 or not self.legal_characters.match(unicode(value))
                 or (lc_value != value))
-    
+
+    def quote_schema(self, schema, force):
+        """Quote a schema.
+
+        Subclasses should override this to provide database-dependent 
+        quoting behavior.
+        """
+        return self.quote(schema, force)
+
     def quote(self, ident, force):
         if force is None:
             if ident in self._strings:
@@ -1072,7 +1121,7 @@ class IdentifierPreparer(object):
     def format_sequence(self, sequence, use_schema=True):
         name = self.quote(sequence.name, sequence.quote)
         if not self.omit_schema and use_schema and sequence.schema is not None:
-            name = self.quote(sequence.schema, sequence.quote) + "." + name
+            name = self.quote_schema(sequence.schema, sequence.quote) + "." + name
         return name
 
     def format_label(self, label, name=None):
@@ -1094,7 +1143,7 @@ class IdentifierPreparer(object):
             name = table.name
         result = self.quote(name, table.quote)
         if not self.omit_schema and use_schema and getattr(table, "schema", None):
-            result = self.quote(table.schema, table.quote_schema) + "." + result
+            result = self.quote_schema(table.schema, table.quote_schema) + "." + result
         return result
 
     def format_column(self, column, use_table=False, name=None, table_name=None):
@@ -1122,7 +1171,7 @@ class IdentifierPreparer(object):
         # a longer sequence.
 
         if not self.omit_schema and use_schema and getattr(table, 'schema', None):
-            return (self.quote(table.schema, table.quote_schema),
+            return (self.quote_schema(table.schema, table.quote_schema),
                     self.format_table(table, use_schema=False))
         else:
             return (self.format_table(table, use_schema=False), )

@@ -1,5 +1,5 @@
 # oracle.py
-# Copyright (C) 2005, 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2005, 2006, 2007, 2008, 2009 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of SQLAlchemy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -8,39 +8,44 @@
 Oracle version 8 through current (11g at the time of this writing) are supported.
 
 Driver
+------
 
 The Oracle dialect uses the cx_oracle driver, available at 
-http://python.net/crew/atuining/cx_Oracle/ .   The dialect has several behaviors 
+http://cx-oracle.sourceforge.net/ .   The dialect has several behaviors 
 which are specifically tailored towards compatibility with this module.
 
 Connecting
+----------
 
 Connecting with create_engine() uses the standard URL approach of 
-oracle://user:pass@host:port/dbname[?key=value&key=value...].  If dbname is present, the 
+``oracle://user:pass@host:port/dbname[?key=value&key=value...]``.  If dbname is present, the 
 host, port, and dbname tokens are converted to a TNS name using the cx_oracle 
-makedsn() function.  Otherwise, the host token is taken directly as a TNS name.
+:func:`makedsn()` function.  Otherwise, the host token is taken directly as a TNS name.
 
 Additional arguments which may be specified either as query string arguments on the
-URL, or as keyword arguments to create_engine() include:
+URL, or as keyword arguments to :func:`~sqlalchemy.create_engine()` are:
 
-   mode - This is given the string value of SYSDBA or SYSOPER, or alternatively an
-   integer value.  This value is only available as a URL query string argument.
+* *allow_twophase* - enable two-phase transactions.  Defaults to ``True``.
 
-   allow_twophase - enable two-phase transactions.  This feature is not yet supported.
+* *auto_convert_lobs* - defaults to True, see the section on LOB objects.
 
-   threaded - defaults to True with SQLAlchemy, enable multithreaded access to 
-   cx_oracle connections.
+* *auto_setinputsizes* - the cx_oracle.setinputsizes() call is issued for all bind parameters.
+  This is required for LOB datatypes but can be disabled to reduce overhead.  Defaults
+  to ``True``.
 
-   use_ansi - defaults to True, use ANSI JOIN constructs (see the section on Oracle 8).
+* *mode* - This is given the string value of SYSDBA or SYSOPER, or alternatively an
+  integer value.  This value is only available as a URL query string argument.
 
-   auto_convert_lobs - defaults to True, see the section on LOB objects.
+* *threaded* - enable multithreaded access to cx_oracle connections.  Defaults
+  to ``True``.  Note that this is the opposite default of cx_oracle itself.
 
-   auto_setinputsizes - the cx_oracle.setinputsizes() call is issued for all bind parameters.
-   This is required for LOB datatypes but can be disabled to reduce overhead.
+* *use_ansi* - Use ANSI JOIN constructs (see the section on Oracle 8).  Defaults
+  to ``True``.  If ``False``, Oracle-8 compatible constructs are used for joins.
 
-   optimize_limits - defaults to False, see the section on LIMIT/OFFSET.
+* *optimize_limits* - defaults to ``False``. see the section on LIMIT/OFFSET.
 
 Auto Increment Behavior
+-----------------------
 
 SQLAlchemy Table objects which include integer primary keys are usually assumed to have
 "autoincrementing" behavior, meaning they can generate their own primary key values upon
@@ -63,6 +68,7 @@ This step is also required when using table reflection, i.e. autoload=True::
   ) 
 
 LOB Objects
+-----------
 
 cx_oracle presents some challenges when fetching LOB objects.  A LOB object in a result set
 is presented by cx_oracle as a cx_oracle.LOB object which has a read() method.  By default, 
@@ -84,6 +90,7 @@ without raising cursor errors.  The conversion of LOB in all cases, as well as t
 of LOB objects, can be disabled using auto_convert_lobs=False.  
 
 LIMIT/OFFSET Support
+--------------------
 
 Oracle has no support for the LIMIT or OFFSET keywords.  Whereas previous versions of SQLAlchemy
 used the "ROW NUMBER OVER..." construct to simulate LIMIT/OFFSET, SQLAlchemy 0.5 now uses 
@@ -94,18 +101,20 @@ this was stepping into the bounds of optimization that is better left on the DBA
 prefix can be added by enabling the optimize_limits=True flag on create_engine().
 
 Two Phase Transaction Support
+-----------------------------
 
-Two Phase transactions are partially implemented using XA transactions but at the time of this
-writing have not been successfully tested.  The author of cx_oracle also stated that he's never
-seen them work so this may be a cx_oracle issue.
+Two Phase transactions are implemented using XA transactions.  Success has been reported of them
+working successfully but this should be regarded as an experimental feature.
 
 Oracle 8 Compatibility
+----------------------
 
 When using Oracle 8, a "use_ansi=False" flag is available which converts all
 JOIN phrases into the WHERE clause, and in the case of LEFT OUTER JOIN
 makes use of Oracle's (+) operator.
 
 Synonym/DBLINK Reflection
+-------------------------
 
 When using reflection with Table objects, the dialect can optionally search for tables
 indicated by synonyms that reference DBLINK-ed tables by passing the flag 
@@ -118,7 +127,7 @@ import datetime, random, re
 
 from sqlalchemy import util, sql, schema, log
 from sqlalchemy.engine import default, base
-from sqlalchemy.sql import compiler, visitors
+from sqlalchemy.sql import compiler, visitors, expression
 from sqlalchemy.sql import operators as sql_operators, functions as sql_functions
 from sqlalchemy import types as sqltypes
 
@@ -192,6 +201,10 @@ class OracleTimestamp(sqltypes.TIMESTAMP):
 class OracleString(sqltypes.String):
     def get_col_spec(self):
         return "VARCHAR(%(length)s)" % {'length' : self.length}
+
+class OracleNVarchar(sqltypes.Unicode, OracleString):
+    def get_col_spec(self):
+        return "NVARCHAR2(%(length)s)" % {'length' : self.length}
 
 class OracleText(sqltypes.Text):
     def get_dbapi_type(self, dbapi):
@@ -288,6 +301,7 @@ colspecs = {
 
 ischema_names = {
     'VARCHAR2' : OracleString,
+    'NVARCHAR2' : OracleNVarchar,
     'CHAR' : OracleString,
     'DATE' : OracleDateTime,
     'DATETIME' : OracleDateTime,
@@ -331,7 +345,11 @@ class OracleExecutionContext(default.DefaultExecutionContext):
                 for bind, name in self.compiled.bind_names.iteritems():
                     if name in self.out_parameters:
                         type = bind.type
-                        self.out_parameters[name] = type.dialect_impl(self.dialect).result_processor(self.dialect)(self.out_parameters[name].getvalue())
+                        result_processor = type.dialect_impl(self.dialect).result_processor(self.dialect)
+                        if result_processor is not None:
+                            self.out_parameters[name] = result_processor(self.out_parameters[name].getvalue())
+                        else:
+                            self.out_parameters[name] = self.out_parameters[name].getvalue()
             else:
                 for k in self.out_parameters:
                     self.out_parameters[k] = self.out_parameters[k].getvalue()
@@ -441,8 +459,8 @@ class OracleDialect(default.DefaultDialect):
         do_commit_twophase().  its format is unspecified."""
 
         id = random.randint(0, 2 ** 128)
-        return (0x1234, "%032x" % 9, "%032x" % id)
-
+        return (0x1234, "%032x" % id, "%032x" % 9)
+        
     def do_release_savepoint(self, connection, name):
         # Oracle does not support RELEASE SAVEPOINT
         pass
@@ -461,9 +479,6 @@ class OracleDialect(default.DefaultDialect):
 
     def do_recover_twophase(self, connection):
         pass
-
-    def create_execution_context(self, *args, **kwargs):
-        return OracleExecutionContext(self, *args, **kwargs)
 
     def has_table(self, connection, table_name, schema=None):
         if not schema:
@@ -674,7 +689,7 @@ class OracleDialect(default.DefaultDialect):
                     fk[1].append(refspec)
 
         for name, value in fks.iteritems():
-            table.append_constraint(schema.ForeignKeyConstraint(value[0], value[1], name=name))
+            table.append_constraint(schema.ForeignKeyConstraint(value[0], value[1], name=name, link_to_name=True))
 
 
 class _OuterJoinColumn(sql.ClauseElement):
@@ -754,7 +769,11 @@ class OracleCompiler(compiler.DefaultCompiler):
         """Oracle doesn't like ``FROM table AS alias``.  Is the AS standard SQL??"""
 
         if asfrom:
-            return self.process(alias.original, asfrom=asfrom, **kwargs) + " " + self.preparer.format_alias(alias, self._anonymize(alias.name))
+            alias_name = isinstance(alias.name, expression._generated_label) and \
+                            self._truncated_identifier("alias", alias.name) or alias.name
+            
+            return self.process(alias.original, asfrom=True, **kwargs) + " " +\
+                    self.preparer.format_alias(alias, alias_name)
         else:
             return self.process(alias.original, **kwargs)
 
@@ -882,3 +901,4 @@ dialect.schemagenerator = OracleSchemaGenerator
 dialect.schemadropper = OracleSchemaDropper
 dialect.preparer = OracleIdentifierPreparer
 dialect.defaultrunner = OracleDefaultRunner
+dialect.execution_ctx_cls = OracleExecutionContext

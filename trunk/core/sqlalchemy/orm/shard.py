@@ -65,7 +65,7 @@ class ShardedSession(Session):
         else:
             return self.get_bind(mapper, shard_id=shard_id, instance=instance).contextual_connect(**kwargs)
     
-    def get_bind(self, mapper, shard_id=None, instance=None, clause=None):
+    def get_bind(self, mapper, shard_id=None, instance=None, clause=None, **kw):
         if shard_id is None:
             shard_id = self.shard_chooser(mapper, instance, clause=clause)
         return self.__binds[shard_id]
@@ -94,18 +94,12 @@ class ShardedQuery(Query):
     def _execute_and_instances(self, context):
         if self._shard_id is not None:
             result = self.session.connection(mapper=self._mapper_zero(), shard_id=self._shard_id).execute(context.statement, self._params)
-            try:
-                return iter(self.instances(result, context))
-            finally:
-                result.close()
+            return self.instances(result, context)
         else:
             partial = []
             for shard_id in self.query_chooser(self):
                 result = self.session.connection(mapper=self._mapper_zero(), shard_id=shard_id).execute(context.statement, self._params)
-                try:
-                    partial = partial + list(self.instances(result, context))
-                finally:
-                    result.close()
+                partial = partial + list(self.instances(result, context))
             # if some kind of in memory 'sorting' were done, this is where it would happen
             return iter(partial)
 

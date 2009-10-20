@@ -1,5 +1,5 @@
 # mapper/sync.py
-# Copyright (C) 2005, 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2005, 2006, 2007, 2008, 2009 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of SQLAlchemy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -50,26 +50,18 @@ def populate_dict(source, source_mapper, dict_, synchronize_pairs):
 
         dict_[r.key] = value
 
-def source_changes(uowcommit, source, source_mapper, synchronize_pairs):
+def source_modified(uowcommit, source, source_mapper, synchronize_pairs):
+    """return true if the source object has changes from an old to a new value on the given
+    synchronize pairs
+    
+    """
     for l, r in synchronize_pairs:
         try:
             prop = source_mapper._get_col_to_prop(l)
         except exc.UnmappedColumnError:
             _raise_col_to_prop(False, source_mapper, l, None, r)
         history = uowcommit.get_attribute_history(source, prop.key, passive=True)
-        if history.has_changes():
-            return True
-    else:
-        return False
-
-def dest_changes(uowcommit, dest, dest_mapper, synchronize_pairs):
-    for l, r in synchronize_pairs:
-        try:
-            prop = dest_mapper._get_col_to_prop(r)
-        except exc.UnmappedColumnError:
-            _raise_col_to_prop(True, None, l, dest_mapper, r)
-        history = uowcommit.get_attribute_history(dest, prop.key, passive=True)
-        if history.has_changes():
+        if len(history.deleted):
             return True
     else:
         return False

@@ -1,25 +1,27 @@
 # util.py
-# Copyright (C) 2005, 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2005, 2006, 2007, 2008, 2009 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of SQLAlchemy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
-import inspect, itertools, new, operator, sys, warnings, weakref
+import inspect, itertools, operator, sys, warnings, weakref
 import __builtin__
 types = __import__('types')
 
 from sqlalchemy import exc
 
 try:
-    import thread, threading
-    from threading import local as ThreadLocal
+    import threading
 except ImportError:
-    import dummy_thread as thread
     import dummy_threading as threading
-    from dummy_threading import local as ThreadLocal
 
-if sys.version_info < (2, 6):
+py3k = getattr(sys, 'py3kwarning', False) or sys.version_info >= (3, 0)
+
+if py3k:
+    set_types = set
+elif sys.version_info < (2, 6):
     import sets
+    set_types = set, sets.Set
 else:
     # 2.6 deprecates sets.Set, but we still need to be able to detect them
     # in user code and as return values from DB-APIs
@@ -32,15 +34,24 @@ else:
         import sets
         warnings.filters.remove(ignore)
 
-set_types = set, sets.Set
+    set_types = set, sets.Set
 
 EMPTY_SET = frozenset()
 
-try:
-    import cPickle as pickle
-except ImportError:
+if py3k:
     import pickle
+else:
+    try:
+        import cPickle as pickle
+    except ImportError:
+        import pickle
 
+# a controversial feature, required by MySQLdb currently
+def buffer(x):
+    return x 
+    
+buffer = getattr(__builtin__, 'buffer', buffer)
+        
 if sys.version_info >= (2, 5):
     class PopulateDict(dict):
         """A dict which populates missing values via a creation function.
@@ -69,6 +80,17 @@ else:
             except KeyError:
                 self[key] = value = self.creator(key)
                 return value
+
+if py3k:
+    def callable(fn):
+        return hasattr(fn, '__call__')
+else:
+    callable = __builtin__.callable
+
+if py3k:
+    from functools import reduce
+else:
+    reduce = __builtin__.reduce
 
 try:
     from collections import defaultdict
@@ -125,6 +147,14 @@ def to_set(x):
     else:
         return x
 
+def to_column_set(x):
+    if x is None:
+        return column_set()
+    if not isinstance(x, column_set):
+        return column_set(to_list(x))
+    else:
+        return x
+
 
 try:
     from functools import update_wrapper
@@ -137,6 +167,17 @@ except ImportError:
         for attr in updated:
             getattr(wrapper, attr).update(getattr(wrapped, attr, ()))
         return wrapper
+
+try:
+    from functools import partial
+except:
+    def partial(func, *args, **keywords):
+        def newfunc(*fargs, **fkeywords):
+            newkeywords = keywords.copy()
+            newkeywords.update(fkeywords)
+            return func(*(args + fargs), **newkeywords)
+        return newfunc
+
 
 def accepts_a_list_as_starargs(list_deprecation=None):
     def decorate(fn):
@@ -644,6 +685,12 @@ class OrderedDict(dict):
         self._list = []
         dict.clear(self)
 
+    def copy(self):
+        return self.__copy__()
+
+    def __copy__(self):
+        return OrderedDict(self)
+
     def sort(self, *arg, **kw):
         self._list.sort(*arg, **kw)
 
@@ -812,10 +859,11 @@ class IdentitySet(object):
 
     This strategy has edge cases for builtin types- it's possible to have
     two 'foo' strings in one of these sets, for example.  Use sparingly.
+    
     """
 
     _working_set = set
-
+    
     def __init__(self, iterable=None):
         self._members = dict()
         if iterable:
@@ -907,7 +955,7 @@ class IdentitySet(object):
         result = type(self)()
         # testlib.pragma exempt:__hash__
         result._members.update(
-            self._working_set(self._members.iteritems()).union(_iter_id(iterable)))
+            self._working_set(self._member_id_tuples()).union(_iter_id(iterable)))
         return result
 
     def __or__(self, other):
@@ -928,7 +976,7 @@ class IdentitySet(object):
         result = type(self)()
         # testlib.pragma exempt:__hash__
         result._members.update(
-            self._working_set(self._members.iteritems()).difference(_iter_id(iterable)))
+            self._working_set(self._member_id_tuples()).difference(_iter_id(iterable)))
         return result
 
     def __sub__(self, other):
@@ -949,7 +997,7 @@ class IdentitySet(object):
         result = type(self)()
         # testlib.pragma exempt:__hash__
         result._members.update(
-            self._working_set(self._members.iteritems()).intersection(_iter_id(iterable)))
+            self._working_set(self._member_id_tuples()).intersection(_iter_id(iterable)))
         return result
 
     def __and__(self, other):
@@ -970,9 +1018,12 @@ class IdentitySet(object):
         result = type(self)()
         # testlib.pragma exempt:__hash__
         result._members.update(
-            self._working_set(self._members.iteritems()).symmetric_difference(_iter_id(iterable)))
+            self._working_set(self._member_id_tuples()).symmetric_difference(_iter_id(iterable)))
         return result
-
+    
+    def _member_id_tuples(self):
+        return ((id(v), v) for v in self._members.itervalues())
+        
     def __xor__(self, other):
         if not isinstance(other, IdentitySet):
             return NotImplemented
@@ -1005,11 +1056,6 @@ class IdentitySet(object):
         return '%s(%r)' % (type(self).__name__, self._members.values())
 
 
-def _iter_id(iterable):
-    """Generator: ((id(o), o) for o in iterable)."""
-    for item in iterable:
-        yield id(item), item
-
 class OrderedIdentitySet(IdentitySet):
     class _working_set(OrderedSet):
         # a testing pragma: exempt the OIDS working set from the test suite's
@@ -1017,13 +1063,26 @@ class OrderedIdentitySet(IdentitySet):
         # but it's safe here: IDS operates on (id, instance) tuples in the
         # working set.
         __sa_hash_exempt__ = True
-
+    
     def __init__(self, iterable=None):
         IdentitySet.__init__(self)
         self._members = OrderedDict()
         if iterable:
             for o in iterable:
                 self.add(o)
+
+def _iter_id(iterable):
+    """Generator: ((id(o), o) for o in iterable)."""
+
+    for item in iterable:
+        yield id(item), item
+
+# define collections that are capable of storing 
+# ColumnElement objects as hashable keys/elements.
+column_set = set
+column_dict = dict
+ordered_column_set = OrderedSet
+populate_column_dict = PopulateDict
 
 def unique_list(seq, compare_with=set):
     seen = compare_with()
@@ -1121,38 +1180,6 @@ class _TLocalRegistry(ScopedRegistry):
             del self.registry.value
         except AttributeError:
             pass
-
-class WeakCompositeKey(object):
-    """an weak-referencable, hashable collection which is strongly referenced
-    until any one of its members is garbage collected.
-
-    """
-    keys = set()
-
-    __slots__ = 'args', '__weakref__'
-    
-    def __init__(self, *args):
-        self.args = [self.__ref(arg) for arg in args]
-        WeakCompositeKey.keys.add(self)
-
-    def __ref(self, arg):
-        if isinstance(arg, type):
-            return weakref.ref(arg, self.__remover)
-        else:
-            return lambda: arg
-
-    def __remover(self, wr):
-        WeakCompositeKey.keys.discard(self)
-
-    def __hash__(self):
-        return hash(tuple(self))
-
-    def __cmp__(self, other):
-        return cmp(tuple(self), tuple(other))
-
-    def __iter__(self):
-        return iter(arg() for arg in self.args)
-
 
 class _symbol(object):
     def __init__(self, name):
@@ -1285,7 +1312,7 @@ def function_named(fn, name):
     try:
         fn.__name__ = name
     except TypeError:
-        fn = new.function(fn.func_code, fn.func_globals, name,
+        fn = types.FunctionType(fn.func_code, fn.func_globals, name,
                           fn.func_defaults, fn.func_closure)
     return fn
 
@@ -1331,10 +1358,7 @@ class memoized_instancemethod(object):
         return oneshot
 
 def reset_memoized(instance, name):
-    try:
-        del instance.__dict__[name]
-    except KeyError:
-        pass
+    instance.__dict__.pop(name, None)
 
 class WeakIdentityMapping(weakref.WeakKeyDictionary):
     """A WeakKeyDictionary with an object identity index.

@@ -1,34 +1,25 @@
 from sqlalchemy import types as sqltypes
 from sqlalchemy.sql.expression import (
-    ClauseList, _Function, _literal_as_binds, text
+    ClauseList, Function, _literal_as_binds, text
     )
 from sqlalchemy.sql import operators
 from sqlalchemy.sql.visitors import VisitableType
 
 class _GenericMeta(VisitableType):
-    def __init__(cls, clsname, bases, dict):
-        cls.__visit_name__ = 'function'
-        type.__init__(cls, clsname, bases, dict)
-
     def __call__(self, *args, **kwargs):
         args = [_literal_as_binds(c) for c in args]
         return type.__call__(self, *args, **kwargs)
 
-class GenericFunction(_Function):
+class GenericFunction(Function):
     __metaclass__ = _GenericMeta
 
-    def __init__(self, type_=None, group=True, args=(), **kwargs):
+    def __init__(self, type_=None, args=(), **kwargs):
         self.packagenames = []
         self.name = self.__class__.__name__
         self._bind = kwargs.get('bind', None)
-        if group:
-            self.clause_expr = ClauseList(
+        self.clause_expr = ClauseList(
                 operator=operators.comma_op,
                 group_contents=True, *args).self_group()
-        else:
-            self.clause_expr = ClauseList(
-                operator=operators.comma_op,
-                group_contents=True, *args)
         self.type = sqltypes.to_instance(
             type_ or getattr(self, '__return_type__', None))
 
@@ -75,7 +66,7 @@ class random(GenericFunction):
         GenericFunction.__init__(self, args=args, **kwargs)
 
 class count(GenericFunction):
-    """The ANSI COUNT aggregate function.  With no arguments, emits COUNT *."""
+    """The ANSI COUNT aggregate function.  With no arguments, emits COUNT \*."""
 
     __return_type__ = sqltypes.Integer
 

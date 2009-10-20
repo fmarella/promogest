@@ -1,5 +1,5 @@
 # sqlalchemy/orm/__init__.py
-# Copyright (C) 2005, 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2005, 2006, 2007, 2008, 2009 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of SQLAlchemy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -26,6 +26,7 @@ from sqlalchemy.orm.interfaces import (
      MapperExtension,
      PropComparator,
      SessionExtension,
+     AttributeExtension,
      )
 from sqlalchemy.orm.util import (
      AliasedClass as aliased,
@@ -41,6 +42,7 @@ from sqlalchemy.orm.properties import (
      ColumnProperty,
      ComparableProperty,
      CompositeProperty,
+     RelationProperty,
      PropertyLoader,
      SynonymProperty,
      )
@@ -60,6 +62,7 @@ __all__ = (
     'EXT_STOP',
     'InstrumentationManager',
     'MapperExtension',
+    'AttributeExtension',
     'Validator',
     'PropComparator',
     'Query',
@@ -80,11 +83,13 @@ __all__ = (
     'eagerload',
     'eagerload_all',
     'extension',
+    'join',
     'lazyload',
     'mapper',
     'noload',
     'object_mapper',
     'object_session',
+    'outerjoin',
     'polymorphic_union',
     'reconstructor',
     'relation',
@@ -100,8 +105,16 @@ __all__ = (
 def scoped_session(session_factory, scopefunc=None):
     """Provides thread-local management of Sessions.
 
-    This is a front-end function to the [sqlalchemy.orm.scoping#ScopedSession]
-    class.
+    This is a front-end function to
+    :class:`~sqlalchemy.orm.scoping.ScopedSession`.
+
+    :param session_factory: a callable function that produces
+      :class:`Session` instances, such as :func:`sessionmaker` or
+      :func:`create_session`.
+
+    :param scopefunc: optional, TODO
+
+    :returns: an :class:`~sqlalchemy.orm.scoping.ScopedSession` instance
 
     Usage::
 
@@ -129,18 +142,31 @@ def scoped_session(session_factory, scopefunc=None):
     return ScopedSession(session_factory, scopefunc=scopefunc)
 
 def create_session(bind=None, **kwargs):
-    """create a new [sqlalchemy.orm.session#Session].
+    """Create a new :class:`~sqlalchemy.orm.session.Session`.
 
-    The defaults of create_session() are the opposite of
-    that of sessionmaker(); autoflush and expire_on_commit
-    are false, autocommit is True. 
-    In this sense the session acts more like the "classic"
-    SQLAlchemy 0.3 session with these defaults.
-    
-    It is recommended to use the [sqlalchemy.orm#sessionmaker()] function
-    instead of create_session().
+    :param bind: optional, a single Connectable to use for all
+      database access in the created
+      :class:`~sqlalchemy.orm.session.Session`.
+
+    :param \*\*kwargs: optional, passed through to the
+      :class:`Session` constructor.
+
+    :returns: an :class:`~sqlalchemy.orm.session.Session` instance
+
+    The defaults of create_session() are the opposite of that of
+    :func:`sessionmaker`; ``autoflush`` and ``expire_on_commit`` are
+    False, ``autocommit`` is True.  In this sense the session acts
+    more like the "classic" SQLAlchemy 0.3 session with these.
+
+    Usage::
+
+      >>> from sqlalchemy.orm import create_session
+      >>> session = create_session()
+
+    It is recommended to use :func:`sessionmaker` instead of
+    create_session().
+
     """
-
     if 'transactional' in kwargs:
         sa_util.warn_deprecated(
             "The 'transactional' argument to sessionmaker() is deprecated; "
@@ -158,230 +184,288 @@ def relation(argument, secondary=None, **kwargs):
     """Provide a relationship of a primary Mapper to a secondary Mapper.
 
     This corresponds to a parent-child or associative table relationship.  The
-    constructed class is an instance of
-    [sqlalchemy.orm.properties#PropertyLoader].
+    constructed class is an instance of :class:`RelationProperty`.
 
-      argument
-          a class or Mapper instance, representing the target of the relation.
+    A typical :func:`relation`::
 
-      secondary
-        for a many-to-many relationship, specifies the intermediary table. The
-        ``secondary`` keyword argument should generally only be used for a
-        table that is not otherwise expressed in any class mapping. In
-        particular, using the Association Object Pattern is generally mutually
-        exclusive against using the ``secondary`` keyword argument.
+       mapper(Parent, properties={
+         'children': relation(Children)
+       })
 
-      \**kwargs follow:
+    :param argument:
+      a class or :class:`Mapper` instance, representing the target of
+      the relation.
 
-        backref
-          indicates the name of a property to be placed on the related mapper's
-          class that will handle this relationship in the other direction,
-          including synchronizing the object attributes on both sides of the
-          relation. Can also point to a ``backref()`` construct for more
-          configurability.
+    :param secondary:
+      for a many-to-many relationship, specifies the intermediary
+      table. The *secondary* keyword argument should generally only
+      be used for a table that is not otherwise expressed in any class
+      mapping. In particular, using the Association Object Pattern is
+      generally mutually exclusive with the use of the *secondary*
+      keyword argument.
 
-        cascade
-          a comma-separated list of cascade rules which determines how Session
-          operations should be "cascaded" from parent to child.  This defaults
-          to "False", which means the default cascade should be used.
-          The default value is "save-update, merge".
-          Available cascades are:
+    :param backref:
+      indicates the string name of a property to be placed on the related
+      mapper's class that will handle this relationship in the other
+      direction. The other property will be created automatically 
+      when the mappers are configured.  Can also be passed as a
+      :func:`backref` object to control the configuration of the
+      new relation.
+      
+    :param back_populates:
+      Takes a string name and has the same meaning as ``backref``, 
+      except the complementing property is **not** created automatically, 
+      and instead must be configured explicitly on the other mapper.  The 
+      complementing property should also indicate ``back_populates`` 
+      to this relation to ensure proper functioning.
 
-            save-update - cascade the "add()" operation 
-            (formerly known as save() and update())
+    :param cascade:
+      a comma-separated list of cascade rules which determines how
+      Session operations should be "cascaded" from parent to child.
+      This defaults to ``False``, which means the default cascade
+      should be used.  The default value is ``"save-update, merge"``.
 
-            merge - cascade the "merge()" operation
-            
-            expunge - cascade the "expunge()" operation
-            
-            delete - cascade the "delete()" operation
-            
-            delete-orphan - if an item of the child's type with no parent is detected,
-            mark it for deletion.  Note that this option prevents a pending item
-            of the child's class from being persisted without a parent 
-            present.
-            
-            refresh-expire - cascade the expire() and refresh() operations
-            
-            all - shorthand for "save-update,merge, refresh-expire, expunge, delete"
+      Available cascades are:
 
-        collection_class
-          a class or function that returns a new list-holding object. will be
-          used in place of a plain list for storing elements.
+        ``save-update`` - cascade the "add()" operation (formerly
+        known as save() and update())
 
-        extension
-          an [sqlalchemy.orm.interfaces#AttributeExtension] instance, 
-          or list of extensions, which will be prepended to the list of 
-          attribute listeners for the resulting descriptor placed on the class.
-          These listeners will receive append and set events before the 
-          operation proceeds, and may be used to halt (via exception throw)
-          or change the value used in the operation.
-          
-        foreign_keys
-          a list of columns which are to be used as "foreign key" columns.
-          this parameter should be used in conjunction with explicit
-          ``primaryjoin`` and ``secondaryjoin`` (if needed) arguments, and the
-          columns within the ``foreign_keys`` list should be present within
-          those join conditions. Normally, ``relation()`` will inspect the
-          columns within the join conditions to determine which columns are
-          the "foreign key" columns, based on information in the ``Table``
-          metadata. Use this argument when no ForeignKey's are present in the
-          join condition, or to override the table-defined foreign keys.
+        ``merge`` - cascade the "merge()" operation
 
-        join_depth=None
-          when non-``None``, an integer value indicating how many levels deep
-          eagerload joins should be constructed on a self-referring or
-          cyclical relationship.  The number counts how many times the same
-          Mapper shall be present in the loading condition along a particular
-          join branch.  When left at its default of ``None``, eager loads will
-          automatically stop chaining joins when they encounter a mapper which
-          is already higher up in the chain.
+        ``expunge`` - cascade the "expunge()" operation
 
-        lazy=(True|False|None|'dynamic')
-          specifies how the related items should be loaded. Values include:
+        ``delete`` - cascade the "delete()" operation
 
-            True - items should be loaded lazily when the property is first
-                   accessed.
+        ``delete-orphan`` - if an item of the child's type with no
+        parent is detected, mark it for deletion.  Note that this
+        option prevents a pending item of the child's class from being
+        persisted without a parent present.
 
-            False - items should be loaded "eagerly" in the same query as that
-                    of the parent, using a JOIN or LEFT OUTER JOIN.
+        ``refresh-expire`` - cascade the expire() and refresh()
+        operations
 
-            None - no loading should occur at any time.  This is to support
-                   "write-only" attributes, or attributes which are populated
-                   in some manner specific to the application.
+        ``all`` - shorthand for "save-update,merge, refresh-expire,
+        expunge, delete"
 
-            'dynamic' - a ``DynaLoader`` will be attached, which returns a
-                        ``Query`` object for all read operations.  The
-                        dynamic- collection supports only ``append()`` and
-                        ``remove()`` for write operations; changes to the
-                        dynamic property will not be visible until the data is
-                        flushed to the database.
+    :param collection_class:
+      a class or callable that returns a new list-holding object. will
+      be used in place of a plain list for storing elements.
 
-        order_by
-          indicates the ordering that should be applied when loading these
-          items.
+    :param comparator_factory:
+      a class which extends :class:`RelationProperty.Comparator` which
+      provides custom SQL clause generation for comparison operations.
 
-        passive_deletes=False
-          Indicates loading behavior during delete operations.
+    :param extension:
+      an :class:`AttributeExtension` instance, or list of extensions,
+      which will be prepended to the list of attribute listeners for
+      the resulting descriptor placed on the class.  These listeners
+      will receive append and set events before the operation
+      proceeds, and may be used to halt (via exception throw) or
+      change the value used in the operation.
 
-          A value of True indicates that unloaded child items should not be
-          loaded during a delete operation on the parent.  Normally, when a
-          parent item is deleted, all child items are loaded so that they can
-          either be marked as deleted, or have their foreign key to the parent
-          set to NULL.  Marking this flag as True usually implies an ON DELETE
-          <CASCADE|SET NULL> rule is in place which will handle
-          updating/deleting child rows on the database side.
+    :param foreign_keys:
 
-          Additionally, setting the flag to the string value 'all' will
-          disable the "nulling out" of the child foreign keys, when there is
-          no delete or delete-orphan cascade enabled.  This is typically used
-          when a triggering or error raise scenario is in place on the
-          database side.  Note that the foreign key attributes on in-session
-          child objects will not be changed after a flush occurs so this is a
-          very special use-case setting.
+      a list of columns which are to be used as "foreign key" columns.
+      this parameter should be used in conjunction with explicit
+      ``primaryjoin`` and ``secondaryjoin`` (if needed) arguments, and
+      the columns within the ``foreign_keys`` list should be present
+      within those join conditions. Normally, ``relation()`` will
+      inspect the columns within the join conditions to determine
+      which columns are the "foreign key" columns, based on
+      information in the ``Table`` metadata. Use this argument when no
+      ForeignKey's are present in the join condition, or to override
+      the table-defined foreign keys.
 
-        passive_updates=True
-          Indicates loading and INSERT/UPDATE/DELETE behavior when the source
-          of a foreign key value changes (i.e. an "on update" cascade), which
-          are typically the primary key columns of the source row.
+    :param join_depth:
+      when non-``None``, an integer value indicating how many levels
+      deep eagerload joins should be constructed on a self-referring
+      or cyclical relationship.  The number counts how many times the
+      same Mapper shall be present in the loading condition along a
+      particular join branch.  When left at its default of ``None``,
+      eager loads will automatically stop chaining joins when they
+      encounter a mapper which is already higher up in the chain.
 
-          When True, it is assumed that ON UPDATE CASCADE is configured on the
-          foreign key in the database, and that the database will handle
-          propagation of an UPDATE from a source column to dependent rows.
-          Note that with databases which enforce referential integrity
-          (i.e. Postgres, MySQL with InnoDB tables), ON UPDATE CASCADE is
-          required for this operation.  The relation() will update the value
-          of the attribute on related items which are locally present in the
-          session during a flush.
+    :param lazy=(True|False|None|'dynamic'):
+      specifies how the related items should be loaded. Values include:
 
-          When False, it is assumed that the database does not enforce
-          referential integrity and will not be issuing its own CASCADE
-          operation for an update.  The relation() will issue the appropriate
-          UPDATE statements to the database in response to the change of a
-          referenced key, and items locally present in the session during a
-          flush will also be refreshed.
+      True - items should be loaded lazily when the property is first
+             accessed.
 
-          This flag should probably be set to False if primary key changes are
-          expected and the database in use doesn't support CASCADE
-          (i.e. SQLite, MySQL MyISAM tables).
+      False - items should be loaded "eagerly" in the same query as
+              that of the parent, using a JOIN or LEFT OUTER JOIN.
 
-        post_update
-          this indicates that the relationship should be handled by a second
-          UPDATE statement after an INSERT or before a DELETE. Currently, it
-          also will issue an UPDATE after the instance was UPDATEd as well,
-          although this technically should be improved. This flag is used to
-          handle saving bi-directional dependencies between two individual
-          rows (i.e. each row references the other), where it would otherwise
-          be impossible to INSERT or DELETE both rows fully since one row
-          exists before the other. Use this flag when a particular mapping
-          arrangement will incur two rows that are dependent on each other,
-          such as a table that has a one-to-many relationship to a set of
-          child rows, and also has a column that references a single child row
-          within that list (i.e. both tables contain a foreign key to each
-          other). If a ``flush()`` operation returns an error that a "cyclical
-          dependency" was detected, this is a cue that you might want to use
-          ``post_update`` to "break" the cycle.
+      None - no loading should occur at any time.  This is to support
+             "write-only" attributes, or attributes which are
+             populated in some manner specific to the application.
 
-        primaryjoin
-          a ClauseElement that will be used as the primary join of this child
-          object against the parent object, or in a many-to-many relationship
-          the join of the primary object to the association table. By default,
-          this value is computed based on the foreign key relationships of the
-          parent and child tables (or association table).
+      'dynamic' - a ``DynaLoader`` will be attached, which returns a
+                  ``Query`` object for all read operations.  The
+                  dynamic- collection supports only ``append()`` and
+                  ``remove()`` for write operations; changes to the
+                  dynamic property will not be visible until the data
+                  is flushed to the database.
 
-        remote_side
-          used for self-referential relationships, indicates the column or
-          list of columns that form the "remote side" of the relationship.
+    :param order_by:
+      indicates the ordering that should be applied when loading these
+      items.
 
-        secondaryjoin
-          a ClauseElement that will be used as the join of an association
-          table to the child object. By default, this value is computed based
-          on the foreign key relationships of the association and child
-          tables.
+    :param passive_deletes=False:
+       Indicates loading behavior during delete operations.
 
-        uselist=(True|False)
-          a boolean that indicates if this property should be loaded as a list
-          or a scalar. In most cases, this value is determined automatically
-          by ``relation()``, based on the type and direction of the
-          relationship - one to many forms a list, many to one forms a scalar,
-          many to many is a list. If a scalar is desired where normally a list
-          would be present, such as a bi-directional one-to-one relationship,
-          set uselist to False.
+       A value of True indicates that unloaded child items should not
+       be loaded during a delete operation on the parent.  Normally,
+       when a parent item is deleted, all child items are loaded so
+       that they can either be marked as deleted, or have their
+       foreign key to the parent set to NULL.  Marking this flag as
+       True usually implies an ON DELETE <CASCADE|SET NULL> rule is in
+       place which will handle updating/deleting child rows on the
+       database side.
 
-        viewonly=False
-          when set to True, the relation is used only for loading objects
-          within the relationship, and has no effect on the unit-of-work flush
-          process.  Relations with viewonly can specify any kind of join
-          conditions to provide additional views of related objects onto a
-          parent object. Note that the functionality of a viewonly
-          relationship has its limits - complicated join conditions may not
-          compile into eager or lazy loaders properly. If this is the case,
-          use an alternative method.
+       Additionally, setting the flag to the string value 'all' will
+       disable the "nulling out" of the child foreign keys, when there
+       is no delete or delete-orphan cascade enabled.  This is
+       typically used when a triggering or error raise scenario is in
+       place on the database side.  Note that the foreign key
+       attributes on in-session child objects will not be changed
+       after a flush occurs so this is a very special use-case
+       setting.
+
+    :param passive_updates=True:
+      Indicates loading and INSERT/UPDATE/DELETE behavior when the
+      source of a foreign key value changes (i.e. an "on update"
+      cascade), which are typically the primary key columns of the
+      source row.
+
+      When True, it is assumed that ON UPDATE CASCADE is configured on
+      the foreign key in the database, and that the database will
+      handle propagation of an UPDATE from a source column to
+      dependent rows.  Note that with databases which enforce
+      referential integrity (i.e. PostgreSQL, MySQL with InnoDB tables),
+      ON UPDATE CASCADE is required for this operation.  The
+      relation() will update the value of the attribute on related
+      items which are locally present in the session during a flush.
+
+      When False, it is assumed that the database does not enforce
+      referential integrity and will not be issuing its own CASCADE
+      operation for an update.  The relation() will issue the
+      appropriate UPDATE statements to the database in response to the
+      change of a referenced key, and items locally present in the
+      session during a flush will also be refreshed.
+
+      This flag should probably be set to False if primary key changes
+      are expected and the database in use doesn't support CASCADE
+      (i.e. SQLite, MySQL MyISAM tables).
+
+    :param post_update:
+      this indicates that the relationship should be handled by a
+      second UPDATE statement after an INSERT or before a
+      DELETE. Currently, it also will issue an UPDATE after the
+      instance was UPDATEd as well, although this technically should
+      be improved. This flag is used to handle saving bi-directional
+      dependencies between two individual rows (i.e. each row
+      references the other), where it would otherwise be impossible to
+      INSERT or DELETE both rows fully since one row exists before the
+      other. Use this flag when a particular mapping arrangement will
+      incur two rows that are dependent on each other, such as a table
+      that has a one-to-many relationship to a set of child rows, and
+      also has a column that references a single child row within that
+      list (i.e. both tables contain a foreign key to each other). If
+      a ``flush()`` operation returns an error that a "cyclical
+      dependency" was detected, this is a cue that you might want to
+      use ``post_update`` to "break" the cycle.
+
+    :param primaryjoin:
+      a ClauseElement that will be used as the primary join of this
+      child object against the parent object, or in a many-to-many
+      relationship the join of the primary object to the association
+      table. By default, this value is computed based on the foreign
+      key relationships of the parent and child tables (or association
+      table).
+
+    :param remote_side:
+      used for self-referential relationships, indicates the column or
+      list of columns that form the "remote side" of the relationship.
+
+    :param secondaryjoin:
+      a ClauseElement that will be used as the join of an association
+      table to the child object. By default, this value is computed
+      based on the foreign key relationships of the association and
+      child tables.
+
+    :param single_parent=(True|False):
+      when True, installs a validator which will prevent objects
+      from being associated with more than one parent at a time.
+      This is used for many-to-one or many-to-many relationships that
+      should be treated either as one-to-one or one-to-many.  Its
+      usage is optional unless delete-orphan cascade is also 
+      set on this relation(), in which case its required (new in 0.5.2).
+      
+    :param uselist=(True|False):
+      a boolean that indicates if this property should be loaded as a
+      list or a scalar. In most cases, this value is determined
+      automatically by ``relation()``, based on the type and direction
+      of the relationship - one to many forms a list, many to one
+      forms a scalar, many to many is a list. If a scalar is desired
+      where normally a list would be present, such as a bi-directional
+      one-to-one relationship, set uselist to False.
+
+    :param viewonly=False:
+      when set to True, the relation is used only for loading objects
+      within the relationship, and has no effect on the unit-of-work
+      flush process.  Relationships with viewonly can specify any kind of
+      join conditions to provide additional views of related objects
+      onto a parent object. Note that the functionality of a viewonly
+      relationship has its limits - complicated join conditions may
+      not compile into eager or lazy loaders properly. If this is the
+      case, use an alternative method.
 
     """
-    return PropertyLoader(argument, secondary=secondary, **kwargs)
+    return RelationProperty(argument, secondary=secondary, **kwargs)
 
-def dynamic_loader(argument, secondary=None, primaryjoin=None, secondaryjoin=None, 
-    foreign_keys=None, backref=None, post_update=False, cascade=False, remote_side=None, enable_typechecks=True,
-    passive_deletes=False, order_by=None):
+def dynamic_loader(argument, secondary=None, primaryjoin=None,
+                   secondaryjoin=None, foreign_keys=None, backref=None,
+                   post_update=False, cascade=False, remote_side=None,
+                   enable_typechecks=True, passive_deletes=False,
+                   order_by=None, comparator_factory=None, query_class=None):
     """Construct a dynamically-loading mapper property.
 
-    This property is similar to relation(), except read operations return an
-    active Query object, which reads from the database in all cases.  Items
-    may be appended to the attribute via append(), or removed via remove();
-    changes will be persisted to the database during a flush().  However, no
-    other list mutation operations are available.
+    This property is similar to :func:`relation`, except read
+    operations return an active :class:`Query` object which reads from
+    the database when accessed.  Items may be appended to the
+    attribute via ``append()``, or removed via ``remove()``; changes
+    will be persisted to the database during a :meth:`Sesion.flush`.
+    However, no other Python list or collection mutation operations
+    are available.
 
-    A subset of arguments available to relation() are available here.
+    A subset of arguments available to :func:`relation` are available
+    here.
+
+    :param argument:
+      a class or :class:`Mapper` instance, representing the target of
+      the relation.
+
+    :param secondary:
+      for a many-to-many relationship, specifies the intermediary
+      table. The *secondary* keyword argument should generally only
+      be used for a table that is not otherwise expressed in any class
+      mapping. In particular, using the Association Object Pattern is
+      generally mutually exclusive with the use of the *secondary*
+      keyword argument.
+
+    :param query_class:
+      Optional, a custom Query subclass to be used as the basis for
+      dynamic collection.
 
     """
     from sqlalchemy.orm.dynamic import DynaLoader
 
-    return PropertyLoader(argument, secondary=secondary, primaryjoin=primaryjoin,
-            secondaryjoin=secondaryjoin, foreign_keys=foreign_keys, backref=backref,
-            post_update=post_update, cascade=cascade, remote_side=remote_side, enable_typechecks=enable_typechecks,
-            passive_deletes=passive_deletes, order_by=order_by,
-            strategy_class=DynaLoader)
+    return RelationProperty(
+        argument, secondary=secondary, primaryjoin=primaryjoin,
+        secondaryjoin=secondaryjoin, foreign_keys=foreign_keys, backref=backref,
+        post_update=post_update, cascade=cascade, remote_side=remote_side,
+        enable_typechecks=enable_typechecks, passive_deletes=passive_deletes,
+        order_by=order_by, comparator_factory=comparator_factory,
+        strategy_class=DynaLoader, query_class=query_class)
 
 def column_property(*args, **kwargs):
     """Provide a column-level property for use with a Mapper.
@@ -398,6 +482,10 @@ def column_property(*args, **kwargs):
       \*cols
           list of Column objects to be mapped.
 
+      comparator_factory
+        a class which extends ``sqlalchemy.orm.properties.ColumnProperty.Comparator``
+        which provides custom SQL clause generation for comparison operations.
+
       group
           a group name for this property when marked as deferred.
 
@@ -405,13 +493,13 @@ def column_property(*args, **kwargs):
           when True, the column property is "deferred", meaning that
           it does not load immediately, and is instead loaded when the
           attribute is first accessed on an instance.  See also
-          [sqlalchemy.orm#deferred()].
+          :func:`~sqlalchemy.orm.deferred`.
 
       extension
-        an [sqlalchemy.orm.interfaces#AttributeExtension] instance, 
-        or list of extensions, which will be prepended to the list of 
+        an :class:`~sqlalchemy.orm.interfaces.AttributeExtension` instance,
+        or list of extensions, which will be prepended to the list of
         attribute listeners for the resulting descriptor placed on the class.
-        These listeners will receive append and set events before the 
+        These listeners will receive append and set events before the
         operation proceeds, and may be used to halt (via exception throw)
         or change the value used in the operation.
 
@@ -440,14 +528,14 @@ def composite(class_, *cols, **kwargs):
               return self.x, self.y
           def __eq__(self, other):
               return other is not None and self.x == other.x and self.y == other.y
-              
+
       # and then in the mapping:
       ... composite(Point, mytable.c.x, mytable.c.y) ...
 
     The composite object may have its attributes populated based on the names
     of the mapped columns.  To override the way internal state is set,
-    additionally implement ``__set_composite_values__``:
-        
+    additionally implement ``__set_composite_values__``::
+
         class Point(object):
             def __init__(self, x, y):
                 self.some_x = x
@@ -474,17 +562,17 @@ def composite(class_, *cols, **kwargs):
     deferred
       When True, the column property is "deferred", meaning that it does not
       load immediately, and is instead loaded when the attribute is first
-      accessed on an instance.  See also [sqlalchemy.orm#deferred()].
+      accessed on an instance.  See also :func:`~sqlalchemy.orm.deferred`.
 
-    comparator
-      An optional instance of [sqlalchemy.orm#PropComparator] which provides
-      SQL expression generation functions for this composite type.
+    comparator_factory
+      a class which extends ``sqlalchemy.orm.properties.CompositeProperty.Comparator``
+      which provides custom SQL clause generation for comparison operations.
 
     extension
-      an [sqlalchemy.orm.interfaces#AttributeExtension] instance, 
-      or list of extensions, which will be prepended to the list of 
+      an :class:`~sqlalchemy.orm.interfaces.AttributeExtension` instance,
+      or list of extensions, which will be prepended to the list of
       attribute listeners for the resulting descriptor placed on the class.
-      These listeners will receive append and set events before the 
+      These listeners will receive append and set events before the
       operation proceeds, and may be used to halt (via exception throw)
       or change the value used in the operation.
 
@@ -513,7 +601,7 @@ def deferred(*columns, **kwargs):
     return ColumnProperty(deferred=True, *columns, **kwargs)
 
 def mapper(class_, local_table=None, *args, **params):
-    """Return a new [sqlalchemy.orm#Mapper] object.
+    """Return a new :class:`~sqlalchemy.orm.Mapper` object.
 
       class\_
         The class to be mapped.
@@ -528,12 +616,7 @@ def mapper(class_, local_table=None, *args, **params):
         erasing any in-memory changes with whatever information was loaded
         from the database.  Usage of this flag is highly discouraged; as an
         alternative, see the method `populate_existing()` on
-        [sqlalchemy.orm.query#Query].
-
-      allow_column_override
-        If True, allows the usage of a ``relation()`` which has the
-        same name as a column in the mapped table.  The table column
-        will no longer be mapped.
+        :class:`~sqlalchemy.orm.query.Query`.
 
       allow_null_pks
         Indicates that composite primary keys where one or more (but not all)
@@ -559,7 +642,7 @@ def mapper(class_, local_table=None, *args, **params):
         with its parent mapper.
 
       extension
-        A [sqlalchemy.orm#MapperExtension] instance or list of
+        A :class:`~sqlalchemy.orm.MapperExtension` instance or list of
         ``MapperExtension`` instances which will be applied to all
         operations by this ``Mapper``.
 
@@ -607,10 +690,8 @@ def mapper(class_, local_table=None, *args, **params):
         corresponding to the *class identity* of this mapper.
 
       polymorphic_fetch
-        specifies how subclasses mapped through joined-table inheritance will
-        be fetched.  options are 'union', 'select', and 'deferred'.  if the
-        'with_polymorphic' argument is present, defaults to 'union', otherwise
-        defaults to 'select'.
+        Deprecated. Unloaded columns load as deferred in all cases; loading
+        can be controlled using the "with_polymorphic" option.
 
       properties
         A dictionary mapping the string names of object attributes to
@@ -672,7 +753,7 @@ def mapper(class_, local_table=None, *args, **params):
 def synonym(name, map_column=False, descriptor=None, comparator_factory=None, proxy=False):
     """Set up `name` as a synonym to another mapped property.
 
-    Used with the ``properties`` dictionary sent to  [sqlalchemy.orm#mapper()].
+    Used with the ``properties`` dictionary sent to  :func:`~sqlalchemy.orm.mapper`.
 
     Any existing attributes on the class which map the key name sent
     to the ``properties`` dictionary will be used by the synonym to provide
@@ -734,7 +815,7 @@ def comparable_property(comparator_factory, descriptor=None):
       mapper(MyClass, mytable, properties=dict(
                'myprop': comparable_property(MyComparator)))
 
-    Used with the ``properties`` dictionary sent to  [sqlalchemy.orm#mapper()].
+    Used with the ``properties`` dictionary sent to  :func:`~sqlalchemy.orm.mapper`.
 
     comparator_factory
       A PropComparator subclass or factory that defines operator behavior
@@ -857,7 +938,7 @@ def contains_eager(*keys, **kwargs):
     if kwargs:
         raise exceptions.ArgumentError("Invalid kwargs for contains_eager: %r" % kwargs.keys())
 
-    return (strategies.EagerLazyOption(keys, lazy=False), strategies.LoadEagerFromAliasOption(keys, alias=alias))
+    return (strategies.EagerLazyOption(keys, lazy=False, _only_on_lead=True), strategies.LoadEagerFromAliasOption(keys, alias=alias))
 
 @sa_util.accepts_a_list_as_starargs(list_deprecation='pending')
 def defer(*keys):

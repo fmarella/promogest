@@ -1,3 +1,13 @@
+"""
+information schema implementation.
+
+This module is deprecated and will not be present in this form in SQLAlchemy 0.6.
+
+"""
+from sqlalchemy import util
+
+util.warn_deprecated("the information_schema module is deprecated.")
+
 import sqlalchemy.sql as sql
 import sqlalchemy.exc as exc
 from sqlalchemy import select, MetaData, Table, Column, String, Integer
@@ -29,6 +39,7 @@ columns = Table("columns", ischema,
     Column("numeric_precision", Integer),
     Column("numeric_scale", Integer),
     Column("column_default", Integer),
+    Column("collation_name", String),
     schema="information_schema")
 
 constraints = Table("table_constraints", ischema,

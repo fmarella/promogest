@@ -1,10 +1,8 @@
 # mapper/util.py
-# Copyright (C) 2005, 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2005, 2006, 2007, 2008, 2009 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of SQLAlchemy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
-
-import new
 
 import sqlalchemy.exceptions as sa_exc
 from sqlalchemy import sql, util
@@ -33,6 +31,11 @@ class CascadeOptions(object):
         self.merge = "merge" in values or "all" in values
         self.expunge = "expunge" in values or "all" in values
         self.refresh_expire = "refresh-expire" in values or "all" in values
+
+        if self.delete_orphan and not self.delete:
+            util.warn("The 'delete-orphan' cascade option requires "
+                        "'delete'.  This will raise an error in 0.6.")
+
         for x in values:
             if x not in all_cascades:
                 raise sa_exc.ArgumentError("Invalid cascade option '%s'" % x)
@@ -48,34 +51,39 @@ class CascadeOptions(object):
 
 
 class Validator(AttributeExtension):
-    """Runs a validation method on an attribute value to be set or appended."""
-    
+    """Runs a validation method on an attribute value to be set or appended.
+
+    The Validator class is used by the :func:`~sqlalchemy.orm.validates`
+    decorator, and direct access is usually not needed.
+
+    """
+
     def __init__(self, key, validator):
         """Construct a new Validator.
-        
+
             key - name of the attribute to be validated;
-            will be passed as the second argument to 
+            will be passed as the second argument to
             the validation method (the first is the object instance itself).
-            
+
             validator - an function or instance method which accepts
             three arguments; an instance (usually just 'self' for a method),
             the key name of the attribute, and the value.  The function should
             return the same value given, unless it wishes to modify it.
-            
+
         """
         self.key = key
         self.validator = validator
-    
+
     def append(self, state, value, initiator):
         return self.validator(state.obj(), self.key, value)
 
     def set(self, state, value, oldvalue, initiator):
         return self.validator(state.obj(), self.key, value)
-    
+
 def polymorphic_union(table_map, typecolname, aliasname='p_union'):
     """Create a ``UNION`` statement used by a polymorphic mapper.
 
-    See the `SQLAlchemy` advanced mapping docs for an example of how
+    See  :ref:`concrete_inheritance` for an example of how
     this is used.
     """
 
@@ -169,7 +177,7 @@ def identity_key(*args, **kwargs):
             % ", ".join(kwargs.keys()))
     mapper = object_mapper(instance)
     return mapper.identity_key_from_instance(instance)
-    
+
 class ExtensionCarrier(dict):
     """Fronts an ordered collection of MapperExtension objects.
 
@@ -212,7 +220,7 @@ class ExtensionCarrier(dict):
 
     def _register(self, extension):
         """Register callable fronts for overridden interface methods."""
-        
+
         for method in self.interface.difference(self):
             impl = getattr(extension, method, None)
             if impl and impl is not getattr(MapperExtension, method):
@@ -237,38 +245,45 @@ class ExtensionCarrier(dict):
 
     def __getattr__(self, key):
         """Delegate MapperExtension methods to bundled fronts."""
-        
+
         if key not in self.interface:
             raise AttributeError(key)
         return self.get(key, self._pass)
 
 class ORMAdapter(sql_util.ColumnAdapter):
     """Extends ColumnAdapter to accept ORM entities.
-    
+
     The selectable is extracted from the given entity,
     and the AliasedClass if any is referenced.
-    
+
     """
-    def __init__(self, entity, equivalents=None, chain_to=None):
-        mapper, selectable, is_aliased_class = _entity_info(entity)
+    def __init__(self, entity, equivalents=None, chain_to=None, adapt_required=False):
+        self.mapper, selectable, is_aliased_class = _entity_info(entity)
         if is_aliased_class:
             self.aliased_class = entity
         else:
             self.aliased_class = None
-        sql_util.ColumnAdapter.__init__(self, selectable, equivalents, chain_to)
+        sql_util.ColumnAdapter.__init__(self, selectable, equivalents, chain_to, adapt_required=adapt_required)
+
+    def replace(self, elem):
+        entity = elem._annotations.get('parentmapper', None)
+        if not entity or entity.isa(self.mapper):
+            return sql_util.ColumnAdapter.replace(self, elem)
+        else:
+            return None
 
 class AliasedClass(object):
     """Represents an 'alias'ed form of a mapped class for usage with Query.
-    
-    The ORM equivalent of a sqlalchemy.sql.expression.Alias 
-    object, this object mimics the mapped class using a 
+
+    The ORM equivalent of a :class:`~sqlalchemy.sql.expression.Alias`
+    object, this object mimics the mapped class using a
     __getattr__ scheme and maintains a reference to a
-    real Alias object.   It indicates to Query that the 
+    real Alias object.   It indicates to Query that the
     selectable produced for this class should be aliased,
     and also adapts PropComparators produced by the class'
-    InstrumentedAttributes so that they adapt the 
+    InstrumentedAttributes so that they adapt the
     "local" side of SQL expressions against the alias.
-    
+
     """
     def __init__(self, cls, alias=None, name=None):
         self.__mapper = _class_to_mapper(cls)
@@ -283,7 +298,7 @@ class AliasedClass(object):
 
     def __getstate__(self):
         return {'mapper':self.__mapper, 'alias':self.__alias, 'name':self._sa_label_name}
-    
+
     def __setstate__(self, state):
         self.__mapper = state['mapper']
         self.__target = self.__mapper.class_
@@ -293,16 +308,16 @@ class AliasedClass(object):
         name = state['name']
         self._sa_label_name = name
         self.__name__ = 'AliasedClass_' + str(self.__target)
-        
+
     def __adapt_element(self, elem):
-        return self.__adapter.traverse(elem)._annotate({'parententity': self})
-        
+        return self.__adapter.traverse(elem)._annotate({'parententity': self, 'parentmapper':self.__mapper})
+
     def __adapt_prop(self, prop):
         existing = getattr(self.__target, prop.key)
         comparator = existing.comparator.adapted(self.__adapt_element)
 
-        queryattr = attributes.QueryableAttribute(
-            existing.impl, parententity=self, comparator=comparator)
+        queryattr = attributes.QueryableAttribute(prop.key,
+            impl=existing.impl, parententity=self, comparator=comparator)
         setattr(self, prop.key, queryattr)
         return queryattr
 
@@ -324,7 +339,7 @@ class AliasedClass(object):
         if hasattr(attr, 'func_code'):
             is_method = getattr(self.__target, key, None)
             if is_method and is_method.im_self is not None:
-                return new.instancemethod(attr.im_func, self, self)
+                return util.types.MethodType(attr.im_func, self, self)
             else:
                 return None
         elif hasattr(attr, '__get__'):
@@ -338,31 +353,31 @@ class AliasedClass(object):
 
 def _orm_annotate(element, exclude=None):
     """Deep copy the given ClauseElement, annotating each element with the "_orm_adapt" flag.
-    
+
     Elements within the exclude collection will be cloned but not annotated.
-    
+
     """
     return sql_util._deep_annotate(element, {'_orm_adapt':True}, exclude)
 
 _orm_deannotate = sql_util._deep_deannotate
-        
+
 class _ORMJoin(expression.Join):
     """Extend Join to support ORM constructs as input."""
-    
+
     __visit_name__ = expression.Join.__visit_name__
 
-    def __init__(self, left, right, onclause=None, isouter=False):
+    def __init__(self, left, right, onclause=None, isouter=False, join_to_left=True):
+        adapt_from = None
+
         if hasattr(left, '_orm_mappers'):
             left_mapper = left._orm_mappers[1]
-            adapt_from = left.right
-
+            if join_to_left:
+                adapt_from = left.right
         else:
             left_mapper, left, left_is_aliased = _entity_info(left)
-            if left_is_aliased or not left_mapper:
+            if join_to_left and (left_is_aliased or not left_mapper):
                 adapt_from = left
-            else:
-                adapt_from = None
-        
+
         right_mapper, right, right_is_aliased = _entity_info(right)
         if right_is_aliased:
             adapt_to = right
@@ -375,7 +390,8 @@ class _ORMJoin(expression.Join):
             if isinstance(onclause, basestring):
                 prop = left_mapper.get_property(onclause)
             elif isinstance(onclause, attributes.QueryableAttribute):
-                adapt_from = onclause.__clause_element__()
+                if not adapt_from:
+                    adapt_from = onclause.__clause_element__()
                 prop = onclause.property
             elif isinstance(onclause, MapperProperty):
                 prop = onclause
@@ -383,7 +399,12 @@ class _ORMJoin(expression.Join):
                 prop = None
 
             if prop:
-                pj, sj, source, dest, secondary, target_adapter = prop._create_joins(source_selectable=adapt_from, dest_selectable=adapt_to, source_polymorphic=True, dest_polymorphic=True)
+                pj, sj, source, dest, secondary, target_adapter = prop._create_joins(
+                                source_selectable=adapt_from,
+                                dest_selectable=adapt_to,
+                                source_polymorphic=True,
+                                dest_polymorphic=True,
+                                of_type=right_mapper)
 
                 if sj:
                     left = sql.join(left, secondary, pj, isouter)
@@ -391,38 +412,43 @@ class _ORMJoin(expression.Join):
                 else:
                     onclause = pj
                 self._target_adapter = target_adapter
-                
+
         expression.Join.__init__(self, left, right, onclause, isouter)
 
-    def join(self, right, onclause=None, isouter=False):
-        return _ORMJoin(self, right, onclause, isouter)
+    def join(self, right, onclause=None, isouter=False, join_to_left=True):
+        return _ORMJoin(self, right, onclause, isouter, join_to_left)
 
-    def outerjoin(self, right, onclause=None):
-        return _ORMJoin(self, right, onclause, True)
+    def outerjoin(self, right, onclause=None, join_to_left=True):
+        return _ORMJoin(self, right, onclause, True, join_to_left)
 
-def join(left, right, onclause=None, isouter=False):
+def join(left, right, onclause=None, isouter=False, join_to_left=True):
     """Produce an inner join between left and right clauses.
-    
-    In addition to the interface provided by 
-    sqlalchemy.sql.join(), left and right may be mapped 
-    classes or AliasedClass instances. The onclause may be a 
-    string name of a relation(), or a class-bound descriptor 
-    representing a relation.
-    
-    """
-    return _ORMJoin(left, right, onclause, isouter)
 
-def outerjoin(left, right, onclause=None):
-    """Produce a left outer join between left and right clauses.
-    
-    In addition to the interface provided by 
-    sqlalchemy.sql.outerjoin(), left and right may be mapped 
-    classes or AliasedClass instances. The onclause may be a 
-    string name of a relation(), or a class-bound descriptor 
+    In addition to the interface provided by
+    :func:`~sqlalchemy.sql.expression.join()`, left and right may be mapped
+    classes or AliasedClass instances. The onclause may be a
+    string name of a relation(), or a class-bound descriptor
     representing a relation.
-    
+
+    join_to_left indicates to attempt aliasing the ON clause,
+    in whatever form it is passed, to the selectable
+    passed as the left side.  If False, the onclause
+    is used as is.
+
     """
-    return _ORMJoin(left, right, onclause, True)
+    return _ORMJoin(left, right, onclause, isouter, join_to_left)
+
+def outerjoin(left, right, onclause=None, join_to_left=True):
+    """Produce a left outer join between left and right clauses.
+
+    In addition to the interface provided by
+    :func:`~sqlalchemy.sql.expression.outerjoin()`, left and right may be mapped
+    classes or AliasedClass instances. The onclause may be a
+    string name of a relation(), or a class-bound descriptor
+    representing a relation.
+
+    """
+    return _ORMJoin(left, right, onclause, True, join_to_left)
 
 def with_parent(instance, prop):
     """Return criterion which selects instances with a given parent.
@@ -430,13 +456,13 @@ def with_parent(instance, prop):
     instance
       a parent instance, which should be persistent or detached.
 
-     property
-       a class-attached descriptor, MapperProperty or string property name
-       attached to the parent instance.
+    property
+      a class-attached descriptor, MapperProperty or string property name
+      attached to the parent instance.
 
-     \**kwargs
-       all extra keyword arguments are propagated to the constructor of
-       Query.
+    \**kwargs
+      all extra keyword arguments are propagated to the constructor of
+      Query.
 
     """
     if isinstance(prop, basestring):
@@ -450,14 +476,14 @@ def with_parent(instance, prop):
 
 def _entity_info(entity, compile=True):
     """Return mapping information given a class, mapper, or AliasedClass.
-    
+
     Returns 3-tuple of: mapper, mapped selectable, boolean indicating if this
     is an aliased() construct.
-    
+
     If the given entity is not a mapper, mapped class, or aliased construct,
     returns None, the entity, False.  This is typically used to allow
     unmapped selectables through.
-    
+
     """
     if isinstance(entity, AliasedClass):
         return entity._AliasedClass__mapper, entity._AliasedClass__alias, True
@@ -475,9 +501,9 @@ def _entity_info(entity, compile=True):
 
 def _entity_descriptor(entity, key):
     """Return attribute/property information given an entity and string name.
-    
+
     Returns a 2-tuple representing InstrumentedAttribute/MapperProperty.
-    
+
     """
     if isinstance(entity, AliasedClass):
         desc = getattr(entity, key)
@@ -508,9 +534,9 @@ def _state_mapper(state):
 
 def object_mapper(instance):
     """Given an object, return the primary Mapper associated with the object instance.
-    
+
     Raises UnmappedInstanceError if no mapping is configured.
-    
+
     """
     try:
         state = attributes.instance_state(instance)
@@ -521,21 +547,19 @@ def object_mapper(instance):
         raise exc.UnmappedInstanceError(instance)
 
 def class_mapper(class_, compile=True):
-    """Given a class (or an object), return the primary Mapper associated with the key.
+    """Given a class, return the primary Mapper associated with the key.
 
     Raises UnmappedClassError if no mapping is configured.
-    
+
     """
-    if not isinstance(class_, type):
-        class_ = type(class_)
     try:
         class_manager = attributes.manager_of_class(class_)
         mapper = class_manager.mapper
-        
+
         # HACK until [ticket:1142] is complete
         if mapper is None:
             raise AttributeError
-            
+
     except exc.NO_STATE:
         raise exc.UnmappedClassError(class_)
 
@@ -567,9 +591,12 @@ def _is_mapped_class(cls):
     from sqlalchemy.orm import mapperlib as mapper
     if isinstance(cls, (AliasedClass, mapper.Mapper)):
         return True
-
-    manager = attributes.manager_of_class(cls)
-    return manager and _INSTRUMENTOR in manager.info
+    if isinstance(cls, expression.ClauseElement):
+        return False
+    if isinstance(cls, type):
+        manager = attributes.manager_of_class(cls)
+        return manager and _INSTRUMENTOR in manager.info
+    return False
 
 def instance_str(instance):
     """Return a string describing an instance."""
@@ -578,7 +605,7 @@ def instance_str(instance):
 
 def state_str(state):
     """Return a string describing an instance via its InstanceState."""
-    
+
     if state is None:
         return "None"
     else:

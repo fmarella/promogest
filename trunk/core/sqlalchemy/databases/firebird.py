@@ -1,5 +1,5 @@
 # firebird.py
-# Copyright (C) 2005, 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2005, 2006, 2007, 2008, 2009 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of SQLAlchemy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -253,7 +253,7 @@ ischema_names = {
        'DATE': lambda r: FBDate(),
        'TIME': lambda r: FBTime(),
        'TEXT': lambda r: FBString(r['flen']),
-      'INT64': lambda r: FBNumeric(precision=r['fprec'], length=r['fscale'] * -1), # This generically handles NUMERIC()
+      'INT64': lambda r: FBNumeric(precision=r['fprec'], scale=r['fscale'] * -1), # This generically handles NUMERIC()
      'DOUBLE': lambda r: FBFloat(),
   'TIMESTAMP': lambda r: FBDateTime(),
     'VARYING': lambda r: FBString(r['flen']),
@@ -301,9 +301,6 @@ class FBDialect(default.DefaultDialect):
             _initialized_kb = True
             self.dbapi.init(type_conv=type_conv, concurrency_level=concurrency_level)
         return ([], opts)
-
-    def create_execution_context(self, *args, **kwargs):
-        return FBExecutionContext(self, *args, **kwargs)
 
     def type_descriptor(self, typeobj):
         return sqltypes.adapt_type(typeobj, colspecs)
@@ -542,7 +539,7 @@ class FBDialect(default.DefaultDialect):
             fk[1].append(refspec)
 
         for name, value in fks.iteritems():
-            table.append_constraint(schema.ForeignKeyConstraint(value[0], value[1], name=name))
+            table.append_constraint(schema.ForeignKeyConstraint(value[0], value[1], name=name, link_to_name=True))
 
     def do_execute(self, cursor, statement, parameters, **kwargs):
         # kinterbase does not accept a None, but wants an empty list
@@ -768,3 +765,4 @@ dialect.schemagenerator = FBSchemaGenerator
 dialect.schemadropper = FBSchemaDropper
 dialect.defaultrunner = FBDefaultRunner
 dialect.preparer = FBIdentifierPreparer
+dialect.execution_ctx_cls = FBExecutionContext

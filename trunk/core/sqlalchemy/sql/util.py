@@ -7,6 +7,7 @@ from itertools import chain
 def sort_tables(tables):
     """sort a collection of Table objects in order of their foreign-key dependency."""
     
+    tables = list(tables)
     tuples = []
     def visit_foreign_key(fkey):
         if fkey.use_alter:
@@ -20,39 +21,53 @@ def sort_tables(tables):
         visitors.traverse(table, {'schema_visitor':True}, {'foreign_key':visit_foreign_key})    
     return topological.sort(tuples, tables)
 
-def search(clause, target):
-    if not clause:
-        return False
-    for elem in visitors.iterate(clause, {'column_collections':False}):
-        if elem is target:
-            return True
+def find_join_source(clauses, join_to):
+    """Given a list of FROM clauses and a selectable, 
+    return the first index and element from the list of 
+    clauses which can be joined against the selectable.  returns 
+    None, None if no match is found.
+    
+    e.g.::
+    
+        clause1 = table1.join(table2)
+        clause2 = table4.join(table5)
+        
+        join_to = table2.join(table3)
+        
+        find_join_source([clause1, clause2], join_to) == clause1
+    
+    """
+    
+    selectables = list(expression._from_objects(join_to))
+    for i, f in enumerate(clauses):
+        for s in selectables:
+            if f.is_derived_from(s):
+                return i, f
     else:
-        return False
+        return None, None
 
+    
 def find_tables(clause, check_columns=False, include_aliases=False, include_joins=False, include_selects=False):
     """locate Table objects within the given expression."""
     
     tables = []
     _visitors = {}
     
-    def visit_something(elem):
-        tables.append(elem)
-        
     if include_selects:
-        _visitors['select'] = _visitors['compound_select'] = visit_something
+        _visitors['select'] = _visitors['compound_select'] = tables.append
     
     if include_joins:
-        _visitors['join'] = visit_something
+        _visitors['join'] = tables.append
         
     if include_aliases:
-        _visitors['alias']  = visit_something
+        _visitors['alias']  = tables.append
 
     if check_columns:
         def visit_column(column):
             tables.append(column.table)
         _visitors['column'] = visit_column
 
-    _visitors['table'] = visit_something
+    _visitors['table'] = tables.append
 
     visitors.traverse(clause, {'column_collections':False}, _visitors)
     return tables
@@ -60,7 +75,7 @@ def find_tables(clause, check_columns=False, include_aliases=False, include_join
 def find_columns(clause):
     """locate Column objects within the given expression."""
     
-    cols = set()
+    cols = util.column_set()
     def visit_column(col):
         cols.add(col)
     visitors.traverse(clause, {}, {'column':visit_column})
@@ -121,7 +136,7 @@ def join_condition(a, b, ignore_nonexistent_tables=False):
     else:
         return sql.and_(*crit)
 
-    
+
 class Annotated(object):
     """clones a ClauseElement and applies an 'annotations' dictionary.
     
@@ -141,9 +156,14 @@ class Annotated(object):
             return object.__new__(cls)
         else:
             element, values = args
-            # pull appropriate subclass from this module's 
-            # namespace (see below for rationale)
-            cls = eval("Annotated%s"  % element.__class__.__name__)
+            # pull appropriate subclass from registry of annotated
+            # classes
+            try:
+                cls = annotated_classes[element.__class__]
+            except KeyError:
+                cls = annotated_classes[element.__class__] = type.__new__(type, 
+                        "Annotated%s" % element.__class__.__name__, 
+                        (Annotated, element.__class__), {})
             return object.__new__(cls)
 
     def __init__(self, element, values):
@@ -177,7 +197,7 @@ class Annotated(object):
             # to this object's __dict__.
             clone.__dict__.update(self.__dict__)
             return Annotated(clone, self._annotations)
-        
+    
     def __hash__(self):
         return hash(self.__element)
 
@@ -187,13 +207,15 @@ class Annotated(object):
 # hard-generate Annotated subclasses.  this technique
 # is used instead of on-the-fly types (i.e. type.__new__())
 # so that the resulting objects are pickleable.
+annotated_classes = {}
+
 from sqlalchemy.sql import expression
 for cls in expression.__dict__.values() + [schema.Column, schema.Table]:
     if isinstance(cls, type) and issubclass(cls, expression.ClauseElement):
         exec "class Annotated%s(Annotated, cls):\n" \
              "    __visit_name__ = cls.__visit_name__\n"\
              "    pass" % (cls.__name__, ) in locals()
-
+        exec "annotated_classes[cls] = Annotated%s" % (cls.__name__)
 
 def _deep_annotate(element, annotations, exclude=None):
     """Deep copy the given ClauseElement, annotating each element with the given annotations dictionary.
@@ -272,11 +294,11 @@ def reduce_columns(columns, *clauses, **kw):
     """
     ignore_nonexistent_tables = kw.pop('ignore_nonexistent_tables', False)
     
-    columns = util.OrderedSet(columns)
+    columns = util.ordered_column_set(columns)
 
-    omit = set()
+    omit = util.column_set()
     for col in columns:
-        for fk in col.foreign_keys:
+        for fk in chain(*[c.foreign_keys for c in col.proxy_set]):
             for c in columns:
                 if c is col:
                     continue
@@ -294,7 +316,7 @@ def reduce_columns(columns, *clauses, **kw):
     if clauses:
         def visit_binary(binary):
             if binary.operator == operators.eq:
-                cols = set(chain(*[c.proxy_set for c in columns.difference(omit)]))
+                cols = util.column_set(chain(*[c.proxy_set for c in columns.difference(omit)]))
                 if binary.left in cols and binary.right in cols:
                     for c in columns:
                         if c.shares_lineage(binary.right):
@@ -318,14 +340,14 @@ def criterion_as_pairs(expression, consider_as_foreign_keys=None, consider_as_re
             return
 
         if consider_as_foreign_keys:
-            if binary.left in consider_as_foreign_keys:
+            if binary.left in consider_as_foreign_keys and (binary.right is binary.left or binary.right not in consider_as_foreign_keys):
                 pairs.append((binary.right, binary.left))
-            elif binary.right in consider_as_foreign_keys:
+            elif binary.right in consider_as_foreign_keys and (binary.left is binary.right or binary.left not in consider_as_foreign_keys):
                 pairs.append((binary.left, binary.right))
         elif consider_as_referenced_keys:
-            if binary.left in consider_as_referenced_keys:
+            if binary.left in consider_as_referenced_keys and (binary.right is binary.left or binary.right not in consider_as_referenced_keys):
                 pairs.append((binary.left, binary.right))
-            elif binary.right in consider_as_referenced_keys:
+            elif binary.right in consider_as_referenced_keys and (binary.left is binary.right or binary.left not in consider_as_referenced_keys):
                 pairs.append((binary.right, binary.left))
         else:
             if isinstance(binary.left, schema.Column) and isinstance(binary.right, schema.Column):
@@ -338,7 +360,10 @@ def criterion_as_pairs(expression, consider_as_foreign_keys=None, consider_as_re
     return pairs
 
 def folded_equivalents(join, equivs=None):
-    """Returns the column list of the given Join with all equivalently-named,
+    """Return a list of uniquely named columns.
+    
+    The column list of the given Join will be narrowed 
+    down to a list of all equivalently-named,
     equated columns folded into one column, where 'equated' means they are
     equated to each other in the ON clause of this join.
 
@@ -437,14 +462,14 @@ class ClauseAdapter(visitors.ReplacingCloningVisitor):
         self.selectable = selectable
         self.include = include
         self.exclude = exclude
-        self.equivalents = equivalents or {}
+        self.equivalents = util.column_dict(equivalents or {})
         
-    def _corresponding_column(self, col, require_embedded):
+    def _corresponding_column(self, col, require_embedded, _seen=util.EMPTY_SET):
         newcol = self.selectable.corresponding_column(col, require_embedded=require_embedded)
 
-        if not newcol and col in self.equivalents:
+        if not newcol and col in self.equivalents and col not in _seen:
             for equiv in self.equivalents[col]:
-                newcol = self.selectable.corresponding_column(equiv, require_embedded=require_embedded)
+                newcol = self._corresponding_column(equiv, require_embedded=require_embedded, _seen=_seen.union([col]))
                 if newcol:
                     return newcol
         return newcol
@@ -473,11 +498,12 @@ class ColumnAdapter(ClauseAdapter):
     adapted_row() factory.
     
     """
-    def __init__(self, selectable, equivalents=None, chain_to=None, include=None, exclude=None):
+    def __init__(self, selectable, equivalents=None, chain_to=None, include=None, exclude=None, adapt_required=False):
         ClauseAdapter.__init__(self, selectable, equivalents, include, exclude)
         if chain_to:
             self.chain(chain_to)
-        self.columns = util.PopulateDict(self._locate_col)
+        self.columns = util.populate_column_dict(self._locate_col)
+        self.adapt_required = adapt_required
 
     def wrap(self, adapter):
         ac = self.__class__.__new__(self.__class__)
@@ -485,7 +511,7 @@ class ColumnAdapter(ClauseAdapter):
         ac._locate_col = ac._wrap(ac._locate_col, adapter._locate_col)
         ac.adapt_clause = ac._wrap(ac.adapt_clause, adapter.adapt_clause)
         ac.adapt_list = ac._wrap(ac.adapt_list, adapter.adapt_list)
-        ac.columns = util.PopulateDict(ac._locate_col)
+        ac.columns = util.populate_column_dict(ac._locate_col)
         return ac
 
     adapt_clause = ClauseAdapter.traverse
@@ -505,6 +531,16 @@ class ColumnAdapter(ClauseAdapter):
             # anonymize labels in case they have a hardcoded name
             if isinstance(c, expression._Label):
                 c = c.label(None)
+                
+        # adapt_required indicates that if we got the same column
+        # back which we put in (i.e. it passed through), 
+        # it's not correct.  this is used by eagerloading which
+        # knows that all columns and expressions need to be adapted
+        # to a result row, and a "passthrough" is definitely targeting
+        # the wrong column.
+        if self.adapt_required and c is col:
+            return None
+            
         return c    
 
     def adapted_row(self, row):

@@ -1,17 +1,16 @@
 # interfaces.py
-# Copyright (C) 2005, 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2005, 2006, 2007, 2008, 2009 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of SQLAlchemy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
 """
 
-Semi-private implementation objects which form the basis of ORM-mapped
-attributes, query options and mapper extension.
+Semi-private module containing various base classes used throughout the ORM.
 
-Defines the [sqlalchemy.orm.interfaces#MapperExtension] class, which can be
-end-user subclassed to add event-based functionality to mappers.  The
-remainder of this module is generally private to the ORM.
+Defines the extension classes :class:`MapperExtension`,
+:class:`SessionExtension`, and :class:`AttributeExtension` as
+well as other user-subclassable extension objects.
 
 """
 
@@ -135,7 +134,7 @@ class MapperExtension(object):
 
         \**flags
           extra information about the row, same as criterion in
-          ``create_row_processor()`` method of [sqlalchemy.orm.interfaces#MapperProperty]
+          ``create_row_processor()`` method of :class:`~sqlalchemy.orm.interfaces.MapperProperty`
         """
 
         return EXT_CONTINUE
@@ -168,7 +167,7 @@ class MapperExtension(object):
         ``__new__``, and after initial attribute population has
         occurred.
 
-        This typicically occurs when the instance is created based on
+        This typically occurs when the instance is created based on
         incoming result rows, and is only called once for that
         instance's lifetime.
 
@@ -326,7 +325,7 @@ class SessionExtension(object):
         `query_context` was the query context object.
         `result` is the result object returned from the bulk operation.
         """
-    
+
 class MapperProperty(object):
     """Manage the relationship of a ``Mapper`` to a single class
     attribute, as well as that attribute as it appears on individual
@@ -360,7 +359,7 @@ class MapperProperty(object):
 
         Callables are of the following form::
 
-            def new_execute(state, row, **flags):
+            def new_execute(state, dict_, row, **flags):
                 # process incoming instance state and given row.  the instance is
                 # "new" and was just created upon receipt of this row.
                 # flags is a dictionary containing at least the following
@@ -369,7 +368,7 @@ class MapperProperty(object):
                 #           result of reading this row
                 #   instancekey - identity key of the instance
 
-            def existing_execute(state, row, **flags):
+            def existing_execute(state, dict_, row, **flags):
                 # process incoming instance state and given row.  the instance is
                 # "existing" and was created based on a previous row.
 
@@ -393,34 +392,58 @@ class MapperProperty(object):
     def set_parent(self, parent):
         self.parent = parent
 
-    def init(self, key, parent):
-        """Called after all mappers are compiled to assemble
-        relationships between mappers, establish instrumented class
-        attributes.
-        """
+    def instrument_class(self, mapper):
+        raise NotImplementedError()
 
-        self.key = key
-        self._compiled = True
+    _compile_started = False
+    _compile_finished = False
+
+    def init(self):
+        """Called after all mappers are created to assemble
+        relationships between mappers and perform other post-mapper-creation
+        initialization steps.
+
+        """
+        self._compile_started = True
         self.do_init()
+        self._compile_finished = True
 
     def do_init(self):
-        """Perform subclass-specific initialization steps.
+        """Perform subclass-specific initialization post-mapper-creation steps.
 
         This is a *template* method called by the
-        ``MapperProperty`` object's init() method."""
+        ``MapperProperty`` object's init() method.
 
+        """
+        pass
+
+    def post_instrument_class(self, mapper):
+        """Perform instrumentation adjustments that need to occur
+        after init() has completed.
+
+        """
         pass
 
     def register_dependencies(self, *args, **kwargs):
         """Called by the ``Mapper`` in response to the UnitOfWork
         calling the ``Mapper``'s register_dependencies operation.
-        Should register with the UnitOfWork all inter-mapper
-        dependencies as well as dependency processors (see UOW docs
-        for more details).
+        Establishes a topological dependency between two mappers
+        which will affect the order in which mappers persist data.
+        
         """
 
         pass
 
+    def register_processors(self, *args, **kwargs):
+        """Called by the ``Mapper`` in response to the UnitOfWork
+        calling the ``Mapper``'s register_processors operation.
+        Establishes a processor object between two mappers which
+        will link data and state between parent/child objects.
+        
+        """
+
+        pass
+        
     def is_primary(self):
         """Return True if this ``MapperProperty``'s mapper is the
         primary mapper for its class.
@@ -469,10 +492,10 @@ class PropComparator(expression.ColumnOperators):
     def adapted(self, adapter):
         """Return a copy of this PropComparator which will use the given adaption function
         on the local side of generated expressions.
-        
+
         """
         return self.__class__(self.prop, self.mapper, adapter)
-        
+
     @staticmethod
     def any_op(a, b, **kwargs):
         return a.any(b, **kwargs)
@@ -572,8 +595,10 @@ class StrategizedProperty(MapperProperty):
     def do_init(self):
         self.__all_strategies = {}
         self.strategy = self.__init_strategy(self.strategy_class)
+
+    def post_instrument_class(self, mapper):
         if self.is_primary():
-            self.strategy.init_class_attribute()
+            self.strategy.init_class_attribute(mapper)
 
 def build_path(entity, key, prev=None):
     if prev:
@@ -657,23 +682,47 @@ class PropertyOption(MapperOption):
             searchfor = mapper
         else:
             searchfor = _class_to_mapper(mapper).base_mapper
-
+        
         for ent in query._mapper_entities:
             if ent.path_entity is searchfor:
                 return ent
         else:
             if raiseerr:
-                raise sa_exc.ArgumentError("Can't find entity %s in Query.  Current list: %r" % (searchfor, [str(m.path_entity) for m in query._entities]))
+                raise sa_exc.ArgumentError("Can't find entity %s in Query.  Current list: %r" 
+                    % (searchfor, [str(m.path_entity) for m in query._entities]))
             else:
                 return None
+
+    def __getstate__(self):
+        d = self.__dict__.copy()
+        d['key'] = ret = []
+        for token in util.to_list(self.key):
+            if isinstance(token, PropComparator):
+                ret.append((token.mapper.class_, token.key))
+            else:
+                ret.append(token)
+        return d
+
+    def __setstate__(self, state):
+        ret = []
+        for key in state['key']:
+            if isinstance(key, tuple):
+                cls, propkey = key
+                ret.append(getattr(cls, propkey))
+            else:
+                ret.append(key)
+        state['key'] = tuple(ret)
+        self.__dict__ = state
 
     def __get_paths(self, query, raiseerr):
         path = None
         entity = None
         l = []
 
+        # _current_path implies we're in a secondary load
+        # with an existing path
         current_path = list(query._current_path)
-
+            
         if self.mapper:
             entity = self.__find_entity(query, self.mapper, raiseerr)
             mapper = entity.mapper
@@ -706,7 +755,7 @@ class PropertyOption(MapperOption):
                 if current_path and key == current_path[1]:
                     current_path = current_path[2:]
                     continue
-
+                    
                 if prop is None:
                     return []
 
@@ -718,40 +767,50 @@ class PropertyOption(MapperOption):
                     path_element = mapper = getattr(prop, 'mapper', None)
                 if path_element:
                     path_element = path_element.base_mapper
-
+        
+        # if current_path tokens remain, then
+        # we didn't have an exact path match.
+        if current_path:
+            return []
+            
         return l
 
 class AttributeExtension(object):
     """An event handler for individual attribute change events.
-    
-    AttributeExtension is assembled within the descriptors associated 
-    with a mapped class. 
-    
+
+    AttributeExtension is assembled within the descriptors associated
+    with a mapped class.
+
     """
 
+    active_history = True
+    """indicates that the set() method would like to receive the 'old' value,
+    even if it means firing lazy callables.
+    """
+    
     def append(self, state, value, initiator):
         """Receive a collection append event.
-        
+
         The returned value will be used as the actual value to be
         appended.
-        
+
         """
         return value
 
     def remove(self, state, value, initiator):
         """Receive a remove event.
-        
+
         No return value is defined.
-        
+
         """
         pass
 
     def set(self, state, value, oldvalue, initiator):
         """Receive a set event.
-        
+
         The returned value will be used as the actual value to be
         set.
-        
+
         """
         return value
 
@@ -809,7 +868,7 @@ class LoaderStrategy(object):
     def init(self):
         raise NotImplementedError("LoaderStrategy")
 
-    def init_class_attribute(self):
+    def init_class_attribute(self, mapper):
         pass
 
     def setup_query(self, context, entity, path, adapter, **kwargs):
@@ -840,7 +899,12 @@ class LoaderStrategy(object):
             return fn
 
 class InstrumentationManager(object):
-    """User-defined class instrumentation extension."""
+    """User-defined class instrumentation extension.
+    
+    The API for this class should be considered as semi-stable,
+    and may change slightly with new releases.
+    
+    """
 
     # r4361 added a mandatory (cls) constructor to this interface.
     # given that, perhaps class_ should be dropped from all of these
@@ -861,6 +925,9 @@ class InstrumentationManager(object):
         return get
 
     def instrument_attribute(self, class_, key, inst):
+        pass
+
+    def post_configure_attribute(self, class_, key, inst):
         pass
 
     def install_descriptor(self, class_, key, inst):
@@ -890,5 +957,12 @@ class InstrumentationManager(object):
     def install_state(self, class_, instance, state):
         setattr(instance, '_default_state', state)
 
+    def remove_state(self, class_, instance):
+        delattr(instance, '_default_state', state)
+
     def state_getter(self, class_):
         return lambda instance: getattr(instance, '_default_state')
+
+    def dict_getter(self, class_):
+        return lambda inst: self.get_instance_dict(class_, inst)
+        

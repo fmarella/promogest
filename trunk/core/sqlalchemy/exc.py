@@ -1,4 +1,4 @@
-# Copyright (C) 2005, 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2005, 2006, 2007, 2008, 2009 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of SQLAlchemy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
@@ -7,7 +7,7 @@
 
 The base exception class is SQLAlchemyError.  Exceptions which are raised as a
 result of DBAPI exceptions are all subclasses of
-[sqlalchemy.exc#DBAPIError].
+:class:`~sqlalchemy.exc.DBAPIError`.
 
 """
 
@@ -132,6 +132,11 @@ class DBAPIError(SQLAlchemyError):
         self.connection_invalidated = connection_invalidated
 
     def __str__(self):
+        if isinstance(self.params, (list, tuple)) and len(self.params) > 10 and isinstance(self.params[0], (list, dict, tuple)):
+            return ' '.join((SQLAlchemyError.__str__(self),
+                             repr(self.statement),
+                             repr(self.params[:2]),
+                             '... and a total of %i bound parameter sets' % len(self.params)))
         return ' '.join((SQLAlchemyError.__str__(self),
                          repr(self.statement), repr(self.params)))
 
