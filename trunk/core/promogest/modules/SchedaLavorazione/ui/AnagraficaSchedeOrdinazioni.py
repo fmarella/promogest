@@ -204,7 +204,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
                                                 nomiSposi = nomiSposi,
                                                 referente=nomeReferente,
                                                 ricevutaAssociata=numeroRicevuta,
-                                                documentoSaldato=documentoSaldato,
+                                                documentoSaldato=schedeAperte,
                                                 idArticolo = idArticolo)
 
         self._filterCountClosure = filterCountClosure
