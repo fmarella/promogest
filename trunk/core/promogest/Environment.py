@@ -426,11 +426,11 @@ pg2log.addHandler(handler)
 pg2log.debug("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
 
 
-#def hook(et, ev, eb):
-    #import traceback
-    #pg2log.debug("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
-    #print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE"
-#sys.excepthook = hook
+def hook(et, ev, eb):
+    import traceback
+    pg2log.debug("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
+    print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE"
+sys.excepthook = hook
 
 #import warnings
 
