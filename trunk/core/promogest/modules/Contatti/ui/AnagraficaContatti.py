@@ -14,7 +14,7 @@ import gobject
 from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
+#from promogest.dao.Dao import Dao
 from promogest.dao.Contatto import Contatto
 from promogest.dao.ContattoCliente import ContattoCliente
 from promogest.dao.ContattoFornitore import ContattoFornitore
@@ -62,7 +62,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         self._widgetFirstFocus = self.appartenenza_filter_entry
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         # Colonne della Treeview per il filtro
         treeview = self._anagrafica.anagrafica_filter_treeview
         renderer = gtk.CellRendererText()
@@ -451,7 +451,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
         self._tabPressed = False
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         #Popola combobox categorie contatti
         fillComboboxCategorieContatti(self.id_categoria_contatto_customcombobox.combobox)
         self.id_categoria_contatto_customcombobox.connect('clicked',

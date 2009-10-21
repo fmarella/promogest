@@ -370,7 +370,7 @@ if tipodb == "sqlite":
 else:
     mainSchema = "promogest2"
     #azienda=conf.Database.azienda
-    engine = create_engine('postgresql:'+'//'
+    engine = create_engine('postgres:'+'//'
                     +user+':'
                     + password+ '@'
                     + host + ':'

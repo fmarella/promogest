@@ -28,7 +28,9 @@ class UnsignedIntegerEntryField(CustomEntryField):
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
         CustomEntryField.__init__(self)
 
-        self._lunghezza = 10
+
+        
+        self._lunghezza = 11
         self._default = str1
         if self._lunghezza > 0:
             self.set_max_length(self._lunghezza)
@@ -44,10 +46,10 @@ class UnsignedIntegerEntryField(CustomEntryField):
     def my_focus_out_event(self, widget, event):
         try:
             i = int(self.get_text())
-            if self._lunghezza > 0:
-                f = "%0" + str(self._lunghezza) + "d"
-                self.set_text(f % i)
-            else:
-                self.set_text(str(i))
+            #if self._lunghezza > 0:
+                #f = "%0" + str(self._lunghezza) + "d"
+                #self.set_text(f % i)
+            #else:
+            self.set_text(str(self.get_text()))
         except Exception:
             self.set_text('')
