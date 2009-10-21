@@ -1066,7 +1066,8 @@ class AnagraficaHtml(object):
         """ show the html page in the custom widget"""
         pageData = {}
         html = "<html><body></body></html>"
-        self._gtkHtml = self._anagrafica.getHtmlWidget()
+        if not self._gtkHtml:
+            self._gtkHtml = self._anagrafica.getHtmlWidget()
         if self.dao:
             pageData = {
                     "file" :self.defaultFileName+".html",

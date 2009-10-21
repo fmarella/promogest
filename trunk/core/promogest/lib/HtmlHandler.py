@@ -87,6 +87,12 @@ def _on_html_link_clicked(url, link):
     gobject.idle_add(linkOpen)
     return True
 
+if not WEBKIT:
+    document = gtkhtml2.Document()
+    document.connect('request_url', _on_html_request_url)
+    document.connect('link_clicked', _on_html_link_clicked)
+
+
 def renderHTMLTemplate(pageData):
     return renderTemplate(pageData)
 
@@ -94,9 +100,6 @@ def renderHTML(widget, html):
     if WEBKIT:
             widget.load_string(html,"text/html","utf-8", "file:///"+sys.path[0]+os.sep)
     else:
-        document = gtkhtml2.Document()
-        document.connect('request_url', _on_html_request_url)
-        document.connect('link_clicked', _on_html_link_clicked)
         document.open_stream('text/html')
         document.write_stream(html)
         document.close_stream()
