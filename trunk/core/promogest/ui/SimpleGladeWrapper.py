@@ -28,7 +28,7 @@ import re
 
 import tokenize
 import gtk
-import gtk.glade
+#import gtk.glade
 import weakref
 import inspect
 import os.path, glob, zipfile, warnings
@@ -118,6 +118,7 @@ class SimpleGladeWrapper:
                 setattr(self, key, value)
         if not gl:
             gl = gtk.Builder()
+            #self.builda = gtk.Buildable()
         print "FILE GLADE: ", self.glade_path
         gl.add_from_file(self.glade_path)
         self.widgets = gl.get_objects()
@@ -129,6 +130,7 @@ class SimpleGladeWrapper:
         if callbacks_proxy is None:
             callbacks_proxy = self
         gl.connect_signals(callbacks_proxy)
+        self.gl = gl
         #self.new()
 
 
@@ -191,7 +193,10 @@ class SimpleGladeWrapper:
                     setattr(self, widget_api_name, widget)
                     if prefixes:
                         gtk.Widget.set_data(widget, "prefixes", prefixes)
-                #print dir(widget.__gtype__), widget.__gtype__, widget.__gtype__.name
+                #print "ALLORAAA", widget.nomee, gtk.Buildable.get_name(self.gl, widget)
+                if widget.__gtype__.name == "UnsignedIntegerEntryField":
+                    setattr(widget, "nomee",widget_api_name)
+                    self.entryGlobalcb(widget)
                 if widget.__gtype__.name == "GtkEntry":
                     #print "MAAAAAAAAAAAAAAAAAAAAAAA"
                     self.entryGlobalcb(widget)

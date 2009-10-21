@@ -175,6 +175,8 @@ def TotaleAnnualeCliente(id_cliente=None):
     totale =0
     for doc in documentiCliente:
         if doc.operazione in ["Fattura vendita",'Fattura differita vendita','Fattura accompagnatoria','Vendita dettaglio','Nota di credito a cliente']:
+            if not doc.totale_pagato: doc.totale_pagato=0
+            if not doc.totale_sospeso: doc.totale_sospeso=0
             totale += (doc.totale_pagato + doc.totale_sospeso)
     return totale
 

@@ -1252,7 +1252,8 @@ class AnagraficaLabel(object):
                 k = "azi_"+a
                 azidict[k] = b
                 del azidict[a]
-            param[0].update(azidict)
+            if param:
+                param[0].update(azidict)
         if not Environment.new_print_enjine:
             return self._slaTemplateObj.serialize(param, self.objects)
         else:

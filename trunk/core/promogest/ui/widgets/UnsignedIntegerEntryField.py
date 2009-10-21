@@ -27,14 +27,21 @@ class UnsignedIntegerEntryField(CustomEntryField):
     __gtype_name__ = 'UnsignedIntegerEntryField'
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
         CustomEntryField.__init__(self)
-
-
-        
-        self._lunghezza = 11
+        self._lunghezza = None
         self._default = str1
         if self._lunghezza > 0:
             self.set_max_length(self._lunghezza)
         self.acceptedKeys = self.controlKeys + self.numberKeys
+
+    def proprieta(self):
+        if "partita_iva" in self.nomee:
+            lunghezza = 11
+        elif "cap" in self.nomee:
+            lunghezza = 5
+        else:
+            lunghezza = 10
+        self.set_max_length(lunghezza)
+        return lunghezza 
 
 
     def my_key_press_event(self, widget, event):
@@ -44,12 +51,13 @@ class UnsignedIntegerEntryField(CustomEntryField):
 
 
     def my_focus_out_event(self, widget, event):
+        lunghezza = self.proprieta()
         try:
             i = int(self.get_text())
-            #if self._lunghezza > 0:
-                #f = "%0" + str(self._lunghezza) + "d"
-                #self.set_text(f % i)
-            #else:
-            self.set_text(str(self.get_text()))
+            if lunghezza > 0:
+                f = "%0" + str(lunghezza) + "d"
+                self.set_text(f % i)
+            else:
+                self.set_text(str(self.get_text()))
         except Exception:
             self.set_text('')
