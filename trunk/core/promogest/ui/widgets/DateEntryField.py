@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -26,16 +26,18 @@ from CustomEntryField import CustomEntryField
 
 class DateEntryField(CustomEntryField):
 # Effettua la validazione delle date
-
+    __gtype_name__ = 'DateEntryField'
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
         CustomEntryField.__init__(self)
-
+        self.set_property("secondary_icon_stock", None)
+        self.set_property("secondary_icon_activatable", False)
+        self.set_property("secondary_icon_sensitive", False)
         self._lunghezza = 10
         self.acceptedKeys = self.controlKeys + self.numberKeys
         self.connect('changed', self.on_change)
 
 
-    def do_key_press_event(self, widget, event):
+    def my_key_press_event(self, widget, event):
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname not in self.acceptedKeys:
             return True
@@ -48,7 +50,7 @@ class DateEntryField(CustomEntryField):
             widget.set_text(data)
 
 
-    def do_focus_out_event(self, widget, event):
+    def my_focus_out_event(self, widget, event):
         data=widget.get_text()
         for c in self.dateChars:
             if c in data:

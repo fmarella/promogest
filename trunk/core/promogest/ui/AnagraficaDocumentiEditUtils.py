@@ -32,7 +32,6 @@ if "Pagamenti" in Environment.modulesList:
     from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 
 def drawPart(anaedit):
-
     treeview = anaedit.righe_treeview
     rendererSx = gtk.CellRendererText()
     rendererDx = gtk.CellRendererText()
@@ -167,80 +166,34 @@ def drawPart(anaedit):
             elif Environment.conf.Documenti.ricerca_per == 'codice_articolo_fornitore':
                 anaedit.ricerca_codice_articolo_fornitore_button.set_active(True)
 
-    anaedit.id_operazione_combobox.connect('changed',
-            anaedit.on_id_operazione_combobox_changed)
     anaedit.id_persona_giuridica_customcombobox.setSingleValue()
     anaedit.id_persona_giuridica_customcombobox.setOnChangedCall(anaedit.persona_giuridica_changed)
-    anaedit.id_magazzino_combobox.connect('changed',
-            anaedit.on_id_magazzino_combobox_changed)
-    anaedit.id_multiplo_customcombobox.connect('clicked',
-            anaedit.on_id_multiplo_customcombobox_button_clicked)
-    anaedit.id_multiplo_customcombobox.combobox.connect('changed',
-            anaedit.on_id_multiplo_customcombobox_changed)
-    anaedit.id_listino_customcombobox.connect('clicked',
-            anaedit.on_id_listino_customcombobox_button_clicked)
-    anaedit.id_listino_customcombobox.combobox.connect('changed',
-            anaedit.on_id_listino_customcombobox_changed)
-    anaedit.id_listino_customcombobox.button.connect('toggled',
-            anaedit.on_id_listino_customcombobox_button_toggled)
-    anaedit.sconti_widget.button.connect('toggled',
-            anaedit.on_sconti_widget_button_toggled)
+
     anaedit.id_destinazione_merce_customcombobox.connect('clicked',
             anaedit.on_id_destinazione_merce_customcombobox_button_clicked)
     idHandler = anaedit.id_vettore_customcombobox.connect('changed',
             on_combobox_vettore_search_clicked)
+    anaedit.id_multiplo_customcombobox.combobox.connect('changed',
+            anaedit.on_id_multiplo_customcombobox_changed)
+    anaedit.id_listino_customcombobox.combobox.connect('changed',
+            anaedit.on_id_listino_customcombobox_changed)
+    anaedit.id_listino_customcombobox.button.connect('toggled',
+            anaedit.on_id_listino_customcombobox_button_toggled)
+    anaedit.id_pagamento_customcombobox.connect('clicked',
+                        on_id_pagamento_customcombobox_clicked)
+    anaedit.id_banca_customcombobox.connect('clicked',
+                        on_id_banca_customcombobox_clicked)
+    anaedit.id_aliquota_iva_esenzione_customcombobox.connect('clicked',
+                        on_id_aliquota_iva_customcombobox_clicked)
     anaedit.id_vettore_customcombobox.setChangedHandler(idHandler)
     idHandler = anaedit.id_agente_customcombobox.connect('changed',
             on_combobox_agente_search_clicked)
-    anaedit.id_agente_customcombobox.setChangedHandler(idHandler)
+    anaedit.sconti_widget.button.connect('toggled',
+            anaedit.on_sconti_widget_button_toggled)
     anaedit.sconti_testata_widget.button.connect('toggled',
             anaedit.on_sconti_testata_widget_button_toggled)
-    anaedit.id_pagamento_customcombobox.connect('clicked',
-            on_id_pagamento_customcombobox_clicked)
-    anaedit.id_banca_customcombobox.connect('clicked',
-            on_id_banca_customcombobox_clicked)
-    anaedit.id_aliquota_iva_esenzione_customcombobox.connect('clicked',
-            on_id_aliquota_iva_customcombobox_clicked)
-    anaedit.ricerca_codice_button.connect('clicked',
-            anaedit.on_ricerca_codice_button_clicked)
-    anaedit.ricerca_codice_a_barre_button.connect('clicked',
-            anaedit.on_ricerca_codice_a_barre_button_clicked)
-    anaedit.ricerca_descrizione_button.connect('clicked',
-            anaedit.on_ricerca_descrizione_button_clicked)
-    anaedit.ricerca_codice_articolo_fornitore_button.connect('clicked',
-            anaedit.on_ricerca_codice_articolo_fornitore_button_clicked)
     if "Pagamenti" in Environment.modulesList:
         AnagraficadocumentiPagamentExt.connectEntryPag(anaedit)
-
-    #Castelletto iva
-    rendererText = gtk.CellRendererText()
-
-    column = gtk.TreeViewColumn('Aliquota I.V.A.', rendererText, text=0)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-    column.set_clickable(False)
-    column.set_resizable(True)
-    column.set_expand(True)
-    anaedit.riepiloghi_iva_treeview.append_column(column)
-
-    rendererText = gtk.CellRendererText()
-    rendererText.set_property('xalign', 1)
-
-    column = gtk.TreeViewColumn('Imponibile', rendererText, text=1)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-    column.set_clickable(False)
-    column.set_resizable(True)
-    column.set_expand(True)
-    anaedit.riepiloghi_iva_treeview.append_column(column)
-
-    column = gtk.TreeViewColumn('Imposta', rendererText, text=2)
-    column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-    column.set_clickable(False)
-    column.set_resizable(True)
-    column.set_expand(True)
-    anaedit.riepiloghi_iva_treeview.append_column(column)
-
-    model = gtk.ListStore(str, str, str)
-    anaedit.riepiloghi_iva_treeview.set_model(model)
 
 def calcolaTotalePart(anaedit, dao=None):
     """ calcola i totali documento """

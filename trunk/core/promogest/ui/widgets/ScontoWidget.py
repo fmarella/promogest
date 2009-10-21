@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -24,7 +24,7 @@ from SignedDecimalEntryField import SignedDecimalEntryField
 
 class ScontoWidget(gtk.HBox):
 # entryfield numerica con segno con possibilita' di scelta del tipo di sconto
-
+    __gtype_name__ = 'ScontoWidget'
     discountTypeChars = ('p', 'P', 'v', 'V')
 
     def __init__(self, str1=None, str2=None, int1=None, int2=None):

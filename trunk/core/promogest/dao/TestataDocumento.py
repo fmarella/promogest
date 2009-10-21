@@ -549,6 +549,10 @@ class TestataDocumento(Dao):
 
 
 
+
+
+
+
     def _al(self):
         if self.AL: return self.AL.denominazione
         else: return ""
@@ -779,6 +783,12 @@ class TestataDocumento(Dao):
         data_fine_noleggio = property(_get_data_fine_noleggio, _set_data_fine_noleggio)
 
 
+    def delete(self):
+        print "PARTIAMO DA QUI"
+        #testataMovDel = TestataMovimento().select(id_testata_documento = self.id).all()
+
+        params['session'].delete(self)
+        params['session'].commit()
 
     def filter_values(self,k,v):
         if k == 'daNumero':
@@ -843,7 +853,7 @@ fornitor=Table('fornitore', params['metadata'], schema = params['schema'], autol
 
 std_mapper = mapper(TestataDocumento, testata_documento, properties={
         "rigadoc": relation(RigaDocumento, backref="testata_documento"),
-        "testata_documento_scadenza" :relation(TestataDocumentoScadenza, backref="testata_documento"),
+        "testata_documento_scadenza" :relation(TestataDocumentoScadenza,cascade="all, delete, delete-orphan", backref="testata_documento"),
         "PG":relation(Pagamento,primaryjoin = testata_documento.c.id_pagamento==paga.c.id),
         "BN":relation(Banca,primaryjoin = (testata_documento.c.id_banca==banc.c.id)),
         "AL":relation(AliquotaIva,primaryjoin = (testata_documento.c.id_aliquota_iva_esenzione==AliquotaIva.id)),

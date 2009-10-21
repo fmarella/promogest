@@ -14,6 +14,7 @@ import glob
 import getopt, sys
 from sqlalchemy import *
 from sqlalchemy.orm import *
+from sqlalchemy.interfaces import PoolListener
 import logging
 import logging.handlers
 
@@ -326,6 +327,8 @@ azienda=conf.Database.azienda
 #azienda = None
 #except:
     #azienda = "azienda_prova"
+#print sys.path
+
 try:
     tipodb = conf.Database.tipodb
 except:
@@ -334,12 +337,15 @@ try:
     pw = conf.Database.pw
 except:
     pw = "No"
-if tipodb == "sqlite" and not (os.path.exists("data/db")):
-    if os.path.exists("data/db_pw.dist")\
-            and pw.upper()=="YES":
-        shutil.copy("data/db_pw.dist","data/db" )
+if tipodb == "sqlite" and not (os.path.exists(startdir()+"db")):
+    if os.path.exists("data/db"):
+        shutil.copy("data/db",startdir()+"db")
+        os.remove("data/db")
+    elif os.path.exists("data/db_pw.dist")\
+                        and pw.upper()=="YES":
+        shutil.copy("data/db_pw.dist",startdir()+"db" )
     elif os.path.exists("data/db.dist"):
-        shutil.copy("data/db.dist","data/db" )
+        shutil.copy("data/db.dist",startdir()+"db" )
     else:
         print("ERRORE NON RIESCO A CREARE IL DB")
 
@@ -350,14 +356,21 @@ password = conf.Database.password
 host = conf.Database.host
 userdata = ["","","",user]
 
+
+class SetTextFactory(PoolListener):
+     def connect(self, dbapi_con, con_record):
+         dbapi_con.text_factory = str
+
+
 if tipodb == "sqlite":
     azienda = None
     mainSchema = None
-    engine =create_engine('sqlite:///data/db')
+    print "startdir()", startdir()
+    engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()])
 else:
     mainSchema = "promogest2"
     #azienda=conf.Database.azienda
-    engine = create_engine('postgres:'+'//'
+    engine = create_engine('postgresql:'+'//'
                     +user+':'
                     + password+ '@'
                     + host + ':'
@@ -370,6 +383,8 @@ engine.echo = False
 meta = MetaData(engine)
     #Session = sessionmaker(bind=engine)
 Session = scoped_session(sessionmaker(bind=engine, autoflush=True))
+
+#meta = None
 #Session = scoped_session(sessionmaker(bind=engine))
 session = Session()
 params = {'engine': engine ,
@@ -411,11 +426,11 @@ pg2log.addHandler(handler)
 pg2log.debug("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
 
 
-def hook(et, ev, eb):
-    import traceback
-    pg2log.debug("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
-    print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE"
-sys.excepthook = hook
+#def hook(et, ev, eb):
+    #import traceback
+    #pg2log.debug("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
+    #print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE"
+#sys.excepthook = hook
 
 #import warnings
 

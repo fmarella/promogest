@@ -23,9 +23,13 @@ import string, re
 import pysvn
 import xml.etree.cElementTree as ElementTree
 from xml.etree.cElementTree import *
-import Login
+try:  # necessario per gestire i custom widgts con glade3 e gtkBuilder
+    import Login
+except:
+    pass
 from promogest.dao.Dao import Dao
 from utilsCombobox import *
+
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
 
 
@@ -587,7 +591,6 @@ def on_combobox_agente_search_clicked(combobox, callName=None):
     """
     Richiama la ricerca degli agenti
     """
-
     def refresh_combobox_agente(anagWindow):
         """
         FIXME
@@ -1150,7 +1153,6 @@ def on_id_pagamento_customcombobox_clicked(widget, button):
     """
     richiama l'anagrafica dei pagamenti
     """
-
     def on_anagrafica_pagamenti_destroyed(window):
         """
         all'uscita dall'anagrafica richiamata, aggiorna l'elenco associato

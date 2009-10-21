@@ -1,141 +1,163 @@
 <?xml version="1.0"?>
-<glade-interface>
-  <!-- interface-requires gtk+ 2.16 -->
+<interface>
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
-  <widget class="GtkWindow" id="anagrafica_window">
+  <object class="GtkIconFactory" id="iconfactory1">
+    <sources>
+      <source stock-id="generated-icon-salva24x24-png" filename="salva24x24.png"/>
+      <source stock-id="generated-icon-elimina24x24-png" filename="elimina24x24.png"/>
+      <source stock-id="generated-icon-trova24x24-png" filename="trova24x24.png"/>
+      <source stock-id="generated-icon-ripristina24x24-png" filename="ripristina24x24.png"/>
+      <source stock-id="generated-icon-annulla24x24-png" filename="annulla24x24.png"/>
+      <source stock-id="generated-icon-modifica24x24-png" filename="modifica24x24.png"/>
+      <source stock-id="generated-icon-nuovo24x24-png" filename="nuovo24x24.png"/>
+    </sources>
+  </object>
+  <object class="GtkWindow" id="anagrafica_window">
     <property name="title" translatable="yes">Anagrafica</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="default_width">800</property>
     <property name="default_height">600</property>
     <property name="icon">promogest.png</property>
+    <accel-groups>
+      <group name="accelgroup1"/>
+    </accel-groups>
     <signal name="destroy_event" handler="on_anagrafica_window_close"/>
     <signal name="delete_event" handler="on_anagrafica_window_close"/>
     <child>
-      <widget class="GtkVBox" id="anagrafica_main_vbox">
+      <object class="GtkVBox" id="anagrafica_main_vbox">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
-          <widget class="GtkMenuBar" id="menubar1">
+          <object class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
             <child>
-              <widget class="GtkMenuItem" id="record_menu">
+              <object class="GtkMenuItem" id="record_menu">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Record</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_record_menu_activate"/>
-                <child>
-                  <widget class="GtkMenu" id="record_menu_menu">
+                <child type="submenu">
+                  <object class="GtkMenu" id="record_menu_menu">
                     <child>
-                      <widget class="GtkImageMenuItem" id="record_new_menu">
+                      <object class="GtkImageMenuItem" id="record_new_menu">
                         <property name="label">_Nuovo</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accelgroup1</property>
                         <signal name="activate" handler="on_record_new_menu_activate"/>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkSeparatorMenuItem" id="separatore1">
+                      <object class="GtkSeparatorMenuItem" id="separatore1">
                         <property name="visible">True</property>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="record_edit_menu">
+                      <object class="GtkImageMenuItem" id="record_edit_menu">
                         <property name="label">_Modifica</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accelgroup1</property>
                         <signal name="activate" handler="on_record_edit_menu_activate"/>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="record_delete_menu">
+                      <object class="GtkImageMenuItem" id="record_delete_menu">
                         <property name="label">_Elimina</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accelgroup1</property>
                         <signal name="activate" handler="on_record_delete_menu_activate"/>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkSeparatorMenuItem" id="separatore3">
+                      <object class="GtkSeparatorMenuItem" id="separatore3">
                         <property name="visible">True</property>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="record_save_menu">
+                      <object class="GtkImageMenuItem" id="record_save_menu">
                         <property name="label">_Salva</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accelgroup1</property>
                         <signal name="activate" handler="on_record_save_menu_activate"/>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="record_cancel_menu">
+                      <object class="GtkImageMenuItem" id="record_cancel_menu">
                         <property name="label">_Annulla</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accelgroup1</property>
                         <signal name="activate" handler="on_record_cancel_menu_activate"/>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkSeparatorMenuItem" id="separatore2">
+                      <object class="GtkSeparatorMenuItem" id="separatore2">
                         <property name="visible">True</property>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="record_undo_menu">
+                      <object class="GtkImageMenuItem" id="record_undo_menu">
                         <property name="label">_Ripristina</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accelgroup1</property>
                         <signal name="activate" handler="on_record_undo_menu_activate"/>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkSeparatorMenuItem" id="separatore4">
+                      <object class="GtkSeparatorMenuItem" id="separatore4">
                         <property name="visible">True</property>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="record_menu_close">
+                      <object class="GtkImageMenuItem" id="record_menu_close">
                         <property name="label">_Chiudi</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accelgroup1</property>
                         <signal name="activate" handler="on_record_menu_close_activate"/>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
-              </widget>
+              </object>
             </child>
             <child>
-              <widget class="GtkMenuItem" id="aiuto_menu">
+              <object class="GtkMenuItem" id="aiuto_menu">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">A_iuto</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_aiuto_menu_activate"/>
-                <child>
-                  <widget class="GtkMenu" id="aiuto_menu_menu">
+                <child type="submenu">
+                  <object class="GtkMenu" id="aiuto_menu_menu">
                     <child>
-                      <widget class="GtkMenuItem" id="aiuto_menu_informazioni">
+                      <object class="GtkMenuItem" id="aiuto_menu_informazioni">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">I_nformazioni</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_aiuto_menu_informazioni_activate"/>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
-              </widget>
+              </object>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
@@ -143,145 +165,145 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkToolbar" id="toolbar1">
+          <object class="GtkToolbar" id="toolbar1">
             <property name="visible">True</property>
             <property name="toolbar_style">both</property>
             <child>
-              <widget class="GtkToolButton" id="record_new_button">
+              <object class="GtkToolButton" id="record_new_button">
                 <property name="visible">True</property>
-                <property name="tooltip" translatable="yes">Nuovo record</property>
+                <property name="tooltip_text" translatable="yes">Nuovo record</property>
                 <property name="label" translatable="yes">Nuovo</property>
                 <property name="use_underline">True</property>
-                <property name="icon">nuovo24x24.png</property>
+                <property name="stock_id">generated-icon-nuovo24x24-png</property>
                 <signal name="clicked" handler="on_record_new_activate"/>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkSeparatorToolItem" id="separatortoolitem2">
+              <object class="GtkSeparatorToolItem" id="separatortoolitem2">
                 <property name="visible">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkToolButton" id="record_edit_button">
+              <object class="GtkToolButton" id="record_edit_button">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="tooltip" translatable="yes">Modifica il record selezionato</property>
+                <property name="tooltip_text" translatable="yes">Modifica il record selezionato</property>
                 <property name="label" translatable="yes">Modifica</property>
                 <property name="use_underline">True</property>
-                <property name="icon">modifica24x24.png</property>
+                <property name="stock_id">generated-icon-modifica24x24-png</property>
                 <signal name="clicked" handler="on_record_edit_activate"/>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkToolButton" id="record_delete_button">
+              <object class="GtkToolButton" id="record_delete_button">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="tooltip" translatable="yes">Elimina il record selezionato</property>
+                <property name="tooltip_text" translatable="yes">Elimina il record selezionato</property>
                 <property name="label" translatable="yes">Elimina</property>
                 <property name="use_underline">True</property>
-                <property name="icon">elimina24x24.png</property>
+                <property name="stock_id">generated-icon-elimina24x24-png</property>
                 <signal name="clicked" handler="on_record_delete_activate"/>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkSeparatorToolItem" id="separatortoolitem3">
+              <object class="GtkSeparatorToolItem" id="separatortoolitem3">
                 <property name="visible">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkToolButton" id="record_save_button">
+              <object class="GtkToolButton" id="record_save_button">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="tooltip" translatable="yes">Salva le modifiche</property>
+                <property name="tooltip_text" translatable="yes">Salva le modifiche</property>
                 <property name="label" translatable="yes">Salva</property>
                 <property name="use_underline">True</property>
-                <property name="icon">salva24x24.png</property>
+                <property name="stock_id">generated-icon-salva24x24-png</property>
                 <signal name="clicked" handler="on_record_save_activate"/>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkToolButton" id="record_cancel_button">
+              <object class="GtkToolButton" id="record_cancel_button">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="tooltip" translatable="yes">Non salva le modifiche</property>
+                <property name="tooltip_text" translatable="yes">Non salva le modifiche</property>
                 <property name="label" translatable="yes">Annulla</property>
                 <property name="use_underline">True</property>
-                <property name="icon">annulla24x24.png</property>
+                <property name="stock_id">generated-icon-annulla24x24-png</property>
                 <signal name="clicked" handler="on_record_cancel_activate"/>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkSeparatorToolItem" id="separatortoolitem4">
+              <object class="GtkSeparatorToolItem" id="separatortoolitem4">
                 <property name="visible">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkToolButton" id="record_undo_button">
+              <object class="GtkToolButton" id="record_undo_button">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
-                <property name="tooltip" translatable="yes">Annulla i cambiamenti</property>
+                <property name="tooltip_text" translatable="yes">Annulla i cambiamenti</property>
                 <property name="label" translatable="yes">Ripristina</property>
                 <property name="use_underline">True</property>
-                <property name="icon">ripristina24x24.png</property>
+                <property name="stock_id">generated-icon-ripristina24x24-png</property>
                 <signal name="clicked" handler="on_record_undo_activate"/>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkSeparatorToolItem" id="separatortoolitem5">
+              <object class="GtkSeparatorToolItem" id="separatortoolitem5">
                 <property name="visible">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkToggleToolButton" id="toggle_filter_button">
+              <object class="GtkToggleToolButton" id="toggle_filter_button">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Trova</property>
                 <property name="use_underline">True</property>
-                <property name="icon">trova24x24.png</property>
+                <property name="stock_id">generated-icon-trova24x24-png</property>
                 <property name="active">True</property>
                 <signal name="clicked" handler="on_toggle_filter_button_clicked"/>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
@@ -289,74 +311,76 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkHPaned" id="anagrafica_hpaned">
+          <object class="GtkHPaned" id="anagrafica_hpaned">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="border_width">6</property>
             <property name="position">300</property>
             <child>
-              <widget class="GtkScrolledWindow" id="anagrafica_filter_scrolledwindow">
+              <object class="GtkScrolledWindow" id="anagrafica_filter_scrolledwindow">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hscrollbar_policy">automatic</property>
                 <property name="vscrollbar_policy">never</property>
                 <child>
-                  <widget class="GtkViewport" id="anagrafica_filter_viewport">
+                  <object class="GtkViewport" id="anagrafica_filter_viewport">
                     <property name="visible">True</property>
                     <property name="shadow_type">none</property>
                     <child>
-                      <widget class="GtkVBox" id="anagrafica_filter_main_vbox">
+                      <object class="GtkVBox" id="anagrafica_filter_main_vbox">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
-                          <widget class="GtkFrame" id="anagrafica_filter_frame">
+                          <object class="GtkFrame" id="anagrafica_filter_frame">
                             <property name="visible">True</property>
                             <property name="label_xalign">0</property>
                             <child>
-                              <widget class="GtkAlignment" id="anagrafica_filter_alignment">
+                              <object class="GtkAlignment" id="anagrafica_filter_alignment">
                                 <property name="visible">True</property>
                                 <property name="right_padding">5</property>
                                 <child>
-                                  <widget class="GtkVBox" id="anagrafica_filter_vbox">
+                                  <object class="GtkVBox" id="anagrafica_filter_vbox">
                                     <property name="visible">True</property>
+                                    <property name="orientation">vertical</property>
                                     <child>
                                       <placeholder/>
                                     </child>
                                     <child>
-                                      <widget class="GtkHBox" id="hbox1">
+                                      <object class="GtkHBox" id="hbox1">
                                         <property name="visible">True</property>
                                         <child>
                                           <placeholder/>
                                         </child>
                                         <child>
-                                          <widget class="GtkHButtonBox" id="hbuttonbox">
+                                          <object class="GtkHButtonBox" id="hbuttonbox">
                                             <property name="visible">True</property>
                                             <property name="border_width">6</property>
                                             <property name="spacing">6</property>
                                             <property name="layout_style">end</property>
                                             <child>
-                                              <widget class="GtkButton" id="anagrafica_filter_clear_button">
+                                              <object class="GtkButton" id="anagrafica_filter_clear_button">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="can_default">True</property>
                                                 <property name="receives_default">True</property>
                                                 <property name="has_tooltip">True</property>
-                                                <property name="tooltip" translatable="yes">Ripulisci i parametri di ricerca</property>
+                                                <property name="tooltip_text" translatable="yes">Ripulisci i parametri di ricerca</property>
                                                 <signal name="clicked" handler="on_anagrafica_filter_clear_button_clicked"/>
                                                 <child>
-                                                  <widget class="GtkAlignment" id="alignment508">
+                                                  <object class="GtkAlignment" id="alignment508">
                                                     <property name="visible">True</property>
                                                     <property name="xscale">0</property>
                                                     <property name="yscale">0</property>
                                                     <child>
-                                                      <widget class="GtkHBox" id="hbox376">
+                                                      <object class="GtkHBox" id="hbox376">
                                                         <property name="visible">True</property>
                                                         <property name="spacing">2</property>
                                                         <child>
-                                                          <widget class="GtkImage" id="image363">
+                                                          <object class="GtkImage" id="image363">
                                                             <property name="visible">True</property>
                                                             <property name="pixbuf">pulisci24x24.png</property>
-                                                          </widget>
+                                                          </object>
                                                           <packing>
                                                             <property name="expand">False</property>
                                                             <property name="fill">False</property>
@@ -364,22 +388,22 @@
                                                           </packing>
                                                         </child>
                                                         <child>
-                                                          <widget class="GtkLabel" id="label3463">
+                                                          <object class="GtkLabel" id="label3463">
                                                             <property name="visible">True</property>
                                                             <property name="label">_Pulisci</property>
                                                             <property name="use_underline">True</property>
-                                                          </widget>
+                                                          </object>
                                                           <packing>
                                                             <property name="expand">False</property>
                                                             <property name="fill">False</property>
                                                             <property name="position">1</property>
                                                           </packing>
                                                         </child>
-                                                      </widget>
+                                                      </object>
                                                     </child>
-                                                  </widget>
+                                                  </object>
                                                 </child>
-                                              </widget>
+                                              </object>
                                               <packing>
                                                 <property name="expand">False</property>
                                                 <property name="fill">False</property>
@@ -387,29 +411,29 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <widget class="GtkButton" id="anagrafica_filter_search_button">
+                                              <object class="GtkButton" id="anagrafica_filter_search_button">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="can_default">True</property>
                                                 <property name="has_default">True</property>
                                                 <property name="receives_default">True</property>
                                                 <property name="has_tooltip">True</property>
-                                                <property name="tooltip" translatable="yes">Ricerca in base ai parametri specificati</property>
+                                                <property name="tooltip_text" translatable="yes">Ricerca in base ai parametri specificati</property>
                                                 <signal name="clicked" handler="on_anagrafica_filter_search_button_clicked"/>
                                                 <child>
-                                                  <widget class="GtkAlignment" id="alignment509">
+                                                  <object class="GtkAlignment" id="alignment509">
                                                     <property name="visible">True</property>
                                                     <property name="xscale">0</property>
                                                     <property name="yscale">0</property>
                                                     <child>
-                                                      <widget class="GtkHBox" id="hbox377">
+                                                      <object class="GtkHBox" id="hbox377">
                                                         <property name="visible">True</property>
                                                         <property name="spacing">2</property>
                                                         <child>
-                                                          <widget class="GtkImage" id="image364">
+                                                          <object class="GtkImage" id="image364">
                                                             <property name="visible">True</property>
                                                             <property name="pixbuf">trova24x24.png</property>
-                                                          </widget>
+                                                          </object>
                                                           <packing>
                                                             <property name="expand">False</property>
                                                             <property name="fill">False</property>
@@ -417,328 +441,326 @@
                                                           </packing>
                                                         </child>
                                                         <child>
-                                                          <widget class="GtkLabel" id="label3464">
+                                                          <object class="GtkLabel" id="label3464">
                                                             <property name="visible">True</property>
                                                             <property name="label">Tr_ova</property>
                                                             <property name="use_underline">True</property>
-                                                          </widget>
+                                                          </object>
                                                           <packing>
                                                             <property name="expand">False</property>
                                                             <property name="fill">False</property>
                                                             <property name="position">1</property>
                                                           </packing>
                                                         </child>
-                                                      </widget>
+                                                      </object>
                                                     </child>
-                                                  </widget>
+                                                  </object>
                                                 </child>
-                                              </widget>
+                                              </object>
                                               <packing>
                                                 <property name="expand">False</property>
                                                 <property name="fill">False</property>
                                                 <property name="position">1</property>
                                               </packing>
                                             </child>
-                                          </widget>
+                                          </object>
                                           <packing>
                                             <property name="pack_type">end</property>
                                             <property name="position">0</property>
                                           </packing>
                                         </child>
-                                      </widget>
+                                      </object>
                                       <packing>
                                         <property name="position">1</property>
                                       </packing>
                                     </child>
-                                  </widget>
+                                  </object>
                                 </child>
-                              </widget>
+                              </object>
                             </child>
-                            <child>
-                              <widget class="GtkLabel" id="label27">
+                            <child type="label">
+                              <object class="GtkLabel" id="label27">
                                 <property name="visible">True</property>
                                 <property name="label" translatable="yes">&lt;b&gt;Ricerca&lt;/b&gt;</property>
                                 <property name="use_markup">True</property>
-                              </widget>
-                              <packing>
-                                <property name="type">label_item</property>
-                              </packing>
+                              </object>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkScrolledWindow" id="anagrafica_filter_scrolledwindow1">
+                          <object class="GtkScrolledWindow" id="anagrafica_filter_scrolledwindow1">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="hscrollbar_policy">automatic</property>
                             <property name="vscrollbar_policy">automatic</property>
                             <property name="shadow_type">in</property>
                             <child>
-                              <widget class="GtkTreeView" id="anagrafica_filter_treeview">
+                              <object class="GtkTreeView" id="anagrafica_filter_treeview">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="rules_hint">True</property>
                                 <signal name="cursor_changed" handler="on_anagrafica_filter_treeview_cursor_changed"/>
                                 <signal name="row_activated" handler="on_record_edit_activate"/>
-                              </widget>
+                              </object>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkHBox" id="anagrafica_filter_hbox_navigation">
+                          <object class="GtkHBox" id="anagrafica_filter_hbox_navigation">
                             <property name="visible">True</property>
                             <child>
-                              <widget class="GtkButton" id="anagrafica_filter_first_button">
+                              <object class="GtkButton" id="anagrafica_filter_first_button">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <signal name="clicked" handler="on_anagrafica_filter_first_button_clicked"/>
                                 <child>
-                                  <widget class="GtkAlignment" id="alignment15">
+                                  <object class="GtkAlignment" id="alignment15">
                                     <property name="visible">True</property>
                                     <property name="xscale">0</property>
                                     <property name="yscale">0</property>
                                     <child>
-                                      <widget class="GtkHBox" id="hbox28">
+                                      <object class="GtkHBox" id="hbox28">
                                         <property name="visible">True</property>
                                         <property name="spacing">2</property>
                                         <child>
-                                          <widget class="GtkImage" id="image15">
+                                          <object class="GtkImage" id="image15">
                                             <property name="visible">True</property>
                                             <property name="pixbuf">primo24x24.png</property>
-                                          </widget>
+                                          </object>
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">False</property>
                                             <property name="position">0</property>
                                           </packing>
                                         </child>
-                                      </widget>
+                                      </object>
                                     </child>
-                                  </widget>
+                                  </object>
                                 </child>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkButton" id="anagrafica_filter_prev_button">
+                              <object class="GtkButton" id="anagrafica_filter_prev_button">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <signal name="clicked" handler="on_anagrafica_filter_prev_button_clicked"/>
                                 <child>
-                                  <widget class="GtkAlignment" id="alignment16">
+                                  <object class="GtkAlignment" id="alignment16">
                                     <property name="visible">True</property>
                                     <property name="xscale">0</property>
                                     <property name="yscale">0</property>
                                     <child>
-                                      <widget class="GtkHBox" id="hbox29">
+                                      <object class="GtkHBox" id="hbox29">
                                         <property name="visible">True</property>
                                         <property name="spacing">2</property>
                                         <child>
-                                          <widget class="GtkImage" id="image16">
+                                          <object class="GtkImage" id="image16">
                                             <property name="visible">True</property>
                                             <property name="pixbuf">indietro24x24.png</property>
-                                          </widget>
+                                          </object>
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">False</property>
                                             <property name="position">0</property>
                                           </packing>
                                         </child>
-                                      </widget>
+                                      </object>
                                     </child>
-                                  </widget>
+                                  </object>
                                 </child>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkHBox" id="hbox32">
+                              <object class="GtkHBox" id="hbox32">
                                 <property name="visible">True</property>
                                 <property name="border_width">6</property>
                                 <child>
-                                  <widget class="GtkLabel" id="label37">
+                                  <object class="GtkLabel" id="label37">
                                     <property name="visible">True</property>
                                     <property name="label" translatable="yes">Pag. </property>
-                                  </widget>
+                                  </object>
                                   <packing>
                                     <property name="position">0</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkEntry" id="anagrafica_current_page_entry">
+                                  <object class="GtkEntry" id="anagrafica_current_page_entry">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="has_frame">False</property>
                                     <property name="width_chars">4</property>
                                     <property name="text" translatable="yes">1</property>
                                     <signal name="key_press_event" handler="on_anagrafica_current_page_entry_key_press_event"/>
-                                  </widget>
+                                  </object>
                                   <packing>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkLabel" id="label38">
+                                  <object class="GtkLabel" id="label38">
                                     <property name="visible">True</property>
                                     <property name="label" translatable="yes"> /</property>
-                                  </widget>
+                                  </object>
                                   <packing>
                                     <property name="position">2</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkLabel" id="anagrafica_filter_total_count">
+                                  <object class="GtkLabel" id="anagrafica_filter_total_count">
                                     <property name="visible">True</property>
                                     <property name="label" translatable="yes">1</property>
-                                  </widget>
+                                  </object>
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
                                     <property name="position">3</property>
                                   </packing>
                                 </child>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">2</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkButton" id="anagrafica_filter_next_button">
+                              <object class="GtkButton" id="anagrafica_filter_next_button">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <signal name="clicked" handler="on_anagrafica_filter_next_button_clicked"/>
                                 <child>
-                                  <widget class="GtkAlignment" id="alignment17">
+                                  <object class="GtkAlignment" id="alignment17">
                                     <property name="visible">True</property>
                                     <property name="xscale">0</property>
                                     <property name="yscale">0</property>
                                     <child>
-                                      <widget class="GtkHBox" id="hbox30">
+                                      <object class="GtkHBox" id="hbox30">
                                         <property name="visible">True</property>
                                         <property name="spacing">2</property>
                                         <child>
-                                          <widget class="GtkImage" id="image17">
+                                          <object class="GtkImage" id="image17">
                                             <property name="visible">True</property>
                                             <property name="pixbuf">avanti24x24.png</property>
-                                          </widget>
+                                          </object>
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">False</property>
                                             <property name="position">0</property>
                                           </packing>
                                         </child>
-                                      </widget>
+                                      </object>
                                     </child>
-                                  </widget>
+                                  </object>
                                 </child>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">3</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkButton" id="anagrafica_filter_last_button">
+                              <object class="GtkButton" id="anagrafica_filter_last_button">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <signal name="clicked" handler="on_anagrafica_filter_last_button_clicked"/>
                                 <child>
-                                  <widget class="GtkAlignment" id="alignment18">
+                                  <object class="GtkAlignment" id="alignment18">
                                     <property name="visible">True</property>
                                     <property name="xscale">0</property>
                                     <property name="yscale">0</property>
                                     <child>
-                                      <widget class="GtkHBox" id="hbox31">
+                                      <object class="GtkHBox" id="hbox31">
                                         <property name="visible">True</property>
                                         <property name="spacing">2</property>
                                         <child>
-                                          <widget class="GtkImage" id="image18">
+                                          <object class="GtkImage" id="image18">
                                             <property name="visible">True</property>
                                             <property name="pixbuf">ultimo24x24.png</property>
-                                          </widget>
+                                          </object>
                                           <packing>
                                             <property name="expand">False</property>
                                             <property name="fill">False</property>
                                             <property name="position">0</property>
                                           </packing>
                                         </child>
-                                      </widget>
+                                      </object>
                                     </child>
-                                  </widget>
+                                  </object>
                                 </child>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">4</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="position">2</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="resize">False</property>
                 <property name="shrink">True</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkScrolledWindow" id="anagrafica_detail_scrolledwindow">
+              <object class="GtkScrolledWindow" id="anagrafica_detail_scrolledwindow">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hscrollbar_policy">automatic</property>
                 <property name="vscrollbar_policy">automatic</property>
                 <child>
-                  <widget class="GtkViewport" id="anagrafica_detail_viewport">
+                  <object class="GtkViewport" id="anagrafica_detail_viewport">
                     <property name="visible">True</property>
                     <property name="shadow_type">none</property>
                     <child>
                       <placeholder/>
                     </child>
-                  </widget>
+                  </object>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="resize">True</property>
                 <property name="shrink">True</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="position">2</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkStatusbar" id="statusbar1">
+          <object class="GtkStatusbar" id="statusbar1">
             <property name="visible">True</property>
             <property name="has_resize_grip">False</property>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
             <property name="position">3</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+  <object class="GtkAccelGroup" id="accelgroup1"/>
+</interface>

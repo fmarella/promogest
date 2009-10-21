@@ -193,8 +193,7 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
 class AnagraficaTaglieHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica,'taglia',
-                                'Informazioni sulla famiglia articoli',
-                                templatesHTMLDir=os.path.join("promogest/modules/PromoWear/templates/"))
+                                'Informazioni sulla famiglia articoli')
 
 
 

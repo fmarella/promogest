@@ -59,7 +59,7 @@ class AnagraficaPromemoriaFilter(AnagraficaFilter):
         self.orderBy = 'data_scadenza'
 
 
-    def draw(self):
+    def draw(self,cplx=False):
         # Colonne della Treeview per il filtro
         treeview = self._anagrafica.anagrafica_filter_treeview
         renderer = gtk.CellRendererText()
@@ -159,16 +159,16 @@ class AnagraficaPromemoriaFilter(AnagraficaFilter):
         self.a_data_inserimento_entry.set_text('')
         self.da_data_scadenza_entry.set_text('')
         self.a_data_scadenza_entry.set_text('')
-        self.oggetto_entry.set_text('')
-        fillComboboxIncaricatiPromemoria(self.incaricato_combobox_entry)
-        self.incaricato_combobox_entry.set_active(-1)
-        self.incaricato_combobox_entry.child.set_text('')
-        fillComboboxAutoriPromemoria(self.autore_combobox_entry)
-        self.autore_combobox_entry.set_active(-1)
-        self.autore_combobox_entry.child.set_text('')
-        self.descrizione_entry.set_text('')
-        self.annotazione_entry.set_text('')
-        self.riferimento_entry.set_text('')
+        self.oggetto_filter_entry.set_text('')
+        fillComboboxIncaricatiPromemoria(self.incaricato_combobox_filter_entry)
+        self.incaricato_combobox_filter_entry.set_active(-1)
+        self.incaricato_combobox_filter_entry.child.set_text('')
+        fillComboboxAutoriPromemoria(self.autore_combobox_filter_entry)
+        self.autore_combobox_filter_entry.set_active(-1)
+        self.autore_combobox_filter_entry.child.set_text('')
+        self.descrizione_filter_entry.set_text('')
+        self.annotazione_filter_entry.set_text('')
+        self.riferimento_filter_entry.set_text('')
         self.completati_checkbox.set_active(False)
         self.scaduti_checkbox.set_active(False)
         self.in_scadenza_checkbox.set_active(True)
@@ -183,11 +183,11 @@ class AnagraficaPromemoriaFilter(AnagraficaFilter):
         da_data_scadenza = stringToDateTime(emptyStringToNone(self.da_data_scadenza_entry.get_text()))
         a_data_scadenza = stringToDateTime(emptyStringToNone(self.a_data_scadenza_entry.get_text()))
         oggetto = prepareFilterString(self.oggetto_entry.get_text())
-        incaricato = prepareFilterString(self.incaricato_combobox_entry.get_active_text())
-        autore = prepareFilterString(self.autore_combobox_entry.get_active_text())
-        descrizione = prepareFilterString(self.descrizione_entry.get_text())
-        annotazione = prepareFilterString(self.annotazione_entry.get_text())
-        riferimento = prepareFilterString(self.riferimento_entry.get_text())
+        incaricato = prepareFilterString(self.incaricato_combobox_filter_entry.get_active_text())
+        autore = prepareFilterString(self.autore_combobox_filter_entry.get_active_text())
+        descrizione = prepareFilterString(self.descrizione_filter_entry.get_text())
+        annotazione = prepareFilterString(self.annotazione_filter_entry.get_text())
+        riferimento = prepareFilterString(self.riferimento_filter_entry.get_text())
         completati = self.completati_checkbox.get_active()
         scaduti = self.scaduti_checkbox.get_active()
         in_scadenza = self.in_scadenza_checkbox.get_active()
@@ -292,7 +292,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
         self._widgetFirstFocus = self.data_scadenza_entry
 
 
-    def draw(self):
+    def draw(self,cplx=False):
         textBuffer = gtk.TextBuffer()
         self.descrizione_textview.set_buffer(textBuffer)
         textBuffer = gtk.TextBuffer()
@@ -339,11 +339,11 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
     def saveDao(self):
         if self.data_scadenza_entry.get_text() == '':
             msg = 'Data scadenza. \nCampo obbligatorio'
-            ObligatoryField(self.dialogTopLevel, self.data_scadenza_entry, msg)
+            obligatoryField(self.dialogTopLevel, self.data_scadenza_entry, msg)
 
         if self.oggetto_entry.get_text() == '':
             msg = 'Oggetto. \nCampo obbligatorio'
-            ObligatoryField(self.dialogTopLevel, self.oggetto_entry, msg)
+            obligatoryField(self.dialogTopLevel, self.oggetto_entry, msg)
 
         self.dao.data_scadenza = stringToDateTime(self.data_scadenza_entry.get_text())
         self.dao.oggetto = self.oggetto_entry.get_text()

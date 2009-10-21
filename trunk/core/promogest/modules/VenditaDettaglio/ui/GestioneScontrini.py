@@ -5,9 +5,9 @@
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francescoo@promotux.it>
 
-import gtk, gobject
+import gtk
 import os, popen2
-import gtkhtml2
+
 from promogest.dao.DaoUtils import giacenzaSel
 from datetime import datetime, timedelta
 from promogest import Environment
@@ -18,9 +18,8 @@ from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRig
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.ui.utils import *
 from promogest.ui import utils
-from jinja2 import Environment  as Env
-from jinja2 import FileSystemLoader,FileSystemBytecodeCache
 
+from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 
 class GestioneScontrini(GladeWidget):
     """ Classe per la gestione degli scontrini emessi """
@@ -54,7 +53,8 @@ class GestioneScontrini(GladeWidget):
         sw = gtk.ScrolledWindow()
         sw.set_policy(hscrollbar_policy = gtk.POLICY_AUTOMATIC,
                             vscrollbar_policy = gtk.POLICY_AUTOMATIC)
-        self.detail = gtkhtml2.View()
+        #createHtmlObj(self)
+        self.detail = createHtmlObj(self)
         sw.add(self.detail)
         self.main_hpaned.pack2(sw)
 
@@ -64,6 +64,7 @@ class GestioneScontrini(GladeWidget):
         self.filterss.filter_body_label.set_property('visible', True)
 
         self.filterss.hbox1.destroy()
+        self.quit_button.connect('clicked', self.on_scontrini_window_close)
         # Colonne della Treeview per il filtro
         treeview = self.filterss.resultsElement
         model = self.filterss._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str)
@@ -140,12 +141,8 @@ class GestioneScontrini(GladeWidget):
             self.filters.a_data_filter_entry.setNow()
         else:
             self.filters.a_data_filter_entry.set_text(self_aData)
-        self.defaultFileName = "scontrino.html"
-        self._htmlTemplate = "promogest/modules/VenditaDettaglio/templates"
-         #self.html_scrolledwindow.add(self.detail)
+
         self.refreshHtml()
-
-
         self.refresh()
 
     def clear(self):
@@ -215,8 +212,7 @@ class GestioneScontrini(GladeWidget):
             tot += m.totale_scontrino
             totccr += m.totale_carta_credito
             totass += m.totale_assegni
-            if m.totale_contanti:
-                totcont += m.totale_contanti - m.totale_scontrino
+            totcont += m.totale_contanti
             totnum += 1
         self.filterss.label1.set_text("T scontrini:")
         stringa = """<b><span foreground="black" size="20000">%s</span></b> - Resto da contante:<b>%s</b> - T Carta:<b>%s</b> - T Assegni:<b>%s</b> - T Sconti:<b>%s</b> - N°:<b><span foreground="black" size="18000">%s</span></b>""" %(mN(tot),mN(totcont), mN(totccr), mN(totass),mN(tot_sconti), totnum )
@@ -243,23 +239,22 @@ class GestioneScontrini(GladeWidget):
         pass
 
     def refreshHtml(self, dao=None):
-        document =gtkhtml2.Document()
-        if self.dao is None:
-            html = '<html><body></body></html>'
-        else:
-            templates_dir = self._htmlTemplate
-            jinja_env = Env(loader=FileSystemLoader(templates_dir),
-                bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
-            jinja_env.globals['environment'] = Environment
-            jinja_env.globals['utils'] = utils
-            html = jinja_env.get_template(self.defaultFileName).render(dao=self.dao)
-        document.open_stream('text/html')
-        document.write_stream(html)
-        document.close_stream()
-        #self.detail.detail_html.set_document(document)
-        self.detail.set_document(document)
+        pageData = {}
+        html = '<html></html>'
+        if self.dao:
+            pageData = {
+                    "file": "scontrino.html",
+                    "dao" :self.dao
+                    }
+            html = renderTemplate(pageData)
+        renderHTML(self.detail,html)
 
-    def on_quit_button_clicked(self, widget, event=None):
+    #def on_quit_button_clicked(self, widget, event=None):
+        #self.destroy()
+        #return None
+
+
+    def on_scontrini_window_close(self, widget, event=None):
         self.destroy()
         return None
 

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -62,7 +62,7 @@ class AnagraficaDestinazioniMerceFilter(AnagraficaFilter):
         self.orderBy = 'denominazione'
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         # Colonne della Treeview per il filtro
         treeview = self._anagrafica.anagrafica_filter_treeview
         renderer = gtk.CellRendererText()
@@ -184,7 +184,7 @@ class AnagraficaDestinazioniMerceEdit(AnagraficaEdit):
         self._widgetFirstFocus = self.denominazione_entry
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         pass
 
 

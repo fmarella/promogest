@@ -25,21 +25,50 @@ class CustomEntryField(gtk.Entry):
 
     def __init__(self):
         gtk.Entry.__init__(self)
-        self.connect('key_press_event', self.do_key_press_event)
-        self.connect('focus_out_event', self.do_focus_out_event)
-        self.connect('paste_clipboard', self.do_paste_clipboard)
+        self.connect('key_press_event', self.my_key_press_event)
+        self.connect('focus_out_event', self.my_focus_out_event)
+        self.connect('paste_clipboard', self.my_paste_clipboard)
+        self.connect('focus-in-event', self.on_focus_in_event)
+        self.connect('focus-out-event', self.on_focus_out_event)
+        self.connect("icon-press", self.on_icon_press)
+        self.set_property("secondary_icon_stock", "gtk-clear")
+        self.set_property("secondary_icon_activatable", True)
+        self.set_property("secondary_icon_sensitive", True)
         self.connect("show", self.on_show)
 
 
-    def do_key_press_event(self, widget, event):
+    def on_icon_press(self, widget):
+        pass
+
+    def on_focus_in_event(self, widget, event):
+        try:
+            color_base = Environment.conf.Documenti.color_base
+        except:
+            #print "DEFINIRE NELLA SEZIONE DOCUMENTI UN COLORE PER LE ENTRY CON color_base = #FLFLFLF"
+            color_base = "#F9FBA7"
+        try:
+            color_text = Environment.conf.Documenti.color_text
+        except:
+            #print "DEFINIRE NELLA SEZIONE DOCUMENTI UN COLORE PER LE ENTRY CON color_text = #FFFFFF"
+            color_text = "black"
+        widget.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse(color_base))
+        widget.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse(color_text))
+
+    def on_focus_out_event(self, widget, event):
+        #widget.modify_fg(gtk.STATE_NORMAL, gtk.gdk.color_parse("blue"))
+        #widget.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("red"))
+        widget.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse("white"))
+        widget.modify_text(gtk.STATE_NORMAL, gtk.gdk.color_parse("black"))
+
+    def my_key_press_event(self, widget, event):
         pass
 
 
-    def do_focus_out_event(self, widget, event):
+    def my_focus_out_event(self, widget, event):
         pass
 
 
-    def do_paste_clipboard(self, widget):
+    def my_paste_clipboard(self, widget):
         self.emit_stop_by_name('paste_clipboard')
 
 

@@ -22,7 +22,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_documenti_filter_table', 'anagrafica_documenti.glade')
+                                  'anagrafica_documenti_filter_table',
+                                    '_ricerca_semplice_documenti.glade')
         self._widgetFirstFocus = self.da_data_filter_entry
         if not "GestioneNoleggio" in Environment.modulesList:
             self.noleggio_expander.destroy()
@@ -243,7 +244,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self._filterClosure = filterClosure
         #self._allResultForHtml = self.runFilter(offset=None, batchSize=None)
         tdos = self.runFilter()
-        self.xptDaoList = self.runFilter(offset=None, batchSize=None)
+        #self.xptDaoList = self.runFilter(offset=None, batchSize=None)
         self._treeViewModel.clear()
         for t in tdos:
             totali = t.totali

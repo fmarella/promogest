@@ -320,6 +320,9 @@ class RicercaArticoliFilter(GladeWidget):
 
         GladeWidget.__init__(self, 'anagrafica_articoli_filter_vbox',
                             fileName='_anagrafica_articoli_elements.glade')
+        self.ricerca_semplice_articoli_filter_vbox.pack_start(self.anagrafica_articoli_filter_table)
+        self.viewport1.add(self.ricerca_avanzata_articoli_filter_filters_frame)
+        #ATTENZIONE: Sicuramente qui ci sono da riaggiungere  le tabelle alla vbox
 
         self._denominazione = denominazione
         self._codice = codice
@@ -388,7 +391,8 @@ class RicercaArticoliFilter(GladeWidget):
         if "PromoWear" in Environment.modulesList:
             RicercaComplessaArticoliPromoWearExpand.drawRicercaSemplicePromoWearPart(self)
         else:
-            self.promowear_filter_frame.destroy()
+            self.promowear_expander_semplice.destroy()
+            #self.promowear_filter_frame.destroy()
         self.denominazione_filter_entry.set_text(self._denominazione or '')
         self.produttore_filter_entry.set_text(self._produttore or '')
         self.codice_filter_entry.set_text(self._codice or '')
@@ -426,7 +430,8 @@ class RicercaArticoliFilter(GladeWidget):
         if "PromoWear" in Environment.modulesList:
             RicercaComplessaArticoliPromoWearExpand.drawRicercaComplessaPromoWearPart(self)
         else:
-            self.promowear_filter_frame.destroy()
+            self.filter_promowear2.destroy()
+            #self.promowear_filter_frame.destroy()
             #FIXME: They are not present anywhere
             #self.includi_principali_articolo_filter_checkbutton.set_active(True)
             #self.includi_varianti_articolo_filter_checkbutton.set_active(True)

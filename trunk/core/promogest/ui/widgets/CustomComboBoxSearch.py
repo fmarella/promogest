@@ -24,6 +24,7 @@ import gobject
 #from promogest.ui.utils import
 
 class CustomComboBoxSearch(gtk.ComboBox):
+    __gtype_name__ = 'CustomComboBoxSearch'
 
     def __init__(self):
         self._id = None
@@ -150,4 +151,4 @@ class CustomComboBoxSearch(gtk.ComboBox):
         rowIndex = self.get_active()
         return ((rowIndex == -1) or (model[rowIndex][0] == 'empty'))
 
-#gobject.type_register(CustomComboBoxSearch)
+gobject.type_register(CustomComboBoxSearch)

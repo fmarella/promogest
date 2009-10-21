@@ -27,6 +27,15 @@ jinja_env = None
 def env(templates_dir):
     jinja_env = Env(loader=FileSystemLoader(templates_dir),
             bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
+    def noNone(value):
+        if value =="None":
+            return ""
+        elif not value:
+            return ""
+        else:
+            return value
+    jinja_env.filters['nonone'] = noNone
+
     return jinja_env
 
 """
@@ -35,6 +44,8 @@ def env(templates_dir):
                                             renderizzazione del template engine
     renderHTML = inserisce il codice html dentro l'oggetto
 """
+
+
 
 def createHtmlObj(mainWidget,widget=None):
     try:
@@ -49,7 +60,7 @@ def renderTemplate(pageData):
     jinja_env.globals['environment'] = Environment
     jinja_env.globals['utils'] = utils
     pageData["titolo"] = pageData["file"].split(".")[0].capitalize()
-    html = jinja_env.get_template(pageData["file"]).render(pageData= pageData,dao=pageData["dao"],
+    html = jinja_env.get_template("/"+ pageData["file"]).render(pageData= pageData,dao=pageData["dao"],
                     objects=pageData["objects"], feed=pageData["feed"])
     return html
 

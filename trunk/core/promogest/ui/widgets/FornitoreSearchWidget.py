@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -11,7 +11,7 @@ from promogest.ui.utils import leggiFornitore
 
 class FornitoreSearchWidget(CustomComboBoxSearch):
     """ Classe base per la ricerca fornitori """
-
+    __gtype_name__ = 'FornitoreSearchWidget'
     def __init__(self):
         CustomComboBoxSearch.__init__(self)
 

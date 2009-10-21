@@ -1,13 +1,9 @@
 {% extends 'index.html' %}
 
 {% block body %}
-<div id="head">
-        <div id="img"><img src= "gui/fornitura48x48.png"></div>
-    <div id="testo">{{ui|replace("_"," ")|capitalize()}}</div>
-  </div>  <div id="rigaheader"></div>
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>
-                <td class="report-header" colspan="0"><h3>Codice articolo fornitore:
+                <td class="report-header" colspan="0"><h3><img src= "gui/fornitura48x48.png"> Codice articolo fornitore:
                     <strong>{{dao.codice_articolo_fornitore}}</strong></h3></td>
             </tr>
 </table>

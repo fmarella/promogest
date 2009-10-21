@@ -95,8 +95,8 @@ class SimpleGladeWrapper:
                 glade_app = SimpleGladeApp("ui.glade", foo="some value", bar="another value")
             sets two attributes (foo and bar) to glade_app.
         """
+        gl = None
         if (path is None) or (path == './gui/'):
-            #gladeFile = "./gui/"+ root +".xml"
             gladeFile = "./gui/"+ root +".glade"
             if os.path.exists(gladeFile):
                 self.glade_path = gladeFile
@@ -104,9 +104,6 @@ class SimpleGladeWrapper:
                 self.glade_path = "./gui/promogest.glade"
             self.glade = None
         else:
-            #print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
-            #if os.path.isfile(path+".xml"):
-                #self.glade_path = path+".xml"
             if os.path.isfile(path):
                 self.glade_path = path
             elif isModule:
@@ -119,35 +116,20 @@ class SimpleGladeWrapper:
                 setattr(self, key, weakref.proxy(value) )
             except TypeError:
                 setattr(self, key, value)
-
-        #self.glade = gtk.Builder()
-        #self.glade.add_from_file(self.glade_path)
-        #self.widgets = self.glade.get_objects()
-        #print self.widgets
-        #self.install_custom_handler(self.custom_handler)
-        #self.glade = self.create_glade(self.glade_path, root, domain)
-        #if root:
-            ##self.main_widget = self.widgets[0]
-            #self.main_widget = self.glade.get_object(root)
-        #else:
-            #self.main_widget = None
-        #self.normalize_names()
-        #self.glade.connect_signals(self)
-
-
-        self.install_custom_handler(self.custom_handler)
-        self.glade = self.create_glade(self.glade_path, root, domain)
+        if not gl:
+            gl = gtk.Builder()
+        print "FILE GLADE: ", self.glade_path
+        gl.add_from_file(self.glade_path)
+        self.widgets = gl.get_objects()
         if root:
-            self.main_widget = self.get_widget(root)
+            self.main_widget = gl.get_object(root)
         else:
             self.main_widget = None
         self.normalize_names()
-
         if callbacks_proxy is None:
             callbacks_proxy = self
-        self.add_callbacks(callbacks_proxy)
-
-        self.new()
+        gl.connect_signals(callbacks_proxy)
+        #self.new()
 
 
     def __repr__(self):
@@ -195,7 +177,7 @@ class SimpleGladeWrapper:
         It also sets a data "prefixes" with the list of
         prefixes a widget has for each widget.
         """
-        for widget in self.get_widgets():
+        for widget in self.widgets:
             try:
                 widget_name = gtk.Widget.get_name(widget)
                 prefixes_name_l = widget_name.split(":")
@@ -209,9 +191,30 @@ class SimpleGladeWrapper:
                     setattr(self, widget_api_name, widget)
                     if prefixes:
                         gtk.Widget.set_data(widget, "prefixes", prefixes)
+                #print dir(widget.__gtype__), widget.__gtype__, widget.__gtype__.name
+                if widget.__gtype__.name == "GtkEntry":
+                    #print "MAAAAAAAAAAAAAAAAAAAAAAA"
+                    self.entryGlobalcb(widget)
             except:
                 print "widget", widget
 
+
+    def entryGlobalcb(self,entry):
+        entry.connect("icon-press", self.on_icon_press)
+        entry.connect("focus-in-event", self.on_focus_in_event)
+        entry.connect("focus-out-event", self.on_focus_out_event)
+        entry.set_property("secondary_icon_stock", "gtk-clear")
+        entry.set_property("secondary_icon_activatable", True)
+        entry.set_property("secondary_icon_sensitive", True)
+
+    def on_icon_press(self, widget):
+        pass
+
+    def on_focus_in_event(self, widget, event):
+        pass
+
+    def on_focus_out_event(self, widget, event):
+        pass
 
     def add_prefix_actions(self, prefix_actions_proxy):
         """
@@ -240,7 +243,7 @@ class SimpleGladeWrapper:
         prefix_actions_t = filter(is_prefix_action, methods_t)
         prefix_actions_d = dict( map(drop_prefix, prefix_actions_t) )
 
-        for widget in self.get_widgets():
+        for widget in self.widgets:
             prefixes = gtk.Widget.get_data(widget, "prefixes")
             if prefixes:
                 for prefix in prefixes:
@@ -267,6 +270,7 @@ class SimpleGladeWrapper:
         method named create_foo is called with str1,str2,int1,int2 as arguments.
         """
         try:
+            print "VEDIAMO UN PO", function_name
             handler = getattr(self, function_name)
             return handler(str1, str2, int1, int2)
         except AttributeError:
@@ -376,8 +380,8 @@ class SimpleGladeWrapper:
 
 
     def get_widgets(self):
-        return self.glade.get_widget_prefix("")
-        #return self.glade.get_objects()
+        #return self.glade.get_widget_prefix("")
+        return self.glade.get_objects()
 
 
     def getTopLevel(self):

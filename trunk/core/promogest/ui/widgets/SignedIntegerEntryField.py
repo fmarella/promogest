@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -23,7 +23,7 @@ from UnsignedIntegerEntryField import UnsignedIntegerEntryField
 
 class SignedIntegerEntryField(UnsignedIntegerEntryField):
 # Effettua la validazione per interi con segno
-
+    __gtype_name__ = 'SignedIntegerEntryField'
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
         UnsignedIntegerEntryField.__init__(self, str1, str2, int1, int2)
 

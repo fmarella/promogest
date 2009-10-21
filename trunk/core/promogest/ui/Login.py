@@ -41,6 +41,9 @@ from promogest.ui.SendEmail import SendEmail
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.lib import feedparser
+from promogest.lib import HtmlHandler
+
+
 
 windowGroup = []
 visible = 1
@@ -137,9 +140,6 @@ class Login(GladeApp):
         GladeApp.__init__(self, 'login_window')
         Environment.exceptionHandler = GtkExceptionHandler()
         checkAggiorna()
-        #watch = gtk.gdk.Cursor(gtk.gdk.WATCH)
-        #print dir(watch), dir(watch.type), watch.type.denominator
-        #print watch.get_display().get_pointer()
         self.draw()
         self.getTopLevel().show_all()
 
@@ -209,7 +209,8 @@ class Login(GladeApp):
         if index >= 0:
             combo.child.set_text(combo.get_model()[index][0])
 
-    #def on_button_help_clicked(self, button):
+    def on_help_button_clicked(self, button):
+        return
         #"""
         #Help button, open sendmail widget
         #"""
@@ -279,7 +280,7 @@ class Login(GladeApp):
                     if Environment.feed:
                         thread = threading.Thread(target=self.feddretreive)
                         thread.start()
-                        #thread.join(1.3)
+                        thread.join(2.3)
                     Environment.params['usernameLoggedList'][0] = users[0].id
                     Environment.params['usernameLoggedList'][1] = users[0].username
 
@@ -364,6 +365,7 @@ class Login(GladeApp):
             """
             Check the modules directory and automatically try to load all available modules
             """
+            #global jinja_env
             Environment.modulesList=[]
             modules_folders = [folder for folder in os.listdir(modules_dir) \
                             if (os.path.isdir(os.path.join(modules_dir, folder)) \
@@ -376,8 +378,9 @@ class Login(GladeApp):
                         if mod_enableyes=="yes":
                             stringa= "%s.%s.module" % (modules_dir.replace("/", "."), m_str)
                             m= __import__(stringa, globals(), locals(), ["m"], -1)
-                            #exec "import %s.%s.module as m" % (modules_dir.replace("/", "."), m_str)
                             Environment.modulesList.append(str(m.MODULES_NAME))
+                            if hasattr(m,"TEMPLATES"):
+                                HtmlHandler.templates_dir.append(m.TEMPLATES)
                             for class_name in m.MODULES_FOR_EXPORT:
                                 exec 'module = m.'+ class_name
                                 self.modules[class_name] = {
@@ -387,6 +390,8 @@ class Login(GladeApp):
                                                     'guiDir':m.GUI_DIR
 }
             Environment.pg2log.info("LISTA DEI MODULI CARICATI E FUNZIONANTI %s" %(str(repr(Environment.modulesList))))
+            HtmlHandler.jinja_env = HtmlHandler.env(HtmlHandler.templates_dir)
+
             self.groupModulesByType()
 
     def on_login_window_key_press_event(self, widget, event):

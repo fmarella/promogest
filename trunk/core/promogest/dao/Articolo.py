@@ -145,13 +145,8 @@ class Articolo(Dao):
 
         def getArticoloTagliaColore(self):
             """ Restituisce il Dao ArticoloTagliaColore collegato al Dao Articolo #"""
-            #if self.__articoloTagliaColore is not None:
-            #self.__articoloTagliaColore = None
-            #try:
             self.__articoloTagliaColore = ArticoloTagliaColore().getRecord(id=self.id)
             return self.__articoloTagliaColore
-            #except:
-                #return False
 
         def setArticoloTagliaColore(self, value):
             """ Imposta il Dao ArticoloTagliaColore collegato al Dao Articolo
@@ -425,15 +420,14 @@ class Articolo(Dao):
             daoArticolo = Articolo().getRecord(id=self.id)
             daoArticolo.cancellato = True
             params["session"].add(daoArticolo)
-            #self.saveToAppLog(daoArticolo)
         else:
             if "PromoWear" in Environment.modulesList:
                 atc = ArticoloTagliaColore().getRecord(id=self.id)
                 if atc:
                     atc.delete()
-
             params["session"].delete(self)
-            #self.saveToAppLog(self)
+        params["session"].commit()
+        Environment.pg2log.info("DELETE ARTICOLO ID %s" )%(str(self.id))
 
     def filter_values(self,k,v):
         if k == "codice":

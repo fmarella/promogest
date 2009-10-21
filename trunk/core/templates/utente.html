@@ -2,7 +2,7 @@
 
 {% block body %}
 <div id="head">
-        <div id="img"><img src= "promogest/modules/RuoliAzioni/gui/utenti_48.png"></div>
+        <div id="img"></div>
     <div id="testo">{{ui|replace("_"," ")|capitalize()}}</div>
   </div>
     <div id="rigaheader"></div>
@@ -11,7 +11,7 @@
         {% endif %}
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>
-                <td class="report-header" colspan="2"><h3>Username: <strong>{{dao.username}}</strong></h3></td>
+                <td class="report-header" colspan="2"><h3><img src= "promogest/modules/RuoliAzioni/gui/utenti_48.png"> Username: <strong>{{dao.username}}</strong></h3></td>
             </tr>
             <tr><td colspan="2" class="table-header">Dati utente</td></tr>
             <tr>

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -221,7 +221,7 @@ class AnagraficaMultipliEdit(AnagraficaEdit):
         self._widgetFirstFocus = self.denominazione_entry
 
 
-    def draw(self):
+    def draw(self,cplx=False):
         #Popola combobox unita di misura base
         fillComboboxUnitaBase(self.id_unita_base_combobox)
         if self._anagrafica._idUnitaBase is not None:

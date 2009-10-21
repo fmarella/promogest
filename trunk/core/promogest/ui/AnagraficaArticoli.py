@@ -143,9 +143,13 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_articoli_filter_table',
-                                  gladeFile='_anagrafica_articoli_elements.glade')
+                                  'ricerca_semplice_articoli_filter_vbox',
+                                  #'anagrafica_articoli_filter_vbox',
+                                  gladeFile='_ricerca_semplice_articoli.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
+        #self.ricerca_avanzata_articoli_filter_hbox.set_no_show_all(True)
+        self.ricerca_avanzata_button_alignment.destroy()
+        #self.ricerca_semplice_articoli_filter_vbox.show()
 
     def draw(self):
         treeview = self._anagrafica.anagrafica_filter_treeview
@@ -221,7 +225,8 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
             AnagraficaArticoliPromoWearExpand.treeViewExpand(self, treeview, renderer)
         else:
             self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str)
-            self.promowear_filter_frame.destroy()
+            #self.promowear_filter_frame.destroy()
+            self.promowear_expander_semplice.destroy()
         treeview.set_search_column(2)
 
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)

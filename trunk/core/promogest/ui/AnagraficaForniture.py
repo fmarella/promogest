@@ -55,7 +55,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   'anagrafica_forniture_filter_table',
-                                  gladeFile='_anagrafica_fornitura_articoli_elements.glade')
+                                  gladeFile='_ricerca_forniture.glade')
         self._widgetFirstFocus = self.id_articolo_filter_customcombobox
         persona_giuridica=Table('persona_giuridica', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
         #self.fornitore=Table('fornitore', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
@@ -342,7 +342,7 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         self.taglia_colore_table.set_no_show_all(True)
 
 
-    def draw(self):
+    def draw(self,cplx=False):
         self.id_articolo_customcombobox.setSingleValue()
         self.id_articolo_customcombobox.setOnChangedCall(self.on_id_articolo_customcombobox_changed)
         self.id_fornitore_customcombobox.setSingleValue()

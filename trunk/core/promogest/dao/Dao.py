@@ -102,9 +102,8 @@ class Dao(object):
         self.saveAppLog(self)
 
     def saveAppLog(self,dao):
-        #self.saveToAppLog(self)
+        self.saveToAppLog(self)
 #        self.commit()
-        return
 
     def commit(self):
         """ Salva i dati nel DB"""

@@ -36,7 +36,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                                 anagrafica,
                                 'anagrafica_articoli_detail_table',
                                 'Dati articolo',
-                                gladeFile='_anagrafica_articoli_elements.glade')
+                                gladeFile='_anagrafica_articoli_detail.glade')
         self._widgetFirstFocus = self.codice_entry
         self._loading = False
         #FIXME: promogest.dao.Articolo.isNuovoCodiceByFamiglia()
@@ -60,7 +60,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.divisore_noleggio_entry.destroy()
             self.divisore_noleggio_label.destroy()
 
-    def draw(self):
+    def draw(self,cplx=False):
         if "PromoWear" in Environment.modulesList:
             self.normale_radiobutton.set_active(True)
             self.frame_promowear.set_sensitive(False)

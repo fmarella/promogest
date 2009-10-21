@@ -7,14 +7,11 @@
 # License: GNU GPLv2
 
 import gtk
-import gobject
 
 from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
-#from promogest.dao.Dao import Dao
-from promogest.dao.Agente import Agente
-
+from promogest.modules.Agenti.dao.Agente import Agente, getNuovoCodiceAgente
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 
@@ -38,9 +35,10 @@ class AnagraficaAgentiFilter(AnagraficaFilter):
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_agenti_filter_table',
-                                  gladeFile='_anagrafica_agenti_elements.glade')
+                            anagrafica,
+                            'anagrafica_agenti_filter_table',
+                            gladeFile='Agenti/gui/_anagrafica_agenti_elements.glade',
+                            module=True)
      ##   self._widgetFirstFocus = self.ragione_sociale_filter_entry
         self.orderBy = 'ragione_sociale'
         persona_giuridica=Table('persona_giuridica', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
@@ -113,6 +111,7 @@ class AnagraficaAgentiFilter(AnagraficaFilter):
         self.localita_filter_entry.set_text('')
         self.codice_fiscale_filter_entry.set_text('')
         self.partita_iva_filter_entry.set_text('')
+        self.percentuale_entry.set_text('')
         self.ragione_sociale_filter_entry.grab_focus()
         self.refresh()
 
@@ -204,20 +203,26 @@ class AnagraficaAgentiEdit(AnagraficaEdit):
                                 anagrafica,
                                 'anagrafica_agenti_detail_table',
                                 'Dati agente',
-                                gladeFile='_anagrafica_agenti_elements.glade')
+                                gladeFile='Agenti/gui/_anagrafica_agenti_elements.glade',
+                                module=True)
         self._widgetFirstFocus = self.codice_entry
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         pass
 
+
+    def on_codice_entry_icon_press(self,entry,position,event):
+        if position.value_nick == "primary":
+            codice = getNuovoCodiceAgente()
+            self.codice_entry.set_text(codice)
 
     def setDao(self, dao):
         """ Istanzia un  oggetto nuovo se non presente """
         if dao is None:
             # Crea un nuovo Dao vuoto
             self.dao = Agente()
-            self.dao.codice = promogest.dao.Agente.getNuovoCodiceAgente()
+            self.dao.codice = getNuovoCodiceAgente()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Agente().getRecord(id=dao.id)
@@ -241,6 +246,7 @@ class AnagraficaAgentiEdit(AnagraficaEdit):
         self.provincia_sede_legale_entry.set_text(self.dao.sede_legale_provincia or '')
         self.codice_fiscale_entry.set_text(self.dao.codice_fiscale or '')
         self.partita_iva_entry.set_text(self.dao.partita_iva or '')
+        self.percentuale_entry.set_text(str(self.dao.percentuale) or '')
 
 
     def saveDao(self):
@@ -278,4 +284,5 @@ class AnagraficaAgentiEdit(AnagraficaEdit):
             partiva = checkPartIva(self.dao.partita_iva)
             if not partiva:
                 return
+        self.dao.percentuale = float(self.percentuale_entry.get_text() or 0)
         self.dao.persist()

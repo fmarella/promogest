@@ -79,7 +79,7 @@ class AnagraficaDocumenti(Anagrafica):
             return
 
         from DuplicazioneDocumento import DuplicazioneDocumento
-        anag = DuplicazioneDocumento(dao,self)
+        anag = DuplicazioneDocumento(dao)
         showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), None, self.filter.refresh)
 
     def on_record_fattura_button_clicked(self, button=None):
@@ -106,7 +106,6 @@ class AnagraficaDocumentiHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'documento',
                                 'Documento')
-
 
 
 class AnagraficaDocumentiReport(AnagraficaReport):

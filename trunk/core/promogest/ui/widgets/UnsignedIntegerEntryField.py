@@ -23,25 +23,25 @@ import gtk
 from CustomEntryField import CustomEntryField
 
 class UnsignedIntegerEntryField(CustomEntryField):
-# Effettua la validazione per interi senza segno
-
+# Effettua la validazione per interi senza segno o virgole
+    __gtype_name__ = 'UnsignedIntegerEntryField'
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
         CustomEntryField.__init__(self)
 
-        self._lunghezza = int1
+        self._lunghezza = 10
         self._default = str1
         if self._lunghezza > 0:
             self.set_max_length(self._lunghezza)
         self.acceptedKeys = self.controlKeys + self.numberKeys
 
 
-    def do_key_press_event(self, widget, event):
+    def my_key_press_event(self, widget, event):
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname not in self.acceptedKeys:
             return True
 
 
-    def do_focus_out_event(self, widget, event):
+    def my_focus_out_event(self, widget, event):
         try:
             i = int(self.get_text())
             if self._lunghezza > 0:

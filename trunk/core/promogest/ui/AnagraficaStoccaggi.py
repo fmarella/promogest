@@ -50,7 +50,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         self.orderBy=None
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         # Colonne della Treeview per il filtro
         #TODO: FARE GLI ORDINAMENTI COLONNA
         treeview = self._anagrafica.anagrafica_filter_treeview
@@ -182,7 +182,7 @@ class AnagraficaStoccaggiEdit(AnagraficaEdit):
             self.promowear_frame.destroy()
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         self.id_articolo_customcombobox.setSingleValue()
 
         fillComboboxMagazzini(self.id_magazzino_customcombobox.combobox)

@@ -1,30 +1,20 @@
 <style>
 
-    body {
-        font-family: monospace;
-    }
+    body {font-family: 'Lucida Casual';}
 
-    table {
-        width: 100%;
-    }
+    table { width: 100%; }
 
-/* da eliminare dopo la riconversione */
-    td.left {
-        text-align: left;
-    }
-/* */
+    td.left {text-align: left;}
 
     td.odd-detail {
         text-align: left;
         color :black;
         border-bottom : 1px solid #c0c0c0;
     }
-
-    td.even-detail {
-        text-align: left;
-        color :black;
-        background: #efefef;
-        border-bottom : 1px solid #FFFFFF;
+    td.even-detail { text-align: left;
+                    color :black;
+                    background: #efefef;
+                    border-bottom : 1px solid #FFFFFF;
     }
 
     td.odd-number {
@@ -48,47 +38,42 @@
     th {
         padding-left: 0px;
         font-weight: normal;
-        font-style: italic;
+/*         font-style: italic; */
         font-size: 1.1em;
     }
 
-    th.left {
-        font-weight: normal;
-    }
+/*     th.left {font-weight: normal;} */
 
     li {
         padding-left: 4px;
-/*         list-style: square; */
     }
 
     .table-header {
-        color: #FFFFFF;
-        font-weight : bold;
-        border-width: 1px 0px 1px 0px;
-        border-style: solid;
-        border-color: #777777;
-        padding: 0px;
-        margin: 0px;
-        font-size: 1.2em;
-        background : #c0c0c0;
+            color: #FFFFFF;
+            font-weight : bold;
+            border-width: 1px 0px 1px 0px;
+            border-style: solid;
+            border-color: #777777;
+            padding: 0px;
+            margin: 0px;
+            font-size: 1.1em;
+            background : #585858;
     }
-
-/* da eliminare dopo la riconversione */
     .header {
-        font-style: italic;
+/*         font-style: italic; */
         color: black;
         border-width: 1px 0px 1px 0px;
         border-style: solid;
         border-color: black;
         padding: 4px;
         margin: 4px;
-        font-size: 1.2em;
+        font-size: 1.1em;
     }
 
     .report-header {
-        text-align: left;
+/*         text-align: left; */
         color :black;
-        font-size: 1.2em;
+        font-size: 1.1em;
     }
 
     .totale-number {
@@ -113,7 +98,10 @@
     td.number {
         text-align: right;
     }
-
+    td.img{
+/*     border-width: 2px; */
+    
+}
     th.number {
         text-align: right;
     }
@@ -122,54 +110,54 @@
 /*     height: 600px; */
 }
 #container #footer {
-/*     background-attachment: scroll; */
-    background-image: url("gui/bkg_footer.png");
-    background-repeat: repeat;
-/*     background-position: left top; */
+/*     background-image: url("templates/bkg_footer.png"); */
+/*     background-repeat: repeat; */
     position: relative;
     width: auto;
-/*     top: 600px; */
-    font-family: Arial;
+/*     font-family: Arial; */
     font-size: 10px;
-    color: #333333;
+    color: #000000;
     height: 21px;
 
 }
-#container #rigaheader {
+/*#container #rigaheader {
 /*     background-attachment: scroll; */
-    background-image: url("gui/bkg_footer.png");
-    background-repeat: repeat;
+/*     background-image: url("templates/bkg_footer.png"); */
+/*     background-repeat: repeat; */
 /*     background-position: left top; */
-    position: relative;
-    width: auto;
-    height: 15px;
-}
+/*     position: relative; */
+/*     width: auto; */
+/*     height: 15px; */
+/* }*/ */
 #container #head {
-    height: 70px;
+    height: 130px;
 }
 #container #head #testo {
     position: relative;
     top: -40px;
     left: 80px;
-    width: 80%;
-    font-family: Arial;
+/*     width: 80%; */
+/*     font-family: Arial; */
     font-size: 24px;
     color: #666666;
-    font-weight: bold;
+/*     font-weight: bold; */
 }
-#container #head #img {
+/*#container #head #img {
     height: 48px;
-    width: 48px;
+    width: 48px;*/
 /*     background-attachment: scroll; */
 /*     background-image: url("gui/articolo48x48.png"); */
-    background-repeat: no-repeat;
+/*     background-repeat: no-repeat; */
 /*     background-position: left center; */
-    position: relative;
-    left: 20px;
-    top: 5px;
-    padding-top: 10px;
-}
+/*     position: relative; */
+/*    left: 20px;
+    top: 1px;
+    padding-top: 3px;
+}*/
+#container #head .testooo{
+color:red;
 
+}
 #dialog{
 /*    background-image: url("gui/aggiungi16x16.png");
     background-repeat: no-repeat;
@@ -184,11 +172,9 @@ table#calendar td{background: #DBDFEB url(gui/tdbk.png) no-repeat}
 table#calendar a{text-decoration:none;color:#4A5576;font-weight:bold}
 table#calendar a:hover{color: #716F64}
 
-
 @page {
-    size: A4 landscape;
-    margin: 1cm;
+size: A4 landscape;
+margin: 1cm;
 }
-
 
 </style>

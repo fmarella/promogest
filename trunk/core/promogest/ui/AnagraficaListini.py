@@ -46,11 +46,11 @@ class AnagraficaListiniFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   'anagrafica_listini_filter_table',
-                                  gladeFile='_anagrafica_listini_elements.glade')
+                                  gladeFile='_ricerca_semplice_listini.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         # Colonne della Treeview per il filtro
         treeview = self._anagrafica.anagrafica_filter_treeview
         renderer = gtk.CellRendererText()
@@ -165,7 +165,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         self._widgetFirstFocus = self.denominazione_entry
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         #Elenco categorie
         rendererText = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Categoria', rendererText, text=1)

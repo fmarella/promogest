@@ -24,12 +24,14 @@ from SimpleGladeWrapper import SimpleGladeWrapper
 
 import gtk
 import gobject
-import gtkhtml2
+#import gtkhtml2
 import xml.etree.cElementTree as ElementTree
 
 from promogest import Environment
 from widgets.UnsignedDecimalEntryField import UnsignedDecimalEntryField
 from widgets.SignedDecimalEntryField import SignedDecimalEntryField
+from widgets.UnsignedMoneyEntryField import UnsignedMoneyEntryField
+from widgets.SignedMoneyEntryField import SignedMoneyEntryField
 from widgets.UnsignedIntegerEntryField import UnsignedIntegerEntryField
 from widgets.SignedIntegerEntryField import SignedIntegerEntryField
 from widgets.DateEntryField import DateEntryField
@@ -40,7 +42,6 @@ from widgets.CustomComboBoxModify import CustomComboBoxModify
 from widgets.CustomComboBoxSearch import CustomComboBoxSearch
 from widgets.ScontiWidget import ScontiWidget
 from widgets.ScontoWidget import ScontoWidget
-
 
 
 #from promogest.lib.HtmlTextView import HtmlTextView
@@ -59,100 +60,104 @@ class GladeWidget(SimpleGladeApp):
                                     callbacks_proxy=callbacks_proxy, isModule=isModule)
         self._prepareWindowPlacement()
 
+    def on_generic_button_clicked(self, button):
+        print "generic button press "
+        return False
+
     # Custom widget building methods (used by Glade)
-    def createUnsignedDecimalEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for no sign decimal numbers input """
-        return UnsignedDecimalEntryField(str1, str2, int1, int2)
+    #def createUnsignedDecimalEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for no sign decimal numbers input """
+        #return UnsignedDecimalEntryField(str1, str2, int1, int2)
 
 
-    def createUnsignedIntegerEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for no sign integer numbers input """
-        return UnsignedIntegerEntryField(str1, str2, int1, int2)
+    #def createUnsignedIntegerEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for no sign integer numbers input """
+        #return UnsignedIntegerEntryField(str1, str2, int1, int2)
 
 
-    def createSignedDecimalEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for signed decimal numbers input """
-        return SignedDecimalEntryField(str1, str2, int1, int2)
+    #def createSignedDecimalEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for signed decimal numbers input """
+        #return SignedDecimalEntryField(str1, str2, int1, int2)
 
 
-    def createSignedIntegerEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for signed integer numbers input """
-        return SignedIntegerEntryField(str1, str2, int1, int2)
+    #def createSignedIntegerEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for signed integer numbers input """
+        #return SignedIntegerEntryField(str1, str2, int1, int2)
 
 
-    def createUnsignedMoneyEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for no sign money values input """
-        return UnsignedDecimalEntryField(str1, str2, int1, Environment.conf.decimals)
+    #def createUnsignedMoneyEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for no sign money values input """
+        #return UnsignedDecimalEntryField(str1, str2, int1, Environment.conf.decimals)
 
 
-    def createSignedMoneyEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for signed money values input """
-        return SignedDecimalEntryField(str1, str2, int1, Environment.conf.decimals)
+    #def createSignedMoneyEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for signed money values input """
+        #return SignedDecimalEntryField(str1, str2, int1, Environment.conf.decimals)
 
 
-    def createDateEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for date input """
-        return DateEntryField(str1, str2, int1, int2)
+    #def createDateEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for date input """
+        #return DateEntryField(str1, str2, int1, int2)
 
 
-    def createDateTimeEntryField(self, str1, str2, int1, int2):
-        """ Return an EntryField for date-time input """
-        return DateTimeEntryField(str1, str2, int1, int2)
+    #def createDateTimeEntryField(self, str1, str2, int1, int2):
+        #""" Return an EntryField for date-time input """
+        #return DateTimeEntryField(str1, str2, int1, int2)
 
 
-    def createCustomComboBoxModify(self, str1, str2, int1, int2):
-        """ Return a lookup ComboBox with changes possibility """
-        return CustomComboBoxModify()
+    #def createCustomComboBoxModify(self, str1, str2, int1, int2):
+        #""" Return a lookup ComboBox with changes possibility """
+        #return CustomComboBoxModify()
 
-    def createCustomComboBoxSearch(self, str1, str2, int1, int2):
-        """ Return a ComboBox with search & history possibility """
-        return CustomComboBoxSearch()
+    #def createCustomComboBoxSearch(self, str1, str2, int1, int2):
+        #""" Return a ComboBox with search & history possibility """
+        #return CustomComboBoxSearch()
 
-    def createScontiWidget(self, str1, str2, int1, int2):
-        """ Return a ScontiWidget widget """
-        return ScontiWidget(str1, str2)
+    #def createScontiWidget(self, str1, str2, int1, int2):
+        #""" Return a ScontiWidget widget """
+        #return ScontiWidget(str1, str2)
 
-    def createScontoWidget(self, str1, str2, int1, int2):
-        """ Return an EntryField for discount input with selection of the discount type"""
-        return ScontoWidget(str1, str2, int1, int2)
+    #def createScontoWidget(self, str1, str2, int1, int2):
+        #""" Return an EntryField for discount input with selection of the discount type"""
+        #return ScontoWidget(str1, str2, int1, int2)
 
-    def createGtkHtml2Widget(self, str1, str2, int1, int2):
-        """ Return a GtkHtml2 widget """
-        return gtkhtml2.View()
+    #def createGtkHtml2Widget(self, str1, str2, int1, int2):
+        #""" Return a GtkHtml2 widget """
+        #return gtkhtml2.View()
 
-    def createHtmlWidget(self, str1, str2, int1, int2):
-        """ Return a HtmlTextView widget """
-        return HtmlTextView()
+    #def createHtmlWidget(self, str1, str2, int1, int2):
+        #""" Return a HtmlTextView widget """
+        #return HtmlTextView()
 
-    def createDateWidget(self, str1, str2, int1, int2):
-        """ Return a DateWidget widget """
-        return DateWidget(str1, str2, int1, int2)
+    #def createDateWidget(self, str1, str2, int1, int2):
+        #""" Return a DateWidget widget """
+        #return DateWidget(str1, str2, int1, int2)
 
-    def createDateTimeWidget(self, str1, str2, int1, int2):
-        """ Return a DateTimeWidget widget """
-        return DateTimeWidget(str1, str2, int1, int2)
+    #def createDateTimeWidget(self, str1, str2, int1, int2):
+        #""" Return a DateTimeWidget widget """
+        #return DateTimeWidget(str1, str2, int1, int2)
 
-    def createArticoloSearchWidget(self, str1, str2, int1, int2):
-        """ Return an ArticoloSearchWidget widget """
-        from widgets.ArticoloSearchWidget import ArticoloSearchWidget
-        return ArticoloSearchWidget()
+    #def createArticoloSearchWidget(self, str1, str2, int1, int2):
+        #""" Return an ArticoloSearchWidget widget """
+        #from widgets.ArticoloSearchWidget import ArticoloSearchWidget
+        #return ArticoloSearchWidget()
 
-    def createClienteSearchWidget(self, str1, str2, int1, int2):
-        """ Return an ClienteSearchWidget widget """
-        from widgets.ClienteSearchWidget import ClienteSearchWidget
-        widget = ClienteSearchWidget()
-        #print widget.__class__
-        return widget
+    #def createClienteSearchWidget(self, str1, str2, int1, int2):
+        #""" Return an ClienteSearchWidget widget """
+        #from widgets.ClienteSearchWidget import ClienteSearchWidget
+        #widget = ClienteSearchWidget()
+        ##print widget.__class__
+        #return widget
 
-    def createFornitoreSearchWidget(self, str1, str2, int1, int2):
-        """ Return an FornitoreSearchWidget widget """
-        from widgets.FornitoreSearchWidget import FornitoreSearchWidget
-        return FornitoreSearchWidget()
+    #def createFornitoreSearchWidget(self, str1, str2, int1, int2):
+        #""" Return an FornitoreSearchWidget widget """
+        #from widgets.FornitoreSearchWidget import FornitoreSearchWidget
+        #return FornitoreSearchWidget()
 
-    def createPersonaGiuridicaSearchWidget(self, str1, str2, int1, int2):
-        """ Return an PersonaGiuridicaSearchWidget widget """
-        from widgets.PersonaGiuridicaSearchWidget import PersonaGiuridicaSearchWidget
-        return PersonaGiuridicaSearchWidget()
+    #def createPersonaGiuridicaSearchWidget(self, str1, str2, int1, int2):
+        #""" Return an PersonaGiuridicaSearchWidget widget """
+        #from widgets.PersonaGiuridicaSearchWidget import PersonaGiuridicaSearchWidget
+        #return PersonaGiuridicaSearchWidget()
 
     def _prepareWindowPlacement(self):
         """ Elements for the correct view of windows """

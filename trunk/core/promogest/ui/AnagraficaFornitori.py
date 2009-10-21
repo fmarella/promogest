@@ -34,21 +34,21 @@ class AnagraficaFornitori(Anagrafica):
                             editElement=AnagraficaFornitoriEdit(self),
                             aziendaStr=aziendaStr)
 
-
-
 class AnagraficaFornitoriFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei fornitori """
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_fornitori_filter_table',
-                                  gladeFile='_anagrafica_fornitori_elements.glade')
+                                  'anagrafica_fornitori_filter_vbox',
+                                  gladeFile='_ricerca_fornitori.glade')
         self._widgetFirstFocus = self.ragione_sociale_filter_entry
         self.orderBy = 'ragione_sociale'
         persona_giuridica=Table('persona_giuridica', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
         fornitore=Table('fornitore', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
         self.joinT = join(fornitore, persona_giuridica)
+        self.ricerca_avanzata_fornitori_filter_hbox.destroy()
+        self.ricerca_avanzata_fornitori_filter_vbox.destroy()
 
 
     def draw(self):
@@ -208,7 +208,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         self._widgetFirstFocus = self.codice_entry
 
 
-    def draw(self):
+    def draw(self,cplx=False):
         fillComboBoxNazione(self.nazione_combobox, default="Italia")
         #Popola combobox categorie fornitori
         fillComboboxCategorieFornitori(self.id_categoria_fornitore_customcombobox.combobox)

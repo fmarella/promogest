@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -14,12 +14,12 @@ from SignedDecimalEntryField import SignedDecimalEntryField
 class Sconti(GladeWidget):
     """ Classe base per l'inserimento e la modifica degli sconti """
 
-    def __init__(self, windowTitle, sconti=None, applicazione='scalare', percentuale=True, valore=True):
+    def __init__(self, windowTitle="", sconti=None, applicazione='scalare', percentuale=True, valore=True):
         GladeWidget.__init__(self, 'sconti_window')
 
         self.listSconti = []
         self.stringApplicazione = ''
-
+        if not windowTitle:windowTitle=""
         self.sconti_window.set_title(windowTitle)
         self.sconti_treeview.set_headers_clickable(False)
         self.percentuale_radiobutton.set_sensitive(percentuale)

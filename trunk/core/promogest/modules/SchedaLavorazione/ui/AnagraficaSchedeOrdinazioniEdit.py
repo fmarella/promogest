@@ -272,6 +272,8 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             self._parzialeLordo = self._parzialeLordo + mN(float(row.valore_unitario_lordo)*float(row.quantita))
             self._parzialeNetto = self._parzialeNetto + row.valore_unitario_netto * row.quantita
             #findComboboxRowFromId(self.listino_combobox, row.id_listino)
+            if row.descrizione == "Contrassegno":
+                row.quantita = 1 
             self._articoliTreeviewModel.append([row,
                                                 idArticolo,
                                                 codice,

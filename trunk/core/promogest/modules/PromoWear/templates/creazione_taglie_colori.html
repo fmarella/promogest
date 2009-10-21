@@ -1,6 +1,6 @@
 <html>
 <head>
-        {% include 'style.css' with context %}
+    {% include 'promowear_style.css' with context %}
     </head>
     <body>
         <table cellpadding="3" cellspacing="5" border="0">
@@ -12,7 +12,7 @@
                 <th>CODICE A BARRE</th>
             </tr>
             <tr><td colspan="5"><hr /></td></tr>
-            {% for dao in datas %}
+            {% for dao in pageData['datas'] %}
             <tr>
                 <td class="detail" >{{dao[0].denominazione_gruppo_taglia }}</td>
                 <td class="detail" >{{dao[2].denominazione}}</td>

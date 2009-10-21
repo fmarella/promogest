@@ -184,7 +184,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
         nomeReferente = prepareFilterString(_nome_referente)
         _nomi_sposi = self.nome_sposi_filter_entry.get_text()
         nomiSposi = prepareFilterString(_nomi_sposi)
-        documentoSaldato = self.documento_saldato_checkbutton.get_active() or None
+        schedeAperte = self.schede_aperte_checkbutton.get_active() or None
         coloreStampa = findIdFromCombobox(self.colore_stampa_filter_combobox)
         carattereStampa = findIdFromCombobox(self.carattere_stampa_filter_combobox)
         idArticolo = self.id_articolo_filter_customcombobox.getId()

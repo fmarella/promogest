@@ -19,12 +19,12 @@ from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTagli
 
 
 class ManageSizeAndColor(GladeWidget):
-    """Gestione e selezione taglie e colori da inserire come righe in doc"""
-
+    """Gestione e selezione taglie e colori da inserire come righe in documenti
+    """
     def __init__(self, mainWindow, articolo=None, data=None, idPerGiu=None,
                                             idListino=None, fonteValore=None):
         GladeWidget.__init__(self, 'gestione_varianti_taglie_colore',
-                    fileName= 'promogest/modules/PromoWear/gui/gestione_varianti_taglia_colore.glade',
+                    fileName= 'PromoWear/gui/gestione_varianti_taglia_colore.glade',
                     isModule=True)
         self.placeWindow(self.getTopLevel())
         self.getTopLevel().set_modal(modal=True)
@@ -54,7 +54,8 @@ class ManageSizeAndColor(GladeWidget):
 
     def draw(self):
         """Creo una treeview che abbia come colonne i colori e come righe
-           le taglie direi che sia il caso di gestire anche le descrizioni variante visto che le ho
+        le taglie direi che sia il caso di gestire anche le descrizioni variante
+        visto che le ho
         """
         self.treeview = self.taglie_colori_treeview
         rendererSx = gtk.CellRendererText()
@@ -146,8 +147,7 @@ class ManageSizeAndColor(GladeWidget):
             megaDict[artvar]["listino"] = self._listino = leggiListino(self._id_listino,idArticolo=self.articoloPadre.id )
 
     def creDictFornitura(self):
-        """
-            Creo un dizionario delle forniture? ... Commenta Francè commentaaaaaaaaaaa
+        """ Creo un dizionario delle forniture? ..Commenta Francè commentaaaaaa
         """
         artiDict= {}
         variantiList = []
@@ -188,7 +188,9 @@ class ManageSizeAndColor(GladeWidget):
 
 
     def refresh(self,treeview=None, order = "Taglia"):
-        """ Aggiornamento della principale treeview, si può ordinare? """
+        """ Aggiornamento della principale treeview,
+        TODO: si può ordinare?
+        """
         self._treeViewModel.clear()
         if self.TipoOperazione == "acquisto":
             self.price_entry.set_text(str(self.articoloPadreDict['valori']['prezzoLordo']))
@@ -271,7 +273,7 @@ class ManageSizeAndColor(GladeWidget):
         model[path][3] = value
 
     def on_column_prezzo_edited(self, cell, path, value, treeview, editNext=True):
-        """ Function to set the value quantita edit in the cell"""
+        """ Function to set the value prezzo edit in the cell"""
         model = treeview.get_model()
         if self.TipoOperazione == "acquisto":
                 model[path][0]['valori']["prezzoLordo"] = value
@@ -292,7 +294,7 @@ class ManageSizeAndColor(GladeWidget):
                 model[path][0]['valori']["prezzoIngrossoScontato"] = model[path][4]
 
     def on_column_sconto_edited(self, cell, path, value, treeview, editNext=True):
-        """ Function to set the value quantita edit in the cell"""
+        """ Function to set the value sconto edit in the cell"""
         model = treeview.get_model()
         if self.TipoOperazione == "acquisto":
             model[path][0]['valori']["sconto"] = [value]
@@ -424,6 +426,10 @@ class ManageSizeAndColor(GladeWidget):
                         row[0]['valori']["prezzoIngrossoScontato"]= row[6]
 
     def on_conferma_singolarmente_button_clicked(self,button):
+        """ Unico bottone rimasto, prende i dati così come sono stati inseriti
+        e li rimanda direttamente alla treeview principale di anagraficadocumentiedit
+        TODO: Gestione delle quantità per ognuno delle variantiList
+        """
         if self.TipoOperazione == "acquisto":
             self.articoloPadreDict['valori']['prezzoLordo']=self.price_entry.get_text()
         else:
@@ -437,9 +443,9 @@ class ManageSizeAndColor(GladeWidget):
                 continue
             else:
                 resultList.append(row[0])
-        #Environment.tagliacoloretempdata= (False, resultList)
-        #print "RESULT LIST", resultList
-        self.mainWindow.tagliaColoreRigheList = resultList
+
+        print "RESULT LIST", resultList
+        self.mainWindow.tagliaColoreRigheList = resultList # rimando indietro la lista
         self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
         self.destroy()
 

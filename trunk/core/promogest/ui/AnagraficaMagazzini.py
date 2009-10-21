@@ -45,7 +45,7 @@ class AnagraficaMagazziniFilter(AnagraficaFilter):
         self._widgetFirstFocus = self.denominazione_filter_entry
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         # Colonne della Treeview per il filtro
         treeview = self._anagrafica.anagrafica_filter_treeview
         renderer = gtk.CellRendererText()
@@ -138,7 +138,7 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
         self._widgetFirstFocus = self.denominazione_entry
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         pass
 
 

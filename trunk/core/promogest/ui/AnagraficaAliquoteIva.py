@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 """
  Promogest
@@ -156,7 +156,7 @@ class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
         self._widgetFirstFocus = self.denominazione_entry
 
 
-    def draw(self):
+    def draw(self,cplx=False):
         #Popola combobox tipi aliquote iva
         fillComboboxTipiAliquoteIva(self.id_tipo_combobox)
 

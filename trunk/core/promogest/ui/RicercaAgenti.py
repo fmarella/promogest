@@ -33,14 +33,16 @@ class RicercaAgenti(Ricerca):
         def refresh():
             self.filter.refresh()
             self.filter.ragione_sociale_filter_entry.grab_focus()
+        if "Agenti" in Environment.modulesList:
+            from promogest.modules.Agenti.ui.AnagraficaAgenti import AnagraficaAgenti
+            anag = AnagraficaAgenti()
+            anagWindow = anag.getTopLevel()
 
-        from AnagraficaAgenti import AnagraficaAgenti
-        anag = AnagraficaAgenti()
-        anagWindow = anag.getTopLevel()
+            showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)
 
-        showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)
-
-        anag.on_record_new_activate(anag.record_new_button)
+            anag.on_record_new_activate(anag.record_new_button)
+        else:
+            fenceDialog()
 
 
 
@@ -50,8 +52,10 @@ class RicercaAgentiFilter(RicercaFilter):
     def __init__(self, ricerca):
         RicercaFilter.__init__(self, ricerca,
                                'anagrafica_agenti_filter_table',
-                               fileName='_anagrafica_agenti_elements.glade')
-
+                               fileName='Agenti/gui/_anagrafica_agenti_elements.glade',
+                            isModule=True)
+    def on_filter_treeview_selection_changed(self, treeview):
+        pass
 
     def draw(self):
         # Colonne della Treeview per il filtro

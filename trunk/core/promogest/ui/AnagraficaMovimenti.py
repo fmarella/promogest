@@ -157,7 +157,7 @@ class AnagraficaMovimenti(Anagrafica):
             return
 
         from DuplicazioneMovimento import DuplicazioneMovimento
-        anag = DuplicazioneMovimento(dao,self)
+        anag = DuplicazioneMovimento(dao)
         showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), None, self.filter.refresh)
 
 
@@ -174,12 +174,12 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   'anagrafica_movimenti_filter_table',
-                                  gladeFile='_anagrafica_movimenti_elements.glade')
+                                  gladeFile='_ricerca_semplice_movimenti.glade')
         self._widgetFirstFocus = self.da_data_filter_entry
         self.orderBy = 'id'
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         """
         FIXME
         """
@@ -400,11 +400,12 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                                 'Dati movimento',
                                 gladeFile='_anagrafica_movimenti_elements.glade')
         self._widgetFirstFocus = self.data_movimento_entry
-        try:
-            if Environment.conf.Documenti.rosas =="yes":
-                pass
-        except:
-            self.totale_spinbutton.destroy()
+        #try:
+            #if Environment.conf.Documenti.rosas =="yes":
+                #pass
+        #except:
+        self.totale_spinbutton.destroy()
+        self.prz_lordo_label1.hide()
 
         # contenitore (dizionario) righe (riga 0 riservata per
         # variazioni in corso)
@@ -511,7 +512,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self.nuovaRiga()
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         """
         Costruisce la treevew e gli altri widget dell'interfaccia
         """

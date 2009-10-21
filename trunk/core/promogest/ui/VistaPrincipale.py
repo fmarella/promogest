@@ -7,7 +7,6 @@
 import gtk
 import threading
 import webbrowser
-import gtkhtml2
 
 from GladeWidget import GladeWidget
 from promogest import Environment
@@ -16,9 +15,7 @@ from promogest.dao.Promemoria import Promemoria
 from promogest.lib import feedparser
 from utils import *
 from promogest.ui.SendEmail import SendEmail
-
-from jinja2 import Environment  as Env
-from jinja2 import FileSystemLoader,FileSystemBytecodeCache
+from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 
 class VistaPrincipale(GladeWidget):
     """
@@ -31,13 +28,11 @@ class VistaPrincipale(GladeWidget):
         #self.cancel_alarm_button.set_sensitive(False)
         #self.alarm_notify_treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self._loading=None
-        self.feed_html = gtkhtml2.View()
-        self.feed_scrolled.add(self.feed_html)
-        self.document = gtkhtml2.Document()
-        self.document.connect('request_url', self.on_html_request_url)
-        self.document.connect('link_clicked', self.on_html_link_clicked)
-        self.feed_html.set_document(self.document)
-        self.refresh()
+        self.html = createHtmlObj(self)
+        self.feed_scrolled.add(self.html)
+        html = """<html><body></body></html>"""
+        renderHTML(self.html,html)
+        self.getfeedFromSite()
         self.draw()
 
     def draw(self):
@@ -239,42 +234,13 @@ E' presente una nuova versione disponibile"""
 
     def renderPage(self, feedToHtml):
         """ show the html page in the custom widget"""
-        templates_dir = "./templates/"
-        jinja_env = Env(loader=FileSystemLoader(templates_dir),
-                bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
-        body = jinja_env.get_template("feed.html").render(feed=feedToHtml)
-        #print body
-        self.refresh(body)
-
-
-    def refresh(self, body="<html><p></p></html>"):
-        self.document.clear()
-        self.document.open_stream('text/html')
-        self.document.write_stream(body)
-        self.document.close_stream()
-
-    def on_html_request_url(self,document, url, stream):
-
-        def render():
-            try:
-                f = open(url, 'rb')
-                stream.write(f.read())
-                f.close()
-                stream.close()
-            except:
-                req = urllib2.Request(url)
-                response = urllib2.urlopen(req)
-                html = response.read()
-                stream.write(html)
-                stream.close()
-        gobject.idle_add(render)
-
-    def on_html_link_clicked(self, url, link):
-        """ funzione di apertura dei link presenti nelle pagine html di anteprima"""
-        print "URLLLLLLLLLLLLLLLLLLLLLLLLLL", url, link
-        def linkOpen():
-            webbrowser.open_new_tab(link)
-        gobject.idle_add(linkOpen)
+        pageData = {}
+        pageData = {
+                "file" :"feed.html",
+                "feed" :feedToHtml,
+                }
+        html = renderTemplate(pageData)
+        renderHTML(self.html,html)
 
     def getfeedFromSite(self):
         string = ""
@@ -284,15 +250,11 @@ E' presente una nuova versione disponibile"""
             d = Environment.feedAll
         feedList = d['entries']
         feedToHtml = []
-        for feed in feedList[:-3]:
+        for feed in feedList[:-1]:
             try:
                 body = feed['content'][0]['value']
             except:
                 body = feed["summary_detail"]['value']
-            body = body.replace("<strong>","<span style='font-weight: bold'>")
-            body = body.replace("</strong>","</span>")
-            body = body.replace ( "<em>","<span style='font-style: italic'>")
-            body = body.replace ( "</em>","</span>")
             feed = {
                 "title" :feed['title'],
                 "links": feed['links'][0]['href'],

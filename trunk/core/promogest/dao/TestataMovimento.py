@@ -259,5 +259,5 @@ std_mapper = mapper(TestataMovimento, testata_mov,properties={
                     (testata_mov.c.id_fornitore==Fornitore.id), backref="testata_movimento"),
         "cli":relation(Cliente,primaryjoin=
                     (testata_mov.c.id_cliente==clie.c.id), backref="testata_movimento"),
-        "opera": relation(Operazione, backref="testata_movimento"),
+        "opera": relation(Operazione,primaryjoin = (testata_mov.c.operazione==Operazione.denominazione),backref="testata_movimento"),
         }, order_by=testata_mov.c.id)

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
 # Promogest
 #
@@ -26,7 +26,7 @@ from promogest import Environment
 
 class DateWidget(gtk.HBox):
 # dateentryfield con possibilita' di scelta dal calendario
-
+    __gtype_name__ = 'DateWidget'
     def __init__(self, str1=None, str2=None, int1=None, int2=None, futurecheck=None):
         self.futurecheck = futurecheck
         gtk.HBox.__init__(self, False, 0)
@@ -39,12 +39,12 @@ class DateWidget(gtk.HBox):
         self.button.add(image)
         self.pack_start(self.entry, True, True, 0)
         self.pack_start(self.button, False, False, 0)
-        self.button.connect('clicked', self.do_button_clicked)
+        self.button.connect('clicked', self.my_button_clicked)
         self.connect("show", self.on_show)
-        self.entry.connect('focus_out_event', self.do_focus_out_event)
+        self.entry.connect('focus_out_event', self.my_focus_out_event)
 
 
-    def do_button_clicked(self, button):
+    def my_button_clicked(self, button):
 
         def currentAction(button):
             current = datetime.datetime.now()
@@ -168,7 +168,7 @@ class DateWidget(gtk.HBox):
         self.set_size_request(size, -1)
 
 
-    def do_focus_out_event(self, entry, event):
+    def my_focus_out_event(self, entry, event):
         self.emit('focus_out_event', event)
 
 

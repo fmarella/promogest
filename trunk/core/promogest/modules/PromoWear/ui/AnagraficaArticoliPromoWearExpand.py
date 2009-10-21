@@ -317,8 +317,8 @@ def clear(anaarti):
             pass
     #gestione stagione abbigliamento con prelievo del dato di default dal configure ( nb da usare l'id)
     anaarti.id_stagione_articolo_filter_combobox.set_active(0)
-    stagione = getattr(Environment.conf.PromoWear,'stagione_default', None)
-    if stagione is not None:
+    stagione = getattr(Environment.conf.PromoWear,'stagione_default', 0)
+    if stagione:
         findComboboxRowFromId(anaarti.id_stagione_articolo_filter_combobox, int(stagione))
     anaarti.id_genere_articolo_filter_combobox.set_active(0)
     anaarti.taglie_colori_filter_combobox.set_active(0)

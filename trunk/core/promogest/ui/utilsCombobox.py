@@ -27,8 +27,6 @@ from sqlalchemy import *
 import string, re
 import xml.etree.cElementTree as ElementTree
 from xml.etree.cElementTree import *
-import Login
-from promogest.dao.Dao import Dao
 
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
 
@@ -547,7 +545,6 @@ def fillComboboxMagazzini(combobox, filter=False, noempty=False):
     if combobox.__class__ is gtk.ComboBoxEntry:
         combobox.set_text_column(2)
 
-
 def fillComboboxOperazioni(combobox, tipo=None, filter=False):
     """
     Crea l'elenco delle operazioni per la movimentazione di magazzino """
@@ -557,7 +554,6 @@ def fillComboboxOperazioni(combobox, tipo=None, filter=False):
     else:
         res = Environment.params['session'].query(Operazione).filter(Operazione.tipo_operazione==None).order_by(Operazione.denominazione).all()
     model = gtk.ListStore(object, str, str)
-
     if not filter:
         emptyRow = ''
     else:

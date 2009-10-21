@@ -8,20 +8,18 @@
 
 
 import gtk
-import gtkhtml2
 import math
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
-
+from promogest.lib.HtmlHandler import createHtmlObj, renderHTML
 
 class FilterWidget(GladeWidget):
     """ Base Class for filter part of windows/dialogs """
 
     def __init__(self, owner, filtersElement=None, resultsElement='grid'):
         GladeWidget.__init__(self, 'filter_vbox', fileName='_filter_elements.glade')
-
         self._owner = owner
         self.filtersElement = None
         self.resultsElement = None
@@ -59,7 +57,6 @@ class FilterWidget(GladeWidget):
         """
         Put filter elements into frame
         """
-
         self.filtersElement = filtersElement
         self.filtersElementTopLevel = self.filtersElement.getTopLevel()
         self.filter_frame_vbox.pack_start(self.filtersElementTopLevel)
@@ -365,18 +362,10 @@ class FilterWidget(GladeWidget):
 
     def getHtmlFilterResultsWidget(self):
         """ Return a treeview widget for filter results """
-
-        html = gtkhtml2.View()
-
-        # some default settings
-        html._htmlTemplate = None
-
-        document = gtkhtml2.Document()
-        document.open_stream('text/html')
-        document.write_stream('<html></html>')
-        document.close_stream()
-        html.set_document(document)
-        return html
+        self.html = createHtmlObj(self)
+        html = """<html><body></body></html>"""
+        renderHTML(self.html,html)
+        return self.html
 
 
     def on_filter_treeview_row_activated(self, treeview, path, column):
