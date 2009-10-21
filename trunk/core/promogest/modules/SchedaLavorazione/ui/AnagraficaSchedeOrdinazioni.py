@@ -229,7 +229,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
                                                 nomiSposi = nomiSposi,
                                                 referente=nomeReferente,
                                                 ricevutaAssociata=numeroRicevuta,
-                                                documentoSaldato=documentoSaldato,
+                                                documentoSaldato=schedeAperte,
                                                 idArticolo = idArticolo,
                                                 offset=offset,
                                                 batchSize=batchSize)
