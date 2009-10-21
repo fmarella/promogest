@@ -75,7 +75,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.scontiTEMP = []
         self.scontiSuTotale = []
 
-    def draw(self):
+    def draw(self,cplx=False):
         """
         popola le combobox della gui e imposta le colonne degli articoli nella treeview articoli
         """
