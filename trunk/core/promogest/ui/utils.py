@@ -556,7 +556,7 @@ def leggiAgente(id):
     """
     Restituisce un dizionario con le informazioni sul vettore letto
     """
-    from  promogest.dao.Agente import Agente
+    from  promogest.modules.Agenti.dao.Agente import Agente
     _id = None
     _ragioneSociale = ''
     _nome = ''
