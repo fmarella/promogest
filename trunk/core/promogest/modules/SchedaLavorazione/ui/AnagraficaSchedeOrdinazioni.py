@@ -255,8 +255,8 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
 class AnagraficaSchedeOrdinazioniHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'scheda_ordinazione',
-                                'Scheda Ordinazione',
-                                templatesHTMLDir ="promogest/modules/SchedaLavorazione/templates/")
+                                'Scheda Ordinazione'
+                                )
 
 class AnagraficaSchedeOrdinazioniReport(AnagraficaReport):
     def __init__(self, anagrafica):

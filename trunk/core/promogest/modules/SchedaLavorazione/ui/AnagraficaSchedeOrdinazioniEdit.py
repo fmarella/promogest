@@ -53,7 +53,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                                 anagrafica,
                                 'anagrafica_schede_ordinazioni_detail_vbox',
                                 'Dettagli scheda lavorazione',
-                                gladeFile='./promogest/modules/SchedaLavorazione/gui/SchedaLavorazione.glade',
+                                gladeFile='SchedaLavorazione/gui/SchedaLavorazione.glade',
                                 module=True)
         self._prepareWindowPlacement()
         self._anagrafica = anagrafica
