@@ -42,7 +42,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
         self._widgetFirstFocus = self.nome_sposi_filter_entry
         self.orderBy = 'id'
 
-    def draw(self):
+    def draw(self, cplx=False):
         treeview = self._anagrafica.anagrafica_filter_treeview
 
         renderer = gtk.CellRendererText()
