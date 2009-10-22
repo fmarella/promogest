@@ -79,7 +79,7 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
         self.orderBy = 'denominazione'
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         # Colonne della Treeview per il filtro
         treeview = self._anagrafica.anagrafica_filter_treeview
 
@@ -220,7 +220,7 @@ class AnagraficaTaglieEdit(AnagraficaEdit):
         self._widgetFirstFocus = self.denominazione_entry
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         #Popola combobox gruppi taglia
         fillComboboxGruppiTaglia(self.gruppo_taglia_combobox)
 
