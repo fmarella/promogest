@@ -7,7 +7,6 @@
 
 import gtk
 import os, popen2
-from promogest.dao.DaoUtils import giacenzaSel
 from datetime import datetime, timedelta
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
@@ -28,8 +27,6 @@ class GestioneChiusuraFiscale(object):
     def __init__(self,gladeobj):
         self.gladeobj = gladeobj
 
-
-
     def chiusuraDialog(self, widget, idMagazzino):
         dialog = gtk.MessageDialog(self.gladeobj.getTopLevel(),
                                    gtk.DIALOG_MODAL
@@ -40,7 +37,7 @@ class GestioneChiusuraFiscale(object):
     Se non sai cosa stai facendo lascia la data odierna impostata
     e contatta la Promotux""")
         hbox = gtk.HBox()
-        entry = self.gladeobj.createDateWidget(None,None,10,0)
+        entry = self.gladeobj.data_chiusura
         entry.setNow()
         hbox.pack_start(entry, False, False, 0)
         dialog.vbox.pack_start(hbox, False, False, 0)
@@ -76,7 +73,7 @@ class GestioneChiusuraFiscale(object):
                                             aData = aData,  # Scontrini prodotti nella giornata odierna
                                             offset = None,
                                             batchSize = None)
-        print "SCONTRINI PRODOTTI IN GIORNATA N°", len(scontrini), scontrini
+        Environment.pg2log.info( "SCONTRINI PRODOTTI IN GIORNATA N° %s dettaglio: %s" ) %(str(len(scontrini)), str(scontrini))
         # Creo nuovo movimento
         daoMovimento = TestataMovimento()
         daoMovimento.operazione = Environment.conf.VenditaDettaglio.operazione

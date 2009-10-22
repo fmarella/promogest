@@ -1620,4 +1620,7 @@ Scontrino</property>
     <property name="visible">True</property>
     <property name="stock">gtk-about</property>
   </object>
+  <object class="DateWidget" id="data_chiusura">
+    <property name="visible">True</property>
+  </object>
 </interface>

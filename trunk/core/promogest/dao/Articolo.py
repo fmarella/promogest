@@ -427,7 +427,7 @@ class Articolo(Dao):
                     atc.delete()
             params["session"].delete(self)
         params["session"].commit()
-        Environment.pg2log.info("DELETE ARTICOLO ID %s" )%(str(self.id))
+        Environment.pg2log.info("DELETE ARTICOLO ID %s" )%(str(self.id or ""))
 
     def filter_values(self,k,v):
         if k == "codice":
