@@ -71,7 +71,7 @@ class Contatto(Dao):
         for contatto in cleanContattoCategoriaContatto:
             contatto.delete()
         params['session'].delete(self)
-        params['session'].flush()
+        params['session'].commit()
         #params["session"].refresh(self)
         params["session"].clear()
 

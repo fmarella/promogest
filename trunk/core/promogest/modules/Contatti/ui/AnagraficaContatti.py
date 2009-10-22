@@ -888,6 +888,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
 
 
     def saveDao(self):
+        print "SELLLLLLLLLLLLLLLLLLLLLLLF DAOOOOOOOOOOOOOOOOOOOO", self.dao, self.dao.id
         if not self.generico_radiobutton.get_active():
             if self.appartenenza_customcombobox._id is None:
                 obligatoryField(self.dialogTopLevel, self.appartenenza_customcombobox)
@@ -922,7 +923,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
         self.dao.descrizione = self.descrizione_comboboxentry.child.get_text()
         textBuffer = self.note_textview.get_buffer()
         self.dao.note = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter())
-        self.daoid=self.dao.id
+        #self.daoid=self.dao.id
         self.dao.persist()
         # Salvo categorie contatti
         model = self.categorie_treeview.get_model()
