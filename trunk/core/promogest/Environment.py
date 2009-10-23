@@ -65,6 +65,17 @@ shop = False
 rev_locale = None
 rev_remota = None
 
+gtkrc = """# Auto-written by gtk2_prefs. Do not edit.
+
+gtk-theme-name = "Nodoka"
+style "user-font"
+{
+    font_name="Tahoma 8"
+}
+widget_class "*" style "user-font"
+"""
+
+
 def getConfigureDir(company='__default__'):
     """ Tests if another configuration folder was indicated """
     default='promogest2'
@@ -123,7 +134,10 @@ def set_configuration(company=None, year = None):
         promogestDir = os.path.expanduser('~') + os.sep + dire + os.sep
         if not (os.path.exists(promogestDir)):
             os.mkdir(promogestDir)
-
+        if os.name =="nt" and not os.path.exists(os.path.expanduser('~')+os.sep+".gtkrc-2.0"):
+            f = open(os.path.expanduser('~')+os.sep+".gtkrc-2.0","w")
+            f.write(gtkrc)
+            f.close
         try:
             documentsDir = promogestDir + 'documenti' + os.sep
             if not (os.path.exists(documentsDir)):
