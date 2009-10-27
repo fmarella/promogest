@@ -551,9 +551,12 @@ def fillComboboxOperazioni(combobox, tipo=None, filter=False):
     Crea l'elenco delle operazioni per la movimentazione di magazzino """
     if tipo:
 #        res = Environment.params['session'].query(Operazione).filter(Operazione.tipo_operazione==tipo).order_by(Operazione.denominazione).all()
-        res = Environment.params['session'].query(Operazione).filter(or_(Operazione.tipo_operazione==None,Operazione.tipo_operazione==tipo)).order_by(Operazione.denominazione).all()
+        res = Environment.params['session'].query(Operazione).\
+                    filter(or_(Operazione.tipo_operazione==None,Operazione.tipo_operazione==tipo)).\
+                    order_by(Operazione.denominazione).all()
     else:
         res = Environment.params['session'].query(Operazione).filter(Operazione.tipo_operazione==None).order_by(Operazione.denominazione).all()
+
     model = gtk.ListStore(object, str, str)
 
     if not filter:
@@ -561,6 +564,7 @@ def fillComboboxOperazioni(combobox, tipo=None, filter=False):
     else:
         emptyRow = '< Tutti >'
     model.append((None, '', emptyRow))
+
     for o in res:
         model.append((o, o.denominazione, (o.denominazione or '')[0:30]))
 
@@ -569,8 +573,10 @@ def fillComboboxOperazioni(combobox, tipo=None, filter=False):
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
     combobox.set_model(model)
+
     if combobox.__class__ is gtk.ComboBoxEntry:
         combobox.set_text_column(2)
+
 
 
 def fillComboboxTipiRecapito(combobox):

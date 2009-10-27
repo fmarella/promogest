@@ -50,7 +50,7 @@ VERSION = "0.6"
 
 class SlaTpl2Sla(object):
 
-    def __init__(self, slaFileName, pdfFolder, report=False, label=False):
+    def __init__(self, slaFileName, pdfFolder, report=False, label=False, classic=None, template_file=None):
         """
         Build a template object based on the specified file-like
         object and sequence of objects
@@ -64,7 +64,8 @@ class SlaTpl2Sla(object):
         self.timeTags = ['date','time','datetime']
         self.positionTags = ['first','last']
         self.pageTags = ['currentPage','totalPage']
-
+        self._classic = classic
+        self._template_file = template_file
         self.report = report
         self.label = label
         self.cycle = 0
@@ -118,7 +119,7 @@ class SlaTpl2Sla(object):
         self.findTablesProperties()
         self.getIteratableGroups()
         self.getPagesNumber()
-        if self.label:
+        if self.label and self._classic:
             self.duplicateElementLabel()
         self.addEmptyPages()
         self.fillDocument()
@@ -335,23 +336,26 @@ class SlaTpl2Sla(object):
         scarta i tag non utili e verifica poi la lunghezza del dao e il numero
         di righe presenti, c'è da migliorarla ma per il momento funziona
         """
-        self.pagesNumber = 1
-        for group in self.iteratableGroups:
-            tableGroup = self.indexGroupTableFromListDict(group)
-            for tagDict in self.tablesTags[group]:
-                for tag in tagDict.keys():
-                    indexN = tag.find('(n)')
-                    if (indexN != -1):
-                        indexNP = tag.find('(n).')
-                        group = str(group).strip()
-                        if (indexNP != -1):
-                            arrayName = tag[:indexNP]
-                            valuesNumber = len(self.objects[self.cycle][arrayName])
-                            rowsNumber = tableGroup['rows'] - 1
-                        else:
-                            valuesNumber = len(self.objects)
-                            rowsNumber = tableGroup['rows'] - 1
-                        self.pagesNumber = int(math.ceil(float(valuesNumber) / float(rowsNumber)))
+        if not self._classic:
+            self.pagesNumber = len(self.objects)
+        else:
+            self.pagesNumber = 1
+            for group in self.iteratableGroups:
+                tableGroup = self.indexGroupTableFromListDict(group)
+                for tagDict in self.tablesTags[group]:
+                    for tag in tagDict.keys():
+                        indexN = tag.find('(n)')
+                        if (indexN != -1):
+                            indexNP = tag.find('(n).')
+                            group = str(group).strip()
+                            if (indexNP != -1):
+                                arrayName = tag[:indexNP]
+                                valuesNumber = len(self.objects[self.cycle][arrayName])
+                                rowsNumber = tableGroup['rows'] - 1
+                            else:
+                                valuesNumber = len(self.objects)
+                                rowsNumber = tableGroup['rows'] - 1
+                            self.pagesNumber = int(math.ceil(float(valuesNumber) / float(rowsNumber)))
         #self.pagesNumber = 2
         #print "questo è il nuovo numero di pagine del template sla:", self.pagesNumber
 
@@ -392,6 +396,10 @@ class SlaTpl2Sla(object):
         if not self.label:
             self.duplicateElement()
             self.duplicateTags()
+        elif self.label and not self._classic:
+            self.duplicateElement()
+            self.duplicateTags()
+            self.labelSla()
         #self.doc.write('__temp.sla')
 
     def duplicateElement(self):

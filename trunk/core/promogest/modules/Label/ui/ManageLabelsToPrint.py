@@ -22,8 +22,8 @@ class ManageLabelsToPrint(GladeWidget):
         """Widget di transizione per visualizzare e confermare gli oggetti
             preparati per la stampa ( Multi_dialog.glade tab 1) 
         """
-        GladeWidget.__init__(self, 'multi_dialog',
-                        fileName= 'multi_dialog.glade')
+        GladeWidget.__init__(self, 'label_dialog',
+                        fileName= 'Label/gui/label_dialog.glade',isModule=True)
         self.revert_button.destroy()
         self.apply_button.destroy()
         self.mainWindow = mainWindow
@@ -86,6 +86,13 @@ class ManageLabelsToPrint(GladeWidget):
         treeview.set_model(self._treeViewModel)
         fillComboboxMagazzini(self.id_magazzino_label_combobox, True)
         self.id_magazzino_label_combobox.set_active(0)
+        modek = self.select_template_combobox.get_model()
+        path=Environment.labelTemplatesDir  # insert the path to the directory of interest
+        dirList=os.listdir(path)
+        print dirList
+        for fname in dirList:
+            if os.path.splitext(fname)[1] ==".sla":
+                modek.append([fname],)
         self.refresh()
 
 
@@ -103,26 +110,30 @@ class ManageLabelsToPrint(GladeWidget):
                 self.resultList.append(oggetto)
         #return lista
 
+    def get_active_text(self, combobox):
+        model = combobox.get_model()
+        active = combobox.get_active()
+        if active < 0:
+            return None
+        return model[active][0]
+
 
 
     def on_ok_button_clicked(self,button):
-        #self.scorritreeview()
         self.resultList= []
-        #self.lista = []
-        #if "PromoWear" in Environment.modulesList:
-            #resultList= self._treeViewModel.foreach(self.selectFilter)
-            #print "PDPDPDPDPDDP", self.resultList
-        #else:
         for row in self._treeViewModel:
             if row[5] == "0" or row[5] == "":
                 continue
             else:
                 for v in range(0,int(row[5])):
                     self.resultList.append(row[0])
-
+        classic = False
+        if self.classic_radio.get_active():
+            classic = True
+        template_file= self.get_active_text(self.select_template_combobox)
         self.mainWindow._handlePrinting(pdfGenerator=self.mainWindow.labelHandler,
-                                report=True,daos=self.resultList,
-                                label=True,returnResults=True)
+                                report=True,daos=self.resultList,template_file=template_file,
+                                label=True,returnResults=True, classic=classic)
         self.getTopLevel().destroy()
 
 

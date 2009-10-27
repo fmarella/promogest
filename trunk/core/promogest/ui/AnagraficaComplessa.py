@@ -229,14 +229,6 @@ class Anagrafica(GladeWidget):
         elif response == gtk.RESPONSE_CANCEL:
             saveDialog.destroy()
 
-    #def exporttoods(self,data_export):
-        #import promogest.lib.ooolib
-        #if data_export:
-            #doc = ooolib.Calc()
-            #for data in data_export:
-                #if str(data.__module__).split(".")[-1] == "ListinoArticolo":
-                    #leggi
-
     def on_credits_menu_activate(self, widget):
         creditsDialog = GladeWidget('credits_dialog', callbacks_proxy=self)
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
@@ -410,14 +402,8 @@ class Anagrafica(GladeWidget):
 
     def on_Stampa_Frontaline_clicked(self, widget):
         if "Label" in Environment.modulesList:
-            results = self.filter.runFilter(offset=None, batchSize=None,
-                                            #progressCB=progressCB,
-                                            #progressBatchSize=5
-                                            )
+            results = self.filter.runFilter(offset=None, batchSize=None)
             self.manageLabels(results)
-            #self._handlePrinting(pdfGenerator=self.labelHandler,
-                                #report=True, label=True)
-            #self.returnResults=None
         else:
             fenceDialog()
 
@@ -427,31 +413,34 @@ class Anagrafica(GladeWidget):
                              report=True)
 
     def manageLabels(self, results):
-        print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
         from promogest.modules.Label.ui.ManageLabelsToPrint import ManageLabelsToPrint
         a = ManageLabelsToPrint(mainWindow=self,daos=results)
-        #anag = PrintDialogHandler(self,self.windowTitle)
         anagWindow = a.getTopLevel()
         returnWindow = self.getTopLevel().get_toplevel()
         anagWindow.set_transient_for(returnWindow)
         anagWindow.show_all()
 
-    def _handlePrinting(self, pdfGenerator, report, daos=None, label=None,
-                                                            returnResults=None):
+    def _handlePrinting(self, pdfGenerator, report,
+                        daos=None, label=None,
+                        returnResults=None,classic=False, template_file=False):
         # FIXME: refactor this mess!!!
 
+        # tiro su la finestrella con la progress bar
         progressDialog = GladeWidget('records_print_progress_dialog',
                                      callbacks_proxy=self)
         progressDialog.getTopLevel().set_transient_for(self.getTopLevel())
         progressDialog.getTopLevel().show_all()
-
         pbar = progressDialog.records_print_progress_bar
+        pbar.set_text('Lettura dati')
+
         self.__pulseSourceTag = None
         self.__cancelOperation = False
         self.__pdfGenerator = pdfGenerator
         self.__returnResults = returnResults
         self.__pdfReport = None
         self._reportType = report
+        self._template_file = template_file
+        self._classic = classic
         self.label = label # tipo report ma anche opzione label
         self._folder = ''
         self._pdfName = str(pdfGenerator.defaultFileName)
@@ -520,14 +509,15 @@ class Anagrafica(GladeWidget):
                     return False
                 gobject.idle_add(renewProgressBarIdle)
 
-                # In the end, let's launch the template rendering
-                # thread
+                # In the end, let's launch the template rendering thread
                 def renderingThread():
+                    """ Questo è il thread di conversione e generazione della stampa"""
                     operationName = ""
 
                     pdfGenerator.setObjects(results)
-
+                    print "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT", self._template_file
                     self._pdfName = str(pdfGenerator.defaultFileName)
+
                     if pdfGenerator.defaultFileName == 'documento':
                         dao = self.filter.getSelectedDao()
                         data = dao.data_documento
@@ -543,11 +533,14 @@ class Anagrafica(GladeWidget):
                                         '_' + \
                                         str(dao.id)
                     elif pdfGenerator.defaultFileName == 'label':
+
                         self._pdfName = pdfGenerator.defaultFileName +\
                                         '_' + \
                                         time.strftime('%d-%m-%Y')
                         operationName = "label"
-                    self.__pdfReport = pdfGenerator.pdf(operationName)
+                    self.__pdfReport = pdfGenerator.pdf(operationName,
+                                                classic=self._classic,
+                                                template_file=self._template_file)
 
                     # When we're done, let's schedule the printing
                     # dialog (going back to the main GTK loop)
@@ -564,11 +557,12 @@ class Anagrafica(GladeWidget):
                         t = threading.Thread(group=None, target=renderingThread,
                                             name='Data rendering thread', args=(),
                                             kwargs={})
-                        t.setDaemon(True) # FIXME: are we sure?
+                        #t.setDaemon(True) # FIXME: are we sure?
                         t.start()
 
 
         def fetchingThread(daos=None):
+            """ funzione di prelievo dei risultati """
             if daos is None:
                 # Let's fetch the data
                 self.unused = self.filter.runFilter(offset=None, batchSize=None,
@@ -580,17 +574,14 @@ class Anagrafica(GladeWidget):
                 # callback directly
                 progressCB(results=daos, prevLen=0, totalLen=len(daos))
 
-        # FIXME: unlocalized string!
-        progressDialog.records_print_progress_bar.set_text('Lettura dati')
+        # Qui c'è il cuore della funzione di stampa con il lancio del thread separato
         if Environment.tipo_eng =="sqlite":
             fetchingThread(daos=daos)
-            #else:
         else:
             t = threading.Thread(group=None, target=fetchingThread,
                                 name='Data fetching thread', args=(),
                                 kwargs={'daos' : daos})
-            t.setDaemon(True) # FIXME: are we sure?
-
+            #t.setDaemon(True) # FIXME: are we sure?
             t.start()
 
     def on_records_print_on_screen_activate(self, widget):
@@ -1083,7 +1074,7 @@ class AnagraficaHtml(object):
 
 
 
-    def pdf(self, operationName):
+    def pdf(self, operationName, classic=None, template_file=None):
         self._slaTemplate = None
         self._slaTemplateObj=None
         azienda = Azienda().getRecord(id=Environment.azienda)
@@ -1121,7 +1112,9 @@ class AnagraficaHtml(object):
             if self._slaTemplateObj is None:
                 self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
                                             pdfFolder=self._anagrafica._folder,
-                                            report=self._anagrafica._reportType)
+                                            report=self._anagrafica._reportType,
+                                            classic = classic,
+                                            template_file=template_file)
 
             #self.dao.resolveProperties()
             param = [self.dao.dictionary(complete=True)]
@@ -1164,7 +1157,7 @@ class AnagraficaReport(object):
         """ Imposta gli oggetti che verranno inclusi nel report """
         self.objects = objects
 
-    def pdf(self,operationName):
+    def pdf(self,operationName, classic=None, template_file=None):
         """ Restituisce una stringa contenente il report in formato PDF
         """
         azienda = Azienda().getRecord(id=Environment.azienda)
@@ -1172,7 +1165,9 @@ class AnagraficaReport(object):
             if self._slaTemplateObj is None:
                 self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
                                             pdfFolder=self._anagrafica._folder,
-                                            report=self._anagrafica._reportType)
+                                            report=self._anagrafica._reportType,
+                                            classic = classic,
+                                            template_file=template_file)
 
         param = []
         for d in self.objects:
@@ -1216,18 +1211,20 @@ class AnagraficaLabel(object):
         """ Create labels
         """
         self._anagrafica = anagrafica
+        print "SSSSSSSSSSSSS", dir(anagrafica)
         self.description = description
         self.defaultFileName = defaultFileName
         self._htmlTemplate = os.path.join('label-templates', htmlTemplate + '.html')
         self._slaTemplate = Environment.labelTemplatesDir + sxwTemplate + '.sla'
         self.objects = None
+        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         self._slaTemplateObj = None
 
     def setObjects(self, objects):
         """ Imposta gli oggetti che verranno inclusi nel report """
         self.objects = objects
 
-    def pdf(self,operationName):
+    def pdf(self,operationName, classic=None, template_file=None):
         """ Restituisce una stringa contenente il report in formato PDF
         """
         azienda = Azienda().getRecord(id=Environment.azienda)
@@ -1240,7 +1237,9 @@ class AnagraficaLabel(object):
                 self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
                                             pdfFolder=self._anagrafica._folder,
                                             report=self._anagrafica._reportType,
-                                            label=True)
+                                            label=True,
+                                            classic = classic,
+                                            template_file=template_file)
         param = []
         for d in self.objects:
             d.resolveProperties()

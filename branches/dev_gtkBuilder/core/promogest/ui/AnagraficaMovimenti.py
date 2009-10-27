@@ -233,9 +233,13 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
         self._treeViewModel = gtk.ListStore(object, str, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
+
+
         fillComboboxOperazioni(self.id_operazione_filter_combobox, 'movimento',
                                True)
         self.id_operazione_filter_combobox.set_active(0)
+
+
         fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
         if self._anagrafica._magazzinoFissato:
             findComboboxRowFromId(self.id_magazzino_filter_combobox,
@@ -605,6 +609,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         treeview.append_column(column)
 
         fillComboboxOperazioni(self.id_operazione_combobox, 'movimento')
+
+
         fillComboboxMagazzini(self.id_magazzino_combobox)
 
         self.nuovaRiga()
