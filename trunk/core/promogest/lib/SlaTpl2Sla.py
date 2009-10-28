@@ -66,6 +66,7 @@ class SlaTpl2Sla(object):
         self.pageTags = ['currentPage','totalPage']
         self._classic = classic
         self._template_file = template_file
+        print "VEDIAMO QUI ADESSO", classic, template_file
         self.report = report
         self.label = label
         self.cycle = 0
@@ -99,12 +100,17 @@ class SlaTpl2Sla(object):
                 break
         return tableGroup
 
-    def serialize(self, objects, dao=None):
+    def serialize(self, objects, dao=None, classic =None, template_file=None):
         """ Model parsing, values substitution and pdf creation """
         self.objects = objects
         result = None
         self.slaRootTag()
         version=self.scribusVersion()
+        self._classic = classic
+        self._template_file = template_file
+        print "IL FILEEEEEEEEEEEEEEEEEEEE", self.slaFileName
+        if template_file:
+            self.slaFileName = Environment.labelTemplatesDir+self._template_file
         if version ==True:
             from promogest.lib.Sla2Pdf_ng import Sla2Pdf_ng as Sla2Pdf
             #print "TEMPLATE CREATO O MODIFICATO CON SCRIBUS %s" %version
@@ -122,8 +128,9 @@ class SlaTpl2Sla(object):
         if self.label and self._classic:
             self.duplicateElementLabel()
         self.addEmptyPages()
+
         self.fillDocument()
-        #self.findTablesProperties()
+        self.findTablesProperties()
         slatopdf = Sla2Pdf(document = self.slaDocumentTag(),
                         pdfFolder = self.pdfFolder,
                         version=self.scribusVersion(),
@@ -398,9 +405,10 @@ class SlaTpl2Sla(object):
             self.duplicateTags()
         elif self.label and not self._classic:
             self.duplicateElement()
-            self.duplicateTags()
+            #self.duplicateTags()
             self.labelSla()
-        #self.doc.write('__temp.sla')
+
+        self.doc.write('__temp.sla')
 
     def duplicateElement(self):
         pages = len(self.slaPage())

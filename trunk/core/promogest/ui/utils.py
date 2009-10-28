@@ -2488,7 +2488,7 @@ def checkAggiorna():
         client = pysvn.Client()
         if not Environment.rev_locale:
             Environment.rev_locale= client.info(".").revision.number
-            print "FFFFFFFFFFFFFFFFFFFFFFFFF", Environment.rev_locale, client.info(".").__dict__
+            #print "FFFFFFFFFFFFFFFFFFFFFFFFF", Environment.rev_locale, client.info(".").__dict__
         if not Environment.rev_remota:
             Environment.rev_remota= pysvn.Client().info2("http://svn.promotux.it/svn/promogest2/trunk/", recurse=False)[0][1]["rev"].number
 

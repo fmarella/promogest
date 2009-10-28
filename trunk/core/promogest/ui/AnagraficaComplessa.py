@@ -515,7 +515,7 @@ class Anagrafica(GladeWidget):
                     operationName = ""
 
                     pdfGenerator.setObjects(results)
-                    print "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT", self._template_file
+                    print "TEMPLATE FILE", self._template_file
                     self._pdfName = str(pdfGenerator.defaultFileName)
 
                     if pdfGenerator.defaultFileName == 'documento':
@@ -1211,13 +1211,11 @@ class AnagraficaLabel(object):
         """ Create labels
         """
         self._anagrafica = anagrafica
-        print "SSSSSSSSSSSSS", dir(anagrafica)
         self.description = description
         self.defaultFileName = defaultFileName
         self._htmlTemplate = os.path.join('label-templates', htmlTemplate + '.html')
         self._slaTemplate = Environment.labelTemplatesDir + sxwTemplate + '.sla'
         self.objects = None
-        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         self._slaTemplateObj = None
 
     def setObjects(self, objects):
@@ -1234,12 +1232,11 @@ class AnagraficaLabel(object):
                                             #pdfFolder=self._anagrafica._folder,
                                             #report=self._anagrafica._reportType,
                                             #label=True).createPDF(objects=param)
+                print "VISTO CHE SIAMO QUI", classic, template_file
                 self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
                                             pdfFolder=self._anagrafica._folder,
                                             report=self._anagrafica._reportType,
-                                            label=True,
-                                            classic = classic,
-                                            template_file=template_file)
+                                            label=True)
         param = []
         for d in self.objects:
             d.resolveProperties()
@@ -1254,7 +1251,8 @@ class AnagraficaLabel(object):
             if param:
                 param[0].update(azidict)
         if not Environment.new_print_enjine:
-            return self._slaTemplateObj.serialize(param, self.objects)
+            return self._slaTemplateObj.serialize(param, self.objects,classic = classic,
+                                            template_file=template_file)
         else:
             return Sla2Pdf(slaFileName=self._slaTemplate,
                                            pdfFolder=self._anagrafica._folder,
