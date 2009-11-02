@@ -157,7 +157,7 @@ class AnagraficaMovimenti(Anagrafica):
             return
 
         from DuplicazioneMovimento import DuplicazioneMovimento
-        anag = DuplicazioneMovimento(dao)
+        anag = DuplicazioneMovimento(dao,self)
         showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), None, self.filter.refresh)
 
 
@@ -330,6 +330,7 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
 
         tdos = self.runFilter()
         self.xptDaoList = self.runFilter(offset=None, batchSize=None)
+        #self.xptDaoList =None
 
         self._treeViewModel.clear()
         for t in tdos:

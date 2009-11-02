@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 """
  Promogest
  Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
@@ -108,7 +107,7 @@ def drawRicercaSemplicePromoWearPart(anaarti):
     #gestione stagione abbigliamento con prelievo del dato di default dal configure ( nb da usare l'id)
     anaarti.id_stagione_articolo_filter_combobox.set_active(0)
     stagione = getattr(Environment.conf.PromoWear,'stagione_default', None)
-    if stagione is not None:
+    if stagione is not "":
         findComboboxRowFromId(anaarti.id_stagione_articolo_filter_combobox, int(stagione))
     anaarti.id_genere_articolo_filter_combobox.set_active(0)
     if anaarti._idGenere is not None:
