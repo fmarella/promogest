@@ -73,7 +73,7 @@ class GestioneChiusuraFiscale(object):
                                             aData = aData,  # Scontrini prodotti nella giornata odierna
                                             offset = None,
                                             batchSize = None)
-        Environment.pg2log.info( "SCONTRINI PRODOTTI IN GIORNATA N° %s dettaglio: %s" ) %(str(len(scontrini)), str(scontrini))
+        ##Environment.pg2log.info( "SCONTRINI PRODOTTI IN GIORNATA N° %s dettaglio: %s" ) %(str(len(scontrini)or""), str(scontrini)or"")
         # Creo nuovo movimento
         daoMovimento = TestataMovimento()
         daoMovimento.operazione = Environment.conf.VenditaDettaglio.operazione
