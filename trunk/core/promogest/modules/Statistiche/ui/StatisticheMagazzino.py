@@ -34,25 +34,21 @@ class StatisticheMagazzino(GladeWidget):
                 'Statistiche/gui/statistiche_magazzino_elements.glade',
                 isModule=True)
         self.placeWindow(self.getTopLevel())
-        self.da_data_entry.set_text('01/01/' + Environment.workingYear)
-        self.a_data_entry.set_text(dateToString(datetime.datetime.now()))
+        self.da_data__entry.set_text('01/01/' + Environment.workingYear)
+        self.a_data__entry.set_text(dateToString(datetime.datetime.now()))
         self._idMagazzino = idMagazzino
+        self.da_data__entry.show_all()
+        self.a_data__entry.show_all()
 
+    def on_statistiche_magazzino_dialog_destroy(self, widget):
+        self.a_data__entry.destroy()
+        self.da_data__entry.destroy()
+        self.getTopLevel().destroy()
+        #return
 
-    def on_window_close(self, widget, event):
-        self.destroy()
+    def on_ok_buttonn_clicked(self, button):
 
-    def on_ok_button_clicked(self, button):
-        fileDialog = gtk.FileChooserDialog(title='Salva la statistica ',
-                                           parent=self.getTopLevel(),
-                                           action=gtk.FILE_CHOOSER_ACTION_SAVE,
-                                           buttons=(gtk.STOCK_CANCEL,
-                                                    gtk.RESPONSE_CANCEL,
-                                                    gtk.STOCK_SAVE,
-                                                    gtk.RESPONSE_OK),
-                                           backend=None)
-
-
+        self.filechooserdialog_stats.show()
         folder = ''
         if hasattr(Environment.conf,'Documenti'):
             folder = getattr(Environment.conf.Documenti,'cartella_predefinita','')
@@ -61,30 +57,30 @@ class StatisticheMagazzino(GladeWidget):
                 folder = os.environ['HOME']
             elif os.name == 'nt':
                 folder = os.environ['USERPROFILE']
-        fileDialog.set_current_folder(folder)
+        self.filechooserdialog_stats.set_current_folder(folder)
 
         fltr = gtk.FileFilter()
         fltr.add_mime_type('application/csv')
         fltr.set_name('File CSV (*.csv)')
-        fileDialog.add_filter(fltr)
+        self.filechooserdialog_stats.add_filter(fltr)
 
-        fileDialog.set_current_name('stat_mag.csv')
+        self.filechooserdialog_stats.set_current_name('stat_mag.csv')
 
-        response = fileDialog.run()
-        if response == gtk.RESPONSE_OK:
-            filename = fileDialog.get_filename()
-            fileDialog.destroy()
+        response = self.filechooserdialog_stats.run()
 
-            self.export(filename)
-        else:
-            fileDialog.destroy()
-            return
+    def on_salva_file_clicked(self, button):
+        filename = self.filechooserdialog_stats.get_filename()
+        self.exportss(filename)
+        self.filechooserdialog_stats.destroy()
 
-    def export(self, filename):
+    def on_cancella_file_clicked(self, button):
+        self.filechooserdialog_stats.destroy()
+
+    def exportss(self, filename):
         intervallo = ''
         self.res = []
-        daData = stringToDate(self.da_data_entry.get_text())
-        aData = stringToDate(self.a_data_entry.get_text())
+        daData = stringToDate(self.da_data__entry.get_text())
+        aData = stringToDate(self.a_data__entry.get_text())
         if self.allmag_checkbutton:
             magazzini = Environment.params["session"].query(Magazzino.id).all()
         else:

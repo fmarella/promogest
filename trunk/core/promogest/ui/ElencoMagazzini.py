@@ -13,8 +13,6 @@ import gobject
 from GladeWidget import GladeWidget
 
 from promogest import Environment
-#from promogest.dao.Dao import Dao
-#import promogest.dao.Magazzino
 from promogest.dao.Magazzino import Magazzino
 
 from utils import *
@@ -172,18 +170,18 @@ class ElencoMagazzini(GladeWidget):
         if "Statistiche" in Environment.modulesList:
             #return
 
-            #if self._currentDao is not None:
-            #idMagazzino = self._currentDao.id
-            from promogest.modules.Statistiche.ui.StatisticheMagazzino import StatisticheMagazzino
-            anag = StatisticheMagazzino(idMagazzino=None)
-            anagWindow = anag.getTopLevel()
+            if self._currentDao is not None:
+                idMagazzino = self._currentDao.id
+                from promogest.modules.Statistiche.ui.StatisticheMagazzino import StatisticheMagazzino
+                anag = StatisticheMagazzino(idMagazzino=None)
+                anagWindow = anag.getTopLevel()
 
-            showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
-            #else:
-                #toggleButton.set_active(False)
-                #obligatoryField(self._mainWindow,
-                                #None,
-                                #'\nSelezionare un magazzino !')
+                showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
+            else:
+                toggleButton.set_active(False)
+                obligatoryField(self._mainWindow,
+                                None,
+                                '\nSelezionare un magazzino !')
         else:
             fenceDialog()
             toggleButton.set_active(False)
