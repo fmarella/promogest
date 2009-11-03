@@ -175,7 +175,8 @@ class Articolo(Dao):
                                                                 offset=None,
                                                                 batchSize=None)
             except:
-                print "FOR DEBUG ONLY getArticoliTagliaColore FAILED"
+                #print "FOR DEBUG ONLY getArticoliTagliaColore FAILED"
+                pass
             return articoli
         articoliTagliaColore = property(getArticoliTagliaColore)
 
@@ -545,7 +546,7 @@ def getNuovoCodiceArticolo(idFamiglia=None):
     if hasattr(conf,'Articoli'):
         if hasattr(conf.Articoli,'lunghezza_progressivo'):
             if isNuovoCodiceByFamiglia():
-                print "passi qui,isNuovoCodiceByFamiglia() "
+                #print "passi qui,isNuovoCodiceByFamiglia() "
                 lunghezzaCodiceFamiglia = int(conf.Articoli.lunghezza_codice_famiglia)
                 numeroFamiglie = int(conf.Articoli.numero_famiglie)
             #codicesel  =params['session'].query(Articolo.codice).order_by("id").all()

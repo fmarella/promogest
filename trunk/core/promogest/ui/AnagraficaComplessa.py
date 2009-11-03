@@ -1232,7 +1232,7 @@ class AnagraficaLabel(object):
                                             #pdfFolder=self._anagrafica._folder,
                                             #report=self._anagrafica._reportType,
                                             #label=True).createPDF(objects=param)
-                print "VISTO CHE SIAMO QUI", classic, template_file
+                #print "VISTO CHE SIAMO QUI", classic, template_file
                 self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
                                             pdfFolder=self._anagrafica._folder,
                                             report=self._anagrafica._reportType,
@@ -1251,14 +1251,17 @@ class AnagraficaLabel(object):
             if param:
                 param[0].update(azidict)
         if not Environment.new_print_enjine:
+            #print "AAOAOAOAOAOAAOAOAOAOAAO", template_file
             return self._slaTemplateObj.serialize(param, self.objects,classic = classic,
                                             template_file=template_file)
         else:
+            #print "AEECOCOCOSOAAAAAAAAAAAAAAAAAAAAAAAAA"
             return Sla2Pdf(slaFileName=self._slaTemplate,
-                                           pdfFolder=self._anagrafica._folder,
-                                           report=self._anagrafica._reportType,
-                                           label=True).createPDF(objects=param, daos=self.objects)
-
+                            pdfFolder=self._anagrafica._folder,
+                            report=self._anagrafica._reportType,
+                            label=True).createPDF(objects=param, daos=self.objects,
+                                                classic = classic,
+                                                template_file=template_file)
 class AnagraficaEdit(GladeWidget):
     """ Interfaccia di editing dell'anagrafica """
 

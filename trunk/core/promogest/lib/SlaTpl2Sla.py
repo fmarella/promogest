@@ -8,7 +8,6 @@
 # Author: Francesco Meloni  <francesco@promotux.it>
 
 
-
 import sys
 import os
 import math
@@ -66,7 +65,6 @@ class SlaTpl2Sla(object):
         self.pageTags = ['currentPage','totalPage']
         self._classic = classic
         self._template_file = template_file
-        print "VEDIAMO QUI ADESSO", classic, template_file
         self.report = report
         self.label = label
         self.cycle = 0
@@ -104,14 +102,13 @@ class SlaTpl2Sla(object):
         """ Model parsing, values substitution and pdf creation """
         self.objects = objects
         result = None
-        self.slaRootTag()
-        version=self.scribusVersion()
         self._classic = classic
         self._template_file = template_file
-        print "IL FILEEEEEEEEEEEEEEEEEEEE", self.slaFileName
         if template_file:
-            self.slaFileName = Environment.labelTemplatesDir+self._template_file
-        if version ==True:
+            self.slaFileName = Environment.labelTemplatesDir+template_file
+        self.slaRootTag()
+        version=self.scribusVersion()
+        if version:
             from promogest.lib.Sla2Pdf_ng import Sla2Pdf_ng as Sla2Pdf
             #print "TEMPLATE CREATO O MODIFICATO CON SCRIBUS %s" %version
         else:
@@ -121,6 +118,7 @@ class SlaTpl2Sla(object):
                                 slaFileName = self.slaFileName,
                                 report = self.report).serialize(objects, dao=dao)
             return slatopdf
+        #print "IL FILEEEEEEEEEEEEEEEEEEEE", self.slaFileName, template_file, version
         self.findTablesAndTags()
         self.findTablesProperties()
         self.getIteratableGroups()
@@ -408,7 +406,7 @@ class SlaTpl2Sla(object):
             #self.duplicateTags()
             self.labelSla()
 
-        self.doc.write('__temp.sla')
+        #self.doc.write('__temp.sla')
 
     def duplicateElement(self):
         pages = len(self.slaPage())

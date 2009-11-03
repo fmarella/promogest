@@ -56,7 +56,7 @@ class Riga(Dao):
     aliquota = property(_getAliquotaIva, )
 
     def __unita_base(self):
-        #print "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", self.arti.denominazione_breve_unita_base
+        
         #a =  params["session"].query(Articolo).with_parent(self).filter(self.arti.id_unita_base==UnitaBase.id).all()
         #if not a:
             #return a

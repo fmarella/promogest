@@ -419,7 +419,7 @@ class AnagraficaFilter(GladeWidget):
 
 
     def _changeOrderBy(self, widget, campi):
-        print "CAMBIO L'ORDINE DEI RISULTATI ORDINANDO PER ", campi
+        #print "CAMBIO L'ORDINE DEI RISULTATI ORDINANDO PER ", campi
         self.orderBy = campi
         self.refresh()
 

@@ -292,7 +292,12 @@ def pageProFunc(document):
         pageProperties.append([size, num,
                                     borderTop, borderBottom, borderRight, borderLeft,
                                     orientation, pageHeight, pageWidth, pageXPos, pageYPos])
-        #print "PROPRIETA' DELLA PAGINA", pageProperties
+        print "PROPRIETA' DELLA PAGINA", pageProperties
+        #PROPRIETA' DELLA PAGINA [['Custom', 1, 0.0, 0.0, 0.0, 0.0, 0, 102.047, 252.28299999999999, 100.0, 20.0],
+        #                         ['Custom', 2, 0.0, 0.0, 0.0, 0.0, 0, 102.047, 252.28299999999999, 100.0, 122.047],
+        #                         ['Custom', 3, 0.0, 0.0, 0.0, 0.0, 0, 102.047, 252.28299999999999, 100.0, 224.09399999999999]]
+
+
         #self.canvas = Canvas(filename = self.pdfFolder + self.pdfFileName + '.pdf', pagesize=(pageWidth, pageHeight))
 
     return pageProperties

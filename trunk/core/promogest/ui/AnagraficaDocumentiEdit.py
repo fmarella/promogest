@@ -879,7 +879,7 @@ del documento.
         """
         Memorizza la riga inserita o modificata
         """
-        print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+        #print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
         if self.NoRowUsableArticle:
             self.showMessage('ARTICOLO NON USABILE IN UNA RIGA IN QUANTO ARTICOLO PRINCIPALE O PADRE!')
             return
@@ -1050,7 +1050,7 @@ del documento.
             self.nuovaRiga()
 
     def ricercaArticolo(self):
-        print "AAAAAAAAAAAAAAAAAA"
+        #print "AAAAAAAAAAAAAAAAAA"
         def on_ricerca_articolo_hide(anagWindow, anag):
             if anag.dao is None:
                 anagWindow.destroy()

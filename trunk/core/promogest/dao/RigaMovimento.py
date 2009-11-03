@@ -293,7 +293,6 @@ class RigaMovimento(Dao):
             nr.coeficente = self.coeficente_noleggio
             nr.prezzo_acquisto = self.prezzo_acquisto_noleggio
             if str(self.isrent).upper().strip() == "True".upper().strip():
-                print " QUINDI SEI QUI"
                 nr.isrent = True
             else:
                 nr.isrent = False

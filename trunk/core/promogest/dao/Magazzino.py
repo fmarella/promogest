@@ -15,7 +15,7 @@ from Dao import Dao
 
 magazzinoTable=Table('magazzino',params['metadata'],schema = params['schema'],autoload=True)
 if "magazzino.pvcode" not in str(magazzinoTable.columns):
-    print "AGGIUNGO LA COLONNA PVCODE"
+    #print "AGGIUNGO LA COLONNA PVCODE"
     conn = params["engine"].connect()
     trans = conn.begin()
     if tipodb == "sqlite":

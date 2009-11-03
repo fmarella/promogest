@@ -41,9 +41,6 @@ class Sla2Pdf_ng(object):
         self.iteratableGroups = iteratableGroups
         self.translate()
 
-
-
-
     def drawImage(self,group):
         """ Drawing an image """
         pfile = self.tablesPropertie['pfile']

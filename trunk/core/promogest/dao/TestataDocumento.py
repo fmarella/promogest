@@ -784,7 +784,7 @@ class TestataDocumento(Dao):
 
 
     def delete(self):
-        print "PARTIAMO DA QUI"
+        #print "PARTIAMO DA QUI"
         #testataMovDel = TestataMovimento().select(id_testata_documento = self.id).all()
 
         params['session'].delete(self)

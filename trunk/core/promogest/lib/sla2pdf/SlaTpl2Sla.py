@@ -2,8 +2,7 @@
 
 # Promogest
 #
-# Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
-# Author: Simone Cossu <simone@promotux.it>
+# Copyright (C) 2007-2010 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni  <francesco@promotux.it>
 
@@ -33,12 +32,14 @@ class SlaTpl2Sla(SlaParser):
     """
 
     def __init__(self,slafile=None,label=None, report=None, objects=None,
-                    daos=None, slaFileName=None, pdfFolder=None):
+                    daos=None, slaFileName=None, pdfFolder=None, classic=None, template_file=None):
 
         #self.pdfFileName = '_temp'
         #self.slaTempFileName = '_temp.sla'
         self.slaFileName = slaFileName
         self.report = report
+        self.classic = classic
+        self.template_file = template_file
         SlaParser.__init__(self, slaFileName=slaFileName,
                                     pdfFolder=pdfFolder,
                                     slafile=slafile)
@@ -53,7 +54,7 @@ class SlaTpl2Sla(SlaParser):
         self.tableProperties = self.findTablesProperties()
         self.getIteratableGroups()
         self.getPagesNumber()
-        if self.label:
+        if self.label and self.classic:
             self.duplicateElementLabel()
         self.addEmptyPages()
         self.fillDocument()
@@ -87,23 +88,26 @@ class SlaTpl2Sla(SlaParser):
         scarta i tag non utili e verifica poi la lunghezza del dao e il numero
         di righe presenti, c'è da migliorarla ma per il momento funziona
         """
-        self.pagesNumber =1
-        for group in self.iteratableGroups:
-            tableGroup = self.indexGroupTableFromListDict(group)
-            for tagDict in self.tablesTags[group]:
-                for tag in tagDict.keys():
-                    indexN = tag.find('(n)')
-                    if (indexN != -1):
-                        indexNP = tag.find('(n).')
-                        group = str(group).strip()
-                        if (indexNP != -1):
-                            arrayName = tag[:indexNP]
-                            valuesNumber = len(self.objects[self.cycle][arrayName])
-                            rowsNumber = tableGroup['rows'] - 1
-                        else:
-                            valuesNumber = len(self.objects)
-                            rowsNumber = tableGroup['rows'] - 1
-                        self.pagesNumber = int(math.ceil(float(valuesNumber) / float(rowsNumber)))
+        if not self.classic:
+            self.pagesNumber = len(self.objects)
+        else:
+            self.pagesNumber =1
+            for group in self.iteratableGroups:
+                tableGroup = self.indexGroupTableFromListDict(group)
+                for tagDict in self.tablesTags[group]:
+                    for tag in tagDict.keys():
+                        indexN = tag.find('(n)')
+                        if (indexN != -1):
+                            indexNP = tag.find('(n).')
+                            group = str(group).strip()
+                            if (indexNP != -1):
+                                arrayName = tag[:indexNP]
+                                valuesNumber = len(self.objects[self.cycle][arrayName])
+                                rowsNumber = tableGroup['rows'] - 1
+                            else:
+                                valuesNumber = len(self.objects)
+                                rowsNumber = tableGroup['rows'] - 1
+                            self.pagesNumber = int(math.ceil(float(valuesNumber) / float(rowsNumber)))
         print "NUMERO PAGINE", self.pagesNumber
 
 
@@ -146,6 +150,10 @@ class SlaTpl2Sla(SlaParser):
         if not self.label:
             self.duplicateElement()
             self.duplicateTags()
+        elif self.label and not self.classic:
+            self.duplicateElement()
+            #self.duplicateTags()
+            self.labelSla()
         #self.doc.write('__temp.sla')
 
     def duplicateElement(self):
@@ -434,7 +442,7 @@ class SlaTpl2Sla(SlaParser):
             iterator += 1
         #self.pageObjectPropertiesDict()
         #if not self.label:
-            #self.findTablesProperties()
+        #self.findTablesProperties()
         self.doc.write(self.pdfFolder+"_temppp")
         self.toPdf(slafile=self.pdfFolder+"_temppp")
         #print

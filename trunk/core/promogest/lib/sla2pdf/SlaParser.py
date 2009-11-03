@@ -122,6 +122,7 @@ class SlaParser(object):
         tableList = []
         table= None
         monoFoto = False
+        columns=1
 
         for obj in self.slaPageObjects():
             #print "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",obj
@@ -218,7 +219,7 @@ class SlaParser(object):
                             #print "YPOSSSSSS", ypos
             #print "questa è la lista delle tabelle già parsate", tableList, table
             if table not in tableList:
-                n_cells = self.shitFunc(ypos)*columns
+                n_cells = self.shitFunc(ypos)*(columns or 1)
                 groupDict[str(table).strip()] = {
                             'GROUPS': table,
                             'isTableItem': isTableItem2,

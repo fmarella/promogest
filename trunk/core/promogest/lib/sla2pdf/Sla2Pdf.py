@@ -22,7 +22,7 @@ from reportlab.lib.pagesizes import cm, inch, A4, landscape
 from reportlab.pdfgen.canvas import Canvas
 from PIL import Image
 import xml.etree.cElementTree as ElementTree
-#from promogest import Environment
+
 import Sla2pdfUtils
 
 from SlaParser import SlaParser
@@ -64,11 +64,16 @@ class Sla2Pdf(object):
         self.report = report
         self.label = label
 
-    def createPDF(self, daos=None,objects=None):
+    def createPDF(self, daos=None,objects=None, classic=None, template_file=None):
         self.objects = objects
         self.daos = daos
 
         if self.objects or self.daos:
+            from promogest import Environment
+            self._classic = classic
+            self._template_file = template_file
+            if template_file:
+                self.slaFileName = Environment.labelTemplatesDir+template_file
             version = SlaParser(slaFileName=self.slaFileName,
                                     pdfFolder=self.pdfFolder,
                                     slafile=self.slafile).scribusVersion()
@@ -120,7 +125,9 @@ class Sla2Pdf(object):
                                     daos=daos,
                                     report = self.report,
                                     slaFileName = self.slaFileName,
-                                    pdfFolder =self.pdfFolder
+                                    pdfFolder =self.pdfFolder,
+                                    classic=self._classic,
+                                    template_file=self._template_file
                                 )
 
 
