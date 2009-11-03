@@ -42,9 +42,9 @@ class Sla2Pdf_ng(SlaParser):
         self.pdfFolder = pdfFolder
         self.slaFileName = slaFileName
 
-        SlaParser.__init__(self, slaFileName=slaFileName,
-                                    pdfFolder=pdfFolder,
-                                    slafile=slafile)
+        #SlaParser.__init__(self, slaFileName=slaFileName,
+                                    #pdfFolder=pdfFolder,
+                                    #slafile=slafile)
         self.document = None
         self.version = self.scribusVersion()
         self.numPages = self.numPage()
@@ -105,12 +105,12 @@ class Sla2Pdf_ng(SlaParser):
         stile = TableStyle([])
         stile.add('VALIGN',(0,0),(-1,-1),'TOP')
         tblprop = self.tablesPropertie['cellProperties']
-        print "NOTTEEEEEEEEE", "rows:",rows, "columns", columns, "cell", cells, len(heights), len(widths),tblprop
+        #print "NOTTEEEEEEEEE", "rows:",rows, "columns", columns, "cell", cells, len(heights), len(widths),tblprop
         if monocell==True:
             cells = 1
             columns=1
             rows = 1
-        print "CEEEEEEEEEEEEEELS", cells
+        #print "CEEEEEEEEEEEEEELS", cells
         for v in range(0,cells):
             if v == 0:
                 contRows = 0
@@ -121,9 +121,9 @@ class Sla2Pdf_ng(SlaParser):
             else:
                 contRows= int(v/columns)
                 contColumns = ((v)%columns)
-            print "VVVVVVVVVVVVVVVVVVVV", v
-            print "ZZZZZZZZZZZZZZZZ2", tblprop[v],
-            print "INIINI", len(tblprop)
+            #print "VVVVVVVVVVVVVVVVVVVV", v
+            #print "ZZZZZZZZZZZZZZZZ2", tblprop[v],
+            #print "INIINI", len(tblprop)
             background = self.backgroundFunc(tblprop[v])# Finding background
             hexBorderColor = self.hexBorderColorFunc(tblprop[v]['borderColor'])
             stile.add('ROWBACKGROUNDS', (contColumns,contRows),
@@ -340,9 +340,9 @@ class Sla2Pdf_ng(SlaParser):
             sfondo = "White"
         else:
             sfondo = cellProperties['cellBackground']
-        print "MAAAAAAAAAAAAAAAAAAAAA"
+        #print "MAAAAAAAAAAAAAAAAAAAAA"
         background = colors.HexColor(ColorDicTFull.colorDict[str(sfondo)][1])
-        print "TUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"
+        #print "TUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"
         return background
 
     def chFunc(self, text):
