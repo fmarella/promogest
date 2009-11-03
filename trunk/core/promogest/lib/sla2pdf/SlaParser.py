@@ -58,6 +58,7 @@ class SlaParser(object):
             f.write(text)
             f.close()
             self.doc = ElementTree.parse(tempFile)
+        print "SEEEEEEEEEEEEEELF DOOOOOOOOOOOOOOOOC", self.doc
         self.slaRootTag()
         self.slaDocumentTag()
         #return tempFile

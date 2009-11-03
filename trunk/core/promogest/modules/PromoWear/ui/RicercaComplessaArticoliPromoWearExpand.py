@@ -107,7 +107,7 @@ def drawRicercaSemplicePromoWearPart(anaarti):
     #gestione stagione abbigliamento con prelievo del dato di default dal configure ( nb da usare l'id)
     anaarti.id_stagione_articolo_filter_combobox.set_active(0)
     stagione = getattr(Environment.conf.PromoWear,'stagione_default', None)
-    if stagione is not "":
+    if stagione is not "" and stagione is not None:
         findComboboxRowFromId(anaarti.id_stagione_articolo_filter_combobox, int(stagione))
     anaarti.id_genere_articolo_filter_combobox.set_active(0)
     if anaarti._idGenere is not None:
