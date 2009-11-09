@@ -135,11 +135,12 @@ class SincroDB(GladeWidget):
         GladeWidget.__init__(self, 'sincro_dialog',
                         fileName='sincro_dialog.glade')
         self.placeWindow(self.getTopLevel())
+        self.batch = batch
         if batch:
             print " MI ACCINGO A CARICARE IL FILE configure dalla cartella '%s' ed usare lo schema '%s'" %(fileconf, schema)
             Environment.conf = conf
             Environment.params["schema"] = schema
-            self.batch = batch
+            #self.batch = batch
 
 
     def on_tuttecose_checkbutton_toggled(self,toggled):
