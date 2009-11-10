@@ -43,7 +43,7 @@ class AnagraficaDistintaBaseFilter(AnagraficaFilter):
         self._widgetFirstFocus = self.denominazione_filter_entry
         self.articoliprincipaliList = []
 
-    def draw(self):
+    def draw(self, cplx=False):
 
         treeview = self._anagrafica.anagrafica_filter_treeview
 
@@ -244,7 +244,7 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
         self._loading= False
         self.articoliAssociatiList = []
 
-    def draw(self):
+    def draw(self, cplx=False):
         treeview = self.articoli_associati_treeview
 
         renderer = gtk.CellRendererText()
