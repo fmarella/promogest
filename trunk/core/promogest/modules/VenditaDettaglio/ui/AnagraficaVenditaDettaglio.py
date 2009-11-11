@@ -316,40 +316,43 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 Environment.pg2log.info("ARTICOLO JOLLY NON SETTATO NEL CONFIGURE NELLA SEZIONE [VenditaDettaglio]")
 
 
-    def fnovewidget(self):
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
-        dialog.set_markup("""<b>ARTICOLO GENERICO</b>: Inserire Quantità e Prezzo""")
-        hbox = gtk.HBox()
-        #entry = self.createSignedDecimalEntryField(None,None,10,0)
-        quantita=gtk.Entry()
-        #entry.show()
-        quantita.set_text("1.00")
-        quantita.connect("insert_text", self.insert_text_decimal)
-        prezzo=gtk.Entry()
-        prezzo.connect("insert_text", self.insert_text_decimal)
-        #entry1 = self.createSignedMoneyEntryField(None,None,10,0)
-        labelMoney = gtk.Label()
-        labelMoney.set_markup("<b>   Quantità  </b>")
-        labelMoney1 = gtk.Label()
-        labelMoney1.set_markup("<b>   Prezzo  </b>")
-        hbox.pack_start(labelMoney, False, False, 0)
-        hbox.pack_start(quantita, False, False, 0)
-        hbox1 = gtk.HBox()
-        hbox1.pack_start(labelMoney1, False, False, 0)
-        hbox1.pack_start(prezzo, False, False, 0)
-        dialog.vbox.pack_start(hbox1, False, False, 0)
-        dialog.vbox.pack_start(hbox, False, False, 0)
-        dialog.show_all()
-        response = dialog.run()
-        dialog.destroy()
-        quantita1 = quantita.get_text().strip()
-        prezzo1 =  mN(prezzo.get_text())
-        return  ( quantita1,prezzo1 )
+    def fnovewidget(self,codice=None, destroy=None):
+        if destroy:
+            prezzo1 = self.prezzo_f9_entry.get_text()
+            quantita1 = self.quantita_f9_entry.get_text()
+            self.articolo_generico_dialogo.hide()
+            self.search_item(codice=self.codi,fnove=True,valorigenerici=(quantita1,prezzo1) )
+        else:
+            self.codi =  codice
+            self.prezzo_f9_entry.set_text("1.00")
+            self.quantita_f9_entry.set_text("1")
+            self.articolo_generico_dialogo.show_all()
 
-    def search_item(self, codiceABarre=None, codice=None, descrizione=None, fnove=False):
+    def on_generico_ok_button_clicked(self, button):
+        self.fnovewidget(destroy=True)
+
+    def on_annulla_generico_button_clicked(self, button):
+        self.articolo_generico_dialogo.hide()
+
+    def on_minus_button_clicked(self, button):
+        valore = int(abs(float(self.prezzo_f9_entry.get_text())))
+        self.prezzo_f9_entry.set_text(str(valore-1))
+
+    def on_plus_button_clicked(self, button):
+        valore = int(abs(float(self.prezzo_f9_entry.get_text())))
+        self.prezzo_f9_entry.set_text(str(valore+1))
+
+    def on_minus2_button_clicked(self, button):
+        valore = int(abs(float(self.quantita_f9_entry.get_text())))
+        self.quantita_f9_entry.set_text(str(valore-1))
+
+    def on_plus2_button_clicked(self, button):
+        valore = int(abs(float(self.quantita_f9_entry.get_text())))
+        self.quantita_f9_entry.set_text(str(valore+1))
+
+
+
+    def search_item(self, codiceABarre=None, codice=None,valorigenerici=[], descrizione=None, fnove=False):
         # Ricerca articolo per barcode
         if codiceABarre is not None:
             arts = Articolo().select( codiceABarre = codiceABarre,
@@ -370,8 +373,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             descrizione = arts[0].descrizione_etichetta or arts[0].denominazione or ''
             # Ricerca listino_articolo
             listino = leggiListino(self.id_listino, idArticolo)
-            if fnove:
-                valorigenerici = self.fnovewidget()
+            if fnove and not valorigenerici:
+                self.fnovewidget(codice=codice)
+            elif fnove and valorigenerici:
                 quantita = valorigenerici[0] or 1
                 prezzo = mN(valorigenerici[1]) or 0
             else:
