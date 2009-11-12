@@ -324,7 +324,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             self.search_item(codice=self.codi,fnove=True,valorigenerici=(quantita1,prezzo1) )
         else:
             self.codi =  codice
-            #self.prezzo_f9_entry.set_text("1.00")
+            self.prezzo_f9_entry.set_text("")
             self.quantita_f9_entry.set_text("1")
             self.articolo_generico_dialogo.show_all()
 
