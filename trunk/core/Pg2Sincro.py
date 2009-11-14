@@ -31,7 +31,7 @@ class Pg2Sincro(object):
             schema = options.Schema
         configure = options.Configure
         new_conf = Config(configure)
-        sla22 = SincroDB(batch=True, conf=new_conf, fileconf=configure, schema=schema).on_run_button_clicked()
+        sla22 = SincroDB(batch=True, conf=new_conf, fileconf=configure, schema=schema).runBatch()
         #login.run()
 
 if __name__ == '__main__':
