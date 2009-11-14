@@ -150,7 +150,7 @@ def drawPart(anaedit):
     quantita, prezzo lordo, sconti, prezzo netto, totale, altezza, larghezza,molt_pezzi
     """
     anaedit.modelRiga = gtk.ListStore(int,str, str, str, str, str, str, str,str, str, str, str, str, str,str, str,str)
-
+    #anaedit.modelRiga.connect("rows-reordered", riodinate_righe)
     anaedit.righe_treeview.set_model(anaedit.modelRiga)
 
     anaedit.nuovaRiga()
@@ -194,6 +194,7 @@ def drawPart(anaedit):
             anaedit.on_sconti_testata_widget_button_toggled)
     if "Pagamenti" in Environment.modulesList:
         AnagraficadocumentiPagamentExt.connectEntryPag(anaedit)
+
 
 def calcolaTotalePart(anaedit, dao=None):
     """ calcola i totali documento """

@@ -799,6 +799,36 @@ del documento.
 
         self.importo_sovrapprezzo_label.set_text(str((mN(self.dao.costo_da_ripartire) or 0)/self.dao.totalConfections))
 
+    #def on_righe_treeview_drag_data_received(self, treeview,drag_context, x, y, selection, info, eventtime):
+        #path, pos = treeview.get_dest_row_at_pos(x, y)
+        #model = treeview.get_model()
+        #if path:
+            #self.target_iter___ = model.get_iter(path)
+
+    def on_righe_treeview_drag_begin(self, treeview, drag_context):
+        """ starting dragging func, just give the row start to drag """
+        model, iter_to_copy = treeview.get_selection().get_selected()
+        self.riga_partenza =  model.get_path(iter_to_copy)
+
+
+    def on_righe_treeview_drag_leave(self, treeview, drag_context, timestamp):
+        """ questa è la funzione di "scarico" del drop, abbiamo la riga di
+        destinazione con la funzione get_drag_dest_row() e prendiamo
+        la riga di partenza con la funzione precedente """
+        duplicarighe= []
+        model, iter_to_copy = treeview.get_selection().get_selected()
+        row, pos = treeview.get_drag_dest_row()
+        if self.riga_partenza != row[0]:
+            duplicarighe = self._righe[:]
+            if self.riga_partenza[0] > row[0]:
+                self._righe.insert(row[0]+1,duplicarighe[self.riga_partenza[0]+1])
+                self._righe.pop(self.riga_partenza[0]+2)
+            elif self.riga_partenza[0] < row[0]:
+                self._righe.insert(row[0]+2,duplicarighe[self.riga_partenza[0]+1])
+                self._righe.pop(self.riga_partenza[0]+1)
+            duplicarighe= []
+        self.riga_partenza = None
+
     def on_righe_treeview_row_activated(self, treeview, path, column):
         """ riporta la riga selezionata in primo piano per la modifica"""
 
@@ -806,7 +836,6 @@ del documento.
         (model, self._iteratorRiga) = sel.get_selected()
         (selRow, ) = path
         self._numRiga = selRow + 1
-
         self.azzeraRiga(0)
         self._loading = True
 
@@ -879,7 +908,7 @@ del documento.
         """
         Memorizza la riga inserita o modificata
         """
-        #print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
+
         if self.NoRowUsableArticle:
             self.showMessage('ARTICOLO NON USABILE IN UNA RIGA IN QUANTO ARTICOLO PRINCIPALE O PADRE!')
             return
@@ -935,7 +964,6 @@ del documento.
             self._righe[0]["altezza"] = self.altezza_entry.get_text()
             self._righe[0]["larghezza"] = self.larghezza_entry.get_text()
             self._righe[0]["molt_pezzi"] = self.moltiplicatore_entry.get_text()
-
         self._righe[self._numRiga]["idRiga"] = self._righe[0]["idRiga"]
         self._righe[self._numRiga]["idMagazzino"] = self._righe[0]["idMagazzino"]
         self._righe[self._numRiga]["magazzino"] = self._righe[0]["magazzino"]
@@ -972,6 +1000,7 @@ del documento.
         if inserisci is False:
             if self._iteratorRiga is None:
                 return
+            print "ITERATOREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", self._iteratorRiga
             #self.modelRiga.set_value(self._iteratorRiga, 0, self._righe[self._numRiga]["magazzino"])
             self.modelRiga.set_value(self._iteratorRiga, 1, self._righe[self._numRiga]["magazzino"])
             self.modelRiga.set_value(self._iteratorRiga, 2, self._righe[self._numRiga]["codiceArticolo"])
