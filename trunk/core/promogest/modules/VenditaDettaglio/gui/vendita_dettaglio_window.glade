@@ -1644,8 +1644,10 @@ Scontrino</property>
     <property name="title" translatable="yes">Gestione articolo generico F9</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
+    <property name="destroy_with_parent">True</property>
     <property name="type_hint">normal</property>
     <property name="skip_taskbar_hint">True</property>
+    <property name="deletable">False</property>
     <property name="transient_for">vendita_dettaglio_window</property>
     <property name="message_type">question</property>
     <property name="text" translatable="yes">Articolo Generico. </property>
@@ -1658,7 +1660,7 @@ INVIO  per confermare</property>
     <property name="secondary_use_markup">True</property>
     <signal name="destroy_event" handler="on_annulla_generico_button_clicked"/>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox4">
+      <object class="GtkVBox" id="dialog_genrico_vbox">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
@@ -1698,8 +1700,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">ctrl +( +) aumenta</property>
                 <property name="image">image_plus</property>
-                <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <signal name="clicked" handler="on_plus_button_clicked"/>
               </object>
               <packing>
@@ -1713,8 +1715,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">ctrl +( - ) diminisce</property>
                 <property name="image">image3_minus</property>
-                <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <signal name="clicked" handler="on_minus_button_clicked"/>
               </object>
               <packing>
@@ -1758,8 +1760,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">(+) aumenta</property>
                 <property name="image">image2_plus</property>
-                <accelerator key="plus" signal="clicked"/>
                 <accelerator key="KP_Add" signal="clicked"/>
+                <accelerator key="plus" signal="clicked"/>
                 <signal name="clicked" handler="on_plus2_button_clicked"/>
               </object>
               <packing>
@@ -1773,8 +1775,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">(-) diminuisce</property>
                 <property name="image">image4_minus2</property>
-                <accelerator key="minus" signal="clicked"/>
                 <accelerator key="KP_Subtract" signal="clicked"/>
+                <accelerator key="minus" signal="clicked"/>
                 <signal name="clicked" handler="on_minus2_button_clicked"/>
               </object>
               <packing>
@@ -1815,8 +1817,8 @@ INVIO  per confermare</property>
                 <property name="tooltip_markup">Conferma con invio</property>
                 <property name="border_width">1</property>
                 <property name="use_stock">True</property>
-                <accelerator key="KP_Enter" signal="clicked"/>
                 <accelerator key="Return" signal="clicked"/>
+                <accelerator key="KP_Enter" signal="clicked"/>
                 <signal name="clicked" handler="on_generico_ok_button_clicked"/>
               </object>
               <packing>

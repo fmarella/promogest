@@ -326,7 +326,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             self.codi =  codice
             self.prezzo_f9_entry.set_text("")
             self.quantita_f9_entry.set_text("1")
+            self.dialog_genrico_vbox.show_all()
             self.articolo_generico_dialogo.show_all()
+
 
     def on_generico_ok_button_clicked(self, button):
         self.fnovewidget(destroy=True)
