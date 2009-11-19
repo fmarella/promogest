@@ -223,6 +223,7 @@ class SincroDB(GladeWidget):
                 try:
                     sqlalchemy.ext.sqlsoup.Session.commit()
                 except:
+                    sqlalchemy.ext.sqlsoup.Session.rollback()
                     self.azzeraTable(table=dao) 
             if deleteRow:
                 for i in range(len(remote),len(locale)):
