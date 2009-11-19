@@ -219,6 +219,7 @@ class SincroDB(GladeWidget):
                                     op="INSERT",
                                     dao=str(remote[i]._table).split(".")[1],
                                     save=False)
+                sqlalchemy.ext.sqlsoup.Session.commit() 
             if deleteRow:
                 for i in range(len(remote),len(locale)):
                     print "QUESTA È LA RIGA DA rimuovere ", str(locale[i]._table).split(".")[1], "Operazione DELETE"
@@ -248,7 +249,7 @@ class SincroDB(GladeWidget):
                 t = str(i).split(".")[1] #mi serve solo il nome tabella
                 setattr(rowLocale, t, getattr(row, t))
             sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
-            sqlalchemy.ext.sqlsoup.Session.commit()
+#            sqlalchemy.ext.sqlsoup.Session.commit()
         elif op == "UPDATE":
             try:
                 for i in rowLocale.c:

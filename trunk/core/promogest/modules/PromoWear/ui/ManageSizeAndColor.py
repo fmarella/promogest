@@ -165,7 +165,7 @@ class ManageSizeAndColor(GladeWidget):
                 variante['valori']['prezzoDettaglioScontato'] = 0
                 variante['valori']['prezzoIngrossoScontato'] = 0
                 variantiList.append(variante)
-        # uso della libreria operator per ordinare 
+        # uso della libreria operator per ordinare
         out = []
         for e in variantiList:
             out.append((e['ordine'],e)) #trasformo in tupla
@@ -215,7 +215,7 @@ class ManageSizeAndColor(GladeWidget):
                 elif self._fonteValore == "vendita_senza_iva":
                     prezzoLordo = str(var['valori']['prezzoIngrosso'])
                     prezzoNetto = str(var['valori']['prezzoIngrossoScontato'])
-            
+
             sconto = str(self.formatSconti(var['valori']))
             self._treeViewModel.append((var,
                                         str(var['taglia']),
