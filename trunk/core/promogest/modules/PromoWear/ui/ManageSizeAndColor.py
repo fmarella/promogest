@@ -5,17 +5,14 @@
 # Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
 # Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
 
-import string
 import operator
 from decimal import *
-import gtk, gobject, os
+import gtk
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
-from promogest.ui.utilsCombobox import fillModelCombobox,fillComboboxListini
-from promogest.dao.Fornitura import Fornitura
-from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
-from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTaglia
+from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear,\
+                                                     leggiFornituraPromoWear
 
 
 class ManageSizeAndColor(GladeWidget):
@@ -24,8 +21,8 @@ class ManageSizeAndColor(GladeWidget):
     def __init__(self, mainWindow, articolo=None, data=None, idPerGiu=None,
                                             idListino=None, fonteValore=None):
         GladeWidget.__init__(self, 'gestione_varianti_taglie_colore',
-                    fileName= 'PromoWear/gui/gestione_varianti_taglia_colore.glade',
-                    isModule=True)
+                fileName= 'PromoWear/gui/gestione_varianti_taglia_colore.glade',
+                isModule=True)
         self.placeWindow(self.getTopLevel())
         self.getTopLevel().set_modal(modal=True)
         self.articoloPadre= articolo
@@ -41,7 +38,6 @@ class ManageSizeAndColor(GladeWidget):
             self.TipoOperazione = "acquisto"
         elif ((self._fonteValore == "vendita_iva") or (self._fonteValore == "vendita_senza_iva")):
             self.TipoOperazione = "vendita"
-
 
         self.articoloPadreDict = self.creDictFornitura()
         self._treeViewModel = None
@@ -144,7 +140,7 @@ class ManageSizeAndColor(GladeWidget):
         if self.TipoOperazione == "acquisto":
             megaDict[artvar]["fornitura"]=self._fornitura = leggiFornitura(self.articoloPadre.id, idFornitore=self.idPerGiu, data=self.data)
         else:
-            megaDict[artvar]["listino"] = self._listino = leggiListino(self._id_listino,idArticolo=self.articoloPadre.id )
+            megaDict[artvar]["listino"] = self._listino = leggiListino(self._id_listino,idArticolo=self.articoloPadre.id)
 
     def creDictFornitura(self):
         """ Creo un dizionario delle forniture? ..Commenta Francè commentaaaaaa
@@ -163,7 +159,8 @@ class ManageSizeAndColor(GladeWidget):
                                                 data=self.data)
                 variantiList.append(variante)
             else:   # vendita
-                variante['valori'] = leggiListino(self._id_listino,idArticolo=self.articoloPadre.id )
+                variante['valori'] = leggiListino(self._id_listino, 
+                                            idArticolo=self.articoloPadre.id)
                 #print "VARIANTE VALORIIIIIIIIIIIIIIIIIIIIII", variante['valori']
                 variante['valori']['prezzoDettaglioScontato'] = 0
                 variante['valori']['prezzoIngrossoScontato'] = 0
@@ -181,11 +178,12 @@ class ManageSizeAndColor(GladeWidget):
         artiDict = leggiArticoloPromoWear(self.articoloPadre.id)
         artiDict["varianti"] = newlist #al dizionatio articolo dell'articolo padre aggancio la lista delle varianti
         if self.TipoOperazione == "acquisto":
-            artiDict['valori'] = leggiFornitura(self.articoloPadre.id,idFornitore=self.idPerGiu, data=self.data)
+            artiDict['valori'] = leggiFornitura(self.articoloPadre.id, 
+                                    idFornitore=self.idPerGiu, data=self.data)
         else:  #operazione vendita
-            artiDict['valori'] = leggiListino(self._id_listino,idArticolo=self.articoloPadre.id )
+            artiDict['valori'] = leggiListino(self._id_listino,
+                                            idArticolo=self.articoloPadre.id )
         return artiDict
-
 
     def refresh(self,treeview=None, order = "Taglia"):
         """ Aggiornamento della principale treeview,
@@ -360,85 +358,90 @@ class ManageSizeAndColor(GladeWidget):
             row[3] = quantitagenerale
 
     def on_price_entry_focus_out_event(self, entry, widget):
+#        print "OPERAZIONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", self.TipoOperazione
         prezzogenerale = self.price_entry.get_text()
         for row in self._treeViewModel:
             if self.TipoOperazione == "acquisto":
                 row[0]['valori']["prezzoLordo"] = prezzogenerale
+                row[0]['valori']["prezzoNetto"] = prezzogenerale
             else:
                 if self._fonteValore == "vendita_iva":
                     row[0]['valori']["prezzoDettaglio"] = prezzogenerale
                 elif self._fonteValore == "vendita_senza_iva":
                     row[0]['valori']["prezzoIngrosso"] = prezzogenerale
-            row[4] = prezzogenerale
+            row[4] = row[6] = prezzogenerale
 
     def on_discount_entry_focus_out_event(self, entry, widget):
         scontogenerale = self.discount_entry.get_text()
-        for row in self._treeViewModel:
-            row[5] = scontogenerale
-            if row[4] and "%" in scontogenerale:
-                value= int(scontogenerale[0:-1].strip())
-                prezzo = float(row[4]) * (1 - float(value) / 100)
-                row[6] = prezzo
+        if scontogenerale:
+            for row in self._treeViewModel:
+                row[5] = scontogenerale
+                if row[4] and "%" in scontogenerale:
+                    value= int(scontogenerale[0:-1].strip())
+                    prezzo = float(row[4]) * (1 - float(value) / 100)
+                    row[6] = prezzo
 
-                if self.TipoOperazione == "acquisto":
-                    row[0]['valori']["sconti"] = [{'tipo':"percentuale",
-                                                 'valore':float(value)},]
-                    row[0]['valori']["prezzoNetto"]= row[6]
-                else:
-                    if self._fonteValore == "vendita_iva":
-                        row[0]['valori']["scontiDettaglio"] = [{'tipo':"percentuale",
-                                                 'valore':float(value)},]
-                        row[0]['valori']["prezzoDettaglioScontato"]= row[6]
-                    elif self._fonteValore == "vendita_senza_iva":
-                        row[0]['valori']["scontiIngrosso"] = [{'tipo':"percentuale",
-                                                 'valore':float(value)},]
-                        row[0]['valori']["prezzoIngrossoScontato"]= row[6]
-            elif row[4] and scontogenerale == "0" or scontogenerale == "":
-                row[6] = row[4]
+                    if self.TipoOperazione == "acquisto":
+                        row[0]['valori']["sconti"] = [{'tipo':"percentuale",
+                                                     'valore':float(value)},]
+                        row[0]['valori']["prezzoNetto"]= row[6]
+                    else:
+                        if self._fonteValore == "vendita_iva":
+                            row[0]['valori']["scontiDettaglio"] = [{'tipo':"percentuale",
+                                                     'valore':float(value)},]
+                            row[0]['valori']["prezzoDettaglioScontato"]= row[6]
+                        elif self._fonteValore == "vendita_senza_iva":
+                            row[0]['valori']["scontiIngrosso"] = [{'tipo':"percentuale",
+                                                     'valore':float(value)},]
+                            row[0]['valori']["prezzoIngrossoScontato"]= row[6]
+                elif row[4] and scontogenerale == "0" or scontogenerale == "":
+                    row[6] = row[4]
 
-                if self.TipoOperazione == "acquisto":
-                    row[0]['valori']["sconti"] = []
-                    row[0]['valori']["prezzoNetto"]= row[5]
-                else:
-                    if self._fonteValore == "vendita_iva":
+                    if self.TipoOperazione == "acquisto":
                         row[0]['valori']["sconti"] = []
-                        row[0]['valori']["prezzoDettaglioScontato"]= row[6]
-                    elif self._fonteValore == "vendita_senza_iva":
-                        row[0]['valori']["sconti"] = []
-                        row[0]['valori']["prezzoIngrossoScontato"]= row[6]
-            elif row[4] and "€" in scontogenerale:
-                value = str(scontogenerale).strip()
-                value = value.replace("€", '')
-                value= int(value)
-                row[6] = float(row[3]) - float(value)
-                if self.TipoOperazione == "acquisto":
-                    row[0]['valori']["sconti"] = [{'tipo':"valore",
-                                                'valore':float(value)},]
-                    row[0]['valori']["prezzoNetto"]= row[6]
-                else:
-                    if self._fonteValore == "vendita_iva":
+                        row[0]['valori']["prezzoNetto"]= row[6]
+                    else:
+                        if self._fonteValore == "vendita_iva":
+                            row[0]['valori']["sconti"] = []
+                            row[0]['valori']["prezzoDettaglioScontato"]= row[6]
+                        elif self._fonteValore == "vendita_senza_iva":
+                            row[0]['valori']["sconti"] = []
+                            row[0]['valori']["prezzoIngrossoScontato"]= row[6]
+                elif row[4] and "€" in scontogenerale:
+                    value = str(scontogenerale).strip()
+                    value = value.replace("€", '')
+                    value= int(value)
+                    row[6] = float(row[4]) - float(value)
+                    if self.TipoOperazione == "acquisto":
                         row[0]['valori']["sconti"] = [{'tipo':"valore",
                                                     'valore':float(value)},]
-                        row[0]['valori']["prezzoDettaglioScontato"]= row[6]
-                    elif self._fonteValore == "vendita_senza_iva":
-                        row[0]['valori']["sconti"] = [{'tipo':"valore",
-                                                    'valore':float(value)},]
-                        row[0]['valori']["prezzoIngrossoScontato"]= row[6]
+                        row[0]['valori']["prezzoNetto"]= row[6]
+                    else:
+                        if self._fonteValore == "vendita_iva":
+                            row[0]['valori']["sconti"] = [{'tipo':"valore",
+                                                        'valore':float(value)}, ]
+                            row[0]['valori']["prezzoDettaglioScontato"]= row[6]
+                        elif self._fonteValore == "vendita_senza_iva":
+                            row[0]['valori']["sconti"] = [{'tipo':"valore",
+                                                        'valore':float(value)}, ]
+                            row[0]['valori']["prezzoIngrossoScontato"]= row[6]
 
-    def on_conferma_singolarmente_button_clicked(self,button):
+    def on_conferma_singolarmente_button_clicked(self, button):
         """ Unico bottone rimasto, prende i dati così come sono stati inseriti
         e li rimanda direttamente alla treeview principale di anagraficadocumentiedit
         TODO: Gestione delle quantità per ognuno delle variantiList
         """
-        if self.TipoOperazione == "acquisto":
-            self.articoloPadreDict['valori']['prezzoLordo']=self.price_entry.get_text()
-        else:
-            if self._fonteValore == "vendita_iva":
-                self.articoloPadreDict['valori']['prezzoDettaglio']=self.price_entry.get_text()
-            elif self._fonteValore == "vendita_senza_iva":
-                self.articoloPadreDict['valori']['prezzoIngrosso']=self.price_entry.get_text()
+#        if self.TipoOperazione == "acquisto":
+#            print "PASSI QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+#            self.articoloPadreDict['valori']['prezzoLordo']=self.price_entry.get_text()
+#        else:
+#            if self._fonteValore == "vendita_iva":
+#                self.articoloPadreDict['valori']['prezzoDettaglio']=self.price_entry.get_text()
+#            elif self._fonteValore == "vendita_senza_iva":
+#                self.articoloPadreDict['valori']['prezzoIngrosso']=self.price_entry.get_text()
         resultList= []
         for row in self._treeViewModel:
+#            print "ROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", row, row[0], row[1], row[2], row[3], row[4], row[5],row[6]
             if row[0]['quantita'] == "0" or row[0]['quantita'] == "":
                 continue
             else:
@@ -449,8 +452,8 @@ class ManageSizeAndColor(GladeWidget):
         self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
         self.destroy()
 
-
     def on_cancel_button_clicked(self, button):
+        """ """
         self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
         resultList = []
         Environment.tagliacoloretempdata= (True, resultList)

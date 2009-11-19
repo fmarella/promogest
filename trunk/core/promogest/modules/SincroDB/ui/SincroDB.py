@@ -161,12 +161,6 @@ class SincroDB(GladeWidget):
                 blocchi = abs(conteggia/blocSize)
                 for j in range(0,blocchi+1):
                     self.avanzamento_pgbar.pulse()
-                    #if offsett:
-                        #if offsett/blocSize < j:
-                            #continue
-                        #else:
-                            #offset = j*blocSize
-                    #else:
                     offset = j*blocSize
                     print "OFFSET", offset , datetime.datetime.now(), "TABELLA", dg[0]
                     exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
@@ -241,7 +235,6 @@ class SincroDB(GladeWidget):
         """
         rimanda alla gestione delle singole tabelle con le operazioni da fare
         """
-
         #soupLocale.clear()
 
         soupLocale = self.dammiSoupLocale(dao)
@@ -291,13 +284,6 @@ class SincroDB(GladeWidget):
                             return
                     except:
                         pass
-                            #except:
-                                #sqlalchemy.ext.sqlsoup.Session.rollback()
-                                #print "IL SISTEMA DI CONTROLLO ARTICOLO HA FALLITO"
-                                #if self.batch:
-                                    #self.runBatch()
-                                #else:
-                                    #self.test()
                     try:
                         print "SONO NELL try dentro l'ecept che gestisce la particolarità articolo"
                         sqlalchemy.ext.sqlsoup.Session.rollback()
@@ -359,8 +345,6 @@ class SincroDB(GladeWidget):
                 self.runBatch()
             else:
                 self.test()
-            #self.daosScheme(tables=tablesSchemeArticolo)
-        #sqlalchemy.ext.sqlsoup.Session.commit()
 
     def test(self):
         self.connectDbRemote()
@@ -380,9 +364,6 @@ class SincroDB(GladeWidget):
             self.daosScheme(tables=tablesSchemeAnagrafiche)
         if self.parametri_togglebutton.get_active():
             self.daosScheme(tables= tablesSchemePromemoria)
-        #if self.magazzini_togglebutton.get_active():
-            #self.daosScheme(tables=tablesSchemeDocumenti)
-        #print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         self.run =False
         gobject.source_remove(self.timer)
         self.timer = 0
