@@ -260,7 +260,7 @@ class SincroDB(GladeWidget):
                     t = str(i).split(".")[1] #mi serve solo il nome colonna
                     setattr(rowLocale, t, getattr(row, t))
                 sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
-                if dao == "articolo"
+                if dao == "articolo":
                     sqlalchemy.ext.sqlsoup.Session.commit()
             except Exception,e :
                 print "ERRORE",e # e.args, "FFFF", e.instance ,"MMM",  e.message, "ORIG", e.orig , "PRA", type(e.params), "STA", e.statement, e.params["codice"]
@@ -320,8 +320,8 @@ class SincroDB(GladeWidget):
                         self.runBatch()
                     else:
                         self.test()
-                else:
-                    self.azzeraTable(table=dao)
+#                else:
+#                    self.azzeraTable(table=dao)
 
     def azzeraTable(self, table=None):
         if table in ["operazione","tipo_aliquota_iva","stato_articolo","unita_base",
