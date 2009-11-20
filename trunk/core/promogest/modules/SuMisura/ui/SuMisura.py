@@ -5,17 +5,17 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: JJDaNiMoTh <jjdanimoth@gmail.com>
 
-
 from promogest import Environment
+
 
 def CalcolaArea(altezza, larghezza):
     """
     Blabla
     """
 
-    altezzamin = int(getattr(Environment.conf.SuMisura,'altezzamin'))
-    larghezzamin = int(getattr(Environment.conf.SuMisura,'larghezzamin'))
-    multiplo = int(getattr(Environment.conf.SuMisura,'errore_max'))
+    altezzamin = int(getattr(Environment.conf.SuMisura, 'altezzamin'))
+    larghezzamin = int(getattr(Environment.conf.SuMisura, 'larghezzamin'))
+    multiplo = int(getattr(Environment.conf.SuMisura, 'errore_max'))
 
     if altezza < altezzamin:
         altezza = altezzamin
@@ -37,8 +37,9 @@ def CalcolaArea(altezza, larghezza):
     metri_quadrati = (altezza * larghezza) * 0.0001
     metri_qqq = altezza * larghezza
     # ATTENZIONE inizialmente la funzione arrotondava a 4 cifre
-    # si è momentaneamente portata a due ....vediamo 
+    # si è momentaneamente portata a due ....vediamo
     return ("%.2f" % metri_quadrati)
+
 
 def CalcolaPerimetro(altezza, larghezza):
     """

@@ -5,7 +5,6 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francescoo@promotux.it>
 import sys
-import gtk
 import gobject
 import datetime
 import threading
@@ -16,13 +15,16 @@ from sqlalchemy.orm import *
 from sqlalchemy.ext.sqlsoup import SqlSoup
 from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
-from tabelle_to_sincro import tablesMain, tablesSchemeArticolo,tablesSchemeAnagrafiche,\
-                                tablesSchemePromemoria,tablesSchemeDocumenti
+from tabelle_to_sincro import tablesMain, tablesSchemeArticolo,\
+                                tablesSchemeAnagrafiche,\
+                                tablesSchemePromemoria,\
+                                tablesSchemeDocumenti
 
 
 #avanzamento_pgbar
 # Update the value of the progress bar so that we get
 # some movement
+
 def progress_timeout(pbobj):
     if pbobj.run:
         pbobj.avanzamento_pgbar.set_text('Sincronizzazione dei DB')
@@ -44,9 +46,12 @@ def progress_timeout(pbobj):
     else:
         return False
 
+
 class SincroDB(GladeWidget):
-    """ Finestra di gestione esdportazione variazioni Database """
-    def __init__(self,conf=None, batch=False, schema=None, fileconf=None):
+    """ Finestra di gestione esdportazione variazioni Database
+    """
+
+    def __init__(self, conf=None, batch=False, schema=None, fileconf=None):
         GladeWidget.__init__(self, 'sincro_dialog',
                         fileName='sincro_dialog.glade')
         self.placeWindow(self.getTopLevel())
@@ -198,19 +203,30 @@ class SincroDB(GladeWidget):
                 deleteRow=True
             for i in range(0,(len(remote))):
                 if i <= (len(locale)-1):
-                    if  remote[i] != locale[i]:
-                        print "PROCEDO CON UN UPDATE", str(remote[i]._table).split(".")[1]
-                        print "REMOTE:", remote[i]
-                        print
-                        print "LOCALE:",  locale[i]
-                        self.fixToTable(
-                                        soupLocale=soupLocale,
-                                        row=remote[i],
-                                        rowLocale=locale[i],
-                                        op="UPDATE",
-                                        dao=str(remote[i]._table).split(".")[1],
-                                        save=True,
-                                        offset=offset)
+                    try:
+                        if  remote[i] != locale[i]:
+                            print "PROCEDO CON UN UPDATE", str(remote[i]._table).split(".")[1]
+                            print "REMOTE:", remote[i]
+                            print
+                            print "LOCALE:",  locale[i]
+                            self.fixToTable(
+                                            soupLocale=soupLocale,
+                                            row=remote[i],
+                                            rowLocale=locale[i],
+                                            op="UPDATE",
+                                            dao=str(remote[i]._table).split(".")[1],
+                                            save=True,
+                                            offset=offset)
+                    except:
+                            self.fixToTable(
+                                            soupLocale=soupLocale,
+                                            row=remote[i],
+                                            rowLocale=locale[i],
+                                            op="UPDATE",
+                                            dao=str(remote[i]._table).split(".")[1],
+                                            save=True,
+                                            offset=offset)
+                        
                 else:
                     print " ", str(remote[i]._table).split(".")[1], "INSERT"
                     #print " RIGA REMOTE", remote[i]

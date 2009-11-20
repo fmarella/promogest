@@ -5,8 +5,6 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 
-
-from promogest import Environment
 from promogest.ui.utils import *
 from SuMisura import CalcolaArea, CalcolaPerimetro
 
@@ -15,6 +13,7 @@ def setLabels(ui):
     ui.altezza_entry.set_text('')
     ui.larghezza_entry.set_text('')
     ui.moltiplicatore_entry.set_text('')
+
 
 def setTreeview(treeview, rendererSx):
     column = gtk.TreeViewColumn('H', rendererSx, text=5)
@@ -38,17 +37,20 @@ def setTreeview(treeview, rendererSx):
     column.set_expand(False)
     treeview.append_column(column)
 
-def azzeraRiga(anaedit,numero):
+
+def azzeraRiga(anaedit, numero):
     return
     anaedit._righe[numero].update(altezza = '',
                                 larghezza = "",
                                 molt_pezzi = 0)
 
-def azzeraRigaPartial(anaedit, numero,rigatampone):
+
+def azzeraRigaPartial(anaedit, numero, rigatampone):
     return
     anaedit._righe[numero].update(altezza= rigatampone['altezza'],
                                 larghezza = rigatampone['larghezza'],
                                 molt_pezzi = rigatampone['molt_pezzi'])
+
 
 def on_altezza_entry_key_press_eventPart(anaedit, entry, event):
     return
@@ -66,6 +68,7 @@ def on_altezza_entry_key_press_eventPart(anaedit, entry, event):
             if quantita is not None:
                 da_stamp = float(quantita) * moltiplicatore
                 anaedit.quantita_entry.set_text(str(da_stamp))
+
 
 def on_larghezza_entry_key_press_eventPart(anaedit, entry, event):
     return
