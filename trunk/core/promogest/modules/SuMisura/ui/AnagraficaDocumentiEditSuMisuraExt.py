@@ -39,16 +39,19 @@ def setTreeview(treeview, rendererSx):
     treeview.append_column(column)
 
 def azzeraRiga(anaedit,numero):
+    return
     anaedit._righe[numero].update(altezza = '',
                                 larghezza = "",
                                 molt_pezzi = 0)
 
 def azzeraRigaPartial(anaedit, numero,rigatampone):
+    return
     anaedit._righe[numero].update(altezza= rigatampone['altezza'],
                                 larghezza = rigatampone['larghezza'],
                                 molt_pezzi = rigatampone['molt_pezzi'])
 
 def on_altezza_entry_key_press_eventPart(anaedit, entry, event):
+    return
     larghezza = float(anaedit.larghezza_entry.get_text() or 0)
     moltiplicatore = float(anaedit.moltiplicatore_entry.get_text() or 1)
     if larghezza != 0:
@@ -65,7 +68,7 @@ def on_altezza_entry_key_press_eventPart(anaedit, entry, event):
                 anaedit.quantita_entry.set_text(str(da_stamp))
 
 def on_larghezza_entry_key_press_eventPart(anaedit, entry, event):
-
+    return
     altezza = float(anaedit.altezza_entry.get_text() or 0)
     moltiplicatore = float(anaedit.moltiplicatore_entry.get_text() or 1)
     if altezza != 0:
