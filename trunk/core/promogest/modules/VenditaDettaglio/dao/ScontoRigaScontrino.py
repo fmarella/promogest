@@ -27,13 +27,14 @@ sconto_riga_scontrino=Table('sconto_riga_scontrino',
                             schema = params['schema'],
                             autoload=True)
 
-sconto=Table('sconto',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
 
-j = join(sconto, sconto_riga_scontrino)
+sconto_scontrino = Table('sconto_scontrino',
+                                params['metadata'],     
+                                schema = params['schema'],
+                                autoload=True)
+
+j = join(sconto_scontrino, sconto_riga_scontrino)
 
 std_mapper = mapper(ScontoRigaScontrino,j, properties={
-            'id':[sconto.c.id, sconto_riga_scontrino.c.id],
+            'id':[sconto_scontrino.c.id, sconto_riga_scontrino.c.id],
             }, order_by=sconto_riga_scontrino.c.id)

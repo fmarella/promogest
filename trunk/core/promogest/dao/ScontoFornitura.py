@@ -27,6 +27,3 @@ sconto_fornitura=Table('sconto_fornitura',
 
 std_mapper = mapper(ScontoFornitura, sconto_fornitura, order_by=sconto_fornitura.c.id)
 
-
-
-

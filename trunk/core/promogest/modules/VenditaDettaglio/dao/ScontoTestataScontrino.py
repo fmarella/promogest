@@ -25,13 +25,13 @@ class ScontoTestataScontrino(Dao):
 
 
 
-sconto=Table('sconto', params['metadata'], schema = params['schema'], autoload=True)
+sconto_scontrino=Table('sconto_scontrino', params['metadata'], schema = params['schema'], autoload=True)
 
 sconto_testata_scontrino=Table('sconto_testata_scontrino',params['metadata'],
                                 schema = params['schema'],autoload=True)
 
-j = join(sconto, sconto_testata_scontrino)
+j = join(sconto_scontrino, sconto_testata_scontrino)
 
 std_mapper = mapper(ScontoTestataScontrino,j, properties={
-    'id':[sconto.c.id, sconto_testata_scontrino.c.id],
+    'id':[sconto_scontrino.c.id, sconto_testata_scontrino.c.id],
     }, order_by=sconto_testata_scontrino.c.id)

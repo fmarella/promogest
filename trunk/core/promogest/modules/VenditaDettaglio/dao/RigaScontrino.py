@@ -13,7 +13,7 @@ from promogest.dao.Articolo import Articolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 #from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 #import promogest.dao.ScontoRigaScontrino
-from promogest.dao.Sconto import Sconto
+from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import scontoRigaScontrinoDel
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
 
@@ -41,7 +41,7 @@ class RigaScontrino(Dao):
     def _valoreSconto(self):
         #if self.srs:return self.srs.valore_sconto
         #else: return ""
-        a = params["session"].query(ScontoRigaScontrino).with_parent(self).filter(and_(ScontoRigaScontrino.id_riga_scontrino==riga_scontrino.c.id, ScontoRigaScontrino.id==Sconto.id)).all()
+        a = params["session"].query(ScontoRigaScontrino).with_parent(self).filter(and_(ScontoRigaScontrino.id_riga_scontrino==riga_scontrino.c.id, ScontoRigaScontrino.id==ScontoScontrino.id)).all()
         if not a:
             return a
         else:

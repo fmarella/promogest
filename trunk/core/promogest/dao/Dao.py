@@ -96,6 +96,10 @@ class Dao(object):
     def save_update(self,multiple=False, record=True):
         params["session"].add(self)
         self.saveAppLog(self)
+        
+    def add(self,multiple=False, record=True):
+        params["session"].add(self)
+        self.saveAppLog(self)
 
     def delete(self, multiple=False, record = True ):
         params['session'].delete(self)

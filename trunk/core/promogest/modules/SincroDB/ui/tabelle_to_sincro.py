@@ -5,9 +5,9 @@
 tablesMain = [
             #"azienda",
             ("operazione","denominazione"),
-            ("tipo_aliquota_iva","id"),
-            ("stato_articolo","id"),
-            ("unita_base","id"),
+#            ("tipo_aliquota_iva","id"),
+#            ("stato_articolo","id"),
+#            ("unita_base","id"),
             #"role",
             #"language",
             ("tipo_recapito","denominazione"),
