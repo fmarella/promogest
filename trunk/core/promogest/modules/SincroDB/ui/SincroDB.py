@@ -20,7 +20,6 @@ from tabelle_to_sincro import tablesMain, tablesSchemeArticolo,\
                                 tablesSchemePromemoria,\
                                 tablesSchemeDocumenti
 
-
 #avanzamento_pgbar
 # Update the value of the progress bar so that we get
 # some movement
@@ -154,27 +153,46 @@ class SincroDB(GladeWidget):
 
     def daosScheme(self, tables=None, offsett=None):
         """ Crea le liste delle query ciclando nelle tabelle """
+        blocSize = int(Environment.conf.SincroDB.offset)
+        #blocSize = 500
         for dg in tables:
-            self.table_label.set_text(str(dg[0]).upper())
-            self.avanzamento_pgbar.pulse()
-            print "TABELLA IN LAVORAZIONE :", dg[0]
-            conteggia = self.pg_db_server_remote.entity(dg[0]).count() # serve per poter affettare le select
-            print "NUMERO DEI RECORD PRESENTI:", conteggia
-            blocSize = int(Environment.conf.SincroDB.offset)
-            #blocSize = 500
-            if conteggia >= blocSize:
-                blocchi = abs(conteggia/blocSize)
-                for j in range(0,blocchi+1):
-                    self.avanzamento_pgbar.pulse()
-                    offset = j*blocSize
-                    print "OFFSET", offset , datetime.datetime.now(), "TABELLA", dg[0]
-                    exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
-                    exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
-                    self.logica(remote=remote, locale=locale,dao=dg[0], all=True, offset=offset)
-            elif conteggia < blocSize: # SI FA LA QUERY IN UN UNICI BOCCONE
-                exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).all()") %(dg[0],dg[0],dg[1])
-                exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).all()") %(dg[0],dg[0],dg[1])
-                self.logica(remote=remote, locale=locale,dao=dg[0], all=True)
+            if dg[0] =="listino_articolo":
+                exec ("listini=self.pg_db_server_remote.listino.order_by(self.pg_db_server_remote.listino.id).all()")
+                for li in listini:
+                    print "LISTNI", li.id
+                    exec ("remote=self.pg_db_server_remote.listino_articolo.filter_by(id_listino=li.id).order_by(self.pg_db_server_remote.listino_articolo.id_articolo).all()")
+                    exec ("locale=self.pg_db_server_locale.listino_articolo.filter_by(id_listino=li.id).order_by(self.pg_db_server_locale.listino_articolo.id_articolo).all()")
+                    print "LUNGHEEEEEEEEEEEEEEEEEZZZA", len(remote), len(locale)
+    #                    conteggia = len(remote)
+    #                    if conteggia >= blocSize:
+    #                        blocchi = abs(conteggia/blocSize)
+    #                        for j in range(0,blocchi+1):
+    #                            self.avanzamento_pgbar.pulse()
+    #                            offset = j*blocSize
+    #                            print "OFFSET", offset , datetime.datetime.now(), "TABELLA", dg[0]
+    #                    exec ("remote=self.pg_db_server_remote.%s.filter_by(id_listino=li.id).order_by(self.pg_db_server_remote.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
+    #                    exec ("locale=self.pg_db_server_locale.%s.filter_by(id_listino=li.id).order_by(self.pg_db_server_locale.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
+                    self.logica(remote=remote, locale=locale,dao=dg[0], all=True, offset=None)
+            else:
+                self.table_label.set_text(str(dg[0]).upper())
+                self.avanzamento_pgbar.pulse()
+                print "TABELLA IN LAVORAZIONE :", dg[0]
+                conteggia = self.pg_db_server_remote.entity(dg[0]).count() # serve per poter affettare le select
+                print "NUMERO DEI RECORD PRESENTI:", conteggia
+
+                if conteggia >= blocSize:
+                    blocchi = abs(conteggia/blocSize)
+                    for j in range(0,blocchi+1):
+                        self.avanzamento_pgbar.pulse()
+                        offset = j*blocSize
+                        print "OFFSET", offset , datetime.datetime.now(), "TABELLA", dg[0]
+                        exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
+                        exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
+                        self.logica(remote=remote, locale=locale,dao=dg[0], all=True, offset=offset)
+                elif conteggia < blocSize: # SI FA LA QUERY IN UN UNICI BOCCONE
+                    exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).all()") %(dg[0],dg[0],dg[1])
+                    exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).all()") %(dg[0],dg[0],dg[1])
+                    self.logica(remote=remote, locale=locale,dao=dg[0], all=True)
         print "<<<<<<<< FINITO CON LO SCHEMA AZIENDA >>>>>>>>",
         print "<<<<<<< INIZIATO :", self.tempo_inizio, " FINITO:", datetime.datetime.now() , ">>>>>>>>>>>>>"
         self.run =False
@@ -206,6 +224,7 @@ class SincroDB(GladeWidget):
                     try:
                         if  remote[i] != locale[i]:
                             print "PROCEDO CON UN UPDATE", str(remote[i]._table).split(".")[1]
+                            print
                             print "REMOTE:", remote[i]
                             print
                             print "LOCALE:",  locale[i]
@@ -277,8 +296,8 @@ class SincroDB(GladeWidget):
                     t = str(i).split(".")[1] #mi serve solo il nome colonna
                     setattr(rowLocale, t, getattr(row, t))
                 sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
-                if dao == "articolo":
-                    sqlalchemy.ext.sqlsoup.Session.commit()
+#                if dao == "articolo":
+                sqlalchemy.ext.sqlsoup.Session.commit()
             except Exception,e :
                 print "ERRORE",e # e.args, "FFFF", e.instance ,"MMM",  e.message, "ORIG", e.orig , "PRA", type(e.params), "STA", e.statement, e.params["codice"]
                 print "QUALCOSA NELL'UPDATE NON È ANDATO BENE ....VERIFICHIAMO"
@@ -422,4 +441,3 @@ class SincroDB(GladeWidget):
 if __name__ == '__main__':
     import Envir
         #BigBang()
-
