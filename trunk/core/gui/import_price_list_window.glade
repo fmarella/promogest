@@ -7,7 +7,7 @@
     <property name="border_width">10</property>
     <property name="title" translatable="yes">Importazione Listino</property>
     <property name="resizable">False</property>
-    <property name="modal">True</property>
+    <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
     <property name="icon">promogest.png</property>
     <signal name="destroy" handler="on_import_price_list_window_close"/>
