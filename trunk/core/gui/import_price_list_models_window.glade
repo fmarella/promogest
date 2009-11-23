@@ -1,8 +1,71 @@
 <?xml version="1.0"?>
-<glade-interface>
-  <!-- interface-requires gtk+ 2.16 -->
+<interface>
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
-  <widget class="GtkWindow" id="import_price_list_models_window">
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name item text -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes"> </col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">,	Virgola</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">.	Punto</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes"></col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="liststore2">
+    <columns>
+      <!-- column-name item text -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes"> </col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">"	Virgolette</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">'	Apice</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="liststore3">
+    <columns>
+      <!-- column-name item text -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">    </col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">|	Pipe</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">;	Punto e virgola</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">,	Virgola</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">#	Cancelletto </col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">@	Chiocciola</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkWindow" id="import_price_list_models_window">
     <property name="width_request">800</property>
     <property name="height_request">550</property>
     <property name="visible">True</property>
@@ -13,21 +76,22 @@
     <property name="destroy_with_parent">True</property>
     <property name="icon">promogest.png</property>
     <child>
-      <widget class="GtkVBox" id="vbox92">
+      <object class="GtkVBox" id="vbox92">
         <property name="visible">True</property>
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
         <property name="extension_events">cursor</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">5</property>
         <child>
-          <widget class="GtkHBox" id="hbox104">
+          <object class="GtkHBox" id="hbox104">
             <property name="visible">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <child>
-              <widget class="GtkLabel" id="label196">
+              <object class="GtkLabel" id="label196">
                 <property name="visible">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="label" translatable="yes">Nome Modello:</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
@@ -35,7 +99,7 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkComboBoxEntry" id="model_name_comboboxentry">
+              <object class="GtkComboBoxEntry" id="model_name_comboboxentry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="has_focus">True</property>
@@ -43,38 +107,38 @@
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="text_column">0</property>
                 <signal name="changed" handler="on_model_name_comboboxentry_changed"/>
-              </widget>
+              </object>
               <packing>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="refresh_button">
+              <object class="GtkButton" id="refresh_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <signal name="clicked" handler="on_refresh_button_clicked"/>
                 <child>
-                  <widget class="GtkAlignment" id="alignment2">
+                  <object class="GtkAlignment" id="alignment2">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <child>
-                      <widget class="GtkImage" id="image2">
+                      <object class="GtkImage" id="image2">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="pixbuf">avanti16x16.png</property>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="position">2</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
@@ -82,17 +146,18 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkVBox" id="vbox93">
+          <object class="GtkVBox" id="vbox93">
             <property name="visible">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+            <property name="orientation">vertical</property>
             <child>
-              <widget class="GtkTable" id="table30">
+              <object class="GtkTable" id="table30">
                 <property name="visible">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="n_rows">5</property>
                 <property name="n_columns">4</property>
                 <child>
-                  <widget class="GtkCheckButton" id="prezzo_acquisto_non_ivato_cb">
+                  <object class="GtkCheckButton" id="prezzo_acquisto_non_ivato_cb">
                     <property name="label" translatable="yes">Prezzo Acquisto</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -100,14 +165,14 @@
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">3</property>
                     <property name="right_attach">4</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="sconto_vendita_ingrosso_cb">
+                  <object class="GtkCheckButton" id="sconto_vendita_ingrosso_cb">
                     <property name="label" translatable="yes">Sconto Ingrosso</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -116,7 +181,7 @@
                     <property name="has_tooltip">True</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">3</property>
                     <property name="right_attach">4</property>
@@ -125,7 +190,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="sconto_vendita_dettaglio_cb">
+                  <object class="GtkCheckButton" id="sconto_vendita_dettaglio_cb">
                     <property name="label" translatable="yes">Sconto Dettaglio</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -134,7 +199,7 @@
                     <property name="has_tooltip">True</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">3</property>
                     <property name="right_attach">4</property>
@@ -143,46 +208,46 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkButton" id="remove_null_field_button">
+                  <object class="GtkButton" id="remove_null_field_button">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <signal name="clicked" handler="on_remove_null_field_button_clicked"/>
                     <child>
-                      <widget class="GtkAlignment" id="alignment111">
+                      <object class="GtkAlignment" id="alignment111">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <child>
-                          <widget class="GtkHBox" id="hbox107">
+                          <object class="GtkHBox" id="hbox107">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <child>
-                              <widget class="GtkImage" id="image76">
+                              <object class="GtkImage" id="image76">
                                 <property name="visible">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <property name="pixbuf">sottrai16X16.png</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label226">
+                              <object class="GtkLabel" id="label226">
                                 <property name="visible">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <property name="xpad">5</property>
                                 <property name="label" translatable="yes">Valore Nullo</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                         </child>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">3</property>
                     <property name="right_attach">4</property>
@@ -193,46 +258,46 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkButton" id="add_null_field_button">
+                  <object class="GtkButton" id="add_null_field_button">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <signal name="clicked" handler="on_add_null_field_button_clicked"/>
                     <child>
-                      <widget class="GtkAlignment" id="alignment114">
+                      <object class="GtkAlignment" id="alignment114">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <child>
-                          <widget class="GtkHBox" id="hbox114">
+                          <object class="GtkHBox" id="hbox114">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <child>
-                              <widget class="GtkImage" id="image81">
+                              <object class="GtkImage" id="image81">
                                 <property name="visible">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <property name="pixbuf">aggiungi16x16.png</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label229">
+                              <object class="GtkLabel" id="label229">
                                 <property name="visible">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <property name="xpad">5</property>
                                 <property name="label" translatable="yes">Valore Nullo</property>
-                              </widget>
+                              </object>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
-                          </widget>
+                          </object>
                         </child>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">3</property>
                     <property name="right_attach">4</property>
@@ -243,7 +308,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="codice_articolo_cb">
+                  <object class="GtkCheckButton" id="codice_articolo_cb">
                     <property name="label" translatable="yes">Codice Articolo</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -251,13 +316,13 @@
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_field_checkbutton_checked" object="'Codice Articolo'" after="yes"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="y_padding">4</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="codice_barre_articolo_cb">
+                  <object class="GtkCheckButton" id="codice_barre_articolo_cb">
                     <property name="label" translatable="yes">Codice a Barre</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -265,7 +330,7 @@
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
@@ -273,7 +338,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="codice_fornitore_cb">
+                  <object class="GtkCheckButton" id="codice_fornitore_cb">
                     <property name="label" translatable="yes">Codice Articolo Fornitore</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -281,14 +346,14 @@
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="denominazione_articolo_cb">
+                  <object class="GtkCheckButton" id="denominazione_articolo_cb">
                     <property name="label" translatable="yes">Descrizione Articolo</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -296,14 +361,14 @@
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="top_attach">3</property>
                     <property name="bottom_attach">4</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="aliquota_iva_cb">
+                  <object class="GtkCheckButton" id="aliquota_iva_cb">
                     <property name="label" translatable="yes">Aliquota IVA</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -311,14 +376,14 @@
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="famiglia_articolo_cb">
+                  <object class="GtkCheckButton" id="famiglia_articolo_cb">
                     <property name="label" translatable="yes">Famiglia</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -326,7 +391,7 @@
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
@@ -335,7 +400,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="categoria_articolo_cb">
+                  <object class="GtkCheckButton" id="categoria_articolo_cb">
                     <property name="label" translatable="yes">Categoria</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -343,7 +408,7 @@
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
@@ -352,7 +417,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="unita_base_cb">
+                  <object class="GtkCheckButton" id="unita_base_cb">
                     <property name="label" translatable="yes">Unit&#xE0; Base</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -360,7 +425,7 @@
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
@@ -369,7 +434,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="produttore_cb">
+                  <object class="GtkCheckButton" id="produttore_cb">
                     <property name="label" translatable="yes">Produttore</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -377,14 +442,14 @@
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="prezzo_vendita_ivato_cb">
+                  <object class="GtkCheckButton" id="prezzo_vendita_ivato_cb">
                     <property name="label" translatable="yes">Prezzo Dettaglio</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -392,7 +457,7 @@
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
@@ -401,7 +466,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="prezzo_vendita_non_ivato_cb">
+                  <object class="GtkCheckButton" id="prezzo_vendita_non_ivato_cb">
                     <property name="label" translatable="yes">Prezzo Ingrosso</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -409,7 +474,7 @@
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
@@ -418,7 +483,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="prezzo_acquisto_ivato_cb">
+                  <object class="GtkCheckButton" id="prezzo_acquisto_ivato_cb">
                     <property name="label" translatable="yes">Prezzo Acquisto Ivato</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -426,7 +491,7 @@
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
@@ -435,75 +500,75 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkExpander" id="PromoWear">
+                  <object class="GtkExpander" id="PromoWear">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <child>
-                      <widget class="GtkTable" id="table1">
+                      <object class="GtkTable" id="table1">
                         <property name="visible">True</property>
                         <property name="n_rows">3</property>
                         <property name="n_columns">3</property>
                         <child>
-                          <widget class="GtkCheckButton" id="anno_cb">
+                          <object class="GtkCheckButton" id="anno_cb">
                             <property name="label" translatable="yes">anno</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="draw_indicator">True</property>
                             <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                          </widget>
+                          </object>
                         </child>
                         <child>
-                          <widget class="GtkCheckButton" id="modello_cb">
+                          <object class="GtkCheckButton" id="modello_cb">
                             <property name="label" translatable="yes">modello</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="draw_indicator">True</property>
                             <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="right_attach">2</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkCheckButton" id="genere_cb">
+                          <object class="GtkCheckButton" id="genere_cb">
                             <property name="label" translatable="yes">genere</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="draw_indicator">True</property>
                             <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="left_attach">2</property>
                             <property name="right_attach">3</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkCheckButton" id="colore_cb">
+                          <object class="GtkCheckButton" id="colore_cb">
                             <property name="label" translatable="yes">colore</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="draw_indicator">True</property>
                             <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="top_attach">1</property>
                             <property name="bottom_attach">2</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkCheckButton" id="taglia_cb">
+                          <object class="GtkCheckButton" id="taglia_cb">
                             <property name="label" translatable="yes">taglia</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="draw_indicator">True</property>
                             <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="right_attach">2</property>
@@ -512,14 +577,14 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkCheckButton" id="gruppo_taglia_cb">
+                          <object class="GtkCheckButton" id="gruppo_taglia_cb">
                             <property name="label" translatable="yes">gruppo taglia</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="draw_indicator">True</property>
                             <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="left_attach">2</property>
                             <property name="right_attach">3</property>
@@ -528,21 +593,21 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkCheckButton" id="stagione_cb">
+                          <object class="GtkCheckButton" id="stagione_cb">
                             <property name="label" translatable="yes">stagione</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="draw_indicator">True</property>
                             <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="top_attach">2</property>
                             <property name="bottom_attach">3</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkCheckButton" id="codice_padre_cb">
+                          <object class="GtkCheckButton" id="codice_padre_cb">
                             <property name="label" translatable="yes">codice padre</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
@@ -550,7 +615,7 @@
                             <property name="relief">half</property>
                             <property name="draw_indicator">True</property>
                             <signal name="toggled" handler="on_field_checkbutton_checked"/>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="right_attach">2</property>
@@ -561,25 +626,22 @@
                         <child>
                           <placeholder/>
                         </child>
-                      </widget>
+                      </object>
                     </child>
-                    <child>
-                      <widget class="GtkLabel" id="label2">
+                    <child type="label">
+                      <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">PromoWear</property>
-                      </widget>
-                      <packing>
-                        <property name="type">label_item</property>
-                      </packing>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="right_attach">3</property>
                     <property name="top_attach">4</property>
                     <property name="bottom_attach">5</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
@@ -587,46 +649,47 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkScrolledWindow" id="scrolledwindow5">
+              <object class="GtkScrolledWindow" id="scrolledwindow5">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="hscrollbar_policy">automatic</property>
                 <property name="vscrollbar_policy">automatic</property>
                 <child>
-                  <widget class="GtkTreeView" id="fields_treeview">
+                  <object class="GtkTreeView" id="fields_treeview">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="has_tooltip">True</property>
-                    <property name="tooltip" translatable="yes">Trascinare le voci col mouse per modificare
+                    <property name="tooltip_text" translatable="yes">Trascinare le voci col mouse per modificare
 l'ordine dei campi del modello listino</property>
                     <property name="reorderable">True</property>
                     <property name="rules_hint">True</property>
                     <property name="fixed_height_mode">True</property>
                     <property name="show_expanders">False</property>
                     <signal name="cursor_changed" handler="on_fields_treeview_cursor_changed"/>
-                  </widget>
+                  </object>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="position">1</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="position">1</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkVBox" id="vbox2">
+          <object class="GtkVBox" id="vbox2">
             <property name="visible">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+            <property name="orientation">vertical</property>
             <child>
-              <widget class="GtkHSeparator" id="hseparator4">
+              <object class="GtkHSeparator" id="hseparator4">
                 <property name="visible">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
@@ -635,30 +698,31 @@ l'ordine dei campi del modello listino</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkNotebook" id="notebook4">
+              <object class="GtkNotebook" id="notebook4">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="scrollable">True</property>
                 <property name="enable_popup">True</property>
                 <child>
-                  <widget class="GtkVBox" id="vbox1">
+                  <object class="GtkVBox" id="vbox1">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="orientation">vertical</property>
                     <child>
-                      <widget class="GtkHBox" id="hbox8">
+                      <object class="GtkHBox" id="hbox8">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="spacing">5</property>
                         <child>
-                          <widget class="GtkLabel" id="label80">
+                          <object class="GtkLabel" id="label80">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <property name="yalign">0.51999998092651367</property>
                             <property name="xpad">2</property>
                             <property name="label" translatable="yes">Famiglia</property>
                             <property name="width_chars">10</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
@@ -666,36 +730,36 @@ l'ordine dei campi del modello listino</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkComboBox" id="default_famiglia_combobox">
+                          <object class="GtkComboBox" id="default_famiglia_combobox">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <signal name="changed" handler="on_default_combobox_changed"/>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkToggleButton" id="famiglia_togglebutton">
+                          <object class="GtkToggleButton" id="famiglia_togglebutton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <signal name="toggled" handler="on_famiglia_togglebutton_toggled"/>
                             <child>
-                              <widget class="GtkAlignment" id="alignment19">
+                              <object class="GtkAlignment" id="alignment19">
                                 <property name="visible">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <child>
-                                  <widget class="GtkImage" id="image21">
+                                  <object class="GtkImage" id="image21">
                                     <property name="visible">True</property>
                                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                     <property name="pixbuf">modifica16x16.png</property>
-                                  </widget>
+                                  </object>
                                 </child>
-                              </widget>
+                              </object>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
@@ -704,12 +768,12 @@ l'ordine dei campi del modello listino</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="label91">
+                          <object class="GtkLabel" id="label91">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <property name="label" translatable="yes">Aliquota Iva</property>
                             <property name="width_chars">10</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
@@ -718,36 +782,36 @@ l'ordine dei campi del modello listino</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkComboBox" id="default_aliquotaiva_combobox">
+                          <object class="GtkComboBox" id="default_aliquotaiva_combobox">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <signal name="changed" handler="on_default_combobox_changed"/>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">4</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkToggleButton" id="aliquota_iva_togglebutton">
+                          <object class="GtkToggleButton" id="aliquota_iva_togglebutton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <signal name="toggled" handler="on_aliquota_iva_togglebutton_toggled"/>
                             <child>
-                              <widget class="GtkAlignment" id="alignment22">
+                              <object class="GtkAlignment" id="alignment22">
                                 <property name="visible">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <child>
-                                  <widget class="GtkImage" id="image23">
+                                  <object class="GtkImage" id="image23">
                                     <property name="visible">True</property>
                                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                     <property name="pixbuf">modifica16x16.png</property>
-                                  </widget>
+                                  </object>
                                 </child>
-                              </widget>
+                              </object>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
@@ -755,7 +819,7 @@ l'ordine dei campi del modello listino</property>
                             <property name="position">5</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
@@ -764,18 +828,18 @@ l'ordine dei campi del modello listino</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkHBox" id="hbox24">
+                      <object class="GtkHBox" id="hbox24">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="spacing">5</property>
                         <child>
-                          <widget class="GtkLabel" id="label82">
+                          <object class="GtkLabel" id="label82">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <property name="xpad">2</property>
                             <property name="label" translatable="yes">Categoria</property>
                             <property name="width_chars">10</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
@@ -783,36 +847,36 @@ l'ordine dei campi del modello listino</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkComboBox" id="default_categoria_combobox">
+                          <object class="GtkComboBox" id="default_categoria_combobox">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <signal name="changed" handler="on_default_combobox_changed"/>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkToggleButton" id="categoria_togglebutton">
+                          <object class="GtkToggleButton" id="categoria_togglebutton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <signal name="toggled" handler="on_categoria_togglebutton_toggled"/>
                             <child>
-                              <widget class="GtkAlignment" id="alignment21">
+                              <object class="GtkAlignment" id="alignment21">
                                 <property name="visible">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <child>
-                                  <widget class="GtkImage" id="image22">
+                                  <object class="GtkImage" id="image22">
                                     <property name="visible">True</property>
                                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                     <property name="pixbuf">modifica16x16.png</property>
-                                  </widget>
+                                  </object>
                                 </child>
-                              </widget>
+                              </object>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
@@ -821,13 +885,13 @@ l'ordine dei campi del modello listino</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="label120">
+                          <object class="GtkLabel" id="label120">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <property name="xpad">3</property>
                             <property name="label" translatable="yes">Unit&#xE0; Base</property>
                             <property name="width_chars">10</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
@@ -836,17 +900,17 @@ l'ordine dei campi del modello listino</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkComboBox" id="default_unita_base_combobox">
+                          <object class="GtkComboBox" id="default_unita_base_combobox">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <signal name="changed" handler="on_default_combobox_changed"/>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">4</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkToggleButton" id="unita_derivate_togglebutton">
+                          <object class="GtkToggleButton" id="unita_derivate_togglebutton">
                             <property name="sensitive">False</property>
                             <property name="can_focus">False</property>
                             <property name="receives_default">False</property>
@@ -856,7 +920,7 @@ l'ordine dei campi del modello listino</property>
                             <child>
                               <placeholder/>
                             </child>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
@@ -864,7 +928,7 @@ l'ordine dei campi del modello listino</property>
                             <property name="position">5</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
@@ -872,21 +936,20 @@ l'ordine dei campi del modello listino</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
-                  </widget>
+                  </object>
                 </child>
-                <child>
-                  <widget class="GtkLabel" id="label52">
+                <child type="tab">
+                  <object class="GtkLabel" id="label52">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="label" translatable="yes">Impostazioni Default</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="tab_fill">False</property>
-                    <property name="type">tab</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkTable" id="table2">
+                  <object class="GtkTable" id="table2">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="n_rows">3</property>
@@ -894,43 +957,48 @@ l'ordine dei campi del modello listino</property>
                     <property name="row_spacing">5</property>
                     <property name="homogeneous">True</property>
                     <child>
-                      <widget class="GtkAlignment" id="alignment24">
+                      <object class="GtkAlignment" id="alignment24">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <child>
-                          <widget class="GtkComboBox" id="fields_separator_combobox">
+                          <object class="GtkComboBox" id="fields_separator_combobox">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="items" translatable="yes">    
-|	Pipe
-;	Punto e virgola
-,	Virgola
-#	Cancelletto 
-@	Chiocciola</property>
+                            <property name="model">liststore3</property>
                             <signal name="changed" handler="on_fields_separator_combobox_changed"/>
-                          </widget>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext3"/>
+                              <attributes>
+                                <attribute name="text">0</attribute>
+                              </attributes>
+                            </child>
+                          </object>
                         </child>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkAlignment" id="alignment11">
+                      <object class="GtkAlignment" id="alignment11">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <child>
-                          <widget class="GtkComboBox" id="fields_delimiter_combobox">
+                          <object class="GtkComboBox" id="fields_delimiter_combobox">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="items" translatable="yes"> 
-"	Virgolette
-'	Apice</property>
+                            <property name="model">liststore2</property>
                             <signal name="changed" handler="on_fields_delimiter_combobox_changed"/>
-                          </widget>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                              <attributes>
+                                <attribute name="text">0</attribute>
+                              </attributes>
+                            </child>
+                          </object>
                         </child>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
@@ -939,21 +1007,24 @@ l'ordine dei campi del modello listino</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkAlignment" id="alignment10">
+                      <object class="GtkAlignment" id="alignment10">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <child>
-                          <widget class="GtkComboBox" id="decimal_symbol_combobox">
+                          <object class="GtkComboBox" id="decimal_symbol_combobox">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="items" translatable="yes"> 
-,	Virgola
-.	Punto
-</property>
+                            <property name="model">liststore1</property>
                             <signal name="changed" handler="on_decimal_symbol_combobox_changed"/>
-                          </widget>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                              <attributes>
+                                <attribute name="text">0</attribute>
+                              </attributes>
+                            </child>
+                          </object>
                         </child>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
@@ -962,12 +1033,12 @@ l'ordine dei campi del modello listino</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label16">
+                      <object class="GtkLabel" id="label16">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="label" translatable="yes">Separatore decimali</property>
                         <property name="width_chars">20</property>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="top_attach">2</property>
                         <property name="bottom_attach">3</property>
@@ -976,12 +1047,12 @@ l'ordine dei campi del modello listino</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label15">
+                      <object class="GtkLabel" id="label15">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="label" translatable="yes">Delimitatore di Campo</property>
                         <property name="width_chars">20</property>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
@@ -990,25 +1061,25 @@ l'ordine dei campi del modello listino</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label14">
+                      <object class="GtkLabel" id="label14">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="label" translatable="yes">Separatore di campo</property>
                         <property name="justify">fill</property>
                         <property name="width_chars">20</property>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="x_options"></property>
                         <property name="y_options"></property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label17">
+                      <object class="GtkLabel" id="label17">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="label" translatable="yes">Salta la prima riga</property>
                         <property name="width_chars">20</property>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="left_attach">2</property>
                         <property name="right_attach">3</property>
@@ -1017,12 +1088,12 @@ l'ordine dei campi del modello listino</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label18">
+                      <object class="GtkLabel" id="label18">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="label" translatable="yes">Salta la prima colonna</property>
                         <property name="width_chars">20</property>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="left_attach">2</property>
                         <property name="right_attach">3</property>
@@ -1033,14 +1104,14 @@ l'ordine dei campi del modello listino</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkCheckButton" id="skip_first_line_checkbutton">
+                      <object class="GtkCheckButton" id="skip_first_line_checkbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="draw_indicator">True</property>
                         <signal name="toggled" handler="on_skip_first_line_checkbutton_toggled"/>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="left_attach">3</property>
                         <property name="right_attach">4</property>
@@ -1049,14 +1120,14 @@ l'ordine dei campi del modello listino</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkCheckButton" id="skip_first_column_checkbutton">
+                      <object class="GtkCheckButton" id="skip_first_column_checkbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="draw_indicator">True</property>
                         <signal name="toggled" handler="on_skip_first_column_checkbutton_toggled"/>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="left_attach">3</property>
                         <property name="right_attach">4</property>
@@ -1072,92 +1143,88 @@ l'ordine dei campi del modello listino</property>
                     <child>
                       <placeholder/>
                     </child>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="position">1</property>
                     <property name="reorderable">True</property>
                   </packing>
                 </child>
-                <child>
-                  <widget class="GtkLabel" id="label1">
+                <child type="tab">
+                  <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">Sintassi CSV</property>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="position">1</property>
                     <property name="tab_fill">False</property>
-                    <property name="type">tab</property>
                   </packing>
                 </child>
                 <child>
                   <placeholder/>
                 </child>
-                <child>
+                <child type="tab">
                   <placeholder/>
-                  <packing>
-                    <property name="type">tab</property>
-                  </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="position">2</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkHBox" id="hbox124">
+          <object class="GtkHBox" id="hbox124">
             <property name="visible">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <property name="border_width">10</property>
             <property name="spacing">5</property>
             <child>
-              <widget class="GtkButton" id="save_button">
+              <object class="GtkButton" id="save_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <signal name="clicked" handler="on_save_button_clicked"/>
                 <child>
-                  <widget class="GtkAlignment" id="alignment119">
+                  <object class="GtkAlignment" id="alignment119">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <child>
-                      <widget class="GtkHBox" id="hbox127">
+                      <object class="GtkHBox" id="hbox127">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <child>
-                          <widget class="GtkImage" id="image87">
+                          <object class="GtkImage" id="image87">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <property name="pixbuf">salva16x16.png</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="label314">
+                          <object class="GtkLabel" id="label314">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <property name="label" translatable="yes">Salva</property>
                             <property name="width_chars">7</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
@@ -1166,53 +1233,53 @@ l'ordine dei campi del modello listino</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="delete_button">
+              <object class="GtkButton" id="delete_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <signal name="clicked" handler="on_import_price_list_models_window_close"/>
                 <child>
-                  <widget class="GtkAlignment" id="alignment120">
+                  <object class="GtkAlignment" id="alignment120">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <child>
-                      <widget class="GtkHBox" id="hbox128">
+                      <object class="GtkHBox" id="hbox128">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <child>
-                          <widget class="GtkImage" id="image88">
+                          <object class="GtkImage" id="image88">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <property name="pixbuf">chiudi16x16.png</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="label315">
+                          <object class="GtkLabel" id="label315">
                             <property name="visible">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                             <property name="label" translatable="yes">Annulla</property>
                             <property name="width_chars">7</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="pack_type">end</property>
                 <property name="position">-1</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
@@ -1221,7 +1288,7 @@ l'ordine dei campi del modello listino</property>
             <property name="position">3</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+</interface>
