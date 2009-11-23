@@ -24,15 +24,15 @@ tablesSchemeArticolo = [
             ("famiglia_articolo","id"),#########
             ("image","id"),
             ("imballaggio","id"),
-#            ("articolo","id"),
+            ("articolo","id"),
             ("multiplo","id"),
             ("pagamento","id"),
             ("persona_giuridica","id"),
             ("fornitore","id"),
 #
-#            ("sconto" ,"id"),
+            ("sconto" ,"id"),
             ("categoria_cliente","id"),
-#            ("codice_a_barre_articolo","id"),
+            ("codice_a_barre_articolo","id"),
 
             #("cart","id"),
             ("articolo_associato","id"),
