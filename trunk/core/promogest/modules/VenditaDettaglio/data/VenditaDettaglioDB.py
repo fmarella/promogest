@@ -123,25 +123,26 @@ Ci scusiamo per l'inconveniente.
 
     dati_sconto = params["session"].query(scontoRigaScontrinoTable.c.id).all()
     cc = None
-#    print dati_sconto    
-    for dato in dati_sconto:
-        print dato[0]
-        riga = Sconto().getRecord(id=dato[0])
-        test = ScontoScontrino().getRecord(id=dato[0])
-        if not test:
-            cc = ScontoScontrino()
-            cc.id = dato[0]
-            cc.valore= riga.valore
-            cc.tipo_sconto = riga.tipo_sconto
-            cc.save_update(cc)
-        else:
-            continue
-    try:
-        if cc:
-            cc.commit()
-    except:
-        cc.rollback()
-        print "GIA FATTO"
+#    print dati_sconto
+    if dati_sconto:
+        for dato in dati_sconto:
+            print dato[0]
+            riga = Sconto().getRecord(id=dato[0])
+            test = ScontoScontrino().getRecord(id=dato[0])
+            if not test:
+                cc = ScontoScontrino()
+                cc.id = dato[0]
+                cc.valore= riga.valore
+                cc.tipo_sconto = riga.tipo_sconto
+                cc.save_update(cc)
+            else:
+                continue
+        try:
+            if cc:
+                cc.commit()
+        except:
+            cc.rollback()
+            print "GIA FATTO"
         
     try:
         stri="""ALTER TABLE %s
@@ -168,25 +169,26 @@ Ci scusiamo per l'inconveniente.
 
     dati_sconto2 = params["session"].query(scontoTestataScontrinoTable.c.id).all()
     cc2 = None
-    print dati_sconto2
-    for dato in dati_sconto2:
-        print dato[0]
-        riga = Sconto().getRecord(id=dato[0])
-        test = ScontoScontrino().getRecord(id=dato[0])
-        if not test:
-            cc = ScontoScontrino()
-            cc.id = dato[0]
-            cc.valore= riga.valore
-            cc.tipo_sconto = riga.tipo_sconto
-            cc.save_update(cc)
-        else:
-            continue
-    try:
-        if cc:
-            cc.commit()
-    except:
-        cc.rollback()
-        print "GIA FATTO"
+    #print dati_sconto2
+    if dati_sconto2:
+        for dato in dati_sconto2:
+            print dato[0]
+            riga = Sconto().getRecord(id=dato[0])
+            test = ScontoScontrino().getRecord(id=dato[0])
+            if not test:
+                cc = ScontoScontrino()
+                cc.id = dato[0]
+                cc.valore= riga.valore
+                cc.tipo_sconto = riga.tipo_sconto
+                cc.save_update(cc)
+            else:
+                continue
+        try:
+            if cc:
+                cc.commit()
+        except:
+            cc.rollback()
+            print "GIA FATTO"
         
     try:
         stri= """ALTER TABLE %s
