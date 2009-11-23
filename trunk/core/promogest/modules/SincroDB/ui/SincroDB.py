@@ -151,6 +151,45 @@ class SincroDB(GladeWidget):
         return soupLocale
 
 
+
+    def gestisciListinoArticolo(self, dg=None):
+        blocSize = int(Environment.conf.SincroDB.offset)
+        listini=self.pg_db_server_remote.listino.order_by(self.pg_db_server_remote.listino.id).all()
+        for li in listini:
+            self.avanzamento_pgbar.pulse()
+            conteggia = self.pg_db_server_remote.entity("listino_articolo").filter_by(id_listino=li.id).count()
+            print "GLI ARTICOLI SONO:",conteggia , "ID LISTINO", li.id
+            if conteggia >= blocSize:
+                blocchi = abs(conteggia/blocSize)
+                for j in range(0,blocchi+1):
+                    self.avanzamento_pgbar.pulse()
+                    offset = j*blocSize
+                    print "SPEZZETTO IL LISTINO OFFSET", offset , datetime.datetime.now(), "TABELLA", dg[0]
+                    remote=self.pg_db_server_remote.listino_articolo.\
+                                filter_by(id_listino=li.id).\
+                                order_by(self.pg_db_server_remote.listino_articolo.id_articolo,
+                                        self.pg_db_server_remote.listino_articolo.data_listino_articolo).\
+                                limit(blocSize).\
+                                offset(offset).all()
+                    locale=self.pg_db_server_locale.\
+                            listino_articolo.\
+                            filter_by(id_listino=li.id).\
+                            order_by(self.pg_db_server_remote.listino_articolo.id_articolo,
+                                    self.pg_db_server_locale.listino_articolo.data_listino_articolo).\
+                            limit(blocSize).\
+                            offset(offset).all()
+                    self.logica(remote=remote, locale=locale,dao=dg[0], all=True, offset=None)
+            elif conteggia < blocSize:
+                remote=self.pg_db_server_remote.listino_articolo.filter_by(id_listino=li.id).order_by(self.pg_db_server_remote.listino_articolo.id_articolo,self.pg_db_server_remote.listino_articolo.data_listino_articolo).all()
+                locale=self.pg_db_server_locale.listino_articolo.filter_by(id_listino=li.id).order_by(self.pg_db_server_remote.listino_articolo.id_articolo,self.pg_db_server_locale.listino_articolo.data_listino_articolo).all()
+                self.logica(remote=remote, locale=locale,dao=dg[0], all=True)
+        return True
+
+
+
+
+
+
     def daosScheme(self, tables=None, offsett=None):
         """ Crea le liste delle query ciclando nelle tabelle """
         blocSize = int(Environment.conf.SincroDB.offset)
@@ -158,35 +197,7 @@ class SincroDB(GladeWidget):
         for dg in tables:
             self.table_label.set_text(str(dg[0]).upper())
             if dg[0] =="listino_articolo": #listino lo gestisco facendo select per id listino cos gestisco meglio i nuovi record
-                listini=self.pg_db_server_remote.listino.order_by(self.pg_db_server_remote.listino.id).all()
-                for li in listini:
-                    self.avanzamento_pgbar.pulse()
-                    conteggia = self.pg_db_server_remote.entity("listino_articolo").filter_by(id_listino=li.id).count()
-                    print "GLI ARTICOLI SONO:",conteggia , "ID LISTINO", li.id
-                    if conteggia >= blocSize:
-                        blocchi = abs(conteggia/blocSize)
-                        for j in range(0,blocchi+1):
-                            self.avanzamento_pgbar.pulse()
-                            offset = j*blocSize
-                            print "SPEZZETTO IL LISTINO OFFSET", offset , datetime.datetime.now(), "TABELLA", dg[0]
-                            remote=self.pg_db_server_remote.listino_articolo.\
-                                        filter_by(id_listino=li.id).\
-                                        order_by(self.pg_db_server_remote.listino_articolo.id_articolo,
-                                                self.pg_db_server_remote.listino_articolo.data_listino_articolo).\
-                                        limit(blocSize).\
-                                        offset(offset).all()
-                            locale=self.pg_db_server_locale.\
-                                    listino_articolo.\
-                                    filter_by(id_listino=li.id).\
-                                    order_by(self.pg_db_server_remote.listino_articolo.id_articolo,
-                                            self.pg_db_server_locale.listino_articolo.data_listino_articolo).\
-                                    limit(blocSize).\
-                                    offset(offset).all()
-                            self.logica(remote=remote, locale=locale,dao=dg[0], all=True, offset=None)
-                    elif conteggia < blocSize:
-                        remote=self.pg_db_server_remote.listino_articolo.filter_by(id_listino=li.id).order_by(self.pg_db_server_remote.listino_articolo.id_articolo,self.pg_db_server_remote.listino_articolo.data_listino_articolo).all()
-                        locale=self.pg_db_server_locale.listino_articolo.filter_by(id_listino=li.id).order_by(self.pg_db_server_remote.listino_articolo.id_articolo,self.pg_db_server_locale.listino_articolo.data_listino_articolo).all()
-                        self.logica(remote=remote, locale=locale,dao=dg[0], all=True)
+                self.gestisciListinoArticolo(dg)
             else:
                 self.avanzamento_pgbar.pulse()
                 print "TABELLA IN LAVORAZIONE :", dg[0]
