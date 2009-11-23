@@ -109,17 +109,19 @@ class ImportPriceListModels(GladeWidget):
         if not(self.priceListModel._fieldsDelimiter is None or self.priceListModel._fieldsDelimiter == ''):
             model = self.fields_delimiter_combobox.get_model()
             for r in model:
-                if r[mcolumn][0] == self.priceListModel._fieldsDelimiter:
+                if r[mcolumn] == self.priceListModel._fieldsDelimiter:
                     self.fields_delimiter_combobox.set_active_iter(r.iter)
         if not(self.priceListModel._fieldsSeparator is None or self.priceListModel._fieldsSeparator == ''):
             model = self.fields_separator_combobox.get_model()
             for r in model:
-                if r[mcolumn][0] == self.priceListModel._fieldsSeparator:
+                if r[mcolumn] == self.priceListModel._fieldsSeparator:
+                    #print "TUUUUUUUUUUUUUUUUUUUUUU",r.iter , r[0], r[mcolumn], self.priceListModel._fieldsSeparator
                     self.fields_separator_combobox.set_active_iter(r.iter)
         if not(self.priceListModel._decimalSymbol is None or self.priceListModel._decimalSymbol == ''):
             model = self.decimal_symbol_combobox.get_model()
             for r in model:
-                if r[mcolumn][0] == self.priceListModel._decimalSymbol:
+                #print "TUUUUUUUUUUUUUUUUUUUUUU",r.iter , r[0], r[mcolumn]
+                if r[mcolumn] == self.priceListModel._decimalSymbol:
                     self.decimal_symbol_combobox.set_active_iter(r.iter)
         for f in self.priceListModel._fields:
             if f == 'Codice':
