@@ -34,7 +34,7 @@ if "PromoWear" in Environment.modulesList:
     possibleFieldsKeys.append("Genere")
     possibleFieldsKeys.append("Modello")
     possibleFieldsKeys.append("Codice Padre")
-                                
+
 # possibleFieldsValues is a global module list containing all real fields that is possible to import from a price list
 possibleFieldsValues = ['codice_articolo',
                         'codice_barre_articolo',

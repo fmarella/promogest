@@ -6,39 +6,20 @@
 # Author:  Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
 # Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
 
-import re,decimal
 from decimal import *
-import gtk
-from datetime import datetime
 import xml.etree.cElementTree as ElementTree
-from promogest import Environment
-from promogest.ui.GladeWidget import GladeWidget
-from promogest.dao.Articolo import Articolo
-from promogest.dao.AliquotaIva import AliquotaIva
-from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-from promogest.dao.FamigliaArticolo import FamigliaArticolo
-from promogest.dao.CategoriaArticolo import CategoriaArticolo
-from promogest.dao.Fornitura import Fornitura
-from promogest.dao.Listino import Listino
-from promogest.dao.ListinoArticolo import ListinoArticolo
-from promogest.dao.UnitaBase import UnitaBase
-from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
-from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 import promogest.ui.AnagraficaListini
 import promogest.ui.Main
 from promogest.ui.Main import *
-from promogest.ui.AnagraficaListini import AnagraficaListini
-from promogest.ui.AnagraficaAliquoteIva import AnagraficaAliquoteIva
-from promogest.ui.AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
-from promogest.ui.AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
-from promogest.ui.AnagraficaFornitori import AnagraficaFornitori
 from promogest.ui.utils import *
-from promogest.ui.utilsCombobox import fillModelCombobox,fillComboboxListini
 import promogest.ui.Login
 from fieldsDict import *
 
+
 class PriceListModel:
-    """PriceListModel class manages model's structure"""
+    """PriceListModel class manages model's structure
+    """
+
     def __init__(self, pathFile=None):
         self._file = pathFile
         self._fields = []
@@ -107,21 +88,20 @@ class PriceListModel:
         decimalSymbolTag = SubElement(model_tag, "decimalSymbol")
         decimalSymbolTag.attrib['value'] = str(self._decimalSymbol)
 
-        skipFirstLineTag = SubElement(model_tag,"skipFirstLine")
+        skipFirstLineTag = SubElement(model_tag, "skipFirstLine")
         skipFirstLineTag.attrib["value"] = str(self._skipFirstLine)
 
-        skipFirstColumnTag = SubElement(model_tag,"skipFirstColumn")
+        skipFirstColumnTag = SubElement(model_tag, "skipFirstColumn")
         skipFirstColumnTag.attrib["value"] = str(self._skipFirstColumn)
 
         for d in self._defaultAttributes.keys():
-            oneDefault = SubElement(model_tag,'default')
+            oneDefault = SubElement(model_tag, 'default')
             oneDefault.attrib["name"] = str(d)
             oneDefault.attrib["value"] = str(self._defaultAttributes[d])
         ElementTree(model_tag).write(filename, encoding='utf-8')
 
-    def parseFile(self,returnObject):
+    def parseFile(self, returnObject):
         """Parses xml file and returns, according to the value of returnObject,
-
         the entire tree or the root element of the tree"""
         file = open(self._file, 'r')
         tree = parse(file)
@@ -132,7 +112,8 @@ class PriceListModel:
             return tree
 
     def setDefaultFields(self):
-        obbligatoryFields = ['Famiglia','Categoria','Aliquota iva','Unita base']
+        obbligatoryFields = ['Famiglia', 'Categoria', 'Aliquota iva',
+                                                                'Unita base']
         for f in obbligatoryFields:
             if f not in self._fields:
                 if f not in self._defaultAttributes.keys():
@@ -142,5 +123,5 @@ class PriceListModel:
                     try:
                         retVal = self._defaultAttributes.pop(f)
                     except:
-                        print 'ATTENZIONE! si è cercato di rimuovere un campo inesistente da un modello di importazione listini.'
+                        print 'ATTENZIONE! si è cercato di rimuovere un campoinesistente da un modello di importazione listini.'
         return self._defaultAttributes.keys()

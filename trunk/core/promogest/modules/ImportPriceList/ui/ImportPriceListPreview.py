@@ -6,46 +6,29 @@
 # Author:  Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
 # Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
 
-import re, string, decimal
 from decimal import *
 import gtk
-import xml.etree.cElementTree as ElementTree
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.dao.Articolo import Articolo
-from promogest.dao.AliquotaIva import AliquotaIva
-from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-from promogest.dao.FamigliaArticolo import FamigliaArticolo
-from promogest.dao.CategoriaArticolo import CategoriaArticolo
-from promogest.dao.Fornitura import Fornitura
-from promogest.dao.Listino import Listino
-from promogest.dao.ListinoArticolo import ListinoArticolo
-from promogest.dao.UnitaBase import UnitaBase
-from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
-from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 import promogest.ui.AnagraficaListini
 import promogest.ui.Main
 from promogest.ui.Main import *
-from promogest.ui.AnagraficaListini import AnagraficaListini
-from promogest.ui.AnagraficaAliquoteIva import AnagraficaAliquoteIva
-from promogest.ui.AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
-from promogest.ui.AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
-from promogest.ui.AnagraficaFornitori import AnagraficaFornitori
 from promogest.ui.utils import *
-from promogest.ui.utilsCombobox import fillModelCombobox,fillComboboxListini
 import promogest.ui.Login
 from ProductFromCSV import ProductFromCsv
 from fieldsDict import *
 
 
 class ImportPreview(GladeWidget):
-    """create a preview window to check that import is being executed correctly"""
+    """create a preview window to check that import is being executed correctly
+    """
 
     # Table is the csv file data
     # Model is a priceListModel instance
     # ProductList is a list of dictionary that came from csv file
-    # PromoPriceList is an existing "Listino" in the database. (what is it for?)
-    def __init__(self, mainWindow, table, PLModel, productList, promoPriceList,Fornitore,data_listino):
+    # PromoPriceList is an existing "Listino" in the database.(what is it for?)
+    def __init__(self, mainWindow, table, PLModel, productList, promoPriceList,
+                                                    Fornitore, data_listino):
         GladeWidget.__init__(self, 'import_preview_window')
         self.import_preview_window.set_title('Anteprima Importazione Dati')
         self._mainWindow = mainWindow
@@ -87,14 +70,17 @@ class ImportPreview(GladeWidget):
         import csv
         savedlines = 0
         err_count = 0
-        csvErrorFile = csv.DictWriter(file(Environment.documentsDir+'/import_error_list.csv', 'wb'), fieldnames=self.PLModel._fields,dialect='excel')
+        csvErrorFile = csv.DictWriter(file(Environment.documentsDir+\
+                            '/import_error_list.csv', 'wb'),
+                             fieldnames=self.PLModel._fields, dialect='excel')
         for product in self.productList:
             productFromCsv = ProductFromCsv(product=product,
                                             PLModel=self.PLModel,
                                             promoPriceList=self.promoPriceList,
                                             idfornitore=self.fornitore,
                                             dataListino=self.data_listino)
-            #try: #product data dictionary is transmitted to the method that will generate (or update) the corrispondent product
+            #try: #product data dictionary is transmitted to the method that
+                    #will generate (or update) the corrispondent product
             productFromCsv.save()
             #except:
                 #err_count += 1
@@ -105,22 +91,24 @@ class ImportPreview(GladeWidget):
 È stato creato un nuovo file CSV con questi prodotti nella cartella documenti.
 Verificare gli errori nel file e ritentare l'importazione"""
             overDialog = gtk.MessageDialog(self.getTopLevel(),
-                                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                   gtk.MESSAGE_ERROR,
-                                                   gtk.BUTTONS_CANCEL, msg)
+                           gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                           gtk.MESSAGE_ERROR,
+                           gtk.BUTTONS_CANCEL, msg)
             response = overDialog.run()
             overDialog.destroy()
             savedlines = savedlines - err_count
         print u'Import Procedure completed.'
         print u'Articoli salvati: '+str(savedlines)
-        print u'Articoli di cui è fallito l\'import (completamente): '+str(err_count)
+        print u'Articoli di cui è fallito l\'import (completamente): '+\
+                                                            str(err_count)
         if savedlines > 0:
-            msg = u'Operazione completata.\nsono stati importati/aggiornati '+str(savedlines)+' articoli.'
+            msg = u'Operazione completata.\nsono stati importati/aggiornati '+\
+                                                str(savedlines)+' articoli.'
 
             overDialog = gtk.MessageDialog(self.getTopLevel(),
-                                                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,\
-                                                                gtk.MESSAGE_INFO,
-                                                                gtk.BUTTONS_OK, msg)
+                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,\
+                            gtk.MESSAGE_INFO,
+                            gtk.BUTTONS_OK, msg)
             response = overDialog.run()
             overDialog.destroy()
             self.window.destroy()
@@ -129,9 +117,9 @@ Verificare gli errori nel file e ritentare l'importazione"""
             msg = u'Nessun articolo aggiornato/importato.'
 
             overDialog = gtk.MessageDialog(self.getTopLevel(),
-                                                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,\
-                                                                gtk.MESSAGE_INFO,
-                                                                gtk.BUTTONS_OK, msg)
+                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,\
+                            gtk.MESSAGE_INFO,
+                            gtk.BUTTONS_OK, msg)
             response = overDialog.run()
             overDialog.destroy()
         if response == gtk.BUTTONS_OK:

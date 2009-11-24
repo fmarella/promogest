@@ -6,13 +6,8 @@
 # Author:  Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
 # Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
 
-import decimal
 from decimal import *
-import gtk
-from datetime import datetime
-import xml.etree.cElementTree as ElementTree
 from promogest import Environment
-from promogest.ui.GladeWidget import GladeWidget
 from promogest.dao.Articolo import Articolo
 from promogest.dao.AliquotaIva import AliquotaIva
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
@@ -27,30 +22,20 @@ from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 import promogest.ui.AnagraficaListini
 import promogest.ui.Main
 from promogest.ui.Main import *
-from promogest.ui.AnagraficaListini import AnagraficaListini
-from promogest.ui.AnagraficaAliquoteIva import AnagraficaAliquoteIva
-from promogest.ui.AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
-from promogest.ui.AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
-from promogest.ui.AnagraficaFornitori import AnagraficaFornitori
 from promogest.ui.utils import *
-from promogest.ui.utilsCombobox import fillModelCombobox,fillComboboxListini
 import promogest.ui.Login
 #from ImportPriceListPreview import ImportPreview
 from fieldsDict import *
 if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
-    from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
-    from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
-    from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
     from promogest.modules.PromoWear.dao.Modello import Modello
-    from promogest.modules.PromoWear.dao.Taglia import Taglia
-    from promogest.modules.PromoWear.dao.Colore import Colore
+
 
 class ProductFromCsv(object):
     """Takes a product from a generic price list and "translates" it in a
     promogest-compatible dao product, ListinoArticolo and Fornitura"""
 
-    def __init__(self, product, PLModel, promoPriceList, idfornitore,dataListino):
+    def __init__(self, product, PLModel, promoPriceList, idfornitore, dataListino):
         self.PLModel = PLModel
         self.product = product
         self.promoPriceList = promoPriceList or None
@@ -58,7 +43,7 @@ class ProductFromCsv(object):
         self.dataListino = dataListino
         self.daoArticolo = None
         if self.promoPriceList:
-            liss = Listino().select(idListino=self.promoPriceList,batchSize=None)
+            liss = Listino().select(idListino=self.promoPriceList, batchSize=None)
             if liss:
                 self.price_list_id = liss[0].id
             del self.promoPriceList
@@ -147,12 +132,10 @@ class ProductFromCsv(object):
         elif not self.anno:
             artTC.id_annno = articolo.id_anno
 
-
-
     def fillDaos(self):
         """fillDaos method fills all Dao related to daoArticolo"""
         self.codice_articolo = str(self.codice_articolo)
-        if self.codice_articolo is None or  self.codice_articolo == "None":
+        if self.codice_articolo is None or self.codice_articolo == "None":
             self.codice_articolo = promogest.dao.Articolo.getNuovoCodiceArticolo()
         self.daoArticolo.codice = self.codice_articolo
 
@@ -171,7 +154,8 @@ class ProductFromCsv(object):
             code_list = []
             for f in self._families:
                 code_list.append(f.codice)
-                if self.famiglia_articolo in  (f.denominazione_breve, f.denominazione, f.codice, f.id):
+                if self.famiglia_articolo in (f.denominazione_breve,
+                                            f.denominazione, f.codice, f.id):
                     id_famiglia = f.id
 
                     break
@@ -234,12 +218,13 @@ class ProductFromCsv(object):
         else:
             self._vats = AliquotaIva().select(batchSize=None)
             for v in self._vats:
-                if self.aliquota_iva.lower() in (v.denominazione_breve.lower(),v.denominazione.lower()) or\
-                            int(str(self.aliquota_iva).replace('%','')) == int(v.percentuale):
+                if self.aliquota_iva.lower() in (v.denominazione_breve.lower(),
+                                                v.denominazione.lower()) or\
+                            int(str(self.aliquota_iva).replace('%', '')) == int(v.percentuale):
                     id_aliquota_iva = v.id
                     break
             if id_aliquota_iva is None:
-                self.aliquota_iva = str(self.aliquota_iva).replace('%','')
+                self.aliquota_iva = str(self.aliquota_iva).replace('%', '')
                 daoAliquotaIva = AliquotaIva()
                 daoAliquotaIva.denominazione = 'ALIQUOTA '+ self.aliquota_iva +'%'
                 daoAliquotaIva.denominazione_breve = self.aliquota_iva + '%'
@@ -249,25 +234,26 @@ class ProductFromCsv(object):
                 id_aliquota_iva = daoAliquotaIva.id
                 self._vats.append(daoAliquotaIva)
         self.daoArticolo.id_aliquota_iva = id_aliquota_iva
-        
 
         #base units
         id_unita_base = None
         if  self.unita_base is None:
             self.unita_base_id = self.defaults['Unita base']
             #FIXME: promogest2 ----proviamo
-            # La storedProcedure UnitaBaseGet NON esiste e la chiamta Dao qui sotto fallisce con un errore!!!
+            # La storedProcedure UnitaBaseGet NON esiste e la chiamta Dao
+            #qui sotto fallisce con un errore!!!
             self.unita_base = UnitaBase().getRecord(id=self.unita_base_id)
             id_unita_base = self.unita_base_id
         else:
             unis = UnitaBase().select(batchSize=None)
             for u in unis:
-                if self.unita_base.lower() in (u.denominazione.lower(),u.denominazione_breve.lower()):
+                if self.unita_base.lower() in (u.denominazione.lower(),
+                                            u.denominazione_breve.lower()):
                     id_unita_base = u.id
                     break
             if id_unita_base is None:
                 self.unita_base = UnitaBase().select(denominazione='Pezzi',
-                                                                    batchSize=None)
+                                                            batchSize=None)
                 id_unita_base = self.unita_base.id
         self.daoArticolo.id_unita_base = id_unita_base
         self.daoArticolo.produttore = self.produttore or ''
@@ -306,7 +292,9 @@ class ProductFromCsv(object):
 
         #price-list--> product
         decimalSymbol = self.PLModel._decimalSymbol
-        if (self.prezzo_vendita_non_ivato is not None or self.prezzo_acquisto_non_ivato is not None or self.prezzo_acquisto_ivato is not None or
+        if (self.prezzo_vendita_non_ivato is not None or \
+            self.prezzo_acquisto_non_ivato is not None or \
+            self.prezzo_acquisto_ivato is not None or \
             self.prezzo_vendita_ivato is not None):
             try:
                 daoPriceListProduct = ListinoArticolo().select(idListino=self.price_list_id,
@@ -319,7 +307,7 @@ class ProductFromCsv(object):
                 daoPriceListProduct.data_listino_articolo = self.dataListino
                 daoPriceListProduct.listino_attuale = True
 
-            if self.prezzo_vendita_ivato is not None :
+            if self.prezzo_vendita_ivato is not None:
                 prezzo = self.sanitizer(self.prezzo_vendita_ivato)
                 #try:
                 daoPriceListProduct.prezzo_dettaglio = mN(prezzo)
@@ -340,10 +328,12 @@ class ProductFromCsv(object):
                 daoPriceListProduct.prezzo_ingrosso = 0
 
 
-            sconti_ingrosso = [ScontoVenditaIngrosso(),]
-            sconti_dettaglio = [ScontoVenditaDettaglio(),]
+            sconti_ingrosso = [ScontoVenditaIngrosso(), ]
+            sconti_dettaglio = [ScontoVenditaDettaglio(), ]
 
-            if self.sconto_vendita_ingrosso is not None and str(self.sconto_vendita_ingrosso).strip() != "0" and str(self.sconto_vendita_ingrosso).strip() !="":
+            if self.sconto_vendita_ingrosso is not None \
+                and str(self.sconto_vendita_ingrosso).strip() != "0" \
+                and str(self.sconto_vendita_ingrosso).strip() !="":
                 self.sconto_vendita_ingrosso = self.sanitizer(self.sconto_vendita_ingrosso)
                 #try:
                 sconti_ingrosso[0].valore = mN(self.sconto_vendita_ingrosso)
@@ -379,7 +369,7 @@ class ProductFromCsv(object):
                 #prezzo = prezzo.replace("€","")
                 #prezzo = prezzo.replace(",",".")
                 #try:
-                daoPriceListProduct.ultimo_costo =  mN(calcolaPrezzoIva(mN(prezzo), -1 * (mN(self.aliquota_iva.percentuale))))
+                daoPriceListProduct.ultimo_costo = mN(calcolaPrezzoIva(mN(prezzo), -1 * (mN(self.aliquota_iva.percentuale))))
                 #except:
                     #prezzo = mN(self.checkDecimalSymbol(str(prezzo).split(), decimalSymbol))
                     #daoPriceListProduct.ultimo_costo =  mN(calcolaPrezzoIva(mN(prezzo), -1 * mN(self.aliquota_iva.percentuale)))
@@ -414,16 +404,16 @@ class ProductFromCsv(object):
             return str(0)
 
         if symbol == '.':
-            number = str(number).replace(',','')
+            number = str(number).replace(',', '')
         elif symbol == ',':
-            number = str(number).replace('.','')
-            number = str(number).replace(',','.')
+            number = str(number).replace('.', '')
+            number = str(number).replace(',', '.')
         return number
 
-    def sanitizer(self,value):
+    def sanitizer(self, value):
         if value:
             value = value.strip()
-            value = value.replace("€","")
-            value = value.replace("%","")
-            value = value.replace(",",".")
+            value = value.replace("€", "")
+            value = value.replace("%", "")
+            value = value.replace(",", ".")
         return value

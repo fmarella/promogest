@@ -9,36 +9,21 @@
 import string
 from decimal import *
 import gtk
-from datetime import datetime
-import xml.etree.cElementTree as ElementTree
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.dao.Articolo import Articolo
-from promogest.dao.AliquotaIva import AliquotaIva
-from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-from promogest.dao.FamigliaArticolo import FamigliaArticolo
-from promogest.dao.CategoriaArticolo import CategoriaArticolo
-from promogest.dao.Fornitura import Fornitura
-from promogest.dao.Listino import Listino
-from promogest.dao.ListinoArticolo import ListinoArticolo
-from promogest.dao.UnitaBase import UnitaBase
-from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
-from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 import promogest.ui.AnagraficaListini
 import promogest.ui.Main
 from promogest.ui.Main import *
 from promogest.ui.AnagraficaListini import AnagraficaListini
-from promogest.ui.AnagraficaAliquoteIva import AnagraficaAliquoteIva
-from promogest.ui.AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
-from promogest.ui.AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
 from promogest.ui.AnagraficaFornitori import AnagraficaFornitori
 from promogest.ui.utils import *
-from promogest.ui.utilsCombobox import fillModelCombobox,fillComboboxListini
+from promogest.ui.utilsCombobox import fillModelCombobox, fillComboboxListini
 import promogest.ui.Login
 from promogest.modules.ImportPriceList.ui.ImportPriceListPreview import ImportPreview
 from fieldsDict import *
 from promogest.modules.ImportPriceList.ui.ImportPriceListModels import ImportPriceListModels
 from promogest.modules.ImportPriceList.ui.PriceListModel import PriceListModel
+
 
 class ImportPriceList(GladeWidget):
     """Does price-list importation"""
@@ -66,17 +51,18 @@ class ImportPriceList(GladeWidget):
             self.path_file_entry.set_text(self.file_name)
         fillModelCombobox(self.model_combobox)
         if self.mod_name is not None:
-            findComboboxRowFromStr(self.model_combobox, self.mod_name,0)
+            findComboboxRowFromStr(self.model_combobox, self.mod_name, 0)
         else:
             self.model_combobox.set_active(0)
         fillComboboxListini(self.price_list_name_combobox)
         if self.promoPriceList is not None:
-            findComboboxRowFromStr(self.price_list_name_combobox, self.promoPriceList, 1)
+            findComboboxRowFromStr(self.price_list_name_combobox,
+                                    self.promoPriceList, 1)
         else:
             self.price_list_name_combobox.set_active(0)
         fillComboboxFornitori(self.fornitore_combobox)
         if self.fornitore is not None:
-            findComboboxRowFromStr(self.fornitore_combobox, self.fornitore,1)
+            findComboboxRowFromStr(self.fornitore_combobox, self.fornitore, 1)
         else:
             self.fornitore_combobox.set_active(0)
 
@@ -87,7 +73,7 @@ class ImportPriceList(GladeWidget):
         self.mod_name = findStrFromCombobox(self.model_combobox, 0)
 
     def on_fornitore_combobox_changed(self, combobox):
-        self.fornitore = findStrFromCombobox(self.fornitore_combobox,1)
+        self.fornitore = findStrFromCombobox(self.fornitore_combobox, 1)
 
     def on_import_button_clicked(self, button):
         """begin price-list importation procedure"""
@@ -106,13 +92,13 @@ class ImportPriceList(GladeWidget):
 
         priceListModel = PriceListModel(pathFile = path)
         try:
-            csvPriceListFile = open(self.file_name,'r')
+            csvPriceListFile = open(self.file_name, 'r')
         except:
             msg = 'Impossibile aprire il file CSV selezionato.'
             overDialog = gtk.MessageDialog(self.getTopLevel(),
-                                                       gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                       gtk.MESSAGE_ERROR,
-                                                       gtk.BUTTONS_CANCEL, msg)
+                           gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                           gtk.MESSAGE_ERROR,
+                           gtk.BUTTONS_CANCEL, msg)
             response = overDialog.run()
             overDialog.destroy()
             return
@@ -121,11 +107,12 @@ class ImportPriceList(GladeWidget):
         try:
             lines = csvPriceListFile.readlines()
         except:
-            msg = 'Impossibile leggere il file "'+self.file_name+'".\nIl file potrebbe essere corrotto'
+            msg = 'Impossibile leggere il file "'+self.file_name+\
+                                '".\nIl file potrebbe essere corrotto'
             overDialog = gtk.MessageDialog(self.getTopLevel(),
-                                                       gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                       gtk.MESSAGE_ERROR,
-                                                       gtk.BUTTONS_CANCEL, msg)
+                           gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                           gtk.MESSAGE_ERROR,
+                           gtk.BUTTONS_CANCEL, msg)
             response = overDialog.run()
             overDialog.destroy()
             return
@@ -140,16 +127,17 @@ class ImportPriceList(GladeWidget):
         product = {}
 
 
-        # Create a bi-dimensional list from the lines of the file (excluding fields separators and fields delimiters)
+        # Create a bi-dimensional list from the lines of the file_name
+        #(excluding fields separators and fields delimiters)
         if startFromRow:
             lines = lines[1:]
         ind = 0
         for line in lines:
-            line.encode('utf-8','replace')
+            line.encode('utf-8', 'replace')
             fields = string.split(line[:-1], priceListModel._fieldsSeparator)
             for i in range(len(fields)):
                 if len(fields[i]) > 0:
-                    if fields[i][0]  == priceListModel._fieldsDelimiter:
+                    if fields[i][0] == priceListModel._fieldsDelimiter:
                         fields[i] = fields[i][1:]
                     if fields[i][-1] == priceListModel._fieldsDelimiter:
                         fields[i] = fields[i][:-1]
@@ -158,14 +146,15 @@ class ImportPriceList(GladeWidget):
         print "Done. We are ready to start, There are "+str(ind)+" products"
 
 
-        #create a 'product' dictionary for every line of the price list file and generate a list of 'products'.
+        #create a 'product' dictionary for every line of the price listino
+        #file and generate a list of 'products'.
         _priceList = []
         rowcount = 0
         width = len(self.modelFields)
 
         for row in table:
             if len(row) == width:
-                product= dict(zip(self.modelFields,row))
+                product= dict(zip(self.modelFields, row))
                 _priceList.append(product)
                 rowcount += 1
             else:
@@ -175,17 +164,17 @@ con quelli realmente presenti nel documento alla
 riga %s Verificare il modello definito o la validità
 del formato del file e riprovare""" % str(rowcount+1)
                 overDialog = gtk.MessageDialog(self.getTopLevel(),
-                                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                   gtk.MESSAGE_ERROR,
-                                                   gtk.BUTTONS_CANCEL, msg)
+                           gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                           gtk.MESSAGE_ERROR,
+                           gtk.BUTTONS_CANCEL, msg)
                 response = overDialog.run()
                 overDialog.destroy()
                 return
         self.window.hide()
-        anag = ImportPreview(self.window, table, priceListModel, _priceList, self.promoPriceList, self.fornitore, self.data_listino)
+        anag = ImportPreview(self.window, table, priceListModel, _priceList,
+                        self.promoPriceList, self.fornitore, self.data_listino)
         anagWindow = anag.getTopLevel()
         showAnagraficaRichiamata(self.window, anagWindow)
-##        self.on_import_price_list_window_close(widget=None)
 
     def on_models_button_clicked(self, button):
         """opens price_list_models_window with path_file parameter if any model
@@ -199,10 +188,12 @@ del formato del file e riprovare""" % str(rowcount+1)
             anag = importPriceListModels(self.window, pathFile=None)
         anagWindow = anag.getTopLevel()
 
-        showAnagraficaRichiamata(self.window, anagWindow, button,self.refresh)
+        showAnagraficaRichiamata(self.window, anagWindow, button, self.refresh)
 
     def on_browse_button_clicked(self, button):
-        """on_browse_button_clicked method opens a FileChooserDialog to choose the price-list file"""
+        """on_browse_button_clicked method opens a
+        FileChooserDialog to choose the price-list file
+        """
         fileDialog = gtk.FileChooserDialog(title='Importazione listino',
                                            parent=self.getTopLevel(),
                                            action=gtk.FILE_CHOOSER_ACTION_OPEN,
@@ -227,12 +218,10 @@ del formato del file e riprovare""" % str(rowcount+1)
             self.path_file_entry.set_text(filename)
         fileDialog.destroy()
 
-
     def on_anagrafica_listini_button_clicked(self, button):
         anag = AnagraficaListini()
         anagWindow = anag.getTopLevel()
         showAnagraficaRichiamata(self.window, anagWindow, button, self.refresh)
-
 
     def on_fornitori_button_clicked(self, button):
         anag = AnagraficaFornitori()
@@ -244,13 +233,13 @@ del formato del file e riprovare""" % str(rowcount+1)
         self._existingModels = getModelsName()
         self.file_name = self.path_file_entry.get_text()
         self.mod_name = findStrFromCombobox(self.model_combobox, 0)
-        self.promoPriceList = findStrFromCombobox(self.price_list_name_combobox,2)
+        self.promoPriceList = findStrFromCombobox(self.price_list_name_combobox, 2)
         self.draw()
 
-
-
     def checkObligatoryFields(self):
-        """checkObligatoryFields method checks if all obligatory fields has been inserted"""
+        """checkObligatoryFields method checks if all obligatory
+        fields has been inserted
+        """
         if not self.path_file_entry.get_text():
             obligatoryField(self.getTopLevel(),
                             self.path_file_entry,

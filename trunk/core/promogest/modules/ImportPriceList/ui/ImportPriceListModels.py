@@ -7,40 +7,24 @@
 # Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
 
 import re
-import string
-import decimal
 from decimal import *
-import gtk,os
-from datetime import datetime
-import xml.etree.cElementTree as ElementTree
+import gtk
+import os
 from promogest import Environment
 import promogest.ui.AnagraficaListini
 import promogest.ui.Main
 import promogest.ui.Login
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.Main import *
-from promogest.ui.AnagraficaListini import AnagraficaListini
 from promogest.ui.AnagraficaAliquoteIva import AnagraficaAliquoteIva
 from promogest.ui.AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
 from promogest.ui.AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
-from promogest.ui.AnagraficaFornitori import AnagraficaFornitori
 from promogest.ui.utils import *
-from promogest.ui.utilsCombobox import fillModelCombobox,fillComboboxListini
-
-from promogest.dao.Articolo import Articolo
-from promogest.dao.AliquotaIva import AliquotaIva
-from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-from promogest.dao.FamigliaArticolo import FamigliaArticolo
-from promogest.dao.CategoriaArticolo import CategoriaArticolo
-from promogest.dao.Fornitura import Fornitura
-from promogest.dao.Listino import Listino
-from promogest.dao.ListinoArticolo import ListinoArticolo
-from promogest.dao.UnitaBase import UnitaBase
-from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
-from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
+from promogest.ui.utilsCombobox import fillModelCombobox
 
 from fieldsDict import *
 from PriceListModel import PriceListModel
+
 
 class ImportPriceListModels(GladeWidget):
     """ImportPriceList  manages all events from import_price_list_models"""
@@ -58,7 +42,6 @@ class ImportPriceListModels(GladeWidget):
         self.priceListModel.setDefaultFields()
         self.draw()
         self.refresh(first_call=True)
-
 
     def draw(self):
 
@@ -100,10 +83,10 @@ class ImportPriceListModels(GladeWidget):
         treeviewModel.clear()
 
         for f in self.priceListModel._fields:
-            treeviewModel.append((f,))
+            treeviewModel.append((f, ))
 
         defaults = self.priceListModel._defaultAttributes
-        self.skip_first_line_checkbutton.set_active(int(self.priceListModel._skipFirstLine ))
+        self.skip_first_line_checkbutton.set_active(int(self.priceListModel._skipFirstLine))
         self.skip_first_column_checkbutton.set_active(int(self.priceListModel._skipFirstColumn))
         mcolumn = 0
         if not(self.priceListModel._fieldsDelimiter is None or self.priceListModel._fieldsDelimiter == ''):
@@ -170,7 +153,7 @@ class ImportPriceListModels(GladeWidget):
                 self.stagione_cb.set_active(True)
             elif "PromoWear" in Environment.modulesList and f == "Gruppo Taglia":
                 self.gruppo_taglia_cb.set_active(True)
-        def_list = ['Aliquota iva','Famiglia','Categoria','Unita base']
+        def_list = ['Aliquota iva', 'Famiglia', 'Categoria', 'Unita base']
 
         self.default_unita_base_combobox.set_sensitive(False)
         self.default_categoria_combobox.set_sensitive(False)
@@ -180,7 +163,7 @@ class ImportPriceListModels(GladeWidget):
         self.default_aliquotaiva_combobox.set_sensitive(False)
         self.aliquota_iva_togglebutton.set_sensitive(False)
 
-        for k,val in defaults.iteritems():
+        for k, val in defaults.iteritems():
             v =int(val or 0)
             if k == 'Unita base':
                 self.default_unita_base_combobox.set_sensitive(True)
@@ -232,10 +215,10 @@ class ImportPriceListModels(GladeWidget):
     def on_field_checkbutton_checked(self, checkbutton):
         if self.loading:
             return
-        def_list =  ['Aliquota iva','Famiglia','Categoria','Unita base']
+        def_list = ['Aliquota iva', 'Famiglia', 'Categoria', 'Unita base']
         _name = checkbutton.get_name()[:-3]
         for k in possibleFieldsKeys:
-            if _name  == possibleFieldsDict[k]:
+            if _name == possibleFieldsDict[k]:
                 status = checkbutton.get_active()
                 if k in self.priceListModel._fields:
                     if not status:
@@ -317,7 +300,7 @@ class ImportPriceListModels(GladeWidget):
                 self.priceListModel._fields[pos] = 'Valore nullo '+str(ind)
                 ind += 1
             pos +=1
-        self.priceListModel._fields.append( 'Valore nullo '+str(ind))
+        self.priceListModel._fields.append('Valore nullo '+str(ind))
         self.refresh()
 
     def on_save_button_clicked(self, button):
@@ -342,8 +325,8 @@ class ImportPriceListModels(GladeWidget):
                 folder = os.environ['USERPROFILE']
         fileDialog.set_current_folder(folder)
         #print "FDFDFDSFSDFSDFSDFSDFSDFSD", dir(self.model_name_comboboxentry)
-        f_name = self.model_name_comboboxentry.child.get_text().replace(' ','_')
-        
+        f_name = self.model_name_comboboxentry.child.get_text().replace(' ', '_')
+
         fileDialog.set_current_name(f_name+'.pgx')
 
         response = fileDialog.run()
@@ -408,29 +391,29 @@ class ImportPriceListModels(GladeWidget):
 
         for d in self.priceListModel._defaultAttributes.keys():
             if d == 'Aliquota Iva':
-                if not findStrFromCombobox(self.default_aliquotaiva_combobox,2):
+                if not findStrFromCombobox(self.default_aliquotaiva_combobox, 2):
                     obligatoryField(self.getTopLevel(),
                             self.default_aliquotaiva_combobox,
                             'Attenzione! E\' necessario indicare il l\'aliquota iva associata\nal listino che si desidera importare')
             elif d == 'Famiglia':
-                if not findStrFromCombobox(self.default_famiglia_combobox,2):
+                if not findStrFromCombobox(self.default_famiglia_combobox, 2):
                     obligatoryField(self.getTopLevel(),
                             self.default_aliquotaiva_combobox,
                             'Attenzione! Indicare la famiglia di appartenenza\ndegli articoli del listino.')
             elif d == 'Categoria':
-                if not findStrFromCombobox(self.default_categoria_combobox,2):
+                if not findStrFromCombobox(self.default_categoria_combobox, 2):
                     obligatoryField(self.getTopLevel(),
                             self.default_aliquotaiva_combobox,
                             'Attenzione! Indicare la categoria di appartenenza\ndegli articoli del listino.')
             elif d == 'Unita base':
-                if not findStrFromCombobox(self.default_unita_base_combobox,2):
+                if not findStrFromCombobox(self.default_unita_base_combobox, 2):
                     obligatoryField(self.getTopLevel(),
                             self.default_aliquotaiva_combobox,
                             'Attenzione! Indicare l\'unita\' di misura degli articoli del listino')
             else:
                 return
 
-    def on_refresh_button_clicked(self,comboboxentry):
+    def on_refresh_button_clicked(self, comboboxentry):
 
         model = self.model_name_comboboxentry.get_model()
         active = self.model_name_comboboxentry.get_active()
@@ -454,7 +437,7 @@ class ImportPriceListModels(GladeWidget):
         if self.loading:
             return
         comboboxName = combobox.get_name()
-        value = findStrFromCombobox(combobox,1) or ''
+        value = findStrFromCombobox(combobox, 1) or ''
 
         if len(str(value)) > 0:
             if comboboxName == 'default_categoria_combobox':
@@ -476,7 +459,7 @@ class ImportPriceListModels(GladeWidget):
                     else:
                         self.priceListModel._defaultAttributes['Aliquota iva'] = value
             elif comboboxName == 'default_unita_base_combobox':
-                value = findStrFromCombobox(combobox,1)
+                value = findStrFromCombobox(combobox, 1)
                 if 'Unita base' in self.priceListModel._defaultAttributes.keys():
                     if value == self.priceListModel._defaultAttributes['Unita base']:
                         return
@@ -496,7 +479,6 @@ class ImportPriceListModels(GladeWidget):
         anag = AnagraficaFamiglieArticoli()
         anagWindow = anag.getTopLevel()
         showAnagraficaRichiamata(self.getTopLevel(), anagWindow, toggleButton, self.refresh)
-
 
     def on_categoria_togglebutton_toggled(self, toggleButton):
         if toggleButton.get_active():
