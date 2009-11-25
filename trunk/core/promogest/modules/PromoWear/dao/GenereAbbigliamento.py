@@ -18,7 +18,12 @@ class GenereAbbigliamento(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'id':genereabbigliamento.c.id ==v}
+        if k=="id":
+            dic= {k: genereabbigliamento.c.id ==v}
+        elif k == "denominazioneBreve":
+            dic = {k:genereabbigliamento.c.denominazione_breve == v }
+        elif k == "denominazione":
+            dic = {k:genereabbigliamento.c.denominazione == v }
         return  dic[k]
 
 genereabbigliamento=Table('genere_abbigliamento',

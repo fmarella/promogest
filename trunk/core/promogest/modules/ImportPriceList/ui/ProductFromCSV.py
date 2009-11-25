@@ -29,6 +29,13 @@ from fieldsDict import *
 if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
     from promogest.modules.PromoWear.dao.Modello import Modello
+    from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
+    from promogest.modules.PromoWear.dao.Taglia import Taglia
+    from promogest.modules.PromoWear.dao.Colore import Colore
+    from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
+    from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
+    from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
+    
 
 
 class ProductFromCsv(object):
@@ -57,6 +64,8 @@ class ProductFromCsv(object):
                 setattr(self, possibleFieldsDict[key], None)
             else:
                 setattr(self, possibleFieldsDict[key], self.product[key])
+
+
         if self.codice_articolo:
             try:
                 self.daoArticolo = Articolo().select(codiceEM=self.codice_articolo)[0]
@@ -78,7 +87,7 @@ class ProductFromCsv(object):
             if self.codice_padre and self.codice_articolo:
                 print "ARTICOLO PADRE"
                 self.articolopromoWear = "father"
-                self.addTagliaColoreData(self.daoArticolo[0])
+                self.addTagliaColoreData(self.daoArticolo)
             elif self.codice_padre and not self.codice_articolo:
                 print "ARTICOLO FIGLIO"
                 self.articolopromoWear = "son"
@@ -86,7 +95,8 @@ class ProductFromCsv(object):
                 if not self.daoArticolo:
                     print "ERROREEEEEEEEE  non può essere caricato un figlio senza il padre"
                 else:
-                    self.addTagliaColoreData(self.daoArticolo[0])
+                    self.daoArticolo = self.daoArticolo[0]
+                    self.addTagliaColoreData(self.daoArticolo)
             elif not self.codice_padre and self.codice_articolo:
                 print "ARTICOLO NORMALE"
                 self.articolopromoWear = ""
@@ -102,8 +112,9 @@ class ProductFromCsv(object):
             artTC = artTC[0]
         else:
             artTC = ArticoloTagliaColore()
+            artTC.id_articolo_padre = articolo.id
 
-        #modello
+        #MODELLO
         if self.modello:
             mode = Modello().select(denominazione = self.modello)
             if mode:
@@ -118,12 +129,11 @@ class ProductFromCsv(object):
         elif not self.modello:
             artTC.id_modello = articolo.id_modello
 
-        #anno
+        #ANNO
         if self.anno:
             anno = AnnoAbbigliamento().select(denominazione = self.anno)
             if anno:
-                anno = anno[0]
-                artTC.id_anno = anno.id
+                artTC.id_anno = anno[0].id
             else:
                 anno = AnnoAbbigliamento()
                 anno.denominazione = self.anno
@@ -131,6 +141,85 @@ class ProductFromCsv(object):
                 artTC.id_anno = anno.id
         elif not self.anno:
             artTC.id_annno = articolo.id_anno
+            
+        #GENERE
+        if self.genere:
+            genere = GenereAbbigliamento().select(denominazione = self.genere.capitalize())
+            if genere:
+                artTC.id_genere = genere[0].id
+            else:
+                genere = GenereAbbigliamento()
+                genere.denominazione = self.genere.capitalize()
+                genere.persist()
+                artTC.id_genere = genere.id
+        elif not self.genere:
+            artTC.id_genere = articolo.id_genere
+            
+        #COLORE
+        if self.colore:
+            colore = Colore().select(denominazione = self.colore)
+            if colore:
+                artTC.id_colore = colore[0].id
+            else:
+                colore = Colore()
+                colore.denominazione = self.colore
+                colore.denominazione_breve = self.colore
+                colore.persist()
+                artTC.id_colore = colore.id
+        elif not self.anno:
+            artTC.id_colore = articolo.id_colore
+            
+        #GRUPPO TAGLIA
+        if self.gruppo_taglia:
+            gruppo_taglia = GruppoTaglia().select(denominazione = self.gruppo_taglia)
+            if gruppo_taglia:
+                artTC.id_gruppo_taglia = gruppo_taglia[0].id
+            else:
+                gruppo_taglia = GruppoTaglia()
+                gruppo_taglia.denominazione = self.gruppo_taglia
+                gruppo_taglia.denominazione_breve = self.gruppo_taglia
+                gruppo_taglia.persist()
+                artTC.id_gruppo_taglia = gruppo_taglia.id
+        elif not self.gruppo_taglia:
+            artTC.id_gruppo_taglia = articolo.id_gruppo_taglia
+
+        #TAGLIA
+        if self.taglia:
+            taglia = Taglia().select(denominazione = self.taglia)
+            if taglia:
+                artTC.id_taglia = taglia[0].id
+            else:
+                taglia = Taglia()
+                taglia.denominazione = self.taglia
+                taglia.denominazione_breve = self.taglia
+                taglia.persist()
+                artTC.id_taglia = taglia.id
+        elif not self.taglia:
+            artTC.id_taglia = articolo.id_taglia
+        
+        #STAGIONE
+        if self.stagione:
+            stagione = StagioneAbbigliamento().select(denominazione = self.stagione)
+            if stagione:
+                artTC.id_stagione = stagione[0].id
+            else:
+                stagione = StagioneAbbigliamento()
+                stagione.denominazione = self.stagione
+                stagione.denominazione_breve = self.stagione
+                stagione.persist()
+                artTC.id_stagione = stagione.id
+        elif not self.stagione:
+            artTC.id_stagione = articolo.id_stagione
+            
+        if self.gruppo_taglia and self.taglia:
+            gtt = GruppoTagliaTaglia().select(idTaglia = self.taglia, idGruppoTaglia= self.gruppo_taglia)
+            if not gtt:
+                gttt = GruppoTagliaTaglia()
+                gttt.id_taglia = self.taglia
+                gttt.id_gruppo_taglia = self.gruppo_taglia
+                gttt.persist()
+        self.daoArticolo.articoloTagliaColore = artTC
+
 
     def fillDaos(self):
         """fillDaos method fills all Dao related to daoArticolo"""
@@ -208,7 +297,6 @@ class ProductFromCsv(object):
                 self._categories.append(daoCategoria)
         self.daoArticolo.id_categoria_articolo = id_categoria
 
-
         #IVA
         id_aliquota_iva = None
         if self.aliquota_iva is None:
@@ -220,7 +308,7 @@ class ProductFromCsv(object):
             for v in self._vats:
                 if self.aliquota_iva.lower() in (v.denominazione_breve.lower(),
                                                 v.denominazione.lower()) or\
-                            int(str(self.aliquota_iva).replace('%', '')) == int(v.percentuale):
+                            int(str(self.aliquota_iva).replace('%', '') or 20) == int(v.percentuale):
                     id_aliquota_iva = v.id
                     break
             if id_aliquota_iva is None:
@@ -235,7 +323,7 @@ class ProductFromCsv(object):
                 self._vats.append(daoAliquotaIva)
         self.daoArticolo.id_aliquota_iva = id_aliquota_iva
 
-        #base units
+        #UNITA BASE
         id_unita_base = None
         if  self.unita_base is None:
             self.unita_base_id = self.defaults['Unita base']
@@ -253,7 +341,7 @@ class ProductFromCsv(object):
                     break
             if id_unita_base is None:
                 self.unita_base = UnitaBase().select(denominazione='Pezzi',
-                                                            batchSize=None)
+                                                            batchSize=None)[0]
                 id_unita_base = self.unita_base.id
         self.daoArticolo.id_unita_base = id_unita_base
         self.daoArticolo.produttore = self.produttore or ''

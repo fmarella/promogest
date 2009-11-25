@@ -29,7 +29,8 @@ class ImportPriceList(GladeWidget):
     """Does price-list importation"""
 
     def __init__(self, mainWindow):
-        GladeWidget.__init__(self, 'import_price_list_window')
+        GladeWidget.__init__(self,'import_price_list_window',
+                    fileName="import_price_list_window.glade")
         self._mainWindow = mainWindow
         self._mainWindow.hide()
         if self._mainWindow in Login.windowGroup:
@@ -45,8 +46,9 @@ class ImportPriceList(GladeWidget):
         self.draw()
 
     def draw(self):
-        """draw method draws and fills all widgets in import_price_list_window """
-
+        """draw method draws and fills all widgets in
+        import_price_list_window
+        """
         if self.file_name:
             self.path_file_entry.set_text(self.file_name)
         fillModelCombobox(self.model_combobox)
@@ -84,7 +86,6 @@ class ImportPriceList(GladeWidget):
             self.promoPriceList = findStrFromCombobox(self.price_list_name_combobox, 2)
 
         self.data_listino = stringToDate(self.data_listino_entry.get_text())
-
 
         model = self.model_combobox.get_model()
         active = self.model_combobox.get_active()
@@ -262,8 +263,8 @@ del formato del file e riprovare""" % str(rowcount+1)
 
         if self.data_listino_entry.get_text() == '':
             obbligatoryField(self.getTopLevel(),
-                                self.data_listino_entry,
-                                'indicare la data del listino che si intende importare')
+                    self.data_listino_entry,
+                    'indicare la data del listino che si intende importare')
 
     def on_import_price_list_window_close(self, widget, event=None):
         self.window.destroy()

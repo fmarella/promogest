@@ -18,7 +18,12 @@ class StagioneAbbigliamento(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'id':stagioneabbigliamento.c.id ==v}
+        if k=="id":
+            dic= {k: stagioneabbigliamento.c.id ==v}
+        elif k == "denominazioneBreve":
+            dic = {k:stagioneabbigliamento.c.denominazione_breve == v }
+        elif k == "denominazione":
+            dic = {k:stagioneabbigliamento.c.denominazione == v }
         return  dic[k]
 
 stagioneabbigliamento=Table('stagione_abbigliamento',

@@ -6,7 +6,6 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 
-
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
@@ -27,7 +26,6 @@ class GruppoTaglia(Dao):
         #if self.__taglie is None:
         grtts = GruppoTagliaTaglia().select(idGruppoTaglia=self.id,
                                                         batchSize=None)
-
         self.__taglie = [Taglia().getRecord(id=grtt.id_taglia) for grtt in grtts]
         return self.__taglie or None
 
@@ -55,7 +53,7 @@ class GruppoTaglia(Dao):
 
     def _denominazione_breve_taglia(self):
         """ esempio di funzione  unita alla property """
-        a =  params["session"].query(GruppoTaglia)\
+        a = params["session"].query(GruppoTaglia)\
                                 .filter(and_(GruppoTagliaTaglia.id_gruppo_taglia == self.id,GruppoTagliaTaglia.id_taglia==Taglia.id)).all()
         if not a: return a
         else: return a[0].denominazione_breve
@@ -63,14 +61,19 @@ class GruppoTaglia(Dao):
 
     def filter_values(self,k,v):
         if k == "id":
-            dic= {'id':gruppotaglia.c.id ==v }
+            dic= {'id': gruppotaglia.c.id ==v}
         elif k == "idTaglia":
-            dic = {k:gruppotaglia.c.id_taglia ==v}
+            dic = {k: gruppotaglia.c.id_taglia ==v}
+        elif k == "denominazione":
+            dic = {k: gruppotaglia.c.denominazione ==v}
         return  dic[k]
 
-gruppotaglia=Table('gruppo_taglia', params['metadata'],schema = params['schema'],autoload=True)
+gruppotaglia=Table('gruppo_taglia',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
 
 std_mapper = mapper(GruppoTaglia, gruppotaglia, properties={
-        "GTT":relation(GruppoTagliaTaglia,primaryjoin=
-                (GruppoTagliaTaglia.id_gruppo_taglia==gruppotaglia.c.id), backref="GTTGT"),},
+        "GTT":relation(GruppoTagliaTaglia, primaryjoin=
+                (GruppoTagliaTaglia.id_gruppo_taglia==gruppotaglia.c.id), backref="GTTGT"), },
         order_by=gruppotaglia.c.id)

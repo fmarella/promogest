@@ -6,6 +6,7 @@
 # Author:  Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
 # Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
 
+import csv
 from decimal import *
 import gtk
 from promogest import Environment
@@ -21,16 +22,15 @@ from fieldsDict import *
 
 class ImportPreview(GladeWidget):
     """create a preview window to check that import is being executed correctly
+    Table is the csv file data
+    Model is a priceListModel instance
+    ProductList is a list of dictionary that came from csv file
+    PromoPriceList is an existing "Listino" in the database.(what is it for?)
     """
-
-    # Table is the csv file data
-    # Model is a priceListModel instance
-    # ProductList is a list of dictionary that came from csv file
-    # PromoPriceList is an existing "Listino" in the database.(what is it for?)
+    
     def __init__(self, mainWindow, table, PLModel, productList, promoPriceList,
                                                     Fornitore, data_listino):
         GladeWidget.__init__(self, 'import_preview_window')
-        self.import_preview_window.set_title('Anteprima Importazione Dati')
         self._mainWindow = mainWindow
         self.window = self.getTopLevel()
         self.table = table
@@ -42,6 +42,8 @@ class ImportPreview(GladeWidget):
         self.draw()
 
     def draw(self):
+        """ Dynamic creation of a trevew model 
+        """
         self.treeview = self.articoli_treeview
         rendererSx = gtk.CellRendererText()
         rendererDx = gtk.CellRendererText()
@@ -49,7 +51,6 @@ class ImportPreview(GladeWidget):
         fields = self.PLModel._fields
         model = getDynamicStrListStore(len(fields))
         self.treeview.set_model(model)
-
         nc = 0
         for f in fields:
             column = gtk.TreeViewColumn(f, rendererSx, text=nc)
@@ -66,26 +67,22 @@ class ImportPreview(GladeWidget):
             remodel.append(row)
 
     def on_import_preview_confirm_clicked(self, button):
-        print "DFGDFGHFGHHHHFHCASTELELLELELELLE"
-        import csv
+        """ cb di controllo dell'inizio delll'importazione"""
         savedlines = 0
         err_count = 0
+        print "DATIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", self.PLModel,self.promoPriceList,self.fornitore,self.data_listino,self.productList
         csvErrorFile = csv.DictWriter(file(Environment.documentsDir+\
                             '/import_error_list.csv', 'wb'),
                              fieldnames=self.PLModel._fields, dialect='excel')
-        for product in self.productList:
-            productFromCsv = ProductFromCsv(product=product,
-                                            PLModel=self.PLModel,
-                                            promoPriceList=self.promoPriceList,
-                                            idfornitore=self.fornitore,
-                                            dataListino=self.data_listino)
-            #try: #product data dictionary is transmitted to the method that
-                    #will generate (or update) the corrispondent product
-            productFromCsv.save()
-            #except:
-                #err_count += 1
-                #csvErrorFile.writerow(product)
-            savedlines += 1
+#        for product in self.productList: #andiamo a salvare il dato ....
+#            productFromCsv = ProductFromCsv(product=product,
+#                                            PLModel=self.PLModel,
+#                                            promoPriceList=self.promoPriceList,
+#                                            idfornitore=self.fornitore,
+#                                            dataListino=self.data_listino)
+#            productFromCsv.save()
+
+        savedlines += 1
         if err_count > 0:
             msg = """Si è verificato un errore nel salvataggio dei dati di qualche prodotto.
 È stato creato un nuovo file CSV con questi prodotti nella cartella documenti.
@@ -104,7 +101,6 @@ Verificare gli errori nel file e ritentare l'importazione"""
         if savedlines > 0:
             msg = u'Operazione completata.\nsono stati importati/aggiornati '+\
                                                 str(savedlines)+' articoli.'
-
             overDialog = gtk.MessageDialog(self.getTopLevel(),
                             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,\
                             gtk.MESSAGE_INFO,
@@ -115,7 +111,6 @@ Verificare gli errori nel file e ritentare l'importazione"""
             self._mainWindow.show_all()
         else:
             msg = u'Nessun articolo aggiornato/importato.'
-
             overDialog = gtk.MessageDialog(self.getTopLevel(),
                             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,\
                             gtk.MESSAGE_INFO,

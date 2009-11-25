@@ -21,6 +21,8 @@ class Taglia(Dao):
             dic= {k: taglia.c.id ==v}
         elif k == "denominazioneBreve":
             dic = {k:taglia.c.denominazione_breve == v }
+        elif k == "denominazione":
+            dic = {k:taglia.c.denominazione == v }
         return  dic[k]
 
 

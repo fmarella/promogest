@@ -4,12 +4,15 @@
   <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="import_price_list_window">
+    <property name="visible">True</property>
     <property name="border_width">10</property>
     <property name="title" translatable="yes">Importazione Listino</property>
     <property name="resizable">False</property>
+    <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
     <property name="icon">promogest.png</property>
+    <property name="gravity">center</property>
     <signal name="destroy" handler="on_import_price_list_window_close"/>
     <signal name="destroy_event" handler="on_import_price_list_window_close"/>
     <signal name="delete_event" handler="on_import_price_list_window_close"/>

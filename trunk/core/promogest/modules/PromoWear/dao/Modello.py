@@ -18,7 +18,10 @@ class Modello(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'id':modello.c.id ==v}
+        if k=="id":
+            dic= {k:modello.c.id ==v}
+        elif k =="denominazione":
+            dic= {k:modello.c.denominazione == v}
         return  dic[k]
 
 modello=Table('modello',
