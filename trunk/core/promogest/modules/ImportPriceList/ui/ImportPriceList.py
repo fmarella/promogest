@@ -127,7 +127,6 @@ class ImportPriceList(GladeWidget):
         table=[]
         product = {}
 
-
         # Create a bi-dimensional list from the lines of the file_name
         #(excluding fields separators and fields delimiters)
         if startFromRow:
@@ -146,13 +145,13 @@ class ImportPriceList(GladeWidget):
             ind += 1
         print "Done. We are ready to start, There are "+str(ind)+" products"
 
-
         #create a 'product' dictionary for every line of the price listino
         #file and generate a list of 'products'.
         _priceList = []
         rowcount = 0
         width = len(self.modelFields)
-
+        print "LUNGHEZZA DEI CAMPI NEL MODEL della gui ", width
+        print "LUNGHEZZA DEi campi del file ",len(table[0])
         for row in table:
             if len(row) == width:
                 product= dict(zip(self.modelFields, row))

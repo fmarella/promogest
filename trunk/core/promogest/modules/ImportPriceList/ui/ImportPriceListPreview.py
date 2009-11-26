@@ -27,7 +27,7 @@ class ImportPreview(GladeWidget):
     ProductList is a list of dictionary that came from csv file
     PromoPriceList is an existing "Listino" in the database.(what is it for?)
     """
-    
+
     def __init__(self, mainWindow, table, PLModel, productList, promoPriceList,
                                                     Fornitore, data_listino):
         GladeWidget.__init__(self, 'import_preview_window')
@@ -42,7 +42,7 @@ class ImportPreview(GladeWidget):
         self.draw()
 
     def draw(self):
-        """ Dynamic creation of a trevew model 
+        """ Dynamic creation of a trevew model
         """
         self.treeview = self.articoli_treeview
         rendererSx = gtk.CellRendererText()
@@ -70,19 +70,23 @@ class ImportPreview(GladeWidget):
         """ cb di controllo dell'inizio delll'importazione"""
         savedlines = 0
         err_count = 0
-        print "DATIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", self.PLModel,self.promoPriceList,self.fornitore,self.data_listino,self.productList
         csvErrorFile = csv.DictWriter(file(Environment.documentsDir+\
                             '/import_error_list.csv', 'wb'),
                              fieldnames=self.PLModel._fields, dialect='excel')
-#        for product in self.productList: #andiamo a salvare il dato ....
-#            productFromCsv = ProductFromCsv(product=product,
-#                                            PLModel=self.PLModel,
-#                                            promoPriceList=self.promoPriceList,
-#                                            idfornitore=self.fornitore,
-#                                            dataListino=self.data_listino)
-#            productFromCsv.save()
-
-        savedlines += 1
+        print "ISTANZIO LA CLASSE E PREPARO L'AMBIENTE "
+        productFromCsv = ProductFromCsv(listaRighe=self.productList,
+                                PLModel=self.PLModel,
+                                promoPriceList=self.promoPriceList,
+                                idfornitore=self.fornitore,
+                                dataListino=self.data_listino,
+                                createData= True)
+        print "PRONTO A CICLARE RIGA PER RIGA"
+        for product in self.productList: #andiamo a salvare il dato ....
+            ProductFromCsv(PLModel=self.PLModel,
+                            promoPriceList=self.promoPriceList,
+                            idfornitore=self.fornitore,
+                            dataListino=self.data_listino,).save(product)
+            savedlines += 1
         if err_count > 0:
             msg = """Si è verificato un errore nel salvataggio dei dati di qualche prodotto.
 È stato creato un nuovo file CSV con questi prodotti nella cartella documenti.

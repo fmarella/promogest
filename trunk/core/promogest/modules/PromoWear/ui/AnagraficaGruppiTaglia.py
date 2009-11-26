@@ -6,16 +6,13 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 
-
 import gtk
 import gobject
-from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
+from promogest.ui.AnagraficaSemplice import Anagrafica,\
+                                        AnagraficaDetail, AnagraficaFilter
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.modules.PromoWear.dao.GruppoTaglia
 from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
 from promogest.ui.utils import *
-
 
 
 class AnagraficaGruppiTaglia(Anagrafica):
@@ -66,7 +63,6 @@ class AnagraficaGruppiTaglia(Anagrafica):
 
         self.refresh()
 
-
     def refresh(self):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
@@ -78,9 +74,9 @@ class AnagraficaGruppiTaglia(Anagrafica):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return GruppoTaglia().select(denominazione=denominazione,
-                                                     orderBy = self.orderBy,
-                                                     offset = self.offset,
-                                                     batchSize = self.batchSize)
+                                                 orderBy = self.orderBy,
+                                                 offset = self.offset,
+                                                 batchSize = self.batchSize)
 
         self._filterClosure = filterClosure
 
@@ -90,8 +86,8 @@ class AnagraficaGruppiTaglia(Anagrafica):
 
         for g in grus:
             # Il gruppo taglia 1 (taglia unica) e' read-only
-            self._treeViewModel.append((g, g.denominazione, g.denominazione_breve, (g.id != 1)))
-
+            self._treeViewModel.append((g, g.denominazione,
+                                g.denominazione_breve, True))
 
 
 class AnagraficaGruppoTagliaFilter(AnagraficaFilter):
@@ -99,12 +95,11 @@ class AnagraficaGruppoTagliaFilter(AnagraficaFilter):
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_gruppo_taglia_filter_table',
-                                  gladeFile='promogest/modules/PromoWear/gui/_anagrafica_gruppo_taglia_elements.glade',
-                                  module=True)
+            anagrafica,
+            'anagrafica_gruppo_taglia_filter_table',
+            gladeFile='PromoWear/gui/_anagrafica_gruppo_taglia_elements.glade',
+            module=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
-
 
     def clear(self):
         # Annullamento filtro
@@ -113,11 +108,11 @@ class AnagraficaGruppoTagliaFilter(AnagraficaFilter):
         self._anagrafica.refresh()
 
 
-
 class AnagraficaGruppoTagliaDetail(AnagraficaDetail):
     """
     Dettaglio dell'anagrafica degli imballaggi
     """
+
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                                   anagrafica)
@@ -156,4 +151,3 @@ class AnagraficaGruppoTagliaDetail(AnagraficaDetail):
 
     def deleteDao(self):
         self.dao.delete()
-

@@ -34,17 +34,20 @@ if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.dao.Colore import Colore
     from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
     from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
+    from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTaglia
     from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
-    
+
 
 
 class ProductFromCsv(object):
     """Takes a product from a generic price list and "translates" it in a
     promogest-compatible dao product, ListinoArticolo and Fornitura"""
 
-    def __init__(self, product, PLModel, promoPriceList, idfornitore, dataListino):
+    def __init__(self, listaRighe=None,
+                    PLModel=None, promoPriceList=None,
+                    idfornitore=None, dataListino=None, createData=False):
         self.PLModel = PLModel
-        self.product = product
+        self.listaRighe = listaRighe
         self.promoPriceList = promoPriceList or None
         self.fornitore = idfornitore
         self.dataListino = dataListino
@@ -55,19 +58,70 @@ class ProductFromCsv(object):
                 self.price_list_id = liss[0].id
             del self.promoPriceList
         self.defaults = self.PLModel._defaultAttributes
+        if createData  and "PromoWear" in Environment.modulesList:
+            self.addGruppiTaglia()
+        self.listaRighe = []
 
-    def save(self):
+    def addGruppiTaglia(self):
+        for riga in self.listaRighe:
+            if riga["Gruppo Taglia"] and riga["Taglia"] == "":
+                gruppo_taglia = GruppoTaglia().select(denominazione = riga["Gruppo Taglia"])
+                if not gruppo_taglia:
+                    a = GruppoTaglia()
+                    a.denominazione = riga["Gruppo Taglia"]
+                    a.denominazione_breve = riga["Gruppo Taglia"]
+                    a.persist()
+            elif riga["Gruppo Taglia"] and riga["Taglia"]:
+                _taglia = Taglia().select(denominazione = riga["Taglia"])
+                if not _taglia:
+                    t = Taglia()
+                    t.denominazione = riga["Taglia"]
+                    t.denominazione_breve = riga["Taglia"]
+                    t.persist()
+                tid = Taglia().select(denominazione = riga["Taglia"])[0].id
+                gtid = GruppoTaglia().select(denominazione = riga["Gruppo Taglia"])[0].id
+                if tid and gtid:
+                    gtt = GruppoTagliaTaglia().select(idGruppoTaglia= gtid,
+                                                    idTaglia = tid)
+                    if not gtt:
+                        numero_taglie = GruppoTagliaTaglia().count(idGruppoTaglia= gtid)
+                        gtt = GruppoTagliaTaglia()
+                        gtt.id_gruppo_taglia = gtid
+                        gtt.id_taglia = tid
+                        gtt.ordine = (numero_taglie or 1) +1
+                        gtt.persist()
+            if "Modello" in riga and riga["Modello"]:
+                mo = Modello().select(denominazione = riga["Modello"])
+                if not mo:
+                    mm = Modello()
+                    mm.denominazione = riga["Modello"]
+                    mm.denominazione_breve = riga["Modello"]
+                    mm.persist()
+
+            if riga["Colore"]:
+                co = Colore().select(denominazione = riga["Colore"])
+                if not co:
+                    c = Colore()
+                    c.denominazione = riga["Colore"]
+                    c.denominazione_breve = riga["Colore"]
+                    c.persist()
+
+    def save(self, product):
+        self.tipoArticolo = None
+        self.articoloPadre = None
+        self.daoArticolo = None
         """Gets the existing Dao"""
-        self.articolopromoWear = ""
+        self.product = product
+        print "dissss", self.__dict__
         for key in possibleFieldsDict.keys():
             if key not in self.product.keys():
                 setattr(self, possibleFieldsDict[key], None)
             else:
                 setattr(self, possibleFieldsDict[key], self.product[key])
-
-
+        print "SELF CODICE ARTICO", self.codice_articolo
         if self.codice_articolo:
             try:
+                print "NON CI PASSO O CI PASSO?"
                 self.daoArticolo = Articolo().select(codiceEM=self.codice_articolo)[0]
             except:
                 print "CODICE %s NON TROVATO" %self.codice_articolo
@@ -81,156 +135,128 @@ class ProductFromCsv(object):
             daoFornitura = Fornitura().select(codiceArticoloFornitoreEM=self.codice_fornitore)
             if len(daoFornitura) == 1:
                 self.daoArticolo = Articolo().getRecord(id=daoFornitura[0].id_articolo)
+        #Non ho trovato un articolo esistente ne' come codice ne' come cbarre
+        #o cod fornitore ne istanzio uno nuovo
+
         if not self.daoArticolo:
+            print "ISTANZIO UN NUOVO ARTicolo "
             self.daoArticolo = Articolo()
+#        print "CE UN ARTICOLO NEL DB ????", self.daoArticolo.__dict__
         if "PromoWear" in Environment.modulesList:
             if self.codice_padre and self.codice_articolo:
                 print "ARTICOLO PADRE"
-                self.articolopromoWear = "father"
-                self.addTagliaColoreData(self.daoArticolo)
+                self.tipoArticolo = "FATHER"
+                self.addTagliaColoreData(tipo = self.tipoArticolo, articolo = self.daoArticolo)
+                self.articoloPadre = None
             elif self.codice_padre and not self.codice_articolo:
-                print "ARTICOLO FIGLIO"
-                self.articolopromoWear = "son"
-                self.daoArticolo = Articolo().select(codiceEM=self.codice_articolo)
-                if not self.daoArticolo:
+                print "ARTICOLO FIGLIO", self.codice_padre
+                padre = Articolo().select(codiceEM=self.codice_padre)
+                if not padre:
                     print "ERROREEEEEEEEE  non può essere caricato un figlio senza il padre"
                 else:
-                    self.daoArticolo = self.daoArticolo[0]
-                    self.addTagliaColoreData(self.daoArticolo)
+                    self.articoloPadre = padre[0]
+                    self.tipoArticolo = "SON"
+                    codice = self.articoloPadre.codice + self.gruppo_taglia[0:3] + self.taglia + self.colore
+                    test = Articolo().select(codiceEM= codice)
+                    if test:
+                        self.daoArticolo = test[0]
+                    self.addTagliaColoreData(tipo = self.tipoArticolo,
+                                        articoloPadre=self.articoloPadre,
+                                        articolo = self.daoArticolo)
             elif not self.codice_padre and self.codice_articolo:
                 print "ARTICOLO NORMALE"
-                self.articolopromoWear = ""
 
         self.fillDaos()
 
-    def addTagliaColoreData(self, articolo):
+    def addTagliaColoreData(self, tipo =None, articolo=None, articoloPadre=None):
         """
         modello, genere, colore, gruppo taglia, taglia, stagione, anno
         """
-        artTC = ArticoloTagliaColore().select(idArticoloPadre = articolo.id)
+#        self.artTC = None
+        artTC = None
+        if articolo and articolo.id and tipo == "FATHER":
+#            print "AAAAAAAAAAAAAAAAAAHHHHHHHHH", articolo.id
+            artTC = ArticoloTagliaColore().select(idArticolo = articolo.id)
+        elif articolo and articolo.id and articoloPadre and tipo =="SON":
+#            print "AAAAAAAAAAAAAAAAAAH2222222222HHH", articolo.id, articoloPadre.id
+            artTC = ArticoloTagliaColore().select(idArticolo = articolo.id,
+                                            idArticoloPadre=articoloPadre.id)
+
+#        print "DAO TALIA E COLORE:", artTC
         if artTC:
             artTC = artTC[0]
         else:
             artTC = ArticoloTagliaColore()
-            artTC.id_articolo_padre = articolo.id
+            if tipo =="SON":
+                artTC.id_articolo_padre = articoloPadre.id
+#        artTC.id_
 
         #MODELLO
         if self.modello:
             mode = Modello().select(denominazione = self.modello)
-            if mode:
-                mode = mode[0]
-                artTC.id_modello = mode.id
-            else:
-                mode = Modello()
-                mode.denominazione_breve = self.modello
-                mode.denominazione = self.modello
-                mode.persist()
-                artTC.id_modello = mode.id
+            artTC.id_modello = mode[0].id
         elif not self.modello:
-            artTC.id_modello = articolo.id_modello
+            try:
+                artTC.id_modello = articoloPadre.id_modello
+            except:
+                print " questo csv non ha modello"
 
         #ANNO
         if self.anno:
             anno = AnnoAbbigliamento().select(denominazione = self.anno)
-            if anno:
-                artTC.id_anno = anno[0].id
-            else:
-                anno = AnnoAbbigliamento()
-                anno.denominazione = self.anno
-                anno.persist()
-                artTC.id_anno = anno.id
+            artTC.id_anno = anno[0].id
         elif not self.anno:
-            artTC.id_annno = articolo.id_anno
-            
+            artTC.id_annno = articoloPadre.id_anno
+
         #GENERE
         if self.genere:
             genere = GenereAbbigliamento().select(denominazione = self.genere.capitalize())
-            if genere:
-                artTC.id_genere = genere[0].id
-            else:
-                genere = GenereAbbigliamento()
-                genere.denominazione = self.genere.capitalize()
-                genere.persist()
-                artTC.id_genere = genere.id
+            artTC.id_genere = genere[0].id
         elif not self.genere:
-            artTC.id_genere = articolo.id_genere
-            
-        #COLORE
-        if self.colore:
-            colore = Colore().select(denominazione = self.colore)
-            if colore:
-                artTC.id_colore = colore[0].id
-            else:
-                colore = Colore()
-                colore.denominazione = self.colore
-                colore.denominazione_breve = self.colore
-                colore.persist()
-                artTC.id_colore = colore.id
-        elif not self.anno:
-            artTC.id_colore = articolo.id_colore
-            
+            artTC.id_genere = articoloPadre.id_genere
+
         #GRUPPO TAGLIA
         if self.gruppo_taglia:
-            gruppo_taglia = GruppoTaglia().select(denominazione = self.gruppo_taglia)
-            if gruppo_taglia:
-                artTC.id_gruppo_taglia = gruppo_taglia[0].id
-            else:
-                gruppo_taglia = GruppoTaglia()
-                gruppo_taglia.denominazione = self.gruppo_taglia
-                gruppo_taglia.denominazione_breve = self.gruppo_taglia
-                gruppo_taglia.persist()
-                artTC.id_gruppo_taglia = gruppo_taglia.id
+            gruppo_taglia = GruppoTaglia().select(denominazione = self.gruppo_taglia)[0].id
+            artTC.id_gruppo_taglia = gruppo_taglia
         elif not self.gruppo_taglia:
-            artTC.id_gruppo_taglia = articolo.id_gruppo_taglia
+            artTC.id_gruppo_taglia = articoloPadre.id_gruppo_taglia
+#        print "A QUESTO PUNTO SON CURIOSO DI SAPERE IL GRUPPO TAGLIA", artTC.id_gruppo_taglia
 
         #TAGLIA
         if self.taglia:
-            taglia = Taglia().select(denominazione = self.taglia)
-            if taglia:
-                artTC.id_taglia = taglia[0].id
-            else:
-                taglia = Taglia()
-                taglia.denominazione = self.taglia
-                taglia.denominazione_breve = self.taglia
-                taglia.persist()
-                artTC.id_taglia = taglia.id
-        elif not self.taglia:
-            artTC.id_taglia = articolo.id_taglia
-        
+            taglia = Taglia().select(denominazione = self.taglia)[0].id
+            artTC.id_taglia = taglia
+
+        #COLORE
+        if self.colore:
+            artTC.id_colore = Colore().select(denominazione = self.colore)[0].id
+
         #STAGIONE
         if self.stagione:
             stagione = StagioneAbbigliamento().select(denominazione = self.stagione)
-            if stagione:
-                artTC.id_stagione = stagione[0].id
-            else:
-                stagione = StagioneAbbigliamento()
-                stagione.denominazione = self.stagione
-                stagione.denominazione_breve = self.stagione
-                stagione.persist()
-                artTC.id_stagione = stagione.id
+            artTC.id_stagione = stagione[0].id
         elif not self.stagione:
-            artTC.id_stagione = articolo.id_stagione
-            
-        if self.gruppo_taglia and self.taglia:
-            gtt = GruppoTagliaTaglia().select(idTaglia = self.taglia, idGruppoTaglia= self.gruppo_taglia)
-            if not gtt:
-                gttt = GruppoTagliaTaglia()
-                gttt.id_taglia = self.taglia
-                gttt.id_gruppo_taglia = self.gruppo_taglia
-                gttt.persist()
+            artTC.id_stagione = articoloPadre.id_stagione
         self.daoArticolo.articoloTagliaColore = artTC
-
+#        print "AAAAAAAAAAAAAAAAAAAAA", artTC.__dict__
+#        self.artTC = artTC
+        artTC = None
+#        self.artTC = None
 
     def fillDaos(self):
-        """fillDaos method fills all Dao related to daoArticolo"""
-        self.codice_articolo = str(self.codice_articolo)
-        if self.codice_articolo is None or self.codice_articolo == "None":
-            self.codice_articolo = promogest.dao.Articolo.getNuovoCodiceArticolo()
-        self.daoArticolo.codice = self.codice_articolo
-
-        self.denominazione_articolo = str(self.denominazione_articolo)
-        self.daoArticolo.denominazione = self.denominazione_articolo
-
+        """fillDaos method fills all Dao related to daoArticolo
+        """
+        if "PromoWear" in Environment.modulesList and self.tipoArticolo == "SON":
+            self.daoArticolo.codice = self.articoloPadre.codice + self.gruppo_taglia[0:3] + self.taglia + self.colore
+            self.daoArticolo.denominazione = self.articoloPadre.denominazione + ' ' + self.taglia + ' ' + self.colore
+            self.codice_articolo = self.articoloPadre
+        else:
+            if self.codice_articolo is None or self.codice_articolo == "None":
+                self.codice_articolo = promogest.dao.Articolo.getNuovoCodiceArticolo()
+            self.daoArticolo.codice = str(self.codice_articolo)
+            self.daoArticolo.denominazione = str(self.denominazione_articolo)
+        print "STO PER SALVARE ", self.daoArticolo.denominazione
         #families
         id_famiglia = None
         if self.famiglia_articolo is None:
@@ -266,7 +292,6 @@ class ProductFromCsv(object):
                 id_famiglia = daoFamiglia.id
                 self._families.append(daoFamiglia)
         self.daoArticolo.id_famiglia_articolo = id_famiglia
-
         #categories
         id_categoria = None
         if self.categoria_articolo is None:
@@ -296,7 +321,6 @@ class ProductFromCsv(object):
                 id_categoria = daoCategoria.id
                 self._categories.append(daoCategoria)
         self.daoArticolo.id_categoria_articolo = id_categoria
-
         #IVA
         id_aliquota_iva = None
         if self.aliquota_iva is None:
@@ -322,7 +346,6 @@ class ProductFromCsv(object):
                 id_aliquota_iva = daoAliquotaIva.id
                 self._vats.append(daoAliquotaIva)
         self.daoArticolo.id_aliquota_iva = id_aliquota_iva
-
         #UNITA BASE
         id_unita_base = None
         if  self.unita_base is None:
@@ -347,10 +370,9 @@ class ProductFromCsv(object):
         self.daoArticolo.produttore = self.produttore or ''
         self.daoArticolo.cancellato = False
         self.daoArticolo.sospeso = False
-        #Environment.params['session'].add(self.daoArticolo)
-        #Environment.params['session'].commit()
+#        print "PTIMA DEL PERSIT", self.daoArticolo.__dict__
         self.daoArticolo.persist()
-
+        print "DAMMMMMMMI IL TUO ID PER CAPIRE", self.daoArticolo.id
         product_id = self.daoArticolo.id
 
         #barcode
@@ -397,24 +419,15 @@ class ProductFromCsv(object):
 
             if self.prezzo_vendita_ivato is not None:
                 prezzo = self.sanitizer(self.prezzo_vendita_ivato)
-                #try:
                 daoPriceListProduct.prezzo_dettaglio = mN(prezzo)
-                #except:
-                    #prezzo = self.checkDecimalSymbol(str(prezzo).strip(), decimalSymbol)
-                    #daoPriceListProduct.prezzo_dettaglio = mN(prezzo)
             else:
                 daoPriceListProduct.prezzo_dettaglio = 0
 
             if self.prezzo_vendita_non_ivato is not None:
                 prezzo = self.sanitizer(self.prezzo_vendita_non_ivato)
-                #try:
                 daoPriceListProduct.prezzo_ingrosso = mN(prezzo)
-                #except:
-                    #prezzo = mN(self.checkDecimalSymbol(str(prezzo).split(), decimalSymbol))
-                    #daoPriceListProduct.prezzo_ingrosso = prezzo
             else:
                 daoPriceListProduct.prezzo_ingrosso = 0
-
 
             sconti_ingrosso = [ScontoVenditaIngrosso(), ]
             sconti_dettaglio = [ScontoVenditaDettaglio(), ]
@@ -423,54 +436,34 @@ class ProductFromCsv(object):
                 and str(self.sconto_vendita_ingrosso).strip() != "0" \
                 and str(self.sconto_vendita_ingrosso).strip() !="":
                 self.sconto_vendita_ingrosso = self.sanitizer(self.sconto_vendita_ingrosso)
-                #try:
                 sconti_ingrosso[0].valore = mN(self.sconto_vendita_ingrosso)
                 sconti_ingrosso[0].tipo_sconto = 'percentuale'
                 daoPriceListProduct.sconto_vendita_ingrosso = sconti_ingrosso
-                #except:
-                    #sconti_ingrosso[0].valore = mN(self.checkDecimalSymbol(self.sconto_vendita_ingrosso, decimalSymbol))
-                    #sconti_ingrosso[0].tipo_sconto = 'percentuale'
-                    #daoPriceListProduct.sconto_vendita_ingrosso = sconti_ingrosso
 
             if self.sconto_vendita_dettaglio is not None and str(self.sconto_vendita_dettaglio).strip() != "0" and str(self.sconto_vendita_dettaglio).strip() !="":
                 self.sconto_vendita_dettaglio = self.sanitizer(self.sconto_vendita_dettaglio)
-                #try:
                 sconti_dettaglio[0].valore = mN(self.sconto_vendita_dettaglio)
                 sconti_dettaglio[0].tipo_sconto = 'percentuale'
                 daoPriceListProduct.sconto_vendita_dettaglio = sconti_dettaglio
-                #except:
-                    #sconti_dettaglio[0].valore = mN(self.checkDecimalSymbol(self.sconto_vendita_dettaglio, decimalSymbol))
-                    #sconti_dettaglio[0].tipo_sconto = 'percentuale'
-                    #daoPriceListProduct.sconto_vendita_dettaglio = sconti_dettaglio
 
             if self.prezzo_acquisto_non_ivato is not None and str(self.prezzo_acquisto_non_ivato).strip() != "0" and str(self.prezzo_acquisto_non_ivato).strip() !="":
                 prezzo = self.sanitizer(self.prezzo_acquisto_non_ivato)
 
-                #try:
                 daoPriceListProduct.ultimo_costo = mN(prezzo)
-                #except:
-                    #prezzo = mN(self.checkDecimalSymbol(str(prezzo).strip(), decimalSymbol))
-                    #daoPriceListProduct.ultimo_costo = prezzo
             elif self.prezzo_acquisto_ivato is not None and str(self.prezzo_acquisto_ivato).strip() != "0" and str(self.prezzo_acquisto_ivato).strip() !="":
                 prezzo = self.sanitizer(self.prezzo_acquisto_ivato)
                 self.aliquota_iva.percentuale = self.sanitizer(self.aliquota_iva.percentuale)
-                #prezzo = prezzo.replace("€","")
-                #prezzo = prezzo.replace(",",".")
-                #try:
                 daoPriceListProduct.ultimo_costo = mN(calcolaPrezzoIva(mN(prezzo), -1 * (mN(self.aliquota_iva.percentuale))))
-                #except:
-                    #prezzo = mN(self.checkDecimalSymbol(str(prezzo).split(), decimalSymbol))
-                    #daoPriceListProduct.ultimo_costo =  mN(calcolaPrezzoIva(mN(prezzo), -1 * mN(self.aliquota_iva.percentuale)))
             else:
                 daoPriceListProduct.ultimo_costo = 0
             daoPriceListProduct.persist()
 
         # Fornitura
         daoFornitura = Fornitura().select(idFornitore=self.fornitore,
-                                                    idArticolo=self.daoArticolo.id,
-                                                    daDataPrezzo=self.dataListino,
-                                                    aDataPrezzo=self.dataListino,
-                                                    batchSize=None)
+                                                idArticolo=self.daoArticolo.id,
+                                                daDataPrezzo=self.dataListino,
+                                                aDataPrezzo=self.dataListino,
+                                                batchSize=None)
         if len(daoFornitura) == 0:
             daoFornitura = Fornitura()
             daoFornitura.prezzo_netto = prezzo or 0
@@ -485,6 +478,7 @@ class ProductFromCsv(object):
             daoFornitura.codice_articolo_fornitore = self.codice_fornitore
             daoFornitura.fornitore_preferenziale = True
             daoFornitura.persist()
+        self.product = None
 
     def checkDecimalSymbol(self, number, symbol):
         """ adjust non decimal simbols """

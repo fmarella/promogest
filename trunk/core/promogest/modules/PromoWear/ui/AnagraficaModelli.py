@@ -7,18 +7,12 @@
 # Author: Alessandro Scano <alessandro@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 
-
 import gtk
-import gobject
-
-from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-
+from promogest.ui.AnagraficaSemplice import Anagrafica,\
+                                    AnagraficaDetail, AnagraficaFilter
 from promogest import Environment
-from promogest.dao.Dao import Dao
 from promogest.modules.PromoWear.dao.Modello import Modello
-
 from promogest.ui.utils import *
-
 
 
 class AnagraficaModelli(Anagrafica):
@@ -29,7 +23,6 @@ class AnagraficaModelli(Anagrafica):
                             '_Modelli',
                             AnagraficaModelliFilter(self),
                             AnagraficaModelliDetail(self))
-
 
     def draw(self):
         # Colonne della Treeview per il filtro
@@ -45,7 +38,7 @@ class AnagraficaModelli(Anagrafica):
                                     sensitive=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'denominazione'))
+        column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
         column.set_resizable(True)
         column.set_expand(True)
         treeview.append_column(column)
@@ -59,7 +52,8 @@ class AnagraficaModelli(Anagrafica):
                                     sensitive=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'denominazione_breve'))
+        column.connect("clicked", self._changeOrderBy,
+                                        (None, 'denominazione_breve'))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
@@ -72,7 +66,6 @@ class AnagraficaModelli(Anagrafica):
 
         self.refresh()
 
-
     def refresh(self):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
@@ -83,7 +76,7 @@ class AnagraficaModelli(Anagrafica):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return Modello().select( denominazione=denominazione,
+            return Modello().select(denominazione=denominazione,
                                                orderBy = self.orderBy,
                                                offset = self.offset,
                                                batchSize = self.batchSize)
@@ -95,19 +88,20 @@ class AnagraficaModelli(Anagrafica):
         self._treeViewModel.clear()
 
         for m in models:
-            # Il colore 1 (n/a) e` read-only
-            self._treeViewModel.append((m, m.denominazione, m.denominazione_breve, (m.id != 1)))
+            self._treeViewModel.append((m, m.denominazione,
+                                m.denominazione_breve, True))
+
 
 class AnagraficaModelliFilter(AnagraficaFilter):
-    """ Filtro per la ricerca nell'anagrafica dei colori """
+    """ Filtro per la ricerca nell'anagrafica dei modelli """
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_modello_filter_table',
-                                  gladeFile='promogest/modules/PromoWear/gui/_anagrafica_modello_elements.glade', module=True)
+                anagrafica,
+                'anagrafica_modello_filter_table',
+                gladeFile='PromoWear/gui/_anagrafica_modello_elements.glade',
+                module=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
-
 
     def clear(self):
         # Annullamento filtro
@@ -123,7 +117,6 @@ class AnagraficaModelliDetail(AnagraficaDetail):
         AnagraficaDetail.__init__(self,
                                   anagrafica)
 
-
     def setDao(self, dao):
         if dao is None:
             self.dao = Modello()
@@ -132,7 +125,6 @@ class AnagraficaModelliDetail(AnagraficaDetail):
         else:
             self.dao = dao
 
-
     def updateDao(self):
         if self.dao is not None:
             self.dao = Modello().getRecord(id=self.dao.id)
@@ -140,14 +132,12 @@ class AnagraficaModelliDetail(AnagraficaDetail):
         else:
             raise Exception, 'Update not possible'
 
-
     def _refresh(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
         model.set_value(iterator, 0, self.dao)
         model.set_value(iterator, 1, self.dao.denominazione)
         model.set_value(iterator, 2, self.dao.denominazione_breve)
-
 
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
