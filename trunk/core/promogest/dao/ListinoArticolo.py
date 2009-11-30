@@ -134,16 +134,19 @@ class ListinoArticolo(Dao):
 
 
     def _getScontiVenditaDettaglio(self):
-        self.__dbScontiVenditaDett = params['session'].query(ScontoVenditaDettaglio).filter_by(id_listino=self.id_listino,
-                                                                                            id_articolo=self.id_articolo,
-                                                                                            data_listino_articolo=self.data_listino_articolo).all()
+        self.__dbScontiVenditaDett = params['session'].\
+                        query(ScontoVenditaDettaglio).\
+                        filter_by(id_listino=self.id_listino,
+                        id_articolo=self.id_articolo,
+                        data_listino_articolo=self.data_listino_articolo).all()
         self.__scontiVenditaDett= self.__dbScontiVenditaDett
         return self.__scontiVenditaDett
 
     def _setScontiVenditaDettaglio(self,value):
          self.__scontiVenditaDett = value
 
-    sconto_vendita_dettaglio = property(_getScontiVenditaDettaglio, _setScontiVenditaDettaglio)
+    sconto_vendita_dettaglio = property(_getScontiVenditaDettaglio,
+                                                 _setScontiVenditaDettaglio)
 
     def _getApplicazioneScontiDettaglio(self):
         return "scalare"
@@ -155,10 +158,10 @@ class ListinoArticolo(Dao):
 
     def _getScontiVenditaIngrosso(self):
         self.__dbScontiVenditaIngr = params['session'].\
-                                    query(ScontoVenditaIngrosso).\
-                                    filter_by(id_listino=self.id_listino,
-                                            id_articolo=self.id_articolo,
-                                            data_listino_articolo=self.data_listino_articolo).all()
+                        query(ScontoVenditaIngrosso).\
+                        filter_by(id_listino=self.id_listino,
+                        id_articolo=self.id_articolo,
+                        data_listino_articolo=self.data_listino_articolo).all()
         self.__scontiVenditaIngr= self.__dbScontiVenditaIngr
         return self.__scontiVenditaIngr
 
@@ -279,21 +282,22 @@ class ListinoArticolo(Dao):
                         u.data_listino_articolo = self.data_listino_articolo
                         params["session"].add(u)
                         #self.saveAppLog(u)
-        #try:
-            #self.__scontiVenditaDett[0].id_listino=self.id_listino
-            #self.__scontiVenditaDett[0].id_articolo = self.id_articolo
-            #self.__scontiVenditaDett[0].data_listino_articolo = self.data_listino_articolo
-            #params["session"].add(self.__scontiVenditaDett[0])
-        #except:
-            #pass
+        elif self.__scontiVenditaDett:
+            try:
+                self.__scontiVenditaDett[0].id_listino=self.id_listino
+                self.__scontiVenditaDett[0].id_articolo = self.id_articolo
+                self.__scontiVenditaDett[0].data_listino_articolo = self.data_listino_articolo
+                params["session"].add(self.__scontiVenditaDett[0])
+            except:
+                pass
 
-        #try:
-            #self.__scontiVenditaIngr[0].id_listino=self.id_listino
-            #self.__scontiVenditaIngr[0].id_articolo = self.id_articolo
-            #self.__scontiVenditaIngr[0].data_listino_articolo = self.data_listino_articolo
-            #params["session"].add(self.__scontiVenditaIngr[0])
-        #except:
-            #pass
+            try:
+                self.__scontiVenditaIngr[0].id_listino=self.id_listino
+                self.__scontiVenditaIngr[0].id_articolo = self.id_articolo
+                self.__scontiVenditaIngr[0].data_listino_articolo = self.data_listino_articolo
+                params["session"].add(self.__scontiVenditaIngr[0])
+            except:
+                pass
 
         params["session"].commit()
 

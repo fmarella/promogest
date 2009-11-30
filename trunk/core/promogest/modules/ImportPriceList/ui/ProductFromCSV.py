@@ -38,7 +38,6 @@ if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
 
 
-
 class ProductFromCsv(object):
     """Takes a product from a generic price list and "translates" it in a
     promogest-compatible dao product, ListinoArticolo and Fornitura"""
@@ -58,7 +57,7 @@ class ProductFromCsv(object):
                 self.price_list_id = liss[0].id
             del self.promoPriceList
         self.defaults = self.PLModel._defaultAttributes
-        if createData  and "PromoWear" in Environment.modulesList:
+        if createData and "PromoWear" in Environment.modulesList:
             self.addGruppiTaglia()
         self.listaRighe = []
 
@@ -221,7 +220,6 @@ class ProductFromCsv(object):
             artTC.id_gruppo_taglia = gruppo_taglia
         elif not self.gruppo_taglia:
             artTC.id_gruppo_taglia = articoloPadre.id_gruppo_taglia
-#        print "A QUESTO PUNTO SON CURIOSO DI SAPERE IL GRUPPO TAGLIA", artTC.id_gruppo_taglia
 
         #TAGLIA
         if self.taglia:
@@ -242,7 +240,6 @@ class ProductFromCsv(object):
 #        print "AAAAAAAAAAAAAAAAAAAAA", artTC.__dict__
 #        self.artTC = artTC
         artTC = None
-#        self.artTC = None
 
     def fillDaos(self):
         """fillDaos method fills all Dao related to daoArticolo
@@ -386,8 +383,9 @@ class ProductFromCsv(object):
                         codes.persist()
             except:
                 pass
-            barCode = CodiceABarreArticolo().select(codiceEM=self.codice_barre_articolo,
-                                                                                batchSize=None)
+            barCode = CodiceABarreArticolo().\
+                                select(codiceEM=self.codice_barre_articolo,
+                                batchSize=None)
             if len(barCode) > 0:
                 daoBarCode = CodiceABarreArticolo().getRecord(id=barCode[0].id)
                 daoBarCode.id_articolo = product_id
@@ -407,9 +405,10 @@ class ProductFromCsv(object):
             self.prezzo_acquisto_ivato is not None or \
             self.prezzo_vendita_ivato is not None):
             try:
-                daoPriceListProduct = ListinoArticolo().select(idListino=self.price_list_id,
-                                                                    idArticolo=product_id,
-                                                                    batchSize=None)[0]
+                daoPriceListProduct = ListinoArticolo().\
+                                    select(idListino=self.price_list_id,
+                                            idArticolo=product_id,
+                                            batchSize=None)[0]
             except:
                 daoPriceListProduct = ListinoArticolo()
                 daoPriceListProduct.id_articolo = product_id
@@ -439,18 +438,24 @@ class ProductFromCsv(object):
                 sconti_ingrosso[0].valore = mN(self.sconto_vendita_ingrosso)
                 sconti_ingrosso[0].tipo_sconto = 'percentuale'
                 daoPriceListProduct.sconto_vendita_ingrosso = sconti_ingrosso
+            if self.sconto_vendita_dettaglio and \
+                str(self.sconto_vendita_dettaglio).strip() != "0" and \
+                str(self.sconto_vendita_dettaglio).strip() !="":
 
-            if self.sconto_vendita_dettaglio and str(self.sconto_vendita_dettaglio).strip() != "0" and str(self.sconto_vendita_dettaglio).strip() !="":
                 self.sconto_vendita_dettaglio = self.sanitizer(self.sconto_vendita_dettaglio)
                 sconti_dettaglio[0].valore = mN(self.sconto_vendita_dettaglio)
                 sconti_dettaglio[0].tipo_sconto = 'percentuale'
                 daoPriceListProduct.sconto_vendita_dettaglio = sconti_dettaglio
 
-            if self.prezzo_acquisto_non_ivato is not None and str(self.prezzo_acquisto_non_ivato).strip() != "0" and str(self.prezzo_acquisto_non_ivato).strip() !="":
+            if self.prezzo_acquisto_non_ivato is not None and \
+                str(self.prezzo_acquisto_non_ivato).strip() != "0" and \
+                str(self.prezzo_acquisto_non_ivato).strip() !="":
                 prezzo = self.sanitizer(self.prezzo_acquisto_non_ivato)
 
                 daoPriceListProduct.ultimo_costo = mN(prezzo)
-            elif self.prezzo_acquisto_ivato is not None and str(self.prezzo_acquisto_ivato).strip() != "0" and str(self.prezzo_acquisto_ivato).strip() !="":
+            elif self.prezzo_acquisto_ivato is not None and \
+                    str(self.prezzo_acquisto_ivato).strip() != "0" and \
+                    str(self.prezzo_acquisto_ivato).strip() !="":
                 prezzo = self.sanitizer(self.prezzo_acquisto_ivato)
                 self.aliquota_iva.percentuale = self.sanitizer(self.aliquota_iva.percentuale)
                 daoPriceListProduct.ultimo_costo = mN(calcolaPrezzoIva(mN(prezzo), -1 * (mN(self.aliquota_iva.percentuale))))
