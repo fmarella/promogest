@@ -100,7 +100,7 @@ class SincroDB(GladeWidget):
         self.pg_db_server_main_remote.schema = mainschema_remoto
         SessionRemote = scoped_session(sessionmaker(bind=engine))
         self.sessionRemote = SessionRemote()
-        print ">>>> CONNESSO AL DB REMOTO : %s IP: %s PORTA: %s SCHEMA %s <<<<< " %(database_remoto, host_remoto,port_remoto,Environment.params["schema"])
+        print ">>>> CONNESSO AL DB REMOTO : %s IP: %s PORTA: %s SCHEMA %s <<<<< " %(database_remoto, host_remoto, port_remoto, Environment.params["schema"])
 
     def connectDbLocale(self):
         mainschema_locale = Environment.conf.SincroDB.mainschema_locale
@@ -128,15 +128,15 @@ class SincroDB(GladeWidget):
         SessionLocale = scoped_session(sessionmaker(bind=engineLocale))
         self.engineLocale = engineLocale
         self.sessionLocale = SessionLocale()
-        print ">>>> CONNESSO AL DB LOCALE : %s IP: %s PORTA: %s SCHEMA %s <<<<< " %(database_locale, host_locale,port_locale,Environment.params["schema"])
+        print ">>>> CONNESSO AL DB LOCALE : %s IP: %s PORTA: %s SCHEMA %s <<<<< " %(database_locale, host_locale, port_locale, Environment.params["schema"])
 
     def daosMain(self, tables=None):
         """ Crea le liste delle query ciclando nelle tabelle """
         for dg in tables:
             self.table_label.set_text(str(dg[0]).upper())
             self.avanzamento_pgbar.pulse()
-            exec ("remote=self.pg_db_server_main_remote.%s.order_by((self.pg_db_server_main_remote.%s.%s).asc()).all()") %(dg[0],dg[0],dg[1])
-            exec ("locale=self.pg_db_server_main_locale.%s.order_by((self.pg_db_server_main_locale.%s.%s).asc()).all()") %(dg[0],dg[0],dg[1])
+            exec ("remote=self.pg_db_server_main_remote.%s.order_by((self.pg_db_server_main_remote.%s.%s).asc()).all()") %(dg[0], dg[0], dg[1])
+            exec ("locale=self.pg_db_server_main_locale.%s.order_by((self.pg_db_server_main_locale.%s.%s).asc()).all()") %(dg[0], dg[0], dg[1])
             print "QUESTO E' IL DAO DELLE TABELLE MAIN IN LAVORAZIONE ...", dg[0]
             self.logica(remote=remote, locale=locale, dao=dg[0], all=True)
         print "<<<<<<<< FINITO CON LO SCHEMA PRINCIPALE >>>>>>>>", datetime.datetime.now()
@@ -150,21 +150,19 @@ class SincroDB(GladeWidget):
             soupLocale = self.pg_db_server_locale
         return soupLocale
 
-
-
     def gestisciListinoArticolo(self, dg=None):
         blocSize = int(Environment.conf.SincroDB.offset)
         listini=self.pg_db_server_remote.listino.order_by(self.pg_db_server_remote.listino.id).all()
         for li in listini:
             self.avanzamento_pgbar.pulse()
             conteggia = self.pg_db_server_remote.entity("listino_articolo").filter_by(id_listino=li.id).count()
-            print "GLI ARTICOLI SONO:",conteggia , "ID LISTINO", li.id
+            print "GLI ARTICOLI SONO:",conteggia, "ID LISTINO", li.id
             if conteggia >= blocSize:
                 blocchi = abs(conteggia/blocSize)
                 for j in range(0,blocchi+1):
                     self.avanzamento_pgbar.pulse()
                     offset = j*blocSize
-                    print "SPEZZETTO IL LISTINO OFFSET", offset , datetime.datetime.now(), "TABELLA", dg[0]
+                    print "SPEZZETTO IL LISTINO OFFSET", offset, datetime.datetime.now(), "TABELLA", dg[0]
                     remote=self.pg_db_server_remote.listino_articolo.\
                                 filter_by(id_listino=li.id).\
                                 order_by(self.pg_db_server_remote.listino_articolo.id_articolo,
@@ -185,18 +183,14 @@ class SincroDB(GladeWidget):
                 self.logica(remote=remote, locale=locale,dao=dg[0], all=True)
         return True
 
-
-
-
-
-
     def daosScheme(self, tables=None, offsett=None):
         """ Crea le liste delle query ciclando nelle tabelle """
         blocSize = int(Environment.conf.SincroDB.offset)
         #blocSize = 500
         for dg in tables:
             self.table_label.set_text(str(dg[0]).upper())
-            if dg[0] =="listino_articolo": #listino lo gestisco facendo select per id listino cos gestisco meglio i nuovi record
+            #listino lo gestisco facendo select per id listino così gestisco meglio i nuovi record
+            if dg[0] =="listino_articolo": 
                 self.gestisciListinoArticolo(dg)
             else:
                 self.avanzamento_pgbar.pulse()
@@ -228,7 +222,8 @@ class SincroDB(GladeWidget):
             print "SINCRONIZZAZIONE TERMINATA CON SUCCESSO"
 
     def logica(self,remote=None, locale=None,dao=None,all=False,offset=None):
-        """ cicla le righe della tabella e decide cosa fare """
+        """ cicla le righe della tabella e decide cosa fare 
+        """
         soupLocale = self.dammiSoupLocale(dao)
         deleteRow=False
         if not remote and not locale:
@@ -251,8 +246,7 @@ class SincroDB(GladeWidget):
                             print "REMOTE:", remote[i]
                             print
                             print "LOCALE:",  locale[i]
-                            self.fixToTable(
-                                            soupLocale=soupLocale,
+                            self.fixToTable(soupLocale=soupLocale,
                                             row=remote[i],
                                             rowLocale=locale[i],
                                             op="UPDATE",
@@ -260,8 +254,7 @@ class SincroDB(GladeWidget):
                                             save=True,
                                             offset=offset)
                     except:
-                            self.fixToTable(
-                                            soupLocale=soupLocale,
+                            self.fixToTable(soupLocale=soupLocale,
                                             row=remote[i],
                                             rowLocale=locale[i],
                                             op="UPDATE",
@@ -282,15 +275,14 @@ class SincroDB(GladeWidget):
                     sqlalchemy.ext.sqlsoup.Session.commit()
                 except Exception, e:
                     if 'listino_articolo_pkey' in str(e):
-                        print "EEEEEEEEEEEEEEEEEE", e, dir(e)
+                        print "ERRORE NEI LISTINI", e
                         sqlalchemy.ext.sqlsoup.Session.rollback()
                         record_id1 = self.pg_db_server_locale.listino_articolo.filter_by(id_listino=remote[i].id_listino).all()
-                        #print "CI SONO", record_id1
                         if record_id1:
                             for r in record_id1:
                                 sqlalchemy.ext.sqlsoup.Session.delete(r)
                             sqlalchemy.ext.sqlsoup.Session.commit()
-                            self.daosScheme(tables=tablesSchemeArticolo)
+                            self.daosScheme(tables=["listino_articolo"])
 
                     else:
                         sqlalchemy.ext.sqlsoup.Session.rollback()
@@ -328,13 +320,14 @@ class SincroDB(GladeWidget):
         elif op == "UPDATE":
             try:
                 for i in rowLocale.c:
-                    t = str(i).split(".")[1] #mi serve solo il nome colonna
+                    #mi serve solo il nome colonna
+                    t = str(i).split(".")[1] 
                     setattr(rowLocale, t, getattr(row, t))
                 sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
                 if dao == "articolo":
                     sqlalchemy.ext.sqlsoup.Session.commit()
             except Exception,e :
-                print "ERRORE",e # e.args, "FFFF", e.instance ,"MMM",  e.message, "ORIG", e.orig , "PRA", type(e.params), "STA", e.statement, e.params["codice"]
+                print "ERRORE",e
                 print "QUALCOSA NELL'UPDATE NON È ANDATO BENE ....VERIFICHIAMO"
                 sqlalchemy.ext.sqlsoup.Session.rollback()
                 print "FATTO IL ROOLBACK"
@@ -344,9 +337,8 @@ class SincroDB(GladeWidget):
                 print "RIGA REMOTA", row
                 print
                 if dao == "articolo":
-                    #try:
                     try:
-                        exec ("record_codice = self.pg_db_server_locale.%s.filter_by(codice=row.codice).one()") %dao
+                        record_codice = self.pg_db_server_locale.articolo.filter_by(codice=row.codice).one()
                         if record_codice:
                             print "CODICE DUPLICATO ...DEVO INTERVENIRE MODIFICANDO IL CODICE E RILANCIANDO "
                             record_codice.codice = str(record_codice.codice)+"_ex_id_"+str(record_codice.id)
@@ -356,7 +348,6 @@ class SincroDB(GladeWidget):
                                 t = str(i).split(".")[1] #mi serve solo il nome colonna
                                 setattr(rowLocale, t, getattr(row, t))
                             sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
-                            #try:
                             sqlalchemy.ext.sqlsoup.Session.commit()
                             return
                     except:
@@ -364,10 +355,8 @@ class SincroDB(GladeWidget):
                     try:
                         print "SONO NELL try dentro l'ecept che gestisce la particolarità articolo"
                         sqlalchemy.ext.sqlsoup.Session.rollback()
-                        #id = rowLocale.id
-                        #sqlalchemy.ext.sqlsoup.Session.expunge_all()
-                        exec ("record_id1 = self.pg_db_server_locale.%s.get(row.id)") %dao
-                        exec ("record_id2 = self.pg_db_server_locale.%s.get(rowLocale.id)") %dao
+                        record_id1 = self.pg_db_server_locale.articolo.get(row.id)
+                        record_id2 = self.pg_db_server_locale.articolo.get(rowLocale.id)
                         sqlalchemy.ext.sqlsoup.Session.delete(record_id2)
                         sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
                         sqlalchemy.ext.sqlsoup.Session.commit()
@@ -378,7 +367,7 @@ class SincroDB(GladeWidget):
 
                     try:
                         sqlalchemy.ext.sqlsoup.Session.rollback()
-                        exec ("riga_scontr = self.pg_db_server_locale.riga_scontrino.filter_by(id_articolo=rowLocale.id).one()") %dao
+                        riga_scontr = self.pg_db_server_locale.riga_scontrino.filter_by(id_articolo=rowLocale.id).one()
                         riga_scontr.id_articolo = row.id
                         sqlalchemy.ext.sqlsoup.Session.add(riga_scontr)
                         sqlalchemy.ext.sqlsoup.Session.commit()
@@ -404,7 +393,6 @@ class SincroDB(GladeWidget):
             record2=self.pg_db_server_locale.entity("listino_magazzino").all()
             for g in record2:
                 self.pg_db_server_locale.delete(g)
-                print "cancello",  g
             sqlalchemy.ext.sqlsoup.Session.commit()
         if record:
             for l in record:
@@ -445,7 +433,6 @@ class SincroDB(GladeWidget):
         gobject.source_remove(self.timer)
         self.timer = 0
 
-
     def runBatch(self):
         sqlalchemy.ext.sqlsoup.Session.expunge_all()
 
@@ -460,7 +447,6 @@ class SincroDB(GladeWidget):
         sqlalchemy.ext.sqlsoup.Session.expunge_all()
         sys.exit()
 
-
     def on_run_button_clicked(self, button=None):
         self.run = True
         self.timer = gobject.timeout_add(80,progress_timeout, self)
@@ -473,6 +459,6 @@ class SincroDB(GladeWidget):
     def on_close_button_clicked(self, button):
         self.destroy()
 
-if __name__ == '__main__':
-    import Envir
-        #BigBang()
+#if __name__ == '__main__':
+#    import Envir
+#        #BigBang()

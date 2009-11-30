@@ -440,7 +440,7 @@ class ProductFromCsv(object):
                 sconti_ingrosso[0].tipo_sconto = 'percentuale'
                 daoPriceListProduct.sconto_vendita_ingrosso = sconti_ingrosso
 
-            if self.sconto_vendita_dettaglio is not None and str(self.sconto_vendita_dettaglio).strip() != "0" and str(self.sconto_vendita_dettaglio).strip() !="":
+            if self.sconto_vendita_dettaglio and str(self.sconto_vendita_dettaglio).strip() != "0" and str(self.sconto_vendita_dettaglio).strip() !="":
                 self.sconto_vendita_dettaglio = self.sanitizer(self.sconto_vendita_dettaglio)
                 sconti_dettaglio[0].valore = mN(self.sconto_vendita_dettaglio)
                 sconti_dettaglio[0].tipo_sconto = 'percentuale'
