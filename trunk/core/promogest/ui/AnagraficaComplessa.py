@@ -860,20 +860,16 @@ class Anagrafica(GladeWidget):
 
         fileDialog.destroy()
 
-
     def setFocus(self, widget=None):
         self.filter.setFocus()
-
 
     def on_anagrafica_window_close(self, widget, event=None):
         if self.anagrafica_complessa_window in Login.windowGroup:
             Login.windowGroup.remove(self.anagrafica_complessa_window)
         self.destroy()
 
-
     def getHtmlWidget(self):
         return self.html
-
 
     def hideNavigator(self):
         self.bodyWidget.filter_navigation_hbox.set_no_show_all(True)
@@ -953,18 +949,16 @@ class AnagraficaFilter(GladeWidget):
 
 
     def runFilter(self, offset='__default__', batchSize='__default__',
-                  progressCB=None, progressBatchSize=0):
+                                      progressCB=None, progressBatchSize=0):
         """ Recupera i dati """
         self.bodyWidget.orderBy = self.orderBy
         return self.bodyWidget.runFilter(offset=offset, batchSize=batchSize,
                                          progressCB=progressCB, progressBatchSize=progressBatchSize,
                                          filterClosure=self._filterClosure)
 
-
     def countFilterResults(self):
         """ Conta i dati """
         return self.bodyWidget.countFilterResults(self._filterCountClosure)
-
 
     def _refreshPageCount(self):
         """ Aggiorna la paginazione """
@@ -1113,7 +1107,7 @@ class AnagraficaHtml(object):
                 self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
                                             pdfFolder=self._anagrafica._folder,
                                             report=self._anagrafica._reportType,
-                                            classic = classic,
+                                            classic = True,
                                             template_file=template_file)
 
             #self.dao.resolveProperties()
@@ -1126,7 +1120,7 @@ class AnagraficaHtml(object):
                     azidict[k] = b
                     del azidict[a]
                 param[0].update(azidict)
-            return self._slaTemplateObj.serialize(param, dao=self.dao)
+            return self._slaTemplateObj.serialize(param, classic = True,dao=self.dao)
 
 
     def cancelOperation(self):

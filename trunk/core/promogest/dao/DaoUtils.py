@@ -141,13 +141,6 @@ def articoloStatistiche(arti=None, righe=None):
 )
     return arti
 
-
-
-
-
-
-
-
 def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None, allMag=None):
     """
     Calcola la giacenza insieme a giacenzaSel
@@ -174,7 +167,11 @@ def TotaleAnnualeCliente(id_cliente=None):
                                                 batchSize=None)
     totale =0
     for doc in documentiCliente:
-        if doc.operazione in ["Fattura vendita",'Fattura differita vendita','Fattura accompagnatoria','Vendita dettaglio','Nota di credito a cliente']:
+        if doc.operazione in ["Fattura vendita",
+                                'Fattura differita vendita',
+                                'Fattura accompagnatoria',
+                                'Vendita dettaglio',
+                                'Nota di credito a cliente']:
             if not doc.totale_pagato: doc.totale_pagato=0
             if not doc.totale_sospeso: doc.totale_sospeso=0
             totale += (doc.totale_pagato + doc.totale_sospeso)
@@ -190,7 +187,11 @@ def TotaleClienteAperto(id_cliente=None):
                                                     batchSize=None)
     totale =0
     for doc in documentiCliente:
-        if doc.operazione in ["Fattura vendita",'Fattura differita vendita','Fattura accompagnatoria','Vendita dettaglio','Nota di credito a cliente']:
+        if doc.operazione in ["Fattura vendita",
+                            'Fattura differita vendita',
+                            'Fattura accompagnatoria',
+                            'Vendita dettaglio',
+                            'Nota di credito a cliente']:
             totale += doc.totale_sospeso
     return totale
 
@@ -204,7 +205,9 @@ def TotaleAnnualeFornitore(id_fornitore=None):
                                                     batchSize=None)
     totale =0
     for doc in documentiFornitore:
-        if doc.operazione in ['Fattura acquisto','Fattura differita acquisto''Nota di credito da fornitore']:
+        if doc.operazione in ['Fattura acquisto',
+                            'Fattura differita acquisto',
+                            'Nota di credito da fornitore']:
             totale += (doc.totale_pagato + doc.totale_sospeso)
     return totale
 
@@ -218,7 +221,9 @@ def TotaleFornitoreAperto(id_fornitore=None):
                                                     batchSize=None)
     totale =0
     for doc in documentiFornitore:
-        if doc.operazione in ['Fattura acquisto','Fattura differita acquisto''Nota di credito da fornitore']:
+        if doc.operazione in ['Fattura acquisto',
+                                'Fattura differita acquisto',
+                                'Nota di credito da fornitore']:
             totale += doc.totale_sospeso
     return totale
 

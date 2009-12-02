@@ -123,6 +123,7 @@ class SlaTpl2Sla(object):
         self.findTablesProperties()
         self.getIteratableGroups()
         self.getPagesNumber()
+#        print "SCLAAAASSICCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", self._classic, self.getPagesNumber()
         if self.label and self._classic:
             self.duplicateElementLabel()
         self.addEmptyPages()
@@ -362,7 +363,7 @@ class SlaTpl2Sla(object):
                                 rowsNumber = tableGroup['rows'] - 1
                             self.pagesNumber = int(math.ceil(float(valuesNumber) / float(rowsNumber)))
         #self.pagesNumber = 2
-        #print "questo è il nuovo numero di pagine del template sla:", self.pagesNumber
+        print "questo è il nuovo numero di pagine del template sla:", self.pagesNumber
 
 
     def createPageTag(self, pagesNumber=None):
