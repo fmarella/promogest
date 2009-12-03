@@ -271,7 +271,7 @@ E' presente una nuova versione disponibile"""
         webbrowser.open_new_tab(url)
 
     def on_promogest_button_clicked(self, button):
-        url ="http://promogest.promotux.it"
+        url ="http://onebip.com/otms/?item=9855"
         webbrowser.open_new_tab(url)
 
     def on_numero_verde_button_clicked(self, button):

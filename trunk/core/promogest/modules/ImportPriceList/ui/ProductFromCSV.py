@@ -171,25 +171,19 @@ class ProductFromCsv(object):
         """
         modello, genere, colore, gruppo taglia, taglia, stagione, anno
         """
-#        self.artTC = None
         artTC = None
         if articolo and articolo.id and tipo == "FATHER":
-#            print "AAAAAAAAAAAAAAAAAAHHHHHHHHH", articolo.id
             artTC = ArticoloTagliaColore().select(idArticolo = articolo.id)
         elif articolo and articolo.id and articoloPadre and tipo =="SON":
-#            print "AAAAAAAAAAAAAAAAAAH2222222222HHH", articolo.id, articoloPadre.id
             artTC = ArticoloTagliaColore().select(idArticolo = articolo.id,
                                             idArticoloPadre=articoloPadre.id)
 
-#        print "DAO TALIA E COLORE:", artTC
         if artTC:
             artTC = artTC[0]
         else:
             artTC = ArticoloTagliaColore()
             if tipo =="SON":
                 artTC.id_articolo_padre = articoloPadre.id
-#        artTC.id_
-
         #MODELLO
         if self.modello:
             mode = Modello().select(denominazione = self.modello)
@@ -199,37 +193,31 @@ class ProductFromCsv(object):
                 artTC.id_modello = articoloPadre.id_modello
             except:
                 print " questo csv non ha modello"
-
         #ANNO
         if self.anno:
             anno = AnnoAbbigliamento().select(denominazione = self.anno)
             artTC.id_anno = anno[0].id
         elif not self.anno:
             artTC.id_annno = articoloPadre.id_anno
-
         #GENERE
         if self.genere:
             genere = GenereAbbigliamento().select(denominazione = self.genere.capitalize())
             artTC.id_genere = genere[0].id
         elif not self.genere:
             artTC.id_genere = articoloPadre.id_genere
-
         #GRUPPO TAGLIA
         if self.gruppo_taglia:
             gruppo_taglia = GruppoTaglia().select(denominazione = self.gruppo_taglia)[0].id
             artTC.id_gruppo_taglia = gruppo_taglia
         elif not self.gruppo_taglia:
             artTC.id_gruppo_taglia = articoloPadre.id_gruppo_taglia
-
         #TAGLIA
         if self.taglia:
             taglia = Taglia().select(denominazione = self.taglia)[0].id
             artTC.id_taglia = taglia
-
         #COLORE
         if self.colore:
             artTC.id_colore = Colore().select(denominazione = self.colore)[0].id
-
         #STAGIONE
         if self.stagione:
             stagione = StagioneAbbigliamento().select(denominazione = self.stagione)
@@ -237,8 +225,6 @@ class ProductFromCsv(object):
         elif not self.stagione:
             artTC.id_stagione = articoloPadre.id_stagione
         self.daoArticolo.articoloTagliaColore = artTC
-#        print "AAAAAAAAAAAAAAAAAAAAA", artTC.__dict__
-#        self.artTC = artTC
         artTC = None
 
     def fillDaos(self):
@@ -253,7 +239,7 @@ class ProductFromCsv(object):
                 self.codice_articolo = promogest.dao.Articolo.getNuovoCodiceArticolo()
             self.daoArticolo.codice = str(self.codice_articolo)
             self.daoArticolo.denominazione = str(self.denominazione_articolo)
-        print "STO PER SALVARE ", self.daoArticolo.denominazione
+#        print "STO PER SALVARE ", self.daoArticolo.denominazione
         #families
         id_famiglia = None
         if self.famiglia_articolo is None:
@@ -369,7 +355,6 @@ class ProductFromCsv(object):
         self.daoArticolo.sospeso = False
 #        print "PTIMA DEL PERSIT", self.daoArticolo.__dict__
         self.daoArticolo.persist()
-        print "DAMMMMMMMI IL TUO ID PER CAPIRE", self.daoArticolo.id
         product_id = self.daoArticolo.id
 
         #barcode
