@@ -121,7 +121,7 @@ class TestataMovimento(Dao):
         elif k == 'idOperazione':
             dic = {k:testata_mov.c.operazione == v}
         elif k == 'idMagazzino':
-            dic = {k:testata_mov.c.id.in_(select([RigaMovimento.id_testata_movimento],RigaMovimento.id_magazzino== v))}
+            dic = {k:testata_mov.c.id.in_(select([RigaMovimento.id_testata_movimento],and_(Riga.id==RigaMovimento.id,Riga.id_magazzino== v)))}
         elif k == 'idCliente':
             dic = {k:testata_mov.c.id_cliente == v}
         elif k == 'idFornitore':
