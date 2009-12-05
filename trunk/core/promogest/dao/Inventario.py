@@ -72,6 +72,14 @@ class Inventario(Dao):
             dic = {k:inventario.c.data_aggiornameno >= v}
         elif k == 'aDataAggiornamento':
             dic = {k:inventario.c.data_aggiornameno >= v}
+        elif k == 'qa_zero':
+            dic = {k:inventario.c.quantita == 0}
+        elif k == 'quantita':
+            dic = {k:inventario.c.quantita > 0}
+        elif k == 'qa_negativa':
+            dic = {k:inventario.c.quantita < 0}
+        elif k == 'val_negativo':
+            dic = {k:inventario.c.valore_unitario == None}
         return  dic[k]
 
     def update(self):
