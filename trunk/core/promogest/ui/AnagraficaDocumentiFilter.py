@@ -244,7 +244,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self._filterClosure = filterClosure
         #self._allResultForHtml = self.runFilter(offset=None, batchSize=None)
         tdos = self.runFilter()
-        #self.xptDaoList = self.runFilter(offset=None, batchSize=None)
+        self.xptDaoList = self.runFilter(offset=None, batchSize=None)
         self._treeViewModel.clear()
         for t in tdos:
             totali = t.totali
