@@ -23,6 +23,7 @@ from AliquotaIva import AliquotaIva
 from RigaMovimento import RigaMovimento
 from Banca import Banca
 from Riga import Riga
+from Articolo import Articolo
 from ScontoRigaMovimento import ScontoRigaMovimento
 from TestataDocumentoScadenza import TestataDocumentoScadenza
 
@@ -808,8 +809,16 @@ class TestataDocumento(Dao):
         elif k == 'idOperazione':
             dic = {k:testata_documento.c.operazione == v}
         elif k == 'idMagazzino':
-            dic = {k:and_(or_(testata_documento.c.id== riga_doc.c.id_testata_documento,riga.c.id_magazzino==v),
-                        or_(testata_documento.c.id==TestataMovimento.id_testata_documento,riga.c.id_magazzino==v))}
+            dic = {k:testata_movi.c.id.in_(select([RigaMovimento.id_testata_movimento],and_(
+                                        testata_movi.c.id_testata_documento == testata_documento.c.id,
+                                        Riga.id==RigaMovimento.id,Riga.id_magazzino== v)))
+                                        }
+#            dic = {k:and_(or_(testata_movi.c.id_testata_documento == testata_documento.c.id,
+#                            testata_movi.c.id == RigaMovimento.id_testata_movimento,
+#                            Riga.id==RigaMovimento.id, Riga.id_magazzino== v),
+#                        or_(testata_documento.c.id == RigaDocumento.id_testata_documento,
+#                            Riga.id==RigaDocumento.id, Riga.id_magazzino== v))
+#                             }
         elif k == 'idCliente':
             dic = {k:testata_documento.c.id_cliente == v}
         elif k == 'idFornitore':
@@ -819,12 +828,14 @@ class TestataDocumento(Dao):
         elif k == 'statoDocumento':
             dic = {k:testata_documento.c.documento_saldato == v}
         elif k == 'idArticolo':
-            dic = {k: and_(Articolo.id ==Riga.id_articolo,
-                            riga.c.id==RigaMovimento.id,
-                            RigaMovimento.id_testata_movimento == TestataMovimento.id,
-                            TestataMovimento.id_testata_documento == testata_documento.c.id,
-                            Articolo.id ==v),
-                                }
+            dic = {k:or_(testata_movi.c.id.in_(select([RigaMovimento.id_testata_movimento],
+                        and_(testata_movi.c.id_testata_documento == testata_documento.c.id,
+                        Riga.id==RigaMovimento.id,Articolo.id ==Riga.id_articolo,
+                        Articolo.id == v))),
+                        testata_documento.c.id.in_(select([RigaDocumento.id_testata_documento],
+                        and_(testata_documento.c.id==riga_doc.c.id_testata_documento,
+                        Riga.id==riga_doc.c.id,Articolo.id ==Riga.id_articolo,
+                        Articolo.id == v))))}
         elif hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
             if k == 'daDataInizioNoleggio':
                 dic = {k:and_(testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
