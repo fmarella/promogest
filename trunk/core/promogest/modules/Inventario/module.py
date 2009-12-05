@@ -6,8 +6,6 @@
 
 from promogest import Environment
 import promogest.ui.Login
-#from promogest.modules.DistintaBase.data.DistintaBaseDB import *
-#from promogest.modules.DistintaBase.ui.AnagraficaDistintaBase import AnagraficaDistintaBase
 
 MODULES_NAME = "Inventario"
 MODULES_FOR_EXPORT = []
