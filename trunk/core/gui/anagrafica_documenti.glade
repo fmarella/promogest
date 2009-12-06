@@ -460,61 +460,7 @@
                             <property name="visible">True</property>
                             <property name="border_width">3</property>
                             <child>
-                              <object class="GtkLabel" id="label168">
-                                <property name="visible">True</property>
-                                <property name="xalign">0</property>
-                                <property name="xpad">2</property>
-                                <property name="label" translatable="yes">Magazzino</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkComboBox" id="id_magazzino_combobox">
-                                <property name="visible">True</property>
-                                <signal name="changed" handler="on_id_magazzino_combobox_changed"/>
-                              </object>
-                              <packing>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label169">
-                                <property name="visible">True</property>
-                                <property name="xalign">0</property>
-                                <property name="xpad">2</property>
-                                <property name="label" translatable="yes">Articolo</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">2</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkEntry" id="articolo_entry">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
-                                <property name="primary_icon_stock">gtk-find</property>
-                                <property name="secondary_icon_stock">gtk-clear</property>
-                                <property name="primary_icon_activatable">True</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <signal name="button_press_event" handler="on_button_press_event"/>
-                                <signal name="key_press_event" handler="on_articolo_entry_key_press_event"/>
-                                <signal name="focus_in_event" handler="on_focus_in_event"/>
-                                <signal name="icon_press" handler="on_articolo_entry_icon_press"/>
-                                <signal name="focus_out_event" handler="on_focus_out_event"/>
-                              </object>
-                              <packing>
-                                <property name="position">3</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHBox" id="hbox77">
+                              <object class="GtkHBox" id="hbox4">
                                 <property name="visible">True</property>
                                 <child>
                                   <object class="GtkRadioButton" id="ricerca_codice_button">
@@ -525,7 +471,7 @@
                                     <property name="use_underline">True</property>
                                     <property name="active">True</property>
                                     <property name="draw_indicator">True</property>
-                                    <signal name="clicked" handler="on_ricerca_codice_button_clicked"/>
+                                    <signal name="toggled" handler="on_codice_item_toggled"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -542,7 +488,7 @@
                                     <property name="use_underline">True</property>
                                     <property name="draw_indicator">True</property>
                                     <property name="group">ricerca_codice_button</property>
-                                    <signal name="clicked" handler="on_ricerca_codice_a_barre_button_clicked"/>
+                                    <signal name="toggled" handler="on_codice_item_toggled"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -559,7 +505,7 @@
                                     <property name="use_underline">True</property>
                                     <property name="draw_indicator">True</property>
                                     <property name="group">ricerca_codice_button</property>
-                                    <signal name="clicked" handler="on_ricerca_descrizione_button_clicked"/>
+                                    <signal name="toggled" handler="on_codice_item_toggled"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -576,7 +522,7 @@
                                     <property name="use_underline">True</property>
                                     <property name="draw_indicator">True</property>
                                     <property name="group">ricerca_codice_button</property>
-                                    <signal name="clicked" handler="on_ricerca_codice_articolo_fornitore_button_clicked"/>
+                                    <signal name="toggled" handler="on_codice_item_toggled"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -584,59 +530,72 @@
                                     <property name="position">3</property>
                                   </packing>
                                 </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="padding">1</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label169">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="xpad">2</property>
+                                <property name="label" translatable="yes"> | Articolo</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="articolo_entry">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="primary_icon_stock">gtk-find</property>
+                                <property name="secondary_icon_stock">gtk-clear</property>
+                                <property name="secondary_icon_activatable">True</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
+                                <property name="primary_icon_tooltip_text">Clicca qui per la ricerca</property>
+                                <property name="primary_icon_tooltip_markup">Clicca qui per la ricerca</property>
+                                <signal name="button_press_event" handler="on_button_press_event"/>
+                                <signal name="changed" handler="on_articolo_entry_insert_text"/>
+                                <signal name="key_press_event" handler="on_articolo_entry_key_press_event"/>
+                                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                <signal name="icon_press" handler="on_articolo_entry_icon_press"/>
+                                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                              </object>
+                              <packing>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkHBox" id="hbox77">
+                                <property name="visible">True</property>
                                 <child>
                                   <object class="GtkButton" id="search_row_button">
+                                    <property name="label">gtk-find</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <property name="use_stock">True</property>
                                     <signal name="clicked" handler="on_search_row_button_clicked"/>
-                                    <child>
-                                      <object class="GtkAlignment" id="alignment6">
-                                        <property name="visible">True</property>
-                                        <property name="xscale">0</property>
-                                        <property name="yscale">0</property>
-                                        <child>
-                                          <object class="GtkHBox" id="hbox4">
-                                            <property name="visible">True</property>
-                                            <property name="spacing">2</property>
-                                            <child>
-                                              <object class="GtkImage" id="image4">
-                                                <property name="visible">True</property>
-                                                <property name="pixbuf">trova24x24.png</property>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">False</property>
-                                                <property name="position">0</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <object class="GtkLabel" id="label6">
-                                                <property name="visible">True</property>
-                                                <property name="use_underline">True</property>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">False</property>
-                                                <property name="position">1</property>
-                                              </packing>
-                                            </child>
-                                          </object>
-                                        </child>
-                                      </object>
-                                    </child>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
                                     <property name="fill">False</property>
-                                    <property name="position">4</property>
+                                    <property name="position">0</property>
                                   </packing>
                                 </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="padding">5</property>
-                                <property name="position">4</property>
+                                <property name="position">3</property>
                               </packing>
                             </child>
                             <child>
@@ -655,7 +614,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">5</property>
+                                <property name="position">4</property>
                               </packing>
                             </child>
                           </object>
@@ -699,6 +658,29 @@
                             <property name="visible">True</property>
                             <property name="spacing">5</property>
                             <child>
+                              <object class="GtkLabel" id="label168">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="xpad">2</property>
+                                <property name="label" translatable="yes">Magazzino</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkComboBox" id="id_magazzino_combobox">
+                                <property name="visible">True</property>
+                                <signal name="changed" handler="on_id_magazzino_combobox_changed"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
                               <object class="GtkLabel" id="label183">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
@@ -707,7 +689,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">0</property>
+                                <property name="position">2</property>
                               </packing>
                             </child>
                             <child>
@@ -726,7 +708,7 @@
                                 <signal name="focus_out_event" handler="on_focus_out_event"/>
                               </object>
                               <packing>
-                                <property name="position">1</property>
+                                <property name="position">3</property>
                               </packing>
                             </child>
                             <child>
@@ -775,7 +757,7 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">2</property>
+                                <property name="position">4</property>
                               </packing>
                             </child>
                           </object>
@@ -1992,6 +1974,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <accelerator key="F6" signal="clicked"/>
                         <signal name="clicked" handler="on_confirm_row_withoutclean_button_clicked"/>
                         <child>
                           <object class="GtkAlignment" id="alignment10">
@@ -2040,6 +2023,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="has_tooltip">True</property>
+                        <accelerator key="F4" signal="clicked"/>
                         <signal name="clicked" handler="on_confirm_row_button_clicked"/>
                         <child>
                           <object class="GtkAlignment" id="alignment49">

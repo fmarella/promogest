@@ -48,7 +48,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     """ Modifica un record dei documenti """
 
     def __init__(self, anagrafica):
-        self. anapri=AnagraficaEdit.__init__(self,
+        self.anapri=AnagraficaEdit.__init__(self,
                                 anagrafica,
                                 'anagrafica_documenti_detail_vbox',
                                 'Dati Documento',
@@ -66,6 +66,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         # cliente o fornitore ?
         self._tipoPersonaGiuridica = None
         self._operazione = None
+        self.mattu = False
         # prezzo vendita/acquisto, ivato/non ivato
         self._fonteValore = None
         # carico (+) o scarico (-)
@@ -94,7 +95,16 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.tagliaColoreRigheList = None
         # Inizializziamo i moduli in interfaccia!
         #self.draw()
-
+        self.completion = gtk.EntryCompletion()
+        self.completion.set_match_func(self.match_func)
+        self.completion.connect("match-selected",
+                                            self.on_completion_match)
+        listore = gtk.ListStore(str, object)
+        self.completion.set_model(listore)
+        self.completion.set_text_column(0)
+        self.articolo_entry.set_completion(self.completion)
+        self.sepric = "  ~  "
+#        self.completion.set_minimum_key_length(3)
         if "Pagamenti" not in Environment.modulesList:
             self.notebook.remove_page(3)
         if "PromoWear" in Environment.modulesList:
@@ -321,9 +331,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         """ """
         if button.get_property('active') is True:
             return
-
         self.calcolaTotale()
-
 
     def on_notebook_select_page(self,notebook,page, page_num):
         return
@@ -338,7 +346,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self.calcola_importi_scadenza_button.set_sensitive(False)
                 self.controlla_rate_scadenza_button.set_sensitive(False)
                 self.pulisci_scadenza_button.set_sensitive(False)
-                
+
             #print "passato al terzo tab"
 
     def on_rent_checkbutton_toggled(self, checkbutton=None):
@@ -504,7 +512,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["larghezza"] = mN(larghezza)
                 self._righe[0]["molt_pezzi"] =mN(moltiplicatore_pezzi)
             if "GestioneNoleggio" in  Environment.modulesList:
-                print " ISRENT  ",riga.isrent 
+                print " ISRENT  ",riga.isrent
                 if riga.isrent :
                     self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
                 else:
@@ -572,7 +580,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if "Pagamenti" in Environment.modulesList:
            AnagraficadocumentiPagamentExt.getScadenze(self)
 
-
     def setDao(self, dao):
         """
             imposta un nuovo dao Testata documenco
@@ -599,7 +606,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                         self.oneshot = True
             except:
                 print "CLIENTE_PREDEFINITO NON SETTATO"
-                
+
         else:
             # Ricrea il Dao prendendolo dal DB
             self.dao = TestataDocumento().getRecord(id=dao.id)
@@ -611,10 +618,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
         self._refresh()
 
-
     def saveDao(self):
-        """ 
-        Salvataggio del Dao 
+        """
+        Salvataggio del Dao
         """
         scontiRigaDocumentoList = {}
         if not(len(self._righe) > 1):
@@ -1078,8 +1084,72 @@ del documento.
         else:
             self.nuovaRiga()
 
+    def on_articolo_entry_insert_text(self, text):
+        stringa = text.get_text()
+        if self.mattu:
+            text.set_text(stringa.split(self.sepric)[0])
+        model = gtk.ListStore(str,object)
+        art = []
+        if stringa ==[] or len(stringa)<2:
+            return
+        if self.ricerca == "ricerca_codice_button":
+            if len(text.get_text()) <3:
+                art = Articolo().select(codice=stringa, batchSize=20)
+            else:
+                art = Articolo().select(codice=stringa, batchSize=100)
+        elif self.ricerca == "ricerca_descrizione_button":
+            if len(text.get_text()) <3:
+                art = Articolo().select(denominazione=stringa, batchSize=20)
+            else:
+                art = Articolo().select(denominazione=stringa, batchSize=100)
+        elif self.ricerca == "ricerca_codice_a_barre_button":
+            if len(text.get_text()) <7:
+                art = Articolo().select(codiceABarre=stringa, batchSize=10)
+            else:
+                art = Articolo().select(codiceABarre=stringa, batchSize=30)
+        elif self.ricerca == "ricerca_codice_articolo_fornitore_button":
+            if len(text.get_text()) <3:
+                art = Articolo().select(codiceArticoloFornitore=stringa, batchSize=10)
+            else:
+                art = Articolo().select(codiceArticoloFornitore=stringa, batchSize=30)
+#        print "MMMM",art
+        for m in art:
+            codice_art = m.codice
+            den = m.denominazione
+            bloccoInformazioni = codice_art+self.sepric+den
+            compl_string = bloccoInformazioni
+            if self.ricerca == "ricerca_codice_articolo_fornitore_button":
+                caf = m.codice_articolo_fornitore
+                compl_string = bloccoInformazioni+self.sepric+caf
+            if self.ricerca == "ricerca_codice_a_barre_button":
+                cb = m.codice_a_barre
+                compl_string = bloccoInformazioni+self.sepric+cb
+            model.append([compl_string,m])
+        self.completion.set_model(model)
+
+    def match_func(self, completion, key, iter):
+        model = self.completion.get_model()
+        self.mattu = False
+        self.articolo_matchato = None
+#        print "MODELLLLLLLLLLLLLLLLLL", model[iter][0], key, completion.get_text_column()
+        if model[iter][0] and self.articolo_entry.get_text().lower() in model[iter][0].lower():
+            return model[iter][0]
+        else:
+            return None
+
+    def on_completion_match(self, completion=None, model=None, iter=None):
+#        print "TUTTUTUTUTUTTUTUTUTUTTUTU", completion, model, iter, model[iter][0].split(" -|- ")[0]
+        self.mattu = True
+        self.articolo_matchato = model[iter][1]
+#        self.articolo_entry.get_text()
+#        self.articolo_entry.set_text(model[iter][0].split(" || ")[0])
+        self.articolo_entry.set_position(-1)
+#        self.ricercaArticolo(stringa = model[iter][0])
+#        return
+
     def ricercaArticolo(self):
-        #print "AAAAAAAAAAAAAAAAAA"
+#        return
+#        print "AAAAAAAAAAAAAAAAAA", self.articolo_entry.get_text()
         def on_ricerca_articolo_hide(anagWindow, anag):
             if anag.dao is None:
                 anagWindow.destroy()
@@ -1089,7 +1159,7 @@ del documento.
             self.mostraArticolo(anag.dao.id)
 
         if (self.data_documento_entry.get_text() == ''):
-            self.showMessage('Inserire la data del documento !3')
+            self.showMessage('Inserire la data del documento !')
             return
 
         if (findIdFromCombobox(self.id_operazione_combobox) is None):
@@ -1105,51 +1175,55 @@ del documento.
         denominazione = None
         codiceArticoloFornitore = None
         join = None
-        if self.ricerca_codice_button.get_active():
-            codice = self.articolo_entry.get_text()
-            if Environment.tipo_eng =="sqlite":
-                orderBy = "articolo.codice"
-            else:
-                orderBy = Environment.params["schema"]+".articolo.codice"
-            batchSize = Environment.conf.batch_size
-        elif self.ricerca_codice_a_barre_button.get_active():
-            codiceABarre = self.articolo_entry.get_text()
-            join= Articolo.cod_barre
-            if Environment.tipo_eng =="sqlite":
-                orderBy = "codice_a_barre_articolo.codice"
-            else:
-                orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
-            batchSize = Environment.conf.batch_size
-        elif self.ricerca_descrizione_button.get_active():
-            denominazione = self.articolo_entry.get_text()
-            if Environment.tipo_eng =="sqlite":
-                orderBy = "articolo.denominazione"
-            else:
-                orderBy = Environment.params["schema"]+".articolo.denominazione"
-            batchSize = Environment.conf.batch_size
-        elif self.ricerca_codice_articolo_fornitore_button.get_active():
-            codiceArticoloFornitore = self.articolo_entry.get_text()
-            join= Articolo.fornitur
-            if Environment.tipo_eng =="sqlite":
-                orderBy = "fornitura.codice_articolo_fornitore"
-            else:
-                orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
-            batchSize = Environment.conf.batch_size
+#        if self.ricerca_codice_button.get_active():
+        codice = self.articolo_entry.get_text()
+        if Environment.tipo_eng =="sqlite":
+            orderBy = "articolo.codice"
+        else:
+            orderBy = Environment.params["schema"]+".articolo.codice"
+#            batchSize = Environment.conf.batch_size
+#        elif self.ricerca_codice_a_barre_button.get_active():
+#            codiceABarre = self.articolo_entry.get_text()
+#            join= Articolo.cod_barre
+#            if Environment.tipo_eng =="sqlite":
+#                orderBy = "codice_a_barre_articolo.codice"
+#            else:
+#                orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
+#            batchSize = Environment.conf.batch_size
+#        elif self.ricerca_descrizione_button.get_active():
+#            denominazione = self.articolo_entry.get_text()
+#            if Environment.tipo_eng =="sqlite":
+#                orderBy = "articolo.denominazione"
+#            else:
+#                orderBy = Environment.params["schema"]+".articolo.denominazione"
+#            batchSize = Environment.conf.batch_size
+#        elif self.ricerca_codice_articolo_fornitore_button.get_active():
+#            codiceArticoloFornitore = self.articolo_entry.get_text()
+#            join= Articolo.fornitur
+#            if Environment.tipo_eng =="sqlite":
+#                orderBy = "fornitura.codice_articolo_fornitore"
+#            else:
+#                orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
+        batchSize = Environment.conf.batch_size
+        if self.articolo_matchato:
+            arts = [self.articolo_matchato]
+        else:
+            arts = Articolo().select(codice=prepareFilterString(codice))
+    #                                    orderBy=orderBy,
+    #                                    join = join,
+    #                                    denominazione=prepareFilterString(denominazione),
 
-        arts = Articolo().select(orderBy=orderBy,
-                                    join = join,
-                                    denominazione=prepareFilterString(denominazione),
-                                    codice=prepareFilterString(codice),
-                                    codiceABarre=prepareFilterString(codiceABarre),
-                                    codiceArticoloFornitore=prepareFilterString(codiceArticoloFornitore),
-                                    idFamiglia=None,
-                                    idCategoria=None,
-                                    idStato=None,
-                                    offset=None,
-                                    batchSize=None)
+    #                                    codiceABarre=prepareFilterString(codiceABarre),
+    #                                    codiceArticoloFornitore=prepareFilterString(codiceArticoloFornitore),
+    #                                    idFamiglia=None,
+    #                                    idCategoria=None,
+    #                                    idStato=None,
+    #                                    offset=None,
+    #                                    batchSize=None
+    #                                    )
         if (len(arts) == 1):
-
             self.mostraArticolo(arts[0].id)
+            self.articolo_matchato = None
         else:
             from RicercaComplessaArticoli import RicercaComplessaArticoli
             anag = RicercaComplessaArticoli(denominazione=denominazione,
@@ -1322,37 +1396,38 @@ del documento.
     def on_articolo_entry_key_press_event(self, widget, event):
         """ """
         keyname = gtk.gdk.keyval_name(event.keyval)
-        if keyname == 'Return' or keyname == 'KP_Enter':
+#        print "KEYNAMEEEEEE", keyname
+        if self.mattu and keyname == 'Return' or keyname == 'KP_Enter':
+            self.ricercaArticolo()
+        if keyname == 'F3':
             self.ricercaArticolo()
 
     def on_search_row_button_clicked(self, widget):
-        #if not self.cplx:
-            #self.cplx=False
         self.ricercaArticolo()
 
-    def on_ricerca_codice_button_clicked(self, widget):
-        """ """
-        if self.ricerca_codice_button.get_active()  and not self.cplx:
-            self.cplx=False
-            self.ricercaArticolo()
+#    def on_ricerca_codice_button_clicked(self, widget):
+#        """ """
+#        if self.ricerca_codice_button.get_active()  and not self.cplx:
+#            self.cplx=False
+#            self.ricercaArticolo()
 
-    def on_ricerca_codice_a_barre_button_clicked(self, widget):
-        """ """
-        if self.ricerca_codice_a_barre_button.get_active()  and not self.cplx:
-            self.cplx=False
-            self.ricercaArticolo()
+#    def on_ricerca_codice_a_barre_button_clicked(self, widget):
+#        """ """
+#        if self.ricerca_codice_a_barre_button.get_active()  and not self.cplx:
+#            self.cplx=False
+#            self.ricercaArticolo()
 
-    def on_ricerca_descrizione_button_clicked(self, widget):
-        """ """
-        if self.ricerca_descrizione_button.get_active()  and not self.cplx:
-            self.cplx=False
-            self.ricercaArticolo()
+#    def on_ricerca_descrizione_button_clicked(self, widget):
+#        """ """
+#        if self.ricerca_descrizione_button.get_active()  and not self.cplx:
+#            self.cplx=False
+#            self.ricercaArticolo()
 
-    def on_ricerca_codice_articolo_fornitore_button_clicked(self, widget):
-        """ """
-        if self.ricerca_codice_articolo_fornitore_button.get_active() and self.cplx:
-            self.cplx=False
-            self.ricercaArticolo()
+#    def on_ricerca_codice_articolo_fornitore_button_clicked(self, widget):
+#        """ """
+#        if self.ricerca_codice_articolo_fornitore_button.get_active() and self.cplx:
+#            self.cplx=False
+#            self.ricercaArticolo()
 
     def on_storico_costi_button_clicked(self, toggleButton):
         """ """
@@ -1630,18 +1705,11 @@ del documento.
 
 
     def on_articolo_entry_icon_press(self,entry, position,event ):
-        #print "bottone = ",event.button
-        #popup = gtk.Menu()
         if position.real == 0:
-            #xml.autoconnect({
-                #'some_handler': some_handler
-                #})
-            #if event.button == 3:
-            #x = int(event.x)
-            #y = int(event.y)
-            #time = event.time
-            #self.menu_ricerca.popup( None, None, None, event.button, time)
-            pass
+            x = int(event.x)
+            y = int(event.y)
+            time = event.time
+            self.menu_ricerca.popup( None, None, None, event.button, time)
             #print "CERCA"
         else:                            #secondary
             self.articolo_entry.set_text("")
@@ -1650,15 +1718,6 @@ del documento.
         if position.real == 1:
             self.descrizione_entry.set_text("")
 
-    def on_codice_articolo_menuitem_toggled(self,toggled):
-        #self.codice_articolo_menuitem.set_active(True)
-        print "CODICE ARTICOLO"
-
-    def on_codice_fornitore_menuitem_toggled(self,toggled):
-        print "FORNITORE"
-
-    def on_descrizione_menuitem_toggled(self,toggled):
-        print "DESCRIZIONE"
-
-    def on_codice_a_barre_menuitem_toggled(self, toggled):
-        print "CODICE A BARRE"
+    def on_codice_item_toggled(self,toggled):
+        if toggled.get_active():
+            self.ricerca = toggled.get_name()
