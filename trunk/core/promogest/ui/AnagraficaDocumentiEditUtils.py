@@ -9,17 +9,7 @@ from GladeWidget import GladeWidget
 from promogest import Environment
 from utils import *
 from utilsCombobox import *
-from promogest.dao.TestataDocumento import TestataDocumento
-from promogest.dao.TestataMovimento import TestataMovimento
-from promogest.dao.RigaDocumento import RigaDocumento
-from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
-from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
-from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
-from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
-from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.dao.Articolo import Articolo
-from promogest.dao.Magazzino import Magazzino
-from promogest.dao.Operazione import Operazione
 from promogest.dao.DaoUtils import giacenzaArticolo
 
 if "PromoWear" in Environment.modulesList:
@@ -30,6 +20,7 @@ if "GestioneNoleggio" in Environment.modulesList:
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
 if "Pagamenti" in Environment.modulesList:
     from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
+
 
 def drawPart(anaedit):
     treeview = anaedit.righe_treeview
@@ -150,7 +141,6 @@ def drawPart(anaedit):
     quantita, prezzo lordo, sconti, prezzo netto, totale, altezza, larghezza,molt_pezzi
     """
     anaedit.modelRiga = gtk.ListStore(int,str, str, str, str, str, str, str,str, str, str, str, str, str,str, str,str)
-    #anaedit.modelRiga.connect("rows-reordered", riodinate_righe)
     anaedit.righe_treeview.set_model(anaedit.modelRiga)
 
     anaedit.nuovaRiga()
@@ -159,12 +149,16 @@ def drawPart(anaedit):
         if hasattr(Environment.conf.Documenti,'ricerca_per'):
             if Environment.conf.Documenti.ricerca_per == 'codice':
                 anaedit.ricerca_codice_button.set_active(True)
+                anaedit.ricerca = anaedit.ricerca_codice_button.get_name()
             elif Environment.conf.Documenti.ricerca_per == 'codice_a_barre':
                 anaedit.ricerca_codice_a_barre_button.set_active(True)
+                anaedit.ricerca = anaedit.ricerca_codice_a_barre_button.get_name()
             elif Environment.conf.Documenti.ricerca_per == 'descrizione':
                 anaedit.ricerca_descrizione_button.set_active(True)
+                anaedit.ricerca = anaedit.ricerca_descrizione_button.get_name()
             elif Environment.conf.Documenti.ricerca_per == 'codice_articolo_fornitore':
                 anaedit.ricerca_codice_articolo_fornitore_button.set_active(True)
+                anaedit.ricerca =  anaedit.ricerca_codice_articolo_fornitore_button.get_name()
 
     anaedit.id_persona_giuridica_customcombobox.setSingleValue()
     anaedit.id_persona_giuridica_customcombobox.setOnChangedCall(anaedit.persona_giuridica_changed)
@@ -337,17 +331,19 @@ def mostraArticoloPart(anaedit, id, art=None):
 
     fillComboboxMultipli(anaedit.id_multiplo_customcombobox.combobox, id, True)
 
-    # articolo c'è 
+    # articolo c'è
     if id is not None:
         articolo = leggiArticolo(id)
+#        print "ARTICOLOOOOOOOOOOOOOOOOOOOOOO", articolo
         if "PromoWear" in Environment.modulesList:
             AnagraficaDocumentiEditPromoWearExt.fillLabelInfo(anaedit, articolo)
         artic = Articolo().getRecord(id=id)
+#        print "ARTIIIIIIIIIIIIIIIIIIICC", artic, articleType(artic)
         if articleType(artic) =="father" :
             anaedit.ArticoloPadre = artic
             anaedit.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
             anaedit.promowear_manager_taglia_colore_togglebutton.set_sensitive(True)
-            #anaedit.on_promowear_manager_taglia_colore_togglebutton_toggled(anaedit)
+#            anaedit.on_promowear_manager_taglia_colore_togglebutton_toggled(anaedit)
             anaedit.NoRowUsableArticle = True
         if art:
             # articolo proveninente da finestra taglia e colore ...
@@ -365,9 +361,11 @@ def mostraArticoloPart(anaedit, id, art=None):
             anaedit.unitaBaseLabel.set_text(anaedit._righe[0]["unitaBase"])
             if ((anaedit._fonteValore == "acquisto_iva") or  (anaedit._fonteValore == "acquisto_senza_iva")):
                 costoLordo = str(articolo['valori']["prezzoLordo"])
-                if costoLordo:costoLordo = costoLordo.replace(',','.')
+                if costoLordo:
+                    costoLordo = costoLordo.replace(',','.')
                 costoNetto = str(articolo['valori']["prezzoNetto"])
-                if costoNetto:costoNetto = costoNetto.replace(',','.')
+                if costoNetto:
+                    costoNetto = costoNetto.replace(',','.')
                 if anaedit._fonteValore == "acquisto_iva":
                     costoLordo = calcolaPrezzoIva(costoLordo, anaedit._righe[0]["percentualeIva"])
                     costoNetto = calcolaPrezzoIva(costoNetto, anaedit._righe[0]["percentualeIva"])
@@ -448,13 +446,13 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit._righe[0]["sconti"] = []
         anaedit._righe[0]["applicazioneSconti"] = 'scalare'
         anaedit._righe[0]["codiceArticoloFornitore"] = ''
-        #inserisco dei dati nel frame delle informazioni 
+        #inserisco dei dati nel frame delle informazioni
         anaedit.giacenza_label.set_text(str(giacenzaArticolo(year=Environment.workingYear,
                                             idMagazzino=findIdFromCombobox(anaedit.id_magazzino_combobox),
                                             idArticolo=anaedit._righe[0]["idArticolo"])))
 
         anaedit.quantitaMinima_label.set_text(str(artic.quantita_minima))
-        # Acquisto 
+        # Acquisto
         if ((anaedit._fonteValore == "acquisto_iva") or  (anaedit._fonteValore == "acquisto_senza_iva")):
             fornitura = leggiFornitura(id, anaedit.id_persona_giuridica_customcombobox.getId(), data)
             costoLordo = fornitura["prezzoLordo"]
