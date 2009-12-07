@@ -6,10 +6,8 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Dr astico <zoccolodignu@gmail.com>
 
-
 import os
 import gtk
-import gobject
 import datetime
 #from decimal import *
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
@@ -280,9 +278,10 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
         aNumero = prepareFilterString(self.a_numero_filter_entry.get_text())
         idOperazione = prepareFilterString(findIdFromCombobox(self.id_operazione_filter_combobox))
         idMagazzino = findIdFromCombobox(self.id_magazzino_filter_combobox)
+#        idMagazzino = 1
         idCliente = self.id_cliente_filter_customcombobox.getId()
         idFornitore = self.id_fornitore_filter_customcombobox.getId()
-
+#        print "IDMAGAZZINOOOOOO", idMagazzino,daData ,aData, daNumero,aNumero,idOperazione,idCliente,idFornitore
         def filterCountClosure():
             """
             FIXME
@@ -299,11 +298,13 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
                                                     idMagazzino=idMagazzino,
                                                     idCliente=idCliente,
                                                     idFornitore=idFornitore)
-
+#        print "PRIMPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"
         self._filterCountClosure = filterCountClosure
+#        print "PRI11111111111111111111111111111111111111111111111111111111111",self._filterCountClosure
         self.numRecords = self.countFilterResults()
+#        print "444444445435353453453453453453534534534534534534534534534534534"
         self._refreshPageCount()
-
+#        print "22222222222222222222222222222222222222222222222222222222222222"
         def filterClosure(offset, batchSize):
             """
             FIXME
@@ -313,25 +314,25 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
             @type batchSize:
             """
             return TestataMovimento().select(orderBy=self.orderBy,
-                                                         daNumero=daNumero,
-                                                         aNumero=aNumero,
-                                                         daParte=None,
-                                                         aParte=None,
-                                                         daData=daData,
-                                                         aData=aData,
-                                                         idOperazione=idOperazione,
-                                                         idMagazzino=idMagazzino,
-                                                         idCliente=idCliente,
-                                                         idFornitore=idFornitore,
-                                                         offset=offset,
-                                                         batchSize=batchSize)
+                                                 daNumero=daNumero,
+                                                 aNumero=aNumero,
+                                                 daParte=None,
+                                                 aParte=None,
+                                                 daData=daData,
+                                                 aData=aData,
+                                                 idOperazione=idOperazione,
+                                                 idMagazzino=idMagazzino,
+                                                 idCliente=idCliente,
+                                                 idFornitore=idFornitore,
+                                                 offset=offset,
+                                                 batchSize=batchSize)
 
         self._filterClosure = filterClosure
-
+#        print "333333333333333333333333333333333333333333333333333333333333333"
         tdos = self.runFilter()
         self.xptDaoList = self.runFilter(offset=None, batchSize=None)
-        #self.xptDaoList =None
-
+#        self.xptDaoList =None
+#        print "LEEEEEEEEEEEEEEEEEEEEEEEEEN", len(tdos)
         self._treeViewModel.clear()
         for t in tdos:
             soggetto = ''
@@ -350,10 +351,8 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
                                         (soggetto or ''),
                                         (t.note_interne or '')))
 
-
     def on_filter_radiobutton_toggled(self, widget=None):
-        """
-        FIXME
+        """ FIXME
         """
         if self.cliente_filter_radiobutton.get_active():
             self.id_cliente_filter_customcombobox.set_sensitive(True)
@@ -365,7 +364,6 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
             self.id_fornitore_filter_customcombobox.grab_focus()
             self.id_cliente_filter_customcombobox.set_active(0)
             self.id_cliente_filter_customcombobox.set_sensitive(False)
-
 
 
 class AnagraficaMovimentiHtml(AnagraficaHtml):
@@ -767,13 +765,11 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                                         self._righe[0]["idMagazzino"],
                                         self.id_persona_giuridica_customcombobox.getId())
 
-
     def on_id_multiplo_customcombobox_button_clicked(self, widget, toggleButton):
         """
         FIXME
         """
         on_id_multiplo_customcombobox_clicked(widget, toggleButton, self._righe[0]["idArticolo"])
-
 
     def on_id_multiplo_customcombobox_changed(self, combobox):
         """
@@ -788,13 +784,11 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self._righe[0]["moltiplicatore"] = multiplo["moltiplicatore"]
         self.calcolaTotaleRiga()
 
-
     def on_id_listino_customcombobox_button_clicked(self, widget, toggleButton):
         """
         FIXME
         """
         on_id_listino_customcombobox_clicked(widget, toggleButton, self._righe[0]["idArticolo"], None)
-
 
     def on_id_listino_customcombobox_button_toggled(self, button):
         """
@@ -804,7 +798,6 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             return
 
         self.refresh_combobox_listini()
-
 
     def on_id_listino_customcombobox_changed(self, combobox):
         """
@@ -818,7 +811,6 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self.getPrezzoVenditaLordo(idListino, idArticolo)
         self.prezzo_lordo_entry.set_text(str(mN(self._righe[0]["prezzoLordo"])))
         self.on_show_totali_riga()
-
 
     def getPrezzoVenditaLordo(self, idListino, idArticolo):
         """
@@ -834,7 +826,6 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                 prezzoLordo = listino["prezzoIngrosso"]
         self._righe[0]["prezzoLordo"] = prezzoLordo
         self._righe[0]["idListino"] = idListino
-
 
     def getPrezzoNetto(self):
         """
@@ -866,7 +857,6 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         moltiplicatore = Decimal(self._righe[0]["moltiplicatore"])
         self._righe[0]["totale"] = prezzoNetto * quantita * moltiplicatore
 
-
     def on_sconti_widget_button_toggled(self, button):
         """
         Apre il custom widget degli sconti
@@ -878,14 +868,12 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()
         self.on_show_totali_riga()
 
-
     def on_notebook_switch_page(self, notebook, page, page_num):
         """
         Gestisce il cambio di pagina nel notebook
         """
         if page_num == 2:
             self.calcolaTotale()
-
 
     def _refresh(self):
         """
@@ -993,7 +981,6 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         else:
             self.id_magazzino_combobox.grab_focus()
 
-
     def setDao(self, dao):
         """
         Inizializza un Dao nuovo se None o usa quello passato Dalla anag Filter
@@ -1015,7 +1002,6 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = TestataMovimento().getRecord(id=dao.id)
         self._refresh()
-
 
     def saveDao(self):
         """
