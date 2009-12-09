@@ -584,6 +584,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         """
             imposta un nuovo dao Testata documenco
         """
+        self.destinatario_radiobutton.set_active(True)
+        self.id_vettore_customcombobox.set_sensitive(False)
         if dao is None:
             # Crea un nuovo Dao vuoto
             #Environment.tagliacoloretempdata = (False,[])
