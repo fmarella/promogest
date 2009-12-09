@@ -143,14 +143,14 @@ class TestataDocumento(Dao):
         return len(__numeroMagazzini)
 
         #__numeroMagazzini = 0
-        
+
         #if len(self.righe) > 0 and self.id:
           #mov_query = params['session'].query(RigaMovimento.id).filter(RigaMovimento.id_testata_movimento == self.id)
           #doc_query = params['session'].query(RigaDocumento.id).filter(RigaDocumento.id_testata_documento == self.id)
           #res = params['session'].query(Riga.id_magazzino).filter(or_(Riga.id.in_(mov_query),Riga.id.in_(doc_query))).distinct().count()
           #__numeroMagazzini = res
         #return __numeroMagazzini
-        
+
     numeroMagazzini = property(_getNumeroMagazzini)
 
     def _getScontiTestataDocumento(self):
@@ -828,14 +828,20 @@ class TestataDocumento(Dao):
         elif k == 'statoDocumento':
             dic = {k:testata_documento.c.documento_saldato == v}
         elif k == 'idArticolo':
-            dic = {k:or_(testata_movi.c.id.in_(select([RigaMovimento.id_testata_movimento],
-                        and_(testata_movi.c.id_testata_documento == testata_documento.c.id,
-                        Riga.id==RigaMovimento.id,Articolo.id ==Riga.id_articolo,
-                        Articolo.id == v))),
-                        testata_documento.c.id.in_(select([RigaDocumento.id_testata_documento],
-                        and_(testata_documento.c.id==riga_doc.c.id_testata_documento,
-                        Riga.id==riga_doc.c.id,Articolo.id ==Riga.id_articolo,
-                        Articolo.id == v))))}
+            dic = {k:and_(Articolo.id ==Riga.id_articolo,
+                           riga.c.id==RigaMovimento.id,
+                           RigaMovimento.id_testata_movimento == TestataMovimento.id,
+                           TestataMovimento.id_testata_documento == testata_documento.c.id,
+                           Articolo.id ==v)}
+#            dic = {k:and_(testata_movi.c.id.in_(select([RigaMovimento.id_testata_movimento],
+#                        and_(testata_movi.c.id_testata_documento == testata_documento.c.id,
+#                        Riga.id==RigaMovimento.id,Articolo.id ==Riga.id_articolo,
+#                        Articolo.id == v))))}
+#            ,
+#                        testata_documento.c.id.in_(select([RigaDocumento.id_testata_documento],
+#                        and_(testata_documento.c.id==riga_doc.c.id_testata_documento,
+#                        Riga.id==riga_doc.c.id,Articolo.id ==Riga.id_articolo,
+#                        Articolo.id == v)))
         elif hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
             if k == 'daDataInizioNoleggio':
                 dic = {k:and_(testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
@@ -882,5 +888,3 @@ std_mapper = mapper(TestataDocumento, testata_documento, properties={
 if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
     std_mapper.add_property("TGN",relation(TestataGestioneNoleggio,primaryjoin=(testata_documento.c.id==TestataGestioneNoleggio.id_testata_documento),backref="TD",uselist = False))
-
-
