@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
-<glade-interface>
-  <!-- interface-requires gtk+ 2.16 -->
+<interface>
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
-  <widget class="GtkWindow" id="_anagrafica_colori_stampa_elements">
+  <object class="GtkWindow" id="_anagrafica_colori_stampa_elements">
     <property name="visible">True</property>
     <property name="title" translatable="yes">Anagrafica Colori Stampa</property>
     <child>
-      <widget class="GtkHBox" id="hbox2">
+      <object class="GtkHBox" id="hbox2">
         <property name="visible">True</property>
         <child>
-          <widget class="GtkTable" id="_anagrafica_colori_stampa_filter_table">
+          <object class="GtkTable" id="_anagrafica_colori_stampa_filter_table">
             <property name="visible">True</property>
             <property name="n_columns">2</property>
             <child>
-              <widget class="GtkLabel" id="label6">
+              <object class="GtkLabel" id="label6">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Descrizione</property>
-              </widget>
+              </object>
               <packing>
                 <property name="x_options">GTK_FILL</property>
                 <property name="y_options"></property>
@@ -25,10 +25,10 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkEntry" id="denominazione_filter_entry">
+              <object class="GtkEntry" id="denominazione_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
@@ -36,7 +36,7 @@
                 <property name="y_options"></property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
@@ -44,17 +44,17 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkTable" id="_anagrafica_colori_stampa_detail_table">
+          <object class="GtkTable" id="_anagrafica_colori_stampa_detail_table">
             <property name="visible">True</property>
             <property name="border_width">6</property>
             <property name="n_columns">2</property>
             <property name="row_spacing">6</property>
             <child>
-              <widget class="GtkLabel" id="label7">
+              <object class="GtkLabel" id="label7">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Descrizione</property>
-              </widget>
+              </object>
               <packing>
                 <property name="x_options">GTK_FILL</property>
                 <property name="y_options"></property>
@@ -62,10 +62,10 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkEntry" id="denominazione_entry">
+              <object class="GtkEntry" id="denominazione_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
@@ -73,30 +73,30 @@
                 <property name="y_options"></property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="position">1</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-  <widget class="GtkWindow" id="_anagrafica_caratteri_stampa_elements">
+  </object>
+  <object class="GtkWindow" id="_anagrafica_caratteri_stampa_elements">
     <property name="visible">True</property>
     <property name="title" translatable="yes">Anagrafica Colori Stampa</property>
     <child>
-      <widget class="GtkHBox" id="hbox4">
+      <object class="GtkHBox" id="hbox4">
         <property name="visible">True</property>
         <child>
-          <widget class="GtkTable" id="_anagrafica_caratteri_stampa_filter_table">
+          <object class="GtkTable" id="_anagrafica_caratteri_stampa_filter_table">
             <property name="visible">True</property>
             <property name="n_columns">2</property>
             <child>
-              <widget class="GtkLabel" id="label12">
+              <object class="GtkLabel" id="label12">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Descrizione</property>
-              </widget>
+              </object>
               <packing>
                 <property name="x_options">GTK_FILL</property>
                 <property name="y_options"></property>
@@ -104,10 +104,10 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkEntry" id="denominazione_filter_entry">
+              <object class="GtkEntry" id="denominazione_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
@@ -115,7 +115,7 @@
                 <property name="y_options"></property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
@@ -123,17 +123,17 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkTable" id="_anagrafica_caratteri_stampa_detail_table">
+          <object class="GtkTable" id="_anagrafica_caratteri_stampa_detail_table">
             <property name="visible">True</property>
             <property name="border_width">6</property>
             <property name="n_columns">2</property>
             <property name="row_spacing">6</property>
             <child>
-              <widget class="GtkLabel" id="label27">
+              <object class="GtkLabel" id="label27">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Descrizione</property>
-              </widget>
+              </object>
               <packing>
                 <property name="x_options">GTK_FILL</property>
                 <property name="y_options"></property>
@@ -141,10 +141,10 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkEntry" id="denominazione_entry">
+              <object class="GtkEntry" id="denominazione_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
@@ -152,12 +152,12 @@
                 <property name="y_options"></property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="position">1</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+</interface>
