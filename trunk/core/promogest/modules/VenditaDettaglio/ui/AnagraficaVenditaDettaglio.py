@@ -867,7 +867,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 process = popen2.Popen3(command, True)
                 message = process.childerr.readlines()
                 ret_value = process.wait()
-                
+
         else:
             ret_value = 0
 
@@ -901,6 +901,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.delete_button.set_sensitive(False)
         self.on_empty_button_clicked(self.empty_button)
         self.righe_label.set_markup('<b> [ 0 ] Righe scontrino</b>')
+        self.codice_a_barre_entry.grab_focus()
         self._state = 'search'
 
     def on_chiusura_fiscale_activate(self, widget):

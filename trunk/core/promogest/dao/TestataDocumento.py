@@ -838,17 +838,17 @@ class TestataDocumento(Dao):
         elif k == 'statoDocumento':
             dic = {k:testata_documento.c.documento_saldato == v}
         elif k == 'idArticolo':
-#            dic = {k:and_(Articolo.id ==Riga.id_articolo,
-#                           riga.c.id==RigaMovimento.id,
-#                           RigaMovimento.id_testata_movimento == TestataMovimento.id,
-#                           TestataMovimento.id_testata_documento == testata_documento.c.id,
-#                           Articolo.id ==v)}
-            dic = {k:testata_documento.c.id.in_(select([testata_documento.c.id],
-                        or_(and_(testata_movi.c.id_testata_documento == testata_documento.c.id,
-                        Riga.id==RigaMovimento.id,Articolo.id ==Riga.id_articolo,
-                        Articolo.id == v),and_(testata_documento.c.id==riga_doc.c.id_testata_documento,
-                        Riga.id==riga_doc.c.id,Articolo.id ==Riga.id_articolo,
-                        Articolo.id == v))))}
+            dic = {k:and_(Articolo.id ==Riga.id_articolo,
+                           riga.c.id==RigaMovimento.id,
+                           RigaMovimento.id_testata_movimento == TestataMovimento.id,
+                           TestataMovimento.id_testata_documento == testata_documento.c.id,
+                           Articolo.id ==v)}
+#            dic = {k:testata_documento.c.id.in_(select([testata_documento.c.id],
+#                        or_(and_(testata_movi.c.id_testata_documento == testata_documento.c.id,
+#                        Riga.id==RigaMovimento.id,Articolo.id ==Riga.id_articolo,
+#                        Articolo.id == v),and_(testata_documento.c.id==riga_doc.c.id_testata_documento,
+#                        Riga.id==riga_doc.c.id,Articolo.id ==Riga.id_articolo,
+#                        Articolo.id == v))))}
         elif hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
             if k == 'daDataInizioNoleggio':
                 dic = {k:and_(testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,

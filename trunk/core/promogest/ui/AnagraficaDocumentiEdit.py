@@ -603,27 +603,25 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 print "TIPO_DOCUMENTO_PREDEFINITO NON SETTATO"
             try:
                 if Environment.conf.Documenti.cliente_predefinito:
-                    cli = Cliente().select(codicesatto= Environment.conf.Documenti.cliente_predefinito)
+                    cli = Cliente().select(codicesatto=Environment.conf.Documenti.cliente_predefinito)
                     if cli:
                         self.dao.id_cliente = cli[0].id
                         self.oneshot = True
+                        self.articolo_entry.grab_focus()
             except:
                 print "CLIENTE_PREDEFINITO NON SETTATO"
 
         else:
             # Ricrea il Dao prendendolo dal DB
             self.dao = TestataDocumento().getRecord(id=dao.id)
-            #Environment.tagliacoloretempdata = (False,[])
             self._controllo_data_documento = dateToString(self.dao.data_documento)
             self._controllo_numero_documento = self.dao.numero
             self.oneshot = False
             self._oldDaoRicreato = True #il dao è nuovo il controllo sul nuovo codice non  è necessario
-
         self._refresh()
 
     def saveDao(self):
-        """
-        Salvataggio del Dao
+        """ Salvataggio del Dao
         """
         scontiRigaDocumentoList = {}
         if not(len(self._righe) > 1):
@@ -1099,22 +1097,22 @@ del documento.
             if len(text.get_text()) <3:
                 art = Articolo().select(codice=stringa, batchSize=20)
             else:
-                art = Articolo().select(codice=stringa, batchSize=100)
+                art = Articolo().select(codice=stringa, batchSize=None)
         elif self.ricerca == "ricerca_descrizione_button":
             if len(text.get_text()) <3:
                 art = Articolo().select(denominazione=stringa, batchSize=20)
             else:
-                art = Articolo().select(denominazione=stringa, batchSize=100)
+                art = Articolo().select(denominazione=stringa, batchSize=None)
         elif self.ricerca == "ricerca_codice_a_barre_button":
             if len(text.get_text()) <7:
                 art = Articolo().select(codiceABarre=stringa, batchSize=10)
             else:
-                art = Articolo().select(codiceABarre=stringa, batchSize=30)
+                art = Articolo().select(codiceABarre=stringa, batchSize=40)
         elif self.ricerca == "ricerca_codice_articolo_fornitore_button":
             if len(text.get_text()) <3:
                 art = Articolo().select(codiceArticoloFornitore=stringa, batchSize=10)
             else:
-                art = Articolo().select(codiceArticoloFornitore=stringa, batchSize=30)
+                art = Articolo().select(codiceArticoloFornitore=stringa, batchSize=40)
 #        print "MMMM",art
         for m in art:
             codice_art = m.codice
