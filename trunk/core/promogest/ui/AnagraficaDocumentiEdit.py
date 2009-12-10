@@ -104,6 +104,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.completion.set_text_column(0)
         self.articolo_entry.set_completion(self.completion)
         self.sepric = "  ~  "
+        self.articolo_matchato = None
 #        self.completion.set_minimum_key_length(3)
         if "Pagamenti" not in Environment.modulesList:
             self.notebook.remove_page(3)
@@ -1150,8 +1151,7 @@ del documento.
 #        return
 
     def ricercaArticolo(self):
-#        return
-#        print "AAAAAAAAAAAAAAAAAA", self.articolo_entry.get_text()
+
         def on_ricerca_articolo_hide(anagWindow, anag):
             if anag.dao is None:
                 anagWindow.destroy()
@@ -1177,52 +1177,51 @@ del documento.
         denominazione = None
         codiceArticoloFornitore = None
         join = None
-#        if self.ricerca_codice_button.get_active():
-        codice = self.articolo_entry.get_text()
-        if Environment.tipo_eng =="sqlite":
-            orderBy = "articolo.codice"
-        else:
-            orderBy = Environment.params["schema"]+".articolo.codice"
-#            batchSize = Environment.conf.batch_size
-#        elif self.ricerca_codice_a_barre_button.get_active():
-#            codiceABarre = self.articolo_entry.get_text()
-#            join= Articolo.cod_barre
-#            if Environment.tipo_eng =="sqlite":
-#                orderBy = "codice_a_barre_articolo.codice"
-#            else:
-#                orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
-#            batchSize = Environment.conf.batch_size
-#        elif self.ricerca_descrizione_button.get_active():
-#            denominazione = self.articolo_entry.get_text()
-#            if Environment.tipo_eng =="sqlite":
-#                orderBy = "articolo.denominazione"
-#            else:
-#                orderBy = Environment.params["schema"]+".articolo.denominazione"
-#            batchSize = Environment.conf.batch_size
-#        elif self.ricerca_codice_articolo_fornitore_button.get_active():
-#            codiceArticoloFornitore = self.articolo_entry.get_text()
-#            join= Articolo.fornitur
-#            if Environment.tipo_eng =="sqlite":
-#                orderBy = "fornitura.codice_articolo_fornitore"
-#            else:
-#                orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
+        if self.ricerca_codice_button.get_active():
+            codice = self.articolo_entry.get_text()
+            if Environment.tipo_eng =="sqlite":
+                orderBy = "articolo.codice"
+            else:
+                orderBy = Environment.params["schema"]+".articolo.codice"
+                batchSize = Environment.conf.batch_size
+        elif self.ricerca_codice_a_barre_button.get_active():
+            codiceABarre = self.articolo_entry.get_text()
+            join= Articolo.cod_barre
+            if Environment.tipo_eng =="sqlite":
+                orderBy = "codice_a_barre_articolo.codice"
+            else:
+                orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
+            batchSize = Environment.conf.batch_size
+        elif self.ricerca_descrizione_button.get_active():
+            denominazione = self.articolo_entry.get_text()
+            if Environment.tipo_eng =="sqlite":
+                orderBy = "articolo.denominazione"
+            else:
+                orderBy = Environment.params["schema"]+".articolo.denominazione"
+            batchSize = Environment.conf.batch_size
+        elif self.ricerca_codice_articolo_fornitore_button.get_active():
+            codiceArticoloFornitore = self.articolo_entry.get_text()
+            join= Articolo.fornitur
+            if Environment.tipo_eng =="sqlite":
+                orderBy = "fornitura.codice_articolo_fornitore"
+            else:
+                orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
         batchSize = Environment.conf.batch_size
         if self.articolo_matchato:
             arts = [self.articolo_matchato]
         else:
-            arts = Articolo().select(codice=prepareFilterString(codice))
-    #                                    orderBy=orderBy,
-    #                                    join = join,
-    #                                    denominazione=prepareFilterString(denominazione),
-
-    #                                    codiceABarre=prepareFilterString(codiceABarre),
-    #                                    codiceArticoloFornitore=prepareFilterString(codiceArticoloFornitore),
-    #                                    idFamiglia=None,
-    #                                    idCategoria=None,
-    #                                    idStato=None,
-    #                                    offset=None,
-    #                                    batchSize=None
-    #                                    )
+            arts = Articolo().select(codice=prepareFilterString(codice),
+                                        orderBy=orderBy,
+                                        join = join,
+                                        denominazione=prepareFilterString(denominazione),
+                                        codiceABarre=prepareFilterString(codiceABarre),
+                                        codiceArticoloFornitore=prepareFilterString(codiceArticoloFornitore),
+                                        idFamiglia=None,
+                                        idCategoria=None,
+                                        idStato=None,
+                                        offset=None,
+                                        batchSize=None
+                                        )
         if (len(arts) == 1):
             self.mostraArticolo(arts[0].id)
             self.articolo_matchato = None

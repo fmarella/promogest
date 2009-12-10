@@ -10,6 +10,9 @@
     </columns>
     <data>
       <row>
+        <col id="0" translatable="yes"></col>
+      </row>
+      <row>
         <col id="0" translatable="yes">Franco</col>
       </row>
       <row>
