@@ -44,6 +44,8 @@ class RicercaVettoriFilter(RicercaFilter):
                                'anagrafica_vettori_filter_table',
                                fileName='_anagrafica_vettori_elements.glade')
 
+    def on_filter_treeview_selection_changed(self, treeview):
+        pass
 
     def draw(self):
         # Colonne della Treeview per il filtro

@@ -96,7 +96,7 @@ class Dao(object):
     def save_update(self,multiple=False, record=True):
         params["session"].add(self)
         self.saveAppLog(self)
-        
+
     def add(self,multiple=False, record=True):
         params["session"].add(self)
         self.saveAppLog(self)
@@ -108,6 +108,9 @@ class Dao(object):
     def saveAppLog(self,dao):
         self.saveToAppLog(self)
 #        self.commit()
+
+    def rollback(self):
+        params["session"].rollback()
 
     def commit(self):
         """ Salva i dati nel DB"""

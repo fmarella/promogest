@@ -2451,6 +2451,7 @@ def calcolaTotali(daos):
                         "totale_pagato":totale_pagato,
                         "totale_sospeso": totale_sospeso}
     return totaliGenerali
+
 def fenceDialog():
     """
     FIXME
@@ -2561,3 +2562,12 @@ def aggiorna(anag):
                         msgg)
         dialogg.run()
         dialogg.destroy()
+
+def messageInfo(msg="Messaggio generico"):
+    dialoggg = gtk.MessageDialog(None,
+                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                        gtk.MESSAGE_INFO,
+                        gtk.BUTTONS_OK,
+                        msg)
+    dialoggg.run()
+    dialoggg.destroy()

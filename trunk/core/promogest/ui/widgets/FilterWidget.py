@@ -205,7 +205,6 @@ class FilterWidget(GladeWidget):
         """
         return self.offset / self.batchSize + 1
 
-
     def _getPageCount(self):
         """
         Calculate how much pages we have
@@ -213,7 +212,6 @@ class FilterWidget(GladeWidget):
         #print self.numRecords
         return int(math.ceil(float(self.numRecords or 0)
                              / float(self.batchSize)) or '1')
-
 
     def _refreshCurrentPage(self):
         """
@@ -223,30 +221,23 @@ class FilterWidget(GladeWidget):
         self.filter_current_page_entry.set_text(str(currPage))
         self.refresh()
 
-
     def _refreshPageCount(self):
-        """
-        Show total pages number
+        """ Show total pages number
         """
         self.filter_total_pages_label.set_text(str(self._getPageCount()))
 
-
     def isLastPage(self):
-        """
-        Returns if the current page is the last
+        """ Returns if the current page is the last
         """
         return (self._getCurrentPage() == self._getPageCount())
-
 
     def _disablePageNumbers(self):
         self.filter_current_page_entry.set_text('')
         self.filter_current_page_entry.set_sensitive(False)
         self.filter_filter_total_count.set_text('')
 
-
     def _changeOrderBy(self, widget, fieldsString):
-        """
-        Changes results order
+        """ Changes results order
         """
         if self.orderBy == fieldsString[1]:
             if self.flag == False:
@@ -261,10 +252,8 @@ class FilterWidget(GladeWidget):
             self.join = fieldsString[0]
         self.refresh()
 
-
     def setFocus(self, widget=None):
-        """
-        Give focus to a widget
+        """ Give focus to a widget
         """
         if widget is None:
             if hasattr(self, '_firstFocusWidget'):
@@ -273,10 +262,8 @@ class FilterWidget(GladeWidget):
         else:
             widget.grab_focus()
 
-
     def clear(self):
-        """
-        Clears filter's parameters
+        """ Clears filter's parameters
         """
         self._owner.clear()
 
@@ -367,27 +354,21 @@ class FilterWidget(GladeWidget):
         renderHTML(self.html,html)
         return self.html
 
-
     def on_filter_treeview_row_activated(self, treeview, path, column):
-        """
-        Row activated event response
+        """ Row activated event response
         """
         self._owner.on_filter_treeview_row_activated(treeview, path, column)
 
-
     def on_filter_treeview_cursor_changed(self, treeview):
-        """
-        Row selection event response
+        """ Row selection event response
         """
         self._owner.on_filter_treeview_cursor_changed(treeview)
-
 
     def on_filter_treeview_selection_changed(self, treeSelection):
         """
         Row selection event response
         """
         self._owner.on_filter_treeview_selection_changed(treeSelection)
-
 
     def on_filter_treeview_keypress_event(self, treeview, event):
         """
