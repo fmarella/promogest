@@ -7,12 +7,8 @@
 # Author: vete <info@promotux.it>
 
 import gtk
-
 from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-
-from promogest import Environment
 from promogest.modules.SchedaLavorazione.dao.CarattereStampa import CarattereStampa
-
 from promogest.ui.utils import *
 
 class AnagraficaCaratteriStampa(Anagrafica):
@@ -39,13 +35,13 @@ class AnagraficaCaratteriStampa(Anagrafica):
         column.set_resizable(True)
         column.set_expand(True)
         treeview.append_column(column)
-        
+
         self._treeViewModel = gtk.ListStore(object, str)
         treeview.set_model(self._treeViewModel)
 
         treeview.set_search_column(1)
         self.refresh()
-    
+
     def refresh(self):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
@@ -94,7 +90,7 @@ class AnagraficaCaratteriStampaDetail(AnagraficaDetail):
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                                 anagrafica,
-                                gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade', 
+                                gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade',
                                 module=True)
 
     def setDao(self, dao):
@@ -105,11 +101,9 @@ class AnagraficaCaratteriStampaDetail(AnagraficaDetail):
         else:
             self.dao = dao
 
-
     def updateDao(self):
         self.dao = CarattereStampa().getRecord(id=self.dao.id)
         self._refresh()
-
 
     def _refresh(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()

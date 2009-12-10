@@ -7,14 +7,9 @@
 # Author: vete <info@promotux.it>
 
 import gtk
-
 from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-
-from promogest import Environment
 from promogest.modules.SchedaLavorazione.dao.ColoreStampa import ColoreStampa
-
 from promogest.ui.utils import *
-
 
 
 class AnagraficaColoriStampa(Anagrafica):
@@ -25,7 +20,6 @@ class AnagraficaColoriStampa(Anagrafica):
                             '_Colori stampe',
                             AnagraficaColoriStampaFilter(self),
                             AnagraficaColoriStampaDetail(self))
-
 
     def draw(self):
         # Colonne della Treeview per il filtro
@@ -50,7 +44,6 @@ class AnagraficaColoriStampa(Anagrafica):
         treeview.set_model(self._treeViewModel)
 
         self.refresh()
-
 
     def refresh(self):
         # Aggiornamento TreeView
@@ -84,7 +77,9 @@ class AnagraficaColoriStampaFilter(AnagraficaFilter):
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  '_anagrafica_colori_stampa_filter_table', gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade', module=True)
+                                  '_anagrafica_colori_stampa_filter_table',
+                          gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade',
+                          module=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def clear(self):
@@ -99,7 +94,8 @@ class AnagraficaColoriStampaDetail(AnagraficaDetail):
 
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
-                                  anagrafica, gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade',module=True)
+                                  anagrafica,
+                  gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade',module=True)
 
     def setDao(self, dao):
         if dao is None:
