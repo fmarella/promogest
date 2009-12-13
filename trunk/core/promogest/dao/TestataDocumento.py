@@ -560,10 +560,6 @@ class TestataDocumento(Dao):
 
 
 
-
-
-
-
     def _al(self):
         if self.AL: return self.AL.denominazione
         else: return ""

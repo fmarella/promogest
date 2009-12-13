@@ -123,6 +123,11 @@ class Riga(Dao):
             """ esempio di funzione  unita alla property """
             if self.arti:return self.arti.genere
         genere = property(_genere)
+        
+        def _modello(self):
+            """ esempio di funzione  unita alla property """
+            if self.arti:return self.arti.denominazione_modello
+        denominazione_modello = property(_modello)
 
 
 artic = Table('articolo', params['metadata'],schema = params['schema'],autoload=True)

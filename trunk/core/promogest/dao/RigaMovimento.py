@@ -252,6 +252,11 @@ class RigaMovimento(Dao):
             """ esempio di funzione  unita alla property """
             if self.rig:return self.rig.genere
         genere = property(_genere)
+        
+        def _modello(self):
+            """ esempio di funzione  unita alla property """
+            if self.rig:return self.rig.denominazione_modello
+        denominazione_modello = property(_modello)
 
 
     def filter_values(self,k,v):
