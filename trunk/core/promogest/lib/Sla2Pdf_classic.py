@@ -29,13 +29,8 @@ from reportlab.lib import colors, utils
 from reportlab.platypus import Table, TableStyle, Paragraph, Frame
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
-#from reportlab.lib.pagesizes import cm, inch, A4, landscape
 from reportlab.pdfgen.canvas import Canvas
-#from PIL import Image
 
-##from elementtree import ElementTree
-##from elementtree.ElementTree import *
-#import cElementTree as ElementTree
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment
 
@@ -81,9 +76,7 @@ class Sla2Pdf_classic(object):
     def serialize(self, objects, dao):
         """ Model parsing, values substitution and pdf creation """
         self.objects = objects
-        #~ print "[[[[[[[[[]]]]]]]]]]", objects
         result = None
-        #try:
         self.dao =dao
         self.initialize()
         self.findTablesAndTags()
@@ -93,7 +86,6 @@ class Sla2Pdf_classic(object):
         self.addEmptyPages()
         self.fillDocument()
         self.translate()
-        #finally:
 
         # temporary pdf file is removed immediately
         filename = self.pdfFolder + self.pdfFileName + '.pdf'
@@ -690,7 +682,6 @@ class Sla2Pdf_classic(object):
 
             return fontName
 
-
         def drawImage(width, height):
             """ Drawing an image """
             (imgPath, imgFile) = os.path.split(self.pfile)
@@ -701,7 +692,6 @@ class Sla2Pdf_classic(object):
                                 width=width,
                                 height=height)
             self.canvas.saveState()
-
 
         def drawCell():
             """ Drawing a cell text """
@@ -826,7 +816,6 @@ class Sla2Pdf_classic(object):
                           showBoundary=0)
                 f.addFromList(lst, self.canvas)
                 self.canvas.saveState()
-
 
         def drawTable():
             """ Drawing a table """

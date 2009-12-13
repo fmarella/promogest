@@ -5,14 +5,11 @@
 # Copyright (C) 2007-2009 by Promotux Informatica - http://www.promotux.it/
 # Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
 
-import string
 from decimal import *
-import gtk, gobject, os
+import gtk, os
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
-from promogest.ui.utilsCombobox import fillModelCombobox,fillComboboxListini
-from promogest.dao.Fornitura import Fornitura
 from promogest.dao.DaoUtils import giacenzaArticolo
 
 
@@ -180,7 +177,6 @@ class ManageLabelsToPrint(GladeWidget):
 
     def on_calculate_button_clicked(self, button):
         idMagazzino = findIdFromCombobox(self.id_magazzino_label_combobox)
-        print "IDMAGAZZINOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", idMagazzino
         if self.manuale_radio.get_active():
             quantitagenerale = self.quantita_entry.get_text()
             for row in self._treeViewModel:

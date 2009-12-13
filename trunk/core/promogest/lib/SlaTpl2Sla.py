@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Promogest
 #
 # Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
@@ -7,25 +6,12 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni  <francesco@promotux.it>
 
-
-import sys
 import os
 import math
-import datetime
-import time
 import pprint
-from reportlab.lib import colors, utils
-from reportlab.platypus import Table, TableStyle, Paragraph, Frame
-from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT, TA_JUSTIFY
-from reportlab.lib.pagesizes import cm, inch, A4, landscape
-from reportlab.pdfgen.canvas import Canvas
-from PIL import Image
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment
 from promogest.lib import Sla2pdfUtils
-
-
 
 # KNOWN BUGS
 # ****************************************************************
@@ -45,7 +31,7 @@ from promogest.lib import Sla2pdfUtils
 ## Image Size fixed on pdf convertion.
 # fixed fontsize recognition with standard font if not setted
 
-VERSION = "0.6"
+__Version__ = "0.6"
 
 class SlaTpl2Sla(object):
 
@@ -70,8 +56,7 @@ class SlaTpl2Sla(object):
         self.cycle = 0
 
     def slaRootTag(self):
-        """
-        Restituisce la root del file XML di scribus
+        """ Restituisce la root del file XML di scribus
         """
         f = file(self.slaFileName, 'rb')
         text = f.read()
@@ -86,11 +71,8 @@ class SlaTpl2Sla(object):
         self.root = self.doc.getroot() #<Element 'SCRIBUSUTF8NEW' at 0x24cf660>
         self.document= self.root.findall('DOCUMENT')[0]
 
-
-
     def indexGroupTableFromListDict(self, group):
-        """
-        Dato un gruppo ti dà la sua tabella
+        """ Dato un gruppo ti dà la sua tabella
         """
         for index in self.tablesProperties:
             if str(index.keys()[0]).strip() == str(group).strip():
@@ -109,42 +91,39 @@ class SlaTpl2Sla(object):
         self.slaRootTag()
         version=self.scribusVersion()
         if version:
+            print "DICIAMO 1.3.4", "label",self.label,"classic", self._classic
             from promogest.lib.Sla2Pdf_ng import Sla2Pdf_ng as Sla2Pdf
-            #print "TEMPLATE CREATO O MODIFICATO CON SCRIBUS %s" %version
+            self.findTablesAndTags()
+            self.findTablesProperties()
+            self.getIteratableGroups()
+            self.getPagesNumber()
+            if self.label and self._classic:
+                self.duplicateElementLabel()
+            self.addEmptyPages()
+            self.fillDocument()
+            self.findTablesProperties()
+            
+            slatopdf = Sla2Pdf(document = self.slaDocumentTag(),
+                            pdfFolder = self.pdfFolder,
+                            version=self.scribusVersion(),
+                            tablesProperties=self.tablesProperties,
+                            pgObjList=self.slaPageObjects(),
+                            numPages = self.pagesNumber,
+                            iteratableGroups = self.iteratableGroups)
+            # temporary pdf file is removed immediately
+            filename = self.pdfFolder + self.pdfFileName + '.pdf'
+            f = file(filename, 'rb')
+            result = f.read()
+            f.close()
+#            os.remove(filename)
+            return result
         else:
-            #print "TEMPLATE CREATO O MODIFICATO CON SCRIBUS %s" %version
+            print "DICIAMO 1.3.3"
             from promogest.lib.Sla2Pdf_classic import Sla2Pdf_classic
             slatopdf = Sla2Pdf_classic(pdfFolder = self.pdfFolder,
                                 slaFileName = self.slaFileName,
                                 report = self.report).serialize(objects, dao=dao)
             return slatopdf
-        #print "IL FILEEEEEEEEEEEEEEEEEEEE", self.slaFileName, template_file, version
-        self.findTablesAndTags()
-        self.findTablesProperties()
-        self.getIteratableGroups()
-        self.getPagesNumber()
-#        print "SCLAAAASSICCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", self._classic, self.getPagesNumber()
-        if self.label and self._classic:
-            self.duplicateElementLabel()
-        self.addEmptyPages()
-
-        self.fillDocument()
-        self.findTablesProperties()
-        slatopdf = Sla2Pdf(document = self.slaDocumentTag(),
-                        pdfFolder = self.pdfFolder,
-                        version=self.scribusVersion(),
-                        tablesProperties=self.tablesProperties,
-                        pgObjList=self.slaPageObjects(),
-                        numPages = self.pagesNumber,
-                        iteratableGroups = self.iteratableGroups)
-        # temporary pdf file is removed immediately
-        filename = self.pdfFolder + self.pdfFileName + '.pdf'
-        f = file(filename, 'rb')
-        result = f.read()
-        f.close()
-        os.remove(filename)
-
-        return result
 
     def findTablesProperties(self):
         """
@@ -280,8 +259,6 @@ class SlaTpl2Sla(object):
                 propertiesList.append(groupDict)
         self.tablesProperties=propertiesList
 
-
-
     def findTablesAndTags(self):
         """
         Questa funzione crea DUE e dico DUE dizionari, uno con chiave gruppo
@@ -319,7 +296,6 @@ class SlaTpl2Sla(object):
                         for k in tags.keys():
                             self.tagsTables[k] = group
                 self.tablesTags[group] = vector
-
 
     def getIteratableGroups(self):
         """
@@ -365,7 +341,6 @@ class SlaTpl2Sla(object):
         #self.pagesNumber = 2
         print "questo è il nuovo numero di pagine del template sla:", self.pagesNumber
 
-
     def createPageTag(self, pagesNumber=None):
         # Index of first tag 'PAGE'
         self.pagesNumber = pagesNumber
@@ -395,7 +370,6 @@ class SlaTpl2Sla(object):
             self.lastPageYPos = numPages[i-1].get('PAGEYPOS')
             numPages[i].set('PAGEYPOS', str(float(self.pageHeight) + float(self.borderTop) + float(self.lastPageYPos)))
 
-
     def addEmptyPages(self):
         """ Creates new pages based on the model's first page """
         self.createPageTag(self.pagesNumber)
@@ -407,7 +381,7 @@ class SlaTpl2Sla(object):
             #self.duplicateTags()
             self.labelSla()
 
-        #self.doc.write('__temp.sla')
+        self.doc.write('_temp.sla')
 
     def duplicateElement(self):
         pages = len(self.slaPage())
@@ -451,7 +425,6 @@ class SlaTpl2Sla(object):
                 initial = app.get('YPOS')
                 app.set('YPOS', str( j * (float(self.pageHeight) + float(self.borderTop)) + float(initial)))
                 self.slaDocumentTag().append(app)
-
 
     def duplicateElementLabel(self):
         """
@@ -718,9 +691,6 @@ class SlaTpl2Sla(object):
                                 increment = False
                             itext.set('CH', tmp)
 
-
-
-
     def fillDocument(self):
         """ Replacing tags with real values """
         self.pageObjects = self.slaPageObjects()
@@ -850,7 +820,7 @@ class SlaTpl2Sla(object):
         #self.pageObjectPropertiesDict()
         if not self.label:
             self.findTablesProperties()
-        #self.doc.write('___temp.sla')
+        self.doc.write('___temp.sla')
 
     def callFunction(self, functionName, value=None, parameter=None):
         """
@@ -949,11 +919,11 @@ class SlaTpl2Sla(object):
 
     def slaCharStyleDefault(self):
         charStyleTag = self.slaDocumentTag().findall('CHARSTYLE')
-        return charStyleDefault
+        return charStyleTag
 
     def slaPdfDefault(self):
         pdfTag = self.slaDocumentTag().findall('PDF')
-        return pdfDefault
+        return pdfTag
 
     def slaPage(self):
         page = self.slaDocumentTag().findall('PAGE')

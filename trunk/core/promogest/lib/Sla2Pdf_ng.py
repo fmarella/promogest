@@ -7,7 +7,6 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni  <francesco@promotux.it>
 
-
 import os
 
 from reportlab.lib import colors, utils
@@ -15,8 +14,6 @@ from reportlab.platypus import Table, TableStyle,Frame
 from reportlab.platypus import *
 
 from reportlab.pdfgen.canvas import Canvas
-
-import xml.etree.cElementTree as ElementTree
 from promogest import Environment
 from promogest.lib import Sla2pdfUtils
 from promogest.lib import ColorDicTFull
@@ -25,12 +22,15 @@ from promogest.lib import ColorDicTFull
 class Sla2Pdf_ng(object):
     """ sla to pdf format translation """
 
-    def __init__(self, document,pdfFolder, version, tablesProperties,pgObjList, numPages,iteratableGroups  ):
+    def __init__(self, document, pdfFolder,
+                         version, tablesProperties,
+                         pgObjList, numPages,
+                         iteratableGroups):
         """
         Build a template object based on the specified file-like
         object and sequence of objects
         """
-        self.pdfFolder = pdfFolder
+        self.pdfFolder = pdfFolder 
         self.pdfFileName = '_temp'
         self.version = version
         self.tablesProperties = tablesProperties
@@ -40,6 +40,40 @@ class Sla2Pdf_ng(object):
         self.numPages = numPages
         self.iteratableGroups = iteratableGroups
         self.translate()
+
+    def translate(self):
+        self.pageProperties = Sla2pdfUtils.pageProFunc(self.document)
+        self.canvas = Canvas(filename = self.pdfFolder + self.pdfFileName + '.pdf', pagesize=(self.pageProperties[0][8],self.pageProperties[0][7]))
+        # Page's table
+        reiter = False
+        self.pdfPage = 0
+        for e in xrange(0, self.numPages):
+            self.pdfPage = e
+            for group in self.tablesProperties:
+                self.group = group.keys()[0]
+                self.tablesPropertie = group.values()[0]
+                try:
+                    self.group= self.group.strip().split('%%%')[0]
+                except:
+                    self.group= self.group.strip()
+                if self.group in self.iteratableGroups:
+                    colu = int(self.tablesPropertie['columns'])
+                    self.tablesPropertie['iterproper'] = self.tablesPropertie['parasobj'][colu:(colu*2)]
+                    reiter = True
+                cells = int(self.tablesPropertie['cells'])
+                # Closing pages (elements of the same page must be near)
+                if "noGroup" in self.group and self.tablesPropertie["pfile"] != "" :
+                    #print "IMMAGINEEEEEEEEEEEEEEE", self.group, self.tablesPropertie["isTableItem"]
+                    self.drawImage(group=self.group) # IMMAGINE
+                elif "noGroup" in self.group  and self.tablesPropertie["pfile"] == "":
+                    #print "MONOCELLAAAAAAA", self.group, self.tablesPropertie
+                    self.drawTable(group =self.group, monocell=True)# MONOCELLA
+                else:
+#                    print "TABELLAAAAAAAA", self.group, self.tablesPropertie["isTableItem"]
+                    self.drawTable(group =self.group, reiter = reiter) # TABELLA
+            self.canvas.saveState()
+            self.canvas.showPage()
+        self.canvas.save()
 
     def drawImage(self,group):
         """ Drawing an image """
@@ -72,6 +106,7 @@ class Sla2Pdf_ng(object):
         heights = self.tablesPropertie['heights']
         xpos = self.tablesPropertie['xpos']
         ypos = self.tablesPropertie['ypos']
+        print "DATI", cells, columns, rows, group, heights, widths
         contColumns = 0
         ch = ''
         col = 0
@@ -191,18 +226,20 @@ class Sla2Pdf_ng(object):
                 matrix.append(vector)
                 vector = []
                 cycle = False
-        if columns > 1 and not reiter:
-            #wid = []
-            hei = []
-            for h in range(0,len(heights),rows):
-                hei.append(heights[h])
-            heights = hei
+#        if columns > 1 and not reiter:
+#            #wid = []
+#            hei = []
+#            for h in range(0,len(heights),rows):
+#                hei.append(heights[h])
+#            heights = hei
+#        print "MATRIXXXXXXXXXXXXXXXXX", matrix,widths[:columns],heights[:rows], rows
         table=Table(matrix,style=stile,  colWidths=widths[:columns], rowHeights=heights[:rows])
 
         lst.append(table)
         # Effective table size
         sumRows = Sla2pdfUtils.sumRowsFunc(heights,rows)
         sumColumns = Sla2pdfUtils.sumColumnsFunc(widths,columns)
+#        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", sumRows, sumColumns
         f = Frame(x1=(xpos[0] - self.pageProperties[self.pdfPage][9]),
                     y1=(self.pageProperties[self.pdfPage][7] - ypos[0] - sumRows + self.pageProperties[self.pdfPage][10] - 12),
                     width=sumColumns,
@@ -212,44 +249,6 @@ class Sla2Pdf_ng(object):
         f.addFromList(lst, self.canvas)
         reiter = False
         #self.canvas.saveState()
-
-
-    def translate(self):
-        # begin translate
-        self.pageProperties = Sla2pdfUtils.pageProFunc(self.document)
-        docPage = self.numPages
-        self.canvas = Canvas(filename = self.pdfFolder + self.pdfFileName + '.pdf', pagesize=(self.pageProperties[0][8],self.pageProperties[0][7]))
-        # Page's table
-        reiter = False
-        self.pdfPage = 0
-        #docPage = docPage +docPage
-        for e in xrange(0, docPage):
-            self.pdfPage = e
-            for group in self.tablesProperties:
-                self.group = group.keys()[0]
-                self.tablesPropertie = group.values()[0]
-                try:
-                    self.group= self.group.strip().split('%%%')[0]
-                except:
-                    self.group= self.group.strip()
-                if self.group in self.iteratableGroups:
-                    colu = int(self.tablesPropertie['columns'])
-                    self.tablesPropertie['iterproper'] = self.tablesPropertie['parasobj'][colu:(colu*2)]
-                    reiter = True
-                cells = int(self.tablesPropertie['cells'])
-                # Closing pages (elements of the same page must be near)
-                if "noGroup" in self.group and self.tablesPropertie["pfile"] != "" :
-                    #print "IMMAGINEEEEEEEEEEEEEEE", self.group, self.tablesPropertie["isTableItem"]
-                    self.drawImage(group=self.group) # IMMAGINE
-                elif "noGroup" in self.group  and self.tablesPropertie["pfile"] == "":
-                    #print "MONOCELLAAAAAAA", self.group, self.tablesPropertie
-                    self.drawTable(group =self.group, monocell=True)# MONOCELLA
-                else:
-                    #print "TABELLAAAAAAAA", self.group, self.tablesPropertie["isTableItem"]
-                    self.drawTable(group =self.group, reiter = reiter) # TABELLA
-            self.canvas.saveState()
-            self.canvas.showPage()
-        self.canvas.save()
 
     # ATTENZIONE !!!   this part above is for generic function.
 
@@ -300,7 +299,6 @@ class Sla2Pdf_ng(object):
         foreground = colors.HexColor(ColorDicTFull.colorDict[str(textColor)][1])
         return foreground
 
-
     def backgroundFunc(self, pageObject):
         cellProperties = pageObject
         if cellProperties['cellBackground'] == str("None"):
@@ -325,8 +323,6 @@ class Sla2Pdf_ng(object):
         else:
             itext = None
         return [ch, itext]
-
-
 
     def slaStyleDefault(self):
         styleTag = self.document.findall('STYLE')[0]

@@ -11,27 +11,16 @@
 import time
 import gtk
 import gobject
-import webbrowser
-import math
 import os
-import shutil
 import sys
-import tempfile
 import threading
 import os.path
-import urllib2
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
-
 from promogest.Environment import conf
 from GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.lib.XmlGenerator import XlsXmlGenerator
 from promogest.lib.CsvGenerator import CsvFileGenerator
 from utils import *
-import utils
 import Login
 
 from promogest import Environment
@@ -40,12 +29,8 @@ if Environment.new_print_enjine:
 else:
     from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
 from promogest.ui.SendEmail import SendEmail
-
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
-
-from promogest.dao.Articolo import Articolo
 from promogest.dao.Azienda import Azienda
-
 
 
 class Anagrafica(GladeWidget):
@@ -146,7 +131,6 @@ class Anagrafica(GladeWidget):
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura dell'anagrafica """
         self.anagrafica_complessa_window.show_all()
-
 
     def on_records_file_export_clicked(self, widget):
         data = self.set_export_data()
@@ -250,7 +234,6 @@ class Anagrafica(GladeWidget):
     def on_send_Email_activate(self, widget):
         sendemail = SendEmail()
 
-
     def on_licenza_menu_activate(self, widget):
         licenzaDialog = GladeWidget('licenza_dialog', callbacks_proxy=self)
         licenzaDialog.getTopLevel().set_transient_for(self.getTopLevel())
@@ -269,7 +252,6 @@ class Anagrafica(GladeWidget):
         response = licenzaDialog.licenza_dialog.run()
         if response == gtk.RESPONSE_OK:
             licenzaDialog.licenza_dialog.destroy()
-
 
     def on_seriale_menu_activate(self, widget):
         try:
@@ -353,7 +335,6 @@ class Anagrafica(GladeWidget):
     def on_record_new_activate(self, widget=None):
         self.editElement.setVisible(True)
         self.editElement.setDao(None)
-
         self.setFocus()
 
     def on_record_delete_activate(self, widget):
@@ -371,9 +352,7 @@ class Anagrafica(GladeWidget):
         dao = self.filter.getSelectedDao()
         dao.delete()
         self.filter.refresh()
-
         self.htmlHandler.setDao(None)
-
         self.setFocus()
 
     def on_record_edit_activate(self, widget, path=None, column=None):
@@ -382,7 +361,6 @@ class Anagrafica(GladeWidget):
         self._selectedDao = dao
         self.editElement.setVisible(True)
         self.editElement.setDao(dao)
-
         self.setFocus()
 
     def on_record_duplicate_menu_activate(self, widget, path=None, column=None):
@@ -390,15 +368,12 @@ class Anagrafica(GladeWidget):
         self._selectedDao = dao
         self.duplicate(dao)
 
-
     def duplicate(self):
         """ Duplica il dao corrente """
         raise NotImplementedError
 
-
     def on_records_print_activate(self, widget):
         self._handlePrinting(pdfGenerator=self.reportHandler, report=True)
-
 
     def on_Stampa_Frontaline_clicked(self, widget):
         if "Label" in Environment.modulesList:
@@ -547,7 +522,6 @@ class Anagrafica(GladeWidget):
                     gobject.idle_add(showPrintingDialog)
                 if pdfGenerator.defaultFileName == 'label' and self.__returnResults == None:
                     progressDialog.getTopLevel().destroy()
-                    #print "DFDFHFHHJDJDJJHGJHGJUYTUYTRTUTUEFASDASDASDASDa",results
                     #gobject.idle_add(self.manageLabels,results)
                     self.manageLabels(results)
                 else:
@@ -559,7 +533,6 @@ class Anagrafica(GladeWidget):
                                             kwargs={})
                         #t.setDaemon(True) # FIXME: are we sure?
                         t.start()
-
 
         def fetchingThread(daos=None):
             """ funzione di prelievo dei risultati """
@@ -587,7 +560,6 @@ class Anagrafica(GladeWidget):
     def on_records_print_on_screen_activate(self, widget):
         previewDialog = self.reportHandler.buildPreviewWidget()
         previewDialog.getTopLevel().show_all()
-
 
     def on_records_print_progress_dialog_response(self, dialog, responseId):
         if responseId == gtk.RESPONSE_CANCEL:
@@ -1066,8 +1038,6 @@ class AnagraficaHtml(object):
         # FIXME: dummy function for API compatibility, refactoring(TM) needed!
         pass
 
-
-
     def pdf(self, operationName, classic=None, template_file=None):
         self._slaTemplate = None
         self._slaTemplateObj=None
@@ -1220,22 +1190,11 @@ class AnagraficaLabel(object):
         """ Restituisce una stringa contenente il report in formato PDF
         """
         azienda = Azienda().getRecord(id=Environment.azienda)
-        if not Environment.new_print_enjine:
-            if self._slaTemplateObj is None:
-                #self._slaTemplateObj = Sla2Pdf(slaFileName=self._slaTemplate,
-                                            #pdfFolder=self._anagrafica._folder,
-                                            #report=self._anagrafica._reportType,
-                                            #label=True).createPDF(objects=param)
-                #print "VISTO CHE SIAMO QUI", classic, template_file
-                self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
-                                            pdfFolder=self._anagrafica._folder,
-                                            report=self._anagrafica._reportType,
-                                            label=True)
         param = []
         for d in self.objects:
             d.resolveProperties()
             param.append(d.dictionary(complete=True))
-        multilinedirtywork(param)
+#        multilinedirtywork(param)
         if azienda:
             azidict = azienda.dictionary(complete=True)
             for a,b in azidict.items():
@@ -1245,11 +1204,18 @@ class AnagraficaLabel(object):
             if param:
                 param[0].update(azidict)
         if not Environment.new_print_enjine:
-            #print "AAOAOAOAOAOAAOAOAOAOAAO", template_file
-            return self._slaTemplateObj.serialize(param, self.objects,classic = classic,
-                                            template_file=template_file)
+            print "OLD PRINT ENGINE"
+            self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
+                                        pdfFolder=self._anagrafica._folder,
+                                        report=self._anagrafica._reportType,
+                                        label=True).serialize(
+                                                    param,
+                                                    self.objects,
+                                                    classic = classic,
+                                                    template_file=template_file)
+            return self._slaTemplateObj
         else:
-            #print "AEECOCOCOSOAAAAAAAAAAAAAAAAAAAAAAAAA"
+            print "NEW PRINT ENGINE"
             return Sla2Pdf(slaFileName=self._slaTemplate,
                             pdfFolder=self._anagrafica._folder,
                             report=self._anagrafica._reportType,
