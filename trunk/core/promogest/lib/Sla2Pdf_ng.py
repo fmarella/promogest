@@ -10,9 +10,7 @@
 import os
 
 from reportlab.lib import colors, utils
-from reportlab.platypus import Table, TableStyle,Frame
-from reportlab.platypus import *
-
+from reportlab.platypus import Table, TableStyle, Frame, Image
 from reportlab.pdfgen.canvas import Canvas
 from promogest import Environment
 from promogest.lib import Sla2pdfUtils
