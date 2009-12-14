@@ -111,7 +111,7 @@ class ProductFromCsv(object):
         self.daoArticolo = None
         """Gets the existing Dao"""
         self.product = product
-        print "dissss", self.__dict__
+#        print "dissss", self.__dict__
         for key in possibleFieldsDict.keys():
             if key not in self.product.keys():
                 setattr(self, possibleFieldsDict[key], None)

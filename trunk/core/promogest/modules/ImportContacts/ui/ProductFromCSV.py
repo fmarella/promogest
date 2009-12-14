@@ -23,7 +23,6 @@ import promogest.ui.Main
 from promogest.ui.Main import *
 from promogest.ui.utils import *
 import promogest.ui.Login
-#from ImportPriceListPreview import ImportPreview
 from fieldsDict import *
 
 

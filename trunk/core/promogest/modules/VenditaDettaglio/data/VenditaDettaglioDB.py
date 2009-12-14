@@ -83,24 +83,24 @@ if hasattr(conf, 'VenditaDettaglio'):
             schema=params['schema']
             )
     scontoTestataScontrinoTable.create(checkfirst=True)
-    
-    
+
+
     schema = params['schema']
     tabella = schema+".sconto_riga_scontrino"
     tabella2 = schema+".sconto_scontrino"
     tabella3 = schema+".sconto_testata_scontrino"
 
 if not hasattr(conf.VenditaDettaglio,"migrazione_sincro_effettuata") or conf.VenditaDettaglio.migrazione_sincro_effettuata =="no":
-    msg = """ATTENZIONE, per qualche giorno l'avvio del pg2 
-potrebbe essere lento ( anche qualche minuto): 
+    msg = """ATTENZIONE, per qualche giorno l'avvio del pg2
+potrebbe essere lento ( anche qualche minuto):
 Il rallentamento è solo di chi usa il modulo di
 vendita al dettaglio, ed è dovuto ad un aggiornamento/modifica
 del database per facilitare e rendere coerente
 la sincronizzazione di una sede centrale con i punti vendita
-Se il Promogest parte correttamente ed il modulo funziona vi 
-invitiamo a contattarci al numero verde 800 034561 per disabilitare 
+Se il Promogest parte correttamente ed il modulo funziona vi
+invitiamo a contattarci al numero verde 800 034561 per disabilitare
 l'aggiornamento grazie.
-Ci scusiamo per l'inconveniente. 
+Ci scusiamo per l'inconveniente.
             """
     dialog = gtk.MessageDialog(None,
                                gtk.DIALOG_MODAL
@@ -116,10 +116,13 @@ Ci scusiamo per l'inconveniente.
     from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
     from promogest.dao.Sconto import Sconto
 
-    stro = 'ALTER TABLE %s DROP CONSTRAINT "sconto_riga_scontrino_id_fkey";' %tabella
-    session.execute(text(stro))  
-    session.commit()    
-    session.flush()
+    try:
+        stro = 'ALTER TABLE %s DROP CONSTRAINT "sconto_riga_scontrino_id_fkey";' %tabella
+        session.execute(text(stro))
+        session.commit()
+        session.flush()
+    except:
+        session.rollback()
 
     dati_sconto = params["session"].query(scontoRigaScontrinoTable.c.id).all()
     cc = None
@@ -143,7 +146,7 @@ Ci scusiamo per l'inconveniente.
         except:
             cc.rollback()
             print "GIA FATTO"
-        
+
     try:
         stri="""ALTER TABLE %s
             ADD CONSTRAINT sconto_riga_scontrino_id_fkey FOREIGN KEY (id)
@@ -154,17 +157,18 @@ Ci scusiamo per l'inconveniente.
         session.flush()
     except:
         print "ADD fallito"
-        
+
     #################### sezione sconto testata scontrino ##########################
 
     try:
         conn = params["engine"].connect()
         trans = conn.begin()
-        stri = 'ALTER TABLE %s DROP CONSTRAINT sconto_testata_scontrino_id_fkey'%tabella3 
-        conn.execute(stri) 
+        stri = 'ALTER TABLE %s DROP CONSTRAINT sconto_testata_scontrino_id_fkey'%tabella3
+        conn.execute(stri)
         trans.commit()
         trans.close()
     except:
+        trans.rollback()
         print "drop fallito"
 
     dati_sconto2 = params["session"].query(scontoTestataScontrinoTable.c.id).all()
@@ -189,7 +193,7 @@ Ci scusiamo per l'inconveniente.
         except:
             cc.rollback()
             print "GIA FATTO"
-        
+
     try:
         stri= """ALTER TABLE %s
                     ADD CONSTRAINT sconto_testata_scontrino_id_fkey FOREIGN KEY (id)
@@ -201,12 +205,11 @@ Ci scusiamo per l'inconveniente.
 #        trans2.close()
     except:
         print "ADD fallito"
-        
-        
+
+
     ################################## sistemo la sequence ....che resta sfasata a causa degli inserimenti ..... ################à
     try:
         command = "SELECT setval( '%s',(SELECT max(id)+1 FROM %s));" %(params["schema"]+".sconto_scontrino_id_seq",params["schema"] +".sconto_scontrino")
         session.execute(text(command))
     except:
         print "PURE QUESTO FATTO"
-
