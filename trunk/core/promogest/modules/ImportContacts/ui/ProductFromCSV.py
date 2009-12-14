@@ -6,13 +6,7 @@
 # Author:  Marco Pinna "Dr astico" <zoccolodignu@gmail.com>
 # Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
 
-import re, string, decimal
 from decimal import *
-import gtk, gobject, os
-from datetime import datetime
-import xml.etree.cElementTree as ElementTree
-from promogest import Environment
-from promogest.ui.GladeWidget import GladeWidget
 from promogest.dao.Articolo import Articolo
 from promogest.dao.AliquotaIva import AliquotaIva
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
@@ -27,13 +21,7 @@ from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 import promogest.ui.AnagraficaListini
 import promogest.ui.Main
 from promogest.ui.Main import *
-from promogest.ui.AnagraficaListini import AnagraficaListini
-from promogest.ui.AnagraficaAliquoteIva import AnagraficaAliquoteIva
-from promogest.ui.AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
-from promogest.ui.AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
-from promogest.ui.AnagraficaFornitori import AnagraficaFornitori
 from promogest.ui.utils import *
-from promogest.ui.utilsCombobox import fillModelCombobox,fillComboboxListini
 import promogest.ui.Login
 #from ImportPriceListPreview import ImportPreview
 from fieldsDict import *
@@ -95,7 +83,6 @@ class ProductFromCsv(object):
         self.denominazione_articolo = str(self.denominazione_articolo)
         self.daoArticolo.codice = self.codice_articolo
         self.daoArticolo.denominazione = self.denominazione_articolo
-
 
         #families
         id_famiglia = None
@@ -259,68 +246,45 @@ class ProductFromCsv(object):
 
             if self.prezzo_vendita_ivato is not None :
                 prezzo = self.sanitizer(self.prezzo_vendita_ivato)
-                #try:
                 daoPriceListProduct.prezzo_dettaglio = mN(prezzo)
-                #except:
-                    #prezzo = self.checkDecimalSymbol(str(prezzo).strip(), decimalSymbol)
-                    #daoPriceListProduct.prezzo_dettaglio = mN(prezzo)
             else:
                 daoPriceListProduct.prezzo_dettaglio = 0
 
             if self.prezzo_vendita_non_ivato is not None:
                 prezzo = self.sanitizer(self.prezzo_vendita_non_ivato)
-                #try:
                 daoPriceListProduct.prezzo_ingrosso = mN(prezzo)
-                #except:
-                    #prezzo = mN(self.checkDecimalSymbol(str(prezzo).split(), decimalSymbol))
-                    #daoPriceListProduct.prezzo_ingrosso = prezzo
             else:
                 daoPriceListProduct.prezzo_ingrosso = 0
-
 
             sconti_ingrosso = [ScontoVenditaIngrosso(),]
             sconti_dettaglio = [ScontoVenditaDettaglio(),]
 
-            if self.sconto_vendita_ingrosso is not None and str(self.sconto_vendita_ingrosso).strip() != "0" and str(self.sconto_vendita_ingrosso).strip() !="":
+            if self.sconto_vendita_ingrosso is not None and\
+                 str(self.sconto_vendita_ingrosso).strip() != "0" and\
+                 str(self.sconto_vendita_ingrosso).strip() !="":
                 self.sconto_vendita_ingrosso = self.sanitizer(self.sconto_vendita_ingrosso)
-                #try:
+
                 sconti_ingrosso[0].valore = mN(self.sconto_vendita_ingrosso)
                 sconti_ingrosso[0].tipo_sconto = 'percentuale'
                 daoPriceListProduct.sconto_vendita_ingrosso = sconti_ingrosso
-                #except:
-                    #sconti_ingrosso[0].valore = mN(self.checkDecimalSymbol(self.sconto_vendita_ingrosso, decimalSymbol))
-                    #sconti_ingrosso[0].tipo_sconto = 'percentuale'
-                    #daoPriceListProduct.sconto_vendita_ingrosso = sconti_ingrosso
 
             if self.sconto_vendita_dettaglio is not None and str(self.sconto_vendita_dettaglio).strip() != "0" and str(self.sconto_vendita_dettaglio).strip() !="":
                 self.sconto_vendita_dettaglio = self.sanitizer(self.sconto_vendita_dettaglio)
-                #try:
                 sconti_dettaglio[0].valore = mN(self.sconto_vendita_dettaglio)
                 sconti_dettaglio[0].tipo_sconto = 'percentuale'
                 daoPriceListProduct.sconto_vendita_dettaglio = sconti_dettaglio
-                #except:
-                    #sconti_dettaglio[0].valore = mN(self.checkDecimalSymbol(self.sconto_vendita_dettaglio, decimalSymbol))
-                    #sconti_dettaglio[0].tipo_sconto = 'percentuale'
-                    #daoPriceListProduct.sconto_vendita_dettaglio = sconti_dettaglio
 
-            if self.prezzo_acquisto_non_ivato is not None and str(self.prezzo_acquisto_non_ivato).strip() != "0" and str(self.prezzo_acquisto_non_ivato).strip() !="":
+            if self.prezzo_acquisto_non_ivato is not None and\
+                     str(self.prezzo_acquisto_non_ivato).strip() != "0" and\
+                     str(self.prezzo_acquisto_non_ivato).strip() !="":
                 prezzo = self.sanitizer(self.prezzo_acquisto_non_ivato)
-
-                #try:
                 daoPriceListProduct.ultimo_costo = mN(prezzo)
-                #except:
-                    #prezzo = mN(self.checkDecimalSymbol(str(prezzo).strip(), decimalSymbol))
-                    #daoPriceListProduct.ultimo_costo = prezzo
-            elif self.prezzo_acquisto_ivato is not None and str(self.prezzo_acquisto_ivato).strip() != "0" and str(self.prezzo_acquisto_ivato).strip() !="":
+            elif self.prezzo_acquisto_ivato is not None and \
+                    str(self.prezzo_acquisto_ivato).strip() != "0" and\
+                    str(self.prezzo_acquisto_ivato).strip() !="":
                 prezzo = self.sanitizer(self.prezzo_acquisto_ivato)
                 self.aliquota_iva.percentuale = self.sanitizer(self.aliquota_iva.percentuale)
-                #prezzo = prezzo.replace("€","")
-                #prezzo = prezzo.replace(",",".")
-                #try:
                 daoPriceListProduct.ultimo_costo =  mN(calcolaPrezzoIva(mN(prezzo), -1 * (mN(self.aliquota_iva.percentuale))))
-                #except:
-                    #prezzo = mN(self.checkDecimalSymbol(str(prezzo).split(), decimalSymbol))
-                    #daoPriceListProduct.ultimo_costo =  mN(calcolaPrezzoIva(mN(prezzo), -1 * mN(self.aliquota_iva.percentuale)))
             else:
                 daoPriceListProduct.ultimo_costo = 0
             daoPriceListProduct.persist()

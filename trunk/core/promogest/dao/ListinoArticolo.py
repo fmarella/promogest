@@ -25,13 +25,17 @@ class ListinoArticolo(Dao):
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
 
+    @reconstructor
+    def init_on_load(self):
+        self.__scontiVenditaDett = None
+        self.__scontiVenditaIngr = None
+
     def cleann(self):
         #print "VERIFICO SE CI SONO ENTRY FALSE IN LISTINO ARTICOLO"
         falsi = self.select(listinoAttuale=bool(0), batchSize=None)
         if falsi:
             for f in falsi:
                 f.delete()
-
 
     def _denominazione(self):
         if self.listi:return self.listi.denominazione
@@ -68,30 +72,23 @@ class ListinoArticolo(Dao):
         else: return ""
     codice_a_barre= property(_codice_a_barre)
 
-
     if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
 
         def _denominazione_gruppo_taglia(self):
-            #if self.ATC: return self.ATC.denominazione or ""
             if self.arti:return self.arti.denominazione_gruppo_taglia
-            #else: return ""
         denominazione_gruppo_taglia = property(_denominazione_gruppo_taglia)
 
         def _id_articolo_padre(self):
-            #if self.ATC: return self.ATC.id_articolo_padre or None
             if self.arti:return self.arti.id_articolo_padre
         id_articolo_padre_taglia_colore=property(_id_articolo_padre)
         id_articolo_padre = property(_id_articolo_padre)
 
         def _id_gruppo_taglia(self):
-            #if self.ATC: return self.ATC.id_gruppo_taglia or None
             if self.arti:return self.arti.id_gruppo_taglia
         id_gruppo_taglia=property(_id_gruppo_taglia)
 
         def _id_genere(self):
-            #if self.ATC: return self.ATC.id_genere or None
             if self.arti:return self.arti.id_genere
-            #else: return ""
         id_genere = property(_id_genere)
 
         def _id_stagione(self):
@@ -131,7 +128,6 @@ class ListinoArticolo(Dao):
             """ esempio di funzione  unita alla property """
             if self.arti:return self.arti.genere
         genere = property(_genere)
-
 
     def _getScontiVenditaDettaglio(self):
         self.__dbScontiVenditaDett = params['session'].\
@@ -181,8 +177,6 @@ class ListinoArticolo(Dao):
         return getStringaSconti(listSconti)
 
     stringaScontiIngrosso = property(_getStringaScontiIngrosso)
-
-
 
     def _getApplicazioneScontiIngrosso(self):
         return "scalare"
@@ -243,8 +237,6 @@ class ListinoArticolo(Dao):
             params["session"].commit()
             return True
 
-
-
     def persist(self,sconti=None):
 
         if not self.data_listino_articolo:
@@ -290,7 +282,6 @@ class ListinoArticolo(Dao):
                 params["session"].add(self.__scontiVenditaDett[0])
             except:
                 pass
-
             try:
                 self.__scontiVenditaIngr[0].id_listino=self.id_listino
                 self.__scontiVenditaIngr[0].id_articolo = self.id_articolo

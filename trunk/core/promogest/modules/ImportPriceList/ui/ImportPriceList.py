@@ -30,7 +30,8 @@ class ImportPriceList(GladeWidget):
 
     def __init__(self, mainWindow):
         GladeWidget.__init__(self,'import_price_list_window',
-                    fileName="import_price_list_window.glade")
+                    fileName="ImportPriceList/gui/import_price_list_window.glade",
+                    isModule=True)
         self._mainWindow = mainWindow
         self._mainWindow.hide()
         if self._mainWindow in Login.windowGroup:
