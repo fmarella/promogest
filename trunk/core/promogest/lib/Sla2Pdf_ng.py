@@ -28,7 +28,7 @@ class Sla2Pdf_ng(object):
         Build a template object based on the specified file-like
         object and sequence of objects
         """
-        self.pdfFolder = pdfFolder 
+        self.pdfFolder = pdfFolder
         self.pdfFileName = '_temp'
         self.version = version
         self.tablesProperties = tablesProperties
@@ -104,7 +104,7 @@ class Sla2Pdf_ng(object):
         heights = self.tablesPropertie['heights']
         xpos = self.tablesPropertie['xpos']
         ypos = self.tablesPropertie['ypos']
-        print "DATI", cells, columns, rows, group, heights, widths
+#        print "DATI", cells, columns, rows, group, heights, widths
         contColumns = 0
         ch = ''
         col = 0

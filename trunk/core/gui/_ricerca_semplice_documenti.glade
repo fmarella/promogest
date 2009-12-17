@@ -643,6 +643,9 @@
     </columns>
     <data>
       <row>
+        <col id="0" translatable="yes"/>
+      </row>
+      <row>
         <col id="0" translatable="yes">Tutti</col>
       </row>
       <row>

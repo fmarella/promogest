@@ -102,7 +102,7 @@ class SlaTpl2Sla(object):
             self.addEmptyPages()
             self.fillDocument()
             self.findTablesProperties()
-            
+
             slatopdf = Sla2Pdf(document = self.slaDocumentTag(),
                             pdfFolder = self.pdfFolder,
                             version=self.scribusVersion(),
@@ -115,7 +115,7 @@ class SlaTpl2Sla(object):
             f = file(filename, 'rb')
             result = f.read()
             f.close()
-#            os.remove(filename)
+            os.remove(filename)
             return result
         else:
             print "DICIAMO 1.3.3"
