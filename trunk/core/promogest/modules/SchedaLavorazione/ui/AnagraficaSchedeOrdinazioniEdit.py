@@ -273,7 +273,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             self._parzialeNetto = self._parzialeNetto + row.valore_unitario_netto * row.quantita
             #findComboboxRowFromId(self.listino_combobox, row.id_listino)
             if row.descrizione == "Contrassegno":
-                row.quantita = 1 
+                row.quantita = 1
             self._articoliTreeviewModel.append([row,
                                                 idArticolo,
                                                 codice,
@@ -654,7 +654,9 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                             RigaSchedaOrdinazione.id_scheda == SchedaOrdinazione.id,
                             Riga.id_articolo==idArticolo,
                             Articolo.id==idArticolo)).all()
+        print "PAAAAART", part, idArticolo
         for r in part:
+            print "QUANTITA",r.id, r.quantita
             t +=r.quantita
         return t
 
