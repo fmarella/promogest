@@ -198,10 +198,16 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         idFornitore = self.id_fornitore_filter_customcombobox.getId()
         idAgente = self.id_agente_filter_customcombobox._id
         statoDocumento = self.stato_documento_filter_combobox.get_active()
-        if statoDocumento == -1:statoDocumento = None
-        elif statoDocumento == 0: statoDocumento = and_("FALSE", "TRUE")
-        elif statoDocumento == 1 : statoDocumento = "FALSE"
-        elif statoDocumento == 2: statoDocumento = "TRUE"
+        if statoDocumento == -1 or statoDocumento == 0:
+            statoDocumento = None
+        elif statoDocumento == 1:
+            statoDocumento = and_("FALSE", "TRUE")
+        elif statoDocumento == 2:
+            statoDocumento = "FALSE"
+        elif statoDocumento == 3:
+            statoDocumento = "TRUE"
+        else:
+            statoDocumento = None
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         #genero il dizionario dei filtri
         self.filterDict = {"daNumero":daNumero ,
@@ -283,4 +289,3 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             self.id_fornitore_filter_customcombobox.grab_focus()
             self.id_cliente_filter_customcombobox.set_active(0)
             self.id_cliente_filter_customcombobox.set_sensitive(False)
-
