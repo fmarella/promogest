@@ -80,7 +80,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         self._modifica.qa_zero_radio.connect('toggled', self.on_macro_filter_toggled)
         self._modifica.qa_negativa_radio.connect('toggled', self.on_macro_filter_toggled)
         self._modifica.val_negativo_radio.connect('toggled', self.on_macro_filter_toggled)
-        
+
         self.setRiepilogo()
 
     def draw(self):
@@ -171,7 +171,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         column.set_min_width(250)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Produttore', rendererSx, text=8)
+        column = gtk.TreeViewColumn('c Barre', rendererSx, text=8)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, 'produttore')
@@ -179,7 +179,15 @@ class GestioneInventario(RicercaComplessaArticoli):
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Famiglia', rendererSx, text=9)
+        column = gtk.TreeViewColumn('Produttore', rendererSx, text=9)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(True)
+        column.connect("clicked", self.filter._changeOrderBy, 'produttore')
+        column.set_resizable(True)
+        column.set_expand(False)
+        treeview.append_column(column)
+
+        column = gtk.TreeViewColumn('Famiglia', rendererSx, text=10)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, 'denominazione_famiglia')
@@ -187,7 +195,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Categoria', rendererSx, text=10)
+        column = gtk.TreeViewColumn('Categoria', rendererSx, text=11)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, 'denominazione_categoria')
@@ -195,7 +203,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Codice articolo fornitore', rendererSx, text=11)
+        column = gtk.TreeViewColumn('Codice articolo fornitore', rendererSx, text=12)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, 'codice_articolo_fornitore')
@@ -232,7 +240,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         self.qa_zero = self._modifica.qa_zero_radio.get_active() or None
         self.val_negativo =self._modifica.val_negativo_radio.get_active() or None
         self.qa_negativa =self._modifica.qa_negativa_radio.get_active() or None
-            
+
         self.idMagazzino = idMagazzino
         daData = stringToDate(self.additional_filter.da_data_aggiornamento_filter_entry.get_text())
         aData = stringToDate(self.additional_filter.a_data_aggiornamento_filter_entry.get_text())
@@ -273,10 +281,10 @@ class GestioneInventario(RicercaComplessaArticoli):
                           dateToString(i.data_aggiornamento),
                           (i.codice_articolo or ''),
                           (i.articolo or ''),
+                          (i.codice_a_barre or ''),
                           (i.produttore or ''),
                           (i.denominazione_famiglia or ''),
                           (i.denominazione_categoria or ''),
-                          (i.codice_a_barre or ''),
                           (i.codice_articolo_fornitore or '')))
 
     def on_filter_treeview_row_activated(self, treeview, path, column):
