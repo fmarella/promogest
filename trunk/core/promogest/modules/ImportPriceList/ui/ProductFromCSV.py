@@ -120,8 +120,8 @@ class ProductFromCsv(object):
         print "SELF CODICE ARTICO", self.codice_articolo
         if self.codice_articolo:
             try:
-                print "NON CI PASSO O CI PASSO?"
                 self.daoArticolo = Articolo().select(codiceEM=self.codice_articolo)[0]
+                print "CODICE GIÀ PRESENTE NEL DATABASE"
             except:
                 print "CODICE %s NON TROVATO" %self.codice_articolo
 
@@ -129,7 +129,6 @@ class ProductFromCsv(object):
             daoCodiceABarre = CodiceABarreArticolo().select(codiceEM=self.codice_barre_articolo)
             if daoCodiceABarre:
                 self.daoArticolo = Articolo().getRecord(id=daoCodiceABarre[0].id_articolo)
-
         elif self.codice_fornitore:
             daoFornitura = Fornitura().select(codiceArticoloFornitoreEM=self.codice_fornitore)
             if len(daoFornitura) == 1:
@@ -138,7 +137,7 @@ class ProductFromCsv(object):
         #o cod fornitore ne istanzio uno nuovo
 
         if not self.daoArticolo:
-            print "ISTANZIO UN NUOVO ARTicolo "
+            print "ISTANZIO UN NUOVO ARTiCOLO"
             self.daoArticolo = Articolo()
 #        print "CE UN ARTICOLO NEL DB ????", self.daoArticolo.__dict__
         if "PromoWear" in Environment.modulesList:
