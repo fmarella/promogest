@@ -6,7 +6,7 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 
-import gobject, os, decimal
+import os
 from decimal import *
 import pygtk
 pygtk.require('2.0')
@@ -18,16 +18,13 @@ from sqlalchemy import *
 from promogest import Environment
 from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.Operazione import Operazione
-from promogest.dao.Azienda import Azienda
 import string, re
 import pysvn
-import xml.etree.cElementTree as ElementTree
 from xml.etree.cElementTree import *
 try:  # necessario per gestire i custom widgts con glade3 e gtkBuilder
     import Login
 except:
     pass
-from promogest.dao.Dao import Dao
 from utilsCombobox import *
 
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
@@ -2174,7 +2171,6 @@ def hasAction(actionID=None):
     """
     if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
         from promogest.modules.RuoliAzioni.dao.RoleAction import RoleAction
-        from promogest.modules.RuoliAzioni.dao.Role import Role
         idRole = Environment.params['usernameLoggedList'][2]
         roleActions = RoleAction().select(id_role=idRole,
                                                 id_action=actionID,
@@ -2571,3 +2567,10 @@ def messageInfo(msg="Messaggio generico"):
                         msg)
     dialoggg.run()
     dialoggg.destroy()
+
+
+def deaccenta(self,riga=None):
+    import unicodedata
+    nkfd_form = unicodedata.normalize('NFKD', unicode(riga))
+    only_ascii = nkfd_form.encode('ASCII', 'ignore')
+    return only_ascii
