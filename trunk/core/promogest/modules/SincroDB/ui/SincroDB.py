@@ -270,12 +270,12 @@ class SincroDB(GladeWidget):
                                     op="INSERT",
                                     dao=str(remote[i]._table).split(".")[1],
                                     save=False)
-            print "TABRLLLLLAAAA", str(remote[i]._table).split(".")[1]
-            if str(remote[i]._table).split(".")[1] != "articolo":
+            tabe = str(remote[i]._table).split(".")[1]
+            if tabe != "articolo":
                 try:
                     sqlalchemy.ext.sqlsoup.Session.commit()
                 except Exception, e:
-                    if 'listino_articolo_pkey' in str(e):
+                    if tabe=="listino_articolo":
                         print "ERRORE NEI LISTINI", e
                         sqlalchemy.ext.sqlsoup.Session.rollback()
                         record_id1 = self.pg_db_server_locale.listino_articolo.filter_by(id_listino=remote[i].id_listino).all()
@@ -284,7 +284,6 @@ class SincroDB(GladeWidget):
                                 sqlalchemy.ext.sqlsoup.Session.delete(r)
                             sqlalchemy.ext.sqlsoup.Session.commit()
                             self.daosScheme(tables=["listino_articolo"])
-
                     else:
                         sqlalchemy.ext.sqlsoup.Session.rollback()
                         self.azzeraTable(table=dao)
