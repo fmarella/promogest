@@ -279,6 +279,7 @@ class SincroDB(GladeWidget):
                         print "ERRORE NEI LISTINI", e
                         sqlalchemy.ext.sqlsoup.Session.rollback()
                         record_id1 = self.pg_db_server_locale.listino_articolo.filter_by(id_listino=remote[i].id_listino).all()
+                        print "RECOOOOOOOOOOOOOOOOORD", record_id1
                         if record_id1:
                             for r in record_id1:
                                 sqlalchemy.ext.sqlsoup.Session.delete(r)
