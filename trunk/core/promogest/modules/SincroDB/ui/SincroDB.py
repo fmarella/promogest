@@ -283,8 +283,8 @@ class SincroDB(GladeWidget):
                         if record_id1:
                             for r in record_id1:
                                 sqlalchemy.ext.sqlsoup.Session.delete(r)
-                                sqlalchemy.ext.sqlsoup.Session.commit()
-                            print "QUIIII"
+                            sqlalchemy.ext.sqlsoup.Session.commit()
+#                            print "QUIIII"
                             self.daosScheme(tables=[("listino_articolo","id_listino")])
                     else:
                         sqlalchemy.ext.sqlsoup.Session.rollback()
