@@ -119,7 +119,7 @@ class SimpleGladeWrapper:
         if not gl:
             gl = gtk.Builder()
             #self.builda = gtk.Buildable()
-        print "FILE GLADE: ", self.glade_path
+#        print "FILE GLADE: ", self.glade_path
         gl.add_from_file(self.glade_path)
         self.widgets = gl.get_objects()
         if root:
@@ -201,7 +201,7 @@ class SimpleGladeWrapper:
                     #print "MAAAAAAAAAAAAAAAAAAAAAAA"
                     self.entryGlobalcb(widget)
             except:
-                print "widget", widget
+                print "WIDGET NON WIDGET", widget
 
 
     def entryGlobalcb(self,entry):
@@ -392,4 +392,3 @@ class SimpleGladeWrapper:
     def getTopLevel(self):
         """ Restituisce il widget al livello piu` alto della gerarchia """
         return self.main_widget
-
