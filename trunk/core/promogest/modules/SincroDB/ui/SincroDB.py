@@ -281,9 +281,9 @@ class SincroDB(GladeWidget):
                         record_id1 = self.pg_db_server_locale.listino_articolo.filter_by(id_listino=remote[i].id_listino).all()
 #                        print "RECOOOOOOOOOOOOOOOOORD", record_id1
                         if record_id1:
-#                            for r in record_id1:
-                            sqlalchemy.ext.sqlsoup.Session.delete(record_id1)
-                            sqlalchemy.ext.sqlsoup.Session.commit()
+                            for r in record_id1:
+                                sqlalchemy.ext.sqlsoup.Session.delete(r)
+                                sqlalchemy.ext.sqlsoup.Session.commit()
                             print "QUIIII"
                             self.daosScheme(tables=["listino_articolo"])
                     else:
