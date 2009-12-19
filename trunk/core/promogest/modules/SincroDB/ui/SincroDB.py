@@ -190,7 +190,7 @@ class SincroDB(GladeWidget):
         for dg in tables:
             self.table_label.set_text(str(dg[0]).upper())
             #listino lo gestisco facendo select per id listino così gestisco meglio i nuovi record
-            if dg[0] =="listino_articolo": 
+            if dg[0] =="listino_articolo":
                 self.gestisciListinoArticolo(dg)
             else:
                 self.avanzamento_pgbar.pulse()
@@ -222,7 +222,7 @@ class SincroDB(GladeWidget):
             print "SINCRONIZZAZIONE TERMINATA CON SUCCESSO"
 
     def logica(self,remote=None, locale=None,dao=None,all=False,offset=None):
-        """ cicla le righe della tabella e decide cosa fare 
+        """ cicla le righe della tabella e decide cosa fare
         """
         soupLocale = self.dammiSoupLocale(dao)
         deleteRow=False
@@ -270,6 +270,7 @@ class SincroDB(GladeWidget):
                                     op="INSERT",
                                     dao=str(remote[i]._table).split(".")[1],
                                     save=False)
+            print "TABRLLLLLAAAA", str(remote[i]._table).split(".")[1]
             if str(remote[i]._table).split(".")[1] != "articolo":
                 try:
                     sqlalchemy.ext.sqlsoup.Session.commit()
@@ -321,7 +322,7 @@ class SincroDB(GladeWidget):
             try:
                 for i in rowLocale.c:
                     #mi serve solo il nome colonna
-                    t = str(i).split(".")[1] 
+                    t = str(i).split(".")[1]
                     setattr(rowLocale, t, getattr(row, t))
                 sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
                 if dao == "articolo":

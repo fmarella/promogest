@@ -42,7 +42,7 @@ colorDict = {
         "Bisque2": ["#00193711", "#eed5b7"],
         "Bisque3": ["#00162f32", "#cdb79e"],
         "Bisque4": ["#000e2074", "#8b7d6b"],
-        "Black": ["#000000ff", "#000000"],
+        "Black" : ["#000000ff", "#000000"],
         "BlanchedAlmond" : ["#00143200", "#ffebcd"],
         "Blue" : ["#ffff0000", "#0000ff"],
         "Blue1" : ["#ffff0000", "#0000ff"],
