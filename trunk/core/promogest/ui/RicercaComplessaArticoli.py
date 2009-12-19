@@ -9,7 +9,6 @@
 """
 
 import gtk
-import gobject
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy import and_, or_
@@ -22,7 +21,6 @@ import Login
 from utils import *
 from utilsCombobox import *
 from promogest import Environment
-import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
 from promogest.dao.FamigliaArticolo import FamigliaArticolo
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
@@ -253,7 +251,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
                 selection.set_mode(mode)
 
     def getResultsElement(self):
-        
+
         """ Restituisce il risultato della ricerca se composto da un solo elemento """
         if self._ricerca._tipoRicerca == 'semplice':
             return self.dao
@@ -1461,7 +1459,7 @@ class RicercaArticoliFilter(GladeWidget):
     def refresh(self):
         # Aggiornamento TreeView
         model = self._parentObject.filter.resultsElement.get_model()
-        
+
         if self._tipoRicerca == 'semplice':
             denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
             produttore = prepareFilterString(self.produttore_filter_entry.get_text())
