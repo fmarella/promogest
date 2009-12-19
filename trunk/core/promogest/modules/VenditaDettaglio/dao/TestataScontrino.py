@@ -11,7 +11,6 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from promogest.dao.TestataMovimento import TestataMovimento
-from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import rigaScontrinoDel
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
 from promogest.ui.utils import *
@@ -67,21 +66,18 @@ class TestataScontrino(Dao):
         return getStringaSconti(listSconti)
     stringaSconti = property(_getStringaScontiTestataScontrino)
 
-    def filter_values(self,k,v):
+    def filter_values(self, k, v):
         if k == 'id':
-            dic= {k:testata_scontrino.c.id ==v}
+            dic= {k: testata_scontrino.c.id ==v}
         elif k == 'idTestataMovimento':
-            dic= {k:testata_scontrino.c.id_testata_movimento==v}
+            dic= {k: testata_scontrino.c.id_testata_movimento==v}
         elif k == 'daData':
-            dic = {k :testata_scontrino.c.data_inserimento >= v}
+            dic = {k: testata_scontrino.c.data_inserimento >= v}
         elif k == 'aData':
-            dic = {k:testata_scontrino.c.data_inserimento <= v}
+            dic = {k: testata_scontrino.c.data_inserimento <= v}
         elif k== 'idArticolo':
-            dic = {k: and_(testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino,riga_scontrinoo.c.id_articolo==v)}
+            dic = {k: and_(testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino, riga_scontrinoo.c.id_articolo==v)}
         return  dic[k]
-
-    def update(self):
-        return
 
     def persist(self, chiusura=False):
 
@@ -111,7 +107,7 @@ class TestataScontrino(Dao):
                     scontisutot.persist()
         params['session'].flush()
 
-    def scontiTestataScontrinoDel(self,id=None):
+    def scontiTestataScontrinoDel(self, id=None):
         """
         Cancella gli sconti associati ad un documento
         """
@@ -125,13 +121,10 @@ class TestataScontrino(Dao):
             params["session"].commit()
             return True
 
-
-
 riga_scontrinoo=Table('riga_scontrino',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
-
 
 testata_scontrino=Table('testata_scontrino',
                     params['metadata'],
