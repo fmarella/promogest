@@ -6,7 +6,8 @@
 # Author: Francesco Meloni <francescoo@promotux.it>
 
 from promogest import Environment
-from datetime import datetime
+import datetime
+#from datetime import *
 from promogest.ui.utils import *
 from  subprocess import *
 import popen2
@@ -56,7 +57,8 @@ class Ditron(object):
             reparto = str(reparto).zfill(2)
 
             if not(riga.quantita < 0):
-                stringa = '01%-16s%09.2f%2s\r\n' % (deaccenta(riga.descrizione[:16]), riga.prezzo, reparto)
+#                print "RIGA", riga.descrizione[:16], deaccenta(riga=riga.descrizione[:16])
+                stringa = '01%-16s%09.2f%2s\r\n' % (deaccenta(riga=riga.descrizione[:16]), riga.prezzo, reparto)
                 f.write(stringa)
                 if riga.sconti:
                     for sconto in riga.sconti:
@@ -68,8 +70,9 @@ class Ditron(object):
 
                             f.write(stringa)
             else:
+#                print "RIGA", riga.descrizione[:16], deaccenta(riga=riga.descrizione[:16])
                 # per i resi, nello scontrino, si scrive direttamente il prezzo scontato (limitazione cassa)
-                stringa = '01%-16s%09.2f%2s\r\n' % (deaccenta(riga.descrizione[:16]),
+                stringa = '01%-16s%09.2f%2s\r\n' % (deaccenta(riga= riga.descrizione[:16]),
                                                 riga.prezzo_scontato, reparto)
                 f.write(stringa)
 
@@ -114,7 +117,7 @@ class Ditron(object):
     def stampa_della_affluenza_oraria(self):
         filename = Environment.conf.VenditaDettaglio.export_path\
                      + 'stampa_della_affluenza_oraria_'\
-                     + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+                     + datetime.datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename, 'w')
         stringa = '52                00000000009..\r\n'
         f.write(stringa)
@@ -124,7 +127,7 @@ class Ditron(object):
     def stampa_del_periodico_articoli(self):
         filename = Environment.conf.VenditaDettaglio.export_path\
                      + 'stampa_del_periodico_articoli_'\
-                     + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+                     + datetime.datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename, 'w')
         stringa = '52                00000000008..\r\n'
         f.write(stringa)
@@ -134,7 +137,7 @@ class Ditron(object):
     def stampa_del_periodico_reparti(self):
         filename = Environment.conf.VenditaDettaglio.export_path\
                      + 'stampa_del_periodico_reparti_'\
-                     + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+                     + datetime.datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename, 'w')
         stringa = '52                00000000006..\r\n'
         f.write(stringa)
@@ -144,7 +147,7 @@ class Ditron(object):
     def stampa_del_periodico_cassa(self):
         filename = Environment.conf.VenditaDettaglio.export_path\
                      + 'stampa_del_periodico_cassa_'\
-                     + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+                     + datetime.datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename, 'w')
         stringa = '52                00000000004..\r\n'
         f.write(stringa)
@@ -154,7 +157,7 @@ class Ditron(object):
     def stampa_del_giornale_breve(self):
         filename = Environment.conf.VenditaDettaglio.export_path\
                     + 'stampa_del_giornale_breve_'\
-                    + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+                    + datetime.datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename, 'w')
         stringa = '52                00000000002..\r\n'
         f.write(stringa)

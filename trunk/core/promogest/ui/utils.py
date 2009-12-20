@@ -21,6 +21,8 @@ from promogest.dao.Operazione import Operazione
 import string, re
 import pysvn
 from xml.etree.cElementTree import *
+import unicodedata
+
 try:  # necessario per gestire i custom widgts con glade3 e gtkBuilder
     import Login
 except:
@@ -2569,8 +2571,8 @@ def messageInfo(msg="Messaggio generico"):
     dialoggg.destroy()
 
 
-def deaccenta(self,riga=None):
-    import unicodedata
+def deaccenta(riga=None):
+
     nkfd_form = unicodedata.normalize('NFKD', unicode(riga))
     only_ascii = nkfd_form.encode('ASCII', 'ignore')
     return only_ascii
