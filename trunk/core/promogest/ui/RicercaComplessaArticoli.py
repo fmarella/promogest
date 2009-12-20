@@ -371,7 +371,8 @@ class RicercaArticoliFilter(GladeWidget):
         self.ricerca_semplice_articoli_filter_vbox.hide()
         self.ricerca_avanzata_articoli_filter_vbox.show()
         if "PromoWear" not in Environment.modulesList:
-            self.promowear_filter_frame.destroy()
+#            self.promowear_filter_frame.destroy()
+            self.filter_promowear2.destroy()
         self.descrizione_articolo_filter_expander.grab_focus()
         self._parentObject._changeTreeViewSelectionType()
         self._parentObject.refresh()

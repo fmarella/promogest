@@ -8,6 +8,8 @@
 from promogest import Environment
 from datetime import datetime
 from promogest.ui.utils import *
+from  subprocess import *
+import popen2
 
 
 class Ditron(object):
@@ -22,7 +24,7 @@ class Ditron(object):
         # Genero nome file
         filename = Environment.conf.VenditaDettaglio.export_path\
                             + str(daoScontrino.id)\
-                            + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+                            + datetime.datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename, 'w')
 
         # nel file scontrino i resi vengono vengono messi alla fine (limitazione cassa) DITRON
@@ -54,7 +56,7 @@ class Ditron(object):
             reparto = str(reparto).zfill(2)
 
             if not(riga.quantita < 0):
-                stringa = '01%-16s%09.2f%2s\r\n' % (self.deaccenta(riga.descrizione[:16]), riga.prezzo, reparto)
+                stringa = '01%-16s%09.2f%2s\r\n' % (deaccenta(riga.descrizione[:16]), riga.prezzo, reparto)
                 f.write(stringa)
                 if riga.sconti:
                     for sconto in riga.sconti:
@@ -67,7 +69,7 @@ class Ditron(object):
                             f.write(stringa)
             else:
                 # per i resi, nello scontrino, si scrive direttamente il prezzo scontato (limitazione cassa)
-                stringa = '01%-16s%09.2f%2s\r\n' % (self.deaccenta(riga.descrizione[:16]),
+                stringa = '01%-16s%09.2f%2s\r\n' % (deaccenta(riga.descrizione[:16]),
                                                 riga.prezzo_scontato, reparto)
                 f.write(stringa)
 
@@ -131,7 +133,7 @@ class Ditron(object):
 
     def stampa_del_periodico_reparti(self):
         filename = Environment.conf.VenditaDettaglio.export_path\
-                     + 'stampa_del_periodico_reparti_'
+                     + 'stampa_del_periodico_reparti_'\
                      + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
         f = file(filename, 'w')
         stringa = '52                00000000006..\r\n'
