@@ -79,6 +79,9 @@ class TestataScontrino(Dao):
             dic = {k: and_(testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino, riga_scontrinoo.c.id_articolo==v)}
         return  dic[k]
 
+    def update(self):
+        return
+
     def persist(self, chiusura=False):
 
         #salvataggio testata scontrino
