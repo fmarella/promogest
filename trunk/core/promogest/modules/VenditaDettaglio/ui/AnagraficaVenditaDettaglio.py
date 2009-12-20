@@ -8,31 +8,37 @@
 
 from promogest.ui.utils import *
 import gtk
-import gobject
-import unicodedata
 from  subprocess import *
-import os, popen2
-from promogest.dao.DaoUtils import giacenzaSel
-from datetime import datetime, timedelta
+from datetime import datetime
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.dao.TestataMovimento import TestataMovimento
-from promogest.dao.RigaMovimento import RigaMovimento
-from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
-from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
 from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
 from promogest.dao.Articolo import Articolo
-from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
-from promogest.dao.AliquotaIva import AliquotaIva
-from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
-from promogest.ui.widgets.FilterWidget import FilterWidget
 from GestioneScontrini import GestioneScontrini
 from GestioneChiusuraFiscale import GestioneChiusuraFiscale
+from venditaDettaglioUiPart import drawPart
+
+if hasattr(Environment.conf.VenditaDettaglio,"backend") and\
+    Environment.conf.VenditaDettaglio.backend.capitalize() =="OLIVETTI" and\
+    Environment.conf.VenditaDettaglio.disabilita_stampa == 'no':
+    from promogest.modules.VenditaDettaglio.lib.olivetti import ElaExecute
+    print "DRIVER OLIVETTI ANCORA DA FARE"
+    DRIVER = "E"
+elif hasattr(Environment.conf.VenditaDettaglio,"backend") and\
+    Environment.conf.VenditaDettaglio.backend.capitalize() == "DITRON" and\
+    Environment.conf.VenditaDettaglio.disabilita_stampa == 'no':
+    from promogest.modules.VenditaDettaglio.lib.ditron import Ditron
+    DRIVER = "D"
+elif Environment.conf.VenditaDettaglio.disabilita_stampa == 'yes':
+    DRIVER = None
+else:
+    from promogest.modules.VenditaDettaglio.lib.ditron import Ditron
+    DRIVER = "D"
 
 class AnagraficaVenditaDettaglio(GladeWidget):
     """ Frame per la gestione delle vendite a dettaglio """
@@ -46,8 +52,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self._simboloPercentuale = '%'
         self._simboloEuro = '€'
         textStatusBar = "     PromoGest2 - Vendita Dettaglio - by PromoTUX Informatica - 800 034561 - www.PromoTUX.it - info@PromoTUX.it      "
-        context_id =  self.vendita_dettaglio_statusbar.get_context_id("vendita_dettaglio_window")
-        self.vendita_dettaglio_statusbar.push(context_id,textStatusBar)
+        context_id = self.vendita_dettaglio_statusbar.get_context_id("vendita_dettaglio_window")
+        self.vendita_dettaglio_statusbar.push(context_id, textStatusBar)
         azienda = Azienda().getRecord(id=Environment.params["schema"])
         self.logo_articolo.set_from_file(azienda.percorso_immagine)
         self.createPopupMenu()
@@ -57,183 +63,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.draw()
 
     def draw(self):
-        accelGroup = gtk.AccelGroup()
-        self.getTopLevel().add_accel_group(accelGroup)
-        self.contanti_radio_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F1, 0, gtk.ACCEL_VISIBLE)
-        self.assegni_radio_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F2, 0, gtk.ACCEL_VISIBLE)
-        self.carta_di_credito_radio_button.add_accelerator('clicked', accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
-        self.total_button.add_accelerator('grab_focus', accelGroup, gtk.keysyms.F5, 0, gtk.ACCEL_VISIBLE)
-        self.total_button.set_focus_on_click(False)
-
-        # Costruisco treeview scontrino
-        self.modelRiga = gtk.ListStore(int,str, str, str, str, str, str, str, str, str)
-
-        treeview = self.scontrino_treeview
-        rendererSx = gtk.CellRendererText()
-        rendererDx = gtk.CellRendererText()
-        rendererDx.set_property('xalign', 1)
-
-        self.lsmodel = gtk.ListStore(int,str)
-        cellcombo1= gtk.CellRendererCombo()
-        cellcombo1.set_property("editable", True)
-        cellcombo1.set_property("visible", True)
-        cellcombo1.set_property("text-column", 1)
-        cellcombo1.set_property("editable", True)
-        cellcombo1.set_property("has-entry", False)
-        cellcombo1.set_property("model", self.lsmodel)
-        cellcombo1.connect('edited', self.on_column_listinoRiga_edited, treeview, True)
-        column = gtk.TreeViewColumn('List.', cellcombo1, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(20)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Codice a barre', rendererSx, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(90)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Codice', rendererSx, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(70)
-        treeview.append_column(column)
-
-        cellrendererDescrizione = gtk.CellRendererText()
-        cellrendererDescrizione.set_property("editable", True)
-        cellrendererDescrizione.set_property("visible", True)
-        cellrendererDescrizione.connect('edited', self.on_column_descrizione_edited, treeview, True)
-        column = gtk.TreeViewColumn('Descrizione', cellrendererDescrizione, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        rendererSx.connect('edited', self.on_column_descrizione_edited, treeview, True)
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(50)
-        treeview.append_column(column)
-
-        cellspin = gtk.CellRendererSpin()
-        cellspin.set_property("editable", True)
-        cellspin.set_property("visible", True)
-        adjustment = gtk.Adjustment(1, 1, 1000,0.500,2)
-        cellspin.set_property("adjustment", adjustment)
-        cellspin.set_property("digits",3)
-        cellspin.set_property("climb-rate",3)
-        #cellspin.set_property("foreground", "orange")
-
-        cellspin.connect('edited', self.on_column_prezzo_edited, treeview, True)
-        column = gtk.TreeViewColumn('Prezzo', cellspin, text=5,foreground=4, background=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(80)
-        treeview.append_column(column)
-
-        cellspinsconto = gtk.CellRendererSpin()
-        cellspinsconto.set_property("editable", True)
-        cellspinsconto.set_property("visible", True)
-        adjustment = gtk.Adjustment(1, 1, 1000,1,2)
-        cellspinsconto.set_property("adjustment", adjustment)
-        #cellspin.set_property("digits",3)
-        #cellspin.set_property("climb-rate",3)
-        cellspinsconto.connect('edited', self.on_column_sconto_edited, treeview, True)
-        column = gtk.TreeViewColumn('Sconto', cellspinsconto, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(50)
-        treeview.append_column(column)
-
-
-        lsmodel = gtk.ListStore(str)
-        lsmodel.append(["%"])
-        lsmodel.append(["€"])
-        cellcombo= gtk.CellRendererCombo()
-        cellcombo.set_property("editable", True)
-        cellcombo.set_property("visible", True)
-        cellcombo.set_property("text-column", 0)
-        cellcombo.set_property("editable", True)
-        cellcombo.set_property("has-entry", False)
-        cellcombo.set_property("model", lsmodel)
-        cellcombo.connect('edited', self.on_column_tipo_edited, treeview, True)
-        column = gtk.TreeViewColumn('Tipo', cellcombo, text=7)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(20)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Pr.Scont', rendererDx, text=8)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(50)
-        treeview.append_column(column)
-
-        cellspin = gtk.CellRendererSpin()
-        cellspin.set_property("editable", True)
-        cellspin.set_property("visible", True)
-        adjustment = gtk.Adjustment(1, 1, 1000,1,2)
-        cellspin.set_property("adjustment", adjustment)
-        cellspin.set_property("digits",2)
-        cellspin.set_property("climb-rate",3)
-        cellspin.connect('edited', self.on_column_quantita_edited, treeview, True)
-        column = gtk.TreeViewColumn('Quantità', cellspin, text=9)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(50)
-        treeview.append_column(column)
-
-        treeview.set_model(self.modelRiga)
-
-        # Disabilito bottoni e text entry
-        #self.confirm_button.set_sensitive(False)
-        self.delete_button.set_sensitive(False)
-        self.rhesus_button.set_sensitive(False)
-        #self.annulling_button.set_sensitive(False)
-        self.total_button.set_sensitive(False)
-        self.subtotal_button.set_sensitive(False)
-        self.empty_button.set_sensitive(False)
-        self.sconto_hbox.set_sensitive(False)
-        self.setPagamento(enabled = False)
-
-        self.codice_a_barre_entry.grab_focus()
-        self._loading = False
-
-        # Segnali
-        treeViewSelection = self.scontrino_treeview.get_selection()
-        self.scontrino_treeview.set_property('rules-hint',True)
-        treeViewSelection.connect('changed', self.on_scontrino_treeview_selection_changed)
-
-        # Ricerca listino
-        self.id_listino = self.ricercaListino()
-
-        # Ricerca magazzino
-        magalist = Magazzino().select(denominazione = Environment.conf.VenditaDettaglio.magazzino,
-                                        offset = None,
-                                        batchSize = None)
-
-        if len(magalist) > 0:
-            self.id_magazzino = magalist[0].id
-        else:
-            self.id_magazzino = None
-
-        # Vado in stato di ricerca
-        self._state = 'search'
-        self.empty_current_row()
+        drawPart(self)
 
     def on_column_prezzo_edited(self, cell, path, value, treeview, editNext=True):
         """ Function to set the value prezzo edit in the cell"""
@@ -273,7 +103,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         for l in self.lsmodel:
             if l[1] == value:
                 idlisti=l[0]
-                listin = leggiListino(l[0],model[path][0] )
+                listin = leggiListino(l[0],model[path][0])
                 break
         prez = str(listin['prezzoDettaglio'])
         if listin.has_key('scontiDettaglio'):
@@ -305,7 +135,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         scont = model[path][6]
         self.on_column_sconto_edited(cell, path, scont, treeview)
 
-    def on_vendita_dettaglio_window_key_press_event(self,widget, event):
+    def on_vendita_dettaglio_window_key_press_event(self, widget, event):
         """ jolly key è F9, richiama ed inserisce l'articolo definito nel configure"""
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'F9':
@@ -314,7 +144,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 self.search_item(codice=codice, fnove=True)
             except:
                 Environment.pg2log.info("ARTICOLO JOLLY NON SETTATO NEL CONFIGURE NELLA SEZIONE [VenditaDettaglio]")
-
 
     def fnovewidget(self,codice=None, destroy=None):
         if destroy:
@@ -328,7 +157,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             self.quantita_f9_entry.set_text("1")
             self.dialog_genrico_vbox.show_all()
             self.articolo_generico_dialogo.show_all()
-
 
     def on_generico_ok_button_clicked(self, button):
         self.fnovewidget(destroy=True)
@@ -352,20 +180,20 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         valore = int(abs(float(self.quantita_f9_entry.get_text())))
         self.quantita_f9_entry.set_text(str(valore+1))
 
-
-
-    def search_item(self, codiceABarre=None, codice=None,valorigenerici=[], descrizione=None, fnove=False):
+    def search_item(self, codiceABarre=None, codice=None,
+                                valorigenerici=[], descrizione=None,
+                                fnove=False):
         # Ricerca articolo per barcode
         if codiceABarre is not None:
-            arts = Articolo().select( codiceABarre = codiceABarre,
+            arts = Articolo().select(codiceABarre = codiceABarre,
                                                  offset = None,
                                                  batchSize = None)
         elif codice is not None:
-            arts = Articolo().select( codice = codice,
+            arts = Articolo().select(codice = codice,
                                                  offset = None,
                                                  batchSize = None)
         elif descrizione is not None:
-            arts = Articolo().select( denominazione = descrizione,
+            arts = Articolo().select(denominazione = descrizione,
                                                  offset = None,
                                                  batchSize = None)
         if len(arts) == 1:
@@ -466,17 +294,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.id_listino = self.ricercaListino()
         self.giacenza_label.set_text('-')
 
-
     def activate_item(self, idArticolo,listinoRiga,codiceABarre,codice,denominazione,
                         prezzo,valoreSconto,tipoSconto,prezzoScontato,quantita):
         self._loading = True
         self.lsmodel.clear()
 
-        #fillComboboxListiniFiltrati(self.listini_combobox,
-                                    #idArticolo=idArticolo,
-                                    #idMagazzino=None,
-                                    #idCliente=None,
-                                    #filter=False)
         listiniList= listinoCandidateSel(idArticolo=idArticolo,
                                         idMagazzino=self.id_magazzino ,
                                         idCliente=None)
@@ -517,7 +339,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                             'tipoSconto' : tipoSconto,
                             'prezzoScontato':prezzoScontato,
                             'quantita' : quantita}
-
 
     def on_scontrino_treeview_selection_changed(self, treeSelection):
         (model, iterator) = treeSelection.get_selected()
@@ -633,9 +454,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         # Disabilito cancella e conferma e abilito ricerca barcode
         self.delete_button.set_sensitive(False)
-        #self.confirm_button.set_sensitive(False)
         self.rhesus_button.set_sensitive(False)
-        #self.annulling_button.set_sensitive(False)
         self.codice_a_barre_entry.set_sensitive(True)
         self.codice_entry.set_sensitive(True)
         self.descrizione_entry.set_sensitive(True)
@@ -651,9 +470,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.empty_button.set_sensitive(notEmpty)
         self.setPagamento(enabled = notEmpty)
         self.sconto_hbox.set_sensitive(notEmpty)
-
         treeview.get_selection().unselect_all()
-
         # vado in search
         self._state = 'search'
         self.codice_a_barre_entry.grab_focus()
@@ -681,9 +498,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         # Disabilito cancella e conferma e abilito ricerca barcode
         self.delete_button.set_sensitive(False)
-        #self.confirm_button.set_sensitive(False)
         self.rhesus_button.set_sensitive(False)
-        #self.annulling_button.set_sensitive(False)
         self.codice_a_barre_entry.set_sensitive(True)
         self.codice_entry.set_sensitive(True)
         self.descrizione_entry.set_sensitive(True)
@@ -699,10 +514,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
     def refreshTotal(self):
         """ Here we can calculate subTotals and Totals of the sales
-            TODO: Add a discount
         """
         total = 0
-        #total = "0.00"
         totale_scontato = "0.00"
         totale_sconto = "0.00"
         model = self.scontrino_treeview.get_model()
@@ -732,7 +545,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 else:
                     totale_sconto = total*(Decimal(self.sconto)/100)
                     totale_scontato = total-totale_sconto
-
 
         self.label_totale.set_markup('<b><span foreground="black" size="40000">' + str(mN(totale_scontato)) +'</span></b>')
         self.label_sconto.set_markup('<b><span foreground="#338000" size="24000">' + str(mN(totale_sconto)) +'</span></b>')
@@ -779,7 +591,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             return
 
         # Creo dao testata_scontrino
-
         scontiSuTotale = []
         #res = self.sconti_testata_widget.getSconti()
         if dao.totale_sconto:
@@ -845,50 +656,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         dao.righe = righe
         dao.persist()
 
-        # Rileggo dao
-        dao.update()
-
-        """ fine salvataggio  TODO: Spezzare questa funzione al più presto  """
-
-        # Creo il file
-        filescontrino = self.create_export_file(dao)
-        # Mando comando alle casse
-
-        if not(hasattr(Environment.conf.VenditaDettaglio,'disabilita_stampa') and Environment.conf.VenditaDettaglio.disabilita_stampa == 'yes'):
-            program_launch = Environment.conf.VenditaDettaglio.driver_command
-            program_params = (' ' + filescontrino + ' ' +
-                              Environment.conf.VenditaDettaglio.serial_device)
-            if os.name == 'nt':
-                exportingProcessPid = os.spawnl(os.P_NOWAIT, program_launch, program_params)
-                id, ret_value = os.waitpid(exportingProcessPid, 0)
-                ret_value = ret_value >> 8
-            else:
-                command = program_launch + program_params
-                process = popen2.Popen3(command, True)
-                message = process.childerr.readlines()
-                ret_value = process.wait()
-
-        else:
-            ret_value = 0
-
-        # Elimino il file
-        os.remove(filescontrino)
-
-        if ret_value != 0:
-            string_message = ''
-            for s in message:
-                string_message = string_message + s + "\n"
-
-            # Mostro messaggio di errore
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
-                                       string_message)
-            response = dialog.run()
-            dialog.destroy()
-            # Elimino lo scontrino
-            dao.delete()
+        # Creo il file e lo stampo
+        if DRIVER:
+            filescontrino = self.createFileToPos(dao)
 
         # Svuoto transazione e mi rimetto in stato di ricerca
         self.search_button.set_sensitive(True)
@@ -904,181 +674,17 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.codice_a_barre_entry.grab_focus()
         self._state = 'search'
 
+    def createFileToPos(self, dao):
+        if DRIVER == "E":
+            print "DRIVER OLIVETTI ANCORA DA FARE"
+        elif DRIVER =="D":
+            filescontrino = Ditron().create_export_file(daoScontrino=dao)
+            Ditron().sendToPrint(filescontrino)
+            return True
+
     def on_chiusura_fiscale_activate(self, widget):
-        # Chiedo conferma
-        GestioneChiusuraFiscale(self).chiusuraDialog(widget, self.id_magazzino)
-
-
-
-    def deaccenta(self,riga=None):
-        nkfd_form = unicodedata.normalize('NFKD', unicode(riga))
-        only_ascii = nkfd_form.encode('ASCII', 'ignore')
-        return only_ascii
-
-    def create_export_file(self, daoScontrino):
-        # Genero nome file
-        filename = Environment.conf.VenditaDettaglio.export_path + str(daoScontrino.id) + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
-        f = file(filename,'w')
-
-        # nel file scontrino i resi vengono vengono messi alla fine (limitazione cassa) DITRON
-        righe = []
-        for riga in daoScontrino.righe:
-            if riga.quantita < 0:
-                righe.append(riga)
-            else:
-                righe.insert(0, riga)
-
-        for riga in righe:
-            quantita = abs(riga.quantita)
-            if quantita != 1:
-                # quantita' non unitaria
-                stringa = '000000000000000000%09d00\r\n' % (quantita * 1000)
-                f.write(stringa)
-            if riga.quantita < 0:
-                # riga reso
-                stringa = '020000000000000000%09d00\r\n' % (0)
-                f.write(stringa)
-
-            reparto = getattr(Environment.conf.VenditaDettaglio,'reparto_default',1)
-            art = leggiArticolo(riga.id_articolo)
-            repartoIva = 'reparto_' + art["denominazioneBreveAliquotaIva"].lower()
-            if hasattr(Environment.conf.VenditaDettaglio, repartoIva):
-                reparto = getattr(Environment.conf.VenditaDettaglio,repartoIva,reparto)
-            reparto = str(reparto).zfill(2)
-
-            if not(riga.quantita < 0):
-                stringa = '01%-16s%09.2f%2s\r\n' % (self.deaccenta(riga.descrizione[:16]), riga.prezzo, reparto)
-                f.write(stringa)
-                if riga.sconti:
-                    for sconto in riga.sconti:
-                        if sconto.valore != 0:
-                            if sconto.tipo_sconto == 'percentuale':
-                                stringa = '07%-16s%09.2f00\r\n' % ('sconto', sconto.valore)
-                            else:
-                                stringa = '06%-16s%09.2f00\r\n' % ('sconto', sconto.valore * quantita)
-
-                            f.write(stringa)
-            else:
-                # per i resi, nello scontrino, si scrive direttamente il prezzo scontato (limitazione cassa)
-                stringa = '01%-16s%09.2f%2s\r\n' % (self.deaccenta(riga.descrizione[:16]), riga.prezzo_scontato, reparto)
-                f.write(stringa)
-
-        if daoScontrino.totale_scontrino < daoScontrino.totale_subtotale and daoScontrino.totale_sconto > 0:
-            stringa='15                000000.0000\r\n'
-            f.write(stringa)
-            if daoScontrino.tipo_sconto_scontrino =='percentuale':
-                stringa = '07%-16s%09.2f00\r\n' % ('sconto',daoScontrino.totale_sconto)
-                f.write(stringa)
-            else:
-                stringa = '06%-16s%09.2f00\r\n' % ('sconto', daoScontrino.totale_sconto)
-                f.write(stringa)
-
-
-        if daoScontrino.totale_contanti is None or daoScontrino.totale_contanti == 0:
-            totale_contanti = daoScontrino.totale_scontrino
-            #stringa = '10                %09.2f00\r\n' % (totale_contanti)
-            #f.write(stringa)
-        else:
-            totale_contanti = daoScontrino.totale_contanti
-            #stringa = '10                %09.2f00\r\n' % (totale_contanti)
-            #f.write(stringa)
-        if daoScontrino.totale_assegni is not None and daoScontrino.totale_assegni != 0:
-            stringa = '20                %09d00\r\n' % (daoScontrino.totale_assegni * 100)
-            f.write(stringa)
-
-        if daoScontrino.totale_carta_credito is not None and daoScontrino.totale_carta_credito != 0:
-            stringa = '30                %09d00\r\n' % (daoScontrino.totale_carta_credito * 100)
-            f.write(stringa)
-
-
-        #stringa = '10                %09.2f00\r\n' % (totale_contanti)
-        #f.write(stringa)
-        stringa = '10                %09.2f00\r\n' % (totale_contanti)
-        f.write(stringa)
-        #stringa='71      Francesco Meloni     ..\r\n'
-        #f.write(stringa)
-        #stringa='71 CIAO A TUTTI              ..\r\n'
-        #f.write(stringa)
-        #stringa='71ARRIVEDERCI ALLA PROSSIMA  ..\r\n'
-        #f.write(stringa)
-        #stringa='72                00000000000..\r\n'
-        #f.write(stringa)
-        f.close()
-        return filename
-
-
-    def on_stampa_del_giornale_breve_activate(self, widget):
-        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_giornale_breve_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
-        f = file(filename,'w')
-        stringa = '52                00000000002..\r\n'
-        f.write(stringa)
-        f.close()
-        self.sendToPrint(filename)
-
-    def on_stampa_del_periodico_cassa_activate(self, widget):
-        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_cassa_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
-        f = file(filename,'w')
-        stringa = '52                00000000004..\r\n'
-        f.write(stringa)
-        f.close()
-        self.sendToPrint(filename)
-
-    def on_stampa_del_periodico_reparti_activate(self, widget):
-        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_reparti_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
-        f = file(filename,'w')
-        stringa = '52                00000000006..\r\n'
-        f.write(stringa)
-        f.close()
-        self.sendToPrint(filename)
-
-    def on_stampa_del_periodico_articoli_activate(self, widget):
-        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_del_periodico_articoli_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
-        f = file(filename,'w')
-        stringa = '52                00000000008..\r\n'
-        f.write(stringa)
-        f.close()
-        self.sendToPrint(filename)
-
-    def on_stampa_della_affluenza_oraria_activate(self, widget):
-        filename = Environment.conf.VenditaDettaglio.export_path + 'stampa_della_affluenza_oraria_' + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
-        f = file(filename,'w')
-        stringa = '52                00000000009..\r\n'
-        f.write(stringa)
-        f.close()
-        self.sendToPrint(filename)
-
-    def sendToPrint(self, filesToSend):
-        # Mando comando alle casse
-        program_launch = Environment.conf.VenditaDettaglio.driver_command
-        program_params = (' ' + filesToSend + ' ' +
-                            Environment.conf.VenditaDettaglio.serial_device)
-
-        if os.name == 'nt':
-            exportingProcessPid = os.spawnl(os.P_NOWAIT, program_launch, program_params)
-            id, ret_value = os.waitpid(exportingProcessPid, 0)
-            ret_value = ret_value >> 8
-        else:
-            command = program_launch + program_params
-            process = popen2.Popen3(command, True)
-            message = process.childerr.readlines()
-            ret_value = process.wait()
-
-        # Elimino il file
-        os.remove(filesToSend)
-        #print "VEDIAMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", filesToSend
-        if ret_value != 0:
-            string_message = ''
-            for s in message:
-                string_message = string_message + s + "\n"
-
-            # Mostro messaggio di errore
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
-                                       string_message)
-            response = dialog.run()
-            dialog.destroy()
+        if DRIVER=="D":
+            GestioneChiusuraFiscale(self).chiusuraDialog(widget, self.id_magazzino)
 
     def ricercaArticolo(self):
 
@@ -1147,10 +753,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         anagWindow.set_transient_for(self.getTopLevel())
         anagWindow.show_all()
 
-
     def on_new_button_clicked(self, button):
         """ open the anagraficaArticolo Semplice to add a new article
         """
+        return
         from promogest.ui.AnagraficaArticoliSemplice import AnagraficaArticoliSemplice
         anag = AnagraficaArticoliSemplice()
         anagWindow = anag.getTopLevel()
@@ -1243,6 +849,38 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             self.destroy()
             return None
 
+    def createFileToPos(self, dao):
+        if DRIVER == "E":
+            print "DRIVER OLIVETTI ANCORA DA FARE"
+        elif DRIVER =="D":
+            filescontrino = Ditron().create_export_file(daoScontrino=dao)
+            Ditron().sendToPrint(filescontrino)
+            return True
+
+    def on_chiusura_fiscale_activate(self, widget):
+        if DRIVER=="D":
+            GestioneChiusuraFiscale(self).chiusuraDialog(widget, self.id_magazzino)
+
+    def on_stampa_del_giornale_breve_activate(self, widget):
+        if DRIVER =="D":
+            Ditron().stampa_del_giornale_breve()
+
+    def on_stampa_del_periodico_cassa_activate(self, widget):
+        if DRIVER =="D":
+            Ditron().stampa_del_periodico_cassa()
+
+    def on_stampa_del_periodico_reparti_activate(self, widget):
+        if DRIVER =="D":
+            Ditron().stampa_del_periodico_reparti()
+
+    def on_stampa_del_periodico_articoli_activate(self, widget):
+        if DRIVER =="D":
+            Ditron().stampa_del_periodico_articoli()
+
+    def on_stampa_della_affluenza_oraria_activate(self, widget):
+        if DRIVER =="D":
+            Ditron().stampa_della_affluenza_oraria()
+
     def creaScontrinoReso(self):
         treeview = self.scontrino_treeview
         model = treeview.get_model()
@@ -1292,19 +930,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self._state = 'search'
         self.codice_a_barre_entry.grab_focus()
 
-    def getGiacenzaArticolo(self, idArticolo):
-        idMagazzino = self.id_magazzino
-        totGiacenza = 0
-        movs = giacenzaSel(year=Environment.workingYear, idMagazzino= self.id_magazzino, idArticolo=idArticolo)
-        #movs = Environment.connection.execStoredProcedure('GiacenzaSel', (None, Environment.conf.workingYear, idMagazzino, idArticolo))
-        for m in movs:
-            totGiacenza += m['giacenza'] or 0
-        #FIXME: attenzione funzioen da rifareeeeeeeeeeeeeeeee
-        #movs = Environment.connection.execStoredProcedure('ScaricoScontrinoSel', (None, Environment.conf.workingYear, idArticolo, idMagazzino, False))
-        #for m in movs:
-            #totGiacenza += ((m['scarico_qta'] or 0 ) * -1)
-        return totGiacenza
-
     def on_scontrino_treeview_button_press_event(self, treeview, event):
         if event.button == 3:
                 x = int(event.x)
@@ -1314,8 +939,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 if pthinfo is not None:
                     path, col, cellx, celly = pthinfo
                     treeview.grab_focus()
-                    treeview.set_cursor( path, col, 0)
-                    self.file_menu.popup( None, None, None, event.button, time)
+                    treeview.set_cursor(path, col, 0)
+                    self.file_menu.popup(None, None, None, event.button, time)
                 return 1
 
     def createPopupMenu(self):
@@ -1331,7 +956,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # Attach the callback functions to the activate signal
         open_item.connect_object("activate", self.on_confirm_button_clicked, "file.open")
         #save_item.connect_object("activate", self.on_empty_button_clicked, "file.save")
-        quit_item.connect_object ("activate", self.on_cancel_button_clicked, "file.quit")
+        quit_item.connect_object("activate", self.on_cancel_button_clicked, "file.quit")
 
         # We do need to show menu items
         open_item.show()
@@ -1340,7 +965,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
     def on_subtotal_button_clicked(self, button):
         self.refreshTotal()
-        #print "subtotale"
 
     def on_list_button_clicked(self, widget):
         self.idRhesusSource = []
