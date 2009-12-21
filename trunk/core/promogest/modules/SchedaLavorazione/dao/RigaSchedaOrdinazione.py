@@ -15,7 +15,8 @@ from promogest.dao.AliquotaIva import AliquotaIva
 #from promogest.modules.SchedaLavorazione.ui.SchedaLavorazioneUtils import *
 #from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
 from promogest.ui.utils import *
-
+from promogest.dao.DaoUtils import giacenzaArticolo
+from promogest.dao.Riga import Riga
 
 class RigaSchedaOrdinazione(Dao):
 
@@ -81,14 +82,37 @@ class RigaSchedaOrdinazione(Dao):
 
     def __codiceArticolo(self):
         """ esempio di funzione  unita alla property """
-        #a =  params["session"].query(Articolo).with_parent(self).filter(RigaSchedaOrdinazione.id_articolo==Articolo.id).all()
-        #if not a:
-            #return a
-        #else:
-            #return a[0].codice
         if self.arti: return self.arti.codice
         else: return ""
     codice_articolo= property(__codiceArticolo)
+
+    def _setGiacenzaArticolo(self):
+#        print "ARTICOLOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.arti.codice
+        if self.arti.codice not in ["Stampa", "z-CONTR","z-BONIFICO"]:
+            giace =giacenzaArticolo(year=Environment.workingYear,
+                                        idMagazzino=self.id_magazzino,
+                                        idArticolo=self.id_articolo)
+        else:
+            giace = 0
+        return giace
+    giacenza_articolo = property(_setGiacenzaArticolo)
+
+    def _impegnatoSuLavorazione(self):
+        if self.arti.codice not in ["Stampa", "z-CONTR","z-BONIFICO"]:
+            year = Environment.workingYear
+            t=0
+            part= Environment.params["session"]\
+                .query(Riga)\
+                .filter(and_(schedaordinazione.c.fattura!=True,
+                            riga.c.id==self.id,
+                                self.id_scheda == schedaordinazione.c.id,
+                                riga.c.id_articolo==self.id_articolo,
+                                Articolo.id==self.id_articolo)).all()
+            for r in part:
+                t +=r.quantita
+            return t
+    impegnato_su_lavorazione = property(_impegnatoSuLavorazione)
+
 
     def _getAliquotaIva(self):
         # Restituisce la denominazione breve dell'aliquota iva
@@ -138,6 +162,14 @@ class RigaSchedaOrdinazione(Dao):
             dic = {k:rigaschedaordinazione.c.id_articolo == v}
         return  dic[k]
 
+
+schedaordinazione=Table('schede_ordinazioni',
+                                    params['metadata'],
+                                    schema = params['schema'],
+                                    autoload=True)
+
+
+
 rigaschedaordinazione=Table('righe_schede_ordinazioni',
                                     params['metadata'],
                                     schema = params['schema'],
@@ -152,4 +184,3 @@ std_mapper = mapper(RigaSchedaOrdinazione, j, properties={
         "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==Articolo.id),
             },
                     order_by=rigaschedaordinazione.c.id)
-
