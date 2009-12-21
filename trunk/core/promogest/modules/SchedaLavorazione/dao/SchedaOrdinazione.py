@@ -562,8 +562,8 @@ class SchedaOrdinazione(Dao):
             dic = {k:and_(SchedaOrdinazione.id==schedaordinazione.c.id,SchedaOrdinazione.referente.ilike("%"+v+"%"))}
         elif k== 'ricevutaAssociata':
             dic = {k:and_(SchedaOrdinazione.id==schedaordinazione.c.id,SchedaOrdinazione.ricevuta_associata.ilike("%"+v+"%"))}
-        elif k== 'documentoSaldato':
-            dic = {k:and_(SchedaOrdinazione.id==schedaordinazione.c.id,SchedaOrdinazione.documento_saldato ==v)}
+        elif k== 'schedeAperte':
+            dic = {k:and_(SchedaOrdinazione.id==schedaordinazione.c.id,SchedaOrdinazione.fattura ==v)}
         elif k == 'idArticolo':
             dic = {k: and_(Articolo.id ==Riga.id_articolo,
                             Riga.id==RigaSchedaOrdinazione.id,
@@ -605,4 +605,3 @@ std_mapper = mapper(SchedaOrdinazione, schedaordinazione, properties={
                     cascade="all, delete",
                     backref="sched_ord", uselist=False) },
                 order_by=desc(schedaordinazione.c.numero))
-

@@ -184,11 +184,23 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
         nomeReferente = prepareFilterString(_nome_referente)
         _nomi_sposi = self.nome_sposi_filter_entry.get_text()
         nomiSposi = prepareFilterString(_nomi_sposi)
-        schedeAperte = self.schede_aperte_checkbutton.get_active() or None
+        schedeAperte = self.schede_aperte_filter_combobox.get_active()
+        if schedeAperte == -1 or schedeAperte == 0:
+            schedeAperte = None
+        elif schedeAperte == 1:
+            schedeAperte = None
+        elif schedeAperte == 2:
+            schedeAperte = "FALSE"
+        elif schedeAperte == 3:
+            schedeAperte = "TRUE"
+        else:
+            schedeAperte = None
+
+#        schedeAperte = self.schede_aperte_checkbutton.get_active() or None
         coloreStampa = findIdFromCombobox(self.colore_stampa_filter_combobox)
         carattereStampa = findIdFromCombobox(self.carattere_stampa_filter_combobox)
         idArticolo = self.id_articolo_filter_customcombobox.getId()
-
+#        print "SCHEDE LAVORAZIONE", schedeAperte
         def filterCountClosure():
             return SchedaOrdinazione().count(daNumero=daNumero,
                                                 aNumero=aNumero,
@@ -204,7 +216,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
                                                 nomiSposi = nomiSposi,
                                                 referente=nomeReferente,
                                                 ricevutaAssociata=numeroRicevuta,
-                                                documentoSaldato=schedeAperte,
+                                                schedeAperte=schedeAperte,
                                                 idArticolo = idArticolo)
 
         self._filterCountClosure = filterCountClosure
@@ -229,7 +241,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
                                                 nomiSposi = nomiSposi,
                                                 referente=nomeReferente,
                                                 ricevutaAssociata=numeroRicevuta,
-                                                documentoSaldato=schedeAperte,
+                                                schedeAperte=schedeAperte,
                                                 idArticolo = idArticolo,
                                                 offset=offset,
                                                 batchSize=batchSize)

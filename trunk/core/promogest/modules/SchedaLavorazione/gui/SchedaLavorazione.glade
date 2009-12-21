@@ -16,23 +16,6 @@
         <property name="column_spacing">2</property>
         <property name="row_spacing">2</property>
         <child>
-          <object class="GtkCheckButton" id="schede_aperte_checkbutton">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-            <property name="draw_indicator">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">3</property>
-            <property name="right_attach">4</property>
-            <property name="top_attach">8</property>
-            <property name="bottom_attach">9</property>
-            <property name="x_options"></property>
-            <property name="y_options"></property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkLabel" id="label6">
             <property name="visible">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
@@ -456,6 +439,27 @@
             <property name="bottom_attach">7</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkComboBox" id="schede_aperte_filter_combobox">
+            <property name="visible">True</property>
+            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+            <property name="model">liststore1</property>
+            <child>
+              <object class="GtkCellRendererText" id="cellrenderertext2"/>
+              <attributes>
+                <attribute name="text">0</attribute>
+              </attributes>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="right_attach">4</property>
+            <property name="top_attach">8</property>
+            <property name="bottom_attach">9</property>
+            <property name="x_options">GTK_FILL</property>
+            <property name="y_options"></property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -466,6 +470,26 @@
     <child>
       <placeholder/>
     </child>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes"></col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Tutti</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Aperto</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Chiuso</col>
+      </row>
+    </data>
   </object>
   <object class="GtkVBox" id="anagrafica_schede_ordinazioni_detail_vbox">
     <property name="visible">True</property>
