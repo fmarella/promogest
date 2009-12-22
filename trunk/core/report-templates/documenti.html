@@ -1,8 +1,9 @@
 {% extends 'index.html' %}
 {% block body %}
+
         <table cellpadding="0" cellspacing="3" border="0">
             <tr>
-                <th>Numero/Parte</th>
+                <th style="30px;">N</th>
                 <th>Operazione</th>
                 <th>Data docum.</th>
                 <th>Cliente/Fornitore</th>
@@ -17,7 +18,7 @@
             {% for dao in objects %}
             {% set tota = dao.totali %}
             <tr class="row">
-                <td class="detail">{{dao.numero|string + ' ' + (dao.parte or '')|string}}</td>
+                <td >{{dao.numero|string + ' ' + (dao.parte or '')|string}}</td>
 
                 <td class="detail">{{dao.operazione}}</td>
                 <td class="detail">{{utils.dateToString(dao.data_documento)}}</td>

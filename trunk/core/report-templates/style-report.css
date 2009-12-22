@@ -3,12 +3,12 @@
     body {
         background-color: white;
         font-family: monospace;
-    }        
-    
-    table {
-        width: 98%;      
     }
-    
+
+    table {
+        width: 98%;
+    }
+
     tr.row {
         border-bottom : 1px solid black;
     }
@@ -16,12 +16,12 @@
     td {
         padding-left: 4px;
     }
-    
+
     td.detail {
         padding-left: 2px;
 
     }
-    
+
     td.left {
         text-align: left;
     }
@@ -36,16 +36,16 @@
         padding: 4px;
 
     }
-    
+
     th.left {
         font-weight: normal;
     }
-    
+
     li {
-        padding-left: 4px; 
+        padding-left: 4px;
         list-style: square;
     }
-    
+
     .header {
         font-style: italic;
         border-width: 1px 0px 1px 0px;
@@ -55,7 +55,7 @@
         margin: 4px;
         font-size: 1.2em;
     }
-    
+
     .totale {
         padding-top: 6px;
         margin-top: 6px;
@@ -63,37 +63,31 @@
         border-style: solid;
         border-color: black;
     }
-    
+
     td.number {
         text-align: right;
     }
-    
+
     th.number {
         text-align: right;
     }
     #container {
     width: auto;
-/*     height: 600px; */
 }
+
 #container #footer {
-/*     background-attachment: scroll; */
     background-image: url("gui/bkg_footer.png");
     background-repeat: repeat;
-/*     background-position: left top; */
     position: relative;
     width: auto;
-/*     top: 600px; */
     font-family: Arial;
     font-size: 10px;
     color: #333333;
     height: 21px;
-
 }
 #container #rigaheader {
-/*     background-attachment: scroll; */
     background-image: url("gui/bkg_footer.png");
     background-repeat: repeat;
-/*     background-position: left top; */
     position: relative;
     width: auto;
     height: 15px;
@@ -114,10 +108,7 @@
 #container #head #img {
     height: 48px;
     width: 48px;
-/*     background-attachment: scroll; */
-/*     background-image: url("gui/articolo48x48.png"); */
     background-repeat: no-repeat;
-/*     background-position: left center; */
     position: relative;
     left: 20px;
     top: 5px;
