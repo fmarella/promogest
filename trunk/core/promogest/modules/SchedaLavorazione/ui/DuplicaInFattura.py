@@ -6,27 +6,13 @@
 # Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
 # Author: Francesco <francesco@promotux.it>
 
-from promogest.dao.Dao import Dao
-from promogest.dao.Listino import Listino
 from promogest.Environment import *
 from promogest.ui.utils import *
-from promogest.modules.SchedaLavorazione.dao.RigaSchedaOrdinazione import RigaSchedaOrdinazione
-from promogest.modules.SchedaLavorazione.dao.ScontoRigaScheda import ScontoRigaScheda
-from promogest.modules.SchedaLavorazione.dao.ScontoSchedaOrdinazione import ScontoSchedaOrdinazione
-from promogest.modules.SchedaLavorazione.dao.ColoreStampa import ColoreStampa
-from promogest.modules.SchedaLavorazione.dao.CarattereStampa import CarattereStampa
-from promogest.modules.SchedaLavorazione.dao.PromemoriaSchedaOrdinazione import PromemoriaSchedaOrdinazione
-from promogest.modules.SchedaLavorazione.dao.Datario import Datario
-from promogest.modules.SchedaLavorazione.dao.ContattoScheda import ContattoScheda
-from promogest.modules.SchedaLavorazione.dao.NotaScheda import NotaScheda
-from promogest.modules.SchedaLavorazione.dao.RecapitoSpedizione import RecapitoSpedizione
-from promogest.dao.Cliente import Cliente
-from promogest.dao.Magazzino import Magazzino
 from promogest.dao.RigaDocumento import RigaDocumento
-from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.DestinazioneMerce import DestinazioneMerce
 from promogest.dao.TestataDocumento import TestataDocumento
-
+from promogest.dao.TestataMovimento import TestataMovimento
+from promogest.dao.RigaMovimento import RigaMovimento
 
 
 class DuplicaInFattura(object):
@@ -36,32 +22,46 @@ class DuplicaInFattura(object):
         self.ui = ui
 
 
-    def checkField(self):
-        if not self.dao.id_cliente:
+    def checkField(self, tipo="fattura", operazione=None):
+        if tipo =="fattura" and not self.dao.id_cliente:
             obligatoryField(None, msg='scegliere prima un cliente da associare al documento')
             return
         else:
             if self.dao.id is None:
                 msg = "Prima di poter generare la fattura di questa scheda e' necessario salvarla .\n Salvare ?"
                 response = self.advertise(msg)
-                if response == gtk.RESPONSE_YES:
+                if tipo=="fattura" and response == gtk.RESPONSE_YES:
                     if not self.dao.fattura:
-                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
                         idFattura = self.creaFatturaDaScheda()
                         self.dao.ricevuta_associata = TestataDocumento().getRecord(id=idFattura).numero
                         self.ui.n_documento_entry.set_text(str(self.dao.ricevuta_associata))
                         self.dao.fattura = True
-                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
                         self.ui._refresh()
                     else:
                         if self.dao.ricevuta_associata is not None:
                             ricevuta_num = self.dao.ricevuta_associata
                             self.advertise("La presente scheda ha gia' generato una fattura (numero "+ricevuta_num+").")
                     return
+                elif tipo=="movimento" and response == gtk.RESPONSE_YES:
+                    if not self.dao.fattura:
+                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
+                        idMovimento = self.creaMovimentoDaScheda(operazione=operazione)
+                        self.dao.ricevuta_associata = TestataMovimento().getRecord(id=idMovimento).numero
+                        self.ui.n_documento_entry.set_text(str(self.dao.ricevuta_associata))
+                        self.dao.fattura = True
+                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
+                        self.ui._refresh()
+                    else:
+                        #TODO: check this part
+                        if self.dao.ricevuta_associata is not None:
+                            ricevuta_num = self.dao.ricevuta_associata
+                            self.advertise("La presente scheda ha gia' generato una fattura (numero "+ricevuta_num+").")
                 else:
                     return
             else:
-                if not self.dao.fattura:
+                if tipo=="fattura" and not self.dao.fattura:
                     self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
                     idFattura = self.creaFatturaDaScheda()
                     self.dao.ricevuta_associata = TestataDocumento().getRecord(id=idFattura).numero
@@ -70,6 +70,20 @@ class DuplicaInFattura(object):
                     self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
                     self.ui._refresh()
                     return
+                elif tipo=="movimento":
+                    if not self.dao.fattura:
+                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
+                        idMovimento = self.creaMovimentoDaScheda(operazione=operazione)
+                        self.dao.ricevuta_associata = TestataMovimento().getRecord(id=idMovimento).numero
+                        self.ui.n_documento_entry.set_text(str(self.dao.ricevuta_associata))
+                        self.dao.fattura = True
+                        self.ui.on_anagrafica_complessa_detail_dialog_response(self.ui.dialogTopLevel, gtk.RESPONSE_APPLY)
+                        self.ui._refresh()
+                    else:
+                        #TODO: check this part
+                        if self.dao.ricevuta_associata is not None:
+                            ricevuta_num = self.dao.ricevuta_associata
+                            self.advertise("La presente scheda ha gia' generato una fattura (numero "+ricevuta_num+").")
                 else:
                     if self.dao.ricevuta_associata is not None:
                         ricevuta_num = self.dao.ricevuta_associata
@@ -78,6 +92,52 @@ class DuplicaInFattura(object):
                         msg = "La presente scheda ha gia' generato una fattura,\nma non è possibile stabilire il numero del documento."
                     self.advertise(msg)
                     return
+
+    def creaMovimentoDaScheda(self, operazione=None):
+        daoTestataMovimento = TestataMovimento()
+        daoTestataMovimento.data_documento = datetime.datetime.today()
+        if self.dao.id_magazzino is None:
+            obligatoryField(None, msg='Selezionare un magazzino per generare il movimento.')
+        daoTestataMovimento.note_interne = 'Movimento associato a scheda lavorazione numero '+str(self.dao.numero)
+        daoTestataMovimento.note_pie_pagina = None
+        daoTestataMovimento.registro_numerazione = 'registro_movimenti'
+        daoTestataMovimento.operazione = operazione
+
+        righe_testata = []
+
+        for riga in self.dao.righe:
+            riga_testata = RigaMovimento()
+            riga_testata.id_articolo = riga.id_articolo
+            riga_testata.id_magazzino = riga.id_magazzino
+            riga_testata.descrizione = riga.descrizione
+            riga_testata.id_listino = riga.id_listino
+            riga_testata.percentuale_iva = riga.percentuale_iva
+            riga_testata.applicazione_sconti = riga.applicazione_sconti
+            riga_testata.quantita = riga.quantita
+            riga_testata.id_multiplo = riga.id_multiplo
+            riga_testata.moltiplicatore = riga.moltiplicatore
+            if riga.scontiRiga:
+                for sconto in riga.scontiRiga:
+                    self.ui.setScontiRiga(riga_testata, 'movimento')
+            try:
+                riga_testata.scontiRigheMovimento = riga_testata.scontiRiga
+            except:
+                riga_testata.scontiRigheMovimento = []
+
+            riga_testata.valore_unitario_lordo = calcolaPrezzoIva(riga.valore_unitario_lordo, (-1*riga.percentuale_iva))
+            riga_testata.valore_unitario_netto =calcolaPrezzoIva(riga.valore_unitario_netto, (-1*riga.percentuale_iva))
+            righe_testata.append(riga_testata)
+        daoTestataMovimento.righeMovimento = righe_testata
+
+        daoTestataMovimento.scontiSuTotale = []
+        if not daoTestataMovimento.numero:
+            valori = numeroRegistroGet(tipo="Movimento", date=daoTestataMovimento.data_documento)
+            daoTestataMovimento.numero = valori[0]
+            #self.dao.registro_numerazione= valori[1]
+        daoTestataMovimento.persist()
+        messageInfo(msg="Duplicazione in movimento correttamente effettuato")
+        return daoTestataMovimento.id
+
 
     def creaFatturaDaScheda(self):
         """
@@ -129,7 +189,7 @@ class DuplicaInFattura(object):
             daoTestataFattura.totale_sospeso = 0
         else:
             daoTestataFattura.totale_pagato = 0
-            daoTestataFattura.totale_sospeso =  float(self.ui.tot_scontato_entry.get_text()) or 0
+            daoTestataFattura.totale_sospeso = float(self.ui.tot_scontato_entry.get_text()) or 0
         daoTestataFattura.id_banca = None
         righe_testata = []
 
@@ -144,22 +204,9 @@ class DuplicaInFattura(object):
             riga_testata.quantita = riga.quantita
             riga_testata.id_multiplo = riga.id_multiplo
             riga_testata.moltiplicatore = riga.moltiplicatore
-            #print "FFFFFFFFFFFFFFFFFFFFAAAAAAAAAAAAAAAAAAAAAAAAAAA",riga.scontiRiga
-            #for sconto in self.scontiTEMP:
-                #if tipo == 'documento':
-                    #from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
-                    #scontoRiga = ScontoRigaDocumento()
-                #else:
-                    #scontoRiga = ScontoRigaScheda()
-                #scontoRiga.valore = sconto.valore
-                #scontoRiga.tipo_sconto = sconto.tipo_sconto
-                #scontiRiga.append(scontoRiga)
-                #daoRiga.scontiRiga = scontiRiga
             if riga.scontiRiga:
-                #print "TADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
                 for sconto in riga.scontiRiga:
                     self.ui.setScontiRiga(riga_testata, 'documento')
-            #print "FFFFFFFFFFFFFFFFFFFFAAAAAAAAAAAAAAAAAAAAAAAAAAA",riga_testata.scontiRiga
             try:
                 riga_testata.scontiRigaDocumento = riga_testata.scontiRiga
             except:
@@ -170,28 +217,13 @@ class DuplicaInFattura(object):
             righe_testata.append(riga_testata)
         daoTestataFattura.righeDocumento = righe_testata
 
-##        scontiTestata = []
-##        scontoTestata = None
-##        for sconto in self.dao.sconti:
-##            scontoTestata = ScontoTestataDocumento(Environment.connection)
-##            scontoTestata.tipo_sconto =sconto.tipo_sconto
-##            scontoTestata.valore = sconto.valore
-##            scontiTestata.append(scontoTestata)
-        #scontiSuTotale = []
-        #res = self.ui.sconti_scheda_widget.getSconti()
-        #if res is not None:
-            #for k in range(0, len(res)):
-                #daoSconto = ScontoSchedaOrdinazione()
-                #daoSconto.valore = float(res[k]["valore"])
-                #daoSconto.tipo_sconto = res[k]["tipo"]
-                #scontiSuTotale.append(daoSconto)
-
         daoTestataFattura.scontiSuTotale = []
         if not daoTestataFattura.numero:
             valori = numeroRegistroGet(tipo=daoTestataFattura.operazione, date=daoTestataFattura.data_documento)
             daoTestataFattura.numero = valori[0]
             #self.dao.registro_numerazione= valori[1]
         daoTestataFattura.persist()
+        messageInfo(msg="Duplicazione in fattura  correttamente effettuato")
         return daoTestataFattura.id
 
     def advertise(self, msg):

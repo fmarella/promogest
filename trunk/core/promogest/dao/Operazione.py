@@ -23,6 +23,10 @@ class Operazione(Dao):
             dic= { k: operazione.c.denominazione == (v).strip()}
         elif k=="tipoOperazione":
             dic = {k:operazione.c.tipo_operazione==v}
+        elif k=="segno":
+            dic = {k: operazione.c.segno ==v}
+        elif k=="tipoPersonaGiuridica":
+            dic = {k: operazione.c.tipo_persona_giuridica ==v}
         return  dic[k]
 
 operazione=Table('operazione',params['metadata'],schema = params['mainSchema'],autoload=True)

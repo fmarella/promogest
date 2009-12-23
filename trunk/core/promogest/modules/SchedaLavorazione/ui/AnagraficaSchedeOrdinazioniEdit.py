@@ -187,10 +187,43 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         column.set_fixed_width(100)
         treeview.append_column(column)
 
+#        fillComboboxOperazioni(self.id_operazione_combobox, 'movimento')
+
+        res = Operazione().select(segno="-",tipoPersonaGiuridica="", tipoOperazione="movimento")
+
+        model = gtk.ListStore(object, str, str)
+        for o in res:
+            model.append((o, o.denominazione, (o.denominazione or '')[0:30]))
+        self.fattura_toggle.set_active(True)
+        self.id_operazione_combobox.set_sensitive(False)
+        self.id_operazione_combobox.clear()
+        renderer = gtk.CellRendererText()
+        self.id_operazione_combobox.pack_start(renderer, True)
+        self.id_operazione_combobox.add_attribute(renderer, 'text', 2)
+        self.id_operazione_combobox.set_model(model)
+
         self._articoliTreeviewModel = gtk.ListStore(object, str, str, str, str, str, str,str,str)
         self.articoli_treeview.set_model(self._articoliTreeviewModel)
 
         self.sconti_scheda_widget.button.connect('toggled',self.on_sconti_scheda_widget_button_toggled)
+
+    def on_fattura_toggle_toggled(self, button):
+        if self.fattura_toggle.get_active():
+            self.id_operazione_combobox.set_sensitive(False)
+        else:
+            self.id_operazione_combobox.set_sensitive(True)
+
+
+    def on_duplica_button_clicked(self, button):
+        if self.fattura_toggle.get_active():
+            print "DUPLICHIAMO IN FATTURA"
+            DuplicaInFattura(dao=self.dao, ui = self).checkField(tipo="fattura")
+        else:
+            print "DEVO FARE UN MOVIMENTO"
+            self._operazione = findIdFromCombobox(self.id_operazione_combobox)
+            operazione = leggiOperazione(self._operazione)
+            DuplicaInFattura(dao=self.dao, ui = self).checkField(tipo="movimento",operazione=self._operazione)
+
 
     def setDao(self, dao):
         self.righeTEMP = []
@@ -444,6 +477,9 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                 if tipo == 'documento':
                     from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
                     scontoRiga = ScontoRigaDocumento()
+                elif tipo == "movimento":
+                    from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
+                    scontoRiga = ScontoRigaMovimento()
                 else:
                     scontoRiga = ScontoRigaScheda()
                 scontoRiga.valore = sconto.valore
@@ -654,9 +690,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                             RigaSchedaOrdinazione.id_scheda == SchedaOrdinazione.id,
                             Riga.id_articolo==idArticolo,
                             Articolo.id==idArticolo)).all()
-        print "PAAAAART", part, idArticolo
         for r in part:
-            print "QUANTITA",r.id, r.quantita
             t +=r.quantita
         return t
 

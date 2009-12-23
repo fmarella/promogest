@@ -5,8 +5,6 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 
-import os
-import gtk, gobject
 import gtk
 from GladeWidget import GladeWidget
 
@@ -25,7 +23,6 @@ if Environment.conf.hasPagamenti == True:
 from utils import *
 
 
-
 class DuplicazioneMovimento(GladeWidget):
 
     def __init__(self, daoMovimento, anagraficaMovimenti):
@@ -33,20 +30,20 @@ class DuplicazioneMovimento(GladeWidget):
         self.dao = daoMovimento
         self.anagrafica_movimenti = anagraficaMovimenti
 
-        GladeWidget.__init__(self, 'duplicazione_movimento_window', 'duplicazione_movimento.glade')
+        GladeWidget.__init__(self, 'duplicazione_movimento_window',
+                                            'duplicazione_movimento.glade')
         self.placeWindow(self.getTopLevel())
         self.draw()
 
-
     def draw(self):
-        
+
         operazione = leggiOperazione(self.dao.operazione)
         self.tipoPersonaGiuridica = operazione['tipoPersonaGiuridica']
         self.persona_label.set_text(self.tipoPersonaGiuridica.capitalize())
         self.id_persona_giuridica_customcombobox.setType(self.tipoPersonaGiuridica)
-        
+
         res = Environment.params['session'].query(Operazione).all()
-        
+
         model = gtk.ListStore(object, str, str)
         for o in res:
             model.append((o, o.denominazione, (o.denominazione or '')[0:30]))
@@ -66,36 +63,36 @@ class DuplicazioneMovimento(GladeWidget):
         model = gtk.ListStore(object, str)
         model.append((None, '<Invariato>'))
         for l in listini:
-            model.append((l, (l.denominazione or '')[0:30]))                
+            model.append((l, (l.denominazione or '')[0:30]))
         self.id_prezzo_combobox.clear()
         renderer = gtk.CellRendererText()
         self.id_prezzo_combobox.pack_start(renderer, True)
         self.id_prezzo_combobox.add_attribute(renderer, 'text', 1)
         self.id_prezzo_combobox.set_model(model)
         self.id_prezzo_combobox.set_active(0)
-        
+
         #controlla che nel documento ci sia un solo magazzino
         nMags = Environment.params['session'].query(Magazzino).count()
         if nMags > 1:
-          if self.dao.numeroMagazzini == 1:
-            mags = Environment.params['session'].query(Magazzino)#.filter(Magazzino.id != self.dao.righe[0].id_magazzino)
-            model = gtk.ListStore(object, str)
-            for m in mags:
-                model.append((m, (m.denominazione or '')[0:30]))                
-            self.id_magazzino_combobox.clear()
-            renderer = gtk.CellRendererText()
-            self.id_magazzino_combobox.pack_start(renderer, True)
-            self.id_magazzino_combobox.add_attribute(renderer, 'text', 1)
-            self.id_magazzino_combobox.set_model(model)
-          else:
+            if self.dao.numeroMagazzini == 1:
+                mags = Environment.params['session'].query(Magazzino)#.filter(Magazzino.id != self.dao.righe[0].id_magazzino)
+                model = gtk.ListStore(object, str)
+                for m in mags:
+                    model.append((m, (m.denominazione or '')[0:30]))
+                    self.id_magazzino_combobox.clear()
+                    renderer = gtk.CellRendererText()
+                    self.id_magazzino_combobox.pack_start(renderer, True)
+                    self.id_magazzino_combobox.add_attribute(renderer, 'text', 1)
+                    self.id_magazzino_combobox.set_model(model)
+            else:
+                #disabilito il cambio di magazzino
+                self.id_magazzino_combobox.set_sensitive(False)
+        else:
             #disabilito il cambio di magazzino
             self.id_magazzino_combobox.set_sensitive(False)
-        else:
-          #disabilito il cambio di magazzino
-          self.id_magazzino_combobox.set_sensitive(False)
-    
+
     def on_confirm_button_clicked(self, button=None):
-        
+
         if (self.data_movimento_entry.get_text() == ''):
             obligatoryField(self.getTopLevel(), self.data_movimento_entry)
 
@@ -115,19 +112,19 @@ class DuplicazioneMovimento(GladeWidget):
         newDao.id_testata_documento = self.dao.id_testata_documento
         if  self.personaGiuridicaCambiata:
             if (self.id_persona_giuridica_customcombobox.getId() is None):
-              obligatoryField(self.getTopLevel(), self.id_persona_giuridica_customcombobox)
+                obligatoryField(self.getTopLevel(), self.id_persona_giuridica_customcombobox)
             if self.id_persona_giuridica_customcombobox.getType() == "cliente":
-              newDao.id_cliente = self.id_persona_giuridica_customcombobox.getId()
-              newDao.id_fornitore = None
+                newDao.id_cliente = self.id_persona_giuridica_customcombobox.getId()
+                newDao.id_fornitore = None
             else:
-              newDao.id_fornitore = self.id_persona_giuridica_customcombobox.getId()
-              newDao.id_cliente = None  
+                newDao.id_fornitore = self.id_persona_giuridica_customcombobox.getId()
+                newDao.id_cliente = None
         elif not self.persona_giuridica_sensitive:
-          newDao.id_fornitore = None
-          newDao.id_cliente = None
+            newDao.id_fornitore = None
+            newDao.id_cliente = None
         else:
-          newDao.id_fornitore = self.dao.id_fornitore
-          newDao.id_cliente = self.dao.id_cliente
+            newDao.id_fornitore = self.dao.id_fornitore
+            newDao.id_cliente = self.dao.id_cliente
         righe = []
         righeMovimento = []
         rig = self.dao.righe
@@ -151,50 +148,33 @@ class DuplicazioneMovimento(GladeWidget):
             #ricalcola prezzi
             listino = self.id_prezzo_combobox.get_model()[self.id_prezzo_combobox.get_active()][0]
             if  listino is None:
-              daoRiga.id_listino = r.id_listino
-              daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
-              daoRiga.valore_unitario_netto = r.valore_unitario_netto
-            else:
-              #ricalcola prezzi
-              listinoArticolo = Environment.params['session'].query(ListinoArticolo).filter(ListinoArticolo.id_listino == listino.id and r.id_articolo == ListinoArticolo.id_articolo).all()
-              if len(listinoArticolo) > 0:
-                daoRiga.id_listino = listinoArticolo[0].id_listino
-                daoRiga.valore_unitario_lordo = listinoArticolo[0].prezzo_dettaglio
-                daoRiga.valore_unitario_netto = listinoArticolo[0].prezzo_ingrosso
-              else:
                 daoRiga.id_listino = r.id_listino
                 daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
                 daoRiga.valore_unitario_netto = r.valore_unitario_netto
+            else:
+                #ricalcola prezzi
+                listinoArticolo = Environment.params['session'].query(ListinoArticolo).filter(ListinoArticolo.id_listino == listino.id and r.id_articolo == ListinoArticolo.id_articolo).all()
+                if len(listinoArticolo) > 0:
+                    daoRiga.id_listino = listinoArticolo[0].id_listino
+                    daoRiga.valore_unitario_lordo = listinoArticolo[0].prezzo_dettaglio
+                    daoRiga.valore_unitario_netto = listinoArticolo[0].prezzo_ingrosso
+                else:
+                    daoRiga.id_listino = r.id_listino
+                    daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
+                    daoRiga.valore_unitario_netto = r.valore_unitario_netto
             sconti = []
             scontiRigaMovimento = []
             sco = r.sconti
             if self.mantieni_sconti_checkbutton.get_active() :
-              for s in sco:
-                  daoSconto = ScontoRigaMovimento()
-                  daoSconto.valore = s.valore
-                  daoSconto.tipo_sconto = s.tipo_sconto
-                  scontiRigaMovimento.append(daoSconto)
+                for s in sco:
+                    daoSconto = ScontoRigaMovimento()
+                    daoSconto.valore = s.valore
+                    daoSconto.tipo_sconto = s.tipo_sconto
+                    scontiRigaMovimento.append(daoSconto)
             daoRiga.scontiRigheMovimento = scontiRigaMovimento
             righeMovimento.append(daoRiga)
 
         newDao.righeMovimento = righeMovimento
-        #newDao.totale_pagato = self.dao.totale_pagato
-        #newDao.totale_sospeso = self.dao.totale_sospeso
-        #newDao.documento_saldato = self.dao.documento_saldato
-        #newDao.id_secondo_riferimento = self.dao.id_secondo_riferimento
-        #scadenze = []
-        #scad = self.dao.scadenze
-        #for s in scad:
-            #daoTestataDocumentoScadenza = TestataDocumentoScadenza()
-            #daoTestataDocumentoScadenza.id_testata_documento = newDao.id
-            #daoTestataDocumentoScadenza.data = s.data
-            #daoTestataDocumentoScadenza.importo = s.importo
-            #daoTestataDocumentoScadenza.pagamento = s.pagamento
-            #daoTestataDocumentoScadenza.data_pagamento= s.data_pagamento
-            #daoTestataDocumentoScadenza.numero_scadenza = s.numero_scadenza
-            #scadenze.append(daoTestataDocumentoScadenza)
-        #newDao.scadenze = scadenze
-        
         newDao.persist()
 
         res = TestataMovimento(newDao.id)
@@ -209,44 +189,42 @@ class DuplicazioneMovimento(GladeWidget):
 
     def on_id_operazione_combobox_changed(self, widget, event=None):
         tipoPersonaGiuridica = self.id_operazione_combobox.get_model()[self.id_operazione_combobox.get_active()][0].tipo_persona_giuridica
-        
+
         if self.tipoPersonaGiuridica == tipoPersonaGiuridica:
-          self.personaGiuridicaCambiata = False
+            self.personaGiuridicaCambiata = False
         else:
-          self.personaGiuridicaCambiata = True
-          
+            self.personaGiuridicaCambiata = True
+
         if self.id_persona_giuridica_customcombobox.getType() == "fornitore" and tipoPersonaGiuridica == 'cliente':
-          self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)
+            self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)
         if self.id_persona_giuridica_customcombobox.getType() == "cliente" and tipoPersonaGiuridica == 'fornitore':
-          self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)
-        
+            self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)
+
         self.persona_label.set_text(tipoPersonaGiuridica.capitalize())
         self.id_persona_giuridica_customcombobox.setType(tipoPersonaGiuridica)
-        
-        
+
     def on_id_operazione_combobox_changed(self, widget, event=None):
         tipoPersonaGiuridica = self.id_operazione_combobox.get_model()[self.id_operazione_combobox.get_active()][0].tipo_persona_giuridica
         if tipoPersonaGiuridica is not None:
-          self.id_persona_giuridica_customcombobox.set_sensitive(True)
-          self.persona_giuridica_sensitive = True
-          if self.tipoPersonaGiuridica == tipoPersonaGiuridica:
-            self.personaGiuridicaCambiata = False 
-          else:
-            self.personaGiuridicaCambiata = True
-            
-          if self.id_persona_giuridica_customcombobox.getType() == "fornitore" and tipoPersonaGiuridica == 'cliente':
-            self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)
-          if self.id_persona_giuridica_customcombobox.getType() == "cliente" and tipoPersonaGiuridica == 'fornitore':
-            self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)
-          
-          self.persona_label.set_text(tipoPersonaGiuridica.capitalize())
-          self.id_persona_giuridica_customcombobox.setType(tipoPersonaGiuridica)
+            self.id_persona_giuridica_customcombobox.set_sensitive(True)
+            self.persona_giuridica_sensitive = True
+            if self.tipoPersonaGiuridica == tipoPersonaGiuridica:
+                self.personaGiuridicaCambiata = False
+            else:
+                self.personaGiuridicaCambiata = True
 
+            if self.id_persona_giuridica_customcombobox.getType() == "fornitore" and tipoPersonaGiuridica == 'cliente':
+                self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)
+            if self.id_persona_giuridica_customcombobox.getType() == "cliente" and tipoPersonaGiuridica == 'fornitore':
+                self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)
+
+            self.persona_label.set_text(tipoPersonaGiuridica.capitalize())
+            self.id_persona_giuridica_customcombobox.setType(tipoPersonaGiuridica)
         else:
-          self.id_persona_giuridica_customcombobox.set_sensitive(False)
-          self.persona_giuridica_sensitive = False
-          self.personaGiuridicaCambiata = False       
-        
+            self.id_persona_giuridica_customcombobox.set_sensitive(False)
+            self.persona_giuridica_sensitive = False
+            self.personaGiuridicaCambiata = False
+
     def on_duplicazione_documento_window_close(self, widget, event=None):
         self.destroy()
         return None

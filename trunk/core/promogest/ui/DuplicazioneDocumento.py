@@ -5,8 +5,6 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 
-import os
-import gtk, gobject
 import gtk
 from GladeWidget import GladeWidget
 
@@ -22,25 +20,27 @@ if Environment.conf.hasPagamenti == True:
 from utils import *
 
 
-
 class DuplicazioneDocumento(GladeWidget):
 
     def __init__(self, daoDocumento):
 
         self.dao = daoDocumento
 
-        GladeWidget.__init__(self, 'duplicazione_documento_window', 'duplicazione_documento.glade')
+        GladeWidget.__init__(self, 'duplicazione_documento_window',
+                                        'duplicazione_documento.glade')
         self.placeWindow(self.getTopLevel())
         self.draw()
-
 
     def draw(self):
         # seleziona i tipi documento compatibili
         operazione = leggiOperazione(self.dao.operazione)
-        res = Environment.params['session'].query(Operazione).filter(and_(or_(Operazione.tipo_operazione==None,
-                                                                    Operazione.tipo_operazione =="documento"),
-                                                                    (Operazione.fonte_valore == operazione["fonteValore"]),
-                                                                    (Operazione.tipo_persona_giuridica == operazione["tipoPersonaGiuridica"]))).all()
+        res = Environment.params['session']\
+                .query(Operazione)\
+                .filter(and_(or_(Operazione.tipo_operazione==None,
+                    Operazione.tipo_operazione =="documento"),
+                    (Operazione.fonte_valore == operazione["fonteValore"]),
+                    (Operazione.tipo_persona_giuridica == operazione["tipoPersonaGiuridica"])))\
+                .all()
         model = gtk.ListStore(object, str, str)
         for o in res:
             model.append((o, o.denominazione, (o.denominazione or '')[0:30]))
@@ -55,7 +55,6 @@ class DuplicazioneDocumento(GladeWidget):
         self.data_documento_entry.grab_focus()
         #self.getTopLevel().show_all()
         #self.show_all()
-
 
     def on_confirm_button_clicked(self, button=None):
 
@@ -195,9 +194,7 @@ class DuplicazioneDocumento(GladeWidget):
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
         response = dialog.run()
         dialog.destroy()
-
         self.destroy()
-
 
     def on_duplicazione_documento_window_close(self, widget, event=None):
         self.destroy()
