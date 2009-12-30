@@ -9,12 +9,10 @@
  """
 
 import gtk
-import gobject
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 from promogest import Environment
-#from promogest.dao.Dao import Dao
 from promogest.dao.Listino import Listino
 from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
 from promogest.dao.ListinoMagazzino import ListinoMagazzino
@@ -38,7 +36,6 @@ class AnagraficaListini(Anagrafica):
                             aziendaStr=aziendaStr)
 
 
-
 class AnagraficaListiniFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei listini """
 
@@ -48,7 +45,6 @@ class AnagraficaListiniFilter(AnagraficaFilter):
                                   'anagrafica_listini_filter_table',
                                   gladeFile='_ricerca_semplice_listini.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
-
 
     def draw(self, cplx=False):
         # Colonne della Treeview per il filtro
@@ -93,12 +89,10 @@ class AnagraficaListiniFilter(AnagraficaFilter):
         if self._anagrafica._denominazione is not None:
             self._anagrafica.anagrafica_filter_treeview.grab_focus()
 
-
     def clear(self):
         # Annullamento filtro
         self.denominazione_filter_entry.set_text('')
         self.refresh()
-
 
     def refresh(self):
         # Aggiornamento TreeView
@@ -137,12 +131,10 @@ class AnagraficaListiniFilter(AnagraficaFilter):
                                         dateToString(l.data_listino)))
 
 
-
 class AnagraficaListiniHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'listino',
                                 'Listino')
-
 
 
 class AnagraficaListiniReport(AnagraficaReport):
@@ -152,6 +144,7 @@ class AnagraficaListiniReport(AnagraficaReport):
                                   defaultFileName='listini',
                                   htmlTemplate='listini',
                                   sxwTemplate='listini')
+
 
 class AnagraficaListiniEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica dei listini """
@@ -163,7 +156,6 @@ class AnagraficaListiniEdit(AnagraficaEdit):
                                   'Dati listino',
                                   gladeFile='_anagrafica_listini_elements.glade')
         self._widgetFirstFocus = self.denominazione_entry
-
 
     def draw(self, cplx=False):
         #Elenco categorie
@@ -239,7 +231,6 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         self.id_listino_customcombobox.connect('clicked',
                                                  on_id_listino_customcombobox_clicked)
 
-
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
@@ -255,7 +246,6 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             self.dao = Listino().select(id=dao.id)[0]
             self._refresh()
 
-
     def _refresh(self):
         self.denominazione_entry.set_text(self.dao.denominazione or '')
         self.descrizione_entry.set_text(self.dao.descrizione or '')
@@ -263,7 +253,6 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         self._refreshCategorieClienti()
         self._refreshMagazzini()
         self._refreshListiniComplessi()
-
 
     def _refreshCategorieClienti(self):
         self.id_categoria_cliente_customcombobox.combobox.set_active(-1)
@@ -274,7 +263,6 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         categorie = self.dao.categorieCliente
         for c in categorie:
             model.append((c.id_categoria_cliente, c.categoria_cliente, None, None))
-
 
     def _refreshMagazzini(self):
         self.id_magazzino_customcombobox.combobox.set_active(-1)
@@ -295,7 +283,6 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         listini = self.dao.listiniComplessi
         for m in listini:
             model.append((m.id_listino, m.listino_denominazione, None, None))
-
 
     def saveDao(self):
         if (self.denominazione_entry.get_text() == ''):
@@ -386,13 +373,11 @@ class AnagraficaListiniEdit(AnagraficaEdit):
                 daoListinoComplessoListino.id_listino = l[0]
                 daoListinoComplessoListino.persist()
 
-
         #self.dao.persist()
 
         self._refreshCategorieClienti()
         self._refreshMagazzini()
         self._refreshListiniComplessi()
-
 
     def on_add_row_categoria_button_clicked(self, widget):
         id = findIdFromCombobox(self.id_categoria_cliente_customcombobox.combobox)
@@ -452,7 +437,6 @@ class AnagraficaListiniEdit(AnagraficaEdit):
                         model.remove(c.iter)
         self.categorie_treeview.get_selection().unselect_all()
 
-
     def on_delete_row_magazzino_button_clicked(self, widget):
         id = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)
         if id is not None:
@@ -485,7 +469,6 @@ class AnagraficaListiniEdit(AnagraficaEdit):
                         model.remove(m.iter)
         self.listino_complesso_treeview.get_selection().unselect_all()
 
-
     def on_undelete_row_categoria_button_clicked(self, widget):
         id = findIdFromCombobox(self.id_categoria_cliente_customcombobox.combobox)
         if id is not None:
@@ -496,7 +479,6 @@ class AnagraficaListiniEdit(AnagraficaEdit):
                         c[2] = None
                         c[3] = None
         self.categorie_treeview.get_selection().unselect_all()
-
 
     def on_undelete_row_magazzino_button_clicked(self, widget):
         id = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)
@@ -530,7 +512,6 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             self.delete_row_categoria_button.set_sensitive(status != 'deleted')
             self.undelete_row_categoria_button.set_sensitive(status == 'deleted')
 
-
     def on_magazzini_treeview_cursor_changed(self, treeview):
         sel = treeview.get_selection()
         (model, iterator) = sel.get_selected()
@@ -550,7 +531,6 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             status = model.get_value(iterator, 3)
             self.delete_listino_button.set_sensitive(status != 'deleted')
             self.undelete_listino_button.set_sensitive(status == 'deleted')
-
 
     def on_listini_articoli_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):
@@ -597,4 +577,3 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         anagWindow = anag.getTopLevel()
 
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
-

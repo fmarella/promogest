@@ -5,6 +5,7 @@
   <object class="GtkVBox" id="anagrafica_articoli_filter_vbox">
     <property name="visible">True</property>
     <property name="orientation">vertical</property>
+    <property name="homogeneous">True</property>
     <child>
       <object class="GtkVBox" id="ricerca_semplice_articoli_filter_vbox">
         <property name="visible">True</property>
@@ -55,8 +56,6 @@
         </child>
       </object>
       <packing>
-        <property name="expand">False</property>
-        <property name="fill">False</property>
         <property name="position">0</property>
       </packing>
     </child>
@@ -742,91 +741,80 @@
     <property name="label_xalign">0</property>
     <property name="shadow_type">in</property>
     <child>
-      <object class="GtkAlignment" id="alignment__">
+      <object class="GtkVBox" id="ricerca_avanzata_articoli_filter_filters_vbox">
         <property name="visible">True</property>
-        <property name="left_padding">12</property>
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkVBox" id="ricerca_avanzata_articoli_filter_filters_vbox">
+          <object class="GtkExpander" id="descrizione_articolo_filter_expander">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
+            <property name="can_focus">True</property>
+            <signal name="activate" handler="on_any_expander_expanded"/>
             <child>
-              <object class="GtkExpander" id="descrizione_articolo_filter_expander">
+              <object class="GtkAlignment" id="alignment445">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <signal name="activate" handler="on_any_expander_expanded"/>
+                <property name="bottom_padding">5</property>
+                <property name="left_padding">10</property>
+                <property name="right_padding">3</property>
                 <child>
-                  <object class="GtkAlignment" id="alignment445">
+                  <object class="GtkHBox" id="hbox335">
                     <property name="visible">True</property>
-                    <property name="bottom_padding">5</property>
-                    <property name="left_padding">10</property>
-                    <property name="right_padding">3</property>
+                    <property name="spacing">3</property>
                     <child>
-                      <object class="GtkHBox" id="hbox335">
+                      <object class="GtkScrolledWindow" id="scrolledwindow43">
                         <property name="visible">True</property>
-                        <property name="spacing">3</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">automatic</property>
+                        <property name="vscrollbar_policy">automatic</property>
+                        <property name="shadow_type">in</property>
                         <child>
-                          <object class="GtkScrolledWindow" id="scrolledwindow43">
+                          <object class="GtkTreeView" id="descrizione_articolo_filter_treeview">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
-                            <property name="shadow_type">in</property>
+                            <signal name="key_press_event" handler="on_descrizione_articolo_filter_treeview_key_press_event"/>
+                            <signal name="cursor_changed" handler="on_descrizione_articolo_filter_treeview_cursor_changed"/>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkVBox" id="vbox59">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">3</property>
+                        <child>
+                          <object class="GtkButton" id="nuova_descrizione_articolo_filter_button">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_nuova_descrizione_articolo_filter_button_clicked"/>
                             <child>
-                              <object class="GtkTreeView" id="descrizione_articolo_filter_treeview">
+                              <object class="GtkImage" id="image322">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <signal name="key_press_event" handler="on_descrizione_articolo_filter_treeview_key_press_event"/>
-                                <signal name="cursor_changed" handler="on_descrizione_articolo_filter_treeview_cursor_changed"/>
+                                <property name="stock">gtk-new</property>
                               </object>
                             </child>
                           </object>
                           <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkVBox" id="vbox59">
+                          <object class="GtkButton" id="cancella_descrizione_articolo_filter_button">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">3</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_cancella_descrizione_articolo_filter_button_clicked"/>
                             <child>
-                              <object class="GtkButton" id="nuova_descrizione_articolo_filter_button">
+                              <object class="GtkImage" id="image330">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_nuova_descrizione_articolo_filter_button_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image322">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-new</property>
-                                  </object>
-                                </child>
+                                <property name="stock">gtk-delete</property>
                               </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="cancella_descrizione_articolo_filter_button">
-                                <property name="visible">True</property>
-                                <property name="sensitive">False</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_cancella_descrizione_articolo_filter_button_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image330">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-delete</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
                             </child>
                           </object>
                           <packing>
@@ -836,114 +824,1007 @@
                           </packing>
                         </child>
                       </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="descrizione_articolo_filter_label">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Descrizione</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkExpander" id="produttore_articolo_filter_expander">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <signal name="activate" handler="on_any_expander_expanded"/>
+            <child>
+              <object class="GtkAlignment" id="alignment454">
+                <property name="visible">True</property>
+                <property name="bottom_padding">5</property>
+                <property name="left_padding">10</property>
+                <property name="right_padding">3</property>
+                <child>
+                  <object class="GtkHBox" id="hbox349">
+                    <property name="visible">True</property>
+                    <property name="spacing">3</property>
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolledwindow44">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">automatic</property>
+                        <property name="vscrollbar_policy">automatic</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <object class="GtkTreeView" id="produttore_articolo_filter_treeview">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <signal name="key_press_event" handler="on_produttore_articolo_filter_treeview_key_press_event"/>
+                            <signal name="cursor_changed" handler="on_produttore_articolo_filter_treeview_cursor_changed"/>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkVBox" id="vbox60">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">3</property>
+                        <child>
+                          <object class="GtkButton" id="nuovo_produttore_articolo_filter_button">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_nuovo_produttore_articolo_filter_button_clicked"/>
+                            <child>
+                              <object class="GtkImage" id="image331">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-new</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="cancella_produttore_articolo_filter_button">
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_cancella_produttore_articolo_filter_button_clicked"/>
+                            <child>
+                              <object class="GtkImage" id="image332">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-delete</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="produttore_articolo_filter_label">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Produttore</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkExpander" id="codice_articolo_filter_expander">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <signal name="activate" handler="on_any_expander_expanded"/>
+            <child>
+              <object class="GtkAlignment" id="alignment456">
+                <property name="visible">True</property>
+                <property name="bottom_padding">5</property>
+                <property name="left_padding">10</property>
+                <property name="right_padding">3</property>
+                <child>
+                  <object class="GtkHBox" id="hbox350">
+                    <property name="visible">True</property>
+                    <property name="spacing">3</property>
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolledwindow45">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">automatic</property>
+                        <property name="vscrollbar_policy">automatic</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <object class="GtkTreeView" id="codice_articolo_filter_treeview">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <signal name="key_press_event" handler="on_codice_articolo_filter_treeview_key_press_event"/>
+                            <signal name="cursor_changed" handler="on_codice_articolo_filter_treeview_cursor_changed"/>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkVBox" id="vbox61">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">3</property>
+                        <child>
+                          <object class="GtkButton" id="nuovo_codice_articolo_filter_button">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_nuovo_codice_articolo_filter_button_clicked"/>
+                            <child>
+                              <object class="GtkImage" id="image333">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-new</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="cancella_codice_articolo_filter_button">
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_cancella_codice_articolo_filter_button_clicked"/>
+                            <child>
+                              <object class="GtkImage" id="image334">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-delete</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="codice_articolo_filter_label">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Codice</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkExpander" id="codice_a_barre_articolo_filter_expander">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <signal name="activate" handler="on_any_expander_expanded"/>
+            <child>
+              <object class="GtkAlignment" id="alignment458">
+                <property name="visible">True</property>
+                <property name="bottom_padding">5</property>
+                <property name="left_padding">10</property>
+                <property name="right_padding">3</property>
+                <child>
+                  <object class="GtkHBox" id="hbox351">
+                    <property name="visible">True</property>
+                    <property name="spacing">3</property>
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolledwindow46">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">automatic</property>
+                        <property name="vscrollbar_policy">automatic</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <object class="GtkTreeView" id="codice_a_barre_articolo_filter_treeview">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <signal name="key_press_event" handler="on_codice_a_barre_articolo_filter_treeview_key_press_event"/>
+                            <signal name="cursor_changed" handler="on_codice_a_barre_articolo_filter_treeview_cursor_changed"/>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkVBox" id="vbox62">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">3</property>
+                        <child>
+                          <object class="GtkButton" id="nuovo_codice_a_barre_articolo_filter_button">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_nuovo_codice_a_barre_articolo_filter_button_clicked"/>
+                            <child>
+                              <object class="GtkImage" id="image335">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-new</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="cancella_codice_a_barre_articolo_filter_button">
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_cancella_codice_a_barre_articolo_filter_button_clicked"/>
+                            <child>
+                              <object class="GtkImage" id="image336">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-delete</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="codice_a_barre_articolo_filter_label">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Codice a barre</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkExpander" id="codice_articolo_fornitore_articolo_filter_expander">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <signal name="activate" handler="on_any_expander_expanded"/>
+            <child>
+              <object class="GtkAlignment" id="alignment460">
+                <property name="visible">True</property>
+                <property name="bottom_padding">5</property>
+                <property name="left_padding">10</property>
+                <property name="right_padding">3</property>
+                <child>
+                  <object class="GtkHBox" id="hbox352">
+                    <property name="visible">True</property>
+                    <property name="spacing">3</property>
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolledwindow47">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">automatic</property>
+                        <property name="vscrollbar_policy">automatic</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <object class="GtkTreeView" id="codice_articolo_fornitore_articolo_filter_treeview">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <signal name="key_press_event" handler="on_codice_articolo_fornitore_articolo_filter_treeview_key_press_event"/>
+                            <signal name="cursor_changed" handler="on_codice_articolo_fornitore_articolo_filter_treeview_cursor_changed"/>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkVBox" id="vbox63">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">3</property>
+                        <child>
+                          <object class="GtkButton" id="nuovo_codice_articolo_fornitore_articolo_filter_button">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_nuovo_codice_articolo_fornitore_articolo_filter_button_clicked"/>
+                            <child>
+                              <object class="GtkImage" id="image337">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-new</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="cancella_codice_articolo_fornitore_articolo_filter_button">
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_cancella_codice_articolo_fornitore_articolo_filter_button_clicked"/>
+                            <child>
+                              <object class="GtkImage" id="image338">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-delete</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="codice_articolo_fornitore_articolo_filter_label">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Codice articolo fornitore</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkExpander" id="famiglia_articolo_filter_expander">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <signal name="activate" handler="on_any_expander_expanded"/>
+            <child>
+              <object class="GtkAlignment" id="alignment462">
+                <property name="visible">True</property>
+                <property name="bottom_padding">5</property>
+                <property name="left_padding">10</property>
+                <property name="right_padding">3</property>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow48">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hscrollbar_policy">automatic</property>
+                    <property name="vscrollbar_policy">automatic</property>
+                    <property name="shadow_type">in</property>
+                    <child>
+                      <object class="GtkTreeView" id="famiglia_articolo_filter_treeview">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="famiglia_articolo_filter_label">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Famiglia merceologica</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkExpander" id="categoria_articolo_filter_expander">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <signal name="activate" handler="on_any_expander_expanded"/>
+            <child>
+              <object class="GtkAlignment" id="alignment463">
+                <property name="visible">True</property>
+                <property name="bottom_padding">5</property>
+                <property name="left_padding">10</property>
+                <property name="right_padding">3</property>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow49">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hscrollbar_policy">automatic</property>
+                    <property name="vscrollbar_policy">automatic</property>
+                    <property name="shadow_type">in</property>
+                    <child>
+                      <object class="GtkTreeView" id="categoria_articolo_filter_treeview">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="categoria_articolo_filter_label">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Categoria</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">6</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkExpander" id="stato_articolo_filter_expander">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <signal name="activate" handler="on_any_expander_expanded"/>
+            <child>
+              <object class="GtkAlignment" id="alignment464">
+                <property name="visible">True</property>
+                <property name="bottom_padding">5</property>
+                <property name="left_padding">10</property>
+                <property name="right_padding">3</property>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow50">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hscrollbar_policy">automatic</property>
+                    <property name="vscrollbar_policy">automatic</property>
+                    <property name="shadow_type">in</property>
+                    <child>
+                      <object class="GtkTreeView" id="stato_articolo_filter_treeview">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="stato_articolo_filter_label">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Stato</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">7</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkExpander" id="unita_base_articolo_filter_expander">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <signal name="activate" handler="on_any_expander_expanded"/>
+            <child>
+              <object class="GtkAlignment" id="alignment465">
+                <property name="visible">True</property>
+                <property name="bottom_padding">5</property>
+                <property name="left_padding">10</property>
+                <property name="right_padding">3</property>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow51">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hscrollbar_policy">automatic</property>
+                    <property name="vscrollbar_policy">automatic</property>
+                    <property name="shadow_type">in</property>
+                    <child>
+                      <object class="GtkTreeView" id="unita_base_articolo_filter_treeview">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="unita_base_articolo_filter_label">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Unita' base</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">8</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkExpander" id="varie_articolo_filter_expander">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <signal name="activate" handler="on_any_expander_expanded"/>
+            <child>
+              <object class="GtkAlignment" id="alignment453">
+                <property name="visible">True</property>
+                <property name="left_padding">10</property>
+                <child>
+                  <object class="GtkVBox" id="vbox58">
+                    <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkCheckButton" id="includi_eliminati_articolo_filter_checkbutton">
+                        <property name="label" translatable="yes">Includi eliminati</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="draw_indicator">True</property>
+                        <signal name="toggled" handler="on_includi_eliminati_articolo_filter_checkbutton_toggled"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="solo_eliminati_articolo_filter_checkbutton">
+                        <property name="label" translatable="yes">Solo eliminati</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="draw_indicator">True</property>
+                        <signal name="toggled" handler="on_solo_eliminati_articolo_filter_checkbutton_toggled"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="varie_articolo_filter_label">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Incl./Escl Eliminati</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">9</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="filter_promowear2">
+            <property name="visible">True</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child type="label">
+              <object class="GtkExpander" id="promowear_expander">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <child>
+                  <object class="GtkVBox" id="vbox1">
+                    <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
+                    <property name="homogeneous">True</property>
+                    <child>
+                      <object class="GtkExpander" id="stagione_articolo_filter_expander">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <child>
+                          <object class="GtkAlignment" id="alignment217">
+                            <property name="visible">True</property>
+                            <property name="bottom_padding">5</property>
+                            <property name="left_padding">10</property>
+                            <property name="right_padding">3</property>
+                            <child>
+                              <object class="GtkScrolledWindow" id="scrolledwindow72">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="hscrollbar_policy">automatic</property>
+                                <property name="vscrollbar_policy">automatic</property>
+                                <property name="shadow_type">in</property>
+                                <child>
+                                  <object class="GtkTreeView" id="stagione_articolo_filter_treeview">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel" id="stagione_articolo_filter_label">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Stagione</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkExpander" id="colore_articolo_filter_expander">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <child>
+                          <object class="GtkAlignment" id="alignment214">
+                            <property name="visible">True</property>
+                            <property name="bottom_padding">5</property>
+                            <property name="left_padding">10</property>
+                            <property name="right_padding">3</property>
+                            <child>
+                              <object class="GtkScrolledWindow" id="scrolledwindow70">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="hscrollbar_policy">automatic</property>
+                                <property name="vscrollbar_policy">automatic</property>
+                                <property name="shadow_type">in</property>
+                                <child>
+                                  <object class="GtkTreeView" id="colore_articolo_filter_treeview">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel" id="colore_articolo_filter_label">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Colore</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkExpander" id="anno_articolo_filter_expander">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <child>
+                          <object class="GtkAlignment" id="alignment215">
+                            <property name="visible">True</property>
+                            <property name="bottom_padding">5</property>
+                            <property name="left_padding">10</property>
+                            <property name="right_padding">3</property>
+                            <child>
+                              <object class="GtkScrolledWindow" id="scrolledwindow71">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="hscrollbar_policy">automatic</property>
+                                <property name="vscrollbar_policy">automatic</property>
+                                <property name="shadow_type">in</property>
+                                <child>
+                                  <object class="GtkTreeView" id="anno_articolo_filter_treeview">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel" id="anno_articolo_filter_label">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Anno</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkExpander" id="genere_articolo_filter_expander">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <child>
+                          <object class="GtkAlignment" id="alignment218">
+                            <property name="visible">True</property>
+                            <property name="bottom_padding">5</property>
+                            <property name="left_padding">10</property>
+                            <property name="right_padding">3</property>
+                            <child>
+                              <object class="GtkScrolledWindow" id="scrolledwindow73">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="hscrollbar_policy">automatic</property>
+                                <property name="vscrollbar_policy">automatic</property>
+                                <property name="shadow_type">in</property>
+                                <child>
+                                  <object class="GtkTreeView" id="genere_articolo_filter_treeview">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel" id="genere_articolo_filter_label">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Genere</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkExpander" id="taglia_articolo_filter_expander">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <child>
+                          <object class="GtkAlignment" id="alignment213">
+                            <property name="visible">True</property>
+                            <property name="bottom_padding">3</property>
+                            <property name="left_padding">3</property>
+                            <property name="right_padding">3</property>
+                            <child>
+                              <object class="GtkScrolledWindow" id="scrolledwindow69">
+                                <property name="width_request">400</property>
+                                <property name="height_request">150</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="hscrollbar_policy">automatic</property>
+                                <property name="vscrollbar_policy">automatic</property>
+                                <property name="shadow_type">in</property>
+                                <child>
+                                  <object class="GtkTreeView" id="taglia_articolo_filter_treeview">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel" id="taglia_articolo_filter_label">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Taglia</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkExpander" id="gruppo_taglia_articolo_filter_expander">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <child>
+                          <object class="GtkAlignment" id="alignment212">
+                            <property name="visible">True</property>
+                            <property name="bottom_padding">5</property>
+                            <property name="left_padding">10</property>
+                            <property name="right_padding">3</property>
+                            <child>
+                              <object class="GtkScrolledWindow" id="scrolledwindow68">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="hscrollbar_policy">automatic</property>
+                                <property name="vscrollbar_policy">automatic</property>
+                                <property name="shadow_type">in</property>
+                                <child>
+                                  <object class="GtkTreeView" id="gruppo_taglia_articolo_filter_treeview">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel" id="gruppo_taglia_articolo_filter_label">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Gruppo taglia</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkExpander" id="cutsize_articolo_filter_expander">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <child>
+                          <object class="GtkAlignment" id="alignment1">
+                            <property name="visible">True</property>
+                            <property name="bottom_padding">5</property>
+                            <property name="left_padding">10</property>
+                            <property name="right_padding">3</property>
+                            <child>
+                              <object class="GtkScrolledWindow" id="scrolledwindow2">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="hscrollbar_policy">automatic</property>
+                                <property name="vscrollbar_policy">automatic</property>
+                                <property name="shadow_type">in</property>
+                                <child>
+                                  <object class="GtkTreeView" id="cutsize_articolo_filter_treeview">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel" id="cutsize_articolo_filter_label">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Taglia/colore:includi</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">6</property>
+                      </packing>
                     </child>
                   </object>
                 </child>
                 <child type="label">
-                  <object class="GtkLabel" id="descrizione_articolo_filter_label">
+                  <object class="GtkLabel" id="label5">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Descrizione</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Abbigliamento&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="position">10</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkVBox" id="riepilogo_articolo_filter_vbox">
+            <property name="visible">True</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkAlignment" id="alignment496">
+                <property name="visible">True</property>
+                <property name="yalign">1</property>
+                <property name="yscale">0</property>
+                <property name="left_padding">5</property>
+                <property name="right_padding">5</property>
+                <child>
+                  <object class="GtkHSeparator" id="hseparator40">
+                    <property name="visible">True</property>
                   </object>
                 </child>
               </object>
               <packing>
+                <property name="padding">3</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
-              <object class="GtkExpander" id="produttore_articolo_filter_expander">
+              <object class="GtkFrame" id="riepilogo_articolo_filter_frame">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <signal name="activate" handler="on_any_expander_expanded"/>
+                <property name="label_xalign">0</property>
+                <property name="shadow_type">none</property>
                 <child>
-                  <object class="GtkAlignment" id="alignment454">
+                  <object class="GtkAlignment" id="alignment497">
                     <property name="visible">True</property>
+                    <property name="top_padding">5</property>
                     <property name="bottom_padding">5</property>
-                    <property name="left_padding">10</property>
-                    <property name="right_padding">3</property>
+                    <property name="left_padding">7</property>
+                    <property name="right_padding">2</property>
                     <child>
-                      <object class="GtkHBox" id="hbox349">
+                      <object class="GtkScrolledWindow" id="scrolledwindow65">
+                        <property name="height_request">100</property>
                         <property name="visible">True</property>
-                        <property name="spacing">3</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">automatic</property>
+                        <property name="vscrollbar_policy">automatic</property>
+                        <property name="shadow_type">in</property>
                         <child>
-                          <object class="GtkScrolledWindow" id="scrolledwindow44">
+                          <object class="GtkTextView" id="riepilogo_articolo_filter_textview">
+                            <property name="width_request">300</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
-                            <property name="shadow_type">in</property>
-                            <child>
-                              <object class="GtkTreeView" id="produttore_articolo_filter_treeview">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <signal name="key_press_event" handler="on_produttore_articolo_filter_treeview_key_press_event"/>
-                                <signal name="cursor_changed" handler="on_produttore_articolo_filter_treeview_cursor_changed"/>
-                              </object>
-                            </child>
+                            <property name="editable">False</property>
                           </object>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkVBox" id="vbox60">
-                            <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">3</property>
-                            <child>
-                              <object class="GtkButton" id="nuovo_produttore_articolo_filter_button">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_nuovo_produttore_articolo_filter_button_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image331">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-new</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="cancella_produttore_articolo_filter_button">
-                                <property name="visible">True</property>
-                                <property name="sensitive">False</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_cancella_produttore_articolo_filter_button_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image332">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-delete</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
-                          </packing>
                         </child>
                       </object>
                     </child>
                   </object>
                 </child>
                 <child type="label">
-                  <object class="GtkLabel" id="produttore_articolo_filter_label">
+                  <object class="GtkLabel" id="label3453">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Produttore</property>
+                    <property name="label" translatable="yes">Riepilogo</property>
+                    <property name="use_markup">True</property>
                   </object>
                 </child>
               </object>
@@ -951,903 +1832,13 @@
                 <property name="position">1</property>
               </packing>
             </child>
-            <child>
-              <object class="GtkExpander" id="codice_articolo_filter_expander">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <signal name="activate" handler="on_any_expander_expanded"/>
-                <child>
-                  <object class="GtkAlignment" id="alignment456">
-                    <property name="visible">True</property>
-                    <property name="bottom_padding">5</property>
-                    <property name="left_padding">10</property>
-                    <property name="right_padding">3</property>
-                    <child>
-                      <object class="GtkHBox" id="hbox350">
-                        <property name="visible">True</property>
-                        <property name="spacing">3</property>
-                        <child>
-                          <object class="GtkScrolledWindow" id="scrolledwindow45">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
-                            <property name="shadow_type">in</property>
-                            <child>
-                              <object class="GtkTreeView" id="codice_articolo_filter_treeview">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <signal name="key_press_event" handler="on_codice_articolo_filter_treeview_key_press_event"/>
-                                <signal name="cursor_changed" handler="on_codice_articolo_filter_treeview_cursor_changed"/>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkVBox" id="vbox61">
-                            <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">3</property>
-                            <child>
-                              <object class="GtkButton" id="nuovo_codice_articolo_filter_button">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_nuovo_codice_articolo_filter_button_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image333">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-new</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="cancella_codice_articolo_filter_button">
-                                <property name="visible">True</property>
-                                <property name="sensitive">False</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_cancella_codice_articolo_filter_button_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image334">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-delete</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="label">
-                  <object class="GtkLabel" id="codice_articolo_filter_label">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Codice</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkExpander" id="codice_a_barre_articolo_filter_expander">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <signal name="activate" handler="on_any_expander_expanded"/>
-                <child>
-                  <object class="GtkAlignment" id="alignment458">
-                    <property name="visible">True</property>
-                    <property name="bottom_padding">5</property>
-                    <property name="left_padding">10</property>
-                    <property name="right_padding">3</property>
-                    <child>
-                      <object class="GtkHBox" id="hbox351">
-                        <property name="visible">True</property>
-                        <property name="spacing">3</property>
-                        <child>
-                          <object class="GtkScrolledWindow" id="scrolledwindow46">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
-                            <property name="shadow_type">in</property>
-                            <child>
-                              <object class="GtkTreeView" id="codice_a_barre_articolo_filter_treeview">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <signal name="key_press_event" handler="on_codice_a_barre_articolo_filter_treeview_key_press_event"/>
-                                <signal name="cursor_changed" handler="on_codice_a_barre_articolo_filter_treeview_cursor_changed"/>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkVBox" id="vbox62">
-                            <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">3</property>
-                            <child>
-                              <object class="GtkButton" id="nuovo_codice_a_barre_articolo_filter_button">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_nuovo_codice_a_barre_articolo_filter_button_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image335">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-new</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="cancella_codice_a_barre_articolo_filter_button">
-                                <property name="visible">True</property>
-                                <property name="sensitive">False</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_cancella_codice_a_barre_articolo_filter_button_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image336">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-delete</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="label">
-                  <object class="GtkLabel" id="codice_a_barre_articolo_filter_label">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Codice a barre</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="position">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkExpander" id="codice_articolo_fornitore_articolo_filter_expander">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <signal name="activate" handler="on_any_expander_expanded"/>
-                <child>
-                  <object class="GtkAlignment" id="alignment460">
-                    <property name="visible">True</property>
-                    <property name="bottom_padding">5</property>
-                    <property name="left_padding">10</property>
-                    <property name="right_padding">3</property>
-                    <child>
-                      <object class="GtkHBox" id="hbox352">
-                        <property name="visible">True</property>
-                        <property name="spacing">3</property>
-                        <child>
-                          <object class="GtkScrolledWindow" id="scrolledwindow47">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
-                            <property name="shadow_type">in</property>
-                            <child>
-                              <object class="GtkTreeView" id="codice_articolo_fornitore_articolo_filter_treeview">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <signal name="key_press_event" handler="on_codice_articolo_fornitore_articolo_filter_treeview_key_press_event"/>
-                                <signal name="cursor_changed" handler="on_codice_articolo_fornitore_articolo_filter_treeview_cursor_changed"/>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkVBox" id="vbox63">
-                            <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">3</property>
-                            <child>
-                              <object class="GtkButton" id="nuovo_codice_articolo_fornitore_articolo_filter_button">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_nuovo_codice_articolo_fornitore_articolo_filter_button_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image337">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-new</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="cancella_codice_articolo_fornitore_articolo_filter_button">
-                                <property name="visible">True</property>
-                                <property name="sensitive">False</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_cancella_codice_articolo_fornitore_articolo_filter_button_clicked"/>
-                                <child>
-                                  <object class="GtkImage" id="image338">
-                                    <property name="visible">True</property>
-                                    <property name="stock">gtk-delete</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="label">
-                  <object class="GtkLabel" id="codice_articolo_fornitore_articolo_filter_label">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Codice articolo fornitore</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="position">4</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkExpander" id="famiglia_articolo_filter_expander">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <signal name="activate" handler="on_any_expander_expanded"/>
-                <child>
-                  <object class="GtkAlignment" id="alignment462">
-                    <property name="visible">True</property>
-                    <property name="bottom_padding">5</property>
-                    <property name="left_padding">10</property>
-                    <property name="right_padding">3</property>
-                    <child>
-                      <object class="GtkScrolledWindow" id="scrolledwindow48">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
-                        <property name="shadow_type">in</property>
-                        <child>
-                          <object class="GtkTreeView" id="famiglia_articolo_filter_treeview">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="label">
-                  <object class="GtkLabel" id="famiglia_articolo_filter_label">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Famiglia merceologica</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="position">5</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkExpander" id="categoria_articolo_filter_expander">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <signal name="activate" handler="on_any_expander_expanded"/>
-                <child>
-                  <object class="GtkAlignment" id="alignment463">
-                    <property name="visible">True</property>
-                    <property name="bottom_padding">5</property>
-                    <property name="left_padding">10</property>
-                    <property name="right_padding">3</property>
-                    <child>
-                      <object class="GtkScrolledWindow" id="scrolledwindow49">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
-                        <property name="shadow_type">in</property>
-                        <child>
-                          <object class="GtkTreeView" id="categoria_articolo_filter_treeview">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="label">
-                  <object class="GtkLabel" id="categoria_articolo_filter_label">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Categoria</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="position">6</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkExpander" id="stato_articolo_filter_expander">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <signal name="activate" handler="on_any_expander_expanded"/>
-                <child>
-                  <object class="GtkAlignment" id="alignment464">
-                    <property name="visible">True</property>
-                    <property name="bottom_padding">5</property>
-                    <property name="left_padding">10</property>
-                    <property name="right_padding">3</property>
-                    <child>
-                      <object class="GtkScrolledWindow" id="scrolledwindow50">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
-                        <property name="shadow_type">in</property>
-                        <child>
-                          <object class="GtkTreeView" id="stato_articolo_filter_treeview">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="label">
-                  <object class="GtkLabel" id="stato_articolo_filter_label">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Stato</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="position">7</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkExpander" id="unita_base_articolo_filter_expander">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <signal name="activate" handler="on_any_expander_expanded"/>
-                <child>
-                  <object class="GtkAlignment" id="alignment465">
-                    <property name="visible">True</property>
-                    <property name="bottom_padding">5</property>
-                    <property name="left_padding">10</property>
-                    <property name="right_padding">3</property>
-                    <child>
-                      <object class="GtkScrolledWindow" id="scrolledwindow51">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
-                        <property name="shadow_type">in</property>
-                        <child>
-                          <object class="GtkTreeView" id="unita_base_articolo_filter_treeview">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="label">
-                  <object class="GtkLabel" id="unita_base_articolo_filter_label">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Unita' base</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="position">8</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkExpander" id="varie_articolo_filter_expander">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <signal name="activate" handler="on_any_expander_expanded"/>
-                <child>
-                  <object class="GtkAlignment" id="alignment453">
-                    <property name="visible">True</property>
-                    <property name="left_padding">10</property>
-                    <child>
-                      <object class="GtkVBox" id="vbox58">
-                        <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
-                        <child>
-                          <object class="GtkCheckButton" id="includi_eliminati_articolo_filter_checkbutton">
-                            <property name="label" translatable="yes">Includi eliminati</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="use_underline">True</property>
-                            <property name="draw_indicator">True</property>
-                            <signal name="toggled" handler="on_includi_eliminati_articolo_filter_checkbutton_toggled"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkCheckButton" id="solo_eliminati_articolo_filter_checkbutton">
-                            <property name="label" translatable="yes">Solo eliminati</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="use_underline">True</property>
-                            <property name="draw_indicator">True</property>
-                            <signal name="toggled" handler="on_solo_eliminati_articolo_filter_checkbutton_toggled"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="label">
-                  <object class="GtkLabel" id="varie_articolo_filter_label">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Incl./Escl Eliminati</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="position">9</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkFrame" id="filter_promowear2">
-                <property name="visible">True</property>
-                <property name="label_xalign">0</property>
-                <property name="shadow_type">none</property>
-                <child>
-                  <placeholder/>
-                </child>
-                <child type="label">
-                  <object class="GtkExpander" id="promowear_expander">
-                    <property name="width_request">300</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <child>
-                      <object class="GtkVBox" id="vbox1">
-                        <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
-                        <child>
-                          <object class="GtkExpander" id="stagione_articolo_filter_expander">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <child>
-                              <object class="GtkAlignment" id="alignment217">
-                                <property name="visible">True</property>
-                                <property name="bottom_padding">5</property>
-                                <property name="left_padding">10</property>
-                                <property name="right_padding">3</property>
-                                <child>
-                                  <object class="GtkScrolledWindow" id="scrolledwindow72">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">automatic</property>
-                                    <property name="vscrollbar_policy">automatic</property>
-                                    <property name="shadow_type">in</property>
-                                    <child>
-                                      <object class="GtkTreeView" id="stagione_articolo_filter_treeview">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel" id="stagione_articolo_filter_label">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Stagione</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkExpander" id="colore_articolo_filter_expander">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <child>
-                              <object class="GtkAlignment" id="alignment214">
-                                <property name="visible">True</property>
-                                <property name="bottom_padding">5</property>
-                                <property name="left_padding">10</property>
-                                <property name="right_padding">3</property>
-                                <child>
-                                  <object class="GtkScrolledWindow" id="scrolledwindow70">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">automatic</property>
-                                    <property name="vscrollbar_policy">automatic</property>
-                                    <property name="shadow_type">in</property>
-                                    <child>
-                                      <object class="GtkTreeView" id="colore_articolo_filter_treeview">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel" id="colore_articolo_filter_label">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Colore</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkExpander" id="anno_articolo_filter_expander">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <child>
-                              <object class="GtkAlignment" id="alignment215">
-                                <property name="visible">True</property>
-                                <property name="bottom_padding">5</property>
-                                <property name="left_padding">10</property>
-                                <property name="right_padding">3</property>
-                                <child>
-                                  <object class="GtkScrolledWindow" id="scrolledwindow71">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">automatic</property>
-                                    <property name="vscrollbar_policy">automatic</property>
-                                    <property name="shadow_type">in</property>
-                                    <child>
-                                      <object class="GtkTreeView" id="anno_articolo_filter_treeview">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel" id="anno_articolo_filter_label">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Anno</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkExpander" id="genere_articolo_filter_expander">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <child>
-                              <object class="GtkAlignment" id="alignment218">
-                                <property name="visible">True</property>
-                                <property name="bottom_padding">5</property>
-                                <property name="left_padding">10</property>
-                                <property name="right_padding">3</property>
-                                <child>
-                                  <object class="GtkScrolledWindow" id="scrolledwindow73">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">automatic</property>
-                                    <property name="vscrollbar_policy">automatic</property>
-                                    <property name="shadow_type">in</property>
-                                    <child>
-                                      <object class="GtkTreeView" id="genere_articolo_filter_treeview">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel" id="genere_articolo_filter_label">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Genere</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">3</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkExpander" id="taglia_articolo_filter_expander">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <child>
-                              <object class="GtkAlignment" id="alignment213">
-                                <property name="visible">True</property>
-                                <property name="bottom_padding">3</property>
-                                <property name="left_padding">3</property>
-                                <property name="right_padding">3</property>
-                                <child>
-                                  <object class="GtkScrolledWindow" id="scrolledwindow69">
-                                    <property name="width_request">400</property>
-                                    <property name="height_request">150</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">automatic</property>
-                                    <property name="vscrollbar_policy">automatic</property>
-                                    <property name="shadow_type">in</property>
-                                    <child>
-                                      <object class="GtkTreeView" id="taglia_articolo_filter_treeview">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel" id="taglia_articolo_filter_label">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Taglia</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">4</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkExpander" id="gruppo_taglia_articolo_filter_expander">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <child>
-                              <object class="GtkAlignment" id="alignment212">
-                                <property name="visible">True</property>
-                                <property name="bottom_padding">5</property>
-                                <property name="left_padding">10</property>
-                                <property name="right_padding">3</property>
-                                <child>
-                                  <object class="GtkScrolledWindow" id="scrolledwindow68">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">automatic</property>
-                                    <property name="vscrollbar_policy">automatic</property>
-                                    <property name="shadow_type">in</property>
-                                    <child>
-                                      <object class="GtkTreeView" id="gruppo_taglia_articolo_filter_treeview">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel" id="gruppo_taglia_articolo_filter_label">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Gruppo taglia</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">5</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkExpander" id="cutsize_articolo_filter_expander">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <child>
-                              <object class="GtkAlignment" id="alignment1">
-                                <property name="visible">True</property>
-                                <property name="bottom_padding">5</property>
-                                <property name="left_padding">10</property>
-                                <property name="right_padding">3</property>
-                                <child>
-                                  <object class="GtkScrolledWindow" id="scrolledwindow2">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">automatic</property>
-                                    <property name="vscrollbar_policy">automatic</property>
-                                    <property name="shadow_type">in</property>
-                                    <child>
-                                      <object class="GtkTreeView" id="cutsize_articolo_filter_treeview">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="label">
-                              <object class="GtkLabel" id="cutsize_articolo_filter_label">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Taglia/colore:includi</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">6</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                    <child type="label">
-                      <object class="GtkLabel" id="label5">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Abbigliamento&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">10</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkVBox" id="riepilogo_articolo_filter_vbox">
-                <property name="visible">True</property>
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkAlignment" id="alignment496">
-                    <property name="visible">True</property>
-                    <property name="yalign">1</property>
-                    <property name="yscale">0</property>
-                    <property name="left_padding">5</property>
-                    <property name="right_padding">5</property>
-                    <child>
-                      <object class="GtkHSeparator" id="hseparator40">
-                        <property name="visible">True</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="padding">3</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkFrame" id="riepilogo_articolo_filter_frame">
-                    <property name="visible">True</property>
-                    <property name="label_xalign">0</property>
-                    <property name="shadow_type">none</property>
-                    <child>
-                      <object class="GtkAlignment" id="alignment497">
-                        <property name="visible">True</property>
-                        <property name="top_padding">5</property>
-                        <property name="bottom_padding">5</property>
-                        <property name="left_padding">7</property>
-                        <property name="right_padding">2</property>
-                        <child>
-                          <object class="GtkScrolledWindow" id="scrolledwindow65">
-                            <property name="height_request">100</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
-                            <property name="shadow_type">in</property>
-                            <child>
-                              <object class="GtkTextView" id="riepilogo_articolo_filter_textview">
-                                <property name="width_request">300</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="editable">False</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                    <child type="label">
-                      <object class="GtkLabel" id="label3453">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Riepilogo</property>
-                        <property name="use_markup">True</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="position">11</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
           </object>
+          <packing>
+            <property name="position">11</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>

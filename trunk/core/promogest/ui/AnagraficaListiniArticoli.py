@@ -6,10 +6,7 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 
-
-import os
 import gtk
-import gobject
 import datetime
 import string
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport,  AnagraficaEdit, AnagraficaLabel
@@ -138,7 +135,6 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                                   gladeFile='_anagrafica_listini_articoli_elements.glade')
         self._widgetFirstFocus = self.id_listino_filter_combobox
 
-
     def draw(self, cplx=False):
         """
         FIXME
@@ -248,7 +244,6 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
             self.id_sotto_listino_filter_combobox.set_active(0)
         self.refresh()
 
-
     def refresh(self):
         """
         Allora, si è resa necessaria una soluzione tampone per la ricerca
@@ -322,6 +317,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
             else:
                 self._treeViewModel.append(modelRow)
         #Environment.listinoFissato =  None
+
 class AnagraficaListiniArticoliHtml(AnagraficaHtml):
 
     def __init__(self, anagrafica):

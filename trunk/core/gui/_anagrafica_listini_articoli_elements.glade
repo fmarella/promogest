@@ -4,6 +4,7 @@
   <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkTable" id="anagrafica_listini_articoli_filter_table">
+    <property name="height_request">270</property>
     <property name="visible">True</property>
     <property name="n_rows">3</property>
     <property name="n_columns">2</property>
