@@ -284,6 +284,7 @@ class ListinoArticolo(Dao):
                 params["session"].add(self.__scontiVenditaDett[0])
             except:
                 pass
+        elif self.__scontiVenditaIngr:
             try:
                 self.__scontiVenditaIngr[0].id_listino=self.id_listino
                 self.__scontiVenditaIngr[0].id_articolo = self.id_articolo
