@@ -24,6 +24,8 @@ class ListinoArticolo(Dao):
 
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
+        self.__scontiVenditaDett = None
+        self.__scontiVenditaIngr = None
 
     @reconstructor
     def init_on_load(self):

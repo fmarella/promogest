@@ -63,14 +63,20 @@ class ProductFromCsv(object):
 
     def addGruppiTaglia(self):
         for riga in self.listaRighe:
-            if riga["Gruppo Taglia"] and riga["Taglia"] == "":
+            if "Gruppo Taglia" in riga and \
+                    riga["Gruppo Taglia"] and \
+                    "Taglia" in riga and\
+                    riga["Taglia"] == "":
                 gruppo_taglia = GruppoTaglia().select(denominazione = riga["Gruppo Taglia"])
                 if not gruppo_taglia:
                     a = GruppoTaglia()
                     a.denominazione = riga["Gruppo Taglia"]
                     a.denominazione_breve = riga["Gruppo Taglia"]
                     a.persist()
-            elif riga["Gruppo Taglia"] and riga["Taglia"]:
+            elif "Gruppo Taglia" in riga and \
+                        riga["Gruppo Taglia"] and\
+                        "Taglia" in riga and\
+                        riga["Taglia"]:
                 _taglia = Taglia().select(denominazione = riga["Taglia"])
                 if not _taglia:
                     t = Taglia()
@@ -97,7 +103,7 @@ class ProductFromCsv(object):
                     mm.denominazione_breve = riga["Modello"]
                     mm.persist()
 
-            if riga["Colore"]:
+            if "Colore" in riga and riga["Colore"]:
                 co = Colore().select(denominazione = riga["Colore"])
                 if not co:
                     c = Colore()
