@@ -11,9 +11,7 @@
 #from AnagraficaComplessa import AnagraficaFilter
 import gtk
 from utils import *
-from promogest.dao.TestataDocumento import TestataDocumento
-import math, os, shutil, sys, tempfile, threading, os.path
-import datetime
+import os, sys, threading, os.path
 from utilsCombobox import *
 from promogest import Environment
 from GladeWidget import GladeWidget

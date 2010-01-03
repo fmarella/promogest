@@ -13,6 +13,29 @@
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
+          <object class="GtkToolbar" id="toolbar1">
+            <property name="visible">True</property>
+            <property name="icon_size_set">True</property>
+            <child>
+              <object class="GtkToolButton" id="distinta_button">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Distinta giornaliera</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-dnd</property>
+                <signal name="clicked" handler="on_distinta_button_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkVBox" id="main_vbox">
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
@@ -33,7 +56,7 @@
             </child>
           </object>
           <packing>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child internal-child="action_area">
@@ -80,7 +103,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="pack_type">end</property>
-            <property name="position">0</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>

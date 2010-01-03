@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.1  (Unix)">
+	<META NAME="AUTHOR" CONTENT="vete ">
+	<META NAME="CREATED" CONTENT="20100102;22475000">
+	<META NAME="CHANGEDBY" CONTENT="vete ">
+	<META NAME="CHANGED" CONTENT="20100103;21343000">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { margin: 1.5cm }
+		P { margin-bottom: 0.21cm }
+		TD P { margin-bottom: 0cm }
+		A:link { so-language: zxx }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="it-IT" DIR="LTR">
+<P ALIGN=RIGHT STYLE="margin-bottom: 0cm"><B>Data:</B>
+{{pageData['dataeora'].day}}/{{pageData['dataeora'].month}}/{{pageData['dataeora'].year}}
+– <B>Ore:</B>{{pageData['dataeora'].hour}}:{{pageData['dataeora'].minute}}
+  
+</P>
+<P ALIGN=RIGHT STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">  <B>Ragione sociale:
+</B>{{pageData['ragione_sociale']}} /
+{{environment.conf.VenditaDettaglio.magazzino}}</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P ALIGN=RIGHT STYLE="margin-bottom: 0cm"><B>Distinta giornaliera
+aperta : </B>{{pageData['aperto']}}  
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><B>Parziali per categorie</B>:{% for t
+in pageData['parziali'] %} 
+</P>
+<TABLE WIDTH=100% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=23*>
+	<COL WIDTH=22*>
+	<COL WIDTH=18*>
+	<COL WIDTH=35*>
+	<COL WIDTH=23*>
+	<COL WIDTH=47*>
+	<COL WIDTH=29*>
+	<COL WIDTH=42*>
+	<COL WIDTH=17*>
+	<TR VALIGN=TOP>
+		<TD WIDTH=9% HEIGHT=21 BGCOLOR="#00cccc">
+			<P><B>{{t[0]}}</B></P>
+		</TD>
+		<TD WIDTH=8%>
+			<P STYLE="font-weight: normal">Totale</P>
+		</TD>
+		<TD WIDTH=7%>
+			<P><B>{{t[1]}}</B></P>
+		</TD>
+		<TD WIDTH=14%>
+			<P STYLE="font-weight: normal">Totale sconti</P>
+		</TD>
+		<TD WIDTH=9%>
+			<P><B>{{t[2]}}</B></P>
+		</TD>
+		<TD WIDTH=18%>
+			<P STYLE="font-weight: normal">Totale scontato 
+			</P>
+		</TD>
+		<TD WIDTH=11%>
+			<P><B>{{t[1] - t[2]}}</B></P>
+		</TD>
+		<TD WIDTH=17%>
+			<P>Numero pezzi</P>
+		</TD>
+		<TD WIDTH=7%>
+			<P><B>{{t[3]}} </B>
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P STYLE="margin-bottom: 0.5cm">{% endfor %} 
+</P>
+<P STYLE="margin-bottom: 0.5cm"><BR><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT SIZE=4><B>RIEPILOGO TOTALI:</B></FONT></P>
+<TABLE WIDTH=100% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=59*>
+	<COL WIDTH=26*>
+	<COL WIDTH=68*>
+	<COL WIDTH=29*>
+	<COL WIDTH=33*>
+	<COL WIDTH=41*>
+	<TR VALIGN=TOP>
+		<TD WIDTH=23%>
+			<P>Contanti</P>
+		</TD>
+		<TD WIDTH=10%>
+			<P>{{pageData['totali'][1]}}</P>
+		</TD>
+		<TD WIDTH=27%>
+			<P>Num scontrini</P>
+		</TD>
+		<TD WIDTH=11%>
+			<P>{{pageData['totali'][5]}}</P>
+		</TD>
+		<TD WIDTH=13%>
+			<P>Tot. Pezzi</P>
+		</TD>
+		<TD WIDTH=16%>
+			<P>{{pageData['totali'][6]}}</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=23%>
+			<P>Assegni</P>
+		</TD>
+		<TD WIDTH=10%>
+			<P>{{pageData['totali'][3]}}</P>
+		</TD>
+		<TD WIDTH=27%>
+			<P>Resi e Storni</P>
+		</TD>
+		<TD WIDTH=11%>
+			<P>{{pageData['categoria']}}</P>
+		</TD>
+		<TD WIDTH=13%>
+			<P><BR>
+			</P>
+		</TD>
+		<TD WIDTH=16%>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=23%>
+			<P>C.Credito e POS</P>
+		</TD>
+		<TD WIDTH=10%>
+			<P>{{pageData['totali'][2]}}</P>
+		</TD>
+		<TD WIDTH=27%>
+			<P>Tot sconti su totale</P>
+		</TD>
+		<TD WIDTH=11%>
+			<P>{{pageData['totali'][4]}}</P>
+		</TD>
+		<TD WIDTH=13%>
+			<P><B>TOTALE</B> 
+			</P>
+		</TD>
+		<TD WIDTH=16% BGCOLOR="#00ae00">
+			<P><FONT SIZE=4><B>{{pageData['totali'][0]}}</B></FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><BR>
+</P>
+<DIV TYPE=FOOTER>
+	<P ALIGN=CENTER STYLE="margin-top: 0.5cm; margin-bottom: 0cm; font-style: normal">
+	<FONT SIZE=2>Distinta realizzata con modulo Gestione negozio di
+	PromoGest2 by PromoTux snc</FONT></P>
+</DIV>
+</BODY>
+</HTML>

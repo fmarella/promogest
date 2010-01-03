@@ -1839,15 +1839,9 @@ def setFileName(filename, ext, returnName = False):
 
 def showAnagraficaRichiamata(returnWindow, anagWindow, button=None, callName=None):
     """
-    FIXME
     """
-
     def on_anagrafica_richiamata_destroy(anagWindow):
-        """
-        FIXME
-        @param anagWindow:
-        @type anagWindow:
-        """
+        """ """
         if anagWindow in Login.windowGroup:
             Login.windowGroup.remove(anagWindow)
 ##        Login.windowGroup.append(anagReturn)

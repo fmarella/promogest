@@ -15,6 +15,7 @@ from promogest.ui.GladeWidget import GladeWidget
 from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
+from promogest.modules.VenditaDettaglio.ui.Distinta import Distinta
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.ui.utils import *
 from promogest.ui import utils
@@ -188,7 +189,7 @@ class GestioneScontrini(GladeWidget):
                                                      aData=aData,
                                                      offset=None,
                                                      batchSize=None)
-
+        self.scontrini = scos_no_batchSize
         self.calcolaTotale(scos_no_batchSize)
 
     def calcolasconto(self, dao):
@@ -262,3 +263,8 @@ class GestioneScontrini(GladeWidget):
         if self.dao is not None:
             self._righe.append(self.dao.id)
             self.on_scontrini_window_close(widget)
+
+    def on_distinta_button_clicked(self, button):
+        gest = Distinta(righe = self.scontrini)
+        gestWnd = gest.getTopLevel()
+        showAnagraficaRichiamata(self.getTopLevel(), gestWnd, None, None)

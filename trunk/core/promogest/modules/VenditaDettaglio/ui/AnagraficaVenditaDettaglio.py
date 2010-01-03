@@ -24,10 +24,10 @@ from GestioneChiusuraFiscale import GestioneChiusuraFiscale
 from venditaDettaglioUiPart import drawPart
 
 if hasattr(Environment.conf.VenditaDettaglio,"backend") and\
-    Environment.conf.VenditaDettaglio.backend.capitalize() =="OLIVETTI" and\
+    Environment.conf.VenditaDettaglio.backend.upper() =="OLIVETTI" and\
     Environment.conf.VenditaDettaglio.disabilita_stampa == 'no':
     from promogest.modules.VenditaDettaglio.lib.olivetti import ElaExecute
-    print "DRIVER OLIVETTI ANCORA DA FARE"
+#    print "DRIVER OLIVETTI ANCORA DA FARE"
     DRIVER = "E"
 elif hasattr(Environment.conf.VenditaDettaglio,"backend") and\
     Environment.conf.VenditaDettaglio.backend.capitalize() == "DITRON" and\
@@ -37,6 +37,7 @@ elif hasattr(Environment.conf.VenditaDettaglio,"backend") and\
 elif Environment.conf.VenditaDettaglio.disabilita_stampa == 'yes':
     DRIVER = None
 else:
+    print "ERRORE NELLA DEFINIZIONE DEL BACKEND"
     from promogest.modules.VenditaDettaglio.lib.ditron import Ditron
     DRIVER = "D"
 
@@ -674,14 +675,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.codice_a_barre_entry.grab_focus()
         self._state = 'search'
 
-    def createFileToPos(self, dao):
-        if DRIVER == "E":
-            print "DRIVER OLIVETTI ANCORA DA FARE"
-        elif DRIVER =="D":
-            filescontrino = Ditron().create_export_file(daoScontrino=dao)
-            Ditron().sendToPrint(filescontrino)
-            return True
-
     def on_chiusura_fiscale_activate(self, widget):
         if DRIVER=="D":
             GestioneChiusuraFiscale(self).chiusuraDialog(widget, self.id_magazzino)
@@ -851,11 +844,19 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
     def createFileToPos(self, dao):
         if DRIVER == "E":
-            print "DRIVER OLIVETTI ANCORA DA FARE"
+            print "DRIVER OLIVETTI"
+            filescontrino = ElaExecute().create_export_file(daoScontrino=dao)
         elif DRIVER =="D":
+            print "DRIVER DITRON"
             filescontrino = Ditron().create_export_file(daoScontrino=dao)
             Ditron().sendToPrint(filescontrino)
             return True
+        else:
+            print " WHAT ELSE?"
+
+
+
+
 
     def on_chiusura_fiscale_activate(self, widget):
         if DRIVER=="D":

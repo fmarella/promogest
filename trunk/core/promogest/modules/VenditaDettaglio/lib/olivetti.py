@@ -5,10 +5,10 @@
 # Copyright (C) 2005-2010 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francescoo@promotux.it>
 
+import datetime
 from promogest import Environment
-from datetime import datetime
 from promogest.ui.utils import *
-
+import shutil
 
 class ElaExecute(object):
     """
@@ -25,53 +25,54 @@ class ElaExecute(object):
     """
     def __init__(self):
         pass
-
+#1325 ; 30,43 ; TRANCIO MORTADELLA DOLCE ; 1 ; 5,646 x 5,39
     def create_export_file(self, daoScontrino=None):
         # Genero nome file
         filename = Environment.conf.VenditaDettaglio.export_path\
                             + str(daoScontrino.id)\
-                            + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
+                            + datetime.datetime.today().strftime('%d_%m_%Y_%H_%M_%S')+".txt"
         f = file(filename, 'w')
-
+        print "DAO SCRONRTINOOOOOOOOOOOOO2", daoScontrino , daoScontrino.__dict__
         # nel file scontrino i resi vengono vengono messi alla fine (limitazione cassa) DITRON
         righe = []
+#        for riga in daoScontrino.righe:
+#            if riga.quantita < 0:
+#                righe.append(riga)
+#            else:
+#                righe.insert(0, riga)
+        f.write("1322\n")
         for riga in daoScontrino.righe:
-            if riga.quantita < 0:
-                righe.append(riga)
-            else:
-                righe.insert(0, riga)
-
-        for riga in righe:
+#            print "RIGAAAAAA", riga.__dict__
             quantita = abs(riga.quantita)
-            if quantita != 1:
-                # quantita' non unitaria
-                stringa = '000000000000000000%09d00\r\n' % (quantita * 1000)
-                f.write(stringa)
             if riga.quantita < 0:
                 # riga reso
                 stringa = '020000000000000000%09d00\r\n' % (0)
                 f.write(stringa)
+            elif quantita != 1:
+                # quantita' non unitaria
+                stringa = "1325;"+str(quantita*riga.prezzo)+";"+deaccenta(riga.descrizione[:16])+"; ;"+ str(quantita) +"x"+ str(riga.prezzo)+"\n"
+                f.write(stringa)
 
-            reparto = getattr(Environment.conf.VenditaDettaglio,
-                                                    'reparto_default', 1)
-            art = leggiArticolo(riga.id_articolo)
-            repartoIva = 'reparto_' + art["denominazioneBreveAliquotaIva"].lower()
-            if hasattr(Environment.conf.VenditaDettaglio, repartoIva):
-                reparto = getattr(Environment.conf.VenditaDettaglio,
-                                                        repartoIva, reparto)
-            reparto = str(reparto).zfill(2)
 
-            if not(riga.quantita < 0):
-                stringa = '01%-16s%09.2f%2s\r\n' % (self.deaccenta(riga.descrizione[:16]), riga.prezzo, reparto)
+#            reparto = getattr(Environment.conf.VenditaDettaglio,
+#                                                    'reparto_default', 1)
+#            art = leggiArticolo(riga.id_articolo)
+#            repartoIva = 'reparto_' + art["denominazioneBreveAliquotaIva"].lower()
+#            if hasattr(Environment.conf.VenditaDettaglio, repartoIva):
+#                reparto = getattr(Environment.conf.VenditaDettaglio,
+#                                                        repartoIva, reparto)
+#            reparto = str(reparto).zfill(2)
+
+            elif not (riga.quantita < 0):
+                stringa = "1325;"+str(riga.prezzo)+";"+deaccenta(riga.descrizione[:16])+"\n"
                 f.write(stringa)
                 if riga.sconti:
                     for sconto in riga.sconti:
                         if sconto.valore != 0:
                             if sconto.tipo_sconto == 'percentuale':
-                                stringa = '07%-16s%09.2f00\r\n' % ('sconto', sconto.valore)
+                                stringa="1327;"+str(riga.prezzo-riga.prezzo_scontato) +";%s%%\n" %str(sconto.valore)
                             else:
-                                stringa = '06%-16s%09.2f00\r\n' % ('sconto', sconto.valore * quantita)
-
+                                stringa="1327;"+ str(sconto.valore * quantita)+";%s euro\n" % (str(sconto.valore * quantita))
                             f.write(stringa)
             else:
                 # per i resi, nello scontrino, si scrive direttamente il prezzo scontato (limitazione cassa)
@@ -81,119 +82,34 @@ class ElaExecute(object):
 
         if daoScontrino.totale_scontrino < daoScontrino.totale_subtotale and\
                                              daoScontrino.totale_sconto > 0:
-            stringa='15                000000.0000\r\n'
-            f.write(stringa)
             if daoScontrino.tipo_sconto_scontrino =='percentuale':
-                stringa = '07%-16s%09.2f00\r\n' % ('sconto', daoScontrino.totale_sconto)
+                stringa="1327;"+str(daoScontrino.totale_subtotale-daoScontrino.totale_scontrino) +";%s%%\n" %str(daoScontrino.totale_sconto)
                 f.write(stringa)
             else:
-                stringa = '06%-16s%09.2f00\r\n' % ('sconto', daoScontrino.totale_sconto)
+                stringa="1327;"+ str(daoScontrino.totale_sconto)+";%s euro\n" %str(daoScontrino.totale_sconto)
                 f.write(stringa)
-
-        if daoScontrino.totale_contanti is None or daoScontrino.totale_contanti == 0:
+        if daoScontrino.totale_contanti == 0 and daoScontrino.totale_assegni == 0 and daoScontrino.totale_carta_credito == 0:
             totale_contanti = daoScontrino.totale_scontrino
-        else:
+            f.write("1329;"+str(totale_contanti)+";Contanti\n")
+        elif daoScontrino.totale_contanti and daoScontrino.totale_assegni == 0 and daoScontrino.totale_carta_credito == 0:
             totale_contanti = daoScontrino.totale_contanti
-        if daoScontrino.totale_assegni is not None and daoScontrino.totale_assegni != 0:
-            stringa = '20                %09d00\r\n' % (daoScontrino.totale_assegni * 100)
-            f.write(stringa)
-        if daoScontrino.totale_carta_credito is not None and daoScontrino.totale_carta_credito != 0:
-            stringa = '30                %09d00\r\n' % (daoScontrino.totale_carta_credito * 100)
-            f.write(stringa)
+            f.write("1329;"+str(totale_contanti)+";Contanti\n")
+        elif daoScontrino.totale_contanti == 0 and daoScontrino.totale_assegni != 0 and daoScontrino.totale_carta_credito == 0:
+            f.write("1329;;Assegno\n")
+        elif daoScontrino.totale_contanti == 0 and daoScontrino.totale_carta_credito != 0 and daoScontrino.totale_assegni == 0:
+            f.write("1329;;Carta/Bancomat\n")
+        else:
+            print "SITUAZIONE POCO CHIARA METTO UN VALORE SEMPLICE "
+            f.write("1329\n")
 
-
-        #stringa = '10                %09.2f00\r\n' % (totale_contanti)
-        #f.write(stringa)
-        stringa = '10                %09.2f00\r\n' % (totale_contanti)
-        f.write(stringa)
-        #stringa='71      Francesco Meloni     ..\r\n'
-        #f.write(stringa)
-        #stringa='71 CIAO A TUTTI              ..\r\n'
-        #f.write(stringa)
-        #stringa='71ARRIVEDERCI ALLA PROSSIMA  ..\r\n'
-        #f.write(stringa)
-        #stringa='72                00000000000..\r\n'
-        #f.write(stringa)
+        f.write("1323\n")
         f.close()
+        g = file(filename, 'rb')
+        self.copyToInDir(filename)
+        g.close()
+
         return filename
 
-    def stampa_della_affluenza_oraria(self):
-        filename = Environment.conf.VenditaDettaglio.export_path\
-                     + 'stampa_della_affluenza_oraria_'\
-                     + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
-        f = file(filename, 'w')
-        stringa = '52                00000000009..\r\n'
-        f.write(stringa)
-        f.close()
-        self.sendToPrint(filename)
-
-    def stampa_del_periodico_articoli(self):
-        filename = Environment.conf.VenditaDettaglio.export_path\
-                     + 'stampa_del_periodico_articoli_'\
-                     + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
-        f = file(filename, 'w')
-        stringa = '52                00000000008..\r\n'
-        f.write(stringa)
-        f.close()
-        self.sendToPrint(filename)
-
-    def stampa_del_periodico_reparti(self):
-        filename = Environment.conf.VenditaDettaglio.export_path\
-                     + 'stampa_del_periodico_reparti_'\
-                     + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
-        f = file(filename, 'w')
-        stringa = '52                00000000006..\r\n'
-        f.write(stringa)
-        f.close()
-        self.sendToPrint(filename)
-
-    def stampa_del_periodico_cassa(self):
-        filename = Environment.conf.VenditaDettaglio.export_path\
-                     + 'stampa_del_periodico_cassa_'\
-                     + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
-        f = file(filename, 'w')
-        stringa = '52                00000000004..\r\n'
-        f.write(stringa)
-        f.close()
-        self.sendToPrint(filename)
-
-    def stampa_del_giornale_breve(self):
-        filename = Environment.conf.VenditaDettaglio.export_path\
-                    + 'stampa_del_giornale_breve_'\
-                    + datetime.today().strftime('%d_%m_%Y_%H_%M_%S')
-        f = file(filename, 'w')
-        stringa = '52                00000000002..\r\n'
-        f.write(stringa)
-        f.close()
-        self.sendToPrint(filename)
-
-    def sendToPrint(self, filesToSend):
-        """ Mando comando alle casse """
-        program_launch = Environment.conf.VenditaDettaglio.driver_command
-        program_params = (' ' + filesToSend + ' ' +
-                            Environment.conf.VenditaDettaglio.serial_device)
-
-        if os.name == 'nt':
-            exportingProcessPid = os.spawnl(os.P_NOWAIT, program_launch, program_params)
-            id, ret_value = os.waitpid(exportingProcessPid, 0)
-            ret_value = ret_value >> 8
-        else:
-            command = program_launch + program_params
-            process = popen2.Popen3(command, True)
-            message = process.childerr.readlines()
-            ret_value = process.wait()
-        # Elimino il file
-        os.remove(filesToSend)
-        if ret_value != 0:
-            string_message = ''
-            for s in message:
-                string_message = string_message + s + "\n"
-
-            # Mostro messaggio di errore
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                                       gtk.DIALOG_MODAL
-                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
-                                       string_message)
-            response = dialog.run()
-            dialog.destroy()
+    def copyToInDir(self, filename):
+        print "filename", filename
+        shutil.copy(filename, "/opt/ela_execute/in/")
