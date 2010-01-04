@@ -8,7 +8,6 @@
 
 import os
 import gtk
-import time
 import csv
 import datetime
 from promogest.ui.GladeWidget import GladeWidget
@@ -17,10 +16,7 @@ from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.Riga import Riga
 from promogest.dao.Magazzino import Magazzino
-from promogest.dao.Operazione import Operazione
 from promogest.dao.Stoccaggio import Stoccaggio
-from promogest.dao.Articolo import Articolo
-from sqlalchemy import or_
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.dao.DaoUtils import *
@@ -102,12 +98,11 @@ class StatisticheMagazzino(GladeWidget):
 
             self.res.append(arti)
         c = csv.writer(open(filename, "wb"),dialect='excel',delimiter=';')
-        c.writerow(["ID","CODICE","DENOMINAZIONE","QUANTITA' VENDUTA", "QUANTITA' ACQUISTATA","DATA ULTIMO ACQUISTO", 
+        c.writerow(["ID","CODICE","DENOMINAZIONE","QUANTITA' VENDUTA", "QUANTITA' ACQUISTATA","DATA ULTIMO ACQUISTO",
                     "DATA ULTIMA VENDITA", "PREZZO ULTIMA VENDITA",  "PREZZO ULTIMO ACQUISTO",
-                    "GIACENZA", "MEDIA PREZZO VENDITA", "MEDIA PREZZO ACQUISTO", 
+                    "GIACENZA", "MEDIA PREZZO VENDITA", "MEDIA PREZZO ACQUISTO",
                     "UNITA' BASE", "IVA", "FAMIGLIA", "CATEGORIA","COLORE","ANNO",
-                    "GRUPPO TAGLIA","GENERE", "TAGLIA", "STAGIONE"]
-)
+                    "GRUPPO TAGLIA","GENERE", "TAGLIA", "STAGIONE"])
         for i in self.res:
             id = i["id"][0]
             codice = i["codice"]
@@ -132,15 +127,13 @@ class StatisticheMagazzino(GladeWidget):
             famiglia = i["daoArticolo"].denominazione_breve_famiglia
             categoria = i["daoArticolo"].denominazione_breve_categoria
 
-            c.writerow([id,codice,denominazione,quantita_venduta,quantita_acquistata,
+            c.writerow([id, codice,denominazione, quantita_venduta, quantita_acquistata,
                         data_ultimo_acquisto,data_ultima_vendita, prezzo_ultima_vendita,
                          prezzo_ultimo_acquisto, giacenza, media_vendita, media_acquisto,
                         unita_base, denominazioneBreveAliquotaIva, famiglia, categoria,
-                        colore, anno, gruppoTaglia, genere, taglia,stagione]
-)
- 
+                        colore, anno, gruppoTaglia, genere, taglia,stagione])
+
         dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK, '\n\nEsportazione terminata !')
         dialog.run()
         dialog.destroy()
-

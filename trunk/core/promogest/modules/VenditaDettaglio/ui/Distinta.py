@@ -16,15 +16,15 @@ from promogest.ui.PrintDialog import PrintDialogHandler
 
 class Distinta(GladeWidget):
     """ Classe per la gestione della distinta di fine giornata
-    TODO: manca la data ed il dato azienda e la conversione in pdf  """
+    """
 
     def __init__(self, righe = []):
         self._scontrini = righe
         self._htmlTemplate = None
 
-        GladeWidget.__init__(self, 'distinta_giornaliera',
-                fileName="VenditaDettaglio/gui/distinta.glade", isModule=True)
-        self._window = self.distinta_giornaliera
+        GladeWidget.__init__(self, 'visualizzatore_html',
+                fileName="htmlviewer.glade")
+        self._window = self.visualizzatore_html
         self.windowTitle = "Distinta giornaliera"
         self.categorie = CategoriaArticolo().select(batchSize=None)
         self.placeWindow(self._window)
@@ -32,22 +32,8 @@ class Distinta(GladeWidget):
 
     def draw(self):
         self.detail = createHtmlObj(self)
-        self.distinta_scrolledwindow.add(self.detail)
-
-#        self.quit_button.connect('clicked', on_quit_button_clicked)
+        self.html_scrolledwindow.add(self.detail)
         self.refreshHtml()
-#        self.refresh()
-
-    def clear(self):
-        # Annullamento filtro
-        self.refresh()
-
-
-    def refresh(self):
-        # Aggiornamento TreeView
-
-        self.calcolaTotale(self.scontrini)
-
 
     def calcolaTotale(self, scontrini):
         tot = 0
