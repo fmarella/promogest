@@ -84,10 +84,8 @@ class Distinta(GladeWidget):
         tot_sconti = 0
         partz_def = []
         for partz in parziali:
-#            print "PARTZZZZ", partz
             if partz[1]:
                 for p in partz[1]:
-                    print p.__dict__
                     if p.sconti:
                         tot_sconti += self.calcolascontoXRiga(p)
                     tot += p.prezzo*p.quantita
@@ -103,7 +101,7 @@ class Distinta(GladeWidget):
         parziali = []
         totali = self.calcolaTotale(self._scontrini)
         catelist =[]
-        html = '<html></html>'
+        self.html = '<html></html>'
         dataeora = datetime.datetime.now()
         ragione_sociale = Environment.azienda
         chiusure = ChiusuraFiscale().select( dataChiusura = dataeora,
@@ -114,7 +112,6 @@ class Distinta(GladeWidget):
         else:
             aperto ="SI"
         if self._scontrini:
-#            print "scontriniiiiiiiiiiiiiiiiiiiiiiii", self._righe
             for cate in self.categorie:
                 for s in self._scontrini:
                     for una in s.righe:
@@ -123,11 +120,9 @@ class Distinta(GladeWidget):
                 parziali.append((cate,catelist))
                 catelist= []
             partz = self.aggiungiTotaliXRiga(parziali)
-#            print "PAAAAAAAAAAAAAAAAAAAAAAAAAAAAARTZ", partz
 
             pageData = {
                     "file": "distinta_giornaliera.html",
-#                    "dao" :self.dao
                     "parziali": partz,
                     "totali": totali,
                     "dataeora": dataeora,
@@ -138,7 +133,6 @@ class Distinta(GladeWidget):
         renderHTML(self.detail,self.html)
 
     def on_pdf_button_clicked(self, button):
-        print "CREA PDF"
         import pisaLib.ho.pisa as pisa
         f = self.html
         g = file(".temp.pdf", "wb")
