@@ -16,12 +16,13 @@ from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanva
 from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
 
 class chartViewer():
-    def __init__(self, func= None, scontrini = None):
+    def __init__(self,widget, func= None, scontrini = None):
         member = getattr(self, func)
         self.fig = member(scontrini=scontrini)
-        self.draw(func)
 
-    def draw(self,func):
+        self.draw(widget, func)
+
+    def draw(self,widget, func):
 
         win = gtk.Window()
         win.connect("destroy", lambda x: gtk.main_quit())
@@ -42,6 +43,8 @@ class chartViewer():
         toolbar = NavigationToolbar(canvas, win)
         toolbar.set_message(func)
         vbox.pack_start(toolbar, False, False)
+        win.set_modal(True)
+        win.set_transient_for(widget)
         win.show_all()
         gtk.main()
 

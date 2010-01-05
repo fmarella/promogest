@@ -266,19 +266,21 @@ class GestioneScontrini(GladeWidget):
 
     def on_affluenza_oraria_chart_clicked(self, button):
         if "Statistiche" in Environment.modulesList and \
-            hasattr(Environment.conf.Statistiche,"affluenzaOrariaGiornaliera") and\
-            Environment.conf.Statistiche.affluenzaOrariaGiornaliera == "si" or "yes":
+            hasattr(Environment.conf,"Statistiche") and \
+            hasattr(Environment.conf.Statistiche,"affluenza_oraria_giornaliera") and\
+            Environment.conf.Statistiche.affluenza_oraria_giornaliera == "yes":
             from promogest.modules.Statistiche.ui.chart import chartViewer
-            chartViewer(func="affluenzaOrariaGiornaliera",scontrini= self.scontrini)
+            chartViewer(self._window, func="affluenzaOrariaGiornaliera",scontrini= self.scontrini)
         else:
             fenceDialog()
 
     def on_affluenza_mensile_chart_clicked(self, button):
         if "Statistiche" in Environment.modulesList and \
-            hasattr(Environment.conf.Statistiche,"affluenzaGiornalieraMensile") and\
-            Environment.conf.Statistiche.affluenzaGiornalieraMensile == "si" or "yes":
+            hasattr(Environment.conf,"Statistiche") and \
+            hasattr(Environment.conf.Statistiche,"affluenza_giornaliera_mensile") and\
+            Environment.conf.Statistiche.affluenza_giornaliera_mensile == "yes":
             from promogest.modules.Statistiche.ui.chart import chartViewer
-            chartViewer(func="affluenzaGiornalieraMensile", scontrini= self.scontrini)
+            chartViewer(self._window, func="affluenzaGiornalieraMensile", scontrini= self.scontrini)
         else:
             fenceDialog()
 
