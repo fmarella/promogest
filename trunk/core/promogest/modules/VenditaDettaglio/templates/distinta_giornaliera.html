@@ -7,7 +7,7 @@
 	<META NAME="AUTHOR" CONTENT="vete ">
 	<META NAME="CREATED" CONTENT="20100102;22475000">
 	<META NAME="CHANGEDBY" CONTENT="vete ">
-	<META NAME="CHANGED" CONTENT="20100103;21343000">
+	<META NAME="CHANGED" CONTENT="20100105;17032600">
 	<STYLE TYPE="text/css">
 	<!--
 		@page { margin: 1.5cm }
@@ -21,17 +21,16 @@
 <P ALIGN=RIGHT STYLE="margin-bottom: 0cm"><B>Data:</B>
 {{pageData['dataeora'].day}}/{{pageData['dataeora'].month}}/{{pageData['dataeora'].year}}
 – <B>Ore:</B>{{pageData['dataeora'].hour}}:{{pageData['dataeora'].minute}}
-  
 </P>
 <P ALIGN=RIGHT STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P STYLE="margin-bottom: 0cm">  <B>Ragione sociale:
+<P STYLE="margin-bottom: 0cm"><B>Ragione sociale:
 </B>{{pageData['ragione_sociale']}} /
 {{environment.conf.VenditaDettaglio.magazzino}}</P>
 <P STYLE="margin-bottom: 0cm"><BR>
 </P>
 <P ALIGN=RIGHT STYLE="margin-bottom: 0cm"><B>Distinta giornaliera
-aperta : </B>{{pageData['aperto']}}  
+aperta : </B>{{pageData['aperto']}} 
 </P>
 <P STYLE="margin-bottom: 0cm"><BR>
 </P>
@@ -94,22 +93,22 @@ in pageData['parziali'] %}
 	<COL WIDTH=41*>
 	<TR VALIGN=TOP>
 		<TD WIDTH=23%>
-			<P>Contanti</P>
+			<P>Contanti LORDO</P>
 		</TD>
 		<TD WIDTH=10%>
 			<P>{{pageData['totali'][1]}}</P>
 		</TD>
 		<TD WIDTH=27%>
-			<P>Num scontrini</P>
+			<P>Contanti RESTO</P>
 		</TD>
 		<TD WIDTH=11%>
-			<P>{{pageData['totali'][5]}}</P>
+			<P> {{pageData['totali'][6]}}</P>
 		</TD>
 		<TD WIDTH=13%>
-			<P>Tot. Pezzi</P>
+			<P>Contanti NETTO</P>
 		</TD>
 		<TD WIDTH=16%>
-			<P>{{pageData['totali'][6]}}</P>
+			<P>{{pageData['totali'][7]}}</P>
 		</TD>
 	</TR>
 	<TR VALIGN=TOP>
@@ -126,12 +125,10 @@ in pageData['parziali'] %}
 			<P>{{pageData['categoria']}}</P>
 		</TD>
 		<TD WIDTH=13%>
-			<P><BR>
-			</P>
+			<P>Num scontrini</P>
 		</TD>
 		<TD WIDTH=16%>
-			<P><BR>
-			</P>
+			<P>{{pageData['totali'][5]}}</P>
 		</TD>
 	</TR>
 	<TR VALIGN=TOP>

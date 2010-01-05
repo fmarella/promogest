@@ -6,7 +6,8 @@
 # Author:  Francesco Meloni  "Vete" <francesco@promotux.it.com>
 
 from decimal import *
-import gtk, os
+import gtk
+import os
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
@@ -17,7 +18,7 @@ class ManageLabelsToPrint(GladeWidget):
 
     def __init__(self, mainWindow=None,daos=None):
         """Widget di transizione per visualizzare e confermare gli oggetti
-            preparati per la stampa ( Multi_dialog.glade tab 1) 
+            preparati per la stampa ( Multi_dialog.glade tab 1)
         """
         GladeWidget.__init__(self, 'label_dialog',
                         fileName= 'Label/gui/label_dialog.glade',isModule=True)
@@ -191,7 +192,7 @@ class ManageLabelsToPrint(GladeWidget):
                     giacenza = giacenzaArticolo(year=Environment.workingYear,
                                             idArticolo=row[0].id_articolo,
                                             allMag=True)
-                if int(giacenza) <= 0 :
+                if int(giacenza) <= 0:
                     row[5] = "1"
                 else:
                     row[5] = str(int(giacenza))
@@ -204,7 +205,7 @@ class ManageLabelsToPrint(GladeWidget):
                     for riga in doc.righe:
                         if riga.codice_articolo == row[1]:
                             quanti = riga.quantita
-                            if int(quanti) <= 0 :
+                            if int(quanti) <= 0:
                                 row[5] = "1"
                             else:
                                 row[5] = str(int(quanti))
@@ -214,7 +215,7 @@ class ManageLabelsToPrint(GladeWidget):
             self.quantita_entry.set_property("sensitive",False)
         else:
             self.quantita_entry.set_property("sensitive",True)
-        
+
     def on_quantita_entry_icon_press(self,entry,button,secondary):
         self.quantita_entry.set_text("")
 

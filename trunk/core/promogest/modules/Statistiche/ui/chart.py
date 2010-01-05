@@ -48,6 +48,11 @@ class chartViewer():
         win.show_all()
         gtk.main()
 
+    def export_csv(self):
+        print "OKOKOKOKKOKOKOKOKO"
+
+
+
     def affluenzaOrariaGiornaliera(self, scontrini=None):
         """ TODO: Avvisare con un messaggio quando i dati non sono omogenei
             esempio ci sono più giorni negli scontrini """
@@ -88,6 +93,27 @@ class chartViewer():
 
         plt.ylabel('Numero scontrini emessi')
         plt.xlabel('Giorni del mese')
+
+        plt.axis()
+        plt.legend()
+        plt.grid(True)
+        return f
+
+    def affluenzaMensileAnnuale(self, scontrini=None):
+        mesi = []
+        if scontrini:
+            for sco in scontrini:
+                mesi.append(sco.data_inserimento.month)
+        f = plt.figure()
+        ax = f.add_subplot(111)
+
+        plt.plot([a for a in range(1,13)], [mesi.count(b) or 0 for b in range(1,13)], color='green',label='Q/y',linewidth=2)
+
+        ax.xaxis.set_major_locator(plt.FixedLocator(range(1,13)))
+#        ax.yaxis.set_major_locator(plt.FixedLocator(range(0,len(mesi)+1)))
+
+        plt.ylabel('Numero scontrini emessi')
+        plt.xlabel('Mesi')
 
         plt.axis()
         plt.legend()

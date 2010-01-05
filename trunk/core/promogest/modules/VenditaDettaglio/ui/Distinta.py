@@ -43,15 +43,20 @@ class Distinta(GladeWidget):
         totnum = 0
         totcont = 0
         tot_sconti = 0
+        totcont_resto = 0
+        totcont_netto = 0
         for m in scontrini:
             if m.sconti:
                 tot_sconti += self.calcolasconto(m)
             tot += m.totale_scontrino
             totccr += m.totale_carta_credito
             totass += m.totale_assegni
+            if m.totale_contanti:
+                totcont_resto += (m.totale_contanti-m.totale_scontrino)
+                totcont_netto += m.totale_scontrino
             totcont += m.totale_contanti
             totnum += 1
-        return (mN(tot),mN(totcont), mN(totccr), mN(totass),mN(tot_sconti), totnum )
+        return (mN(tot),mN(totcont), mN(totccr), mN(totass),mN(tot_sconti), totnum, mN(totcont_resto), mN(totcont_netto) )
 
     def calcolasconto(self, dao):
         if dao.sconti[0].tipo_sconto=="valore":

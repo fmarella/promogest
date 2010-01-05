@@ -284,6 +284,19 @@ class GestioneScontrini(GladeWidget):
         else:
             fenceDialog()
 
+    def on_affluenza_annuale_chart_clicked(self, button):
+        if "Statistiche" in Environment.modulesList and \
+            hasattr(Environment.conf,"Statistiche") and \
+            hasattr(Environment.conf.Statistiche,"affluenza_mensile_annuale") and\
+            Environment.conf.Statistiche.affluenza_mensile_annuale == "yes":
+            from promogest.modules.Statistiche.ui.chart import chartViewer
+            chartViewer(self._window, func="affluenzaMensileAnnuale", scontrini= self.scontrini)
+        else:
+            fenceDialog()
+
+    def on_esporta_affluenza_csv_clicked(self, button):
+        print "esport to csv"
+
     def on_distinta_button_clicked(self, button):
         gest = Distinta(righe = self.scontrini)
         gestWnd = gest.getTopLevel()

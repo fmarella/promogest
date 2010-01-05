@@ -48,8 +48,34 @@
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Grafico affluenza mensile</property>
                 <property name="use_underline">True</property>
-                <property name="icon_widget">image3</property>
+                <property name="icon_widget">image4</property>
                 <signal name="clicked" handler="on_affluenza_mensile_chart_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="affluenza_annuale_chart">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Grafico affluenza annuale</property>
+                <property name="use_underline">True</property>
+                <property name="icon_widget">image3</property>
+                <signal name="clicked" handler="on_affluenza_annuale_chart_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="esporta_affluenza_csv">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Affluenza csv</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-execute</property>
+                <signal name="clicked" handler="on_esporta_affluenza_csv_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -148,6 +174,10 @@
     <property name="pixbuf">col_pie_chart.png</property>
   </object>
   <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="pixbuf">col_pie_chart.png</property>
+  </object>
+  <object class="GtkImage" id="image4">
     <property name="visible">True</property>
     <property name="pixbuf">col_pie_chart.png</property>
   </object>
