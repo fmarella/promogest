@@ -27,7 +27,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self._widgetFirstFocus = self.da_data_filter_entry
         if not "GestioneNoleggio" in Environment.modulesList:
             self.noleggio_expander.destroy()
-        self.orderBy = 'id'
+        self.orderBy = 'data_documento'
         self.xptDaoList = None
 
     def draw(self):
