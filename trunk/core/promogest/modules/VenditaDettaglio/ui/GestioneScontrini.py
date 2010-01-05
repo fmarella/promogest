@@ -264,6 +264,24 @@ class GestioneScontrini(GladeWidget):
             self._righe.append(self.dao.id)
             self.on_scontrini_window_close(widget)
 
+    def on_affluenza_oraria_chart_clicked(self, button):
+        if "Statistiche" in Environment.modulesList and \
+            hasattr(Environment.conf.Statistiche,"affluenzaOrariaGiornaliera") and\
+            Environment.conf.Statistiche.affluenzaOrariaGiornaliera == "si" or "yes":
+            from promogest.modules.Statistiche.ui.chart import chartViewer
+            chartViewer(func="affluenzaOrariaGiornaliera",scontrini= self.scontrini)
+        else:
+            fenceDialog()
+
+    def on_affluenza_mensile_chart_clicked(self, button):
+        if "Statistiche" in Environment.modulesList and \
+            hasattr(Environment.conf.Statistiche,"affluenzaGiornalieraMensile") and\
+            Environment.conf.Statistiche.affluenzaGiornalieraMensile == "si" or "yes":
+            from promogest.modules.Statistiche.ui.chart import chartViewer
+            chartViewer(func="affluenzaGiornalieraMensile", scontrini= self.scontrini)
+        else:
+            fenceDialog()
+
     def on_distinta_button_clicked(self, button):
         gest = Distinta(righe = self.scontrini)
         gestWnd = gest.getTopLevel()

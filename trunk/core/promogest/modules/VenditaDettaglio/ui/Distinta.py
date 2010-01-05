@@ -26,6 +26,7 @@ class Distinta(GladeWidget):
                 fileName="htmlviewer.glade")
         self._window = self.visualizzatore_html
         self.windowTitle = "Distinta giornaliera"
+#        self.set_title("Distinta giornaliera")
         self.categorie = CategoriaArticolo().select(batchSize=None)
         self.placeWindow(self._window)
         self.draw()

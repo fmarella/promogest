@@ -15,6 +15,7 @@
         <child>
           <object class="GtkToolbar" id="toolbar1">
             <property name="visible">True</property>
+            <property name="toolbar_style">both</property>
             <property name="icon_size_set">True</property>
             <child>
               <object class="GtkToolButton" id="distinta_button">
@@ -23,6 +24,32 @@
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-dnd</property>
                 <signal name="clicked" handler="on_distinta_button_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="affluenza_oraria_chart">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Grafico affluenza oraria</property>
+                <property name="use_underline">True</property>
+                <property name="icon_widget">image2</property>
+                <signal name="clicked" handler="on_affluenza_oraria_chart_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="affluenza_mensile_chart">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Grafico affluenza mensile</property>
+                <property name="use_underline">True</property>
+                <property name="icon_widget">image3</property>
+                <signal name="clicked" handler="on_affluenza_mensile_chart_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -70,7 +97,6 @@
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
-                <property name="image">image1</property>
                 <signal name="clicked" handler="on_rhesus_button_clicked"/>
               </object>
               <packing>
@@ -116,5 +142,13 @@
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="pixbuf">scontrino16x16.png</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="pixbuf">col_pie_chart.png</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="pixbuf">col_pie_chart.png</property>
   </object>
 </interface>
