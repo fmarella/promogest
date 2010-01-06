@@ -84,7 +84,10 @@ class ProductFromCsv(object):
                     t.denominazione_breve = riga["Taglia"]
                     t.persist()
                 tid = Taglia().select(denominazione = riga["Taglia"])[0].id
-                gtid = GruppoTaglia().select(denominazione = riga["Gruppo Taglia"])[0].id
+                gtids = GruppoTaglia().select(denominazione = riga["Gruppo Taglia"])
+                print "GTTTTTTTTTTTTTTTTTTTTTTTTTTT", gtids
+                if gtids:
+                    gtid =  gtids[0].id
                 if tid and gtid:
                     gtt = GruppoTagliaTaglia().select(idGruppoTaglia= gtid,
                                                     idTaglia = tid)
