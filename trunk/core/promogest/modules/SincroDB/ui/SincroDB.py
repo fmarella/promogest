@@ -319,12 +319,14 @@ class SincroDB(GladeWidget):
             sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
             sqlalchemy.ext.sqlsoup.Session.commit()
         elif op == "INSERT":
+            print "INSERTIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
             exec ("rowLocale = soupLocale.%s.insert()") %dao
             for i in rowLocale.c:
                 t = str(i).split(".")[1] #mi serve solo il nome tabella
                 setattr(rowLocale, t, getattr(row, t))
             sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
-#            sqlalchemy.ext.sqlsoup.Session.commit()
+            sqlalchemy.ext.sqlsoup.Session.commit()
+            return
         elif op == "UPDATE":
             try:
                 for i in rowLocale.c:

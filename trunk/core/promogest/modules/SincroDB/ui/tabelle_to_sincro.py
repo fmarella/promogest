@@ -32,7 +32,6 @@ tablesSchemeArticolo = [
             ("sconto" ,"id"),
             ("categoria_cliente","id"),
             ("codice_a_barre_articolo","id"),
-
             #("cart","id"),
             ("articolo_associato","id"),
             #("access","id"),
