@@ -97,7 +97,7 @@ tablesSchemePromoWear = [
             ("colore","id"),
             ("gruppo_taglia","id"),
             ("taglia","id"),
-            ("gruppo_taglia_taglia","id"),
+            ("gruppo_taglia_taglia","id_taglia"),
             ("modello","id"),
             ("articolo_taglia_colore","id")
             ]
