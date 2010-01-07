@@ -89,3 +89,18 @@ tablesSchemeDocumenti = [
             ("testata_documento_scadenza","id"),
             ("informazioni_contabili_documento","id"),
 ]
+
+tablesMainSchemePromoWear = [
+            ("anno_abbigliamento","id"),
+            ("genere_abbigliamento","id"),
+            ("stagione_abbigliamento","id"),
+            ]
+
+tablesSchemePromoWear = [
+            ("colore","id"),
+            ("gruppo_taglia","id"),
+            ("taglia","id"),
+            ("gruppo_taglia_taglia","id"),
+            ("modello","id"),
+            ("articolo_taglia_colore","id")
+            ]

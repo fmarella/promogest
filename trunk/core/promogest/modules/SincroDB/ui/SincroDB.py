@@ -18,7 +18,12 @@ from promogest import Environment
 from tabelle_to_sincro import tablesMain, tablesSchemeArticolo,\
                                 tablesSchemeAnagrafiche,\
                                 tablesSchemePromemoria,\
-                                tablesSchemeDocumenti
+                                tablesSchemeDocumenti,\
+                                tablesSchemePromoWear,\
+                                tablesMainSchemePromoWear
+
+
+
 
 #avanzamento_pgbar
 # Update the value of the progress bar so that we get
@@ -50,11 +55,12 @@ class SincroDB(GladeWidget):
     """ Finestra di gestione esdportazione variazioni Database
     """
 
-    def __init__(self, conf=None, batch=False, schema=None, fileconf=None):
+    def __init__(self, conf=None, batch=False, schema=None, fileconf=None, wear= False):
         GladeWidget.__init__(self, 'sincro_dialog',
                         fileName='sincro_dialog.glade')
         self.placeWindow(self.getTopLevel())
         self.batch = batch
+        self.wear = wear
         if batch:
             print " MI ACCINGO A CARICARE IL FILE configure dalla cartella '%s' ed usare lo schema '%s'" %(fileconf, schema)
             Environment.conf = conf
@@ -443,7 +449,11 @@ class SincroDB(GladeWidget):
         self.tempo_inizio = datetime.datetime.now()
         print "INIZIO sincro",datetime.datetime.now()
         self.daosMain(tables=tablesMain)
+        if self.wear:
+            self.daosMain(tables=tablesMainSchemePromoWear)
         self.daosScheme(tables=tablesSchemeArticolo)
+        if self.wear:
+            self.daosMain(tables=tablesSchemePromoWear)
         self.daosScheme(tables=tablesSchemeAnagrafiche)
         self.daosScheme(tables= tablesSchemePromemoria)
         sqlalchemy.ext.sqlsoup.Session.expunge_all()
@@ -460,7 +470,3 @@ class SincroDB(GladeWidget):
 
     def on_close_button_clicked(self, button):
         self.destroy()
-
-#if __name__ == '__main__':
-#    import Envir
-#        #BigBang()
