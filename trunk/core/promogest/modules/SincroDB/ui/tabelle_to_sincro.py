@@ -29,7 +29,6 @@ tablesSchemeArticolo = [
             ("pagamento","id"),
             ("persona_giuridica","id"),
             ("fornitore","id"),
-#
             ("sconto" ,"id"),
             ("categoria_cliente","id"),
             ("codice_a_barre_articolo","id"),
@@ -40,7 +39,6 @@ tablesSchemeArticolo = [
             ("listino","id"),
             ("listino_magazzino","id_listino"),
             ("listino_categoria_cliente","id_listino"),
-#
             ("listino_articolo","id_listino"),
 #            ("listino_articolo","data_listino_articolo"),
             #("feed","id"),
