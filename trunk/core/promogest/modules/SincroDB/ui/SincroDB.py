@@ -453,7 +453,7 @@ class SincroDB(GladeWidget):
             self.daosMain(tables=tablesMainSchemePromoWear)
         self.daosScheme(tables=tablesSchemeArticolo)
         if self.wear:
-            self.daosMain(tables=tablesSchemePromoWear)
+            self.daosScheme(tables=tablesSchemePromoWear)
         self.daosScheme(tables=tablesSchemeAnagrafiche)
         self.daosScheme(tables= tablesSchemePromemoria)
         sqlalchemy.ext.sqlsoup.Session.expunge_all()
