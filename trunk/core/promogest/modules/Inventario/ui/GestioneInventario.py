@@ -17,6 +17,7 @@ from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.Riga import Riga
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Articolo import Articolo
+from promogest.dao.Stoccaggio import Stoccaggio
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
 from promogest.dao.DaoUtils import giacenzaArticolo
@@ -224,9 +225,6 @@ class GestioneInventario(RicercaComplessaArticoli):
         if radio.get_active():
             self.refresh()
 
-
-
-
     def refresh(self, macro_filter="tutti"):
         """ Esegue il filtraggio in base ai filtri impostati e aggiorna la treeview """
         self.anno = int(Environment.workingYear)
@@ -248,7 +246,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         model = self.filter.resultsElement.get_model()
         self.batchSize = 50
         self._ricerca._prepare()
-        self.filter.numRecords = Inventario().count(anno=self.anno,
+        self.filter.numRecords = Inventario().count(anno=self.annoScorso,
                                                     idMagazzino=idMagazzino,
                                                     daDataAggiornamento=daData,
                                                     aDataAggiornamento=aData,
@@ -260,7 +258,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         self.filter._refreshPageCount()
 
         invs = Inventario().select(orderBy=self.filter.orderBy,
-                                               anno=self.anno,
+                                               anno=self.annoScorso,
                                                idMagazzino=idMagazzino,
                                                daDataAggiornamento=daData,
                                                aDataAggiornamento=aData,
@@ -444,12 +442,13 @@ class GestioneInventario(RicercaComplessaArticoli):
             sovrascrivi = True
 
         idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
-        res = Inventario().select(anno=self.anno,
+        res = Inventario().select(anno=self.annoScorso,
                                     idMagazzino=idMagazzino, batchSize=None)
         if res:
             for r in res:
                 if (sovrascrivi) or (not sovrascrivi and not r.quantita):
-                    giace = giacenzaArticolo(year=self.anno,
+                    print "ANNO DI GIACENZA", self.annoScorso
+                    giace = giacenzaArticolo(year=self.annoScorso,
                                     idMagazzino=idMagazzino,
                                     idArticolo=r.id_articolo)
                     r.quantita = giace
@@ -483,7 +482,7 @@ class GestioneInventario(RicercaComplessaArticoli):
             for s in sel:
                 righeArticoloMovimentate = Environment.params["session"]\
                     .query(RigaMovimento, TestataMovimento)\
-                    .filter(and_(func.date_part("year", TestataMovimento.data_movimento)==(int(Environment.workingYear)-1)))\
+                    .filter(and_(func.date_part("year", TestataMovimento.data_movimento)==(self.annoScorso)))\
                     .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
                     .filter(Riga.id_articolo==s[1])\
                     .filter(Riga.id_magazzino==s[0])\
@@ -521,24 +520,25 @@ class GestioneInventario(RicercaComplessaArticoli):
                 query(Inventario.id_magazzino,
                     Inventario.id_articolo).\
                     filter(Inventario.id_magazzino==self.idMagazzino).\
-                    filter(Inventario.anno == Environment.workingYear).\
+                    filter(Inventario.anno == self.annoScorso).\
                     order_by(Inventario.id_articolo).all()
         sel = Environment.params['session'].\
-                query(Magazzino.id,
-                    Articolo.id).\
+                query(Stoccaggio.id_magazzino,
+                    Stoccaggio.id_articolo).\
                     filter(Magazzino.id==self.idMagazzino).\
-                    filter(Articolo.cancellato != True).\
-                    order_by(Articolo.id).all()
-        print "AGGIORNA"
+                    order_by(Stoccaggio.id_articolo).all()
+        print "AGGIORNA" , self.idMagazzino
+        print "SEL", sel,sel2
         if sel != sel2:
             for s in sel:
                 if s not in sel2:
+                    print "MA QUI CI PASSI"
                     inv = Inventario()
-                    inv.anno = Environment.workingYear
+                    inv.anno = self.annoScorso
                     inv.id_magazzino = s[0]
                     inv.id_articolo = s[1]
                     Environment.params['session'].add(inv)
-            Environment.params['session'].commit()
+                Environment.params['session'].commit()
         self.refresh()
 
     def on_esporta_button_clicked(self, button):
@@ -587,27 +587,27 @@ class GestioneInventario(RicercaComplessaArticoli):
             riga = ('Codice, Descrizione, Quantita\', Valore unitario, U.M., ' +
                     'Codice a barre, Famiglia, Categoria\n')
             f.write(riga)
-            invs = Inventario().select(anno=Environment.conf.workingYear,
+            invs = Inventario().select(anno=self.annoScorso,
                                                     idMagazzino=idMagazzino,
                                                     offset=None,
                                                     batchSize=None)
 
-
-            for i in invs:
-                quantita = '%14.4f' % float(i.quantita or 0)
-                quantita = quantita.replace('.', ',')
-                valore = '%14.4f' % float(i.valore_unitario or 0)
-                valore = valore.replace('.', ',')
-                riga = ('"' + str(i.codice_articolo or '') + '",' +
-                        '"' + str(i.articolo or '') + '",' +
-                        '"' + quantita + '",' +
-                        '"' + valore + '",' +
-                        '"' + str(i.denominazione_breve_unita_base or '') + '",' +
-                        '"' + str(i.codice_a_barre or '') + '",' +
-                        '"' + str(i.denominazione_famiglia or '') + '",' +
-                        '"' + str(i.denominazione_categoria or '') + '"\n')
-                f.write(riga)
-            f.close()
+            if invs:
+                for i in invs:
+                    quantita = '%14.4f' % float(i.quantita or 0)
+                    quantita = quantita.replace('.', ',')
+                    valore = '%14.4f' % float(i.valore_unitario or 0)
+                    valore = valore.replace('.', ',')
+                    riga = ('"' + str(i.codice_articolo or '') + '",' +
+                            '"' + str(i.articolo or '') + '",' +
+                            '"' + quantita + '",' +
+                            '"' + valore + '",' +
+                            '"' + str(i.denominazione_breve_unita_base or '') + '",' +
+                            '"' + str(i.codice_a_barre or '') + '",' +
+                            '"' + str(i.denominazione_famiglia or '') + '",' +
+                            '"' + str(i.denominazione_categoria or '') + '"\n')
+                    f.write(riga)
+                f.close()
         else:
             fileDialog.destroy()
             return
@@ -664,13 +664,13 @@ class GestioneInventario(RicercaComplessaArticoli):
         EXECUTE sql_statement;"""
         if self.confermaValorizzazione():
             idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
-            sel = Inventario().select(anno=self.anno,
+            sel = Inventario().select(anno=self.annoScorso,
                                     idMagazzino=idMagazzino, batchSize=None)
             for s in sel:
                 righeArticoloMovimentate = Environment.params["session"]\
                     .query(func.max(RigaMovimento.valore_unitario_netto), func.max(TestataMovimento.data_movimento))\
                     .join(TestataMovimento, Articolo)\
-                    .filter(TestataMovimento.data_movimento.between(datetime.date(int(self.anno),1, 1), datetime.date(int(self.anno), 12, 31)))\
+                    .filter(TestataMovimento.data_movimento.between(datetime.date(int(self.annoScorso),1, 1), datetime.date(int(self.annoScorso), 12, 31)))\
                     .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
                     .filter(Operazione.segno=="+")\
                     .filter(Riga.id_magazzino==idMagazzino)\
@@ -704,13 +704,13 @@ class GestioneInventario(RicercaComplessaArticoli):
         EXECUTE sql_statement;"""
         if self.confermaValorizzazione():
             idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
-            sel = Inventario().select(anno=self.anno,
+            sel = Inventario().select(anno=self.annoScorso,
                         idMagazzino=idMagazzino, batchSize=None)
             for s in sel:
                 righeArticoloMovimentate = Environment.params["session"]\
                     .query(func.max(RigaMovimento.valore_unitario_netto), func.max(TestataMovimento.data_movimento))\
                     .join(TestataMovimento, Articolo)\
-                    .filter(TestataMovimento.data_movimento.between(datetime.date(int(self.anno), 1, 1), datetime.date(int(self.anno), 12, 31)))\
+                    .filter(TestataMovimento.data_movimento.between(datetime.date(int(self.annoScorso), 1, 1), datetime.date(int(self.annoScorso), 12, 31)))\
                     .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
                     .filter(Operazione.segno=="-")\
                     .filter(Riga.id_magazzino==idMagazzino)\
@@ -741,13 +741,13 @@ class GestioneInventario(RicercaComplessaArticoli):
         EXECUTE sql_statement;"""
         if self.confermaValorizzazione():
             idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
-            sel = Inventario().select(anno=self.anno,
+            sel = Inventario().select(anno=self.annoScorso,
                         idMagazzino=idMagazzino, batchSize=None)
             for s in sel:
                 righeArticoloMovimentate = Environment.params["session"]\
                     .query(func.avg(RigaMovimento.valore_unitario_netto))\
                     .join(TestataMovimento, Articolo)\
-                    .filter(TestataMovimento.data_movimento.between(datetime.date(int(self.anno), 1, 1), datetime.date(int(self.anno), 12, 31)))\
+                    .filter(TestataMovimento.data_movimento.between(datetime.date(int(self.annoScorso), 1, 1), datetime.date(int(self.annoScorso), 12, 31)))\
                     .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
                     .filter(Operazione.segno=="+")\
                     .filter(Riga.id_magazzino==idMagazzino)\
@@ -777,13 +777,13 @@ class GestioneInventario(RicercaComplessaArticoli):
         EXECUTE sql_statement;"""
         if self.confermaValorizzazione():
             idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
-            sel = Inventario().select(anno=self.anno,
+            sel = Inventario().select(anno=self.annoScorso,
                         idMagazzino=idMagazzino, batchSize=None)
             for s in sel:
                 righeArticoloMovimentate = Environment.params["session"]\
                     .query(func.avg(RigaMovimento.valore_unitario_netto))\
                     .join(TestataMovimento, Articolo)\
-                    .filter(TestataMovimento.data_movimento.between(datetime.date(int(self.anno), 1, 1), datetime.date(int(self.anno), 12, 31)))\
+                    .filter(TestataMovimento.data_movimento.between(datetime.date(int(self.annoScorso), 1, 1), datetime.date(int(self.annoScorso), 12, 31)))\
                     .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
                     .filter(Operazione.segno=="-")\
                     .filter(Riga.id_magazzino==idMagazzino)\
@@ -821,7 +821,7 @@ class GestioneInventario(RicercaComplessaArticoli):
                 blocchi = abs(conteggia/blocSize)
                 for j in range(0,blocchi+1):
                     offset = j*blocSize
-                    invs=Inventario().select(anno=self.anno,
+                    invs=Inventario().select(anno=self.annoScorso,
                                                    idMagazzino=idMagazzino,
                                                    quantita = True,
                                                    offset=offset,
