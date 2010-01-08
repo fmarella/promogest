@@ -45,7 +45,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         RicercaComplessaArticoli.__init__(self)
 
         # modifiche all'interfaccia originaria
-        self.getTopLevel().set_title('Promogest - Gestione inventario ' + Environment.workingYear)
+        self.getTopLevel().set_title('Promogest - Gestione inventario ' + self.annoScorso)
         self.search_image.set_no_show_all(True)
         self.search_image.set_property('visible', False)
         self.filter.filter_search_button.set_label('_Seleziona')
@@ -813,7 +813,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         dialog.destroy()
         if response == gtk.RESPONSE_YES:
             blocSize = 500
-            conteggia = Inventario().count(anno=self.anno,
+            conteggia = Inventario().count(anno=self.annoScorso,
                                         idMagazzino=idMagazzino,
                                         quantita = True) # serve per poter affettare le select
             print "NUMERO DEI RECORD PRESENTI:", conteggia
@@ -848,6 +848,33 @@ class GestioneInventario(RicercaComplessaArticoli):
 
                     testata.righeMovimento = righe
                     testata.persist()
+            else:
+                invs = Inventario().select(anno=self.annoScorso,
+                                                   idMagazzino=idMagazzino,
+                                                   quantita = True,
+                                                   offset=None,
+                                                   batchSize=None)
+                testata = TestataMovimento()
+                data = '01/01/' + str(self.anno)
+                testata.data_movimento = stringToDate(data)
+                testata.operazione = 'Carico per inventario'
+                righe = []
+
+                for i in invs:
+                    if i.quantita is not None and i.quantita > 0:
+                        riga = RigaMovimento()
+                        riga.id_testata_movimento = testata.id
+                        riga.id_articolo = i.id_articolo
+                        riga.id_magazzino = i.id_magazzino
+                        riga.descrizione = i.arti.denominazione
+                        riga.percentuale_iva = i.arti.percentuale_aliquota_iva
+                        riga.quantita = i.quantita
+                        riga.moltiplicatore = 1
+                        riga.valore_unitario_lordo = riga.valore_unitario_netto = i.valore_unitario or 0
+                        riga.scontiRigheMovimento = []
+                        righe.append(riga)
+                testata.righeMovimento = righe
+                testata.persist()
 
             dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                        gtk.MESSAGE_INFO, gtk.BUTTONS_OK, '\nElaborazione terminata !')
