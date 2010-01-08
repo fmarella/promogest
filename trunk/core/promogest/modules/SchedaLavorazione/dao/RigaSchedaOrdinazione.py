@@ -104,15 +104,14 @@ class RigaSchedaOrdinazione(Dao):
             part= Environment.params["session"]\
                 .query(Riga)\
                 .filter(and_(schedaordinazione.c.fattura!=True,
-                            riga.c.id==self.id,
-                                self.id_scheda == schedaordinazione.c.id,
+                            riga.c.id==rigaschedaordinazione.c.id,
+                                rigaschedaordinazione.c.id_scheda == schedaordinazione.c.id,
                                 riga.c.id_articolo==self.id_articolo,
                                 Articolo.id==self.id_articolo)).all()
             for r in part:
                 t +=r.quantita
             return t
     impegnato_su_lavorazione = property(_impegnatoSuLavorazione)
-
 
     def _getAliquotaIva(self):
         # Restituisce la denominazione breve dell'aliquota iva
