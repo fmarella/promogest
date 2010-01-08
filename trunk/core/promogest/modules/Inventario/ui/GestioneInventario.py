@@ -45,7 +45,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         RicercaComplessaArticoli.__init__(self)
 
         # modifiche all'interfaccia originaria
-        self.getTopLevel().set_title('Promogest - Gestione inventario ' + self.annoScorso)
+        self.getTopLevel().set_title('Promogest - Gestione inventario ' + str(self.annoScorso))
         self.search_image.set_no_show_all(True)
         self.search_image.set_property('visible', False)
         self.filter.filter_search_button.set_label('_Seleziona')
