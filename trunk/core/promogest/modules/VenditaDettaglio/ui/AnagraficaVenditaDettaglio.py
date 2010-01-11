@@ -854,10 +854,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         else:
             print " WHAT ELSE?"
 
-
-
-
-
     def on_chiusura_fiscale_activate(self, widget):
         if DRIVER=="D":
             GestioneChiusuraFiscale(self).chiusuraDialog(widget, self.id_magazzino)
