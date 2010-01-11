@@ -68,6 +68,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.draw()
 
     def draw(self):
+        if DRIVER =="E":
+#            self.apri_cassetto_button.set_active(True)
+            self.apri_cassetto_button.set_sensitive(True)
         drawPart(self)
 
     def on_column_prezzo_edited(self, cell, path, value, treeview, editNext=True):
@@ -884,10 +887,15 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             Ditron().stampa_della_affluenza_oraria()
 
     def on_apri_cassetto_button_clicked(self, button):
-        filename = Environment.conf.VenditaDettaglio.export_path+\
-                            "apri_cassetto.txt"
-        f = file(filename, 'w')
-        f.write("912;1\n")
+        if DRIVER =="E":
+            filename = Environment.conf.VenditaDettaglio.export_path+\
+                                "apri_cassetto.txt"
+            f = file(filename, 'w')
+            f.write("912;1\n")
+            f.close()
+            g = file(filename, 'rb')
+            ElaExecute().copyToInDir(filename)
+            g.close()
 
     def creaScontrinoReso(self):
         treeview = self.scontrino_treeview
