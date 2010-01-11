@@ -1,19 +1,20 @@
 <?xml version="1.0"?>
-<glade-interface>
-  <!-- interface-requires gtk+ 2.16 -->
+<interface>
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
-  <widget class="GtkWindow" id="roleaction">
+  <object class="GtkWindow" id="roleaction">
     <property name="title" translatable="yes">roleaction</property>
     <property name="window_position">center</property>
     <child>
-      <widget class="GtkVBox" id="vbox2">
+      <object class="GtkVBox" id="vbox2">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
-          <widget class="GtkLabel" id="titolo">
+          <object class="GtkLabel" id="titolo">
             <property name="visible">True</property>
             <property name="use_markup">True</property>
             <property name="justify">center</property>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
@@ -21,15 +22,15 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkHBox" id="hbox1">
+          <object class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
             <child>
-              <widget class="GtkLabel" id="label2">
+              <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
                 <property name="xpad">11</property>
                 <property name="label" translatable="yes">Ruolo</property>
                 <property name="justify">fill</property>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
@@ -38,21 +39,21 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkComboBox" id="id_role_filter_combobox">
+              <object class="GtkComboBox" id="id_role_filter_combobox">
                 <property name="visible">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="abbina_button">
+              <object class="GtkButton" id="abbina_button">
                 <property name="label" translatable="yes">Abbina</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <signal name="clicked" handler="on_abbina_button_clicked"/>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
@@ -60,7 +61,7 @@
                 <property name="position">2</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
@@ -68,28 +69,28 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkScrolledWindow" id="scrolledwindow1">
+          <object class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="hscrollbar_policy">automatic</property>
             <property name="vscrollbar_policy">automatic</property>
             <property name="shadow_type">in</property>
             <child>
-              <widget class="GtkTreeView" id="anagrafica_treeview_role">
+              <object class="GtkTreeView" id="anagrafica_treeview_role">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="show_expanders">False</property>
                 <property name="level_indentation">2</property>
                 <property name="enable_grid_lines">both</property>
-              </widget>
+              </object>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="position">2</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkHBox" id="hbox2">
+          <object class="GtkHBox" id="hbox2">
             <property name="visible">True</property>
             <property name="spacing">6</property>
             <property name="homogeneous">True</property>
@@ -97,7 +98,7 @@
               <placeholder/>
             </child>
             <child>
-              <widget class="GtkButton" id="save_button">
+              <object class="GtkButton" id="save_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="has_focus">True</property>
@@ -106,19 +107,19 @@
                 <property name="receives_default">False</property>
                 <signal name="clicked" handler="on_save_button_clicked"/>
                 <child>
-                  <widget class="GtkAlignment" id="alignment1">
+                  <object class="GtkAlignment" id="alignment1">
                     <property name="visible">True</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
-                      <widget class="GtkHBox" id="hbox3">
+                      <object class="GtkHBox" id="hbox3">
                         <property name="visible">True</property>
                         <property name="spacing">2</property>
                         <child>
-                          <widget class="GtkImage" id="image1">
+                          <object class="GtkImage" id="image1">
                             <property name="visible">True</property>
                             <property name="pixbuf">salva24x24.png</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
@@ -126,22 +127,22 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="label1">
+                          <object class="GtkLabel" id="label1">
                             <property name="visible">True</property>
                             <property name="label">_Salva</property>
                             <property name="use_underline">True</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="padding">6</property>
@@ -149,7 +150,7 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="annulla_button">
+              <object class="GtkButton" id="annulla_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="has_focus">True</property>
@@ -158,19 +159,19 @@
                 <property name="receives_default">False</property>
                 <signal name="clicked" handler="on_annulla_button_clicked"/>
                 <child>
-                  <widget class="GtkAlignment" id="alignment537">
+                  <object class="GtkAlignment" id="alignment537">
                     <property name="visible">True</property>
                     <property name="xscale">0</property>
                     <property name="yscale">0</property>
                     <child>
-                      <widget class="GtkHBox" id="hbox405">
+                      <object class="GtkHBox" id="hbox405">
                         <property name="visible">True</property>
                         <property name="spacing">2</property>
                         <child>
-                          <widget class="GtkImage" id="image446">
+                          <object class="GtkImage" id="image446">
                             <property name="visible">True</property>
                             <property name="pixbuf">annulla2nd24x24.png</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
@@ -178,29 +179,29 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="label3492">
+                          <object class="GtkLabel" id="label3492">
                             <property name="visible">True</property>
                             <property name="label">_Annulla</property>
                             <property name="use_underline">True</property>
-                          </widget>
+                          </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="padding">3</property>
                 <property name="position">2</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
@@ -208,7 +209,7 @@
             <property name="position">3</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+</interface>

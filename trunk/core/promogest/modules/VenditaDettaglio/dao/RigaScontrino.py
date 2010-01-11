@@ -101,5 +101,5 @@ riga_scontrino=Table('riga_scontrino',
 
 std_mapper = mapper(RigaScontrino, riga_scontrino,properties={
         "arti":relation(Articolo,primaryjoin=riga_scontrino.c.id_articolo==Articolo.id),
-        "srs":relation(ScontoRigaScontrino, primaryjoin=riga_scontrino.c.id ==ScontoRigaScontrino.id_riga_scontrino)
+        "srs":relation(ScontoRigaScontrino, primaryjoin=riga_scontrino.c.id ==ScontoRigaScontrino.id_riga_scontrino,cascade="all, delete")
         }, order_by=riga_scontrino.c.id)

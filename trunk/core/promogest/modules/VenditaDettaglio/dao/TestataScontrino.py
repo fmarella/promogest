@@ -137,6 +137,6 @@ testata_scontrino=Table('testata_scontrino',
 std_mapper = mapper(TestataScontrino, testata_scontrino,properties={
         "testatamovimento": relation(TestataMovimento,primaryjoin=
                 (testata_scontrino.c.id_testata_movimento==TestataMovimento.id), backref="testata_scontrino"),
-        "riga_scontr":relation(RigaScontrino,primaryjoin=RigaScontrino.id_testata_scontrino==testata_scontrino.c.id, backref="testata_scontrino"),
-        "STS":relation(ScontoTestataScontrino,primaryjoin = (testata_scontrino.c.id==ScontoTestataScontrino.id_testata_scontrino), backref="TS"),
+        "riga_scontr":relation(RigaScontrino,primaryjoin=RigaScontrino.id_testata_scontrino==testata_scontrino.c.id, backref="testata_scontrino",cascade="all, delete"),
+        "STS":relation(ScontoTestataScontrino,primaryjoin = (testata_scontrino.c.id==ScontoTestataScontrino.id_testata_scontrino), backref="TS",cascade="all, delete"),
         }, order_by=testata_scontrino.c.id)

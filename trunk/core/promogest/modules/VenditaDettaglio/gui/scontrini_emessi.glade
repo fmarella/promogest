@@ -115,7 +115,6 @@
         <child internal-child="action_area">
           <object class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
-            <property name="layout_style">edge</property>
             <child>
               <object class="GtkButton" id="rhesus_button">
                 <property name="label" translatable="yes">Reso</property>
@@ -123,6 +122,7 @@
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Effettua il RESO degli articoli presenti nello scontrino</property>
                 <signal name="clicked" handler="on_rhesus_button_clicked"/>
               </object>
               <packing>
@@ -132,7 +132,35 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkButton" id="delete_button">
+                <property name="label">gtk-delete</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Elimina lo scontrino SOLO dal PromoGest2</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_delete_button_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="storno_button">
+                <property name="label" translatable="yes">Storno</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Storna lo scontrino corrente</property>
+                <signal name="clicked" handler="on_storno_button_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
             </child>
             <child>
               <object class="GtkButton" id="quit_button">
@@ -141,6 +169,7 @@
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Chiude la finestra corrente</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_quit_button_clicked"/>
               </object>
@@ -148,7 +177,7 @@
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="pack_type">end</property>
-                <property name="position">2</property>
+                <property name="position">3</property>
               </packing>
             </child>
           </object>
@@ -162,6 +191,8 @@
     </child>
     <action-widgets>
       <action-widget response="0">rhesus_button</action-widget>
+      <action-widget response="0">delete_button</action-widget>
+      <action-widget response="0">storno_button</action-widget>
       <action-widget response="0">quit_button</action-widget>
     </action-widgets>
   </object>

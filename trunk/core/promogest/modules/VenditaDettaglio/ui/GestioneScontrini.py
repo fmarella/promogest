@@ -264,6 +264,33 @@ class GestioneScontrini(GladeWidget):
             self._righe.append(self.dao.id)
             self.on_scontrini_window_close(widget)
 
+    def on_delete_button_clicked(self, button):
+        if self.dao is not None:
+            msg = """ ATTENZIONE!!!!
+    Si sta per cancellare uno scontrino, L'operazione
+    è irreversibile per cui dovete essere sicuri di
+    quel che state facendo. VUOI CANCELLARLO?"""
+            dialog = gtk.MessageDialog(self.getTopLevel(),
+                                   gtk.DIALOG_MODAL
+                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                                   msg)
+            response = dialog.run()
+            dialog.destroy()
+            if response ==  gtk.RESPONSE_YES:
+                if self.dao.numero_movimento:
+                    messageInfo(msg= """Esiste già un movimento abbinato di chiusura per scarico da cassa,
+        l'operazione è comunque impossibile
+        Rivolgersi all'assasistenza""")
+                else:
+                    Environment.pg2log.info("CANCELLO UNO SCONTRINO DAL PG2 ")
+                    self.dao.delete()
+                self.refresh()
+            else:
+                return
+
+
+
     def on_affluenza_oraria_chart_clicked(self, button):
         if "Statistiche" in Environment.modulesList and \
             hasattr(Environment.conf,"Statistiche") and \

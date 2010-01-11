@@ -1,23 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--*- mode: xml -*-->
-<glade-interface>
-  <widget class="GtkWindow" id="_anagrafica_categorie_articoli_elements">
+<?xml version="1.0"?>
+<interface>
+  <!-- interface-requires gtk+ 2.6 -->
+  <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkWindow" id="_anagrafica_categorie_articoli_elements">
     <property name="visible">True</property>
     <property name="title" translatable="yes">Anagrafica categorie articoli</property>
     <child>
-      <widget class="GtkHBox" id="hbox22">
+      <object class="GtkHBox" id="hbox22">
         <property name="visible">True</property>
         <child>
-          <widget class="GtkTable" id="anagrafica_ruoli_filter_table">
+          <object class="GtkTable" id="anagrafica_ruoli_filter_table">
             <property name="visible">True</property>
             <property name="n_columns">2</property>
             <child>
-              <widget class="GtkLabel" id="label34">
+              <object class="GtkLabel" id="label34">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Nome</property>
-              </widget>
+              </object>
               <packing>
                 <property name="x_options">GTK_FILL</property>
                 <property name="y_options"></property>
@@ -25,11 +25,11 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkEntry" id="name_filter_entry">
+              <object class="GtkEntry" id="name_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
@@ -37,25 +37,26 @@
                 <property name="y_options"></property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkTable" id="anagrafica_ruoli_detail_table">
+          <object class="GtkTable" id="anagrafica_ruoli_detail_table">
             <property name="visible">True</property>
             <property name="border_width">6</property>
             <property name="n_rows">2</property>
             <property name="n_columns">2</property>
             <property name="row_spacing">6</property>
             <child>
-              <widget class="GtkLabel" id="label35">
+              <object class="GtkLabel" id="label35">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Nome</property>
-              </widget>
+              </object>
               <packing>
                 <property name="x_options">GTK_FILL</property>
                 <property name="y_options"></property>
@@ -63,11 +64,11 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="label36">
+              <object class="GtkLabel" id="label36">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Descrizione</property>
-              </widget>
+              </object>
               <packing>
                 <property name="top_attach">1</property>
                 <property name="bottom_attach">2</property>
@@ -77,10 +78,10 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkEntry" id="name_entry">
+              <object class="GtkEntry" id="name_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
@@ -89,18 +90,18 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkAlignment" id="alignment51">
+              <object class="GtkAlignment" id="alignment51">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="xscale">0</property>
                 <child>
-                  <widget class="GtkEntry" id="descrizione_entry">
+                  <object class="GtkEntry" id="descrizione_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">10</property>
-                  </widget>
+                  </object>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
@@ -110,12 +111,12 @@
                 <property name="y_options"></property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="position">1</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+</interface>
