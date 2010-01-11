@@ -103,7 +103,7 @@ class ElaExecute(object):
             f.write("1329\n")
 
         f.write("1323\n")
-        f.write("912\n")
+        f.write("912;1\n")
         f.close()
         g = file(filename, 'rb')
         self.copyToInDir(filename)

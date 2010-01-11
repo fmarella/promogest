@@ -883,6 +883,12 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         if DRIVER =="D":
             Ditron().stampa_della_affluenza_oraria()
 
+    def on_apri_cassetto_button_clicked(self, button):
+        filename = Environment.conf.VenditaDettaglio.export_path+\
+                            "apri_cassetto.txt"
+        f = file(filename, 'w')
+        f.write("912;1\n")
+
     def creaScontrinoReso(self):
         treeview = self.scontrino_treeview
         model = treeview.get_model()
