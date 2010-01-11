@@ -1530,7 +1530,19 @@ Scontrino</property>
                           </packing>
                         </child>
                         <child>
-                          <placeholder/>
+                          <object class="GtkButton" id="apri_cassetto_button">
+                            <property name="label" translatable="yes">Apri Cassetto (F12)</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <accelerator key="F12" signal="clicked"/>
+                            <signal name="clicked" handler="on_apri_cassetto_button_clicked"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
                         </child>
                         <child>
                           <object class="GtkButton" id="exit_button">
@@ -1700,8 +1712,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">ctrl +( +) aumenta</property>
                 <property name="image">image_plus</property>
-                <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <signal name="clicked" handler="on_plus_button_clicked"/>
               </object>
               <packing>
@@ -1715,8 +1727,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">ctrl +( - ) diminisce</property>
                 <property name="image">image3_minus</property>
-                <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <signal name="clicked" handler="on_minus_button_clicked"/>
               </object>
               <packing>
@@ -1760,8 +1772,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">(+) aumenta</property>
                 <property name="image">image2_plus</property>
-                <accelerator key="KP_Add" signal="clicked"/>
                 <accelerator key="plus" signal="clicked"/>
+                <accelerator key="KP_Add" signal="clicked"/>
                 <signal name="clicked" handler="on_plus2_button_clicked"/>
               </object>
               <packing>
@@ -1775,8 +1787,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">(-) diminuisce</property>
                 <property name="image">image4_minus2</property>
-                <accelerator key="KP_Subtract" signal="clicked"/>
                 <accelerator key="minus" signal="clicked"/>
+                <accelerator key="KP_Subtract" signal="clicked"/>
                 <signal name="clicked" handler="on_minus2_button_clicked"/>
               </object>
               <packing>
@@ -1817,8 +1829,8 @@ INVIO  per confermare</property>
                 <property name="tooltip_markup">Conferma con invio</property>
                 <property name="border_width">1</property>
                 <property name="use_stock">True</property>
-                <accelerator key="Return" signal="clicked"/>
                 <accelerator key="KP_Enter" signal="clicked"/>
+                <accelerator key="Return" signal="clicked"/>
                 <signal name="clicked" handler="on_generico_ok_button_clicked"/>
               </object>
               <packing>
