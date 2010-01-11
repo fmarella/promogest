@@ -1,8 +1,8 @@
 <style>
 
-    body {
-        font-family: monospace;
-    }
+/*    body {*/
+/*        font-family: monospace;*/
+/*    }*/
 
     table {
         width: 100%;
@@ -50,7 +50,7 @@
         padding-left: 0px;
         font-weight: normal;
         font-style: italic;
-        font-size: 1.1em;
+/*        font-size: 1.1em;*/
     }
 
     th.left {
@@ -70,7 +70,7 @@
         border-color: #777777;
         padding: 0px;
         margin: 0px;
-        font-size: 1.2em;
+/*        font-size: 1.2em;*/
         background : #c0c0c0;
     }
 
@@ -110,7 +110,6 @@
         text-align: left;
     }
 
-
     td.number {
         text-align: right;
     }
@@ -118,71 +117,11 @@
     th.number {
         text-align: right;
     }
-#container {
-    width: auto;
-/*     height: 600px; */
-}
-#container #footer {
-/*     background-attachment: scroll; */
-    background-image: url("gui/bkg_footer.png");
-    background-repeat: repeat;
-/*     background-position: left top; */
-    position: relative;
-    width: auto;
-/*     top: 600px; */
-    font-family: Arial;
-    font-size: 10px;
-    color: #333333;
-    height: 21px;
 
-}
-#container #rigaheader {
-/*     background-attachment: scroll; */
-    background-image: url("gui/bkg_footer.png");
-    background-repeat: repeat;
-/*     background-position: left top; */
-    position: relative;
-    width: auto;
-    height: 15px;
-}
-#container #head {
-    height: 70px;
-}
-#container #head #testo {
-    position: relative;
-    top: -40px;
-    left: 80px;
-    width: 80%;
-    font-family: Arial;
-    font-size: 24px;
-    color: #666666;
-    font-weight: bold;
-}
-#container #head #img {
-    height: 48px;
-    width: 48px;
-/*     background-attachment: scroll; */
-/*     background-image: url("gui/articolo48x48.png"); */
-    background-repeat: no-repeat;
-/*     background-position: left center; */
-    position: relative;
-    left: 20px;
-    top: 5px;
-    padding-top: 10px;
-}
 
-#dialog{
-/*    background-image: url("gui/aggiungi16x16.png");
-    background-repeat: no-repeat;
-    background-color:black;*/
+@page {
+size: A4 landscape;
+margin: 1cm;
 }
-table#calendar{width:160px;font: 12px "Trebuchet MS",sans-serif;
-    text-align:center;color:#444}
-table#calendar,table#calendar th,table#calendar td{
-    border: 1px solid #99A4C4;border-collapse:collapse}
-table#calendar th{background: #FEFEFE url(gui/thbk.png) repeat-x bottom}
-table#calendar td{background: #DBDFEB url(gui/tdbk.png) no-repeat}
-table#calendar a{text-decoration:none;color:#4A5576;font-weight:bold}
-table#calendar a:hover{color: #716F64}
 
 </style>

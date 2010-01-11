@@ -1,8 +1,6 @@
 {% extends 'index.html' %}
-
 {% block body %}
-<h2><b> Dettagli generali scontrino</b></h2><br/><br/>
-<table>
+<table><th><h2> Dettaglio scontrino</h2></th>
     <tr>
         <td class="table-header">Data Scontrino</td>
         <td class="table-header">Data Mov.</td>
@@ -13,8 +11,8 @@
             <td class="odd-detail">{{dao.data_movimento|string[0:-7]}}</td>
             <td class="odd-detail">{{dao.numero_movimento}}</td>
 </tr><br/><br/>
-</table><br/><br/>
-<h3><b> Righe scontrino</b></h3><br/><br/>
+</table><th>
+<h5>Righe scontrino</h5></th>
 <table cellpadding="0" cellspacing="4" border="0">
 	<tr>
         <td class="table-header">Articolo</td>
@@ -47,15 +45,14 @@
         </tr>
             {% endfor %}
         </table>
-<br/><br/>
-<h3><b> Totali</b></h3><br/><br/>
 <table>
+    <th><h4> Totali</h4></th>
     <tr>
-        <td class="table-header">Sconti su Totale</td>
-        <td class="table-header">Totale assegni</td>
-        <td class="table-header">Totale carta di credito</td>
-        <td class="table-header">Totale contanti</td>
-        <td class="table-header">Totale scontrino</td>
+        <td class="table-header">Sco su Tot</td>
+        <td class="table-header">Tot assegni</td>
+        <td class="table-header">Tot c di credito</td>
+        <td class="table-header">Tot contanti</td>
+        <td class="table-header">Tot scontrino</td>
 </tr>
 <tr class="row">
             {% if dao.sconti %}
