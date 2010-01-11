@@ -25,7 +25,7 @@ def drawPart(anag):
 
     # Costruisco treeview scontrino
     anag.modelRiga = gtk.ListStore(int, str, str, str, str,
-                                            str, str, str, str, str)
+                                            str, str, str, str, str,str,str)
 
     treeview = anag.scontrino_treeview
     rendererSx = gtk.CellRendererText()
@@ -42,7 +42,7 @@ def drawPart(anag):
     cellcombo1.set_property("model", anag.lsmodel)
     cellcombo1.connect('edited', anag.on_column_listinoRiga_edited,
                                                             treeview, True)
-    column = gtk.TreeViewColumn('List.', cellcombo1, text=1)
+    column = gtk.TreeViewColumn('List.', cellcombo1, text=1, background=10,font=11)
     column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
     column.set_clickable(True)
     column.set_resizable(True)
@@ -50,7 +50,7 @@ def drawPart(anag):
     column.set_min_width(20)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Codice a barre', rendererSx, text=2)
+    column = gtk.TreeViewColumn('Codice a barre', rendererSx, text=2,background=10,font=11)
     column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
@@ -58,7 +58,7 @@ def drawPart(anag):
     column.set_min_width(90)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Codice', rendererSx, text=3)
+    column = gtk.TreeViewColumn('Codice', rendererSx, text=3, background=10,font=11)
     column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
@@ -71,7 +71,7 @@ def drawPart(anag):
     cellrendererDescrizione.set_property("visible", True)
     cellrendererDescrizione.connect('edited',
                         anag.on_column_descrizione_edited, treeview, True)
-    column = gtk.TreeViewColumn('Descrizione', cellrendererDescrizione, text=4)
+    column = gtk.TreeViewColumn('Descrizione', cellrendererDescrizione, text=4,background=10, font=11)
     column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
     column.set_clickable(True)
     rendererSx.connect('edited', anag.on_column_descrizione_edited,
@@ -91,8 +91,7 @@ def drawPart(anag):
     #cellspin.set_property("foreground", "orange")
 
     cellspin.connect('edited', anag.on_column_prezzo_edited, treeview, True)
-    column = gtk.TreeViewColumn('Prezzo', cellspin, text=5, foreground=4,
-                                                                background=2)
+    column = gtk.TreeViewColumn('Prezzo', cellspin, text=5, background=10, font=11)
     column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
     #column.set_clickable(False)
     column.set_resizable(True)
@@ -109,7 +108,7 @@ def drawPart(anag):
     #cellspin.set_property("climb-rate",3)
     cellspinsconto.connect('edited', anag.on_column_sconto_edited,
                                                             treeview, True)
-    column = gtk.TreeViewColumn('Sconto', cellspinsconto, text=6)
+    column = gtk.TreeViewColumn('Sconto', cellspinsconto, text=6,background=10,font=11)
     column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
     column.set_clickable(True)
     column.set_resizable(True)
@@ -129,7 +128,7 @@ def drawPart(anag):
     cellcombo.set_property("has-entry", False)
     cellcombo.set_property("model", lsmodel)
     cellcombo.connect('edited', anag.on_column_tipo_edited, treeview, True)
-    column = gtk.TreeViewColumn('Tipo', cellcombo, text=7)
+    column = gtk.TreeViewColumn('Tipo', cellcombo, text=7,background=10,font=11)
     column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
     column.set_clickable(True)
     column.set_resizable(True)
@@ -137,7 +136,7 @@ def drawPart(anag):
     column.set_min_width(20)
     treeview.append_column(column)
 
-    column = gtk.TreeViewColumn('Pr.Scont', rendererDx, text=8)
+    column = gtk.TreeViewColumn('Pr.Scont', rendererDx, text=8,background=10,font=11)
     column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
     column.set_clickable(False)
     column.set_resizable(True)
@@ -153,7 +152,7 @@ def drawPart(anag):
     cellspin.set_property("digits", 2)
     cellspin.set_property("climb-rate", 3)
     cellspin.connect('edited', anag.on_column_quantita_edited, treeview, True)
-    column = gtk.TreeViewColumn('Quantità', cellspin, text=9)
+    column = gtk.TreeViewColumn('Quantità', cellspin, text=9,background=10,font=11)
     column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
     #column.set_clickable(False)
     column.set_resizable(True)

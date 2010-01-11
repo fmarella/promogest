@@ -61,6 +61,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         #nascondo i dati riga e le info aggiuntive
         self.dati_riga_frame.destroy()
         self.shop = Environment.shop
+#        self.rowBoldFont = 'arial bold 12'
+        self.rowBoldFont = 'arial 13'
+#        self.rowBackGround = '#E6E6FF'
+        self.rowBackGround = "#FFFFC0"
         self.draw()
 
     def draw(self):
@@ -405,7 +409,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                         mN(self._currentRow['valoreSconto']),
                         self._currentRow['tipoSconto'],
                         mN(self._currentRow['prezzoScontato']),
-                        Decimal(self._currentRow['quantita'])))
+                        Decimal(self._currentRow['quantita']),
+                        self.rowBackGround,
+                        self.rowBoldFont))
         elif self._state == 'editing':
             model.set_value(self.currentIteratorRow, 0, self._currentRow['idArticolo'])
             model.set_value(self.currentIteratorRow, 1, self._currentRow['listinoRiga'][1])
@@ -656,11 +662,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # Aggiungo righe e salvo dao
         dao.righe = righe
         dao.persist()
-
         # Creo il file e lo stampo
         if DRIVER:
             filescontrino = self.createFileToPos(dao)
-
+        self.last_scontr_label.set_text("Tot. scontrino precedente: "+str(dao.totale_scontrino))
         # Svuoto transazione e mi rimetto in stato di ricerca
         self.search_button.set_sensitive(True)
         self.codice_a_barre_entry.set_sensitive(True)
