@@ -542,6 +542,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             total = "0.00"
             totale_scontato = "0.00"
             totale_sconto = "0.00"
+            self.sconto = Decimal(totale_sconto or 0)
         else:
             self.sconto = self.sconto_totale_entry.get_text()
             if self.tipo_sconto_euro.get_active():
@@ -863,8 +864,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             print " WHAT ELSE?"
 
     def on_chiusura_fiscale_activate(self, widget):
-#        if DRIVER=="D":
-        GestioneChiusuraFiscale(self).chiusuraDialog(widget, self.id_magazzino)
+        if DRIVER=="D":
+            GestioneChiusuraFiscale(self).chiusuraDialog(widget, self.id_magazzino)
 
     def on_stampa_del_giornale_breve_activate(self, widget):
         if DRIVER =="D":

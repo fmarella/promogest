@@ -5,7 +5,6 @@
 # Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
 
 import gtk
-import gobject
 import hashlib
 from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
@@ -29,7 +28,6 @@ class AnagraficaUtenti(Anagrafica):
                             aziendaStr=aziendaStr)
 
 
-
 class AnagraficaUtentiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica degli utenti"""
 
@@ -42,7 +40,7 @@ class AnagraficaUtentiFilter(AnagraficaFilter):
         self._widgetFirstFocus = self.username_filter_entry
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         # Colonne della Treeview per il filtro
         treeview = self._anagrafica.anagrafica_filter_treeview
         renderer = gtk.CellRendererText()
@@ -165,7 +163,7 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
         self._widgetFirstFocus = self.username_entry
 
 
-    def draw(self):
+    def draw(self, cplx=False):
         #Popola combobox tipi utenti
         fillComboboxRole(self.id_role_combobox)
         fillComboboxLang(self.id_language_combobox)
