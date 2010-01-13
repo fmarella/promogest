@@ -119,6 +119,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         cellspin1.set_property("climb-rate", 3)
         cellspin1.set_property('xalign', 1)
         cellspin1.connect('edited', self.on_column_valore_unitario_edited, treeview, True)
+
         column = gtk.TreeViewColumn('Valore unitario', cellspin1, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
@@ -326,7 +327,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         #model[path][4] = dateToString(datetime.datetime.today().date())
         quantita = float(value)
         valore_unitario = float(model[path][2])
-        data = model[path][4] or datetime.datetime.today().date()
+        data = model[path][5] or datetime.datetime.today().date()
         dao = Inventario().getRecord(id=self.dao.id)
         dao.anno = self.dao.anno
         dao.id_magazzino = self.dao.id_magazzino
@@ -344,10 +345,10 @@ class GestioneInventario(RicercaComplessaArticoli):
         value=value.replace(",", ".")
         value = mN(value)
         model[path][2] = value
-        model[path][4] = dateToString(datetime.datetime.today().date())
+        model[path][5] = dateToString(datetime.datetime.today().date())
         valore_unitario = float(value)
         quantita= float(model[path][2])
-        data = model[path][4] or datetime.datetime.today().date()
+        data = model[path][5] or datetime.datetime.today().date()
         dao = Inventario().getRecord(id=self.dao.id)
         dao.anno = self.dao.anno
         dao.id_magazzino = self.dao.id_magazzino
