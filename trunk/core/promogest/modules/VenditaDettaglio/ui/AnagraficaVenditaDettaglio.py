@@ -684,9 +684,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.codice_a_barre_entry.grab_focus()
         self._state = 'search'
 
-    def on_chiusura_fiscale_activate(self, widget):
-        if DRIVER=="D":
-            GestioneChiusuraFiscale(self).chiusuraDialog(widget, self.id_magazzino)
+#    def on_chiusura_fiscale_activate(self, widget):
+#        if DRIVER=="D":
+#            GestioneChiusuraFiscale(self).chiusuraDialog(widget, self.id_magazzino)
 
     def ricercaArticolo(self):
 
