@@ -66,7 +66,7 @@ class chartViewer():
         plt.plot([a for a in range(8,25)], [ore.count(b) or 0 for b in range(8,25)], color='red',label='Q/h',linewidth=2)
 
         ax.xaxis.set_major_locator(plt.FixedLocator(range(8,25)))
-        ax.yaxis.set_major_locator(plt.FixedLocator(range(0,len(ore)+1)))
+#        ax.yaxis.set_major_locator(plt.FixedLocator(range(0,len(ore)+1)))
 
         plt.ylabel('Numero scontrini emessi')
         plt.xlabel('Orario 8,00 alle 24,00')
@@ -89,7 +89,7 @@ class chartViewer():
         plt.plot([a for a in range(1,32)], [giorni.count(b) or 0 for b in range(0,31)], color='green',label='Q/h',linewidth=2)
 
         ax.xaxis.set_major_locator(plt.FixedLocator(range(1,32)))
-        ax.yaxis.set_major_locator(plt.FixedLocator(range(0,len(giorni)+1)))
+#        ax.yaxis.set_major_locator(plt.FixedLocator(range(0,len(giorni)+1)))
 
         plt.ylabel('Numero scontrini emessi')
         plt.xlabel('Giorni del mese')

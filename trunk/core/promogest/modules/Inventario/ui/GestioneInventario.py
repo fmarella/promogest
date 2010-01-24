@@ -72,6 +72,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         self._modifica.azzera_button.connect('clicked', self.on_azzera_button_clicked)
         self._modifica.ricrea_button.connect('clicked', self.on_ricrea_button_clicked)
         self._modifica.aggiorna_button.connect('clicked', self.on_aggiorna_button_clicked)
+        self._modifica.aggiorna_da_ana_articoli.connect('clicked', self.on_aggiorna_da_ana_articoli_clicked)
         self._modifica.esporta_button.connect('clicked', self.on_esporta_button_clicked)
         self._modifica.valorizza_button.connect('clicked', self.on_valorizza_button_clicked)
         self._modifica.movimento_button.connect('clicked', self.on_movimento_button_clicked)
@@ -401,7 +402,7 @@ class GestioneInventario(RicercaComplessaArticoli):
             idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
             sel2 = Environment.params['session']\
                             .query(Inventario)\
-                            .filter(and_(Inventario.anno ==self.anno,
+                            .filter(and_(Inventario.anno ==self.annoScorso,
                                     Inventario.id_magazzino==idMagazzino))\
                             .all()
 
@@ -540,6 +541,28 @@ class GestioneInventario(RicercaComplessaArticoli):
                     inv.id_articolo = s[1]
                     Environment.params['session'].add(inv)
                 Environment.params['session'].commit()
+        self.refresh()
+
+    def on_aggiorna_da_ana_articoli_clicked(self, button):
+        """ Aggiornamento inventario con gli articoli eventualmente non presenti """
+
+        sel2 = Environment.params['session'].\
+                query(Inventario.id_articolo).\
+                    filter(Inventario.anno == self.annoScorso).\
+                    order_by(Inventario.id_articolo).all()
+        sel = Environment.params['session'].\
+                query(Articolo.id).\
+                    order_by(Articolo.id).all()
+        if sel != sel2:
+            for s in sel:
+                if s not in sel2:
+                    print "MA QUI CI PASSI"
+                    inv = Inventario()
+                    inv.anno = self.annoScorso
+                    inv.id_magazzino =  self.idMagazzino
+                    inv.id_articolo = s[0]
+                    Environment.params['session'].add(inv)
+            Environment.params['session'].commit()
         self.refresh()
 
     def on_esporta_button_clicked(self, button):
