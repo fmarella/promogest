@@ -229,7 +229,8 @@ class ProductFromCsv(object):
         #STAGIONE
         if self.stagione:
             stagione = StagioneAbbigliamento().select(denominazione = self.stagione)
-            artTC.id_stagione = stagione[0].id
+            if stagione:
+                artTC.id_stagione = stagione[0].id
         elif not self.stagione:
             artTC.id_stagione = articoloPadre.id_stagione
         self.daoArticolo.articoloTagliaColore = artTC
