@@ -18,6 +18,7 @@ from promogest.dao.Riga import Riga
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Stoccaggio import Stoccaggio
+from promogest.dao.Listino import Listino
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
 from promogest.dao.DaoUtils import giacenzaArticolo
@@ -82,6 +83,8 @@ class GestioneInventario(RicercaComplessaArticoli):
         self._modifica.qa_zero_radio.connect('toggled', self.on_macro_filter_toggled)
         self._modifica.qa_negativa_radio.connect('toggled', self.on_macro_filter_toggled)
         self._modifica.val_negativo_radio.connect('toggled', self.on_macro_filter_toggled)
+        self._modifica.calcola_pezzi_button.connect("clicked", self.on_calcola_pezzi_button_clicked)
+        self._modifica.calcola_valori_button.connect("clicked", self.on_calcola_valori_button_clicked)
 
         self.setRiepilogo()
 
@@ -273,12 +276,14 @@ class GestioneInventario(RicercaComplessaArticoli):
         model.clear()
 
         for i in invs:
+            quantita = ('%8.2f') % float(i.quantita or 0)
+            valore_unitario = mN(i.valore_unitario or 0)
             model.append((i,
-                          ('%8.3f') % float(i.quantita or 0),
-                          ('%14.' + Environment.conf.decimals + 'f') % float(i.valore_unitario or 0),
-                            (i.denominazione_breve_unita_base or ''),
-                            mN(i.valore_unitario)* mN(i.quantita) or 0,
-                          dateToString(i.data_aggiornamento),
+                          quantita,
+                          valore_unitario,
+                          (i.denominazione_breve_unita_base or ''),
+                          mN(valore_unitario*Decimal(quantita)) or 0,
+                          dateTimeToString(i.data_aggiornamento),
                           (i.codice_articolo or ''),
                           (i.articolo or ''),
                           (i.codice_a_barre or ''),
@@ -286,6 +291,42 @@ class GestioneInventario(RicercaComplessaArticoli):
                           (i.denominazione_famiglia or ''),
                           (i.denominazione_categoria or ''),
                           (i.codice_articolo_fornitore or '')))
+        self._modifica.numero_referenze.set_text(str(self.inventariati()))
+
+    def on_calcola_pezzi_button_clicked(self, button):
+        self._modifica.numero_referenze.set_text(str(self.inventariati()))
+        self._modifica.numero_pezzi.set_text(str(self.totaleInventariati()))
+
+    def on_calcola_valori_button_clicked(self, button):
+        self._modifica.numero_referenze.set_text(str(self.inventariati()))
+        self._modifica.numero_pezzi.set_text(str(self.totaleInventariati()))
+        self._modifica.valore_complessivo.set_text(str(self.valoreComplessivo()))
+
+    def inventariati(self):
+        return Inventario().count(inventariato = True)
+
+    def totaleInventariati(self):
+        idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
+        sel = Inventario().select(anno=self.annoScorso,
+                                    idMagazzino=idMagazzino, batchSize=None)
+        tot=0
+        for s in sel:
+            if s.quantita >=1:
+                tot+=s.quantita
+        return tot
+
+    def valoreComplessivo(self):
+        """ Valore complessivo inventariato"""
+        idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
+        sel = Inventario().select(anno=self.annoScorso,
+                                    idMagazzino=idMagazzino, batchSize=None)
+        tot=0
+        for s in sel:
+            if s.quantita >=1:
+                valore = Decimal(s.quantita)*Decimal(s.valore_unitario)
+                tot+=valore
+                valore = 0
+        return mN(tot)
 
     def on_filter_treeview_row_activated(self, treeview, path, column):
         """ Rileva la riga attualmente selezionata e aggiorna il dettaglio """
@@ -661,14 +702,60 @@ class GestioneInventario(RicercaComplessaArticoli):
         buttonAcquistoMedio.connect('clicked', self.on_buttonAcquistoMedio_clicked)
         buttonVenditaMedio = gtk.Button(label = 'Prezzo medio\n di vendita')
         buttonVenditaMedio.connect('clicked', self.on_buttonVenditaMedio_clicked)
+        buttonVenditaDaListino = gtk.Button(label = 'Prezzo da listino\n di vendita')
+        buttonVenditaDaListino.connect('clicked', self.on_buttonVenditaDaListino_clicked)
         dialog.action_area.pack_start(buttonAcquistoUltimo)
         dialog.action_area.pack_start(buttonVenditaUltimo)
         dialog.action_area.pack_start(buttonAcquistoMedio)
         dialog.action_area.pack_start(buttonVenditaMedio)
+        dialog.action_area.pack_start(buttonVenditaDaListino)
 
         dialog.show_all()
         result = dialog.run()
         dialog.destroy()
+
+    def on_buttonVenditaDaListino_clicked(self, button):
+        if self.confermaValorizzazione():
+            idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
+            sel = Inventario().select(anno=self.annoScorso,
+                                    idMagazzino=idMagazzino, batchSize=None)
+            dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, 'Tengo conto degli sconti alla vendita?')
+
+            response = dialog.run()
+            dialog.destroy()
+            noSconti = False
+            if response !=  gtk.RESPONSE_YES:
+                noSconti = True
+            for s in sel:
+                if s.quantita >=1:
+                    listino = Environment.conf.VenditaDettaglio.listino
+                    idListino = Listino().select(denominazioneEM = listino)
+                    valori = leggiListino(idListino[0].id, s.id_articolo)
+                    if not noSconti:
+                        s.valore_unitario = valori["prezzoDettaglio"]
+                    else:
+                        prezzo = valori["prezzoDettaglio"]
+                        prezzoScontato = prezzo
+                        tipoSconto = None
+                        if "scontiDettaglio" in valori:
+                            if  len(valori["scontiDettaglio"]) > 0:
+                                valoreSconto = valori['scontiDettaglio'][0].valore or 0
+                                if valoreSconto == 0:
+                                    tipoSconto = None
+                                    prezzoScontato = prezzo
+                                else:
+                                    tipoSconto = valori['scontiDettaglio'][0].tipo_sconto
+                                    if tipoSconto == "percentuale":
+                                        prezzoScontato = mN(mN(prezzo) - (mN(prezzo) * mN(valoreSconto)) / 100)
+                                    else:
+                                        prezzoScontato = mN(mN(prezzo) -mN(valoreSconto))
+                            s.valore_unitario = prezzoScontato
+                    Environment.params['session'].add(s)
+            print "VALORIZZA"
+            Environment.params['session'].commit()
+            self.refresh()
+            self.fineElaborazione()
 
     def on_buttonAcquistoUltimo_clicked(self, button):
         """ Valorizzazione a ultimo prezzo di acquisto

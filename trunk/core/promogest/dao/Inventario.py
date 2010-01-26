@@ -80,6 +80,8 @@ class Inventario(Dao):
             dic = {k:inventario.c.quantita < 0}
         elif k == 'val_negativo':
             dic = {k:inventario.c.valore_unitario == None}
+        elif k == 'inventariato':
+            dic = {k:inventario.c.quantita >= 1}
         return  dic[k]
 
     def update(self):
@@ -184,5 +186,3 @@ inventario=Table('inventario',params['metadata'],schema = params['schema'],autol
 std_mapper = mapper(Inventario, inventario,properties={
         "arti":relation(Articolo,primaryjoin=inventario.c.id_articolo==Articolo.id,backref ="inve")
         }, order_by=inventario.c.id)
-
-
