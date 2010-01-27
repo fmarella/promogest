@@ -1573,6 +1573,7 @@ class RicercaArticoliFilter(GladeWidget):
         """
         stringa= []
         wherestring=[]
+        print "HERE I AM"
         def getDescrizioniIn(row, index):
             if row[0]:
                 self._descrizioniIn.append(optimizeString(row[index]))
@@ -1889,18 +1890,18 @@ class RicercaArticoliFilter(GladeWidget):
                         #whereString += "(" + condition + ")"
 
 
-            if self._soloEliminatiIn:
-                #variabili = []
-                stringa = and_(Articolo.cancellato == True)
-                variabili.append(stringa)
-                datus= and_(*variabili)
-                wherestring.append(datus)
-            elif not self._eliminatiIn:
-                variabili = []
-                stringa = and_(Articolo.cancellato == False)
-                variabili.append(stringa)
-                datus= and_(*variabili)
-                wherestring.append(datus)
+#            if self._soloEliminatiIn:
+#                #variabili = []
+#                stringa = and_(Articolo.cancellato == True)
+#                variabili.append(stringa)
+#                datus= and_(*variabili)
+#                wherestring.append(datus)
+#            elif not self._eliminatiIn:
+#                variabili = []
+#                stringa = and_(Articolo.cancellato == False)
+#                variabili.append(stringa)
+#                datus= and_(*variabili)
+#                wherestring.append(datus)
             if self._listinoFissato:
                 from promogest.dao.ListinoArticolo import ListinoArticolo
                 variabili = []

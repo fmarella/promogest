@@ -11,9 +11,19 @@ from promogest import Environment
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Articolo import Articolo
-from Dao import Dao
+from promogest.dao.Articolo import Articolo
+from promogest.dao.Fornitura import Fornitura
+from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
+from promogest.dao.Dao import Dao
 
+if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
+    from promogest.modules.PromoWear.dao.Colore import Colore
+    from promogest.modules.PromoWear.dao.Taglia import Taglia
+    from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
+    from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
+    from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
+    from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
+    from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
 
 class Inventario(Dao):
     def __init__(self, arg=None):
@@ -82,6 +92,43 @@ class Inventario(Dao):
             dic = {k:inventario.c.valore_unitario == None}
         elif k == 'inventariato':
             dic = {k:inventario.c.quantita >= 1}
+        elif k == 'articolo':
+            dic = {k:and_(inventario.c.id_articolo==Articolo.id, Articolo.denominazione.ilike("%"+v+"%"))}
+        elif k == 'codice':
+            dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.codice.ilike("%"+v+"%"))}
+        elif k == 'codiceABarre':
+            dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==CodiceABarreArticolo.id_articolo,CodiceABarreArticoloodice.ilike("%"+v+"%"))}
+        elif k == 'produttore':
+            dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.produttore.ilike("%"+v+"%"))}
+        elif k== 'codiceArticoloFornitoreEM':
+            dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==Fornitura.id_articolo,Fornitura.codice_articolo_fornitore == v)}
+        elif k=='idFamiglia':
+            dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id_famiglia_articolo ==v)}
+        elif k == 'idCategoria':
+            dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id_categoria_articolo ==v)}
+        elif k == 'idStato':
+            dic= {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id_stato_articolo == v)}
+        elif k == 'cancellato':
+            dic = {k:or_(and_(inventario.c.id_articolo==Articolo.id,Articolo.cancellato != v))}
+        elif "PromoWear" in Environment.modulesList:
+            if k == 'figliTagliaColore':
+                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_articolo_padre==None)}
+            elif k == 'idTaglia':
+                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_taglia==v)}
+            elif k == 'idModello':
+                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_modello==v)}
+            elif k == 'idGruppoTaglia':
+                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_gruppo_taglia ==v)}
+            elif k == 'padriTagliaColore':
+                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_articolo_padre!=None)}
+            elif k == 'idColore':
+                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_colore ==v)}
+            elif k == 'idStagione':
+                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_stagione ==v)}
+            elif k == 'idAnno':
+                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_anno == v)}
+            elif k == 'idGenere':
+                dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_genere ==v)}
         return  dic[k]
 
     def update(self):
@@ -166,21 +213,6 @@ class Inventario(Dao):
                                         gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
                 response = dialog.run()
                 dialog.destroy()
-
-#sql_statement:= \'INSERT INTO inventario (anno, id_magazzino, id_articolo, quantita, valore_unitario, data_aggiornamento)
-    #(SELECT \' || _anno || \', M.id, A.id, G.giacenza, NULL, CURRENT_TIMESTAMP
-        #FROM magazzino M CROSS JOIN articolo A
-        #LEFT OUTER JOIN (SELECT R.id_magazzino, R.id_articolo, SUM( CASE O.segno WHEN \'\'-\'\' THEN (-R.quantita * R.moltiplicatore) WHEN \'\'+\'\' THEN (R.quantita * R.moltiplicatore) END ) AS giacenza
-                        #FROM riga_movimento RM
-                        #INNER JOIN riga R ON RM.id = R.id
-                        #INNER JOIN testata_movimento TM ON RM.id_testata_movimento = TM.id
-                        #INNER JOIN promogest.operazione O ON TM.operazione = O.denominazione
-                        #WHERE DATE_PART(\'\'year\'\', TM.data_movimento) = \' || _anno_prec || \'
-                        #GROUP BY id_magazzino, id_articolo) G ON M.id = G.id_magazzino AND A.id = G.id_articolo
-                             #WHERE A.cancellato <> True)\';
-        #EXECUTE sql_statement;
-
-
 
 inventario=Table('inventario',params['metadata'],schema = params['schema'],autoload=True)
 std_mapper = mapper(Inventario, inventario,properties={

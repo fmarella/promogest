@@ -24,6 +24,9 @@ from promogest.ui.utils import *
 from promogest.dao.DaoUtils import giacenzaArticolo
 from sqlalchemy import func
 
+if "PromoWear" in Environment.modulesList:
+    from promogest.modules.PromoWear.ui.PromowearUtils import *
+    from promogest.modules.PromoWear.ui import AnagraficaArticoliPromoWearExpand
 
 class GestioneInventario(RicercaComplessaArticoli):
     """ Gestione inventario di magazzino """
@@ -44,20 +47,21 @@ class GestioneInventario(RicercaComplessaArticoli):
             fileName="Inventario/gui/_inventario_select.glade", isModule=True)
 
         RicercaComplessaArticoli.__init__(self)
-
+        self.anno = int(Environment.workingYear)
+        self.annoScorso= int(Environment.workingYear) -1
         # modifiche all'interfaccia originaria
         self.getTopLevel().set_title('Promogest - Gestione inventario ' + str(self.annoScorso))
         self.search_image.set_no_show_all(True)
         self.search_image.set_property('visible', False)
         self.filter.filter_search_button.set_label('_Seleziona')
-        self.buttons_hbox.destroy()
+#        self.buttons_hbox.destroy()
         self._ricerca.varie_articolo_filter_expander.set_no_show_all(True)
         self._ricerca.varie_articolo_filter_expander.set_property('visible', False)
-        self.anno = int(Environment.workingYear)
-        self.annoScorso= int(Environment.workingYear) -1
+
         # aggiunta dei filtri propri e della parte di dettaglio
-        self.filters.ricerca_avanzata_articoli_filter_filters_vbox.pack_start(self.additional_filter.getTopLevel(), expand=False)
-        self.filters.ricerca_avanzata_articoli_filter_filters_vbox.reorder_child(self.additional_filter.getTopLevel(), 0)
+#        ricerca_semplice_articoli_filter_vbox
+        self.filters.ricerca_semplice_articoli_filter_vbox.pack_start(self.additional_filter.getTopLevel(), expand=False)
+        self.filters.ricerca_semplice_articoli_filter_vbox.reorder_child(self.additional_filter.getTopLevel(), 0)
         self.results_vbox.pack_start(self._modifica.getTopLevel(), expand=False)
 
         self.additional_filter.id_magazzino_filter_combobox2.connect('changed',
@@ -86,7 +90,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         self._modifica.calcola_pezzi_button.connect("clicked", self.on_calcola_pezzi_button_clicked)
         self._modifica.calcola_valori_button.connect("clicked", self.on_calcola_valori_button_clicked)
 
-        self.setRiepilogo()
+#        self.setRiepilogo()
 
     def draw(self):
         """ Disegna la treeview relativa al risultato del filtraggio """
@@ -124,7 +128,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         cellspin1.set_property('xalign', 1)
         cellspin1.connect('edited', self.on_column_valore_unitario_edited, treeview, True)
 
-        column = gtk.TreeViewColumn('Valore unitario', cellspin1, text=2)
+        column = gtk.TreeViewColumn('Val. unitario', cellspin1, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -150,7 +154,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         column.set_min_width(20)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Data aggiornamento', rendererSx, text=5)
+        column = gtk.TreeViewColumn('Data agg', rendererSx, text=5)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, 'data_aggiornamento')
@@ -168,7 +172,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Descrizione', rendererSx, text=7)
+        column = gtk.TreeViewColumn('Descriz', rendererSx, text=7)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, 'articolo')
@@ -177,7 +181,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         column.set_min_width(250)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('c Barre', rendererSx, text=8)
+        column = gtk.TreeViewColumn('C Barre', rendererSx, text=8)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, 'produttore')
@@ -209,7 +213,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Codice articolo fornitore', rendererSx, text=12)
+        column = gtk.TreeViewColumn('Cod arti forn', rendererSx, text=12)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self.filter._changeOrderBy, 'codice_articolo_fornitore')
@@ -222,9 +226,12 @@ class GestioneInventario(RicercaComplessaArticoli):
 
     def setInitialSearch(self):
         """ Imposta il tipo di ricerca iniziale """
-        self._ricerca.setRicercaAvanzata()
+        self._ricerca.setRicercaSemplice()
+        self._ricerca.ricerca_avanzata_articoli_button.set_no_show_all(True)
+        self._ricerca.ricerca_avanzata_articoli_button.set_property('visible', False)
         self._ricerca.ricerca_semplice_articoli_button.set_no_show_all(True)
         self._ricerca.ricerca_semplice_articoli_button.set_property('visible', False)
+        self.buttons_hbox.destroy()
 
     def on_macro_filter_toggled(self, radio):
         if radio.get_active():
@@ -239,39 +246,66 @@ class GestioneInventario(RicercaComplessaArticoli):
                             self.additional_filter.id_magazzino_filter_combobox2,
                             'Inserire il magazzino !')
 
-        idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
+        self.idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
         self.qa_zero = self._modifica.qa_zero_radio.get_active() or None
         self.val_negativo =self._modifica.val_negativo_radio.get_active() or None
         self.qa_negativa =self._modifica.qa_negativa_radio.get_active() or None
 
-        self.idMagazzino = idMagazzino
         daData = stringToDate(self.additional_filter.da_data_aggiornamento_filter_entry.get_text())
         aData = stringToDate(self.additional_filter.a_data_aggiornamento_filter_entry.get_text())
 
         model = self.filter.resultsElement.get_model()
         self.batchSize = 50
-        self._ricerca._prepare()
+#        self._ricerca._prepare()
+        denominazione = prepareFilterString(self._ricerca.denominazione_filter_entry.get_text())
+        produttore = prepareFilterString(self._ricerca.produttore_filter_entry.get_text())
+        codice = prepareFilterString(self._ricerca.codice_filter_entry.get_text())
+        codiceABarre = prepareFilterString(self._ricerca.codice_a_barre_filter_entry.get_text())
+        codiceArticoloFornitore = prepareFilterString(self._ricerca.codice_articolo_fornitore_filter_entry.get_text())
+        idFamiglia = findIdFromCombobox(self._ricerca.id_famiglia_articolo_filter_combobox)
+        idCategoria = findIdFromCombobox(self._ricerca.id_categoria_articolo_filter_combobox)
+        idStato = findIdFromCombobox(self._ricerca.id_stato_articolo_filter_combobox)
+        if self._ricerca.cancellato_filter_checkbutton.get_active():
+            cancellato = False
+        else:
+            cancellato = True
+        self.filterDict = { "articolo":denominazione,
+                            "codice":codice,
+                            "codiceABarre":codiceABarre,
+                            "codiceArticoloFornitore":codiceArticoloFornitore,
+                            "produttore":produttore,
+                            "idFamiglia":idFamiglia,
+                            "idCategoria":idCategoria,
+                            "idStato":idStato,
+                            "cancellato":cancellato
+                            }
+        self._ricerca.filterDict= self.filterDict
+        if "PromoWear" in Environment.modulesList:
+            AnagraficaArticoliPromoWearExpand.refresh(self._ricerca)
+
         self.filter.numRecords = Inventario().count(anno=self.annoScorso,
-                                                    idMagazzino=idMagazzino,
+                                                    idMagazzino=self.idMagazzino,
                                                     daDataAggiornamento=daData,
                                                     aDataAggiornamento=aData,
                                                     qa_zero=self.qa_zero,
                                                     qa_negativa=self.qa_negativa,
                                                     val_negativo = self.val_negativo,
+                                                    filterDict = self.filterDict
                                                     )
 
         self.filter._refreshPageCount()
 
         invs = Inventario().select(orderBy=self.filter.orderBy,
                                                anno=self.annoScorso,
-                                               idMagazzino=idMagazzino,
+                                               idMagazzino=self.idMagazzino,
                                                daDataAggiornamento=daData,
                                                aDataAggiornamento=aData,
                                                 qa_zero=self.qa_zero,
                                                 qa_negativa=self.qa_negativa,
                                                 val_negativo =self.val_negativo,
                                                offset=self.filter.offset,
-                                               batchSize=self.batchSize)
+                                               batchSize=self.batchSize,
+                                               filterDict=self.filterDict)
 
         model.clear()
 
@@ -303,9 +337,11 @@ class GestioneInventario(RicercaComplessaArticoli):
         self._modifica.valore_complessivo.set_text(str(self.valoreComplessivo()))
 
     def inventariati(self):
+        """ numero delle referenze inventariate"""
         return Inventario().count(inventariato = True)
 
     def totaleInventariati(self):
+        """ Numero totale dei pezzi inventariati numero * quantita' """
         idMagazzino = findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2)
         sel = Inventario().select(anno=self.annoScorso,
                                     idMagazzino=idMagazzino, batchSize=None)
