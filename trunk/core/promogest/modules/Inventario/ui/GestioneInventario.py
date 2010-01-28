@@ -313,15 +313,18 @@ class GestioneInventario(RicercaComplessaArticoli):
 
         for i in invs:
             if not i.quantita:
-                quantita = "0.00"
+                quantita = mN("0.00")
             else:
                 quantita = Decimal(str(i.quantita).strip()).quantize(Decimal('.01'))
-            valore_unitario = mN(i.valore_unitario )or 0
+            if not i.valore_unitario:
+                valore_unitario = mN("0.00")
+            else:
+                valore_unitario = mN(i.valore_unitario )or 0
             model.append((i,
                           quantita,
                           valore_unitario,
                           (i.denominazione_breve_unita_base or ''),
-                          mN(valore_unitario*quantita or 0) ,
+                          mN(valore_unitario*quantita ) or 0 ,
                           dateTimeToString(i.data_aggiornamento),
                           (i.codice_articolo or ''),
                           (i.articolo or ''),
