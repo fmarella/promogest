@@ -111,7 +111,8 @@ class GestioneInventario(RicercaComplessaArticoli):
         cellspin.connect('edited', self.on_column_quantita_edited, treeview, True)
         column = gtk.TreeViewColumn('Quantità', cellspin, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        #column.set_clickable(False)
+        column.set_clickable(True)
+        column.connect("clicked", self.filter._changeOrderBy, (None, Inventario.quantita))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(50)
@@ -130,7 +131,8 @@ class GestioneInventario(RicercaComplessaArticoli):
 
         column = gtk.TreeViewColumn('Val. unitario', cellspin1, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
+        column.set_clickable(True)
+        column.connect("clicked", self.filter._changeOrderBy, (None, Inventario.valore_unitario))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(70)
@@ -138,8 +140,8 @@ class GestioneInventario(RicercaComplessaArticoli):
 
         column = gtk.TreeViewColumn('U/B', rendererSx, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self.filter._changeOrderBy, 'denominazione_breve_unita_base')
+#        column.set_clickable(True)
+#        column.connect("clicked", self.filter._changeOrderBy, (Articolo, Articolo.unita_base))
         column.set_resizable(False)
         column.set_expand(False)
         column.set_min_width(10)
@@ -157,7 +159,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         column = gtk.TreeViewColumn('Data agg', rendererSx, text=5)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self.filter._changeOrderBy, 'data_aggiornamento')
+        column.connect("clicked", self.filter._changeOrderBy, (None, Inventario.data_aggiornamento))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -166,7 +168,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         column = gtk.TreeViewColumn('Cod. ART', rendererSx, text=6)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self.filter._changeOrderBy, 'codice_articolo')
+        column.connect("clicked", self.filter._changeOrderBy,(Articolo, Articolo.codice))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -175,7 +177,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         column = gtk.TreeViewColumn('Descriz', rendererSx, text=7)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self.filter._changeOrderBy, 'articolo')
+        column.connect("clicked", self.filter._changeOrderBy, (Articolo, Articolo.denominazione))
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(250)
@@ -183,7 +185,7 @@ class GestioneInventario(RicercaComplessaArticoli):
 
         column = gtk.TreeViewColumn('C Barre', rendererSx, text=8)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
+        column.set_clickable(False)
         column.connect("clicked", self.filter._changeOrderBy, 'produttore')
         column.set_resizable(True)
         column.set_expand(False)
@@ -310,13 +312,16 @@ class GestioneInventario(RicercaComplessaArticoli):
         model.clear()
 
         for i in invs:
-            quantita = ('%8.2f') % float(i.quantita or 0)
-            valore_unitario = mN(i.valore_unitario or 0)
+            if not i.quantita:
+                quantita = "0.00"
+            else:
+                quantita = Decimal(str(i.quantita).strip()).quantize(Decimal('.01'))
+            valore_unitario = mN(i.valore_unitario )or 0
             model.append((i,
                           quantita,
                           valore_unitario,
                           (i.denominazione_breve_unita_base or ''),
-                          mN(valore_unitario*Decimal(quantita)) or 0,
+                          mN(valore_unitario*quantita or 0) ,
                           dateTimeToString(i.data_aggiornamento),
                           (i.codice_articolo or ''),
                           (i.articolo or ''),
