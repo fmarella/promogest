@@ -302,9 +302,9 @@ class GestioneInventario(RicercaComplessaArticoli):
                                                idMagazzino=self.idMagazzino,
                                                daDataAggiornamento=daData,
                                                aDataAggiornamento=aData,
-                                                qa_zero=self.qa_zero,
-                                                qa_negativa=self.qa_negativa,
-                                                val_negativo =self.val_negativo,
+                                               qa_zero=self.qa_zero,
+                                               qa_negativa=self.qa_negativa,
+                                               val_negativo =self.val_negativo,
                                                offset=self.filter.offset,
                                                batchSize=self.batchSize,
                                                filterDict=self.filterDict)
@@ -385,23 +385,23 @@ class GestioneInventario(RicercaComplessaArticoli):
         """ Aggiorna il testo del riepilogo perche' almeno uno dei filtri propri e' cambiato """
         self.setRiepilogo()
 
-    def setRiepilogo(self):
-        """ Aggiorna il testo del riepilogo """
-        testo = ''
-        if self.additional_filter.id_magazzino_filter_combobox2.get_active() != -1:
-            value = findStrFromCombobox(self.additional_filter.id_magazzino_filter_combobox2, 2)
-            testo += '  Magazzino:\n'
-            testo += '       ' + value + '\n'
-        value = self.additional_filter.da_data_aggiornamento_filter_entry.get_text()
-        if value != '':
-            testo += '  Da data aggiornamento:\n'
-            testo += '       ' + value + '\n'
-        value = self.additional_filter.a_data_aggiornamento_filter_entry.get_text()
-        if value != '':
-            testo += '  A data aggiornamento:\n'
-            testo += '       ' + value + '\n'
+#    def setRiepilogo(self):
+#        """ Aggiorna il testo del riepilogo """
+#        testo = ''
+#        if self.additional_filter.id_magazzino_filter_combobox2.get_active() != -1:
+#            value = findStrFromCombobox(self.additional_filter.id_magazzino_filter_combobox2, 2)
+#            testo += '  Magazzino:\n'
+#            testo += '       ' + value + '\n'
+#        value = self.additional_filter.da_data_aggiornamento_filter_entry.get_text()
+#        if value != '':
+#            testo += '  Da data aggiornamento:\n'
+#            testo += '       ' + value + '\n'
+#        value = self.additional_filter.a_data_aggiornamento_filter_entry.get_text()
+#        if value != '':
+#            testo += '  A data aggiornamento:\n'
+#            testo += '       ' + value + '\n'
 
-        self.setSummaryTextBefore(testo)
+#        self.setSummaryTextBefore(testo)
 
     def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
         """ Function to set the value quantita edit in the cell
@@ -411,8 +411,9 @@ class GestioneInventario(RicercaComplessaArticoli):
         value = mN(value)
         model[path][1] = value
         #model[path][4] = dateToString(datetime.datetime.today().date())
-        quantita = float(value)
-        valore_unitario = float(model[path][2])
+        quantita = Decimal(value)
+        valore_unitario = Decimal(model[path][2])
+        model[path][4] = mN(Decimal(quantita*valore_unitario).quantize(Decimal('.01')))
         data = model[path][5] or datetime.datetime.today().date()
         dao = Inventario().getRecord(id=self.dao.id)
         dao.anno = self.dao.anno
@@ -425,15 +426,16 @@ class GestioneInventario(RicercaComplessaArticoli):
         Environment.params['session'].commit()
 
     def on_column_valore_unitario_edited(self, cell, path, value, treeview, editNext=True):
-        """ Function ti set the value quantita edit in the cell
+        """ Function ti set the value valore unitario edit in the cell
         """
         model = treeview.get_model()
         value=value.replace(",", ".")
         value = mN(value)
         model[path][2] = value
         model[path][5] = dateToString(datetime.datetime.today().date())
-        valore_unitario = float(value)
-        quantita= float(model[path][2])
+        valore_unitario = Decimal(value)
+        quantita= Decimal(model[path][1])
+        model[path][4] = mN(Decimal(quantita*valore_unitario).quantize(Decimal('.01')))
         data = model[path][5] or datetime.datetime.today().date()
         dao = Inventario().getRecord(id=self.dao.id)
         dao.anno = self.dao.anno
@@ -445,24 +447,24 @@ class GestioneInventario(RicercaComplessaArticoli):
         Environment.params['session'].add(dao)
         Environment.params['session'].commit()
 
-    def next(self):
-        """ Passa alla riga successiva della treeview """
-        treeview = self.filter.resultsElement
-        selection = treeview.get_selection()
-        (model, iterator) = selection.get_selected()
-        nextIter = model.iter_next(iterator)
-        if nextIter is not None:
-            path = model.get_path(nextIter)
-            selection.select_path(path)
-            treeview.scroll_to_cell(path)
-            self.on_filter_treeview_cursor_changed(treeview)
-        else:
-            if not(self.filter.isLastPage()):
-                self.filter.filter_next_button.clicked()
-                path=model.get_path(model.get_iter_root())
-                selection.select_path(path)
-                treeview.scroll_to_cell(path)
-                self.on_filter_treeview_cursor_changed(treeview)
+#    def next(self):
+#        """ Passa alla riga successiva della treeview """
+#        treeview = self.filter.resultsElement
+#        selection = treeview.get_selection()
+#        (model, iterator) = selection.get_selected()
+#        nextIter = model.iter_next(iterator)
+#        if nextIter is not None:
+#            path = model.get_path(nextIter)
+#            selection.select_path(path)
+#            treeview.scroll_to_cell(path)
+#            self.on_filter_treeview_cursor_changed(treeview)
+#        else:
+#            if not(self.filter.isLastPage()):
+#                self.filter.filter_next_button.clicked()
+#                path=model.get_path(model.get_iter_root())
+#                selection.select_path(path)
+#                treeview.scroll_to_cell(path)
+#                self.on_filter_treeview_cursor_changed(treeview)
 
     def on_azzera_button_clicked(self, button):
         msg = """ATTENZIONE!!!
