@@ -366,8 +366,11 @@ class GestioneInventario(RicercaComplessaArticoli):
                                     idMagazzino=idMagazzino, batchSize=None)
         tot=0
         for s in sel:
-            if s.quantita >=1:
-                valore = Decimal(s.quantita)*Decimal(s.valore_unitario)
+            if s.quantita >0:
+                if s.valore_unitario:
+                    valore = Decimal(s.quantita)*Decimal(s.valore_unitario)
+                else:
+                    valore = 0
                 tot+=valore
                 valore = 0
         return mN(tot)
@@ -773,35 +776,35 @@ class GestioneInventario(RicercaComplessaArticoli):
             noSconti = False
             if response !=  gtk.RESPONSE_YES:
                 noSconti = True
+            listino = Environment.conf.VenditaDettaglio.listino
+            idListino = Listino().select(denominazioneEM = listino)
             for s in sel:
-                if s.quantita >=1:
-                    listino = Environment.conf.VenditaDettaglio.listino
-                    idListino = Listino().select(denominazioneEM = listino)
-                    valori = leggiListino(idListino[0].id, s.id_articolo)
-                    if not noSconti:
-                        s.valore_unitario = valori["prezzoDettaglio"]
-                    else:
-                        prezzo = valori["prezzoDettaglio"]
-                        prezzoScontato = prezzo
-                        tipoSconto = None
-                        if "scontiDettaglio" in valori:
-                            if  len(valori["scontiDettaglio"]) > 0:
-                                valoreSconto = valori['scontiDettaglio'][0].valore or 0
-                                if valoreSconto == 0:
-                                    tipoSconto = None
-                                    prezzoScontato = prezzo
+#                if s.quantita >=1:
+                valori = leggiListino(idListino[0].id, s.id_articolo)
+                if not noSconti:
+                    s.valore_unitario = valori["prezzoDettaglio"]
+                else:
+                    prezzo = valori["prezzoDettaglio"]
+                    prezzoScontato = prezzo
+                    tipoSconto = None
+                    if "scontiDettaglio" in valori:
+                        if  len(valori["scontiDettaglio"]) > 0:
+                            valoreSconto = valori['scontiDettaglio'][0].valore or 0
+                            if valoreSconto == 0:
+                                tipoSconto = None
+                                prezzoScontato = prezzo
+                            else:
+                                tipoSconto = valori['scontiDettaglio'][0].tipo_sconto
+                                if tipoSconto == "percentuale":
+                                    prezzoScontato = mN(mN(prezzo) - (mN(prezzo) * mN(valoreSconto)) / 100)
                                 else:
-                                    tipoSconto = valori['scontiDettaglio'][0].tipo_sconto
-                                    if tipoSconto == "percentuale":
-                                        prezzoScontato = mN(mN(prezzo) - (mN(prezzo) * mN(valoreSconto)) / 100)
-                                    else:
-                                        prezzoScontato = mN(mN(prezzo) -mN(valoreSconto))
-                            s.valore_unitario = prezzoScontato
-                    Environment.params['session'].add(s)
-            print "VALORIZZA"
+                                    prezzoScontato = mN(mN(prezzo) -mN(valoreSconto))
+                        s.valore_unitario = prezzoScontato
+                Environment.params['session'].add(s)
+                print "VALORIZZA", valori
             Environment.params['session'].commit()
-            self.refresh()
-            self.fineElaborazione()
+        self.refresh()
+        self.fineElaborazione()
 
     def on_buttonAcquistoUltimo_clicked(self, button):
         """ Valorizzazione a ultimo prezzo di acquisto

@@ -289,8 +289,6 @@ class GestioneScontrini(GladeWidget):
             else:
                 return
 
-
-
     def on_affluenza_oraria_chart_clicked(self, button):
         if "Statistiche" in Environment.modulesList and \
             hasattr(Environment.conf,"Statistiche") and \
@@ -323,6 +321,20 @@ class GestioneScontrini(GladeWidget):
 
     def on_esporta_affluenza_csv_clicked(self, button):
         print "esport to csv"
+
+    def on_aggiorna_inve_activate(self, item):
+        if "Inventario" in Environment.modulesList:
+            for scontrino in self.scontrini:
+                for riga in scontrino.righe:
+                    daoInv = Inventario().select(idArticolo=riga.id_articolo)
+                    if daoInv:
+                        if riga.data_inserimento > daoInv[0].data_aggiornamento:
+                            print "OKKEI DEVO AGGIORNARLO"
+                            quantitaprecedente = daoInv[0].quantita
+                            quantitavenduta = riga.quantita
+                            nuovaquantita = quantitaprecedente-quantitavenduta
+                            daoInv[0].quantita= nuovaquantita
+#                            daoInv.persist()
 
     def on_distinta_button_clicked(self, button):
         gest = Distinta(righe = self.scontrini)
