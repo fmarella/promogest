@@ -370,22 +370,22 @@ class SincroDB(GladeWidget):
                     sqlalchemy.ext.sqlsoup.Session.delete(record_id2)
                     sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
                     sqlalchemy.ext.sqlsoup.Session.commit()
-                    return
+#                    return
 #                    except:
 #                        print "SECONTO TRY INUTILE"
 #                        pass
 
                     try:
-                        sqlalchemy.ext.sqlsoup.Session.rollback()
-                        riga_scontr = self.pg_db_server_locale.riga_scontrino.filter_by(id_articolo=rowLocale.id).one()
-                        riga_scontr.id_articolo = row.id
-                        sqlalchemy.ext.sqlsoup.Session.add(riga_scontr)
-                        sqlalchemy.ext.sqlsoup.Session.commit()
-                        sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
-                        sqlalchemy.ext.sqlsoup.Session.commit()
-                        return
-                    except:
-                        print "terzo try"
+                    sqlalchemy.ext.sqlsoup.Session.rollback()
+                    riga_scontr = self.pg_db_server_locale.riga_scontrino.filter_by(id_articolo=rowLocale.id).one()
+                    riga_scontr.id_articolo = row.id
+                    sqlalchemy.ext.sqlsoup.Session.add(riga_scontr)
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+                    sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+#                        return
+#                    except:
+#                        print "terzo try"
                     if self.batch:
                         self.runBatch()
                     else:
