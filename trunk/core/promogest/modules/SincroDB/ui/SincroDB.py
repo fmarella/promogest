@@ -362,32 +362,32 @@ class SincroDB(GladeWidget):
                             return
                     except:
                         pass
-#                    try:
-#                    print "SONO NELL try dentro l'ecept che gestisce la particolarità articolo"
-#                    sqlalchemy.ext.sqlsoup.Session.rollback()
-#                    record_id1 = self.pg_db_server_locale.articolo.get(row.id)
-#                    record_id2 = self.pg_db_server_locale.articolo.get(rowLocale.id)
-#                    sqlalchemy.ext.sqlsoup.Session.delete(record_id2)
-#                    sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
-#                    sqlalchemy.ext.sqlsoup.Session.commit()
-#                    return
-#                    except:
-#                        print "SECONTO TRY INUTILE"
-#                        pass
+                    try:
+                        print "SONO NELL try dentro l'ecept che gestisce la particolarità articolo"
+                        sqlalchemy.ext.sqlsoup.Session.rollback()
+                        record_id1 = self.pg_db_server_locale.articolo.get(row.id)
+                        record_id2 = self.pg_db_server_locale.articolo.get(rowLocale.id)
+                        sqlalchemy.ext.sqlsoup.Session.delete(record_id2)
+                        sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
+                        sqlalchemy.ext.sqlsoup.Session.commit()
+                        return
+                    except:
+                        print "SECONTO TRY INUTILE"
+                        pass
 
-#                    try:
-                    sqlalchemy.ext.sqlsoup.Session.rollback()
-                    riga_scontr = self.pg_db_server_locale.riga_scontrino.filter_by(id_articolo=rowLocale.id)
-                    if riga_scontr:
-                        riga_scontr = riga_scontr[0]
-                    riga_scontr.id_articolo = row.id
-                    sqlalchemy.ext.sqlsoup.Session.add(riga_scontr)
-                    sqlalchemy.ext.sqlsoup.Session.commit()
-                    sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
-                    sqlalchemy.ext.sqlsoup.Session.commit()
-#                        return
-#                    except:
-#                        print "terzo try"
+                    try:
+                        sqlalchemy.ext.sqlsoup.Session.rollback()
+                        riga_scontr = self.pg_db_server_locale.riga_scontrino.filter_by(id_articolo=rowLocale.id)
+                        if riga_scontr:
+                            riga_scontr = riga_scontr[0]
+                        riga_scontr.id_articolo = row.id
+                        sqlalchemy.ext.sqlsoup.Session.add(riga_scontr)
+                        sqlalchemy.ext.sqlsoup.Session.commit()
+                        sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
+                        sqlalchemy.ext.sqlsoup.Session.commit()
+                        return
+                    except:
+                        print "terzo try"
                     if self.batch:
                         self.runBatch()
                     else:
