@@ -377,7 +377,9 @@ class SincroDB(GladeWidget):
 
 #                    try:
                     sqlalchemy.ext.sqlsoup.Session.rollback()
-                    riga_scontr = self.pg_db_server_locale.riga_scontrino.filter_by(id_articolo=rowLocale.id).one()
+                    riga_scontr = self.pg_db_server_locale.riga_scontrino.filter_by(id_articolo=rowLocale.id)
+                    if riga_scontr:
+                        riga_scontr = riga_scontr[0]
                     riga_scontr.id_articolo = row.id
                     sqlalchemy.ext.sqlsoup.Session.add(riga_scontr)
                     sqlalchemy.ext.sqlsoup.Session.commit()
