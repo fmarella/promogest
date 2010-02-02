@@ -375,7 +375,7 @@ class SincroDB(GladeWidget):
 #                        print "SECONTO TRY INUTILE"
 #                        pass
 
-                    try:
+#                    try:
                     sqlalchemy.ext.sqlsoup.Session.rollback()
                     riga_scontr = self.pg_db_server_locale.riga_scontrino.filter_by(id_articolo=rowLocale.id).one()
                     riga_scontr.id_articolo = row.id
