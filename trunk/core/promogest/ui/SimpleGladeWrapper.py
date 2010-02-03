@@ -217,7 +217,7 @@ class SimpleGladeWrapper:
                     #print "MAAAAAAAAAAAAAAAAAAAAAAA"
                     self.entryGlobalcb(widget)
             except:
-                print "WIDGET NON WIDGET", widget.get_name()
+                print "WIDGET NON WIDGET", widget
 
 
     def entryGlobalcb(self,entry):
