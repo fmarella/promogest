@@ -134,17 +134,17 @@ class SimpleGladeWrapper:
         self.gl = gl
         #self.new()
 
-    def __getattr__(self, attr_name):
-        try:
-            return object.__getattribute__(self, attr_name)
-        except AttributeError:
-            obj = self.gl.get_object(attr_name)
-            if obj:
-                self.obj = obj
-                return obj
-            else:
-                raise AttributeError, "no object named \"%s\" in the GUI ( file: %s) " %(attr_name,self.glade_path)
-        return
+#    def __getattr__(self, attr_name):
+#        try:
+#            return object.__getattribute__(self, attr_name)
+#        except AttributeError:
+#            obj = self.gl.get_object(attr_name)
+#            if obj:
+#                self.obj = obj
+#                return obj
+#            else:
+#                raise AttributeError, "no object named \"%s\" in the GUI ( file: %s) " %(attr_name,self.glade_path)
+#        return
 
     def __repr__(self):
         class_name = self.__class__.__name__
@@ -191,29 +191,29 @@ class SimpleGladeWrapper:
         It also sets a data "prefixes" with the list of
         prefixes a widget has for each widget.
         """
-        if os.name =="nt":
-            for widget in self.widgets:
-                try:
-                    widget_name = widget.get_name()
-                    prefixes_name_l = widget_name.split(":")
-                    prefixes = prefixes_name_l[ : -1]
-                    widget_api_name = prefixes_name_l[-1]
-                    widget_api_name = "_".join( re.findall(tokenize.Name, widget_api_name) )
-                    gtk.Widget.set_name(widget, widget_api_name)
-                    if hasattr(self, widget_api_name):
-                        raise AttributeError("instance %s already has an attribute %s" % (self,widget_api_name))
-                    else:
-                        setattr(self, widget_api_name, widget)
-                        if prefixes:
-                            gtk.Widget.set_data(widget, "prefixes", prefixes)
-                    if widget.__gtype__.name == "UnsignedIntegerEntryField":
-                        setattr(widget, "nomee",widget_api_name)
-                        self.entryGlobalcb(widget)
-                    if widget.__gtype__.name == "GtkEntry":
-                        #print "MAAAAAAAAAAAAAAAAAAAAAAA"
-                        self.entryGlobalcb(widget)
-                except:
-                    print "WIDGET NON WIDGET", widget.get_name()
+#        if os.name =="nt":
+        for widget in self.widgets:
+            try:
+                widget_name = widget.get_name()
+                prefixes_name_l = widget_name.split(":")
+                prefixes = prefixes_name_l[ : -1]
+                widget_api_name = prefixes_name_l[-1]
+                widget_api_name = "_".join( re.findall(tokenize.Name, widget_api_name) )
+                gtk.Widget.set_name(widget, widget_api_name)
+                if hasattr(self, widget_api_name):
+                    raise AttributeError("instance %s already has an attribute %s" % (self,widget_api_name))
+                else:
+                    setattr(self, widget_api_name, widget)
+                    if prefixes:
+                        gtk.Widget.set_data(widget, "prefixes", prefixes)
+                if widget.__gtype__.name == "UnsignedIntegerEntryField":
+                    setattr(widget, "nomee",widget_api_name)
+                    self.entryGlobalcb(widget)
+                if widget.__gtype__.name == "GtkEntry":
+                    #print "MAAAAAAAAAAAAAAAAAAAAAAA"
+                    self.entryGlobalcb(widget)
+            except:
+                print "WIDGET NON WIDGET", widget
 
 
     def entryGlobalcb(self,entry):
