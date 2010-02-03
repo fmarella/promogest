@@ -537,7 +537,7 @@
       </packing>
     </child>
     <child>
-      <object class="ScontiWidget" id="sconti_widget ">
+      <object class="ScontiWidget" id="sconti_widget">
         <property name="visible">True</property>
       </object>
       <packing>

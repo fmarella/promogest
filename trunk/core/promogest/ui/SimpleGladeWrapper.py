@@ -60,7 +60,7 @@ def bindtextdomain(app_name, locale_dir=None):
         __builtins__.__dict__["_"] = lambda x : x
 
 
-class SimpleGladeWrapper:
+class SimpleGladeWrapper(object):
 
     def __init__(self, path=None, root=None, domain=None,\
                             callbacks_proxy=None, isModule=False, **kwargs):
@@ -122,29 +122,29 @@ class SimpleGladeWrapper:
             #self.builda = gtk.Buildable()
 #        print "FILE GLADE: ", self.glade_path
         gl.add_from_file(self.glade_path)
-        self.widgets = gl.get_objects()
+#        self.widgets = gl.get_objects()
         if root:
             self.main_widget = gl.get_object(root)
         else:
             self.main_widget = None
-        self.normalize_names()
+#        self.normalize_names()
         if callbacks_proxy is None:
             callbacks_proxy = self
         gl.connect_signals(callbacks_proxy)
         self.gl = gl
         #self.new()
 
-#    def __getattr__(self, attr_name):
-#        try:
-#            return object.__getattribute__(self, attr_name)
-#        except AttributeError:
-#            obj = self.gl.get_object(attr_name)
-#            if obj:
-#                self.obj = obj
-#                return obj
-#            else:
-#                raise AttributeError, "no object named \"%s\" in the GUI ( file: %s) " %(attr_name,self.glade_path)
-#        return
+    def __getattr__(self, attr_name):
+        try:
+            return object.__getattribute__(self, attr_name)
+        except AttributeError:
+            obj = self.gl.get_object(attr_name)
+            if obj:
+                self.obj = obj
+                return obj
+            else:
+                raise AttributeError, "no object named \"%s\" in the GUI ( file: %s) " %(attr_name,self.glade_path)
+        return
 
     def __repr__(self):
         class_name = self.__class__.__name__
