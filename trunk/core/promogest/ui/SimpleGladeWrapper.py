@@ -122,12 +122,14 @@ class SimpleGladeWrapper:
             #self.builda = gtk.Buildable()
 #        print "FILE GLADE: ", self.glade_path
         gl.add_from_file(self.glade_path)
-#        self.widgets = gl.get_objects()
+        if os.name =="nt":
+            self.widgets = gl.get_objects()
+            self.normalize_names()
         if root:
             self.main_widget = gl.get_object(root)
         else:
             self.main_widget = None
-#        self.normalize_names()
+
         if callbacks_proxy is None:
             callbacks_proxy = self
         gl.connect_signals(callbacks_proxy)
@@ -135,16 +137,19 @@ class SimpleGladeWrapper:
         #self.new()
 
     def __getattr__(self, attr_name):
-        try:
-            return object.__getattribute__(self, attr_name)
-        except AttributeError:
-            obj = self.gl.get_object(attr_name)
-            if obj:
-                self.obj = obj
-                return obj
-            else:
-                raise AttributeError, "no object named \"%s\" in the GUI ( file: %s) " %(attr_name,self.glade_path)
-        return
+        if os.name =="nt":
+            return
+        else:
+            try:
+                return object.__getattribute__(self, attr_name)
+            except AttributeError:
+                obj = self.gl.get_object(attr_name)
+                if obj:
+                    self.obj = obj
+                    return obj
+                else:
+                    raise AttributeError, "no object named \"%s\" in the GUI ( file: %s) " %(attr_name,self.glade_path)
+            return
 
     def __repr__(self):
         class_name = self.__class__.__name__
@@ -192,12 +197,6 @@ class SimpleGladeWrapper:
         prefixes a widget has for each widget.
         """
         for widget in self.widgets:
-            for a in dir(widget):
-                g=  getattr(widget, a)
-                try:
-                    print a, g()
-                except:
-                    pass
             try:
                 widget_name = widget.get_name()
                 prefixes_name_l = widget_name.split(":")
