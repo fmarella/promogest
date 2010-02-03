@@ -124,22 +124,19 @@ class SimpleGladeWrapper:
         gl.add_from_file(self.glade_path)
         if os.name =="nt":
             self.widgets = gl.get_objects()
-            self.normalize_names()
         if root:
             self.main_widget = gl.get_object(root)
         else:
             self.main_widget = None
-
+        if os.name =="nt":
+            self.normalize_names()
         if callbacks_proxy is None:
             callbacks_proxy = self
         gl.connect_signals(callbacks_proxy)
         self.gl = gl
         #self.new()
-
-    def __getattr__(self, attr_name):
-        if os.name =="nt":
-            return
-        else:
+    if os.name =="nt":
+        def __getattr__(self, attr_name):
             try:
                 return object.__getattribute__(self, attr_name)
             except AttributeError:
@@ -149,7 +146,6 @@ class SimpleGladeWrapper:
                     return obj
                 else:
                     raise AttributeError, "no object named \"%s\" in the GUI ( file: %s) " %(attr_name,self.glade_path)
-            return
 
     def __repr__(self):
         class_name = self.__class__.__name__
@@ -198,7 +194,7 @@ class SimpleGladeWrapper:
         """
         for widget in self.widgets:
             try:
-                widget_name = widget.get_name()
+                widget_name = gtk.Widget.get_name(widget)
                 prefixes_name_l = widget_name.split(":")
                 prefixes = prefixes_name_l[ : -1]
                 widget_api_name = prefixes_name_l[-1]
