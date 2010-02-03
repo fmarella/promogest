@@ -90,7 +90,8 @@ if hasattr(conf, 'VenditaDettaglio'):
     tabella2 = schema+".sconto_scontrino"
     tabella3 = schema+".sconto_testata_scontrino"
 
-if not hasattr(conf.VenditaDettaglio,"migrazione_sincro_effettuata") and conf.VenditaDettaglio.migrazione_sincro_effettuata =="no" and "ciccio" == "pluto":
+#if not hasattr(conf.VenditaDettaglio,"migrazione_sincro_effettuata") and conf.VenditaDettaglio.migrazione_sincro_effettuata =="no" and
+if "ciccio" == "pluto":
     msg = """ATTENZIONE, per qualche giorno l'avvio del pg2
 potrebbe essere lento ( anche qualche minuto):
 Il rallentamento è solo di chi usa il modulo di
