@@ -7,9 +7,8 @@
 
 import gtk
 import os, popen2
-from datetime import datetime, timedelta
+from datetime import datetime
 from promogest import Environment
-from promogest.ui.GladeWidget import GladeWidget
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.Articolo import Articolo
@@ -19,7 +18,6 @@ from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScont
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
-from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.ui.utils import *
 
 class GestioneChiusuraFiscale(object):
@@ -28,6 +26,7 @@ class GestioneChiusuraFiscale(object):
         self.gladeobj = gladeobj
 
     def chiusuraDialog(self, widget, idMagazzino):
+        print "MAGAZZINOOOOOOOOOOOOOOOOOOOOOOOOOOO", idMagazzino
         dialog = gtk.MessageDialog(self.gladeobj.getTopLevel(),
                                    gtk.DIALOG_MODAL
                                    | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -41,6 +40,7 @@ class GestioneChiusuraFiscale(object):
         entry.setNow()
         hbox.pack_start(entry, False, False, 0)
         dialog.vbox.pack_start(hbox, False, False, 0)
+        entry.show()
         dialog.show_all()
         response = dialog.run()
         dialog.destroy()

@@ -625,6 +625,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         """
         scontiRigaDocumentoList = {}
         if not(len(self._righe) > 1):
+            messageInfo(msg="TENTATIVO DI SALVATAGGIO DOCUMENTO SENZA RIGHE???")
             raise Exception, "ATTENZIONE, TENTATIVO DI SALVATAGGIO SENZA RIGHE?????"
 
         if (self.data_documento_entry.get_text() == ''):
