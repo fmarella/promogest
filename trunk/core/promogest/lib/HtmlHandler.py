@@ -13,7 +13,7 @@ try:
 except:
     import gtkhtml2
     WEBKIT = False
-from HtmlTextView import HtmlTextView
+#from HtmlTextView import HtmlTextView
 import urllib2
 import webbrowser
 from promogest import Environment
@@ -44,8 +44,6 @@ def env(templates_dir):
                                             renderizzazione del template engine
     renderHTML = inserisce il codice html dentro l'oggetto
 """
-
-
 
 def createHtmlObj(mainWidget,widget=None):
     try:
@@ -91,7 +89,6 @@ if not WEBKIT:
     document = gtkhtml2.Document()
     document.connect('request_url', _on_html_request_url)
     document.connect('link_clicked', _on_html_link_clicked)
-
 
 def renderHTMLTemplate(pageData):
     return renderTemplate(pageData)

@@ -27,7 +27,7 @@ import re
 
 import tokenize
 import gtk
-import gtk.glade
+#import gtk.glade
 import weakref
 import inspect
 from promogest import Environment

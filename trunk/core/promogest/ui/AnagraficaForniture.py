@@ -47,7 +47,6 @@ class AnagraficaForniture(Anagrafica):
                             aziendaStr=aziendaStr)
 
 
-
 class AnagraficaFornitureFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica delle forniture """
 

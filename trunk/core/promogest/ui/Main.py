@@ -59,7 +59,6 @@ class Main(GladeWidget):
             self.client_sincro_db.destroy()
         self.updates()
 
-
     def show(self):
         """ Visualizza la finestra """
 
@@ -129,6 +128,7 @@ class Main(GladeWidget):
             self._refresh()
         self.placeWindow(self.main_window)
         self.main_window.show_all()
+        self.on_button_refresh_clicked()
 
 
     def updates(self):

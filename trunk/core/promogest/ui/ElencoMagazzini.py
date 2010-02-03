@@ -30,7 +30,6 @@ class ElencoMagazzini(GladeWidget):
         self.orderBy = 'denominazione'
         self.draw()
 
-
     def draw(self):
         # Colonne della Treeview dell' elenco
         treeview = self.elenco_magazzini_treeview
@@ -58,14 +57,11 @@ class ElencoMagazzini(GladeWidget):
 
         model = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str)
         treeview.set_model(model)
-
         self.refresh()
-
 
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura dell'elenco """
         self._elenco_magazzini_elements.show_all()
-
 
     def refresh(self):
         # Aggiornamento Treeview
@@ -81,18 +77,15 @@ class ElencoMagazzini(GladeWidget):
                           (m.denominazione or ''),
                           (m.localita or '')))
 
-
     def _changeOrderBy(self, widget, campi):
         self.orderBy = campi
         self.refresh()
-
 
     def on_elenco_magazzini_treeview_cursor_changed(self, treeview):
         sel = treeview.get_selection()
         (model, iterator) = sel.get_selected()
         if iterator is not None:
             self._currentDao = model.get_value(iterator,0)
-
 
     def on_magazzini_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):

@@ -2215,7 +2215,6 @@ def numeroRegistroGet(tipo=None, date=None):
         numeroSEL = TestataMovimento()\
             .select(complexFilter=(and_(TestataMovimento.data_movimento.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)) ,
                             TestataMovimento.registro_numerazione==registrovalue)), batchSize=None, orderBy="id")
-
     else:
         numeroSEL = TestataDocumento().select(complexFilter=(and_(TestataDocumento.data_documento.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)) ,
                         TestataDocumento.registro_numerazione==registrovalue)), batchSize=None, orderBy="id")

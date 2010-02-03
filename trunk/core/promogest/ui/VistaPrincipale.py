@@ -32,8 +32,8 @@ class VistaPrincipale(GladeWidget):
         self.feed_scrolled.add(self.html)
         html = """<html><body></body></html>"""
         renderHTML(self.html,html)
-        self.getfeedFromSite()
         self.draw()
+#        self.getfeedFromSite()
 
     def draw(self):
         """

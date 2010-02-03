@@ -253,11 +253,11 @@ class GestioneInventario(RicercaComplessaArticoli):
         self.val_negativo =self._modifica.val_negativo_radio.get_active() or None
         self.qa_negativa =self._modifica.qa_negativa_radio.get_active() or None
 
-        daData = stringToDate(self.additional_filter.da_data_aggiornamento_filter_entry.get_text())
-        aData = stringToDate(self.additional_filter.a_data_aggiornamento_filter_entry.get_text())
+        self.daData = stringToDate(self.additional_filter.da_data_aggiornamento_filter_entry.get_text())
+        self.aData = stringToDate(self.additional_filter.a_data_aggiornamento_filter_entry.get_text())
 
         model = self.filter.resultsElement.get_model()
-        self.batchSize = 50
+#        self.batchSize = 50
 #        self._ricerca._prepare()
         denominazione = prepareFilterString(self._ricerca.denominazione_filter_entry.get_text())
         produttore = prepareFilterString(self._ricerca.produttore_filter_entry.get_text())
@@ -287,8 +287,8 @@ class GestioneInventario(RicercaComplessaArticoli):
 
         self.filter.numRecords = Inventario().count(anno=self.annoScorso,
                                                     idMagazzino=self.idMagazzino,
-                                                    daDataAggiornamento=daData,
-                                                    aDataAggiornamento=aData,
+                                                    daDataAggiornamento=self.daData,
+                                                    aDataAggiornamento=self.aData,
                                                     qa_zero=self.qa_zero,
                                                     qa_negativa=self.qa_negativa,
                                                     val_negativo = self.val_negativo,
@@ -300,13 +300,12 @@ class GestioneInventario(RicercaComplessaArticoli):
         invs = Inventario().select(orderBy=self.filter.orderBy,
                                                anno=self.annoScorso,
                                                idMagazzino=self.idMagazzino,
-                                               daDataAggiornamento=daData,
-                                               aDataAggiornamento=aData,
+                                               daDataAggiornamento=self.daData,
+                                               aDataAggiornamento=self.aData,
                                                qa_zero=self.qa_zero,
                                                qa_negativa=self.qa_negativa,
                                                val_negativo =self.val_negativo,
                                                offset=self.filter.offset,
-                                               batchSize=self.batchSize,
                                                filterDict=self.filterDict)
 
         model.clear()
@@ -975,7 +974,12 @@ class GestioneInventario(RicercaComplessaArticoli):
             blocSize = 500
             conteggia = Inventario().count(anno=self.annoScorso,
                                         idMagazzino=idMagazzino,
-                                        quantita = True) # serve per poter affettare le select
+                                        quantita = True,
+                                        daDataAggiornamento=self.daData,
+                                        aDataAggiornamento=self.aData,
+                                        filterDict = self.filterDict
+                                                    )
+
             print "NUMERO DEI RECORD PRESENTI:", conteggia
             if conteggia >= blocSize:
                 blocchi = abs(conteggia/blocSize)
@@ -985,7 +989,11 @@ class GestioneInventario(RicercaComplessaArticoli):
                                                    idMagazzino=idMagazzino,
                                                    quantita = True,
                                                    offset=offset,
-                                                   batchSize=blocSize)
+                                                   batchSize=blocSize,
+                                                   daDataAggiornamento=self.daData,
+                                                    aDataAggiornamento=self.aData,
+                                                    filterDict=self.filterDict)
+
                     testata = TestataMovimento()
                     data = '01/01/' + str(self.anno)
                     testata.data_movimento = stringToDate(data)
@@ -1013,7 +1021,10 @@ class GestioneInventario(RicercaComplessaArticoli):
                                                    idMagazzino=idMagazzino,
                                                    quantita = True,
                                                    offset=None,
-                                                   batchSize=None)
+                                                   batchSize=None,
+                                                    daDataAggiornamento=self.daData,
+                                                    aDataAggiornamento=self.aData,
+                                                    filterDict=self.filterDict)
                 testata = TestataMovimento()
                 data = '01/01/' + str(self.anno)
                 testata.data_movimento = stringToDate(data)

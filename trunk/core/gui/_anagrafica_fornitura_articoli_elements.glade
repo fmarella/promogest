@@ -513,7 +513,7 @@
       </packing>
     </child>
     <child>
-      <object class="ArticoloSearchWidget" id="id_articolo_customcombobox ">
+      <object class="ArticoloSearchWidget" id="id_articolo_customcombobox">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
       </object>
