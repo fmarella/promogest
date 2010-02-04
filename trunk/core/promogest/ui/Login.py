@@ -341,7 +341,7 @@ class Login(GladeApp):
 #            boh.inc()
 #            boh.pulse()
 #        boh.set(30)
-#        aggiorna(self)
+        aggiorna(self)
 
     def groupModulesByType(self):
         """
