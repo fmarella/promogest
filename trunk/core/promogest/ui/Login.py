@@ -258,8 +258,12 @@ class Login(GladeApp):
                 dialog.destroy()
                 do_login = False
         if do_login: #superati i check di login
-            users = User().select(username=username,
-                                    password=hashlib.md5(username+password).hexdigest())
+            users = []
+            if hashlib.md5(self.azienda.strip()).hexdigest() not in ['a487de4d6383f01e198a49bdce51ede5',
+                                                                    '67a421202f505269675a6c80790995db',
+                                                                    '48817f183d6efcc81869cf64ef8c6bdd']:
+                users = User().select(username=username,
+                                        password=hashlib.md5(username+password).hexdigest())
             if len(users) ==1:
                 if users[0].active == False:
                     dialog = gtk.MessageDialog(self.getTopLevel(),
