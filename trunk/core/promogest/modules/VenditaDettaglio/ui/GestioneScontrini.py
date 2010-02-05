@@ -326,7 +326,7 @@ class GestioneScontrini(GladeWidget):
         if "Inventario" in Environment.modulesList:
             for scontrino in self.scontrini:
                 for riga in scontrino.righe:
-                    daoInv = Inventario().select(idArticolo=riga.id_articolo)
+                    daoInv = Inventario().select(idArticolo=riga.id_articolo, idMagazzino = Environment.conf.VenditaDettaglio.magazzino)
                     if daoInv:
                         if riga.data_inserimento > daoInv[0].data_aggiornamento:
                             print "OKKEI DEVO AGGIORNARLO"

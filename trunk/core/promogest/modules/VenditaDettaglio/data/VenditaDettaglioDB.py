@@ -90,6 +90,14 @@ if hasattr(conf, 'VenditaDettaglio'):
     tabella2 = schema+".sconto_scontrino"
     tabella3 = schema+".sconto_testata_scontrino"
 
+""" Rivediamo la struttura della testata vendita al dettaglio per gestire
+    anche una definizione dei magazzini, dei punti cassa e possibilmente
+    anche del cassiere che ha effettuato la vendita """
+
+
+
+
+
 #if not hasattr(conf.VenditaDettaglio,"migrazione_sincro_effettuata") and conf.VenditaDettaglio.migrazione_sincro_effettuata =="no" and
 if "ciccio" == "pluto":
     msg = """ATTENZIONE, per qualche giorno l'avvio del pg2

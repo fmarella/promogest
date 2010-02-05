@@ -38,22 +38,43 @@
             <tr><td colspan="5" class="table-header">Situazione magazzino</td></tr>
             <tr class="even-detail">
                 <td width="74%" style="padding-left:20px;" > Dati Movimento</td>
-                <td class="even-number" style="text-align:center;" width="10%">Quantita'</td>
-                <td class="even-number" style="text-align:center;" width="10%">Valore</td>
+                <td class="even-number" style="text-align:center;" width="10%">Carico</td>
+                <td class="even-number" style="text-align:center;" width="10%">Scarico</td>
+                <td class="even-number" style="text-align:center;" width="10%">Valore Carico</td>
+                <td class="even-number" style="text-align:center;" width="10%">Valore Scarico</td>
                 <td class="even-number" style="text-align:center;" width="4%">+/-</td>
             </tr>
             {% for item in dao.totaliOperazioniMovimento %}
             <tr >
             <td class="odd-detail" style="padding-left:5px;"><strong>N° {{item['numero']}} - {{item['operazione']}} - Del: {{utils.dateToString(item['data_movimento'])}} - Rag_soc.:{{item['fornitore'][0:9]|string}}{{item['cliente'][0:9]|string}} </strong></td>
+            {% if item['segnoOperazione'] == "+" %}
             <td class="odd-number" style="text-align:center;" >{{'%14.2f' % (item['giacenza'],)}}</td>
+            {% else %}
+            <td class="odd-number" style="text-align:center;" > FFF </td>
+            {% endif %}
+            {% if item['segnoOperazione'] == "-" %}
+            <td class="odd-number" style="text-align:center;" >{{'%14.2f' % (item['giacenza'],)}} </td>
+            {% else %}
+            <td class="odd-number" style="text-align:center;" > XXX </td>
+            {% endif %}
+            {% if item['segnoOperazione'] == "+" %}
             <td class="odd-number" style="text-align:center;">{{'%14.2f' % item['valore']|abs}}</td>
-                <td class="odd-number" style="text-align:center;" >{{item['segnoOperazione']}}</td>
+            {% else %}
+            <td class="odd-number" style="text-align:center;" > FFF </td>
+            {% endif %}
+                        {% if item['segnoOperazione'] == "-" %}
+                         <td class="odd-number" style="text-align:center;">{{'%14.2f' % item['valore']|abs}}</td>
+                            {% else %}
+            <td class="odd-number" style="text-align:center;" > XXX </td>
+            {% endif %}
+            <td class="odd-number" style="text-align:center;" >{{item['segnoOperazione']}}</td>
             </tr>
             {% endfor %}
             <tr>
-                <td class="totale-detail"><strong>Totali</strong></td>                
+                <td class="totale-detail"><strong>Totali</strong></td>
+                <td></td>
                 <td class="totale-number" style="text-align:center;"><strong>{{'%14.2f' % (dao.giacenza, )}}</strong></td>
                 <td class="totale-number" style="text-align:center;"><strong>{{'%14.2f' % (dao.valoreGiacenza, )}}</strong></td>
             </tr>
-        </table>
+</table>
 {% endblock %}
