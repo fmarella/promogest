@@ -42,8 +42,8 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.lib import feedparser
 from promogest.lib import HtmlHandler
-import glib
-glib.threads_init()
+#import glib
+#glib.threads_init()
 
 
 windowGroup = []
