@@ -89,12 +89,101 @@ if hasattr(conf, 'VenditaDettaglio'):
     tabella = schema+".sconto_riga_scontrino"
     tabella2 = schema+".sconto_scontrino"
     tabella3 = schema+".sconto_testata_scontrino"
+    tabella4 = schema+".testata_scontrino"
+    tabella5 = schema+".magazzino"
+    tabella6 = schema+".pos"
+    tabella7 = "promogest2.utente"
 
-""" Rivediamo la struttura della testata vendita al dettaglio per gestire
-    anche una definizione dei magazzini, dei punti cassa e possibilmente
-    anche del cassiere che ha effettuato la vendita """
+    """ Rivediamo la struttura della testata vendita al dettaglio per gestire
+        anche una definizione dei magazzini, dei punti cassa e possibilmente
+        anche del cassiere che ha effettuato la vendita """
+
+    #if "testata_scontrino.id_magazzino" not in testatascontrinoTable.c:
+    #    print "OKOKOKOKOKO NN CE"
+    try:
+        comando = 'ALTER TABLE %s ADD COLUMN id_magazzino integer ;'  % tabella4
+        session.connection().execute(text(comando))
+        session.commit()
+    #    session.flush()
+    except:
+        session.rollback()
+        print "LACOLONNA ID:MAGAZZINO C?E"
+
+    #if "id_magazzino" in testatascontrinoTable.c:
+    try:
+        stri="""ALTER TABLE %s
+            ADD CONSTRAINT testata_scontrino_id_magazzino_id_fkey FOREIGN KEY (id_magazzino)
+            REFERENCES %s (id) MATCH SIMPLE
+            ON UPDATE CASCADE ON DELETE CASCADE;""" %(tabella4,tabella5)
+        session.execute(text(stri))
+        session.commit()
+    except:
+        session.rollback()
+        print "ADD ID MAGAZZINO fallito"
+
+    posTable = Table('pos', params['metadata'],
+            Column('id', Integer, primary_key=True),
+            Column('denominazione', String(200), nullable=False ),
+            Column('denominazione_breve', String(10), nullable=False),
+            schema=params['schema']
+            )
+    posTable.create(checkfirst=True)
+
+    try:
+        comando = 'ALTER TABLE %s ADD COLUMN id_pos integer ;'  % tabella4
+        session.connection().execute(text(comando))
+        session.commit()
+    #    session.flush()
+    except:
+        session.rollback()
+        print "LACOLONNA ID_POS C'E"
+
+    #if "id_magazzino" in testatascontrinoTable.c:
+    try:
+        stri="""ALTER TABLE %s
+            ADD CONSTRAINT testata_scontrino_id_pos_id_fkey FOREIGN KEY (id_pos)
+            REFERENCES %s (id) MATCH SIMPLE
+            ON UPDATE CASCADE ON DELETE CASCADE;""" %(tabella4,tabella6)
+        session.execute(text(stri))
+        session.commit()
+    except:
+        session.rollback()
+        print "ADD FK ID POS fallito"
 
 
+    """ AGGIUNGO LA FK ID_USER NELLA TABELLA TESTATA SCONTRINO"""
+    try:
+        comando = 'ALTER TABLE %s ADD COLUMN id_user integer ;'  % tabella4
+        session.connection().execute(text(comando))
+        session.commit()
+    #    session.flush()
+    except:
+        session.rollback()
+        print "LACOLONNA ID_USER C'E"
+
+    #if "id_magazzino" in testatascontrinoTable.c:
+    try:
+        stri="""ALTER TABLE %s
+            ADD CONSTRAINT testata_scontrino_id_user_id_fkey FOREIGN KEY (id_user)
+            REFERENCES %s (id) MATCH SIMPLE
+            ON UPDATE CASCADE ON DELETE CASCADE;""" %(tabella4,tabella7)
+        session.execute(text(stri))
+        session.commit()
+    except:
+        session.rollback()
+        print "ADD FK ID POS fallito"
+
+    try:
+        stri="""ALTER TABLE %s
+            ADD CONSTRAINT sconto_riga_scontrino_id_fkey FOREIGN KEY (id)
+            REFERENCES %s (id) MATCH SIMPLE
+            ON UPDATE CASCADE ON DELETE CASCADE;"""%(tabella,tabella2)
+        session.execute(text(stri))
+        session.commit()
+#        session.flush()
+    except:
+        session.rollback()
+        print "ADD FK SCONTO RIGA SCONTRINO fallito"
 
 
 

@@ -48,6 +48,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         GladeWidget.__init__(self, 'vendita_dettaglio_window',
                         fileName='VenditaDettaglio/gui/vendita_dettaglio_window.glade',
                         isModule=True)
+#        if not Environment.magazzino_pos:
+#            self.altre_opzioni_dialog.show_all()
+
+
         self.placeWindow(self.getTopLevel())
         self._currentRow = {}
         self._simboloPercentuale = '%'
@@ -57,7 +61,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.vendita_dettaglio_statusbar.push(context_id, textStatusBar)
         azienda = Azienda().getRecord(id=Environment.params["schema"])
         self.logo_articolo.set_from_file(azienda.percorso_immagine)
-        self.createPopupMenu()
+#        self.createPopupMenu()
         #nascondo i dati riga e le info aggiuntive
         self.dati_riga_frame.destroy()
         self.shop = Environment.shop
@@ -72,6 +76,12 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 #            self.apri_cassetto_button.set_active(True)
             self.apri_cassetto_button.set_sensitive(True)
         drawPart(self)
+
+
+    def on_ao_ok_button_clicked(self, button):
+#        self.show_all()
+        print "okok"
+
 
     def on_column_prezzo_edited(self, cell, path, value, treeview, editNext=True):
         """ Function to set the value prezzo edit in the cell"""

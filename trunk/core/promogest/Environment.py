@@ -64,6 +64,7 @@ new_print_enjine=False
 shop = False
 rev_locale = None
 rev_remota = None
+magazzino_pos = None
 
 gtkrc = """# Auto-written by gtk2_prefs. Do not edit.
 

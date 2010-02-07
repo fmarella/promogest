@@ -3,31 +3,26 @@
 """
  Promogest
  Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
- Author: Andrea Argiolas <andrea@promotux.it>
  Author: Francesco Meloni <francesco@promotux.it>
  License: GNU GPLv2
 """
 
 import gtk
-import gobject
-
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-
 from promogest import Environment
-from promogest.dao.Dao import Dao
-from promogest.dao.CategoriaArticolo import CategoriaArticolo
+from promogest.modules.VenditaDettaglio.dao.Pos import Pos
 
 from utils import *
 
 
-class AnagraficaCategorieArticoli(Anagrafica):
-    """ Anagrafica categorie degli articoli """
+class AnagraficaPos(Anagrafica):
+    """ Anagrafica dei punti cassa """
 
     def __init__(self):
-        Anagrafica.__init__(self, 'Promogest - Anagrafica categorie articoli',
-                            '_Categorie',
-                            AnagraficaCategorieArticoliFilter(self),
-                            AnagraficaCategorieArticoliDetail(self))
+        Anagrafica.__init__(self, 'Promogest - Anagrafica Pos',
+                            '_Pos',
+                            AnagraficaPosFilter(self),
+                            AnagraficaPosDetail(self))
 
 
     def draw(self):
@@ -95,14 +90,14 @@ class AnagraficaCategorieArticoli(Anagrafica):
 
 
 
-class AnagraficaCategorieArticoliFilter(AnagraficaFilter):
-    """ Filtro per la ricerca nell'anagrafica delle categorie articoli """
+class AnagraficaPosFilter(AnagraficaFilter):
+    """ Filtro per la ricerca nell'anagrafica dei punti cassa """
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
-                                  'anagrafica_categorie_articoli_filter_table',
-                                  gladeFile='_anagrafica_categorie_articoli_elements.glade')
+                                  'anagrafica_pos_filter_table',
+                                  gladeFile='_anagrafica_pos_elements.glade', isModule=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
 
@@ -114,13 +109,13 @@ class AnagraficaCategorieArticoliFilter(AnagraficaFilter):
 
 
 
-class AnagraficaCategorieArticoliDetail(AnagraficaDetail):
-    """ Dettaglio dell'anagrafica delle categorie articoli """
+class AnagraficaPosDetail(AnagraficaDetail):
+    """ Dettaglio dell'anagrafica delle punti cassa """
 
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                                   anagrafica,
-                                  gladeFile='_anagrafica_categorie_articoli_elements.glade')
+                                  gladeFile='_anagrafica_pos_elements.glade', isModule=True)
 
 
     def setDao(self, dao):

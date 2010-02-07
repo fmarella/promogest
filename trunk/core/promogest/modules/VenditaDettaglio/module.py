@@ -35,4 +35,3 @@ class VenditaDettaglio(object):
     def getApplication(self):
         anag = AnagraficaVenditaDettaglio()
         return anag
-
