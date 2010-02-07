@@ -49,6 +49,8 @@ class GestioneChiusuraFiscale(object):
             data = stringToDate(entry.get_text())
             chiusure = ChiusuraFiscale().select( dataChiusura = data,
                                                 offset = None,
+                                                idMagazzino = self.gladeobj.idMagazzino,
+                                                idPuntoCassa = self.gladeobj.idPuntoCassa,
                                                 batchSize = None)
             if len(chiusure) != 0:
                 dialog = gtk.MessageDialog(self.gladeobj.getTopLevel(),
@@ -71,6 +73,8 @@ class GestioneChiusuraFiscale(object):
         aData= data+OneDay
         scontrini = TestataScontrino().select(daData = datefirst,
                                             aData = aData,  # Scontrini prodotti nella giornata odierna
+                                            idMagazzino = self.gladeobj.idMagazzino,
+                                            idPuntoCassa = self.gladeobj.idPuntoCassa,
                                             offset = None,
                                             batchSize = None)
         ##Environment.pg2log.info( "SCONTRINI PRODOTTI IN GIORNATA N° %s dettaglio: %s" ) %(str(len(scontrini)or""), str(scontrini)or"")
@@ -115,6 +119,8 @@ class GestioneChiusuraFiscale(object):
         # Creo nuova chiusura
         daoChiusura = ChiusuraFiscale()
         daoChiusura.data_chiusura = datefirst
+        daoChiusura.id_magazzino = self.gladeobj.idMagazzino
+        daoChiusura.id_pos = self.gladeobj.idPuntoCassa
         daoChiusura.persist()
         #daoChiusura.update()
 

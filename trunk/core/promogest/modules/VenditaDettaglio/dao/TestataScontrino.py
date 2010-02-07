@@ -3,7 +3,7 @@
 # Promogest
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Alessandro Scano <alessandro@promotux.it>
+# Author: francesco Meloni <francesco@promotux.it>
 
 
 from sqlalchemy import *
@@ -75,6 +75,10 @@ class TestataScontrino(Dao):
             dic = {k: testata_scontrino.c.data_inserimento >= v}
         elif k == 'aData':
             dic = {k: testata_scontrino.c.data_inserimento <= v}
+        elif k == 'idMagazzino':
+            dic = {k: testata_scontrino.c.id_magazzino == v}
+        elif k == 'idPuntoCassa':
+            dic = {k: testata_scontrino.c.id_pos == v}
         elif k== 'idArticolo':
             dic = {k: and_(testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino, riga_scontrinoo.c.id_articolo==v)}
         return  dic[k]

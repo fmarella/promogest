@@ -8,11 +8,11 @@
 """
 
 import gtk
-from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
+from promogest.ui.AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest import Environment
 from promogest.modules.VenditaDettaglio.dao.Pos import Pos
 
-from utils import *
+from promogest.ui.utils import *
 
 
 class AnagraficaPos(Anagrafica):
@@ -66,13 +66,13 @@ class AnagraficaPos(Anagrafica):
     def refresh(self):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
-        self.numRecords = CategoriaArticolo().count(denominazione=denominazione)
+        self.numRecords = Pos().count(denominazione=denominazione)
 
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return CategoriaArticolo().select(denominazione=denominazione,
+            return Pos().select(denominazione=denominazione,
                                             orderBy=self.orderBy,
                                             offset=self.offset,
                                             batchSize=self.batchSize)
@@ -97,7 +97,7 @@ class AnagraficaPosFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   'anagrafica_pos_filter_table',
-                                  gladeFile='_anagrafica_pos_elements.glade', isModule=True)
+                                  gladeFile='VenditaDettaglio/gui/_anagrafica_pos_elements.glade', module=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
 
 
@@ -115,12 +115,12 @@ class AnagraficaPosDetail(AnagraficaDetail):
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
                                   anagrafica,
-                                  gladeFile='_anagrafica_pos_elements.glade', isModule=True)
+                                  gladeFile='VenditaDettaglio/gui/_anagrafica_pos_elements.glade', module=True)
 
 
     def setDao(self, dao):
         if dao is None:
-            self.dao = CategoriaArticolo()
+            self.dao = Pos()
             self._anagrafica._newRow((self.dao, '', ''))
             self._refresh()
         else:
@@ -128,7 +128,7 @@ class AnagraficaPosDetail(AnagraficaDetail):
 
 
     def updateDao(self):
-        self.dao = CategoriaArticolo().getRecord(id=self.dao.id)
+        self.dao = Pos().getRecord(id=self.dao.id)
         self._refresh()
 
 

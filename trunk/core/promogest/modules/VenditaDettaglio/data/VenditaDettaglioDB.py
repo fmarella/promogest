@@ -10,10 +10,18 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 #from promogest.dao.Dao import Dao
 
-#def create()
 if hasattr(conf, 'VenditaDettaglio'):
     #if conf.VenditaDettaglio.primoavvio=="yes":
 
+    posTable = Table('pos', params['metadata'],
+            Column('id', Integer, primary_key=True),
+            Column('denominazione', String(200), nullable=False ),
+            Column('denominazione_breve', String(10), nullable=False),
+            schema=params['schema']
+            )
+    posTable.create(checkfirst=True)
+
+    magazzinoTable = Table('magazzino', params['metadata'], autoload=True, schema=params['schema'])
     testataMovimentoTable = Table('testata_movimento', params['metadata'], autoload=True, schema=params['schema'])
     testataScontrinoTable = Table('testata_scontrino', params['metadata'],
                 Column('id',Integer,primary_key=True),
@@ -23,12 +31,14 @@ if hasattr(conf, 'VenditaDettaglio'):
                 Column('totale_assegni',Numeric(16,4),nullable=False),
                 Column('totale_carta_credito',Numeric(16,4),nullable=False),
                 #chiavi esterne
+                Column('id_magazzino',Integer,ForeignKey(params['schema']+'.magazzino.id', onupdate="CASCADE", ondelete="RESTRICT")),
+                Column('id_pos',Integer,ForeignKey(params['schema']+'.pos.id', onupdate="CASCADE", ondelete="RESTRICT")),
+                Column('id_user',Integer,ForeignKey(params['mainSchema']+'.utente.id', onupdate="CASCADE", ondelete="RESTRICT")),
                 Column('id_testata_movimento',Integer,ForeignKey(params['schema']+'.testata_movimento.id', onupdate="CASCADE", ondelete="RESTRICT")),
                 schema=params['schema']
                 )
     testataScontrinoTable.create(checkfirst=True)
 
-    #testataScontrinoTable = Table('testata_scontrino', params['metadata'], autoload=True, schema=params['schema'])
     articoloTable = Table('articolo', params['metadata'], autoload=True, schema=params['schema'])
 
     rigaScontrinoTable = Table('riga_scontrino', params['metadata'],
@@ -44,7 +54,6 @@ if hasattr(conf, 'VenditaDettaglio'):
             )
     rigaScontrinoTable.create(checkfirst=True)
 
-
     scontoScontrinoTable= Table('sconto_scontrino', params['metadata'],
                 Column('id',Integer,primary_key=True),
                 Column('valore',Numeric(16,4),nullable=True),
@@ -54,8 +63,6 @@ if hasattr(conf, 'VenditaDettaglio'):
             )
     scontoScontrinoTable.create(checkfirst=True)
 
-
-    #rigaDocumentoTable = Table('riga_scontrino', params['metadata'], autoload=True, schema=params['schema'])
     rigaDotoTable = Table('sconto_scontrino', params['metadata'], autoload=True, schema=params['schema'])
 
     scontoRigaScontrinoTable = Table('sconto_riga_scontrino', params['metadata'],
@@ -66,7 +73,9 @@ if hasattr(conf, 'VenditaDettaglio'):
 
     chiusuraFiscaleTable = Table('chiusura_fiscale', params['metadata'],
                 Column('id',Integer,primary_key=True),
-                Column('data_chiusura',DateTime, unique=True, nullable=False),
+                Column('data_chiusura',DateTime,nullable=False),
+                Column('id_magazzino',Integer,ForeignKey(params['schema']+'.magazzino.id', onupdate="CASCADE", ondelete="RESTRICT")),
+                Column('id_pos',Integer,ForeignKey(params['schema']+'.pos.id', onupdate="CASCADE", ondelete="RESTRICT")),
                 schema=params['schema']
                 )
     chiusuraFiscaleTable.create(checkfirst=True)
@@ -75,7 +84,7 @@ if hasattr(conf, 'VenditaDettaglio'):
         #conf.VenditaDettaglio.primoavvio = "no"
         #conf.save()
 
-    testatascontrinoTable = Table('testata_scontrino', params['metadata'], autoload=True, schema=params['schema'])
+#    testatascontrinoTable = Table('testata_scontrino', params['metadata'], autoload=True, schema=params['schema'])
     testataDoctoTable = Table('sconto_scontrino', params['metadata'], autoload=True, schema=params['schema'])
     scontoTestataScontrinoTable = Table('sconto_testata_scontrino', params['metadata'],
             Column('id',Integer,ForeignKey(params['schema']+'.sconto_scontrino.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
@@ -93,6 +102,11 @@ if hasattr(conf, 'VenditaDettaglio'):
     tabella5 = schema+".magazzino"
     tabella6 = schema+".pos"
     tabella7 = "promogest2.utente"
+    tabella8 = schema+".chiusura_fiscale"
+
+#testataScontrinoTable
+#    if "testata_scontrino.id_magazzino" in str(testataScontrinoTable.c):
+#        print "OOOOOOOOOOOOOOOOOOOOO"
 
     """ Rivediamo la struttura della testata vendita al dettaglio per gestire
         anche una definizione dei magazzini, dei punti cassa e possibilmente
@@ -107,27 +121,20 @@ if hasattr(conf, 'VenditaDettaglio'):
     #    session.flush()
     except:
         session.rollback()
-        print "LACOLONNA ID:MAGAZZINO C?E"
+        print "LACOLONNA ID_MAGAZZINO C'E"
 
     #if "id_magazzino" in testatascontrinoTable.c:
     try:
         stri="""ALTER TABLE %s
             ADD CONSTRAINT testata_scontrino_id_magazzino_id_fkey FOREIGN KEY (id_magazzino)
             REFERENCES %s (id) MATCH SIMPLE
-            ON UPDATE CASCADE ON DELETE CASCADE;""" %(tabella4,tabella5)
+            ON UPDATE CASCADE ON DELETE RESTRICT;""" %(tabella4,tabella5)
         session.execute(text(stri))
         session.commit()
     except:
         session.rollback()
         print "ADD ID MAGAZZINO fallito"
 
-    posTable = Table('pos', params['metadata'],
-            Column('id', Integer, primary_key=True),
-            Column('denominazione', String(200), nullable=False ),
-            Column('denominazione_breve', String(10), nullable=False),
-            schema=params['schema']
-            )
-    posTable.create(checkfirst=True)
 
     try:
         comando = 'ALTER TABLE %s ADD COLUMN id_pos integer ;'  % tabella4
@@ -138,12 +145,12 @@ if hasattr(conf, 'VenditaDettaglio'):
         session.rollback()
         print "LACOLONNA ID_POS C'E"
 
-    #if "id_magazzino" in testatascontrinoTable.c:
+
     try:
         stri="""ALTER TABLE %s
             ADD CONSTRAINT testata_scontrino_id_pos_id_fkey FOREIGN KEY (id_pos)
             REFERENCES %s (id) MATCH SIMPLE
-            ON UPDATE CASCADE ON DELETE CASCADE;""" %(tabella4,tabella6)
+            ON UPDATE CASCADE ON DELETE RESTRICT;""" %(tabella4,tabella6)
         session.execute(text(stri))
         session.commit()
     except:
@@ -166,7 +173,61 @@ if hasattr(conf, 'VenditaDettaglio'):
         stri="""ALTER TABLE %s
             ADD CONSTRAINT testata_scontrino_id_user_id_fkey FOREIGN KEY (id_user)
             REFERENCES %s (id) MATCH SIMPLE
-            ON UPDATE CASCADE ON DELETE CASCADE;""" %(tabella4,tabella7)
+            ON UPDATE CASCADE ON DELETE RESTRICT;""" %(tabella4,tabella7)
+        session.execute(text(stri))
+        session.commit()
+    except:
+        session.rollback()
+        print "ADD FK ID USER fallito"
+
+    try:
+        stri="""ALTER TABLE %s
+            ADD CONSTRAINT sconto_riga_scontrino_id_fkey FOREIGN KEY (id)
+            REFERENCES %s (id) MATCH SIMPLE
+            ON UPDATE CASCADE ON DELETE DELETE;"""%(tabella,tabella2)
+        session.execute(text(stri))
+        session.commit()
+    except:
+        session.rollback()
+        print "ADD FK SCONTO RIGA SCONTRINO fallito"
+
+
+    """ AGGIUNGO LA FK ID_MAGAZZINO NELLA TABELLA CHIUSURA FISCALE"""
+
+    try:
+        comando = 'ALTER TABLE %s ADD COLUMN id_magazzino integer ;'  % tabella8
+        session.connection().execute(text(comando))
+        session.commit()
+    except:
+        session.rollback()
+        print "LA COLONNA ID_MAGAZZINO C'E"
+
+    try:
+        stri="""ALTER TABLE %s
+            ADD CONSTRAINT chiusura_fiscale_id_magazzino_id_fkey FOREIGN KEY (id_magazzino)
+            REFERENCES %s (id) MATCH SIMPLE
+            ON UPDATE CASCADE ON DELETE RESTRICT;""" %(tabella8,tabella5)
+        session.execute(text(stri))
+        session.commit()
+    except:
+        session.rollback()
+        print "ADD FK ID MAGAZZINO fallito"
+
+    """ AGGIUNGO LA FK ID_POS NELLA TABELLA CHIUSURA FISCALE"""
+
+    try:
+        comando = 'ALTER TABLE %s ADD COLUMN id_pos integer ;'  % tabella8
+        session.connection().execute(text(comando))
+        session.commit()
+    except:
+        session.rollback()
+        print "LA COLONNA ID_pos C'E"
+
+    try:
+        stri="""ALTER TABLE %s
+            ADD CONSTRAINT chiusura_fiscale_id_pos_id_fkey FOREIGN KEY (id_pos)
+            REFERENCES %s (id) MATCH SIMPLE
+            ON UPDATE CASCADE ON DELETE RESTRICT;""" %(tabella8,tabella6)
         session.execute(text(stri))
         session.commit()
     except:
@@ -174,18 +235,20 @@ if hasattr(conf, 'VenditaDettaglio'):
         print "ADD FK ID POS fallito"
 
     try:
-        stri="""ALTER TABLE %s
-            ADD CONSTRAINT sconto_riga_scontrino_id_fkey FOREIGN KEY (id)
-            REFERENCES %s (id) MATCH SIMPLE
-            ON UPDATE CASCADE ON DELETE CASCADE;"""%(tabella,tabella2)
-        session.execute(text(stri))
+        stri = 'ALTER TABLE %s DROP CONSTRAINT chiusura_fiscale_data_chiusura_key'%tabella8
+        session.execute(stri)
         session.commit()
-#        session.flush()
     except:
         session.rollback()
-        print "ADD FK SCONTO RIGA SCONTRINO fallito"
+        print " LA UNIQUE e' già stata tolta"
 
-
+    try:
+        stri = 'ALTER TABLE %s ADD CONSTRAINT chiusura_fiscale_data_chiusura_key'%tabella8
+        session.execute(stri)
+        session.commit()
+    except:
+        session.rollback()
+        print " LA UNIQUE e' già stata tolta"
 
 #if not hasattr(conf.VenditaDettaglio,"migrazione_sincro_effettuata") and conf.VenditaDettaglio.migrazione_sincro_effettuata =="no" and
 if "ciccio" == "pluto":

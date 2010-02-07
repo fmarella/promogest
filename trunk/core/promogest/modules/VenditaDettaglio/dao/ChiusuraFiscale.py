@@ -18,9 +18,12 @@ class ChiusuraFiscale(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'id':chiusura_fiscale.c.id ==v,
-        "dataChiusura": chiusura_fiscale.c.data_chiusura ==v,
-                        }
+        if k == 'dataChiusura':
+            dic= {k: chiusura_fiscale.c.data_chiusura ==v}
+        elif k == 'idMagazzino':
+            dic = {k: chiusura_fiscale.c.id_magazzino == v}
+        elif k == 'idPuntoCassa':
+            dic = {k: chiusura_fiscale.c.id_pos == v}
         return  dic[k]
 
 chiusura_fiscale=Table('chiusura_fiscale',

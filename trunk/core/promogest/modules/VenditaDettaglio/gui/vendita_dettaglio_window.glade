@@ -93,6 +93,26 @@
                 </child>
               </object>
             </child>
+            <child>
+              <object class="GtkMenuItem" id="Opzioni">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Opzioni</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu2">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkMenuItem" id="anagrafica_punti_cassa">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Anagrafica Punti Cassa</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_anagrafica_punti_cassa_activate_item"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -118,6 +138,19 @@
                     <property name="visible">True</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">1</property>
+                    <child>
+                      <object class="GtkLabel" id="info_label">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.029999999329447746</property>
+                        <property name="ypad">3</property>
+                        <property name="label" translatable="yes">Info:</property>
+                        <property name="selectable">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
                     <child>
                       <object class="GtkTable" id="table23">
                         <property name="visible">True</property>
@@ -865,7 +898,7 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="position">0</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
                     <child>
@@ -903,7 +936,7 @@
                       </object>
                       <packing>
                         <property name="padding">3</property>
-                        <property name="position">1</property>
+                        <property name="position">2</property>
                       </packing>
                     </child>
                     <child>
@@ -1485,7 +1518,7 @@ Scontrino</property>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="position">2</property>
+                        <property name="position">3</property>
                       </packing>
                     </child>
                     <child>
@@ -1578,7 +1611,7 @@ Scontrino</property>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="position">3</property>
+                        <property name="position">4</property>
                       </packing>
                     </child>
                   </object>
@@ -1867,125 +1900,125 @@ INVIO  per confermare</property>
       <action-widget response="0">generico_ok_button</action-widget>
     </action-widgets>
   </object>
-  <object class="GtkDialog" id="altre_opzioni_dialog">
+  <object class="GtkMessageDialog" id="altre_opzioni_dialog">
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">Altre opzioni</property>
-    <property name="resizable">False</property>
+    <property name="type">popup</property>
+    <property name="title" translatable="yes">opzioni varie dialog</property>
     <property name="modal">True</property>
     <property name="window_position">center-always</property>
+    <property name="default_width">400</property>
+    <property name="default_height">115</property>
     <property name="destroy_with_parent">True</property>
-    <property name="type_hint">utility</property>
+    <property name="type_hint">normal</property>
     <property name="accept_focus">False</property>
     <property name="focus_on_map">False</property>
     <property name="transient_for">vendita_dettaglio_window</property>
+    <property name="message_type">warning</property>
+    <property name="text" translatable="yes">&lt;b&gt;ATTENZIONE&lt;/b&gt;
+Le seguenti combo permettono di selezionare il punto vendita 
+ed il punto cassa da cui si sta effettuando la vendita.
+Il punto vendita &#xE8; obbligatorio ma &#xE8; vivamente consigliato 
+di aggiungere e settare anche gli eventuali punti cassa 
+dal menu "opzioni" della finestra principale</property>
+    <property name="use_markup">True</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox5">
+      <object class="GtkVBox" id="dialog-vbox7">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
-          <object class="GtkVBox" id="vbox1__">
+          <object class="GtkFrame" id="altre_opzioni_frame">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">in</property>
             <child>
-              <object class="GtkFrame" id="altre_opzioni_frame">
+              <object class="GtkAlignment" id="ao_alignment">
                 <property name="visible">True</property>
-                <property name="label_xalign">0</property>
-                <property name="shadow_type">in</property>
+                <property name="left_padding">12</property>
                 <child>
-                  <object class="GtkAlignment" id="ao_alignment">
+                  <object class="GtkVBox" id="vbox2XX">
                     <property name="visible">True</property>
-                    <property name="left_padding">12</property>
+                    <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkVBox" id="vbox2XX">
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <object class="GtkHBox" id="hbox1">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <child>
-                          <placeholder/>
+                          <object class="GtkLabel" id="ao_magazzino_label">
+                            <property name="visible">True</property>
+                            <property name="xpad">3</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Magazzino /P Vendita&lt;/b&gt;</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
                         </child>
                         <child>
-                          <object class="GtkHBox" id="hbox1">
+                          <object class="GtkComboBox" id="ao_magazzino_combobox">
                             <property name="visible">True</property>
-                            <child>
-                              <object class="GtkLabel" id="ao_magazzino_label">
-                                <property name="visible">True</property>
-                                <property name="xpad">3</property>
-                                <property name="label" translatable="yes">Magazzino /P Vendita</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkComboBox" id="ao_magazzino_combobox">
-                                <property name="visible">True</property>
-                              </object>
-                              <packing>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
                           </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkHBox" id="ao_hbox2">
+                        <property name="visible">True</property>
                         <child>
-                          <object class="GtkHBox" id="ao_hbox2">
+                          <object class="GtkLabel" id="ao_punto_cassa_label">
                             <property name="visible">True</property>
-                            <child>
-                              <object class="GtkLabel" id="ao_punto_cassa_label">
-                                <property name="visible">True</property>
-                                <property name="xpad">30</property>
-                                <property name="label" translatable="yes">Punto Cassa</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkComboBox" id="ao_punto_cassa_combobox">
-                                <property name="visible">True</property>
-                              </object>
-                              <packing>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
+                            <property name="xpad">30</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Punto Cassa&lt;/b&gt;</property>
+                            <property name="use_markup">True</property>
                           </object>
                           <packing>
-                            <property name="position">2</property>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkComboBox" id="ao_punto_cassa_combobox">
+                            <property name="visible">True</property>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
                           </packing>
                         </child>
                       </object>
+                      <packing>
+                        <property name="position">2</property>
+                      </packing>
                     </child>
                   </object>
                 </child>
-                <child type="label">
-                  <object class="GtkLabel" id="ao_label">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Altre Opzioni di vendita&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
-                  </object>
-                </child>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="position">0</property>
-              </packing>
             </child>
-            <child>
-              <placeholder/>
+            <child type="label">
+              <object class="GtkLabel" id="ao_label">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">&lt;b&gt;Altre Opzioni di vendita&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+              </object>
             </child>
           </object>
           <packing>
-            <property name="position">1</property>
+            <property name="expand">False</property>
+            <property name="position">5</property>
           </packing>
         </child>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area5">
+          <object class="GtkHButtonBox" id="dialog-action_area7">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
@@ -2003,7 +2036,7 @@ INVIO  per confermare</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">1</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>

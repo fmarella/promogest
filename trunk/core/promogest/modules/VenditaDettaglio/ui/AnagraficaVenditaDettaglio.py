@@ -22,6 +22,7 @@ from promogest.dao.ListinoArticolo import ListinoArticolo
 from GestioneScontrini import GestioneScontrini
 from GestioneChiusuraFiscale import GestioneChiusuraFiscale
 from venditaDettaglioUiPart import drawPart
+from VenditaDettaglioUtils import fillComboboxPos
 
 if hasattr(Environment.conf.VenditaDettaglio,"backend") and\
     Environment.conf.VenditaDettaglio.backend.upper() =="OLIVETTI" and\
@@ -48,9 +49,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         GladeWidget.__init__(self, 'vendita_dettaglio_window',
                         fileName='VenditaDettaglio/gui/vendita_dettaglio_window.glade',
                         isModule=True)
-#        if not Environment.magazzino_pos:
-#            self.altre_opzioni_dialog.show_all()
-
+        if not Environment.magazzino_pos:
+            fillComboboxMagazzini(self.ao_magazzino_combobox)
+            fillComboboxPos(self.ao_punto_cassa_combobox)
+            self.altre_opzioni_dialog.show_all()
+#            self.altre_opzioni_dialog.set_transient_for(self.getTopLevel())
 
         self.placeWindow(self.getTopLevel())
         self._currentRow = {}
@@ -61,7 +64,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.vendita_dettaglio_statusbar.push(context_id, textStatusBar)
         azienda = Azienda().getRecord(id=Environment.params["schema"])
         self.logo_articolo.set_from_file(azienda.percorso_immagine)
-#        self.createPopupMenu()
+        self.createPopupMenu()
         #nascondo i dati riga e le info aggiuntive
         self.dati_riga_frame.destroy()
         self.shop = Environment.shop
@@ -79,9 +82,26 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
 
     def on_ao_ok_button_clicked(self, button):
-#        self.show_all()
-        print "okok"
+        self.idPuntoCassa = findIdFromCombobox(self.ao_punto_cassa_combobox)
+        self.idMagazzino = findIdFromCombobox(self.ao_magazzino_combobox)
+        strPuntoCassa = findStrFromCombobox(self.ao_punto_cassa_combobox,2)
+        strMagazzino = findStrFromCombobox(self.ao_magazzino_combobox,2)
+#        if not self.idPuntoCassa:
+#            obligatoryField(None, widget=None, msg="Punto Cassa Obbligatorio")
+#            return
+        if not self.idMagazzino:
+            obligatoryField(None, widget=None, msg="Magazzino Obbligatorio")
+            return
+        print "DDDDDDDDDDDDDDDDDDDDDDDDDDD",  Environment.params["usernameLoggedList"][1]
+        self.altre_opzioni_dialog.destroy()
+        testo = "OPERATORE: <b>%s</b>  --  MAGAZZINO/P.VENDITA: <b>%s</b>  --  PUNTO CASSA: <b>%s</b>" %(Environment.params["usernameLoggedList"][1], strMagazzino, strPuntoCassa)
+        self.info_label.set_markup(testo)
 
+    def on_anagrafica_punti_cassa_activate_item(self, item):
+        from AnagraficaPOS import AnagraficaPos
+        anag = AnagraficaPos()
+
+        showAnagrafica(self.getTopLevel(), anag, item, self)
 
     def on_column_prezzo_edited(self, cell, path, value, treeview, editNext=True):
         """ Function to set the value prezzo edit in the cell"""
@@ -597,6 +617,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         dao.totale_sconto = mN(self.sconto_totale_entry.get_text())
         dao.totale_subtotale = mN(self.label_subtotale.get_text())
         dao.tipo_sconto_scontrino = self.tipo_sconto_scontrino
+        dao.id_magazzino = int(self.idMagazzino)
+        dao.id_pos = int(self.idPuntoCassa)
+        dao.id_user = Environment.params["usernameLoggedList"][0]
 
         #print "TOTALI",totale_scontrino,  totale_sconto, totale_subtotale
 
@@ -998,3 +1021,23 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         gest = GestioneScontrini(daData=None, aData=None, righe=self.idRhesusSource)
         gestWnd = gest.getTopLevel()
         showAnagraficaRichiamata(self.getTopLevel(), gestWnd, None, self.creaScontrinoReso)
+
+
+def on_anagrafica_destroyed(anagrafica_window, argList):
+    mainWindow = argList[0]
+    anagraficaButton= argList[1]
+    mainClass = argList[2]
+    if anagrafica_window in Login.windowGroup:
+        Login.windowGroup.remove(anagrafica_window)
+#    if anagraficaButton is not None:
+#        anagraficaButton.set_active(False)
+#    if mainClass is not None:
+#        mainClass.on_button_refresh_clicked()
+
+
+def showAnagrafica(window, anag, button=None, mainClass=None):
+    anagWindow = anag.getTopLevel()
+    anagWindow.connect("destroy", on_anagrafica_destroyed, [window, button,mainClass])
+    #anagWindow.connect("hide", on_anagrafica_destroyed, [window, button,mainClass])
+    anagWindow.set_transient_for(window)
+    anagWindow.show_all()
