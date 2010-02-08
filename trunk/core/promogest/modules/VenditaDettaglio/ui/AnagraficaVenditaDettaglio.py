@@ -728,7 +728,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         dao.persist()
         # Creo il file e lo stampo
         if DRIVER and not self.no_print_toggled.get_active():
+            print "SIAMO QUI PRONTI A MANDARE LO SCONTRINO IN CASSA"
             filescontrino = self.createFileToPos(dao)
+            print "TORNATI", filescontrino
         self.last_scontr_label.set_text("Tot. scontrino precedente: "+str(dao.totale_scontrino))
         # Svuoto transazione e mi rimetto in stato di ricerca
         self.search_button.set_sensitive(True)
