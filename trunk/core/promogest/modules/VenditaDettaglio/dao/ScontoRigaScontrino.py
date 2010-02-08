@@ -9,7 +9,9 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
+from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import scontoRigaScontrinoDel
+
 
 class ScontoRigaScontrino(Dao):
 
@@ -29,7 +31,7 @@ sconto_riga_scontrino=Table('sconto_riga_scontrino',
 
 
 sconto_scontrino = Table('sconto_scontrino',
-                                params['metadata'],     
+                                params['metadata'],
                                 schema = params['schema'],
                                 autoload=True)
 

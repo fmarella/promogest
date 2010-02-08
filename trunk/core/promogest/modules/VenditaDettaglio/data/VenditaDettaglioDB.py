@@ -13,16 +13,18 @@ from promogest.Environment import *
 if hasattr(conf, 'VenditaDettaglio'):
     #if conf.VenditaDettaglio.primoavvio=="yes":
 
+
     posTable = Table('pos', params['metadata'],
             Column('id', Integer, primary_key=True),
             Column('denominazione', String(200), nullable=False ),
             Column('denominazione_breve', String(10), nullable=False),
-            schema=params['schema']
+            schema=params['schema'], useexisting =True
             )
     posTable.create(checkfirst=True)
 
     magazzinoTable = Table('magazzino', params['metadata'], autoload=True, schema=params['schema'])
     testataMovimentoTable = Table('testata_movimento', params['metadata'], autoload=True, schema=params['schema'])
+#    ccdTypeTable = Table('credit_card_type', params['metadata'], autoload=True, schema=params['schema'])
     testataScontrinoTable = Table('testata_scontrino', params['metadata'],
                 Column('id',Integer,primary_key=True),
                 Column('data_inserimento',DateTime,PassiveDefault(func.now()),nullable=False),
@@ -33,9 +35,11 @@ if hasattr(conf, 'VenditaDettaglio'):
                 #chiavi esterne
                 Column('id_magazzino',Integer,ForeignKey(params['schema']+'.magazzino.id', onupdate="CASCADE", ondelete="RESTRICT")),
                 Column('id_pos',Integer,ForeignKey(params['schema']+'.pos.id', onupdate="CASCADE", ondelete="RESTRICT")),
+                Column('id_ccardtype',Integer,ForeignKey(params['schema']+'.credit_card_type.id', onupdate="CASCADE", ondelete="RESTRICT")),
                 Column('id_user',Integer,ForeignKey(params['mainSchema']+'.utente.id', onupdate="CASCADE", ondelete="RESTRICT")),
                 Column('id_testata_movimento',Integer,ForeignKey(params['schema']+'.testata_movimento.id', onupdate="CASCADE", ondelete="RESTRICT")),
-                schema=params['schema']
+                schema=params['schema'],
+                useexisting =True
                 )
     testataScontrinoTable.create(checkfirst=True)
 
@@ -103,6 +107,7 @@ if hasattr(conf, 'VenditaDettaglio'):
     tabella6 = schema+".pos"
     tabella7 = "promogest2.utente"
     tabella8 = schema+".chiusura_fiscale"
+    tabella9 = schema+".credit_card_type"
 
 #testataScontrinoTable
 #    if "testata_scontrino.id_magazzino" in str(testataScontrinoTable.c):
@@ -135,6 +140,28 @@ if hasattr(conf, 'VenditaDettaglio'):
         session.rollback()
         print "ADD ID MAGAZZINO fallito"
 
+
+
+    try:
+        comando = 'ALTER TABLE %s ADD COLUMN id_ccardtype integer ;'  % tabella4
+        session.connection().execute(text(comando))
+        session.commit()
+    #    session.flush()
+    except:
+        session.rollback()
+        print "LACOLONNA ID_CCARDTYPE C'E"
+
+    #if "id_magazzino" in testatascontrinoTable.c:
+    try:
+        stri="""ALTER TABLE %s
+            ADD CONSTRAINT testata_scontrino_id_ccardtype_id_fkey FOREIGN KEY (id_ccardtype)
+            REFERENCES %s (id) MATCH SIMPLE
+            ON UPDATE CASCADE ON DELETE SET NULL;""" %(tabella4,tabella9)
+        session.execute(text(stri))
+        session.commit()
+    except:
+        session.rollback()
+        print "ADD ID CCardType fallito"
 
     try:
         comando = 'ALTER TABLE %s ADD COLUMN id_pos integer ;'  % tabella4
@@ -250,8 +277,9 @@ if hasattr(conf, 'VenditaDettaglio'):
         session.rollback()
         print " LA UNIQUE e' già stata tolta"
 
-#if not hasattr(conf.VenditaDettaglio,"migrazione_sincro_effettuata") and conf.VenditaDettaglio.migrazione_sincro_effettuata =="no" and
-if "ciccio" == "pluto":
+
+if not hasattr(conf.VenditaDettaglio,"migrazione_sincro_effettuata") or conf.VenditaDettaglio.migrazione_sincro_effettuata =="no":
+#if "ciccio" == "pluto":
     msg = """ATTENZIONE, per qualche giorno l'avvio del pg2
 potrebbe essere lento ( anche qualche minuto):
 Il rallentamento è solo di chi usa il modulo di
@@ -270,6 +298,7 @@ Ci scusiamo per l'inconveniente.
                                msg)
     dialog.run()
     dialog.destroy()
+
     ####################### sezione deciata allo sconto riga scontrino .... ##############
 
     from promogest.modules.VenditaDettaglio.dao.ScontoScontrino import ScontoScontrino
@@ -277,20 +306,11 @@ Ci scusiamo per l'inconveniente.
     from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
     from promogest.dao.Sconto import Sconto
 
-    try:
-        stro = 'ALTER TABLE %s DROP CONSTRAINT "sconto_riga_scontrino_id_fkey";' %tabella
-        session.execute(text(stro))
-        session.commit()
-        session.flush()
-    except:
-        session.rollback()
-
     dati_sconto = params["session"].query(scontoRigaScontrinoTable.c.id).all()
     cc = None
 #    print dati_sconto
     if dati_sconto:
         for dato in dati_sconto:
-            print dato[0]
             riga = Sconto().getRecord(id=dato[0])
             test = ScontoScontrino().getRecord(id=dato[0])
             if not test:
@@ -298,14 +318,13 @@ Ci scusiamo per l'inconveniente.
                 cc.id = dato[0]
                 cc.valore= riga.valore
                 cc.tipo_sconto = riga.tipo_sconto
-                cc.save_update(cc)
+                session.add(cc)
             else:
                 continue
         try:
-            if cc:
-                cc.commit()
+            session.commit()
         except:
-            cc.rollback()
+            session.rollback()
             print "GIA FATTO"
 
     try:
@@ -315,29 +334,23 @@ Ci scusiamo per l'inconveniente.
             ON UPDATE CASCADE ON DELETE CASCADE;"""%(tabella,tabella2)
         session.execute(text(stri))
         session.commit()
-        session.flush()
     except:
         print "ADD fallito"
 
     #################### sezione sconto testata scontrino ##########################
 
     try:
-        conn = params["engine"].connect()
-        trans = conn.begin()
         stri = 'ALTER TABLE %s DROP CONSTRAINT sconto_testata_scontrino_id_fkey'%tabella3
-        conn.execute(stri)
-        trans.commit()
-        trans.close()
+        session.connection().execute(stri)
+        session.commit()
     except:
-        trans.rollback()
+        session.rollback()
         print "drop fallito"
 
     dati_sconto2 = params["session"].query(scontoTestataScontrinoTable.c.id).all()
     cc2 = None
-    #print dati_sconto2
     if dati_sconto2:
         for dato in dati_sconto2:
-            print dato[0]
             riga = Sconto().getRecord(id=dato[0])
             test = ScontoScontrino().getRecord(id=dato[0])
             if not test:
@@ -345,14 +358,11 @@ Ci scusiamo per l'inconveniente.
                 cc.id = dato[0]
                 cc.valore= riga.valore
                 cc.tipo_sconto = riga.tipo_sconto
-                cc.save_update(cc)
-            else:
-                continue
+                session.add(cc)
         try:
-            if cc:
-                cc.commit()
+            session.commit()
         except:
-            cc.rollback()
+            session.rollback()
             print "GIA FATTO"
 
     try:
@@ -362,9 +372,8 @@ Ci scusiamo per l'inconveniente.
                     ON UPDATE CASCADE ON DELETE CASCADE;"""%(tabella3,tabella2)
         session.execute(text(stri))
         session.commit()
-        session.flush()
-#        trans2.close()
     except:
+        session.rollback()
         print "ADD fallito"
 
 
@@ -372,5 +381,7 @@ Ci scusiamo per l'inconveniente.
     try:
         command = "SELECT setval( '%s',(SELECT max(id)+1 FROM %s));" %(params["schema"]+".sconto_scontrino_id_seq",params["schema"] +".sconto_scontrino")
         session.execute(text(command))
+        session.commit()
     except:
+        session.rollback()
         print "PURE QUESTO FATTO"

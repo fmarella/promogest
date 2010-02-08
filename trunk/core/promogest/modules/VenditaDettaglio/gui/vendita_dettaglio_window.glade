@@ -109,6 +109,14 @@
                         <signal name="activate" handler="on_anagrafica_punti_cassa_activate_item"/>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkMenuItem" id="anagrafica_tipi_carta">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Anagrafica Tipi Carta</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_anagrafica_tipi_carta_activate"/>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -1115,26 +1123,6 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="non_contanti_entry">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="width_chars">50</property>
-                                    <property name="secondary_icon_stock">gtk-clear</property>
-                                    <property name="secondary_icon_activatable">True</property>
-                                    <property name="secondary_icon_sensitive">True</property>
-                                    <signal name="insert_text" handler="insert_text_decimal"/>
-                                    <signal name="focus_out_event" handler="on_focus_out_event"/>
-                                    <signal name="focus_in_event" handler="on_focus_in_event"/>
-                                    <signal name="icon_press" handler="on_icon_press"/>
-                                  </object>
-                                  <packing>
-                                    <property name="top_attach">3</property>
-                                    <property name="bottom_attach">4</property>
-                                    <property name="x_options">GTK_FILL</property>
-                                    <property name="y_options"></property>
-                                  </packing>
-                                </child>
-                                <child>
                                   <object class="GtkEntry" id="contanti_entry">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
@@ -1248,6 +1236,58 @@
                                   <packing>
                                     <property name="top_attach">4</property>
                                     <property name="bottom_attach">5</property>
+                                    <property name="y_options"></property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkHBox" id="cart_hbox1">
+                                    <property name="visible">True</property>
+                                    <child>
+                                      <object class="GtkEntry" id="non_contanti_entry">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="invisible_char">&#x2022;</property>
+                                        <property name="width_chars">20</property>
+                                        <property name="secondary_icon_stock">gtk-clear</property>
+                                        <property name="secondary_icon_activatable">True</property>
+                                        <property name="secondary_icon_sensitive">True</property>
+                                        <signal name="insert_text" handler="insert_text_decimal"/>
+                                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                        <signal name="icon_press" handler="on_icon_press"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="tipi_carta_label">
+                                        <property name="visible">True</property>
+                                        <property name="xpad">2</property>
+                                        <property name="label" translatable="yes">Tipi Carta</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="padding">1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="card_type_combobox">
+                                        <property name="sensitive">False</property>
+                                      </object>
+                                      <packing>
+                                        <property name="position">2</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="top_attach">3</property>
+                                    <property name="bottom_attach">4</property>
+                                    <property name="x_options">GTK_FILL</property>
                                     <property name="y_options"></property>
                                   </packing>
                                 </child>
@@ -1759,8 +1799,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">ctrl +( +) aumenta</property>
                 <property name="image">image_plus</property>
-                <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <signal name="clicked" handler="on_plus_button_clicked"/>
               </object>
               <packing>
@@ -1774,8 +1814,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">ctrl +( - ) diminisce</property>
                 <property name="image">image3_minus</property>
-                <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <signal name="clicked" handler="on_minus_button_clicked"/>
               </object>
               <packing>
@@ -1819,8 +1859,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">(+) aumenta</property>
                 <property name="image">image2_plus</property>
-                <accelerator key="plus" signal="clicked"/>
                 <accelerator key="KP_Add" signal="clicked"/>
+                <accelerator key="plus" signal="clicked"/>
                 <signal name="clicked" handler="on_plus2_button_clicked"/>
               </object>
               <packing>
@@ -1834,8 +1874,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">(-) diminuisce</property>
                 <property name="image">image4_minus2</property>
-                <accelerator key="minus" signal="clicked"/>
                 <accelerator key="KP_Subtract" signal="clicked"/>
+                <accelerator key="minus" signal="clicked"/>
                 <signal name="clicked" handler="on_minus2_button_clicked"/>
               </object>
               <packing>
@@ -1876,8 +1916,8 @@ INVIO  per confermare</property>
                 <property name="tooltip_markup">Conferma con invio</property>
                 <property name="border_width">1</property>
                 <property name="use_stock">True</property>
-                <accelerator key="KP_Enter" signal="clicked"/>
                 <accelerator key="Return" signal="clicked"/>
+                <accelerator key="KP_Enter" signal="clicked"/>
                 <signal name="clicked" handler="on_generico_ok_button_clicked"/>
               </object>
               <packing>
@@ -1915,11 +1955,13 @@ INVIO  per confermare</property>
     <property name="transient_for">vendita_dettaglio_window</property>
     <property name="message_type">warning</property>
     <property name="text" translatable="yes">&lt;b&gt;ATTENZIONE&lt;/b&gt;
-Le seguenti combo permettono di selezionare il punto vendita 
-ed il punto cassa da cui si sta effettuando la vendita.
-Il punto vendita &#xE8; obbligatorio ma &#xE8; vivamente consigliato 
-di aggiungere e settare anche gli eventuali punti cassa 
-dal menu "opzioni" della finestra principale</property>
+Le seguenti combobox permettono di selezionare 
+il punto vendita ed il punto cassa da cui si sta 
+effettuando la vendita.
+Il punto vendita &#xE8; obbligatorio ma &#xE8; vivamente 
+consigliato aggiungere e settare anche gli eventuali 
+punti cassa dal menu "opzioni" della finestra principale
+dell'interfaccia di vendita</property>
     <property name="use_markup">True</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox7">

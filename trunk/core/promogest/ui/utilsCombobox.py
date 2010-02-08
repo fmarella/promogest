@@ -104,6 +104,30 @@ def fillComboboxCategorieArticoli(combobox, filter=False):
     if combobox.__class__ is gtk.ComboBoxEntry:
         combobox.set_text_column(2)
 
+def fillComboboxCCardType(combobox, filter=False):
+    """
+    Crea l'elenco dei tipi di carte di credito
+    """
+    from promogest.dao.CCardType import CCardType
+    model = gtk.ListStore(object, int, str)
+    cats = CCardType().select(offset=None,batchSize=None, orderBy="denominazione")
+    if not filter:
+        emptyRow = ''
+    else:
+        emptyRow = '< Tutti >'
+    model.append((None, 0, emptyRow))
+    for c in cats:
+
+        model.append((c, c.id, (c.denominazione or '')[0:20]))
+
+    combobox.clear()
+    renderer = gtk.CellRendererText()
+    combobox.pack_start(renderer, True)
+    combobox.add_attribute(renderer, 'text', 2)
+    combobox.set_model(model)
+    if combobox.__class__ is gtk.ComboBoxEntry:
+        combobox.set_text_column(2)
+
 def fillComboboxFamiglieArticoli(combobox, filter=False, ignore=[]):
     """
     Crea l'elenco delle famiglie articoli

@@ -11,8 +11,12 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from promogest.dao.TestataMovimento import TestataMovimento
+from promogest.dao.CCardType import CCardType
+from promogest.dao.Magazzino import Magazzino
+from promogest.dao.User import User
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
+from promogest.modules.VenditaDettaglio.dao.Pos import Pos
 from promogest.ui.utils import *
 
 
@@ -139,6 +143,10 @@ testata_scontrino=Table('testata_scontrino',
                     autoload=True)
 
 std_mapper = mapper(TestataScontrino, testata_scontrino,properties={
+        "cctypee":relation(CCardType,primaryjoin=(testata_scontrino.c.id_ccardtype==CCardType.id)),
+        "mag":relation(Magazzino,primaryjoin=(testata_scontrino.c.id_magazzino==Magazzino.id)),
+        "usr":relation(User,primaryjoin=(testata_scontrino.c.id_user==User.id)),
+        "poss":relation(Pos,primaryjoin=(testata_scontrino.c.id_pos==Pos.id)),
         "testatamovimento": relation(TestataMovimento,primaryjoin=
                 (testata_scontrino.c.id_testata_movimento==TestataMovimento.id), backref="testata_scontrino"),
         "riga_scontr":relation(RigaScontrino,primaryjoin=RigaScontrino.id_testata_scontrino==testata_scontrino.c.id, backref="testata_scontrino",cascade="all, delete"),

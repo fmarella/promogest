@@ -103,6 +103,13 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         showAnagrafica(self.getTopLevel(), anag, item, self)
 
+    def on_anagrafica_tipi_carta_activate(self, item):
+        from promogest.ui.AnagraficaCCardType import AnagraficaCCardType
+        anag = AnagraficaCCardType()
+
+        showAnagrafica(self.getTopLevel(), anag, item, self)
+
+
     def on_column_prezzo_edited(self, cell, path, value, treeview, editNext=True):
         """ Function to set the value prezzo edit in the cell"""
         model = treeview.get_model()
@@ -619,6 +626,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         dao.tipo_sconto_scontrino = self.tipo_sconto_scontrino
         dao.id_magazzino = int(self.idMagazzino)
         dao.id_pos = int(self.idPuntoCassa)
+        dao.id_ccardtype = findIdFromCombobox(self.card_type_combobox)
         dao.id_user = Environment.params["usernameLoggedList"][0]
 
         #print "TOTALI",totale_scontrino,  totale_sconto, totale_subtotale
@@ -831,9 +839,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             self.contanti_entry.set_sensitive(True)
             self.contanti_entry.grab_focus()
             self.non_contanti_entry.set_text('')
+            self.card_type_combobox.set_sensitive(False)
             self.non_contanti_entry.set_sensitive(False)
         else:
             self.contanti_entry.set_sensitive(False)
+            self.card_type_combobox.set_sensitive(False)
             self.non_contanti_entry.set_sensitive(False)
         self.refreshTotal()
 
@@ -841,6 +851,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         #predisposizione per il pagamento non in contanti
         if self.total_button.get_property('sensitive'):
             self.non_contanti_entry.set_sensitive(True)
+            self.card_type_combobox.set_sensitive(True)
             self.non_contanti_entry.grab_focus()
             self.non_contanti_entry.set_text(str(self.refreshTotal()[0]))
             self.contanti_entry.set_text('')
@@ -848,6 +859,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         else:
             self.contanti_entry.set_sensitive(False)
             self.non_contanti_entry.set_sensitive(False)
+            self.card_type_combobox.set_sensitive(False)
         self.refreshTotal()
 
     def on_assegni_radio_button_clicked(self, button):

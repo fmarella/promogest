@@ -19,6 +19,16 @@ import datetime
 #if conf.PromoWear.primoavvio=="yes":
 """ tabelle schema principale """
 
+ccardTypeTable = Table('credit_card_type', params['metadata'],
+        Column('id', Integer, primary_key=True),
+        Column('denominazione', String(200), nullable=False ),
+        Column('denominazione_breve', String(10), nullable=False),
+        schema=params['schema'],
+        )
+ccardTypeTable.create(checkfirst=True)
+
+
+
 #listinoArticoloTable = Table('listino_articolo', params['metadata'], autoload=True, schema=params['schema'])
 #scontoTable = Table('sconto', params['metadata'], autoload=True, schema=params['schema'])
 
@@ -131,6 +141,3 @@ import datetime
 #comando ="ALTER TABLE %s ALTER COLUMN data_listino_articolo TYPE time;" %tabella2
 #params['session'].connection().execute(text(comando))
 #print "SE TUTTO E? ANDATO ENE BUON LAVORO"
-
-
-

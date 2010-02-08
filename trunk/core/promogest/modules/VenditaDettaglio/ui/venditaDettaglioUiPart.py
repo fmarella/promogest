@@ -8,7 +8,7 @@
 import gtk
 from promogest.dao.Magazzino import Magazzino
 from promogest import Environment
-
+from promogest.ui.utilsCombobox import fillComboboxCCardType
 
 def drawPart(anag):
     accelGroup = gtk.AccelGroup()
@@ -181,7 +181,7 @@ def drawPart(anag):
     anag.scontrino_treeview.set_property('rules-hint', True)
     treeViewSelection.connect('changed',
                             anag.on_scontrino_treeview_selection_changed)
-
+    fillComboboxCCardType(anag.card_type_combobox)
     # Ricerca listino
     anag.id_listino = anag.ricercaListino()
 

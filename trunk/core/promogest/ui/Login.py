@@ -303,10 +303,11 @@ class Login(GladeApp):
                         self.login_window.hide()
                         global windowGroup
                         windowGroup.remove(self.getTopLevel())
+                        from promogest.lib.UpdateDB import *
                         self.importModulesFromDir('promogest/modules')
                         #saveAppLog(action="login", status=True,value=username)
                         Environment.pg2log.info("LOGIN  id, user, role azienda: %s, %s" %(repr(Environment.params['usernameLoggedList']),self.azienda) )
-                        from promogest.lib.UpdateDB import *
+
                         from Main import Main
                         main = Main(self.azienda,
                                     self.anagrafiche_modules,
