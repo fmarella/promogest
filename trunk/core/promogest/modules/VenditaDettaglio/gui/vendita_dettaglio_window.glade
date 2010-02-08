@@ -1643,6 +1643,21 @@ Scontrino</property>
                           </packing>
                         </child>
                         <child>
+                          <object class="GtkToggleButton" id="no_print_toggled">
+                            <property name="label" translatable="yes">NO Print</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="tooltip_markup">Quando questo bottone &#xE8; premuto non verr&#xE0; inviato lo scontrino alla stampa</property>
+                            <property name="image">no_prinnt_image</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
                           <object class="GtkButton" id="exit_button">
                             <property name="label">gtk-quit</property>
                             <property name="visible">True</property>
@@ -1655,7 +1670,7 @@ Scontrino</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
-                            <property name="position">2</property>
+                            <property name="position">3</property>
                           </packing>
                         </child>
                       </object>
@@ -1952,17 +1967,19 @@ INVIO  per confermare</property>
     </action-widgets>
   </object>
   <object class="GtkMessageDialog" id="altre_opzioni_dialog">
+    <property name="visible">True</property>
+    <property name="is_focus">True</property>
+    <property name="can_default">True</property>
+    <property name="has_default">True</property>
+    <property name="receives_default">True</property>
     <property name="border_width">5</property>
-    <property name="type">popup</property>
     <property name="title" translatable="yes">opzioni varie dialog</property>
-    <property name="modal">True</property>
-    <property name="window_position">center-always</property>
+    <property name="window_position">center-on-parent</property>
     <property name="default_width">400</property>
     <property name="default_height">115</property>
     <property name="destroy_with_parent">True</property>
-    <property name="type_hint">normal</property>
-    <property name="accept_focus">False</property>
-    <property name="focus_on_map">False</property>
+    <property name="type_hint">dialog</property>
+    <property name="urgency_hint">True</property>
     <property name="transient_for">vendita_dettaglio_window</property>
     <property name="message_type">warning</property>
     <property name="text" translatable="yes">&lt;b&gt;ATTENZIONE&lt;/b&gt;
@@ -2117,5 +2134,13 @@ dell'interfaccia di vendita</property>
       <action-widget response="0">ao_annulla_button</action-widget>
       <action-widget response="0">ao_ok_button</action-widget>
     </action-widgets>
+  </object>
+  <object class="GtkImage" id="no_prinnt_image">
+    <property name="visible">True</property>
+    <property name="tooltip_text" translatable="yes">Quando questo bottone &#xE8; premuto 
+verr&#xE0; generato lo scontrino ma non 
+verr&#xE0; mandata la stampa
+all stampante fiscale.</property>
+    <property name="stock">gtk-print</property>
   </object>
 </interface>

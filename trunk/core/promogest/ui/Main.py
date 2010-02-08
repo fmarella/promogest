@@ -804,4 +804,5 @@ def showAnagrafica(window, anag, button=None, mainClass=None):
     anagWindow.connect("destroy", on_anagrafica_destroyed, [window, button,mainClass])
     #anagWindow.connect("hide", on_anagrafica_destroyed, [window, button,mainClass])
     anagWindow.set_transient_for(window)
+#    setattr(anagWindow, "mainClass",mainClass)
     anagWindow.show_all()

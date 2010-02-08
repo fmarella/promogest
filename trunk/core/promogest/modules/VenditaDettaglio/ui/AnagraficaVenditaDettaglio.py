@@ -51,14 +51,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                         isModule=True)
         if not Environment.magazzino_pos:
             self.altreopzionishow()
-
-#            self.altre_opzioni_dialog.set_transient_for(self.getTopLevel())
-
         self.placeWindow(self.getTopLevel())
         self._currentRow = {}
         self._simboloPercentuale = '%'
         self._simboloEuro = '€'
-        textStatusBar = "     PromoGest2 - Vendita Dettaglio - by PromoTUX Informatica - 800 034561 - www.PromoTUX.it - info@PromoTUX.it      "
+        textStatusBar = "     PromoGest2 - Vendita Dettaglio - by PromoTUX Informatica - 800034561 - www.PromoTUX.it - info@PromoTUX.it      "
         context_id = self.vendita_dettaglio_statusbar.get_context_id("vendita_dettaglio_window")
         self.vendita_dettaglio_statusbar.push(context_id, textStatusBar)
         azienda = Azienda().getRecord(id=Environment.params["schema"])
@@ -80,7 +77,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         fillComboboxPos(self.ao_punto_cassa_combobox)
         if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
             findComboboxRowFromStr(self.ao_punto_cassa_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
+        self.altre_opzioni_dialog.set_transient_for(self.topLevelWindow)
         self.altre_opzioni_dialog.show_all()
+#        print dir(self)
+
+        self.altre_opzioni_dialog.run()
 
     def draw(self):
         if DRIVER =="E":
@@ -111,6 +112,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.altre_opzioni_dialog.hide()
         testo = "OPERATORE: <b>%s</b>  --  MAGAZZINO/P.VENDITA: <b>%s</b>  --  PUNTO CASSA: <b>%s</b>" %(Environment.params["usernameLoggedList"][1], strMagazzino, strPuntoCassa)
         self.info_label.set_markup(testo)
+
+#    def on_no_stampa_toggled_toggled(self, button):
+
 
     def on_anagrafica_punti_cassa_activate_item(self, item):
         from AnagraficaPOS import AnagraficaPos
@@ -723,7 +727,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         dao.righe = righe
         dao.persist()
         # Creo il file e lo stampo
-        if DRIVER:
+        if DRIVER and not self.no_print_toggled.get_active():
             filescontrino = self.createFileToPos(dao)
         self.last_scontr_label.set_text("Tot. scontrino precedente: "+str(dao.totale_scontrino))
         # Svuoto transazione e mi rimetto in stato di ricerca
