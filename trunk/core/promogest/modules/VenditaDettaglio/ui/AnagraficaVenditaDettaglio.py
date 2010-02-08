@@ -50,9 +50,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                         fileName='VenditaDettaglio/gui/vendita_dettaglio_window.glade',
                         isModule=True)
         if not Environment.magazzino_pos:
-            fillComboboxMagazzini(self.ao_magazzino_combobox)
-            fillComboboxPos(self.ao_punto_cassa_combobox)
-            self.altre_opzioni_dialog.show_all()
+            self.altreopzionishow()
+
 #            self.altre_opzioni_dialog.set_transient_for(self.getTopLevel())
 
         self.placeWindow(self.getTopLevel())
@@ -74,26 +73,42 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.rowBackGround = "#FFFFC0"
         self.draw()
 
+    def altreopzionishow(self):
+        fillComboboxMagazzini(self.ao_magazzino_combobox)
+        if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
+            findComboboxRowFromStr(self.ao_magazzino_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
+        fillComboboxPos(self.ao_punto_cassa_combobox)
+        if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
+            findComboboxRowFromStr(self.ao_punto_cassa_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
+        self.altre_opzioni_dialog.show_all()
+
     def draw(self):
         if DRIVER =="E":
 #            self.apri_cassetto_button.set_active(True)
             self.apri_cassetto_button.set_sensitive(True)
         drawPart(self)
 
+    def on_set_pv_pos_activate(self, item):
+        self.altreopzionishow()
+
+    def on_ao_annulla_button_clicked(self, button):
+        self.altre_opzioni_dialog.hide()
 
     def on_ao_ok_button_clicked(self, button):
         self.idPuntoCassa = findIdFromCombobox(self.ao_punto_cassa_combobox)
         self.idMagazzino = findIdFromCombobox(self.ao_magazzino_combobox)
         strPuntoCassa = findStrFromCombobox(self.ao_punto_cassa_combobox,2)
         strMagazzino = findStrFromCombobox(self.ao_magazzino_combobox,2)
+        Environment.conf.VenditaDettaglio.puntocassa = strPuntoCassa
+        Environment.conf.VenditaDettaglio.magazzino = strMagazzino
+        Environment.conf.save()
 #        if not self.idPuntoCassa:
 #            obligatoryField(None, widget=None, msg="Punto Cassa Obbligatorio")
 #            return
         if not self.idMagazzino:
             obligatoryField(None, widget=None, msg="Magazzino Obbligatorio")
             return
-        print "DDDDDDDDDDDDDDDDDDDDDDDDDDD",  Environment.params["usernameLoggedList"][1]
-        self.altre_opzioni_dialog.destroy()
+        self.altre_opzioni_dialog.hide()
         testo = "OPERATORE: <b>%s</b>  --  MAGAZZINO/P.VENDITA: <b>%s</b>  --  PUNTO CASSA: <b>%s</b>" %(Environment.params["usernameLoggedList"][1], strMagazzino, strPuntoCassa)
         self.info_label.set_markup(testo)
 

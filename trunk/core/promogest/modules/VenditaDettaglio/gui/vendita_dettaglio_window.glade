@@ -117,6 +117,17 @@
                         <signal name="activate" handler="on_anagrafica_tipi_carta_activate"/>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkMenuItem" id="set_pv_pos">
+                        <property name="visible">True</property>
+                        <property name="tooltip_text" translatable="yes">Riapre il menu iniziale per 
+settare un nuovo magazzino 
+ed un nuovo punto cassa.</property>
+                        <property name="label" translatable="yes">Risetta Punto cassa e P Vendita</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_set_pv_pos_activate"/>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -2064,7 +2075,19 @@ dell'interfaccia di vendita</property>
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <placeholder/>
+              <object class="GtkButton" id="ao_annulla_button">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_ao_annulla_button_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
             <child>
               <object class="GtkButton" id="ao_ok_button">
@@ -2091,6 +2114,7 @@ dell'interfaccia di vendita</property>
       </object>
     </child>
     <action-widgets>
+      <action-widget response="0">ao_annulla_button</action-widget>
       <action-widget response="0">ao_ok_button</action-widget>
     </action-widgets>
   </object>
