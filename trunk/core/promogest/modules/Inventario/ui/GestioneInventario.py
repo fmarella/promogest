@@ -34,7 +34,7 @@ class GestioneInventario(RicercaComplessaArticoli):
     def __init__(self, idMagazzino = None):
 
         # aggiornamento inventario con gli articoli eventualmente non presenti
-        #self.update()
+        self.checkTable()
         # filtri propri della parte inventario
         self.additional_filter = GladeWidget(rootWidget='inventario_filter_table',
         fileName="Inventario/gui/inventario_filter_table.glade", isModule=True)
@@ -91,6 +91,17 @@ class GestioneInventario(RicercaComplessaArticoli):
         self._modifica.calcola_valori_button.connect("clicked", self.on_calcola_valori_button_clicked)
 
 #        self.setRiepilogo()
+
+    def checkTable(self):
+        tutti = Environment.session.query(Inventario.id_articolo,Inventario.id_magazzino).all()
+        cancellati = []
+#        print "tutti", tutti
+        for a in tutti:
+            if tutti.count(a) >1 and a not in cancellati:
+                dacancellare = Inventario().select(idArticolo=a[0],idMagazzino=a[1])
+                cancellati.append(a)
+                for g in dacancellare[1:]:
+                    g.delete()
 
     def draw(self):
         """ Disegna la treeview relativa al risultato del filtraggio """
