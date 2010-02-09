@@ -49,6 +49,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         GladeWidget.__init__(self, 'vendita_dettaglio_window',
                         fileName='VenditaDettaglio/gui/vendita_dettaglio_window.glade',
                         isModule=True)
+        self.idPuntoCassa = None
+        self.idMagazzino = None
         if not Environment.magazzino_pos:
             self.altreopzionishow()
         self.placeWindow(self.getTopLevel())
@@ -644,7 +646,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         dao.totale_subtotale = mN(self.label_subtotale.get_text())
         dao.tipo_sconto_scontrino = self.tipo_sconto_scontrino
         dao.id_magazzino = int(self.idMagazzino)
-        dao.id_pos = int(self.idPuntoCassa)
+        if self.idPuntoCassa:
+            dao.id_pos = int(self.idPuntoCassa)
         dao.id_ccardtype = findIdFromCombobox(self.card_type_combobox)
         dao.id_user = Environment.params["usernameLoggedList"][0]
 
