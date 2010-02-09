@@ -187,7 +187,7 @@ class Ditron(object):
                 string_message = string_message + s + "\n"
 
             # Mostro messaggio di errore
-            dialog = gtk.MessageDialog(self.getTopLevel(),
+            dialog = gtk.MessageDialog(None,
                                        gtk.DIALOG_MODAL
                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
                                        gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
