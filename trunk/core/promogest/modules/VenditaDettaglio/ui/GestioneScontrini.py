@@ -162,7 +162,6 @@ class GestioneScontrini(GladeWidget):
         self.filterss.numRecords = TestataScontrino().count(idArticolo=idArticolo,
                                                                       daData=daData,
                                                                       aData=aData)
-
         self.filterss._refreshPageCount()
 
         scos = TestataScontrino().select( orderBy=self.filterss.orderBy,
