@@ -105,64 +105,13 @@
     th.number {
         text-align: right;
     }
+
 #container {
     width: auto;
 /*     height: 600px; */
 }
-#container #footer {
-/*     background-image: url("templates/bkg_footer.png"); */
-/*     background-repeat: repeat; */
-    position: relative;
-    width: auto;
-/*     font-family: Arial; */
-    font-size: 10px;
-    color: #000000;
-    height: 21px;
 
-}
-/*#container #rigaheader {
-/*     background-attachment: scroll; */
-/*     background-image: url("templates/bkg_footer.png"); */
-/*     background-repeat: repeat; */
-/*     background-position: left top; */
-/*     position: relative; */
-/*     width: auto; */
-/*     height: 15px; */
-/* }*/ */
-#container #head {
-    height: 130px;
-}
-#container #head #testo {
-    position: relative;
-    top: -40px;
-    left: 80px;
-/*     width: 80%; */
-/*     font-family: Arial; */
-    font-size: 24px;
-    color: #666666;
-/*     font-weight: bold; */
-}
-/*#container #head #img {
-    height: 48px;
-    width: 48px;*/
-/*     background-attachment: scroll; */
-/*     background-image: url("gui/articolo48x48.png"); */
-/*     background-repeat: no-repeat; */
-/*     background-position: left center; */
-/*     position: relative; */
-/*    left: 20px;
-    top: 1px;
-    padding-top: 3px;
-}*/
-#container #head .testooo{
-color:red;
 
-}
-#dialog{
-/*    background-image: url("gui/aggiungi16x16.png");
-    background-repeat: no-repeat;
-    background-color:black;*/
-}
 table#calendar{width:160px;font: 12px "Trebuchet MS",sans-serif;
     text-align:center;color:#444}
 table#calendar,table#calendar th,table#calendar td{
