@@ -86,7 +86,16 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         column.set_min_width(200)
         treeview.append_column(column)
 
-        self._treeViewModel = gtk.ListStore(object, str, str, str)
+        column = gtk.TreeViewColumn('Giacenza', rendererSx, text=4)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(False)
+        column.connect("clicked", self._changeOrderBy, 'articolo')
+        column.set_resizable(True)
+        column.set_expand(True)
+        column.set_min_width(200)
+        treeview.append_column(column)
+
+        self._treeViewModel = gtk.ListStore(object, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
@@ -207,7 +216,8 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
             self._treeViewModel.append((s,
                                         (s.magazzino or ''),
                                         (s.codice_articolo or ''),
-                                        (s.articolo or '')))
+                                        (s.articolo or ''),
+                                        (s.giacenza or '')))
 
 
 class AnagraficaStoccaggiHtml(AnagraficaHtml):
