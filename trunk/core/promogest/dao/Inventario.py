@@ -97,7 +97,7 @@ class Inventario(Dao):
         elif k == 'codice':
             dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.codice.ilike("%"+v+"%"))}
         elif k == 'codiceABarre':
-            dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==CodiceABarreArticolo.id_articolo,CodiceABarreArticoloodice.ilike("%"+v+"%"))}
+            dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==CodiceABarreArticolo.id_articolo,CodiceABarreArticolo.codice.ilike("%"+v+"%"))}
         elif k == 'produttore':
             dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.produttore.ilike("%"+v+"%"))}
         elif k== 'codiceArticoloFornitoreEM':

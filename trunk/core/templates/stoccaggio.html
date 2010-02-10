@@ -1,23 +1,13 @@
-{% extends 'index.html' %}
-
+{% include 'single_style.css' with context %}
 {% block body %}
-        <table cellpadding="0" cellspacing="4" border="0">
-            <tr>
-                <td class = "report-header" colspan="4"><h3><img src= "gui/stoccaggio48x48.png"> Magazzino: <strong>{{dao.magazzino}}</strong></h3></td>
-            </tr>
-            <tr>
-                <td class = "report-header" colspan="4"><h3>Articolo: <strong>{{dao.articolo}}</strong></h3></td>
-            </tr>
-	<tr><TD></TD></tr>
-	</table>
 
 	<table cellpadding="0" cellspacing="0" border="0">
-            <tr><td colspan="4" class="table-header">Dati stoccaggio</td></tr>
+            <tr><td colspan="6" class="table-header"><b>Dati stoccaggio:</b> {{dao.magazzino}} - <b>Articolo:</b> {{dao.articolo}}</td></tr>
             <tr>
-                <td width="20%" class="odd-detail">Scorta minima</td>
-                <td width="30%" class="odd-detail"><strong>{{dao.scorta_minima}}</strong></td>
-                <td width="20%" class="odd-detail">Livello riordino</td>
-                <td width="30%" class="odd-detail"><strong>{{dao.livello_riordino}}</strong></td>
+                <td width="25%" class="odd-detail">Scorta minima</td>
+                <td width="25%" class="odd-detail"><strong>{{dao.scorta_minima|nonone}}</strong></td>
+                <td width="25%" class="odd-detail">Livello riordino</td>
+                <td width="25%" class="odd-detail"><strong>{{dao.livello_riordino|nonone}}</strong></td>
             </tr>
             <tr>
                 <td width="20%" class="even-detail" >Data fine scorte</td>
@@ -33,39 +23,39 @@
                     {% endif %}
                 </td>
             </tr>
-</table>
+</table><br />
 <table cellpadding="0" cellspacing="0" border="0">
-            <tr><td colspan="5" class="table-header">Situazione magazzino</td></tr>
+            <tr><td colspan="6" class="table-header">Situazione magazzino</td></tr>
             <tr class="even-detail">
-                <td width="74%" style="padding-left:20px;" > Dati Movimento</td>
-                <td class="even-number" style="text-align:center;" width="10%">Carico</td>
-                <td class="even-number" style="text-align:center;" width="10%">Scarico</td>
-                <td class="even-number" style="text-align:center;" width="10%">Valore Carico</td>
-                <td class="even-number" style="text-align:center;" width="10%">Valore Scarico</td>
-                <td class="even-number" style="text-align:center;" width="4%">+/-</td>
+                <td class="even-number" style="text-align:center;" width="71%" style="padding-left:20px;" > Dati Movimento</td>
+                <td class="even-number" style="text-align:center;" width="7%">Carico</td>
+                <td class="even-number" style="text-align:center;" width="7%">Scarico</td>
+                <td class="even-number" style="text-align:center;" width="7%">Valore Carico</td>
+                <td class="even-number" style="text-align:center;" width="7%">Valore Scarico</td>
+                <td class="even-number" style="text-align:center;" width="1%">+/-</td>
             </tr>
             {% for item in dao.totaliOperazioniMovimento %}
             <tr >
-            <td class="odd-detail" style="padding-left:5px;"><strong>N° {{item['numero']}} - {{item['operazione']}} - Del: {{utils.dateToString(item['data_movimento'])}} - Rag_soc.:{{item['fornitore'][0:9]|string}}{{item['cliente'][0:9]|string}} </strong></td>
+            <td class="odd-detail" style="padding-left:5px;">N° {{item['numero']}} - {{item['operazione']}} - Del: {{utils.dateToString(item['data_movimento'])}} - Rag_soc.:{{item['fornitore'][0:9]|string}}{{item['cliente'][0:9]|string}}</td>
             {% if item['segnoOperazione'] == "+" %}
-            <td class="odd-number" style="text-align:center;" >{{'%14.2f' % (item['giacenza'],)}}</td>
+                <td class="odd-number" style="text-align:center;" >{{'%14.2f' % (item['giacenza'],)}}</td>
             {% else %}
-            <td class="odd-number" style="text-align:center;" > FFF </td>
+                <td class="odd-number" style="text-align:center;" >  </td>
             {% endif %}
-            {% if item['segnoOperazione'] == "-" %}
-            <td class="odd-number" style="text-align:center;" >{{'%14.2f' % (item['giacenza'],)}} </td>
+                {% if item['segnoOperazione'] == "-" %}
+                <td class="odd-number" style="text-align:center;" >{{'%14.2f' % (item['giacenza'],)}} </td>
             {% else %}
-            <td class="odd-number" style="text-align:center;" > XXX </td>
+                <td class="odd-number" style="text-align:center;" >  </td>
             {% endif %}
-            {% if item['segnoOperazione'] == "+" %}
-            <td class="odd-number" style="text-align:center;">{{'%14.2f' % item['valore']|abs}}</td>
+                {% if item['segnoOperazione'] == "+" %}
+                <td class="odd-number" style="text-align:center;">{{'%14.2f' % item['valore']|abs}}</td>
             {% else %}
-            <td class="odd-number" style="text-align:center;" > FFF </td>
+                <td class="odd-number" style="text-align:center;" >  </td>
             {% endif %}
-                        {% if item['segnoOperazione'] == "-" %}
-                         <td class="odd-number" style="text-align:center;">{{'%14.2f' % item['valore']|abs}}</td>
-                            {% else %}
-            <td class="odd-number" style="text-align:center;" > XXX </td>
+                {% if item['segnoOperazione'] == "-" %}
+                <td class="odd-number" style="text-align:center;">{{'%14.2f' % item['valore']|abs}}</td>
+            {% else %}
+                <td class="odd-number" style="text-align:center;" >  </td>
             {% endif %}
             <td class="odd-number" style="text-align:center;" >{{item['segnoOperazione']}}</td>
             </tr>

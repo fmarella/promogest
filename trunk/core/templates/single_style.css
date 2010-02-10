@@ -49,15 +49,15 @@
     }
 
     .table-header {
-            color: #FFFFFF;
-            font-weight : bold;
+            color: #000000;
+/*            font-weight : bold;*/
             border-width: 1px 0px 1px 0px;
             border-style: solid;
             border-color: #777777;
             padding: 0px;
             margin: 0px;
             font-size: 1.1em;
-            background : #585858;
+        background : #FFFFC0;
     }
     .header {
 /*         font-style: italic; */
@@ -100,7 +100,7 @@
     }
     td.img{
 /*     border-width: 2px; */
-    
+
 }
     th.number {
         text-align: right;

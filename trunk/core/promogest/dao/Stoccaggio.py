@@ -10,11 +10,21 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, workingYear, conf
+from promogest.Environment import params, workingYear, conf, modulesList
 from Dao import Dao
 from Articolo import Articolo
 from Magazzino import Magazzino
 from DaoUtils import giacenzaSel
+if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
+    from promogest.modules.PromoWear.dao.Colore import Colore
+    from promogest.modules.PromoWear.dao.Taglia import Taglia
+    from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
+    from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
+    from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
+    from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
+    from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
+
+
 
 class Stoccaggio(Dao):
     """ User class provides to make a Users dao which include more used"""
@@ -136,7 +146,46 @@ class Stoccaggio(Dao):
             dic = {k:stoc.c.id_articolo.in_(v)}
         elif k == 'idMagazzino':
             dic = {k:stoc.c.id_magazzino == v}
+        elif k == 'articolo':
+            dic = {k:and_(stoc.c.id_articolo==Articolo.id, Articolo.denominazione.ilike("%"+v+"%"))}
+        elif k == 'codice':
+            dic = {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.codice.ilike("%"+v+"%"))}
+        elif k == 'codiceABarre':
+            dic = {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.id==CodiceABarreArticolo.id_articolo,CodiceABarreArticolo.codice.ilike("%"+v+"%"))}
+        elif k == 'produttore':
+            dic = {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.produttore.ilike("%"+v+"%"))}
+        elif k== 'codiceArticoloFornitoreEM':
+            dic = {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.id==Fornitura.id_articolo,Fornitura.codice_articolo_fornitore == v)}
+        elif k=='idFamiglia':
+            dic = {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.id_famiglia_articolo ==v)}
+        elif k == 'idCategoria':
+            dic = {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.id_categoria_articolo ==v)}
+        elif k == 'idStato':
+            dic= {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.id_stato_articolo == v)}
+        elif k == 'cancellato':
+            dic = {k:or_(and_(stoc.c.id_articolo==Articolo.id,Articolo.cancellato != v))}
+        elif "PromoWear" in modulesList:
+            if k == 'figliTagliaColore':
+                dic = {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_articolo_padre==None)}
+            elif k == 'idTaglia':
+                dic = {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_taglia==v)}
+            elif k == 'idModello':
+                dic = {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_modello==v)}
+            elif k == 'idGruppoTaglia':
+                dic = {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_gruppo_taglia ==v)}
+            elif k == 'padriTagliaColore':
+                dic = {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_articolo_padre!=None)}
+            elif k == 'idColore':
+                dic = {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_colore ==v)}
+            elif k == 'idStagione':
+                dic = {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_stagione ==v)}
+            elif k == 'idAnno':
+                dic = {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_anno == v)}
+            elif k == 'idGenere':
+                dic = {k:and_(stoc.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_genere ==v)}
         return  dic[k]
+
+
 articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
 stoc=Table('stoccaggio',params['metadata'],schema = params['schema'],autoload=True)
 
