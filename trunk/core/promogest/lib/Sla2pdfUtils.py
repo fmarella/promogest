@@ -129,10 +129,10 @@ def approxValue(value, decimals):
     Approximate the floating point values of the element with the
     given number of decimals
     """
-    value = value.replace("%;","")
-    value = value.replace("€;","")
-    value = value.strip()
-    value = value.replace(",",".")
+#    value = value.replace("%;","")
+#    value = value.replace("€;","")
+#    value = value.strip()
+#    value = value.replace(",",".")
     format = '%%.%df' % decimals
     #print value
     value = float(value)
