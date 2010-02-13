@@ -36,10 +36,10 @@ if hasattr(conf, 'VenditaDettaglio'):
                 Column('id_magazzino',Integer,ForeignKey(params['schema']+'.magazzino.id', onupdate="CASCADE", ondelete="RESTRICT")),
                 Column('id_pos',Integer,ForeignKey(params['schema']+'.pos.id', onupdate="CASCADE", ondelete="RESTRICT")),
                 Column('id_ccardtype',Integer,ForeignKey(params['schema']+'.credit_card_type.id', onupdate="CASCADE", ondelete="RESTRICT")),
-                Column('id_user',Integer,ForeignKey(params['mainSchema']+'.utente.id', onupdate="CASCADE", ondelete="RESTRICT")),
+                Column('id_user',Integer,ForeignKey(params['mainSchema']+'.utente.id')),
                 Column('id_testata_movimento',Integer,ForeignKey(params['schema']+'.testata_movimento.id', onupdate="CASCADE", ondelete="RESTRICT")),
                 schema=params['schema'],
-                useexisting =True
+#                useexisting =True
                 )
     testataScontrinoTable.create(checkfirst=True)
 
