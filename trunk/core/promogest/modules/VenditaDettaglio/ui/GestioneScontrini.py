@@ -342,15 +342,17 @@ class GestioneScontrini(GladeWidget):
                 return
             for scontrino in self.scontrini:
                 for riga in scontrino.righe:
-                    print "RIGAAAAAAAAAAAAAAAA", riga.id_articolo
+#                    print "RIGAAAAAAAAAAAAAAAA", riga.id_articolo
                     daoInv = Inventario().select(idArticolo=riga.id_articolo, idMagazzino = idMagazzino)
                     if daoInv and idArticoloGenerico!=riga.id_articolo:
                         if daoInv[0].data_aggiornamento is None or scontrino.data_inserimento < daoInv[0].data_aggiornamento:
+
                             quantitaprecedente = daoInv[0].quantita or 0
                             quantitavenduta = riga.quantita
                             nuovaquantita = quantitaprecedente+quantitavenduta
+                            print "OPERAZIONE DA EFFETTUARE", quantitaprecedente,quantitavenduta, nuovaquantita,
                             daoInv[0].quantita= nuovaquantita
-                            daoInv.persist()
+                            daoInv[0].persist()
         else:
             print "IL MODULO INVENTARIO NON e' ATTIVO "
 
