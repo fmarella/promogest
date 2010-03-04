@@ -21,6 +21,17 @@ from  promogest.ui import utils
 from jinja2 import Environment  as Env
 from jinja2 import FileSystemLoader,FileSystemBytecodeCache
 
+#from pygtkie import IEHtmlView
+#window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+#window.resize(800, 600)
+#ie = IEHtmlView();
+#window.add(ie)
+#ie.show()
+#window.show()
+#
+#ie.SetDocument("""This is an IE page hosted by <a href="http://www.python.org">python</a>')""")
+
+
 templates_dir = [os.path.join('templates'),os.path.join('report-templates')]
 jinja_env = None
 

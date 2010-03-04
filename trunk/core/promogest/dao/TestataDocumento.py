@@ -363,6 +363,7 @@ class TestataDocumento(Dao):
 
         Environment.pg2log.debug("INIZIO SALVATAGGIO DOCUMENTO")
         self.scontiTestataDocumentoDel(id=self.id)
+
         self.testataDocumentoScadenzaDel(id=self.id)
         self.righeDocumentoDel(id=self.id)
         #verifica se sono presenti righe di movimentazione magazzino
@@ -488,11 +489,11 @@ class TestataDocumento(Dao):
         #print "DOPO FINE NOLEGGIO", tempo()
 
         if self.scontiSuTotale:
+            print "OLLELLEEEEEEEEEEEEEEOLLALLAAAAAAAAAAAA", self.scontiSuTotale
             self.scontiTestataDocumentoDel(id=self.id)
             for scontisutot in self.scontiSuTotale:
                 scontisutot.id_testata_documento = self.id
                 scontisutot.persist()
-        #params["session"].flush()
         Environment.pg2log.debug("FINE SALVATAGGIO DOCUMENTO")
 
 

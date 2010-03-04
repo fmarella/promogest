@@ -17,6 +17,9 @@ from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
 from promogest.modules.VenditaDettaglio.ui.Distinta import Distinta
 from promogest.ui.widgets.FilterWidget import FilterWidget
+from promogest.dao.Inventario import Inventario
+from promogest.dao.Magazzino import Magazzino
+from promogest.dao.Articolo import Articolo
 from promogest.ui.utils import *
 from promogest.ui import utils
 
@@ -322,18 +325,34 @@ class GestioneScontrini(GladeWidget):
         print "esport to csv"
 
     def on_aggiorna_inve_activate(self, item):
+        """ Questa funzione serve a ricalibrare le giacenze di inventario con
+            gli articoli venduti al dettaglio """
+
         if "Inventario" in Environment.modulesList:
+            idMagazzinosel = Magazzino().select(denominazione = Environment.conf.VenditaDettaglio.magazzino)
+            if Environment.conf.VenditaDettaglio.jolly:
+
+                idArticoloGenericoSel = Articolo().select(codiceEM = Environment.conf.VenditaDettaglio.jolly)
+                if idArticoloGenericoSel:
+                    idArticoloGenerico = idArticoloGenericoSel[0].id
+            if idMagazzinosel:
+                idMagazzino = idMagazzinosel[0].id
+            else:
+                print "ERRORE NELLA DEFINIZIONE DEL MAGAZZINO"
+                return
             for scontrino in self.scontrini:
                 for riga in scontrino.righe:
-                    daoInv = Inventario().select(idArticolo=riga.id_articolo, idMagazzino = Environment.conf.VenditaDettaglio.magazzino)
-                    if daoInv:
-                        if riga.data_inserimento > daoInv[0].data_aggiornamento:
-                            print "OKKEI DEVO AGGIORNARLO"
-                            quantitaprecedente = daoInv[0].quantita
+                    print "RIGAAAAAAAAAAAAAAAA", riga.id_articolo
+                    daoInv = Inventario().select(idArticolo=riga.id_articolo, idMagazzino = idMagazzino)
+                    if daoInv and idArticoloGenerico!=riga.id_articolo:
+                        if daoInv[0].data_aggiornamento is None or scontrino.data_inserimento < daoInv[0].data_aggiornamento:
+                            quantitaprecedente = daoInv[0].quantita or 0
                             quantitavenduta = riga.quantita
-                            nuovaquantita = quantitaprecedente-quantitavenduta
+                            nuovaquantita = quantitaprecedente+quantitavenduta
                             daoInv[0].quantita= nuovaquantita
-#                            daoInv.persist()
+                            daoInv.persist()
+        else:
+            print "IL MODULO INVENTARIO NON e' ATTIVO "
 
     def on_distinta_button_clicked(self, button):
         gest = Distinta(righe = self.scontrini)

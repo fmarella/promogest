@@ -71,7 +71,7 @@ class Inventario(Dao):
 
     def filter_values(self,k,v):
         if k == 'denominazione':
-            dic= {  k : inventario.c.anno == v}
+            dic= {k :inventario.c.anno == v}
         elif k == 'idMagazzino':
             dic = {k:inventario.c.id_magazzino == v}
         elif k == 'idArticolo':
