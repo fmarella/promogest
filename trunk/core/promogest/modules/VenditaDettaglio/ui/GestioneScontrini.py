@@ -331,10 +331,11 @@ class GestioneScontrini(GladeWidget):
         if "Inventario" in Environment.modulesList:
             idMagazzinosel = Magazzino().select(denominazione = Environment.conf.VenditaDettaglio.magazzino)
             if Environment.conf.VenditaDettaglio.jolly:
-
                 idArticoloGenericoSel = Articolo().select(codiceEM = Environment.conf.VenditaDettaglio.jolly)
                 if idArticoloGenericoSel:
                     idArticoloGenerico = idArticoloGenericoSel[0].id
+                else:
+                    idArticoloGenerico = None
             if idMagazzinosel:
                 idMagazzino = idMagazzinosel[0].id
             else:
@@ -346,7 +347,6 @@ class GestioneScontrini(GladeWidget):
                     daoInv = Inventario().select(idArticolo=riga.id_articolo, idMagazzino = idMagazzino)
                     if daoInv and idArticoloGenerico!=riga.id_articolo:
                         if daoInv[0].data_aggiornamento is None or scontrino.data_inserimento < daoInv[0].data_aggiornamento:
-
                             quantitaprecedente = daoInv[0].quantita or 0
                             quantitavenduta = riga.quantita
                             nuovaquantita = quantitaprecedente+quantitavenduta
