@@ -350,7 +350,7 @@ class GestioneScontrini(GladeWidget):
                             quantitaprecedente = daoInv[0].quantita or 0
                             quantitavenduta = riga.quantita
                             nuovaquantita = quantitaprecedente+quantitavenduta
-                            print "OPERAZIONE DA EFFETTUARE", quantitaprecedente,quantitavenduta, nuovaquantita,
+                            print "OPERAZIONE DA EFFETTUARE", quantitaprecedente,quantitavenduta, nuovaquantita
                             daoInv[0].quantita= nuovaquantita
                             daoInv[0].persist()
         else:

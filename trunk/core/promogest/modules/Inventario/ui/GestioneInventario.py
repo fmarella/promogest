@@ -709,7 +709,7 @@ class GestioneInventario(RicercaComplessaArticoli):
 
             f = open(filename, 'w')
             riga = ('Codice, Descrizione, Quantita\', Valore unitario, U.M., ' +
-                    'Codice a barre, Famiglia, Categoria\n')
+                    'Codice a barre, Famiglia, Categoria,Anno ,idMagazzino , idArticolo ,data_aggiornamento\n')
             f.write(riga)
             invs = Inventario().select(anno=self.annoScorso,
                                                     idMagazzino=idMagazzino,
@@ -729,7 +729,11 @@ class GestioneInventario(RicercaComplessaArticoli):
                             '"' + str(i.denominazione_breve_unita_base or '') + '",' +
                             '"' + str(i.codice_a_barre or '') + '",' +
                             '"' + str(i.denominazione_famiglia or '') + '",' +
-                            '"' + str(i.denominazione_categoria or '') + '"\n')
+                            '"' + str(i.denominazione_categoria or '') + '",'+
+                            '"' + str(i.anno or '') + '",'+
+                            '"' + str(i.id_magazzino or '') + '",'+
+                            '"' + str(i.id_articolo or '') + '",'+
+                            '"' + str(i.data_aggiornamento or '') + '"\n')
                     f.write(riga)
                 f.close()
         else:
