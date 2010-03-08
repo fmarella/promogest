@@ -337,12 +337,6 @@ class Login(GladeApp):
         """
         Upgrande button signal clicked
         """
-#        from promogest.lib.progressBarEasy import *
-#        boh = ProgressBar(label="CIAOOOOOOOOOOOOOO", maxval = 1180)
-#        for i in range(1,1180, 1/2):
-#            boh.inc()
-#            boh.pulse()
-#        boh.set(30)
         aggiorna(self)
 
     def groupModulesByType(self):
