@@ -395,7 +395,7 @@ e movimento derivato</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="esporta_buoni_button">
+                      <object class="GtkButton" id="esporta_conquantita_button">
                         <property name="label" translatable="yes">Esporta &gt;1</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>

@@ -80,6 +80,8 @@ class GestioneInventario(RicercaComplessaArticoli):
         self._modifica.aggiorna_button.connect('clicked', self.on_aggiorna_button_clicked)
         self._modifica.aggiorna_da_ana_articoli.connect('clicked', self.on_aggiorna_da_ana_articoli_clicked)
         self._modifica.esporta_button.connect('clicked', self.on_esporta_button_clicked)
+
+        self._modifica.esporta_conquantita_button.connect('clicked', self.on_esporta_conquantita_button_clicked)
         self._modifica.valorizza_button.connect('clicked', self.on_valorizza_button_clicked)
         self._modifica.movimento_button.connect('clicked', self.on_movimento_button_clicked)
         self._modifica.chiudi_button.connect('clicked', self.on_chiudi_button_clicked)
@@ -701,7 +703,10 @@ class GestioneInventario(RicercaComplessaArticoli):
             Environment.params['session'].commit()
         self.refresh()
 
-    def on_esporta_button_clicked(self, button):
+    def on_esporta_conquantita_button_clicked(self, button):
+        self.on_esporta_button_clicked(button=button, siquantita = True)
+
+    def on_esporta_button_clicked(self, button= None, siquantita = False):
         """ Esportazione inventario in formato csv
         """
         if (findIdFromCombobox(self.additional_filter.id_magazzino_filter_combobox2) is None):
@@ -754,24 +759,41 @@ class GestioneInventario(RicercaComplessaArticoli):
 
             if invs:
                 for i in invs:
-                    quantita = '%14.4f' % float(i.quantita or 0)
-                    quantita = quantita.replace('.', ',')
+                    quantita_ = '%14.4f' % float(i.quantita or 0)
+                    quantita = quantita_.replace('.', ',')
                     valore = '%14.4f' % float(i.valore_unitario or 0)
                     valore = valore.replace('.', ',')
-                    riga = ('"' + str(i.codice_articolo or '') + '",' +
-                            '"' + str(i.articolo or '') + '",' +
-                            '"' + quantita + '",' +
-                            '"' + valore + '",' +
-                            '"' + str(i.denominazione_breve_unita_base or '') + '",' +
-                            '"' + str(i.codice_a_barre or '') + '",' +
-                            '"' + str(i.denominazione_famiglia or '') + '",' +
-                            '"' + str(i.denominazione_categoria or '') + '",'+
-                            '"' + str(i.anno or '') + '",'+
-                            '"' + str(i.id_magazzino or '') + '",'+
-                            '"' + str(i.id_articolo or '') + '",'+
-                            '"' + str(i.data_aggiornamento or '') + '"\n')
-                    f.write(riga)
+                    if siquantita:
+                        if float(quantita_)>0:
+                            riga = ('"' + str(i.codice_articolo or '') + '",' +
+                                    '"' + str(i.articolo or '') + '",' +
+                                    '"' + quantita + '",' +
+                                    '"' + valore + '",' +
+                                    '"' + str(i.denominazione_breve_unita_base or '') + '",' +
+                                    '"' + str(i.codice_a_barre or '') + '",' +
+                                    '"' + str(i.denominazione_famiglia or '') + '",' +
+                                    '"' + str(i.denominazione_categoria or '') + '",'+
+                                    '"' + str(i.anno or '') + '",'+
+                                    '"' + str(i.id_magazzino or '') + '",'+
+                                    '"' + str(i.id_articolo or '') + '",'+
+                                    '"' + str(i.data_aggiornamento or '') + '"\n')
+                            f.write(riga)
+                    else:
+                        riga = ('"' + str(i.codice_articolo or '') + '",' +
+                                    '"' + str(i.articolo or '') + '",' +
+                                    '"' + quantita + '",' +
+                                    '"' + valore + '",' +
+                                    '"' + str(i.denominazione_breve_unita_base or '') + '",' +
+                                    '"' + str(i.codice_a_barre or '') + '",' +
+                                    '"' + str(i.denominazione_famiglia or '') + '",' +
+                                    '"' + str(i.denominazione_categoria or '') + '",'+
+                                    '"' + str(i.anno or '') + '",'+
+                                    '"' + str(i.id_magazzino or '') + '",'+
+                                    '"' + str(i.id_articolo or '') + '",'+
+                                    '"' + str(i.data_aggiornamento or '') + '"\n')
+                        f.write(riga)
                 f.close()
+                self.fineElaborazione()
         else:
             fileDialog.destroy()
             return
