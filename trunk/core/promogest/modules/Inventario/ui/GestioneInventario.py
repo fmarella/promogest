@@ -75,6 +75,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         #self._modifica.valore_unitario_entry.connect('key_press_event', self.detail_key_press_event)
 
         self._modifica.azzera_button.connect('clicked', self.on_azzera_button_clicked)
+        self._modifica.azzera_selected_button.connect('clicked', self.on_azzera_selected_button_clicked)
         self._modifica.ricrea_button.connect('clicked', self.on_ricrea_button_clicked)
         self._modifica.aggiorna_button.connect('clicked', self.on_aggiorna_button_clicked)
         self._modifica.aggiorna_da_ana_articoli.connect('clicked', self.on_aggiorna_da_ana_articoli_clicked)
@@ -318,7 +319,16 @@ class GestioneInventario(RicercaComplessaArticoli):
                                                val_negativo =self.val_negativo,
                                                offset=self.filter.offset,
                                                filterDict=self.filterDict)
-
+        self.inventariati_filtrati_tutti = Inventario().select(orderBy=self.filter.orderBy,
+                                               anno=self.annoScorso,
+                                               idMagazzino=self.idMagazzino,
+                                               daDataAggiornamento=self.daData,
+                                               aDataAggiornamento=self.aData,
+                                               qa_zero=self.qa_zero,
+                                               qa_negativa=self.qa_negativa,
+                                               val_negativo =self.val_negativo,
+                                               batchSize =None,
+                                               filterDict=self.filterDict)
         model.clear()
 
         for i in invs:
@@ -396,7 +406,8 @@ class GestioneInventario(RicercaComplessaArticoli):
 
     def on_filter_field_changed(self, widget=None, event=None):
         """ Aggiorna il testo del riepilogo perche' almeno uno dei filtri propri e' cambiato """
-        self.setRiepilogo()
+#        self.setRiepilogo()
+        return
 
 #    def setRiepilogo(self):
 #        """ Aggiorna il testo del riepilogo """
@@ -478,6 +489,31 @@ class GestioneInventario(RicercaComplessaArticoli):
 #                selection.select_path(path)
 #                treeview.scroll_to_cell(path)
 #                self.on_filter_treeview_cursor_changed(treeview)
+
+    def on_azzera_selected_button_clicked(self, button):
+        msg = """ATTENZIONE!!!
+    Stai per cancellare le informazioni
+    relative alle voci di inventario filtrate e selezionate.
+        Confermi la cancellazione ?
+        """
+        dialog = gtk.MessageDialog(self.getTopLevel(),
+                                gtk.DIALOG_MODAL
+                                | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                                msg)
+
+        response = dialog.run()
+        dialog.destroy()
+        if response == gtk.RESPONSE_YES:
+            for i in  self.inventariati_filtrati_tutti:
+                i.quantita = 0
+                Environment.session.add(i)
+            Environment.session.commit()
+            self.fineElaborazione()
+
+
+
+
 
     def on_azzera_button_clicked(self, button):
         msg = """ATTENZIONE!!!

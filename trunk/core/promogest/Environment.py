@@ -373,6 +373,7 @@ host = conf.Database.host
 userdata = ["","","",user]
 
 
+
 class SetTextFactory(PoolListener):
      def connect(self, dbapi_con, con_record):
          dbapi_con.text_factory = str
@@ -394,10 +395,35 @@ else:
                     + database,
                     encoding='utf-8',
                     convert_unicode=True )
+
+if hasattr(conf,'Database2'):
+    print "HO LA CONFIGURAZIONE PER IL SECONDO DATABASE"
+#    try:
+    database2 = conf.Database2.database2
+    port2 = conf.Database2.port2
+    user2 = conf.Database2.user2
+    password2 = conf.Database2.password2
+    host2 = conf.Database2.host2
+    engine2 = create_engine('postgres:'+'//'
+                    +user2+':'
+                    + password2+ '@'
+                    + host2 + ':'
+                    + port2 + '/'
+                    + database2,
+                    encoding='utf-8',
+                    convert_unicode=True )
+    engine2.echo = False
+    Session2 = scoped_session(sessionmaker(bind=engine, autoflush=True))
+    session2 = Session2()
+    meta2 = MetaData(engine2)
+    print "IL SECONDO DB E' A POSTO"
+#    except:
+#        print "MESSO IN UN TRY IL SECONDO DB"
+
 tipo_eng = engine.name
 engine.echo = False
 meta = MetaData(engine)
-    #Session = sessionmaker(bind=engine)
+#Session = sessionmaker(bind=engine)
 Session = scoped_session(sessionmaker(bind=engine, autoflush=True))
 
 #meta = None

@@ -79,9 +79,9 @@ class Inventario(Dao):
         elif k == 'anno':
             dic = {k:inventario.c.anno == v}
         elif k == 'daDataAggiornamento':
-            dic = {k:inventario.c.data_aggiornameno >= v}
+            dic = {k:inventario.c.data_aggiornamento >= v}
         elif k == 'aDataAggiornamento':
-            dic = {k:inventario.c.data_aggiornameno >= v}
+            dic = {k:inventario.c.data_aggiornamento <= v}
         elif k == 'qa_zero':
             dic = {k:inventario.c.quantita == 0}
         elif k == 'quantita':
