@@ -271,8 +271,8 @@ E' presente una nuova versione disponibile"""
         webbrowser.open_new_tab(url)
 
     def on_promogest_button_clicked(self, button):
-        from promogest.dao.TestataDocumento import TestataDocumento
-        daos = TestataDocumento().select(batchSize=1000)
+        from promogest.dao.TestataMovimento import TestataMovimento
+        daos = TestataMovimento().select(batchSize=1000)
         if daos:
             for d in daos:
                 print d
