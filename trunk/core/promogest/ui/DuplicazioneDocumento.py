@@ -5,42 +5,50 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 
+import os
+import gtk, gobject
 import gtk
 from GladeWidget import GladeWidget
 
 from promogest import Environment
 from promogest.dao.TestataDocumento import TestataDocumento
+from promogest.dao.Magazzino import Magazzino
+from promogest.dao.Listino import Listino
+from promogest.dao.ListinoArticolo import ListinoArticolo
 from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.Operazione import Operazione
+from promogest.dao.Fornitura import Fornitura
+from AnagraficaDocumenti import *
 if Environment.conf.hasPagamenti == True:
     import promogest.modules.Pagamenti.dao.TestataDocumentoScadenza
     from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from utils import *
 
 
+
 class DuplicazioneDocumento(GladeWidget):
 
-    def __init__(self, daoDocumento):
+    def __init__(self, daoDocumento, anagraficaDocumenti):
 
         self.dao = daoDocumento
+        self.anagrafica_documenti = anagraficaDocumenti
 
-        GladeWidget.__init__(self, 'duplicazione_documento_window',
-                                        'duplicazione_documento.glade')
+        GladeWidget.__init__(self, 'duplicazione_documento_window', 'duplicazione_documento.glade')
         self.placeWindow(self.getTopLevel())
         self.draw()
+
 
     def draw(self):
         # seleziona i tipi documento compatibili
         operazione = leggiOperazione(self.dao.operazione)
-        res = Environment.params['session']\
-                .query(Operazione)\
-                .filter(and_(or_(Operazione.tipo_operazione==None,
-                    Operazione.tipo_operazione =="documento"),
-                    (Operazione.fonte_valore == operazione["fonteValore"]),
-                    (Operazione.tipo_persona_giuridica == operazione["tipoPersonaGiuridica"])))\
-                .all()
+        self.tipoPersonaGiuridica = operazione['tipoPersonaGiuridica']
+        self.persona_label.set_text(self.tipoPersonaGiuridica.capitalize())
+        self.id_persona_giuridica_customcombobox.setType(self.tipoPersonaGiuridica)
+        
+        res = Environment.params['session'].query(Operazione).filter(Operazione.tipo_persona_giuridica != '').all()
+        
         model = gtk.ListStore(object, str, str)
         for o in res:
             model.append((o, o.denominazione, (o.denominazione or '')[0:30]))
@@ -56,8 +64,44 @@ class DuplicazioneDocumento(GladeWidget):
         #self.getTopLevel().show_all()
         #self.show_all()
 
-    def on_confirm_button_clicked(self, button=None):
+        listini = Environment.params['session'].query(Listino)
+        model = gtk.ListStore(object, int, str)
+        model.append((None, 0, '<Invariato>'))
+        model.append((None, 1, '<Azzera>'))
+        model.append((None, 2, '<Prezzo d\'acquisto>'))
+        indice_prezzo = 3;
+        for l in listini:
+            model.append((l, indice_prezzo, (l.denominazione or '')[0:30]))
+            indice_prezzo += 1
+        self.id_prezzo_combobox.clear()
+        renderer = gtk.CellRendererText()
+        self.id_prezzo_combobox.pack_start(renderer, True)
+        self.id_prezzo_combobox.add_attribute(renderer, 'text', 2)
+        self.id_prezzo_combobox.set_model(model)
+        self.id_prezzo_combobox.set_active(0)
+        
+        #controlla che nel documento ci sia un solo magazzino
+        nMags = Environment.params['session'].query(Magazzino).count()
+        if nMags > 1:
+          if self.dao.numeroMagazzini == 1:
+            mags = Environment.params['session'].query(Magazzino)#.filter(Magazzino.id != self.dao.righe[0].id_magazzino)
+            model = gtk.ListStore(object, str)
+            for m in mags:
+                model.append((m, (m.denominazione or '')[0:30]))                
+            self.id_magazzino_combobox.clear()
+            renderer = gtk.CellRendererText()
+            self.id_magazzino_combobox.pack_start(renderer, True)
+            self.id_magazzino_combobox.add_attribute(renderer, 'text', 1)
+            self.id_magazzino_combobox.set_model(model)
+          else:
+            #disabilito il cambio di magazzino
+            self.id_magazzino_combobox.set_sensitive(False)
+        else:
+          #disabilito il cambio di magazzino
+          self.id_magazzino_combobox.set_sensitive(False)
 
+    def on_confirm_button_clicked(self, button=None):
+        
         if (self.data_documento_entry.get_text() == ''):
             obligatoryField(self.getTopLevel(), self.data_documento_entry)
 
@@ -69,11 +113,22 @@ class DuplicazioneDocumento(GladeWidget):
         newDao = TestataDocumento()
         newDao.data_documento = stringToDate(self.data_documento_entry.get_text())
         newDao.operazione = findIdFromCombobox(self.id_operazione_combobox)
-        newDao.id_cliente = self.dao.id_cliente
-        newDao.id_fornitore = self.dao.id_fornitore
+        if self.personaGiuridicaCambiata:
+          if (self.id_persona_giuridica_customcombobox.getId() is None):
+            obligatoryField(self.getTopLevel(), self.id_persona_giuridica_customcombobox)
+          if self.id_persona_giuridica_customcombobox.getType() == "cliente":
+            newDao.id_cliente = self.id_persona_giuridica_customcombobox.getId()
+            newDao.id_fornitore = None
+          else:
+            newDao.id_fornitore = self.id_persona_giuridica_customcombobox.getId()
+            newDao.id_cliente = None
+        else:
+          newDao.id_fornitore = self.dao.id_fornitore
+          newDao.id_cliente = self.dao.id_cliente
         newDao.id_destinazione_merce = self.dao.id_destinazione_merce
         newDao.id_pagamento = self.dao.id_pagamento
         newDao.id_banca = self.dao.id_banca
+        newDao.numero = self.dao.numero
         newDao.id_aliquota_iva_esenzione = self.dao.id_aliquota_iva_esenzione
         newDao.protocollo = self.dao.protocollo
         newDao.causale_trasporto = self.dao.causale_trasporto
@@ -106,16 +161,47 @@ class DuplicazioneDocumento(GladeWidget):
             daoRiga = RigaDocumento()
             daoRiga.id_testata_documento = newDao.id
             daoRiga.id_articolo = r.id_articolo
-            daoRiga.id_magazzino = r.id_magazzino
+            if self.id_magazzino_combobox.get_active() != -1:
+                magazzino_model = self.id_magazzino_combobox.get_model()
+                magazzino_active = self.id_magazzino_combobox.get_active()
+                daoRiga.id_magazzino = magazzino_model[magazzino_active][0].id
+            else:
+                daoRiga.id_magazzino = r.id_magazzino
             daoRiga.descrizione = r.descrizione
-            daoRiga.id_listino = r.id_listino
+            
+            #ricalcola prezzi
+            indice_prezzo_combobox = self.id_prezzo_combobox.get_model()[self.id_prezzo_combobox.get_active()][1]
+            if  indice_prezzo_combobox == 0:
+              daoRiga.id_listino = r.id_listino
+              daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
+              daoRiga.valore_unitario_netto = r.valore_unitario_netto
+            elif indice_prezzo_combobox == 1:
+              daoRiga.id_listino = r.id_listino
+              daoRiga.valore_unitario_lordo = 0
+              daoRiga.valore_unitario_netto = 0
+            elif indice_prezzo_combobox == 2:
+              fornitura = Environment.params['session'].query(Fornitura).filter(Fornitura.id_articolo == r.id_articolo).order_by(Fornitura.data_prezzo.asc()).all()[0]
+              daoRiga.id_listino = r.id_listino
+              daoRiga.valore_unitario_lordo = fornitura.prezzo_lordo
+              daoRiga.valore_unitario_netto = fornitura.prezzo_netto
+            else:
+              #ricalcola prezzi
+              listino = self.id_prezzo_combobox.get_model()[indice_prezzo_combobox][0]
+              listinoArticolo = Environment.params['session'].query(ListinoArticolo).filter(ListinoArticolo.id_listino == listino.id and r.id_articolo == ListinoArticolo.id_articolo).all()
+              if len(listinoArticolo) > 0:
+                daoRiga.id_listino = listinoArticolo[0].id_listino
+                daoRiga.valore_unitario_lordo = listinoArticolo[0].prezzo_dettaglio
+                daoRiga.valore_unitario_netto = listinoArticolo[0].prezzo_ingrosso
+              else:
+                daoRiga.id_listino = r.id_listino
+                daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
+                daoRiga.valore_unitario_netto = r.valore_unitario_netto
+            
             daoRiga.percentuale_iva = r.percentuale_iva
-            daoRiga.applicazione_sconti = r.applicazione_sconti
+            daoRiga.applicazione_sconti = r.applicazione_sconti  
             daoRiga.quantita = r.quantita
             daoRiga.id_multiplo = r.id_multiplo
             daoRiga.moltiplicatore = r.moltiplicatore
-            daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
-            daoRiga.valore_unitario_netto = r.valore_unitario_netto
             #print "RIGA ARTICOLO", r.descrizione, r.id_articolo
             if "SuMisura" in Environment.modulesList:
                 from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
@@ -135,13 +221,15 @@ class DuplicazioneDocumento(GladeWidget):
             sconti = []
             scontiRigaDocumento = []
             sco = r.sconti
-            for s in sco:
-                daoSconto = ScontoRigaDocumento()
-                daoSconto.valore = s.valore
-                daoSconto.tipo_sconto = s.tipo_sconto
-                scontiRigaDocumento.append(daoSconto)
+            if self.mantieni_sconti_checkbutton.get_active() :
+              for s in sco:
+                  daoSconto = ScontoRigaDocumento()
+                  daoSconto.valore = s.valore
+                  daoSconto.tipo_sconto = s.tipo_sconto
+                  scontiRigaDocumento.append(daoSconto)
             daoRiga.scontiRigaDocumento = scontiRigaDocumento
             righeDocumento.append(daoRiga)
+            
         newDao.righeDocumento = righeDocumento
         scadenze = []
         if Environment.conf.hasPagamenti == True:
@@ -180,22 +268,48 @@ class DuplicazioneDocumento(GladeWidget):
         newDao.scadenze = scadenze
         tipoid = findIdFromCombobox(self.id_operazione_combobox)
         tipo = Operazione().getRecord(id=tipoid)
-        if not newDao.numero:
-            valori = numeroRegistroGet(tipo=tipo.denominazione, date=self.data_documento_entry.get_text())
-            newDao.numero = valori[0]
-            newDao.registro_numerazione= valori[1]
+        #if not newDao.numero:
+        valori = numeroRegistroGet(tipo=tipo.denominazione, date=self.data_documento_entry.get_text())
+        newDao.numero = valori[0]
+        newDao.registro_numerazione= valori[1]
 
         newDao.persist()
 
+        #se il segno dell'operazione non è cambiato duplico il documento, altrimenti duplico ma apro la finestra di new/modifica documento
+        
         res = TestataDocumento().getRecord(id=newDao.id)
 
-        msg = "Nuovo documento creato !\n\nIl nuovo documento e' il n. " + str(res.numero) + " del " + dateToString(res.data_documento) + " (" + newDao.operazione + ")"
+        msg = "Nuovo documento creato !\n\nIl nuovo documento e' il n. " + str(res.numero) + " del " + dateToString(res.data_documento) + " (" + newDao.operazione + ")\n" + "Lo vuoi modificare?"
         dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
+                                  gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
         response = dialog.run()
+        
+        if response == gtk.RESPONSE_YES:
+          self.anagrafica_documenti.editElement.setVisible(True)
+          self.anagrafica_documenti.editElement.setDao(newDao)
+          
+          self.anagrafica_documenti.editElement.id_persona_giuridica_customcombobox.set_sensitive(True)
+          self.anagrafica_documenti.editElement.setFocus()
+       
         dialog.destroy()
         self.destroy()
 
+    def on_id_operazione_combobox_changed(self, widget, event=None):
+        tipoPersonaGiuridica = self.id_operazione_combobox.get_model()[self.id_operazione_combobox.get_active()][0].tipo_persona_giuridica
+        
+        if self.tipoPersonaGiuridica == tipoPersonaGiuridica:
+          self.personaGiuridicaCambiata = False
+        else:
+          self.personaGiuridicaCambiata = True
+          
+        if self.id_persona_giuridica_customcombobox.getType() == "fornitore" and tipoPersonaGiuridica == 'cliente':
+          self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)
+        if self.id_persona_giuridica_customcombobox.getType() == "cliente" and tipoPersonaGiuridica == 'fornitore':
+          self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)
+        
+        self.persona_label.set_text(tipoPersonaGiuridica.capitalize())
+        self.id_persona_giuridica_customcombobox.setType(tipoPersonaGiuridica)
+        
     def on_duplicazione_documento_window_close(self, widget, event=None):
         self.destroy()
         return None
