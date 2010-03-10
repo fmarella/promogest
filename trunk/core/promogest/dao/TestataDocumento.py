@@ -882,7 +882,7 @@ std_mapper = mapper(TestataDocumento, testata_documento, properties={
         "AL":relation(AliquotaIva,primaryjoin = (testata_documento.c.id_aliquota_iva_esenzione==AliquotaIva.id)),
         "PV":relation(Vettore,primaryjoin = (testata_documento.c.id_vettore==vettore.c.id)),
         "DM":relation(DestinazioneMerce, primaryjoin=(testata_documento.c.id_destinazione_merce==DestinazioneMerce.id)),
-        "TM":relation(TestataMovimento,primaryjoin = (testata_documento.c.id==testata_movi.c.id_testata_documento),cascade="all, delete, delete-orphan", backref='TD'),
+        "TM":relation(TestataMovimento,primaryjoin = (testata_documento.c.id==testata_movi.c.id_testata_documento),cascade="all, delete", backref='TD'),
         "CLI":relation(Cliente,primaryjoin = (testata_documento.c.id_cliente==clie.c.id)),
         "FORN":relation(Fornitore,primaryjoin = (testata_documento.c.id_fornitore==fornitor.c.id)),
         "AGE":relation(Agente,primaryjoin = (testata_documento.c.id_agente==agen.c.id)),
