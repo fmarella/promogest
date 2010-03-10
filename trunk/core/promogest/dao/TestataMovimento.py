@@ -252,7 +252,7 @@ operaz = Table('operazione',params['metadata'],schema = params['mainSchema'],aut
 std_mapper = mapper(TestataMovimento, testata_mov,properties={
         "rigamov": relation(RigaMovimento,primaryjoin=
                 testata_mov.c.id==rigamovi.c.id_testata_movimento,
-                cascade="all, delete, delete-orphan",
+                cascade="all, delete",
                 backref="testata_movimento"),
         #"fornitore": relation(Fornitore, backref="testata_movimento"),
         "forni":relation(Fornitore,primaryjoin=
