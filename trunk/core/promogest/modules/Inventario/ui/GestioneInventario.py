@@ -899,7 +899,9 @@ class GestioneInventario(RicercaComplessaArticoli):
             sel = Inventario().select(anno=self.annoScorso,
                                     idMagazzino=idMagazzino, batchSize=None)
             for s in sel:
-                if s.quantita:
+                print  s.id_articolo
+                if s.quantita >0:
+                    print s.quantita
                     righeArticoloMovimentate = Environment.params["session"]\
                         .query(func.max(RigaMovimento.valore_unitario_netto), func.max(TestataMovimento.data_movimento))\
                         .join(TestataMovimento, Articolo)\
