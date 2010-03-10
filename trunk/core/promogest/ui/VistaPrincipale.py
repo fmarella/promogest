@@ -271,6 +271,20 @@ E' presente una nuova versione disponibile"""
         webbrowser.open_new_tab(url)
 
     def on_promogest_button_clicked(self, button):
+        from promogest.dao.TestataDocumento import TestataDocumento
+        daos = TestataDocumento().select(batchSize=1000)
+        if daos:
+            for d in daos:
+                print d
+    #            d.delete()
+                Environment.session.delete(d)
+            Environment.session.commit()
+            print "FINITA QUESTA TRANCE da 1000"
+        else:
+            print "FINITTIIIIIIWW"
+
+
+#        print daos
         return
 #        from promogest.dao.Inventario import Inventario
 #        daos = Inventario().select(idMagazzino=3, batchSize=None)

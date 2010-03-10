@@ -792,11 +792,13 @@ class TestataDocumento(Dao):
 
 
     def delete(self):
-        #print "PARTIAMO DA QUI"
+        print "PARTIAMO DA QUI"
         #testataMovDel = TestataMovimento().select(id_testata_documento = self.id).all()
-
         params['session'].delete(self)
         params['session'].commit()
+
+
+
 
     def filter_values(self,k,v):
         if k == 'daNumero':
@@ -873,19 +875,19 @@ banc = Table('banca',params['metadata'],schema = params['schema'],autoload=True)
 fornitor=Table('fornitore', params['metadata'], schema = params['schema'], autoload=True)
 
 std_mapper = mapper(TestataDocumento, testata_documento, properties={
-        "rigadoc": relation(RigaDocumento, backref="testata_documento"),
+        "rigadoc": relation(RigaDocumento, cascade="all, delete, delete-orphan",backref="testata_documento"),
         "testata_documento_scadenza" :relation(TestataDocumentoScadenza,cascade="all, delete, delete-orphan", backref="testata_documento"),
         "PG":relation(Pagamento,primaryjoin = testata_documento.c.id_pagamento==paga.c.id),
         "BN":relation(Banca,primaryjoin = (testata_documento.c.id_banca==banc.c.id)),
         "AL":relation(AliquotaIva,primaryjoin = (testata_documento.c.id_aliquota_iva_esenzione==AliquotaIva.id)),
         "PV":relation(Vettore,primaryjoin = (testata_documento.c.id_vettore==vettore.c.id)),
         "DM":relation(DestinazioneMerce, primaryjoin=(testata_documento.c.id_destinazione_merce==DestinazioneMerce.id)),
-        "TM":relation(TestataMovimento,primaryjoin = (testata_documento.c.id==testata_movi.c.id_testata_documento), backref='TD'),
+        "TM":relation(TestataMovimento,primaryjoin = (testata_documento.c.id==testata_movi.c.id_testata_documento),cascade="all, delete, delete-orphan", backref='TD'),
         "CLI":relation(Cliente,primaryjoin = (testata_documento.c.id_cliente==clie.c.id)),
         "FORN":relation(Fornitore,primaryjoin = (testata_documento.c.id_fornitore==fornitor.c.id)),
         "AGE":relation(Agente,primaryjoin = (testata_documento.c.id_agente==agen.c.id)),
         "OP":relation(Operazione,primaryjoin = (testata_documento.c.operazione==Operazione.denominazione), backref="TD"),
-        "STD":relation(ScontoTestataDocumento,primaryjoin = (testata_documento.c.id==ScontoTestataDocumento.id_testata_documento), backref="TD"),
+        "STD":relation(ScontoTestataDocumento,primaryjoin = (testata_documento.c.id==ScontoTestataDocumento.id_testata_documento),cascade="all, delete, delete-orphan", backref="TD"),
         #'lang':relation(Language, backref='user')
         }, order_by=testata_documento.c.numero)
 

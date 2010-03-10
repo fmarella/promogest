@@ -102,7 +102,7 @@ class TestataMovimento(Dao):
             #doc_query = params['session'].query(RigaDocumento.id).filter(RigaDocumento.id_testata_documento == self.id)
             #res = params['session'].query(Riga.id_magazzino).filter(or_(Riga.id.in_(mov_query),Riga.id.in_(doc_query))).distinct().count()
             #return res
-        
+
     numeroMagazzini = property(_getNumeroMagazzini)
 
     def filter_values(self,k,v):
@@ -252,7 +252,7 @@ operaz = Table('operazione',params['metadata'],schema = params['mainSchema'],aut
 std_mapper = mapper(TestataMovimento, testata_mov,properties={
         "rigamov": relation(RigaMovimento,primaryjoin=
                 testata_mov.c.id==rigamovi.c.id_testata_movimento,
-                cascade="all, delete",
+                cascade="all, delete, delete-orphan",
                 backref="testata_movimento"),
         #"fornitore": relation(Fornitore, backref="testata_movimento"),
         "forni":relation(Fornitore,primaryjoin=

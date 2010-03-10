@@ -899,20 +899,21 @@ class GestioneInventario(RicercaComplessaArticoli):
             sel = Inventario().select(anno=self.annoScorso,
                                     idMagazzino=idMagazzino, batchSize=None)
             for s in sel:
-                righeArticoloMovimentate = Environment.params["session"]\
-                    .query(func.max(RigaMovimento.valore_unitario_netto), func.max(TestataMovimento.data_movimento))\
-                    .join(TestataMovimento, Articolo)\
-                    .filter(TestataMovimento.data_movimento.between(datetime.date(int(self.annoScorso),1, 1), datetime.date(int(self.annoScorso), 12, 31)))\
-                    .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
-                    .filter(Operazione.segno=="+")\
-                    .filter(Riga.id_magazzino==idMagazzino)\
-                    .filter(Riga.id_articolo==s.id_articolo)\
-                    .filter(Riga.valore_unitario_netto!=0)\
-                    .all()
+                if s.quantita:
+                    righeArticoloMovimentate = Environment.params["session"]\
+                        .query(func.max(RigaMovimento.valore_unitario_netto), func.max(TestataMovimento.data_movimento))\
+                        .join(TestataMovimento, Articolo)\
+                        .filter(TestataMovimento.data_movimento.between(datetime.date(int(self.annoScorso),1, 1), datetime.date(int(self.annoScorso), 12, 31)))\
+                        .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                        .filter(Operazione.segno=="+")\
+                        .filter(Riga.id_magazzino==idMagazzino)\
+                        .filter(Riga.id_articolo==s.id_articolo)\
+                        .filter(Riga.valore_unitario_netto!=0)\
+                        .all()
 
-                if righeArticoloMovimentate and righeArticoloMovimentate[0][0]:
-                    s.valore_unitario = righeArticoloMovimentate[0][0]
-                    Environment.params['session'].add(s)
+                    if righeArticoloMovimentate and righeArticoloMovimentate[0][0]:
+                        s.valore_unitario = righeArticoloMovimentate[0][0]
+                        Environment.params['session'].add(s)
             print "VALORIZZA"
             Environment.params['session'].commit()
             self.refresh()
