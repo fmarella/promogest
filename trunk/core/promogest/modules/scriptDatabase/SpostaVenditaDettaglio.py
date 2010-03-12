@@ -16,6 +16,9 @@ from sqlalchemy.ext.sqlsoup import SqlSoup
 OFFSET = 500
 TABELLA = "testata_scontrino"
 ORDERBY = "id"
+MAGAZZINO = 3
+POS = 2
+USER = 1
 
 
 MAINSCHEMA_LOCALE = "promogest2"
@@ -140,10 +143,10 @@ class SpostaVenditaDettaglio(object):
                     "totale_assegni":ts.totale_assegni,
                     "totale_carta_credito": ts.totale_carta_credito,
                     "id_testata_movimento": ts.id_testata_movimento,
-                    "id_magazzino":ts.id_magazzino,
+                    "id_magazzino":ts.id_magazzino or MAGAZZINO,
                     "id_ccardtype":ts.id_ccardtype,
-                    "id_pos" : ts.id_pos,
-                    "id_user" : ts.id_user,
+                    "id_pos" : ts.id_pos or POS,
+                    "id_user" : ts.id_user or USER,
                     "righe_scontrino" : rr,
                     "sconto_testata_scontrino": stsdict
                         }
