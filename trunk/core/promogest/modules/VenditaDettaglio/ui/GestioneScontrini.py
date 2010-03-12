@@ -22,6 +22,7 @@ from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Articolo import Articolo
 from promogest.ui.utils import *
 from promogest.ui import utils
+from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import fillComboboxPos
 
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 
@@ -145,6 +146,13 @@ class GestioneScontrini(GladeWidget):
             self.filters.a_data_filter_entry.setNow()
         else:
             self.filters.a_data_filter_entry.set_text(self_aData)
+        fillComboboxMagazzini(self.filters.id_magazzino_filter_combobox)
+        if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
+            findComboboxRowFromStr(self.filters.id_magazzino_filter_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
+        fillComboboxPos(self.filters.id_pos_filter_combobox)
+        if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
+            findComboboxRowFromStr(self.filters.id_pos_filter_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
+
 
         self.refreshHtml()
         self.refresh()
@@ -152,6 +160,11 @@ class GestioneScontrini(GladeWidget):
     def clear(self):
         # Annullamento filtro
         self.filters.id_articolo_filter_customcombobox.set_active(0)
+        if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
+            findComboboxRowFromStr(self.filters.id_magazzino_filter_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
+        if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
+            findComboboxRowFromStr(self.filters.id_pos_filter_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
+
         self.filters.da_data_filter_entry.setNow()
         self.filters.a_data_filter_entry.setNow()
         self.refresh()
@@ -162,15 +175,22 @@ class GestioneScontrini(GladeWidget):
         idArticolo = self.filters.id_articolo_filter_customcombobox.getId()
         daData = stringToDate(self.filters.da_data_filter_entry.get_text())
         aData = stringToDateBumped(self.filters.a_data_filter_entry.get_text())
+        idPuntoCassa = findIdFromCombobox(self.filters.id_pos_filter_combobox)
+        idMagazzino = findIdFromCombobox(self.filters.id_magazzino_filter_combobox)
+
         self.filterss.numRecords = TestataScontrino().count(idArticolo=idArticolo,
                                                                       daData=daData,
-                                                                      aData=aData)
+                                                                      aData=aData,
+                                                                      idMagazzino = idMagazzino,
+                                                                      idPuntoCassa = idPuntoCassa)
         self.filterss._refreshPageCount()
 
         scos = TestataScontrino().select( orderBy=self.filterss.orderBy,
                                                      idArticolo=idArticolo,
                                                      daData=daData,
                                                      aData=aData,
+                                                     idMagazzino = idMagazzino,
+                                                     idPuntoCassa = idPuntoCassa,
                                                      offset=self.filterss.offset,
                                                      batchSize=self.filterss.batchSize)
 
