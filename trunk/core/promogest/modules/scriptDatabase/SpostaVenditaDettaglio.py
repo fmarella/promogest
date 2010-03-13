@@ -198,7 +198,7 @@ class SpostaVenditaDettaglio(object):
                 stsl.id_testata_scontrino = tsl.id
                 sqlalchemy.ext.sqlsoup.Session.add(stsl)
                 sqlalchemy.ext.sqlsoup.Session.commit()
-            print "SALVATO SCONTRINO"
+            print "SALVATO  CORRETTAMENTE SCONTRINO"
         print "<<<<<<< INIZIATO :", self.tempo_inizio, " FINITO:", datetime.datetime.now() , ">>>>>>>>>>>>>"
         print "SINCRONIZZAZIONE TERMINATA CON SUCCESSO"
 
