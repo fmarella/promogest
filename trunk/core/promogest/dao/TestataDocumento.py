@@ -875,8 +875,8 @@ banc = Table('banca',params['metadata'],schema = params['schema'],autoload=True)
 fornitor=Table('fornitore', params['metadata'], schema = params['schema'], autoload=True)
 
 std_mapper = mapper(TestataDocumento, testata_documento, properties={
-        "rigadoc": relation(RigaDocumento, cascade="all, delete, delete-orphan",backref="testata_documento"),
-        "testata_documento_scadenza" :relation(TestataDocumentoScadenza,cascade="all, delete, delete-orphan", backref="testata_documento"),
+        "rigadoc": relation(RigaDocumento, cascade="all, delete",backref="testata_documento"),
+        "testata_documento_scadenza" :relation(TestataDocumentoScadenza,cascade="all, delete", backref="testata_documento"),
         "PG":relation(Pagamento,primaryjoin = testata_documento.c.id_pagamento==paga.c.id),
         "BN":relation(Banca,primaryjoin = (testata_documento.c.id_banca==banc.c.id)),
         "AL":relation(AliquotaIva,primaryjoin = (testata_documento.c.id_aliquota_iva_esenzione==AliquotaIva.id)),
