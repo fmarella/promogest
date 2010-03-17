@@ -9,6 +9,7 @@ import gtk
 import os, popen2
 from datetime import datetime
 from promogest import Environment
+from promogest.ui.GladeWidget import GladeWidget
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.Articolo import Articolo
@@ -19,51 +20,73 @@ from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
 from promogest.ui.utils import *
+from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import fillComboboxPos
 
-class GestioneChiusuraFiscale(object):
+class GestioneChiusuraFiscale(GladeWidget):
     """ Classe per la gestione degli scontrini emessi """
     def __init__(self,gladeobj):
+        GladeWidget.__init__(self, 'chiusura_dialog',
+                fileName='VenditaDettaglio/gui/chiusura_fine_giornata.glade',
+                isModule=True)
+        self.draw()
+#        self.run()
         self.gladeobj = gladeobj
 
-    def chiusuraDialog(self, widget, idMagazzino):
-        print "MAGAZZINOOOOOOOOOOOOOOOOOOOOOOOOOOO", idMagazzino
-        dialog = gtk.MessageDialog(self.gladeobj.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO)
-        dialog.set_markup("""<b>ATTENZIONE</b>: Chiusura fiscale!
-    Confermi la data?
-    Se non sai cosa stai facendo lascia la data odierna impostata
-    e contatta la Promotux""")
-        hbox = gtk.HBox()
-        entry = self.gladeobj.data_chiusura
-        entry.setNow()
-        hbox.pack_start(entry, False, False, 0)
-        dialog.vbox.pack_start(hbox, False, False, 0)
-        entry.show()
-        dialog.show_all()
-        response = dialog.run()
-        dialog.destroy()
-        if response ==  gtk.RESPONSE_YES:
-            # controllo se vi e` gia` stata una chiusura
-            data = stringToDate(entry.get_text())
-            chiusure = ChiusuraFiscale().select( dataChiusura = data,
-                                                offset = None,
-                                                idMagazzino = self.gladeobj.idMagazzino,
-                                                idPuntoCassa = self.gladeobj.idPuntoCassa,
-                                                batchSize = None)
-            if len(chiusure) != 0:
-                dialog = gtk.MessageDialog(self.gladeobj.getTopLevel(),
-                                           gtk.DIALOG_MODAL
-                                           | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           gtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
-                dialog.set_markup("<b>ATTENZIONE:\n La chiusura odierna e` gia' stata effettuata</b>")
-                response = dialog.run()
-                dialog.destroy()
-                return
-            self.close_day(idMagazzino, data)
-        else:
+    def draw(self):
+        fillComboboxMagazzini(self.chiusura_id_magazzino_combobox)
+        if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
+            findComboboxRowFromStr(self.chiusura_id_magazzino_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
+        fillComboboxPos(self.chiusura_id_pos_combobox)
+        if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
+            findComboboxRowFromStr(self.chiusura_id_pos_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
+        self.chiusura_datetime.show_all()
+        self.chiusura_datetime.setNow()
+
+    def on_ok_chiusura_button_clicked(self, button):
+        # controllo se vi e` gia` stata una chiusura
+        data = stringToDate(self.chiusura_datetime.get_text())
+        self.idPuntoCassa = findIdFromCombobox(self.chiusura_id_pos_combobox)
+        self.idMagazzino = findIdFromCombobox(self.chiusura_id_magazzino_combobox)
+        chiusure = ChiusuraFiscale().select( dataChiusura = data,
+                                            offset = None,
+                                            idMagazzino = self.idMagazzino,
+                                            idPuntoCassa = self.idPuntoCassa,
+                                            batchSize = None)
+        if len(chiusure) != 0:
+            dialog = gtk.MessageDialog(self.getTopLevel(),
+                                       gtk.DIALOG_MODAL
+                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                       gtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
+            dialog.set_markup("<b>ATTENZIONE:\n La chiusura odierna e` gia' stata effettuata</b>")
+            response = dialog.run()
+            dialog.destroy()
             return
+        self.close_day(idMagazzino, data)
+
+    def on_no_chiusura_button_clicked(self, button):
+        self.chiusura_dialog.hide()
+
+#    def chiusuraDialog(self, widget, idMagazzino):
+
+#            # controllo se vi e` gia` stata una chiusura
+#            data = stringToDate(entry.get_text())
+#            chiusure = ChiusuraFiscale().select( dataChiusura = data,
+#                                                offset = None,
+#                                                idMagazzino = self.gladeobj.idMagazzino,
+#                                                idPuntoCassa = self.gladeobj.idPuntoCassa,
+#                                                batchSize = None)
+#            if len(chiusure) != 0:
+#                dialog = gtk.MessageDialog(self.gladeobj.getTopLevel(),
+#                                           gtk.DIALOG_MODAL
+#                                           | gtk.DIALOG_DESTROY_WITH_PARENT,
+#                                           gtk.MESSAGE_ERROR, gtk.BUTTONS_OK)
+#                dialog.set_markup("<b>ATTENZIONE:\n La chiusura odierna e` gia' stata effettuata</b>")
+#                response = dialog.run()
+#                dialog.destroy()
+#                return
+#            self.close_day(idMagazzino, data)
+#        else:
+#            return
 
     def close_day(self, idMagazzino, data):
         # Seleziono scontrini della giornata
@@ -73,8 +96,8 @@ class GestioneChiusuraFiscale(object):
         aData= data+OneDay
         scontrini = TestataScontrino().select(daData = datefirst,
                                             aData = aData,  # Scontrini prodotti nella giornata odierna
-                                            idMagazzino = self.gladeobj.idMagazzino,
-                                            idPuntoCassa = self.gladeobj.idPuntoCassa,
+                                            idMagazzino = self.idMagazzino,
+                                            idPuntoCassa = self.idPuntoCassa,
                                             offset = None,
                                             batchSize = None)
         ##Environment.pg2log.info( "SCONTRINI PRODOTTI IN GIORNATA N° %s dettaglio: %s" ) %(str(len(scontrini)or""), str(scontrini)or"")
@@ -122,7 +145,6 @@ class GestioneChiusuraFiscale(object):
         daoChiusura.id_magazzino = self.gladeobj.idMagazzino
         daoChiusura.id_pos = self.gladeobj.idPuntoCassa
         daoChiusura.persist()
-        #daoChiusura.update()
 
         # Creo il file
         filechiusura = self.create_fiscal_close_file()

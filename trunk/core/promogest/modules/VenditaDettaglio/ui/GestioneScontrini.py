@@ -207,6 +207,8 @@ class GestioneScontrini(GladeWidget):
 
         scos_no_batchSize = TestataScontrino().select( orderBy=self.filterss.orderBy,
                                                      idArticolo=idArticolo,
+                                                     idMagazzino = idMagazzino,
+                                                     idPuntoCassa = idPuntoCassa,
                                                      daData=daData,
                                                      aData=aData,
                                                      offset=None,
@@ -237,8 +239,9 @@ class GestioneScontrini(GladeWidget):
             totass += m.totale_assegni
             totcont += m.totale_contanti
             totnum += 1
-        self.filterss.label1.set_text("T scontrini:")
-        stringa = """<b><span foreground="black" size="20000">%s</span></b> - Resto da contante:<b>%s</b> - T Carta:<b>%s</b> - T Assegni:<b>%s</b> - T Sconti:<b>%s</b> - N°:<b><span foreground="black" size="18000">%s</span></b>""" %(mN(tot),mN(totcont), mN(totccr), mN(totass),mN(tot_sconti), totnum )
+        self.filterss.label1.set_text("")
+        stringa = """GENERALE:<b><span foreground="black" size="20000">%s</span></b> - NUM. SCONTRINI:<b><span foreground="black" size="18000">%s</span></b>
+TOT CARTA:<b>%s</b> - TOT ASSEGNI:<b>%s</b> - TOT CONT.:<b>%s</b> - TOT SCONTI:<b>%s</b> - """ %(mN(tot), totnum, mN(totccr), mN(totass), mN(totcont), mN(tot_sconti) )
         self.filterss.info_label.set_markup(str(stringa))
 
 
@@ -387,119 +390,6 @@ class GestioneScontrini(GladeWidget):
                                 daoInv[0].persist()
             else:
                 print "IL MODULO INVENTARIO NON e' ATTIVO "
-
-    def on_sposta_scontrini_activate(self, item):
-        msg = """ ATTENZIONE!!!!
-            QUESTA OPERAZIONE È PERICOLOSSIMA!!!!
-            è stata aggiunta per corprire una casistica specifica
-            di "spostamento scontrini da un database ad un altro
-            sei sicuro di volerlo fare??"""
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                               gtk.DIALOG_MODAL
-                               | gtk.DIALOG_DESTROY_WITH_PARENT,
-                               gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                               msg)
-        response = dialog.run()
-        dialog.destroy()
-        if response ==  gtk.RESPONSE_YES:
-            print "ok ok "
-            print self.scontrini
-            Environment.params["metadata"] = Environment.meta2
-            from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
-            test= Environment.session2.query(TestataScontrino.id).all()
-            print "TESSSST",test
-            Environment.params["metadata"] = Environment.meta
-#            dao = TestataScontrino()
-#            dao.data_inserimento = datetime.now()
-#            dao.totale_scontrino = mN(self.label_totale.get_text())
-#            dao.totale_sconto = mN(self.sconto_totale_entry.get_text())
-#            dao.totale_subtotale = mN(self.label_subtotale.get_text())
-#            dao.tipo_sconto_scontrino = self.tipo_sconto_scontrino
-#            dao.id_magazzino = int(self.idMagazzino)
-#            if self.idPuntoCassa:
-#                dao.id_pos = int(self.idPuntoCassa)
-#            dao.id_ccardtype = findIdFromCombobox(self.card_type_combobox)
-#            dao.id_user = Environment.params["usernameLoggedList"][0]
-
-#            #print "TOTALI",totale_scontrino,  totale_sconto, totale_subtotale
-
-#            if dao.totale_scontrino < 0:
-#                msg = 'Attenzione!\n\nIl totale non puo\' essere negativo !'
-#                dialog = gtk.MessageDialog(self.getTopLevel(),
-#                                           gtk.DIALOG_MODAL
-#                                           | gtk.DIALOG_DESTROY_WITH_PARENT,
-#                                           gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
-#                                           msg)
-#                response = dialog.run()
-#                dialog.destroy()
-#                return
-
-#            # Creo dao testata_scontrino
-#            scontiSuTotale = []
-#            #res = self.sconti_testata_widget.getSconti()
-#            if dao.totale_sconto:
-#                daoSconto = ScontoTestataScontrino()
-#                daoSconto.valore = dao.totale_sconto
-#                daoSconto.tipo_sconto = dao.tipo_sconto_scontrino
-#                scontiSuTotale.append(daoSconto)
-#            dao.scontiSuTotale = scontiSuTotale
-
-#            #dao.totale_scontrino = totale_scontrino
-#            totale_contanti = 0
-#            totale_assegni = 0
-#            totale_carta_di_credito = 0
-
-#            if self.contanti_entry.get_text() != '':
-#                totale_contanti = mN(self.contanti_entry.get_text())
-#                resto = totale_contanti - dao.totale_scontrino
-#                self.label_resto.set_markup('<b><span foreground="black" size="24000">' + str(resto) +'</span></b>')
-#            if self.non_contanti_entry.get_text() != '':
-#                if self.assegni_radio_button.get_active():
-#                    totale_assegni = mN(self.non_contanti_entry.get_text())
-#                else:
-#                    totale_carta_di_credito = mN(self.non_contanti_entry.get_text())
-
-#            dao.totale_contanti = totale_contanti
-#            dao.totale_assegni = totale_assegni
-#            dao.totale_carta_credito = totale_carta_di_credito
-
-#            # Creo righe
-#            righe = []
-#            model = self.scontrino_treeview.get_model()
-#            for row in model:
-#                idArticolo = row[0]
-#                descrizione = row[4]
-#                prezzo = mN(row[5])
-#                valoreSconto = mN(row[6])
-#                tipoSconto = row[7]
-#                prezzoScontato = mN(row[8])
-#                quantita = Decimal(row[9])
-
-#                # Nuova riga
-#                daoRiga = RigaScontrino()
-#                daoRiga.id_testata_scontrino = dao.id
-#                daoRiga.id_articolo = idArticolo
-#                daoRiga.descrizione = descrizione
-#                daoRiga.prezzo = prezzo
-#                daoRiga.prezzo_scontato = prezzoScontato
-#                daoRiga.quantita = quantita
-#                listarighesconto = []
-
-#                if valoreSconto > 0:
-#                    daoScontoRigaScontrino = ScontoRigaScontrino()
-#                    daoScontoRigaScontrino.valore = valoreSconto
-#                    if tipoSconto == self._simboloPercentuale:
-#                        daoScontoRigaScontrino.tipo_sconto = 'percentuale'
-#                    else:
-#                        daoScontoRigaScontrino.tipo_sconto = 'valore'
-#                    listarighesconto.append(daoScontoRigaScontrino)
-#                daoRiga.sconti=listarighesconto
-#                righe.append(daoRiga)
-
-#            # Aggiungo righe e salvo dao
-#            dao.righe = righe
-#            dao.persist()
-
 
     def on_distinta_button_clicked(self, button):
         gest = Distinta(righe = self.scontrini)
