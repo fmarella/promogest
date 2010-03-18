@@ -16,7 +16,7 @@ PORT = "5432"
 USER = "promoadmin"
 PASSWORD = "admin"
 HOST = "192.168.1.101"
-FILE_CSV = "inv_2010_gradisca01.csv"
+FILE_CSV = "inv_2010_gradisca01_def.csv"
 MAINSCHEMA = "promogest2"
 DELIMITER = ","
 QUOTECHAR = '"'
@@ -57,6 +57,7 @@ class GenericFillData(object):
 
     def fillDataContact(self,spamReader):
         for row in spamReader:
+            print "TUUUUUUUUUUUUUUUUUUUUUUUU", row[2].strip().replace(",",".")
             quantita = float(row[2].strip().replace(",","."))
             if quantita >0:
                 _field = self.pg_db_dest.inventario()
@@ -66,7 +67,7 @@ class GenericFillData(object):
 
                 _field.quantita = quantita
                 _field.valore_unitario = float(row[3].strip().replace(",","."))
-                _field.data_aggiornamento = row[11]
+                _field.data_aggiornamento = row[11] or None
                 print _field.__dict__
                 sqlalchemy.ext.sqlsoup.Session.add(_field)
                 sqlalchemy.ext.sqlsoup.Session.commit()

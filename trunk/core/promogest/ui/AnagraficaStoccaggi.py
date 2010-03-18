@@ -135,7 +135,8 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
 
             fillComboboxGeneriAbbigliamento(self.id_genere_articolo_filter_combobox, True)
             self.id_genere_articolo_filter_combobox.set_active(0)
-
+        else:
+            self.promowear_expander_semplice.destroy()
         self.clear()
 
 

@@ -14,6 +14,7 @@ from promogest.Environment import params, workingYear, conf, modulesList
 from Dao import Dao
 from Articolo import Articolo
 from Magazzino import Magazzino
+from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from DaoUtils import giacenzaSel
 if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
     from promogest.modules.PromoWear.dao.Colore import Colore

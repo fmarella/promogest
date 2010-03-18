@@ -315,7 +315,6 @@
           <object class="GtkExpander" id="promowear_expander_semplice">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="expanded">True</property>
             <child>
               <object class="GtkScrolledWindow" id="scrolledwindow__">
                 <property name="visible">True</property>
@@ -418,7 +417,6 @@
                         <child>
                           <object class="GtkComboBox" id="taglie_colori_filter_combobox">
                             <property name="visible">True</property>
-                            <property name="model">liststore1</property>
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext1"/>
                               <attributes>
