@@ -39,12 +39,12 @@ class GestioneChiusuraFiscale(GladeWidget):
         fillComboboxPos(self.chiusura_id_pos_combobox)
         if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
             findComboboxRowFromStr(self.chiusura_id_pos_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
-        self.chiusura_datetime.show_all()
-        self.chiusura_datetime.setNow()
+        self.chiusura_datetime_entry.show_all()
+        self.chiusura_datetime_entry.setNow()
 
     def on_ok_chiusura_button_clicked(self, button):
         # controllo se vi e` gia` stata una chiusura
-        data = stringToDate(self.chiusura_datetime.get_text())
+        data = stringToDate(self.chiusura_datetime_entry.get_text())
         self.idPuntoCassa = findIdFromCombobox(self.chiusura_id_pos_combobox)
         self.idMagazzino = findIdFromCombobox(self.chiusura_id_magazzino_combobox)
         chiusure = ChiusuraFiscale().select( dataChiusura = data,
