@@ -61,7 +61,7 @@ class GestioneChiusuraFiscale(GladeWidget):
             response = dialog.run()
             dialog.destroy()
             return
-        self.close_day(idMagazzino, data)
+        self.close_day(self.idMagazzino, data)
 
     def on_no_chiusura_button_clicked(self, button):
         self.chiusura_dialog.hide()
