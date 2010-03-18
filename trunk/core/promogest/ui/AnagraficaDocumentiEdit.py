@@ -406,7 +406,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     self.dao.id_cliente)
             findComboboxRowFromId(self.id_destinazione_merce_customcombobox.combobox,
                     (self.dao.id_destinazione_merce or -1))
-            self.id_destinazione_merce_customcombobox.set_sensitive(True)
+            self.id_destinazione_merce_customcombobox.combobox.set_sensitive(True)
 
         self.data_documento_entry.set_text(dateToString(self.dao.data_documento))
         self.numero_documento_entry.set_text(str(self.dao.numero or '0'))

@@ -472,6 +472,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             daoLA.prezzo_ingrosso = listino.prezzo_ingrosso
             daoLA.ultimo_costo = listino.ultimo_costo
             daoLA.data_listino_articolo = listino.data_listino_articolo
+            daoLA.sconto_vendita_ingrosso = listino.sconto_vendita_ingrosso
+            daoLA.sconto_vendita_dettaglio = listino.sconto_vendita_dettaglio
             daoLA.persist()
 
         self._duplicatedDaoId = None

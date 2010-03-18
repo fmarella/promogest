@@ -123,7 +123,7 @@ class AnagraficaArticoli(Anagrafica):
 
         self.editElement.setVisible(True)
         self.editElement._refresh()
-
+        print "BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
         msg = 'Si desidera duplicare anche tutti i listini dell\' articolo scelto ?'
         dialog = gtk.MessageDialog(self.editElement.dialogTopLevel,
                                    gtk.DIALOG_MODAL
@@ -134,6 +134,7 @@ class AnagraficaArticoli(Anagrafica):
         response = dialog.run()
         dialog.destroy()
         if response != gtk.RESPONSE_YES:
+            print "AHAHAHAAHAHAAHAHAH"
             self.editElement._duplicatedDaoId = None
 
 
@@ -287,7 +288,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
 
         if "PromoWear" in Environment.modulesList:
             AnagraficaArticoliPromoWearExpand.refresh(self)
-        
+
         def filterCountClosure():
             return Articolo().count(filterDict = self.filterDict)
 
