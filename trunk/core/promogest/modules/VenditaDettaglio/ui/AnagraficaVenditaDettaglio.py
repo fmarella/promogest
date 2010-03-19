@@ -734,6 +734,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             print "SIAMO QUI PRONTI A MANDARE LO SCONTRINO IN CASSA"
             filescontrino = self.createFileToPos(dao)
             print "TORNATI", filescontrino
+        self.codice_a_barre_entry.grab_focus()
         self.last_scontr_label.set_text("Tot. scontrino precedente: "+str(dao.totale_scontrino))
         # Svuoto transazione e mi rimetto in stato di ricerca
         self.search_button.set_sensitive(True)
@@ -748,6 +749,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.righe_label.set_markup('<b> [ 0 ] Righe scontrino</b>')
         self.codice_a_barre_entry.grab_focus()
         self._state = 'search'
+        self.codice_a_barre_entry.grab_focus()
 
 #    def on_chiusura_fiscale_activate(self, widget):
 #        if DRIVER=="D":
