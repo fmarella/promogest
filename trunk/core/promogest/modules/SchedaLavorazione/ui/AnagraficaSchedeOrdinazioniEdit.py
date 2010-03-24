@@ -614,7 +614,13 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                 daoSconto.tipo_sconto = sc["tipo"]
                 #scontiSuTotale[self.dao]=daoSconto
                 scontiSuTotale.append(daoSconto)
-
+        else:
+            msg="ATTENZIONE!! NESSUNO SCONTO INSERITO"
+            dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.
+                                        DIALOG_DESTROY_WITH_PARENT,
+                                        gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
+            dialog.run()
+            dialog.destroy()
         self.dao.scontiSuTotale = scontiSuTotale
         self.scontiTEMP = scontiSuTotale
 

@@ -2331,6 +2331,57 @@ def mN(value,decimal=None):
     newvalue= Decimal(str(value).strip()).quantize(Decimal(decimals), rounding=ROUND_HALF_UP)
     return newvalue
 
+def addSeparatoreMigliaia(value, decimal=2, curr='', sep='.', dp=',',
+             pos='', neg='-', trailneg=''):
+    """Convert Decimal to a money formatted string.
+
+    places:  required number of places after the decimal point
+    curr:    optional currency symbol before the sign (may be blank)
+    sep:     optional grouping separator (comma, period, space, or blank)
+    dp:      decimal point indicator (comma or period)
+             only specify as blank when places is zero
+    pos:     optional sign for positive numbers: '+', space or blank
+    neg:     optional sign for negative numbers: '-', '(', space or blank
+    trailneg:optional trailing minus indicator:  '-', ')', space or blank
+
+    >>> d = Decimal('-1234567.8901')
+    >>> moneyfmt(d, curr='$')
+    '-$1,234,567.89'
+    >>> moneyfmt(d, places=0, sep='.', dp='', neg='', trailneg='-')
+    '1.234.568-'
+    >>> moneyfmt(d, curr='$', neg='(', trailneg=')')
+    '($1,234,567.89)'
+    >>> moneyfmt(Decimal(123456789), sep=' ')
+    '123 456 789.00'
+    >>> moneyfmt(Decimal('-0.02'), neg='<', trailneg='>')
+    '<0.02>'
+
+    """
+#    qq = Decimal(10) ** -places      # 2 places --> '0.01'
+    precisione = decimal or int(Environment.conf.decimals)
+    sign, digits, exp = Decimal(value).as_tuple()
+    result = []
+    digits = map(str, digits)
+    build, next = result.append, digits.pop
+    if sign:
+        build(trailneg)
+    for i in range(precisione):
+        build(next() if digits else '0')
+    build(dp)
+    if not digits:
+        build('0')
+    i = 0
+    while digits:
+        build(next())
+        i += 1
+        if i == 3 and digits:
+            i = 0
+            build(sep)
+    build(curr)
+    build(neg if sign else pos)
+    return ''.join(reversed(result))
+
+
 def generateRandomBarCode(ean=13):
     """
     funzione di generazione codice ean13 random
@@ -2475,9 +2526,8 @@ def tempo():
     print datetime.datetime.now()
     return ""
 
-
 def checkAggiorna():
-
+    """ controllo se il pg2 è da aggiornare o no"""
     def agg():
         client = pysvn.Client()
         if not Environment.rev_locale:
@@ -2497,7 +2547,7 @@ def checkAggiorna():
 
 
 def aggiorna(anag):
-
+    """ Funzione di gestione del processo di aggiornamento"""
     client = pysvn.Client()
     client.exception_style = 0
     #rev_locale= client.info(".").revision.number
@@ -2557,6 +2607,7 @@ def aggiorna(anag):
         dialogg.destroy()
 
 def messageInfo(msg="Messaggio generico"):
+    """generic msg dialog """
     dialoggg = gtk.MessageDialog(None,
                         gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                         gtk.MESSAGE_INFO,
@@ -2565,9 +2616,8 @@ def messageInfo(msg="Messaggio generico"):
     dialoggg.run()
     dialoggg.destroy()
 
-
 def deaccenta(riga=None):
-
+    """ questa funzione elimina gli accenti magari non graditi in alcuni casi"""
     nkfd_form = unicodedata.normalize('NFKD', unicode(riga))
     only_ascii = nkfd_form.encode('ASCII', 'ignore')
     return only_ascii

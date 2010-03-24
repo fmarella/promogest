@@ -1358,7 +1358,7 @@ ed un nuovo punto cassa.</property>
                                         <property name="visible">True</property>
                                         <property name="xalign">1</property>
                                         <property name="xpad">6</property>
-                                        <property name="label" translatable="yes">&lt;b&gt;SUBTOTALE: &lt;span size="xx-large"&gt;&#x20AC;&lt;/span&gt;&lt;/b&gt;</property>
+                                        <property name="label" translatable="yes">&lt;b&gt;SUBTOTALE: &lt;/b&gt;</property>
                                         <property name="use_markup">True</property>
                                       </object>
                                       <packing>
@@ -1371,7 +1371,7 @@ ed un nuovo punto cassa.</property>
                                         <property name="visible">True</property>
                                         <property name="xalign">1</property>
                                         <property name="xpad">6</property>
-                                        <property name="label" translatable="yes">&lt;b&gt;SCONTO: &lt;span size="xx-large"&gt;&#x20AC;&lt;/span&gt;&lt;/b&gt;</property>
+                                        <property name="label" translatable="yes">&lt;b&gt;SCONTO: &lt;/b&gt;</property>
                                         <property name="use_markup">True</property>
                                       </object>
                                       <packing>
@@ -1401,7 +1401,7 @@ ed un nuovo punto cassa.</property>
                                         <property name="visible">True</property>
                                         <property name="xalign">1</property>
                                         <property name="xpad">6</property>
-                                        <property name="label" translatable="yes">&lt;b&gt;RESTO: &lt;span size="xx-large"&gt;&#x20AC;&lt;/span&gt;&lt;/b&gt;</property>
+                                        <property name="label" translatable="yes">&lt;b&gt;RESTO: &lt;/b&gt;</property>
                                         <property name="use_markup">True</property>
                                       </object>
                                       <packing>
@@ -1435,7 +1435,7 @@ ed un nuovo punto cassa.</property>
                                         <property name="visible">True</property>
                                         <property name="xalign">1</property>
                                         <property name="xpad">6</property>
-                                        <property name="label" translatable="yes">&lt;b&gt;TOTALE: &lt;span size="xx-large"&gt;&#x20AC;&lt;/span&gt;&lt;/b&gt;</property>
+                                        <property name="label" translatable="yes">&lt;b&gt;TOTALE:&lt;/b&gt;</property>
                                         <property name="use_markup">True</property>
                                       </object>
                                       <packing>
@@ -1825,8 +1825,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">ctrl +( +) aumenta</property>
                 <property name="image">image_plus</property>
-                <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="plus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="KP_Add" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <signal name="clicked" handler="on_plus_button_clicked"/>
               </object>
               <packing>
@@ -1840,8 +1840,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">ctrl +( - ) diminisce</property>
                 <property name="image">image3_minus</property>
-                <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="minus" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="KP_Subtract" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                 <signal name="clicked" handler="on_minus_button_clicked"/>
               </object>
               <packing>
@@ -1885,8 +1885,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">(+) aumenta</property>
                 <property name="image">image2_plus</property>
-                <accelerator key="KP_Add" signal="clicked"/>
                 <accelerator key="plus" signal="clicked"/>
+                <accelerator key="KP_Add" signal="clicked"/>
                 <signal name="clicked" handler="on_plus2_button_clicked"/>
               </object>
               <packing>
@@ -1900,8 +1900,8 @@ INVIO  per confermare</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_markup">(-) diminuisce</property>
                 <property name="image">image4_minus2</property>
-                <accelerator key="KP_Subtract" signal="clicked"/>
                 <accelerator key="minus" signal="clicked"/>
+                <accelerator key="KP_Subtract" signal="clicked"/>
                 <signal name="clicked" handler="on_minus2_button_clicked"/>
               </object>
               <packing>
@@ -1942,8 +1942,8 @@ INVIO  per confermare</property>
                 <property name="tooltip_markup">Conferma con invio</property>
                 <property name="border_width">1</property>
                 <property name="use_stock">True</property>
-                <accelerator key="Return" signal="clicked"/>
                 <accelerator key="KP_Enter" signal="clicked"/>
+                <accelerator key="Return" signal="clicked"/>
                 <signal name="clicked" handler="on_generico_ok_button_clicked"/>
               </object>
               <packing>
