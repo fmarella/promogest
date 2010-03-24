@@ -443,6 +443,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             insertComboboxSearchVettore(self.id_vettore_customcombobox,
                     self.dao.id_vettore)
             self.porto_combobox.set_sensitive(True)
+            print "VETTOREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
         if self.dao.porto == 'Franco':
             self.porto_combobox.set_active(0)
         elif self.dao.porto == 'Assegnato':
@@ -705,6 +706,11 @@ del documento.
                 self.dao.porto = 'Franco'
             elif self.porto_combobox.get_active() == 1:
                 self.dao.porto = 'Assegnato'
+            if not self.dao.id_vettore:
+                obligatoryField(self.dialogTopLevel,
+                    self.id_vettore_customcombobox,
+                    'Quando si seleziona vettore è obbligatorio settarne uno!')
+            print "QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", self.dao.id_vettore
         elif self.mittente_radiobutton.get_active():
             self.dao.id_vettore = None
             self.dao.incaricato_trasporto = 'mittente'

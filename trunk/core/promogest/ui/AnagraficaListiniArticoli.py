@@ -439,9 +439,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
 
     def aggiornaCostoIvato(self, widget=None, event=None):
-        """
-
-        """
+        """ """
         self.ultimo_costo_ivato_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(float(self.ultimo_costo_entry.get_text()),
                                                                                                  float(self._percentualeIva)))
         return False
@@ -452,7 +450,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         FIXME
         """
         self.aggiornaCostoIvato()
-
 
     def confermaAggiornaDaCosto(self, widget=None, event=None):
         """
