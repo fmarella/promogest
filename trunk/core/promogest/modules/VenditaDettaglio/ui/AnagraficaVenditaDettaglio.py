@@ -616,23 +616,23 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                     totale_sconto = total*(Decimal(self.sconto)/100)
                     totale_scontato = total-totale_sconto
 
-#        self.label_totale.set_markup('<b><span foreground="black" size="40000">' + addSeparatoreMigliaia(mN(totale_scontato),curr="€ ") +'</span></b>')
-#        self.label_sconto.set_markup('<b><span foreground="#338000" size="24000">' + addSeparatoreMigliaia(mN(totale_sconto),curr="€ ") +'</span></b>')
-#        self.label_subtotale.set_markup('<b><span foreground="#338000" size="26000">' + addSeparatoreMigliaia(mN(total),curr="€ ") +'</span></b>')
+        self.label_totale.set_markup('<b><span foreground="black" size="40000">' + italianizza(mN(totale_scontato),curr="€ ") +'</span></b>')
+        self.label_sconto.set_markup('<b><span foreground="#338000" size="24000">' + italianizza(mN(totale_sconto),curr="€ ") +'</span></b>')
+        self.label_subtotale.set_markup('<b><span foreground="#338000" size="26000">' + italianizza(mN(total),curr="€ ") +'</span></b>')
 
-        self.label_totale.set_markup('<b><span foreground="black" size="40000">' + str(mN(totale_scontato)) +'</span></b>')
-        self.label_sconto.set_markup('<b><span foreground="#338000" size="24000">' + str(mN(totale_sconto)) +'</span></b>')
-        self.label_subtotale.set_markup('<b><span foreground="#338000" size="26000">' + str(mN(total)) +'</span></b>')
+#        self.label_totale.set_markup('<b><span foreground="black" size="40000">' + str(mN(totale_scontato)) +'</span></b>')
+#        self.label_sconto.set_markup('<b><span foreground="#338000" size="24000">' + str(mN(totale_sconto)) +'</span></b>')
+#        self.label_subtotale.set_markup('<b><span foreground="#338000" size="26000">' + str(mN(total)) +'</span></b>')
 
         return (totale_scontato,total,totale_sconto, self.sconto)
 
     def on_empty_button_clicked(self, button):
         self.scontrino_treeview.get_model().clear()
         self.empty_current_row()
-        self.label_totale.set_markup('<b><span foreground="black" size="40000">0.00</span></b>')
-        self.label_resto.set_markup('<b><span foreground="black" size="24000">0.00</span></b>')
-        self.label_subtotale.set_markup('<b><span foreground="black" size="24000">0.00</span></b>')
-        self.label_sconto.set_markup('<b><span foreground="black" size="26000">0.00</span></b>')
+        self.label_totale.set_markup('<b><span foreground="black" size="40000">0,00</span></b>')
+        self.label_resto.set_markup('<b><span foreground="black" size="24000">0,00</span></b>')
+        self.label_subtotale.set_markup('<b><span foreground="black" size="24000">0,00</span></b>')
+        self.label_sconto.set_markup('<b><span foreground="black" size="26000">0,00</span></b>')
         self.empty_button.set_sensitive(False)
         self.total_button.set_sensitive(False)
         self.subtotal_button.set_sensitive(False)
@@ -687,7 +687,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         if self.contanti_entry.get_text() != '':
             totale_contanti = mN(self.contanti_entry.get_text())
             resto = totale_contanti - dao.totale_scontrino
-            self.label_resto.set_markup('<b><span foreground="black" size="24000">' + str(resto) +'</span></b>')
+            self.label_resto.set_markup('<b><span foreground="black" size="24000">' + italianizza(resto) +'</span></b>')
         if self.non_contanti_entry.get_text() != '':
             if self.assegni_radio_button.get_active():
                 totale_assegni = mN(self.non_contanti_entry.get_text())
@@ -858,7 +858,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         else:
             totale_pagamento = 0
         resto = totale_pagamento - totale_scontrino
-        self.label_resto.set_markup('<b><span size="xx-large">'+ str(resto) +'</span></b>')
+        self.label_resto.set_markup('<b><span size="xx-large">'+ italianizza(resto) +'</span></b>')
 
         if self.total_button.is_focus():
             self.on_total_button_clicked(button)

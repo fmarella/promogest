@@ -2326,12 +2326,25 @@ def mN(value,decimal=None):
     """
     if not value or value =='':
         return Decimal(0)
+    value = deItalianizza(value)
     precisione = decimal or int(Environment.conf.decimals)
     decimals = Decimal(10) ** -(precisione)
     newvalue= Decimal(str(value).strip()).quantize(Decimal(decimals), rounding=ROUND_HALF_UP)
     return newvalue
 
-def addSeparatoreMigliaia(value, decimal=2, curr='', sep='.', dp=',',
+def deItalianizza(value):
+    if type("stringa") == type(value):
+        if "€" in str(value):
+            value = value.replace("€","")
+        if "," in str(value) and "." in str(value):
+            value = value.replace(".","")
+            value = value.replace(",",".")
+        elif "," in str(value):
+            value = value.replace(",",".")
+    return value
+
+
+def italianizza(value, decimal=2, curr='', sep='.', dp=',',
              pos='', neg='-', trailneg=''):
     """Convert Decimal to a money formatted string.
 
