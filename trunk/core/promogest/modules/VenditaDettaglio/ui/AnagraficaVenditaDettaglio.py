@@ -616,9 +616,13 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                     totale_sconto = total*(Decimal(self.sconto)/100)
                     totale_scontato = total-totale_sconto
 
-        self.label_totale.set_markup('<b><span foreground="black" size="40000">' + addSeparatoreMigliaia(mN(totale_scontato),curr="€ ") +'</span></b>')
-        self.label_sconto.set_markup('<b><span foreground="#338000" size="24000">' + addSeparatoreMigliaia(mN(totale_sconto),curr="€ ") +'</span></b>')
-        self.label_subtotale.set_markup('<b><span foreground="#338000" size="26000">' + addSeparatoreMigliaia(mN(total),curr="€ ") +'</span></b>')
+#        self.label_totale.set_markup('<b><span foreground="black" size="40000">' + addSeparatoreMigliaia(mN(totale_scontato),curr="€ ") +'</span></b>')
+#        self.label_sconto.set_markup('<b><span foreground="#338000" size="24000">' + addSeparatoreMigliaia(mN(totale_sconto),curr="€ ") +'</span></b>')
+#        self.label_subtotale.set_markup('<b><span foreground="#338000" size="26000">' + addSeparatoreMigliaia(mN(total),curr="€ ") +'</span></b>')
+
+        self.label_totale.set_markup('<b><span foreground="black" size="40000">' + str(mN(totale_scontato)) +'</span></b>')
+        self.label_sconto.set_markup('<b><span foreground="#338000" size="24000">' + str(mN(totale_sconto)) +'</span></b>')
+        self.label_subtotale.set_markup('<b><span foreground="#338000" size="26000">' + str(mN(total)) +'</span></b>')
 
         return (totale_scontato,total,totale_sconto, self.sconto)
 
