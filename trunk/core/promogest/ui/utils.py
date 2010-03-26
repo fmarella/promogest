@@ -2344,7 +2344,7 @@ def deItalianizza(value):
     return value
 
 
-def italianizza(value, decimal=2, curr='', sep='.', dp=',',
+def italianizza(value, decimal=0, curr='', sep='.', dp=',',
              pos='', neg='-', trailneg=''):
     """Convert Decimal to a money formatted string.
 
@@ -2371,7 +2371,7 @@ def italianizza(value, decimal=2, curr='', sep='.', dp=',',
 
     """
 #    qq = Decimal(10) ** -places      # 2 places --> '0.01'
-    precisione = decimal or int(Environment.conf.decimals)
+    precisione = int(Environment.conf.decimals) or int(decimal)
     sign, digits, exp = Decimal(value).as_tuple()
     result = []
     digits = map(str, digits)
@@ -2380,6 +2380,9 @@ def italianizza(value, decimal=2, curr='', sep='.', dp=',',
         build(trailneg)
     for i in range(precisione):
         build(next() if digits else '0')
+    if not precisione:
+        build("0")
+        build("0")
     build(dp)
     if not digits:
         build('0')
