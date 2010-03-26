@@ -34,7 +34,7 @@ class GestioneInventario(RicercaComplessaArticoli):
     def __init__(self, idMagazzino = None):
 
         # aggiornamento inventario con gli articoli eventualmente non presenti
-#        self.checkTable()
+        self.checkTable()
         # filtri propri della parte inventario
         self.additional_filter = GladeWidget(rootWidget='inventario_filter_table',
         fileName="Inventario/gui/inventario_filter_table.glade", isModule=True)
