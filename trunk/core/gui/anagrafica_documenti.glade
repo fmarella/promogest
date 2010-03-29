@@ -49,7 +49,6 @@
   </object>
   <object class="GtkVBox" id="anagrafica_documenti_detail_vbox">
     <property name="visible">True</property>
-    <property name="orientation">vertical</property>
     <child>
       <object class="GtkHBox" id="hbox257">
         <property name="visible">True</property>
@@ -254,7 +253,6 @@
                     <child>
                       <object class="GtkVBox" id="vbox5">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkHBox" id="hbox35">
                             <property name="visible">True</property>
@@ -442,7 +440,6 @@
         <child>
           <object class="GtkVBox" id="vbox27">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
             <child>
               <object class="GtkFrame" id="frame12">
                 <property name="visible">True</property>
@@ -471,6 +468,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="tooltip_text" translatable="yes">ricerca_codice_button</property>
                                     <property name="use_underline">True</property>
                                     <property name="active">True</property>
                                     <property name="draw_indicator">True</property>
@@ -488,6 +486,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="tooltip_text" translatable="yes">ricerca_codice_a_barre_button</property>
                                     <property name="use_underline">True</property>
                                     <property name="draw_indicator">True</property>
                                     <property name="group">ricerca_codice_button</property>
@@ -505,6 +504,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="tooltip_text" translatable="yes">ricerca_descrizione_button</property>
                                     <property name="use_underline">True</property>
                                     <property name="draw_indicator">True</property>
                                     <property name="group">ricerca_codice_button</property>
@@ -522,6 +522,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="tooltip_text" translatable="yes">ricerca_codice_articolo_fornitore_button</property>
                                     <property name="use_underline">True</property>
                                     <property name="draw_indicator">True</property>
                                     <property name="group">ricerca_codice_button</property>
@@ -654,7 +655,6 @@
                     <child>
                       <object class="GtkVBox" id="vbox28">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <property name="spacing">5</property>
                         <child>
                           <object class="GtkHBox" id="hbox242">
@@ -1734,7 +1734,6 @@
                                           <object class="GtkVBox" id="vbox29">
                                             <property name="visible">True</property>
                                             <property name="border_width">2</property>
-                                            <property name="orientation">vertical</property>
                                             <property name="homogeneous">True</property>
                                             <child>
                                               <object class="GtkButton" id="variazione_listini_button">
@@ -2363,7 +2362,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox6">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">5</property>
                             <child>
                               <object class="GtkLabel" id="label43">
@@ -3561,7 +3559,6 @@ _
                     <child>
                       <object class="GtkVBox" id="vbox4">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkComboBox" id="stato_pagamento_combbox">
                             <property name="visible">True</property>
@@ -3618,7 +3615,6 @@ _
                     <child>
                       <object class="GtkVBox" id="vbox3">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkHBox" id="hbox21">
                             <property name="visible">True</property>
@@ -4063,7 +4059,6 @@ _
                     <child>
                       <object class="GtkVBox" id="vbox2">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkHBox" id="hbox18">
                             <property name="visible">True</property>

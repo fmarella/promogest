@@ -141,11 +141,11 @@ class SimpleGladeWrapper(object):
             obj = self.gl.get_object(attr_name)
             if obj:
                 self.obj = obj
-                if obj.__gtype__.name == "UnsignedIntegerEntryField":
-                    setattr(obj, "nomee",attr_name)
-                    self.entryGlobalcb(obj)
-                if obj.__gtype__.name == "GtkEntry":
-                    self.entryGlobalcb(obj)
+#                if obj.__gtype__.name == "UnsignedIntegerEntryField":
+#                    setattr(obj, "nomee",attr_name)
+#                    self.entryGlobalcb(obj)
+#                if obj.__gtype__.name == "GtkEntry":
+#                    self.entryGlobalcb(obj)
                 return obj
             else:
                 raise AttributeError, "no object named \"%s\" in the GUI ( file: %s) " %(attr_name,self.glade_path)

@@ -1094,9 +1094,12 @@ del documento.
 
     def on_articolo_entry_insert_text(self, text):
         stringa = text.get_text()
+#        print "AJAJAAJAJAJAJAJ", stringa, self.mattu,self.ricerca
         if self.mattu:
             text.set_text(stringa.split(self.sepric)[0])
         model = gtk.ListStore(str,object)
+        vediamo = self.completion.get_model()
+        vediamo.clear()
         art = []
         if stringa ==[] or len(stringa)<2:
             return
@@ -1104,12 +1107,12 @@ del documento.
             if len(text.get_text()) <3:
                 art = Articolo().select(codice=stringa, batchSize=20)
             else:
-                art = Articolo().select(codice=stringa, batchSize=None)
+                art = Articolo().select(codice=stringa, batchSize=50)
         elif self.ricerca == "ricerca_descrizione_button":
             if len(text.get_text()) <3:
                 art = Articolo().select(denominazione=stringa, batchSize=20)
             else:
-                art = Articolo().select(denominazione=stringa, batchSize=None)
+                art = Articolo().select(denominazione=stringa, batchSize=50)
         elif self.ricerca == "ricerca_codice_a_barre_button":
             if len(text.get_text()) <7:
                 art = Articolo().select(codiceABarre=stringa, batchSize=10)
@@ -1146,17 +1149,12 @@ del documento.
             return None
 
     def on_completion_match(self, completion=None, model=None, iter=None):
-#        print "TUTTUTUTUTUTTUTUTUTUTTUTU", completion, model, iter, model[iter][0].split(" -|- ")[0]
         self.mattu = True
         self.articolo_matchato = model[iter][1]
-#        self.articolo_entry.get_text()
-#        self.articolo_entry.set_text(model[iter][0].split(" || ")[0])
         self.articolo_entry.set_position(-1)
-#        self.ricercaArticolo(stringa = model[iter][0])
-#        return
 
     def ricercaArticolo(self):
-
+        print "ECCOMI QUIIIIIIIIIIIIIIII"
         def on_ricerca_articolo_hide(anagWindow, anag):
             if anag.dao is None:
                 anagWindow.destroy()
@@ -1182,6 +1180,7 @@ del documento.
         denominazione = None
         codiceArticoloFornitore = None
         join = None
+#        print "MA L?ARTICOLO E SEEZIONATO?", self.articolo_matchato, self.mattu
         if self.ricerca_codice_button.get_active():
             codice = self.articolo_entry.get_text()
             if Environment.tipo_eng =="sqlite":
@@ -1213,6 +1212,7 @@ del documento.
                 orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
         batchSize = Environment.conf.batch_size
         if self.articolo_matchato:
+#            print "KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK"
             arts = [self.articolo_matchato]
         else:
             arts = Articolo().select(codice=prepareFilterString(codice),
@@ -1225,10 +1225,11 @@ del documento.
                                         idCategoria=None,
                                         idStato=None,
                                         offset=None,
-                                        batchSize=None
-                                        )
+                                        batchSize=None)
+#        print "GGPGPGGPGPGPGGPGPGGP"
         if (len(arts) == 1):
             self.mostraArticolo(arts[0].id)
+#            print "OASASASASASASASAS"
             self.articolo_matchato = None
         else:
             from RicercaComplessaArticoli import RicercaComplessaArticoli
@@ -1725,5 +1726,9 @@ del documento.
             self.descrizione_entry.set_text("")
 
     def on_codice_item_toggled(self,toggled):
+        """ ATTENZIONE schifezza per tamponare il bug di gtk 2.17 numero :
+        Bug 607492 - widget.get_name() """
         if toggled.get_active():
-            self.ricerca = toggled.get_name()
+#            print "OLLLLALAAAA", dir(toggled), toggled.__dict__, toggled.get_label(), dir(toggled.get_name())
+#            self.ricerca = toggled.get_name()
+            self.ricerca = toggled.get_tooltip_text()
