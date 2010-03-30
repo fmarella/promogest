@@ -271,11 +271,19 @@ E' presente una nuova versione disponibile"""
         webbrowser.open_new_tab(url)
 
     def on_promogest_button_clicked(self, button):
-#        from promogest.dao.TestataMovimento import TestataMovimento
-#        daos = TestataMovimento().select(batchSize=1000)
+#        from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
+#        daos = TestataScontrino().select(batchSize=None)
 #        if daos:
 #            for d in daos:
 #                print d
+#                if not d.id_magazzino:
+#                    d.id_magazzino = 1
+#                if not d.id_pos:
+#                    d.id_pos = 1
+#                if not d.id_user:
+#                    d.id_user = 1
+#                Environment.session.add(d)
+#            Environment.session.commit()
 #    #            d.delete()
 #                Environment.session.delete(d)
 #            Environment.session.commit()

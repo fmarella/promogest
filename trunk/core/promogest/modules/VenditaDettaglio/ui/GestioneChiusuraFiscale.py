@@ -14,6 +14,7 @@ from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.Articolo import Articolo
 from promogest.dao.AliquotaIva import AliquotaIva
+from promogest.dao.Magazzino import Magazzino
 from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
@@ -21,6 +22,7 @@ from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRig
 from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
 from promogest.ui.utils import *
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import fillComboboxPos
+from promogest.modules.VenditaDettaglio.dao.Pos import Pos
 
 class GestioneChiusuraFiscale(GladeWidget):
     """ Classe per la gestione degli scontrini emessi """
@@ -31,6 +33,8 @@ class GestioneChiusuraFiscale(GladeWidget):
         self.draw()
 #        self.run()
         self.gladeobj = gladeobj
+        self.idMagazzino = None
+        self.idPuntoCassa = None
 
     def draw(self):
         fillComboboxMagazzini(self.chiusura_id_magazzino_combobox)
@@ -102,10 +106,23 @@ class GestioneChiusuraFiscale(GladeWidget):
                                             batchSize = None)
         ##Environment.pg2log.info( "SCONTRINI PRODOTTI IN GIORNATA N° %s dettaglio: %s" ) %(str(len(scontrini)or""), str(scontrini)or"")
         # Creo nuovo movimento
+        if self.idMagazzino:
+            mag = Magazzino().getRecord(id=self.idMagazzino)
+            if mag:
+                nomeMagazzino = mag.denominazione
+        else:
+            nomeMagazzino = " "
+        if self.idPuntoCassa:
+            pos = Pos().getRecord(id= self.idPuntoCassa)
+            if pos:
+                nomePuntoCassa = pos.denominazione
+        else:
+            nomePuntoCassa = " "
+
         daoMovimento = TestataMovimento()
         daoMovimento.operazione = Environment.conf.VenditaDettaglio.operazione
         daoMovimento.data_movimento = datefirst
-        daoMovimento.note_interne = 'Movimento chiusura fiscale'
+        daoMovimento.note_interne = """Movimento chiusura fiscale  magazzino: %s, punto cassa: %s """ %(str(nomeMagazzino),str(nomePuntoCassa))
         righeMovimento = []
 
         scontiRigheMovimento= []
@@ -122,7 +139,7 @@ class GestioneChiusuraFiscale(GladeWidget):
                 daoRiga.quantita = riga.quantita
                 daoRiga.moltiplicatore = 1
                 daoRiga.descrizione = riga.descrizione
-                daoRiga.id_magazzino = idMagazzino
+                daoRiga.id_magazzino = self.idMagazzino
                 daoRiga.id_articolo = riga.id_articolo
                 daoRiga.percentuale_iva = iva.percentuale
                 scontiRigheMovimento= []
@@ -142,8 +159,8 @@ class GestioneChiusuraFiscale(GladeWidget):
         # Creo nuova chiusura
         daoChiusura = ChiusuraFiscale()
         daoChiusura.data_chiusura = datefirst
-        daoChiusura.id_magazzino = self.gladeobj.idMagazzino
-        daoChiusura.id_pos = self.gladeobj.idPuntoCassa
+        daoChiusura.id_magazzino = self.idMagazzino
+        daoChiusura.id_pos = self.idPuntoCassa
         daoChiusura.persist()
 
         # Creo il file
@@ -196,6 +213,7 @@ class GestioneChiusuraFiscale(GladeWidget):
 
         # Svuoto transazione
         self.on_empty_button_clicked(self.gladeobj.empty_button)
+        self.fineElaborazione()
 
     def create_fiscal_close_file(self):
         # Genero nome file
@@ -215,3 +233,10 @@ class GestioneChiusuraFiscale(GladeWidget):
         self.gladeobj.total_button.set_sensitive(False)
         #self.setPagamento(enabled = False)
         self.gladeobj.codice_a_barre_entry.grab_focus()
+
+    def fineElaborazione(self):
+        """ Messaggio di fine elaborazione """
+        dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_INFO, gtk.BUTTONS_OK, '\nElaborazione terminata !')
+        response = dialog.run()
+        dialog.destroy()
