@@ -247,7 +247,9 @@ class ProductFromCsv(object):
             if self.codice_articolo is None or self.codice_articolo == "None":
                 self.codice_articolo = promogest.dao.Articolo.getNuovoCodiceArticolo()
             self.daoArticolo.codice = str(self.codice_articolo)
-            self.daoArticolo.denominazione = str(self.denominazione_articolo)
+            if self.denominazione_articolo:
+                self.daoArticolo.denominazione = str(self.denominazione_articolo)
+
 #        print "STO PER SALVARE ", self.daoArticolo.denominazione
         #families
         id_famiglia = None
