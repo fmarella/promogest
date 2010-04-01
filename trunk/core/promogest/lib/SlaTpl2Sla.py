@@ -97,12 +97,17 @@ class SlaTpl2Sla(object):
             self.findTablesProperties()
             self.getIteratableGroups()
             self.getPagesNumber()
+            print " dopo getPagesNumber"
             if self.label and self._classic:
+                print " è una label ...di tipo classico ? "
                 self.duplicateElementLabel()
-            self.addEmptyPages()
-            self.fillDocument()
-            self.findTablesProperties()
 
+            self.addEmptyPages()
+            print " prima di fillDocument()"
+            self.fillDocument()
+            print " prima di findTablesProperties()"
+            self.findTablesProperties()
+            print "PRIMA DELLA CONVERSIONE IN PDF"
             slatopdf = Sla2Pdf(document = self.slaDocumentTag(),
                             pdfFolder = self.pdfFolder,
                             version=self.scribusVersion(),
@@ -176,8 +181,7 @@ class SlaTpl2Sla(object):
                                 "cellBackground" : obj.get('PCOLOR'),
                                 "cellPicture": obj.get('PFILE'),
                                 "cellHeight" :obj.get('HEIGHT'),
-                                "cellWidth" :obj.get('WIDTH')
-                                }]
+                                "cellWidth" :obj.get('WIDTH')}]
                 widths = [float(obj.get('WIDTH'))]
                 heights = [float(obj.get('HEIGHT'))]
                 paras = obj.findall('para')
@@ -567,6 +571,7 @@ class SlaTpl2Sla(object):
                         elif tagsKeys in self.timeTags:
                             value = Sla2pdfUtils.getNowValue(tagsKeys)
                         else:
+                            print "11111111111111111111111111111",index, self.objects
                             value = self.objects[index][tagsKeys] or ""
                         if function in self.formatFunctions and "X" not in parameter:
                             resolvedTag = self.callFunction(function, str(value), int(parameter))

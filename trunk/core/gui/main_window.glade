@@ -1,12 +1,10 @@
 <?xml version="1.0"?>
 <interface>
-  <requires lib="gtk+" version="2.14"/>
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="main_window">
     <property name="title" translatable="yes">PromoGest2</property>
-    <property name="window_position">center</property>
     <property name="icon">promogest.png</property>
-    <property name="type_hint">dialog</property>
     <signal name="destroy" handler="on_main_window_destroy"/>
     <signal name="key_press_event" handler="on_main_window_key_press_event"/>
     <signal name="close" handler="on_main_window_destroy"/>

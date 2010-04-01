@@ -1172,8 +1172,7 @@ class AnagraficaLabel(object):
 
     def __init__(self, anagrafica, description, defaultFileName,
                                                     htmlTemplate,sxwTemplate):
-        """ Create labels
-        """
+        """ Create labels """
         self._anagrafica = anagrafica
         self.description = description
         self.defaultFileName = defaultFileName
@@ -1257,6 +1256,7 @@ class AnagraficaEdit(GladeWidget):
         else:
             Login.windowGroup.remove(self.dialogTopLevel)
             self.dialogTopLevel.vbox.remove(self.getTopLevel())
+            self.on_top_level_closed()
             self.dialogTopLevel.destroy()
 
 
@@ -1319,7 +1319,6 @@ class AnagraficaEdit(GladeWidget):
             self.setVisible(False)
         else:
             return True
-
 
     def setFocus(self, widget=None):
         if widget is None:

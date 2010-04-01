@@ -67,7 +67,7 @@ class Sla2Pdf(object):
     def createPDF(self, daos=None,objects=None, classic=None, template_file=None):
         self.objects = objects
         self.daos = daos
-
+        print "SELF DAOSSSS", objects, daos
         if self.objects or self.daos:
             from promogest import Environment
             self._classic = classic

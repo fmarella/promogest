@@ -2,10 +2,6 @@
 
 # Promogest
 #
-# Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
-# Author: Simone Cossu <simone@promotux.it>
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Francesco Meloni  <francesco@promotux.it>
 # Copyright (C) 2008-2009 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni  <francesco@promotux.it>
 
@@ -179,10 +175,10 @@ class SlaParser(object):
                     if gruppo == table and (table not in tableList):
                         if abj.get('isGroupControl')=="0":
                             ##if abj.get("LeftLINK") == "-1":
-                            #if abj.get("gXpos") == "0" or "0.00" in abj.get("gXpos")[0:4]:
-                                #leftLink.append(abj.get("gXpos"))
-                            #if abj.get("gYpos") == "0" or "0.00" in abj.get("gYpos")[0:4]:
-                                #topLink.append(abj.get("gYpos"))
+                            if abj.get("gXpos") == "0" or "0.00" in abj.get("gXpos")[0:4]:
+                                leftLink.append(abj.get("gXpos"))
+                            if abj.get("gYpos") == "0" or "0.00" in abj.get("gYpos")[0:4]:
+                                topLink.append(abj.get("gYpos"))
                             cellpropert = {
                                         "bottomLine" : int(abj.get('BottomLine')),
                                         "topLine":  int(abj.get('TopLine')),

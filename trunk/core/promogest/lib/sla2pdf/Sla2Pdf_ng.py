@@ -28,12 +28,8 @@ from SlaParser import SlaParser
 class Sla2Pdf_ng(SlaParser):
     """ sla to pdf format translation """
 
-    def __init__(self,
-                    pdfFolder=None,
-                    slaFileName = None,
-                    fileName= None,
-                    slafile = None,
-                        ):
+    def __init__(self, pdfFolder=None, slaFileName = None, fileName= None,
+                                                            slafile = None):
         """
         Build a template object based on the specified file-like
         object and sequence of objects

@@ -49,6 +49,7 @@
   </object>
   <object class="GtkVBox" id="anagrafica_documenti_detail_vbox">
     <property name="visible">True</property>
+    <property name="orientation">vertical</property>
     <child>
       <object class="GtkHBox" id="hbox257">
         <property name="visible">True</property>
@@ -184,7 +185,6 @@
                 <property name="invisible_char">&#x25CF;</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="secondary_icon_activatable">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
                 <signal name="icon_press" handler="on_icon_press"/>
@@ -253,6 +253,7 @@
                     <child>
                       <object class="GtkVBox" id="vbox5">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkHBox" id="hbox35">
                             <property name="visible">True</property>
@@ -440,6 +441,7 @@
         <child>
           <object class="GtkVBox" id="vbox27">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <child>
               <object class="GtkFrame" id="frame12">
                 <property name="visible">True</property>
@@ -562,8 +564,6 @@
                                 <property name="primary_icon_stock">gtk-find</property>
                                 <property name="secondary_icon_stock">gtk-clear</property>
                                 <property name="secondary_icon_activatable">True</property>
-                                <property name="primary_icon_sensitive">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                                 <property name="primary_icon_tooltip_text">Clicca qui per la ricerca</property>
                                 <property name="primary_icon_tooltip_markup">Clicca qui per la ricerca</property>
                                 <signal name="button_press_event" handler="on_button_press_event"/>
@@ -655,6 +655,7 @@
                     <child>
                       <object class="GtkVBox" id="vbox28">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">5</property>
                         <child>
                           <object class="GtkHBox" id="hbox242">
@@ -703,7 +704,6 @@
                                 <property name="invisible_char">&#x25CF;</property>
                                 <property name="secondary_icon_stock">gtk-clear</property>
                                 <property name="secondary_icon_activatable">True</property>
-                                <property name="secondary_icon_sensitive">True</property>
                                 <signal name="button_press_event" handler="on_button_press_event"/>
                                 <signal name="insert_text" handler="on_number_insert_text"/>
                                 <signal name="focus_in_event" handler="on_focus_in_event"/>
@@ -1077,7 +1077,6 @@
                                     <property name="invisible_char">&#x25CF;</property>
                                     <property name="secondary_icon_stock">gtk-clear</property>
                                     <property name="secondary_icon_activatable">True</property>
-                                    <property name="secondary_icon_sensitive">True</property>
                                     <signal name="button_press_event" handler="on_button_press_event"/>
                                     <signal name="focus_in_event" handler="on_focus_in_event"/>
                                     <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -1734,6 +1733,7 @@
                                           <object class="GtkVBox" id="vbox29">
                                             <property name="visible">True</property>
                                             <property name="border_width">2</property>
+                                            <property name="orientation">vertical</property>
                                             <property name="homogeneous">True</property>
                                             <child>
                                               <object class="GtkButton" id="variazione_listini_button">
@@ -2362,6 +2362,7 @@
                         <child>
                           <object class="GtkVBox" id="vbox6">
                             <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
                             <property name="spacing">5</property>
                             <child>
                               <object class="GtkLabel" id="label43">
@@ -2666,7 +2667,6 @@ _
                 <property name="invisible_char">&#x25CF;</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="secondary_icon_activatable">True</property>
-                <property name="secondary_icon_sensitive">True</property>
                 <signal name="icon_press" handler="on_icon_press"/>
               </object>
               <packing>
@@ -3559,6 +3559,7 @@ _
                     <child>
                       <object class="GtkVBox" id="vbox4">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkComboBox" id="stato_pagamento_combbox">
                             <property name="visible">True</property>
@@ -3615,6 +3616,7 @@ _
                     <child>
                       <object class="GtkVBox" id="vbox3">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkHBox" id="hbox21">
                             <property name="visible">True</property>
@@ -4059,6 +4061,7 @@ _
                     <child>
                       <object class="GtkVBox" id="vbox2">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkHBox" id="hbox18">
                             <property name="visible">True</property>

@@ -53,7 +53,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 'anagrafica_documenti_detail_vbox',
                                 'Dati Documento',
                                 'anagrafica_documenti.glade')
-
+#        self.placeWindow(self.getTopLevel())
         self._widgetFirstFocus = self.data_documento_entry
         # contenitore (dizionario) righe (riga 0 riservata per  variazioni in corso)
         self._righe = []

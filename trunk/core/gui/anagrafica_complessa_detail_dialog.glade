@@ -5,9 +5,9 @@
   <object class="GtkDialog" id="anagrafica_complessa_detail_dialog">
     <property name="title" translatable="yes">Detail</property>
     <property name="modal">True</property>
-    <property name="window_position">center</property>
+    <property name="destroy_with_parent">True</property>
     <property name="icon">promogest.png</property>
-    <property name="type_hint">dialog</property>
+    <property name="type_hint">normal</property>
     <signal name="response" handler="on_anagrafica_complessa_detail_dialog_response"/>
     <signal name="delete_event" handler="on_anagrafica_complessa_detail_dialog_close"/>
     <child internal-child="vbox">
