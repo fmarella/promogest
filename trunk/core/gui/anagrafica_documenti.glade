@@ -49,7 +49,7 @@
   </object>
   <object class="GtkVBox" id="anagrafica_documenti_detail_vbox">
     <property name="visible">True</property>
-    <property name="orientation">vertical</property>
+    <signal name="key_press_event" handler="on_anagrafica_documenti_detail_vbox_key_press_event"/>
     <child>
       <object class="GtkHBox" id="hbox257">
         <property name="visible">True</property>
@@ -253,7 +253,6 @@
                     <child>
                       <object class="GtkVBox" id="vbox5">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkHBox" id="hbox35">
                             <property name="visible">True</property>
@@ -441,7 +440,6 @@
         <child>
           <object class="GtkVBox" id="vbox27">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
             <child>
               <object class="GtkFrame" id="frame12">
                 <property name="visible">True</property>
@@ -655,7 +653,6 @@
                     <child>
                       <object class="GtkVBox" id="vbox28">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <property name="spacing">5</property>
                         <child>
                           <object class="GtkHBox" id="hbox242">
@@ -1264,19 +1261,6 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <object class="GtkLabel" id="prz_lordo_label">
-                                                <property name="visible">True</property>
-                                                <property name="xalign">0</property>
-                                                <property name="label" translatable="yes">Prezzo</property>
-                                              </object>
-                                              <packing>
-                                                <property name="top_attach">1</property>
-                                                <property name="bottom_attach">2</property>
-                                                <property name="x_options">GTK_FILL</property>
-                                                <property name="y_options"></property>
-                                              </packing>
-                                            </child>
-                                            <child>
                                               <object class="GtkLabel" id="label173">
                                                 <property name="visible">True</property>
                                                 <property name="xalign">0</property>
@@ -1340,6 +1324,8 @@
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="invisible_char">&#x25CF;</property>
+                                                    <property name="text" translatable="yes">0.00      </property>
+                                                    <signal name="key_press_event" handler="on_prezzo_lordo_entry_key_press_event"/>
                                                     <signal name="focus_out_event" handler="on_show_totali_riga"/>
                                                     <signal name="focus_out_event" handler="on_focus_out_event"/>
                                                     <signal name="focus_in_event" handler="on_focus_in_event"/>
@@ -1539,6 +1525,41 @@
                                             <child>
                                               <placeholder/>
                                             </child>
+                                            <child>
+                                              <object class="GtkHBox" id="hbox5">
+                                                <property name="visible">True</property>
+                                                <child>
+                                                  <object class="GtkLabel" id="prz_lordo_label">
+                                                    <property name="visible">True</property>
+                                                    <property name="xalign">0</property>
+                                                    <property name="label" translatable="yes">Prezzo</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="position">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkButton" id="scorporo_button">
+                                                    <property name="label" translatable="yes">s</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">True</property>
+                                                    <accelerator key="F11" signal="clicked"/>
+                                                    <signal name="clicked" handler="on_scorporo_button_clicked"/>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="padding">2</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="top_attach">1</property>
+                                                <property name="bottom_attach">2</property>
+                                              </packing>
+                                            </child>
                                           </object>
                                         </child>
                                       </object>
@@ -1733,7 +1754,6 @@
                                           <object class="GtkVBox" id="vbox29">
                                             <property name="visible">True</property>
                                             <property name="border_width">2</property>
-                                            <property name="orientation">vertical</property>
                                             <property name="homogeneous">True</property>
                                             <child>
                                               <object class="GtkButton" id="variazione_listini_button">
@@ -2362,7 +2382,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox6">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">5</property>
                             <child>
                               <object class="GtkLabel" id="label43">
@@ -3559,7 +3578,6 @@ _
                     <child>
                       <object class="GtkVBox" id="vbox4">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkComboBox" id="stato_pagamento_combbox">
                             <property name="visible">True</property>
@@ -3616,7 +3634,6 @@ _
                     <child>
                       <object class="GtkVBox" id="vbox3">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkHBox" id="hbox21">
                             <property name="visible">True</property>
@@ -4061,7 +4078,6 @@ _
                     <child>
                       <object class="GtkVBox" id="vbox2">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkHBox" id="hbox18">
                             <property name="visible">True</property>

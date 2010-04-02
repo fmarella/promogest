@@ -131,6 +131,31 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.cplx = cplx
         drawPart (self)
 
+    def on_scorporo_button_clicked(self, button):
+        iva = self.percentuale_iva_entry.get_text()
+        if iva == "" or iva == "0":
+            self.showMessage(msg="ATTENZIONE IVA a 0%")
+        else:
+            prezzoLordo = self.prezzo_lordo_entry.get_text()
+            print "PREZZO LORDO " , prezzoLordo
+            imponibile = float(prezzoLordo)/(1+float(iva)/100)
+            print "IMPONIBILE", mN(str(imponibile))
+            self.prezzo_lordo_entry.set_text(str(mN(str(imponibile))))
+            self.prezzo_lordo_entry.grab_focus()
+
+#    def on_anagrafica_documenti_detail_vbox_key_press_event(self, widget=None, event=None):
+#        """ Mappiamo un po' di tasti su ana documenti"""
+#        keyname = gtk.gdk.keyval_name(event.keyval)
+#        if keyname == 'F12':  # scorporo iva
+#            if self.percentuale_iva_entry.get_text() == "":
+#                obligatoryField(self.dialogTopLevel,
+#                    self.self.percentuale_iva_entry,
+#                    'Inserire iva per lo scorporo !')
+#            elif self.percentuale_iva_entry.get_text() == "0":
+#                self.showMessage(msg="ATTENZIONE iva a 0%")
+#            else:
+#                print "pronto a calcolare l0imponibile"
+
     def azzeraRiga(self, numero=0):
         """
         Azzera i campi del dizionario privato delle righe, alla riga
