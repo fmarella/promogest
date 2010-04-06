@@ -6,8 +6,6 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: francesco meloni <francesco@promotux.it>
 
-import math
-
 import gtk
 from GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
@@ -20,8 +18,8 @@ class Visualizzazione(GladeWidget):
     """ Classe base per le visualizzazioni di Promogest """
 
     def __init__(self, windowTitle, filterElement):
-        GladeWidget.__init__(self, 'visualizzazione_window')
-
+        GladeWidget.__init__(self, 'visualizzazione_window', 'visualizzazione_window.glade')
+        print "AKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK", self.visualizzazione_window, filterElement
         self.visualizzazione_window.set_title(windowTitle)
         self.dao = None
         self._setFilterElement(filterElement)
@@ -32,6 +30,7 @@ class Visualizzazione(GladeWidget):
 
     def _setFilterElement(self, gladeWidget):
         self.bodyWidget = FilterWidget(owner=gladeWidget, filtersElement=gladeWidget)
+
         self.visualizzazione_viewport.add(self.bodyWidget.getTopLevel())
         self.bodyWidget.filter_body_label.set_no_show_all(True)
         self.bodyWidget.filter_body_label.set_property('visible', False)
@@ -89,6 +88,7 @@ class VisualizzazioneFilter(GladeWidget):
     """ Filtro per la visualizzazione """
 
     def __init__(self, visualizzazione, rootWidget):
+#        print "666666666666666666666666666", rootWidget, visualizzazione
         GladeWidget.__init__(self, rootWidget)
         self._visualizzazione = visualizzazione
 

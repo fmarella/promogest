@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <interface>
-  <!-- interface-requires gtk+ 2.6 -->
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="visualizzazione_window">
     <property name="title" translatable="yes">Visualizzazione</property>
@@ -18,7 +18,6 @@
         <child>
           <object class="GtkVBox" id="visualizzazione_main_vbox">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkHBox" id="hbox82">

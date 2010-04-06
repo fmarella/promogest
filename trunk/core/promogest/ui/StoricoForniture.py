@@ -39,9 +39,8 @@ class StoricoFornitureFilter(VisualizzazioneFilter):
 
     def __init__(self, visualizzazione):
         VisualizzazioneFilter.__init__(self, visualizzazione,
-                                             'anagrafica_forniture_filter_table')
+                                         'anagrafica_forniture_filter_table')
         self.orderBy = 'data_prezzo'
-
 
     def draw(self):
         # Colonne della Treeview per il filtro

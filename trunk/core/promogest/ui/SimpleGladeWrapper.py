@@ -120,7 +120,7 @@ class SimpleGladeWrapper(object):
         if not gl:
             gl = gtk.Builder()
             #self.builda = gtk.Buildable()
-#        print "FILE GLADE: ", self.glade_path
+        print "FILE GLADE: ", self.glade_path
         gl.add_from_file(self.glade_path)
 #        self.widgets = gl.get_objects()
         if root:

@@ -10,7 +10,6 @@ import gobject
 from Visualizzazione import Visualizzazione, VisualizzazioneFilter
 
 from promogest import Environment
-#from promogest.dao.Dao import Dao
 import promogest.dao.ListinoArticolo
 from promogest.dao.ListinoArticolo import ListinoArticolo
 
@@ -24,16 +23,18 @@ class StoricoListini(Visualizzazione):
         self._idArticolo = idArticolo
         self._idListino = idListino
         Visualizzazione.__init__(self, 'Promogest - Visualizzazione storico prezzi di vendita',
-                                StoricoListiniFilter(self),)
-
+                                StoricoListiniFilter(self))
+#        Visualizzazione.__init__(self, 'Promogest - Visualizzazione storico prezzi di vendita',
+#                                None)
 
 
 class StoricoListiniFilter(VisualizzazioneFilter):
     """ Filtro per la visualizzazione dei listini """
 
     def __init__(self, visualizzazione):
-        VisualizzazioneFilter.__init__(self, visualizzazione,
-                                             'storico_listini_articoli_filter_table',)
+        VisualizzazioneFilter.__init__(self,
+                                    visualizzazione,
+                                    'storico_listini_articoli_filter_table')
         self.orderBy = 'data_listino'
 
 

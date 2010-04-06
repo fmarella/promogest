@@ -132,6 +132,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         drawPart (self)
 
     def on_scorporo_button_clicked(self, button):
+        """ Bottone con una "s" minuscola, che permette di effettuare "al volo"
+        lo scorporo di un valore finale nel campo prezzo """
         iva = self.percentuale_iva_entry.get_text()
         if iva == "" or iva == "0":
             self.showMessage(msg="ATTENZIONE IVA a 0%")
@@ -142,6 +144,13 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             print "IMPONIBILE", mN(str(imponibile))
             self.prezzo_lordo_entry.set_text(str(mN(str(imponibile))))
             self.prezzo_lordo_entry.grab_focus()
+
+    def on_articolo_entry_focus_in_event(self, widget, event):
+        """ controlliamo prima di effettuare una ricerca che il magazzino sia
+        selezionato per rendere la ricerca possibile e corretta"""
+        if not findIdFromCombobox(self.id_magazzino_combobox):
+            self.showMessage(msg="ATTENZIONE! \n SELEZIONARE UN MAGAZZINO\n PER UNA RICERCA CORRETTA")
+            self.id_magazzino_combobox.grab_focus()
 
 #    def on_anagrafica_documenti_detail_vbox_key_press_event(self, widget=None, event=None):
 #        """ Mappiamo un po' di tasti su ana documenti"""

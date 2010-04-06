@@ -568,6 +568,7 @@
                                 <signal name="changed" handler="on_articolo_entry_insert_text"/>
                                 <signal name="key_press_event" handler="on_articolo_entry_key_press_event"/>
                                 <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                <signal name="focus_in_event" handler="on_articolo_entry_focus_in_event"/>
                                 <signal name="icon_press" handler="on_articolo_entry_icon_press"/>
                                 <signal name="focus_out_event" handler="on_focus_out_event"/>
                               </object>
@@ -1520,12 +1521,6 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <placeholder/>
-                                            </child>
-                                            <child>
-                                              <placeholder/>
-                                            </child>
-                                            <child>
                                               <object class="GtkHBox" id="hbox5">
                                                 <property name="visible">True</property>
                                                 <child>
@@ -1559,6 +1554,12 @@
                                                 <property name="top_attach">1</property>
                                                 <property name="bottom_attach">2</property>
                                               </packing>
+                                            </child>
+                                            <child>
+                                              <placeholder/>
+                                            </child>
+                                            <child>
+                                              <placeholder/>
                                             </child>
                                           </object>
                                         </child>
