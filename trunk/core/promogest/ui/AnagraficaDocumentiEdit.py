@@ -409,6 +409,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.label31.set_sensitive(True)
 
     def _refresh(self):
+        """ Funzione importantissima di "impianto" del documento nella UI"""
         self._loading = True
 
         self._tipoPersonaGiuridica = None
@@ -480,7 +481,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             insertComboboxSearchVettore(self.id_vettore_customcombobox,
                     self.dao.id_vettore)
             self.porto_combobox.set_sensitive(True)
-            print "VETTOREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
+#            print "VETTOREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
         if self.dao.porto == 'Franco':
             self.porto_combobox.set_active(0)
         elif self.dao.porto == 'Assegnato':
@@ -543,8 +544,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["prezzoLordo"] = mN(riga.valore_unitario_lordo)
             self._righe[0]["sconti"] = sconti
             self._righe[0]["applicazioneSconti"] = applicazione
-            self._righe[0]["prezzoNetto"] = mN(riga.valore_unitario_netto)
-            self._righe[0]["prezzoNettoUltimo"] = mN(riga.valore_unitario_netto)
+            self._righe[0]["prezzoNetto"] = Decimal(riga.valore_unitario_netto)
+            self._righe[0]["prezzoNettoUltimo"] = Decimal(riga.valore_unitario_netto)
             self._righe[0]["totale"] = 0
             if "SuMisura" in Environment.modulesList:
                 self._righe[0]["altezza"] = mN(altezza)

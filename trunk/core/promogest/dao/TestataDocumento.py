@@ -244,7 +244,7 @@ class TestataDocumento(Dao):
             #print "VALORIIIIIIIIIIIIIIIII", riga.quantita, riga.moltiplicatore, riga.valore_unitario_netto
             if not riga.moltiplicatore:
                 riga.moltiplicatore = 1
-            totaleRiga = Decimal(str(riga.quantita)) * Decimal(str(riga.moltiplicatore)) * mN(str(riga.valore_unitario_netto))
+            totaleRiga = Decimal(str(riga.quantita)) * Decimal(str(riga.moltiplicatore)) * Decimal(str(riga.valore_unitario_netto))
             percentualeIvaRiga = Decimal(str(riga.percentuale_iva))
             if percentualeIvaRiga != Environment.percentualeIvaRiga:
                 aliquotaIvaRiga = riga.aliquota
@@ -258,10 +258,10 @@ class TestataDocumento(Dao):
             if (fonteValore == "vendita_iva" or fonteValore == "acquisto_iva"):
                 totaleImponibileRiga = calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)
             else:
-                totaleImponibileRiga = mN(totaleRiga,2)
+                totaleImponibileRiga = totaleRiga
                 totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
 
-            totaleImpostaRiga = mN(totaleRiga,2) - totaleImponibileRiga
+            totaleImpostaRiga = totaleRiga - totaleImponibileRiga
             totaleNonScontato += totaleRiga
             totaleImponibile += totaleImponibileRiga
             totaleImposta += totaleImpostaRiga
@@ -277,8 +277,8 @@ class TestataDocumento(Dao):
                 castellettoIva[aliquotaIvaRiga]['imposta'] += totaleImpostaRiga
                 castellettoIva[aliquotaIvaRiga]['totale'] += totaleRiga
 
-        totaleNonScontato = mN(totaleNonScontato, 2)
-        totaleImponibile = mN(totaleImponibile, 2)
+        totaleNonScontato = Decimal(totaleNonScontato)
+        totaleImponibile = Decimal(totaleImponibile)
         totaleImposta = totaleNonScontato - totaleImponibile
         for aliquotaIva in castellettoIva:
             castellettoIva[aliquotaIva]['imponibile'] = mN(castellettoIva[aliquotaIva]['imponibile'], 2)
