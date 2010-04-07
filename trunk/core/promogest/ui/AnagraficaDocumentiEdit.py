@@ -105,6 +105,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.articolo_entry.set_completion(self.completion)
         self.sepric = "  ~  "
         self.articolo_matchato = None
+        self.checkMAGAZZINO = True
 #        self.completion.set_minimum_key_length(3)
         if "Pagamenti" not in Environment.modulesList:
             self.notebook.remove_page(3)
@@ -148,9 +149,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def on_articolo_entry_focus_in_event(self, widget, event):
         """ controlliamo prima di effettuare una ricerca che il magazzino sia
         selezionato per rendere la ricerca possibile e corretta"""
-        if not findIdFromCombobox(self.id_magazzino_combobox):
+#        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAZZINOOOOOOOOOO"
+        if not findIdFromCombobox(self.id_magazzino_combobox) and self.checkMAGAZZINO:
             self.showMessage(msg="ATTENZIONE! \n SELEZIONARE UN MAGAZZINO\n PER UNA RICERCA CORRETTA")
             self.id_magazzino_combobox.grab_focus()
+            self.checkMAGAZZINO = False
 
 #    def on_anagrafica_documenti_detail_vbox_key_press_event(self, widget=None, event=None):
 #        """ Mappiamo un po' di tasti su ana documenti"""
@@ -956,7 +959,7 @@ del documento.
         """
         Memorizza la riga inserita o modificata
         """
-
+        self.checkMAGAZZINO = False
         if self.NoRowUsableArticle:
             self.showMessage('ARTICOLO NON USABILE IN UNA RIGA IN QUANTO ARTICOLO PRINCIPALE O PADRE!')
             return

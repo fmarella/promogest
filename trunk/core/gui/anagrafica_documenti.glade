@@ -2072,7 +2072,7 @@
                                 <child>
                                   <object class="GtkLabel" id="label185">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Conferma e pulisci</property>
+                                    <property name="label" translatable="yes">Conferma e pulisci </property>
                                     <property name="use_underline">True</property>
                                   </object>
                                   <packing>

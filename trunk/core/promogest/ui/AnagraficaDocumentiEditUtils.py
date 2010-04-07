@@ -209,12 +209,15 @@ def calcolaTotalePart(anaedit, dao=None):
     castellettoIva = {}
 
     for i in range(1, len(anaedit._righe)):
-        prezzoNetto = mN(anaedit._righe[i]["prezzoNetto"])
+        prezzoNetto = Decimal(anaedit._righe[i]["prezzoNetto"])
         quantita = Decimal(anaedit._righe[i]["quantita"])
         moltiplicatore = Decimal(str(anaedit._righe[i]["moltiplicatore"]))
         percentualeIva = Decimal(str(anaedit._righe[i]["percentualeIva"]))
 
         totaleRiga = mN(prezzoNetto * quantita * moltiplicatore)
+
+        # PARTE dedicata al modulo noleggio ...
+        # TODO : Rivedere quanto prima
         if "GestioneNoleggio" in Environment.modulesList and anaedit.noleggio and str(anaedit._righe[i]["arco_temporale"]) != "NO" :
             arco_temporale = Decimal(anaedit.giorni_label.get_text())
             if str(anaedit._righe[i]["divisore_noleggio"]) == "1":
@@ -227,10 +230,11 @@ def calcolaTotalePart(anaedit, dao=None):
         if (anaedit._fonteValore == "vendita_iva" or anaedit._fonteValore == "acquisto_iva"):
             totaleImponibileRiga = mN(calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)) or 0
         else:
+#            print " SONO QUI O DOVE SONO", totaleRiga
             totaleImponibileRiga = totaleRiga
-            totaleRiga = mN(calcolaPrezzoIva(totaleRiga, percentualeIvaRiga))
-
-        totaleImpostaRiga = totaleRiga - mN(totaleImponibileRiga)
+            totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
+#            print " SONO QUI O DOVE SONO 2222222", totaleRiga
+        totaleImpostaRiga = totaleRiga - totaleImponibileRiga
         totaleNonScontato += totaleRiga
         totaleImponibile += totaleImponibileRiga
         totaleImposta += totaleImpostaRiga
