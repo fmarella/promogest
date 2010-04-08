@@ -1470,7 +1470,11 @@ class RicercaArticoliFilter(GladeWidget):
             idFamiglia = findIdFromCombobox(self.id_famiglia_articolo_filter_combobox)
             idCategoria = findIdFromCombobox(self.id_categoria_articolo_filter_combobox)
             idStato = findIdFromCombobox(self.id_stato_articolo_filter_combobox)
-            cancellato = False
+            if self.cancellato_filter_checkbutton.get_active():
+                cancellato = False
+            else:
+                cancellato = True
+#            cancellato = False
             listinoFissato = self._listinoFissato
             #if "PromoWear" in Environment.modulesList:
                 #RicercaComplessaArticoliPromoWearExpand.refreshPromoWearPart(self)

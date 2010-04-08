@@ -53,9 +53,6 @@ class AnagraficaListiniArticoli(Anagrafica):
 
     def set_data_list(self, data):
         """
-        FIXME
-        @param data:
-        @type data:
         """
         rowlist=[]
         for d in data:

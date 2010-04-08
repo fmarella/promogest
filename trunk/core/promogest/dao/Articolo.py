@@ -414,9 +414,12 @@ class Articolo(Dao):
     def delete(self):
         # se l'articolo e' presente tra le righe di un movimento o documento
         # si esegue la cancellazione logica
+        from promogest.dao.ListinoArticolo import ListinoArticolo
+        from promogest.dao.Inventario import Inventario
         from Riga import Riga
         res = Riga().select(id_articolo=self.id)
-        if res:
+        inv = Inventario().select(idArticolo=self.id)
+        if res or inv:
             daoArticolo = Articolo().getRecord(id=self.id)
             daoArticolo.cancellato = True
             params["session"].add(daoArticolo)
@@ -426,8 +429,15 @@ class Articolo(Dao):
                 if atc:
                     atc.delete()
             params["session"].delete(self)
+        la = ListinoArticolo().select(idArticolo= self.id)
+        if la:
+            for l in la:
+                l.delete()
+#        try:
         params["session"].commit()
-        Environment.pg2log.info("DELETE ARTICOLO ID %s" ) %(str(self.id) or "")
+        Environment.pg2log.info("DELETE ARTICOLO" )
+#        except:
+#            print " ATTENZIONE CANCELLAZIONE ARTICOLO NON  RIUSCITA"
 
     def filter_values(self,k,v):
         if k == "codice":
