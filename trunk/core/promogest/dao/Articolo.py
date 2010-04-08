@@ -419,7 +419,14 @@ class Articolo(Dao):
         from Riga import Riga
         res = Riga().select(id_articolo=self.id)
         inv = Inventario().select(idArticolo=self.id)
+        if "VenditaDettaglio" in Environment.modulesList:
+            from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
+            sc = RigaScontrino().select(idArticolo= self.id)
         if res or inv:
+            daoArticolo = Articolo().getRecord(id=self.id)
+            daoArticolo.cancellato = True
+            params["session"].add(daoArticolo)
+        elif sc:
             daoArticolo = Articolo().getRecord(id=self.id)
             daoArticolo.cancellato = True
             params["session"].add(daoArticolo)
