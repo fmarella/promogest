@@ -767,7 +767,7 @@ del documento.
             self.dao.data_inizio_noleggio= self.start_rent_entry.get_text()
             self.dao.data_fine_noleggio = self.end_rent_entry.get_text()
 
-        scontiSuTotale = []#{}
+        scontiSuTotale = []
 
         res = self.sconti_testata_widget.getSconti()
         if res:

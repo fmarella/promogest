@@ -489,11 +489,13 @@ class TestataDocumento(Dao):
         #print "DOPO FINE NOLEGGIO", tempo()
 
         if self.scontiSuTotale:
-            print "OLLELLEEEEEEEEEEEEEEOLLALLAAAAAAAAAAAA", self.scontiSuTotale
+#            print "OLLELLEEEEEEEEEEEEEEOLLALLAAAAAAAAAAAA", self.scontiSuTotale
             self.scontiTestataDocumentoDel(id=self.id)
             for scontisutot in self.scontiSuTotale:
                 scontisutot.id_testata_documento = self.id
-                scontisutot.persist()
+                params["session"].add(scontisutot)
+            params["session"].commit()
+#                scontisutot.persist()
         Environment.pg2log.debug("FINE SALVATAGGIO DOCUMENTO")
 
 
@@ -887,7 +889,7 @@ std_mapper = mapper(TestataDocumento, testata_documento, properties={
         "FORN":relation(Fornitore,primaryjoin = (testata_documento.c.id_fornitore==fornitor.c.id)),
         "AGE":relation(Agente,primaryjoin = (testata_documento.c.id_agente==agen.c.id)),
         "OP":relation(Operazione,primaryjoin = (testata_documento.c.operazione==Operazione.denominazione), backref="TD"),
-        "STD":relation(ScontoTestataDocumento,primaryjoin = (testata_documento.c.id==ScontoTestataDocumento.id_testata_documento),cascade="all, delete, delete-orphan", backref="TD"),
+        "STD":relation(ScontoTestataDocumento,primaryjoin = (testata_documento.c.id==ScontoTestataDocumento.id_testata_documento),cascade="all, delete", backref="TD"),
         #'lang':relation(Language, backref='user')
         }, order_by=testata_documento.c.numero)
 

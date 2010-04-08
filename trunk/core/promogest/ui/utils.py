@@ -1748,7 +1748,6 @@ def getScontiFromDao(daoSconti = [], daoApplicazione = 'scalare'):
     if daoSconti:
         for s in daoSconti:
             sconti.append({"valore": s.valore, "tipo": s.tipo_sconto})
-
     return (sconti, applicazione)
 
 def getMisureFromRiga(daoMisura = []):
