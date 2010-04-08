@@ -244,7 +244,7 @@ class TestataDocumento(Dao):
             #print "VALORIIIIIIIIIIIIIIIII", riga.quantita, riga.moltiplicatore, riga.valore_unitario_netto
             if not riga.moltiplicatore:
                 riga.moltiplicatore = 1
-            totaleRiga = Decimal(str(riga.quantita)) * Decimal(str(riga.moltiplicatore)) * Decimal(str(riga.valore_unitario_netto))
+            totaleRiga = mN(Decimal(str(riga.quantita)) * Decimal(str(riga.moltiplicatore)) * Decimal(str(riga.valore_unitario_netto)))
             percentualeIvaRiga = Decimal(str(riga.percentuale_iva))
             if percentualeIvaRiga != Environment.percentualeIvaRiga:
                 aliquotaIvaRiga = riga.aliquota
@@ -280,6 +280,7 @@ class TestataDocumento(Dao):
         totaleNonScontato = Decimal(totaleNonScontato)
         totaleImponibile = Decimal(totaleImponibile)
         totaleImposta = totaleNonScontato - totaleImponibile
+#        print "VEDIAMO I TOTALI", totaleNonScontato, totaleImponibile, totaleImposta
         for aliquotaIva in castellettoIva:
             castellettoIva[aliquotaIva]['imponibile'] = mN(castellettoIva[aliquotaIva]['imponibile'], 2)
             castellettoIva[aliquotaIva]['imposta'] = mN(castellettoIva[aliquotaIva]['imposta'], 2)
@@ -322,12 +323,12 @@ class TestataDocumento(Dao):
 
             totaleScontato = mN(totaleImponibileScontato) + mN(totaleImpostaScontata)
 
-        self._totaleNonScontato = mN(totaleNonScontato,2)
-        self._totaleScontato = mN(totaleScontato,2)
-        self._totaleImponibile = mN(totaleImponibile,2)
-        self._totaleImposta = mN(totaleImposta,2)
-        self._totaleImponibileScontato = mN(totaleImponibileScontato,2)
-        self._totaleImpostaScontata = mN(totaleImpostaScontata,2)
+        self._totaleNonScontato = totaleNonScontato
+        self._totaleScontato = totaleScontato
+        self._totaleImponibile = totaleImponibile
+        self._totaleImposta = totaleImposta
+        self._totaleImponibileScontato = totaleImponibileScontato
+        self._totaleImpostaScontata = totaleImpostaScontata
         self._castellettoIva = []
         for k in castellettoIva.keys():
             dictCastellettoIva = castellettoIva[k]
