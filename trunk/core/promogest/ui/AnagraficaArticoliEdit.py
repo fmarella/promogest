@@ -17,6 +17,9 @@ import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
 from utils import *
 from utilsCombobox import *
+from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
+from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
+
 if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.ui.PromowearUtils import *
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
@@ -465,6 +468,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         from promogest.dao.ListinoArticolo import ListinoArticolo
         listini = ListinoArticolo().select(idArticolo = self._duplicatedDaoId)
         for listino in listini:
+            print "VEDIAMOOOOOO", listino.sconto_vendita_ingrosso, listino.sconto_vendita_dettaglio, self._duplicatedDaoId, self.dao.id
             daoLA = ListinoArticolo()
             daoLA.id_listino = listino.id_listino
             daoLA.id_articolo = self.dao.id
@@ -472,9 +476,26 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             daoLA.prezzo_ingrosso = listino.prezzo_ingrosso
             daoLA.ultimo_costo = listino.ultimo_costo
             daoLA.data_listino_articolo = listino.data_listino_articolo
-            daoLA.sconto_vendita_ingrosso = listino.sconto_vendita_ingrosso
-            daoLA.sconto_vendita_dettaglio = listino.sconto_vendita_dettaglio
-            daoLA.persist()
+            sconti_ingrosso = []
+            sconti_dettaglio = []
+            if listino.sconto_vendita_dettaglio:
+#                print "SCNTOOOO", listino.sconto_vendita_dettaglio[0].__dict__
+                daoLA.applicazione_sconti = "scalare"
+                for s in listino.sconto_vendita_dettaglio:
+                    daoScontod = ScontoVenditaDettaglio()
+                    daoScontod.valore = s.valore
+                    daoScontod.tipo_sconto = s.tipo_sconto
+                    sconti_dettaglio.append(daoScontod)
+            if listino.sconto_vendita_dettaglio:
+
+                daoLA.applicazione_sconti = "scalare"
+                for s in listino.sconto_vendita_ingrosso:
+                    daoScontoi = ScontoVenditaIngrosso()
+                    daoScontoi.valore = s.valore
+                    daoScontoi.tipo_sconto = s.tipo_sconto
+                    sconti_ingrosso.append(daoScontoi)
+            daoLA.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})
+#            daoLA.persist()
 
         self._duplicatedDaoId = None
 
