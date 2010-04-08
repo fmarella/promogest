@@ -8,11 +8,11 @@
     <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="icon">promogest.png</property>
-    <property name="type_hint">dialog</property>
+    <property name="type_hint">normal</property>
+    <property name="deletable">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <property name="spacing">3</property>
         <child>
           <object class="GtkImage" id="splash_image">
@@ -48,7 +48,6 @@
             <child>
               <object class="GtkVBox" id="login_parameters_vbox">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkLabel" id="label6">
