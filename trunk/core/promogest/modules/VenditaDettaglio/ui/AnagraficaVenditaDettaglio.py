@@ -999,15 +999,17 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                     tipoSconto = self._simboloEuro
             listinoRiga = ""
             model.append((idArticolo,
-                            listinoRiga,
-                            codiceABarre,
-                            codiceArticolo,
+                            str(listinoRiga),
+                            str(codiceABarre),
+                            str(codiceArticolo),
                             descrizione,
-                            prezzo,
-                            sconto,
-                            tipoSconto,
-                            prezzoScontato,
-                            quantita))
+                            str(prezzo),
+                            str(sconto),
+                            str(tipoSconto),
+                            str(prezzoScontato),
+                            str(quantita),
+                            self.rowBackGround,
+                             self.rowBoldFont))
 
         notEmpty = (len(model) > 0)
         self.total_button.set_sensitive(notEmpty)
