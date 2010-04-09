@@ -270,32 +270,33 @@ def calcolaTotalePart(anaedit, dao=None):
                     raise Exception, ('BUG! Tipo di applicazione sconto '
                                         'sconosciuto: %s' % s['tipo'])
             elif s["tipo"] == 'valore':
-                totaleScontato = mN(totaleScontato) - mN(s["valore"])
+                totaleScontato = mN(totaleScontato - Decimal(s["valore"]))
 
         # riporta l'insieme di sconti ad una percentuale globale
         percentualeScontoGlobale = (1 - totaleScontato / totaleNonScontato) * 100
         totaleImpostaScontata = 0
         totaleImponibileScontato = 0
-        totaleScontato = 0
+#        totaleScontato = 0
         # riproporzione del totale, dell'imponibile e dell'imposta
         for k in castellettoIva.keys():
-            castellettoIva[k]['totale'] = mN(castellettoIva[k]['totale']) * (1 - mN(percentualeScontoGlobale) / 100)
-            castellettoIva[k]['imponibile'] = mN(castellettoIva[k]['imponibile']) * (1 - mN(percentualeScontoGlobale) / 100)
+            castellettoIva[k]['totale'] = Decimal(castellettoIva[k]['totale']) * (1 - Decimal(percentualeScontoGlobale) / 100)
+            castellettoIva[k]['imponibile'] = Decimal(castellettoIva[k]['imponibile']) * (1 - Decimal(percentualeScontoGlobale) / 100)
             castellettoIva[k]['imposta'] = castellettoIva[k]['totale'] - castellettoIva[k]['imponibile']
 
-            totaleImponibileScontato += mN(castellettoIva[k]['imponibile'])
-            totaleImpostaScontata += mN(castellettoIva[k]['imposta'])
+            totaleImponibileScontato += Decimal(castellettoIva[k]['imponibile'])
+            totaleImpostaScontata += Decimal(castellettoIva[k]['imposta'])
 
-        totaleScontato = mN(mN(totaleImponibileScontato) + mN(totaleImpostaScontata),2)
+        totaleScontato = mN(Decimal(totaleImponibileScontato) + Decimal(totaleImpostaScontata),2)
 
-    anaedit.totale_generale_label.set_text(str(totaleNonScontato))
+
+    anaedit.totale_generale_label.set_text(str(totaleScontato))
     anaedit.totale_generale_riepiloghi_label.set_text(str(totaleNonScontato))
-    anaedit.totale_imponibile_label.set_text(str(totaleImponibile))
+    anaedit.totale_imponibile_label.set_text(str(mN(totaleImponibileScontato,2)))
     anaedit.totale_imponibile_riepiloghi_label.set_text(str(totaleImponibile))
-    anaedit.totale_imposta_label.set_text(str(totaleImposta))
+    anaedit.totale_imposta_label.set_text(str(mN(totaleImpostaScontata,2)))
     anaedit.totale_imposta_riepiloghi_label.set_text(str(totaleImposta))
-    anaedit.totale_imponibile_scontato_riepiloghi_label.set_text(str(totaleImponibileScontato))
-    anaedit.totale_imposta_scontata_riepiloghi_label.set_text(str(totaleImpostaScontata))
+    anaedit.totale_imponibile_scontato_riepiloghi_label.set_text(str(mN(totaleImponibileScontato,2)))
+    anaedit.totale_imposta_scontata_riepiloghi_label.set_text(str(mN(totaleImpostaScontata,2)))
     anaedit.totale_scontato_riepiloghi_label.set_text(str(totaleScontato))
 
     model = anaedit.riepiloghi_iva_treeview.get_model()

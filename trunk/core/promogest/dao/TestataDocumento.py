@@ -303,7 +303,7 @@ class TestataDocumento(Dao):
                         raise Exception, ('BUG! Tipo di applicazione sconto '
                                           'sconosciuto: %s' % s.tipo_sconto)
                 elif s.tipo_sconto == 'valore':
-                    totaleScontato = mN(totaleScontato) - mN(s.valore)
+                    totaleScontato = mN(Decimal(totaleScontato) - Decimal(s.valore))
 
             # riporta l'insieme di sconti ad una percentuale globale
             if totaleNonScontato == 0:
@@ -311,11 +311,11 @@ class TestataDocumento(Dao):
             percentualeScontoGlobale = (1 - totaleScontato / totaleNonScontato) * 100
             totaleImpostaScontata = 0
             totaleImponibileScontato = 0
-            totaleScontato = 0
+#            totaleScontato = 0
             # riproporzione del totale, dell'imponibile e dell'imposta
             for k in castellettoIva.keys():
-                castellettoIva[k]['totale'] = mN(castellettoIva[k]['totale'] * (1 - mN(percentualeScontoGlobale) / 100), 2)
-                castellettoIva[k]['imponibile'] = mN(castellettoIva[k]['imponibile'] * (1 - mN(percentualeScontoGlobale) / 100),2)
+                castellettoIva[k]['totale'] = mN(castellettoIva[k]['totale'] * (1 - Decimal(percentualeScontoGlobale) / 100), 2)
+                castellettoIva[k]['imponibile'] = mN(castellettoIva[k]['imponibile'] * (1 - Decimal(percentualeScontoGlobale) / 100),2)
                 castellettoIva[k]['imposta'] = castellettoIva[k]['totale'] - castellettoIva[k]['imponibile']
 
                 totaleImponibileScontato += castellettoIva[k]['imponibile']
