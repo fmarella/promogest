@@ -11,7 +11,6 @@
   </object>
   <object class="GtkVBox" id="anagrafica_movimenti_detail_vbox">
     <property name="visible">True</property>
-    <property name="orientation">vertical</property>
     <child>
       <object class="GtkHBox" id="hbox257">
         <property name="visible">True</property>
@@ -264,7 +263,6 @@
         <child>
           <object class="GtkVBox" id="vbox27">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
             <child>
               <object class="GtkFrame" id="frame12">
                 <property name="visible">True</property>
@@ -301,6 +299,7 @@
                                 <property name="visible">True</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -507,7 +506,6 @@
                     <child>
                       <object class="GtkVBox" id="vbox28">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <property name="spacing">5</property>
                         <child>
                           <object class="GtkHBox" id="hbox242">
@@ -1056,7 +1054,6 @@
                                             <property name="secondary_icon_stock">gtk-clear</property>
                                             <property name="secondary_icon_activatable">True</property>
                                             <property name="secondary_icon_sensitive">True</property>
-                                            <property name="adjustment"></property>
                                             <property name="climb_rate">2</property>
                                             <property name="digits">2</property>
                                             <property name="numeric">True</property>
@@ -1194,7 +1191,6 @@
                                       <object class="GtkVBox" id="vbox29">
                                         <property name="visible">True</property>
                                         <property name="border_width">3</property>
-                                        <property name="orientation">vertical</property>
                                         <property name="spacing">6</property>
                                         <child>
                                           <object class="GtkButton" id="variazione_listini_button">
@@ -1368,7 +1364,6 @@
             <child>
               <object class="GtkVBox" id="vbox1">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkHButtonBox" id="hbuttonbox1">
                     <property name="visible">True</property>
