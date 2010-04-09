@@ -7,18 +7,13 @@
 # Author: Francesco Meloni <francesco@promotux.it>
 
 
-import os
-import gtk, gobject
 import gtk
 from GladeWidget import GladeWidget
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-#import promogest.dao.Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 
 from utils import *
-
 
 
 class VariazioneListini(GladeWidget):
@@ -255,7 +250,7 @@ class VariazioneListini(GladeWidget):
                 else:
                     nuovoCosto = vecchioCosto
                 daoListinoArticolo.data_listino_articolo = None
-                daoListinoArticolo.listino_attuale = None
+                daoListinoArticolo.listino_attuale = True
                 if self.mantieni_ricarico_dettaglio_radiobutton.get_active():
                     ricarico = calcolaRicarico(float(vecchioCosto),
                                                float(daoListinoArticolo.prezzo_dettaglio),
