@@ -99,8 +99,12 @@
                 <td class="odd-number" colspan="2">{{utils.mN(riga.valore_unitario_lordo,2)}}</td>
                 <td class="odd-detail" colspan="2">{{utils.getStringaSconti(utils.getScontiFromDao(riga.sconti)[0])}}</td>
                 <td class="odd-number" colspan="2">{{riga.valore_unitario_netto}}</td>
-                <td class="odd-number" colspan="2" >{{utils.mN((riga.quantita * riga.moltiplicatore),0)}}</td>
-                <td class="odd-number" colspan="2">{{riga.multiplo}}</td>
+                <td class="odd-number" colspan="2" >{{utils.mN(riga.quantita,2)}}</td>
+                {% if riga.moltiplicatore > 1 %}
+                <td class="odd-number" colspan="2">{{riga.multiplo}} ( {{utils.mN(riga.moltiplicatore,2)}} )</td>
+                {% else %}
+                <td class="odd-number" colspan="2"></td>
+                {% endif %}
                 <td class="odd-number" colspan="2">{{environment.conf.number_format % riga.percentuale_iva}}</td>
                 <td class="odd-number" colspan="3">{{utils.mN(( riga.quantita*  riga.moltiplicatore * riga.valore_unitario_netto ),2)}}</td>
             </tr>

@@ -392,7 +392,7 @@ def fillComboboxMultipli(combobox, idArticolo=None, noSottoMultipli=False, filte
         muls = [ item for item in muls if item.moltiplicatore > 1 ]
 
     for m in muls:
-        model.append((m, m.id, m.denominazione, m.moltiplicatore))
+        model.append((m, m.id, m.denominazione_breve, m.moltiplicatore))
 
     combobox.clear()
     renderer = gtk.CellRendererText()

@@ -29,6 +29,7 @@ from promogest.dao.Articolo import Articolo
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Operazione import Operazione
 from promogest.dao.Cliente import Cliente
+from promogest.dao.Multiplo import Multiplo
 
 from utils import *
 from utilsCombobox import *
@@ -534,7 +535,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["unitaBase"] = articolo["unitaBase"]
             self._righe[0]["idMultiplo"] = riga.id_multiplo
             if multiplo["moltiplicatore"] != 0:
-                self._righe[0]["multiplo"] = multiplo["denominazioneBreve"] + ' ( ' + str(multiplo["moltiplicatore"]) + ' X )'
+                self._righe[0]["multiplo"] = multiplo["denominazioneBreve"] + ' ( ' + str(mN(multiplo["moltiplicatore"],2)) + ' X )'
             else:
                 self._righe[0]["multiplo"] = ''
             self._righe[0]["idListino"] = riga.id_listino
@@ -1372,7 +1373,7 @@ del documento.
         prezzoNetto = self._righe[0]["prezzoNetto"]
         quantita = self._righe[0]["quantita"]
         moltiplicatore = self._righe[0]["moltiplicatore"]
-        self._righe[0]["totale"] = mN(Decimal(str(prezzoNetto)) * Decimal(str(quantita)) * Decimal(str(moltiplicatore)),2)
+        self._righe[0]["totale"] = mN(Decimal(str(prezzoNetto)) * (Decimal(str(quantita)) * Decimal(str(moltiplicatore))),2)
 
 
     def getPrezzoNetto(self):
