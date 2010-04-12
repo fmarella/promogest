@@ -1375,6 +1375,7 @@
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="invisible_char">&#x25CF;</property>
+                                                    <property name="text" translatable="yes">0.00      </property>
                                                     <signal name="focus_out_event" handler="on_quantita_entry_focus_out_event"/>
                                                     <signal name="focus_out_event" handler="on_focus_out_event"/>
                                                     <signal name="focus_in_event" handler="on_focus_in_event"/>
@@ -2022,7 +2023,8 @@
                                 <child>
                                   <object class="GtkLabel" id="label4">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Conferma senza pulire</property>
+                                    <property name="label" translatable="yes">Conferma senza pulire (&lt;b&gt;F6&lt;/b&gt;)</property>
+                                    <property name="use_markup">True</property>
                                     <property name="use_underline">True</property>
                                   </object>
                                   <packing>
@@ -2072,7 +2074,8 @@
                                 <child>
                                   <object class="GtkLabel" id="label185">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Conferma e pulisci </property>
+                                    <property name="label" translatable="yes">Conferma e pulisci (&lt;b&gt;F4&lt;/b&gt;)</property>
+                                    <property name="use_markup">True</property>
                                     <property name="use_underline">True</property>
                                   </object>
                                   <packing>

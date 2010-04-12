@@ -156,18 +156,14 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.id_magazzino_combobox.grab_focus()
             self.checkMAGAZZINO = False
 
-#    def on_anagrafica_documenti_detail_vbox_key_press_event(self, widget=None, event=None):
-#        """ Mappiamo un po' di tasti su ana documenti"""
-#        keyname = gtk.gdk.keyval_name(event.keyval)
-#        if keyname == 'F12':  # scorporo iva
-#            if self.percentuale_iva_entry.get_text() == "":
-#                obligatoryField(self.dialogTopLevel,
-#                    self.self.percentuale_iva_entry,
-#                    'Inserire iva per lo scorporo !')
-#            elif self.percentuale_iva_entry.get_text() == "0":
-#                self.showMessage(msg="ATTENZIONE iva a 0%")
-#            else:
-#                print "pronto a calcolare l0imponibile"
+    def on_anagrafica_documenti_detail_vbox_key_press_event(self, widget=None, event=None):
+        """ Mappiamo un po' di tasti su ana documenti"""
+        print "AHAAHAHAHAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
+        keyname = gtk.gdk.keyval_name(event.keyval)
+        if keyname == 'F4':  # confermo e pulisco
+            self.on_confirm_row_button_clicked(widget=None)
+        elif keyname == 'F6':  # confermo e pulisco
+            self.on_confirm_row_withoutclean_button_clicked(widget=None)
 
     def azzeraRiga(self, numero=0):
         """
@@ -960,7 +956,7 @@ del documento.
         self.articolo_entry.grab_focus()
 
 
-    def on_confirm_row_button_clicked(self, widget,row=None):
+    def on_confirm_row_button_clicked(self, widget=None,row=None):
         """
         Memorizza la riga inserita o modificata
         """
@@ -1651,7 +1647,7 @@ del documento.
     def on_new_row_button_clicked(self, widget):
         self.nuovaRiga()
 
-    def on_confirm_row_withoutclean_button_clicked(self, widget):
+    def on_confirm_row_withoutclean_button_clicked(self, widget=None):
         self.reuseDataRow = True
         self.on_confirm_row_button_clicked(widget)
 

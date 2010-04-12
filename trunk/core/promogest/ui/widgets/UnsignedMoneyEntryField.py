@@ -38,7 +38,12 @@ class UnsignedMoneyEntryField(CustomEntryField):
 
     def my_key_press_event(self, widget, event):
         keyname = gtk.gdk.keyval_name(event.keyval)
+        print " PASSIAMO DI QUI"
         if keyname not in self.acceptedKeys:
+            return True
+        elif keyname in self.specialKeys:
+            self.set_focus(self.getTopLevel())
+            print " PASSIAMO DI QUI"
             return True
         s = self.get_text()
         # verifica che non sia gia' stato inserito un separatore decimale
@@ -59,4 +64,3 @@ class UnsignedMoneyEntryField(CustomEntryField):
                 self.set_text('')
             else:
                 self.set_text(self._default)
-
