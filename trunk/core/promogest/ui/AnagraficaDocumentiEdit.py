@@ -1752,6 +1752,8 @@ del documento.
         dialog.run()
         dialog.destroy()
 
+    def on_avvertimento_sconti_button_clicked(self, button):
+        self.notebook.set_current_page(2)
 
     def on_articolo_entry_icon_press(self,entry, position,event ):
         if position.real == 0:

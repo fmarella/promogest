@@ -2335,6 +2335,23 @@
                         <property name="position">7</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkButton" id="avvertimento_sconti_button">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="tooltip_text" translatable="yes">ATTENZIONE!!
+I Totali sono frutto di una variazione sconto visibile
+nella sezione riepiloghi</property>
+                        <property name="image">avvertimento_sconto_image</property>
+                        <signal name="clicked" handler="on_avvertimento_sconti_button_clicked"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">8</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="right_attach">7</property>
@@ -4710,5 +4727,9 @@ _
         <property name="position">1</property>
       </packing>
     </child>
+  </object>
+  <object class="GtkImage" id="avvertimento_sconto_image">
+    <property name="visible">True</property>
+    <property name="stock">gtk-dialog-warning</property>
   </object>
 </interface>

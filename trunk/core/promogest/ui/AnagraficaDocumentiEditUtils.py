@@ -208,6 +208,8 @@ def calcolaTotalePart(anaedit, dao=None):
 
     castellettoIva = {}
 
+    anaedit.avvertimento_sconti_button.set_sensitive(False)
+    anaedit.avvertimento_sconti_button.hide()
     for i in range(1, len(anaedit._righe)):
         prezzoNetto = Decimal(anaedit._righe[i]["prezzoNetto"])
         quantita = Decimal(anaedit._righe[i]["quantita"])
@@ -260,6 +262,8 @@ def calcolaTotalePart(anaedit, dao=None):
     scontiSuTotale = anaedit.sconti_testata_widget.getSconti()
     applicazioneSconti = anaedit.sconti_testata_widget.getApplicazione()
     if len(scontiSuTotale) > 0:
+        anaedit.avvertimento_sconti_button.set_sensitive(True)
+        anaedit.avvertimento_sconti_button.show()
         for s in scontiSuTotale:
             if s["tipo"] == 'percentuale':
                 if applicazioneSconti == 'scalare':

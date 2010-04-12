@@ -521,8 +521,6 @@ class TestataDocumento(Dao):
             params["session"].commit()
             return True
 
-
-
     def scontiTestataDocumentoDel(self,id=None):
         """
         Cancella gli sconti associati ad un documento
