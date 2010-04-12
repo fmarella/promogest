@@ -178,6 +178,7 @@ class GladeWidget(SimpleGladeApp):
             #print "CERCA"
         else:                            #secondary
             entry.set_text("")
+            entry.grab_focus()
 
     def on_top_level_closed(self):
         """ Saving window's parameters """

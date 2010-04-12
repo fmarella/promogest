@@ -38,7 +38,13 @@ class CustomEntryField(gtk.Entry):
         self.connect("show", self.on_show)
 
 
-    def on_icon_press(self, widget):
+    def on_icon_press(self, entry, position, event):
+        if position.value_nick == "primary":
+            pass
+            #print "CERCA"
+        else:                            #secondary
+            entry.set_text("")
+            entry.grab_focus()
         pass
 
     def on_focus_in_event(self, widget, event):

@@ -42,8 +42,8 @@ class UnsignedMoneyEntryField(CustomEntryField):
         if keyname not in self.acceptedKeys:
             return True
         elif keyname in self.specialKeys:
-            self.set_focus(self.getTopLevel())
-            print " PASSIAMO DI QUI"
+#            self.set_focus(self.getTopLevel())
+#            print " PASSIAMO DI QUI"
             return True
         s = self.get_text()
         # verifica che non sia gia' stato inserito un separatore decimale
