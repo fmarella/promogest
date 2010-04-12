@@ -496,6 +496,8 @@ class TestataDocumento(Dao):
                 scontisutot.id_testata_documento = self.id
                 params["session"].add(scontisutot)
             params["session"].commit()
+            self.sconti = []
+            self.scontiSuTotale = []
 #                scontisutot.persist()
         Environment.pg2log.debug("FINE SALVATAGGIO DOCUMENTO")
 

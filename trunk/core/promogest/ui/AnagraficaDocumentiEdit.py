@@ -772,13 +772,14 @@ del documento.
 
         res = self.sconti_testata_widget.getSconti()
         if res:
-            print " MA ALLLLLLLLLLLORA"
+            print " MA ALLLLLLLLLLLORA", res
             for scrow in res:
                 daoScontost = ScontoTestataDocumento()
                 daoScontost.valore = scrow["valore"]
                 daoScontost.tipo_sconto = scrow["tipo"]
                 scontiSuTotale.append(daoScontost)
 #        print "DAOOOOOOOOOSCONTO", daoScontost.__dict__
+        print "SCONTI SU TOTALE", scontiSuTotale
         self.dao.scontiSuTotale = scontiSuTotale
 
         scontiRigaDocumento=[]
