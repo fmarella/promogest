@@ -25,8 +25,8 @@ class AnagraficaStoccaggi(Anagrafica):
     """ Anagrafica stoccaggi articoli """
 
     def __init__(self, idArticolo=None, idMagazzino=None, aziendaStr=None):
-        self._articoloFissato = (idArticolo <> None)
-        self._magazzinoFissato = (idMagazzino <> None)
+        self._articoloFissato = idArticolo
+        self._magazzinoFissato = idMagazzino
         self._idArticolo=idArticolo
         self._idMagazzino=idMagazzino
         Anagrafica.__init__(self,
@@ -159,7 +159,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
 
     def refresh(self):
         # Aggiornamento TreeView
-#        idArticolo = self.id_articolo_filter_customcombobox.getId()
+        idArticolo = self.id_articolo_filter_customcombobox.getId()
         idMagazzino = findIdFromCombobox(self.id_magazzino_filter_combobox)
         denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
         produttore = prepareFilterString(self.produttore_filter_entry.get_text())
@@ -189,6 +189,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
 
         def filterCountClosure():
             return Stoccaggio().count(idMagazzino=idMagazzino,
+                                    idArticolo = idArticolo,
                                           filterDict = self.filterDict)
 #                                            idArticolo=idArticolo,
 
@@ -203,6 +204,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         def filterClosure(offset, batchSize):
             return Stoccaggio().select(orderBy=self.orderBy,
                                                    idMagazzino=idMagazzino,
+                                                   idArticolo = idArticolo,
                                                    offset=offset,
                                                    batchSize=batchSize,
                                                    filterDict = self.filterDict)
