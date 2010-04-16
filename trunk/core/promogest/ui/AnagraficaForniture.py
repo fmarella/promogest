@@ -9,18 +9,14 @@
  """
 
 import gtk
-import gobject
 
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml,\
+                                         AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
-#from promogest.dao.Dao import Dao
-#import promogest.dao.Fornitura
 from promogest.dao.Fornitura import Fornitura
 from promogest.dao.Fornitore import Fornitore
-#import promogest.dao.ScontoFornitura
 from promogest.dao.ScontoFornitura import ScontoFornitura
-#import promogest.dao.Articolo
 from promogest.dao.Articolo import Articolo
 from utils import *
 from utilsCombobox import *
@@ -54,7 +50,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   'anagrafica_forniture_filter_table',
-                                  gladeFile='anagrafica_forniture_filter_table')
+                                  gladeFile='anagrafica_forniture_filter_table.glade')
         self._widgetFirstFocus = self.id_articolo_filter_customcombobox
         persona_giuridica=Table('persona_giuridica', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
         #self.fornitore=Table('fornitore', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
