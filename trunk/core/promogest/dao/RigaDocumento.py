@@ -272,6 +272,3 @@ std_mapper = mapper(RigaDocumento, j,properties={
 if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
     from promogest.modules.GestioneNoleggio.dao.NoleggioRiga import NoleggioRiga
     std_mapper.add_property("NR",relation(NoleggioRiga,primaryjoin=NoleggioRiga.id_riga==riga.c.id,cascade="all, delete",backref="RD",uselist=False))
-
-
-

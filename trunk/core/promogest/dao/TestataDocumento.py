@@ -411,7 +411,7 @@ class TestataDocumento(Dao):
             for row in self.righeDocumento:
                 if (row.id_articolo is not None and contieneMovimentazione):
                     #salvo tra le righe movimenti
-                    #print "RIGHE ",row.id_articolo, tempo()
+#                    print "RIGHE ",row, row.id_articolo, row.__dict__["_RigaDocumento__codiceArticoloFornitore"]
                     daoRigaMovimento = RigaMovimento()
                     #daoRigaMovimento.id_testata_movimento = DaoTestataMovimento.id
                     daoRigaMovimento.valore_unitario_netto = row.valore_unitario_netto
@@ -425,7 +425,7 @@ class TestataDocumento(Dao):
                     daoRigaMovimento.id_magazzino = row.id_magazzino
                     daoRigaMovimento.id_articolo = row.id_articolo
                     daoRigaMovimento.id_multiplo = row.id_multiplo
-                    daoRigaMovimento.codiceArticoloFornitore = row.codiceArticoloFornitore
+                    daoRigaMovimento.codiceArticoloFornitore = row.__dict__["_RigaDocumento__codiceArticoloFornitore"]
                     if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
                         daoRigaMovimento.prezzo_acquisto_noleggio = row.prezzo_acquisto_noleggio
                         daoRigaMovimento.coeficente_noleggio = row.coeficente_noleggio

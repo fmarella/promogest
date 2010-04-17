@@ -744,7 +744,6 @@ del documento.
                 obligatoryField(self.dialogTopLevel,
                     self.id_vettore_customcombobox,
                     'Quando si seleziona vettore è obbligatorio settarne uno!')
-            print "QUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", self.dao.id_vettore
         elif self.mittente_radiobutton.get_active():
             self.dao.id_vettore = None
             self.dao.incaricato_trasporto = 'mittente'
@@ -773,8 +772,6 @@ del documento.
                 daoScontost.valore = scrow["valore"]
                 daoScontost.tipo_sconto = scrow["tipo"]
                 scontiSuTotale.append(daoScontost)
-#        print "DAOOOOOOOOOSCONTO", daoScontost.__dict__
-        print "SCONTI SU TOTALE", scontiSuTotale
         self.dao.scontiSuTotale = scontiSuTotale
 
         scontiRigaDocumento=[]
@@ -1003,6 +1000,7 @@ del documento.
             inserisci = False
         # memorizzazione delle parti descrittive (liberamente modificabili)
         self._righe[0]["descrizione"] = self.descrizione_entry.get_text()
+        print " INIZIAMO DA QUI", self.codice_articolo_fornitore_entry.get_text()
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
         totale = self._righe[0]["totale"]
         #print "TOTALE IN CONFIRM", totale
@@ -1191,7 +1189,6 @@ del documento.
         self.articolo_entry.set_position(-1)
 
     def ricercaArticolo(self):
-        print "ECCOMI QUIIIIIIIIIIIIIIII"
         def on_ricerca_articolo_hide(anagWindow, anag):
             if anag.dao is None:
                 anagWindow.destroy()
