@@ -38,7 +38,7 @@ class UnsignedMoneyEntryField(CustomEntryField):
 
     def my_key_press_event(self, widget, event):
         keyname = gtk.gdk.keyval_name(event.keyval)
-        print " PASSIAMO DI QUI"
+#        print " PASSIAMO DI QUI"
         if keyname not in self.acceptedKeys:
             return True
         elif keyname in self.specialKeys:

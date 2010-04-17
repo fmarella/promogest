@@ -285,7 +285,7 @@ class RigaMovimento(Dao):
         #print "DOPO Commit Riga movimento", tempo()
         stoccato = (Stoccaggio().count(idArticolo=self.id_articolo,
                                                 idMagazzino=self.id_magazzino) > 0)
-        print "STOCCATOOOOOOOOOOOOOOOOOOOO", stoccato
+#        print "STOCCATOOOOOOOOOOOOOOOOOOOO", stoccato
         if not stoccato:
             daoStoccaggio = Stoccaggio()
             daoStoccaggio.id_articolo = self.id_articolo
