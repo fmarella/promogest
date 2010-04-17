@@ -56,10 +56,8 @@ class DuplicazioneMovimento(GladeWidget):
 
         self.data_movimento_entry.set_text(dateToString(datetime.datetime.today()))
         self.data_movimento_entry.grab_focus()
-        #self.getTopLevel().show_all()
-        #self.show_all()
 
-        listini = Environment.params['session'].query(Listino)
+        listini = Listino().select(batchSize=None)
         model = gtk.ListStore(object, str)
         model.append((None, '<Invariato>'))
         for l in listini:
@@ -72,21 +70,8 @@ class DuplicazioneMovimento(GladeWidget):
         self.id_prezzo_combobox.set_active(0)
 
         #controlla che nel documento ci sia un solo magazzino
-        nMags = Environment.params['session'].query(Magazzino).count()
-        if nMags > 1:
-            if self.dao.numeroMagazzini == 1:
-                mags = Environment.params['session'].query(Magazzino)#.filter(Magazzino.id != self.dao.righe[0].id_magazzino)
-                model = gtk.ListStore(object, str)
-                for m in mags:
-                    model.append((m, (m.denominazione or '')[0:30]))
-                    self.id_magazzino_combobox.clear()
-                    renderer = gtk.CellRendererText()
-                    self.id_magazzino_combobox.pack_start(renderer, True)
-                    self.id_magazzino_combobox.add_attribute(renderer, 'text', 1)
-                    self.id_magazzino_combobox.set_model(model)
-            else:
-                #disabilito il cambio di magazzino
-                self.id_magazzino_combobox.set_sensitive(False)
+        if self.dao.numeroMagazzini == 1:
+            fillComboboxMagazzini(self.id_magazzino_combobox)
         else:
             #disabilito il cambio di magazzino
             self.id_magazzino_combobox.set_sensitive(False)
@@ -129,13 +114,12 @@ class DuplicazioneMovimento(GladeWidget):
         righeMovimento = []
         rig = self.dao.righe
         for r in rig:
-            daoRiga = RigaMovimento(Environment.connection)
+            daoRiga = RigaMovimento()
             daoRiga.id_testata_movimento = newDao.id
             daoRiga.id_articolo = r.id_articolo
             if self.id_magazzino_combobox.get_active() != -1:
-                magazzino_model = self.id_magazzino_combobox.get_model()
-                magazzino_active = self.id_magazzino_combobox.get_active()
-                daoRiga.id_magazzino = magazzino_model[magazzino_active][0].id
+                iddi = findIdFromCombobox(self.id_magazzino_combobox)
+                daoRiga.id_magazzino = iddi
             else:
                 daoRiga.id_magazzino = r.id_magazzino
             daoRiga.descrizione = r.descrizione

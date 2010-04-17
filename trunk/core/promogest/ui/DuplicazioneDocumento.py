@@ -59,7 +59,7 @@ class DuplicazioneDocumento(GladeWidget):
         self.data_documento_entry.set_text(dateToString(datetime.datetime.today()))
         self.data_documento_entry.grab_focus()
 
-        listini = Environment.params['session'].query(Listino)
+        listini = Listino().select(batchSize=None)
         model = gtk.ListStore(object, int, str)
         model.append((None, 0, '<Invariato>'))
         model.append((None, 1, '<Azzera>'))
@@ -76,20 +76,8 @@ class DuplicazioneDocumento(GladeWidget):
         self.id_prezzo_combobox.set_active(0)
 
         #controlla che nel documento ci sia un solo magazzino
-#        nMags = Magazzino().count()
-#        if nMags > 1:
-        print "NUMERO MAGAZZINI", self.dao.numeroMagazzini
         if self.dao.numeroMagazzini == 1:
             fillComboboxMagazzini(self.id_magazzino_combobox)
-#            mags = Environment.params['session'].query(Magazzino)#.filter(Magazzino.id != self.dao.righe[0].id_magazzino)
-#            model = gtk.ListStore(object, str)
-#            for m in mags:
-#                model.append((m, (m.denominazione or '')[0:30]))
-#            self.id_magazzino_combobox.clear()
-#            renderer = gtk.CellRendererText()
-#            self.id_magazzino_combobox.pack_start(renderer, True)
-#            self.id_magazzino_combobox.add_attribute(renderer, 'text', 1)
-#            self.id_magazzino_combobox.set_model(model)
         else:
             #disabilito il cambio di magazzino
             self.id_magazzino_combobox.set_sensitive(False)
