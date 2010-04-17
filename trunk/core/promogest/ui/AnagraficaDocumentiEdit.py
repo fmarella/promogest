@@ -158,7 +158,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
     def on_anagrafica_documenti_detail_vbox_key_press_event(self, widget=None, event=None):
         """ Mappiamo un po' di tasti su ana documenti"""
-        print "AHAAHAHAHAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'F4':  # confermo e pulisco
             self.on_confirm_row_button_clicked(widget=None)

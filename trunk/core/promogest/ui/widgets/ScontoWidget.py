@@ -29,6 +29,7 @@ class ScontoWidget(gtk.HBox):
 
     def __init__(self, str1=None, str2=None, int1=None, int2=None):
         gtk.HBox.__init__(self, False, 0)
+#        print "BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOH"
         self.entry = SignedDecimalEntryField(str1, str2, int1, int2)
         self.entry.connect("key_press_event", self.do_key_press_event)
         self.entry.connect("focus_out_event", self.do_focus_out_event)
@@ -53,6 +54,7 @@ class ScontoWidget(gtk.HBox):
 
     def do_key_press_event(self, widget, event):
         keyname = gtk.gdk.keyval_name(event.keyval)
+#        print "AHAHAAHAHAHAHAAHAH", keyname
         if keyname not in self.entry.acceptedKeys:
             return True
         if keyname == 'p' or keyname == 'P':
@@ -62,10 +64,8 @@ class ScontoWidget(gtk.HBox):
             self.tipoSconto = 'valore'
             return True
 
-
     def do_focus_out_event(self, widget, entry):
         self.emit('focus_out_event', entry)
-
 
     def _getTipoSconto(self):
         if self.buttonPerc.get_active():
