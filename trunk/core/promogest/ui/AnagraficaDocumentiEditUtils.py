@@ -314,40 +314,10 @@ def mostraArticoloPart(anaedit, id, art=None):
     """questa funzione viene chiamata da ricerca articolo e si occupa di
         riempire la riga[0] con i dati corretti
     """
-    anaedit.articolo_entry.set_text('')
-    anaedit.descrizione_entry.set_text('')
-    anaedit.codice_articolo_fornitore_entry.set_text('')
-    anaedit.percentuale_iva_entry.set_text('0')
-    anaedit.id_multiplo_customcombobox.combobox.clear()
-    anaedit.id_listino_customcombobox.combobox.clear()
-    anaedit.prezzo_lordo_entry.set_text('0')
-    anaedit.quantita_entry.set_text('0')
-    anaedit.prezzo_netto_label.set_text('0')
-    anaedit.sconti_widget.clearValues()
-    anaedit.totale_riga_label.set_text('0')
-
-    anaedit._righe[0]["idArticolo"] = None
-    anaedit._righe[0]["codiceArticolo"] = ''
-    anaedit._righe[0]["descrizione"] = ''
-    anaedit._righe[0]["codiceArticoloFornitore"] = ''
-    anaedit._righe[0]["percentualeIva"] = 0
-    anaedit._righe[0]["idUnitaBase"] = None
-    anaedit._righe[0]["idMultiplo"] = None
-    anaedit._righe[0]["moltiplicatore"] = 1
-    anaedit._righe[0]["idListino"] = None
-    anaedit._righe[0]["prezzoLordo"] = 0
-    anaedit._righe[0]["quantita"] = 0
-    anaedit._righe[0]["prezzoNetto"] = 0
-    anaedit._righe[0]["divisore_noleggio"] = 0
-    anaedit._righe[0]["sconti"] = []
-    anaedit._righe[0]["applicazioneSconti"] = 'scalare'
-    anaedit._righe[0]["totale"] = 0
     data = stringToDate(anaedit.data_documento_entry.get_text())
-
-    fillComboboxMultipli(anaedit.id_multiplo_customcombobox.combobox, id, True)
-
     # articolo c'è
     if id is not None:
+        fillComboboxMultipli(anaedit.id_multiplo_customcombobox.combobox, id, True)
         articolo = leggiArticolo(id)
 #        print "ARTICOLOOOOOOOOOOOOOOOOOOOOOO", articolo
         if "PromoWear" in Environment.modulesList:
@@ -460,7 +430,7 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit._righe[0]["prezzoNetto"] = 0
         anaedit._righe[0]["sconti"] = []
         anaedit._righe[0]["applicazioneSconti"] = 'scalare'
-        anaedit._righe[0]["codiceArticoloFornitore"] = ''
+        anaedit._righe[0]["codiceArticoloFornitore"] = artic.codice_articolo_fornitore
         #inserisco dei dati nel frame delle informazioni
         anaedit.giacenza_label.set_text(str(giacenzaArticolo(year=Environment.workingYear,
                                             idMagazzino=findIdFromCombobox(anaedit.id_magazzino_combobox),
@@ -483,11 +453,42 @@ def mostraArticoloPart(anaedit, id, art=None):
             anaedit._righe[0]["sconti"] = fornitura["sconti"]
             anaedit._righe[0]["applicazioneSconti"] = fornitura["applicazioneSconti"]
             anaedit.sconti_widget.setValues(anaedit._righe[0]["sconti"], anaedit._righe[0]["applicazioneSconti"], False)
-            anaedit._righe[0]["codiceArticoloFornitore"] = fornitura["codiceArticoloFornitore"]
+#            anaedit._righe[0]["codiceArticoloFornitore"] = fornitura["codiceArticoloFornitore"]
             anaedit.codice_articolo_fornitore_entry.set_text(anaedit._righe[0]["codiceArticoloFornitore"])
         #vendita
         elif ((anaedit._fonteValore == "vendita_iva") or (anaedit._fonteValore == "vendita_senza_iva")):
             anaedit.refresh_combobox_listini()
+    else:
+        anaedit.articolo_entry.set_text('')
+        anaedit.descrizione_entry.set_text('')
+        anaedit.codice_articolo_fornitore_entry.set_text('')
+        anaedit.percentuale_iva_entry.set_text('0')
+        anaedit.id_multiplo_customcombobox.combobox.clear()
+        anaedit.id_listino_customcombobox.combobox.clear()
+        anaedit.prezzo_lordo_entry.set_text('0')
+        anaedit.quantita_entry.set_text('0')
+        anaedit.prezzo_netto_label.set_text('0')
+        anaedit.sconti_widget.clearValues()
+        anaedit.totale_riga_label.set_text('0')
+
+        anaedit._righe[0]["idArticolo"] = None
+        anaedit._righe[0]["codiceArticolo"] = ''
+        anaedit._righe[0]["descrizione"] = ''
+        anaedit._righe[0]["codiceArticoloFornitore"] = ''
+        anaedit._righe[0]["percentualeIva"] = 0
+        anaedit._righe[0]["idUnitaBase"] = None
+        anaedit._righe[0]["idMultiplo"] = None
+        anaedit._righe[0]["moltiplicatore"] = 1
+        anaedit._righe[0]["idListino"] = None
+        anaedit._righe[0]["prezzoLordo"] = 0
+        anaedit._righe[0]["quantita"] = 0
+        anaedit._righe[0]["prezzoNetto"] = 0
+        anaedit._righe[0]["divisore_noleggio"] = 0
+        anaedit._righe[0]["sconti"] = []
+        anaedit._righe[0]["applicazioneSconti"] = 'scalare'
+        anaedit._righe[0]["totale"] = 0
+
+
 
     if anaedit._tipoPersonaGiuridica == "cliente":
         anaedit.id_listino_customcombobox.combobox.grab_focus()

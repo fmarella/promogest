@@ -73,6 +73,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
     _quantita_minima = ''
     artiDict = {}
     daoArticolo = None
+    _codicearticolofornitore = ""
     if id is not None:
         if "PromoWear" in Environment.modulesList:
             from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
@@ -84,19 +85,23 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
             _denominazione = daoArticolo.denominazione or ''
             _codice = daoArticolo.codice or ''
             _idUnitaBase = daoArticolo.id_unita_base
+            _codicearticolofornitore = daoArticolo.codice_articolo_fornitore
+            _denominazioneBreveAliquotaIva = daoArticolo.denominazione_breve_aliquota_iva
+            _percentualeAliquotaIva = daoArticolo.percentuale_aliquota_iva
+            _unitaBase = daoArticolo.denominazione_unita_base
             try:
                 _quantita_minima = daoArticolo.quantita_minima
             except:
                 _quantita_minima = ""
-            if _idUnitaBase is not None:
-                res = UnitaBase().getRecord(id =_idUnitaBase)
-                if res is not None:
-                    _unitaBase = res.denominazione
-            if daoArticolo.id_aliquota_iva is not None:
-                daoAliquotaIva = AliquotaIva().getRecord(id=daoArticolo.id_aliquota_iva)
-                if daoAliquotaIva is not None:
-                    _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
-                    _percentualeAliquotaIva = daoAliquotaIva.percentuale or 0
+#            if _idUnitaBase is not None:
+#                res = UnitaBase().getRecord(id =_idUnitaBase)
+#                if res is not None:
+#                    _unitaBase = res.denominazione
+#            if daoArticolo.id_aliquota_iva is not None:
+#                daoAliquotaIva = AliquotaIva().getRecord(id=daoArticolo.id_aliquota_iva)
+#                if daoAliquotaIva is not None:
+#                    _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
+#                    _percentualeAliquotaIva = daoAliquotaIva.percentuale or 0
 
     artiDict = {"id": _id,
                 "denominazione": _denominazione,
@@ -106,6 +111,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
                 "idUnitaBase": _idUnitaBase,
                 "unitaBase": _unitaBase,
                 "quantita_minima": _quantita_minima,
+                "codicearticolofornitore":_codicearticolofornitore,
                 "daoArticolo":daoArticolo}
     return artiDict
 
@@ -437,7 +443,7 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
 
     if (idArticolo is not None):
         fors = Fornitura().select(idArticolo=idArticolo,
-                                    idFornitore=None,
+                                    idFornitore=idFornitore,
                                     daDataFornitura=None,
                                     aDataFornitura=None,
                                     daDataPrezzo=None,
@@ -448,7 +454,8 @@ def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=Fals
                                     batchSize = None)
 
         fornitura = None
-        if idFornitore is not None:
+        if idFornitore:
+#            print "FOOOOOOOOOOOOOOOOOOOOORSA2", fors
             # cerca tra tutti i fornitori quello utile, o in sua assenza, quello preferenziale
             for f in fors:
                 if f.id_fornitore == idFornitore:

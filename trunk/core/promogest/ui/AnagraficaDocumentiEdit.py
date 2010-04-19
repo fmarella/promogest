@@ -562,7 +562,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
             if self._tipoPersonaGiuridica == "fornitore":
                 fornitura = leggiFornitura(riga.id_articolo, self.dao.id_fornitore, self.dao.data_documento, True)
-                self._righe[0]["codiceArticoloFornitore"] = fornitura["codiceArticoloFornitore"]
+                self._righe[0]["codiceArticoloFornitore"] = fornitura["codiceArticoloFornitore"] or articolo["codicearticolofornitore"]
 
             self._righe.append(self._righe[0])
             rigadoc= self._righe[j]
@@ -955,19 +955,25 @@ del documento.
     def on_confirm_row_button_clicked(self, widget=None,row=None):
         """
         Memorizza la riga inserita o modificata
+        TODO: ATTENZIONE, iniziato il controllo sull'iva ma non finito
         """
         self.checkMAGAZZINO = False
         if self.NoRowUsableArticle:
             self.showMessage('ARTICOLO NON USABILE IN UNA RIGA IN QUANTO ARTICOLO PRINCIPALE O PADRE!')
             return
 
+#        iva = self.percentuale_iva_entry.get_text()
+#        if iva == "" or iva == "0" or iva =="0.00":
+#            self.showMessage(msg="ATTENZIONE IVA a 0%??")
+#            ivaazero = True
+#            return
         self._righe[0]["idMagazzino"] = findIdFromCombobox(self.id_magazzino_combobox)
         magazzino = leggiMagazzino(self._righe[0]["idMagazzino"])
         #magazzino = Magazzino().getRecord(id=self._righe[0]["idMagazzino"])
         self._righe[0]["magazzino"] = magazzino['denominazione']
 
         if (self.data_documento_entry.get_text() == ''):
-            self.showMessage('Inserire la data del documento !2')
+            self.showMessage('Inserire la data del documento !')
             return
 
         if (findIdFromCombobox(self.id_operazione_combobox) is None):
@@ -1000,7 +1006,6 @@ del documento.
             inserisci = False
         # memorizzazione delle parti descrittive (liberamente modificabili)
         self._righe[0]["descrizione"] = self.descrizione_entry.get_text()
-        print " INIZIAMO DA QUI", self.codice_articolo_fornitore_entry.get_text()
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
         totale = self._righe[0]["totale"]
         #print "TOTALE IN CONFIRM", totale
@@ -1049,7 +1054,7 @@ del documento.
         if inserisci is False:
             if self._iteratorRiga is None:
                 return
-            print "ITERATOREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", self._iteratorRiga
+#            print "ITERATOREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", self._iteratorRiga
             #self.modelRiga.set_value(self._iteratorRiga, 0, self._righe[self._numRiga]["magazzino"])
             self.modelRiga.set_value(self._iteratorRiga, 1, self._righe[self._numRiga]["magazzino"])
             self.modelRiga.set_value(self._iteratorRiga, 2, self._righe[self._numRiga]["codiceArticolo"])

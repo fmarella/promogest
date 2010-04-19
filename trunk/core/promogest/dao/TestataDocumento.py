@@ -2,8 +2,8 @@
 
 # Promogest
 #
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
+# Copyright (C) 2005-2010 by Promotux Informatica - http://www.promotux.it/
+# Author: Francesco Meloni <francesco@promotux.it>
 
 from Dao import Dao
 

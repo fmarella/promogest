@@ -67,7 +67,19 @@ class Articolo(Dao):
 
     @property
     def codice_articolo_fornitore(self):
-        if self.fornitur: return self.fornitur.codice_articolo_fornitore or ""
+        codi = []
+        if self.fornitur:
+            for f in self.fornitur:
+                if not f.codice_articolo_fornitore in codi and f.codice_articolo_fornitore is not None:
+                    codi.append(f.codice_articolo_fornitore)
+            if len(codi)>1:
+                print "STRANAMENTE CI SONO PI§ CODICI FORNITORE PER QUESTO ARTICOLO"
+                return codi[-1] or ""
+            elif len(codi)==1:
+                return codi[0]
+            else:
+                return ""
+#            return forni.codice_articolo_fornitore or ""
 
     @property
     def imballaggio(self):
@@ -535,7 +547,7 @@ std_mapper = mapper(Articolo,articolo,
                                             cascade="all, delete",
                                             backref="arti"),
                         sa = relation(StatoArticolo,primaryjoin=(articolo.c.id_stato_articolo==statoart.c.id)),
-                        fornitur = relation(Fornitura,primaryjoin=(fornitura.c.id_articolo==articolo.c.id), backref="arti",uselist=False),
+                        fornitur = relation(Fornitura,primaryjoin=(fornitura.c.id_articolo==articolo.c.id), backref="arti"),
                         multi = relation(Multiplo,primaryjoin=(Multiplo.id_articolo==articolo.c.id),backref="arti")
                         ), order_by=articolo.c.codice)
 if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
