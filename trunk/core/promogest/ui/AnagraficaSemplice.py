@@ -90,7 +90,7 @@ class Anagrafica(GladeWidget):
         creditsDialog.getTopLevel().show_all()
         try:
             query = "SELECT value FROM " +  Environment.connection._schemaAzienda + ".setting WHERE key = 'update_db_version';"
-            
+
             argList = []
             Environment.connection._cursor.execute(query,argList)
             res = Environment.connection._cursor.fetchall()
@@ -150,7 +150,13 @@ class Anagrafica(GladeWidget):
             self.detail.setDao(None, codice=codice)
         else:
             self.detail.setDao(None)
-
+        if self._windowName == 'AnagraficaBanche':
+#            print "passi qui.....", dir(self)
+            from AnagraficaBancheEdit import AnagraficaBancheEdit
+            anag = AnagraficaBancheEdit(self, codice=codice)
+#            anag.set_transient_for(self.getTopLevel())
+#            anag.show_all()
+            return
         self.filterTopLevel.set_sensitive(False)
         self.anagrafica_filter_navigation_hbox.set_sensitive(False)
         self.anagrafica_filter_frame.set_sensitive(False)
@@ -350,7 +356,10 @@ class Anagrafica(GladeWidget):
     def on_record_edit_activate(self, widget):
         """ Modifica record """
         self.detail.updateDao()
-
+        if self._windowName == 'AnagraficaBanche':
+            from AnagraficaBancheEdit import AnagraficaBancheEdit
+            anag = AnagraficaBancheEdit(self, dao=self.detail.dao)
+            return
         self.filterTopLevel.set_sensitive(False)
         self.anagrafica_filter_navigation_hbox.set_sensitive(False)
         self.anagrafica_filter_frame.set_sensitive(False)
@@ -579,6 +588,7 @@ class AnagraficaDetail(object):
     """ Dettaglio dell'anagrafica """
 
     def __init__(self, anagrafica, gladeFile=None,module=False):
+        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA, passiamo qui "
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
 

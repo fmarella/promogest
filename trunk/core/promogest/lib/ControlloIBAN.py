@@ -34,7 +34,7 @@ from string import join
 # identifica la banca e il conto corrente:
 
 #      ITPP CAAA AABB BBBN NNNN NNNN NNN
-#      IT73 J061 5513 0000 0000 0012 345 (esempio)
+#      IT73J0615513000000000012345 (esempio)
 
 #      IT            Codice paese (IT)
 #      PP            Cifra di controllo (73)
@@ -195,3 +195,129 @@ class IBAN():
 
         return True
 
+#
+# IBAN_Check.py
+# Utility to check the integrity of an <strong class="highlight">IBAN</strong> bank account No.
+# <strong class="highlight">Python</strong> 2.5.1
+
+# Sample <strong class="highlight">IBAN</strong> account numbers.
+#-----------------------------
+# BE31435411161155
+# CH5108686001256515001
+# GB35MIDL40253432144670
+
+
+# Dictionaries - Refer to ISO 7064 mod 97-10
+letter_dic={"A":10, "B":11, "C":12, "D":13, "E":14, "F":15, "G":16, "H":17, "I":18, "J":19, "K":20, "L":21, "M":22,
+            "N":23, "O":24, "P":25, "Q":26, "R":27, "S":28, "T":29, "U":30, "V":31, "W":32, "X":33, "Y":34, "Z":35,
+            "0":0,"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9}
+
+# ISO 3166-1 alpha-2 country code
+country_dic={"AL":[28,"Albania"],
+             "AD":[24,"Andorra"],
+             "AT":[20,"Austria"],
+             "BE":[16,"Belgium"],
+             "BA":[20,"Bosnia"],
+             "BG":[22,"Bulgaria"],
+             "HR":[21,"Croatia"],
+             "CY":[28,"Cyprus"],
+             "CZ":[24,"Czech Republic"],
+             "DK":[18,"Denmark"],
+             "EE":[20,"Estonia"],
+             "FO":[18,"Faroe Islands"],
+             "FI":[18,"Finland"],
+             "FR":[27,"France"],
+             "DE":[22,"Germany"],
+             "GI":[23,"Gibraltar"],
+             "GR":[27,"Greece"],
+             "GL":[18,"Greenland"],
+             "HU":[28,"Hungary"],
+             "IS":[26,"Iceland"],
+             "IE":[22,"Ireland"],
+             "IL":[23,"Israel"],
+             "IT":[27,"Italy"],
+             "LV":[21,"Latvia"],
+             "LI":[21,"Liechtenstein"],
+             "LT":[20,"Lithuania"],
+             "LU":[20,"Luxembourg"],
+             "MK":[19,"Macedonia"],
+             "MT":[31,"Malta"],
+             "MU":[30,"Mauritius"],
+             "MC":[27,"Monaco"],
+             "ME":[22,"Montenegro"],
+             "NL":[18,"Netherlands"],
+             "NO":[15,"Northern Ireland"],
+             "PO":[28,"Poland"],
+             "PT":[25,"Portugal"],
+             "RO":[24,"Romania"],
+             "SM":[27,"San Marino"],
+             "SA":[24,"Saudi Arabia"],
+             "RS":[22,"Serbia"],
+             "SK":[24,"Slovakia"],
+             "SI":[19,"Slovenia"],
+             "ES":[24,"Spain"],
+             "SE":[24,"Sweden"],
+             "CH":[21,"Switzerland"],
+             "TR":[26,"Turkey"],
+             "TN":[24,"Tunisia"],
+             "GB":[22,"United Kingdom"]}
+
+def check(n):
+    if int(n)%97 !=1:
+        result=0                                                # False
+    else:
+        result=1                                                # True
+    return result
+
+#while True:
+#    # <strong class="highlight">IBAN</strong> = (raw_input("Enter account No. : ")).upper()          # Input account No.
+#    <strong class="highlight">IBAN</strong> = "GB35MIDL40253432144670"                             # Sample UK <strong class="highlight">IBAN</strong>
+#    print "original:",
+#    print <strong class="highlight">IBAN</strong>
+#    length = len(<strong class="highlight">IBAN</strong>)
+#    country = <strong class="highlight">IBAN</strong>[:2]
+#    if country_dic.has_key(country):
+#        data = country_dic[country]
+#        length_c = data[0]
+#        name_c = data[1]
+#        if length == length_c:
+#            print name_c,"/ <strong class="highlight">IBAN</strong> length",length_c,"OK!"
+#            header = <strong class="highlight">IBAN</strong>[:4]                                   # Get the first four characters
+#            body = <strong class="highlight">IBAN</strong>[4:]                                     # And the remaining characters
+#            <strong class="highlight">IBAN</strong> = body+header                                  # Move the first block at the end
+#            IBAN_ = list(<strong class="highlight">IBAN</strong>)                                  # Transform string into a list
+#            print "C1:", <strong class="highlight">IBAN</strong>
+#            string_=""
+##            for index in range(len(IBAN_)):                     # Convert letters to integers
+##                if letter_dic.has_key(IBAN_[index]):
+##                    value = letter_dic[IBAN_[index]]
+##                    print IBAN_[index],
+##                    IBAN_[index] = value
+##                    print value
+##            for index in range(len(IBAN_)):                     # Transform list into a string
+##                string_ = string_ + str(IBAN_[index])
+#            string_="".join(map(lambda x: str(letter_dic[x]), IBAN_))
+#            print string_
+#            valid = check(string_)                              # Check validity
+#            if not valid:
+#                print "Not a valid <strong class="highlight">IBAN</strong> account No."
+#            else:
+#                print "<strong class="highlight">IBAN</strong> account No. accepted."              # Rebuild the original <strong class="highlight">IBAN</strong>
+#                trailer = <strong class="highlight">IBAN</strong>[len(<strong class="highlight">IBAN</strong>)-4:]                    # Get the four last characters
+#                body = <strong class="highlight">IBAN</strong>[:len(<strong class="highlight">IBAN</strong>)-4]                       # And the remaining characters
+#                <strong class="highlight">IBAN</strong> = trailer+body                             # Move the trailer at the begin
+#                print "Exit loop ..."
+#                break
+#        else:
+#            print name_c,"/ Wrong <strong class="highlight">IBAN</strong> code length!"
+#    else:
+#        print "Wrong <strong class="highlight">IBAN</strong> country code!"
+
+#print "<strong class="highlight">IBAN</strong> account No. :",<strong class="highlight">IBAN</strong>
+## Display a formated account No. (Thanks to Griboullis)
+#split_IBAN = lambda block,string:[string[f:f+block] for f in range(0,len(string),block)]
+#BankAccountNo = split_IBAN(4,<strong class="highlight">IBAN</strong>)
+#print "Formated bank account No :",
+#for block in BankAccountNo:
+#    print block,
+#print

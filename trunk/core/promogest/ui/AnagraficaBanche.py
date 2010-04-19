@@ -11,11 +11,11 @@ import gtk
 import gobject
 
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-
+#from AnagraficaComplessa import AnagraficaEdit
 from promogest import Environment
 from promogest.dao.Banca import Banca
 from promogest.lib.ControlloIBAN import *
-
+from GladeWidget import GladeWidget
 from utils import *
 from utilsCombobox import *
 
@@ -72,58 +72,9 @@ class AnagraficaBanche(Anagrafica):
         column.set_expand(True)
         treeview.append_column(column)
 
-        renderer = gtk.CellRendererText()
-        renderer.set_property('editable', False)
-        renderer.connect('edited', self.on_column_edited, treeview, True)
-        renderer.set_data('column', 3)
-        renderer.set_data('max_length', 5)
-        column = gtk.TreeViewColumn('ABI', renderer, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        renderer.set_property('editable', False)
-        renderer.connect('edited', self.on_column_edited, treeview, True)
-        renderer.set_data('column', 4)
-        renderer.set_data('max_length', 5)
-        column = gtk.TreeViewColumn('CAB', renderer, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        renderer.set_property('editable', False)
-        renderer.connect('edited', self.on_column_edited, treeview, True)
-        renderer.set_data('column', 5)
-        renderer.set_data('max_length', 1)
-        column = gtk.TreeViewColumn('CIN', renderer, text=6)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-        renderer = gtk.CellRendererText()
-        renderer.set_property('editable', False)
-        renderer.connect('edited', self.on_column_edited, treeview, True)
-        renderer.set_data('column', 6)
-        renderer.set_data('max_length', 15)
-        column = gtk.TreeViewColumn('C/C', renderer, text=7)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(True)
-        treeview.append_column(column)
-
-
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str, str, str)
         treeview.set_model(self._treeViewModel)
 
         self.refresh()
@@ -160,11 +111,7 @@ class AnagraficaBanche(Anagrafica):
             self._treeViewModel.append((b,
                                         (b.denominazione or ''),
                                         (b.agenzia or ''),
-                                        (b.iban or ''),
-                                        (iban.abi or ''),
-                                        (iban.cab or ''),
-                                        (iban.cin or ''),
-                                        (iban.account or '')))
+                                        (b.iban or '')))
 
 class AnagraficaBancheFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica delle banche """
@@ -182,10 +129,6 @@ class AnagraficaBancheFilter(AnagraficaFilter):
         self.denominazione_filter_entry.set_text('')
         self.agenzia_filter_entry.set_text('')
         self.iban_filter_entry.set_text('')
-        self.abi_filter_entry.set_text('')
-        self.cab_filter_entry.set_text('')
-#        self.cin_filter_entry.set_text('')
-#        self.account_filter_entry.set_text('')
         self.denominazione_filter_entry.grab_focus()
         self._anagrafica.refresh()
 
@@ -193,9 +136,11 @@ class AnagraficaBancheDetail(AnagraficaDetail):
     """ Dettaglio dell'anagrafica delle banche """
 
     def __init__(self, anagrafica):
-        AnagraficaDetail.__init__(self,
-                                  anagrafica,
-                                  gladeFile='_anagrafica_banche_elements.glade')
+#        GladeWidget.__init__(self,
+#                                  'anagrafica_banche_edit_vbox',
+#                                 fileName='_anagrafica_banche_edit.glade')
+#        self.show_all()
+        pass
 
 
     def setDao(self, dao):
@@ -205,52 +150,50 @@ class AnagraficaBancheDetail(AnagraficaDetail):
                 return
             else:
                 self.dao = Banca()
-                self._anagrafica._newRow((self.dao, '', '', '', '', '', '', ''))
-                self._refresh()
+#                self._anagrafica._newRow((self.dao, '', '', '', '', '', '', ''))
+#                self._refresh()
         else:
             self.dao = dao
 
-
     def updateDao(self):
         self.dao = Banca().getRecord(id= self.dao.id)
-        self._refresh()
+#        self._refresh()
 
+#    def _refresh(self):
+#        sel = self._anagrafica.anagrafica_treeview.get_selection()
+#        (model, iterator) = sel.get_selected()
+#        if self.dao.iban is not None:
+#            iban = IBAN(self.dao.iban)
+#            model.set_value(iterator, 4, iban.abi or '')
+#            model.set_value(iterator, 5, iban.cab or '')
+#            model.set_value(iterator, 6, iban.cin or '')
+#            model.set_value(iterator, 7, iban.account or '')
 
-    def _refresh(self):
-        sel = self._anagrafica.anagrafica_treeview.get_selection()
-        (model, iterator) = sel.get_selected()
-        if self.dao.iban is not None:
-            iban = IBAN(self.dao.iban)
-            model.set_value(iterator, 4, iban.abi or '')
-            model.set_value(iterator, 5, iban.cab or '')
-            model.set_value(iterator, 6, iban.cin or '')
-            model.set_value(iterator, 7, iban.account or '')
+#        model.set_value(iterator, 0, self.dao)
+#        model.set_value(iterator, 1, self.dao.denominazione)
+#        model.set_value(iterator, 2, self.dao.agenzia)
+#        model.set_value(iterator, 3, self.dao.iban)
 
-        model.set_value(iterator, 0, self.dao)
-        model.set_value(iterator, 1, self.dao.denominazione)
-        model.set_value(iterator, 2, self.dao.agenzia)
-        model.set_value(iterator, 3, self.dao.iban)
+#    def saveDao(self):
+#        sel = self._anagrafica.anagrafica_treeview.get_selection()
+#        (model, iterator) = sel.get_selected()
+#        denominazione = model.get_value(iterator, 1) or ''
+#        agenzia = model.get_value(iterator, 2) or ''
+#        iban = model.get_value(iterator, 3) or ''
+#        if (denominazione == ''):
+#            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
+#            return
+#        elif (iban == ''):
+#            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
+#            return
+#        self.dao.denominazione = denominazione
+#        self.dao.agenzia = agenzia
+#        iban = IBAN(iban)
+#        if iban.iban == -1:
+#            model.set_value(iterator, 3, '')
+#            return
+#        self.dao.iban = iban.iban
+#        self.dao.persist()
 
-    def saveDao(self):
-        sel = self._anagrafica.anagrafica_treeview.get_selection()
-        (model, iterator) = sel.get_selected()
-        denominazione = model.get_value(iterator, 1) or ''
-        agenzia = model.get_value(iterator, 2) or ''
-        iban = model.get_value(iterator, 3) or ''
-        if (denominazione == ''):
-            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
-            return
-        elif (iban == ''):
-            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
-            return
-        self.dao.denominazione = denominazione
-        self.dao.agenzia = agenzia
-        iban = IBAN(iban)
-        if iban.iban == -1:
-            model.set_value(iterator, 3, '')
-            return
-        self.dao.iban = iban.iban
-        self.dao.persist()
-
-    def deleteDao(self):
-        self.dao.delete()
+#    def deleteDao(self):
+#        self.dao.delete()
