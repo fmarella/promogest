@@ -75,7 +75,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         #column.connect("clicked", self._changeOrderBy, (self.joinT,Fornitore.ragione_sociale))
         column.set_resizable(True)
         column.set_expand(True)
-        column.set_min_width(200)
+        column.set_min_width(100)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Codice articolo fornitore', rendererSx, text=2)
@@ -102,7 +102,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         #column.connect("clicked", self._changeOrderBy,(self.joinT2,Articolo.denominazione))
         column.set_resizable(True)
         column.set_expand(True)
-        column.set_min_width(150)
+        column.set_min_width(200)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Data fornitura', rendererSx, text=5)
@@ -288,8 +288,8 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
                             (f.codice_articolo or ''),
                             (f.articolo or ''),
                             dateToString(f.data_fornitura),
-                            ('%14.' + Environment.conf.decimals + 'f') % float(f.prezzo_lordo),
-                            ('%14.' + Environment.conf.decimals + 'f') % float(f.prezzo_netto),
+                            (mN(f.prezzo_lordo),
+                            (mN(f.prezzo_netto),
                             (f.denominazione_gruppo_taglia or ''),
                             (f.denominazione_taglia or ''),
                             (f.denominazione_colore or ''),
@@ -303,8 +303,8 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
                             (f.codice_articolo or ''),
                             (f.articolo or ''),
                             dateToString(f.data_fornitura),
-                            ('%14.' + Environment.conf.decimals + 'f') % float(f.prezzo_lordo or 0),
-                            ('%14.' + Environment.conf.decimals + 'f') % float(f.prezzo_netto or 0)))
+                            (mN(f.prezzo_lordo) or 0),
+                            (mN(f.prezzo_netto) or 0)))
 
 
 class AnagraficaFornitureHtml(AnagraficaHtml):

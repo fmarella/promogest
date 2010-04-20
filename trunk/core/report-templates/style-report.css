@@ -19,7 +19,6 @@
 
     td.detail {
         padding-left: 2px;
-
     }
 
     td.left {
@@ -34,7 +33,6 @@
         font-style: normal;
         font-size: 1.1em;
         padding: 4px;
-
     }
 
     th.left {
@@ -75,43 +73,43 @@
     width: auto;
 }
 
-#container #footer {
-    background-image: url("gui/bkg_footer.png");
-    background-repeat: repeat;
-    position: relative;
-    width: auto;
-    font-family: Arial;
-    font-size: 10px;
-    color: #333333;
-    height: 21px;
-}
-#container #rigaheader {
-    background-image: url("gui/bkg_footer.png");
-    background-repeat: repeat;
-    position: relative;
-    width: auto;
-    height: 15px;
-}
-#container #head {
-    height: 70px;
-}
-#container #head #testo {
-    position: relative;
-    top: -40px;
-    left: 80px;
-    width: 80%;
-    font-family: Arial;
-    font-size: 24px;
-    color: #666666;
-    font-weight: bold;
-}
-#container #head #img {
-    height: 48px;
-    width: 48px;
-    background-repeat: no-repeat;
-    position: relative;
-    left: 20px;
-    top: 5px;
-    padding-top: 10px;
-}
+/*#container #footer {*/
+/*    background-image: url("gui/bkg_footer.png");*/
+/*    background-repeat: repeat;*/
+/*    position: relative;*/
+/*    width: auto;*/
+/*    font-family: Arial;*/
+/*    font-size: 10px;*/
+/*    color: #333333;*/
+/*    height: 21px;*/
+/*}*/
+/*#container #rigaheader {*/
+/*    background-image: url("gui/bkg_footer.png");*/
+/*    background-repeat: repeat;*/
+/*    position: relative;*/
+/*    width: auto;*/
+/*    height: 15px;*/
+/*}*/
+/*#container #head {*/
+/*    height: 70px;*/
+/*}*/
+/*#container #head #testo {*/
+/*    position: relative;*/
+/*    top: -40px;*/
+/*    left: 80px;*/
+/*    width: 80%;*/
+/*    font-family: Arial;*/
+/*    font-size: 24px;*/
+/*    color: #666666;*/
+/*    font-weight: bold;*/
+/*}*/
+/*#container #head #img {*/
+/*    height: 48px;*/
+/*    width: 48px;*/
+/*    background-repeat: no-repeat;*/
+/*    position: relative;*/
+/*    left: 20px;*/
+/*    top: 5px;*/
+/*    padding-top: 10px;*/
+/*}*/
 </style>

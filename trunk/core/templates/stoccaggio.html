@@ -2,7 +2,7 @@
 {% block body %}
 
 	<table cellpadding="0" cellspacing="0" border="0">
-            <tr><td colspan="6" class="table-header"><b>Dati stoccaggio:</b> {{dao.magazzino}} - <b>Articolo:</b> {{dao.articolo}}</td></tr>
+            <tr><td colspan="6" class="table-header"><b>MAGAZZINO:</b> {{dao.magazzino}} <br/><b>ARTICOLO: CODICE:</b> {{dao.codice_articolo}}  - <b>C/BARRE:</b> {{dao.arti.codice_a_barre}} <br /> <b>DENOM:</b> {{dao.articolo}}</td></tr>
             <tr>
                 <td width="25%" class="odd-detail">Scorta minima</td>
                 <td width="25%" class="odd-detail"><strong>{{dao.scorta_minima|nonone}}</strong></td>

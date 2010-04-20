@@ -3,11 +3,8 @@
   <!-- interface-requires gtk+ 2.6 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkDialog" id="print_on_screen_dialog">
-    <property name="title" translatable="yes">FIXME</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
-    <property name="default_width">700</property>
-    <property name="default_height">500</property>
     <property name="icon">promogest.png</property>
     <property name="type_hint">dialog</property>
     <signal name="response" handler="on_print_on_screen_dialog_response"/>
@@ -15,7 +12,6 @@
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox8">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkScrolledWindow" id="scrolledwindow55">
             <property name="visible">True</property>

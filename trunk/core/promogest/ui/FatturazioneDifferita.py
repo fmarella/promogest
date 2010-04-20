@@ -7,7 +7,7 @@
 # Author: Francesco Meloni <francesco@promotux.it>
 
 
-import gobject, gtk
+import gtk
 from utils import *
 
 from GladeWidget import GladeWidget
@@ -22,12 +22,8 @@ def newSingleDoc(data, operazione, note, daoDocumento, newDao = None):
     """
     Make a new document from existing one
     """
-    #import promogest.dao.InformazioniFatturazioneDocumento
     from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
-
-    #import promogest.dao.ScontoRigaDocumento
     from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
-    #import promogest.dao.ScontoTestataDocumento
     from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 
     fattura = False
@@ -182,7 +178,7 @@ class FatturazioneDifferita(GladeWidget):
             return
         self.listdoc = self.findDoc(selection)
         self.nomi  = self.getNames(self.listdoc)
-        
+
         self.draw()
         self.listdoc = self.sortDoc(self.nomi, self.listdoc)
 
@@ -278,7 +274,7 @@ class FatturazioneDifferita(GladeWidget):
                                       gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
             response = dialog.run()
             dialog.destroy()
-            
+
             return
         else:
             fattura.righe = righe

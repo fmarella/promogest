@@ -1372,7 +1372,6 @@ def insertComboboxSearchAgente(combobox, idAgente, clear=False, filter=True):
 
 def insertComboboxSearchArticolo(combobox, idArticolo, clear=False, filter=True):
     """
-    FIXME
     @param combobox:
     @type combobox:
     @param idArticolo:
@@ -1388,7 +1387,6 @@ def insertComboboxSearchArticolo(combobox, idArticolo, clear=False, filter=True)
 
 def insertComboboxSearchFornitore(combobox, idFornitore, clear=False, filter=True):
     """
-    FIXME
     @param combobox:
     @type combobox:
     @param idFornitore:

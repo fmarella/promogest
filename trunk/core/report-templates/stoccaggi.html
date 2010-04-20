@@ -1,9 +1,12 @@
-{% extends 'index.html' %}
+{% extends 'index2.html' %}
 {% block body %}
         <table cellpadding="0" cellspacing="3" border="0">
             <tr>
-                <th>Magazzino</th>
+                <th>Codice</th>
+                <th>C Barre</th>
                 <th>Articolo</th>
+                <th>Magazzino</th>
+
                 <th>Giacenza</th>
                 {% if "SchedaLavorazione" in environment.modulesList %}
                 <th>Impegnato</th>
@@ -16,24 +19,20 @@
             <tr><td colspan="7"><hr /></td></tr>
             {% for dao in objects %}
             <tr class="row">
-                <td class="detail">{{dao.magazzino}}</td>
+                <td class="detail">{{dao.codice_articolo}}</td>
+                <td class="detail">{{dao.arti.codice_a_barre}}</td>
                 <td class="detail">{{dao.articolo}}</td>
-                <td class="number">{{environment.conf.number_format % ( dao.giacenza )}}</td>
+                <td class="detail">{{dao.magazzino}}</td>
+
+                <td class="detail">{{utils.mN( dao.giacenza )}}</td>
                 {% if "SchedaLavorazione" in environment.modulesList %}
                     <td class="number">{{ dao.impegnato}}</td>
                 {% endif %}
-                <td class="totale-number" style="text-align:center;"><strong>{{'%14.2f' % (dao.valoreGiacenza, )}}</strong></td>
-                <td class="detail">{{dao.scorta_minima}}</td>
-                 {% if dao.data_fine_scorte %}
+                <td class="detail" "><strong>{{utils.mN(dao.valoreGiacenza)}}</strong></td>
+                <td class="detail">{{dao.scorta_minima|nonone}}</td>
                 <td class="detail">{{utils.dateToString(dao.data_fine_scorte)}}</td>
-                {% else %}
-                <td class="detail">-</td>
-                {% endif %}
-                {% if dao.data_prossimo_ordine %}
                 <td class="detail">{{utils.dateToString(dao.data_prossimo_ordine)}}</td>
-                 {% else %}
-                <td class="detail">-</td>
-                {% endif %}
+
             </tr>
             {% endfor %}
         </table>

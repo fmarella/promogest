@@ -61,8 +61,8 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Magazzino', rendererSx, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.connect("clicked", self._changeOrderBy, 'magazzino')
+        column.set_clickable(True)
+        column.connect("clicked", self._changeOrderBy,("Magazzino", 'denominazione'))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(200)
@@ -70,32 +70,41 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
 
         column = gtk.TreeViewColumn('Codice articolo', rendererSx, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.connect("clicked", self._changeOrderBy, 'codice_articolo')
+        column.set_clickable(True)
+        column.connect("clicked", self._changeOrderBy,("Articolo", 'codice'))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Articolo', rendererSx, text=3)
+        column = gtk.TreeViewColumn('Codice a Barre', rendererSx, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
-        column.connect("clicked", self._changeOrderBy, 'articolo')
+        column.connect("clicked", self._changeOrderBy,("Articolo", 'codice'))
+        column.set_resizable(True)
+        column.set_expand(False)
+        column.set_min_width(100)
+        treeview.append_column(column)
+
+        column = gtk.TreeViewColumn('Articolo', rendererSx, text=4)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(True)
+        column.connect("clicked", self._changeOrderBy, ("Articolo", 'denominazione'))
         column.set_resizable(True)
         column.set_expand(True)
         column.set_min_width(200)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Giacenza', rendererSx, text=4)
+        column = gtk.TreeViewColumn('Giacenza', rendererSx, text=5)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.connect("clicked", self._changeOrderBy, 'articolo')
         column.set_resizable(True)
         column.set_expand(True)
-        column.set_min_width(200)
+        column.set_min_width(100)
         treeview.append_column(column)
 
-        self._treeViewModel = gtk.ListStore(object, str, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str, str, str, str,str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
@@ -111,6 +120,8 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
             column = self._anagrafica.anagrafica_filter_treeview.get_column(1)
             column.set_property('visible', False)
             column = self._anagrafica.anagrafica_filter_treeview.get_column(2)
+            column.set_property('visible', False)
+            column = self._anagrafica.anagrafica_filter_treeview.get_column(3)
             column.set_property('visible', False)
         if self._anagrafica._magazzinoFissato:
             findComboboxRowFromId(self.id_magazzino_filter_combobox, self._anagrafica._idMagazzino)
@@ -219,6 +230,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
             self._treeViewModel.append((s,
                                         (s.magazzino or ''),
                                         (s.codice_articolo or ''),
+                                        (s.arti.codice_a_barre or ''),
                                         (s.articolo or ''),
                                         (s.giacenza or '')))
 
