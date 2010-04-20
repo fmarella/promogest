@@ -246,32 +246,72 @@
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
                 <property name="shadow_type">in</property>
+                <signal name="focus_out_event" handler="on_end_rent_entry_focus_out_event"/>
                 <child>
                   <object class="GtkAlignment" id="alignment25">
                     <property name="visible">True</property>
                     <property name="left_padding">10</property>
                     <child>
-                      <object class="GtkVBox" id="vbox5">
+                      <object class="GtkHBox" id="hbox6">
                         <property name="visible">True</property>
                         <child>
-                          <object class="GtkHBox" id="hbox35">
+                          <object class="GtkVBox" id="vbox5">
                             <property name="visible">True</property>
+                            <signal name="focus_out_event" handler="on_end_rent_entry_focus_out_event"/>
                             <child>
-                              <object class="GtkLabel" id="label49">
+                              <object class="GtkHBox" id="hbox35_">
                                 <property name="visible">True</property>
-                                <property name="xalign">0</property>
-                                <property name="label" translatable="yes">Da data</property>
+                                <child>
+                                  <object class="GtkLabel" id="label49_">
+                                    <property name="visible">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Da data</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="padding">1</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="DateTimeWidget" id="start_rent_entry">
+                                    <property name="visible">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="padding">1</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="DateWidget" id="start_rent_entry">
+                              <object class="GtkHBox" id="hbox36_">
                                 <property name="visible">True</property>
+                                <child>
+                                  <object class="GtkLabel" id="label51_">
+                                    <property name="visible">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="xpad">4</property>
+                                    <property name="label" translatable="yes">A data</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="padding">1</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="DateTimeWidget" id="end_rent_entry">
+                                    <property name="visible">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
                               </object>
                               <packing>
                                 <property name="position">1</property>
@@ -283,32 +323,16 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkHBox" id="hbox36">
+                          <object class="GtkButton" id="at_button">
                             <property name="visible">True</property>
-                            <child>
-                              <object class="GtkLabel" id="label51">
-                                <property name="visible">True</property>
-                                <property name="xalign">0</property>
-                                <property name="xpad">4</property>
-                                <property name="label" translatable="yes">A data</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="padding">1</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="DateWidget" id="end_rent_entry">
-                                <property name="visible">True</property>
-                              </object>
-                              <packing>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="image">at_image</property>
+                            <signal name="clicked" handler="on_end_rent_entry_focus_out_event"/>
                           </object>
                           <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
@@ -4736,5 +4760,9 @@ _
   <object class="GtkImage" id="avvertimento_sconto_image">
     <property name="visible">True</property>
     <property name="stock">gtk-dialog-warning</property>
+  </object>
+  <object class="GtkImage" id="at_image">
+    <property name="visible">True</property>
+    <property name="stock">gtk-execute</property>
   </object>
 </interface>

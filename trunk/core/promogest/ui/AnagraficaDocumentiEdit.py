@@ -136,6 +136,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def on_scorporo_button_clicked(self, button):
         """ Bottone con una "s" minuscola, che permette di effettuare "al volo"
         lo scorporo di un valore finale nel campo prezzo """
+        print "BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",self.end_rent_entry.get_text()
         iva = self.percentuale_iva_entry.get_text()
         if iva == "" or iva == "0":
             self.showMessage(msg="ATTENZIONE IVA a 0%")
@@ -384,7 +385,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             #print "passato al terzo tab"
 
     def on_rent_checkbutton_toggled(self, checkbutton=None):
-        """ check button in schermata documenti """
+        """ check button in schermata documenti relativa al noleggio """
         stato = self.rent_checkbutton.get_active()
         self.noleggio = stato
         if not self.noleggio:
@@ -449,7 +450,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if "GestioneNoleggio" in Environment.modulesList:
             self.start_rent_entry.set_text(dateTimeToString(self.dao.data_inizio_noleggio))
             self.end_rent_entry.set_text(dateTimeToString(self.dao.data_fine_noleggio))
-            self.on_end_rent_entry_focus_out_event()
+#            self.on_end_rent_entry_focus_out_event()
 
         findComboboxRowFromId(self.id_pagamento_customcombobox.combobox, (self.dao.id_pagamento or -1))
         findComboboxRowFromId(self.id_banca_customcombobox.combobox, (self.dao.id_banca or -1) )
@@ -1009,6 +1010,8 @@ del documento.
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
         totale = self._righe[0]["totale"]
         #print "TOTALE IN CONFIRM", totale
+
+        # CONTROLLI DI Gestione NOLEGGIO
         if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
             self._righe[0]["divisore_noleggio"] = self.coeficente_noleggio_entry.get_text()
             self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
@@ -1669,7 +1672,7 @@ del documento.
         on_quantita_entry_focus_out_eventPart(self, entry, event)
 
     def on_end_rent_entry_focus_out_event(self, entry=None, event=None):
-        if self.end_rent_entry.get_text() and self.start_rent_entry.get_text():
+        if self.end_rent_entry.entry.get_text() and self.start_rent_entry.entry.get_text():
             self._durataNoleggio = stringToDateTime(self.end_rent_entry.get_text())- stringToDateTime(self.start_rent_entry.get_text())
             if self._durataNoleggio.days >0:
                 self.giorni_label.set_text(str(self._durataNoleggio.days) or "")
