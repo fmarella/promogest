@@ -1097,6 +1097,7 @@ del documento.
                             arco_temporale,
                             totale])
         self.righe_treeview.set_model(self.modelRiga)
+        self.righe_treeview.scroll_to_cell(str(len(self.modelRiga)-1))
         self.calcolaTotale()
         if costoVariato:
             if not(self._variazioneListiniResponse == 'all' or self._variazioneListiniResponse == 'none'):
