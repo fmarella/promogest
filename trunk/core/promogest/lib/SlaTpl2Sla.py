@@ -291,9 +291,11 @@ class SlaTpl2Sla(object):
                     vector = []
                 for i in itexts:
                     ch = str(i.get('CH'))
+#                    print " CHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", ch
                     if ch.replace(' ', '') == '':
                         continue
                     tags = Sla2pdfUtils.findTags(ch)
+#                    print "TAAAAAAAAAAAAAAGSSS", tags, vector
                     if tags is not None:
                         if tags not in vector:
                             vector.append(tags)
@@ -682,19 +684,28 @@ class SlaTpl2Sla(object):
                     # Qui vengono gestite le tabelle e le celle con tag non iteranti
                     itexts = pageObject.findall('ITEXT')
                     if len(itexts) > 0:
+                        mettilo =False
                         itext = itexts[0]
                         ch = str(itext.get('CH'))
                         tags = Sla2pdfUtils.findTags(ch)
                         if tags is not None:
                             tmp = ch
+                            if "€" in ch or "Euro" in ch:
+                                mettilo = True
                             tagsKeys = tags.keys()
                             increment = True
                             for k in tagsKeys:
                                 if k.replace(' ', '') == '':
                                     continue
                                 tmp = self.getTagToPrint(tmp,increment=increment, tags=tags, k=k)
+#                                print " TEEEEMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMP", tmp, ch
                                 increment = False
-                            itext.set('CH', tmp)
+#                                prova = ch-tmp
+                            if mettilo:
+                                itext.set('CH',"€ " +tmp )
+                                mettilo =False
+                            else:
+                                itext.set('CH', tmp)
 
     def fillDocument(self):
         """ Replacing tags with real values """
