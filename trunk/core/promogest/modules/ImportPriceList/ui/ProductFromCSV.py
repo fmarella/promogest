@@ -248,9 +248,13 @@ class ProductFromCsv(object):
                 self.codice_articolo = promogest.dao.Articolo.getNuovoCodiceArticolo()
             self.daoArticolo.codice = str(self.codice_articolo)
 
-            print "AAAAAAAAAAAAAAAAAAAAAAA", self.denominazione_articolo, self.daoArticolo.denominazione
             if self.denominazione_articolo:
                 self.daoArticolo.denominazione = str(self.denominazione_articolo)
+            else:
+                if not self.daoArticolo.denominazione:
+                    messageInfo(msg= "ATTENZIONE DESCRIZIONE MANCANTE\nIN INSERIMENTO NUOVO ARTICOLO")
+                    raise NameError("ERRORE DESCRIZIONE MANCANTE")
+                    return
 
 
 #        print "STO PER SALVARE ", self.daoArticolo.denominazione

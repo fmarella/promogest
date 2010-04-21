@@ -258,7 +258,6 @@ class ImportPriceListModels(GladeWidget):
                 else:
                     if status:
                         self.priceListModel._fields.append(k)
-                        print "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
                         if k == def_list[0]:
                             self.default_aliquotaiva_combobox.set_sensitive(False)
                             self.aliquota_iva_togglebutton.set_sensitive(False)
@@ -438,7 +437,8 @@ class ImportPriceListModels(GladeWidget):
     def on_default_combobox_changed(self, combobox):
         if self.loading:
             return
-        comboboxName = combobox.get_name()
+#        comboboxName = combobox.get_name()
+        comboboxName = gtk.Buildable.get_name(combobox)
         value = findStrFromCombobox(combobox, 1) or ''
 
         if len(str(value)) > 0:
