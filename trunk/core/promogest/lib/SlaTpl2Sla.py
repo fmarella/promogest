@@ -684,7 +684,6 @@ class SlaTpl2Sla(object):
                     # Qui vengono gestite le tabelle e le celle con tag non iteranti
                     itexts = pageObject.findall('ITEXT')
                     if len(itexts) > 0:
-                        mettilo =False
                         itext = itexts[0]
                         ch = str(itext.get('CH'))
                         tags = Sla2pdfUtils.findTags(ch)
@@ -700,12 +699,13 @@ class SlaTpl2Sla(object):
                                 tmp = self.getTagToPrint(tmp,increment=increment, tags=tags, k=k)
 #                                print " TEEEEMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMP", tmp, ch
                                 increment = False
-#                                prova = ch-tmp
-                            if mettilo:
-                                itext.set('CH',"€ " +tmp )
-                                mettilo =False
-                            else:
-                                itext.set('CH', tmp)
+                                prova = ch.replace(tmp,"")
+                                if "EUR" in prova.upper() :
+                                    prova = "€ "
+#                            if prova:
+                                itext.set('CH',prova +tmp )
+#                            else:
+#                                itext.set('CH', tmp)
 
     def fillDocument(self):
         """ Replacing tags with real values """
