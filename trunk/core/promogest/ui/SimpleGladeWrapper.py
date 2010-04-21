@@ -60,7 +60,7 @@ def bindtextdomain(app_name, locale_dir=None):
         __builtins__.__dict__["_"] = lambda x : x
 
 
-class SimpleGladeWrapper(object):
+class SimpleGladeWrapper:
 
     def __init__(self, path=None, root=None, domain=None,\
                             callbacks_proxy=None, isModule=False, **kwargs):
@@ -96,7 +96,6 @@ class SimpleGladeWrapper(object):
             sets two attributes (foo and bar) to glade_app.
         """
         gl = None
-        self.gl = None
         if (path is None) or (path == './gui/'):
             gladeFile = "./gui/"+ root +".glade"
             if os.path.exists(gladeFile):
@@ -120,41 +119,26 @@ class SimpleGladeWrapper(object):
         if not gl:
             gl = gtk.Builder()
             #self.builda = gtk.Buildable()
-        print "FILE GLADE: ", self.glade_path
+#        print "FILE GLADE: ", self.glade_path
         gl.add_from_file(self.glade_path)
-#        self.widgets = gl.get_objects()
+        self.widgets = gl.get_objects()
         if root:
             self.main_widget = gl.get_object(root)
         else:
             self.main_widget = None
-#        self.normalize_names()
+        self.normalize_names()
         if callbacks_proxy is None:
             callbacks_proxy = self
         gl.connect_signals(callbacks_proxy)
         self.gl = gl
         #self.new()
 
-    def __getattr__(self, attr_name):
-        try:
-            return object.__getattribute__(self, attr_name)
-        except AttributeError:
-            obj = self.gl.get_object(attr_name)
-            if obj:
-                self.obj = obj
-                if obj.__gtype__.name == "UnsignedIntegerEntryField":
-                    setattr(obj, "nomee",attr_name)
-                    self.entryGlobalcb(obj)
-#                if obj.__gtype__.name == "GtkEntry":
-#                    self.entryGlobalcb(obj)
-                return obj
-            else:
-                raise AttributeError, "no object named \"%s\" in the GUI ( file: %s) " %(attr_name,self.glade_path)
-        return
 
     def __repr__(self):
         class_name = self.__class__.__name__
         if self.main_widget:
-            root = gtk.Widget.get_name(self.main_widget)
+#            root = gtk.Widget.get_name(self.main_widget)
+            root = gtk.Buildable.get_name(self.main_widget)
             repr = '%s(path="%s", root="%s")' % (class_name, self.glade_path, root)
         else:
             repr = '%s(path="%s")' % (class_name, self.glade_path)
@@ -196,10 +180,10 @@ class SimpleGladeWrapper(object):
         It also sets a data "prefixes" with the list of
         prefixes a widget has for each widget.
         """
-#        if os.name =="nt":
         for widget in self.widgets:
             try:
-                widget_name = widget.get_name()
+#                widget_name = gtk.Widget.get_name(widget)
+                widget_name = gtk.Buildable.get_name(widget)
                 prefixes_name_l = widget_name.split(":")
                 prefixes = prefixes_name_l[ : -1]
                 widget_api_name = prefixes_name_l[-1]
@@ -211,12 +195,10 @@ class SimpleGladeWrapper(object):
                     setattr(self, widget_api_name, widget)
                     if prefixes:
                         gtk.Widget.set_data(widget, "prefixes", prefixes)
-                print "AHAHAAHAHAHAHAAHAHAH", widget.__gtype__
                 if widget.__gtype__.name == "UnsignedIntegerEntryField":
                     setattr(widget, "nomee",widget_api_name)
                     self.entryGlobalcb(widget)
                 if widget.__gtype__.name == "GtkEntry":
-                    #print "MAAAAAAAAAAAAAAAAAAAAAAA"
                     self.entryGlobalcb(widget)
             except:
                 print "WIDGET NON WIDGET", widget

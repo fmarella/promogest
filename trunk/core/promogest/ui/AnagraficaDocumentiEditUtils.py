@@ -146,25 +146,29 @@ def drawPart(anaedit):
     anaedit.nuovaRiga()
     # preferenza ricerca articolo ?
     """ ATTENZIONE schifezza per tamponare il bug di gtk 2.17 numero :
-        Bug 607492 - widget.get_name() """
+        Bug 607492 - widget.get_name(): semirisolto!!!! """
     if hasattr(Environment.conf,'Documenti'):
         if hasattr(Environment.conf.Documenti,'ricerca_per'):
             if Environment.conf.Documenti.ricerca_per == 'codice':
                 anaedit.ricerca_codice_button.set_active(True)
 #                anaedit.ricerca = anaedit.ricerca_codice_button.get_name()
-                anaedit.ricerca = anaedit.ricerca_codice_button.get_tooltip_text()
+                anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_button)
+#                anaedit.ricerca = anaedit.ricerca_codice_button.get_tooltip_text()
             elif Environment.conf.Documenti.ricerca_per == 'codice_a_barre':
                 anaedit.ricerca_codice_a_barre_button.set_active(True)
 #                anaedit.ricerca = anaedit.ricerca_codice_a_barre_button.get_name()
-                anaedit.ricerca = anaedit.ricerca_codice_a_barre_button.get_tooltip_text()
+                anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_a_barre_button)
+#                anaedit.ricerca = anaedit.ricerca_codice_a_barre_button.get_tooltip_text()
             elif Environment.conf.Documenti.ricerca_per == 'descrizione':
                 anaedit.ricerca_descrizione_button.set_active(True)
 #                anaedit.ricerca = anaedit.ricerca_descrizione_button.get_name()
-                anaedit.ricerca = anaedit.ricerca_descrizione_button.get_tooltip_text()
+                anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_descrizione_button)
+#                anaedit.ricerca = anaedit.ricerca_descrizione_button.get_tooltip_text()
             elif Environment.conf.Documenti.ricerca_per == 'codice_articolo_fornitore':
                 anaedit.ricerca_codice_articolo_fornitore_button.set_active(True)
 #                anaedit.ricerca =  anaedit.ricerca_codice_articolo_fornitore_button.get_name()
-                anaedit.ricerca =  anaedit.ricerca_codice_articolo_fornitore_button.get_tooltip_text()
+                anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_articolo_fornitore_button)
+#                anaedit.ricerca =  anaedit.ricerca_codice_articolo_fornitore_button.get_tooltip_text()
 
     anaedit.id_persona_giuridica_customcombobox.setSingleValue()
     anaedit.id_persona_giuridica_customcombobox.setOnChangedCall(anaedit.persona_giuridica_changed)
