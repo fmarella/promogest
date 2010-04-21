@@ -83,7 +83,6 @@
         <property name="visible">True</property>
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
         <property name="extension_events">cursor</property>
-        <property name="orientation">vertical</property>
         <property name="spacing">5</property>
         <child>
           <object class="GtkHBox" id="hbox104">
@@ -152,7 +151,6 @@
           <object class="GtkVBox" id="vbox93">
             <property name="visible">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-            <property name="orientation">vertical</property>
             <child>
               <object class="GtkTable" id="table30">
                 <property name="visible">True</property>
@@ -687,7 +685,6 @@ l'ordine dei campi del modello listino</property>
           <object class="GtkVBox" id="vbox2">
             <property name="visible">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-            <property name="orientation">vertical</property>
             <child>
               <object class="GtkHSeparator" id="hseparator4">
                 <property name="visible">True</property>
@@ -711,7 +708,6 @@ l'ordine dei campi del modello listino</property>
                   <object class="GtkVBox" id="vbox1">
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                    <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkHBox" id="hbox8">
                         <property name="visible">True</property>

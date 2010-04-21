@@ -216,7 +216,8 @@ class ImportPriceListModels(GladeWidget):
         if self.loading:
             return
         def_list = ['Aliquota iva', 'Famiglia', 'Categoria', 'Unita base']
-        _name = checkbutton.get_name()[:-3]
+#        _name = checkbutton.get_name()[:-3]
+        _name = gtk.Buildable.get_name(checkbutton)[:-3]
         for k in possibleFieldsKeys:
             if _name == possibleFieldsDict[k]:
                 status = checkbutton.get_active()
@@ -257,6 +258,7 @@ class ImportPriceListModels(GladeWidget):
                 else:
                     if status:
                         self.priceListModel._fields.append(k)
+                        print "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
                         if k == def_list[0]:
                             self.default_aliquotaiva_combobox.set_sensitive(False)
                             self.aliquota_iva_togglebutton.set_sensitive(False)

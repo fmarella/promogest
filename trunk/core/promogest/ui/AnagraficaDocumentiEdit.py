@@ -136,7 +136,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def on_scorporo_button_clicked(self, button):
         """ Bottone con una "s" minuscola, che permette di effettuare "al volo"
         lo scorporo di un valore finale nel campo prezzo """
-        print "BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO",self.end_rent_entry.get_text()
         iva = self.percentuale_iva_entry.get_text()
         if iva == "" or iva == "0":
             self.showMessage(msg="ATTENZIONE IVA a 0%")
@@ -151,7 +150,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def on_articolo_entry_focus_in_event(self, widget, event):
         """ controlliamo prima di effettuare una ricerca che il magazzino sia
         selezionato per rendere la ricerca possibile e corretta"""
-#        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAZZINOOOOOOOOOO"
         if not findIdFromCombobox(self.id_magazzino_combobox) and self.checkMAGAZZINO:
             self.showMessage(msg="ATTENZIONE! \n SELEZIONARE UN MAGAZZINO\n PER UNA RICERCA CORRETTA")
             self.id_magazzino_combobox.grab_focus()
@@ -162,7 +160,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'F4':  # confermo e pulisco
             self.on_confirm_row_button_clicked(widget=None)
-        elif keyname == 'F6':  # confermo e pulisco
+        elif keyname == 'F6':  # confermo e non pulisco
             self.on_confirm_row_withoutclean_button_clicked(widget=None)
 
     def azzeraRiga(self, numero=0):
@@ -254,12 +252,16 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.totale_riga_label.set_text('0')
         self.giacenza_label.set_text('0')
         self.quantitaMinima_label.set_text('0')
+
         if "PromoWear" in Environment.modulesList:
             AnagraficaDocumentiEditPromoWearExt.setLabelInfo(self)
+
         if "SuMisura" in Environment.modulesList:
             AnagraficaDocumentiEditSuMisuraExt.setLabels(self)
+
         if "GestioneNoleggio" in Environment.modulesList:
             AnagraficaDocumentiEditGestioneNoleggioExt.setLabels(self)
+
         if "Pagamenti" in Environment.modulesList:
             AnagraficadocumentiPagamentExt.nuovaRiga(self)
             AnagraficadocumentiPagamentExt.attiva_prima_scadenza(self,False, True)
@@ -312,10 +314,13 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 findComboboxRowFromId(self.id_listino_customcombobox.combobox, self._id_listino)
 
     def on_id_multiplo_customcombobox_button_clicked(self, widget, toggleButton):
+        """ FIXME
+        """
         on_id_multiplo_customcombobox_clicked(widget, toggleButton, self._righe[0]["idArticolo"])
 
     def on_id_multiplo_customcombobox_changed(self, combobox):
-
+        """ FIXME
+        """
         if self._loading:
             return
         self._righe[0]["idMultiplo"] = findIdFromCombobox(self.id_multiplo_customcombobox.combobox)
@@ -333,7 +338,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if idListino is not None and idArticolo is not None:
             listino = leggiListino(idListino, idArticolo)
             self._righe[0]["listino"] = listino["denominazione"]
-            #print "TRYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY", self._fonteValore
             if (self._fonteValore == "vendita_iva"):
                     prezzoLordo = listino["prezzoDettaglio"]
                     sconti = listino["scontiDettaglio"]
@@ -347,8 +351,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._righe[0]["sconti"] = sconti
         self._righe[0]["applicazioneSconti"] = applicazione
 
-    def getPrezzoAcquisto(self):
-        """ funzione di lettura del prezzo di acquisto netto che serve per i noleggi """
+    def _getPrezzoAcquisto(self):
+        """ Lettura del prezzo di acquisto netto che serve per i noleggi """
         fornitura = leggiFornitura(self._righe[0]["idArticolo"], data=datetime.datetime.now())
         prezzo = fornitura["prezzoNetto"]
         self.prezzo_aquisto_entry.set_text(str(prezzo) or "0")
@@ -369,8 +373,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.calcolaTotale()
 
     def on_notebook_select_page(self,notebook,page, page_num):
+        """ AL MOMENTO INUTILIZZATA"""
         return
-        #print notebook,page,page_num
 
     def on_notebook_switch_page(self, notebook, page, page_num):
         if page_num == 2:
@@ -558,7 +562,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["divisore_noleggio"] = mN(riga.coeficente_noleggio)
             self.getTotaleRiga()
             if "GestioneNoleggio" in Environment.modulesList and self._righe[0]["arco_temporale"] != "NO" :
-                totaleNoleggio = self.totaleNoleggio()
+                totaleNoleggio = AnagraficaDocumentiEditGestioneNoleggioExt.totaleNoleggio(self)
 
             self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
             if self._tipoPersonaGiuridica == "fornitore":
@@ -947,7 +951,7 @@ del documento.
             self.prezzo_aquisto_entry.set_text(str(self._righe[0]["prezzo_acquisto"]))
             #self._righe[0]["totale"] = self._righe[self._numRiga]["totale_periodo"]
             self.on_show_totali_riga()
-            #self.getPrezzoAcquisto()
+            self._getPrezzoAcquisto()
 
         self._loading = False
         self.articolo_entry.grab_focus()
@@ -1009,14 +1013,14 @@ del documento.
         self._righe[0]["descrizione"] = self.descrizione_entry.get_text()
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
         totale = self._righe[0]["totale"]
-        #print "TOTALE IN CONFIRM", totale
 
         # CONTROLLI DI Gestione NOLEGGIO
         if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
             self._righe[0]["divisore_noleggio"] = self.coeficente_noleggio_entry.get_text()
             self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
             self._righe[0]["totale_periodo"] = self.totale_periodo_label.get_text()
-            totale = self.totaleNoleggio()
+            totale = AnagraficaDocumentiEditGestioneNoleggioExt.totaleNoleggio(self)
+
         if "SuMisura" in Environment.modulesList:
             self._righe[0]["altezza"] = self.altezza_entry.get_text()
             self._righe[0]["larghezza"] = self.larghezza_entry.get_text()
@@ -1339,17 +1343,7 @@ del documento.
         return False
 
 
-    def totaleNoleggio(self):
-        totale = self._righe[0]["totale"]
-        if "GestioneNoleggio" in Environment.modulesList and self.noleggio and self._righe[0]["arco_temporale"] != "NO":
-            if str(self._righe[0]["divisore_noleggio"]).strip() == "1":
-                totale = str(mN(float(self._righe[0]["totale"]) *float(self._righe[0]["arco_temporale"])))
-                self.totale_periodo_label.set_text(totale)
-            else:
-                totale = str(mN(float(self._righe[0]["totale"]) *sqrt(float(self._righe[0]["arco_temporale"]))))
-                self.totale_periodo_label.set_text(totale)
-            self._righe[0]["totale_periodo"] = self.totale_periodo_label.get_text()
-        return totale
+
 
     def calcolaTotaleRiga(self):
         """ calcola il totale riga """
@@ -1367,7 +1361,7 @@ del documento.
         # metto il totale riga nella label apposita"
         self.totale_riga_label.set_text(str(self._righe[0]["totale"]))
         if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
-            totaleNoleggio = self.totaleNoleggio()
+            totaleNoleggio = totaleNoleggio()
 
 
     def getTotaleRiga(self):
@@ -1775,5 +1769,6 @@ del documento.
         Bug 607492 - widget.get_name() """
         if toggled.get_active():
 #            print "OLLLLALAAAA", dir(toggled), toggled.__dict__, toggled.get_label(), dir(toggled.get_name())
+            self.ricerca = gtk.Buildable.get_name(toggled)
 #            self.ricerca = toggled.get_name()
-            self.ricerca = toggled.get_tooltip_text()
+#            self.ricerca = toggled.get_tooltip_text()
