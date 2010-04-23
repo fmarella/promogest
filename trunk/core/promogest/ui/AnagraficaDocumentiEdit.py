@@ -567,7 +567,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
             if self._tipoPersonaGiuridica == "fornitore":
                 fornitura = leggiFornitura(riga.id_articolo, self.dao.id_fornitore, self.dao.data_documento, True)
-                self._righe[0]["codiceArticoloFornitore"] = fornitura["codiceArticoloFornitore"] or articolo["codicearticolofornitore"]
+                self._righe[0]["codiceArticoloFornitore"] = fornitura["codiceArticoloFornitore"] #or articolo["codicearticolofornitore"]
 
             self._righe.append(self._righe[0])
             rigadoc= self._righe[j]
@@ -1756,7 +1756,6 @@ del documento.
             y = int(event.y)
             time = event.time
             self.menu_ricerca.popup( None, None, None, event.button, time)
-            #print "CERCA"
         else:                            #secondary
             self.articolo_entry.set_text("")
 
@@ -1768,7 +1767,6 @@ del documento.
         """ ATTENZIONE schifezza per tamponare il bug di gtk 2.17 numero :
         Bug 607492 - widget.get_name() """
         if toggled.get_active():
-#            print "OLLLLALAAAA", dir(toggled), toggled.__dict__, toggled.get_label(), dir(toggled.get_name())
             self.ricerca = gtk.Buildable.get_name(toggled)
 #            self.ricerca = toggled.get_name()
 #            self.ricerca = toggled.get_tooltip_text()
