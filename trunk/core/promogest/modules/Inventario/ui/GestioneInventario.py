@@ -34,7 +34,7 @@ class GestioneInventario(RicercaComplessaArticoli):
     def __init__(self, idMagazzino = None):
 
         # aggiornamento inventario con gli articoli eventualmente non presenti
-        self.checkTable()
+#        self.checkTable()
         # filtri propri della parte inventario
         self.additional_filter = GladeWidget(rootWidget='inventario_filter_table',
         fileName="Inventario/gui/inventario_filter_table.glade", isModule=True)
@@ -749,8 +749,8 @@ class GestioneInventario(RicercaComplessaArticoli):
             fileDialog.destroy()
 
             f = open(filename, 'w')
-            riga = ('Codice, Descrizione, Quantita\', Valore unitario, U.M., ' +
-                    'Codice a barre, Famiglia, Categoria,Anno ,idMagazzino , idArticolo ,data_aggiornamento\n')
+            riga = ('Codice; Descrizione; Quantita\'; Valore unitario; U.M.; ' +
+                    'Codice a barre; Famiglia; Categoria;Anno ;idMagazzino ; idArticolo ;data_aggiornamento\n')
             f.write(riga)
             invs = Inventario().select(anno=self.annoScorso,
                                                     idMagazzino=idMagazzino,
@@ -765,22 +765,22 @@ class GestioneInventario(RicercaComplessaArticoli):
                     valore = valore.replace('.', ',')
                     if siquantita:
                         if float(quantita_)>0:
-                            riga = ('"' + str(i.codice_articolo or '') + '",' +
-                                    '"' + str(i.articolo or '') + '",' +
-                                    '"' + quantita + '",' +
-                                    '"' + valore + '",' +
-                                    '"' + str(i.denominazione_breve_unita_base or '') + '",' +
-                                    '"' + str(i.codice_a_barre or '') + '",' +
-                                    '"' + str(i.denominazione_famiglia or '') + '",' +
-                                    '"' + str(i.denominazione_categoria or '') + '",'+
-                                    '"' + str(i.anno or '') + '",'+
-                                    '"' + str(i.id_magazzino or '') + '",'+
-                                    '"' + str(i.id_articolo or '') + '",'+
-                                    '"' + str(i.data_aggiornamento or '') + '"\n')
+                            riga = (str(i.codice_articolo or '') + ';' +
+                                    str(i.articolo or '') + ';' +
+                                    str(quantita).strip() + ';' +
+                                    str(valore).strip() + ';' +
+                                    str(i.denominazione_breve_unita_base or '') + ';' +
+                                    str(i.codice_a_barre or '') + ';' +
+                                    str(i.denominazione_famiglia or '') + ';' +
+                                    str(i.denominazione_categoria or '') + ';'+
+                                    str(i.anno or '') + ';'+
+                                    str(i.id_magazzino or '') + ';'+
+                                    str(i.id_articolo or '') + ';'+
+                                    str(i.data_aggiornamento or '') + '\n')
                             f.write(riga)
                     else:
-                        riga = ('"' + str(i.codice_articolo or '') + '",' +
-                                    '"' + str(i.articolo or '') + '",' +
+                        riga = (str(i.codice_articolo or '') + ';' +
+                                    str(i.articolo or '') + ';' +
                                     '"' + quantita + '",' +
                                     '"' + valore + '",' +
                                     '"' + str(i.denominazione_breve_unita_base or '') + '",' +
