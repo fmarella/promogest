@@ -22,7 +22,7 @@ class CustomEntryField(gtk.Entry):
     dateTimeKeys = ('slash', 'KP_Divide', 'colon', 'space')
     dateChars = ('/', '-')
     dateTimeChars = ('/', '-', ':', ' ')
-    specialKeys = ("F4")
+#    specialKeys = ("F4")
 
     def __init__(self):
         gtk.Entry.__init__(self)
