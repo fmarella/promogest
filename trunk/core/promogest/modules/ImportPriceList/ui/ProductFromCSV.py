@@ -260,6 +260,7 @@ class ProductFromCsv(object):
 #        print "STO PER SALVARE ", self.daoArticolo.denominazione
         #families
         id_famiglia = None
+#        print " FAMIGLIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", self.famiglia_articolo,self.defaults['Famiglia']
         if self.famiglia_articolo is None:
             self.famiglia_articolo_id = int(self.defaults['Famiglia'])
             self.famiglia_articolo = FamigliaArticolo().getRecord(id=self.famiglia_articolo_id)
@@ -273,7 +274,6 @@ class ProductFromCsv(object):
                 if self.famiglia_articolo in (f.denominazione_breve,
                                             f.denominazione, f.codice, f.id):
                     id_famiglia = f.id
-
                     break
             if  id_famiglia is None:
                 family_code = self.famiglia_articolo[:4]
