@@ -484,9 +484,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.porto_combobox.set_sensitive(True)
 #            print "VETTOREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
         if self.dao.porto == 'Franco':
-            self.porto_combobox.set_active(0)
-        elif self.dao.porto == 'Assegnato':
             self.porto_combobox.set_active(1)
+        elif self.dao.porto == 'Assegnato':
+            self.porto_combobox.set_active(2)
             self.id_vettore_customcombobox.set_sensitive(True)
 
         if self.dao.incaricato_trasporto == 'destinatario':
@@ -741,9 +741,9 @@ del documento.
         if self.vettore_radiobutton.get_active():
             self.dao.id_vettore = self.id_vettore_customcombobox._id
             self.dao.incaricato_trasporto = 'vettore'
-            if self.porto_combobox.get_active() == 0:
+            if self.porto_combobox.get_active() == 1:
                 self.dao.porto = 'Franco'
-            elif self.porto_combobox.get_active() == 1:
+            elif self.porto_combobox.get_active() == 2:
                 self.dao.porto = 'Assegnato'
             if not self.dao.id_vettore:
                 obligatoryField(self.dialogTopLevel,
