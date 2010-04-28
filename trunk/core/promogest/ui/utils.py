@@ -2053,16 +2053,17 @@ def checkCodFisc(codfis):
     if  c:
         return True
     else:
-
         msg = 'Attenzione Codice Fiscale formalmente scorretto\nInserire comunque?!!!'
-        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK_CANCEL, msg)
-        response = dialog.run()
-        dialog.destroy()
-        if response == gtk.RESPONSE_NONE or response == gtk.RESPONSE_CANCEL:
-            return False
-        elif response == gtk.RESPONSE_OK:
-            return True
+        messageInfo(msg=msg)
+        return True
+#        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+#                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK_CANCEL, msg)
+#        response = dialog.run()
+#        dialog.destroy()
+#        if response == gtk.RESPONSE_NONE or response == gtk.RESPONSE_CANCEL:
+#            return False
+#        elif response == gtk.RESPONSE_OK:
+#            return True
 
 def checkPartIva(partitaIVA):
     """
@@ -2070,38 +2071,41 @@ def checkPartIva(partitaIVA):
     @param partitaIVA:
     @type partitaIVA:
     """
-    def dialog():
-        """
-        FIXME
-        @param :
-        @type :
-        """
-        msg = 'Attenzione Partita Iva formalmente scorretto\nInserire comunque?!!!'
-        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK_CANCEL, msg)
-        response = dialog.run()
-        dialog.destroy()
-        if response == gtk.RESPONSE_NONE or response == gtk.RESPONSE_CANCEL:
-            return False
-        elif response == gtk.RESPONSE_OK:
-            return True
+#    def dialog():
+#        """
+#        FIXME
+#        @param :
+#        @type :
+#        """
+
+#        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+#                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK_CANCEL, msg)
+#        response = dialog.run()
+#        dialog.destroy()
+#        if response == gtk.RESPONSE_NONE or response == gtk.RESPONSE_CANCEL:
+#            return False
+#        elif response == gtk.RESPONSE_OK:
+#            return True
 
     n_Val = 0
     n_Som1 = 0
     n_Som2 = 0
     lcv = 0
     if len(partitaIVA) !=11:
-        dialog()
-        return False
+        msg = 'Attenzione Partita Iva formalmente scorretto\nInserire comunque?!!!'
+        messageInfo(msg=msg)
+        return True
     l_ret = 0
     try:
         l_ret = int(partitaIVA)
     except:
-        dialog()
-        return False
+        msg = 'Attenzione Partita Iva formalmente scorretto\nInserire comunque?!!!'
+        messageInfo(msg=msg)
+        return True
     if l_ret < 0:
-        dialog()
-        return False
+        msg = 'Attenzione Partita Iva formalmente scorretto\nInserire comunque?!!!'
+        messageInfo(msg=msg)
+        return True
     for lcv in [0, 2, 4, 6, 8]:
         n_Val = int(partitaIVA[lcv])
         n_Som1 += n_Val
@@ -2114,8 +2118,9 @@ def checkPartIva(partitaIVA):
     if (n_Som2==n_Val):
         return True
     else:
-        allora = dialog()
-        return allora
+        msg = 'Attenzione Partita Iva formalmente scorretto\nInserire comunque?!!!'
+        messageInfo(msg=msg)
+        return True
 
 def omogeneousCode(section=None, string = None):
     """
