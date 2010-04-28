@@ -85,7 +85,6 @@ class ProductFromCsv(object):
                     t.persist()
                 tid = Taglia().select(denominazione = riga["Taglia"])[0].id
                 gtids = GruppoTaglia().select(denominazione = riga["Gruppo Taglia"])
-                print "GTTTTTTTTTTTTTTTTTTTTTTTTTTT", gtids
                 if gtids:
                     gtid =  gtids[0].id
                 if tid and gtid:
@@ -146,9 +145,8 @@ class ProductFromCsv(object):
         #o cod fornitore ne istanzio uno nuovo
 
         if not self.daoArticolo:
-            print "ISTANZIO UN NUOVO ARTiCOLO"
+            print "ISTANZIO UN NUOVO ARTICOLO"
             self.daoArticolo = Articolo()
-#        print "CE UN ARTICOLO NEL DB ????", self.daoArticolo.__dict__
         if "PromoWear" in Environment.modulesList:
             if self.codice_padre and self.codice_articolo:
                 print "ARTICOLO PADRE"
@@ -252,7 +250,7 @@ class ProductFromCsv(object):
                 self.daoArticolo.denominazione = str(self.denominazione_articolo)
             else:
                 if not self.daoArticolo.denominazione:
-                    messageInfo(msg= "ATTENZIONE DESCRIZIONE MANCANTE\nIN INSERIMENTO NUOVO ARTICOLO")
+                    messageInfo(msg= "ATTENZIONE DESCRIZIONE MANCANTE\nIN INSERIMENTO NUOVO ARTICOLO %s" str(self.codice_barre_articolo))
                     raise NameError("ERRORE DESCRIZIONE MANCANTE")
                     return
 
