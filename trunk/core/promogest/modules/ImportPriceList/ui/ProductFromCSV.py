@@ -250,7 +250,7 @@ class ProductFromCsv(object):
                 self.daoArticolo.denominazione = str(self.denominazione_articolo)
             else:
                 if not self.daoArticolo.denominazione:
-                    messageInfo(msg= "ATTENZIONE DESCRIZIONE MANCANTE\nIN INSERIMENTO NUOVO ARTICOLO %s" str(self.codice_barre_articolo))
+                    messageInfo(msg= "ATTENZIONE DESCRIZIONE MANCANTE\nIN INSERIMENTO NUOVO ARTICOLO %s" %str(self.codice_barre_articolo))
                     raise NameError("ERRORE DESCRIZIONE MANCANTE")
                     return
 
