@@ -60,14 +60,13 @@ class Sla2Pdf(object):
         self.slaFileName = slaFileName
         self.pdfFolder = pdfFolder
         self.slafile = slafile
-
         self.report = report
         self.label = label
 
     def createPDF(self, daos=None,objects=None, classic=None, template_file=None):
         self.objects = objects
         self.daos = daos
-        print "SELF DAOSSSS", objects, daos
+#        print "SELF DAOSSSS", objects, daos
         if self.objects or self.daos:
             from promogest import Environment
             self._classic = classic
@@ -91,7 +90,6 @@ class Sla2Pdf(object):
                 #os.remove(filename)
                 return result
             else:
-
                 self.slaToSla(objects=objects, daos=daos)
             result = None
             # temporary pdf file is removed immediately

@@ -3,22 +3,10 @@
 # Promogest
 #
 # Copyright (C) 2007-2010 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni  <francesco@promotux.it>
 
-
-import sys
-import os
 import math
-import datetime
-import time
-from reportlab.lib import colors, utils
-from reportlab.platypus import Table, TableStyle, Paragraph, Frame
-from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT, TA_JUSTIFY
-from reportlab.lib.pagesizes import cm, inch, A4, landscape
-from reportlab.pdfgen.canvas import Canvas
-from PIL import Image
+import operator
 import xml.etree.cElementTree as ElementTree
 from promogest import Environment
 import Sla2pdfUtils
@@ -32,17 +20,20 @@ class SlaTpl2Sla(SlaParser):
     """
 
     def __init__(self,slafile=None,label=None, report=None, objects=None,
-                    daos=None, slaFileName=None, pdfFolder=None, classic=None, template_file=None):
+                    daos=None, slaFileName=None, pdfFolder=None, classic=None,
+                    template_file=None):
 
+
+        SlaParser.__init__(self, slaFileName=slaFileName,
+                                    pdfFolder=pdfFolder,
+                                    slafile=slafile)
         #self.pdfFileName = '_temp'
         #self.slaTempFileName = '_temp.sla'
         self.slaFileName = slaFileName
         self.report = report
         self.classic = classic
         self.template_file = template_file
-        SlaParser.__init__(self, slaFileName=slaFileName,
-                                    pdfFolder=pdfFolder,
-                                    slafile=slafile)
+        self.daos = daos
         self.objects = objects
         self.label = label
         self.formatFunctions = ['trunc','approx','itformat','itformatdataora','itformatdata', 'bcview']
@@ -50,27 +41,26 @@ class SlaTpl2Sla(SlaParser):
         self.positionTags = ['first','last']
         self.pageTags = ['currentPage','totalPage']
         self.cycle = 0
-        self.findTablesAndTags()
+        # in slaparser in quanto server anche dopo per sla2pdf
+#        self.findTablesAndTags()
+        #questa è una funzione chiave .....
         self.tableProperties = self.findTablesProperties()
-        self.getIteratableGroups()
-        self.getPagesNumber()
+        self.pagesNumber = self.getPagesNumber()
         if self.label and self.classic:
             self.duplicateElementLabel()
-        self.addEmptyPages()
-        self.fillDocument()
+        if self.pagesNumber >1:
+            self.addEmptyPages()
+        if not self.label:
+            self.duplicateElement(self.pagesNumber)
+            self.duplicateTags()
+            self.fillDocument()
+        elif self.label and not self.classic:
+            self.duplicateElement(self.pagesNumber)
+            #self.duplicateTags()
+            self.labelSla()
 
-    def toPdf(self, slafile=None):
-        version=self.scribusVersion()
-        if version ==True:
-            from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
-            slatopdf = Sla2Pdf_ng( slafile= slafile)
-            return slatopdf
-        else:
-            from promogest.lib.Sla2Pdf_classic import Sla2Pdf_classic
-            slatopdf = Sla2Pdf_classic(pdfFolder = self.pdfFolder,
-                                        slaFileName = self.slaFileName,
-                            report = self.report).serialize(objects, dao=dao)
-            return slatopdf
+#        self.fillDocument()
+        self.doc.write(self.pdfFolder+"_temppp.sla")
 
     def indexGroupTableFromListDict(self, group):
         """
@@ -84,53 +74,45 @@ class SlaTpl2Sla(SlaParser):
 
     def getPagesNumber(self):
         """
-        Al momento la funzione itera sula lista dei gruppi con più righe
+        Al momento la funzione itera sulla lista dei gruppi con più righe
         scarta i tag non utili e verifica poi la lunghezza del dao e il numero
         di righe presenti, c'è da migliorarla ma per il momento funziona
         """
+        pags = [1]
         if not self.classic:
-            self.pagesNumber = len(self.objects)
+            pags = [len(self.objects)]
         else:
-            self.pagesNumber =1
-            for group in self.iteratableGroups:
-                tableGroup = self.indexGroupTableFromListDict(group)
-                for tagDict in self.tablesTags[group]:
-                    for tag in tagDict.keys():
-                        indexN = tag.find('(n)')
-                        if (indexN != -1):
-                            indexNP = tag.find('(n).')
-                            group = str(group).strip()
-                            if (indexNP != -1):
-                                arrayName = tag[:indexNP]
-                                valuesNumber = len(self.objects[self.cycle][arrayName])
-                                rowsNumber = tableGroup['rows'] - 1
-                            else:
-                                valuesNumber = len(self.objects)
-                                rowsNumber = tableGroup['rows'] - 1
-                            self.pagesNumber = int(math.ceil(float(valuesNumber) / float(rowsNumber)))
-        print "NUMERO PAGINE", self.pagesNumber
+            for group in self.getIteratableGroups(self.tableProperties):
+                gruppo = self.indexGroupTableFromListDict(group)
 
+                cellsprop = [x.findall('ITEXT') for x in gruppo["cells"] if x.findall('ITEXT')]
+                righe = [round(float(x.get('gYpos')),3) for x in gruppo["cells"]]
+                rowsNumber = len(sorted(list(set(righe))))
+                for i in cellsprop:
+                    a = [g.get("CH") for g in i if "(n)" in g.get("CH")]
+                    for s in a:
+                        arrayName = Sla2pdfUtils.findTags(s).values()[0]["arrayName"]
+                        valuesNumber = len(self.objects[self.cycle][arrayName])
+                        pagesNumber = int(math.ceil(float(valuesNumber) / float(rowsNumber)))
+                        pags.append(pagesNumber)
+        return max(pags)
 
     def createPageTag(self, pagesNumber=None):
         # Index of first tag 'PAGE'
-        self.pagesNumber = pagesNumber
         childrens = self.document.getchildren()
-        Page = self.document.findall('PAGE')
+        page = self.document.findall('PAGE')
         index = ''
         for index in range(0, len(childrens)):
-            childrens[index] = str(childrens[index])
-            s = childrens[index].find("<Element 'PAGE' at ")
-            if s!= -1:
+            if "<Element 'PAGE' at " in str(childrens[index]):
                 break
         numPages = self.slaPage()
-        for i in range(1, self.pagesNumber):
+        for i in range(1, pagesNumber):
             attributes = numPages[0].items()
             dictionary =  {}
             for attr in attributes:
                 dictionary[attr[0]] = attr[1]
             app = numPages[0].makeelement('PAGE', dictionary)
             self.slaDocumentTag().insert(index, app)
-        print self.slaPage()
 
         # Processing page's information
         self.pageHeight = numPages[0].get('PAGEHEIGHT')
@@ -143,21 +125,14 @@ class SlaTpl2Sla(SlaParser):
             self.lastPageYPos = numPages[i-1].get('PAGEYPOS')
             numPages[i].set('PAGEYPOS', str(float(self.pageHeight) + float(self.borderTop) + float(self.lastPageYPos)))
 
-
     def addEmptyPages(self):
         """ Creates new pages based on the model's first page """
         self.createPageTag(self.pagesNumber)
-        if not self.label:
-            self.duplicateElement()
-            self.duplicateTags()
-        elif self.label and not self.classic:
-            self.duplicateElement()
-            #self.duplicateTags()
-            self.labelSla()
         #self.doc.write('__temp.sla')
 
-    def duplicateElement(self):
-        pages = len(self.slaPage())
+    def duplicateElement(self, pages):
+        """ Duplica TUTTI gli oggetti da una pagina all'altra """
+#        pages = len(self.slaPage())
         adesso = self.slaPageObjects()
         for j in range(1,pages):
             for pageObject in adesso:
@@ -176,16 +151,23 @@ class SlaTpl2Sla(SlaParser):
                     dictionary = {}
                     for attrr in attributes:
                         dictionary[attrr[0]] = attrr[1]
-                    # Applying attributes
                     ElementTree.SubElement(app, 'ITEXT', dictionary)
+                trails = pageObject.findall('trail')
+                for trai in trails:
+                    attributes = trai.items()
+                    dictTrai = {}
+                    for attrrr in attributes:
+                        dictTrai[attrrr[0]] = attrrr[1]
+                    ElementTree.SubElement(app, 'trail', dictTrai)
+
                 paras = pageObject.findall('para')
                 for para in paras:
                     attributes = para.items()
                     dictPara = {}
                     for attrrr in attributes:
                         dictPara[attrrr[0]] = attrrr[1]
-                    # Applying attributes
                     ElementTree.SubElement(app, 'para', dictPara)
+
                 pageItemAttributes = pageObject.findall('pageItemAttributes')
                 ElementTree.SubElement(app, 'pageItemAttributes')
                 # Number page
@@ -199,130 +181,155 @@ class SlaTpl2Sla(SlaParser):
                 app.set('YPOS', str( j * (float(self.pageHeight) + float(self.borderTop)) + float(initial)))
                 self.slaDocumentTag().append(app)
 
-
-    def getTagToPrint(self, string,tags=None,k=None, increment=True,column = False ):
+    def getTagToPrint(self, string,tags=None,k=None, increment=True,column = False,row=None, pageNamber=0):
         """
         Questa funzione valuta quali tag riportare nel template definitivo
         TODO:da rivedere
         """
         if tags[k]['position'] in self.positionTags:
-            if (((tags[k]['position'] == 'first') and (self.pageNumber == 1)) or
-                ((tags[k]['position'] == 'last') and (self.pageNumber == self.pagesNumber))):
-                if (k.find('(n)') > -1):
-                    if increment:
-                        self.tableGroup['counters'][column - 1] += 1
-                    counter = self.tableGroup['counters'][column - 1]
+            if (((tags[k]['position'] == 'first') and (pageNamber+1 == 1)) or
+                ((tags[k]['position'] == 'last') and (pageNamber+1 == self.pagesNumber))):
+                if '(n)' in k:
                     tag = tags[k]['completeTag']
-                    tag = tag + ('<<%d>>' % counter)
+                    tag = tag + ('<<%d>>' % row)
                     string = string.replace(tags[k]['completeTag'], tag)
                 else:
                     string = tags[k]['completeTag']
             else:
                 string = ''
         else:
-            if k.find('(n)') > -1:
-                if increment:
-                    self.tableGroup['counters'][column - 1] += 1
-                counter = self.tableGroup['counters'][column - 1]
+            if '(n)' in k:
+
                 tag = tags[k]['completeTag']
-                tag = tag + ('<<%d>>' % counter)
+                tag = tag + ('<<%d>>' % row)
                 string = string.replace(tags[k]['completeTag'], tag)
-            else:
-                pass
         return string
 
-
     def duplicateTags(self):
+        """ Dopo aver duplicato gli elementi adesso duplichiamo i tags
+            TODO: refactoring di questa func"""
 
-        self.pageObjects = self.slaPageObjects()
-        for pageObject in self.pageObjects:
-            isTableItem = pageObject.get('isTableItem') == "1"
-            group = str(pageObject.get('GROUPS')).strip()
-            try:
-                group= group.strip().split('%%%')[0]
-            except:
-                group= group
-            if group:
-                self.pageNumber = int(pageObject.get('OwnPage')) + 1
-                self.tableGroup = self.indexGroupTableFromListDict(group)
-                if isTableItem and (group in self.iteratableGroups):
-                    # Qui vengono gestite le tabelle iterabili , e le righe
-                    itexts = pageObject.findall('ITEXT')
-                    paras = pageObject.findall('para')
-                    pages = self.slaPage()
-                    cell = int(pageObject.get('OwnLINK')) + 1
-                    columns = self.tableGroup['columns']
-                    row = (cell / columns) + 1
-                    column = (cell % columns)
-                    if not (len(itexts) > 0):
-                        # first row of the table (with itext)
-                        itext = self.tableGroup['itexts'][column - 1].copy()
-                        if itext == {}:
-                            continue
-                        ch = str(itext['CH'])
-                        tags = Sla2pdfUtils.findTags(ch)
-                        if tags is None:
-                            continue
-                        tmp = ch
-                        tagsKeys = tags.keys()
-                        increment = True
-                        for k in tagsKeys:
-                            if k.replace(' ', '') == '':
-                                continue
-                            if k.find('(n)') > -1:
-                                tmp = self.getTagToPrint(tmp, column = column, increment=increment, tags=tags,k=k)
-                                increment = False
-                        itext['CH'] = tmp
-                        ElementTree.SubElement(pageObject, 'ITEXT', itext)
+        self.gruppi = self.findTablesProperties()
+        iteranti = self.getIteratableGroups(self.gruppi)
+        for group in self.gruppi:
+            rigaConItextDict = {}
+            gruppo = group.values()[0]
+            if "%%%" in gruppo["GROUPS"]:
+                groupname= str(gruppo["GROUPS"].strip().split('%%%')[0])
+            else:
+                groupname = str(gruppo["GROUPS"].strip())
+
+            if groupname in iteranti :
+                # Qui vengono gestite le tabelle iterabili , e le righe
+                cellsprop = [{x:[x,x.findall('ITEXT'),x.findall('para'),
+                                x.findall('trail')]} for x in gruppo["cells"]]
+                colonne = [float(x.get('gXpos')) for x in gruppo["cells"]]
+                righe = [float(x.get('gYpos')) for x in gruppo["cells"]]
+                col = list(set(colonne))
+                col = sorted(col)
+                rows = list(set(righe))
+                rows = sorted(rows)
+                numeroRighe = len(rows)-1
+                for cel in cellsprop:
+                    CH = None
+                    tags = {}
+                    rowgg = rows.index(float(cel.values()[0][0].get("gYpos")))
+                    pageNamber = int(cel.values()[0][0].get("OwnPage"))
+                    row = (numeroRighe*pageNamber)+rowgg
+                    for ite in cel.values()[0][1]:
+                        CH = ite.get("CH")
+                        tags = Sla2pdfUtils.findTags(CH)
+                    column = col.index(float(cel.values()[0][0].get("gXpos")))+1
+                    if tags and CH:
+                        rigaConItextDict[str(column)+"%"+groupname] = [CH,tags,ite,cel]
+                        for k in tags.keys():
+                            if k.replace(' ', '') is not '':
+                                if '(n)' in k :
+                                    if tags[k]['position'] == 'last':
+                                        row = rowgg
+                                    tmp = self.getTagToPrint(CH, column = column,row=row-1, tags=tags,k=k, pageNamber=pageNamber)
+                                ite.set("CH", tmp)
                     else:
-                        # next rows of the table (without itext)
-                        # banalmente è la prima riga della tabella  es: U.M, DESCRIZIONE
-                        itext = itexts[0]
+                        colu = int(col.index(float(cel.values()[0][0].get("gXpos")))+1)
+                        if str(colu)+"%"+groupname in rigaConItextDict:
+                            ch = rigaConItextDict[str(colu) +"%" + groupname][0]
+                            tags = rigaConItextDict[str(colu) +"%"+ groupname][1]
+                            ite = rigaConItextDict[str(colu)+"%"+groupname][2]
+                            ricel = rigaConItextDict[str(colu)+"%"+groupname][3]
+                            attributes = ite.items()
+                            itedict= {}
+                            for attrr in attributes:
+                                itedict[attrr[0]] = attrr[1]
+                            para = ricel.values()[0][2]
+                            for p in para:
+                                paradict = {}
+                                attri = p.items()
+                                for attrr in attri:
+                                    paradict[attrr[0]] = attrr[1]
+                                ElementTree.SubElement(cel.values()[0][0], 'para', paradict)
+
+
+
+                            tmp = ch
+                            for k in tags.keys():
+                                if k.replace(' ', '') is not '':
+                                    if '(n)' in k :
+                                        if tags[k]['position'] == 'last':
+                                            row = rowgg
+                                        tmp = self.getTagToPrint(tmp, column = colu,row=row-1, tags=tags,k=k,pageNamber=pageNamber)
+                                itedict["CH"] = tmp
+                                ElementTree.SubElement(cel.values()[0][0], 'ITEXT', itedict)
+                                trai = ricel.values()[0][3]
+                                origtrai = cel.values()[0][3]
+                                if origtrai:
+                                    origtrai=origtrai[0]
+                                    for t in trai:
+                                        attria = t.items()
+                                        for attrr in attria:
+                                            origtrai.set(attrr[0],attrr[1])
+                                else:
+                                    for t in trai:
+                                        traidict = {}
+                                        attria = t.items()
+                                        for attrr in attria:
+                                            traidict[attrr[0]] = attrr[1]
+                                        ElementTree.SubElement(cel.values()[0][0], 'trail', traidict)
+            else:
+                # Qui vengono gestite le tabelle e le celle con tag non iteranti
+                itexts = [x.findall('ITEXT') for x in gruppo["cells"]]
+                pageNamber = int(gruppo["cells"][0].get("OwnPage"))
+                if itexts:
+                    for tex in itexts:
+                        if type(tex) == type([1,2]):
+                            if tex:
+                                itext = tex[0]
+                            else:
+                                continue
                         ch = str(itext.get('CH'))
                         tags = Sla2pdfUtils.findTags(ch)
-                        if tags is not None:
+                        if tags:
                             tmp = ch
                             tagsKeys = tags.keys()
-                            increment = True
                             for k in tagsKeys:
                                 if k.replace(' ', '') == '':
                                     continue
-                                if k.find('(n)') > -1:
-                                    if self.tableGroup['itexts'][column - 1] == {}:
-                                        self.tableGroup['itexts'][column - 1] = dict([attribute[0], attribute[1]] for attribute in itext.items())
-                                    tmp = self.getTagToPrint(tmp,column = column, increment=increment, tags=tags,k=k)
-                                    increment = False
-                            itext.set('CH', tmp)
-                else:
-                    # Qui vengono gestite le tabelle e le celle con tag non iteranti
-                    itexts = pageObject.findall('ITEXT')
-                    if len(itexts) > 0:
-                        itext = itexts[0]
-                        ch = str(itext.get('CH'))
-                        tags = Sla2pdfUtils.findTags(ch)
-                        if tags is not None:
-                            tmp = ch
-                            tagsKeys = tags.keys()
-                            increment = True
-                            for k in tagsKeys:
-                                if k.replace(' ', '') == '':
-                                    continue
-                                tmp = self.getTagToPrint(tmp,increment=increment, tags=tags, k=k)
-                                increment = False
-                            itext.set('CH', tmp)
-
-
-
+                                tmp = self.getTagToPrint(tmp,tags=tags, k=k,pageNamber =pageNamber)
+                                prova = ch.replace(tmp,"")
+                                itext.set('CH',tmp )
 
     def fillDocument(self):
         """ Replacing tags with real values """
+        self.gruppi = self.findTablesProperties()
+        iteranti = self.getIteratableGroups(self.gruppi)
         self.pageObjects = self.slaPageObjects()
         iterator = 0
         while iterator < self.lenPageObjects():
-            pageObject = self.slaPageObjects()[iterator]
+            pageObject = self.pageObjects[iterator]
             isTableItem = pageObject.get('isTableItem')
+            isGroupControl = pageObject.get('isGroupControl')
             pageNumber = int(pageObject.get('OwnPage')) + 1
             group = str(pageObject.get('GROUPS')).strip()
+            itexts = pageObject.findall('ITEXT')
             try:
                 group= group.strip().split('%%%')[0]
             except:
@@ -333,9 +340,9 @@ class SlaTpl2Sla(SlaParser):
                 continue
             if group:
                 actualGroup = group
-                if str(actualGroup).strip() not in self.iteratableGroups:
+                if str(actualGroup).strip() not in iteranti:
                     # Replacing non-iterator tags
-                    itexts = pageObject.findall('ITEXT')
+
                     for itext in itexts:
                         ch = str(itext.get('CH'))
                         tags = Sla2pdfUtils.findTags(ch)
@@ -349,9 +356,7 @@ class SlaTpl2Sla(SlaParser):
                                 #try:
                                 resolvedTag = ''
                                 function = tags[tagkey]['function']
-                                #print "function" , function
                                 parameter = tags[tagkey]['parameter']
-                                #print "parameter", parameter
                                 if "X" in parameter:
                                     parameter = parameter.split("X")
                                 if tagkey == 'currentPage':
@@ -376,13 +381,12 @@ class SlaTpl2Sla(SlaParser):
                                 itext.set('CH', ch)
 
                 else:
-                    if isTableItem != '1':
+                    if isGroupControl == '1':
                         iterator += 1
                         continue
-                    itexts = pageObject.findall('ITEXT')
                     for itext in itexts:
                         ch = str(itext.get('CH'))
-                        if (ch.find('<<') > -1) and (ch.find('>>') > -1):
+                        if '<<' in ch and '>>' in ch:
                             while (ch.find('<<') > -1) and (ch.find('>>') > -1):
                                 arrayIndex = int(ch[ch.find('<<')+2:ch.find('>>')])
                                 ch = ch.replace(('<<%d>>' % arrayIndex), '')
@@ -390,8 +394,7 @@ class SlaTpl2Sla(SlaParser):
                             arrayIndex = -1
                         tags = Sla2pdfUtils.findTags(ch)
                         if tags is not None:
-                            tagsKeys = tags.keys()
-                            for k in tagsKeys:
+                            for k in tags.keys():
                                 if k.replace(' ', '') == '':
                                     continue
                                 #try:
@@ -406,9 +409,9 @@ class SlaTpl2Sla(SlaParser):
                                     value = Sla2pdfUtils.getNowValue(k)
                                 else:
                                     indexN = k.find('(n)')
-                                    if (indexN != -1):
+                                    if '(n)' in k:
                                         indexNP = k.find('(n).')
-                                        if (indexNP != -1):
+                                        if '(n).' in k:
                                             arrayName = k[:indexNP]
                                             tagName = k[indexNP+4:]
                                             if self.cycle <= (len(self.objects) - 1):
@@ -432,6 +435,7 @@ class SlaTpl2Sla(SlaParser):
                                         else:
                                             value = ''
                                 # Function
+#                                print "FUCTION", function, value, parameter
                                 if function in self.formatFunctions:
                                     resolvedTag = self.callFunction(function, value, parameter)
                                 else:
@@ -440,12 +444,7 @@ class SlaTpl2Sla(SlaParser):
                                 # Save itext
                                 itext.set('CH', ch)
             iterator += 1
-        #self.pageObjectPropertiesDict()
-        #if not self.label:
-        #self.findTablesProperties()
-        self.doc.write(self.pdfFolder+"_temppp")
-        self.toPdf(slafile=self.pdfFolder+"_temppp")
-        #print
+
 
     def callFunction(self, functionName, value=None, parameter=None):
         """
@@ -531,38 +530,39 @@ class SlaTpl2Sla(SlaParser):
         self.pageProperties = Sla2pdfUtils.pageProFunc(document)
         group = self.tablesProperties[0].keys()[0]
         self.tablesPropertie = self.tablesProperties[0][group]
-        widths = self.tablesPropertie['widths']
-        heights = self.tablesPropertie['heights']
-        cells = int(self.tablesPropertie['cells'])
+
+        widths = [float(x.get("WIDTH")) for x in self.tablesPropertie['cells']]
+        heights = [float(x.get("HEIGHT")) for x in self.tablesPropertie['cells']]
+        cells = int(self.tablesPropertie['n_cells'])
         columns = int(self.tablesPropertie['columns'])
         rows = int(self.tablesPropertie['rows'])
-        sumRows = Sla2pdfUtils.sumRowsFunc(heights,rows)
-        sumColumns = Sla2pdfUtils.sumColumnsFunc(widths,columns)
-        otherColumn = sumColumns +Environment.sistemaColonnaFrontaline
-        sumRows = sumRows + Environment.sistemaRigaFrontaline
-        self.pageYpos = float(numPages[0].get('PAGEYPOS'))
-        self.pageXpos = float(numPages[0].get('PAGEXPOS'))
-        self.pageHeight = float(numPages[0].get('PAGEHEIGHT'))
-        self.borderTop = float(numPages[0].get('BORDERTOP'))
-        self.borderBottom = float(numPages[0].get('BORDERBOTTOM'))
-        self.borderLeft = float(numPages[0].get('BORDERLEFT'))
-        self.borderRight = float(numPages[0].get('BORDERRIGHT'))
-        self.pageWidth = float(numPages[0].get('PAGEWIDTH'))
 
-        realHeightPage = self.pageHeight - self.borderTop - self.borderBottom
-        realWidthPage = self.pageWidth - self.borderLeft - self.borderRight
-        NumMaxRowLabelForPage = int(realHeightPage/sumRows)
+        sumRows = reduce(operator.add, heights[:rows])
+        sumColumns = reduce(operator.add, widths[:columns])
+        otherColumn = sumColumns +Environment.sistemaColonnaFrontaline
+        otherRows = sumRows + Environment.sistemaRigaFrontaline
+
+        pageYpos = float(numPages[0].get('PAGEYPOS'))
+        pageXpos = float(numPages[0].get('PAGEXPOS'))
+        pageHeight = float(numPages[0].get('PAGEHEIGHT'))
+        borderTop = float(numPages[0].get('BORDERTOP'))
+        borderBottom = float(numPages[0].get('BORDERBOTTOM'))
+        borderLeft = float(numPages[0].get('BORDERLEFT'))
+        borderRight = float(numPages[0].get('BORDERRIGHT'))
+        pageWidth = float(numPages[0].get('PAGEWIDTH'))
+
+        realHeightPage = pageHeight - (borderTop + borderBottom)
+        realWidthPage = pageWidth - (borderLeft + borderRight)
+        NumMaxRowLabelForPage = int(realHeightPage/otherRows)
         NumMaxColumnLabelForPage = int(realWidthPage /otherColumn)
         NumMaxLabelForPageTotal = NumMaxRowLabelForPage*NumMaxColumnLabelForPage
         NumLabelInDao = len(self.objects)
         pagesNumber = int((NumLabelInDao/NumMaxLabelForPageTotal)) +1
+
         self.createPageTag(pagesNumber)
-        self.labelObj = self.slaPageObjects()
-        op = True
-        col = True
+        labelObj = self.slaPageObjects()
         for j in range(1, NumLabelInDao):
-            p=r=c = 1
-            for pageObject in self.labelObj:
+            for pageObject in labelObj:
                 ## Creating dictionary attributes pageobject
                 attributes = pageObject.items()
                 dictionary = {}
@@ -580,6 +580,14 @@ class SlaTpl2Sla(SlaParser):
                     ## Applying attributes
                     ElementTree.SubElement(app, 'ITEXT', dictionary)
 
+                trails = pageObject.findall('trail')
+                for trai in trails:
+                    attributes = trai.items()
+                    dictTrai = {}
+                    for attrrr in attributes:
+                        dictTrai[attrrr[0]] = attrrr[1]
+                    ElementTree.SubElement(app, 'trail', dictTrai)
+
                 paras = pageObject.findall('para')
                 for para in paras:
                     attributes = para.items()
@@ -591,38 +599,29 @@ class SlaTpl2Sla(SlaParser):
                 pageItemAttributes = pageObject.findall('pageItemAttributes')
                 ElementTree.SubElement(app, 'pageItemAttributes')
                 ## Number page
-                #inigroup = str(app.get('GROUPS')).strip()
-                x = str(10 +j)+ " "
-                app.set('GROUPS', str(x))
-                #app.set('OwnPage', str(j))
+                inigroup = str(pageObject.get('GROUPS')).strip()
+                x = str(j+int(inigroup))+ " "
+                app.set('GROUPS', x)
+                app.set('OwnPage', str(j))
                 ## Coordinates
-                ypos = app.get('YPOS')
-                height = app.get('HEIGHT')
-                xpos = app.get('XPOS')
+                ypos = pageObject.get('YPOS')
+                height = pageObject.get('HEIGHT')
+                xpos = pageObject.get('XPOS')
                 if (j/NumMaxLabelForPageTotal) >= 1:
                     page = int(j/NumMaxLabelForPageTotal)
                 else:
                     page = 0
-                if j < NumMaxRowLabelForPage:
-                    app.set('YPOS',str(float(ypos)+ sumRows*j))
-                elif (j >= NumMaxRowLabelForPage) and (j < NumMaxLabelForPageTotal):
-                    app.set('XPOS',str(float(xpos) + float(otherColumn)))
-                    app.set('YPOS',str(float(ypos)+(sumRows*(j-NumMaxRowLabelForPage))))
-                elif page != 0 and j < ((NumMaxLabelForPageTotal * page) + NumMaxRowLabelForPage):
-                    app.set('YPOS',str(float(ypos)+\
-                        ((float(self.pageHeight)+float(self.borderTop))*page)+\
-                        sumRows*(j-(NumMaxLabelForPageTotal*page))))
-                elif page !=0 and j >= (NumMaxLabelForPageTotal * page) +NumMaxRowLabelForPage and j < NumMaxLabelForPageTotal * page +NumMaxLabelForPageTotal:
-                    app.set('XPOS',str(float(xpos) + float(otherColumn)))
-                    app.set('YPOS',str(float(ypos)+\
-                        ((float(self.pageHeight)+float(self.borderTop))*page)+\
-                        sumRows*(j-(NumMaxLabelForPageTotal*page)-NumMaxRowLabelForPage)))
+                colonna = NumMaxColumnLabelForPage- ((NumMaxLabelForPageTotal*(page+1) - (j+1)) / NumMaxRowLabelForPage)-1
+                riga = j- (NumMaxRowLabelForPage * (j/NumMaxRowLabelForPage))
+                if not j%NumMaxRowLabelForPage:
+                    app.set('YPOS',str(float(ypos)+((float(pageHeight)+float(borderTop))*page)))
                 else:
-                    print "attenzione oggetto che non ha trovato collocazione"
+                    app.set('YPOS',str(float(ypos)+((float(pageHeight)+float(borderTop))*page)+ (otherRows* riga)))
+                app.set('XPOS',str(float(xpos) + otherColumn* (colonna)))
                 self.slaDocumentTag().append(app)
                 app = {}
+#        self.doc.write(self.pdfFolder+"_tempppPrima.sla")
         self.labelSla()
-        self.findTablesProperties()
 
     def labelSla(self):
         """
@@ -643,7 +642,6 @@ class SlaTpl2Sla(SlaParser):
                         dictionary[attributes[kk][0]] = attributes[kk][1]
                     ch = dictionary['CH']
                     tags = Sla2pdfUtils.findTags(ch)
-                    #print "tagsssss", ch, tags
                     if tags:
                         tagsKeys = tags.keys()[0] or []
                         function = tags[tagsKeys]['function']
@@ -664,10 +662,10 @@ class SlaTpl2Sla(SlaParser):
                             value = ch.replace(tags[tagsKeys]['completeTag'], resolvedTag)
                         else:
                             value = str(value)
+
                     else:
                         value = ch
-                    #print "valueeeeeeeeeeeeee", value
-                    itext.set('CH', str(value))
+                    itext.set('CH', value)
             else:
                 gr.append(group)
                 index += 1

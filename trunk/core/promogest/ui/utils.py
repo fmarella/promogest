@@ -20,7 +20,7 @@ from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.Operazione import Operazione
 import string, re
 import pysvn
-from xml.etree.cElementTree import *
+import xml.etree.ElementTree as ET
 import unicodedata
 
 try:  # necessario per gestire i custom widgts con glade3 e gtkBuilder
@@ -2646,3 +2646,26 @@ def deaccenta(riga=None):
     nkfd_form = unicodedata.normalize('NFKD', unicode(riga))
     only_ascii = nkfd_form.encode('ASCII', 'ignore')
     return only_ascii
+
+
+def scribusVersion(slafile):
+    doc = ET.parse(slafile)
+    root = doc.getroot()
+    document = doc.findall('DOCUMENT')[0]
+    slaversion = root.get('Version')
+    print "FILE SLA DA VERIFICARE PRIMA DLLA STAMPA", slafile
+    print "VERSIONE SLA", slaversion
+    if "1.3.6" in slaversion:
+        Environment.new_print_enjine=True
+        return True
+    elif "1.3.5.1" in slaversion or "1.3.5svn" in slaversion:
+#        messageInfo(msg="ATTENZIONE FORMATO TEMPLATE SLA DA CORREGGERE 1.3.5")
+        print "ATTENZIONE FORMATO TEMPLATE SLA DA CORREGGERE 1.3.5"
+        Environment.pg2log.info("ATTENZIONE FORMATO TEMPLATE SLA DA CORREGGERE 1.3.5")
+        return True
+    elif "1.3.4" in slaversion:
+        Environment.new_print_enjine=False
+        return False
+    elif "1.3.3" in slaversion or "1.3.3.6cvs" in slaversion:
+        Environment.new_print_enjine = False
+        return False

@@ -204,7 +204,6 @@ def findTags(string):
     # Better choice to work with RE
     # wordList = re.findall(r'\b[\S]+\b',string)
     elements = string.split()
-
     # Finding Tags
     for element in elements:
         if not((element[:2] == '[[') and (element[-2:] == ']]')):
@@ -214,6 +213,7 @@ def findTags(string):
         function = ''
         tag = ''
         parameter = ''
+        arrayName = ''
 
         # Finding position
         indexPosition = element.find(':')
@@ -249,11 +249,13 @@ def findTags(string):
                 tag = element[indexPosition+1:-2]
             else:
                 tag = element[2:-2]
-
+        if "(n)" in tag:
+            arrayName = tag.split("(n)")[0]
         #qui compone il tag con i vai elementi
         chDict[tag] = {'position': position,
                         'function': function,
                         'parameter': parameter,
+                        "arrayName": arrayName,
                         'completeTag': element}
 
     if chDict != {}:
@@ -303,4 +305,3 @@ def cancelOperation():
     soon as possible, e.g. when executed in a parallel thread)
     """
     pass
-

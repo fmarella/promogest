@@ -16,7 +16,7 @@ from reportlab.platypus import *
 
 from reportlab.pdfgen.canvas import Canvas
 
-import xml.etree.cElementTree as ElementTree
+#import xml.etree.cElementTree as ElementTree
 try:
     from promogest import Environment
 except:
@@ -38,29 +38,26 @@ class Sla2Pdf_ng(SlaParser):
         self.pdfFolder = pdfFolder
         self.slaFileName = slaFileName
 
-        #SlaParser.__init__(self, slaFileName=slaFileName,
-                                    #pdfFolder=pdfFolder,
-                                    #slafile=slafile)
+        SlaParser.__init__(self, slaFileName=slaFileName,
+                                    pdfFolder=pdfFolder,
+                                    slafile=slafile)
         self.document = None
-        self.version = self.scribusVersion()
-        self.numPages = self.numPage()
-        self.translate()
+#        self.version = self.scribusVersion()
+        self.version = True
+        self.numPages = len(self.slaPage())
+#        self.translate()
 
-    def numPage(self):
-        number = self.slaPage()
-        print "NUMERO DI PAGINE DA CONVERTIRE IN PDF", len(number)
-        return len(number)
-
-    def drawImage(self,group):
+    def drawImage(self,group=None, tabpro=None):
         """ Drawing an image """
-        pfile = self.tablesPropertie['pfile']
+        pfile = tabpro['pfile']
+        celle = tabpro["cells"]
         (imgPath, imgFile) = os.path.split(pfile)
         #innerIterator = self.iterator
-        width = self.tablesPropertie['widths'][0]
-        height = self.tablesPropertie['heights'][0]
-        xPos = self.tablesPropertie['xpos'][0]
-        yPos = self.tablesPropertie['ypos'][0]
-        print "IMAGE Path ", pfile
+        width = [float(x.get("WIDTH")) for x in celle][0]
+        height = [float(x.get("HEIGHT")) for x in celle][0]
+        xPos = [float(x.get("XPOS")) for x in celle][0]
+        yPos = [float(x.get("YPOS")) for x in celle][0]
+#        print "IMAGE Path ", pfile
         try:
             img = utils.ImageReader(Environment.imagesDir + imgFile)
         except:
@@ -76,38 +73,38 @@ class Sla2Pdf_ng(SlaParser):
                             height=height)
         self.canvas.saveState()
 
-    def drawTable(self, group=None, monocell=None, reiter = None):
+    def drawTable(self, group=None, monocell=None, reiter = None, tabpro=None):
         """ Drawing a table """
         matrix = []
         lst = []
         matrix2 = []
         vector = []
         # Total of element's table
-        cells = int(self.tablesPropertie['cells'])
-        columns = int(self.tablesPropertie['columns'])
-        rows = int(self.tablesPropertie['rows'])
-        widths = self.tablesPropertie['widths']
-        heights = self.tablesPropertie['heights']
-        xpos = self.tablesPropertie['xpos']
-        ypos = self.tablesPropertie['ypos']
+        n_cells = int(tabpro['n_cells'])
+        columns = int(tabpro['columns'])
+        rows = int(tabpro['rows'])
+        celle = tabpro["cells"]
+        widths = [float(x.get("WIDTH")) for x in celle]
+        heights = [float(x.get("HEIGHT")) for x in celle]
+        xpos = [float(x.get("XPOS")) for x in celle]
+        ypos = [float(x.get("YPOS")) for x in celle]
         contColumns = 0
         ch = ''
         col = 0
         cycle = False
         vector = []
         alignment= None
-        itexts = self.tablesPropertie['itextsobj']
-        paras = self.tablesPropertie['parasobj']
+        itexts = [x.findall("ITEXT") for x in celle]
+        paras = [x.findall("para") for x in celle]
+        trail = [x.findall("trail") for x in celle]
         stile = TableStyle([])
         stile.add('VALIGN',(0,0),(-1,-1),'TOP')
-        tblprop = self.tablesPropertie['cellProperties']
-        #print "NOTTEEEEEEEEE", "rows:",rows, "columns", columns, "cell", cells, len(heights), len(widths),tblprop
         if monocell==True:
             cells = 1
             columns=1
             rows = 1
         #print "CEEEEEEEEEEEEEELS", cells
-        for v in range(0,cells):
+        for v in range(0,n_cells):
             if v == 0:
                 contRows = 0
                 contColumns = 0
@@ -117,44 +114,42 @@ class Sla2Pdf_ng(SlaParser):
             else:
                 contRows= int(v/columns)
                 contColumns = ((v)%columns)
-            #print "VVVVVVVVVVVVVVVVVVVV", v
-            #print "ZZZZZZZZZZZZZZZZ2", tblprop[v],
-            #print "INIINI", len(tblprop)
-            background = self.backgroundFunc(tblprop[v])# Finding background
-            hexBorderColor = self.hexBorderColorFunc(tblprop[v]['borderColor'])
+#            print "VVVVVVVVVVVVV E CELLE", celle, v, len(celle), celle[v], n_cells
+            background = self.backgroundFunc(celle[v])# Finding background
+            hexBorderColor = self.hexBorderColorFunc(celle[v].get('PCOLOR2'))
             stile.add('ROWBACKGROUNDS', (contColumns,contRows),
                                 (contColumns,contRows),
                                 (background, background))
-            cellpr = tblprop[v]
-            cellpict = cellpr['cellPicture']
-            cellIMGHeight = cellpr['cellHeight']
-            cellIMGWidth = cellpr['cellWidth']
-            if (cellpr['bottomLine'] == 1 and cellpr['topLine'] == 1 and\
-                        cellpr['leftLine'] == 1 and cellpr['rightLine'] == 1):
+            cellpict = celle[v].get('PFILE')
+            cellIMGHeight = celle[v].get('HEIGHT')
+            cellIMGWidth = celle[v].get('WIDTH')
+            if (celle[v].get('BottomLine') == "1" and celle[v].get('TopLine') == "1" and\
+                        celle[v].get('LeftLine') =="1" and celle[v].get('RightLine') == "1"):
                 stile.add('BOX', (contColumns,contRows),
                                 (contColumns,contRows),
-                                cellpr['lineWidth'],
+                                float(celle[v].get('PWIDTH')),
                                 hexBorderColor)
+#                print "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", celle[v].get('PWIDTH'), stile
             else:
-                if cellpr['bottomLine'] == 1:
+                if celle[v].get('BottomLine') == "1":
                     stile.add('LINEBELOW', (contColumns,contRows),
                                 (contColumns,contRows),
-                                cellpr['lineWidth'],
+                                float(celle[v].get('PWIDTH')),
                                 hexBorderColor)
-                elif cellpr['topLine'] == 1:
+                if celle[v].get('TopLine') == "1":
                     stile.add('LINEABOVE', (contColumns,contRows),
                                 (contColumns,contRows),
-                                cellpr['lineWidth'],
+                                float(celle[v].get('PWIDTH')),
                                 hexBorderColor)
-                if cellpr['leftLine'] == 1:
+                if celle[v].get('LeftLine') == "1":
                     stile.add('LINEBEFORE', (contColumns,contRows),
                                 (contColumns,contRows),
-                                cellpr['lineWidth'],
+                                float(celle[v].get('PWIDTH')),
                                 hexBorderColor)
-                if cellpr['rightLine'] == 1:
+                if celle[v].get('RightLine') == "1":
                     stile.add('LINEAFTER', (contColumns,contRows),
                                 (contColumns,contRows),
-                                cellpr['lineWidth'],
+                                float(celle[v].get('PWIDTH')),
                                 hexBorderColor)
 
             if not monocell:
@@ -167,13 +162,10 @@ class Sla2Pdf_ng(SlaParser):
                 except:
                     itext = None
                     ch = ""
-            # self.chFunc(itexts[0])[1]
-            actualPageObject = self.tablesPropertie# Borders
-            uff = self.tablesPropertie['iterproper']
-            if uff != [] and v > columns:
-                pdfAlignment = self.alignmentFunc(self.tablesPropertie['iterproper'][contColumns],v, reiter=True)
-            else:
-                pdfAlignment = self.alignmentFunc(paras, v, monocell) #alignment
+
+            actualPageObject = tabpro # Borders
+
+            pdfAlignment = self.alignmentFunc(paras,v, monocell, trail=trail, reiter=reiter) #alignment
             stile.add('ALIGN', (contColumns,contRows),
                                 (contColumns,contRows),
                                 pdfAlignment)
@@ -214,16 +206,7 @@ class Sla2Pdf_ng(SlaParser):
                 matrix.append(vector)
                 vector = []
                 cycle = False
-        #if columns > 1 and not reiter:
-            ##wid = []
-            #hei = []
-            #for h in range(0,len(heights),rows):
-                #hei.append(heights[h])
-            #heights = hei
-        #print rows, widths, heights
-        #print matrix,  widths[:columns],heights[:rows]
         table=Table(matrix,style=stile,  colWidths=widths[:columns], rowHeights=heights[:rows])
-
         lst.append(table)
         # Effective table size
         sumRows = Sla2pdfUtils.sumRowsFunc(heights,rows)
@@ -243,42 +226,46 @@ class Sla2Pdf_ng(SlaParser):
         # begin translate
 
         self.pageProperties = Sla2pdfUtils.pageProFunc(self.slaDocumentTag())
-        docPage = self.numPages
-        print "GENERO QUESTO FILE DOPO LA  CONVERSIONE", self.slafile + '.pdf'
         self.canvas = Canvas(filename = self.slafile + '.pdf', pagesize=(self.pageProperties[0][8],self.pageProperties[0][7]))
         # Page's table
         reiter = False
         self.pdfPage = 0
-        #docPage = docPage +docPage
-        self.findTablesAndTags()
-        tablepro = self.findTablesProperties()
-        for e in xrange(0, docPage):
-            self.pdfPage = e
-            for group in tablepro:
-                self.group = group.keys()[0]
-                self.tablesPropertie = group.values()[0]
-                try:
-                    self.group= self.group.strip().split('%%%')[0]
-                except:
-                    self.group= self.group.strip()
-                if self.group in self.getIteratableGroups():
-                    colu = int(self.tablesPropertie['columns'])
-                    self.tablesPropertie['iterproper'] = self.tablesPropertie['parasobj'][colu:(colu*2)]
-                    reiter = True
-                cells = int(self.tablesPropertie['cells'])
-                # Closing pages (elements of the same page must be near)
-                if "noGroup" in self.group and self.tablesPropertie["pfile"] != "" :
-                    #print "IMMAGINEEEEEEEEEEEEEEE", self.group, self.tablesPropertie["isTableItem"]
-                    self.drawImage(group=self.group) # IMMAGINE
-                elif "noGroup" in self.group  and self.tablesPropertie["pfile"] == "":
-                    #print "MONOCELLAAAAAAA", self.group, self.tablesPropertie
-                    self.drawTable(group =self.group, monocell=True)# MONOCELLA
-                else:
-                    #print "TABELLAAAAAAAA", self.group, self.tablesPropertie["isTableItem"]
-                    self.drawTable(group =self.group, reiter = reiter) # TABELLA
+        tablepropertys = self.findTablesProperties()
+        iteratable = self.getIteratableGroups(tablepropertys)
+        for self.pdfPage in xrange(0, self.numPages):
+            for tableproperty in tablepropertys:
+                for group in tableproperty.keys():
+                    tabpro = tableproperty[group]
+                    try:
+                        group= group.strip().split('%%%')[0]
+                    except:
+                        group= group.strip()
+                    if group in iteratable:
+                        colu = int(tabpro['columns'])
+    #                    tabpro['iterproper'] = tabpro['parasobj'][colu:(colu*2)]
+                        reiter = True
+                    n_cells = int(tabpro['n_cells'])
+                    # Closing pages (elements of the same page must be near)
+                    if "noGroup" in group and tabpro["pfile"] != "" :
+#                        print "IMMAGINEEEEEEEEEEEEEEE", group
+                        self.drawImage(group=group, tabpro=tabpro) # IMMAGINE
+                    elif "noGroup" in group  and tabpro["pfile"] == "":
+#                        print "MONOCELLAAAAAAA", group
+                        self.drawTable(group =group, monocell=True, tabpro=tabpro)# MONOCELLA
+                    else:
+#                        print "TABELLAAAAAAAA", group, reiter
+                        self.drawTable(group =group, reiter = reiter, tabpro = tabpro) # TABELLA
             self.canvas.saveState()
             self.canvas.showPage()
         self.canvas.save()
+        # temporary pdf file is removed immediately
+#        filename = self.pdfFolder + self.pdfFileName + '.pdf'
+        filename = self.slafile + '.pdf'
+        f = file(filename, 'rb')
+        result = f.read()
+        f.close()
+        os.remove(filename)
+        return result
 
     # ATTENZIONE !!!   this part above is for generic function.
 
@@ -305,14 +292,28 @@ class Sla2Pdf_ng(SlaParser):
             fontName = Sla2pdfUtils.getPdfFontName(str(itext.get('CFONT')))
         return fontName
 
-    def alignmentFunc(self,paras, v, monocell=False, reiter=False):
+    def alignmentFunc(self,paras, v, monocell=False, reiter=False, trail=None):
         if monocell==True:
-            slaAlignment = paras[0].get('ALIGN')
+            try:
+#                print "TRAIL DI MONOCELLA PER CURIOSI", trail
+                slaAlignment = trail[0][0].get('ALIGN')
+            except:
+                slaAlignment = paras[0][0].get('ALIGN')
         elif reiter ==True:
-            slaAlignment = paras[0].get('ALIGN')
+#            print "TRAIL DEL REITER VEDIAMO UN PO?", trail[v][0].get('ALIGN')
+            slaAlignment = trail[v][0].get('ALIGN')
+#            if not slaAlignment:
+#                slaAlignment = paras[0][0].get('ALIGN')
         else:
-            slaAlignment = paras[v][0].get('ALIGN')
-        if slaAlignment == None:
+            try:
+#
+                slaAlignment = trail[v][0].get('ALIGN')
+            except:
+                slaAlignment = paras[v][0].get('ALIGN')
+                if not slaAlignment:
+#                    print "NON RIESCO AD ALLINEARE"
+                    slaAlignment = None
+        if not slaAlignment:
             slaAlignment = self.slaStyleDefault()
         pdfAlignment= Sla2pdfUtils.alignment(slaAlignment)
         return pdfAlignment
@@ -331,14 +332,12 @@ class Sla2Pdf_ng(SlaParser):
 
 
     def backgroundFunc(self, pageObject):
-        cellProperties = pageObject
-        if cellProperties['cellBackground'] == str("None"):
+        cellProperties = pageObject.get('PCOLOR')
+        if cellProperties == str("None"):
             sfondo = "White"
         else:
-            sfondo = cellProperties['cellBackground']
-        #print "MAAAAAAAAAAAAAAAAAAAAA"
+            sfondo = cellProperties
         background = colors.HexColor(ColorDicTFull.colorDict[str(sfondo)][1])
-        #print "TUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"
         return background
 
     def chFunc(self, text):

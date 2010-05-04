@@ -24,10 +24,14 @@ from utils import *
 import Login
 
 from promogest import Environment
-if Environment.new_print_enjine:
-    from promogest.lib.sla2pdf.Sla2Pdf import Sla2Pdf
-else:
-    from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
+
+#if Environment.new_print_enjine:
+from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
+from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
+from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
+#else:
+
+
 from promogest.ui.SendEmail import SendEmail
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.dao.Azienda import Azienda
@@ -1042,56 +1046,40 @@ class AnagraficaHtml(object):
         self._slaTemplate = None
         self._slaTemplateObj=None
         azienda = Azienda().getRecord(id=Environment.azienda)
-        if Environment.new_print_enjine:
-            operationNameUnderscored = operationName.replace(' ' , '_').lower()
-            print "per la stampa", operationNameUnderscored, Environment.templatesDir + operationNameUnderscored + '.sla'
-            if os.path.exists(Environment.templatesDir + operationNameUnderscored + '.sla'):
-                self._slaTemplate = Environment.templatesDir + operationNameUnderscored + '.sla'
-            else:
-                self._slaTemplate = Environment.templatesDir + self.defaultFileName + '.sla'
-            """ Restituisce una stringa contenente il report in formato PDF """
-            param = [self.dao.dictionary(complete=True)]
-            multilinedirtywork(param)
-            if azienda:
-                azidict = azienda.dictionary(complete=True)
-                for a,b in azidict.items():
-                    k = "azi_"+a
-                    azidict[k] = b
-                    del azidict[a]
-                param[0].update(azidict)
-            #return self._slaTemplateObj.serialize(param, dao=self.dao)
-            return Sla2Pdf(slaFileName=self._slaTemplate,
-                            pdfFolder=self._anagrafica._folder,
-                            report=self._anagrafica._reportType,
-                            ).createPDF(objects=param, daos=self.dao)
-
+        operationNameUnderscored = operationName.replace(' ' , '_').lower()
+        print "per la stampa", operationNameUnderscored, Environment.templatesDir + operationNameUnderscored + '.sla'
+        if os.path.exists(Environment.templatesDir + operationNameUnderscored + '.sla'):
+            self._slaTemplate = Environment.templatesDir + operationNameUnderscored + '.sla'
         else:
-            operationNameUnderscored = operationName.replace(' ' , '_').lower()
-
-            if os.path.exists(Environment.templatesDir + operationNameUnderscored + '.sla'):
-                self._slaTemplate = Environment.templatesDir + operationNameUnderscored + '.sla'
-            else:
-                self._slaTemplate = Environment.templatesDir + self.defaultFileName + '.sla'
-            """ Restituisce una stringa contenente il report in formato PDF """
+            self._slaTemplate = Environment.templatesDir + self.defaultFileName + '.sla'
+        """ Restituisce una stringa contenente il report in formato PDF """
+        param = [self.dao.dictionary(complete=True)]
+        multilinedirtywork(param)
+        if azienda:
+            azidict = azienda.dictionary(complete=True)
+            for a,b in azidict.items():
+                k = "azi_"+a
+                azidict[k] = b
+                del azidict[a]
+            param[0].update(azidict)
+        versione = scribusVersion(self._slaTemplate)
+        if Environment.new_print_enjine:
+            stpl2sla = SlaTpl2Sla_ng(slafile=None,label=None, report=None,
+                                    objects=param,
+                                    daos=self.dao,
+                                    slaFileName=self._slaTemplate,
+                                    pdfFolder=self._anagrafica._folder,
+                                    classic=True,
+                                    template_file=None)
+            return Sla2Pdf_ng(slafile=self._anagrafica._folder+"_temppp.sla").translate()
+        else:
             if self._slaTemplateObj is None:
                 self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
                                             pdfFolder=self._anagrafica._folder,
                                             report=self._anagrafica._reportType,
                                             classic = True,
                                             template_file=template_file)
-
-            #self.dao.resolveProperties()
-            param = [self.dao.dictionary(complete=True)]
-            multilinedirtywork(param)
-            if azienda:
-                azidict = azienda.dictionary(complete=True)
-                for a,b in azidict.items():
-                    k = "azi_"+a
-                    azidict[k] = b
-                    del azidict[a]
-                param[0].update(azidict)
             return self._slaTemplateObj.serialize(param, classic = True,dao=self.dao)
-
 
     def cancelOperation(self):
         """ Cancel current operation """
@@ -1125,6 +1113,8 @@ class AnagraficaReport(object):
         """ Restituisce una stringa contenente il report in formato PDF
         """
         azienda = Azienda().getRecord(id=Environment.azienda)
+        versione = scribusVersion(self._slaTemplate)
+        print "OHOHOHHHO", Environment.new_print_enjine
         if not Environment.new_print_enjine:
             if self._slaTemplateObj is None:
                 self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
@@ -1202,6 +1192,10 @@ class AnagraficaLabel(object):
                 del azidict[a]
             if param:
                 param[0].update(azidict)
+        if template_file:
+            versione = scribusVersion(Environment.labelTemplatesDir +template_file)
+        else:
+            versione = scribusVersion(self._slaTemplate)
         if not Environment.new_print_enjine:
             print "OLD PRINT ENGINE"
             self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
@@ -1215,12 +1209,28 @@ class AnagraficaLabel(object):
             return self._slaTemplateObj
         else:
             print "NEW PRINT ENGINE"
-            return Sla2Pdf(slaFileName=self._slaTemplate,
-                            pdfFolder=self._anagrafica._folder,
-                            report=self._anagrafica._reportType,
-                            label=True).createPDF(objects=param, daos=self.objects,
-                                                classic = classic,
-                                                template_file=template_file)
+            if template_file:
+                slafile = Environment.labelTemplatesDir +template_file
+            else:
+                slafile = self._slaTemplate
+            stpl2sla = SlaTpl2Sla_ng(slafile=None,label=True,
+                                    report=self._anagrafica._reportType,
+                                    objects=param, daos=self.objects,
+                                    slaFileName=slafile,
+                                    pdfFolder=self._anagrafica._folder,
+                                    classic=classic,
+                                    template_file=template_file)
+            return Sla2Pdf_ng(slafile=self._anagrafica._folder+"_temppp.sla").translate()
+
+
+
+
+#            return Sla2Pdf(slaFileName=self._slaTemplate,
+#                            pdfFolder=self._anagrafica._folder,
+#                            report=self._anagrafica._reportType,
+#                            label=True).createPDF(objects=param, daos=self.objects,
+#                                                classic = classic,
+#                                                template_file=template_file)
 class AnagraficaEdit(GladeWidget):
     """ Interfaccia di editing dell'anagrafica """
 

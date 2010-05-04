@@ -27,5 +27,17 @@ def azzeraRiga(anaedit,numero):
                                 divisore_noleggio =1,
                                 arco_temporale = "NO",
                                 prezzo_acquisto = 0,
-                                totale_noleggio = 0
-                                    )
+                                totale_noleggio = 0)
+
+
+def totaleNoleggio(anagrafica):
+    totale = anagrafica._righe[0]["totale"]
+    if "GestioneNoleggio" in Environment.modulesList and anagrafica.noleggio and anagrafica._righe[0]["arco_temporale"] != "NO":
+        if str(anagrafica._righe[0]["divisore_noleggio"]).strip() == "1":
+            totale = str(mN(float(anagrafica._righe[0]["totale"]) *float(anagrafica._righe[0]["arco_temporale"])))
+            anagrafica.totale_periodo_label.set_text(totale)
+        else:
+            totale = str(mN(float(anagrafica._righe[0]["totale"]) *sqrt(float(anagrafica._righe[0]["arco_temporale"]))))
+            anagrafica.totale_periodo_label.set_text(totale)
+        anagrafica._righe[0]["totale_periodo"] = anagrafica.totale_periodo_label.get_text()
+    return totale
