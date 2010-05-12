@@ -197,7 +197,7 @@ class Login(GladeApp):
 
     def feddretreive(self):
         """ FIXME """
-        d = feedparser.parse("http://blog.promotux.it/?feed=rss2")
+        d = feedparser.parse("http://www.promotux.it/newsfeed")
         #self.checkUpdate()
         Environment.feedAll = d
         return

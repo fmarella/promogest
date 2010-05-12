@@ -245,7 +245,7 @@ E' presente una nuova versione disponibile"""
     def getfeedFromSite(self):
         string = ""
         if Environment.feedAll == "":
-            d = feedparser.parse("http://blog.promotux.it/category/promogest/feed")
+            d = feedparser.parse("http://www.promotux.it/newsfeed")
         else:
             d = Environment.feedAll
         feedList = d['entries']
@@ -259,7 +259,7 @@ E' presente una nuova versione disponibile"""
                 "title" :feed['title'],
                 "links": feed['links'][0]['href'],
                 "body" : body,
-                "updated" : feed['updated'][4:-14],
+                "updated" : feed['updated'][4:-13],
                 "autore" : feed['author']
                 }
             feedToHtml.append(feed)
@@ -267,7 +267,7 @@ E' presente una nuova versione disponibile"""
         self.renderPage(feedToHtml)
 
     def on_promotux_button_clicked(self, button):
-        url ="http://www.promotux.it"
+        url ="http://www.google.it"
         webbrowser.open_new_tab(url)
 
     def on_promogest_button_clicked(self, button):
