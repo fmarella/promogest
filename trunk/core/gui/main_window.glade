@@ -122,11 +122,11 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="vendita_item">
+                      <object class="GtkMenuItem" id="controllo_fatturato">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">STATISTICHE DI VENDITA</property>
+                        <property name="label" translatable="yes">CONTROLLO FATTURATO</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_vendita_item_activate"/>
+                        <signal name="activate" handler="on_controllo_fatturato_activate"/>
                       </object>
                     </child>
                     <child>

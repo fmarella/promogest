@@ -31,7 +31,7 @@
                 <child>
                   <object class="GtkTable" id="filters_table">
                     <property name="visible">True</property>
-                    <property name="n_rows">7</property>
+                    <property name="n_rows">8</property>
                     <property name="n_columns">2</property>
                     <child>
                       <object class="GtkButton" id="categoria_cliente_button">
@@ -165,6 +165,31 @@
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
                         <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="ClienteSearchWidget" id="id_cliente_filter_customcombobox">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">7</property>
+                        <property name="bottom_attach">8</property>
+                        <property name="y_options">GTK_FILL</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="cliente_label">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Cliente</property>
+                      </object>
+                      <packing>
+                        <property name="top_attach">7</property>
+                        <property name="bottom_attach">8</property>
+                        <property name="y_options">GTK_FILL</property>
                       </packing>
                     </child>
                   </object>
