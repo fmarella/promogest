@@ -154,26 +154,3 @@ class ElencoMagazzini(GladeWidget):
         else:
             fenceDialog()
             toggleButton.set_active(False)
-
-    def on_statistiche_togglebutton_clicked(self, toggleButton):
-        if not(toggleButton.get_active()):
-            toggleButton.set_active(False)
-            return
-        if "Statistiche" in Environment.modulesList:
-            #return
-
-            if self._currentDao is not None:
-                idMagazzino = self._currentDao.id
-                from promogest.modules.Statistiche.ui.StatisticheMagazzino import StatisticheMagazzino
-                anag = StatisticheMagazzino(idMagazzino=None)
-                anagWindow = anag.getTopLevel()
-
-                showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
-            else:
-                toggleButton.set_active(False)
-                obligatoryField(self._mainWindow,
-                                None,
-                                '\nSelezionare un magazzino !')
-        else:
-            fenceDialog()
-            toggleButton.set_active(False)

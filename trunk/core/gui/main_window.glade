@@ -12,7 +12,6 @@
     <child>
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkMenuBar" id="main_menubar">
             <property name="visible">True</property>
@@ -100,6 +99,45 @@
                         <property name="label" translatable="yes">client</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_client_sincro_db_activate"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="statistiche">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">statistiche</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="statistiche_menu">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkMenuItem" id="ricmedio">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">CALCOLO RICARICO MEDIO e INFLUENZA SULLE VENDITE</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_ricmedio_activate"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="vendita_item">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">STATISTICHE DI VENDITA</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_vendita_item_activate"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="export_magazzino">
+                        <property name="visible">True</property>
+                        <property name="tooltip_text" translatable="yes">Esport una CSV abbastanza 
+generico del magazzino 
+articoli per un certo </property>
+                        <property name="label" translatable="yes">EXPORT MAGAZZINO</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_export_magazzino_activate"/>
                       </object>
                     </child>
                   </object>
@@ -196,7 +234,6 @@
             <child>
               <object class="GtkVBox" id="box_immagini_iniziali">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkLabel" id="anno_lavoro_label">
                     <property name="visible">True</property>

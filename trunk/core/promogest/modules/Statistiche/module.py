@@ -6,8 +6,6 @@
 
 from promogest import Environment
 import promogest.ui.Login
-#from promogest.modules.DistintaBase.data.DistintaBaseDB import *
-#from promogest.modules.DistintaBase.ui.AnagraficaDistintaBase import AnagraficaDistintaBase
 
 MODULES_NAME = "Statistiche"
 MODULES_FOR_EXPORT = []
@@ -24,11 +22,3 @@ START_CALL = None                              # of this call in a separated Thr
     es:
         VIEW_TYPE = ('parametro', 'Colori Stampa', 'colori_stampa24x24.png')
 """
-#testataMovimentoTable = Table('testata_movimento', params['metadata'], autoload=True, schema=params['schema'])
-
-#class DistintaBase(object):
-    #VIEW_TYPE = ('anagrafica', 'Distinta Base ', 'report48x48.png')
-    #def getApplication(self):
-        #anag = AnagraficaDistintaBase()
-        #return anag
-

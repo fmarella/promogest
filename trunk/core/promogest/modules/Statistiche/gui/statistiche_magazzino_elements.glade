@@ -5,16 +5,16 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkDialog" id="statistiche_magazzino_dialog">
     <property name="visible">True</property>
+    <property name="is_focus">True</property>
     <property name="title" translatable="yes">Esportazione statistiche di magazzino</property>
-    <property name="modal">True</property>
     <property name="window_position">center-always</property>
-    <property name="type_hint">dialog</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">normal</property>
     <property name="gravity">static</property>
     <signal name="destroy" handler="on_statistiche_magazzino_dialog_destroy"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox23">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkHBox" id="hbox1___">
             <property name="visible">True</property>
@@ -75,7 +75,6 @@
                 <child>
                   <object class="GtkVBox" id="vbox___">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkCheckButton" id="allmag_checkbutton">
                         <property name="label" translatable="yes">Tutti</property>
@@ -166,15 +165,14 @@
     <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">normal</property>
+    <property name="urgency_hint">True</property>
     <property name="transient_for">statistiche_magazzino_dialog</property>
     <property name="do_overwrite_confirmation">True</property>
     <property name="action">save</property>
     <property name="use_preview_label">False</property>
-    <property name="create_folders">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child internal-child="action_area">
           <object class="GtkHButtonBox" id="dialog-action_area2">

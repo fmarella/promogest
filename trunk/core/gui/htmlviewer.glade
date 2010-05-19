@@ -5,6 +5,7 @@
   <object class="GtkDialog" id="visualizzatore_html">
     <property name="width_request">780</property>
     <property name="height_request">500</property>
+    <property name="visible">True</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">""</property>
     <property name="icon">promogest.png</property>
@@ -13,7 +14,6 @@
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
           <object class="GtkScrolledWindow" id="html_scrolledwindow">
@@ -34,7 +34,18 @@
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <placeholder/>
+              <object class="GtkButton" id="csv_button">
+                <property name="label" translatable="yes">CREA CSV</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_csv_button_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
             </child>
             <child>
               <object class="GtkButton" id="pdf_button">
@@ -77,6 +88,7 @@
       </object>
     </child>
     <action-widgets>
+      <action-widget response="0">csv_button</action-widget>
       <action-widget response="0">pdf_button</action-widget>
       <action-widget response="0">quit_button</action-widget>
     </action-widgets>

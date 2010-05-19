@@ -7,13 +7,12 @@
 # License GNU Gplv2
 
 import locale
-import gtk, gobject
+import gtk
 import hashlib
-import zipfile
 import os
 import webbrowser
 from  subprocess import *
-import threading, os, signal
+import os
 from promogest import Environment
 from GladeWidget import GladeWidget
 from ElencoMagazzini import ElencoMagazzini
@@ -25,6 +24,8 @@ from utilsCombobox import *
 from ParametriFrame import ParametriFrame
 from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
 import Login
+
+#inizializzano il customwidget
 from widgets.ArticoloSearchWidget import ArticoloSearchWidget
 from widgets.ClienteSearchWidget import ClienteSearchWidget
 from widgets.FornitoreSearchWidget import FornitoreSearchWidget
@@ -40,7 +41,6 @@ class Main(GladeWidget):
         self.aziendaStr = aziendaStr
 
         self.statusBarHandler()
-
 
         Login.windowGroup.append(self.getTopLevel())
         self.anagrafiche_modules = anagrafiche_modules
@@ -162,7 +162,6 @@ class Main(GladeWidget):
             self.main_hbox.pack_start(self.currentFrame, fill=True, expand=True)
         self.main_hbox.show_all()
 
-
     def statusBarHandler(self):
         textStatusBar = "    PromoGest2 - 800 034561 - www.promotux.it - info@promotux.it     "
         context_id =  self.pg2_statusbar.get_context_id("main_window")
@@ -179,14 +178,12 @@ class Main(GladeWidget):
                                    | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
                                    'Confermi la disconnessione?')
-
         response = dialog.run()
         dialog.destroy()
         if response ==  gtk.RESPONSE_YES:
             self.destroy()
         else:
             return
-
 
     def on_quit(self, widget=None):
         dialog = gtk.MessageDialog(self.getTopLevel(),
@@ -603,6 +600,28 @@ ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDum
         else:
             print "PASSIQUI"
             #return
+
+    def on_ricmedio_activate(self, widget):
+        if "Statistiche" in Environment.modulesList:
+            from promogest.modules.Statistiche.ui.StatisticaGenerale import StatisticaGenerale
+            anag = StatisticaGenerale(idMagazzino=None, nome="RICARICO MEDIO e INFLUENZA SULLE VENDITE")
+            anagWindow = anag.getTopLevel()
+#            showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
+            print "widgettt", widget
+        else:
+            fenceDialog()
+
+    def on_export_magazzino_activate(self, button):
+        if "Statistiche" in Environment.modulesList:
+            from promogest.modules.Statistiche.ui.StatisticheMagazzino import StatisticheMagazzino
+            anag = StatisticheMagazzino(idMagazzino=None)
+            anagWindow = anag.getTopLevel()
+#            showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
+        else:
+            fenceDialog()
+
+
+
 
     def on_main_window_key_press_event(self, widget, event):
         if event.type == gtk.gdk.KEY_PRESS:

@@ -234,7 +234,6 @@ E' presente una nuova versione disponibile"""
 
     def renderPage(self, feedToHtml):
         """ show the html page in the custom widget"""
-        pageData = {}
         pageData = {
                 "file" :"feed.html",
                 "feed" :feedToHtml,

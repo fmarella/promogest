@@ -107,6 +107,7 @@ def renderHTMLTemplate(pageData):
 def renderHTML(widget, html):
     if WEBKIT:
             widget.load_string(html,"text/html","utf-8", "file:///"+sys.path[0]+os.sep)
+            widget.show()
     else:
         document.open_stream('text/html')
         document.write_stream(html)

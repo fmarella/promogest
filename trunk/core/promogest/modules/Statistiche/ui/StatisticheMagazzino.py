@@ -70,7 +70,7 @@ class StatisticheMagazzino(GladeWidget):
         self.filechooserdialog_stats.destroy()
 
     def on_cancella_file_clicked(self, button):
-        self.filechooserdialog_stats.destroy()
+        self.filechooserdialog_stats.hide()
 
     def exportss(self, filename):
         intervallo = ''

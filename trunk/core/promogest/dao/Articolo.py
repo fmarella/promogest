@@ -487,6 +487,8 @@ class Articolo(Dao):
             dic = {k:articolo.c.id_famiglia_articolo ==v}
         elif k == 'idCategoria':
             dic = {k:articolo.c.id_categoria_articolo ==v}
+        elif k == 'idCategoriaList':
+            dic = {k:articolo.c.id_categoria_articolo.in_(v)}
         elif k == 'idStato':
             dic= {k:articolo.c.id_stato_articolo == v}
         elif k == 'cancellato':

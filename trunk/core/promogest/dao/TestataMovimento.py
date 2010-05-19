@@ -11,6 +11,7 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
 from DaoUtils import *
+from promogest.dao.Articolo import Articolo
 from Multiplo import Multiplo
 from RigaMovimento import RigaMovimento
 from RigaDocumento import RigaDocumento
@@ -106,6 +107,7 @@ class TestataMovimento(Dao):
     numeroMagazzini = property(_getNumeroMagazzini)
 
     def filter_values(self,k,v):
+        print "KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK", k, v
         if k == 'daNumero':
             dic = {k:testata_mov.c.numero >= v}
         elif k == 'aNumero':
@@ -122,8 +124,12 @@ class TestataMovimento(Dao):
             dic = {k:testata_mov.c.operazione == v}
         elif k == 'idMagazzino':
             dic = {k:testata_mov.c.id.in_(select([RigaMovimento.id_testata_movimento],and_(Riga.id==RigaMovimento.id,Riga.id_magazzino== v)))}
+        elif k == 'idMagazzinoList':
+            dic = {k:testata_mov.c.id.in_(select([RigaMovimento.id_testata_movimento],and_(Riga.id==RigaMovimento.id,Riga.id_magazzino.in_(v))))}
         elif k == 'idCliente':
             dic = {k:testata_mov.c.id_cliente == v}
+        elif k == 'idClienteList':
+            dic = {k:and_(testata_mov.c.id_cliente.in_(v))}
         elif k == 'idFornitore':
             dic = {k:testata_mov.c.id_fornitore == v}
         elif k == 'dataMovimento':
@@ -134,8 +140,16 @@ class TestataMovimento(Dao):
             dic = {k:testata_mov.c.id_testata_documento ==v}
         elif k == 'idTestataDocumento':
             dic = {k:testata_mov.c.id_testata_documento ==v}
-            #'statoDocumento': testata_mov.c.stato_documento == v,
-            #'idArticolo': testata_movimento.c.id_articolo == v  ARRIVANO QUI TRAMITE RIGA - RIGA DOCUMENTO
+#        elif k == 'idArticolo':
+#            dic = {k:and_(Articolo.id ==Riga.id_articolo,
+#                           Riga.id==RigaMovimento.id,
+#                           RigaMovimento.id_testata_movimento == TestataMovimento.id,
+#                           Articolo.id ==v)}
+#        elif k == 'idArticoloList':
+#            dic = {k:and_(Articolo.id ==Riga.id_articolo,
+#                           Riga.id==RigaMovimento.id,
+#                           RigaMovimento.id_testata_movimento == TestataMovimento.id,
+#                           Articolo.id.in_(v))}
         return  dic[k]
 
     def righeMovimentoDel(self,id=None):
@@ -244,6 +258,7 @@ class TestataMovimento(Dao):
             self.__righeMovimento = []
             #params["session"].flush()
 
+#riga=Table('riga',params['metadata'],schema = params['schema'],autoload=True)
 testata_mov=Table('testata_movimento', params['metadata'],schema = params['schema'],autoload=True)
 clie = Table('cliente',params['metadata'],schema = params['schema'],autoload=True)
 rigamovi = Table('riga_movimento',params['metadata'],schema = params['schema'],autoload=True)

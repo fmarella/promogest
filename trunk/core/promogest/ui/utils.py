@@ -500,6 +500,7 @@ def leggiOperazione(id):
     """
     Restituisce un dizionario con le informazioni sulla operazione letta
     """
+    _denominazione = id
     _fonteValore = ''
     _segno = ''
     _tipoPersonaGiuridica = ''
@@ -513,7 +514,8 @@ def leggiOperazione(id):
             _tipoPersonaGiuridica = res.tipo_persona_giuridica or ''
             _tipoOperazione = res.tipo_operazione or ''
 
-    return {"fonteValore": _fonteValore,
+    return {"denominazione":_denominazione,
+            "fonteValore": _fonteValore,
             "segno": _segno,
             "tipoPersonaGiuridica": _tipoPersonaGiuridica,
             "tipoOperazione": _tipoOperazione}
@@ -1514,7 +1516,7 @@ def calcolaListinoDaRicarico(costo=0, ricarico=0, iva=0):
 def calcolaRicarico(costo=0, listino=0, iva=0):
     """
     Calcola il ricarico a partire dal costo, dal prezzo di vendita e dall'iva
-    sel gli argomenti sono tutti oggetti Decimal, lo � anche il valore di ritorno
+    sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
     """
     if costo is None:
         costo = 0

@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.2  (Unix)">
+	<META NAME="AUTHOR" CONTENT="vete ">
+	<META NAME="CREATED" CONTENT="20100519;18392700">
+	<META NAME="CHANGEDBY" CONTENT="vete ">
+	<META NAME="CHANGED" CONTENT="20100519;19095200">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { size: landscape; margin: 2cm }
+		P { margin-bottom: 0.21cm }
+		TD P { margin-bottom: 0cm }
+		TH P { margin-bottom: 0cm }
+		A:link { so-language: zxx }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="it-IT" DIR="LTR">
+<P>Prospetto risultante per la statistica :{{pageData["nomestatistica"]}}</P>
+<P>Con i seguenti criteri di ricerca:</P>
+<P>Da Data: <strong>{{pageData["daData"]}}</strong>  A Data:<strong>{{pageData["aData"]}}</strong></P>
+<P>Produttore:<strong>{{pageData["produt"]}}</strong></P>
+<P>Categoria Cliente:<strong>{{pageData["cateclienti"]}} </strong></P>
+<P>Categoria Articolo: <strong>{{pageData["categorieArticolo"]}}</strong></P>
+<P>Magazzino:<strong>{{pageData["magazzini"]}}</strong></P>
+<P>Cliente:</P>
+<TABLE WIDTH=100% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=37*>
+	<COL WIDTH=37*>
+	<COL WIDTH=37*>
+	<COL WIDTH=37*>
+	<COL WIDTH=37*>
+	<COL WIDTH=37*>
+	<COL WIDTH=37*>
+	<THEAD>
+		<TR VALIGN=TOP>
+			<TH WIDTH=14%>
+				<P>Categoria</P>
+			</TH>
+			<TH WIDTH=14%>
+				<P>Pezzi Venduti</P>
+			</TH>
+			<TH WIDTH=14%>
+				<P>Valore Acquisto</P>
+			</TH>
+			<TH WIDTH=14%>
+				<P>Valore Vendita</P>
+			</TH>
+			<TH WIDTH=14%>
+				<P>Ricarico</P>
+			</TH>
+			<TH WIDTH=14%>
+				<P>Incidenza su Venduto</P>
+			</TH>
+			<TH WIDTH=14%>
+				<P>Incidenza Su Acquistato</P>
+			</TH>
+		</TR>
+	</THEAD>
+	<TBODY>
+	{% for cat in pageData["categorieArticolo"] %}
+		<TR VALIGN=TOP>
+			<TD WIDTH=14%>
+				<P>{{cat}}</P>
+			</TD>
+			<TD WIDTH=14%>
+				<P>{{pageData["quantitaVendutaDict"][cat]|int}}</P>
+			</TD>
+			<TD WIDTH=14%>
+				<P>{{pageData["valoreAcquistoDict"][cat]|round(2)}}</P>
+			</TD>
+			<TD WIDTH=14%>
+				<P>{{pageData["valoreVenditaDict"][cat]|round(2)}}</P>
+			</TD>
+			<TD WIDTH=14%>
+				<P>{{pageData["ricaricomedioDict"][cat]|round(2)}}</P>
+			</TD>
+			<TD WIDTH=14%>
+				<P>{{pageData["incidenzaVenditaDict"][cat]|round(2)}} %</P>
+			</TD>
+			<TD WIDTH=14%>
+				<P>{{pageData["incidenzaAcquistoDict"][cat]|round(2)}} %	</P>
+			</TD>
+		</TR>
+		{% endfor %}
+				<TR VALIGN=TOP>
+			<TD WIDTH=14%>
+				<P>---------</P>
+			</TD>
+			<TD WIDTH=14%>
+				<P>{{pageData["quantitaVendutaTotale"]|int}}</P>
+			</TD>
+			<TD WIDTH=14%>
+				<P>{{pageData["valoreAcquistoTotale"]|round(2)}}</P>
+			</TD>
+			<TD WIDTH=14%>
+				<P>{{pageData["valoreVenditaTotale"]|round(2)}}</P>
+			</TD>
+			<TD WIDTH=14%>
+				<P>----------</P>
+			</TD>
+			<TD WIDTH=14%>
+				<P>100%</P>
+			</TD>
+			<TD WIDTH=14%>
+				<P>100%</P>
+			</TD>
+		</TR>
+	</TBODY>
+</TABLE>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+</BODY>
+</HTML>

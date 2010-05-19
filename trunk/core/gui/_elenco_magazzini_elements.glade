@@ -14,7 +14,6 @@
           <object class="GtkVBox" id="vbox12">
             <property name="width_request">680</property>
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
             <property name="spacing">5</property>
             <child>
               <object class="GtkScrolledWindow" id="scrolledwindow14">
@@ -105,20 +104,7 @@ Magazzino</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkToggleButton" id="statistiche_togglebutton">
-                    <property name="label" translatable="yes">Statistiche</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="image">image5</property>
-                    <property name="focus_on_click">False</property>
-                    <signal name="toggled" handler="on_statistiche_togglebutton_clicked"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">4</property>
-                  </packing>
+                  <placeholder/>
                 </child>
               </object>
               <packing>
@@ -155,9 +141,5 @@ Magazzino</property>
   <object class="GtkImage" id="image4">
     <property name="visible">True</property>
     <property name="pixbuf">inventario24x24.png</property>
-  </object>
-  <object class="GtkImage" id="image5">
-    <property name="visible">True</property>
-    <property name="pixbuf">sconti24x24.png</property>
   </object>
 </interface>

@@ -17,7 +17,10 @@ class ClienteCategoriaCliente(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'idCliente' : cliente_categoria_cliente.c.id_cliente ==v}
+        if k =='idCliente':
+            dic= {k : cliente_categoria_cliente.c.id_cliente ==v}
+        elif k =='idCategoriaList':
+            dic= {k : cliente_categoria_cliente.c.id_categoria_cliente.in_(v)}
         return  dic[k]
 
 cliente_categoria_cliente=Table('cliente_categoria_cliente',
