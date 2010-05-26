@@ -232,7 +232,7 @@ class AnagraficaFamiglieArticoliEdit(AnagraficaEdit):
         self.dao.denominazione = self.denominazione_entry.get_text()
         self.dao.denominazione_breve =self.denominazione_breve_entry.get_text()
         self.dao.id_padre = findIdFromCombobox(self.id_padre_combobox)
-        if self.dao.id == self.dao.id_padre:
+        if self.dao.id and self.dao.id == self.dao.id_padre:
             messageInfo(msg="NON SI PUÒ ASSEGNARE QUESTO COME PADRE\n È UGUALE AL FIGLIO ")
             return
         else:
