@@ -9,18 +9,13 @@
  """
 
 import gtk
-import gobject
 
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
-from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.FamigliaArticolo
 from promogest.dao.FamigliaArticolo import FamigliaArticolo
 
 from utils import *
 from utilsCombobox import *
-
 
 
 class AnagraficaFamiglieArticoli(Anagrafica):
@@ -35,7 +30,6 @@ class AnagraficaFamiglieArticoli(Anagrafica):
                             reportHandler=AnagraficaFamiglieArticoliReport(self),
                             editElement=AnagraficaFamiglieArticoliEdit(self))
         self.hideNavigator()
-
 
 
 class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
@@ -124,7 +118,6 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
 
         padri= FamigliaArticolo().fathers()
 
-
         def recurse(padre,f):
             """ funzione di recursione per ogni figlio di ogni padre """
             for s in f.children:
@@ -135,10 +128,7 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
                                                     None))
                 recurse(figlio1,s)
 
-
-        for f in FamigliaArticolo().select(batchSize=None):
-            #print "LGLGLGLG", FamigliaArticolo.parents, FamigliaArticolo().parent
-            #print "AHAHAHAH", FamigliaArticolo.childrens, FamigliaArticolo().children
+        for f in fams:
             if not f.parent:
                 padre = self._treeViewModel.append(None, (f,
                                                         (f.codice or ''),
@@ -148,16 +138,7 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
                 if f.children:
                     recurse(padre,f)
 
-        #for f in padri:
-            #padre = self._treeViewModel.append(None, (f,
-                                                    #(f.codice or ''),
-                                                    #(f.denominazione_breve or ''),
-                                                    #(f.denominazione or ''),
-                                                    #None))
-            ##figli= FamigliaArticolo().select(idPadre= f.id, batchSize=None)
-            #print "HHHHHHHHHHHHHHHH", f.children
-            #recurse(padre,f)
-
+        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
         self._anagrafica.anagrafica_filter_treeview.collapse_all()
 
         denominazione = emptyStringToNone(self.denominazione_filter_entry.get_text())
@@ -213,11 +194,9 @@ class AnagraficaFamiglieArticoliEdit(AnagraficaEdit):
                                 gladeFile='_anagrafica_famiglie_articoli_elements.glade')
         self._widgetFirstFocus = self.codice_entry
 
-
     def draw(self,cplx=False):
         #Popola combobox famiglie articoli
         fillComboboxFamiglieArticoli(self.id_padre_combobox)
-
 
     def setDao(self, dao):
         if dao is None:
@@ -228,14 +207,12 @@ class AnagraficaFamiglieArticoliEdit(AnagraficaEdit):
             self.dao = FamigliaArticolo().getRecord(id = dao.id)
         self._refresh()
 
-
     def _refresh(self):
         self.codice_entry.set_text(self.dao.codice or '')
         self.denominazione_entry.set_text(self.dao.denominazione or '')
         self.denominazione_breve_entry.set_text(self.dao.denominazione_breve or '')
         fillComboboxFamiglieArticoli(self.id_padre_combobox, ignore=[self.dao.id])
         findComboboxRowFromId(self.id_padre_combobox, self.dao.id_padre)
-
 
     def saveDao(self):
         if (self.codice_entry.get_text() == ''):
