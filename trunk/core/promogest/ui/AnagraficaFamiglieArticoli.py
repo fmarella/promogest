@@ -129,6 +129,9 @@ class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):
                 recurse(figlio1,s)
 
         for f in fams:
+            if f.id == f.id_padre:
+                f.id_padre= None
+                f.persist()
             if not f.parent:
                 padre = self._treeViewModel.append(None, (f,
                                                         (f.codice or ''),
@@ -229,4 +232,8 @@ class AnagraficaFamiglieArticoliEdit(AnagraficaEdit):
         self.dao.denominazione = self.denominazione_entry.get_text()
         self.dao.denominazione_breve =self.denominazione_breve_entry.get_text()
         self.dao.id_padre = findIdFromCombobox(self.id_padre_combobox)
-        self.dao.persist()
+        if self.dao.id == self.dao.id_padre:
+            messageInfo(msg="NON SI PUÒ ASSEGNARE QUESTO COME PADRE\n È UGUALE AL FIGLIO ")
+            return
+        else:
+            self.dao.persist()
