@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.20"/>
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkDialog" id="anagrafica_complessa_detail_dialog">
     <property name="title" translatable="yes">Detail</property>
@@ -26,6 +26,8 @@
                 <property name="spacing">2</property>
               </object>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">0</property>
                 <property name="secondary">True</property>
               </packing>
