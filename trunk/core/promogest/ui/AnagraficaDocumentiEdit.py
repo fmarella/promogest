@@ -138,7 +138,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def on_scorporo_button_clicked(self, button):
         """ Bottone con una "s" minuscola, che permette di effettuare "al volo"
         lo scorporo di un valore finale nel campo prezzo """
-        iva = self.percentuale_iva_entry.get_text()
+        iva = self.percentuale_iva_entry.get_text().strip()
         if iva == "" or iva == "0":
             self.showMessage(msg="ATTENZIONE IVA a 0%")
         else:
