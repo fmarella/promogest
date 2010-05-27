@@ -165,8 +165,7 @@ class Sconti(GladeWidget):
                 if tipo == 'valore':
                     decimals = Environment.conf.decimals
                 valore = ('%-10.' + str(decimals) + 'f') % float(r[0])
-
-                self.listSconti.append({"valore": valore, "tipo": tipo})
+                self.listSconti.append({"valore": valore.strip(), "tipo": tipo})
             except:
                 self.show_message('Valori non corretti:' + r[0] + ', ' + r[1] + ' !')
                 return

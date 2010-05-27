@@ -811,7 +811,7 @@ del documento.
             if self._righe[i]["sconti"] is not None:
                 for scon in self._righe[i]["sconti"]:
                     daoSconto = ScontoRigaDocumento()
-                    daoSconto.valore = Decimal(str(scon["valore"]).strip())
+                    daoSconto.valore = scon["valore"]
                     daoSconto.tipo_sconto = scon["tipo"]
                     scontiRigaDocumento.append(daoSconto)
             #scontiRigaDocumento[daoRiga] = sconti
