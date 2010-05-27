@@ -936,7 +936,7 @@ del documento.
         self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
         self.descrizione_entry.set_text(self._righe[0]["descrizione"])
         self.codice_articolo_fornitore_entry.set_text(self._righe[0]["codiceArticoloFornitore"])
-        self.percentuale_iva_entry.set_text(str(self._righe[0]["percentualeIva"]))
+        self.percentuale_iva_entry.set_text(str(self._righe[0]["percentualeIva"]).strip())
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
         self.quantita_entry.set_text(str(self._righe[0]["quantita"]))
         try:
