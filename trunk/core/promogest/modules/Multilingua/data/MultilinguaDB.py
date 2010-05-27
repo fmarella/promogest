@@ -62,15 +62,6 @@ if (1,) not in s or s ==[]:
     userlangui = userroleTable.insert()
     userlangui.execute(id_language = 1, id_user =1)
 
-
-
-
-
-
-
-
-
-
 actionTable = Table('action', meta,
     Column('id', Integer, primary_key=True),
     Column('denominazione_breve', String(25), nullable=False),
@@ -134,4 +125,3 @@ if (1,) not in s or s ==[]:
         #se tutto è andato bene ..... posso settare la variabile primoavvio su False
         #conf.RuoliAzioni.primoavvio = "no"
         #conf.save()
-

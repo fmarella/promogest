@@ -22,6 +22,8 @@ import string, re
 import pysvn
 import xml.etree.ElementTree as ET
 import unicodedata
+import urllib, urllib2
+import simplejson
 
 
 try:  # necessario per gestire i custom widgts con glade3 e gtkBuilder
@@ -2673,6 +2675,18 @@ def setconf(key, section):
 def orda(name):
      a = "".join([str(ord(x)) for x in list(name)])
      return a
+
+def checkInstallation():
+    return
+    from promogest.dao.Setconf import SetConf
+    url = "http://localhost:8080/check"
+    data = {"masterkey" : SetConf().select(key="install_code",section="Master")[0].value,
+            "modules":simplejson.dumps(SetConf().select(section="Module", batchSize=None))}
+    values = urllib.urlencode(data)
+    req = urllib2.Request(url, values)
+    response = urllib2.urlopen(req)
+    content = response.read()
+    print content
 
 def scribusVersion(slafile):
     print "SLAFILEEEEEEEEEEEEEEEEEEEEEEEEEEE", slafile

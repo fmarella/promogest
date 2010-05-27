@@ -34,7 +34,7 @@ from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from promogest.dao.AppLog import AppLog
 from GtkExceptionHandler import GtkExceptionHandler
-from utils import hasAction,on_status_activate, checkAggiorna, aggiorna
+from utils import hasAction,on_status_activate, checkAggiorna, aggiorna, checkInstallation
 from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
 #from promogest.ui.DocuView import DocuView
@@ -298,7 +298,6 @@ class Login(GladeApp):
                     if hasAction(actionID=1):
                         if Environment.tipodb !="sqlite":
                             Environment.params["schema"]=self.azienda
-
                         #Environment.meta.reflect(schema=self.azienda )
                         self.login_window.hide()
                         global windowGroup
@@ -308,6 +307,7 @@ class Login(GladeApp):
                         #saveAppLog(action="login", status=True,value=username)
                         Environment.pg2log.info("LOGIN  id, user, role azienda: %s, %s" %(repr(Environment.params['usernameLoggedList']),self.azienda) )
                         from SetConf import *
+                        checkInstallation()
                         from Main import Main
                         main = Main(self.azienda,
                                     self.anagrafiche_modules,
