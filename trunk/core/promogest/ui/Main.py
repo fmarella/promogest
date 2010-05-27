@@ -22,6 +22,7 @@ from promogest.ui.SendEmail import SendEmail
 from utils import hasAction,fenceDialog, aggiorna
 from utilsCombobox import *
 from ParametriFrame import ParametriFrame
+from SetConf import SetConfUI
 from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
 import Login
 
@@ -404,7 +405,9 @@ class Main(GladeWidget):
 
     def on_configurazione_menu_activate(self, widget):
         if not hasAction(actionID=14):return
+
         configuraWindow = ConfiguraWindow(self)
+        configuraWindow = SetConfUI(self)
         showAnagrafica(self.getTopLevel(), configuraWindow)
 
     def on_dati_azienda_activate(self, widget):
@@ -467,10 +470,13 @@ class Main(GladeWidget):
 
 
     def on_credits_menu_activate(self, widget):
+        context_id =  self.pg2_statusbar.get_context_id("GENERICO")
+        self.pg2_statusbar.push(context_id,"PROVIAMO")
         from promogest.dao.Setting import Setting
         creditsDialog = GladeWidget('credits_dialog', callbacks_proxy=self)
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
         creditsDialog.getTopLevel().show_all()
+        self.pg2_statusbar.push(context_id,"SECONDO")
         encoding = locale.getlocale()[1]
         utf8conv = lambda x : unicode(x, encoding).encode('utf8')
         licenseText = ''
@@ -483,6 +489,7 @@ class Main(GladeWidget):
             textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
         textBuffer.insert(textBuffer.get_end_iter(),"""I moduli installati sono :
 """)
+#        self.pg2_statusbar.push(context_id,"TERZO")
         for line in Environment.modulesList:
             textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
         response = creditsDialog.credits_dialog.run()

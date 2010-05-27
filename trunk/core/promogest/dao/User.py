@@ -93,4 +93,3 @@ if (tipo_eng == "postgres") \
 if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
     from promogest.modules.MultiLingua.dao.UserLanguage import UserLanguage
     std_mapper.add_property("userlang",relation(UserLanguage,primaryjoin=(user.c.id==UserLanguage.id_user),backref="users",uselist=False))
-

@@ -49,11 +49,12 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     """ Modifica un record dei documenti """
 
     def __init__(self, anagrafica):
-        self.anapri=AnagraficaEdit.__init__(self,
+        AnagraficaEdit.__init__(self,
                                 anagrafica,
                                 'anagrafica_documenti_detail_vbox',
                                 'Dati Documento',
                                 'anagrafica_documenti.glade')
+#        print "ANAGRAFICA EDITA", self.dialogTopLevelself.docu_spinner
 #        self.placeWindow(self.getTopLevel())
         self._widgetFirstFocus = self.data_documento_entry
         # contenitore (dizionario) righe (riga 0 riservata per  variazioni in corso)
@@ -128,6 +129,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.label38.destroy()
             self.label40.destroy()
             self.totale_periodo_label.destroy()
+
 
     def draw(self, cplx=False):
         self.cplx = cplx
@@ -839,10 +841,12 @@ del documento.
             self.dao.registro_numerazione= valori[1]
         #porto in persist tre dizionari: uno per gli sconti sul totale, l'altro per gli sconti sulle righe e le righe stesse
         self.dao.persist()
+
         self.label_numero_righe.hide()
         text = str(len(self.dao.righe))
         self.label_numero_righe.set_text(text)
         self.label_numero_righe.show()
+
 
     def on_importo_da_ripartire_entry_changed(self, entry):
         self.dao.removeDividedCost()
@@ -1259,7 +1263,6 @@ del documento.
                 orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
         batchSize = Environment.conf.batch_size
         if self.articolo_matchato:
-#            print "KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK"
             arts = [self.articolo_matchato]
         else:
             arts = Articolo().select(codice=prepareFilterString(codice),
@@ -1741,7 +1744,7 @@ del documento.
 
     def showMessage(self, msg):
         """ Generic Show dialog func """
-        dialog = gtk.MessageDialog(self.anapri,
+        dialog = gtk.MessageDialog(self.getTopLevel(),
                                     gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
         dialog.run()

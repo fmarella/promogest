@@ -134,15 +134,15 @@ class SimpleGladeWrapper:
         #self.new()
 
 
-    def __repr__(self):
-        class_name = self.__class__.__name__
-        if self.main_widget:
-#            root = gtk.Widget.get_name(self.main_widget)
-            root = gtk.Buildable.get_name(self.main_widget)
-            repr = '%s(path="%s", root="%s")' % (class_name, self.glade_path, root)
-        else:
-            repr = '%s(path="%s")' % (class_name, self.glade_path)
-        return repr
+#    def __repr__(self):
+#        class_name = self.__class__.__name__
+#        if self.main_widget:
+##            root = gtk.Widget.get_name(self.main_widget)
+#            root = gtk.Buildable.get_name(self.main_widget)
+#            repr = '%s(path="%s", root="%s")' % (class_name, self.glade_path, root)
+#        else:
+#            repr = '%s(path="%s")' % (class_name, self.glade_path)
+#        return repr
 
 
     def new(self):

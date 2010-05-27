@@ -1330,12 +1330,6 @@ class AnagraficaEdit(GladeWidget):
         else:
             return True
 
-    def setFocus(self, widget=None):
-        if widget is None:
-            self._widgetFirstFocus.grab_focus()
-        else:
-            widget.grab_focus()
-
 
 
 class AnagraficaPrintPreview(GladeWidget):

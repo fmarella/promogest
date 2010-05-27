@@ -98,8 +98,6 @@ def getConfigureDir(company='__default__'):
     except getopt.GetoptError:
         return default
 
-
-
 def startdir():
     startDir = getConfigureDir()
     promogestStartDir = os.path.expanduser('~') + os.sep + startDir + os.sep
@@ -156,13 +154,6 @@ def set_configuration(company=None, year = None):
                 for s in slas:
                     shutil.copy(s, templatesDir)
 
-            #dataDir = promogestDir + 'data' + os.sep
-            #if not (os.path.exists(dataDir)):
-                #os.mkdir(dataDir)
-                #slas = glob.glob(os.path.join('.', 'data', '*.*'))
-                #for s in slas:
-                    #shutil.copy(s, dataDir)
-
             reportTemplatesDir = promogestDir + 'report-templates' + os.sep
             if not (os.path.exists(reportTemplatesDir)):
                 os.mkdir(reportTemplatesDir)
@@ -189,7 +180,6 @@ def set_configuration(company=None, year = None):
     except IOError:
         msg = ('Il file configure non e\' stato trovato !\n\n' +
                'Il file verra creato in questo momento con valori di default\n' +
-               'e una connessione al database demo di Promotux.\n\n' +
                'Ti invitiamo a riconfigurare il setup secondo le tue esigenze.')
         overDialog = gtk.MessageDialog(None,
                                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -335,15 +325,7 @@ def set_configuration(company=None, year = None):
 
     importDebug = True
 
-
-#mainSchema = "promogest2"
-#mainSchema = None
-#try :
 azienda=conf.Database.azienda
-#azienda = None
-#except:
-    #azienda = "azienda_prova"
-#print sys.path
 
 try:
     tipodb = conf.Database.tipodb
@@ -396,30 +378,6 @@ else:
                     encoding='utf-8',
                     convert_unicode=True )
 
-#if hasattr(conf,'Database2'):
-#    print "HO LA CONFIGURAZIONE PER IL SECONDO DATABASE"
-##    try:
-#    database2 = conf.Database2.database2
-#    port2 = conf.Database2.port2
-#    user2 = conf.Database2.user2
-#    password2 = conf.Database2.password2
-#    host2 = conf.Database2.host2
-#    engine2 = create_engine('postgres:'+'//'
-#                    +user2+':'
-#                    + password2+ '@'
-#                    + host2 + ':'
-#                    + port2 + '/'
-#                    + database2,
-#                    encoding='utf-8',
-#                    convert_unicode=True )
-#    engine2.echo = False
-#    Session2 = scoped_session(sessionmaker(bind=engine, autoflush=True))
-#    session2 = Session2()
-#    meta2 = MetaData(engine2)
-#    print "IL SECONDO DB E' A POSTO"
-#    except:
-#        print "MESSO IN UN TRY IL SECONDO DB"
-
 tipo_eng = engine.name
 engine.echo = False
 meta = MetaData(engine)
@@ -434,6 +392,7 @@ params = {'engine': engine ,
         'schema': azienda,
         'metadata': meta,
         'session' : session,
+        "tipo_db":tipodb,
         'rowsFamily' : [],
         'defaultLimit': 5,
         'widthThumbnail' : 64,
@@ -473,14 +432,3 @@ def hook(et, ev, eb):
     pg2log.debug("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
     print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE"
 sys.excepthook = hook
-
-#import warnings
-
-#def fxn():
-#warnings.warn("deprecated", DeprecationWarning)
-#warnings.showwarning()
-#print "GFGFGFG", warnings.filterwarnings('default')
-#with warnings.catch_warnings():
-    ##print "GFGFGFGFG", warnings.catch_warnings()
-    #print warnings.simplefilter("always")
-    #fxn()

@@ -501,7 +501,6 @@ def mostraArticoloPart(anaedit, id, art=None):
     else:
         anaedit.descrizione_entry.grab_focus()
 
-
 def on_multi_line_button_clickedPart(anaedit, widget):
     """ widget per l'inserimento di righe "multiriga" """
     mleditor = GladeWidget('multi_linea_editor', callbacks_proxy=anaedit)

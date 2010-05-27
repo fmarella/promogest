@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 2.6 -->
+  <requires lib="gtk+" version="2.20"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkDialog" id="anagrafica_complessa_detail_dialog">
     <property name="title" translatable="yes">Detail</property>
@@ -8,12 +8,11 @@
     <property name="destroy_with_parent">True</property>
     <property name="icon">promogest.png</property>
     <property name="type_hint">normal</property>
-    <signal name="response" handler="on_anagrafica_complessa_detail_dialog_response"/>
-    <signal name="delete_event" handler="on_anagrafica_complessa_detail_dialog_close"/>
+    <signal name="response" handler="on_anagrafica_complessa_detail_dialog_response" swapped="no"/>
+    <signal name="delete-event" handler="on_anagrafica_complessa_detail_dialog_close" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox5">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <placeholder/>
         </child>
@@ -21,6 +20,16 @@
           <object class="GtkHButtonBox" id="dialog-action_area5">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
+            <child>
+              <object class="GtkStatusbar" id="pg2_statusbar">
+                <property name="visible">True</property>
+                <property name="spacing">2</property>
+              </object>
+              <packing>
+                <property name="position">0</property>
+                <property name="secondary">True</property>
+              </packing>
+            </child>
             <child>
               <object class="GtkButton" id="apply_button">
                 <property name="label">gtk-apply</property>
@@ -33,7 +42,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">0</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child>
@@ -48,7 +57,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">1</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child>
@@ -63,7 +72,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">2</property>
+                <property name="position">3</property>
               </packing>
             </child>
           </object>

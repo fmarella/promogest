@@ -307,15 +307,14 @@ class Login(GladeApp):
                         self.importModulesFromDir('promogest/modules')
                         #saveAppLog(action="login", status=True,value=username)
                         Environment.pg2log.info("LOGIN  id, user, role azienda: %s, %s" %(repr(Environment.params['usernameLoggedList']),self.azienda) )
-
+                        from SetConf import *
                         from Main import Main
                         main = Main(self.azienda,
                                     self.anagrafiche_modules,
                                     self.parametri_modules,
                                     self.anagrafiche_dirette_modules,
                                     self.frame_modules,
-                                    self.permanent_frames,
-)
+                                    self.permanent_frames)
                         main.getTopLevel().connect("destroy", on_main_window_closed,
                                             self.login_window)
                         main.show()

@@ -23,6 +23,7 @@ import pysvn
 import xml.etree.ElementTree as ET
 import unicodedata
 
+
 try:  # necessario per gestire i custom widgts con glade3 e gtkBuilder
     import Login
 except:
@@ -2649,8 +2650,32 @@ def deaccenta(riga=None):
     only_ascii = nkfd_form.encode('ASCII', 'ignore')
     return only_ascii
 
+def setconf(key, section):
+    """ Importante funzione che "semplifica" la lettura dei dati dalla tabella
+    di configurazione setconf
+    Tentativo abbastanza rudimentale per gestire le liste attraverso i ; ma
+    forse si potrebbero gestire più semplicemente con le virgole
+    """
+    from promogest.dao.Setconf import SetConf
+    conf = SetConf().select(key=key, section=section)
+    c = []
+    if conf:
+        if ";" in str(conf[0].value):
+            val = str(conf[0].value).split(";")
+            for a in val:
+                c.append(a.strip())
+            return c
+        else:
+            return str(conf[0].value)
+    else:
+        return ""
+
+def orda(name):
+     a = "".join([str(ord(x)) for x in list(name)])
+     return a
 
 def scribusVersion(slafile):
+    print "SLAFILEEEEEEEEEEEEEEEEEEEEEEEEEEE", slafile
     doc = ET.parse(slafile)
     root = doc.getroot()
     document = doc.findall('DOCUMENT')[0]
