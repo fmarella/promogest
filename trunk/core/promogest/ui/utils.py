@@ -2685,11 +2685,11 @@ def checkInstallation():
         req = urllib2.Request(url, values)
         response = urllib2.urlopen(req)
         content = response.read()
-        print "PRIMA", content
+#        print "PRIMA", content
         conte = json.loads(content)
     except:
         print "ERRORE NEL COLLEGAMENTO AL CHECK INSTALLAZIONE"
-    print "DOOP", conte
+#    print "DOOP", conte
 
 def scribusVersion(slafile):
     print "SLAFILEEEEEEEEEEEEEEEEEEEEEEEEEEE", slafile
