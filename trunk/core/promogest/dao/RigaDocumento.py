@@ -213,13 +213,11 @@ class RigaDocumento(Dao):
         self.__scontiRigaDocumento = self.__dbScontiRigaDocumento[:]
         return self.__scontiRigaDocumento
 
-
     def _setScontiRigaDocumento(self, value):
 
         self.__scontiRigaDocumento = value
 
     sconti = property(_getScontiRigaDocumento, _setScontiRigaDocumento)
-
 
     def filter_values(self,k,v):
         dic= {  'idTestataDocumento' : riga_doc.c.id_testata_documento==v }

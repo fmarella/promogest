@@ -23,7 +23,7 @@ import pysvn
 import xml.etree.ElementTree as ET
 import unicodedata
 import urllib, urllib2
-import simplejson
+import json
 
 
 try:  # necessario per gestire i custom widgts con glade3 e gtkBuilder
@@ -2677,16 +2677,19 @@ def orda(name):
      return a
 
 def checkInstallation():
-    return
     from promogest.dao.Setconf import SetConf
-    url = "http://localhost:8080/check"
-    data = {"masterkey" : SetConf().select(key="install_code",section="Master")[0].value,
-            "modules":simplejson.dumps(SetConf().select(section="Module", batchSize=None))}
-    values = urllib.urlencode(data)
-    req = urllib2.Request(url, values)
-    response = urllib2.urlopen(req)
-    content = response.read()
-    print content
+    try:
+        url = "http://localhost:8080/check"
+        data = {"masterkey" : SetConf().select(key="install_code",section="Master")[0].value}
+        values = urllib.urlencode(data)
+        req = urllib2.Request(url, values)
+        response = urllib2.urlopen(req)
+        content = response.read()
+        print "PRIMA", content
+        conte = json.loads(content)
+    except:
+        print "ERRORE NEL COLLEGAMENTO AL CHECK INSTALLAZIONE"
+    print "DOOP", conte
 
 def scribusVersion(slafile):
     print "SLAFILEEEEEEEEEEEEEEEEEEEEEEEEEEE", slafile
