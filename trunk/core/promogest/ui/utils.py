@@ -23,7 +23,10 @@ import pysvn
 import xml.etree.ElementTree as ET
 import unicodedata
 import urllib, urllib2
-import json
+try:
+    import json
+except:
+    import simpljson as json
 
 
 try:  # necessario per gestire i custom widgts con glade3 e gtkBuilder
