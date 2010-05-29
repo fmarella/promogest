@@ -2,15 +2,6 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="stock">gtk-execute</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment1">
-    <property name="upper">9999</property>
-    <property name="value">1</property>
-    <property name="step_increment">1</property>
-  </object>
   <object class="GtkDialog" id="login_window">
     <property name="title" translatable="yes">Accesso a PromoGest2 "MentoR" </property>
     <property name="resizable">False</property>
@@ -155,23 +146,6 @@ Inserite i dati:.</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="password_entry">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Inserisci la Password</property>
-                        <property name="visibility">False</property>
-                        <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
-                        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkComboBoxEntry" id="azienda_comboboxentry">
                         <property name="visible">True</property>
                         <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
@@ -218,6 +192,19 @@ Inserite i dati:.</property>
                       <packing>
                         <property name="x_options">GTK_FILL</property>
                         <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="password_entry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="invisible_char">●</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
                       </packing>
                     </child>
                   </object>
@@ -331,5 +318,14 @@ Inserite i dati:.</property>
       <action-widget response="0">button_quit</action-widget>
       <action-widget response="-11">aggiorna_button</action-widget>
     </action-widgets>
+  </object>
+  <object class="GtkAdjustment" id="adjustment1">
+    <property name="upper">9999</property>
+    <property name="value">1</property>
+    <property name="step_increment">1</property>
+  </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="stock">gtk-execute</property>
   </object>
 </interface>
