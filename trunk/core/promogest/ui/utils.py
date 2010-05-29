@@ -26,7 +26,7 @@ import urllib, urllib2
 try:
     import json
 except:
-    import simpljson as json
+    None
 
 
 try:  # necessario per gestire i custom widgts con glade3 e gtkBuilder
