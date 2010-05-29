@@ -2696,7 +2696,11 @@ def checkInstallation():
 
 def scribusVersion(slafile):
     print "SLAFILEEEEEEEEEEEEEEEEEEEEEEEEEEE", slafile
-    doc = ET.parse(slafile)
+    try:
+        doc = ET.parse(slafile)
+    except:
+        Environment.new_print_enjine=False
+        return False
     root = doc.getroot()
     document = doc.findall('DOCUMENT')[0]
     slaversion = root.get('Version')
