@@ -53,6 +53,7 @@ class SlaTpl2Sla(SlaParser):
         if not self.label:
             self.duplicateElement(self.pagesNumber)
             self.duplicateTags()
+            self.doc.write(self.pdfFolder+"_tep.sla")
             self.fillDocument()
         elif self.label and not self.classic:
             self.duplicateElement(self.pagesNumber)
@@ -61,6 +62,10 @@ class SlaTpl2Sla(SlaParser):
 
 #        self.fillDocument()
         self.doc.write(self.pdfFolder+"_temppp.sla")
+
+    def fileElaborated(self):
+        """ aggiunto per maggiore pulizia"""
+        return self.pdfFolder+"_temppp.sla"
 
     def indexGroupTableFromListDict(self, group):
         """
@@ -231,6 +236,7 @@ class SlaTpl2Sla(SlaParser):
                 rows = sorted(rows)
                 numeroRighe = len(rows)-1
                 for cel in cellsprop:
+#                    print "CELLLLLLLLLLLLLLLLA", cel
                     CH = None
                     tags = {}
                     rowgg = rows.index(float(cel.values()[0][0].get("gYpos")))
@@ -240,7 +246,10 @@ class SlaTpl2Sla(SlaParser):
                         CH = ite.get("CH")
                         tags = Sla2pdfUtils.findTags(CH)
                     column = col.index(float(cel.values()[0][0].get("gXpos")))+1
+                    # quelli con tag e CH sono quelli della seconda riga che poi dovrò andare a ciclare
+                    # nella prima riga c'è di norma solo un CH ma senza TAG
                     if tags and CH:
+                        # build a dict with all second row data with tags and CH
                         rigaConItextDict[str(column)+"%"+groupname] = [CH,tags,ite,cel]
                         for k in tags.keys():
                             if k.replace(' ', '') is not '':
@@ -256,20 +265,11 @@ class SlaTpl2Sla(SlaParser):
                             tags = rigaConItextDict[str(colu) +"%"+ groupname][1]
                             ite = rigaConItextDict[str(colu)+"%"+groupname][2]
                             ricel = rigaConItextDict[str(colu)+"%"+groupname][3]
+
                             attributes = ite.items()
                             itedict= {}
                             for attrr in attributes:
                                 itedict[attrr[0]] = attrr[1]
-                            para = ricel.values()[0][2]
-                            for p in para:
-                                paradict = {}
-                                attri = p.items()
-                                for attrr in attri:
-                                    paradict[attrr[0]] = attrr[1]
-                                ElementTree.SubElement(cel.values()[0][0], 'para', paradict)
-
-
-
                             tmp = ch
                             for k in tags.keys():
                                 if k.replace(' ', '') is not '':
@@ -279,20 +279,36 @@ class SlaTpl2Sla(SlaParser):
                                         tmp = self.getTagToPrint(tmp, column = colu,row=row-1, tags=tags,k=k,pageNamber=pageNamber)
                                 itedict["CH"] = tmp
                                 ElementTree.SubElement(cel.values()[0][0], 'ITEXT', itedict)
-                                trai = ricel.values()[0][3]
-                                origtrai = cel.values()[0][3]
-                                if origtrai:
-                                    origtrai=origtrai[0]
-                                    for t in trai:
-                                        attria = t.items()
-                                        for attrr in attria:
-                                            origtrai.set(attrr[0],attrr[1])
-                                else:
-                                    for t in trai:
-                                        traidict = {}
-                                        attria = t.items()
-                                        for attrr in attria:
-                                            traidict[attrr[0]] = attrr[1]
+
+#                            origpara = ricel.values()[0][2]
+#                            para = cel.values()[0][2]
+#                            if origpara:
+#                                origpara=origpara[0]
+#                                if para:
+#                                    for t in para:
+#                                        attria = t.items()
+#                                        for attrr in attria:
+#                                            origpara.set(attrr[0],attrr[1])
+#                                else:
+#                                    paradict = {}
+#                                    for attrr in origpara.items():
+#                                        paradict[attrr[0]] = attrr[1]
+#                                    ElementTree.SubElement(cel.values()[0][0], 'para', paradict)
+
+                            trai = ricel.values()[0][3]
+                            origtrai = cel.values()[0][3]
+                            if origtrai:
+                                origtrai=origtrai[0]
+                                for t in trai:
+                                    attria = t.items()
+                                    for attrr in attria:
+                                        origtrai.set(attrr[0],attrr[1])
+                            else:
+                                for t in trai:
+                                    traidict = {}
+                                    attria = t.items()
+                                    for attrr in attria:
+                                        traidict[attrr[0]] = attrr[1]
                                         ElementTree.SubElement(cel.values()[0][0], 'trail', traidict)
             else:
                 # Qui vengono gestite le tabelle e le celle con tag non iteranti

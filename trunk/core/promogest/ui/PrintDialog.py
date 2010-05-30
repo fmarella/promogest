@@ -133,22 +133,22 @@ class PrintDialogHandler(GladeWidget):
 
             pdfReader = ''
             labelReader = ""
-            if hasattr(Environment.conf,'Documenti'):
-                pdfReaders = getattr(Environment.conf.Documenti,'pdf_reader','')
-                for pdfReader in pdfReaders.split(",") :
-                    ret = os.system('which ' + pdfReader + ' > /dev/null')
-                    if ret==0:
-                        break
-            if pdfReader == '':
-                if sys.platform != 'win32':
-                    pdfReader = 'okular'
-            # FIXME: what if user closes Promogest before the PDF reader?
+#            if hasattr(Environment.conf,'Documenti'):
+#                pdfReaders = getattr(Environment.conf.Documenti,'pdf_reader','')
+#                for pdfReader in pdfReaders.split(",") :
+#                    ret = os.system('which ' + pdfReader + ' > /dev/null')
+#                    if ret==0:
+#                        break
+#            if pdfReader == '':
+#                if sys.platform != 'win32':
+#                    pdfReader = 'okular'
+#            # FIXME: what if user closes Promogest before the PDF reader?
 
             def applicationThread():
-                #if not self.label:
-                    os.system(pdfReader + ' "' + pdfFile + '"')
-                #else:
-                    #os.system(labelReader + ' "' + labelFile + '"')
+                try:
+                    subprocess.Popen(['xdg-open', pdfFile])
+                except:
+                    os.startfile(pdfFile)
 
             t = threading.Thread(group=None, target=applicationThread,
                                     name='File reader control thread',

@@ -127,8 +127,8 @@ class SlaParser(object):
                 columns = len(sorted(list(set(colonne))))
                 rows = len(sorted(list(set(righe))))
                 n_cells = columns*rows
-                if len(cells) != n_cells:
-                   print "ERRORE INTERPRETAZIONE", colonne, righe, columns, rows,columns*rows , table, cells
+#                if len(cells) != n_cells:
+#                   print "ERRORE INTERPRETAZIONE", colonne, righe, columns, rows,columns*rows , table, cells
                 groupDict[str(table).strip()] = {
                             'GROUPS': table,
                             'n_cells': n_cells,

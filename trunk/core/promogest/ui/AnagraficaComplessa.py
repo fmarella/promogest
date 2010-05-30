@@ -1043,18 +1043,23 @@ class AnagraficaHtml(object):
         pass
 
     def pdf(self, operationName, classic=None, template_file=None):
+        """ Qui si stampa selezione """
         self._slaTemplate = None
         self._slaTemplateObj=None
+        # aggiungo i dati azienda al dao in modo che si gestiscano a monte
         azienda = Azienda().getRecord(id=Environment.azienda)
         operationNameUnderscored = operationName.replace(' ' , '_').lower()
-        print "per la stampa", operationNameUnderscored, Environment.templatesDir + operationNameUnderscored + '.sla'
+        print "PER LA STAMPA", operationNameUnderscored, Environment.templatesDir + operationNameUnderscored + '.sla'
         if os.path.exists(Environment.templatesDir + operationNameUnderscored + '.sla'):
             self._slaTemplate = Environment.templatesDir + operationNameUnderscored + '.sla'
         else:
+            Environment.pg2log.info("UTILIZZO il documento.sla normale per la stampa")
             self._slaTemplate = Environment.templatesDir + self.defaultFileName + '.sla'
         """ Restituisce una stringa contenente il report in formato PDF """
+
         param = [self.dao.dictionary(complete=True)]
         multilinedirtywork(param)
+
         if azienda:
             azidict = azienda.dictionary(complete=True)
             for a,b in azidict.items():
@@ -1062,7 +1067,9 @@ class AnagraficaHtml(object):
                 azidict[k] = b
                 del azidict[a]
             param[0].update(azidict)
+        # controllo la versione dello sla che devo elaborare
         versione = scribusVersion(self._slaTemplate)
+
         if Environment.new_print_enjine:
             stpl2sla = SlaTpl2Sla_ng(slafile=None,label=None, report=None,
                                     objects=param,
@@ -1070,8 +1077,8 @@ class AnagraficaHtml(object):
                                     slaFileName=self._slaTemplate,
                                     pdfFolder=self._anagrafica._folder,
                                     classic=True,
-                                    template_file=None)
-            return Sla2Pdf_ng(slafile=self._anagrafica._folder+"_temppp.sla").translate()
+                                    template_file=None).fileElaborated()
+            return Sla2Pdf_ng(slafile=stpl2sla).translate()
         else:
             if self._slaTemplateObj is None:
                 self._slaTemplateObj = SlaTpl2Sla(slaFileName=self._slaTemplate,
