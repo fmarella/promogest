@@ -321,7 +321,7 @@ class SlaTpl2Sla(SlaParser):
                                 itext = tex[0]
                             else:
                                 continue
-                        ch = str(itext.get('CH'))
+                        ch = itext.get('CH')
                         tags = Sla2pdfUtils.findTags(ch)
                         if tags:
                             tmp = ch
@@ -331,7 +331,7 @@ class SlaTpl2Sla(SlaParser):
                                     continue
                                 tmp = self.getTagToPrint(tmp,tags=tags, k=k,pageNamber =pageNamber)
                                 prova = ch.replace(tmp,"")
-                                itext.set('CH',tmp )
+                                itext.set('CH',prova.encode()+" "+ tmp.encode() )
 
     def fillDocument(self):
         """ Replacing tags with real values """
@@ -391,10 +391,9 @@ class SlaTpl2Sla(SlaParser):
                                     resolvedTag = self.callFunction(function, value, parameter)
                                 else:
                                     resolvedTag = str(value)
-
                                 ch = ch.replace(tags[tagkey]['completeTag'], resolvedTag)
                                   # Save itext
-                                itext.set('CH', ch)
+                                itext.set('CH', ch.decode())
 
                 else:
                     if isGroupControl == '1':
@@ -458,7 +457,7 @@ class SlaTpl2Sla(SlaParser):
                                     resolvedTag = str(value)
                                 ch = ch.replace(tags[k]['completeTag'], resolvedTag)
                                 # Save itext
-                                itext.set('CH', ch)
+                                itext.set('CH', ch.decode())
             iterator += 1
 
 
