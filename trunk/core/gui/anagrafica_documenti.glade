@@ -3,49 +3,13 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name item -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes"></col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Franco</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Assegnato</col>
-      </row>
-    </data>
+  <object class="GtkImage" id="at_image">
+    <property name="visible">True</property>
+    <property name="stock">gtk-execute</property>
   </object>
-  <object class="GtkListStore" id="liststore_iva">
-    <columns>
-      <!-- column-name aliquota -->
-      <column type="gchararray"/>
-      <!-- column-name imponibile -->
-      <column type="gchararray"/>
-      <!-- column-name imposta -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">Tutti</col>
-        <col id="1" translatable="yes"></col>
-        <col id="2" translatable="yes"></col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Aperto</col>
-        <col id="1" translatable="yes"></col>
-        <col id="2" translatable="yes"></col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Saldato</col>
-        <col id="1" translatable="yes"></col>
-        <col id="2" translatable="yes"></col>
-      </row>
-    </data>
+  <object class="GtkImage" id="avvertimento_sconto_image">
+    <property name="visible">True</property>
+    <property name="stock">gtk-dialog-warning</property>
   </object>
   <object class="GtkVBox" id="anagrafica_documenti_detail_vbox">
     <property name="visible">True</property>
@@ -1432,7 +1396,7 @@
                                                 </child>
                                                 <child>
                                                   <object class="GtkEntry" id="coeficente_noleggio_entry">
-                                                    <property name="width_request">30</property>
+                                                    <property name="width_request">81</property>
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="max_length">3</property>
@@ -4780,12 +4744,48 @@ _
       </packing>
     </child>
   </object>
-  <object class="GtkImage" id="avvertimento_sconto_image">
-    <property name="visible">True</property>
-    <property name="stock">gtk-dialog-warning</property>
+  <object class="GtkListStore" id="liststore_iva">
+    <columns>
+      <!-- column-name aliquota -->
+      <column type="gchararray"/>
+      <!-- column-name imponibile -->
+      <column type="gchararray"/>
+      <!-- column-name imposta -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Tutti</col>
+        <col id="1" translatable="yes"></col>
+        <col id="2" translatable="yes"></col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Aperto</col>
+        <col id="1" translatable="yes"></col>
+        <col id="2" translatable="yes"></col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Saldato</col>
+        <col id="1" translatable="yes"></col>
+        <col id="2" translatable="yes"></col>
+      </row>
+    </data>
   </object>
-  <object class="GtkImage" id="at_image">
-    <property name="visible">True</property>
-    <property name="stock">gtk-execute</property>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name item -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes"></col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Franco</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Assegnato</col>
+      </row>
+    </data>
   </object>
 </interface>
