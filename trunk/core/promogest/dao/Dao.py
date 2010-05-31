@@ -32,7 +32,7 @@ class Dao(object):
             return None
         return _record
 
-    def select(self, orderBy=None, distinct=False, groupBy=None,join=None, offset=0,
+    def select(self, orderBy=None, distinct=None, groupBy=None,join=None, offset=0,
                 batchSize=20,complexFilter=None,isList = "all", **kwargs):
         """
         Funzione riscritta diverse volte, il vecchio sistema che
@@ -69,19 +69,19 @@ class Dao(object):
 
         try:
             self.record= self.session.query(self.DaoModule)
-            if join:
+            if join is not None:
                 self.record = self.record.join(join)
-            if filter:
+            if filter is not None:
                 self.record = self.record.filter(filter)
-            if orderBy:
+            if orderBy is not None:
                 self.record = self.record.order_by(orderBy)
-            if batchSize:
+            if batchSize is not None:
                 self.record = self.record.limit(batchSize)
-            if distinct:
+            if distinct is not None:
                 self.record = self.record.distinct(distinct)
-            if offset:
+            if offset is not None:
                 self.record = self.record.offset(offset)
-            if groupBy:
+            if groupBy is not None:
                 self.record = self.record.group_by(groupBy)
             return self.record.all()
         except Exception, e:
@@ -100,9 +100,9 @@ class Dao(object):
             filter= self.prepareFilter(kwargs)
         try:
             dao = self.session.query(self.DaoModule)
-            if filter:
+            if filter is not None:
                 dao = dao.filter(filter)
-            if distinct:
+            if distinct is not None:
                 dao = dao.distinct()
             _numRecords = dao.count()
             if _numRecords > 0:
