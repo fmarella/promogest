@@ -118,7 +118,11 @@ class AnagraficaPagamentiDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            if Environment.engine.name =="sqlite" and Pagamento().count() >= 3:
+            if "Pagamentilite" in dir(Environment.conf) and Environment.conf.Pagamentilite.mod_enable =="yes":
+                self.dao = Pagamento()
+                self._anagrafica._newRow((self.dao, ''))
+                self._refresh()
+            elif Environment.engine.name =="sqlite" and Pagamento().count() >= 3:
                 fenceDialog()
                 return
             else:
