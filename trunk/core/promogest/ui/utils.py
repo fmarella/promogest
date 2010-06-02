@@ -2000,7 +2000,6 @@ def multilinedirtywork( param):
                 wrapper = TextWrapper()
                 wrapper.width = int(Environment.conf.Multilinea.multilinealimite)
                 x["descrizione"] = "\n".join(wrapper.wrap(x["descrizione"]))
-            print "AAAAAAAAAAAAAAAAAAAAAAAAAAAA", x["descrizione"]
 
             if '\n' in x["descrizione"]:
                 desc= x["descrizione"].split("\n")

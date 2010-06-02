@@ -1,10 +1,9 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkVBox" id="vista_principale_frame">
     <property name="visible">True</property>
-    <property name="orientation">vertical</property>
     <child>
       <object class="GtkLabel" id="anno_lavoro_label">
         <property name="width_request">200</property>
@@ -36,7 +35,6 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-            <property name="orientation">vertical</property>
             <child>
               <object class="GtkFrame" id="notifica_allarmi_frame">
                 <property name="visible">True</property>
@@ -47,7 +45,6 @@
                     <property name="visible">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="border_width">5</property>
-                    <property name="orientation">vertical</property>
                     <property name="spacing">2</property>
                     <child>
                       <object class="GtkHBox" id="hbox3">
@@ -84,7 +81,7 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <signal name="clicked" handler="on_snooze_alarm_button_clicked"/>
+                                <signal name="clicked" handler="on_snooze_alarm_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment1">
                                     <property name="visible">True</property>
@@ -139,7 +136,7 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <signal name="clicked" handler="on_cancel_alarm_button_clicked"/>
+                                <signal name="clicked" handler="on_cancel_alarm_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment2">
                                     <property name="visible">True</property>
@@ -216,7 +213,7 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <property name="rules_hint">True</property>
                                 <property name="rubber_banding">True</property>
-                                <signal name="cursor_changed" handler="on_alarm_notify_treeview_cursor_changed"/>
+                                <signal name="cursor-changed" handler="on_alarm_notify_treeview_cursor_changed" swapped="no"/>
                               </object>
                             </child>
                           </object>
@@ -301,14 +298,13 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                       <object class="GtkVBox" id="vbox2">
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkButton" id="promogest_button">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <signal name="clicked" handler="on_promogest_button_clicked"/>
+                            <signal name="clicked" handler="on_promogest_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image4">
                                 <property name="visible">True</property>
@@ -327,7 +323,7 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <signal name="clicked" handler="on_numero_verde_button_clicked"/>
+                            <signal name="clicked" handler="on_numero_verde_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image3">
                                 <property name="visible">True</property>
@@ -346,7 +342,7 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <signal name="clicked" handler="on_promotux_button_clicked"/>
+                            <signal name="clicked" handler="on_promotux_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image5">
                                 <property name="visible">True</property>

@@ -7,7 +7,7 @@
 import gtk
 import threading
 import webbrowser
-
+import urllib, urllib2
 from GladeWidget import GladeWidget
 from promogest import Environment
 import promogest.dao.Promemoria
@@ -266,10 +266,12 @@ E' presente una nuova versione disponibile"""
         self.renderPage(feedToHtml)
 
     def on_promotux_button_clicked(self, button):
-        url ="http://www.google.it"
+        url ="http://www.promotux.it"
         webbrowser.open_new_tab(url)
 
     def on_promogest_button_clicked(self, button):
+        url ="http://www.promotux.it/promoGest"
+        webbrowser.open_new_tab(url)
 #        from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 #        daos = TestataScontrino().select(batchSize=None)
 #        if daos:

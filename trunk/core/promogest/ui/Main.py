@@ -23,6 +23,7 @@ from utils import hasAction,fenceDialog, aggiorna
 from utilsCombobox import *
 from ParametriFrame import ParametriFrame
 from SetConf import SetConfUI
+from promogest.lib.HtmlViewer import HtmlViewer
 from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
 import Login
 
@@ -58,6 +59,8 @@ class Main(GladeWidget):
             self.master_sincro_db.destroy()
         elif "SincroDB" in Environment.modulesList and Environment.conf.SincroDB.tipo =="server":
             self.client_sincro_db.destroy()
+        if Environment.tipodb =="postgresql":
+            self.whatcant_button.destroy()
         self.updates()
 
     def show(self):
@@ -618,6 +621,10 @@ ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDum
         else:
             fenceDialog()
 
+    def on_whatcant_button_clicked(self, button):
+        url ="http://www.promotux.it/promoGest/whatCanT"
+        webbrowser.open_new_tab(url)
+
     def on_export_magazzino_activate(self, button):
         if "Statistiche" in Environment.modulesList:
             from promogest.modules.Statistiche.ui.StatisticheMagazzino import StatisticheMagazzino
@@ -626,9 +633,6 @@ ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDum
 #            showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
         else:
             fenceDialog()
-
-
-
 
     def on_main_window_key_press_event(self, widget, event):
         if event.type == gtk.gdk.KEY_PRESS:
@@ -696,9 +700,6 @@ I Numeri:   %s
             return True
         else:
             return False
-
-
-
 
 
 class ConfiguraWindow(GladeWidget):
@@ -780,7 +781,6 @@ class MagazziniFrame(ElencoMagazzini):
         ElencoMagazzini.__init__(self, self.mainWindow, azs)
 
 
-
 class RegistrazioniFrame(GladeWidget):
     """ Frame per la gestione delle registrazioni """
 
@@ -799,13 +799,6 @@ class RegistrazioniFrame(GladeWidget):
 
         showAnagrafica(self.mainWindow, anag, toggleButton)
 
-
-#class AziendaFrame(AnagraficaAziende):
-    #""" Frame per la gestione delle aziende """
-
-    #def __init__(self, mainWindow, mainClass=None):
-        #self.mainWindow = mainWindow
-        #AnagraficaAziende.__init__(self, self.mainWindow)
 
 class ListiniFrame(ElencoListini):
     """ Frame per la gestione dei listini """
