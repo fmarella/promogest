@@ -25,7 +25,6 @@ from SimpleGladeWrapper import SimpleGladeWrapper
 
 import gtk
 import gobject
-#import gtkhtml2
 import xml.etree.cElementTree as ElementTree
 
 from promogest import Environment
