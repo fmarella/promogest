@@ -105,9 +105,9 @@ def _on_html_request_url(document, url, stream):
 def _on_html_link_clicked(url, link):
     def linkOpen():
         webbrowser.open_new_tab(link)
-    agg = eval(link.split("/")[1])
-    print "AGGGGGGGGGGGGGGGGGGGGGGG", agg
-    if "articoloId" in link.split("/")[1]:
+    agg = link.split("/")[1]
+    if "articoloId" in agg:
+        exec(agg)
         apriAnagraficaArticoliEdit(articoloId)
     else:
         gobject.idle_add(linkOpen)
