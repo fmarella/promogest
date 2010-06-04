@@ -46,7 +46,6 @@ class AnagraficaArticoli(Anagrafica):
         self.record_duplicate_menu.set_property('visible', True)
 
     def on_record_edit_activate(self, widget, path=None, column=None, dao=None):
-        print "DAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", dao
         if not dao:
             dao = self.filter.getSelectedDao()
         if dao.cancellato:

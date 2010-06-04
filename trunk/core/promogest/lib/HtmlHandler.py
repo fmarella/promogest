@@ -56,25 +56,24 @@ def apriAnagraficaArticoliEdit(articoloId):
 def _on_navigation_requested(view, frame, req, data=None):
     uri = req.get_uri()
     if uri.startswith("program:/"):
-        exec(uri.split("/")[1])
-        if "articoloId" in uri.split("/")[1]:
+        agg = uri.split("/")[1]
+        if "articoloId" in agg:
+            exec(agg)
             apriAnagraficaArticoliEdit(articoloId)
     else:
         return False
     return True
 
 def createHtmlObj(mainWidget,widget=None):
-#    try:
+    try:
 #    def _on_hovering_over_link(widget, title,uri,userdata):
 #        print "OOOOOIJJJJJJJJJJJJJJJJJJJJJ", widget, title, uri, userdata
-
-    a= WebView()
+        a= WebView()
 #    a.connect('hovering-over-link', _on_hovering_over_link,a)
-    a.connect('navigation-requested', _on_navigation_requested,a)
-    return a
-#    except:
-
-#        return gtkhtml2.View()
+        a.connect('navigation-requested', _on_navigation_requested,a)
+        return a
+    except:
+        return gtkhtml2.View()
 
 def renderTemplate(pageData):
     if "feed" not in pageData: pageData["feed"] = []
@@ -106,8 +105,8 @@ def _on_html_request_url(document, url, stream):
 def _on_html_link_clicked(url, link):
     def linkOpen():
         webbrowser.open_new_tab(link)
-        #print link
-    exec(link.split("/")[1])
+    agg = eval(link.split("/")[1])
+    print "AGGGGGGGGGGGGGGGGGGGGGGG", agg
     if "articoloId" in link.split("/")[1]:
         apriAnagraficaArticoliEdit(articoloId)
     else:
