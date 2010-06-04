@@ -102,15 +102,16 @@ def _on_html_request_url(document, url, stream):
             stream.close()
     gobject.idle_add(render)
 
+def linkOpen(link):
+    webbrowser.open_new_tab(link)
+
 def _on_html_link_clicked(url, link):
-    def linkOpen():
-        webbrowser.open_new_tab(link)
     agg = link.split("/")[1]
     if "articoloId" in agg:
         exec(agg)
         apriAnagraficaArticoliEdit(articoloId)
     else:
-        gobject.idle_add(linkOpen)
+        gobject.idle_add(linkOpen, link)
     return True
 
 if not WEBKIT:
