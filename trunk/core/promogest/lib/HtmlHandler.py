@@ -44,11 +44,11 @@ def env(templates_dir):
                                             renderizzazione del template engine
     renderHTML = inserisce il codice html dentro l'oggetto
 """
-def apriAnagraficaArticoliEdit(articoloId).
+def apriAnagraficaArticoliEdit(articoloId):
     from promogest.ui.AnagraficaArticoli import AnagraficaArticoli
-    a = AnagraficaArticoli()
     from promogest.ui.AnagraficaArticoliEdit import AnagraficaArticoliEdit
     from promogest.dao.Articolo import Articolo
+    a = AnagraficaArticoli()
     art = Articolo().getRecord(id=articoloId)
     a.on_record_edit_activate(a, dao=art)
 
