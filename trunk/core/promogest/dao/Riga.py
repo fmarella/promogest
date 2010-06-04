@@ -48,21 +48,21 @@ class Riga(Dao):
         else: return ""
     codice_articolo= property(__codiceArticolo)
 
+#    def __daoArticolo(self):
+#        print "SELLLLLLLLLLLLLF ARTI", self.arti
+#        if self.arti:
+#            print "E DUEEEE", Articolo().getRecord(id=self.arti.id)
+#            return Articolo().getRecord(id=self.arti.id)
+#        else: return ""
+#    daoArticolo= property(__daoArticolo)
+
     def _getAliquotaIva(self):
-        #_denominazioneBreveAliquotaIva = Articolo().getRecord(id=self.id_articolo).denominazione_breve_aliquota_iva
-        #return _denominazioneBreveAliquotaIva
         if self.arti:return self.arti.denominazione_breve_aliquota_iva
         else: return ""
     aliquota = property(_getAliquotaIva, )
 
     def __unita_base(self):
-        
-        #a =  params["session"].query(Articolo).with_parent(self).filter(self.arti.id_unita_base==UnitaBase.id).all()
-        #if not a:
-            #return a
-        #else:
-            
-            #return a[0].den_unita.denominazione_breve
+
         if self.arti: return self.arti.denominazione_breve_unita_base
         else: return ""
     unita_base = property(__unita_base)
@@ -123,7 +123,7 @@ class Riga(Dao):
             """ esempio di funzione  unita alla property """
             if self.arti:return self.arti.genere
         genere = property(_genere)
-        
+
         def _modello(self):
             """ esempio di funzione  unita alla property """
             if self.arti:return self.arti.denominazione_modello
@@ -139,4 +139,3 @@ std_mapper = mapper(Riga, riga, properties={
             "multi":relation(Multiplo,primaryjoin=riga.c.id_multiplo==Multiplo.id),
             "arti":relation(Articolo,primaryjoin=riga.c.id_articolo==artic.c.id),
 }, order_by=riga.c.id)
-

@@ -17,8 +17,8 @@ from sqlalchemy.ext.serializer import loads, dumps
 
 def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     """
-    Calcola la quantità di oggetti presenti in magazzino    
-    @param year=None: Anno di riferimento 
+    Calcola la quantità di oggetti presenti in magazzino
+    @param year=None: Anno di riferimento
     @type year=None: Intero
     @param idMagazzino=None: se c'è questo è l'id magazzino
     @type idMagazzino=None: interno
@@ -66,7 +66,9 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
                 "cliente":ram[1].ragione_sociale_cliente,
                 "fornitore":ram[1].ragione_sociale_fornitore,
                 "valore":calcolaGiacenza(quantita=ram[0].quantita,moltiplicatore=ram[0].moltiplicatore, segno=ram[1].segnoOperazione, valunine=ram[0].valore_unitario_netto)[1],
-                "segnoOperazione":ram[1].segnoOperazione
+                "segnoOperazione":ram[1].segnoOperazione,
+                "documento_numero":ram[1].TD.numero,
+                "dao":ram[1],
                 #"test_doc":ram[1].testata_documento.numero
                     }
         lista.append(diz)
@@ -159,8 +161,8 @@ def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None, allMag=None):
 
 
 def TotaleAnnualeCliente(id_cliente=None):
-    """ 
-    Ritorna il totale avere da un cliente 
+    """
+    Ritorna il totale avere da un cliente
     """
     from promogest.dao.TestataDocumento import TestataDocumento
     documentiCliente = TestataDocumento().select(idCliente=id_cliente,
@@ -362,4 +364,3 @@ def scontiRigaMovimentoDel(id=None):
             params['session'].delete(r)
         params["session"].commit()
         return True
-
