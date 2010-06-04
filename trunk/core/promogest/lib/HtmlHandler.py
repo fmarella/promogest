@@ -56,8 +56,8 @@ def apriAnagraficaArticoliEdit(articoloId):
 def _on_navigation_requested(view, frame, req, data=None):
     uri = req.get_uri()
     if uri.startswith("program:/"):
-        generico = exec(uri.split("/")[1])
-        if generico == "articoloId":
+        exec(uri.split("/")[1])
+        if "articoloId" in uri.split("/")[1]:
             apriAnagraficaArticoliEdit(articoloId)
     else:
         return False
@@ -108,7 +108,7 @@ def _on_html_link_clicked(url, link):
         webbrowser.open_new_tab(link)
         #print link
     exec(link.split("/")[1])
-    if generico == "articoloId":
+    if "articoloId" in link.split("/")[1]:
         apriAnagraficaArticoliEdit(articoloId)
     else:
         gobject.idle_add(linkOpen)
