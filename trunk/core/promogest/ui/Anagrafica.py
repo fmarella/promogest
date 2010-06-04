@@ -240,7 +240,8 @@ class Anagrafica(GladeWidget):
         self.set_focus(self.detail._widgetFirstFocus)
 
 
-    def on_record_edit_activate(self, widget, path=None, column=None):
+    def on_record_edit_activate(self, widget, path=None, column=None, dao=None):
+        print "SEIIIIIIIIIIIIIIIIIIIIIIITUUUU", dao
         self.detail.setSensitive(True)
         self.filter.setSensitive(False)
 

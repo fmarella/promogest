@@ -5,40 +5,35 @@
         <tr>
             <td class="report-header"><h3> Registro: <strong> {{(dao.registro_numerazione).replace("_"," ").capitalize()}}</strong></h3></td>
             <td class="report-header"><h3>Numero: <strong>{{dao.numero}} {{dao.parte|nonone}}</strong></h3></td>
-	</tr>
+    	</tr>
+    </table>
+
+    <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-            <td width="50%">
-                <table cellpadding="0" cellspacing="0" border="0">
-
-                    <tr>
-                        <td colspan="2" class="table-header">Dati movimento</td></tr>
-                    <tr>
-                        <td width="140px" class="even-detail">Operazione</td>
-                        <td class="odd-detail">
-                            <strong> {{dao.operazione}}</strong></td>
-                    </tr>
-                    <tr>
-                        <td class="even-detail">Data documento</td>
-                        <td class="odd-detail">
-                            <strong> {{utils.dateToString(dao.data_documento)}}</strong>
-                        </td>
-                    </tr>
-                    <tr >
-                        <td class="even-detail">Cliente</td>
-                        {% if dao.id_cliente %}
-                        <td class="odd-detail"><strong>{{dao.intestatario}}</strong></td>
-                        {% endif %}
-                    </tr>
-                    <tr >
-                        <td class="even-detail">Fornitore</td>
-                        {% if dao.id_fornitore %}
-                        <td class="odd-detail"><strong>{{dao.intestatario}}</strong></td>
-                        {% endif %}
-                    </tr>
-
-	       </table>
-        </td>
-        <td width="50%">
+            <td colspan="2" class="table-header">Dati documento</td></tr>
+        <tr>
+            <td width="140px" class="even-detail">Operazione</td>
+            <td class="odd-detail">
+                <strong> {{dao.operazione}}</strong></td>
+        </tr>
+        <tr>
+            <td class="even-detail">Data documento</td>
+            <td class="odd-detail"><strong>{{utils.dateToString(dao.data_documento)}}</strong></td>
+        </tr>
+        <tr >
+            <td class="even-detail">Cliente</td>
+                {% if dao.id_cliente %}
+            <td class="odd-detail"><strong>{{dao.intestatario}}</strong></td>
+                {% endif %}
+        </tr>
+        <tr >
+            <td class="even-detail">Fornitore</td>
+            {% if dao.id_fornitore %}
+                <td class="odd-detail"><strong>{{dao.intestatario}}</strong></td>
+            {% endif %}
+        </tr>
+    </table>
+    <br />
             <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
                     <td colspan="2" class="table-header">TOTALI DOCUMENTO</td>
@@ -64,20 +59,17 @@
                     <td class="even-detail">Totale:</td>
                     <td class="odd-detail"><strong>{{utils.mN(dao._totaleScontato,2)}}</strong></td>
                 </tr>
-	       <tr>
-                    <td></td>
-                </tr>
-            </table>
-        </td>
-    </tr>
 </table>
-
+    <br />
         <table cellpadding="1" cellspacing="3" border="0" >
-            <tr ><td colspan="16" class="table-header">Dettaglio documento</td></tr>
+            <tr >
+                <td colspan="20" class="table-header">Dettaglio documento</td>
+            </tr>
             <tr>
-                <td colspan="2" class="even-detail">Magazzino</td>
-                <td class="even-detail">Articolo</td>
-        <td colspan="2" class="even-detail">Listino</td>
+                <td colspan="2" class="even-detail">MAGAZZINO</td>
+                <td class="even-detail">CODICE ART</td>
+                <td class="even-detail">DESCRIZIONE ARTICOLO</td>
+        <td colspan="2" class="even-detail">LISTINO</td>
         <td colspan="2" class="even-number">Prezzo Lordo</td>
                 <td colspan="2" class="even-number">Sconto</td>
                         <td colspan="2" class="even-number">Prezzo Netto</td>
@@ -85,16 +77,13 @@
                 <td colspan="2" class="even-number">M.plo</td>
                 <td colspan="2" class="even-number">% Iva</td>
                 <td colspan="3" class="even-number">Totale</td>
-
             </tr>
-
-<!--                TOTALI ${dao.totali} -->
-
 
         {% for riga in dao.righe %}
             <tr >
-                <td colspan="2" class="odd-detail">{{(riga.magazzino or '')[:25]}}</td>
-                <td class="odd-detail">{{(riga.descrizione or '')[:45]}}</td>
+                <td colspan="2" class="odd-detail">{{(riga.magazzino|nonone)[:25]}}</td>
+                <td class="odd-detail"><b><a href="program:/articoloId={{riga.id_articolo}}">{{riga.codice_articolo}}</a></b></td>
+                <td class="odd-detail">{{riga.descrizione|nonone}}</td>
                 <td class="odd-detail" colspan="2">{{riga.listino}}</td>
                 <td class="odd-number" colspan="2">{{utils.mN(riga.valore_unitario_lordo,2)}}</td>
                 <td class="odd-detail" colspan="2">{{utils.getStringaSconti(utils.getScontiFromDao(riga.sconti)[0])}}</td>

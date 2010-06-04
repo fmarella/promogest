@@ -21,17 +21,6 @@ from  promogest.ui import utils
 from jinja2 import Environment  as Env
 from jinja2 import FileSystemLoader,FileSystemBytecodeCache
 
-#from pygtkie import IEHtmlView
-#window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-#window.resize(800, 600)
-#ie = IEHtmlView();
-#window.add(ie)
-#ie.show()
-#window.show()
-#
-#ie.SetDocument("""This is an IE page hosted by <a href="http://www.python.org">python</a>')""")
-
-
 templates_dir = [os.path.join('templates'),os.path.join('report-templates')]
 jinja_env = None
 
@@ -55,12 +44,37 @@ def env(templates_dir):
                                             renderizzazione del template engine
     renderHTML = inserisce il codice html dentro l'oggetto
 """
+def apriAnagraficaArticoliEdit(articoloId).
+    from promogest.ui.AnagraficaArticoli import AnagraficaArticoli
+    a = AnagraficaArticoli()
+    from promogest.ui.AnagraficaArticoliEdit import AnagraficaArticoliEdit
+    from promogest.dao.Articolo import Articolo
+    art = Articolo().getRecord(id=articoloId)
+    a.on_record_edit_activate(a, dao=art)
+
+
+def _on_navigation_requested(view, frame, req, data=None):
+    uri = req.get_uri()
+    if uri.startswith("program:/"):
+        generico = exec(uri.split("/")[1])
+        if generico == "articoloId":
+            apriAnagraficaArticoliEdit(articoloId)
+    else:
+        return False
+    return True
 
 def createHtmlObj(mainWidget,widget=None):
-    try:
-        return WebView()
-    except:
-        return gtkhtml2.View()
+#    try:
+#    def _on_hovering_over_link(widget, title,uri,userdata):
+#        print "OOOOOIJJJJJJJJJJJJJJJJJJJJJ", widget, title, uri, userdata
+
+    a= WebView()
+#    a.connect('hovering-over-link', _on_hovering_over_link,a)
+    a.connect('navigation-requested', _on_navigation_requested,a)
+    return a
+#    except:
+
+#        return gtkhtml2.View()
 
 def renderTemplate(pageData):
     if "feed" not in pageData: pageData["feed"] = []
@@ -93,7 +107,11 @@ def _on_html_link_clicked(url, link):
     def linkOpen():
         webbrowser.open_new_tab(link)
         #print link
-    gobject.idle_add(linkOpen)
+    exec(link.split("/")[1])
+    if generico == "articoloId":
+        apriAnagraficaArticoliEdit(articoloId)
+    else:
+        gobject.idle_add(linkOpen)
     return True
 
 if not WEBKIT:
@@ -105,9 +123,10 @@ def renderHTMLTemplate(pageData):
     return renderTemplate(pageData)
 
 def renderHTML(widget, html):
+
     if WEBKIT:
-            widget.load_string(html,"text/html","utf-8", "file:///"+sys.path[0]+os.sep)
-            widget.show()
+        widget.load_string(html,"text/html","utf-8", "file:///"+sys.path[0]+os.sep)
+        widget.show()
     else:
         document.open_stream('text/html')
         document.write_stream(html)

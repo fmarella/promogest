@@ -359,9 +359,9 @@ class Anagrafica(GladeWidget):
         self.htmlHandler.setDao(None)
         self.setFocus()
 
-    def on_record_edit_activate(self, widget, path=None, column=None):
-
-        dao = self.filter.getSelectedDao()
+    def on_record_edit_activate(self, widget=None, path=None, column=None, dao=None):
+        if not dao:
+            dao = self.filter.getSelectedDao()
         self._selectedDao = dao
         self.editElement.setVisible(True)
         self.editElement.setDao(dao)

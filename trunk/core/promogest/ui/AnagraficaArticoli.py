@@ -45,8 +45,10 @@ class AnagraficaArticoli(Anagrafica):
         checkCodBarOrphan = removeCodBarorphan()
         self.record_duplicate_menu.set_property('visible', True)
 
-    def on_record_edit_activate(self, widget, path=None, column=None):
-        dao = self.filter.getSelectedDao()
+    def on_record_edit_activate(self, widget, path=None, column=None, dao=None):
+        print "DAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", dao
+        if not dao:
+            dao = self.filter.getSelectedDao()
         if dao.cancellato:
             msg = "L'articolo risulta eliminato.\nSi desidera riattivare l'articolo ?"
             dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -64,7 +66,7 @@ class AnagraficaArticoli(Anagrafica):
                 model.set_value(iterator, 1, None)
             else:
                 return
-        Anagrafica.on_record_edit_activate(self, widget, path, column)
+        Anagrafica.on_record_edit_activate(self, widget, path, column, dao=dao)
 
     def duplicate(self,dao):
         """ Duplica le informazioni relative ad un articolo scelto su uno nuovo (a meno del codice) """
@@ -123,7 +125,6 @@ class AnagraficaArticoli(Anagrafica):
 
         self.editElement.setVisible(True)
         self.editElement._refresh()
-        print "BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
         msg = 'Si desidera duplicare anche tutti i listini dell\' articolo scelto ?'
         dialog = gtk.MessageDialog(self.editElement.dialogTopLevel,
                                    gtk.DIALOG_MODAL
@@ -134,7 +135,6 @@ class AnagraficaArticoli(Anagrafica):
         response = dialog.run()
         dialog.destroy()
         if response != gtk.RESPONSE_YES:
-            print "AHAHAHAAHAHAAHAHAH"
             self.editElement._duplicatedDaoId = None
 
 
