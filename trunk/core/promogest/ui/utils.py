@@ -1992,30 +1992,30 @@ def multilinedirtywork( param):
     @type param:
     """
     for i in param:
-#        try:
-        lista = i['righe']
-        for x in lista:
-#            try:
-            if len(x["descrizione"]) > int(Environment.conf.Multilinea.multilinealimite):
-                wrapper = TextWrapper()
-                wrapper.width = int(Environment.conf.Multilinea.multilinealimite)
-                x["descrizione"] = "\n".join(wrapper.wrap(x["descrizione"]))
+        try:
+            lista = i['righe']
+            for x in lista:
+    #            try:
+                if len(x["descrizione"]) > int(Environment.conf.Multilinea.multilinealimite):
+                    wrapper = TextWrapper()
+                    wrapper.width = int(Environment.conf.Multilinea.multilinealimite)
+                    x["descrizione"] = "\n".join(wrapper.wrap(x["descrizione"]))
 
-            if '\n' in x["descrizione"]:
-                desc= x["descrizione"].split("\n")
-                o = lista.index(x)
-                lista.remove(x)
-                lung = len(desc)-1
-                for d in desc:
-                    p = desc.index(d)
-                    c = x.copy()
-                    if p < lung:
-                        for k,v in c.iteritems():
-                            c[k] = ""
-                    c["descrizione"] = str(d).strip()
-                    lista.insert(o+p,c)
-#                except:
-#                    pass
+                if '\n' in x["descrizione"]:
+                    desc= x["descrizione"].split("\n")
+                    o = lista.index(x)
+                    lista.remove(x)
+                    lung = len(desc)-1
+                    for d in desc:
+                        p = desc.index(d)
+                        c = x.copy()
+                        if p < lung:
+                            for k,v in c.iteritems():
+                                c[k] = ""
+                        c["descrizione"] = str(d).strip()
+                        lista.insert(o+p,c)
+        except:
+           print " NON e' una riga"
 #        except:
 #            pass
     return param
