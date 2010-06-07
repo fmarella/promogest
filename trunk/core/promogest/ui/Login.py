@@ -34,7 +34,7 @@ from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from promogest.dao.AppLog import AppLog
 from GtkExceptionHandler import GtkExceptionHandler
-from utils import hasAction,on_status_activate, checkAggiorna, aggiorna, checkInstallation
+from utils import hasAction,on_status_activate, checkAggiorna, aggiorna, checkInstallation, setconf
 from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
 #from promogest.ui.DocuView import DocuView
@@ -279,9 +279,13 @@ class Login(GladeApp):
                 else:
                     Environment.workingYear = str(self.anno_lavoro_spinbutton.get_value_as_int())
                     Environment.azienda = self.azienda
+                    if Environment.tipodb !="sqlite":
+                        Environment.params["schema"]=self.azienda
                     # Lancio la funzione di generazione della dir di configurazione
                     Environment.set_configuration(Environment.azienda,Environment.workingYear)
-                    if Environment.feed:
+                    if setconf("Feed","feed"):
+                        print " MA PASSIIIIIIIIIIIIIIIIIIIIII"
+#                    if True == True:
                         thread = threading.Thread(target=self.feddretreive)
                         thread.start()
                         thread.join(2.3)
@@ -296,8 +300,6 @@ class Login(GladeApp):
                     else:
                         Environment.params['usernameLoggedList'][2] = "Admin"
                     if hasAction(actionID=1):
-                        if Environment.tipodb !="sqlite":
-                            Environment.params["schema"]=self.azienda
                         #Environment.meta.reflect(schema=self.azienda )
                         self.login_window.hide()
                         global windowGroup

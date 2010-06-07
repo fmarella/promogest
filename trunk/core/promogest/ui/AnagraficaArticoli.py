@@ -230,8 +230,8 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         treeview.set_search_column(2)
 
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-        self.id_famiglia_articolo_filter_combobox.set_wrap_width(Environment.conf.combo_columns)
-        self.id_categoria_articolo_filter_combobox.set_wrap_width(Environment.conf.combo_columns)
+        self.id_famiglia_articolo_filter_combobox.set_wrap_width(int(setconf("Numbers", "combo_column")))
+        self.id_categoria_articolo_filter_combobox.set_wrap_width(int(setconf("Numbers", "combo_column")))
 
         self.clear()
 

@@ -979,7 +979,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                 orderBy = "articolo.codice"
             else:
                 orderBy = Environment.params["schema"]+".articolo.codice"
-            batchSize = Environment.conf.batch_size
+            batchSize = setconf("Numbers", "batch_size")
         elif self.ricerca_codice_a_barre_button.get_active():
             codiceABarre = self.articolo_entry.get_text()
             join= Articolo.cod_barre
@@ -987,7 +987,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                 orderBy = "codice_a_barre_articolo.codice"
             else:
                 orderBy = Environment.params["schema"]+".codice_a_barre_articolo.codice"
-            batchSize = Environment.conf.batch_size
+            batchSize = setconf("Numbers", "batch_size")
         elif self.ricerca_descrizione_button.get_active():
             denominazione = self.articolo_entry.get_text()
             if Environment.tipodb == "sqlite":
@@ -1001,7 +1001,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
                 orderBy = "fornitura.codice_articolo_fornitore"
             else:
                 orderBy = Environment.params["schema"]+".fornitura.codice_articolo_fornitore"
-            batchSize = Environment.conf.batch_size
+            batchSize = setconf("Numbers", "batch_size")
 
         arts = Articolo().select(orderBy=orderBy,
                                             join = join,

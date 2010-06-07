@@ -714,16 +714,6 @@ class Anagrafica(GladeWidget):
 
             pdfReader = ''
             labelReader = ""
-#            if hasattr(Environment.conf,'Documenti'):
-#                pdfReaders = getattr(Environment.conf.Documenti,'pdf_reader','')
-#                for pdfReader in pdfReaders.split(",") :
-#                    ret = os.system('which ' + pdfReader + ' > /dev/null')
-#                    if ret==0:
-#                        break
-#            if pdfReader == '':
-#                if sys.platform != 'win32':
-#                    pdfReader = 'okular'
-#            # FIXME: what if user closes Promogest before the PDF reader?
 
             def applicationThread():
                 try:
@@ -876,7 +866,6 @@ class AnagraficaFilter(GladeWidget):
             raise NotImplementedError
         self._filterCountClosure = __defaultFilterCountClosure
 
-
     def build(self):
         """ reindirizza alcuni campi e metodi dal filterWidget """
         self.bodyWidget = self._anagrafica.bodyWidget
@@ -885,10 +874,9 @@ class AnagraficaFilter(GladeWidget):
         self._changeOrderBy = self.bodyWidget._changeOrderBy
         self.orderBy = self.bodyWidget.orderBy = None
         self.join =self.bodyWidget.join =None
-        self.batchSize =  Environment.conf.Numbers.batch_size
+        self.batchSize =  setconf("Numbers", "batch_size")
         self.offset = self.bodyWidget.offset = 0
         self.numRecords = self.bodyWidget.numRecords = 0
-
 
     def draw(self):
         """
@@ -897,16 +885,13 @@ class AnagraficaFilter(GladeWidget):
         """
         raise NotImplementedError
 
-
     def clear(self):
         """ Ripulisci il filtro di ricerca e aggiorna la ricerca stessa """
         raise NotImplementedError
 
-
     def refresh(self):
         """ Aggiorna il filtro di ricerca in base ai parametri impostati """
         raise NotImplementedError
-
 
     def on_filter_treeview_row_activated(self, treeview, path, column):
         """ Gestisce la conferma della riga """
@@ -922,7 +907,6 @@ class AnagraficaFilter(GladeWidget):
         Gestisce le selezioni multiple (se attive)
         """
         self._anagrafica.on_anagrafica_filter_treeview_selection_changed(treeSelection)
-
 
     def runFilter(self, offset='__default__', batchSize='__default__',
                                       progressCB=None, progressBatchSize=0):
@@ -940,7 +924,6 @@ class AnagraficaFilter(GladeWidget):
         """ Aggiorna la paginazione """
         self.bodyWidget.numRecords = self.numRecords
         self.bodyWidget._refreshPageCount()
-
 
     def selectCurrentDao(self):
         """ Select the dao currently shown in the HTML detail (if possible) """
@@ -961,7 +944,6 @@ class AnagraficaFilter(GladeWidget):
 
         model.foreach(foreach_handler, selection)
 
-
     def getSelectedDao(self):
         treeViewSelection = self._anagrafica.anagrafica_filter_treeview.get_selection()
         if treeViewSelection.get_mode() != gtk.SELECTION_MULTIPLE:
@@ -980,18 +962,14 @@ class AnagraficaFilter(GladeWidget):
                 dao = None
         return dao
 
-
     def getTreeViewModel(self):
         return self._treeViewModel
-
 
     def on_campo_filter_entry_key_press_event(self, widget, event):
         return self._anagrafica.bodyWidget.on_filter_element_key_press_event(widget, event)
 
-
     def setFocus(self, widget=None):
         self._anagrafica.bodyWidget.setFocus(widget)
-
 
 
 class AnagraficaHtml(object):

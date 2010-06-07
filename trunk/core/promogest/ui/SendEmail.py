@@ -35,8 +35,9 @@ class SendEmail(GladeWidget):
         self.sobject = ""
         self.obj = ""
         try:
-            if Environment.emailmittente:
-                self.fromaddr = str(Environment.emailmittente)
+            from promogest.ui.utils import setconf
+            if setconf("Smtp", "emailmittente"):
+                self.fromaddr = str(setconf("Smtp", "emailmittente"))
                 self.from_email_entry.set_text(self.fromaddr)
         except:
             pass
@@ -108,7 +109,7 @@ class SendEmail(GladeWidget):
         %s""" %(self.codec,self.bodytext)
         subject = self.obj + "  " + self.sobject
         self.fromaddr = self.fromm.strip()
-        self.bccaddrs = ["francesco@promotux.it"]
+        self.bccaddrs = ["assistenza@promotux.it"]
         for i in self.toaddrs:
             self.total_addrs.append(i)
         for i in self.bccaddrs:
@@ -131,7 +132,8 @@ Bcc: %s
 
     def _send(self,fromaddr=None, total_addrs=None, msg=None):
         try:
-            server = smtplib.SMTP(Environment.smtpServer)
+            from promogest.ui.utils import setconf
+            server = smtplib.SMTP(setconf("Smtp","smtpserver"))
             server.set_debuglevel(0)
             server.sendmail(fromaddr, total_addrs , msg)
             server.quit()

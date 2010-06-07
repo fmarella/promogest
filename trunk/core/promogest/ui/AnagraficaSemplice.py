@@ -25,8 +25,8 @@ import gobject
 from GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
 from promogest.ui.SendEmail import SendEmail
-from promogest.dao import Dao
 import Login
+from promogest.ui.utils import setconf
 from promogest import Environment
 
 
@@ -70,7 +70,7 @@ class Anagrafica(GladeWidget):
         self._widgetFirstFocus = self.bodyWidget._firstFocusWidget
         self._changeOrderBy = self.bodyWidget._changeOrderBy
         self.orderBy = self.bodyWidget.orderBy = None
-        self.batchSize = self.bodyWidget.batchSize = int(Environment.conf.Numbers.batch_size)
+        self.batchSize = self.bodyWidget.batchSize = int(setconf("Numbers", "batch_size"))
         self.offset = self.bodyWidget.offset = 0
         self.numRecords = self.bodyWidget.numRecords = 0
         self._filterClosure = None
@@ -588,7 +588,6 @@ class AnagraficaDetail(object):
     """ Dettaglio dell'anagrafica """
 
     def __init__(self, anagrafica, gladeFile=None,module=False):
-        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA, passiamo qui "
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
 

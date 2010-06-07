@@ -1996,9 +1996,9 @@ def multilinedirtywork( param):
             lista = i['righe']
             for x in lista:
     #            try:
-                if len(x["descrizione"]) > int(Environment.conf.Multilinea.multilinealimite):
+                if len(x["descrizione"]) > int(setconf("Multilinea","multilinealimite")):
                     wrapper = TextWrapper()
-                    wrapper.width = int(Environment.conf.Multilinea.multilinealimite)
+                    wrapper.width = int(setconf("Multilinea","multilinealimite"))
                     x["descrizione"] = "\n".join(wrapper.wrap(x["descrizione"]))
 
                 if '\n' in x["descrizione"]:
@@ -2661,7 +2661,7 @@ def deaccenta(riga=None):
     only_ascii = nkfd_form.encode('ASCII', 'ignore')
     return only_ascii
 
-def setconf(key, section):
+def setconf(section, key):
     """ Importante funzione che "semplifica" la lettura dei dati dalla tabella
     di configurazione setconf
     Tentativo abbastanza rudimentale per gestire le liste attraverso i ; ma
@@ -2671,13 +2671,22 @@ def setconf(key, section):
     conf = SetConf().select(key=key, section=section)
     c = []
     if conf:
-        if ";" in str(conf[0].value):
-            val = str(conf[0].value).split(";")
+        valore = conf[0].value
+        if conf[0].tipo == "BOOLEAN":
+            return conf[0].active
+        if ";" in str(valore):
+            val = str(valore).split(";")
             for a in val:
                 c.append(a.strip())
             return c
         else:
-            return str(conf[0].value)
+            if valore == "":
+                return None
+            else:
+                try:
+                    return eval(valore)
+                except:
+                    return str(valore)
     else:
         return ""
 
