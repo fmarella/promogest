@@ -11,6 +11,7 @@
 #from AnagraficaComplessa import AnagraficaFilter
 import gtk
 from utils import *
+import subprocess
 import os, sys, threading, os.path
 from utilsCombobox import *
 from promogest import Environment
@@ -133,26 +134,15 @@ class PrintDialogHandler(GladeWidget):
 
             pdfReader = ''
             labelReader = ""
-#            if hasattr(Environment.conf,'Documenti'):
-#                pdfReaders = getattr(Environment.conf.Documenti,'pdf_reader','')
-#                for pdfReader in pdfReaders.split(",") :
-#                    ret = os.system('which ' + pdfReader + ' > /dev/null')
-#                    if ret==0:
-#                        break
-#            if pdfReader == '':
-#                if sys.platform != 'win32':
-#                    pdfReader = 'okular'
-#            # FIXME: what if user closes Promogest before the PDF reader?
 
             def applicationThread():
                 try:
                     subprocess.Popen(['xdg-open', pdfFile])
                 except:
                     os.startfile(pdfFile)
-
             t = threading.Thread(group=None, target=applicationThread,
-                                    name='File reader control thread',
-                                    args=(), kwargs={})
+                                 name='File reader control thread',
+                                 args=(), kwargs={})
             t.setDaemon(True) # FIXME: are we sure?
             t.start()
         except:

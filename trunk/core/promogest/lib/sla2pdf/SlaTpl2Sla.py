@@ -27,8 +27,6 @@ class SlaTpl2Sla(SlaParser):
         SlaParser.__init__(self, slaFileName=slaFileName,
                                     pdfFolder=pdfFolder,
                                     slafile=slafile)
-        #self.pdfFileName = '_temp'
-        #self.slaTempFileName = '_temp.sla'
         self.slaFileName = slaFileName
         self.report = report
         self.classic = classic
@@ -53,7 +51,7 @@ class SlaTpl2Sla(SlaParser):
         if not self.label:
             self.duplicateElement(self.pagesNumber)
             self.duplicateTags()
-            self.doc.write(self.pdfFolder+"_tep.sla")
+            self.doc.write(self.pdfFolder+"_sla_prima_del_fill.sla")
             self.fillDocument()
         elif self.label and not self.classic:
             self.duplicateElement(self.pagesNumber)
@@ -193,18 +191,18 @@ class SlaTpl2Sla(SlaParser):
         """
         if tags[k]['position'] in self.positionTags:
             if (((tags[k]['position'] == 'first') and (pageNamber+1 == 1)) or
-                ((tags[k]['position'] == 'last') and (pageNamber+1 == self.pagesNumber))):
+             ((tags[k]['position'] == 'last') and (int(pageNamber+1) == int(self.pagesNumber)))):
                 if '(n)' in k:
                     tag = tags[k]['completeTag']
                     tag = tag + ('<<%d>>' % row)
                     string = string.replace(tags[k]['completeTag'], tag)
                 else:
                     string = tags[k]['completeTag']
+#                    string = ""
             else:
                 string = ''
         else:
             if '(n)' in k:
-
                 tag = tags[k]['completeTag']
                 tag = tag + ('<<%d>>' % row)
                 string = string.replace(tags[k]['completeTag'], tag)
@@ -330,8 +328,12 @@ class SlaTpl2Sla(SlaParser):
                                 if k.replace(' ', '') == '':
                                     continue
                                 tmp = self.getTagToPrint(tmp,tags=tags, k=k,pageNamber =pageNamber)
-                                prova = ch.replace(tmp,"")
-                                itext.set('CH',prova.encode()+" "+ tmp.encode() )
+                                if tmp != "":
+                                    prova = ch.replace(tmp,"")
+                                    test=  prova.encode()+" "+ tmp.encode()
+                                else:
+                                    test = tmp
+                                itext.set('CH',test )
 
     def fillDocument(self):
         """ Replacing tags with real values """

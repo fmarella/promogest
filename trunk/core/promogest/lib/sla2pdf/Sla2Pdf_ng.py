@@ -114,7 +114,7 @@ class Sla2Pdf_ng(SlaParser):
             else:
                 contRows= int(v/columns)
                 contColumns = ((v)%columns)
-#            print "VVVVVVVVVVVVV E CELLE", celle, v, len(celle), celle[v], n_cells
+#            print "VVVVVVVVVVVVV E CELLE", "celle", celle,"V:",v, "LEN DI CELLE",len(celle), "NCELLS", n_cells, group
             background = self.backgroundFunc(celle[v])# Finding background
             hexBorderColor = self.hexBorderColorFunc(celle[v].get('PCOLOR2'))
             stile.add('ROWBACKGROUNDS', (contColumns,contRows),
