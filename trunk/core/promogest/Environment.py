@@ -226,12 +226,6 @@ def set_configuration(company=None, year = None):
     # stampa il debug del Dao
 
 
-    #[Feed]
-    try:
-        feed = str(getattr(conf.Feed, 'feed'))
-    except:
-        feed = True
-
     #[Composer]
     if hasattr(conf,'Composer'):
         conf.emailcompose = str(getattr(conf.Composer, 'emailcompose'))
@@ -257,25 +251,10 @@ def set_configuration(company=None, year = None):
     else:
         rivenditoreUrl = "http://promogest.promotux.it/contatti.php"
 
-    if hasattr(conf,'Numbers'):
-        conf.combo_columns = int(getattr(conf.Numbers,'combo_column',5))
-    else:
-        print "ATTENZIONE: OPZIONE combo_column = 5  MANCANTE NEL CONFIGURE SEZIONE [Numbers]"
-        conf.combo_columns = 3
-    #[SMTP]
-    smtpServer = str(getattr(conf.SMTP, 'smtpserver'))
-    emailmittente = str(getattr(conf.SMTP, 'emailmittente'))
-
     #[Documenti]
     cliente_predefinito = str(getattr(conf.Documenti, 'cliente_predefinito'))
     tipo_documento_predefinito = str(getattr(conf.Documenti, 'tipo_documento_predefinito'))
 
-
-    #[Multilinea]
-    try :
-        multilinelimit = int(getattr(conf.Multilinea, 'multilinealimite'))
-    except:
-        multilinelimit = 60
     mltext = ""
 
     #[Pagamenti]

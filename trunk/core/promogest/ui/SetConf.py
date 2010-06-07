@@ -128,9 +128,13 @@ class SetConfUI(GladeWidget):
             ss = SetConf().select(section=s,batchSize=None, orderBy="section")
             for s in ss:
                 if s.key != "install_code":
+                    if s.tipo == "BOOLEAN":
+                        valore = "USARE 'ATTIVA' PER ATTIVARE / DISATTIVARE"
+                    else:
+                        valore = s.value
                     self._treeViewModel.append(iter,(s,
                                             s.key,
-                                            s.value,
+                                            valore,
                                             s.description,
                                             s.tipo_section,
                                             s.tipo,
@@ -270,8 +274,12 @@ if not SetConf().select(key="feed",section="Feed"):
     k.description = "Notizie nella home"
     k.tipo_section = "Generico"
     k.active = True
+    k.tipo = "BOOLEAN"
     k.date = datetime.datetime.now()
     k.persist()
+ff = SetConf().select(key="feed", section="Feed")
+ff[0].tipo = "BOOLEAN"
+ff[0].persist()
 if not SetConf().select(key="smtpserver", section="Smtp"):
     k = SetConf()
     k.key = "smtpserver"
@@ -305,7 +313,7 @@ if not SetConf().select(key="emailcompose", section="Composer"):
 if not SetConf().select(key="multilinealimite", section="Multilinea"):
     k = SetConf()
     k.key = "multilinealimite"
-    k.value ="40"
+    k.value ="60"
     k.section = "Multilinea"
     k.tipo_section = "Generico"
     k.description = "Gestione dei multilinea nei documenti"

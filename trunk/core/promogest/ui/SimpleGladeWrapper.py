@@ -201,7 +201,8 @@ class SimpleGladeWrapper:
                 if widget.__gtype__.name == "GtkEntry":
                     self.entryGlobalcb(widget)
             except:
-                print "WIDGET NON WIDGET", widget
+                pass
+#                print "WIDGET NON WIDGET", widget
 
 
     def entryGlobalcb(self,entry):

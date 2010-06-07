@@ -71,9 +71,7 @@ class AnagraficaCategorieClienti(Anagrafica):
         self._filterClosure = filterClosure
         cats = self.runFilter()
         self._treeViewModel.clear()
-        print "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAts", cats
         for c in cats:
-            print "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", c
             self._treeViewModel.append((c,
                                         (c.denominazione or '')))
 

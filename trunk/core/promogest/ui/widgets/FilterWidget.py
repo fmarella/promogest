@@ -14,6 +14,7 @@ from sqlalchemy.orm import *
 from promogest.ui.GladeWidget import GladeWidget
 from promogest import Environment
 from promogest.lib.HtmlHandler import createHtmlObj, renderHTML
+from promogest.ui.utils import setconf
 
 class FilterWidget(GladeWidget):
     """ Base Class for filter part of windows/dialogs """
@@ -26,7 +27,7 @@ class FilterWidget(GladeWidget):
         self.join = None
         self.orderBy = None
         self.flag = False
-        self.batchSize = int(Environment.conf.Numbers.batch_size)
+        self.batchSize = int(setconf("Numbers", "batch_size"))
         self.offset = 0
         self.numRecords = 0
         self._treeViewModel = None

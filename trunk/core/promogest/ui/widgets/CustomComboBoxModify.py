@@ -23,6 +23,7 @@ import gtk
 import gobject
 from promogest import Environment
 
+
 class CustomComboBoxModify(gtk.HBox):
     __gtype_name__ = 'CustomComboBoxModify'
     __gsignals__ = {'clicked' : (gobject.SIGNAL_RUN_LAST,
@@ -30,6 +31,7 @@ class CustomComboBoxModify(gtk.HBox):
                                  (gobject.TYPE_OBJECT, ) )}
 
     def __init__(self):
+        from promogest.ui.utils import setconf
         gtk.HBox.__init__(self, False, 0)
         self.combobox = gtk.ComboBox()
         self.combobox.set_property("can-focus", True)
@@ -46,10 +48,8 @@ class CustomComboBoxModify(gtk.HBox):
                             self.do_button_clicked)
         self.combobox.connect('key_press_event',
                               self.do_combobox_key_press_event)
-        if hasattr(Environment.conf,'Numbers'):
-            self.combo_column = int(getattr(Environment.conf.Numbers,'combo_column',5))
-            if self.combo_column:
-                self.combobox.set_wrap_width(self.combo_column)
+
+        self.combobox.set_wrap_width(int(setconf("Numbers", "combo_column")))
         renderer = gtk.CellRendererText()
         self.combobox.pack_start(renderer, True)
         self.combobox.add_attribute(renderer, 'text', 0)

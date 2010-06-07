@@ -95,7 +95,7 @@ class VistaPrincipale(GladeWidget):
         model = gtk.ListStore(object, str, str, str, str, str, str)
         treeview.set_model(model)
 
-        if Environment.feed == "True":
+        if setconf("Feed", "feed"):
             feedAll = Environment.feedAll
             feedToHtml = Environment.feedCache
             if feedAll == "":
