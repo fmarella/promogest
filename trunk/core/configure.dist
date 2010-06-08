@@ -26,12 +26,6 @@ decimals = 2
 
 [Documenti]
 cartella_predefinita =
-pdf_reader = acroread,evince,okular,kghostview,xpdf
-# Il processo di stampa necessita di un visualizzatore di PDF:
-# - su GNU/Linux consigliamo kpdf o evince (sostituire con la voce che interessa)
-# - su MS Windows consigliamo l'utilizzo di Adobe Acrobat Reader 8
-#   (download http://ardownload.adobe.com/pub/adobe/reader/win/8.x/8.1.2/ita/AdbeRdr812_it_IT.exe )
-#pdf_reader = C:\Programmi\Adobe\Reader~1.0\Reader\AcroRd32.exe
 
 fornitore_predefinito =  ""
 cliente_predefinito = ""
