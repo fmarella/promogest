@@ -66,10 +66,6 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
                 "cliente":ram[1].ragione_sociale_cliente,
                 "fornitore":ram[1].ragione_sociale_fornitore,
                 "valore":calcolaGiacenza(quantita=ram[0].quantita,moltiplicatore=ram[0].moltiplicatore, segno=ram[1].segnoOperazione, valunine=ram[0].valore_unitario_netto)[1],
-                "segnoOperazione":ram[1].segnoOperazione,
-                "documento_numero":ram[1].TD.numero,
-                "dao":ram[1],
-                #"test_doc":ram[1].testata_documento.numero
                     }
         lista.append(diz)
     return lista

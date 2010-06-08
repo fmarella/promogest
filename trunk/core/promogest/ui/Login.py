@@ -283,9 +283,8 @@ class Login(GladeApp):
                         Environment.params["schema"]=self.azienda
                     # Lancio la funzione di generazione della dir di configurazione
                     Environment.set_configuration(Environment.azienda,Environment.workingYear)
-                    if setconf("Feed","feed"):
-                        print " MA PASSIIIIIIIIIIIIIIIIIIIIII"
-#                    if True == True:
+#                    if setconf("Feed","feed"):
+                    if True == True:
                         thread = threading.Thread(target=self.feddretreive)
                         thread.start()
                         thread.join(2.3)
