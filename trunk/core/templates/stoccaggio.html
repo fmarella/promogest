@@ -28,7 +28,6 @@
             <tr><td colspan="6" class="table-header">Situazione magazzino</td></tr>
             <tr class="even-detail">
                 <td class="even-number" style="text-align:center;" width="41%" style="padding-left:20px;" > Dati MOVIMENTO</td>
-                <td class="even-number" style="text-align:center;" width="15%" style="padding-left:20px;" > ----------</td>
                 <td class="even-number" style="text-align:center;" width="7%">Carico</td>
                 <td class="even-number" style="text-align:center;" width="7%">Scarico</td>
                 <td class="even-number" style="text-align:center;" width="7%">Valore Carico</td>
@@ -36,9 +35,10 @@
                 <td class="even-number" style="text-align:center;" width="1%">+/-</td>
             </tr>
             {% for item in dao.totaliOperazioniMovimento %}
+            {{item['segnoOperazione']}}
             <tr >
             <td class="odd-detail" style="padding-left:5px;">N° {{item['numero']}} - {{item['operazione']}} - Del: {{utils.dateToString(item['data_movimento'])}} - Rag_soc.:{{item['fornitore'][0:9]|string}}{{item['cliente'][0:9]|string}}</td>
-            <td class="odd-detail" style="padding-left:5px;"> ---------- {# {{item['dao'].TD.numero}} DEL: {{utils.dateToString(item['dao'].TD.data_documento)}} #}</td>
+
             {% if item['segnoOperazione'] == "+" %}
                 <td class="odd-number" style="text-align:center;" >{{'%14.2f' % (item['giacenza'],)}}</td>
             {% else %}
