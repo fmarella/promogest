@@ -369,7 +369,9 @@ class FilterWidget(GladeWidget):
         """
         Row selection event response
         """
-        self._owner.on_filter_treeview_selection_changed(treeSelection)
+        print " PASSS"
+
+#        self._owner.on_filter_treeview_selection_changed(treeSelection)
 
     def on_filter_treeview_keypress_event(self, treeview, event):
         """

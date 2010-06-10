@@ -6,8 +6,6 @@
 
 from promogest import Environment
 import promogest.ui.Login
-#from promogest.modules.DistintaBase.data.DistintaBaseDB import *
-#from promogest.modules.DistintaBase.ui.AnagraficaDistintaBase import AnagraficaDistintaBase
 
 MODULES_NAME = "Promemoria"
 MODULES_FOR_EXPORT = []
@@ -31,4 +29,3 @@ START_CALL = None                              # of this call in a separated Thr
     #def getApplication(self):
         #anag = AnagraficaDistintaBase()
         #return anag
-

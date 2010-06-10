@@ -2,8 +2,8 @@
 
 # Promogest
 #
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
+# Copyright (C) 2005 - 2010by Promotux Informatica - http://www.promotux.it/
+# Author: Francesco Meloni <francesco@promotux.it>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,13 +19,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import time, gtk, gobject, gtkhtml2
-import math, os, shutil, sys, tempfile, threading, os.path
+import gtk
+import os, os.path
 from GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
 import Login
 from utils import *
-import webbrowser
 from promogest import Environment
 import utils
 from jinja2 import Environment  as Env
@@ -225,7 +224,7 @@ class RicercaHtml(object):
         """ Visualizza il Dao specificato """
         self.dao = dao
 
-        self._refresh()
+#        self._refresh()
 
         if dao is not None and Environment.debugDao ==True:
             # FIXME: add some logging level check here
@@ -297,4 +296,3 @@ class RicercaHtml(object):
     def cancelOperation(self):
         """ Cancel current operation """
         self._slaTemplateObj.cancelOperation()
-

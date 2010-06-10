@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <interface>
-  <!-- interface-requires gtk+ 2.6 -->
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkListStore" id="liststore1">
@@ -14,26 +14,6 @@
       </row>
       <row>
         <col id="0" translatable="yes"></col>
-      </row>
-    </data>
-  </object>
-  <object class="GtkListStore" id="liststore2">
-    <columns>
-      <!-- column-name item -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes"></col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">&lt;Clienti...&gt;</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">&lt;Fornitori...&gt;</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">&lt;Contatti...&gt;</col>
       </row>
     </data>
   </object>
@@ -713,9 +693,10 @@
       <object class="GtkComboBoxEntry" id="riferimento_combobox_entry">
         <property name="visible">True</property>
         <property name="model">liststore2</property>
+        <property name="text_column">0</property>
         <signal name="changed" handler="on_riferimento_combobox_entry_changed"/>
         <child>
-          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+          <object class="GtkCellRendererText" id="tipo_riferimento_cellrenderer"/>
           <attributes>
             <attribute name="text">0</attribute>
           </attributes>
@@ -778,5 +759,25 @@
         <property name="y_options"></property>
       </packing>
     </child>
+  </object>
+  <object class="GtkListStore" id="liststore2">
+    <columns>
+      <!-- column-name tipo_riferimento -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes"/>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Clienti..</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Fornitori..</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Contatti..</col>
+      </row>
+    </data>
   </object>
 </interface>

@@ -2,8 +2,8 @@
 
 # Promogest
 #
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Enrico Pintus <enrico@promotux.it>
+# Copyright (C) 2005-2010 by Promotux Informatica - http://www.promotux.it/
+# Author: Francesco Meloni <francesco@promotux.it>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,12 +24,10 @@ import gtk
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
-import promogest.dao.Promemoria
 from promogest.dao.Promemoria import Promemoria
 
 from utils import *
 from utilsCombobox import *
-
 
 
 class AnagraficaPromemoria(Anagrafica):
@@ -46,7 +44,6 @@ class AnagraficaPromemoria(Anagrafica):
                             aziendaStr=aziendaStr)
 
 
-
 class AnagraficaPromemoriaFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei clienti """
 
@@ -57,7 +54,6 @@ class AnagraficaPromemoriaFilter(AnagraficaFilter):
                                   gladeFile='_anagrafica_promemoria_elements.glade')
         self._widgetFirstFocus = self.da_data_inserimento_entry.entry
         self.orderBy = 'data_scadenza'
-
 
     def draw(self,cplx=False):
         # Colonne della Treeview per il filtro
@@ -152,7 +148,6 @@ class AnagraficaPromemoriaFilter(AnagraficaFilter):
 
         self.clear()
 
-
     def clear(self):
         # Annullamento filtro
         self.da_data_inserimento_entry.set_text('')
@@ -174,7 +169,6 @@ class AnagraficaPromemoriaFilter(AnagraficaFilter):
         self.in_scadenza_checkbox.set_active(True)
 
         self.refresh()
-
 
     def refresh(self):
         # Aggiornamento TreeView
@@ -262,12 +256,10 @@ class AnagraficaPromemoriaFilter(AnagraficaFilter):
                                         (m.riferimento or '')))
 
 
-
 class AnagraficaPromemoriaHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'promemoria',
                                 'Informazioni sul promemoria')
-
 
 
 class AnagraficaPromemoriaReport(AnagraficaReport):
@@ -277,7 +269,6 @@ class AnagraficaPromemoriaReport(AnagraficaReport):
                                   defaultFileName='promemoria',
                                   htmlTemplate='promemoria',
                                   sxwTemplate='promemoria')
-
 
 
 class AnagraficaPromemoriaEdit(AnagraficaEdit):
@@ -291,7 +282,6 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
                                 gladeFile='_anagrafica_promemoria_elements.glade')
         self._widgetFirstFocus = self.data_scadenza_entry
 
-
     def draw(self,cplx=False):
         textBuffer = gtk.TextBuffer()
         self.descrizione_textview.set_buffer(textBuffer)
@@ -299,7 +289,6 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
         self.annotazione_textview.set_buffer(textBuffer)
         fillComboboxIncaricatiPromemoria(self.incaricato_combobox_entry)
         fillComboboxAutoriPromemoria(self.autore_combobox_entry)
-
 
     def setDao(self, dao):
         if dao is None:
@@ -311,7 +300,6 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
             self.dao = Promemoria().getRecord(id= dao.id)
             self._is_changing = True
         self._refresh()
-
 
     def _refresh(self):
         self.data_scadenza_entry.set_text(dateTimeToString(self.dao.data_scadenza) or '')
@@ -334,7 +322,6 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
 
         fillComboboxIncaricatiPromemoria(self.incaricato_combobox_entry)
         fillComboboxAutoriPromemoria(self.autore_combobox_entry)
-
 
     def saveDao(self):
         if self.data_scadenza_entry.get_text() == '':
@@ -364,11 +351,11 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
 
         self.dao.persist()
 
-
     def on_riferimento_combobox_entry_changed(self, combobox):
-        stringContatti = '<Contatti...>'
-        stringClienti = '<Clienti...>'
-        stringFornitori = '<Fornitori...>'
+        stringContatti = 'Contatti..'
+        stringClienti = 'Clienti..'
+        stringFornitori = 'Fornitori..'
+
 
         def refresh_combobox(anagWindow, tipo):
             if anag.dao is None:
@@ -388,8 +375,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
                 self.riferimento_combobox_entry.child.set_text(res["cognome"] + ' ' + res["nome"])
             anag.on_ricerca_window_close(self)
 
-
-        if self.riferimento_combobox_entry.get_active_text() == stringClienti:
+        if combobox.child.get_text() == stringClienti:
             from RicercaComplessaClienti import RicercaComplessaClienti
             anag = RicercaComplessaClienti()
             anag.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
@@ -398,7 +384,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
             returnWindow = combobox.get_toplevel()
             anagWindow.set_transient_for(returnWindow)
             anag.show_all()
-        elif self.riferimento_combobox_entry.get_active_text() == stringFornitori:
+        elif combobox.child.get_text() == stringFornitori:
             from RicercaComplessaFornitori import RicercaComplessaFornitori
             anag = RicercaComplessaFornitori()
             anag.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
@@ -407,7 +393,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
             returnWindow = combobox.get_toplevel()
             anagWindow.set_transient_for(returnWindow)
             anag.show_all()
-        elif self.riferimento_combobox_entry.get_active_text() == stringContatti:
+        elif combobox.child.get_text() == stringContatti:
             if "Contatti" in Environment.modulesList:
                 from promogest.modules.Contatti.ui.RicercaContatti import RicercaContatti
                 anag = RicercaContatti()
