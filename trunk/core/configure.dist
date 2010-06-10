@@ -26,7 +26,6 @@ decimals = 2
 
 [Documenti]
 cartella_predefinita =
-
 fornitore_predefinito =  ""
 cliente_predefinito = ""
 tipo_documento_predefinito = ""
