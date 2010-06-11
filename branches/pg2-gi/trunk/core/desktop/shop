@@ -1,0 +1,9 @@
+#!/bin/sh
+
+cd ~/pg2/core/
+chmod +x Shop.py
+if [ $# -ne 0 ]; then
+python Shop.py $*
+else
+python Shop.py
+fi;
