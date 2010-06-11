@@ -1,0 +1,37 @@
+Source: promogest
+Section: main
+Priority: optional
+Maintainer: Francesco Meloni <francesco@promotux.it>
+Build-Depends: cdbs, debhelper (>= 4.1.0)
+Standards-Version: 3.6.2
+
+Package: promogest
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, python2.5, libpq-dev, python-gtk2, python-glade2, 
+         python-reportlab, python-imaging, python-gnome2-extras, python-libxslt1, python-dev, 
+         python-setuptools, python-egenix-mxdatetime, python-psycopg2, python-xml, python-gtkhtml2,
+         python-genshi, python-feedparser,python-sqlalchemy
+Description: Promogest Gestionale Open Source. 
+ Il Promogest è un gestionale open source realizzato da Promotux Informatica e dalla comunita'.
+ Promogest nasce da una profonda convinzione: la conoscenza è un bene comune da condividere con tutti.
+ Promogest nasce da quest’idea.
+ Un’idea forte.
+ Un’idea complessa di libertà, di sicurezza, di efficienza, di convenienza e di continuità. E' la stessa 
+ filosofia che determina un caparbio orientamento del prodotto a una implementazione costante e a un 
+ continuo accrescimento delle sue funzionalità e potenzialità d'utilizzo.
+ PROMOGEST per la gestione della tua azienda
+ Promogest è nella realtà dei fatti la soluzione integrata per ogni tipo di esigenza 
+ riguardante le piccole e le medie imprese.
+ Fornisce gli strumenti per una completa copertura funzionale delle aree acquisti, 
+ aliquote, anagrafiche, banche, bolle, clienti, condizioni, contatti, documenti, fornitori, 
+ forniture, giacenza, imballaggi, listini, magazzini, movimentazione, pagamenti, prodotti, 
+ rendimento, report, sconti, servizi, stoccaggio, valorizzazione, vendibilità, vendita, 
+ vettori e molto altro ...tutto sotto controllo per una crescita professionale e produttiva costante.
+ PROMOGEST è multipiattaforma
+ Architettura Client-Server che gira nativamente sotto Linux, Windows..
+ Una peculiarità fortemente voluta e ricercata da Promotux per venire incontro anche a quelle 
+ aziende che per varie ragioni devono utilizzare sistemi operativi diversi.
+ E’ il paradosso Promogest: pur essendo un prodotto innovativo nella sua concezione di sviluppo 
+ e nella sua realizzazione, pur essendo destinato a rappresentare lo stato dell’arte nel suo settore, 
+ seppur avviato a essere un punto di riferimento assoluto, ha scelto di non imporre traumatici 
+ cambiamenti a quei clienti che non desiderano cambiare le loro consolidate abitudini operative.

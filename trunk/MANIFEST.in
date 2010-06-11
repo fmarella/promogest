@@ -1,0 +1,10 @@
+include INSTALL  
+include MANIFEST.in
+include setup.cfg
+include setup.py
+recursive-include data *
+recursive-include debian *
+recursive-include doc *
+recursive-include install_db *
+recursive-include python LICENSE *.py configure.dist promoGest *.desktop *.png *.ico *.glade *.kid *.sla *.css
+

@@ -1,0 +1,39 @@
+{% extends 'index2.html' %}
+{% block body %}
+        <table cellpadding="0" cellspacing="3" border="0">
+            <tr>
+                <th>Codice</th>
+                <th>C Barre</th>
+                <th>Articolo</th>
+                <th>Magazzino</th>
+
+                <th>Giacenza</th>
+                {% if "SchedaLavorazione" in environment.modulesList %}
+                <th>Impegnato</th>
+                {% endif %}
+                <th>Valore Giacenza</th>
+                <th>Scorta minima</th>
+                <th>Data fine scorte</th>
+                <th>Data prossimo ordine</th>
+            </tr>
+            <tr><td colspan="7"><hr /></td></tr>
+            {% for dao in objects %}
+            <tr class="row">
+                <td class="detail">{{dao.codice_articolo}}</td>
+                <td class="detail">{{dao.arti.codice_a_barre}}</td>
+                <td class="detail">{{dao.articolo}}</td>
+                <td class="detail">{{dao.magazzino}}</td>
+
+                <td class="detail">{{utils.mN( dao.giacenza )}}</td>
+                {% if "SchedaLavorazione" in environment.modulesList %}
+                    <td class="number">{{ dao.impegnato}}</td>
+                {% endif %}
+                <td class="detail" "><strong>{{utils.mN(dao.valoreGiacenza)}}</strong></td>
+                <td class="detail">{{dao.scorta_minima|nonone}}</td>
+                <td class="detail">{{utils.dateToString(dao.data_fine_scorte)}}</td>
+                <td class="detail">{{utils.dateToString(dao.data_prossimo_ordine)}}</td>
+
+            </tr>
+            {% endfor %}
+        </table>
+{% endblock %}

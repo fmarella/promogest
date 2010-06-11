@@ -1,0 +1,30 @@
+<html>
+<head>
+    {% include 'promowear_style.css' with context %}
+    </head>
+    <body>
+        <table cellpadding="3" cellspacing="5" border="0">
+            <tr>
+                <th>GRUPPO TAGLIA</th>
+                <th>COLORE</th>
+                <th>TAGLIA</th>
+                <th>DESCRIZIONE</th>
+                <th>CODICE A BARRE</th>
+            </tr>
+            <tr><td colspan="5"><hr /></td></tr>
+            {% for dao in pageData['datas'] %}
+            <tr>
+                <td class="detail" >{{dao[0].denominazione_gruppo_taglia }}</td>
+                <td class="detail" >{{dao[2].denominazione}}</td>
+                <td class="detail">{{dao[1].denominazione}}</td>
+                {% if dao[4] %}
+                <td class="detail">{{dao[4].denominazione}}</td>
+                {% else %}
+                <td class="detail">{{dao[4]}}</td>
+                {% endif %}
+                <td class="detail">{{dao[3]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

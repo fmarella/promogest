@@ -1,0 +1,85 @@
+<?python
+from promogest.Environment import conf
+?>
+<html   xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:py="http://genshi.edgewall.org/"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    lang="en">
+<head>
+    <title>Dettaglio Fornitura</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <xi:include href="style.css"><xi:fallback/></xi:include>
+</head>
+    <body>
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td class="report-header" colspan="0"><h3>Codice articolo fornitore:
+                    <strong>${dao.codice_articolo_fornitore}</strong></h3></td>
+            </tr>
+</table>
+<table cellpadding="0" cellspacing="0" border="0">
+            <tr><td colspan="4" class="table-header">Dati principali</td></tr>
+            <tr>
+                <td width="150px" class="odd-detail">Articolo</td>
+                <td class="odd-detail"><strong>${dao.articolo}</strong></td>
+            </tr>
+		<tr py:if="conf.taglia_colore">
+                <td class="even-detail">Taglia</td>
+                <td class="even-detail"><strong py:content="dao.denominazione_taglia"></strong> (<strong py:content="dao.denominazione_gruppo_taglia"></strong>) <strong py:content="dao.genere"></strong></td>
+            </tr>
+            <tr py:if="conf.taglia_colore">
+                <td class="odd-detail">Colore</td>
+                <td class="odd-detail"><strong py:content="dao.denominazione_colore"></strong></td>
+            </tr>
+            <tr py:if="conf.taglia_colore">
+                <td class="even-detail">Stagione</td>
+                <td class="even-detail"><strong py:content="dao.stagione"></strong> (<strong py:content="dao.anno"></strong>)</td>
+            </tr>
+
+            <tr>
+                <td class="even-detail">Fornitore</td>
+                <td class="even-detail">
+                    <strong py:if="dao.fornitore_preferenziale is True">Preferenziale</strong>
+                    <strong>${dao.fornitore}</strong>
+                </td>
+            </tr>
+            <tr>
+                <td class="odd-detail">Data fornitura</td>
+                <td class="odd-detail">
+                    <strong py:if="dao.data_fornitura is not None">
+                        <strong>${dao.data_fornitura.strftime('%d/%m/%Y')}</strong>
+                    </strong>
+                </td>
+            </tr>
+            <tr>
+                <td class="even-detail">Data prezzo</td>
+                <td class="even-detail">
+                    <strong py:if="dao.data_prezzo is not None">
+                        <strong>${dao.data_prezzo.strftime('%d/%m/%Y')}</strong>
+                    </strong>
+                </td>
+            </tr>
+            <tr>
+                <td class="odd-detail">Aliquota IVA</td>
+                <td class="odd-detail"><strong>${conf.number_format % dao.percentuale_iva}</strong><strong> %</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Scorta minima</td>
+                <td class="even-detail"><strong>${dao.scorta_minima}</strong></td>
+            </tr>
+            <tr>
+                <td class="odd-detail">Tempo arrivo merce</td>
+                <td class="odd-detail"><strong>${dao.tempo_arrivo_merce}</strong></td>
+            </tr>
+            <tr><td colspan="2" class="table-header">Prezzi</td></tr>
+            <tr>
+                <td class="odd-detail">Prezzo lordo</td>
+                <td class="odd-detail"><strong>${conf.number_format % dao.prezzo_lordo}</strong> &euro;</td>
+            </tr>
+            <tr>
+                <td class="even-detail">Prezzo netto</td>
+                <td class="even-detail"><strong>${conf.number_format % dao.prezzo_netto}</strong> &euro;</td>
+            </tr>
+        </table>
+    </body>
+</html>

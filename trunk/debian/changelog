@@ -1,0 +1,14 @@
+promogest (0.8-1) unstable; urgency=low
+
+  * fix install bugs
+  
+
+ -- Andrea Maccis <andrea.maccis@gmail.com>  Thu,  9 Nov 2006 22:07:07 +0100
+
+promogest (0.8) unstable; urgency=low
+
+  * Initial Release.
+  * This is the first Debian package of "The Promogest".
+
+ -- Andrea Maccis <andrea.maccis@gmail.com>  Thu,  9 Nov 2006 22:07:07 +0100
+
