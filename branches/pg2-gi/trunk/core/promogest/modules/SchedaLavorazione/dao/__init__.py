@@ -1,9 +1,0 @@
-import SchedaOrdinazione
-import PromemoriaSchedaOrdinazione
-import ColoreStampa
-import CarattereStampa
-import AssociazioneArticoli
-import RigaSchedaOrdinazione
-import ScontoRigaScheda
-import ScontoSchedaOrdinazione
-
