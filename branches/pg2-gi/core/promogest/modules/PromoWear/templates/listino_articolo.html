@@ -1,0 +1,102 @@
+<?python
+from promogest.ui.utils import *
+from promogest.Environment import conf
+?>
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:py="http://genshi.edgewall.org/"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        lang="en">
+    <head>
+        <title>Dettaglio Listino Articolo</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <xi:include href="style.css"><xi:fallback/></xi:include>
+    </head>
+    <body>
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td class="report-header" colspan="2"><h3>Articolo: <strong>${dao.articolo}</strong></h3></td>
+            </tr>
+            <tr>
+                <td class="report-header" colspan="2"><h3>Listino: <strong>${dao.denominazione}</strong></h3></td>
+            </tr>
+	<tr py:if="conf.taglia_colore">
+                <td width="40%" class="report-header"><h3>Taglia:
+            <strong py:content="dao.denominazione_taglia"></strong>
+            (<strong py:content="dao.denominazione_gruppo_taglia"></strong>)
+            <strong py:content="dao.genere"></strong></h3>
+        </td>
+        <td width="18%" class="report-header"><h3>Colore:
+            <strong py:content="dao.denominazione_colore"></strong></h3>
+        </td>
+               <td class="report-header"><h3>Stagione:
+            <strong py:content="dao.stagione"></strong>
+            (<strong py:content="dao.anno"></strong>)</h3>
+        </td>
+            </tr>
+
+</table>
+<table cellpadding="0" cellspacing="0" border="0">
+            <tr><td colspan="2" class="table-header">Dati</td></tr>
+            <tr>
+                <td width="150px" class="odd-detail">Data prezzo</td>
+                <td class="odd-detail">
+                    <strong py:if="dao.data_listino_articolo is not None">
+                        <strong>${dao.data_listino_articolo.strftime('%d/%m/%Y')}</strong>
+                    </strong>
+                </td>
+            </tr>
+            <tr>
+                <td class="even-detail">Ultimo costo</td>
+                <td class="even-detail"><strong>${conf.number_format % dao.ultimo_costo}</strong></td>
+            </tr>
+            <tr>
+                <td class="odd-detail">Ultimo costo ivato</td>
+                <td class="odd-detail"><strong>${conf.number_format % calcolaPrezzoIva(dao.ultimo_costo,dao.percentuale_iva)}</strong></td>
+            </tr>
+</table>
+<table cellpadding="0" cellspacing="4" border="0">
+
+<tr><td width="50%">
+	<table cellpadding="0" cellspacing="0" border="0">
+	<tr><td colspan="2" class="table-header">Vendita al dettaglio</td></tr>
+	    <tr>
+                <td width="150px" class="odd-detail">Prezzo </td>
+                <td class="odd-detail"><strong>${conf.number_format % calcolaPrezzoIva(dao.prezzo_dettaglio, - dao.percentuale_iva)}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Prezzo ivato</td>
+                <td class="even-detail"><strong>${conf.number_format % dao.prezzo_dettaglio}</strong></td>
+            </tr>
+            <tr>
+                <td class="odd-detail">Ricarico</td>
+                <td class="odd-detail"><strong>${conf.number_format % calcolaRicarico(dao.ultimo_costo,dao.prezzo_dettaglio,dao.percentuale_iva)}</strong> %</td>
+            </tr>
+            <tr>
+                <td class="even-detail">Margine </td>
+                <td class="even-detail"><strong>${conf.number_format % calcolaMargine(dao.ultimo_costo,dao.prezzo_dettaglio,dao.percentuale_iva)}</strong> %</td>
+            </tr>
+	</table>
+     </td>
+<td width="50%">
+<table cellpadding="0" cellspacing="0" border="0">
+	<tr><td colspan="2" class="table-header">Vendita con fatturazione</td></tr>
+            <tr>
+                <td width="150px" class="odd-detail">Prezzo </td>
+                <td class="odd-detail"><strong>${conf.number_format % dao.prezzo_ingrosso}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Prezzo ivato</td>
+                <td class="even-detail"><strong>${conf.number_format % calcolaPrezzoIva(dao.prezzo_ingrosso, dao.percentuale_iva)}</strong></td>
+            </tr>
+            <tr>
+                <td class="odd-detail">Ricarico </td>
+                <td class="odd-detail"><strong>${conf.number_format % calcolaRicarico(dao.ultimo_costo,dao.prezzo_ingrosso)}</strong> %</td>
+            </tr>
+            <tr>
+                <td class="even-detail">Margine </td>
+                <td class="even-detail"><strong>${conf.number_format % calcolaMargine(dao.ultimo_costo,dao.prezzo_ingrosso)}</strong> %</td>
+            </tr>
+        </table>
+</td></tr></table>
+    </body>
+</html>

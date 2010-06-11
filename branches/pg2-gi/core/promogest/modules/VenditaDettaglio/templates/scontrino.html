@@ -1,0 +1,84 @@
+{% include 'vendita_dettaglio_style.css' with context %}
+<h4> Dettaglio scontrino</h4>
+<table>
+    <tr>
+        <td class="table-header">Data Scontrino</td>
+        <td class="table-header">Data Mov.</td>
+        <td class="table-header">N° Mov.</td>
+</tr>
+<tr class="row">
+            <td class="odd-detail">{{dao.data_inserimento|string[0:-7]}}</td>
+            <td class="odd-detail">{{dao.data_movimento|string[0:-7]}}</td>
+            <td class="odd-detail">{{dao.numero_movimento}}</td>
+</tr><br/>
+</table>
+<h5>Righe scontrino</h5>
+<table cellpadding="0" cellspacing="4" border="0">
+	<tr>
+        <td class="table-header">Articolo</td>
+        <td class="table-header">C barre</td>
+        <td class="table-header">Descrizione</td>
+        <td class="table-header">Q.a'</td>
+        <td class="table-header">Pr.</td>
+        <td class="table-header">Sconto</td>
+        <td class="table-header">Netto</td>
+        <td class="table-header">TOTALE</td>
+        </tr>
+            {% for riga in dao.righe %}
+            <tr class="row">
+            <td class="odd-detail">{{riga.codice_articolo}}</td>
+            <td class="odd-detail">{{riga.codice_a_barre}}</td>
+            <td class="odd-detail">{{riga.descrizione[:20]}}</td>
+            <td class="odd-number">{{environment.conf.number_format % (riga.quantita or 0)}}</td>
+            <td class="odd-number">{{environment.conf.number_format % (riga.prezzo or 0)}}</td>
+            {% if riga.tipo_sconto == 'percentuale' %}
+            <td class="odd-number">
+                {{environment.conf.number_format % (riga.valore_sconto or 0) + "%"}}
+            </td>
+            {% else%}
+            <td class="odd-number">
+                {{environment.conf.number_format % (riga.valore_sconto or 0) + " "}}
+            </td>
+            {% endif %}
+            <td class="odd-number">{{environment.conf.number_format % (riga.prezzo_scontato or 0)}}</td>
+            <td class="odd-number"><strong>{{environment.conf.number_format % ( riga.quantita * riga.prezzo_scontato ) or 0}}</strong></td>
+        </tr>
+            {% endfor %}
+        </table>
+<h5>Informazioni accessorie</h5>
+<table>
+    <tr>
+        <td class="table-header">Punto Vendita</td>
+        <td class="table-header">Punto Cassa</td>
+        <td class="table-header">Operatore</td>
+        <td class="table-header">Tipo Carta di credito</td>
+</tr>
+<tr>
+            <td class="odd-detail">{{dao.mag.denominazione}}</td>
+            <td class="odd-detail">{{dao.poss.denominazione}}</td>
+            <td class="odd-detail">{{dao.usr.username}}</td>
+            <td class="odd-detail"><b>{{dao.cctypee.denominazione}}</b></td>
+</tr>
+</table>
+
+<h5> Totali</h5>
+<table>
+    <tr>
+        <td class="table-header">Sco su Tot</td>
+        <td class="table-header">Tot assegni</td>
+        <td class="table-header">Tot c di credito</td>
+        <td class="table-header">Tot contanti</td>
+        <td class="table-header">Tot scontrino</td>
+</tr>
+<tr class="row">
+            {% if dao.sconti %}
+                <td class="odd-number">{{utils.mN(dao.sconti[0].valore)}}{{utils.scontiTipo(dao.sconti[0].tipo_sconto)}}</td>
+            {% else %}
+                <td class="odd-number">0</td>
+            {% endif %}
+            <td class="odd-number">{{utils.mN(dao.totale_assegni)}}</td>
+            <td class="odd-number">{{utils.mN(dao.totale_carta_credito)}}</td>
+            <td class="odd-number">{{utils.mN(dao.totale_contanti)}}</td>
+            <td class="odd-number" style="font-size:1.8em"><b>{{utils.mN(dao.totale_scontrino)}}</b></td>
+</tr>
+</table>

@@ -1,0 +1,216 @@
+{% extends 'index.html' %}
+
+{% block body %}
+    <table>
+        <tr>
+            <td class="report-header"><h3> Registro: <strong> {{(dao.registro_numerazione).replace("_"," ").capitalize()}}</strong></h3></td>
+            <td class="report-header"><h3>Numero: <strong>{{dao.numero}} {{dao.parte|nonone}}</strong></h3></td>
+    	</tr>
+    </table>
+
+    <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+            <td colspan="2" class="table-header">Dati documento</td></tr>
+        <tr>
+            <td width="140px" class="even-detail">Operazione</td>
+            <td class="odd-detail">
+                <strong> {{dao.operazione}}</strong></td>
+        </tr>
+        <tr>
+            <td class="even-detail">Data documento</td>
+            <td class="odd-detail"><strong>{{utils.dateToString(dao.data_documento)}}</strong></td>
+        </tr>
+        <tr >
+            <td class="even-detail">Cliente</td>
+                {% if dao.id_cliente %}
+            <td class="odd-detail"><strong>{{dao.intestatario}}</strong></td>
+                {% endif %}
+        </tr>
+        <tr >
+            <td class="even-detail">Fornitore</td>
+            {% if dao.id_fornitore %}
+                <td class="odd-detail"><strong>{{dao.intestatario}}</strong></td>
+            {% endif %}
+        </tr>
+    </table>
+    <br />
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td colspan="2" class="table-header">TOTALI DOCUMENTO</td>
+                </tr>
+                <tr>
+                    <td width="140px" class="even-detail">Totale Imponibile Lordo:</td>
+                    <td class="odd-detail"><strong> {{ utils.mN(dao._totaleImponibile,2)}}</strong></td>
+                </tr>
+                                <tr>
+                    <td width="140px" class="even-detail">Sconto testata documento:</td>
+                    <td class="odd-detail"><strong> {{ utils.getStringaSconti(utils.getScontiFromDao(dao.sconti, dao.applicazione_sconti)[0])}}{{ utils.getScontiFromDao(dao.sconti, dao.applicazione_sconti)[1]}}</strong></td>
+                </tr>
+
+                <tr>
+                    <td width="140px" class="even-detail">Totale Imponibile:</td>
+                    <td class="odd-detail"><strong> {{ utils.mN(dao._totaleImponibileScontato,2)}}</strong></td>
+                </tr>
+                <tr>
+                    <td class="even-detail">Totale Imposta:</td>
+                    <td class="odd-detail"><strong>{{ utils.mN(dao._totaleImpostaScontata,2)}}</strong></td>
+                </tr>
+                <tr>
+                    <td class="even-detail">Totale:</td>
+                    <td class="odd-detail"><strong>{{utils.mN(dao._totaleScontato,2)}}</strong></td>
+                </tr>
+</table>
+    <br />
+        <table cellpadding="1" cellspacing="3" border="0" >
+            <tr >
+                <td colspan="20" class="table-header">Dettaglio documento</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="even-detail">MAGAZZINO</td>
+                <td class="even-detail">CODICE ART</td>
+                <td class="even-detail">DESCRIZIONE ARTICOLO</td>
+        <td colspan="2" class="even-detail">LISTINO</td>
+        <td colspan="2" class="even-number">Prezzo Lordo</td>
+                <td colspan="2" class="even-number">Sconto</td>
+                        <td colspan="2" class="even-number">Prezzo Netto</td>
+        <td colspan="2" class="even-number">Quantita'</td>
+                <td colspan="2" class="even-number">M.plo</td>
+                <td colspan="2" class="even-number">% Iva</td>
+                <td colspan="3" class="even-number">Totale</td>
+            </tr>
+
+        {% for riga in dao.righe %}
+            <tr >
+                <td colspan="2" class="odd-detail">{{(riga.magazzino|nonone)[:25]}}</td>
+                <td class="odd-detail"><b><a href="program:/articoloId={{riga.id_articolo}}">{{riga.codice_articolo}}</a></b></td>
+                <td class="odd-detail">{{riga.descrizione|nonone}}</td>
+                <td class="odd-detail" colspan="2">{{riga.listino}}</td>
+                <td class="odd-number" colspan="2">{{utils.mN(riga.valore_unitario_lordo,2)}}</td>
+                <td class="odd-detail" colspan="2">{{utils.getStringaSconti(utils.getScontiFromDao(riga.sconti)[0])}}</td>
+                <td class="odd-number" colspan="2">{{riga.valore_unitario_netto}}</td>
+                <td class="odd-number" colspan="2" >{{utils.mN(riga.quantita,2)}}</td>
+                {% if riga.moltiplicatore > 1 %}
+                <td class="odd-number" colspan="2">{{riga.multiplo}} ( {{utils.mN(riga.moltiplicatore,2)}} )</td>
+                {% else %}
+                <td class="odd-number" colspan="2"></td>
+                {% endif %}
+                <td class="odd-number" colspan="2">{{environment.conf.number_format % riga.percentuale_iva}}</td>
+                <td class="odd-number" colspan="3">{{utils.mN(( riga.quantita*  riga.moltiplicatore * riga.valore_unitario_netto ),2)}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+<table>
+<tr><td width="50%">
+	<table cellpadding="0" cellspacing="0" border="0">
+        <tr><td colspan="6" class="table-header">Pagamento </td></tr>
+            <tr>
+                <td width="140px" class="even-detail">Pagamento</td>
+                <td class="odd-detail"><strong>{{dao.pagamento}}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Banca</td>
+                <td class="odd-detail"><strong>{{dao.banca}}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Aliquota esenzione</td>
+                <td class="odd-detail"><strong>{{dao.aliquota_iva_esenzione}}</strong></td>
+            </tr>
+	</table>
+</td><td width="50%">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tr><td colspan="6" class="table-header">Aspetto beni</td></tr>
+            <tr>
+                <td width="175px" class="even-detail">Aspetto esteriore beni</td>
+                <td class="odd-detail"><strong>{{dao.aspetto_esteriore_beni}}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Totale colli</td>
+                <td class="odd-detail"><strong>{{dao.totale_colli}}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Totale peso</td>
+                <td class="odd-detail"><strong>{{dao.totale_peso}}</strong></td>
+            </tr>
+	</table>
+</td></tr>
+</table>
+    <table cellpadding="1" cellspacing="3" border="0">
+        <tr><td colspan="15" class="table-header">Totale Contabilita'</td></tr>
+        <tr>
+            <td class="even-detail" colspan="2">Totale Sospeso</td>
+            <td class="odd-detail">
+                <strong py:if="conf.hasPagamenti == True">
+                    <strong>{{dao.totale_sospeso}}</strong></strong></td>
+            <td class="even-detail" colspan="2">Totale Pagato</td>
+            <td class="odd-detail">
+                <strong py:if="conf.hasPagamenti == True">
+                    <strong>{{dao.totale_pagato}}</strong></strong></td>
+        </tr>
+    </table>
+	<table cellpadding="0" cellspacing="0" border="0">
+            <tr><td colspan="6" class="table-header">Trasporto</td></tr>
+            <tr>
+                <td class="even-detail">Incaricato trasporto</td>
+                <td class="odd-detail" width="150px"><strong>{{dao.incaricato_trasporto}}</strong></td>
+                <td class="even-detail" colspan="2">Vettore</td>
+                <td class="odd-detail" colspan="2"><strong>{{dao.ragione_sociale_vettore}}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Inizio trasporto</td>
+                <td class="odd-detail">
+                    <strong py:if="dao.inizio_trasporto is not None">
+                        <strong>{{utils.dateTimeToString(dao.inizio_trasporto)}}</strong>
+                    </strong>
+                </td>
+    		<td class="even-detail" colspan="2">Fine trasporto</td>
+                <td class="odd-detail" colspan="2">
+                    <strong py:if="dao.fine_trasporto is not None">
+                        <strong>{{utils.dateTimeToString(dao.fine_trasporto)}}</strong>
+                    </strong>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="6" class="table-header">Destinazione merce</td>
+            </tr>
+            <tr>
+                <td class="even-detail" width="150px">Destinazione</td>
+                <td class="odd-detail"><strong>{{dao.destinazione_merce}}</strong></td>
+                <td class="even-detail" width="80px">Indirizzo</td>
+                <td class="odd-detail" colspan="3"><strong>{{dao.indirizzo_destinazione_merce}}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Localita'</td>
+                <td class="odd-detail">
+                    <strong>{{dao.localita_destinazione_merce}}</strong>
+                </td>
+                <td class="even-detail">CAP</td>
+                <td class="odd-detail"><strong>{{dao.cap_destinazione_merce}}</strong></td>
+                <td class="even-detail">Provincia</td>
+                <td class="odd-detail" width="50px"><strong>{{dao.provincia_destinazione_merce}}</strong></td>
+            </tr>
+
+        </table>
+        <table cellpadding="0" cellspacing="0" border="0">
+           <tr>
+                <td colspan="2" class="table-header">Note</td>
+            </tr>
+            <tr>
+                <td width="50px" class="even-detail">Note interne</td>
+                <td width="150px" class="odd-detail"><strong>{{dao.note_interne}}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Note pie' pagina</td>
+                <td class="odd-detail"><strong>{{dao.note_pie_pagina}}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Causale trasporto</td>
+                <td class="odd-detail"><strong>{{dao.causale_trasporto}}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail">Protocollo</td>
+                <td class="odd-detail"><strong>{{dao.protocollo}}</strong></td>
+            </tr>
+        </table>
+{% endblock %}
