@@ -28,10 +28,10 @@ class VistaPrincipale(GladeWidget):
         #self.cancel_alarm_button.set_sensitive(False)
         #self.alarm_notify_treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         self._loading=None
-        self.html = createHtmlObj(self)
-        self.feed_scrolled.add(self.html)
+        self.htmlwidget = createHtmlObj(self)
+        self.feed_scrolled.add(self.htmlwidget)
         html = """<html><body></body></html>"""
-        renderHTML(self.html,html)
+        renderHTML(self.htmlwidget,html)
         self.draw()
 #        self.getfeedFromSite()
 
@@ -98,34 +98,14 @@ class VistaPrincipale(GladeWidget):
         if setconf("Feed", "feed"):
             feedAll = Environment.feedAll
             feedToHtml = Environment.feedCache
-            if feedAll == "":
-                Environment.pg2log.debug("LEGGERO RITARDO NEL RECUPERO DEI FEED")
-
-                """apro un thread per il recupero dei feed , su piattaforma a 32 bit
-                tutto procede per il meglio tanne qualche warning, su 64 bit ci sono
-                invece dei crash core dump dovuti ad una asyncronia tra il textbuffer e la texview che
-                si ritrova il cursore cambiato senza capire perchè
-                ho visto che con un join del thread che "ritarda" di un secondo e mezzo
-                l'apertura della finestra di main tutto procede per il meglio"""
-                thread = threading.Thread(target=self.getfeedFromSite)
-                thread.start()
-                thread.join(1.3)
-                #print "AAAAAAAAAAA", sys.version_info
-                #gobject.io_add_watch(self.getfeedFromSite)
-
-                #time.sleep(20)
-                #thread.stop()
-                #gobject.idle_add(self.getfeedFromSite)
-            elif feedAll and feedToHtml:
+            if feedAll != "" and feedAll and feedToHtml:
                 self.renderPage(feedToHtml)
             else:
-                self.getfeedFromSite()
-        #gobject.idle_add(self.checkUpdate)
-        #thread = threading.Thread(target=self.checkUpdate)
-        #thread.start()
-        #thread.join(1.3)
-        #time.sleep(2)
-        #thread.stop()
+                try:
+                    gobject.idle_add(self.getfeedFromSite)
+                except:
+                    Environment.pg2log.debug("LEGGERO RITARDO NEL RECUPERO DEI FEED")
+
         self.anno_lavoro_label.set_markup('<b>Anno di lavoro:   ' + Environment.workingYear + '</b>')
         self._refresh()
 
@@ -239,7 +219,7 @@ E' presente una nuova versione disponibile"""
                 "feed" :feedToHtml,
                 }
         html = renderTemplate(pageData)
-        renderHTML(self.html,html)
+        renderHTML(self.htmlwidget,html)
 
     def getfeedFromSite(self):
         string = ""

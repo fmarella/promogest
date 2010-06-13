@@ -284,10 +284,10 @@ class Login(GladeApp):
                     # Lancio la funzione di generazione della dir di configurazione
                     Environment.set_configuration(Environment.azienda,Environment.workingYear)
 #                    if setconf("Feed","feed"):
-                    if True == True:
-                        thread = threading.Thread(target=self.feddretreive)
-                        thread.start()
-                        thread.join(2.3)
+#                    if True == True:
+#                        thread = threading.Thread(target=self.feddretreive)
+#                        thread.start()
+#                        thread.join(2.3)
                     Environment.params['usernameLoggedList'][0] = users[0].id
                     Environment.params['usernameLoggedList'][1] = users[0].username
 
@@ -392,8 +392,7 @@ class Login(GladeApp):
                                                     'module': module(),
                                                     'type': module.VIEW_TYPE[0],
                                                     'module_dir': "%s" % (m_str),
-                                                    'guiDir':m.GUI_DIR
-}
+                                                    'guiDir':m.GUI_DIR}
             Environment.pg2log.info("LISTA DEI MODULI CARICATI E FUNZIONANTI %s" %(str(repr(Environment.modulesList))))
             HtmlHandler.jinja_env = HtmlHandler.env(HtmlHandler.templates_dir)
 
