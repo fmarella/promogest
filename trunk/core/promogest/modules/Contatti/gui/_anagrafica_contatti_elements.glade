@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <interface>
-  <!-- interface-requires gtk+ 2.6 -->
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkListStore" id="liststore1">
     <columns>
-      <!-- column-name item text -->
+      <!-- column-name item -->
       <column type="gchararray"/>
     </columns>
     <data>
@@ -25,7 +25,7 @@
   </object>
   <object class="GtkListStore" id="liststore2">
     <columns>
-      <!-- column-name item text -->
+      <!-- column-name item -->
       <column type="gchararray"/>
     </columns>
     <data>
@@ -102,9 +102,11 @@
         <property name="visible">True</property>
         <property name="can_default">True</property>
         <property name="model">liststore2</property>
+        <property name="text_column">0</property>
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext2"/>
           <attributes>
+            <attribute name="alignment">0</attribute>
             <attribute name="text">0</attribute>
           </attributes>
         </child>
@@ -158,9 +160,11 @@
         <property name="visible">True</property>
         <property name="can_default">True</property>
         <property name="model">liststore1</property>
+        <property name="text_column">0</property>
         <child>
           <object class="GtkCellRendererText" id="cellrenderertext1"/>
           <attributes>
+            <attribute name="alignment">0</attribute>
             <attribute name="text">0</attribute>
           </attributes>
         </child>
@@ -344,7 +348,6 @@
             <child>
               <object class="GtkVBox" id="vbox24">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkHBox" id="hbox229">
                     <property name="visible">True</property>
@@ -588,7 +591,6 @@
             <child>
               <object class="GtkVBox" id="vbox25">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkHBox" id="hbox354">
                     <property name="visible">True</property>

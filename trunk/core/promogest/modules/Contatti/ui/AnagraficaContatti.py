@@ -32,6 +32,8 @@ class AnagraficaContatti(Anagrafica):
     """ Anagrafica contatti """
 
     def __init__(self, ownerKey=None, ownerType=None, aziendaStr=None):
+        """ Anagrafica contatti
+        """
         self._ownerKey = None
         self._ownerType = None
         if (((ownerType == 'cliente') or (ownerType == 'fornitore') or
@@ -174,28 +176,28 @@ class AnagraficaContattiFilter(AnagraficaFilter):
 
             def filterCountClosure():
                 return ContattoCliente().count(idCliente=idCliente,
-                                                        cognomeNome=cognomeNome,
-                                                        ruolo=ruolo,
-                                                        descrizione=descrizione,
-                                                        recapito=recapito,
-                                                        tipoRecapito=tipoRecapito,
-                                                        idCategoria=idCategoria)
+                                                cognomeNome=cognomeNome,
+                                                ruolo=ruolo,
+                                                descrizione=descrizione,
+                                                recapito=recapito,
+                                                tipoRecapito=tipoRecapito,
+                                                idCategoria=idCategoria)
 
             self._filterCountClosure = filterCountClosure
             self.numRecords = self.countFilterResults()
             self._refreshPageCount()
             # Let's save the current search as a closure
             def filterClosure(offset, batchSize):
-                return ContattoCliente().select(  orderBy=self.orderBy,
-                                                            idCliente=idCliente,
-                                                            cognomeNome=cognomeNome,
-                                                            ruolo=ruolo,
-                                                            descrizione=descrizione,
-                                                            recapito=recapito,
-                                                            tipoRecapito=tipoRecapito,
-                                                            idCategoria=idCategoria,
-                                                            offset=offset,
-                                                            batchSize=batchSize)
+                return ContattoCliente().select(orderBy=self.orderBy,
+                                                    idCliente=idCliente,
+                                                    cognomeNome=cognomeNome,
+                                                    ruolo=ruolo,
+                                                    descrizione=descrizione,
+                                                    recapito=recapito,
+                                                    tipoRecapito=tipoRecapito,
+                                                    idCategoria=idCategoria,
+                                                    offset=offset,
+                                                    batchSize=batchSize)
 
             self._filterClosure = filterClosure
             cons = self.runFilter()
@@ -303,15 +305,15 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             # Let's save the current search as a closure
             def filterClosure(offset, batchSize):
                 return ContattoAzienda().select(orderBy=self.orderBy,
-                                                            schemaAzienda=schemaAzienda,
-                                                            cognomeNome=cognomeNome,
-                                                            ruolo=ruolo,
-                                                            descrizione=descrizione,
-                                                            recapito=recapito,
-                                                            tipoRecapito=tipoRecapito,
-                                                            idCategoria=idCategoria,
-                                                            offset=offset,
-                                                            batchSize=batchSize)
+                                                    schemaAzienda=schemaAzienda,
+                                                    cognomeNome=cognomeNome,
+                                                    ruolo=ruolo,
+                                                    descrizione=descrizione,
+                                                    recapito=recapito,
+                                                    tipoRecapito=tipoRecapito,
+                                                    idCategoria=idCategoria,
+                                                    offset=offset,
+                                                    batchSize=batchSize)
 
             self._filterClosure = filterClosure
             cons = self.runFilter()
