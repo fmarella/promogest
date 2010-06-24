@@ -96,7 +96,7 @@ class DuplicazioneMovimento(GladeWidget):
         newDao.note_pie_pagina = self.dao.note_pie_pagina
         newDao.id_testata_documento = self.dao.id_testata_documento
         if  self.personaGiuridicaCambiata:
-            if (self.id_persona_giuridica_customcombobox.getId() is None):
+            if not self.id_persona_giuridica_customcombobox.getId():
                 obligatoryField(self.getTopLevel(), self.id_persona_giuridica_customcombobox)
             if self.id_persona_giuridica_customcombobox.getType() == "cliente":
                 newDao.id_cliente = self.id_persona_giuridica_customcombobox.getId()

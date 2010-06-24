@@ -3,13 +3,18 @@
 # Promogest
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Alceste Scalas <alceste@promotux.it>, Francesco Meloni <francesco@promotux.it>
+# Author: Francesco Meloni <francesco@promotux.it>
 # License GNU Gplv2
 
 import locale
 import gtk
 import hashlib
 import os
+import ho.pisa as pisa
+import calendar
+from promogest.lib.relativedelta import relativedelta
+from datetime import datetime, timedelta
+import time
 import webbrowser
 from  subprocess import *
 import os
@@ -19,19 +24,30 @@ from ElencoMagazzini import ElencoMagazzini
 from ElencoListini import ElencoListini
 from VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
-from utils import hasAction,fenceDialog, aggiorna
+from promogest.lib import feedparser
+from promogest.ui.PrintDialog import PrintDialogHandler
+from utils import hasAction,fenceDialog, aggiorna, updateScadenzePromemoria,\
+                     setconf, dateTimeToString, dateToString,last_day_of_month, date_range
 from utilsCombobox import *
 from ParametriFrame import ParametriFrame
 from SetConf import SetConfUI
+from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.lib.HtmlViewer import HtmlViewer
 from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
 import Login
-
+import promogest.dao.Promemoria
+from promogest.dao.Promemoria import Promemoria
+from promogest.ui.AnagraficaPromemoria import AnagraficaPromemoria
+from promogest.dao.TestataDocumento import TestataDocumento
+from ConfiguraWindow import ConfiguraWindow
 #inizializzano il customwidget
 from widgets.ArticoloSearchWidget import ArticoloSearchWidget
 from widgets.ClienteSearchWidget import ClienteSearchWidget
 from widgets.FornitoreSearchWidget import FornitoreSearchWidget
 from widgets.PersonaGiuridicaSearchWidget import PersonaGiuridicaSearchWidget
+if "GestioneNoleggio" in Environment.modulesList:
+    from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
+
 
 class Main(GladeWidget):
 
@@ -53,6 +69,7 @@ class Main(GladeWidget):
         self.currentFrame = None
         self.alarmFrame = None
         self.shop = Environment.shop
+        self.creata = False
         if "SincroDB" not in Environment.modulesList:
             self.sincro_db.destroy()
         elif "SincroDB" in Environment.modulesList and Environment.conf.SincroDB.tipo =="client":
@@ -61,11 +78,18 @@ class Main(GladeWidget):
             self.client_sincro_db.destroy()
         if Environment.tipodb =="postgresql":
             self.whatcant_button.destroy()
+        self.create_allarmi_frame()
+#        self.main_notebook.set_current_page(self.main_notebook.page_num(self.notifica_allarmi_frame))
+#        self.main_notebook.set_current_page(0)
+        self.htmlPlanningWidget = createHtmlObj(self)
+        self.planning_scrolled.add(self.htmlPlanningWidget)
+        self.create_planning_frame()
+        gobject.idle_add(self.create_news_frame)
         self.updates()
 
     def show(self):
         """ Visualizza la finestra """
-
+        self.anno_lavoro_label.set_markup('<b>Anno di lavoro:   ' + Environment.workingYear + '</b>')
         model = gtk.ListStore(int, str, gtk.gdk.Pixbuf)
 
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'anagrafica48x48.png')
@@ -128,89 +152,56 @@ class Main(GladeWidget):
         self.main_iconview_right.set_size_request(130, -1)
         #load the alarm notification frame (AKA MainWindowFrame)
         if self.currentFrame is None:
-            self.main_hbox.remove(self.box_immagini_iniziali)
+#            self.main_hbox.remove(self.box_immagini_iniziali)
             self._refresh()
         self.placeWindow(self.main_window)
         self.main_window.show_all()
         self.on_button_refresh_clicked()
 
-
     def updates(self):
-        """
-            Aggiornamenti e controlli da fare all'avvio del programma
+        """ Aggiornamenti e controlli da fare all'avvio del programma
         """
         #Aggiornamento scadenze promemoria
         if "Promemoria" in Environment.modulesList:
-            import promogest.dao.Promemoria
-            promogest.dao.Promemoria.updateScadenze()
-        #Verifica inventario  FIXME: DA SISTEMAREEEEEEEEEEEEEEEE ( FRANCESCO )
-        #from promogest.dao.Inventario import Inventario
-        #Inventario().control(self.getTopLevel())
-        return
+            updateScadenzePromemoria()
 
     def _refresh(self):
         """
         Update the window, setting the appropriate frame
         """
         self.main_iconview.unselect_all()
-        if self.currentFrame is None:
-            self.currentFrame = self.create_main_window_frame()
-        self.main_notebook = gtk.Notebook()
-        if len(self.permanent_frames) > 0:
-            self.main_notebook.append_page(self.currentFrame, 'Home')
-            for module in self.pemanent_frames.iteritems():
-                frame = module[1]['module'].getApplication().getTopLevel()
-                self.main_notebook.append_page(frame,module[1]['module'].VIEW_TYPE[1])
-            self.main_hbox.pack_start(self.main_notebook, fill=True, expand=True)
-        else:
-            self.main_hbox.pack_start(self.currentFrame, fill=True, expand=True)
+#        if self.currentFrame is None:
+#        self.currentFrame = self.create_main_window_frame()
+#        self.main_notebook = gtk.Notebook()
+#        if len(self.permanent_frames) > 0:
+#            self.main_notebook.append_page(self.currentFrame, 'Home')
+#            for module in self.pemanent_frames.iteritems():
+#                frame = module[1]['module'].getApplication().getTopLevel()
+#                self.main_notebook.append_page(frame,module[1]['module'].VIEW_TYPE[1])
+#            self.main_hbox.pack_start(self.main_notebook, fill=True, expand=True)
+#        else:
+#            self.main_notebook.set_current_page(1)
+#        self.main_viewport.remove(self.main_label1)
+#        self.main_viewport.add(self.currentFrame.notizie_frame)
+#        self.nb_label1.set_text("NOTIZIE")
+#        self.main_viewport2.remove(self.main_label2)
+#        self.main_viewport2.add(self.currentFrame.notifica_allarmi_frame)
+#        self.nb_label2.set_text("NOTIFICHE ALLARMI")
+#            self.main_hbox.pack_start(self.currentFrame, fill=True, expand=True)
         self.main_hbox.show_all()
-
-    def statusBarHandler(self):
-        textStatusBar = "    PromoGest2 - 800 034561 - www.promotux.it - info@promotux.it     "
-        context_id =  self.pg2_statusbar.get_context_id("main_window")
-        self.pg2_statusbar.push(context_id,textStatusBar)
-
-        if Environment.rev_locale < Environment.rev_remota:
-            self.active_img.set_from_file("gui/active_off.png")
-        else:
-            self.active_img.set_from_file("gui/active_on.png")
-
-    def on_disconnect(self, widget=None):
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   'Confermi la disconnessione?')
-        response = dialog.run()
-        dialog.destroy()
-        if response ==  gtk.RESPONSE_YES:
-            self.destroy()
-        else:
-            return
-
-    def on_quit(self, widget=None):
-        dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL
-                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                                   'Confermi la chiusura?')
-
-        response = dialog.run()
-        dialog.destroy()
-        if response ==  gtk.RESPONSE_YES:
-            self.hide()
-            gtk.main_quit()
-        else:
-            return
 
     def on_button_help_clicked(self, button):
         sendemail = SendEmail()
 
     def on_button_refresh_clicked(self, widget=None):
-        if self.currentFrame is not None:
-            self.main_hbox.remove(self.currentFrame)
-        self.currentFrame = None
+        self.create_planning_frame()
+        if self.creata:
+           self.main_notebook.remove_page(0)
+           self.creata = False
+#        print " BOTTONE BUTTON REFRESH"
+#            self.main_hbox.remove(self.currentFrame.notizie_frame)
+#            self.main_hbox.remove(self.currentFrame.notifica_allarmi_frame)
+#        self.currentFrame = None
         self._refresh()
 
     def on_main_iconview_select(self, icon_view, model=None):
@@ -220,16 +211,31 @@ class Main(GladeWidget):
         i = selected[0][0]
         selection = model[i][0]
 
-        if self.currentFrame is not None: #and self.currentFrame != self.alarmFrame:
-            self.main_hbox.remove(self.currentFrame)
-            self.currentFrame.destroy()
-            self.currentFrame = None
         if selection == 0:
-            self.currentFrame = self.create_anagrafiche_principali_frame()
+            if not self.creata:
+                self.main_notebook.prepend_page(self.create_anagrafiche_principali_frame())
+                self.creata = True
+            else:
+                self.main_notebook.remove_page(0)
+                self.main_notebook.prepend_page(self.create_anagrafiche_principali_frame())
+
+#            self.currentFrame = self.create_anagrafiche_principali_frame()
         elif selection == 1:
-            self.currentFrame = self.create_magazzini_frame()
+            if not self.creata:
+                self.main_notebook.prepend_page(self.create_magazzini_frame())
+                self.creata = True
+            else:
+                self.main_notebook.remove_page(0)
+                self.main_notebook.prepend_page(self.create_magazzini_frame())
+#            self.currentFrame = self.create_magazzini_frame()
         elif selection == 2:
-            self.currentFrame = self.create_listini_frame()
+            if not self.creata:
+                self.main_notebook.prepend_page(self.create_listini_frame())
+                self.creata = True
+            else:
+                self.main_notebook.remove_page(0)
+                self.main_notebook.prepend_page(self.create_listini_frame())
+#            self.currentFrame = self.create_listini_frame()
         elif selection == 3:
             #self.currentFrame = self.create_registrazioni_frame()
             # Andrea
@@ -242,7 +248,13 @@ class Main(GladeWidget):
             icon_view.unselect_all()
             return
         elif selection == 4:
-            self.currentFrame = self.create_parametri_frame()
+            if not self.creata:
+                self.main_notebook.prepend_page(self.create_parametri_frame())
+                self.creata = True
+            else:
+                self.main_notebook.remove_page(0)
+                self.main_notebook.prepend_page(self.create_parametri_frame())
+#            self.currentFrame = self.create_parametri_frame()
         elif selection == 5:
             if "Promemoria" in Environment.modulesList:
                 from AnagraficaPromemoria import AnagraficaPromemoria
@@ -252,6 +264,7 @@ class Main(GladeWidget):
                 return
             else:
                 fenceDialog()
+        self.main_notebook.set_current_page(0)
         self._refresh()
 
     def on_main_iconview_right_select(self, icon_view, model=None):
@@ -277,17 +290,392 @@ class Main(GladeWidget):
 ##            icon_view.unselect_all()
         self._refresh()
 
+    # INIZIO CREAZIONE FRAME
+
+    def on_when_combo_changed(self, combo):
+        if self.when_combo.get_active() == 0:
+            Environment.view = "month"
+        elif self.when_combo.get_active() == 1:
+            Environment.view = "week"
+        else:
+            Environment.view = "day"
+        self.create_planning_frame(currentData=Environment.currentData,view=Environment.view)
+
+    def on_tutti_check_toggled(self, toggled):
+        if self.tutti_check.get_active():
+            self.ordini_check.set_active(True)
+            self.preventivi_check.set_active(True)
+            self.promemoria_ins_check.set_active(True)
+            self.promemoria_scad_check.set_active(True)
+        else:
+            self.ordini_check.set_active(False)
+            self.preventivi_check.set_active(False)
+            self.promemoria_ins_check.set_active(False)
+            self.promemoria_scad_check.set_active(False)
+
+    def on_print_button_clicked(self, button):
+        nomefile = "planner"+dateToString(Environment.currentData).replace("/","_")+"_"+Environment.view
+        g = file(".temp.pdf", "wb")
+        pdf = pisa.CreatePDF(str(self.hhttmmll),g)
+        g.close()
+        anag = PrintDialogHandler(self.main_window, nomefile)
+        anagWindow = anag.getTopLevel()
+        returnWindow = self.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
+        anagWindow.show_all()
+
+    def onlyWeek(self, cale, workinDay, workinMonth, workinYearc, dayName):
+        newlist=[]
+        for ca in cale:
+            for s in ca:
+                if s[0] == workinDay:
+                    for c in ca:
+                        z,x,v = c[0],c[1],list(dayName)[c[1]]
+                        newlist.append((z,x,v))
+                    return newlist
+
+    def create_planning_frame(self,d=1,m=1,y=0, currentData=None,view=None):
+        promeDict= {}
+        prevesDict = {}
+        prevesDictAT = {}
+        ordesDict = {}
+        ordesDictAT = {}
+        if d==1 and m==1 and y ==0 and not currentData:
+            currentData = datetime.date.today()
+            m = currentData.month
+            y = currentData.year
+            d = currentData.day
+        if currentData:
+            m = currentData.month
+            y = currentData.year
+            d = currentData.day
+        Environment.currentData = currentData
+        if view:
+            Environment.view = view
+        else:
+            try:
+                view = Environment.view
+            except:
+                view = "month"
+        weekDay = currentData.weekday()
+        workinMonth = Environment.workinMonth= m
+        workinYearc = Environment.workinYearc= y
+        self.anno_calendar_spinbutton.set_value(int(workinYearc))
+        workinDay = Environment.workinDay = d
+        dayName = calendar.day_name
+        monthName = calendar.month_name
+        cale = calendar.Calendar().monthdays2calendar(workinYearc,workinMonth)
+        first_day = relativedelta(days=-(workinDay-1))
+        last_day = relativedelta(days=(last_day_of_month(workinYearc, workinMonth)-workinDay))
+        currentLastDay = currentData+last_day
+        currentFirstDay = currentData+first_day
+
+        eventipromes_ins = []
+        eventipromes_scad = []
+        if self.promemoria_ins_check.get_active():
+            promes = Promemoria().select(da_data_inserimento= currentFirstDay,
+                                a_data_scadenza=currentLastDay, batchSize=None)
+            for p in promes:
+                eventipromes_ins.append((p.data_inserimento.day,{"id":p.id,
+                                                    "short":p.oggetto,
+                                                    "tipo":"data_inserimento",
+                                                    "colore":"#FFE3E8"}))
+        if self.promemoria_scad_check.get_active():
+            promes = Promemoria().select(da_data_inserimento= currentFirstDay,
+                                a_data_scadenza=currentLastDay, batchSize=None)
+            for p in promes:
+                eventipromes_scad.append((p.data_scadenza.day,{"id":p.id,
+                                                    "short":p.oggetto,
+                                                    "tipo":"data_scadenza",
+                                                    "colore":"#95F395"}))
+        eventipreves = []
+        eventiprevesAT = []
+        if self.preventivi_check.get_active():
+            preves = TestataDocumento().select(daData= currentFirstDay,
+                                aData=currentLastDay, batchSize=None,
+                                idOperazione="Preventivo")
+            for p in preves:
+                eventipreves.append((p.data_documento.day,{"id":p.id,
+                                                    "short":p.ragione_sociale_cliente,
+                                                    "tipo":"data_documento",
+                                                    "colore":"#6495ED"}))
+                arcTemp = TestataGestioneNoleggio().select(idTestataDocumento=p.id, batchSize=None)
+                for a in arcTemp:
+                    startDate =a.data_inizio_noleggio
+                    stopDate =a.data_fine_noleggio
+                    dateList= date_range(startDate,stopDate)
+                    for d in dateList:
+                        eventiprevesAT.append((d.day,{"id":p.id,
+                                        "short":p.ragione_sociale_cliente,
+                                        "tipo":"data_documento",
+                                        "colore":"#AFEEEE"}))
+        eventiordes = []
+        eventiordesAT = []
+        if self.ordini_check.get_active():
+            ordes = TestataDocumento().select(daData= currentFirstDay,
+                                aData=currentLastDay, batchSize=None,
+                                idOperazione="Ordine da cliente")
+
+            for p in ordes:
+                eventiordes.append((p.data_documento.day,{
+                                "id":p.id,
+                                "short":p.ragione_sociale_cliente,
+                                "tipo":"data_documento",
+                                "colore":"#FFA500"}))
+
+                arcTemp = TestataGestioneNoleggio().select(idTestataDocumento=p.id, batchSize=None)
+                for a in arcTemp:
+                    startDate =a.data_inizio_noleggio
+                    stopDate =a.data_fine_noleggio
+                    dateList= date_range(startDate,stopDate)
+                    for d in dateList:
+                        eventiordesAT.append((d.day,{"id":p.id,
+                                        "short":p.ragione_sociale_cliente,
+                                        "tipo":"data_documento",
+                                        "colore":"red"}))
+        onlyWeek = self.onlyWeek(cale, workinDay, workinMonth, workinYearc,dayName)
+
+        pageData = {"file": "planning.html",
+                    "cale":cale,
+                    "onlyWeek":onlyWeek,
+                    "eventipromes_ins": eventipromes_ins,
+                    "eventipromes_scad": eventipromes_scad,
+                    "eventipreves":eventipreves,
+                    "eventiprevesAT": eventiprevesAT,
+                    "eventiordes":eventiordes,
+                    "eventiordesAT": eventiordesAT,
+                    "dayName" :dayName,
+                    "monthName": monthName,
+                    "workinDay":workinDay,
+                    "weekDay":weekDay,
+                    "workinMonth":workinMonth,
+                    "workinYearc":workinYearc,
+                    "view":view}
+        self.hhttmmll = renderTemplate(pageData)
+        renderHTML(self.htmlPlanningWidget,self.hhttmmll)
+
+
+    def on_refresh_button_clicked(self, button):
+        self.create_planning_frame(currentData= Environment.currentData)
+
+    def on_corrente_calendar_button_clicked(self,button):
+        self.create_planning_frame(d=1,m=1,y=0)
+
+    def on_piugiorni_calendar_button_clicked(self, button):
+        one_day = datetime.timedelta(days=1)
+        tomorrow =  Environment.currentData+one_day
+        self.create_planning_frame(currentData=tomorrow)
+
+    def on_piumesi_calendar_button_clicked(self, button):
+        if Environment.view =="week":
+            one_week = relativedelta(weeks=1)
+            nextmonth =  Environment.currentData+one_week
+        else:
+            one_month = relativedelta(months=1)
+            nextmonth =  Environment.currentData+one_month
+        self.create_planning_frame(currentData=nextmonth)
+
+    def on_anno_calendar_spinbutton_change_value(self, spinbutton):
+        if int(spinbutton.get_value()) != Environment.workinYearc:
+            newYear = int(spinbutton.get_value()) - Environment.workinYearc
+            one_year = relativedelta(years=newYear)
+            nextyear =  Environment.currentData+one_year
+            self.create_planning_frame(currentData=nextyear)
+
+    def on_menogiorni_calendar_button_clicked(self, button):
+        one_day = relativedelta(days=-1)
+        tomorrow =  Environment.currentData+one_day
+        self.create_planning_frame(currentData=tomorrow)
+
+    def on_menomesi_calendar_button_clicked(self, button):
+        one_month = relativedelta(months=-1)
+        nextmonth =  Environment.currentData+one_month
+        self.create_planning_frame(currentData=nextmonth)
+
+    def drawAllarmi(self):
+        """
+        disegna questo frame nella finestra principale
+        """
+        treeview = self.alarm_notify_treeview
+        renderer = gtk.CellRendererText()
+        rendererCtr = gtk.CellRendererText()
+        rendererCtr.set_property('xalign', 0.5)
+
+        column = gtk.TreeViewColumn('Data Scadenza', rendererCtr, text=1)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(True)
+        column.set_resizable(True)
+        column.set_expand(False)
+        column.set_min_width(120)
+        treeview.append_column(column)
+
+        column = gtk.TreeViewColumn('Oggetto', renderer, text=2)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(True)
+        column.set_resizable(True)
+        column.set_expand(False)
+        column.set_min_width(150)
+        treeview.append_column(column)
+
+        column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(True)
+        column.set_resizable(True)
+        column.set_expand(False)
+        column.set_min_width(150)
+        treeview.append_column(column)
+
+        column = gtk.TreeViewColumn('Incaricato', rendererCtr, text=4)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(True)
+        column.set_resizable(True)
+        column.set_expand(False)
+        column.set_min_width(100)
+        treeview.append_column(column)
+
+        column = gtk.TreeViewColumn('Autore', rendererCtr, text=5)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(True)
+        column.set_resizable(True)
+        column.set_expand(False)
+        column.set_min_width(100)
+        treeview.append_column(column)
+
+        column = gtk.TreeViewColumn('Annotazioni', renderer, text=6)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_clickable(True)
+        column.set_resizable(True)
+        column.set_expand(False)
+        column.set_min_width(200)
+        treeview.append_column(column)
+
+        model = gtk.ListStore(object, str, str, str, str, str, str)
+        treeview.set_model(model)
+
+    def on_alarm_notify_treeview_row_activated(self, treeview, path, column):
+        model = treeview.get_model()
+        dao = model[path][0]
+        a = AnagraficaPromemoria()
+        a.on_record_edit_activate(a, dao=dao)
+
+    def on_cancel_alarm_button_clicked(self, button):
+        """
+        viene(vengono) eliminato(i) l'allarme(i) selezionato(i) nella treeview
+        """
+        count = self.alarm_notify_treeview.get_selection().count_selected_rows()
+        dialog = gtk.MessageDialog(None,
+                                   gtk.DIALOG_MODAL
+                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                                   'Sono stati selezionati '+str(count)+' allarmi.\nConfermi l\'eliminazione?')
+
+        response = dialog.run()
+        dialog.destroy()
+        if response ==  gtk.RESPONSE_YES:
+            (model, indexes)= self.alarm_notify_treeview.get_selection().get_selected_rows()
+            rows = []
+            for index in indexes:
+                iter = model.get_iter(index)
+                dao = model.get(iter,0)[0]
+                dao.scaduto = True
+                dao.completato = True
+                dao.in_scadenza = False
+                dao.persist()
+                model.remove(iter)
+        else:
+            return
+
+    def on_snooze_alarm_button_clicked(self, button):
+            (model, indexes)= self.alarm_notify_treeview.get_selection().get_selected_rows()
+            rows = []
+            for index in indexes:
+                iter = model.get_iter(index)
+                dao = model.get(iter,0)[0]
+                dao.giorni_preavviso += -1
+                dao.in_scadenza = False
+                dao.persist()
+                model.remove(iter)
+
+    def create_allarmi_frame(self):
+        """ creiamo il tab degli allarmi"""
+        self.drawAllarmi()
+        model = self.alarm_notify_treeview.get_model()
+        model.clear()
+        #get the current alarms from db
+        idAllarmi = promogest.dao.Promemoria.getScadenze()
+        #fill again the model of the treeview (a gtk.ListStore)
+        for idAllarme in idAllarmi:
+            dao = Promemoria().getRecord(id=idAllarme)
+            model.append((dao, dateToString(dao.data_scadenza),
+                                dao.oggetto,
+                                dao.descrizione,
+                                dao.incaricato,
+                                dao.autore,
+                                dao.annotazione))
+
+    def create_news_frame(self):
+        """ CREIAMO IL TAB DELLE NEWS"""
+        self.htmlwidget = createHtmlObj(self)
+        self.feed_scrolled.add(self.htmlwidget)
+        html = """<html><body></body></html>"""
+        renderHTML(self.htmlwidget,html)
+        if setconf("Feed", "feed"):
+            feedAll = Environment.feedAll
+            feedToHtml = Environment.feedCache
+            if feedAll != "" and feedAll and feedToHtml:
+                self.renderPage(feedToHtml)
+            else:
+                try:
+                    gobject.idle_add(self.getfeedFromSite)
+                except:
+                    Environment.pg2log.debug("LEGGERO RITARDO NEL RECUPERO DEI FEED")
+
+    def renderPage(self, feedToHtml):
+        """ show the html page in the custom widget"""
+        pageData = {
+                "file" :"feed.html",
+                "feed" :feedToHtml,
+                }
+        html = renderTemplate(pageData)
+        renderHTML(self.htmlwidget,html)
+
+    def getfeedFromSite(self):
+        string = ""
+        if Environment.feedAll == "":
+            d = feedparser.parse("http://www.promotux.it/newsfeed")
+        else:
+            d = Environment.feedAll
+        feedList = d['entries']
+        feedToHtml = []
+        for feed in feedList[:-1]:
+            try:
+                body = feed['content'][0]['value']
+            except:
+                body = feed["summary_detail"]['value']
+            feed = {
+                "title" :feed['title'],
+                "links": feed['links'][0]['href'],
+                "body" : body,
+                "updated" : feed['updated'][4:-13],
+                "autore" : feed['author']
+                }
+            feedToHtml.append(feed)
+        Environment.feedCache = feedToHtml
+        self.renderPage(feedToHtml)
+
+
 
     def create_main_window_frame(self):
-        if self.currentFrame is not None:
-            self.main_hbox.remove(self.currentFrame)
+#        if self.currentFrame is not None:
+#            self.main_hbox.remove(self.currentFrame)
         frame = VistaPrincipale(self, self.aziendaStr)
-        return frame.vista_principale_frame
+#        return frame.vista_principale_frame
+        return frame
 
     def create_anagrafiche_principali_frame(self):
         if not hasAction(actionID=11):return
-        if self.currentFrame is not None:
-            self.main_hbox.remove(self.currentFrame)
+#        if self.currentFrame is not None:
+#            self.main_hbox.remove(self.currentFrame)
         frame = AnagrafichePrincipaliFrame(self.main_window, self.aziendaStr, modules=self.anagrafiche_modules)
         return frame.getTopLevel()
 
@@ -319,79 +707,88 @@ class Main(GladeWidget):
         frame = ParametriFrame(self.main_window, self.aziendaStr, modules=self.parametri_modules)
         return frame.getTopLevel()
 
+    # FINE CREAZIONE FRAME
 
-    def on_nuovo_articolo_menu_activate(self, widget):
+    def on_nuovo_articolo_button_clicked(self, widget):
         if not hasAction(actionID=8):return
         from AnagraficaArticoli import AnagraficaArticoli
         anag = AnagraficaArticoli(self.aziendaStr)
         showAnagrafica(self.getTopLevel(), anag)
         anag.on_record_new_activate()
 
-    def on_nuovo_cliente_menu_activate(self, widget):
+    def on_nuovo_cliente_button_clicked(self, widget):
         if not hasAction(actionID=11):return
         from AnagraficaClienti import AnagraficaClienti
         anag = AnagraficaClienti(self.aziendaStr)
         showAnagrafica(self.getTopLevel(), anag)
         anag.on_record_new_activate()
 
-    def on_nuovo_fornitore_menu_activate(self, widget):
+    def on_nuovo_fornitore_button_clicked(self, widget):
         if not hasAction(actionID=11):return
         from AnagraficaFornitori import AnagraficaFornitori
         anag = AnagraficaFornitori(self.aziendaStr)
         showAnagrafica(self.getTopLevel(), anag)
         anag.on_record_new_activate()
 
-    def on_fattura_vendita_menu_activate(self, widget):
+    def on_nuovo_promemoria_button_clicked(self, widget):
+        if not hasAction(actionID=11):return
+        from AnagraficaPromemoria import AnagraficaPromemoria
+        anag = AnagraficaPromemoria(self.aziendaStr)
+        showAnagrafica(self.getTopLevel(), anag)
+        anag.on_record_new_activate()
+
+    def on_nuovo_contatto_button_clicked(self, widget):
+        if not hasAction(actionID=11):return
+        from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
+        anag = AnagraficaContatti(self.aziendaStr)
+        showAnagrafica(self.getTopLevel(), anag)
+        anag.on_record_new_activate()
+
+    def on_nuovo_fattura_vendita_button_clicked(self, widget):
         if not hasAction(actionID=2):return
         self.nuovoDocumento("Fattura vendita")
 
-
-    def on_fattura_acquisto_menu_activate(self, widget):
+    def on_nuovo_fattura_acquisto_button_clicked(self, widget):
         if not hasAction(actionID=2):return
         self.nuovoDocumento("Fattura acquisto")
 
-
-    def on_ddt_vendita_menu_activate(self, widget):
+    def on_nuovo_ddt_vendita_button_clicked(self, widget):
         if not hasAction(actionID=2):return
         self.nuovoDocumento("DDT vendita")
 
-
-    def on_ddt_acquisto_menu_activate(self, widget):
+    def on_nuovo_ddt_acquisto_button_clicked(self, widget):
         if not hasAction(actionID=2):return
         self.nuovoDocumento("DDT acquisto")
 
-
-    def on_ddt_reso_da_cliente_menu_activate(self, widget):
+    def on_nuovo_ddt_reso_da_cliente_button_clicked(self, widget):
         if not hasAction(actionID=2):return
         self.nuovoDocumento("DDT reso da cliente")
 
-
-    def on_ddt_reso_a_fornitore_menu_activate(self, widget):
+    def on_nuovo_ddt_reso_a_fornitore_button_clicked(self, widget):
         if not hasAction(actionID=2):return
         self.nuovoDocumento("DDT reso a fornitore")
 
-
-    def on_nota_di_credito_a_cliente_menu_activate(self, widget):
+    def on_nota_di_credito_a_cliente_button_clicked(self, widget):
         if not hasAction(actionID=2):return
         self.nuovoDocumento("Nota di credito a cliente")
 
-
-    def on_nota_di_credito_a_fornitore_menu_activate(self, widget):
+    def on_nota_di_credito_a_fornitore_button_clicked(self, widget):
         if not hasAction(actionID=2):return
         self.nuovoDocumento("Nota di credito da fornitore")
-
 
     def on_fattura_accompagnatoria_menu_activate(self, widget):
         if not hasAction(actionID=2):return
         self.nuovoDocumento("Fattura accompagnatoria")
 
-
-    def on_preventivo_menu_activate(self, widget):
+    def on_nuovo_preventivo_button_clicked(self, widget):
         if not hasAction(actionID=2):return
         self.nuovoDocumento("Preventivo")
 
+    def on_nuovo_ordine_da_cliente_button_clicked(self, widget):
+        if not hasAction(actionID=2):return
+        self.nuovoDocumento("Ordine da cliente")
 
-    def on_vendita_al_dettaglio_menu_activate(self, widget):
+    def on_nuovo_vendita_al_dettaglio_button_clicked(self, widget):
         if not hasAction(actionID=2):return
         self.nuovoDocumento("Vendita dettaglio")
 
@@ -405,6 +802,17 @@ class Main(GladeWidget):
         findComboboxRowFromStr(anag.editElement.id_operazione_combobox, kind, 1)
         anag.editElement.id_persona_giuridica_customcombobox.grab_focus()
         findComboboxRowFromStr(anag.editElement.id_persona_giuridica_customcombobox, "Altro", 1)
+
+    def on_promotux_button_clicked(self, button):
+        url ="http://www.promotux.it"
+        webbrowser.open_new_tab(url)
+
+    def on_promogest_button_clicked(self, button):
+        url ="http://www.promotux.it/promoGest"
+        webbrowser.open_new_tab(url)
+
+    def on_email_button_clicked(self, button):
+        sendemail = SendEmail()
 
     def on_configurazione_menu_activate(self, widget):
         if not hasAction(actionID=14):return
@@ -471,7 +879,6 @@ class Main(GladeWidget):
                 #self.path_file_entry.set_text(filename)
             fileDialog.destroy()
 
-
     def on_credits_menu_activate(self, widget):
         context_id =  self.pg2_statusbar.get_context_id("GENERICO")
         self.pg2_statusbar.push(context_id,"PROVIAMO")
@@ -491,14 +898,13 @@ class Main(GladeWidget):
         for line in stdouterr.readlines():
             textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
         textBuffer.insert(textBuffer.get_end_iter(),"""I moduli installati sono :
-""")
+            """)
 #        self.pg2_statusbar.push(context_id,"TERZO")
         for line in Environment.modulesList:
             textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
         response = creditsDialog.credits_dialog.run()
         if response == gtk.RESPONSE_OK:
             creditsDialog.credits_dialog.destroy()
-
 
     def on_licenza_menu_activate(self, widget):
         licenzaDialog = GladeWidget('licenza_dialog', callbacks_proxy=self)
@@ -701,72 +1107,43 @@ I Numeri:   %s
         else:
             return False
 
+    def on_disconnect(self, widget=None):
+        dialog = gtk.MessageDialog(self.getTopLevel(),
+                                   gtk.DIALOG_MODAL
+                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                                   'Confermi la disconnessione?')
+        response = dialog.run()
+        dialog.destroy()
+        if response ==  gtk.RESPONSE_YES:
+            self.destroy()
+        else:
+            return
 
-class ConfiguraWindow(GladeWidget):
+    def on_quit(self, widget=None):
+        dialog = gtk.MessageDialog(self.getTopLevel(),
+                                   gtk.DIALOG_MODAL
+                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                                   'Confermi la chiusura?')
 
-    def __init__(self, mainWindow):
-        self.mainWindow = mainWindow
-        GladeWidget.__init__(self, 'configura_window', fileName='configura_window.glade')
-        self.placeWindow(self.getTopLevel())
+        response = dialog.run()
+        dialog.destroy()
+        if response ==  gtk.RESPONSE_YES:
+            self.hide()
+            gtk.main_quit()
+        else:
+            return
 
-        self.draw()
+    def statusBarHandler(self):
+        textStatusBar = "    PromoGest2 - 8956060615 - www.promotux.it - info@promotux.it     "
+        context_id =  self.pg2_statusbar.get_context_id("main_window")
+        self.pg2_statusbar.push(context_id,textStatusBar)
 
-
-    def draw(self):
-        self.sections_box = gtk.VBox()
-        self.sections_box.set_spacing(6)
-        sections = Environment.conf.sections()
-        i = 0
-        for section in sections:
-            localFrame = gtk.Frame(section)
-            localFrame.set_border_width(8)
-            current_section = getattr(Environment.conf, section)
-
-            #get the sections' attributes
-            attrs = current_section.options()
-
-            #populate the frame with labels containing the attributes' names
-            attr_box = gtk.VBox()
-
-            for attr in attrs:
-                attr_hbox = gtk.HBox()
-                attr_hbox.set_homogeneous(False)
-                label_attribute = gtk.Label(attr)
-                label_attribute.set_padding(7, 0)
-                label_attribute.set_alignment(0.0, 0.5)
-                label_attribute.set_size_request(200, -1)
-                attr_hbox.pack_start(label_attribute, False, False)
-
-                #create the entry containing the attribute's value
-                entry_valore = gtk.Entry()
-                entry_valore.connect('changed', self.on_entry_value_changed, current_section, attr)
-                attr_hbox.add(entry_valore)
-                attr_value = getattr(current_section, attr)
-                if attr == 'password':
-                    entry_valore.set_visibility(False)
-                entry_valore.set_text(attr_value)
-
-                attr_box.add(attr_hbox)
-
-            localFrame.add(attr_box)
-            self.sections_box.add(localFrame)
-
-        self.params_scrolled_window.add_with_viewport(self.sections_box)
-        self.salva_button.set_sensitive(False)
-
-
-    def on_entry_value_changed(self, entry,current_section, attr):
-        self.salva_button.set_sensitive(True)
-        setattr(current_section,attr,entry.get_text())
-
-
-    def on_salva_button_clicked(self, button_salva):
-        Environment.conf.save()
-        self.salva_button.set_sensitive(False)
-
-
-    def on_quit(self, widget=None, event=None):
-        self.destroy()
+        if Environment.rev_locale < Environment.rev_remota:
+            self.active_img.set_from_file("gui/active_off.png")
+        else:
+            self.active_img.set_from_file("gui/active_on.png")
 
 class MainWindowFrame(VistaPrincipale):
     def __init__(self, mainWindow, azs):
@@ -774,8 +1151,8 @@ class MainWindowFrame(VistaPrincipale):
 
 
 class MagazziniFrame(ElencoMagazzini):
-    """ Frame per la gestione dei magazzini """
-
+    """ Frame per la gestione dei magazzini
+    """
     def __init__(self, mainWindow, azs):
         self.mainWindow = mainWindow
         ElencoMagazzini.__init__(self, self.mainWindow, azs)
@@ -789,7 +1166,6 @@ class RegistrazioniFrame(GladeWidget):
         self.aziendaStr = azs
         GladeWidget.__init__(self, 'registrazioni_select_frame', fileName='_registrazioni_select.glade')
 
-
     def on_documenti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
@@ -801,7 +1177,8 @@ class RegistrazioniFrame(GladeWidget):
 
 
 class ListiniFrame(ElencoListini):
-    """ Frame per la gestione dei listini """
+    """ Frame per la gestione dei listini
+    """
 
     def __init__(self, mainWindow,azs):
         self.mainWindow = mainWindow

@@ -96,17 +96,18 @@ class DuplicazioneDocumento(GladeWidget):
         newDao.data_documento = stringToDate(self.data_documento_entry.get_text())
         newDao.operazione = findIdFromCombobox(self.id_operazione_combobox)
         if self.personaGiuridicaCambiata:
-          if (self.id_persona_giuridica_customcombobox.getId() is None):
-            obligatoryField(self.getTopLevel(), self.id_persona_giuridica_customcombobox)
-          if self.id_persona_giuridica_customcombobox.getType() == "cliente":
-            newDao.id_cliente = self.id_persona_giuridica_customcombobox.getId()
-            newDao.id_fornitore = None
-          else:
-            newDao.id_fornitore = self.id_persona_giuridica_customcombobox.getId()
-            newDao.id_cliente = None
+            if not self.id_persona_giuridica_customcombobox.getId():
+                obligatoryField(self.getTopLevel(), self.id_persona_giuridica_customcombobox)
+            if self.id_persona_giuridica_customcombobox.getType() == "cliente":
+                newDao.id_cliente = self.id_persona_giuridica_customcombobox.getId()
+                newDao.id_fornitore = None
+            else:
+                newDao.id_fornitore = self.id_persona_giuridica_customcombobox.getId()
+                newDao.id_cliente = None
         else:
-          newDao.id_fornitore = self.dao.id_fornitore
-          newDao.id_cliente = self.dao.id_cliente
+            newDao.id_fornitore = self.dao.id_fornitore
+            newDao.id_cliente = self.dao.id_cliente
+
         newDao.id_destinazione_merce = self.dao.id_destinazione_merce
         newDao.id_pagamento = self.dao.id_pagamento
         newDao.id_banca = self.dao.id_banca
@@ -247,6 +248,7 @@ class DuplicazioneDocumento(GladeWidget):
             daoTestataDocumentoScadenza.numero_scadenza = s.numero_scadenza
             scadenze.append(daoTestataDocumentoScadenza)
         newDao.scadenze = scadenze
+
         tipoid = findIdFromCombobox(self.id_operazione_combobox)
         tipo = Operazione().getRecord(id=tipoid)
         #if not newDao.numero:
@@ -255,6 +257,16 @@ class DuplicazioneDocumento(GladeWidget):
         newDao.registro_numerazione= valori[1]
 
         newDao.persist()
+
+        if "GestioneNoleggio" in Environment.modulesList:
+            if self.dao.data_inizio_noleggio or self.data_fine_noleggio:
+
+                from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
+                newTestataGestioneNoleggio = TestataGestioneNoleggio()
+                newTestataGestioneNoleggio.data_inizio_noleggio = self.dao.data_inizio_noleggio
+                newTestataGestioneNoleggio.data_fine_noleggio = self.dao.data_fine_noleggio
+                newTestataGestioneNoleggio.id_testata_documento = newDao.id
+                newTestataGestioneNoleggio.persist()
 
         #se il segno dell'operazione non è cambiato duplico il documento, altrimenti duplico ma apro la finestra di new/modifica documento
 
@@ -277,16 +289,15 @@ class DuplicazioneDocumento(GladeWidget):
 
     def on_id_operazione_combobox_changed(self, widget, event=None):
         tipoPersonaGiuridica = self.id_operazione_combobox.get_model()[self.id_operazione_combobox.get_active()][0].tipo_persona_giuridica
-
         if self.tipoPersonaGiuridica == tipoPersonaGiuridica:
-          self.personaGiuridicaCambiata = False
+            self.personaGiuridicaCambiata = False
         else:
-          self.personaGiuridicaCambiata = True
+            self.personaGiuridicaCambiata = True
 
         if self.id_persona_giuridica_customcombobox.getType() == "fornitore" and tipoPersonaGiuridica == 'cliente':
-          self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)
+            self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)
         if self.id_persona_giuridica_customcombobox.getType() == "cliente" and tipoPersonaGiuridica == 'fornitore':
-          self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)
+            self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)
 
         self.persona_label.set_text(tipoPersonaGiuridica.capitalize())
         self.id_persona_giuridica_customcombobox.setType(tipoPersonaGiuridica)

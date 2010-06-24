@@ -27,9 +27,7 @@ from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 
 
-
 class AnagraficaContatti(Anagrafica):
-    """ Anagrafica contatti """
 
     def __init__(self, ownerKey=None, ownerType=None, aziendaStr=None):
         """ Anagrafica contatti
@@ -51,7 +49,6 @@ class AnagraficaContatti(Anagrafica):
                             aziendaStr=aziendaStr)
 
 
-
 class AnagraficaContattiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei contatti """
 
@@ -62,7 +59,6 @@ class AnagraficaContattiFilter(AnagraficaFilter):
                                   gladeFile='Contatti/gui/_anagrafica_contatti_elements.glade',
                                    module=True )
         self._widgetFirstFocus = self.appartenenza_filter_entry
-
 
     def draw(self, cplx=False):
         # Colonne della Treeview per il filtro
@@ -267,15 +263,15 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             # Let's save the current search as a closure
             def filterClosure(offset, batchSize):
                 return ContattoMagazzino().select(orderBy=self.orderBy,
-                                                            idMagazzino=idMagazzino,
-                                                            cognomeNome=cognomeNome,
-                                                            ruolo=ruolo,
-                                                            descrizione=descrizione,
-                                                            recapito=recapito,
-                                                            tipoRecapito=tipoRecapito,
-                                                            idCategoria=idCategoria,
-                                                            offset=offset,
-                                                            batchSize=batchSize)
+                                                    idMagazzino=idMagazzino,
+                                                    cognomeNome=cognomeNome,
+                                                    ruolo=ruolo,
+                                                    descrizione=descrizione,
+                                                    recapito=recapito,
+                                                    tipoRecapito=tipoRecapito,
+                                                    idCategoria=idCategoria,
+                                                    offset=offset,
+                                                    batchSize=batchSize)
 
             self._filterClosure = filterClosure
             cons = self.runFilter()
@@ -292,12 +288,12 @@ class AnagraficaContattiFilter(AnagraficaFilter):
 
             def filterCountClosure():
                 return ContattoAzienda().count(schemaAzienda=schemaAzienda,
-                                        cognomeNome=cognomeNome,
-                                        ruolo=ruolo,
-                                        descrizione=descrizione,
-                                        recapito=recapito,
-                                        tipoRecapito=tipoRecapito,
-                                        idCategoria=idCategoria)
+                                                cognomeNome=cognomeNome,
+                                                ruolo=ruolo,
+                                                descrizione=descrizione,
+                                                recapito=recapito,
+                                                tipoRecapito=tipoRecapito,
+                                                idCategoria=idCategoria)
 
             self._filterCountClosure = filterCountClosure
             self.numRecords = self.countFilterResults()
@@ -420,12 +416,10 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             self.schema_azienda_filter_combobox.set_sensitive(False)
 
 
-
 class AnagraficaContattiHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'contatto',
                                 'Informazioni sul contatto')
-
 
 
 class AnagraficaContattiReport(AnagraficaReport):
@@ -435,7 +429,6 @@ class AnagraficaContattiReport(AnagraficaReport):
                                   defaultFileName='contatti',
                                   htmlTemplate='contatti',
                                   sxwTemplate='contatti')
-
 
 
 class AnagraficaContattiEdit(AnagraficaEdit):
@@ -451,7 +444,6 @@ class AnagraficaContattiEdit(AnagraficaEdit):
         self._widgetFirstFocus = self.cognome_entry
         self.dao = Contatto()
         self._tabPressed = False
-
 
     def draw(self, cplx=False):
         #Popola combobox categorie contatti
@@ -888,9 +880,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
             elif self.azienda_radiobutton.get_active():
                 self.appartenenza_label.set_text('Azienda')
 
-
     def saveDao(self):
-
         if not self.generico_radiobutton.get_active():
             if self.appartenenza_customcombobox._id is None:
                 obligatoryField(self.dialogTopLevel, self.appartenenza_customcombobox)

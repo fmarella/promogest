@@ -1,0 +1,84 @@
+<style>
+
+    body {
+    font-family: 'Lucida Casual';
+    }
+
+table { width: 100%; }
+
+
+table.monthTable{
+    font: 12px "Trebuchet MS",sans-serif;
+    color:#444
+    }
+table.monthTable th{background-color:#fcffc4;}
+table.monthTable td{background-color:#FFFFFF;}
+table.monthTable td:hover{background-color:lightgrey}
+
+table.monthTable.#monthTd td{
+background-color:#FF00FF;
+}
+
+/*table.monthTable tr:hover{*/
+/*background-color:lightgrey*/
+/*    }*/
+
+/*table.monthTable td a {display: block; margin 0;}*/
+/*table.monthTable td a:link {color: red;}*/
+/*table.monthTable td a:hover {color: green;}*/
+
+table.monthTable,table.monthTable th,table.monthTable td{
+    border: 1px solid #99A4C4;
+    border-collapse:collapse
+    }
+
+table.monthTable td{
+/*    width:15%;*/
+    height:60px;
+    }
+
+table.weekTable{
+    font: 12px "Trebuchet MS",sans-serif;
+    color:#444
+    }
+table.weekTable,table.weekTable th,table.weekTable td{
+    border: 1px solid #99A4C4;
+    border-collapse:collapse
+    }
+table.weekTable th{background-color:#fcffc4;}
+table.weekTable td{background-color:#FFFFFF;}
+table.weekTable td:hover{background-color:lightgrey}
+table.dayTable th{background-color:#fcffc4;}
+table.dayTable td{background-color:#FFFFFF;}
+table.dayTable td:hover{background-color:lightgrey}
+
+table.monthTable a{
+    text-decoration:none;
+/*    color:#4A5576;*/
+/*    font-weight:bold;*/
+    }
+/*table.monthTable a:hover{*/
+/*    color: #716F64*/
+/*    }*/
+
+table.dayTable,table.dayTable th,table.dayTable td{
+    border: 1px solid #99A4C4;
+    border-collapse:collapse
+    }
+table.dayTable tr{
+    height:15px;
+    }
+
+.workinMonth {
+    width:100%;
+    font-size:1.4em;
+    color:#DBDFEB;
+    text-align:center;
+    }
+
+@page {
+size: A4 landscape;
+margin: 1cm;
+}
+
+</style>

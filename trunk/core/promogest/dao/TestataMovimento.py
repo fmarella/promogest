@@ -107,7 +107,6 @@ class TestataMovimento(Dao):
     numeroMagazzini = property(_getNumeroMagazzini)
 
     def filter_values(self,k,v):
-        print "KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK", k, v
         if k == 'daNumero':
             dic = {k:testata_mov.c.numero >= v}
         elif k == 'aNumero':

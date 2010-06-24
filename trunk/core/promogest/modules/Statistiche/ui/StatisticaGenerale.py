@@ -3,7 +3,6 @@
 # Promogest
 #
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
 # Author: Francesco Meloni  <francesco@promotux.it>
 
 import os

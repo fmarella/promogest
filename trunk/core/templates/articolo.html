@@ -140,5 +140,31 @@
             </tr>
         </table>
         <BR /><BR />
+{% for anno in pageData["calendarioDatetime"] %}
+    <div>
+        {% for mese in anno %}
+            {% for settimana in mese %}
+                {% for giorno in settimana %}
+<div>
+                        {% for eve in pageData["eventipreves"] %}
+                            {% if giorno.toordinal() == eve[0] %}
+                                {% if eve[1]["operazione"] =="Ordine da cliente" %}
+                                    <b>{{giorno}}</b> --  <span style="color:green;">{{eve[1]["short"]}}</span>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {% for eve in pageData["eventiprevesAT"] %}
+                            {% if eve[1]["operazione"] =="Ordine da cliente" %}
+                                {% if eve[0] == giorno.toordinal() %}
+                                    <b>{{giorno}}</b> -- <span style="color:red;"> {{eve[1]["short"]}}</span>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+
+                {% endfor %}
+            </div>{% endfor %}
+        {% endfor %}
+    </div>
+{% endfor %}
 </div>
 {% endblock %}

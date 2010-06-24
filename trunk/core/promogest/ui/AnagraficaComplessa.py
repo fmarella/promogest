@@ -24,7 +24,7 @@ from utils import *
 import Login
 import subprocess
 from promogest import Environment
-
+from calendar import Calendar
 #if Environment.new_print_enjine:
 from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
 from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
@@ -80,7 +80,6 @@ class Anagrafica(GladeWidget):
         self.email = ""
         self.setFocus()
 
-
     def _setFilterElement(self, gladeWidget):
         self.bodyWidget = FilterWidget(owner=gladeWidget, filtersElement=gladeWidget)
 
@@ -110,7 +109,6 @@ class Anagrafica(GladeWidget):
                             accelGroup, gtk.keysyms.KP_Enter, 0, gtk.ACCEL_VISIBLE)
         self.bodyWidget.filter_search_button.add_accelerator('clicked',
                             accelGroup, gtk.keysyms.Return, 0, gtk.ACCEL_VISIBLE)
-
 
     def _setHtmlHandler(self, htmlHandler):
         self.htmlHandler = htmlHandler
@@ -682,12 +680,10 @@ class Anagrafica(GladeWidget):
         self.__handleOpenResponse(self.printDialog.getTopLevel())
         #self.on_records_print_dialog_close(self.printDialog)
 
-
     def on_records_print_dialog_close(self, dialog, event=None):
         self.printDialog.hide()
         del self.__pdfReport
         del self.__pdfGenerator
-
 
     def __handleOpenResponse(self, dialog):
 
@@ -983,7 +979,6 @@ class AnagraficaHtml(object):
         self.dao = None
         self._slaTemplateObj = None
 
-
     def setDao(self, dao):
         """ Visualizza il Dao specificato """
         self.dao = dao
@@ -1004,14 +999,44 @@ class AnagraficaHtml(object):
     def _refresh(self):
         """ show the html page in the custom widget"""
         pageData = {}
+        eventipreves = []
+        eventiprevesAT = []
+        calendarioDatetime = []
         html = "<html><body></body></html>"
         if not self._gtkHtml:
             self._gtkHtml = self._anagrafica.getHtmlWidget()
         if self.dao:
+            if "GestioneNoleggio" in Environment.modulesList:
+                from promogest.dao.TestataDocumento import TestataDocumento
+                from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
+                preves = TestataDocumento().select(daData= stringToDate("1/1/"+Environment.workingYear),
+                                aData=stringToDate("31/12/"+Environment.workingYear), batchSize=None,
+                                idArticolo=self.dao.id)
+                for p in preves:
+                    eventipreves.append((p.data_documento.toordinal(),{"id":p.id,
+                                                        "operazione":p.operazione,
+                                                        "short":p.ragione_sociale_cliente,
+                                                        "tipo":"data_documento",
+                                                        "colore":"#6495ED"},p.data_documento.day))
+                    arcTemp = TestataGestioneNoleggio().select(idTestataDocumento=p.id, batchSize=None)
+                    for a in arcTemp:
+                        startDate =a.data_inizio_noleggio
+                        stopDate =a.data_fine_noleggio
+                        dateList= date_range(startDate,stopDate)
+                        for d in dateList:
+                            eventiprevesAT.append((d.toordinal(),{"id":p.id,
+                                            "operazione":p.operazione,
+                                            "short":p.ragione_sociale_cliente,
+                                            "tipo":"data_documento",
+                                            "colore":"#AFEEEE"},d.day))
+                calendarioDatetime = Calendar().yeardatescalendar(int(Environment.workingYear))
             pageData = {
                     "file" :self.defaultFileName+".html",
                     "dao":self.dao,
-                    "objects":self.dao
+                    "objects":self.dao,
+                    "eventipreves": eventipreves,
+                    "eventiprevesAT": eventiprevesAT,
+                    "calendarioDatetime": calendarioDatetime,
                     }
             html = renderTemplate(pageData)
         renderHTML(self._gtkHtml,html)
@@ -1364,10 +1389,10 @@ class AnagraficaPrintPreview(GladeWidget):
     def on_generic_combobox_changed(self,combobox):
         if self.codBar_combo.get_active()==0:
             from PrintDialog import PrintDialogHandler
-            import pisaLib.ho.pisa as pisa
+            import ho.pisa as pisa
             f = self.html_code
             g = file(".temp.pdf", "wb")
-            pdf = pisa.CreatePDF(f,g)
+            pdf = pisa.CreatePDF(str(f),g)
             g .close()
             anag = PrintDialogHandler(self,self.windowTitle)
             anagWindow = anag.getTopLevel()

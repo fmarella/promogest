@@ -52,6 +52,25 @@ def apriAnagraficaArticoliEdit(articoloId):
     art = Articolo().getRecord(id=articoloId)
     a.on_record_edit_activate(a, dao=art)
 
+def apriTestataDocumentoEdit(testataDocumentoId):
+    from promogest.ui.AnagraficaDocumenti import AnagraficaDocumenti
+#    from promogest.ui.AnagraficaDocumentiEdit import AnagraficaDocumentiEdit
+    from promogest.dao.TestataDocumento import TestataDocumento
+    a = AnagraficaDocumenti()
+    art = TestataDocumento().getRecord(id=testataDocumentoId)
+    a.on_record_edit_activate(a, dao=art)
+
+def apriAnagraficaPromemoriaNew(selectedData=None):
+    from promogest.ui.AnagraficaPromemoria import AnagraficaPromemoria
+    a = AnagraficaPromemoria(selectedData=selectedData)
+    a.on_record_new_activate(a)
+
+def apriAnagraficaPromemoriaEdit(promemoriaId):
+    from promogest.ui.AnagraficaPromemoria import AnagraficaPromemoria
+    from promogest.dao.Promemoria import Promemoria
+    a = AnagraficaPromemoria()
+    pro = Promemoria().getRecord(id=promemoriaId)
+    a.on_record_edit_activate(a, dao=pro)
 
 def _on_navigation_requested(view, frame, req, data=None):
     uri = req.get_uri()
@@ -60,6 +79,16 @@ def _on_navigation_requested(view, frame, req, data=None):
         if "articoloId" in agg:
             exec(agg)
             apriAnagraficaArticoliEdit(articoloId)
+        elif "newPromemoria" in agg:
+            exec(agg)
+            selectedData = str(newPromemoria)+"/"+str(Environment.workinMonth)+"/"+str(Environment.workinYearc)+" 09:00"
+            apriAnagraficaPromemoriaNew(selectedData=selectedData)
+        elif "promemoriaId" in agg:
+            exec(agg)
+            apriAnagraficaPromemoriaEdit(promemoriaId)
+        elif "testataDocumentoId" in agg:
+            exec(agg)
+            apriTestataDocumentoEdit(testataDocumentoId)
     else:
         return False
     return True
@@ -76,9 +105,12 @@ def createHtmlObj(mainWidget,widget=None):
         return gtkhtml2.View()
 
 def renderTemplate(pageData):
-    if "feed" not in pageData: pageData["feed"] = []
-    if "dao" not in pageData:  pageData["dao"] = []
-    if "objects" not in pageData: pageData["objects"] = []
+    if "feed" not in pageData:
+        pageData["feed"] = []
+    if "dao" not in pageData:
+        pageData["dao"] = []
+    if "objects" not in pageData:
+        pageData["objects"] = []
     jinja_env.globals['environment'] = Environment
     jinja_env.globals['utils'] = utils
     pageData["titolo"] = pageData["file"].split(".")[0].capitalize()
@@ -110,6 +142,8 @@ def _on_html_link_clicked(url, link):
     if "articoloId" in agg:
         exec(agg)
         apriAnagraficaArticoliEdit(articoloId)
+    elif "newPromemoria" in agg:
+            apriAnagraficaPromemoriaNew()
     else:
         gobject.idle_add(linkOpen, link)
     return True

@@ -65,7 +65,7 @@ shop = False
 rev_locale = None
 rev_remota = None
 magazzino_pos = None
-
+view = "month"
 gtkrc = """# Auto-written by gtk2_prefs. Do not edit.
 
 gtk-theme-name = "Nodoka"

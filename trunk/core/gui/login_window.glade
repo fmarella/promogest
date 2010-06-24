@@ -2,6 +2,15 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="stock">gtk-execute</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment1">
+    <property name="upper">9999</property>
+    <property name="value">1</property>
+    <property name="step_increment">1</property>
+  </object>
   <object class="GtkDialog" id="login_window">
     <property name="title" translatable="yes">Accesso a PromoGest2 "MentoR" </property>
     <property name="resizable">False</property>
@@ -319,14 +328,5 @@ Inserite i dati:.</property>
       <action-widget response="0">button_quit</action-widget>
       <action-widget response="-11">aggiorna_button</action-widget>
     </action-widgets>
-  </object>
-  <object class="GtkAdjustment" id="adjustment1">
-    <property name="upper">9999</property>
-    <property name="value">1</property>
-    <property name="step_increment">1</property>
-  </object>
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="stock">gtk-execute</property>
   </object>
 </interface>

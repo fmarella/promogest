@@ -56,11 +56,6 @@ def getScadenze():
             returnList.append(alarm.id)
     return returnList
 
-def updateScadenze():
-    #FIXME " ATTENZIONE :parte commentata e da rifare su pg2
-    """ Segna quali promemoria entrano nel periodo in scadenza, quali scadono, e quali sono completati """
-    #Environment.connection.execStoredProcedure('ScadenzePromemoriaUpd',())
-    pass
 
 promemoria = Table('promemoria',
             params['metadata'],

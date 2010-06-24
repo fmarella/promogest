@@ -25,22 +25,22 @@ from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, An
 
 from promogest import Environment
 from promogest.dao.Promemoria import Promemoria
-
+from datetime import datetime, timedelta
 from utils import *
 from utilsCombobox import *
-
+from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 
 class AnagraficaPromemoria(Anagrafica):
     """ Anagrafica promemoria """
 
-    def __init__(self, aziendaStr=None):
+    def __init__(self, aziendaStr=None, selectedData=None):
         Anagrafica.__init__(self,
                             windowTitle='Promogest - Anagrafica promemoria',
                             recordMenuLabel='_Promemoria',
                             filterElement=AnagraficaPromemoriaFilter(self),
                             htmlHandler=AnagraficaPromemoriaHtml(self),
                             reportHandler=AnagraficaPromemoriaReport(self),
-                            editElement=AnagraficaPromemoriaEdit(self),
+                            editElement=AnagraficaPromemoriaEdit(self, selectedData=selectedData),
                             aziendaStr=aziendaStr)
 
 
@@ -274,17 +274,20 @@ class AnagraficaPromemoriaReport(AnagraficaReport):
 class AnagraficaPromemoriaEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica dei clienti """
 
-    def __init__(self, anagrafica):
+    def __init__(self, anagrafica, selectedData=None):
         AnagraficaEdit.__init__(self,
                                 anagrafica,
                                 'anagrafica_promemoria_detail_table',
                                 'Dati promemoria',
                                 gladeFile='_anagrafica_promemoria_elements.glade')
         self._widgetFirstFocus = self.data_scadenza_entry
+        self.selectedData = selectedData
 
     def draw(self,cplx=False):
         textBuffer = gtk.TextBuffer()
         self.descrizione_textview.set_buffer(textBuffer)
+#        self.annotazioneHTML = createHtmlObj(self)
+#        self.annotazione_scrolled.add(self.annotazioneHTML)
         textBuffer = gtk.TextBuffer()
         self.annotazione_textview.set_buffer(textBuffer)
         fillComboboxIncaricatiPromemoria(self.incaricato_combobox_entry)
@@ -301,24 +304,48 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
             self._is_changing = True
         self._refresh()
 
+    def setPreavvisoSpinLimit(self, diffe):
+        adj = self.giorni_preavviso_entry.get_adjustment()
+        adj.set_upper(diffe)
+
+    def on_data_scadenza_entry_focus_out_event(self, entry, event):
+        differenze = 0
+        data_scadenza = stringToDateTime(self.data_scadenza_entry.get_text())
+        data_inserimento = stringToDateTime(self.data_inserimento_entry.get_text())
+        if data_scadenza:
+            differenze = int((data_scadenza - data_inserimento).days)
+            self.setPreavvisoSpinLimit(differenze)
+
     def _refresh(self):
         self.data_scadenza_entry.set_text(dateTimeToString(self.dao.data_scadenza) or '')
         self.oggetto_entry.set_text(self.dao.oggetto or '')
         self.incaricato_combobox_entry.child.set_text(self.dao.incaricato or '')
         self.autore_combobox_entry.child.set_text(self.dao.autore or '')
         self.descrizione_textview.get_buffer().set_text(self.dao.descrizione or '')
+#        static = self.dao.annotazione or "test"
+#        pageData = {"file": "promemoria_annotazioni.html",
+#                    "static":static,
+#                    }
+#        self.hhttmmll = renderTemplate(pageData)
+#        renderHTML(self.annotazioneHTML,self.hhttmmll)
         self.annotazione_textview.get_buffer().set_text(self.dao.annotazione or '')
         self.riferimento_combobox_entry.child.set_text(self.dao.riferimento or '')
         self.giorni_preavviso_entry.set_text(str(self.dao.giorni_preavviso or ''))
         self.in_scadenza_checkbutton.set_active(self.dao.in_scadenza or False)
+#        self.setPreavvisoSpinLimit()
         if self._is_changing:
             self.scaduto_checkbutton.set_property('visible',True)
             self.completato_checkbutton.set_property('visible',True)
             self.scaduto_checkbutton.set_active(self.dao.scaduto)
             self.completato_checkbutton.set_active(self.dao.completato)
+            self.data_inserimento_entry.set_text(dateTimeToString(self.dao.data_inserimento))
         else:
             self.scaduto_checkbutton.set_property('visible',False)
             self.completato_checkbutton.set_property('visible',False)
+            if self.selectedData:
+                self.data_inserimento_entry.set_text(self.selectedData)
+            else:
+                self.data_inserimento_entry.set_text(dateTimeToString(datetime.datetime.now()) or '')
 
         fillComboboxIncaricatiPromemoria(self.incaricato_combobox_entry)
         fillComboboxAutoriPromemoria(self.autore_combobox_entry)
@@ -331,7 +358,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
         if self.oggetto_entry.get_text() == '':
             msg = 'Oggetto. \nCampo obbligatorio'
             obligatoryField(self.dialogTopLevel, self.oggetto_entry, msg)
-
+        self.dao.data_inserimento = stringToDateTime(self.data_inserimento_entry.get_text())
         self.dao.data_scadenza = stringToDateTime(self.data_scadenza_entry.get_text())
         self.dao.oggetto = self.oggetto_entry.get_text()
         self.dao.incaricato = self.incaricato_combobox_entry.get_active_text()

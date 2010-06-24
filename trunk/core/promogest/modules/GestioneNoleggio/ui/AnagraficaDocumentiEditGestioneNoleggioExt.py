@@ -5,7 +5,7 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 
-
+from math import sqrt
 from promogest import Environment
 from promogest.ui.utils import *
 

@@ -330,22 +330,27 @@ class AnagraficaStoccaggiEdit(AnagraficaEdit):
     def saveDao(self):
         if findIdFromCombobox(self.id_magazzino_customcombobox.combobox) is None:
             obligatoryField(self.dialogTopLevel, self.id_magazzino_customcombobox.combobox)
-
-        if self.id_articolo_customcombobox.getId() is None:
+        idMagazzino = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)
+        idArticolo = self.id_articolo_customcombobox.getId()
+        if not idArticolo:
             obligatoryField(self.dialogTopLevel, self.id_articolo_customcombobox)
-        elif self.id_articolo_customcombobox.getId():
-            idArticoloTemp = self.id_articolo_customcombobox.getId()
-            a = Stoccaggio().select(idArticolo=idArticoloTemp)
-            if a and self.newDao:
-                msg = "Attenzione !\n\n L'Articolo è già presente nel magazzino!"
-                dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                            gtk.MESSAGE_QUESTION, gtk.BUTTONS_OK, msg)
-                response = dialog.run()
-                dialog.destroy()
-                raise Exception("Tentativo di inserimento di un articolo esistente")
-
-        self.dao.id_magazzino = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)
-        self.dao.id_articolo = self.id_articolo_customcombobox.getId()
+        elif idArticolo:
+            a = Stoccaggio().select(idArticolo=idArticolo,idMagazzino=idMagazzino)
+            if a:
+#                msg = "Attenzione !\n\n L'Articolo è già presente nel magazzino!"
+#                dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+#                                            gtk.MESSAGE_QUESTION, gtk.BUTTONS_OK, msg)
+#                response = dialog.run()
+#                dialog.destroy()
+#                raise Exception("Tentativo di inserimento di un articolo esistente")
+                a[0].scorta_minima = int(self.scorta_minima_entry.get_text())
+                a[0].livello_riordino = int(self.livello_riordino_entry.get_text())
+                a[0].data_fine_scorte = stringToDate(self.data_fine_scorte_entry.get_text())
+                a[0].data_prossimo_ordine = stringToDate(self.data_prossimo_ordine_entry.get_text())
+                a[0].persist()
+                return
+        self.dao.id_magazzino = idMagazzino
+        self.dao.id_articolo = idArticolo
         self.dao.scorta_minima = int(self.scorta_minima_entry.get_text())
         self.dao.livello_riordino = int(self.livello_riordino_entry.get_text())
         self.dao.data_fine_scorte = stringToDate(self.data_fine_scorte_entry.get_text())

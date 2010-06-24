@@ -235,10 +235,8 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
 
         self.clear()
 
-
     def _refresh_filter_comboboxes(self, widget=None):
         self.refresh()
-
 
     def clear(self):
         # Annullamento filtro
@@ -258,7 +256,6 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         if "PromoWear" in Environment.modulesList:
             AnagraficaArticoliPromoWearExpand.clear(self)
         self.refresh()
-
 
     def refresh(self):
         # Aggiornamento TreeView
@@ -331,7 +328,6 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
                 self._treeViewModel.append(modelRow +modelRowPromoWear)
             else:
                 self._treeViewModel.append(modelRow)
-
 
     def on_taglie_colori_filter_combobox_changed(self, combobox):
         AnagraficaArticoliPromoWearExpand.on_taglie_colori_filter_combobox_changed(self,combobox)

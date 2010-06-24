@@ -125,7 +125,7 @@ class Distinta(GladeWidget):
         renderHTML(self.detail,self.html)
 
     def on_pdf_button_clicked(self, button):
-        import pisaLib.ho.pisa as pisa
+        import ho.pisa as pisa
         f = self.html
         g = file(".temp.pdf", "wb")
         pdf = pisa.CreatePDF(f,g)

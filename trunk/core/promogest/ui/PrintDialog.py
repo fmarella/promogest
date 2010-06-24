@@ -4,11 +4,8 @@
 #
 # Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
 # Author: Andrea Argiolas <andrea@promotux.it>
-# Author: JJDaNiMoTh <jjdanimoth@gmail.com>
-# Author: Dr astico <zoccolodignu@gmail.com>
 # Author: Francesco Meloni <francesco@promotux.it>
 
-#from AnagraficaComplessa import AnagraficaFilter
 import gtk
 from utils import *
 import subprocess

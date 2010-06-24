@@ -357,6 +357,8 @@ class TestataDocumento(Dao):
         self.scontiTestataDocumentoDel(id=self.id)
 
         self.testataDocumentoScadenzaDel(id=self.id)
+        if "GestioneNoleggio"in Environment.modulesList:
+            self.testataDocumentoGestioneNoleggioDel(id=self.id)
         self.righeDocumentoDel(id=self.id)
         #verifica se sono presenti righe di movimentazione magazzino
         contieneMovimentazione = self.contieneMovimentazione(righe=self.righeDocumento)
@@ -538,6 +540,20 @@ class TestataDocumento(Dao):
         for r in row:
             params['session'].delete(r)
         params["session"].commit()
+        return True
+
+    def testataDocumentoGestioneNoleggioDel(self,id=None):
+        """
+        Cancella la gestione noleggio
+        """
+        row = TestataGestioneNoleggio().select(idTestataDocumento= id,
+                                                                    offset = None,
+                                                                    batchSize = None,
+                                                                    orderBy="id_testata_documento")
+        if row:
+            for r in row:
+                params['session'].delete(r)
+            params["session"].commit()
         return True
 
     def scontiRigaDocumentoDel(self,id=None):
@@ -786,13 +802,9 @@ class TestataDocumento(Dao):
 
 
     def delete(self):
-        print "PARTIAMO DA QUI"
-        #testataMovDel = TestataMovimento().select(id_testata_documento = self.id).all()
+        """ Cancelliamo una testata documento con tutti i cascade"""
         params['session'].delete(self)
         params['session'].commit()
-
-
-
 
     def filter_values(self,k,v):
         if k == 'daNumero':
@@ -831,10 +843,12 @@ class TestataDocumento(Dao):
         elif k == 'statoDocumento':
             dic = {k:testata_documento.c.documento_saldato == v}
         elif k == 'idArticolo':
-            dic = {k:and_(Articolo.id ==Riga.id_articolo,
-                           riga.c.id==RigaMovimento.id,
+            dic = {k : and_(Articolo.id ==Riga.id_articolo,
+                           or_(and_(riga.c.id==RigaMovimento.id,
                            RigaMovimento.id_testata_movimento == TestataMovimento.id,
-                           TestataMovimento.id_testata_documento == testata_documento.c.id,
+                           TestataMovimento.id_testata_documento == testata_documento.c.id),
+                                and_(riga.c.id==RigaDocumento.id,
+                           RigaDocumento.id_testata_documento == testata_documento.c.id)),
                            Articolo.id ==v)}
 #            dic = {k:testata_documento.c.id.in_(select([testata_documento.c.id],
 #                        or_(and_(testata_movi.c.id_testata_documento == testata_documento.c.id,
@@ -887,4 +901,4 @@ std_mapper = mapper(TestataDocumento, testata_documento, properties={
 
 if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
-    std_mapper.add_property("TGN",relation(TestataGestioneNoleggio,primaryjoin=(testata_documento.c.id==TestataGestioneNoleggio.id_testata_documento),backref="TD",uselist = False))
+    std_mapper.add_property("TGN",relation(TestataGestioneNoleggio,primaryjoin=(testata_documento.c.id==TestataGestioneNoleggio.id_testata_documento),cascade="all, delete",backref=backref("TD"),uselist = False))

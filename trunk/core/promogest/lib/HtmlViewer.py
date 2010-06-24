@@ -16,7 +16,11 @@ from promogest.dao.DaoUtils import *
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.lib.html2csv import html2csv
 from promogest.ui.PrintDialog import PrintDialogHandler
-import pisaLib.ho.pisa as pisa
+try:
+    import ho.pisa as pisa
+except:
+    print "ERRORE NELL'IMPORT DI PISA"
+    import pisaLib.ho.pisa as pisa
 
 
 class HtmlViewer(GladeWidget):
@@ -42,7 +46,7 @@ class HtmlViewer(GladeWidget):
 
         f = self.html
         g = file(".temp.pdf", "wb")
-        pdf = pisa.CreatePDF(f, g)
+        pdf = pisa.CreatePDF(str(f), g)
         g .close()
         anag = PrintDialogHandler(self, self.windowTitle)
         anagWindow = anag.getTopLevel()

@@ -8,6 +8,7 @@
 
 from textwrap import TextWrapper
 import os
+from calendar import Calendar
 from decimal import *
 import pygtk
 pygtk.require('2.0')
@@ -1718,11 +1719,12 @@ def stringToDateTime(stringa):
     if stringa is None or stringa == '':
         return None
     else:
-        #try:
-        d = time.strptime(stringa, "%d/%m/%Y %H:%M")
-        data = datetime.datetime(d[0], d[1], d[2], d[3], d[4])
-        #except Exception:
-            #data=None
+        try:
+            d = time.strptime(stringa, "%d/%m/%Y %H:%M")
+            data = datetime.datetime(d[0], d[1], d[2], d[3], d[4])
+        except:
+            messageInfo(msg= "LA DATA E' IN QUALCHE MODO ERRATA O INCOMPLETA")
+            data=None
         return data
 
 def getScadenza(data_documento, ngiorniscad, FM = True):
@@ -2703,14 +2705,65 @@ def checkInstallation():
         req = urllib2.Request(url, values)
         response = urllib2.urlopen(req)
         content = response.read()
-#        print "PRIMA", content
         conte = json.loads(content)
     except:
         print "ERRORE NEL COLLEGAMENTO AL CHECK INSTALLAZIONE"
-#    print "DOOP", conte
+
+def updateScadenzePromemoria():
+    """ Segna quali promemoria entrano nel periodo in scadenza,
+        quali scadono, e quali sono completati """
+    from promogest.dao.Promemoria import Promemoria
+    promes = Promemoria().select(in_scadenza=False, completato=False)
+    for p in promes:
+        preavviso = p.giorni_preavviso
+        data_attuale = datetime.datetime.now()
+        data_scadenza = p.data_scadenza
+        if data_scadenza < data_attuale:
+            p.scaduto = True
+            p.persist()
+        elif data_scadenza > data_attuale:
+            differenze = int((data_scadenza - data_attuale).days)
+            if differenze < preavviso:
+                p.in_scadenza = True
+                p.persist()
+
+_dim = (None, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+
+def _leap(y):
+    if y % 4: return 0
+    if y % 100: return 1
+    if y % 400: return 0
+    return 1
+
+def last_day_of_month(y, m):
+    """Return day (1..31) which is last day of month m in year y
+    """
+    if m == 2:
+        return 28 + _leap(y)
+    if not (1 <= m <= 12):
+        raise Exception("month not in 1..12")
+    return _dim[m]
+
+def date_range(start, end):
+    r = (end+datetime.timedelta(days=1)-start).days
+    return [start+datetime.timedelta(days=i) for i in range(r)]
+
+def dateToOrdinal(anno):
+    dd = []
+    ccccc = Calendar().yeardatescalendar(int(Environment.workingYear))
+    for cccc in ccccc:
+        for ccc in cccc:
+            print "DEDEDEDEDEDEDE",  ccc
+            for cc in ccc:
+                print "SSSSSSSSSSSS", cc
+                for c in cc:
+                    if c.year==int(Environment.workingYear) and c.toordinal() not in dd:
+                        dd.append((c.toordinal(),c))
+    return dd
+
 
 def scribusVersion(slafile):
-    print "SLAFILEEEEEEEEEEEEEEEEEEEEEEEEEEE", slafile
+    print "QUESTO E' IL FILE SLA", slafile
     try:
         doc = ET.parse(slafile)
     except:
@@ -2721,7 +2774,7 @@ def scribusVersion(slafile):
     slaversion = root.get('Version')
     print "FILE SLA DA VERIFICARE PRIMA DLLA STAMPA", slafile
     print "VERSIONE SLA", slaversion
-    if "1.3.6" in slaversion:
+    if "1.3.6" in slaversion or "1.3.7" in slaversion:
         Environment.new_print_enjine=True
         return True
     elif "1.3.5.1" in slaversion or "1.3.5svn" in slaversion:
