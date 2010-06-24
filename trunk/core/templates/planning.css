@@ -6,7 +6,6 @@
 
 table { width: 100%; }
 
-
 table.monthTable{
     font: 12px "Trebuchet MS",sans-serif;
     color:#444
@@ -16,16 +15,9 @@ table.monthTable td{background-color:#FFFFFF;}
 table.monthTable td:hover{background-color:lightgrey}
 
 table.monthTable.#monthTd td{
-background-color:#FF00FF;
+    background-color:#FF00FF;
 }
 
-/*table.monthTable tr:hover{*/
-/*background-color:lightgrey*/
-/*    }*/
-
-/*table.monthTable td a {display: block; margin 0;}*/
-/*table.monthTable td a:link {color: red;}*/
-/*table.monthTable td a:hover {color: green;}*/
 
 table.monthTable,table.monthTable th,table.monthTable td{
     border: 1px solid #99A4C4;
@@ -52,14 +44,10 @@ table.dayTable th{background-color:#fcffc4;}
 table.dayTable td{background-color:#FFFFFF;}
 table.dayTable td:hover{background-color:lightgrey}
 
-table.monthTable a{
+a{
     text-decoration:none;
-/*    color:#4A5576;*/
-/*    font-weight:bold;*/
+    color:#ffffff;
     }
-/*table.monthTable a:hover{*/
-/*    color: #716F64*/
-/*    }*/
 
 table.dayTable,table.dayTable th,table.dayTable td{
     border: 1px solid #99A4C4;

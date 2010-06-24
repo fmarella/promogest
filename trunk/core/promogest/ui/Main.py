@@ -337,10 +337,10 @@ class Main(GladeWidget):
         newlist=[]
         for ca in cale:
             for s in ca:
-                if s[0] == workinDay:
+                if s.day == workinDay:
                     for c in ca:
-                        z,x,v = c[0],c[1],list(dayName)[c[1]]
-                        newlist.append((z,x,v))
+                        q,z,x,v = c.toordinal(), c.day,c.weekday(),list(dayName)[c.weekday()]
+                        newlist.append((q,z,x,v))
                     return newlist
 
     def create_planning_frame(self,d=1,m=1,y=0, currentData=None,view=None):
@@ -373,7 +373,8 @@ class Main(GladeWidget):
         workinDay = Environment.workinDay = d
         dayName = calendar.day_name
         monthName = calendar.month_name
-        cale = calendar.Calendar().monthdays2calendar(workinYearc,workinMonth)
+
+        cale = calendar.Calendar().monthdatescalendar(workinYearc,workinMonth)
         first_day = relativedelta(days=-(workinDay-1))
         last_day = relativedelta(days=(last_day_of_month(workinYearc, workinMonth)-workinDay))
         currentLastDay = currentData+last_day
@@ -385,18 +386,18 @@ class Main(GladeWidget):
             promes = Promemoria().select(da_data_inserimento= currentFirstDay,
                                 a_data_scadenza=currentLastDay, batchSize=None)
             for p in promes:
-                eventipromes_ins.append((p.data_inserimento.day,{"id":p.id,
+                eventipromes_ins.append((p.data_inserimento.toordinal(),{"id":p.id,
                                                     "short":p.oggetto,
                                                     "tipo":"data_inserimento",
-                                                    "colore":"#FFE3E8"}))
+                                                    "colore":"#FFE3E8"},p.data_inserimento.day))
         if self.promemoria_scad_check.get_active():
             promes = Promemoria().select(da_data_inserimento= currentFirstDay,
                                 a_data_scadenza=currentLastDay, batchSize=None)
             for p in promes:
-                eventipromes_scad.append((p.data_scadenza.day,{"id":p.id,
+                eventipromes_scad.append((p.data_scadenza.toordinal(),{"id":p.id,
                                                     "short":p.oggetto,
                                                     "tipo":"data_scadenza",
-                                                    "colore":"#95F395"}))
+                                                    "colore":"#95F395"},p.data_scadenza.day))
         eventipreves = []
         eventiprevesAT = []
         if self.preventivi_check.get_active():
@@ -404,20 +405,20 @@ class Main(GladeWidget):
                                 aData=currentLastDay, batchSize=None,
                                 idOperazione="Preventivo")
             for p in preves:
-                eventipreves.append((p.data_documento.day,{"id":p.id,
+                eventipreves.append((p.data_documento.toordinal(),{"id":p.id,
                                                     "short":p.ragione_sociale_cliente,
                                                     "tipo":"data_documento",
-                                                    "colore":"#6495ED"}))
+                                                    "colore":"#6495ED"},p.data_documento.day))
                 arcTemp = TestataGestioneNoleggio().select(idTestataDocumento=p.id, batchSize=None)
                 for a in arcTemp:
                     startDate =a.data_inizio_noleggio
                     stopDate =a.data_fine_noleggio
                     dateList= date_range(startDate,stopDate)
                     for d in dateList:
-                        eventiprevesAT.append((d.day,{"id":p.id,
+                        eventiprevesAT.append((d.toordinal(),{"id":p.id,
                                         "short":p.ragione_sociale_cliente,
                                         "tipo":"data_documento",
-                                        "colore":"#AFEEEE"}))
+                                        "colore":"#AFEEEE"},d.day))
         eventiordes = []
         eventiordesAT = []
         if self.ordini_check.get_active():
@@ -426,11 +427,11 @@ class Main(GladeWidget):
                                 idOperazione="Ordine da cliente")
 
             for p in ordes:
-                eventiordes.append((p.data_documento.day,{
+                eventiordes.append((p.data_documento.toordinal(),{
                                 "id":p.id,
                                 "short":p.ragione_sociale_cliente,
                                 "tipo":"data_documento",
-                                "colore":"#FFA500"}))
+                                "colore":"#FFA500"},p.data_documento.day))
 
                 arcTemp = TestataGestioneNoleggio().select(idTestataDocumento=p.id, batchSize=None)
                 for a in arcTemp:
@@ -438,10 +439,10 @@ class Main(GladeWidget):
                     stopDate =a.data_fine_noleggio
                     dateList= date_range(startDate,stopDate)
                     for d in dateList:
-                        eventiordesAT.append((d.day,{"id":p.id,
+                        eventiordesAT.append((d.toordinal(),{"id":p.id,
                                         "short":p.ragione_sociale_cliente,
                                         "tipo":"data_documento",
-                                        "colore":"red"}))
+                                        "colore":"red"},d.day))
         onlyWeek = self.onlyWeek(cale, workinDay, workinMonth, workinYearc,dayName)
 
         pageData = {"file": "planning.html",
@@ -497,8 +498,12 @@ class Main(GladeWidget):
         self.create_planning_frame(currentData=tomorrow)
 
     def on_menomesi_calendar_button_clicked(self, button):
-        one_month = relativedelta(months=-1)
-        nextmonth =  Environment.currentData+one_month
+        if Environment.view =="week":
+            one_week = relativedelta(weeks=-1)
+            nextmonth =  Environment.currentData+one_week
+        else:
+            one_month = relativedelta(months=-1)
+            nextmonth =  Environment.currentData+one_month
         self.create_planning_frame(currentData=nextmonth)
 
     def drawAllarmi(self):

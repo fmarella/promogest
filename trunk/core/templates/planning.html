@@ -19,88 +19,83 @@
 <tr>
     {% for c in cal %}
 
-{% if c[0] == 0 %}
-<td>
-<b></b>
-
-{% elif c[0]== pageData["workinDay"] %}
-
-<td ondblclick="window.location='program:/newPromemoria={{c[0]}}/{{pageData['workinMonth']}}/{{pageData['workinYearc']}}" >
-<span><b>{{c[0]}}</b></span>
+{% if c.day== pageData["workinDay"] %}
+<td ondblclick="window.location='program:/newPromemoria={{c[0]}}'" >
+<span><b>[</b>{{c.day}}<b>]</b></span>
 
 {% for a in pageData["eventipromes_ins"] %}
-    {% if c[0] == a[0] %}
+    {% if c.toordinal() == a[0] %}
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/promemoriaId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
     {% endif %}
 {% endfor %}
 
 {% for a in pageData["eventipromes_scad"] %}
-    {% if c[0] == a[0] %}
+    {% if c.toordinal() == a[0] %}
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/promemoriaId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
     {% endif %}
 {% endfor %}
 
 {% for a in pageData["eventipreves"] %}
-    {% if c[0] == a[0] %}
+    {% if c.toordinal() == a[0] %}
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/testataDocumentoId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
     {% endif %}
 {% endfor %}
 
 {% for a in pageData["eventiprevesAT"] %}
-    {% if c[0] == a[0] %}
+    {% if c.toordinal() == a[0] %}
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/testataDocumentoId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
     {% endif %}
 {% endfor %}
 
 {% for a in pageData["eventiordes"] %}
-    {% if c[0] == a[0] %}
+    {% if c.toordinal() == a[0] %}
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/testataDocumentoId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
     {% endif %}
 {% endfor %}
 
 {% for a in pageData["eventiordesAT"] %}
-    {% if c[0] == a[0] %}
+    {% if c.toordinal() == a[0] %}
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/testataDocumentoId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
     {% endif %}
 {% endfor %}
 
 
 {% else %}
-<td ondblclick="window.location='program:/newPromemoria={{c[0]}}'"  >
-{{c[0]}}
+<td ondblclick="window.location='program:/newPromemoria={{c.day}}'"  >
+{{c.day}}
 
 {% for a in pageData["eventipromes_ins"] %}
-    {% if c[0] == a[0] %}
+    {% if c.toordinal() == a[0] %}
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/promemoriaId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
     {% endif %}
 {% endfor %}
 
 {% for a in pageData["eventipromes_scad"] %}
-    {% if c[0] == a[0] %}
+    {% if c.toordinal() == a[0] %}
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/promemoriaId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
     {% endif %}
 {% endfor %}
 
 {% for a in pageData["eventipreves"] %}
-    {% if c[0] == a[0] %}
+    {% if c.toordinal() == a[0] %}
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/testataDocumentoId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
     {% endif %}
 {% endfor %}
 
 {% for a in pageData["eventiprevesAT"] %}
-    {% if c[0] == a[0] %}
+    {% if c.toordinal() == a[0] %}
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/testataDocumentoId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
     {% endif %}
 {% endfor %}
 
 {% for a in pageData["eventiordes"] %}
-    {% if c[0] == a[0] %}
+    {% if c.toordinal() == a[0] %}
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/testataDocumentoId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
     {% endif %}
 {% endfor %}
 
 {% for a in pageData["eventiordesAT"] %}
-    {% if c[0] == a[0] %}
+    {% if c.toordinal() == a[0] %}
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/testataDocumentoId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
     {% endif %}
 {% endfor %}
@@ -116,13 +111,12 @@
 <tr>
 
 {% for c in pageData["onlyWeek"] %}
-
-{% if pageData["dayName"][pageData["weekDay"]] == c[2] %}
+{% if pageData["dayName"][pageData["weekDay"]] == c[3]|string %}
 <th>
-<b>{{c[2]|upper}} {{c[0]}}</b></th>
+<b>{{c[3]|upper}} {{c[1]}}</b></th>
 {% else %}
 <th >
-{{c[2]}} {{c[0]}}</th>
+{{c[3]}} {{c[1]}}</th>
 {% endif %}
 {% endfor %}
 </tr>
@@ -180,7 +174,7 @@
 		</TH>
 	<tr>
 {% for c in pageData["onlyWeek"] %}
-{% if pageData["dayName"][pageData["weekDay"]] == c[2] %}
+{% if pageData["dayName"][pageData["weekDay"]] == c[3] %}
 <td>
 {% for a in pageData["eventipromes_ins"] %}
     {% if c[0] == a[0] %}
