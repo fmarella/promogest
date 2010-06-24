@@ -1389,7 +1389,11 @@ class AnagraficaPrintPreview(GladeWidget):
     def on_generic_combobox_changed(self,combobox):
         if self.codBar_combo.get_active()==0:
             from PrintDialog import PrintDialogHandler
-            import ho.pisa as pisa
+            try:
+                import ho.pisa as pisa
+            except:
+                print "ERRORE NELL'IMPORT DI PISA"
+                import pisaLib.ho.pisa as pisa
             f = self.html_code
             g = file(".temp.pdf", "wb")
             pdf = pisa.CreatePDF(str(f),g)

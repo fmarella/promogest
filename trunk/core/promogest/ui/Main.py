@@ -10,7 +10,11 @@ import locale
 import gtk
 import hashlib
 import os
-import ho.pisa as pisa
+try:
+    import ho.pisa as pisa
+except:
+    print "ERRORE NELL'IMPORT DI PISA"
+    import pisaLib.ho.pisa as pisa
 import calendar
 from promogest.lib.relativedelta import relativedelta
 from datetime import datetime, timedelta
@@ -81,10 +85,14 @@ class Main(GladeWidget):
         self.create_allarmi_frame()
 #        self.main_notebook.set_current_page(self.main_notebook.page_num(self.notifica_allarmi_frame))
 #        self.main_notebook.set_current_page(0)
-        self.htmlPlanningWidget = createHtmlObj(self)
-        self.planning_scrolled.add(self.htmlPlanningWidget)
-        self.create_planning_frame()
-        gobject.idle_add(self.create_news_frame)
+        if os.name=="nt":
+            self.main_notebook.remove_page(2)
+            self.main_notebook.remove_page(2)
+        else:
+            self.htmlPlanningWidget = createHtmlObj(self)
+            self.planning_scrolled.add(self.htmlPlanningWidget)
+            self.create_planning_frame()
+            gobject.idle_add(self.create_news_frame)
         self.updates()
 
     def show(self):
@@ -194,7 +202,8 @@ class Main(GladeWidget):
         sendemail = SendEmail()
 
     def on_button_refresh_clicked(self, widget=None):
-        self.create_planning_frame()
+        if os.name!="nt":
+            self.create_planning_frame()
         if self.creata:
            self.main_notebook.remove_page(0)
            self.creata = False
