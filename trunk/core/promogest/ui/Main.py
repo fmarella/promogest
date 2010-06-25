@@ -409,16 +409,17 @@ class Main(GladeWidget):
                                                     "short":p.ragione_sociale_cliente,
                                                     "tipo":"data_documento",
                                                     "colore":"#6495ED"},p.data_documento.day))
-                arcTemp = TestataGestioneNoleggio().select(idTestataDocumento=p.id, batchSize=None)
-                for a in arcTemp:
-                    startDate =a.data_inizio_noleggio
-                    stopDate =a.data_fine_noleggio
-                    dateList= date_range(startDate,stopDate)
-                    for d in dateList:
-                        eventiprevesAT.append((d.toordinal(),{"id":p.id,
-                                        "short":p.ragione_sociale_cliente,
-                                        "tipo":"data_documento",
-                                        "colore":"#AFEEEE"},d.day))
+                if "GestioneNoleggio" in Environment.modulesList:
+                    arcTemp = TestataGestioneNoleggio().select(idTestataDocumento=p.id, batchSize=None)
+                    for a in arcTemp:
+                        startDate =a.data_inizio_noleggio
+                        stopDate =a.data_fine_noleggio
+                        dateList= date_range(startDate,stopDate)
+                        for d in dateList:
+                            eventiprevesAT.append((d.toordinal(),{"id":p.id,
+                                            "short":p.ragione_sociale_cliente,
+                                            "tipo":"data_documento",
+                                            "colore":"#AFEEEE"},d.day))
         eventiordes = []
         eventiordesAT = []
         if self.ordini_check.get_active():
@@ -432,17 +433,17 @@ class Main(GladeWidget):
                                 "short":p.ragione_sociale_cliente,
                                 "tipo":"data_documento",
                                 "colore":"#FFA500"},p.data_documento.day))
-
-                arcTemp = TestataGestioneNoleggio().select(idTestataDocumento=p.id, batchSize=None)
-                for a in arcTemp:
-                    startDate =a.data_inizio_noleggio
-                    stopDate =a.data_fine_noleggio
-                    dateList= date_range(startDate,stopDate)
-                    for d in dateList:
-                        eventiordesAT.append((d.toordinal(),{"id":p.id,
-                                        "short":p.ragione_sociale_cliente,
-                                        "tipo":"data_documento",
-                                        "colore":"red"},d.day))
+                if "GestioneNoleggio" in Environment.modulesList:
+                    arcTemp = TestataGestioneNoleggio().select(idTestataDocumento=p.id, batchSize=None)
+                    for a in arcTemp:
+                        startDate =a.data_inizio_noleggio
+                        stopDate =a.data_fine_noleggio
+                        dateList= date_range(startDate,stopDate)
+                        for d in dateList:
+                            eventiordesAT.append((d.toordinal(),{"id":p.id,
+                                            "short":p.ragione_sociale_cliente,
+                                            "tipo":"data_documento",
+                                            "colore":"red"},d.day))
         onlyWeek = self.onlyWeek(cale, workinDay, workinMonth, workinYearc,dayName)
 
         pageData = {"file": "planning.html",
