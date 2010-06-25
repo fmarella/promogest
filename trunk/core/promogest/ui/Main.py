@@ -51,6 +51,12 @@ from widgets.FornitoreSearchWidget import FornitoreSearchWidget
 from widgets.PersonaGiuridicaSearchWidget import PersonaGiuridicaSearchWidget
 if "GestioneNoleggio" in Environment.modulesList:
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
+try:
+    from webkit import WebView
+    WEBKIT = True
+except:
+    WEBKIT = False
+
 
 
 class Main(GladeWidget):
@@ -85,7 +91,7 @@ class Main(GladeWidget):
         self.create_allarmi_frame()
 #        self.main_notebook.set_current_page(self.main_notebook.page_num(self.notifica_allarmi_frame))
 #        self.main_notebook.set_current_page(0)
-        if os.name=="nt":
+        if not WEBKIT:
             self.main_notebook.remove_page(2)
             self.main_notebook.remove_page(2)
         else:
@@ -202,7 +208,7 @@ class Main(GladeWidget):
         sendemail = SendEmail()
 
     def on_button_refresh_clicked(self, widget=None):
-        if os.name!="nt":
+        if WEBKIT:
             self.create_planning_frame()
         if self.creata:
            self.main_notebook.remove_page(0)
