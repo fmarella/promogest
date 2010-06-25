@@ -88,7 +88,7 @@ class GladeWidget(SimpleGladeApp):
         self.left = None
         self.top = None
 
-        file = open(self._defaultWindowAttributesFile, "rw")
+        file = open(self._defaultWindowAttributesFile, "r")
         doc = ElementTree.parse(file)
         file.close()
         elem = doc.getroot()
@@ -111,7 +111,7 @@ class GladeWidget(SimpleGladeApp):
         (self.width, self.height) = self.topLevelWindow.get_size()
         (self.left, self.top) = self.topLevelWindow.get_position()
 
-        file = open(self._defaultWindowAttributesFile, "rw")
+        file = open(self._defaultWindowAttributesFile, "r")
         doc = ElementTree.parse(file)
         file.close()
         elem = doc.getroot()

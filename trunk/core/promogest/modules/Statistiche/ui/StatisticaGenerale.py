@@ -111,8 +111,6 @@ class StatisticaGenerale(GladeWidget):
         """%(self.nomestatistica, datata, adata, produt, maga, catec, catea,"")
         buffer.set_text(stringa)
         self.sommario_textview.set_buffer(buffer)
-#        print buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter()), produt,line_count
-
 
     def on_column_selected_edited(self, cell, path, treeview,value, editNext=True):
         """ Function to set the value quantita edit in the cell"""
@@ -120,25 +118,20 @@ class StatisticaGenerale(GladeWidget):
         model[path][1] = not model[path][1]
         for a in  model[path].iterchildren():
              a[1] = model[path][1]
-#        self.printModel()
-
 
     def on_statistica_dialog_destroy(self, widget):
         self.a_data_entry.destroy()
         self.da_data_entry.destroy()
         self.getTopLevel().destroy()
-        #return
 
     def on_ok_button_clicked(self, button):
         self.exportss(self)
 
     def on_tutti_button_clicked(self, button):
-#        model = self.treeview.get_model()
         for m in self._treeViewModel:
             m[1] = True
 
     def on_nessuno_button_clicked(self, button):
-#        model = self.treeview.get_model()
         for m in self._treeViewModel:
             m[1] = False
 
@@ -219,13 +212,15 @@ class StatisticaGenerale(GladeWidget):
 
         quantitaVendutaDict = {}
         quantitaVenduta = 0
+        quantitaAcquistata = 0
+        quantitaAcquistataTotale = 0
         valoreAcquistoDict= {}
         valoreAcquisto = 0
         quantitaVendutaTotale = 0
         valoreAcquistoTotale= 0
         valoreVenditaDict = {}
         valoreVendita = 0
-        valoreVenditaTotale = 0
+        valoreVenditaTotale = Decimal("0")
         ricaricomedioDict = {}
         incidenzaAcquistoDict = {}
         incidenzaVenditaDict = {}
@@ -248,16 +243,40 @@ class StatisticaGenerale(GladeWidget):
                         forni=  leggiFornitura(art.id)
                         quantitaVenduta += rig[0].quantita
                         quantitaVendutaTotale += rig[0].quantita
-                        valoreAcquisto += forni["prezzoNetto"]
-                        valoreAcquistoTotale += forni["prezzoNetto"]
+                        # Qui c'è l'inghippo ...devo leggere ogni movimento in cui c'è
+                        #questo articolo e prendere quel valore, altrimenti solo
+                        # nel caso che non lo trovi prendere la fornitura
+                        # o in ultima istanza l'inventario ...
+
+#                        valoreAcquisto += forni["prezzoNetto"]
+#                        valoreAcquistoTotale += forni["prezzoNetto"]
+                        rigaArticoloMovimentata= Environment.params["session"]\
+                                    .query(RigaMovimento, TestataMovimento)\
+                                    .filter(TestataMovimento.data_movimento.between(daData, aData))\
+                                    .filter(TestataMovimento.id_cliente == None)\
+                                    .filter(TestataMovimento.id_fornitore != None)\
+                                    .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                                    .filter(Riga.id_magazzino.in_(self.magazzinoId))\
+                                    .filter(Riga.id_articolo == art.id)\
+                                    .all()
+                        for r in rigaArticoloMovimentata:
+                            ope1 = leggiOperazione(r[1].operazione)
+#                            print r[0].__dict__, r[1].__dict__
+#                            print "OPEEEEEEEEEEEEEE", ope1
+                            valoreAcquisto += r[0].valore_unitario_netto
+                            valoreAcquistoTotale += r[0].valore_unitario_netto
+                            quantitaAcquistata += r[0].quantita
+                            quantitaAcquistataTotale += r[0].quantita
+                            print "QUANTIT° ACQUISTATA ",quantitaAcquistata, quantitaAcquistataTotale
                         ope = leggiOperazione(rig[1].operazione)
+#                        print "OPEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", ope
                         if ope["fonteValore"] =="vendita_iva":
                             # devo scorporare l'iva dal prezzo finale di vendita
                             imponibile = Decimal(str(float(rig[0].valore_unitario_netto)/(1+float(rig[0].percentuale_iva)/100)))
                         elif ope["fonteValore"] =="vendita_senza_iva":
                             imponibile = Decimal(str(float(rig[0].valore_unitario_netto)))
                         else:
-                            print "TIPO DI FONTE VALORE NN RICONOSCIUTO"
+                            print "TIPO DI FONTE VALORE PER LA VENDITA NN RICONOSCIUTO"
                         valoreVendita += imponibile
                         valoreVenditaTotale += imponibile
             if valoreAcquisto!=0:
@@ -270,10 +289,17 @@ class StatisticaGenerale(GladeWidget):
             quantitaVenduta = 0
             valoreAcquisto = 0
             valoreVendita = 0
+
         for k,v in valoreVenditaDict.items():
-            incidenzaVenditaDict[k] = v*100 / valoreVenditaTotale
+            if v:
+                incidenzaVenditaDict[k] = v*100 / valoreVenditaTotale
+            else:
+                incidenzaVenditaDict[k]  = 0
         for k,v in valoreAcquistoDict.items():
-            incidenzaAcquistoDict[k] = v*100 / valoreAcquistoTotale
+            if v:
+                incidenzaAcquistoDict[k] = v*100 / valoreAcquistoTotale
+            else:
+                incidenzaAcquistoDict[k] = 0
         print tempo()
 
         pageData = {
