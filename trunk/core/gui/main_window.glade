@@ -519,6 +519,7 @@ articoli per un certo </property>
                   </object>
                   <packing>
                     <property name="tab_expand">True</property>
+                    <property name="tab_fill">False</property>
                   </packing>
                 </child>
                 <child>
@@ -781,7 +782,7 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="draw_indicator">False</property>
-                                <signal name="toggled" handler="on_promemoria_ins_check_toggled"/>
+                                <signal name="toggled" handler="on_check_toggled"/>
                               </object>
                               <packing>
                                 <property name="position">0</property>
@@ -794,6 +795,7 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="draw_indicator">False</property>
+                                <signal name="toggled" handler="on_check_toggled"/>
                               </object>
                               <packing>
                                 <property name="position">1</property>
@@ -806,7 +808,7 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="draw_indicator">False</property>
-                                <signal name="toggled" handler="on_preventivi_check_toggled"/>
+                                <signal name="toggled" handler="on_check_toggled"/>
                               </object>
                               <packing>
                                 <property name="position">2</property>
@@ -819,7 +821,7 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="draw_indicator">False</property>
-                                <signal name="toggled" handler="on_ordini_check_toggled"/>
+                                <signal name="toggled" handler="on_check_toggled"/>
                               </object>
                               <packing>
                                 <property name="position">3</property>
@@ -1148,14 +1150,14 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button_disconnect">
-                <property name="label">gtk-disconnect</property>
+              <object class="GtkButton" id="button_quit">
+                <property name="label">gtk-quit</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_disconnect"/>
+                <signal name="clicked" handler="on_quit"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1182,14 +1184,14 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button_quit">
-                <property name="label">gtk-quit</property>
+              <object class="GtkButton" id="button_disconnect">
+                <property name="label">gtk-disconnect</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_quit"/>
+                <signal name="clicked" handler="on_disconnect"/>
               </object>
               <packing>
                 <property name="expand">False</property>

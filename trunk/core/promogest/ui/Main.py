@@ -325,6 +325,7 @@ class Main(GladeWidget):
             self.preventivi_check.set_active(False)
             self.promemoria_ins_check.set_active(False)
             self.promemoria_scad_check.set_active(False)
+        self.create_planning_frame(currentData= Environment.currentData)
 
     def on_print_button_clicked(self, button):
         nomefile = "planner"+dateToString(Environment.currentData).replace("/","_")+"_"+Environment.view
@@ -346,6 +347,9 @@ class Main(GladeWidget):
                         q,z,x,v = c.toordinal(), c.day,c.weekday(),list(dayName)[c.weekday()]
                         newlist.append((q,z,x,v))
                     return newlist
+
+    def on_check_toggled(self, button):
+        self.create_planning_frame(currentData= Environment.currentData)
 
     def create_planning_frame(self,d=1,m=1,y=0, currentData=None,view=None):
         promeDict= {}
@@ -1085,7 +1089,7 @@ ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDum
                         os.system(utilities)
 
                     utils = (
-                        'firefox','konqueror','thunderbird','kcalc','kate','gcalctool')
+                        'firefox','konqueror','thunderbird','kcalc','kate','gcalctool', "gedit")
                     utilities_menu = gtk.Menu()
                     for util in utils:
                         ret = os.system('which ' + util + ' > /dev/null')

@@ -37,9 +37,3 @@ codice_barre_articolo=Table('codice_a_barre_articolo',
 
 std_mapper = mapper(CodiceABarreArticolo, codice_barre_articolo,
                                         order_by=codice_barre_articolo.c.codice)
-
-
-
-
-
-
