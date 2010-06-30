@@ -20,7 +20,7 @@
     {% for c in cal %}
 
 {% if c.day== pageData["workinDay"] %}
-<td ondblclick="window.location='program:/newPromemoria={{c[0]}}'" >
+<td ondblclick="window.location='program:/newPromemoria={{c.day}}'" >
 <span><b>[</b>{{c.day}}<b>]</b></span>
 
 {% for a in pageData["eventipromes_ins"] %}

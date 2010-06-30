@@ -66,21 +66,9 @@ rev_locale = None
 rev_remota = None
 magazzino_pos = None
 view = "month"
-gtkrc = """# Auto-written by gtk2_prefs. Do not edit.
+mm = {'3996679c06ebc369feefc92063644d83':'e4da3b7fbbce2345d7772b0674a318d5', #Contatto = 5
+        'cfe6753e5e82f522119e09df7b726e4a':'eccbc87e4b5ce2fe28308fd9f2a7baf3'} #Promemoria = 3
 
-gtk-theme-name = "Nodoka"
-style "user-font"
-{
-    font_name="Tahoma 8"
-}
-widget_class "*" style "user-font"
-"""
-
-
-if os.name =="nt" and not os.path.exists(os.path.expanduser('~')+os.sep+".gtkrc-2.0"):
-    f = open(os.path.expanduser('~')+os.sep+".gtkrc-2.0","w")
-    f.write(gtkrc)
-    f.close
 
 def getConfigureDir(company='__default__'):
     """ Tests if another configuration folder was indicated """
@@ -212,7 +200,6 @@ def set_configuration(company=None, year = None):
     # Imposto variabili di formattazione numeri
     conf.number_format = '%-14.' + str(getattr(conf.Numbers, 'decimals', 4)) + 'f'
     conf.decimals = str(getattr(conf.Numbers, 'decimals', 4))
-    conf.batch_size = int(getattr(conf.Numbers, "batch_size",15))
 
 
     # Parametri localizzazione formati
@@ -241,7 +228,7 @@ def set_configuration(company=None, year = None):
             conf.bodytemplate = conf.Composer.bodytemplate
         except:
             conf.bodytemplate = ""
-        conf.body = ",body="+ conf.bodytemplate + conf.signature
+        conf.body = conf.bodytemplate + conf.signature
     else:
         emailcompose = None
 

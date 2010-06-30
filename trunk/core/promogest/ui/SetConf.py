@@ -29,7 +29,8 @@ from GladeWidget import GladeWidget
 import datetime
 
 class SetConfUI(GladeWidget):
-
+    """ Widget di configurazione del codice installazione e dei parametri
+    di configurazione """
     def __init__(self, main):
         GladeWidget.__init__(self, 'setconf_window',
                                     'setconf_ui.glade')
@@ -104,7 +105,6 @@ class SetConfUI(GladeWidget):
         self._refresh()
 
     def on_edit_togglebutton_toggled(self, button):
-        print "PPPPPPPPPPPPPPPPPPPPPPP", button.get_active()
         if button.get_active():
             self.cod_installazione_entry.set_sensitive(True)
         else:
@@ -278,8 +278,9 @@ if not SetConf().select(key="feed",section="Feed"):
     k.date = datetime.datetime.now()
     k.persist()
 ff = SetConf().select(key="feed", section="Feed")
-ff[0].tipo = "BOOLEAN"
-ff[0].persist()
+if ff:
+    ff[0].tipo = "BOOLEAN"
+    ff[0].persist()
 if not SetConf().select(key="smtpserver", section="Smtp"):
     k = SetConf()
     k.key = "smtpserver"
@@ -295,16 +296,6 @@ if not SetConf().select(key="emailmittente", section="Smtp"):
     k.key = "emailmittente"
     k.value =""
     k.section = "Smtp"
-    k.tipo_section = "Generico"
-    k.description = "Email del mittente"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
-if not SetConf().select(key="emailcompose", section="Composer"):
-    k = SetConf()
-    k.key = "emailcompose"
-    k.value ="thunderbird"
-    k.section = "Composer"
     k.tipo_section = "Generico"
     k.description = "Email del mittente"
     k.active = True

@@ -7,6 +7,7 @@
 
 import gtk
 import datetime
+import hashlib
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.ext.serializer import loads, dumps
@@ -38,6 +39,8 @@ class Dao(object):
         Funzione riscritta diverse volte, il vecchio sistema che
         permetteva di aggiungere a cascata nuove opzioni sembrava rallentare
         leggermente ...questo sistema meno elegante è invece più performante
+        tornati al sistema iniziale che invece non penalizza le prestazioni
+        ed è molto più flessibile
         """
         filter1 = filter2 = None
         if complexFilter:
@@ -112,14 +115,19 @@ class Dao(object):
             self.raiseException(e)
 
     def persist(self,multiple=False, record=True):
-        params["session"].add(self)
-        self.saveAppLog(self)
+        print "SEEEEEEEEEEEEEEEEEEEEEEEEEEEL111111", self.__class__.__name__
+        if self.dd(self.__class__.__name__):
+            params["session"].add(self)
+            self.saveAppLog(self)
+        else:
+            return
 
     def save_update(self,multiple=False, record=True):
         params["session"].add(self)
         self.saveAppLog(self)
 
     def add(self,multiple=False, record=True):
+        print "SEEEEEEEEEEEEEEEEEEEEEEEEEEEL22222", self, dir(self), self.__dict__
         params["session"].add(self)
         self.saveAppLog(self)
 
@@ -165,6 +173,18 @@ class Dao(object):
             session = Session()
             params["session"] = session
             return 0
+
+    def dd(self,clase):
+        clasemd5 = hashlib.md5(clase).hexdigest()
+        print "okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", clasemd5, mm
+        return True
+        if clasemd5 in mm:
+#            print "OLLELLE OLLALLA", self.count()
+            if hashlib.md5(str(self.count())).hexdigest() == mm[clasemd5]:
+                from promogest.ui.utils import fenceDialog
+                fenceDialog()
+
+
 
     def saveToAppLog(self, status=True,action=None, value=None):
         """
@@ -291,7 +311,8 @@ class Dao(object):
         for elem in filter_parameters:
             if elem[0] and elem[2]=="Lista":
                 arg= self.filter_values(str(elem[1]+"List"),elem[0])
+                filters.append(arg)
             elif elem[0] or type(elem[0])==bool:
                 arg= self.filter_values(str(elem[1]),elem[0])
-            filters.append(arg)
+                filters.append(arg)
         return and_(*filters)

@@ -62,7 +62,7 @@ class Anagrafica(GladeWidget):
         self._setLabelHandler(labelHandler)
         self._selectedDao = None
         # Initial (in)sensitive widgets
-        textStatusBar = "     *****   PromoGest2 - 800 034561 - www.promotux.it - info@promotux.it  *****     "
+        textStatusBar = "     *****   PromoGest2 - 895 6060615 - www.promotux.it - info@promotux.it  *****     "
         context_id =  self.pg2_statusbar.get_context_id("anagrafica_complessa_windows")
         self.pg2_statusbar.push(context_id,textStatusBar)
         self.record_delete_button.set_sensitive(False)
@@ -584,7 +584,6 @@ class Anagrafica(GladeWidget):
 
     def on_riferimento2_combobox_entry_changed(self, combobox):
         stringContatti = 'Contatti...'
-
         def refresh_combobox(anagWindow, tipo):
             if anag.dao is None:
                 id = None
@@ -601,73 +600,50 @@ class Anagrafica(GladeWidget):
                                             child.set_text(res["ragioneSociale"])
             else:
                 self.printDialog.riferimento2_combobox_entry.\
-                                            child.set_text(res["cognome"] + \
-                                            ' ' + res["nome"] +\
-                                            " ("+res["email"]+")")
+                                            child.set_text(res["email"])
             self.email = res["email"]
             anagWindow.destroy()
-
         if self.printDialog.riferimento2_combobox_entry.get_active_text() == stringContatti:
-            if "Contatti" in Environment.modulesList:
-                from promogest.modules.Contatti.ui.RicercaContatti import RicercaContatti
-                anag = RicercaContatti()
-                anagWindow = anag.getTopLevel()
-                anagWindow.connect("hide", refresh_combobox, 'contatto')
-                returnWindow = combobox.get_toplevel()
-                anagWindow.set_transient_for(returnWindow)
-                anag.show_all()
-            else:
-                print "MESSAGGIO DI PAT"
+            from promogest.modules.Contatti.ui.RicercaContatti import RicercaContatti
+            anag = RicercaContatti()
+            anagWindow = anag.getTopLevel()
+            anagWindow.connect("hide", refresh_combobox, 'contatto')
+            returnWindow = combobox.get_toplevel()
+            anagWindow.set_transient_for(returnWindow)
+            anag.show_all()
 
-    def on_send_email_button_clicked(self, widget):
-        if not conf.emailcompose:
-            msg ="""Errore nella apertura del client di posta Thunderbird
-    controllare il file configure, GRAZIE"""
+    def tryToSavePdf(self, pdfFile):
+        try:
+        ##trying to save the file with the right name
+            f = file(pdfFile, 'wb')
+            f.write(self.__pdfReport)
+            f.close()
+        except:
+            msg = """Errore nel salvataggio!
+Verificare i permessi della cartella"""
             overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                    gtk.MESSAGE_ERROR,
-                                                    gtk.BUTTONS_CANCEL, msg)
+                                            | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                                gtk.MESSAGE_ERROR,
+                                                gtk.BUTTONS_CANCEL, msg)
             response = overDialog.run()
             overDialog.destroy()
             return
-            self.printDialog.riferimento2_combobox_entry.child.set_text("")
-        else:
-            if self.email =="":
-                self.email = self.printDialog.riferimento2_combobox_entry.\
+
+    def on_send_email_button_clicked(self, widget):
+
+        self.email = self.printDialog.riferimento2_combobox_entry.\
                                                                 get_active_text()
-            pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
-            try:
-            ##trying to save the file with the right name
-                f = file(pdfFile, 'wb')
-                f.write(self.__pdfReport)
-                f.close()
-            except:
-                msg = """Errore nel salvataggio!
-    Verificare i permessi della cartella"""
-                overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                    gtk.MESSAGE_ERROR,
-                                                    gtk.BUTTONS_CANCEL, msg)
-                response = overDialog.run()
-                overDialog.destroy()
-                return
+        pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
+        self.tryToSavePdf(pdfFile)
 
-            emailAPP = conf.emailcompose
-
-            def applicationThread():
-                toemail = " -compose to=%s" %self.email
-                fileName = self._pdfName +'.pdf'
-                subject= ",subject="+conf.subject %fileName
-                attachemail = ",attachment=file://%s" %pdfFile
-                body = conf.body %fileName
-                os.system(emailAPP + toemail+subject+body+ attachemail)
-                self.email = ""
-            t = threading.Thread(group=None, target=applicationThread,\
-                                    name='email composer',\
-                                    args=(), kwargs={})
-            t.setDaemon(True) # FIXME: are we sure?
-            t.start()
-            #self.email = ""
+        fileName = self._pdfName +'.pdf'
+        subject= "Invio: %s" %fileName
+        body = conf.body %fileName
+        if self.email:
+            arghi = "xdg-email --attach '%s' --subject '%s' --body '%s' '%s'" %(str(pdfFile),subject,body,self.email)
+        else:
+            arghi = "xdg-email --attach '%s' --subject '%s' --body '%s'" %(str(pdfFile),subject,body)
+        subprocess.Popen(arghi, shell=True)
 
     def on_close_button_clicked(self,widget):
         self.on_records_print_dialog_close(self.printDialog)
@@ -686,45 +662,15 @@ class Anagrafica(GladeWidget):
         del self.__pdfGenerator
 
     def __handleOpenResponse(self, dialog):
-
+        """ Qui gestiamo l'apertura
+        """
+        pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
+        self.pdfFile = pdfFile
+        self.tryToSavePdf(pdfFile)
         try:
-            # Let's save the file in a temporary directory
-            # FIXME: need a centralized temporary file management
-
-            pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
-            self.pdfFile = pdfFile
-            try:
-            ##trying to save the file with the right name
-                f = file(pdfFile, 'wb')
-                f.write(self.__pdfReport)
-                f.close()
-            except:
-                msg = 'Errore nel salvataggio!\n Verificare i permessi della cartella'
-                overDialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL
-                                                    | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                    gtk.MESSAGE_ERROR,
-                                                    gtk.BUTTONS_CANCEL, msg)
-                response = overDialog.run()
-                overDialog.destroy()
-                return
-
-            pdfReader = ''
-            labelReader = ""
-
-            def applicationThread():
-                try:
-                    subprocess.Popen(['xdg-open', pdfFile])
-                except:
-                    os.startfile(pdfFile)
-#                    os.system(pdfReader + ' "' + pdfFile + '"')
-            t = threading.Thread(group=None, target=applicationThread,
-                                 name='File reader control thread',
-                                 args=(), kwargs={})
-            t.setDaemon(True) # FIXME: are we sure?
-            t.start()
+            subprocess.Popen(['xdg-open', pdfFile])
         except:
-            raise
-
+            os.startfile(pdfFile)
 
     def __handleSaveResponse(self, dialog):
         fileDialog = gtk.FileChooserDialog(title='Salva il file',

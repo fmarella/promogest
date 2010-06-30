@@ -213,10 +213,6 @@ class Main(GladeWidget):
         if self.creata:
            self.main_notebook.remove_page(0)
            self.creata = False
-#        print " BOTTONE BUTTON REFRESH"
-#            self.main_hbox.remove(self.currentFrame.notizie_frame)
-#            self.main_hbox.remove(self.currentFrame.notifica_allarmi_frame)
-#        self.currentFrame = None
         self._refresh()
 
     def on_main_iconview_select(self, icon_view, model=None):
@@ -271,14 +267,14 @@ class Main(GladeWidget):
                 self.main_notebook.prepend_page(self.create_parametri_frame())
 #            self.currentFrame = self.create_parametri_frame()
         elif selection == 5:
-            if "Promemoria" in Environment.modulesList:
-                from AnagraficaPromemoria import AnagraficaPromemoria
-                anag = AnagraficaPromemoria(self.aziendaStr)
-                showAnagrafica(self.getTopLevel(), anag, mainClass=self)
-                icon_view.unselect_all()
-                return
-            else:
-                fenceDialog()
+#            if "Promemoria" in Environment.modulesList:
+            from AnagraficaPromemoria import AnagraficaPromemoria
+            anag = AnagraficaPromemoria(self.aziendaStr)
+            showAnagrafica(self.getTopLevel(), anag, mainClass=self)
+            icon_view.unselect_all()
+#                return
+#            else:
+#                fenceDialog()
         self.main_notebook.set_current_page(0)
         self._refresh()
 
@@ -1040,30 +1036,21 @@ ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDum
             showAnagrafica(self.getTopLevel(), anag)
         else:
             print "PASSIQUI"
-            #return
 
     def on_ricmedio_activate(self, widget):
-        if "Statistiche" in Environment.modulesList:
-            from promogest.modules.Statistiche.ui.StatisticaGenerale import StatisticaGenerale
-            anag = StatisticaGenerale(idMagazzino=None, nome="RICARICO MEDIO e INFLUENZA SULLE VENDITE")
-            anagWindow = anag.getTopLevel()
-#            showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
-            print "widgettt", widget
-        else:
-            fenceDialog()
+        """ entry Menu statistiche Ricarico medio """
+        from promogest.modules.Statistiche.ui.StatisticaGenerale import StatisticaGenerale
+        anag = StatisticaGenerale(idMagazzino=None, nome="RICARICO MEDIO e INFLUENZA SULLE VENDITE")
+        anagWindow = anag.getTopLevel()
 
     def on_whatcant_button_clicked(self, button):
         url ="http://www.promotux.it/promoGest/whatCanT"
         webbrowser.open_new_tab(url)
 
     def on_export_magazzino_activate(self, button):
-        if "Statistiche" in Environment.modulesList:
-            from promogest.modules.Statistiche.ui.StatisticheMagazzino import StatisticheMagazzino
-            anag = StatisticheMagazzino(idMagazzino=None)
-            anagWindow = anag.getTopLevel()
-#            showAnagraficaRichiamata(self._mainWindow, anagWindow, toggleButton, self.refresh)
-        else:
-            fenceDialog()
+        from promogest.modules.Statistiche.ui.StatisticheMagazzino import StatisticheMagazzino
+        anag = StatisticheMagazzino(idMagazzino=None)
+        anagWindow = anag.getTopLevel()
 
     def on_main_window_key_press_event(self, widget, event):
         if event.type == gtk.gdk.KEY_PRESS:

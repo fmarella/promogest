@@ -22,10 +22,14 @@ from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.dao.DaoUtils import *
 from promogest.lib.HtmlViewer import HtmlViewer
-
+from promogest.lib.relativedelta import relativedelta
 
 class StatisticaGenerale(GladeWidget):
-
+    """ Questa classe nasce con l'intenzione di gestire una interfaccia di
+    creazione delle statistiche più generale possibile,per il momento ne
+    gestisce una
+    TODO: Scorporare la parte logica dalla gestione della pura interfaccia
+    """
     def __init__(self, idMagazzino=None, nome=""):
 
         GladeWidget.__init__(self, 'statistica_dialog',
@@ -50,7 +54,7 @@ class StatisticaGenerale(GladeWidget):
         self.draw()
 
     def draw(self):
-
+        """ Disegnamo le colonne della treeview delle statistiche """
         self.treeview = self.show_treeview
 
         cellspin = gtk.CellRendererToggle()
@@ -78,7 +82,6 @@ class StatisticaGenerale(GladeWidget):
         self._treeViewModel = gtk.ListStore(object, bool, str)
         self.treeview.set_model(self._treeViewModel)
         self._refresh()
-
 
     def _refresh(self):
         datata = self.da_data_entry.get_text()
@@ -125,7 +128,11 @@ class StatisticaGenerale(GladeWidget):
         self.getTopLevel().destroy()
 
     def on_ok_button_clicked(self, button):
-        self.exportss(self)
+        """ cb del bottone ELABORA """
+        if "Statistiche" in Environment.modulesList:
+            self.exportss(self)
+        else:
+            fenceDialog()
 
     def on_tutti_button_clicked(self, button):
         for m in self._treeViewModel:
@@ -150,6 +157,7 @@ class StatisticaGenerale(GladeWidget):
         self.treeview.set_model(self._treeViewModel)
 
     def on_magazzino_button_clicked(self, button):
+        """ cb del bottone magazzino """
         self._treeViewModel.clear()
         mag = Magazzino().select(batchSize=None)
         for c in mag:
@@ -160,6 +168,7 @@ class StatisticaGenerale(GladeWidget):
         return
 
     def on_aggiungi_regola_button_clicked(self, button):
+        """ cb del bottone aggiungi regola """
         if len(self._treeViewModel) > 0:
             if type(self._treeViewModel[0][0]).__name__ =="CategoriaCliente":
                 self.cateClienteId=[]
@@ -197,25 +206,27 @@ class StatisticaGenerale(GladeWidget):
         artiID = []
         intervallo = ''
         self.res = []
+        # Prelevo i dati dalla ui
         daData = stringToDate(self.da_data_entry.get_text())
         aData = stringToDate(self.a_data_entry.get_text())
         produt = self.produttore_entry.get_text()
-
+        # Id dei clienti
         clienti = ClienteCategoriaCliente().select(idCategoria = self.cateClienteId, batchSize=None)
         for cli in clienti:
             idsCliente.append(cli.id_cliente)
 
+        # id degli articoli
         articoli = Articolo().select(idCategoria = self.cateArticoloId,
                                     produttore = produt,  batchSize=None)
         for art in articoli:
             idsArticoli.append(art.id)
-
+        # inizializzo un po' di variabili e dizionari
         quantitaVendutaDict = {}
-        quantitaVenduta = 0
         quantitaAcquistata = 0
         quantitaAcquistataTotale = 0
         valoreAcquistoDict= {}
         valoreAcquisto = 0
+        quantitaVenduta = 0
         quantitaVendutaTotale = 0
         valoreAcquistoTotale= 0
         valoreVenditaDict = {}
@@ -224,61 +235,88 @@ class StatisticaGenerale(GladeWidget):
         ricaricomedioDict = {}
         incidenzaAcquistoDict = {}
         incidenzaVenditaDict = {}
-        righeArticoloMovimentate= Environment.params["session"]\
+
+        # smisto i dati  secondo categoriaArticolo
+        print " ID CATEGORIE", self.cateArticoloId
+        for arto in self.cateArticoloId:
+            # INIZIO livello categoria
+            nomeCategoria = CategoriaArticolo().getRecord(id=arto)
+            articoli = Articolo().select(idCategoria = arto,
+                                    produttore = produt,  batchSize=None)
+            print "ARTICOLI IN QUELLA CATEGORIA", len(articoli)
+            for art in articoli:
+                # INIZIO livello articolo
+                print "INIZIO AD ELABORARE L'ARTICOLO ", art.id
+                quantitaVendutaUNO = 0
+                quantitaVendutaTotaleUNO = 0
+                quantitaAcquistataUNO = 0
+                quantitaAcquistataTotaleUNO = 0
+                # tutte le righe movimento per la vendita
+                righeArticoloMovimentate= Environment.params["session"]\
                     .query(RigaMovimento, TestataMovimento)\
                     .filter(TestataMovimento.data_movimento.between(daData, aData))\
                     .filter(TestataMovimento.id_cliente.in_(idsCliente))\
                     .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
                     .filter(Riga.id_magazzino.in_(self.magazzinoId))\
-                    .filter(Riga.id_articolo.in_(idsArticoli))\
+                    .filter(Riga.id_articolo == art.id)\
                     .all()
-
-        for arto in self.cateArticoloId:
-            nomeCategoria = CategoriaArticolo().getRecord(id=arto)
-            articoli = Articolo().select(idCategoria = arto,
-                                    produttore = produt,  batchSize=None)
-            for art in articoli:
+                print "RIGHE DI MOVIMENTO VENDITA", righeArticoloMovimentate
                 for  rig in righeArticoloMovimentate:
-                    if art.id == rig[0].id_articolo:
-                        forni=  leggiFornitura(art.id)
-                        quantitaVenduta += rig[0].quantita
-                        quantitaVendutaTotale += rig[0].quantita
-                        # Qui c'è l'inghippo ...devo leggere ogni movimento in cui c'è
-                        #questo articolo e prendere quel valore, altrimenti solo
-                        # nel caso che non lo trovi prendere la fornitura
-                        # o in ultima istanza l'inventario ...
+                    # Quanti ne ho venduti IN TOTALE
 
-#                        valoreAcquisto += forni["prezzoNetto"]
-#                        valoreAcquistoTotale += forni["prezzoNetto"]
-                        rigaArticoloMovimentata= Environment.params["session"]\
-                                    .query(RigaMovimento, TestataMovimento)\
-                                    .filter(TestataMovimento.data_movimento.between(daData, aData))\
-                                    .filter(TestataMovimento.id_cliente == None)\
-                                    .filter(TestataMovimento.id_fornitore != None)\
-                                    .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
-                                    .filter(Riga.id_magazzino.in_(self.magazzinoId))\
-                                    .filter(Riga.id_articolo == art.id)\
-                                    .all()
-                        for r in rigaArticoloMovimentata:
-                            ope1 = leggiOperazione(r[1].operazione)
-#                            print r[0].__dict__, r[1].__dict__
-#                            print "OPEEEEEEEEEEEEEE", ope1
-                            valoreAcquisto += r[0].valore_unitario_netto
-                            valoreAcquistoTotale += r[0].valore_unitario_netto
-                            quantitaAcquistata += r[0].quantita
-                            quantitaAcquistataTotale += r[0].quantita
-                            print "QUANTIT° ACQUISTATA ",quantitaAcquistata, quantitaAcquistataTotale
-                        ope = leggiOperazione(rig[1].operazione)
-#                        print "OPEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", ope
-                        if ope["fonteValore"] =="vendita_iva":
-                            # devo scorporare l'iva dal prezzo finale di vendita
-                            imponibile = Decimal(str(float(rig[0].valore_unitario_netto)/(1+float(rig[0].percentuale_iva)/100)))
-                        elif ope["fonteValore"] =="vendita_senza_iva":
-                            imponibile = Decimal(str(float(rig[0].valore_unitario_netto)))
-                        else:
-                            print "TIPO DI FONTE VALORE PER LA VENDITA NN RICONOSCIUTO"
-                        valoreVendita += imponibile
-                        valoreVenditaTotale += imponibile
+                    quantitaVendutaUNO += rig[0].quantita
+                    quantitaVendutaTotaleUNO += rig[0].quantita
+                    quantitaVendutaTotale += rig[0].quantita
+
+
+                    quantitaAcquistataUNO = 0
+                    rigaArticoloMovimentata= Environment.params["session"]\
+                                .query(RigaMovimento, TestataMovimento)\
+                                .filter(TestataMovimento.data_movimento.between(daData+relativedelta(months=-4), aData))\
+                                .filter(TestataMovimento.id_cliente == None)\
+                                .filter(TestataMovimento.id_fornitore != None)\
+                                .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                                .filter(Riga.id_magazzino.in_(self.magazzinoId))\
+                                .filter(Riga.id_articolo == art.id)\
+                                .all()
+                    print "RIGHE DI MOVIMENTO ACQUISTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", rigaArticoloMovimentata
+                    if not rigaArticoloMovimentata:
+                        forni=  leggiFornitura(art.id)
+                        valoreAcquisto += (forni["prezzoNetto"]*quantitaVendutaUNO)
+                        valoreAcquistoTotale += (forni["prezzoNetto"]*quantitaVendutaUNO)
+                        print " PREZZO DA FORNITURA"
+                    else:
+#                        for r in rigaArticoloMovimentata:
+                            valoreAcquisto += (rigaArticoloMovimentata[0][0].valore_unitario_netto*quantitaVendutaUNO)
+                            valoreAcquistoTotale += (rigaArticoloMovimentata[0][0].valore_unitario_netto*quantitaVendutaUNO)
+
+                            quantitaAcquistataUNO += rigaArticoloMovimentata[0][0].quantita
+                            quantitaAcquistataTotaleUNO += rigaArticoloMovimentata[0][0].quantita
+    #                        quantitaAcquistataTotale += r[0].quantita
+                    print " VALORE ACQUISTO", valoreAcquisto
+
+                    ope = leggiOperazione(rig[1].operazione)
+                    if ope["fonteValore"] =="vendita_iva":
+                    # devo scorporare l'iva dal prezzo finale di vendita
+                        imponibile = Decimal(str(float(rig[0].valore_unitario_netto)/(1+float(rig[0].percentuale_iva)/100)))
+                    elif ope["fonteValore"] =="vendita_senza_iva":
+                        imponibile = Decimal(str(float(rig[0].valore_unitario_netto)))
+                    else:
+                        print "TIPO DI FONTE VALORE PER LA VENDITA NN RICONOSCIUTO"
+                    valoreVendita += (imponibile*quantitaVendutaUNO)
+                    valoreVenditaTotale += (imponibile*quantitaVendutaUNO)
+
+
+
+                    # QUESTO LIVELLO ARTICOLO
+
+                if quantitaVendutaTotaleUNO <= quantitaAcquistataTotaleUNO:
+                    print "ARTICOLO %s OK", str(art.id), quantitaVendutaTotaleUNO,quantitaAcquistataTotaleUNO
+                else:
+                    print " SERVE TROVARE UN PREZZO ACQUISTO", str(art.id),quantitaVendutaTotaleUNO,quantitaAcquistataTotaleUNO
+
+            # Questo livello categoria
+            quantitaVenduta =+quantitaVendutaTotale
             if valoreAcquisto!=0:
                 ricaricomedioDict[nomeCategoria.denominazione] = ((valoreVendita - valoreAcquisto )/ valoreAcquisto) *100
             else:
@@ -289,7 +327,7 @@ class StatisticaGenerale(GladeWidget):
             quantitaVenduta = 0
             valoreAcquisto = 0
             valoreVendita = 0
-
+        # Questo livello fuori da tutto
         for k,v in valoreVenditaDict.items():
             if v:
                 incidenzaVenditaDict[k] = v*100 / valoreVenditaTotale
@@ -300,7 +338,8 @@ class StatisticaGenerale(GladeWidget):
                 incidenzaAcquistoDict[k] = v*100 / valoreAcquistoTotale
             else:
                 incidenzaAcquistoDict[k] = 0
-        print tempo()
+
+        print "FINE ELABORAZIONE", tempo()
 
         pageData = {
                 "file": "statistica_ricarico_medio_e_influenza_vendite.html",
