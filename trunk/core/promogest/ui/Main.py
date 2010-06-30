@@ -10,6 +10,7 @@ import locale
 import gtk
 import hashlib
 import os
+import glob
 try:
     import ho.pisa as pisa
 except:
@@ -69,7 +70,8 @@ class Main(GladeWidget):
         self.aziendaStr = aziendaStr
 
         self.statusBarHandler()
-
+        for filename in glob.glob(Environment.promogestDir+"/temp/"+'*.cache') :
+            os.remove( filename )
         Login.windowGroup.append(self.getTopLevel())
         self.anagrafiche_modules = anagrafiche_modules
         self.parametri_modules = parametri_modules
@@ -395,7 +397,7 @@ class Main(GladeWidget):
                 eventipromes_ins.append((p.data_inserimento.toordinal(),{"id":p.id,
                                                     "short":p.oggetto,
                                                     "tipo":"data_inserimento",
-                                                    "colore":"#FFE3E8"},p.data_inserimento.day))
+                                                    "colore":"#F2859A"},p.data_inserimento.day))
         if self.promemoria_scad_check.get_active():
             promes = Promemoria().select(da_data_inserimento= currentFirstDay,
                                 a_data_scadenza=currentLastDay, batchSize=None)
@@ -403,7 +405,7 @@ class Main(GladeWidget):
                 eventipromes_scad.append((p.data_scadenza.toordinal(),{"id":p.id,
                                                     "short":p.oggetto,
                                                     "tipo":"data_scadenza",
-                                                    "colore":"#95F395"},p.data_scadenza.day))
+                                                    "colore":"#148F14"},p.data_scadenza.day))
         eventipreves = []
         eventiprevesAT = []
         if self.preventivi_check.get_active():
