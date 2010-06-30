@@ -80,8 +80,10 @@ def _on_navigation_requested(view, frame, req, data=None):
             exec(agg)
             apriAnagraficaArticoliEdit(articoloId)
         elif "newPromemoria" in agg:
-            exec(agg)
-            selectedData = str(newPromemoria)+"/"+str(Environment.workinMonth)+"/"+str(Environment.workinYearc)+" 09:00"
+            data = agg.split("=")[1].replace("-","/")
+            dta = data.split("/")
+            datadef = dta[2]+"/"+dta[1]+"/"+dta[0]
+            selectedData = datadef+" 09:00"
             apriAnagraficaPromemoriaNew(selectedData=selectedData)
         elif "promemoriaId" in agg:
             exec(agg)

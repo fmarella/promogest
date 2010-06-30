@@ -20,7 +20,7 @@
     {% for c in cal %}
 
 {% if c.day== pageData["workinDay"] %}
-<td ondblclick="window.location='program:/newPromemoria={{c.day}}'" >
+<td ondblclick="window.location='program:/newPromemoria={{c}}'" >
 <span><b>[</b>{{c.day}}<b>]</b></span>
 
 {% for a in pageData["eventipromes_ins"] %}
@@ -61,7 +61,7 @@
 
 
 {% else %}
-<td ondblclick="window.location='program:/newPromemoria={{c.day}}'"  >
+<td ondblclick="window.location='program:/newPromemoria={{c}}'"  >
 {{c.day}}
 
 {% for a in pageData["eventipromes_ins"] %}
@@ -122,7 +122,7 @@
 </tr>
 	<tr >
 {% for c in pageData["onlyWeek"] %}
-<td>
+<td ondblclick="window.location='program:/newPromemoria={{c}}'">
 {% for a in pageData["eventipromes_ins"] %}
     {% if c[0] == a[0] %}
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/promemoriaId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
@@ -175,7 +175,7 @@
 	<tr>
 {% for c in pageData["onlyWeek"] %}
 {% if pageData["dayName"][pageData["weekDay"]] == c[3] %}
-<td>
+<td ondblclick="window.location='program:/newPromemoria={{c}}'">
 {% for a in pageData["eventipromes_ins"] %}
     {% if c[0] == a[0] %}
     <div style='background:{{a[1]["colore"]}};' ><a href='program:/promemoriaId={{a[1]["id"]}}'><p>{{a[1]["short"]}}</p></a></div>
