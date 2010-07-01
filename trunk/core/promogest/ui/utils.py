@@ -2246,7 +2246,7 @@ def numeroRegistroGet(tipo=None, date=None):
         numeroSEL = TestataDocumento().select(complexFilter=(and_(TestataDocumento.data_documento.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)) ,
                         TestataDocumento.registro_numerazione==registrovalue)), batchSize=None, orderBy="id")
 
-    if numeroSEL:
+    if numeroSEL == True:
         for num in numeroSEL:
             numeri.append(num.numero)
         numero = int(max(numeri))+1
