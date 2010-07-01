@@ -295,26 +295,15 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             obligatoryField(self.dialogTopLevel, self.data_listino_entry)
         # ATTENZIONE: incremento ottenuto richiamando esplicitamente la sequence, in quanto id non e' PK
         #             della tabella listino
-        if not self.dao.id:
+        if Environment.tipo_eng !="sqlite" and not self.dao.id:
             listino_sequence = Sequence("listino_id_seq", schema=Environment.params['schema'])
             self.dao.id = Environment.params['session'].connection().execute(listino_sequence)
-            #provaaaaaaaaa = (Listino().select(batchSize=None)[-1].id)+1
-            #self.dao.id = provaaaaaaaaa
         if Environment.tipo_eng =="sqlite" and not self.dao.id:
             listini = Listino().select(orderBy="id")
-            #print "LISTINI", listini[:-1], self.dao.id
             if not listini:
                 self.dao.id = 1
             else:
-                idss = []
-                for l in listini:
-                    idss.append(l.id)
-                self.dao.id = (max(idss)) +1
-            #elif len(listini)==1:
-                #self.dao.id = (listini[0].id) +1
-            #else:
-
-                #self.dao.id = (listini[:-1].id) +1
+                self.dao.id = max([p.id for p in listini) +1
         self.dao.denominazione = self.denominazione_entry.get_text()
         listinoAtt = Listino().select(denominazione=self.dao.denominazione)
         if not listinoAtt:
