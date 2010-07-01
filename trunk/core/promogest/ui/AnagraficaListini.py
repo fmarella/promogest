@@ -303,7 +303,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             if not listini:
                 self.dao.id = 1
             else:
-                self.dao.id = max([p.id for p in listini) +1
+                self.dao.id = max([p.id for p in listini]) +1
         self.dao.denominazione = self.denominazione_entry.get_text()
         listinoAtt = Listino().select(denominazione=self.dao.denominazione)
         if not listinoAtt:
