@@ -431,6 +431,7 @@ class Articolo(Dao):
         from Riga import Riga
         res = Riga().select(id_articolo=self.id)
         inv = Inventario().select(idArticolo=self.id)
+        sc = None
         if "VenditaDettaglio" in Environment.modulesList:
             from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
             sc = RigaScontrino().select(idArticolo= self.id)
