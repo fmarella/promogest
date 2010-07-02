@@ -22,31 +22,26 @@ from jinja2 import Environment  as Env
 from jinja2 import FileSystemLoader,FileSystemBytecodeCache,environmentfilter, Markup, escape
 import re
 
+#Environment.templates_dir.append(os.path.join('templates'))
+#Environment.templates_dir.append(os.path.join('report-templates'))
+#jinja_env = None
+
+#fsload =
+
+
 templates_dir = [os.path.join('templates'),os.path.join('report-templates')]
 jinja_env = None
 
-jinja_env = Env(loader=FileSystemLoader(templates_dir),\
+def env(templates_dir):
+    jinja_env = Env(loader=FileSystemLoader(templates_dir),
             bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
 
-#jinja_env = Env(loader=FileSystemLoader(templates_dir),\
-#            bytecode_cache = FileSystemBytecodeCache(os.path.join("/home/vete/promogest2/promotux2/", 'temp'), '%s.cache'))
-#def env(templates_dir):
 
-def datetimeformat(value, format='%d/%m/%Y %H:%M '):
-    if not value:
-        return ""
-    else:
-        return value.strftime(format)
-
-jinja_env.filters['datetimeformat'] = datetimeformat
-
-def dateformat(value, format='%d/%m/%Y '):
-    if not value:
-        return ""
-    else:
-        return value.strftime(format)
-
-jinja_env.filters['dateformat'] = dateformat
+    jinja_env.filters['dateformat'] = dateformat
+    jinja_env.filters['datetimeformat'] = datetimeformat
+    jinja_env.filters['nl2br'] = nl2br
+    jinja_env.filters['nonone'] = noNone
+    return jinja_env
 
 
 def noNone(value):
@@ -56,7 +51,26 @@ def noNone(value):
         return ""
     else:
         return value
-jinja_env.filters['nonone'] = noNone
+
+def datetimeformat(value, format='%d/%m/%Y %H:%M '):
+    if not value:
+        return ""
+    else:
+        return value.strftime(format)
+
+def dateformat(value, format='%d/%m/%Y '):
+    if not value:
+        return ""
+    else:
+        return value.strftime(format)
+
+def noNone(value):
+    if value =="None":
+        return ""
+    elif not value:
+        return ""
+    else:
+        return value
 
 _paragraph_re = re.compile(r'(?:\r\n|\r|\n){2,}')
 
@@ -69,7 +83,7 @@ def nl2br(eval_ctx, value):
         result = Markup(result)
     return result
 
-jinja_env.filters['nl2br'] = nl2br
+#jinja_env.filters['nl2br'] = nl2br
 """
     createHtmlObj = restituisce un oggetto del render html o gtkhtml2 o webkit
     renderHTMLTemplate o renderTemplate = Restituiscono una stringa html dopo la
@@ -148,7 +162,7 @@ def renderTemplate(pageData):
     jinja_env.globals['environment'] = Environment
     jinja_env.globals['utils'] = utils
     pageData["titolo"] = pageData["file"].split(".")[0].capitalize()
-    html = jinja_env.get_template("/"+ pageData["file"]).render(pageData= pageData,dao=pageData["dao"],
+    html = jinja_env.get_template("/"+pageData["file"]).render(pageData= pageData,dao=pageData["dao"],
                     objects=pageData["objects"], feed=pageData["feed"])
     return html
 
