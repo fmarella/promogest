@@ -41,7 +41,7 @@ from promogest.ui.SendEmail import SendEmail
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.lib import feedparser
-from promogest.lib import HtmlHandler
+
 #import glib
 #glib.threads_init()
 
@@ -369,6 +369,7 @@ class Login(GladeApp):
             """
             Check the modules directory and automatically try to load all available modules
             """
+            from promogest.lib import HtmlHandler
             #global jinja_env
             Environment.modulesList=[]
             modules_folders = [folder for folder in os.listdir(modules_dir) \
@@ -393,7 +394,7 @@ class Login(GladeApp):
                                                     'module_dir': "%s" % (m_str),
                                                     'guiDir':m.GUI_DIR}
             Environment.pg2log.info("LISTA DEI MODULI CARICATI E FUNZIONANTI %s" %(str(repr(Environment.modulesList))))
-            HtmlHandler.jinja_env = HtmlHandler.env(HtmlHandler.templates_dir)
+            HtmlHandler.jinja_env
 
             self.groupModulesByType()
 

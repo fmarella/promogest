@@ -19,25 +19,57 @@ import webbrowser
 from promogest import Environment
 from  promogest.ui import utils
 from jinja2 import Environment  as Env
-from jinja2 import FileSystemLoader,FileSystemBytecodeCache
+from jinja2 import FileSystemLoader,FileSystemBytecodeCache,environmentfilter, Markup, escape
+import re
 
 templates_dir = [os.path.join('templates'),os.path.join('report-templates')]
 jinja_env = None
 
-def env(templates_dir):
-    jinja_env = Env(loader=FileSystemLoader(templates_dir),
+jinja_env = Env(loader=FileSystemLoader(templates_dir),\
             bytecode_cache = FileSystemBytecodeCache(os.path.join(Environment.promogestDir, 'temp'), '%s.cache'))
-    def noNone(value):
-        if value =="None":
-            return ""
-        elif not value:
-            return ""
-        else:
-            return value
-    jinja_env.filters['nonone'] = noNone
 
-    return jinja_env
+#jinja_env = Env(loader=FileSystemLoader(templates_dir),\
+#            bytecode_cache = FileSystemBytecodeCache(os.path.join("/home/vete/promogest2/promotux2/", 'temp'), '%s.cache'))
+#def env(templates_dir):
 
+def datetimeformat(value, format='%d/%m/%Y %H:%M '):
+    if not value:
+        return ""
+    else:
+        return value.strftime(format)
+
+jinja_env.filters['datetimeformat'] = datetimeformat
+
+def dateformat(value, format='%d/%m/%Y '):
+    if not value:
+        return ""
+    else:
+        return value.strftime(format)
+
+jinja_env.filters['dateformat'] = dateformat
+
+
+def noNone(value):
+    if value =="None":
+        return ""
+    elif not value:
+        return ""
+    else:
+        return value
+jinja_env.filters['nonone'] = noNone
+
+_paragraph_re = re.compile(r'(?:\r\n|\r|\n){2,}')
+
+@environmentfilter
+def nl2br(eval_ctx, value):
+    result =  '<br />\n'.join(value.split('\n'))
+#    result = u'<br>\n'.join(u'<p>%s</p>' % p.replace('\n', '<br>\n')
+#                          for p in _paragraph_re.split(escape(value)))
+    if eval_ctx.autoescape:
+        result = Markup(result)
+    return result
+
+jinja_env.filters['nl2br'] = nl2br
 """
     createHtmlObj = restituisce un oggetto del render html o gtkhtml2 o webkit
     renderHTMLTemplate o renderTemplate = Restituiscono una stringa html dopo la

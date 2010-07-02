@@ -267,7 +267,7 @@ class AnagraficaPromemoriaReport(AnagraficaReport):
         AnagraficaReport.__init__(self, anagrafica=anagrafica,
                                   description='Elenco dei promemoria',
                                   defaultFileName='promemoria',
-                                  htmlTemplate='promemoria',
+                                  htmlTemplate='promemorias',
                                   sxwTemplate='promemoria')
 
 

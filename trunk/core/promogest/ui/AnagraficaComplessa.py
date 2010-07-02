@@ -1368,7 +1368,7 @@ class AnagraficaPrintPreview(GladeWidget):
         self.numRecords = self.bodyWidget.countFilterResults(self._filterCountClosure)
         self._refreshPageCount()
         pageData = {}
-        html = "<html><body></body></html>"
+        self.html_code = "<html><body></body></html>"
         if daos:
             pageData = {
                     "file" :self._previewTemplate[1],
