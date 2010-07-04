@@ -90,6 +90,7 @@ class Main(GladeWidget):
             self.client_sincro_db.destroy()
         if Environment.tipodb =="postgresql":
             self.whatcant_button.destroy()
+            self.test_promowear_button.destroy()
         self.create_allarmi_frame()
 #        self.main_notebook.set_current_page(self.main_notebook.page_num(self.notifica_allarmi_frame))
 #        self.main_notebook.set_current_page(0)
@@ -1042,6 +1043,54 @@ ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDum
             showAnagrafica(self.getTopLevel(), anag)
         else:
             print "PASSIQUI"
+
+    def on_test_promowear_button_clicked(self, button):
+        msg = """ATTENZIONE!! ATTENZIONE!! ATTENZIONE!!
+
+QUESTA FUNZIONALITÀ È STATA AGGIUNTA PER
+PERMETTERE DI PROVARE IL PROMOGEST2 LITE CON
+IL MODULO TAGLIA E COLORE PROMOWEAR
+QUESTO MODULO SERVE A CHI DEVE GESTIRE
+UNA ATTIVITÀ CHE MOVIMENTA E VENDE
+ABBIGLIAMENTO O CALZATURE.
+L'OPERAZIONE È IRREVERSIBILE,AGGIUNGE DIVERSE
+TABELLE NEL DATABASE E NUOVE INTERAFFCE UTENTE
+DEDICATE,NON CAUSA PERDITA DI DATI
+MA NON È CONSIGLIATO FARLO SE NON
+NE AVETE BISOGNO
+
+UNA VOLTA PREMUTO TERMINATA LA PROCEDURA
+CHIUDERE E RIAVVIARE IL PROGRAMMA
+
+PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
+        dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+
+        response = dialog.run()
+        dialog.destroy()
+        if response !=  gtk.RESPONSE_YES:
+            return
+        if not hasattr(Environment.conf,"PromoWear"):
+            Environment.conf.add_section("PromoWear")
+            Environment.conf.save()
+            Environment.conf.PromoWear.primoavvio = "yes"
+            Environment.conf.PromoWear.mod_enable = "yes"
+            Environment.conf.save()
+            tables = [t.name for t in Environment.params["metadata"].sorted_tables]
+            if "colore" not in tables and "taglia" not in tables:
+                from promogest.modules.PromoWear.data.PromoWearDB import *
+                msg = " TABELLE AGGIUNTE, RIAVVIARE IL PROGRAMMA "
+                dialog = gtk.MessageDialog(self.getTopLevel(),
+                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_INFO,
+                                   gtk.BUTTONS_OK,
+                                   msg)
+                dialog.run()
+                dialog.destroy()
+        else:
+#            tables = [t.name for t in Environment.params["metadata"].sorted_tables]
+#            if "colore" in tables and "taglia" in tables:
+            print "Pulsante di test già premuto"
 
     def on_ricmedio_activate(self, widget):
         """ entry Menu statistiche Ricarico medio """

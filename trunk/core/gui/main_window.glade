@@ -1116,24 +1116,6 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
             <property name="border_width">2</property>
             <property name="spacing">2</property>
             <child>
-              <object class="GtkButton" id="whatcant_button">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_whatcant_button_clicked"/>
-                <child>
-                  <object class="GtkLabel" id="label1">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">&lt;span foreground="red"&gt;&lt;big&gt;&lt;b&gt;COSA POSSO/NON POSSO FARE CON QUESTA VERSIONE LITE GRATUITA?&lt;/b&gt;&lt;/big&gt;&lt;/span&gt;</property>
-                    <property name="use_markup">True</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkButton" id="button_help">
                 <property name="label">gtk-help</property>
                 <property name="visible">True</property>
@@ -1146,24 +1128,41 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">0</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button_quit">
-                <property name="label">gtk-quit</property>
+              <object class="GtkButton" id="test_promowear_button">
+                <property name="label" translatable="yes">PROVA PROMOWEAR</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="can_default">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_quit"/>
+                <property name="image">prova_promowear_image</property>
+                <signal name="clicked" handler="on_test_promowear_button_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="whatcant_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_whatcant_button_clicked"/>
+                <child>
+                  <object class="GtkLabel" id="label1">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">&lt;span foreground="red"&gt;&lt;big&gt;&lt;b&gt;COSA POSSO/NON POSSO FARE CON QUESTA VERSIONE?&lt;/b&gt;&lt;/big&gt;&lt;/span&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
                 <property name="pack_type">end</property>
-                <property name="position">0</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>
@@ -1192,6 +1191,23 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_disconnect"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button_quit">
+                <property name="label">gtk-quit</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_quit"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1341,5 +1357,9 @@ Rosso: PromoGest2 Da Aggiornare</property>
   <object class="GtkImage" id="fattura_vendita_image1">
     <property name="visible">True</property>
     <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="prova_promowear_image">
+    <property name="visible">True</property>
+    <property name="pixbuf">taglia_colore16x16.png</property>
   </object>
 </interface>

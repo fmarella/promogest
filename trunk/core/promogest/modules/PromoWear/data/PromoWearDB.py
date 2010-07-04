@@ -11,7 +11,7 @@ from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
 
-#def create()
+
 if hasattr(conf, 'PromoWear'):
     if conf.PromoWear.primoavvio=="yes":
         """ tabelle schema principale """

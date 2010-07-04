@@ -462,6 +462,7 @@ class ProductFromCsv(object):
                 daoPriceListProduct.ultimo_costo = mN(calcolaPrezzoIva(mN(prezzo), -1 * (mN(self.aliquota_iva.percentuale))))
             else:
                 daoPriceListProduct.ultimo_costo = 0
+#            print " QUSTNO NON VA BEEN ", daoPriceListProduct.__dict__
             daoPriceListProduct.persist()
 
         # Fornitura

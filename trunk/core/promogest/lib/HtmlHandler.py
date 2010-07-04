@@ -22,13 +22,6 @@ from jinja2 import Environment  as Env
 from jinja2 import FileSystemLoader,FileSystemBytecodeCache,environmentfilter, Markup, escape
 import re
 
-#Environment.templates_dir.append(os.path.join('templates'))
-#Environment.templates_dir.append(os.path.join('report-templates'))
-#jinja_env = None
-
-#fsload =
-
-
 templates_dir = [os.path.join('templates'),os.path.join('report-templates')]
 jinja_env = None
 
@@ -83,7 +76,7 @@ def nl2br(eval_ctx, value):
         result = Markup(result)
     return result
 
-#jinja_env.filters['nl2br'] = nl2br
+
 """
     createHtmlObj = restituisce un oggetto del render html o gtkhtml2 o webkit
     renderHTMLTemplate o renderTemplate = Restituiscono una stringa html dopo la

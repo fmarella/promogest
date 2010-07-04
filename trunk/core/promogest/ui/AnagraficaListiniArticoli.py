@@ -91,8 +91,21 @@ class AnagraficaListiniArticoli(Anagrafica):
             #sconto_ingrosso = mN(d.sconto_vendita_ingrosso[0]) or 0
             datalist=[denominazione,codice_articolo,articolo,data,prezzo_dettaglio,
                         sconto_dettagliostr,prezzo_ingrosso,sconto_ingrossostr,
-                        categoria, famiglia, percentuale_iva
-]
+                        categoria, famiglia, percentuale_iva]
+            if "PromoWear" in Environment.modulesList:
+                if d.id_articolo_padre:
+                    codiceArticoloPAdre = Articolo().getRecord(id=d.id_articolo_padre).codice
+                else:
+                    codiceArticoloPAdre = ""
+                datalist = datalist + [d.denominazione_gruppo_taglia,
+                                        d.denominazione_taglia,
+                                        d.denominazione_colore,
+                                        str(d.anno),
+                                        d.stagione,
+                                        d.genere,
+                                        d.denominazione_modello,
+                                        codiceArticoloPAdre]
+
             rowlist.append(datalist)
         return rowlist
 
@@ -105,14 +118,19 @@ class AnagraficaListiniArticoli(Anagrafica):
         curr_date = string.zfill(str(data.day), 2) + '-' + string.zfill(str(data.month),2) + '-' + string.zfill(str(data.year),4)
         data_details['curr_date'] = curr_date
         data_details['currentName'] = 'Listino_Articoli_aggiornato_al_'+curr_date+'.xml'
-
         FieldsList = ['Listino','Codice Articolo','Articolo','Data Variazione','Prezzo Dettaglio', 'Sconto Dettaglio',
-                            'Prezzo Ingrosso', 'Sconto Ingrosso', "Categoria", "Famiglia", "Iva"
-]
+                            'Prezzo Ingrosso', 'Sconto Ingrosso', "Categoria", "Famiglia", "Iva"]
         colData= [0,0,0,1,2,0,2,0]
         colWidth_Align = [('130','l'),('100','c'),('250','l'),('100','c'),('100','r'),('100','r'),
-                            ('100','r'),('100','r'),('100','r'),('100','r'),('100','r')
-]
+                            ('100','r'),('100','r'),('100','r'),('100','r'),('100','r')]
+        if "PromoWear" in Environment.modulesList:
+            FieldsList = FieldsList +["Gruppo Taglia","Taglia","Colore","Anno",
+                                        "Stagione","Genere","Modello","Codice Padre"]
+            colData = colData+[0,0,0,0,0,0,0,0]
+            colWidth_Align = colWidth_Align+ [('100','r'),('100','r'),('100','r'),
+                                                ('100','r'),('100','r'),('100','r'),
+                                                ('100','r'),('100','r')]
+
         data_details['XmlMarkup'] = (FieldsList, colData, colWidth_Align)
         return data_details
 
