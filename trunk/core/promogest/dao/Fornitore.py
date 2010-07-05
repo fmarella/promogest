@@ -57,7 +57,7 @@ def getNuovoCodiceFornitore():
     listacodici = []
     if hasattr(conf,'Fornitori'):
         try:
-            codicesel = Fornitore().select(batchSize=None, orderBy="ragione_sociale")
+            codicesel = Fornitore().select(batchSize=None, orderBy=Fornitore.ragione_sociale)
             for cod in codicesel:
                 listacodici.append(cod.codice)
                 codice = codeIncrement(str(max(listacodici)))

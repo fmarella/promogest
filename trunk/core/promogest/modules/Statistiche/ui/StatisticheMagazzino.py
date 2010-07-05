@@ -98,11 +98,13 @@ class StatisticheMagazzino(GladeWidget):
 
             self.res.append(arti)
         c = csv.writer(open(filename, "wb"),dialect='excel',delimiter=';')
-        c.writerow(["ID","CODICE","DENOMINAZIONE","QUANTITA' VENDUTA", "QUANTITA' ACQUISTATA","DATA ULTIMO ACQUISTO",
+        rigga = ["ID","CODICE","DENOMINAZIONE","QUANTITA' VENDUTA", "QUANTITA' ACQUISTATA","DATA ULTIMO ACQUISTO",
                     "DATA ULTIMA VENDITA", "PREZZO ULTIMA VENDITA",  "PREZZO ULTIMO ACQUISTO",
                     "GIACENZA", "MEDIA PREZZO VENDITA", "MEDIA PREZZO ACQUISTO",
-                    "UNITA' BASE", "IVA", "FAMIGLIA", "CATEGORIA","COLORE","ANNO",
-                    "GRUPPO TAGLIA","GENERE", "TAGLIA", "STAGIONE"])
+                    "UNITA' BASE", "IVA", "FAMIGLIA", "CATEGORIA"]
+        if "PromoWear" in
+
+        c.writerow(rigga)
         for i in self.res:
             id = i["id"][0]
             codice = i["codice"]

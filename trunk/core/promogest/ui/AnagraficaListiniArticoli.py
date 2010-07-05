@@ -694,7 +694,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = ListinoArticolo().select(idListino=dao.id_listino,
                                     idArticolo=dao.id_articolo,
-                                    orderBy="id_articolo")[0]
+                                    orderBy=ListinoArticolo.id_articolo)[0]
         self._refresh()
 
 

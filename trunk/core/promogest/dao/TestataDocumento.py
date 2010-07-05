@@ -521,7 +521,7 @@ class TestataDocumento(Dao):
         row = ScontoTestataDocumento().select(idScontoTestataDocumento= id,
                                                         offset = None,
                                                         batchSize = None,
-                                                        orderBy="id_testata_documento")
+                                                        orderBy=ScontoTestataDocumento.id_testata_documento)
         if row:
             for r in row:
                 params['session'].delete(r)
@@ -536,7 +536,7 @@ class TestataDocumento(Dao):
         row = TestataDocumentoScadenza().select(idTestataDocumentoScadenza= id,
                                                                     offset = None,
                                                                     batchSize = None,
-                                                                    orderBy="id_testata_documento")
+                                                                    orderBy=TestataDocumentoScadenza.id_testata_documento)
         for r in row:
             params['session'].delete(r)
         params["session"].commit()
@@ -549,7 +549,7 @@ class TestataDocumento(Dao):
         row = TestataGestioneNoleggio().select(idTestataDocumento= id,
                                                                     offset = None,
                                                                     batchSize = None,
-                                                                    orderBy="id_testata_documento")
+                                                                    orderBy=TestataGestioneNoleggio.id_testata_documento)
         if row:
             for r in row:
                 params['session'].delete(r)

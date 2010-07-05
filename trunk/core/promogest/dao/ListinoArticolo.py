@@ -215,7 +215,7 @@ class ListinoArticolo(Dao):
                                                 dataListinoArticolo=dataListinoArticolo,
                                                 offset = None,
                                                 batchSize = None,
-                                                orderBy="id_listino")
+                                                orderBy=ScontoVenditaDettaglio.id_listino)
         if row:
             for r in row:
                 params['session'].delete(r)
@@ -232,7 +232,7 @@ class ListinoArticolo(Dao):
                                                         dataListinoArticolo=dataListinoArticolo,
                                                         offset = None,
                                                         batchSize = None,
-                                                        orderBy="id_listino")
+                                                        orderBy=ScontoVenditaIngrosso.id_listino)
         if row:
             for r in row:
                 params['session'].delete(r)

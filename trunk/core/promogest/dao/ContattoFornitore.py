@@ -34,7 +34,7 @@ class ContattoFornitore(Dao):
 
     def _getCategorieContatto(self):
         self.__dbCategorieContatto = ContattoCategoriaContatto().select(id=self.id,
-                                                                        orderBy="id_contatto")
+                                                                        orderBy=ContattoFornitore.id_contatto)
         self.__categorieContatto = self.__dbCategorieContatto[:]
         return self.__categorieContatto
 
@@ -81,7 +81,3 @@ std_mapper = mapper(ContattoFornitore, j,properties={
         'id':[contatto.c.id, contattofornitore.c.id],
         'tipo_contatto':[contatto.c.tipo_contatto, contattofornitore.c.tipo_contatto],
         "fornitore":relation(Fornitore, backref="contatto_fornitore")})
-
-
-
-

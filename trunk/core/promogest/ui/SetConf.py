@@ -112,7 +112,7 @@ class SetConfUI(GladeWidget):
 
     def _refresh(self):
         self._treeViewModel.clear()
-        sc = SetConf().select(batchSize=None, orderBy="section")
+        sc = SetConf().select(batchSize=None, orderBy=SetConf.section)
         sect = list(set([ x.section for x in sc]))
         for s in sect:
             if s != "Master":
@@ -125,7 +125,7 @@ class SetConfUI(GladeWidget):
                                             self.rowBackGround,
                                             self.rowBoldFont,
                                             False))
-            ss = SetConf().select(section=s,batchSize=None, orderBy="section")
+            ss = SetConf().select(section=s,batchSize=None, orderBy=SetConf.section)
             for s in ss:
                 if s.key != "install_code":
                     if s.tipo == "BOOLEAN":

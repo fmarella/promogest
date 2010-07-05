@@ -243,7 +243,7 @@ class VariazioneListini(GladeWidget):
                 idListino = r[0].id_listino
                 daoListinoArticolo = ListinoArticolo().select(idListino=r[0].id_listino,
                                                 idArticolo= self._idArticolo,
-                                                batchSize=None, orderBy="id_listino")[0]
+                                                batchSize=None, orderBy=ListinoArticolo.id_listino)[0]
                 vecchioCosto = daoListinoArticolo.ultimo_costo
                 if nuovoCosto is not None:
                     daoListinoArticolo.ultimo_costo = nuovoCosto

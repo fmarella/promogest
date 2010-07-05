@@ -149,7 +149,7 @@ class Login(GladeApp):
         model = gtk.ListStore(str, str)
         model.clear()
         usrs = User().select(batchSize = None)
-        azs = Azienda().select(batchSize = None,orderBy="schemaa") #lista aziende
+        azs = Azienda().select(batchSize = None,orderBy=Azienda.schemaa) #lista aziende
         for a in azs:
             model.append((a.schemaa, a.denominazione))
         global windowGroup

@@ -125,7 +125,7 @@ class TestataScontrino(Dao):
         row = ScontoTestataScontrino().select(idScontoTestataScontrino= id,
                                                         offset = None,
                                                         batchSize = None,
-                                                        orderBy="id_testata_scontrino")
+                                                        orderBy=ScontoTestataScontrino.id_testata_scontrino)
         if row:
             for r in row:
                 params['session'].delete(r)

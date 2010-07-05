@@ -255,8 +255,7 @@ def righeMovimentoDel(id=None):
         from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
     row = RigaMovimento().select(idTestataMovimento= id,
                                 offset = None,
-                                batchSize = None,
-                                orderBy="id_testata_movimento")
+                                batchSize = None)
     if row:
         for r in row:
             if "SuMisura" in modulesList:
@@ -276,8 +275,7 @@ def scontiTestataDocumentoDel(id=None):
     from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
     row = ScontoTestataDocumento().select(idScontoTestataDocumento= id,
                                                     offset = None,
-                                                    batchSize = None,
-                                                    orderBy="id_testata_documento")
+                                                    batchSize = None)
     if row:
         for r in row:
             params['session'].delete(r)
@@ -294,7 +292,7 @@ def scontiVenditaDettaglioDel(idListino=None,idArticolo=None,dataListinoArticolo
                                             dataListinoArticolo=dataListinoArticolo,
                                             offset = None,
                                             batchSize = None,
-                                            orderBy="id_listino")
+                                            orderBy=ScontoVenditaDettaglio.id_listino)
     if row:
         for r in row:
             params['session'].delete(r)
@@ -311,7 +309,7 @@ def scontiVenditaIngrossoDel(idListino=None,idArticolo=None,dataListinoArticolo=
                                                     dataListinoArticolo=dataListinoArticolo,
                                                     offset = None,
                                                     batchSize = None,
-                                                    orderBy="id_listino")
+                                                    orderBy=ScontoVenditaIngrosso.id_listino)
     if row:
         for r in row:
             params['session'].delete(r)
@@ -326,7 +324,7 @@ def testataDocumentoScadenzaDel(id=None):
     row = TestataDocumentoScadenza().select(idTestataDocumentoScadenza= id,
                                                                 offset = None,
                                                                 batchSize = None,
-                                                                orderBy="id_testata_documento")
+                                                                orderBy=TestataDocumentoScadenza.id_testata_documento)
     for r in row:
         params['session'].delete(r)
     params["session"].commit()

@@ -77,6 +77,7 @@ class Dao(object):
             if filter is not None:
                 self.record = self.record.filter(filter)
             if orderBy is not None:
+#                print "ORDERRRRRBY" , type(orderBy)
                 self.record = self.record.order_by(orderBy)
             if batchSize is not None:
                 self.record = self.record.limit(batchSize)

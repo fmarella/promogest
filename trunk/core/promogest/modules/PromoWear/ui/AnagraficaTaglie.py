@@ -124,7 +124,7 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return GruppoTagliaTaglia().select(batchSize=None,
-                                        orderBy="id_gruppo_taglia,ordine")
+                                        orderBy=[GruppoTagliaTaglia.id_gruppo_taglia,GruppoTagliaTaglia.ordine])
 
         self._filterClosure = filterClosure
 

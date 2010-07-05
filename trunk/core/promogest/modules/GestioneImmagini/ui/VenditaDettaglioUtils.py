@@ -17,7 +17,7 @@ def rigaScontrinoDel(id=None):
     row = RigaScontrino().select(idTestataScontrino= id,
                                                     offset = None,
                                                     batchSize = None,
-                                                    orderBy="id_testata_scontrino")
+                                                    orderBy=RigaScontrino.id_testata_scontrino)
     for r in row:
         r.delete()
     return True
@@ -29,7 +29,7 @@ def scontoRigaScontrinoDel(id=None):
     row = ScontoRigaScontrino().select(idRigaScontrino= id,
                                                     offset = None,
                                                     batchSize = None,
-                                                    orderBy="id_riga_scontrino")
+                                                    orderBy=ScontoRigaScontrino.id_riga_scontrino)
     for r in row:
         r.delete()
     return True

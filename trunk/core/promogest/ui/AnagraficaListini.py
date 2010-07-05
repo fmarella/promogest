@@ -299,7 +299,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             listino_sequence = Sequence("listino_id_seq", schema=Environment.params['schema'])
             self.dao.id = Environment.params['session'].connection().execute(listino_sequence)
         if Environment.tipo_eng =="sqlite" and not self.dao.id:
-            listini = Listino().select(orderBy="id")
+            listini = Listino().select(orderBy=Listino.id)
             if not listini:
                 self.dao.id = 1
             else:

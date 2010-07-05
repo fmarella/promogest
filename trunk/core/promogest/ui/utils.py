@@ -373,7 +373,7 @@ def leggiListino(idListino=None, idArticolo=None):
                                                                 idArticolo = idArticolo,
                                                                 listinoAttuale = True,
                                                                 batchSize=None,
-                                                                orderBy="id_listino")
+                                                                orderBy=ListinoArticolo.id_listino)
                     if len(daoListinoArticolo1)>1:
                         daoListinoArticolo2 = ListinoComplessoArticoloPrevalente()\
                                                 .select(idListinoComplesso = idListino,
@@ -385,13 +385,13 @@ def leggiListino(idListino=None, idArticolo=None):
                                                         idArticolo = idArticolo,
                                                         listinoAttuale = True,
                                                         batchSize=None,
-                                                        orderBy="id_listino")[0]
+                                                        orderBy=ListinoArticolo.id_listino)[0]
                         else:
                             daoListinoArticolo3 = ListinoArticolo().select(idListino=_sottoListiniID,
                                                                 idArticolo = idArticolo,
                                                                 listinoAttuale = True,
                                                                 batchSize=None,
-                                                                orderBy="data_listino_articolo")
+                                                                orderBy=ListinoArticolo.data_listino_articolo)
                             if daoListinoArticolo3:
                                 daoListinoArticolo = daoListinoArticolo1[-1]
 
@@ -405,7 +405,7 @@ def leggiListino(idListino=None, idArticolo=None):
                                                             idArticolo = idArticolo,
                                                             listinoAttuale = True,
                                                             batchSize=None,
-                                                            orderBy="id_listino")
+                                                            orderBy=ListinoArticolo.id_listino)
                     if not daoListinoArticolo1 and "PromoWear" in Environment.modulesList:
                         from promogest.dao.Articolo import Articolo
                         father = Articolo().getRecord(id=idArticolo)
@@ -415,7 +415,7 @@ def leggiListino(idListino=None, idArticolo=None):
                                                             idArticolo = idArticolo,
                                                             listinoAttuale = True,
                                                             batchSize=None,
-                                                            orderBy="id_listino")
+                                                            orderBy=ListinoArticolo.id_listino)
                     if len(daoListinoArticolo1) >= 1:
                         #PIÙ DI UN LISTINO ARTICOLO ATTUALE" prendo il primo
                         daoListinoArticolo= daoListinoArticolo1[0]
@@ -2197,7 +2197,7 @@ def hasAction(actionID=None):
         idRole = Environment.params['usernameLoggedList'][2]
         roleActions = RoleAction().select(id_role=idRole,
                                                 id_action=actionID,
-                                                orderBy="id_role")
+                                                orderBy=RoleAction.id_role)
         if roleActions:
             return True
         else:
@@ -2275,7 +2275,7 @@ def getCategorieContatto(id=None):
     from promogest.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
     dbCategorieContatto = ContattoCategoriaContatto().select(id=id,
                                                             batchSize=None,
-                                                            orderBy="id_contatto")
+                                                            orderBy=CategoriaContatto.id_contatto)
     return dbCategorieContatto
 
 def getRecapitiContatto(id=None):

@@ -340,7 +340,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         dialog.destroy()
         quantita = entry.get_text().strip()
         prezzo =  mN(entry1.get_text())
-        return  ( quantita,prezzo ) 
+        return  ( quantita,prezzo )
 
 
 
@@ -428,7 +428,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = ListinoArticolo().select(idListino=dao.id_listino,
                                                     idArticolo=dao.id_articolo,
-                                                    orderBy="id_articolo")[0]
+                                                    orderBy=ListinoArticolo.id_articolo)[0]
         self._refresh()
 
     def empty_current_row(self):

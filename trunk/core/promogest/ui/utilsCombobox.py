@@ -86,7 +86,7 @@ def fillComboboxCategorieArticoli(combobox, filter=False):
     """
     from promogest.dao.CategoriaArticolo import CategoriaArticolo
     model = gtk.ListStore(object, int, str)
-    cats = CategoriaArticolo().select(offset=None,batchSize=None, orderBy="denominazione")
+    cats = CategoriaArticolo().select(offset=None,batchSize=None, orderBy=CategoriaArticolo.denominazione)
     if not filter:
         emptyRow = ''
     else:
@@ -110,7 +110,7 @@ def fillComboboxCCardType(combobox, filter=False):
     """
     from promogest.dao.CCardType import CCardType
     model = gtk.ListStore(object, int, str)
-    cats = CCardType().select(offset=None,batchSize=None, orderBy="denominazione")
+    cats = CCardType().select(offset=None,batchSize=None, orderBy=CCardType.denominazione)
     if not filter:
         emptyRow = ''
     else:
@@ -609,7 +609,7 @@ def fillComboboxTipiRecapito(combobox):
 
 def fillModelTipiRecapito():
     """ Crea l'elenco dei tipi di recapito per i contatti  """
-    res = TipoRecapito().select(orderBy="denominazione")
+    res = TipoRecapito().select(orderBy=TipoRecapito.denominazione)
     model = gtk.ListStore(str)
     model.append(('', ))
     for r in res:
@@ -620,7 +620,7 @@ def fillComboboxAziende(combobox, filter=False):
     """ Crea l'elenco delle aziende  """
 
     model = gtk.ListStore(object, str, str)
-    res = Azienda().select(offset=None,batchSize=None, orderBy="schemaa")
+    res = Azienda().select(offset=None,batchSize=None, orderBy=Azienda.schemaa)
     if not filter:
         emptyRow = ''
     else:

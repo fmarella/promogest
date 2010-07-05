@@ -33,7 +33,7 @@ class ContattoCliente(Dao):
 
     def _getCategorieContatto(self):
         self.__dbCategorieContatto = ContattoCategoriaContatto().select(id=self.id,
-                                                        orderBy="id_contatto")
+                                                        orderBy=ContattoCategoriaContatto.id_contatto)
 
         self.__categorieContatto = self.__dbCategorieContatto[:]
         return self.__categorieContatto
