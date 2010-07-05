@@ -107,36 +107,37 @@ class StatisticheMagazzino(GladeWidget):
                     "GRUPPO TAGLIA","GENERE", "TAGLIA", "STAGIONE"]
         c.writerow(rigga)
         for i in self.res:
-            id = i["id"][0]
-            codice = i["codice"]
-            denominazione = str(i["denominazione"]).replace(";"," ")
-            data_ultima_vendita = dateTimeToString(i["data_ultima_vendita"])
-            data_ultimo_acquisto = dateTimeToString(i["data_ultimo_acquisto"])
-            prezzo_ultimo_acquisto = str(mN(i["prezzo_ultimo_acquisto"]))
-            prezzo_ultima_vendita = str(mN(i["prezzo_ultima_vendita"]))
-            giacenza = abs(i["giacenza"])
-            media_acquisto = str(mN(i["media_acquisto"]))
-            media_vendita = str(mN(i["media_vendita"]))
-            quantita_venduta = abs(i["quantita_venduta"])
-            quantita_acquistata = abs(i["quantita_acquistata"])
-            unita_base = i["unitaBase"]
-            denominazioneBreveAliquotaIva = i["denominazioneBreveAliquotaIva"]
-            famiglia = i["daoArticolo"].denominazione_breve_famiglia
-            categoria = i["daoArticolo"].denominazione_breve_categoria
-            if "PromoWear" in Environment.modulesList:
-                colore = i["colore"]
-                anno = i["anno"]
-                gruppoTaglia = i["gruppoTaglia"]
-                genere = i["genere"]
-                taglia = i["taglia"]
-                stagione = i["stagione"]
-            paramRigga = [id, codice,denominazione, quantita_venduta, quantita_acquistata,
-                        data_ultimo_acquisto,data_ultima_vendita, prezzo_ultima_vendita,
-                         prezzo_ultimo_acquisto, giacenza, media_vendita, media_acquisto,
-                        unita_base, denominazioneBreveAliquotaIva, famiglia, categoria]
-            if "PromoWear" in Environment.modulesList:
-                paramRigga = paramRigga + [colore, anno, gruppoTaglia, genere, taglia,stagione]
-            c.writerow(paramRigga)
+            if i["daoArticolo"]:
+                id = i["id"][0]
+                codice = i["codice"]
+                denominazione = str(i["denominazione"]).replace(";"," ")
+                data_ultima_vendita = dateTimeToString(i["data_ultima_vendita"])
+                data_ultimo_acquisto = dateTimeToString(i["data_ultimo_acquisto"])
+                prezzo_ultimo_acquisto = str(mN(i["prezzo_ultimo_acquisto"]))
+                prezzo_ultima_vendita = str(mN(i["prezzo_ultima_vendita"]))
+                giacenza = abs(i["giacenza"])
+                media_acquisto = str(mN(i["media_acquisto"]))
+                media_vendita = str(mN(i["media_vendita"]))
+                quantita_venduta = abs(i["quantita_venduta"])
+                quantita_acquistata = abs(i["quantita_acquistata"])
+                unita_base = i["unitaBase"]
+                denominazioneBreveAliquotaIva = i["denominazioneBreveAliquotaIva"]
+                famiglia = i["daoArticolo"].denominazione_breve_famiglia
+                categoria = i["daoArticolo"].denominazione_breve_categoria
+                if "PromoWear" in Environment.modulesList:
+                    colore = i["colore"]
+                    anno = i["anno"]
+                    gruppoTaglia = i["gruppoTaglia"]
+                    genere = i["genere"]
+                    taglia = i["taglia"]
+                    stagione = i["stagione"]
+                paramRigga = [id, codice,denominazione, quantita_venduta, quantita_acquistata,
+                            data_ultimo_acquisto,data_ultima_vendita, prezzo_ultima_vendita,
+                             prezzo_ultimo_acquisto, giacenza, media_vendita, media_acquisto,
+                            unita_base, denominazioneBreveAliquotaIva, famiglia, categoria]
+                if "PromoWear" in Environment.modulesList:
+                    paramRigga = paramRigga + [colore, anno, gruppoTaglia, genere, taglia,stagione]
+                c.writerow(paramRigga)
 
         dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK, '\n\nEsportazione terminata !')
