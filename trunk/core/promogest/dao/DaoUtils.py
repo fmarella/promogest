@@ -125,8 +125,7 @@ def articoloStatistiche(arti=None, righe=None):
                     media_vendita = media_vendita,
                     quantita_venduta = quantita_venduta,
                     quantita_acquistata = quantita_acquistata,
-                    giacenza = giacenza,
-)
+                    giacenza = giacenza)
     else:
         arti.update(prezzo_ultima_vendita = 0,
                 data_ultima_vendita = data_ultima_vendita,
@@ -136,8 +135,7 @@ def articoloStatistiche(arti=None, righe=None):
                 media_vendita = 0,
                 quantita_venduta = 0,
                 quantita_acquistata = 0,
-                giacenza = 0,
-)
+                giacenza = 0)
     return arti
 
 def giacenzaArticolo(year=None, idMagazzino=None, idArticolo=None, allMag=None):

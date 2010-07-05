@@ -2241,15 +2241,12 @@ def numeroRegistroGet(tipo=None, date=None):
     if tipo == "Movimento":
         numeroSEL = TestataMovimento()\
             .select(complexFilter=(and_(TestataMovimento.data_movimento.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)) ,
-                            TestataMovimento.registro_numerazione==registrovalue)), batchSize=None, orderBy="id")
+                            TestataMovimento.registro_numerazione==registrovalue)), batchSize=None)
     else:
         numeroSEL = TestataDocumento().select(complexFilter=(and_(TestataDocumento.data_documento.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)) ,
-                        TestataDocumento.registro_numerazione==registrovalue)), batchSize=None, orderBy="id")
-
-    if numeroSEL == True:
-        for num in numeroSEL:
-            numeri.append(num.numero)
-        numero = int(max(numeri))+1
+                        TestataDocumento.registro_numerazione==registrovalue)), batchSize=None)
+    if numeroSEL:
+        numero = max([p.numero for p in numeroSEL]) +1
     else:
         numero = 1
     return (numero, registrovalue)
