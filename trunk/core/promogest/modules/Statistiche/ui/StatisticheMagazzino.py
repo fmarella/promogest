@@ -102,19 +102,14 @@ class StatisticheMagazzino(GladeWidget):
                     "DATA ULTIMA VENDITA", "PREZZO ULTIMA VENDITA",  "PREZZO ULTIMO ACQUISTO",
                     "GIACENZA", "MEDIA PREZZO VENDITA", "MEDIA PREZZO ACQUISTO",
                     "UNITA' BASE", "IVA", "FAMIGLIA", "CATEGORIA"]
-        if "PromoWear" in
-
+        if "PromoWear" in Environment.modulesList:
+            rigga = rigga + ["COLORE","ANNO",
+                    "GRUPPO TAGLIA","GENERE", "TAGLIA", "STAGIONE"]
         c.writerow(rigga)
         for i in self.res:
             id = i["id"][0]
             codice = i["codice"]
             denominazione = str(i["denominazione"]).replace(";"," ")
-            colore = i["colore"]
-            anno = i["anno"]
-            gruppoTaglia = i["gruppoTaglia"]
-            genere = i["genere"]
-            taglia = i["taglia"]
-            stagione = i["stagione"]
             data_ultima_vendita = dateTimeToString(i["data_ultima_vendita"])
             data_ultimo_acquisto = dateTimeToString(i["data_ultimo_acquisto"])
             prezzo_ultimo_acquisto = str(mN(i["prezzo_ultimo_acquisto"]))
@@ -128,12 +123,20 @@ class StatisticheMagazzino(GladeWidget):
             denominazioneBreveAliquotaIva = i["denominazioneBreveAliquotaIva"]
             famiglia = i["daoArticolo"].denominazione_breve_famiglia
             categoria = i["daoArticolo"].denominazione_breve_categoria
-
-            c.writerow([id, codice,denominazione, quantita_venduta, quantita_acquistata,
+            if "PromoWear" in Environment.modulesList:
+                colore = i["colore"]
+                anno = i["anno"]
+                gruppoTaglia = i["gruppoTaglia"]
+                genere = i["genere"]
+                taglia = i["taglia"]
+                stagione = i["stagione"]
+            paramRigga = [id, codice,denominazione, quantita_venduta, quantita_acquistata,
                         data_ultimo_acquisto,data_ultima_vendita, prezzo_ultima_vendita,
                          prezzo_ultimo_acquisto, giacenza, media_vendita, media_acquisto,
-                        unita_base, denominazioneBreveAliquotaIva, famiglia, categoria,
-                        colore, anno, gruppoTaglia, genere, taglia,stagione])
+                        unita_base, denominazioneBreveAliquotaIva, famiglia, categoria]
+            if "PromoWear" in Environment.modulesList:
+                paramRigga = paramRigga + [colore, anno, gruppoTaglia, genere, taglia,stagione]
+            c.writerow(paramRigga)
 
         dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK, '\n\nEsportazione terminata !')
