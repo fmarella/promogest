@@ -22,7 +22,6 @@ from datetime import datetime, timedelta
 import time
 import webbrowser
 from  subprocess import *
-import os
 from promogest import Environment
 from GladeWidget import GladeWidget
 from ElencoMagazzini import ElencoMagazzini
