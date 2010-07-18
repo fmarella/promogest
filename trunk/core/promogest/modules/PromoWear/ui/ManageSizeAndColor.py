@@ -32,6 +32,7 @@ class ManageSizeAndColor(GladeWidget):
         self._fornitura = None
         self._listino = None
         self._fonteValore=fonteValore
+        self.order = None
 
 
         if ((self._fonteValore == "acquisto_iva") or  (self._fonteValore == "acquisto_senza_iva")):
@@ -39,7 +40,6 @@ class ManageSizeAndColor(GladeWidget):
         elif ((self._fonteValore == "vendita_iva") or (self._fonteValore == "vendita_senza_iva")):
             self.TipoOperazione = "vendita"
 
-        self.articoloPadreDict = self.creDictFornitura()
         self._treeViewModel = None
         self._rowEditingPath = None
         self._tabPressed = False
@@ -142,15 +142,13 @@ class ManageSizeAndColor(GladeWidget):
         else:
             megaDict[artvar]["listino"] = self._listino = leggiListino(self._id_listino,idArticolo=self.articoloPadre.id)
 
-    def creDictFornitura(self):
+    def creDictFornitura(self, order=None):
         """ Creo un dizionario delle forniture? ..Commenta Francè commentaaaaaa
         """
         artiDict= {}
         variantiList = []
         daoArticolo = self.articoloPadre
-        
-        varianti = daoArticolo.articoliVarianti 
-
+        varianti = daoArticolo._getArticoliVarianti(order=order)
         for varia in varianti:
             variante=leggiArticoloPromoWear(varia.id, full=True)
             if self.TipoOperazione =="acquisto":
@@ -159,26 +157,27 @@ class ManageSizeAndColor(GladeWidget):
                                                 data=self.data)
                 variantiList.append(variante)
             else:   # vendita
-                variante['valori'] = leggiListino(self._id_listino, 
+                variante['valori'] = leggiListino(self._id_listino,
                                             idArticolo=self.articoloPadre.id)
-                #print "VARIANTE VALORIIIIIIIIIIIIIIIIIIIIII", variante['valori']
                 variante['valori']['prezzoDettaglioScontato'] = 0
                 variante['valori']['prezzoIngrossoScontato'] = 0
                 variantiList.append(variante)
         # uso della libreria operator per ordinare
-        out = []
-        for e in variantiList:
-            out.append((e['ordine'],e)) #trasformo in tupla
-        getcount = operator.itemgetter(0)  #seleziono il primo elemento
-        map(getcount, out)  #mappo l'operator con la lista
-        out2 = sorted(out, key=getcount)  #ordino la lista
-        newlist = []
-        for a in out2:
-            newlist.append(a[1]) #riporto ad una lista di dict
-        artiDict = leggiArticoloPromoWear(self.articoloPadre.id)
-        artiDict["varianti"] = newlist #al dizionatio articolo dell'articolo padre aggancio la lista delle varianti
+#        out = []
+#        for e in variantiList:
+#            out.append((e['ordine'],e)) #trasformo in tupla
+#        getcount = operator.itemgetter(0)  #seleziono il primo elemento
+#        map(getcount, out)  #mappo l'operator con la lista
+#        out2 = sorted(out, key=getcount)  #ordino la lista
+#        newlist = []
+#        for a in out2:
+#            newlist.append(a[1]) #riporto ad una lista di dict
+#        artiDict = leggiArticoloPromoWear(self.articoloPadre.id)
+        artiDict["varianti"] = variantiList #al dizionatio articolo dell'articolo padre aggancio la lista delle varianti
+
+
         if self.TipoOperazione == "acquisto":
-            artiDict['valori'] = leggiFornitura(self.articoloPadre.id, 
+            artiDict['valori'] = leggiFornitura(self.articoloPadre.id,
                                     idFornitore=self.idPerGiu, data=self.data)
         else:  #operazione vendita
             artiDict['valori'] = leggiListino(self._id_listino,
@@ -189,6 +188,18 @@ class ManageSizeAndColor(GladeWidget):
         """ Aggiornamento della principale treeview,
         TODO: si può ordinare?
         """
+        if self.order == order:
+            if order == "Taglia":
+                order = "TagliaDESC"
+                self.order = order
+            elif order == "Colore":
+                order = "ColoreDESC"
+                self.order = order
+        else:
+            self.order = order
+
+        self.articoloPadreDict = self.creDictFornitura(order=order)
+
         self._treeViewModel.clear()
         if self.TipoOperazione == "acquisto":
             self.price_entry.set_text(str(self.articoloPadreDict['valori']['prezzoLordo']))
@@ -201,7 +212,7 @@ class ManageSizeAndColor(GladeWidget):
         self.discount_entry.set_text(str(self.formatSconti(self.articoloPadreDict['valori'])))
 
         varianti = self.articoloPadreDict["varianti"]
-        #print varianti
+#        print varianti
 
         for var in varianti:
             quantita =""
@@ -255,7 +266,7 @@ class ManageSizeAndColor(GladeWidget):
                     sconto = str(var['scontiIngrosso'][0]['valore'])+"%"
                 else:
                     sconto = ""
-                
+
         return sconto
 
     def _getRowEditingPath(self, model, iterator):
@@ -447,7 +458,6 @@ class ManageSizeAndColor(GladeWidget):
             else:
                 resultList.append(row[0])
 
-        print "RESULT LIST", resultList
         self.mainWindow.tagliaColoreRigheList = resultList # rimando indietro la lista
         self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
         self.destroy()
