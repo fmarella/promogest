@@ -68,10 +68,13 @@ class User(Dao):
     if hasattr(conf, "RuoliAzioni") \
         and hasattr(conf.RuoliAzioni,"mod_enable") \
         and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
-        @property
-        def ruolo(self):
-            if self.role: return self.role.name
-            else: return ""
+        try:
+            @property
+            def ruolo(self):
+                if self.role: return self.role.name
+                else: return ""
+        except:
+            print " RUOLIAZIONI ANCORA PROBLEMI"
 
     if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
         @property
@@ -86,8 +89,11 @@ std_mapper = mapper(User, user, order_by=user.c.username)
 if hasattr(conf, "RuoliAzioni") \
         and hasattr(conf.RuoliAzioni,"mod_enable") \
         and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
-    from promogest.modules.RuoliAzioni.dao.Role import Role
-    std_mapper.add_property("role",relation(Role,primaryjoin=(user.c.id_role==Role.id),backref="users",uselist=False))
+    try:
+        from promogest.modules.RuoliAzioni.dao.Role import Role
+        std_mapper.add_property("role",relation(Role,primaryjoin=(user.c.id_role==Role.id),backref="users",uselist=False))
+    except:
+        print "ATTENZIONE!! RUOLI AZIONI NON È INSTALLATO CORRETTAMENTE"
 if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
     from promogest.modules.MultiLingua.dao.UserLanguage import UserLanguage
     std_mapper.add_property("userlang",relation(UserLanguage,primaryjoin=(user.c.id==UserLanguage.id_user),backref="users",uselist=False))
