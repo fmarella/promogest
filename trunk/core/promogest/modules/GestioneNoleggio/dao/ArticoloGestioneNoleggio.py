@@ -12,6 +12,24 @@ from promogest.dao.Dao import Dao
 #from promogest.modules.GestioneNoleggio.dao.DivisoreNoleggio import DivisoreNoleggio
 
 
+try:
+    articologestionenoleggio=Table('articolo_gestione_noleggio',params['metadata'],schema = params['schema'],autoload=True)
+except:
+    articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
+
+    if tipodb == "sqlite":
+        articoloFK = 'articolo.id'
+    else:
+        articoloFK = params['schema']+'.articolo.id'
+    params["session"].close()
+    conn = params["engine"].connect()
+    articologestionenoleggio = Table('articolo_gestione_noleggio', params['metadata'],
+                    Column('id_articolo',Integer,ForeignKey(articoloFK,onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
+                    Column('divisore_noleggio_value',Numeric(4), nullable=False),
+                    schema=params['schema'])
+    articologestionenoleggio.create(checkfirst=True)
+    conn.close()
+
 class ArticoloGestioneNoleggio(Dao):
 
     def __init__(self, arg=None):
@@ -24,17 +42,6 @@ class ArticoloGestioneNoleggio(Dao):
             dic = {k:articologestionenoleggio.c.id_divisore_noleggio ==v}
 
         return  dic[k]
-
-articolo=Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
-articoloGestioneleggioTable = Table('articolo_gestione_noleggio', params['metadata'],
-                    Column('id_articolo',Integer,ForeignKey(params['schema']+'.articolo.id',onupdate="CASCADE",ondelete="CASCADE"),primary_key=True),
-                    Column('divisore_noleggio_value',Numeric(4), nullable=False),
-                    schema=params['schema'])
-articoloGestioneleggioTable.create(checkfirst=True)
-
-
-
-articologestionenoleggio=Table('articolo_gestione_noleggio',params['metadata'],schema = params['schema'],autoload=True)
 
 std_mapper = mapper(ArticoloGestioneNoleggio, articologestionenoleggio,
                     #properties=dict(
