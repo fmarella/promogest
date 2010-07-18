@@ -165,26 +165,38 @@ class Articolo(Dao):
             self.__articoloTagliaColore = value
         articoloTagliaColore = property(getArticoloTagliaColore, setArticoloTagliaColore)
 
-        def getArticoliTagliaColore(self, idGruppoTaglia=None, idTaglia=None, idColore=None):
+        def getArticoliTagliaColore(self, idGruppoTaglia=None, idTaglia=None, idColore=None, order=None):
             """ Restituisce una lista di Dao ArticoloTagliaColore figli del Dao Articolo """
             #from promogest.modules.PromoWear.dao.ArticoloTagliaColore import select
             articoli = []
             try:
                 articolo_relato = ArticoloTagliaColore().getRecord(id=self.id)
+                if order =="Colore":
+                    orderBy = ArticoloTagliaColore.id_colore.asc()
+                elif order =="Taglia":
+                    orderBy = ArticoloTagliaColore.id_taglia.asc()
+                elif order =="ColoreDESC":
+                    orderBy = ArticoloTagliaColore.id_colore.desc()
+                elif order =="TagliaDESC":
+                    orderBy = ArticoloTagliaColore.id_taglia.desc()
+                else:
+                    orderBy = None
                 if not articolo_relato.id_articolo_padre:
                     articoli = ArticoloTagliaColore().select(idArticoloPadre=articolo_relato.id_articolo,
                                                                 idGruppoTaglia=idGruppoTaglia,
                                                                 idTaglia=idTaglia,
                                                                 idColore=idColore,
                                                                 offset=None,
-                                                                batchSize=None)
+                                                                batchSize=None,
+                                                                orderBy=orderBy)
                 else:
                     articoli = ArticoloTagliaColore().select(idArticoloPadre=articolo_relato.id_articolo_padre,
                                                                 idGruppoTaglia=idGruppoTaglia,
                                                                 idTaglia=idTaglia,
                                                                 idColore=idColore,
                                                                 offset=None,
-                                                                batchSize=None)
+                                                                batchSize=None,
+                                                                orderBy=orderBy)
             except:
                 #print "FOR DEBUG ONLY getArticoliTagliaColore FAILED"
                 pass
@@ -192,13 +204,10 @@ class Articolo(Dao):
         articoliTagliaColore = property(getArticoliTagliaColore)
 
 
-        def getArticoliVarianti(self):
+        def _getArticoliVarianti(self,order=None):
             """ Restituisce una lista di Dao Articolo Varianti """
-            articoli = []
-            for art in self.getArticoliTagliaColore():
-                articoli.append(Articolo().getRecord(id=art.id_articolo))
-            return articoli
-        articoliVarianti = property(getArticoliVarianti)
+            return [Articolo().getRecord(id=art.id_articolo) for art in self.getArticoliTagliaColore(order=order)]
+        articoliVarianti = property(_getArticoliVarianti)
 
 
         def _getTaglie(self):
