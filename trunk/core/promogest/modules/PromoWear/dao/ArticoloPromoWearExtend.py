@@ -49,16 +49,13 @@ def getArticoliTagliaColore(self, idGruppoTaglia=None, idTaglia=None, idColore=N
                                                         batchSize=None)
     except:
         print "FOR DEBUG ONLY getArticoliTagliaColore FAILED"
+    print "ARTICOLIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", articoli
     return articoli
 articoliTagliaColore = property(getArticoliTagliaColore)
 
-
 def getArticoliVarianti(self):
     """ Restituisce una lista di Dao Articolo Varianti """
-    articoli = []
-    for art in self.getArticoliTagliaColore():
-        articoli.append(Articolo().getRecord(id=art.id_articolo))
-    return articoli
+    return [Articolo().getRecord(id=art.id_articolo) for art in self.getArticoliTagliaColore()]
 articoliVarianti = property(getArticoliVarianti)
 
 
