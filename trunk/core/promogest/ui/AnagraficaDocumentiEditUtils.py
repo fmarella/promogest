@@ -523,8 +523,8 @@ def on_multi_line_button_clickedPart(anaedit, widget):
             anaedit.b = line_count
             anaedit.a = -1
         anaedit.a += 1
-        colonne = Environment.multilinelimit
-        if anaedit.a <= (Environment.multilinelimit-1):
+        colonne = int(setconf("Multilinea","multilinealimite"))
+        if anaedit.a <= (int(setconf("Multilinea","multilinealimite"))-1):
             pass
         else:
             textBuffer.insert_at_cursor("\n")
