@@ -47,8 +47,12 @@ class GestioneInventario(RicercaComplessaArticoli):
             fileName="Inventario/gui/_inventario_select.glade", isModule=True)
 
         RicercaComplessaArticoli.__init__(self)
+
+
         self.anno = int(Environment.workingYear)
         self.annoScorso= int(Environment.workingYear) -1
+
+
         # modifiche all'interfaccia originaria
         self.getTopLevel().set_title('Promogest - Gestione inventario ' + str(self.annoScorso))
         self.search_image.set_no_show_all(True)
@@ -296,8 +300,8 @@ class GestioneInventario(RicercaComplessaArticoli):
                             "cancellato":cancellato
                             }
         self._ricerca.filterDict= self.filterDict
-        if "PromoWear" in Environment.modulesList:
-            AnagraficaArticoliPromoWearExpand.refresh(self._ricerca)
+#        if "PromoWear" in Environment.modulesList:
+#            AnagraficaArticoliPromoWearExpand.refresh(self._ricerca)
 
         self.filter.numRecords = Inventario().count(anno=self.annoScorso,
                                                     idMagazzino=self.idMagazzino,
@@ -321,7 +325,7 @@ class GestioneInventario(RicercaComplessaArticoli):
                                                val_negativo =self.val_negativo,
                                                offset=self.filter.offset,
                                                filterDict=self.filterDict)
-        self.inventariati_filtrati_tutti = Inventario().select(orderBy=self.filter.orderBy,
+        self.inventariati_filtrati_tutti = Inventario().select(
                                                anno=self.annoScorso,
                                                idMagazzino=self.idMagazzino,
                                                daDataAggiornamento=self.daData,
@@ -330,7 +334,8 @@ class GestioneInventario(RicercaComplessaArticoli):
                                                qa_negativa=self.qa_negativa,
                                                val_negativo =self.val_negativo,
                                                batchSize =None,
-                                               filterDict=self.filterDict)
+                                               filterDict=self.filterDict
+                                               )
         model.clear()
 
         for i in invs:
@@ -508,9 +513,11 @@ class GestioneInventario(RicercaComplessaArticoli):
         dialog.destroy()
         if response == gtk.RESPONSE_YES:
             for i in  self.inventariati_filtrati_tutti:
+                print i.anno, i.quantita
                 i.quantita = 0
                 Environment.session.add(i)
             Environment.session.commit()
+            self.refresh()
             self.fineElaborazione()
 
 
@@ -592,7 +599,8 @@ class GestioneInventario(RicercaComplessaArticoli):
                                     idMagazzino=idMagazzino,
                                     idArticolo=r.id_articolo)
                     r.quantita = giace
-                    r.data_aggiornamento = datetime.datetime.today().date()
+                    if giace >0:
+                        r.data_aggiornamento = datetime.datetime.today().date()
                     Environment.params['session'].add(r)
             Environment.params['session'].commit()
         self.refresh()
