@@ -6,9 +6,10 @@
 # Author: francesco Meloni <francesco@promotux.it>
 import os
 import sys
+import gtk
 import gobject
 try:
-    from webkit import WebView
+    from webkit import WebView, WebSettings
     WEBKIT = True
 except:
     import gtkhtml2
@@ -139,6 +140,7 @@ def createHtmlObj(mainWidget,widget=None):
 #    def _on_hovering_over_link(widget, title,uri,userdata):
 #        print "OOOOOIJJJJJJJJJJJJJJJJJJJJJ", widget, title, uri, userdata
         a= WebView()
+#        print dir(a)
 #    a.connect('hovering-over-link', _on_hovering_over_link,a)
         a.connect('navigation-requested', _on_navigation_requested,a)
         return a
@@ -200,7 +202,20 @@ def renderHTMLTemplate(pageData):
 def renderHTML(widget, html):
 
     if WEBKIT:
-        widget.load_string(html,"text/html","utf-8", "file:///"+sys.path[0]+os.sep)
+        c = WebSettings()
+        c.set_property("minimum_font_size", 8)
+        c.set_property("javascript-can-open-windows-automatically", True)
+        c.set_property("default-encoding", "Utf-8")
+        c.set_property("enable-file-access-from-file-uris", True)
+        widget.set_settings(c)
+#        framme =  widget.get_main_frame()
+#        print "PPPPPPPPPPPPPPPPPP", framme, dir(framme)
+#        framme.print_full(gtk.PrintOperation(), gtk.PRINT_OPERATION_ACTION_PRINT_PREVIEW)
+        widget.load_html_string(html, "file:///"+sys.path[0]+os.sep)
+#        print dir(widget)
+#        widget.web_frame_print_full(GTK_PRINT_OPERATION_ACTION_EXPORT, )
+#        widget.load_string(html,"text/html","utf-8", "file:///")
+#        widget.set_editable(True)
         widget.show()
     else:
         document.open_stream('text/html')

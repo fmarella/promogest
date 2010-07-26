@@ -43,7 +43,7 @@ class Dao(object):
         ed è molto più flessibile
         """
         filter1 = filter2 = None
-        if complexFilter == True:
+        if complexFilter is not None:
             filter1 = complexFilter
         else:
             filter2= self.prepareFilter(kwargs)

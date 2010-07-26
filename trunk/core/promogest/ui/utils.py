@@ -2225,7 +2225,7 @@ def numeroRegistroGet(tipo=None, date=None):
 
     _key= str(tipo+".registro").strip()
     registro = Setting().getRecord(id=_key)
-    print "REGISTROOOOOOOOOOOOOOOOOOOOOOOOOOOO", registro, tipo, date
+#    print "REGISTROOOOOOOOOOOOOOOOOOOOOOOOOOOO", registro, tipo, date
     if not registro :
         raise "ATTENZIONE , Registro numerazione non trovato"
 
