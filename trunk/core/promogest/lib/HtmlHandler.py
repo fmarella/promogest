@@ -202,12 +202,15 @@ def renderHTMLTemplate(pageData):
 def renderHTML(widget, html):
 
     if WEBKIT:
-        c = WebSettings()
-        c.set_property("minimum_font_size", 8)
-        c.set_property("javascript-can-open-windows-automatically", True)
-        c.set_property("default-encoding", "Utf-8")
-        c.set_property("enable-file-access-from-file-uris", True)
-        widget.set_settings(c)
+        try:
+            c = WebSettings()
+            c.set_property("minimum_font_size", 8)
+            c.set_property("javascript-can-open-windows-automatically", True)
+            c.set_property("default-encoding", "Utf-8")
+            c.set_property("enable-file-access-from-file-uris", True)
+            widget.set_settings(c)
+        except:
+            print " VERSIONE DI WEBKIT NON AGGIORNATA... KARMIC?"
 #        framme =  widget.get_main_frame()
 #        print "PPPPPPPPPPPPPPPPPP", framme, dir(framme)
 #        framme.print_full(gtk.PrintOperation(), gtk.PRINT_OPERATION_ACTION_PRINT_PREVIEW)
