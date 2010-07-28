@@ -17,7 +17,12 @@ class CategoriaArticolo(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {  'denominazione' : categoria_articolo.c.denominazione.ilike("%"+v+"%")}
+        if k == 'denominazione':
+            dic= {k : categoria_articolo.c.denominazione.ilike("%"+v+"%")}
+        elif k == "denominazioneBreve":
+            dic= {k : categoria_articolo.c.denominazione_breve.ilike("%"+v+"%")}
+        elif k == "denominazioneBreveEM":
+            dic= {k : categoria_articolo.c.denominazione_breve == v}
         return  dic[k]
 
 categoria_articolo=Table('categoria_articolo',

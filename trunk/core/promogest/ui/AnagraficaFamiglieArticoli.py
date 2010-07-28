@@ -9,11 +9,9 @@
  """
 
 import gtk
-
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
-
 from promogest.dao.FamigliaArticolo import FamigliaArticolo
-
+from promogest.dao.Articolo import Articolo
 from utils import *
 from utilsCombobox import *
 
@@ -30,6 +28,71 @@ class AnagraficaFamiglieArticoli(Anagrafica):
                             reportHandler=AnagraficaFamiglieArticoliReport(self),
                             editElement=AnagraficaFamiglieArticoliEdit(self))
         self.hideNavigator()
+
+    def on_record_delete_activate(self, widget):
+        dialog = gtk.MessageDialog(self.getTopLevel(),
+                                   gtk.DIALOG_MODAL
+                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                                   'Confermi l\'eliminazione ?')
+        response = dialog.run()
+        dialog.destroy()
+        if response !=  gtk.RESPONSE_YES:
+            return
+
+        dao = self.filter.getSelectedDao()
+        usata = Articolo().select(idFamiglia=dao.id, batchSize=None)
+        print "USATAAAAAAAAAAAAAAAAAAAAAAAA", usata
+        if usata:
+            msg = """NON è possibile cancellare questa FAMIGLIA ARTICOLO
+perchè abbinata ad uno o più articoli
+
+ATTENZIONE ATTENZIONE!!
+
+E' però possibile "passare" tutti gli articoli della famiglia che
+si vuole cancellare ad un'altra ancora presente.
+Inserite il codice ( Esattamente come è scritto) della famiglia di destinazione
+qui sotto e premete SI
+L'operazione è irreversibile, retroattiva e potrebbe impiegare qualche minuto.
+"""
+            dialog = gtk.MessageDialog(self.getTopLevel(),
+                                   gtk.DIALOG_MODAL
+                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                                   msg)
+            __entry_codi = gtk.Entry()
+            dialog.vbox.pack_start(__entry_codi)
+            __entry_codi.show()
+            response = dialog.run()
+
+            if response !=  gtk.RESPONSE_YES:
+                dialog.destroy()
+                return
+            else:
+#                print "WBUMMMMM", __entry_codi.get_text()
+                famm = FamigliaArticolo().select(codice = __entry_codi.get_text())
+                if famm:
+                    idfam = famm[0].id
+                    isfather = FamigliaArticolo().select(idPadre =idfam)
+                    if isfather:
+                        messageInfo(msg = "Cancellare prima i figli,\n questa è una famiglia padre non vuota ")
+                        dialog.destroy()
+                        return
+                else:
+                    messageInfo(msg = "NON è stato possibile trovare la famiglia\n di passaggio, non faccio niente")
+                    dialog.destroy()
+                    return
+                for u in usata:
+                    u.id_famiglia_articolo = idfam
+                    u.persist()
+                dialog.destroy()
+                dao.delete()
+                self.htmlHandler.setDao(None)
+        else:
+            dao.delete()
+            self.htmlHandler.setDao(None)
+        self.filter.refresh()
+        self.setFocus()
 
 
 class AnagraficaFamiglieArticoliFilter(AnagraficaFilter):

@@ -9,14 +9,9 @@
 """
 
 import gtk
-import gobject
-
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-
-from promogest import Environment
-from promogest.dao.Dao import Dao
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
-
+from promogest.dao.Articolo import Articolo
 from utils import *
 
 
@@ -160,4 +155,44 @@ class AnagraficaCategorieArticoliDetail(AnagraficaDetail):
 
 
     def deleteDao(self):
-        self.dao.delete()
+        usata = Articolo().select(idCategoria=self.dao.id, batchSize=None)
+        if usata:
+            msg = """NON è possibile cancellare questa CATEGORIA ARTICOLO
+perchè abbinata ad uno o più articoli
+
+ATTENZIONE ATTENZIONE!!
+
+E' però possibile "passare" tutti gli articoli della categoria che
+si vuole cancellare ad un'altra ancora presente.
+Inserite la descrizione breve ( Esattamente come è scritta) della categoria di destinazione
+qui sotto e premete SI
+L'operazione è irreversibile,retroattiva e potrebbe impiegare qualche minuto
+"""
+            dialog = gtk.MessageDialog(None,
+                                   gtk.DIALOG_MODAL
+                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                                   msg)
+            __entry_codi = gtk.Entry()
+            dialog.vbox.pack_start(__entry_codi)
+            __entry_codi.show()
+            response = dialog.run()
+
+            if response !=  gtk.RESPONSE_YES:
+                dialog.destroy()
+                return
+            else:
+                cate = CategoriaArticolo().select(denominazioneBreveEM = __entry_codi.get_text())
+                if cate:
+                    idcat = cate[0].id
+                else:
+                    messageInfo(msg = "NON è stato possibile trovare la categoria\n di passaggio, non faccio niente")
+                    dialog.destroy()
+                    return
+                for u in usata:
+                    u.id_categoria_articolo = idcat
+                    u.persist()
+                dialog.destroy()
+                self.dao.delete()
+        else:
+            self.dao.delete()

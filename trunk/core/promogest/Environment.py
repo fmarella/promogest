@@ -335,7 +335,8 @@ if tipodb == "sqlite":
 else:
     mainSchema = "promogest2"
     #azienda=conf.Database.azienda
-    engine = create_engine('postgres:'+'//'
+    try:
+        engine = create_engine('postgresql+pg8000:'+'//'
                     +user+':'
                     + password+ '@'
                     + host + ':'
@@ -343,7 +344,17 @@ else:
                     + database,
                     encoding='utf-8',
                     convert_unicode=True )
-
+        print "PG8000"
+    except:
+        engine = create_engine('postgres:'+'//'
+                        +user+':'
+                        + password+ '@'
+                        + host + ':'
+                        + port + '/'
+                        + database,
+                        encoding='utf-8',
+                        convert_unicode=True )
+        print "PSYCOPG2"
 tipo_eng = engine.name
 engine.echo = False
 meta = MetaData(engine)
