@@ -284,6 +284,15 @@ class Articolo(Dao):
                 except:
                     return self.ATC.denominazione_taglia
 
+        @property
+        def denominazione_breve_taglia(self):
+            """ esempio di funzione  unita alla property """
+            if self.ATC :
+                try:
+                    return self.ATC[0].denominazione_breve_taglia
+                except:
+                    return self.ATC.denominazione_breve_taglia
+
         def _denominazione_colore(self):
             """ esempio di funzione  unita alla property """
             if self.ATC :
@@ -292,6 +301,15 @@ class Articolo(Dao):
                 except:
                     return self.ATC.denominazione_colore
         denominazione_colore = property(_denominazione_colore)
+
+        def _denominazione_breve_colore(self):
+            """ esempio di funzione  unita alla property """
+            if self.ATC :
+                try:
+                    return self.ATC[0].denominazione_breve_colore
+                except:
+                    return self.ATC.denominazione_breve_colore
+        denominazione_breve_colore = property(_denominazione_colore)
 
         def _denominazione_modello(self):
             """ esempio di funzione  unita alla property """

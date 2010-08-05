@@ -190,6 +190,9 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         self._loading = False
 
     def saveDao(self):
+        """ Salvataggio del dao con un po' di logica legata alle diverse
+            tipologie di articolo :noleggio, su misura, promowear
+        """
         if (self.codice_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel,
                             self.codice_entry,
@@ -244,6 +247,24 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.dao.articoloTagliaColore = articoloTagliaColore
             articoloTagliaColore = None
         elif "PromoWear" in Environment.modulesList and (articleType(self.dao) == "father" or self.con_taglie_colori_radiobutton.get_active()):
+            print "SALVATAGGIO ARTICOLO PADRE"
+            if self.dao.denominazione != self.denominazione_entry.get_text():
+                msg = """ATTENZIONE La descrizione di un articolo padre è cambiata, vuoi riportare la modifica anche ai suoi figli?"""
+                dialog = gtk.MessageDialog(None,
+                                       gtk.DIALOG_MODAL
+                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                       gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                                       msg)
+                response = dialog.run()
+
+                if response !=  gtk.RESPONSE_YES:
+                    dialog.destroy()
+                else:
+                    if self.dao.articoliVarianti:
+                        for ar in self.dao.articoliVarianti:
+                            ar.denominazione= self.denominazione_entry.get_text() +" "+ ar.denominazione_breve_taglia + ' ' + ar.denominazione_breve_colore
+                            ar.persist()
+                    dialog.destroy()
             articoloTagliaColore = ArticoloTagliaColore()
             articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
             articoloTagliaColore.id_taglia = findIdFromCombobox(self.id_taglia_customcombobox.combobox)
