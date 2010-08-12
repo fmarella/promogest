@@ -277,7 +277,7 @@ class ManageLabelsToPrint(GladeWidget):
             self.mattu = True
             self.articolo_matchato = art[0]
             self.articolo_entry.set_position(-1)
-            self.on_add_button_clicked()
+#            self.on_add_button_clicked()
 
     def match_func(self, completion, key, iter):
         model = self.completion.get_model()
