@@ -11,8 +11,15 @@ import os
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
 from promogest.dao.DaoUtils import giacenzaArticolo
-
+from promogest.dao.Articolo import Articolo
+from promogest.dao.ListinoArticolo import ListinoArticolo
+#from promogest.ui.AnagraficaComplessa import Anagrafica
+from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
+from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
+from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
+from promogest.ui.PrintDialog import PrintDialogHandler
 
 class ManageLabelsToPrint(GladeWidget):
 
@@ -25,7 +32,20 @@ class ManageLabelsToPrint(GladeWidget):
         self.revert_button.destroy()
         self.apply_button.destroy()
         self.mainWindow = mainWindow
+        self.completion = gtk.EntryCompletion()
+        self.completion.set_match_func(self.match_func)
+        self.completion.connect("match-selected",
+                                            self.on_completion_match)
+        listore = gtk.ListStore(str, object)
+        self.completion.set_model(listore)
+        self.completion.set_text_column(0)
+        self.articolo_entry.set_completion(self.completion)
+        self.mattu = False
+        self.sepric = "  ~  "
+        self.articolo_matchato = None
+        self.ricerca = "ricerca_codice_a_barre_button" # ATTENZIONE ...scorciatoia ... che non gestite
         self.daos = daos
+        fillComboboxListini(self.listino_combobox, True)
         self.draw()
 
     def draw(self):
@@ -118,6 +138,15 @@ class ManageLabelsToPrint(GladeWidget):
 
 
     def on_ok_button_clicked(self,button):
+        self._folder = ''
+#        self._pdfName = str(pdfGenerator.defaultFileName)
+        if hasattr(Environment.conf,'Documenti'):
+            self._folder = getattr(Environment.conf.Documenti,'cartella_predefinita','')
+        if self._folder == '':
+            if os.name == 'posix':
+                self._folder = os.environ['HOME']
+            elif os.name == 'nt':
+                self._folder = os.environ['USERPROFILE']
         self.resultList= []
         for row in self._treeViewModel:
             if row[5] == "0" or row[5] == "":
@@ -126,13 +155,31 @@ class ManageLabelsToPrint(GladeWidget):
                 for v in range(0,int(row[5])):
                     self.resultList.append(row[0])
         classic = False
+        param = []
+        for d in self.daos:
+            d.resolveProperties()
+            param.append(d.dictionary(complete=True))
         if self.classic_radio.get_active():
             classic = True
         template_file= self.get_active_text(self.select_template_combobox)
-        self.mainWindow._handlePrinting(pdfGenerator=self.mainWindow.labelHandler,
-                                report=True,daos=self.resultList,template_file=template_file,
-                                label=True,returnResults=True, classic=classic)
-        self.getTopLevel().destroy()
+        if template_file:
+            slafile = Environment.labelTemplatesDir +template_file
+        else:
+            slafile = self._slaTemplate
+        stpl2sla = SlaTpl2Sla_ng(slafile=None,label=True,
+                                    report=False,
+                                    objects=param,
+                                    daos=self.daos,
+                                    slaFileName=slafile,
+                                    pdfFolder=self._folder,
+                                    classic=classic,
+                                    template_file=template_file)
+        ecco= Sla2Pdf_ng(slafile=self._folder+"_temppp.sla").translate()
+        g = file(".temp.pdf", "wb")
+        g.write(ecco)
+        g.close()
+        anag = PrintDialogHandler(self,g)
+
 
 
     def refresh(self):
@@ -167,6 +214,85 @@ class ManageLabelsToPrint(GladeWidget):
                                             dao.prezzo_dettaglio,
                                             quantita,
                                             ))
+
+    def on_search_row_button_clicked(self, button):
+        print "OKOKOK"
+
+    def on_add_button_clicked(self, button=None):
+        idListino = findIdFromCombobox(self.listino_combobox)
+        self.articolo_entry.set_text("")
+        if self.articolo_matchato:
+            artilist = ListinoArticolo().select(idListino=idListino, idArticolo=self.articolo_matchato.id)
+            if artilist:
+                self.daos.append(artilist[0])
+                self.refresh()
+
+
+    def on_articolo_entry_insert_text(self, text):
+        stringa = text.get_text()
+#        print "AJAJAAJAJAJAJAJ", stringa, self.mattu,self.ricerca
+        if self.mattu:
+            text.set_text(stringa.split(self.sepric)[0])
+        model = gtk.ListStore(str,object)
+        vediamo = self.completion.get_model()
+        vediamo.clear()
+        art = []
+        if stringa ==[] or len(stringa)<2:
+            return
+        if self.ricerca == "ricerca_codice_button":
+            if len(text.get_text()) <3:
+                art = Articolo().select(codice=stringa, batchSize=20)
+            else:
+                art = Articolo().select(codice=stringa, batchSize=50)
+        elif self.ricerca == "ricerca_descrizione_button":
+            if len(text.get_text()) <3:
+                art = Articolo().select(denominazione=stringa, batchSize=20)
+            else:
+                art = Articolo().select(denominazione=stringa, batchSize=50)
+        elif self.ricerca == "ricerca_codice_a_barre_button":
+            if len(text.get_text()) <7:
+                art = Articolo().select(codiceABarre=stringa, batchSize=10)
+            else:
+                art = Articolo().select(codiceABarre=stringa, batchSize=40)
+        elif self.ricerca == "ricerca_codice_articolo_fornitore_button":
+            if len(text.get_text()) <3:
+                art = Articolo().select(codiceArticoloFornitore=stringa, batchSize=10)
+            else:
+                art = Articolo().select(codiceArticoloFornitore=stringa, batchSize=40)
+#        print "MMMM",art
+        for m in art:
+            codice_art = m.codice
+            den = m.denominazione
+            bloccoInformazioni = codice_art+self.sepric+den
+            compl_string = bloccoInformazioni
+            if self.ricerca == "ricerca_codice_articolo_fornitore_button":
+                caf = m.codice_articolo_fornitore
+                compl_string = bloccoInformazioni+self.sepric+caf
+            if self.ricerca == "ricerca_codice_a_barre_button":
+                cb = m.codice_a_barre
+                compl_string = bloccoInformazioni+self.sepric+cb
+            model.append([compl_string,m])
+        self.completion.set_model(model)
+        if len(art) == 1:
+            self.mattu = True
+            self.articolo_matchato = art[0]
+            self.articolo_entry.set_position(-1)
+            self.on_add_button_clicked()
+
+    def match_func(self, completion, key, iter):
+        model = self.completion.get_model()
+        self.mattu = False
+        self.articolo_matchato = None
+#        print "MODELLLLLLLLLLLLLLLLLL", model[iter][0], key, completion.get_text_column()
+        if model[iter][0] and self.articolo_entry.get_text().lower() in model[iter][0].lower():
+            return model[iter][0]
+        else:
+            return None
+
+    def on_completion_match(self, completion=None, model=None, iter=None):
+        self.mattu = True
+        self.articolo_matchato = model[iter][1]
+        self.articolo_entry.set_position(-1)
 
 
 

@@ -11,6 +11,8 @@
     <property name="title" translatable="yes">Azioni sul file:</property>
     <property name="modal">True</property>
     <property name="window_position">center-always</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">dialog</property>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>

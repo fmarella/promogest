@@ -11,6 +11,8 @@ from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
 from promogest.Environment import params, host, database, conf, tipo_eng
 from Dao import Dao
+from Regioni import Regioni
+from Province import Province
 #if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
     #from promogest.modules.RuoliAzioni.dao.Role import Role
 #from Language import Language

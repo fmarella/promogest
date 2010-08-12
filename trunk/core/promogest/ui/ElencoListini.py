@@ -122,6 +122,17 @@ class ElencoListini(GladeWidget):
         self.articoli_listino_togglebutton.set_active(True)
 
 
+    def on_stampa_frontaline_togglebutton_clicked(self, toggleButton):
+        if "Label" in Environment.modulesList:
+            from promogest.modules.Label.ui.ManageLabelsToPrint import ManageLabelsToPrint
+            a = ManageLabelsToPrint(mainWindow=self,daos=[])
+            anagWindow = a.getTopLevel()
+            returnWindow = self.getTopLevel().get_toplevel()
+            anagWindow.set_transient_for(returnWindow)
+            anagWindow.show_all()
+        else:
+            fenceDialog()
+
     def on_listini_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
@@ -166,4 +177,3 @@ class ElencoListini(GladeWidget):
         else:
             fenceDialog()
             toggleButton.set_active(False)
-
