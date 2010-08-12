@@ -276,25 +276,25 @@ class SincroDB(GladeWidget):
                                     op="INSERT",
                                     dao=str(remote[i]._table).split(".")[1],
                                     save=False)
-            tabe = str(remote[i]._table).split(".")[1]
-            if tabe != "articolo":
-                try:
-                    sqlalchemy.ext.sqlsoup.Session.commit()
-                except Exception, e:
-                    if tabe=="listino_articolo":
-                        print "ERRORE NEI LISTINI", e
-                        sqlalchemy.ext.sqlsoup.Session.rollback()
-                        record_id1 = self.pg_db_server_locale.listino_articolo.filter_by(id_listino=remote[i].id_listino).all()
-#                        print "RECOOOOOOOOOOOOOOOOORD", record_id1
-                        if record_id1:
-                            for r in record_id1:
-                                sqlalchemy.ext.sqlsoup.Session.delete(r)
-                            sqlalchemy.ext.sqlsoup.Session.commit()
-#                            print "QUIIII"
-                            self.daosScheme(tables=[("listino_articolo","id_listino")])
-                    else:
-                        sqlalchemy.ext.sqlsoup.Session.rollback()
-                        self.azzeraTable(table=dao)
+                tabe = str(remote[i]._table).split(".")[1]
+                if tabe != "articolo":
+                    try:
+                        sqlalchemy.ext.sqlsoup.Session.commit()
+                    except Exception, e:
+                        if tabe=="listino_articolo":
+                            print "ERRORE NEI LISTINI", e
+                            sqlalchemy.ext.sqlsoup.Session.rollback()
+                            record_id1 = self.pg_db_server_locale.listino_articolo.filter_by(id_listino=remote[i].id_listino).all()
+    #                        print "RECOOOOOOOOOOOOOOOOORD", record_id1
+                            if record_id1:
+                                for r in record_id1:
+                                    sqlalchemy.ext.sqlsoup.Session.delete(r)
+                                sqlalchemy.ext.sqlsoup.Session.commit()
+    #                            print "QUIIII"
+                                self.daosScheme(tables=[("listino_articolo","id_listino")])
+                        else:
+                            sqlalchemy.ext.sqlsoup.Session.rollback()
+                            self.azzeraTable(table=dao)
             if deleteRow:
                 for i in range(len(remote),len(locale)):
                     print "QUESTA È LA RIGA DA rimuovere ", str(locale[i]._table).split(".")[1], "Operazione DELETE"
