@@ -34,7 +34,6 @@ class Sla2Pdf_ng(SlaParser):
         Build a template object based on the specified file-like
         object and sequence of objects
         """
-
         self.pdfFolder = pdfFolder
         self.slaFileName = slaFileName
 
@@ -170,15 +169,16 @@ class Sla2Pdf_ng(SlaParser):
                                 (contColumns,contRows),
                                 pdfAlignment)
             if itext != None:
-                fontName = self.fontNameFunc(itext) #  Font name
-                stile.add('FONT', (contColumns,contRows),
-                                    (contColumns,contRows),
-                                    fontName)
 
-                fontSize = self.fontSizeFunc(itext)# Font size
+                fontSize = self.fontSizeFunc(itext,v=v, trail=trail)# Font size
                 stile.add('FONTSIZE', (contColumns,contRows),
                                     (contColumns,contRows),
                                     fontSize)
+
+                fontName = self.fontNameFunc(itext,trail=trail) #  Font name
+                stile.add('FONT', (contColumns,contRows),
+                                    (contColumns,contRows),
+                                    fontName)
 
                 foreground = self.foregroundFunc(itext) #foreground
                 stile.add('TEXTCOLOR', (contColumns,contRows),
@@ -269,7 +269,7 @@ class Sla2Pdf_ng(SlaParser):
 
     # ATTENZIONE !!!   this part above is for generic function.
 
-    def fontSizeFunc(self, itext):
+    def fontSizeFunc(self, itext,v=None,trail=None):
         fontSize = "0"
         # Font size
         if self.version:
@@ -279,17 +279,23 @@ class Sla2Pdf_ng(SlaParser):
                 pass
         else:
             fontSize = float(itext.get('CSIZE'))
+        if fontSize == "0":
+            try:
+                fontSize = float(trail[v][0].get('FONTSIZE'))
+            except:
+                pass
         if fontSize =="0":
             CHARSTYLE = self.document.findall('CHARSTYLE')[0]
             fontSize = float(CHARSTYLE.get('FONTSIZE'))
                 #fontSize = "8"
         return fontSize
 
-    def fontNameFunc(self, itext, monocell=False):
+    def fontNameFunc(self, itext, monocell=False,v=None,trail=None):
         if self.version:
             fontName = Sla2pdfUtils.getPdfFontName(str(itext.get('FONT')))
         else:
             fontName = Sla2pdfUtils.getPdfFontName(str(itext.get('CFONT')))
+        print "FOOOOOOOOOOONT NAMEEE", fontName
         return fontName
 
     def alignmentFunc(self,paras, v, monocell=False, reiter=False, trail=None):

@@ -11,7 +11,6 @@ import Sla2pdfUtils
 class SlaParser(object):
 
     def __init__(self, slaFileName=None, pdfFolder=None, slafile=None):
-
         self.slaFileName = slaFileName
         self.pdfFolder = pdfFolder
         self.slafile = slafile
@@ -44,11 +43,11 @@ class SlaParser(object):
 
     def slaCharStyleDefault(self):
         charStyleTag = self.slaDocumentTag().findall('CHARSTYLE')
-        return charStyleDefault
+        return charStyleTag
 
     def slaPdfDefault(self):
         pdfTag = self.slaDocumentTag().findall('PDF')
-        return pdfDefault
+        return pdfTag
 
     def slaPage(self):
         page = self.slaDocumentTag().findall('PAGE')
