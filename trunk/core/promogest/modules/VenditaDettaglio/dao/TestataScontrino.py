@@ -145,7 +145,14 @@ testata_scontrino=Table('testata_scontrino',
 std_mapper = mapper(TestataScontrino, testata_scontrino,properties={
         "cctypee":relation(CCardType,primaryjoin=(testata_scontrino.c.id_ccardtype==CCardType.id)),
         "mag":relation(Magazzino,primaryjoin=(testata_scontrino.c.id_magazzino==Magazzino.id)),
-        "usr":relation(User,primaryjoin=(testata_scontrino.c.id_user==User.id)),
+
+         'usr': relation(User, primaryjoin=
+                testata_scontrino.c.id_user==User.id,
+                foreign_keys=[User.id]),
+
+
+
+#        "usr":relation(User,primaryjoin=(testata_scontrino.c.id_user==User.id)),
         "poss":relation(Pos,primaryjoin=(testata_scontrino.c.id_pos==Pos.id)),
         "testatamovimento": relation(TestataMovimento,primaryjoin=
                 (testata_scontrino.c.id_testata_movimento==TestataMovimento.id), backref="testata_scontrino"),

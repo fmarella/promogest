@@ -24,7 +24,9 @@ if hasattr(conf, 'VenditaDettaglio'):
 
     magazzinoTable = Table('magazzino', params['metadata'], autoload=True, schema=params['schema'])
     testataMovimentoTable = Table('testata_movimento', params['metadata'], autoload=True, schema=params['schema'])
-#    ccdTypeTable = Table('credit_card_type', params['metadata'], autoload=True, schema=params['schema'])
+    ccdTypeTable = Table('credit_card_type', params['metadata'], autoload=True, schema=params['schema'])
+
+
     testataScontrinoTable = Table('testata_scontrino', params['metadata'],
                 Column('id',Integer,primary_key=True),
                 Column('data_inserimento',DateTime,PassiveDefault(func.now()),nullable=False),
@@ -36,7 +38,7 @@ if hasattr(conf, 'VenditaDettaglio'):
                 Column('id_magazzino',Integer,ForeignKey(params['schema']+'.magazzino.id', onupdate="CASCADE", ondelete="RESTRICT")),
                 Column('id_pos',Integer,ForeignKey(params['schema']+'.pos.id', onupdate="CASCADE", ondelete="RESTRICT")),
                 Column('id_ccardtype',Integer,ForeignKey(params['schema']+'.credit_card_type.id', onupdate="CASCADE", ondelete="RESTRICT")),
-                Column('id_user',Integer,ForeignKey(params['mainSchema']+'.utente.id')),
+                Column('id_user',Integer),
                 Column('id_testata_movimento',Integer,ForeignKey(params['schema']+'.testata_movimento.id', onupdate="CASCADE", ondelete="RESTRICT")),
                 schema=params['schema'],
 #                useexisting =True
