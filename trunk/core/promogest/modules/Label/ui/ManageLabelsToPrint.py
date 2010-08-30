@@ -323,9 +323,11 @@ class ManageLabelsToPrint(GladeWidget):
                 else:
                     row[5] = str(int(giacenza))
         elif self.movimento_radio.get_active():
-            from promogest.dao.TestataDocumento import TestataDocumento
+            from promogest.dao.TestataMovimento import TestataMovimento
+#            from promogest.dao.TestataDocumento import TestataDocumento
             for row in self._treeViewModel:
-                docu = TestataDocumento().select(idArticolo=row[0].id_articolo)
+                docu = TestataMovimento().select(idArticolo=row[0].id_articolo, batchSize=None)
+#                docu = TestataDocumento().select(idArticolo=row[0].id_articolo, batchSize=None)
                 if docu:
                     doc = docu[-1]
                     for riga in doc.righe:

@@ -843,13 +843,14 @@ class TestataDocumento(Dao):
         elif k == 'statoDocumento':
             dic = {k:testata_documento.c.documento_saldato == v}
         elif k == 'idArticolo':
-            dic = {k : and_(Articolo.id ==Riga.id_articolo,
-                           or_(and_(riga.c.id==RigaMovimento.id,
-                           RigaMovimento.id_testata_movimento == TestataMovimento.id,
-                           TestataMovimento.id_testata_documento == testata_documento.c.id),
-                                and_(riga.c.id==RigaDocumento.id,
-                           RigaDocumento.id_testata_documento == testata_documento.c.id)),
-                           Articolo.id ==v)}
+            dic = {k : or_(and_(testata_movi.c.id_testata_documento == self.id,
+                            riga_mov.c.id_testata_movimento == testata_movi.c.id,
+                           riga.c.id==riga_mov.c.id,
+                           articolo.c.id ==riga.c.id_articolo,articolo.c.id ==v),
+                            and_(riga_doc.c.id_testata_documento == self.id,
+                                riga.c.id==riga_doc.c.id,
+                           articolo.c.id ==riga.c.id_articolo,articolo.c.id ==v))}
+
 #            dic = {k:testata_documento.c.id.in_(select([testata_documento.c.id],
 #                        or_(and_(testata_movi.c.id_testata_documento == testata_documento.c.id,
 #                        Riga.id==RigaMovimento.id,Articolo.id ==Riga.id_articolo,
@@ -871,6 +872,8 @@ class TestataDocumento(Dao):
                             TestataGestioneNoleggio.data_fine_noleggio <= v)}
         return  dic[k]
 
+riga_mov =Table('riga_movimento',params['metadata'],schema = params['schema'],autoload=True)
+articolo = Table('articolo',params['metadata'],schema = params['schema'],autoload=True)
 riga=Table('riga',params['metadata'],schema = params['schema'],autoload=True)
 riga_doc=Table('riga_documento',params['metadata'],schema = params['schema'],autoload=True)
 testata_documento=Table('testata_documento',params['metadata'],schema = params['schema'],autoload=True)

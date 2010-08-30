@@ -139,11 +139,11 @@ class TestataMovimento(Dao):
             dic = {k:testata_mov.c.id_testata_documento ==v}
         elif k == 'idTestataDocumento':
             dic = {k:testata_mov.c.id_testata_documento ==v}
-#        elif k == 'idArticolo':
-#            dic = {k:and_(Articolo.id ==Riga.id_articolo,
-#                           Riga.id==RigaMovimento.id,
-#                           RigaMovimento.id_testata_movimento == TestataMovimento.id,
-#                           Articolo.id ==v)}
+        elif k == 'idArticolo':
+            dic = {k:and_(RigaMovimento.id_testata_movimento == TestataMovimento.id,
+                            Riga.id==RigaMovimento.id,
+                            Articolo.id ==Riga.id_articolo,
+                           Articolo.id ==v)}
 #        elif k == 'idArticoloList':
 #            dic = {k:and_(Articolo.id ==Riga.id_articolo,
 #                           Riga.id==RigaMovimento.id,

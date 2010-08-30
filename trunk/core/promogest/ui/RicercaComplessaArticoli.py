@@ -1531,7 +1531,7 @@ class RicercaArticoliFilter(GladeWidget):
                                             filterDict = self.filterDict,
                                             complexFilter =self.complexFilter,
                                             batchSize=self.filter.batchSize)
-        if ( self._tipoRicerca == 'avanzata' and self.complexFilter) or \
+        if ( self._tipoRicerca == 'avanzata' and self.complexFilter is not None) or \
                         ( self._tipoRicerca == 'semplice' and self.filterDict):
             self.artsResult = Articolo().select(orderBy=self.filter.orderBy,
                                             join=self.filter.join,

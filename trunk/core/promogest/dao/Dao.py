@@ -98,7 +98,7 @@ class Dao(object):
         Restituisce il numero delle righe
         """
         _numRecords = 0
-        if complexFilter:
+        if complexFilter is not None:
             filter = complexFilter
         else:
             filter= self.prepareFilter(kwargs)
