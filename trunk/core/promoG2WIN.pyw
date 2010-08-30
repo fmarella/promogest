@@ -25,7 +25,7 @@ class BigBang(object):
                 -d   --debugDao Per visualizzare con delle print i dizionari dao
                 -f   --debugFilter Per visualizzare maggiori informazioni sui filtri
                 -a   --debugALL Per mettere il debug al massimo
-                -t   --tipoDB  Permette, quando possibile da modificare il DB
+                -t   --tipoDB  Permette, quando possibile, di modificare il DB
                         sottostante ( opzioni possibili: "sqlite" , "postgresql")
                 """
         parser = OptionParser(usage=usage)

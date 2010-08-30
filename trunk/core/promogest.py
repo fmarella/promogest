@@ -3,7 +3,7 @@
 #
 # Promogest
 # Copyright (C) 2005-2009 by Promotux Informatica - http://www.promotux.it/
-# all rights reserver
+# all rights reserved
 
 
 import os
@@ -16,9 +16,6 @@ from config import Config
 
 class BigBang(object):
     def __init__(self, debugDao=None, debugSQL=None, debugALL=None):
-        debugALL = None
-        debugDao = None
-        debugSQL = None
         usage = """Uso: %prog [options]
         Opzioni disponibili sono :
                 -d   --debugDao Per visualizzare con delle print i dizionari dao

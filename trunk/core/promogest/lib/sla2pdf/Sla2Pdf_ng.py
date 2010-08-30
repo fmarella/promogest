@@ -295,7 +295,6 @@ class Sla2Pdf_ng(SlaParser):
             fontName = Sla2pdfUtils.getPdfFontName(str(itext.get('FONT')))
         else:
             fontName = Sla2pdfUtils.getPdfFontName(str(itext.get('CFONT')))
-        print "FOOOOOOOOOOONT NAMEEE", fontName
         return fontName
 
     def alignmentFunc(self,paras, v, monocell=False, reiter=False, trail=None):

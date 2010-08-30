@@ -625,7 +625,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
     def setDao(self, dao):
         """
-            imposta un nuovo dao Testata documenco
+            imposta un nuovo dao Testata documento
         """
         self.destinatario_radiobutton.set_active(True)
         self.id_vettore_customcombobox.set_sensitive(False)

@@ -41,9 +41,9 @@ class ManageLabelsToPrint(GladeWidget):
         self.completion.set_text_column(0)
         self.articolo_entry.set_completion(self.completion)
         self.mattu = False
-        self.sepric = "  ~  "
+        self.sepric = "  ~  " # separatore utile allo split
         self.articolo_matchato = None
-        self.ricerca = "ricerca_codice_a_barre_button" # ATTENZIONE ...scorciatoia ... che non gestite
+        self.ricerca = "ricerca_codice_a_barre_button" # ATTENZIONE ...scorciatoia ... check non gestite
         self.daos = daos
         fillComboboxListini(self.listino_combobox, True)
         self.draw()

@@ -133,8 +133,8 @@ class Main(GladeWidget):
                                    self.on_main_iconview_select, model)
 
         self.main_iconview.set_columns(1)
-        self.main_iconview.set_item_width(120)
-        self.main_iconview.set_size_request(130, -1)
+        self.main_iconview.set_item_width(80)
+        self.main_iconview.set_size_request(95, -1)
 
         # right vertical icon list  adding modules
         model_right = gtk.ListStore(int, str, gtk.gdk.Pixbuf, object)
@@ -164,8 +164,8 @@ class Main(GladeWidget):
                                    self.on_main_iconview_right_select, model_right)
 
         self.main_iconview_right.set_columns(1)
-        self.main_iconview_right.set_item_width(120)
-        self.main_iconview_right.set_size_request(130, -1)
+        self.main_iconview_right.set_item_width(80)
+        self.main_iconview_right.set_size_request(95, -1)
         #load the alarm notification frame (AKA MainWindowFrame)
         if self.currentFrame is None:
 #            self.main_hbox.remove(self.box_immagini_iniziali)

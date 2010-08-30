@@ -29,6 +29,7 @@
   </object>
   <object class="GtkWindow" id="main_window">
     <property name="title" translatable="yes">PromoGest2</property>
+    <property name="window_position">center</property>
     <property name="icon">promogest.png</property>
     <signal name="destroy" handler="on_main_window_destroy"/>
     <signal name="key_press_event" handler="on_main_window_key_press_event"/>
@@ -37,6 +38,7 @@
     <child>
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkMenuBar" id="main_menubar">
             <property name="visible">True</property>
@@ -543,7 +545,7 @@ articoli per un certo </property>
                                 <property name="xpad">8</property>
                                 <property name="ypad">4</property>
                                 <property name="label" translatable="yes"> &lt;b&gt;Attenzione!&lt;/b&gt; 
-I seguenti promemoria sono in scadenza. Verificare?!?</property>
+Promemoria in scadenza. Verificare?!?</property>
                                 <property name="use_markup">True</property>
                                 <property name="justify">center</property>
                                 <property name="wrap">True</property>
@@ -593,7 +595,7 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                                               <object class="GtkLabel" id="label8">
                                                 <property name="visible">True</property>
                                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                                <property name="label" translatable="yes">Rimanda di un giorno</property>
+                                                <property name="label" translatable="yes">Rimanda un giorno</property>
                                               </object>
                                               <packing>
                                                 <property name="position">1</property>
@@ -745,6 +747,7 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                     <child>
                       <object class="GtkVBox" id="vbox1">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkAlignment" id="alignment4">
                             <property name="visible">True</property>
@@ -775,6 +778,7 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                         <child>
                           <object class="GtkHBox" id="hbox7">
                             <property name="visible">True</property>
+                            <property name="spacing">3</property>
                             <child>
                               <object class="GtkCheckButton" id="promemoria_ins_check">
                                 <property name="label" translatable="yes">Promemoria Ins</property>
@@ -862,12 +866,14 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
+                            <property name="padding">1</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
                           <object class="GtkHBox" id="hbox6">
                             <property name="visible">True</property>
+                            <property name="spacing">3</property>
                             <child>
                               <object class="GtkComboBox" id="when_combo">
                                 <property name="visible">True</property>
@@ -995,6 +1001,7 @@ I seguenti promemoria sono in scadenza. Verificare?!?</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
+                            <property name="padding">1</property>
                             <property name="position">2</property>
                           </packing>
                         </child>

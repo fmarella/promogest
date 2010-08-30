@@ -11,6 +11,7 @@ import Sla2pdfUtils
 class SlaParser(object):
 
     def __init__(self, slaFileName=None, pdfFolder=None, slafile=None):
+
         self.slaFileName = slaFileName
         self.pdfFolder = pdfFolder
         self.slafile = slafile
