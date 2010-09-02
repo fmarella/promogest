@@ -278,6 +278,7 @@ class ManageSizeAndColor(GladeWidget):
     def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
         """ Function to set the value quantita edit in the cell"""
         model = treeview.get_model()
+#        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", model, value
         model[path][0]["quantita"] = value
         model[path][3] = value
 
@@ -453,10 +454,11 @@ class ManageSizeAndColor(GladeWidget):
         resultList= []
         for row in self._treeViewModel:
 #            print "ROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", row, row[0], row[1], row[2], row[3], row[4], row[5],row[6]
-            if row[0]['quantita'] == "0" or row[0]['quantita'] == "":
-                continue
-            else:
-                resultList.append(row[0])
+            if "quantita" in row[0]:
+                if row[0]['quantita'] == "0" or row[0]['quantita'] == "":
+                    continue
+                else:
+                    resultList.append(row[0])
 
         self.mainWindow.tagliaColoreRigheList = resultList # rimando indietro la lista
         self.mainWindow.promowear_manager_taglia_colore_togglebutton.set_active(False)
