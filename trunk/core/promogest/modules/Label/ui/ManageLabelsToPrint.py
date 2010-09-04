@@ -156,7 +156,7 @@ class ManageLabelsToPrint(GladeWidget):
                     self.resultList.append(row[0])
         classic = False
         param = []
-        for d in self.daos:
+        for d in self.resultList:
             d.resolveProperties()
             param.append(d.dictionary(complete=True))
         if self.classic_radio.get_active():
