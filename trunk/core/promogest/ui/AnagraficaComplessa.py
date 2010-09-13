@@ -378,7 +378,7 @@ class Anagrafica(GladeWidget):
         self._handlePrinting(pdfGenerator=self.reportHandler, report=True)
 
     def on_Stampa_Frontaline_clicked(self, widget):
-        if ("Label" or "pan") in Environment.modulesList:
+        if "Label" or "pan" in Environment.modulesList:
             results = self.filter.runFilter(offset=None, batchSize=None)
             self.manageLabels(results)
         else:

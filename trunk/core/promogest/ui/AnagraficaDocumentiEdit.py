@@ -42,7 +42,7 @@ if "SuMisura" in Environment.modulesList:
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
 if "GestioneNoleggio" in Environment.modulesList:
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
-if ("Pagamenti" or "pan") in Environment.modulesList:
+if "Pagamenti" or "pan" in Environment.modulesList:
     from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 
 class AnagraficaDocumentiEdit(AnagraficaEdit):
@@ -109,7 +109,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.articolo_matchato = None
         self.checkMAGAZZINO = True
 #        self.completion.set_minimum_key_length(3)
-        if ("Pagamenti" or "pan") not in Environment.modulesList:
+        if "Pagamenti" or "pan" not in Environment.modulesList:
             self.notebook.remove_page(3)
         if "PromoWear" in Environment.modulesList:
             self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
@@ -264,7 +264,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if "GestioneNoleggio" in Environment.modulesList:
             AnagraficaDocumentiEditGestioneNoleggioExt.setLabels(self)
 
-        if ("Pagamenti" or "pan") in Environment.modulesList:
+        if "Pagamenti" or "pan" in Environment.modulesList:
             AnagraficadocumentiPagamentExt.nuovaRiga(self)
             AnagraficadocumentiPagamentExt.attiva_prima_scadenza(self,False, True)
             AnagraficadocumentiPagamentExt.attiva_seconda_scadenza(self,False, True)
@@ -382,7 +382,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if page_num == 2:
             self.calcolaTotale()
         elif page_num ==3:
-            if ("Pagamenti" or "pan") not in Environment.modulesList:
+            if "Pagamenti" or "pan" not in Environment.modulesList:
                 fenceDialog()
                 self.calcola_importi_scadenza_button.set_sensitive(False)
                 self.controlla_rate_scadenza_button.set_sensitive(False)
@@ -620,7 +620,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.id_operazione_combobox.grab_focus()
         else:
             self.id_magazzino_combobox.grab_focus()
-        if "Pagamenti" in Environment.modulesList:
+        if "Pagamenti" or "pan" in Environment.modulesList:
            AnagraficadocumentiPagamentExt.getScadenze(self)
 
     def setDao(self, dao):
@@ -830,7 +830,7 @@ del documento.
             righeDocumento.append(daoRiga)
         self.dao.righeDocumento = righeDocumento
 
-        if "Pagamenti" in Environment.modulesList:
+        if "Pagamenti" or "pan" in Environment.modulesList:
             AnagraficadocumentiPagamentExt.saveScadenze(self)
 
         tipoid = findIdFromCombobox(self.id_operazione_combobox)
@@ -1145,14 +1145,15 @@ del documento.
             self.nuovaRiga()
 
     def on_articolo_entry_insert_text(self, text):
+				# assegna il valore della casella di testo alla variabile
         stringa = text.get_text()
-#        print "AJAJAAJAJAJAJAJ", stringa, self.mattu,self.ricerca
         if self.mattu:
             text.set_text(stringa.split(self.sepric)[0])
         model = gtk.ListStore(str,object)
         vediamo = self.completion.get_model()
         vediamo.clear()
         art = []
+				# evita la ricerca per stringhe vuote o più corte di due caratteri
         if stringa ==[] or len(stringa)<2:
             return
         if self.ricerca == "ricerca_codice_button":

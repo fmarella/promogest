@@ -421,7 +421,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
             anagWindow.set_transient_for(returnWindow)
             anag.show_all()
         elif combobox.child.get_text() == stringContatti:
-            if ("Contatti" or "pan") in Environment.modulesList:
+            if "Contatti" or "pan" in Environment.modulesList:
                 from promogest.modules.Contatti.ui.RicercaContatti import RicercaContatti
                 anag = RicercaContatti()
                 anagWindow = anag.getTopLevel()

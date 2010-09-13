@@ -126,7 +126,7 @@ se non sei registrato fallo premendo il pulsante""")
                         if conf:
                             conf[0].value = "SI"
                             conf[0].persist()
-                    elif setconf("Master","pan") =="SI":
+                    else:
                         conf = SetConf().select(key="pan", section="Master")
                         if conf:
                             c = conf[0]

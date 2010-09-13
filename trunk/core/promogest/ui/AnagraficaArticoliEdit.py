@@ -183,7 +183,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         self.sospeso_checkbutton.set_active(self.dao.sospeso or False)
         if "PromoWear" in Environment.modulesList:
              #articolo ancora non salvato o articolo senza taglia e colore
-            # Articolo in anagrafica già salvato con id_articolo_padre pieno quindi è una variante
+             #Articolo in anagrafica già salvato con id_articolo_padre pieno quindi è una variante
             a = articleTypeGuiManage(self, self.dao, new=self.new)
         if "GestioneNoleggio" in Environment.modulesList:
             self.divisore_noleggio_entry.set_text(str(self.dao.divisore_noleggio))

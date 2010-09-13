@@ -136,7 +136,7 @@ class ElencoMagazzini(GladeWidget):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
-        if ("Inventario" or "pan") in Environment.modulesList:
+        if "Inventario" or "pan" in Environment.modulesList:
 #            return
 
             if self._currentDao is not None:

@@ -18,7 +18,7 @@ if "SuMisura" in Environment.modulesList:
     from promogest.modules.SuMisura.ui import AnagraficaDocumentiEditSuMisuraExt
 if "GestioneNoleggio" in Environment.modulesList:
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
-if ("Pagamenti" or "pan") in Environment.modulesList:
+if "Pagamenti" or "pan" in Environment.modulesList:
     from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 
 
@@ -196,7 +196,7 @@ def drawPart(anaedit):
             anaedit.on_sconti_widget_button_toggled)
     anaedit.sconti_testata_widget.button.connect('toggled',
             anaedit.on_sconti_testata_widget_button_toggled)
-    if ("Pagamenti" or "pan") in Environment.modulesList:
+    if "Pagamenti" or "pan" in Environment.modulesList:
         AnagraficadocumentiPagamentExt.connectEntryPag(anaedit)
 
 

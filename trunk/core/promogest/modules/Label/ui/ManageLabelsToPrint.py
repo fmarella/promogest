@@ -55,6 +55,7 @@ class ManageLabelsToPrint(GladeWidget):
         treeview = self.labels_treeview
 
         rendererSx = gtk.CellRendererText()
+		# istanzia la gestione della TreeViewColumn
         column = gtk.TreeViewColumn("Codice", rendererSx, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)

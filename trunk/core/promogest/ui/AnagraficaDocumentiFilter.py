@@ -119,7 +119,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         column.set_expand(True)
         column.set_min_width(200)
         treeview.append_column(column)
-        if ("Pagamenti" or "pan") in Environment.modulesList:
+        if "Pagamenti" or "pan" in Environment.modulesList:
             column = gtk.TreeViewColumn('Saldato', rendererSx, text=10)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
             column.set_clickable(False)
@@ -172,7 +172,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.id_cliente_filter_customcombobox.set_active(0)
         self.id_fornitore_filter_customcombobox.set_active(0)
         self.id_agente_filter_customcombobox.set_active(0)
-        if ("Pagamenti" or "pan") in Environment.modulesList:
+        if "Pagamenti" or "pan" in Environment.modulesList:
             self.stato_documento_filter_combobox.set_active(-1)
         if "GestioneNoleggio" in Environment.modulesList:
             self.a_data_inizio_noleggio_filter_entry.set_text('')

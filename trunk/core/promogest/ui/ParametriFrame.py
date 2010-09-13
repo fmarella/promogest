@@ -92,7 +92,7 @@ class ParametriFrame(GladeWidget):
     def on_utenti_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        if ("RuoliAzioni" or "pan") in Environment.modulesList:
+        if "RuoliAzioni" or "pan" in Environment.modulesList:
             from promogest.modules.RuoliAzioni.ui.AnagraficaUtenti import AnagraficaUtenti
             anag = AnagraficaUtenti()
             showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
@@ -103,7 +103,7 @@ class ParametriFrame(GladeWidget):
     def on_ruoli_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        if ("RuoliAzioni" or "pan") in Environment.modulesList:
+        if "RuoliAzioni" or "pan" in Environment.modulesList:
             from promogest.modules.RuoliAzioni.ui.AnagraficaRuoli import AnagraficaRuoli
             anag = AnagraficaRuoli()
             showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
@@ -114,7 +114,7 @@ class ParametriFrame(GladeWidget):
     def on_ruoli_azioni_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        if ("RuoliAzioni" or "pan") in Environment.modulesList:
+        if "RuoliAzioni" or "pan" in Environment.modulesList:
             from promogest.modules.RuoliAzioni.ui.ManageRoleAction import ManageRuoloAzioni
             anag = ManageRuoloAzioni()
             showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)

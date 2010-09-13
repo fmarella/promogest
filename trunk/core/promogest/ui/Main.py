@@ -180,7 +180,7 @@ class Main(GladeWidget):
         """ Aggiornamenti e controlli da fare all'avvio del programma
         """
         #Aggiornamento scadenze promemoria
-        if ("Promemoria" or "pan") in Environment.modulesList:
+        if "Promemoria" or "pan" in Environment.modulesList:
             updateScadenzePromemoria()
 
     def _refresh(self):
