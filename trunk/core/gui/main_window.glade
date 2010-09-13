@@ -1123,14 +1123,19 @@ Promemoria in scadenza. Verificare?!?</property>
             <property name="border_width">2</property>
             <property name="spacing">2</property>
             <child>
-              <object class="GtkButton" id="button_help">
-                <property name="label">gtk-help</property>
+              <object class="GtkButton" id="pan_active">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_button_help_clicked"/>
+                <signal name="clicked" handler="on_pan_active_clicked"/>
+                <child>
+                  <object class="GtkLabel" id="pan_label_info">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">&lt;b&gt;NOVITA'&lt;/b&gt; ATTIVA &lt;b&gt;"PAN"&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1162,7 +1167,7 @@ Promemoria in scadenza. Verificare?!?</property>
                 <child>
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">&lt;span foreground="red"&gt;&lt;big&gt;&lt;b&gt;COSA POSSO/NON POSSO FARE CON QUESTA VERSIONE?&lt;/b&gt;&lt;/big&gt;&lt;/span&gt;</property>
+                    <property name="label" translatable="yes">&lt;span foreground="red"&gt;&lt;big&gt;&lt;b&gt;PERCHE UNA VERSIONE LITE?&lt;/b&gt;&lt;/big&gt;&lt;/span&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                 </child>

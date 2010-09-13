@@ -123,7 +123,7 @@ class ElencoListini(GladeWidget):
 
 
     def on_stampa_frontaline_togglebutton_clicked(self, toggleButton):
-        if "Label" in Environment.modulesList:
+        if ("Label" or "pan") in Environment.modulesList:
             from promogest.modules.Label.ui.ManageLabelsToPrint import ManageLabelsToPrint
             a = ManageLabelsToPrint(mainWindow=self,daos=[])
             anagWindow = a.getTopLevel()
@@ -165,7 +165,7 @@ class ElencoListini(GladeWidget):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
-        if "ImportPriceList" in Environment.modulesList:
+        if ("ImportPriceList" or "pan") in Environment.modulesList:
             from promogest.modules.ImportPriceList.ui.ImportPriceList import ImportPriceList
             idListino = None
             if self._currentDao:

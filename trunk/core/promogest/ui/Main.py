@@ -44,6 +44,7 @@ from promogest.dao.Promemoria import Promemoria
 from promogest.ui.AnagraficaPromemoria import AnagraficaPromemoria
 from promogest.dao.TestataDocumento import TestataDocumento
 from ConfiguraWindow import ConfiguraWindow
+from promogest.ui.PanUi import PanUi, checkPan
 #inizializzano il customwidget
 from widgets.ArticoloSearchWidget import ArticoloSearchWidget
 from widgets.ClienteSearchWidget import ClienteSearchWidget
@@ -71,7 +72,7 @@ class Main(GladeWidget):
         self.statusBarHandler()
         for filename in glob.glob(Environment.promogestDir+"/temp/"+'*.cache') :
             os.remove( filename )
-        Login.windowGroup.append(self.getTopLevel())
+        Environment.windowGroup.append(self.getTopLevel())
         self.anagrafiche_modules = anagrafiche_modules
         self.parametri_modules = parametri_modules
         self.anagrafiche_dirette_modules=anagrafiche_dirette_modules
@@ -101,6 +102,7 @@ class Main(GladeWidget):
             self.planning_scrolled.add(self.htmlPlanningWidget)
             self.create_planning_frame()
             gobject.idle_add(self.create_news_frame)
+        gobject.idle_add(checkPan, self)
         self.updates()
 
     def show(self):
@@ -178,7 +180,7 @@ class Main(GladeWidget):
         """ Aggiornamenti e controlli da fare all'avvio del programma
         """
         #Aggiornamento scadenze promemoria
-        if "Promemoria" in Environment.modulesList:
+        if ("Promemoria" or "pan") in Environment.modulesList:
             updateScadenzePromemoria()
 
     def _refresh(self):
@@ -843,7 +845,6 @@ class Main(GladeWidget):
 
     def on_configurazione_menu_activate(self, widget):
         if not hasAction(actionID=14):return
-
         configuraWindow = ConfiguraWindow(self)
         configuraWindow = SetConfUI(self)
         showAnagrafica(self.getTopLevel(), configuraWindow)
@@ -1004,6 +1005,13 @@ ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDum
             #os.remove(stname)
         else:
             Environment.pg2log.info("ATTENZIONE DUMP NON RIUSCITO")
+
+    def on_pan_active_clicked(self, button):
+#        if not hasAction(actionID=14):return
+#        configuraWindow = ConfiguraWindow(self)
+        configuraWindow = PanUi(self)
+        showAnagrafica(self.getTopLevel(), configuraWindow)
+
 
     def on_seriale_menu_activate(self, widget):
         try:
@@ -1254,8 +1262,8 @@ def on_anagrafica_destroyed(anagrafica_window, argList):
     mainWindow = argList[0]
     anagraficaButton= argList[1]
     mainClass = argList[2]
-    if anagrafica_window in Login.windowGroup:
-        Login.windowGroup.remove(anagrafica_window)
+    if anagrafica_window in Environment.windowGroup:
+        Environment.windowGroup.remove(anagrafica_window)
     if anagraficaButton is not None:
         anagraficaButton.set_active(False)
     if mainClass is not None:

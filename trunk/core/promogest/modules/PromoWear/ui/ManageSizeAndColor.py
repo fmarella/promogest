@@ -278,7 +278,6 @@ class ManageSizeAndColor(GladeWidget):
     def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
         """ Function to set the value quantita edit in the cell"""
         model = treeview.get_model()
-#        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", model, value
         model[path][0]["quantita"] = value
         model[path][3] = value
 

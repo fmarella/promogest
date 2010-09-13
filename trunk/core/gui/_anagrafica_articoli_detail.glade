@@ -367,6 +367,8 @@
                     <property name="primary_icon_sensitive">True</property>
                     <property name="secondary_icon_sensitive">True</property>
                     <signal name="button_press_event" handler="on_button_press_event"/>
+                    <signal name="changed" handler="on_codice_entry_changed" after="yes"/>
+                    <signal name="key_press_event" handler="on_codice_entry_key_press_event"/>
                     <signal name="focus_out_event" handler="on_focus_out_event"/>
                     <signal name="focus_in_event" handler="on_focus_in_event"/>
                     <signal name="icon_press" handler="on_icon_press"/>

@@ -22,106 +22,25 @@
 
 import hashlib
 import os
-import gtk, gobject
+import gtk
 import datetime
-import locale
 import threading
 from  subprocess import *
 from GladeApp import GladeApp
-from GladeWidget import GladeWidget
 from promogest import Environment
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
-from promogest.dao.AppLog import AppLog
 from GtkExceptionHandler import GtkExceptionHandler
 from utils import hasAction,on_status_activate, checkAggiorna, aggiorna, checkInstallation, setconf
 from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
-#from promogest.ui.DocuView import DocuView
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.lib import feedparser
 from promogest.lib import HtmlHandler
-#import glib
-#glib.threads_init()
+from promogest.ui.StatusBar import Pg2StatusIcon
 
 
-windowGroup = []
-visible = 1
-blink = 0
-screens = []
-
-class Pg2StatusIcon(gtk.StatusIcon):
-    def __init__(self):
-        gtk.StatusIcon.__init__(self)
-        menu = '''
-            <ui>
-             <menubar name="Menubar">
-              <menu action="Menu">
-               <menuitem action="Preferences"/>
-               <separator/>
-               <menuitem action="About"/>
-               <menuitem action="Exit"/>
-              </menu>
-             </menubar>
-            </ui>
-        '''
-
-        actions = [
-            ('Menu',  None, 'Menu'),
-            ('Preferences', gtk.STOCK_PREFERENCES, '_Preferences...', None, 'tooltip preferences', self.on_preferences),
-            ('About', gtk.STOCK_ABOUT, '_About', None, 'tooltip About', self.on_about),
-            ('Exit', gtk.STOCK_QUIT, '_Exit', None, 'tooltip Exit', self.on_close)
-            ]
-        actionGroup = gtk.ActionGroup("Actions")
-        actionGroup.add_actions(actions)
-        self.manager = gtk.UIManager()
-        self.manager.insert_action_group(actionGroup, 0)
-        self.manager.add_ui_from_string(menu)
-        self.menu = self.manager.get_widget('/Menubar/Menu/About').props.parent
-        self.set_from_file(Environment.conf.guiDir + 'logo_promogest_piccolo.png')
-        self.set_tooltip('Promogest, il Gestionale open source per la tua azienda')
-        self.connect('activate', self.on_activate)
-        self.connect('popup-menu', self.on_popup_menu)
-
-    def on_activate(self, data):
-        """
-        Funzione per la gestione dell'icona nel sys tray
-        """
-        global visible,blink, windowGroup, screens
-        visible, blink,screens = on_status_activate(self, windowGroup, visible, blink, screens)
-                                #statusIcon.connect('activate', on_activate)
-
-    def on_popup_menu(self, status, button, time):
-        self.menu.popup(None, None, None, button, time)
-
-    def on_close(self, data):
-        gtk.main_quit()
-
-    def on_preferences(self, data):
-        #if not hasAction(actionID=14):return
-        #from promogest.ui.Main import ConfiguraWindow
-        #configuraWindow = ConfiguraWindow(self)
-        #showAnagrafica(self.getTopLevel(), configuraWindow)
-        print "clicked on preferences"
-
-
-    def on_about(self, data):
-        """ and this one to show the about box """
-        about = gtk.AboutDialog()
-        about.set_name("PromoGest2")
-        about.set_version("svn")
-        about.set_copyright("Promotux 2009")
-        about.set_license("license")
-        about.set_website("http://promogest.promotux.it")
-        about.set_authors(["Francesco <francesco@promtoux.it>"])
-        try:
-            about.set_logo(gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'logo_promogest_piccolo.png'))
-        except:
-            pass
-        about.set_comments("Gestionale multipiattaforma per la tua impresa")
-        about.run()
-        about.destroy()
 
 class Login(GladeApp):
 
@@ -152,8 +71,7 @@ class Login(GladeApp):
         azs = Azienda().select(batchSize = None,orderBy=Azienda.schemaa) #lista aziende
         for a in azs:
             model.append((a.schemaa, a.denominazione))
-        global windowGroup
-        windowGroup.append(self.getTopLevel())
+        Environment.windowGroup.append(self.getTopLevel())
         if Environment.engine.name == "sqlite": #forzo lo splash per lite
             fileSplashImage = "gui/splash_pg2_lite.png"
         else:
@@ -298,10 +216,9 @@ class Login(GladeApp):
                     else:
                         Environment.params['usernameLoggedList'][2] = "Admin"
                     if hasAction(actionID=1):
-                        #Environment.meta.reflect(schema=self.azienda )
                         self.login_window.hide()
-                        global windowGroup
-                        windowGroup.remove(self.getTopLevel())
+                        Environment.windowGroup.remove(self.getTopLevel())
+
                         from promogest.lib.UpdateDB import *
                         self.importModulesFromDir('promogest/modules')
                         #saveAppLog(action="login", status=True,value=username)
@@ -413,6 +330,5 @@ def on_main_window_closed(main_window, login_window):
     main windows close event in login windows
     """
     login_window.show()
-    global windowGroup
-    windowGroup.append(login_window)
-    windowGroup.remove(main_window)
+    Environment.windowGroup.append(login_window)
+    Environment.windowGroup.remove(main_window)

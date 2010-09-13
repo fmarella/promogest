@@ -92,7 +92,7 @@ class ParametriFrame(GladeWidget):
     def on_utenti_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        if "RuoliAzioni" in Environment.modulesList:
+        if ("RuoliAzioni" or "pan") in Environment.modulesList:
             from promogest.modules.RuoliAzioni.ui.AnagraficaUtenti import AnagraficaUtenti
             anag = AnagraficaUtenti()
             showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
@@ -103,7 +103,7 @@ class ParametriFrame(GladeWidget):
     def on_ruoli_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        if "RuoliAzioni" in Environment.modulesList:
+        if ("RuoliAzioni" or "pan") in Environment.modulesList:
             from promogest.modules.RuoliAzioni.ui.AnagraficaRuoli import AnagraficaRuoli
             anag = AnagraficaRuoli()
             showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
@@ -114,7 +114,7 @@ class ParametriFrame(GladeWidget):
     def on_ruoli_azioni_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        if "RuoliAzioni" in Environment.modulesList:
+        if ("RuoliAzioni" or "pan") in Environment.modulesList:
             from promogest.modules.RuoliAzioni.ui.ManageRoleAction import ManageRuoloAzioni
             anag = ManageRuoloAzioni()
             showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
@@ -206,8 +206,8 @@ def on_anagrafica_destroyed(anagrafica_window, argList):
     mainWindow = argList[0]
     anagraficaButton= argList[1]
     mainClass = argList[2]
-    if anagrafica_window in Login.windowGroup:
-        Login.windowGroup.remove(anagrafica_window)
+    if anagrafica_window in Environment.windowGroup:
+        Environment.windowGroup.remove(anagrafica_window)
     if anagraficaButton is not None:
         anagraficaButton.set_active(False)
     if mainClass is not None:

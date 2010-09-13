@@ -1072,8 +1072,8 @@ def on_anagrafica_destroyed(anagrafica_window, argList):
     mainWindow = argList[0]
     anagraficaButton= argList[1]
     mainClass = argList[2]
-    if anagrafica_window in Login.windowGroup:
-        Login.windowGroup.remove(anagrafica_window)
+    if anagrafica_window in Environment.windowGroup:
+        Environment.windowGroup.remove(anagrafica_window)
 #    if anagraficaButton is not None:
 #        anagraficaButton.set_active(False)
 #    if mainClass is not None:

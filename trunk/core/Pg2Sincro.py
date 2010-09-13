@@ -16,7 +16,7 @@ class Pg2Sincro(object):
         parser = OptionParser(usage=usage)
         parser.add_option("-f", "--fileconf",
                             #action="store_true",
-                            help="NECESSARIO per definire quale configure utlizzare",
+                            help="NECESSARIO per definire quale configure utilizzare",
                             default="",
                             type="string",
                             dest="Configure")

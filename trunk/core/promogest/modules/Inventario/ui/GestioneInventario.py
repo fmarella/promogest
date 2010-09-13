@@ -47,12 +47,8 @@ class GestioneInventario(RicercaComplessaArticoli):
             fileName="Inventario/gui/_inventario_select.glade", isModule=True)
 
         RicercaComplessaArticoli.__init__(self)
-
-
         self.anno = int(Environment.workingYear)
         self.annoScorso= int(Environment.workingYear) -1
-
-
         # modifiche all'interfaccia originaria
         self.getTopLevel().set_title('Promogest - Gestione inventario ' + str(self.annoScorso))
         self.search_image.set_no_show_all(True)
@@ -513,7 +509,6 @@ class GestioneInventario(RicercaComplessaArticoli):
         dialog.destroy()
         if response == gtk.RESPONSE_YES:
             for i in  self.inventariati_filtrati_tutti:
-                print i.anno, i.quantita
                 i.quantita = 0
                 Environment.session.add(i)
             Environment.session.commit()

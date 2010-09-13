@@ -49,8 +49,8 @@ class Anagrafica(GladeWidget):
         else:
             self.anagrafica_complessa_window.set_title(windowTitle)
         self.record_menu.get_child().set_label(recordMenuLabel)
-        if self.anagrafica_complessa_window not in Login.windowGroup:
-            Login.windowGroup.append(self.anagrafica_complessa_window)
+        if self.anagrafica_complessa_window not in Environment.windowGroup:
+            Environment.windowGroup.append(self.anagrafica_complessa_window)
 
         self.html = createHtmlObj(self)
         self.anagrafica_detail_scrolledwindow.add(self.html)
@@ -378,7 +378,7 @@ class Anagrafica(GladeWidget):
         self._handlePrinting(pdfGenerator=self.reportHandler, report=True)
 
     def on_Stampa_Frontaline_clicked(self, widget):
-        if "Label" in Environment.modulesList:
+        if ("Label" or "pan") in Environment.modulesList:
             results = self.filter.runFilter(offset=None, batchSize=None)
             self.manageLabels(results)
         else:
@@ -772,8 +772,8 @@ Verificare i permessi della cartella"""
         self.filter.setFocus()
 
     def on_anagrafica_window_close(self, widget, event=None):
-        if self.anagrafica_complessa_window in Login.windowGroup:
-            Login.windowGroup.remove(self.anagrafica_complessa_window)
+        if self.anagrafica_complessa_window in Environment.windowGroup:
+            Environment.windowGroup.remove(self.anagrafica_complessa_window)
         self.destroy()
 
     def getHtmlWidget(self):
@@ -1214,13 +1214,13 @@ class AnagraficaEdit(GladeWidget):
             self.dialogTopLevel.add_accel_group(accelGroup)
             self.dialog.ok_button.add_accelerator('grab_focus', accelGroup, gtk.keysyms.F5, 0, gtk.ACCEL_VISIBLE)
             self.dialog.ok_button.connect('grab_focus',self.on_ok_button_grab_focus)
-            Login.windowGroup.append(self.dialogTopLevel)
+            Environment.windowGroup.append(self.dialogTopLevel)
             self.dialogTopLevel.set_transient_for(self._anagrafica.getTopLevel())
             self.placeWindow(self.dialogTopLevel)
             self.dialogTopLevel.show_all()
             self.setFocus()
         else:
-            Login.windowGroup.remove(self.dialogTopLevel)
+            Environment.windowGroup.remove(self.dialogTopLevel)
             self.dialogTopLevel.vbox.remove(self.getTopLevel())
             self.on_top_level_closed()
             self.dialogTopLevel.destroy()

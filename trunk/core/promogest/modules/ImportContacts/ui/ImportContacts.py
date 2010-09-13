@@ -47,8 +47,8 @@ class ImportPriceList(GladeWidget):
         GladeWidget.__init__(self, 'import_price_list_window')
         self._mainWindow = mainWindow
         #self._mainWindow.hide()
-        if self._mainWindow in Login.windowGroup:
-            Login.windowGroup.remove(self._mainWindow)
+        if self._mainWindow in Environment.windowGroup:
+            Environment.windowGroup.remove(self._mainWindow)
         self.window = self.getTopLevel()
         self.placeWindow(self.window)
 
@@ -278,6 +278,6 @@ del formato del file e riprovare""" % str(rowcount+1)
     def on_import_price_list_window_close(self, widget, event=None):
         self.window.destroy()
         self.destroy()
-        if self._mainWindow not in Login.windowGroup:
-            Login.windowGroup.append(self._mainWindow)
+        if self._mainWindow not in Environment.windowGroup:
+            Environment.windowGroup.append(self._mainWindow)
         self._mainWindow.show_all()

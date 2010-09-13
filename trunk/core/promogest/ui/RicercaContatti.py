@@ -35,7 +35,7 @@ class RicercaContatti(Ricerca):
         def refresh():
             self.filter.refresh()
             self.filter.cognome_nome_filter_entry.grab_focus()
-        if "Contatti" in Environment.modulesList:
+        if ("Contatti" or "pan") in Environment.modulesList:
             from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
             anag = AnagraficaContatti()
             anagWindow = anag.getTopLevel()

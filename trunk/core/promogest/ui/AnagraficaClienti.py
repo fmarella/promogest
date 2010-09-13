@@ -15,7 +15,7 @@ from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, An
 import promogest.dao.Cliente
 from promogest import Environment
 from promogest.dao.Cliente import Cliente
-from promogest.dao.PersonaGiuridica import PersonaGiuridica_ 
+from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.dao.DaoUtils import *
 from utils import *
@@ -496,7 +496,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
-        if "Contatti" in Environment.modulesList:
+        if ("Contatti" or "pan") in Environment.modulesList:
             if self.dao.id is None:
                 msg = 'Prima di poter inserire i contatti occorre salvare il cliente.\n Salvare ?'
                 dialog = gtk.MessageDialog(self.dialogTopLevel,

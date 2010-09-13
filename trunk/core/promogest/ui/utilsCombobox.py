@@ -1031,3 +1031,58 @@ def fillComboBoxNazione(combobox,default=None):
     combobox.set_wrap_width(5)
     combobox.set_active(11)
     combobox.set_model(model)
+
+# cescoap - utility all'autocompletamento delle entry
+def autocompletamento_entry(par_entry=None, filtro=None):
+    '''Funzione di autocompletamento delle entry'''
+    # preleva articoli filtrati dal Dao Articolo
+    completion = gtk.EntryCompletion()
+    liststore = gtk.ListStore(str, object)
+    liststore.append()
+    completion.set_model(liststore)
+    par_entry.set_completion(completion)
+    completion.set_text_column(0)
+    # connetto entry all'evento di rilascio del tasto
+    par_entry.add_events(gtk.gdk.KEY_RELEASE_MASK)
+    par_entry.connect('key-release-event', gestione_testo, filtro)
+
+# cescoap - funzione supplemento a autocompletamento_entry
+def gestione_testo(gest_entry, event, filtro):
+    ''' Gestione riempimento liststore su base del numero di elementi'''
+    from promogest.dao.Articolo import Articolo
+    print "Gli argomenti saranno filtrati per: " + filtro
+    print "Insert: " + gest_entry.get_text()
+    gest_completion = gest_entry.get_completion()
+    gest_liststore = gest_completion.get_model()
+    gest_filtro = gest_entry.get_text()
+    # seleziona i dati in base al filtro
+    if filtro=="codice":
+        articoli = Articolo().select(codice=gest_filtro)
+    elif filtro=="denominazione":
+        articoli = Articolo().select(denominazione=gest_filtro)
+    elif filtro=="produttore":
+        articoli = Articolo().select(produttore=gest_filtro)
+    elif filtro=="codiceABarre":
+        articoli = Articolo().select(codiceABarre=gest_filtro)
+    elif filtro=="codiceArticoloFornitore":
+        articoli = Articolo().select(codiceArticoloFornitore=gest_filtro)
+    # ripulisco la liststore per evitare accavallamenti
+    gest_liststore.clear()
+    i = 0
+    # aggiorna la liststore con gli oggetti in articoli
+    for n in articoli:
+        print "Il record " + repr(i) + " contiene: " + n.codice
+        if filtro == "codice": 
+            gest_liststore.append([n.codice, n])
+        elif filtro == "denominazione":
+            gest_liststore.append([n.denominazione, n])
+        elif filtro == "produttore":
+            gest_liststore.append([n.produttore, n])
+        elif filtro == "codiceABarre":
+            gest_liststore.append([n.codice_a_barre, n])
+        elif filtro=="codiceArticoloFornitore":
+            gest_liststore.append([n.codice_articolo_fornitore, n])
+        print gest_liststore[i][0] + " inserita nella liststore"
+        i = i + 1
+    gest_completion.set_model(gest_liststore)
+    gest_entry.set_completion(gest_completion)

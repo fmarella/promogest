@@ -20,7 +20,7 @@ class Anagrafica(GladeWidget):
     def __init__(self, windowTitle, recordMenuLabel,
                  filterElement, detailElement):
         GladeWidget.__init__(self, 'anagrafica_window')
-        Login.windowGroup.append(self.getTopLevel)
+        Environment.windowGroup.append(self.getTopLevel)
         self._setFilterElement(filterElement)
         self._setDetailElement(detailElement)
 

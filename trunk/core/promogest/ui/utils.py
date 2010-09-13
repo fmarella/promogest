@@ -8,6 +8,7 @@
 
 from textwrap import TextWrapper
 import os
+import hashlib
 from calendar import Calendar
 from decimal import *
 import pygtk
@@ -20,6 +21,7 @@ from sqlalchemy import *
 from promogest import Environment
 from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.Operazione import Operazione
+from promogest.lib.relativedelta import relativedelta
 import string, re
 import pysvn
 import xml.etree.ElementTree as ET
@@ -1859,8 +1861,8 @@ def showAnagraficaRichiamata(returnWindow, anagWindow, button=None, callName=Non
     """
     def on_anagrafica_richiamata_destroy(anagWindow):
         """ """
-        if anagWindow in Login.windowGroup:
-            Login.windowGroup.remove(anagWindow)
+        if anagWindow in Environment.windowGroup:
+            Environment.windowGroup.remove(anagWindow)
 ##        Login.windowGroup.append(anagReturn)
         if button is not None:
             if isinstance(button, gtk.ToggleButton):
@@ -1873,8 +1875,8 @@ def showAnagraficaRichiamata(returnWindow, anagWindow, button=None, callName=Non
                        on_anagrafica_richiamata_destroy)
     anagWindow.set_transient_for(anagReturn)
 ##    Login.windowGroup.remove(anagReturn)
-    if anagWindow not in Login.windowGroup:
-        Login.windowGroup.append(anagWindow)
+    if anagWindow not in Environment.windowGroup:
+        Environment.windowGroup.append(anagWindow)
     anagWindow.show_all()
 
 def getDateRange(string):

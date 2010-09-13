@@ -24,6 +24,7 @@ except:
             Column('tipo',String(50)),
             Column('date', DateTime, nullable=True),
             Column('active', Boolean, default=0),
+            Column('visible', Boolean, default=0),
             UniqueConstraint('key', "section"),
             schema = params['schema'])
     setconf.create(checkfirst=True)
@@ -50,6 +51,8 @@ class SetConf(Dao):
                         setconf.c.description.ilike("%"+v+"%"))}
         elif k =="active":
             dic = { k :setconf.c.active ==v}
+        elif k =="visible":
+            dic = { k :setconf.c.visible ==v}
         return  dic[k]
 
 std_mapper = mapper(SetConf, setconf, order_by=setconf.c.key)

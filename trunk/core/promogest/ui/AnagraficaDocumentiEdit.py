@@ -42,7 +42,7 @@ if "SuMisura" in Environment.modulesList:
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
 if "GestioneNoleggio" in Environment.modulesList:
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
-if "Pagamenti" in Environment.modulesList:
+if ("Pagamenti" or "pan") in Environment.modulesList:
     from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 
 class AnagraficaDocumentiEdit(AnagraficaEdit):
@@ -109,7 +109,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.articolo_matchato = None
         self.checkMAGAZZINO = True
 #        self.completion.set_minimum_key_length(3)
-        if "Pagamenti" not in Environment.modulesList:
+        if ("Pagamenti" or "pan") not in Environment.modulesList:
             self.notebook.remove_page(3)
         if "PromoWear" in Environment.modulesList:
             self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
@@ -264,7 +264,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if "GestioneNoleggio" in Environment.modulesList:
             AnagraficaDocumentiEditGestioneNoleggioExt.setLabels(self)
 
-        if "Pagamenti" in Environment.modulesList:
+        if ("Pagamenti" or "pan") in Environment.modulesList:
             AnagraficadocumentiPagamentExt.nuovaRiga(self)
             AnagraficadocumentiPagamentExt.attiva_prima_scadenza(self,False, True)
             AnagraficadocumentiPagamentExt.attiva_seconda_scadenza(self,False, True)
@@ -382,7 +382,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if page_num == 2:
             self.calcolaTotale()
         elif page_num ==3:
-            if "Pagamenti" not in Environment.modulesList:
+            if ("Pagamenti" or "pan") not in Environment.modulesList:
                 fenceDialog()
                 self.calcola_importi_scadenza_button.set_sensitive(False)
                 self.controlla_rate_scadenza_button.set_sensitive(False)
@@ -1175,7 +1175,6 @@ del documento.
                 art = Articolo().select(codiceArticoloFornitore=stringa, batchSize=10)
             else:
                 art = Articolo().select(codiceArticoloFornitore=stringa, batchSize=40)
-#        print "MMMM",art
         for m in art:
             codice_art = m.codice
             den = m.denominazione

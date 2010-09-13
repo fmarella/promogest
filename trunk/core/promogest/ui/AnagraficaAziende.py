@@ -138,7 +138,7 @@ class AnagraficaAziende(GladeWidget):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
-        if "Contatti" in Environment.modulesList:
+        if ("Contatti" or "pan" ) in Environment.modulesList:
             from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
             anag = AnagraficaContatti(self.dao.schemaa, 'azienda')
             anagWindow = anag.getTopLevel()

@@ -34,6 +34,7 @@ class Sla2Pdf_ng(SlaParser):
         Build a template object based on the specified file-like
         object and sequence of objects
         """
+
         self.pdfFolder = pdfFolder
         self.slaFileName = slaFileName
 
