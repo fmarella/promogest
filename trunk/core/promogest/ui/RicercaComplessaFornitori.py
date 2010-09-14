@@ -217,8 +217,8 @@ class RicercaComplessaFornitori(RicercaComplessa):
 
     def on_filter_treeview_row_activated(self, treeview, path, column):
         """ La finestra viene nascosta perche' una riga e' stata selezionata """
-        if self.getTopLevel() in Login.windowGroup:
-            Login.windowGroup.remove(self.getTopLevel())
+        if self.getTopLevel() in Environment.windowGroup:
+            Environment.windowGroup.remove(self.getTopLevel())
         self.getTopLevel().hide()
 
 

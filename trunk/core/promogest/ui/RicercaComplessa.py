@@ -48,8 +48,8 @@ class RicercaComplessa(GladeWidget):
 
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura della ricerca """
-        if self.window not in Login.windowGroup:
-            Login.windowGroup.append(self.window)
+        if self.window not in Environment.windowGroup:
+            Environment.windowGroup.append(self.window)
         self.window.show_all()
 
 
@@ -69,14 +69,14 @@ class RicercaComplessa(GladeWidget):
 
     def on_confirm_button_clicked(self, widget):
         """ Riga confermata """
-        if self.ricerca_window in Login.windowGroup:
-            Login.windowGroup.remove(self.ricerca_window)
+        if self.ricerca_window in Environment.windowGroup:
+            Environment.windowGroup.remove(self.ricerca_window)
         self.ricerca_window.hide()
 
 
     def on_ricerca_window_close(self, widget, event=None):
-        if self.ricerca_window in Login.windowGroup:
-            Login.windowGroup.remove(self.ricerca_window)
+        if self.ricerca_window in Environment.windowGroup:
+            Environment.windowGroup.remove(self.ricerca_window)
         self.hide()
         return True
 

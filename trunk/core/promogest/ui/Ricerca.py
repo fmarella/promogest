@@ -76,15 +76,15 @@ class Ricerca(GladeWidget):
 
     def show_all(self):
         """ Visualizza/aggiorna tutta la struttura della ricerca """
-        Login.windowGroup.append(self.ricerca_window)
+        Environment.windowGroup.append(self.ricerca_window)
         self.ricerca_window.show_all()
 
 
     def on_filter_treeview_row_activated(self, widget, path, column):
         """ Gestisce la conferma della riga """
         self.ricerca_window.hide()
-        if self.ricerca_window in Login.windowGroup:
-            Login.windowGroup.remove(self.ricerca_window)
+        if self.ricerca_window in Environment.windowGroup:
+            Environment.windowGroup.remove(self.ricerca_window)
 
 
     def on_filter_treeview_cursor_changed(self, treeview):
@@ -120,15 +120,15 @@ class Ricerca(GladeWidget):
     def on_confirm_button_clicked(self, widget):
         """ Riga confermata """
         self.ricerca_window.hide()
-        if self.ricerca_window in Login.windowGroup:
-            Login.windowGroup.remove(self.ricerca_window)
+        if self.ricerca_window in Environment.windowGroup:
+            Environment.windowGroup.remove(self.ricerca_window)
 
 
     def on_ricerca_window_close(self, widget, event=None):
         """ Uscita """
 
-        if self.ricerca_window in Login.windowGroup:
-            Login.windowGroup.remove(self.ricerca_window)
+        if self.ricerca_window in Environment.windowGroup:
+            Environment.windowGroup.remove(self.ricerca_window)
         self.destroy()
         return None
 
