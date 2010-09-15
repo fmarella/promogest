@@ -1,9 +1,25 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Francesco Meloni <francescoo@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
+
 import sys
 import gobject
 import datetime
@@ -61,7 +77,7 @@ class SincroDB(GladeWidget):
         self.placeWindow(self.getTopLevel())
         self.batch = batch
         self.wear = wear
-        if batch:
+        if batch: #versione senza interfaccia grafica
             print " MI ACCINGO A CARICARE IL FILE configure dalla cartella '%s' ed usare lo schema '%s'" %(fileconf, schema)
             Environment.conf = conf
             Environment.params["schema"] = schema
@@ -109,6 +125,7 @@ class SincroDB(GladeWidget):
         print ">>>> CONNESSO AL DB REMOTO : %s IP: %s PORTA: %s SCHEMA %s <<<<< " %(database_remoto, host_remoto, port_remoto, Environment.params["schema"])
 
     def connectDbLocale(self):
+        """ effettua la connessione al DB locale """
         mainschema_locale = Environment.conf.SincroDB.mainschema_locale
         user_locale = Environment.conf.SincroDB.user_locale
         password_locale = Environment.conf.SincroDB.password_locale
@@ -137,7 +154,7 @@ class SincroDB(GladeWidget):
         print ">>>> CONNESSO AL DB LOCALE : %s IP: %s PORTA: %s SCHEMA %s <<<<< " %(database_locale, host_locale, port_locale, Environment.params["schema"])
 
     def daosMain(self, tables=None):
-        """ Crea le liste delle query ciclando nelle tabelle """
+        """ Crea le liste delle query ciclando nelle tabelle principali"""
         for dg in tables:
             self.table_label.set_text(str(dg[0]).upper())
             self.avanzamento_pgbar.pulse()
@@ -229,12 +246,14 @@ class SincroDB(GladeWidget):
 
     def logica(self,remote=None, locale=None,dao=None,all=False,offset=None):
         """ cicla le righe della tabella e decide cosa fare
+        diciamo che è la funzione principale
         """
         soupLocale = self.dammiSoupLocale(dao)
         deleteRow=False
         if not remote and not locale:
             return False
-
+        # comparazione tra le query locali e quelle remote.
+#        print "VEDIAMO", str(list(remote))
         if str(list(remote)) != str(list(locale)):
             if len(remote) == len(locale):
                 print "STESSO NUMERO DI RECORD", len(remote)
@@ -246,12 +265,22 @@ class SincroDB(GladeWidget):
             for i in range(0,(len(remote))):
                 if i <= (len(locale)-1):
                     try:
-                        if  remote[i] != locale[i]:
+                        # comparo gli elementi con lo stesso indice che è
+                        # la cosa più semplice
+                        do = False
+                        rem_dic = remote[i].__dict__
+                        loc_dic = locale[i].__dict__
+                        for k,v in rem_dic.items():
+                            if k != "_sa_instance_state":
+                                if rem_dic[k] != loc_dic[k]:
+                                    do = True
+                        if  do:
                             print "PROCEDO CON UN UPDATE", str(remote[i]._table).split(".")[1]
                             print
-                            print "REMOTE:", remote[i]
+                            print "REMOTE:", dir(remote[i])
+                            print "REMOTE:", remote[i].__dict__
                             print
-                            print "LOCALE:",  locale[i]
+                            print "LOCALE:",  locale[i].__dict__
                             self.fixToTable(soupLocale=soupLocale,
                                             row=remote[i],
                                             rowLocale=locale[i],
@@ -259,6 +288,9 @@ class SincroDB(GladeWidget):
                                             dao=str(remote[i]._table).split(".")[1],
                                             save=True,
                                             offset=offset)
+                            print " FATTO"
+                        else:
+                            continue
                     except:
                             self.fixToTable(soupLocale=soupLocale,
                                             row=remote[i],
