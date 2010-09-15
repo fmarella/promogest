@@ -689,7 +689,7 @@ class GestioneInventario(RicercaComplessaArticoli):
 
         sel2 = Environment.params['session'].\
                 query(Inventario.id_articolo).\
-                    filter(Inventario.anno == self.annoScorso).\
+                    filter(and_(Inventario.anno == self.annoScorso, Inventario.id_magazzino == self.idMagazzino)).\
                     order_by(Inventario.id_articolo).all()
         sel = Environment.params['session'].\
                 query(Articolo.id).\
