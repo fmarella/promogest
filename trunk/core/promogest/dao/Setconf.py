@@ -23,8 +23,8 @@ except:
             Column('tipo_section',String(50)),
             Column('tipo',String(50)),
             Column('date', DateTime, nullable=True),
-            Column('active', Boolean, default=0),
-            Column('visible', Boolean, default=0),
+            Column('active', Boolean, default=True),
+            Column('visible', Boolean, default=True),
             UniqueConstraint('key', "section"),
             schema = params['schema'])
     setconf.create(checkfirst=True)
