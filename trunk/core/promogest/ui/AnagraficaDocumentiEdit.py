@@ -109,7 +109,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.articolo_matchato = None
         self.checkMAGAZZINO = True
 #        self.completion.set_minimum_key_length(3)
-        if "Pagamenti" or "pan" not in Environment.modulesList:
+        if "Pagamenti" not in Environment.modulesList or "pan" not in Environment.modulesList:
             self.notebook.remove_page(3)
         if "PromoWear" in Environment.modulesList:
             self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
@@ -382,7 +382,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if page_num == 2:
             self.calcolaTotale()
         elif page_num ==3:
-            if "Pagamenti" or "pan" not in Environment.modulesList:
+            if "Pagamenti" not in Environment.modulesList or "pan" not in Environment.modulesList:
                 fenceDialog()
                 self.calcola_importi_scadenza_button.set_sensitive(False)
                 self.controlla_rate_scadenza_button.set_sensitive(False)
