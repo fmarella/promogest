@@ -70,7 +70,7 @@ tablesSchemeAnagrafiche = [
             ("contatto_azienda","id"),
 ]
 tablesSchemePromemoria = [
-            ("promemoria","id"),
+#            ("promemoria","id"),
 
 ]
 tablesSchemeDocumenti = [

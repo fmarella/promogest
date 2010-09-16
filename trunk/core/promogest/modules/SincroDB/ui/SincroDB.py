@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux di Francesco Meloni snc - http://www.promotux.it/
+#    Copyright (C) 2009, 2010 by Promotux di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 
@@ -77,6 +77,7 @@ class SincroDB(GladeWidget):
         self.placeWindow(self.getTopLevel())
         self.batch = batch
         self.wear = wear
+        self.promeid = None
         if batch: #versione senza interfaccia grafica
             print " MI ACCINGO A CARICARE IL FILE configure dalla cartella '%s' ed usare lo schema '%s'" %(fileconf, schema)
             Environment.conf = conf
@@ -263,42 +264,49 @@ class SincroDB(GladeWidget):
                 print "IL DB LOCALE CONTIENE PIU' RECORD", len(remote), "vs", len(locale)
                 deleteRow=True
             for i in range(0,(len(remote))):
+                self.tabe = str(remote[i]._table).split(".")[1]
                 if i <= (len(locale)-1):
-                    try:
-                        # comparo gli elementi con lo stesso indice che è
-                        # la cosa più semplice
-                        do = False
-                        rem_dic = remote[i].__dict__
-                        loc_dic = locale[i].__dict__
-                        for k,v in rem_dic.items():
-                            if k != "_sa_instance_state":
-                                if rem_dic[k] != loc_dic[k]:
-                                    do = True
-                        if  do:
-                            print "PROCEDO CON UN UPDATE", str(remote[i]._table).split(".")[1]
-                            print
-                            print "REMOTE:", dir(remote[i])
-                            print "REMOTE:", remote[i].__dict__
-                            print
-                            print "LOCALE:",  locale[i].__dict__
-                            self.fixToTable(soupLocale=soupLocale,
-                                            row=remote[i],
-                                            rowLocale=locale[i],
-                                            op="UPDATE",
-                                            dao=str(remote[i]._table).split(".")[1],
-                                            save=True,
-                                            offset=offset)
-                            print " FATTO"
-                        else:
-                            continue
-                    except:
-                            self.fixToTable(soupLocale=soupLocale,
-                                            row=remote[i],
-                                            rowLocale=locale[i],
-                                            op="UPDATE",
-                                            dao=str(remote[i]._table).split(".")[1],
-                                            save=True,
-                                            offset=offset)
+#                    try:
+                    # comparo gli elementi con lo stesso indice che è
+                    # la cosa più semplice
+                    do = False
+                    dao_locale_ex = None
+                    rem_dic = remote[i].__dict__
+                    loc_dic = locale[i].__dict__
+                    for k,v in rem_dic.items():
+                        if k != "_sa_instance_state":
+                            if rem_dic[k] != loc_dic[k]:
+                                do = True
+                                tabe = str(remote[i]._table).split(".")[1]
+                                if tabe == "articolo" and k =="denominazione":
+                                    dao_locale_ex = locale[i]
+                                elif tabe == "listino_articolo":
+                                    dao_locale_ex = locale[i]
+                    if  do:
+                        print "PROCEDO CON UN UPDATE", str(remote[i]._table).split(".")[1]
+                        print
+                        print "REMOTE:", remote[i]
+                        print
+                        print "LOCALE:", locale[i]
+                        self.fixToTable(soupLocale=soupLocale,
+                                        row=remote[i],
+                                        rowLocale=locale[i],
+                                        op="UPDATE",
+                                        dao=str(remote[i]._table).split(".")[1],
+                                        save=True,
+                                        offset=offset,
+                                        dao_locale_ex = dao_locale_ex)
+                        print " FATTO"
+#                    else:
+#                        continue
+#                    except:
+#                            self.fixToTable(soupLocale=soupLocale,
+#                                            row=remote[i],
+#                                            rowLocale=locale[i],
+#                                            op="UPDATE",
+#                                            dao=str(remote[i]._table).split(".")[1],
+#                                            save=True,
+#                                            offset=offset)
 
                 else:
                     print " ", str(remote[i]._table).split(".")[1], "INSERT"
@@ -308,12 +316,12 @@ class SincroDB(GladeWidget):
                                     op="INSERT",
                                     dao=str(remote[i]._table).split(".")[1],
                                     save=False)
-            tabe = str(remote[i]._table).split(".")[1]
-            if tabe != "articolo":
+
+            if self.tabe != "articolo":
                 try:
                     sqlalchemy.ext.sqlsoup.Session.commit()
                 except Exception, e:
-                    if tabe=="listino_articolo":
+                    if self.tabe=="listino_articolo":
                         print "ERRORE NEI LISTINI", e
                         sqlalchemy.ext.sqlsoup.Session.rollback()
                         record_id1 = self.pg_db_server_locale.listino_articolo.filter_by(id_listino=remote[i].id_listino).all()
@@ -325,6 +333,7 @@ class SincroDB(GladeWidget):
 #                            print "QUIIII"
                             self.daosScheme(tables=[("listino_articolo","id_listino")])
                     else:
+                        print "ERRORE NEL SALVATAGGIO DEI RECORD", e
                         sqlalchemy.ext.sqlsoup.Session.rollback()
                         self.azzeraTable(table=dao)
             if deleteRow:
@@ -339,7 +348,45 @@ class SincroDB(GladeWidget):
         else:
             print "TABELLE o BLOCCHI CON NUM DI RECORD UGUALI"
 
-    def fixToTable(self, soup =None,soupLocale=None, op=None, row=None,rowLocale=None, dao=None, save=False, offset=None):
+    def promeListinoArticolo(self, dao_local, dao_locale_ex):
+        descr = "\nErrore nella compilazione dei dati listino articolo "
+        d1 = self.pg_db_server_locale.articolo.get(dao_local.id_articolo)
+        if d1:
+            art = d1
+            descr = "\nListino articolo %s - %s è cambiato da %s a %s " %(art.codice, art.denominazione,dao_locale_ex.prezzo_dettaglio, dao_local.prezzo_dettaglio)
+        return descr
+
+
+    def promemoriaInserAlert(self, dao_local, dao_locale_ex):
+#        soupLocale = self.dammiSoupLocale(dao)
+
+        tabe = str(dao_local._table).split(".")[1]
+        if  tabe == "listino_articolo":
+            annot = self.promeListinoArticolo(dao_local, dao_locale_ex)
+        else:
+            annot = "Articolo cambiato da %s a %s" %(dao_locale_ex.denominazione , dao_local.denominazione)
+        if self.promeid:
+            prome = self.pg_db_server_locale.promemoria.get(self.promeid)
+            prome.annotazione = prome.annotazione+annot
+        else:
+            prome = self.pg_db_server_locale.promemoria.insert()
+            prome.annotazione = annot
+        prome.data_inserimento = datetime.datetime.now()
+        prome.data_scadenza  = datetime.datetime.now()
+        prome.oggetto = " Modifica"
+        prome.incaricato ="sincro"
+        prome.autore = "sincroBOT"
+        prome.descrizione = "Automessaggio"
+        prome.riferimento = "Interno"
+        prome.giorni_preavviso  = 1
+        prome.in_scadenza =True
+        prome.scaduto =False
+        prome.completato = False
+        sqlalchemy.ext.sqlsoup.Session.add(prome)
+        sqlalchemy.ext.sqlsoup.Session.commit()
+        self.promeid = prome.id
+
+    def fixToTable(self, soup =None,soupLocale=None, op=None, row=None,rowLocale=None, dao=None, save=False, offset=None, dao_locale_ex=None):
         """
         rimanda alla gestione delle singole tabelle con le operazioni da fare
         """
@@ -368,6 +415,8 @@ class SincroDB(GladeWidget):
                 sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
                 if dao == "articolo":
                     sqlalchemy.ext.sqlsoup.Session.commit()
+                if dao_locale_ex is not None:
+                    self.promemoriaInserAlert(rowLocale, dao_locale_ex)
             except Exception,e :
                 print "ERRORE",e
                 print "QUALCOSA NELL'UPDATE NON È ANDATO BENE ....VERIFICHIAMO"
@@ -424,8 +473,8 @@ class SincroDB(GladeWidget):
                         self.runBatch()
                     else:
                         self.test()
-#                else:
-#                    self.azzeraTable(table=dao)
+                else:
+                    self.azzeraTable(table=dao)
 
     def azzeraTable(self, table=None):
         if table in ["operazione","tipo_aliquota_iva","stato_articolo","unita_base",
