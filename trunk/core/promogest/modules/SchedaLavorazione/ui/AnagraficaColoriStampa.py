@@ -47,7 +47,7 @@ class AnagraficaColoriStampa(Anagrafica):
 
     def refresh(self):
         # Aggiornamento TreeView
-        denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
+        denominazione = prepareFilterString(self.filter.denominazione_colori_filter_entry.get_text())
 
         self.numRecords = ColoreStampa().count(denominazione=denominazione)
 
@@ -80,12 +80,12 @@ class AnagraficaColoriStampaFilter(AnagraficaFilter):
                                   '_anagrafica_colori_stampa_filter_table',
                           gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade',
                           module=True)
-        self._widgetFirstFocus = self.denominazione_filter_entry
+        self._widgetFirstFocus = self.denominazione_colori_filter_entry
 
     def clear(self):
         # Annullamento filtro
-        self.denominazione_filter_entry.set_text('')
-        self.denominazione_filter_entry.grab_focus()
+        self.denominazione_colori_filter_entry.set_text('')
+        self.denominazione_colori_filter_entry.grab_focus()
         self._anagrafica.refresh()
 
 

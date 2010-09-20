@@ -44,7 +44,7 @@ class AnagraficaCaratteriStampa(Anagrafica):
 
     def refresh(self):
         # Aggiornamento TreeView
-        denominazione = prepareFilterString(self.filter.denominazione_filter_entry.get_text())
+        denominazione = prepareFilterString(self.filter.denominazione_caratteri_filter_entry.get_text())
         self.numRecords = CarattereStampa().count(denominazione=denominazione)
 
         self._refreshPageCount()
@@ -76,12 +76,12 @@ class AnagraficaCaratteriStampaFilter(AnagraficaFilter):
                                 '_anagrafica_caratteri_stampa_filter_table', \
                                 gladeFile='SchedaLavorazione/gui/schedalavorazione_plugins.glade', \
                                 module=True)
-        self._widgetFirstFocus = self.denominazione_filter_entry
+        self._widgetFirstFocus = self.denominazione_caratteri_filter_entry
 
     def clear(self):
         # Annullamento filtro
-        self.denominazione_filter_entry.set_text('')
-        self.denominazione_filter_entry.grab_focus()
+        self.denominazione_caratteri_filter_entry.set_text('')
+        self.denominazione_caratteri_filter_entry.grab_focus()
         self._anagrafica.refresh()
 
 class AnagraficaCaratteriStampaDetail(AnagraficaDetail):
