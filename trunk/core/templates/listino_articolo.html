@@ -41,7 +41,7 @@
 	<tr><td colspan="2" class="table-header">Vendita al dettaglio</td></tr>
 	    <tr>
                 <td width="150px" class="odd-detail">Prezzo </td>
-                <td class="odd-detail"><strong>{{environment.conf.number_format % utils.calcolaPrezzoIva(dao.prezzo_dettaglio, - dao.percentuale_iva)}}</strong></td>
+                <td class="odd-detail"><strong>{{environment.conf.number_format % utils.calcolaPrezzoIva(dao.prezzo_dettaglio, -1*dao.percentuale_iva)}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Prezzo ivato</td>

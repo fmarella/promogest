@@ -1,12 +1,28 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: JJDaNiMoTh <jjdanimoth@gmail.com>
-# Author: Dr astico  (Marco Pinna)<marco@promotux.it>
-# Author: Francesco Meloni  <francesco@promotux.it>
+
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Andrea Argiolas <andrea@promotux.it>
+#    Author: JJDaNiMoTh <jjdanimoth@gmail.com>
+#    Author: Dr astico  (Marco Pinna)<marco@promotux.it>
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
 
 import gtk
 import datetime
@@ -42,7 +58,7 @@ if "SuMisura" in Environment.modulesList:
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
 if "GestioneNoleggio" in Environment.modulesList:
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
-if "Pagamenti" or "pan" in Environment.modulesList:
+if ("Pagamenti" or "pan" or "basic") in Environment.modulesList:
     from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 
 class AnagraficaDocumentiEdit(AnagraficaEdit):
@@ -109,7 +125,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.articolo_matchato = None
         self.checkMAGAZZINO = True
 #        self.completion.set_minimum_key_length(3)
-        if "Pagamenti" not in Environment.modulesList or "pan" not in Environment.modulesList:
+
+        if (not "Pagamenti" or not "pan" or not "basic") in Environment.modulesList:
             self.notebook.remove_page(3)
         if "PromoWear" in Environment.modulesList:
             self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
@@ -264,7 +281,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if "GestioneNoleggio" in Environment.modulesList:
             AnagraficaDocumentiEditGestioneNoleggioExt.setLabels(self)
 
-        if "Pagamenti" or "pan" in Environment.modulesList:
+        if ("Pagamenti" or "pan" or "basic") in Environment.modulesList:
             AnagraficadocumentiPagamentExt.nuovaRiga(self)
             AnagraficadocumentiPagamentExt.attiva_prima_scadenza(self,False, True)
             AnagraficadocumentiPagamentExt.attiva_seconda_scadenza(self,False, True)
@@ -382,7 +399,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if page_num == 2:
             self.calcolaTotale()
         elif page_num ==3:
-            if "Pagamenti" not in Environment.modulesList or "pan" not in Environment.modulesList:
+            if (not "Pagamenti" or not "pan" or not "basic") in Environment.modulesList:
                 fenceDialog()
                 self.calcola_importi_scadenza_button.set_sensitive(False)
                 self.controlla_rate_scadenza_button.set_sensitive(False)
@@ -620,7 +637,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.id_operazione_combobox.grab_focus()
         else:
             self.id_magazzino_combobox.grab_focus()
-        if "Pagamenti" or "pan" in Environment.modulesList:
+        if ("Pagamenti" or "basic" or "pan") in Environment.modulesList:
            AnagraficadocumentiPagamentExt.getScadenze(self)
 
     def setDao(self, dao):
@@ -830,7 +847,7 @@ del documento.
             righeDocumento.append(daoRiga)
         self.dao.righeDocumento = righeDocumento
 
-        if "Pagamenti" or "pan" in Environment.modulesList:
+        if ("Pagamenti" or "basic" or "pan" ) in Environment.modulesList:
             AnagraficadocumentiPagamentExt.saveScadenze(self)
 
         tipoid = findIdFromCombobox(self.id_operazione_combobox)
