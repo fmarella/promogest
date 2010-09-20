@@ -80,7 +80,7 @@
       </packing>
     </child>
     <child>
-      <object class="GtkEntry" id="denominazione__colori_entry">
+      <object class="GtkEntry" id="denominazione_colori_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="invisible_char">&#x25CF;</property>
