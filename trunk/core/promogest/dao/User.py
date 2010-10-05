@@ -25,7 +25,7 @@ from sqlalchemy.orm import mapper, relation,
 try:
     from sqlalchemy.orm import relationship
 except:
-    print "AGGIORNARE SQLALCHEMY""
+    print "AGGIORNARE SQLALCHEMY"
 from promogest.Environment import *
 from Dao import Dao
 from Regioni import Regioni
