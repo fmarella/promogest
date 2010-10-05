@@ -21,7 +21,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import Table
-from sqlalchemy.orm import mapper, relation,
+from sqlalchemy.orm import mapper, relation
 try:
     from sqlalchemy.orm import relationship
 except:
