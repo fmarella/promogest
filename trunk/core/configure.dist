@@ -20,7 +20,8 @@ mod_enable=Yes
 #                                            capitalize ( Maiuscolizza solo la prima lettera ),
 #                                            lower ( Minuscolizza tutto il codice)
 
-
+[Numbers]
+decimals = 2
 
 
 [Documenti]
