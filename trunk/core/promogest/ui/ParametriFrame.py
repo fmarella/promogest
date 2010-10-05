@@ -1,10 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Alceste Scalas <alceste@promotux.it>, Francesco Meloni <francesco@promotux.it>
-# License GNU Gplv2
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Alceste Scalas  <alceste@promotux.it>
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import locale
 import gtk, gobject
@@ -92,7 +106,8 @@ class ParametriFrame(GladeWidget):
     def on_utenti_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        if "RuoliAzioni" or "pan" in Environment.modulesList:
+        if ("RuoliAzioni" in Environment.modulesList) or \
+                ("pan" in Environment.modulesList):
             from promogest.modules.RuoliAzioni.ui.AnagraficaUtenti import AnagraficaUtenti
             anag = AnagraficaUtenti()
             showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
@@ -103,7 +118,8 @@ class ParametriFrame(GladeWidget):
     def on_ruoli_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        if "RuoliAzioni" or "pan" in Environment.modulesList:
+        if ("RuoliAzioni" in Environment.modulesList) or \
+                ("pan" in Environment.modulesList):
             from promogest.modules.RuoliAzioni.ui.AnagraficaRuoli import AnagraficaRuoli
             anag = AnagraficaRuoli()
             showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
@@ -114,7 +130,8 @@ class ParametriFrame(GladeWidget):
     def on_ruoli_azioni_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        if "RuoliAzioni" or "pan" in Environment.modulesList:
+        if ("RuoliAzioni" in Environment.modulesList) or \
+                ("pan" in Environment.modulesList):
             from promogest.modules.RuoliAzioni.ui.ManageRoleAction import ManageRuoloAzioni
             anag = ManageRuoloAzioni()
             showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
@@ -146,30 +163,23 @@ class ParametriFrame(GladeWidget):
     def on_famiglie_articoli_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-
         from AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
         anag = AnagraficaFamiglieArticoli()
-
         showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
-
 
     def on_categorie_clienti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-
         from AnagraficaCategorieClienti import AnagraficaCategorieClienti
         anag = AnagraficaCategorieClienti()
-
         showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
 
 
     def on_categorie_fornitori_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-
         from AnagraficaCategorieFornitori import AnagraficaCategorieFornitori
         anag = AnagraficaCategorieFornitori()
-
         showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
 
 

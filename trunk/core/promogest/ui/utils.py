@@ -2760,6 +2760,20 @@ def dateToOrdinal(anno):
                         dd.append((c.toordinal(),c))
     return dd
 
+def b(stringa):
+    if stringa:
+        stringa = "<b>"+stringa+"</b>"
+    else:
+        stringa = ""
+    return stringa
+
+
+def c(stringa, color):
+    if stringa:
+        stringa = "<span foreground='%s' >" %(color) +stringa+"</span>"
+    else:
+        stringa = ""
+    return stringa
 
 def scribusVersion(slafile):
     print "QUESTO E' IL FILE SLA", slafile

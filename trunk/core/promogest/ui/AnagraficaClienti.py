@@ -1,17 +1,30 @@
 # -*- coding: utf-8 -*-
 
-"""
- Promogest
- Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
- Author: Andrea Argiolas <andrea@promotux.it>
- Author: Francesco Meloni <francesco@promotux.it>
- License: GNU GPLv2
- """
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Andrea Argiolas <andrea@promotux.it>
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
 from sqlalchemy.orm import join
 from sqlalchemy import or_
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from AnagraficaComplessa import Anagrafica, AnagraficaFilter, \
+                        AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 import promogest.dao.Cliente
 from promogest import Environment
 from promogest.dao.Cliente import Cliente
@@ -20,6 +33,7 @@ from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.dao.DaoUtils import *
 from utils import *
 from utilsCombobox import *
+
 
 class AnagraficaClienti(Anagrafica):
     """ Anagrafica clienti """
@@ -35,7 +49,6 @@ class AnagraficaClienti(Anagrafica):
                             aziendaStr=aziendaStr)
 
 
-
 class AnagraficaClientiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei clienti """
 
@@ -48,15 +61,10 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         self.orderBy = 'ragione_sociale'
         self.ricerca_avanzata_clienti_filter_hbox.destroy()
         self.ricerca_avanzata_clienti_filter_vbox.destroy()
-        #perso_giuri=Table('persona_giuridica', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
-        #cliente=Table('cliente', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
         self.joinT = None # join(cliente, perso_giuri)
 
-
     def draw(self):
-        """
-        Disegno la treeview e gli altri oggetti della gui
-        """
+        """ Disegno la treeview e gli altri oggetti della gui """
         treeview = self._anagrafica.anagrafica_filter_treeview
         renderer = gtk.CellRendererText()
 
@@ -112,7 +120,6 @@ class AnagraficaClientiFilter(AnagraficaFilter):
 
         self.clear()
 
-
     def clear(self):
         # Annullamento filtro
         self.codice_filter_entry.set_text('')
@@ -125,7 +132,6 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         fillComboboxCategorieClienti(self.id_categoria_cliente_filter_combobox, True)
         self.id_categoria_cliente_filter_combobox.set_active(0)
         self.refresh()
-
 
     def refresh(self):
         """
@@ -191,7 +197,6 @@ class AnagraficaClientiFilter(AnagraficaFilter):
                                         pvcf))
 
 
-
 class AnagraficaClientiHtml(AnagraficaHtml):
     """
     Anteprima Html
@@ -201,7 +206,6 @@ class AnagraficaClientiHtml(AnagraficaHtml):
                                 'Informazioni sul cliente')
 
 
-
 class AnagraficaClientiReport(AnagraficaReport):
     def __init__(self, anagrafica):
         AnagraficaReport.__init__(self, anagrafica=anagrafica,
@@ -209,7 +213,6 @@ class AnagraficaClientiReport(AnagraficaReport):
                                   defaultFileName='clienti',
                                   htmlTemplate='clienti',
                                   sxwTemplate='clienti')
-
 
 
 class AnagraficaClientiEdit(AnagraficaEdit):
@@ -222,7 +225,6 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                                 'Dati cliente',
                                 gladeFile='_anagrafica_clienti_elements.glade')
         self._widgetFirstFocus = self.codice_entry
-
 
     def draw(self,cplx=False):
         #Popola combobox categorie clienti
@@ -254,19 +256,22 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         #Popola combobox pagamenti
         fillComboboxPagamenti(self.id_pagamento_customcombobox.combobox)
         self.id_pagamento_customcombobox.connect('clicked',
-                                                 on_id_pagamento_customcombobox_clicked)
+                                 on_id_pagamento_customcombobox_clicked)
         #Popola combobox magazzini
         fillComboboxMagazzini(self.id_magazzino_customcombobox.combobox)
         self.id_magazzino_customcombobox.connect('clicked',
-                                                 on_id_magazzino_customcombobox_clicked)
+                                 on_id_magazzino_customcombobox_clicked)
         #Popola combobox listini
         fillComboboxListini(self.id_listino_customcombobox.combobox)
         self.id_listino_customcombobox.connect('clicked',
-                                               on_id_listino_customcombobox_clicked)
+                               on_id_listino_customcombobox_clicked)
         fillComboboxBanche(self.id_banca_customcombobox.combobox)
         self.id_banca_customcombobox.connect('clicked',
-                                             on_id_banca_customcombobox_clicked)
-
+                                 on_id_banca_customcombobox_clicked)
+        #Popola combobox aliquote iva
+        fillComboboxAliquoteIva(self.id_aliquota_iva_customcombobox.combobox)
+        self.id_aliquota_iva_customcombobox.connect('clicked',
+                                on_id_aliquota_iva_customcombobox_clicked)
 
     def on_categorie_clienti_add_row_button_clicked(self, widget):
         """
@@ -284,7 +289,6 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                                                gtk.ICON_SIZE_BUTTON)
             model.append((id, categoria, anagPixbuf, 'added'))
         self.categorie_treeview.get_selection().unselect_all()
-
 
     def on_categorie_clienti_delete_row_button_clicked(self, widget):
         """
@@ -305,7 +309,6 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                         model.remove(c.iter)
         self.categorie_treeview.get_selection().unselect_all()
 
-
     def on_categorie_clienti_undelete_row_button_clicked(self, widget):
         id = findIdFromCombobox(self.id_categoria_cliente_customcombobox.combobox)
         if id is not None:
@@ -316,7 +319,6 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                         c[2] = None
                         c[3] = None
         self.categorie_treeview.get_selection().unselect_all()
-
 
     def on_categorie_treeview_cursor_changed(self, treeview = None):
         """ quando si clicca su una riga della treeview """
@@ -329,7 +331,6 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             self.categorie_clienti_delete_row_button.set_sensitive(status != 'deleted')
             self.categorie_clienti_undelete_row_button.set_sensitive(status == 'deleted')
 
-
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
@@ -341,7 +342,6 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             self.dao = Cliente().getRecord(id=dao.id)
             self._oldDaoRicreato = True
         self._refresh()
-
 
     def _refresh(self):
         self.codice_entry.set_text(self.dao.codice or '')
@@ -387,7 +387,6 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 
         self.anagrafica_clienti_detail_notebook.set_current_page(0)
 
-
     def _refreshCategorie(self, widget=None, orderBy=None):
 
         model = self.categorie_treeview.get_model()
@@ -397,7 +396,6 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         categorie = self.dao.categorieCliente
         for c in categorie:
             model.append([c.id_categoria_cliente, c.categoria_cliente.denominazione, None, None])
-
 
     def saveDao(self):
         self.verificaListino()
@@ -496,7 +494,9 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
-        if "Contatti" or "pan" in Environment.modulesList:
+        if ("Contatti" in Environment.modulesList) or \
+                ("pan" in Environment.modulesList) or \
+                ("basic" in Environment.modulesList):
             if self.dao.id is None:
                 msg = 'Prima di poter inserire i contatti occorre salvare il cliente.\n Salvare ?'
                 dialog = gtk.MessageDialog(self.dialogTopLevel,
@@ -542,7 +542,6 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         anagWindow = anag.getTopLevel()
 
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
-
 
     def verificaListino(self):
         """ Verifica se il listino inserito e' compatibile con le categorie e il magazzino associati al cliente """

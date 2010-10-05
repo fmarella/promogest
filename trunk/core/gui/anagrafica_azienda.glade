@@ -27,37 +27,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkImage" id="logo_azienda">
-            <property name="width_request">200</property>
-            <property name="height_request">110</property>
-            <property name="visible">True</property>
-            <property name="xpad">3</property>
-            <property name="ypad">6</property>
-            <property name="stock">gtk-missing-image</property>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="right_attach">6</property>
-            <property name="top_attach">21</property>
-            <property name="bottom_attach">23</property>
-            <property name="x_options">GTK_EXPAND</property>
-            <property name="y_options">GTK_EXPAND</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkFileChooserButton" id="logo_filechooserbutton">
-            <property name="visible">True</property>
-            <property name="local_only">False</property>
-            <property name="do_overwrite_confirmation">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="right_attach">2</property>
-            <property name="top_attach">22</property>
-            <property name="bottom_attach">23</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkHSeparator" id="hseparator18">
             <property name="visible">True</property>
           </object>
@@ -786,34 +755,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label77">
-            <property name="visible">True</property>
-            <property name="xalign">0</property>
-            <property name="xpad">10</property>
-            <property name="label" translatable="yes">IBAN</property>
-          </object>
-          <packing>
-            <property name="top_attach">21</property>
-            <property name="bottom_attach">22</property>
-            <property name="x_options">GTK_FILL</property>
-            <property name="y_options"></property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkEntry" id="iban_entry">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="max_length">50</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="right_attach">2</property>
-            <property name="top_attach">21</property>
-            <property name="bottom_attach">22</property>
-            <property name="y_options"></property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkHBox" id="hbox24">
             <property name="visible">True</property>
             <property name="homogeneous">True</property>
@@ -1305,105 +1246,6 @@
           </packing>
         </child>
         <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
           <object class="UnsignedIntegerEntryField" id="partita_iva_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -1420,7 +1262,254 @@
             <property name="bottom_attach">13</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkImage" id="logo_azienda">
+            <property name="visible">True</property>
+            <property name="stock">gtk-missing-image</property>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="right_attach">6</property>
+            <property name="top_attach">21</property>
+            <property name="bottom_attach">23</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label77">
+            <property name="visible">True</property>
+            <property name="xalign">0</property>
+            <property name="xpad">10</property>
+            <property name="label" translatable="yes">IBAN</property>
+          </object>
+          <packing>
+            <property name="top_attach">18</property>
+            <property name="bottom_attach">19</property>
+            <property name="x_options">GTK_FILL</property>
+            <property name="y_options"></property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="iban_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="max_length">50</property>
+            <property name="invisible_char">&#x25CF;</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+            <property name="top_attach">18</property>
+            <property name="bottom_attach">19</property>
+            <property name="y_options"></property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="path_label">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">path_label</property>
+          </object>
+          <packing>
+            <property name="right_attach">2</property>
+            <property name="top_attach">21</property>
+            <property name="bottom_attach">22</property>
+            <property name="y_options"></property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="hbox2">
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkButton" id="logo_button">
+                <property name="label" translatable="yes">seleziona logo</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_logo_button_clicked"/>
+              </object>
+              <packing>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="rimuovi_logo">
+                <property name="label">gtk-delete</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_rimuovi_logo_clicked"/>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+            <property name="top_attach">22</property>
+            <property name="bottom_attach">23</property>
+            <property name="y_options"></property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
       </object>
     </child>
   </object>
+  <object class="GtkFileChooserDialog" id="logo_filechooserdialog">
+    <property name="border_width">5</property>
+    <property name="modal">True</property>
+    <property name="window_position">center-always</property>
+    <property name="icon">apri16x16.png</property>
+    <property name="type_hint">normal</property>
+    <property name="transient_for">anagrafica_azienda</property>
+    <property name="has_separator">False</property>
+    <property name="do_overwrite_confirmation">True</property>
+    <property name="preview_widget_active">False</property>
+    <signal name="file_activated" handler="on_logo_filechooserdialog_file_activated"/>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox1">
+        <property name="visible">True</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="chiudi_button">
+                <property name="label">gtk-close</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_chiudi_button_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="apri_button">
+                <property name="label">gtk-open</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_apri_button_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">chiudi_button</action-widget>
+      <action-widget response="0">apri_button</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkFileFilter" id="filefilter1"/>
 </interface>

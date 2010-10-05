@@ -1,52 +1,41 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkWindow" id="pan_window">
-    <property name="window_position">center-always</property>
-    <property name="destroy_with_parent">True</property>
+  <object class="GtkFrame" id="pan_frame">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="has_focus">True</property>
+    <property name="label_xalign">0</property>
+    <property name="shadow_type">in</property>
     <child>
       <object class="GtkVBox" id="pan_vbox">
         <property name="visible">True</property>
         <property name="border_width">9</property>
-        <property name="spacing">8</property>
         <child>
           <object class="GtkImage" id="pan_image">
             <property name="visible">True</property>
-            <property name="pixbuf">mask_64.png</property>
+            <property name="pixbuf">testata_promogest2.png</property>
           </object>
           <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <object class="GtkAspectFrame" id="aspectframe1">
+          <object class="GtkLabel" id="generic_label_pan">
             <property name="visible">True</property>
-            <property name="border_width">2</property>
-            <property name="label_xalign">0</property>
-            <property name="shadow_type">in</property>
-            <child>
-              <object class="GtkLabel" id="pan_description">
-                <property name="visible">True</property>
-                <property name="xpad">16</property>
-                <property name="ypad">8</property>
-                <property name="label" translatable="yes">&lt;b&gt;Vuoi attivare l'opzione "PAN" di prova per 30 giorni?&lt;/b&gt;
-L'opzione "PAN" permette di accedere &lt;b&gt;gratuitamente&lt;/b&gt; ai moduli : 
-Multi Listino, Multi Magazzino, Label, Contatti, 
-Multi Pagamento, Inventario, Importazione Listini, Promemoria e Pagamenti,
-Agenti, Vettori. Sbloccando tutte le limitazioni della Lite e dandovi la possibilit&#xE0; di provarli.
-&lt;b&gt;Per ulteriori informazioni o per acquistare ( scaduti i trenta giorni)
-l'opzione PAN  per renderla permanente cliccare sul pulsante 
-informazioni&lt;/b&gt;
-
-GRAZIE</property>
-                <property name="use_markup">True</property>
-              </object>
-            </child>
+            <property name="label" translatable="yes">&lt;b&gt;Vuoi attivare l'opzione "PAN" o "BASIC" come prova gratuita per 30 giorni?&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
           </object>
           <packing>
+            <property name="padding">2</property>
             <property name="position">1</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
         <child>
           <object class="GtkHBox" id="pan_hbox2">
@@ -66,7 +55,8 @@ GRAZIE</property>
               <object class="GtkEntry" id="pan_entry_username">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="editing_canceled">True</property>
+                <property name="invisible_char">●</property>
               </object>
               <packing>
                 <property name="position">1</property>
@@ -76,7 +66,7 @@ GRAZIE</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
-            <property name="position">2</property>
+            <property name="position">3</property>
           </packing>
         </child>
         <child>
@@ -98,7 +88,7 @@ GRAZIE</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="visibility">False</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
               </object>
               <packing>
                 <property name="position">1</property>
@@ -108,53 +98,17 @@ GRAZIE</property>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
-            <property name="position">3</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkRadioButton" id="pan_radio_si">
-            <property name="label" translatable="yes">SI Attivo i 30 giorni con i moduli attivi</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="active">True</property>
-            <property name="draw_indicator">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
             <property name="position">4</property>
           </packing>
         </child>
         <child>
-          <object class="GtkRadioButton" id="pan_radio_no">
-            <property name="label" translatable="yes">NO, per il momento no</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="draw_indicator">True</property>
-            <property name="group">pan_radio_si</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">5</property>
-          </packing>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <object class="GtkHButtonBox" id="hbuttonbox1">
+          <object class="GtkHBox" id="pan_hbox">
             <property name="visible">True</property>
             <property name="spacing">3</property>
-            <property name="layout_style">center</property>
             <child>
-              <object class="GtkButton" id="pan_info_button">
-                <property name="label">gtk-info</property>
+              <object class="GtkImage" id="image1__">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_pan_info_button_clicked"/>
+                <property name="pixbuf">pg2PAN4.png</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -162,6 +116,107 @@ GRAZIE</property>
                 <property name="position">0</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkRadioButton" id="pan_radio_si">
+                <property name="label" translatable="yes">PAN   </property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="padding">5</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="pan_description">
+                <property name="visible">True</property>
+                <property name="ypad">4</property>
+                <property name="label" translatable="yes">L'opzione "PAN" permette di accedere &lt;b&gt;gratuitamente&lt;/b&gt; ai moduli : 
+&lt;b&gt;Multi Listino&lt;/b&gt;, &lt;b&gt;Multi Magazzino&lt;/b&gt;, &lt;b&gt;Label&lt;/b&gt;, &lt;b&gt;Contatti&lt;/b&gt;, 
+&lt;b&gt;Multi Pagamento&lt;/b&gt;, &lt;b&gt;Inventario&lt;/b&gt;, &lt;b&gt;Importazione Listini&lt;/b&gt;, &lt;b&gt;Promemoria&lt;/b&gt;,&lt;b&gt;Pagamenti&lt;/b&gt;,
+&lt;b&gt;Agenti&lt;/b&gt;,&lt;b&gt;Vettori&lt;/b&gt;,&lt;b&gt;Prima Nota Cassa&lt;/b&gt;. Sbloccando le limitazioni della &lt;b&gt;Lite&lt;/b&gt; e dandovi la possibilità di provarli.
+L'acquisto dell'opzione dopo il primo mese costa &lt;b&gt;solo € 42/mese iva inclusa&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+                <property name="selectable">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="basic_hbox">
+            <property name="visible">True</property>
+            <property name="spacing">3</property>
+            <child>
+              <object class="GtkImage" id="image2__">
+                <property name="visible">True</property>
+                <property name="pixbuf">pg2BAS4.png</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="basic_radio">
+                <property name="label" translatable="yes">BASIC</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="draw_indicator">True</property>
+                <property name="group">pan_radio_si</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="padding">5</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="pan_description1">
+                <property name="visible">True</property>
+                <property name="ypad">3</property>
+                <property name="label" translatable="yes">L'opzione "BASIC" permette di accedere &lt;b&gt;gratuitamente&lt;/b&gt; ai moduli : 
+&lt;b&gt;Multi Listino&lt;/b&gt;, &lt;b&gt;Multi Magazzino&lt;/b&gt;, &lt;b&gt;Contatti&lt;/b&gt;, 
+&lt;b&gt;Multi Pagamento&lt;/b&gt;, &lt;b&gt;Promemoria&lt;/b&gt; e &lt;b&gt;Pagamenti&lt;/b&gt;,
+Vettori. Sbloccando tutte le limitazioni della &lt;b&gt;Lite&lt;/b&gt; e dandovi la possibilità di provarli.
+L'acquisto dell'opzione dopo il primo mese costa &lt;b&gt;solo € 24/mese iva inclusa&lt;/b&gt;
+</property>
+                <property name="use_markup">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">6</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHButtonBox" id="hbuttonbox1">
+            <property name="visible">True</property>
+            <property name="spacing">2</property>
+            <property name="layout_style">center</property>
             <child>
               <object class="GtkButton" id="registrati_button">
                 <property name="label" translatable="yes">Registrati sul sito</property>
@@ -174,17 +229,32 @@ GRAZIE</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="preventivo_button">
+                <property name="label" translatable="yes">Preventivo Online</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">preventivo_image</property>
+                <signal name="clicked" handler="on_preventivo_button_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="pan_chiudi_button">
-                <property name="label">gtk-close</property>
+              <object class="GtkButton" id="pan_info_button">
+                <property name="label">Acquista</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_pan_chiudi_button_clicked"/>
+                <property name="image">acquista_image</property>
+                <signal name="clicked" handler="on_pan_info_button_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -194,11 +264,11 @@ GRAZIE</property>
             </child>
             <child>
               <object class="GtkButton" id="pan_esegui_button">
-                <property name="label">gtk-execute</property>
+                <property name="label">Attiva</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
+                <property name="image">attiva_image</property>
                 <signal name="clicked" handler="on_pan_esegui_button_clicked"/>
               </object>
               <packing>
@@ -217,8 +287,26 @@ GRAZIE</property>
         </child>
       </object>
     </child>
+    <child type="label">
+      <object class="GtkLabel" id="label1____">
+        <property name="visible">True</property>
+        <property name="use_markup">True</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkImage" id="acquista_image">
+    <property name="visible">True</property>
+    <property name="pixbuf">carte16x16.png</property>
   </object>
   <object class="GtkImage" id="regstrati_image">
+    <property name="visible">True</property>
+    <property name="stock">gtk-edit</property>
+  </object>
+  <object class="GtkImage" id="attiva_image">
+    <property name="visible">True</property>
+    <property name="stock">gtk-apply</property>
+  </object>
+  <object class="GtkImage" id="preventivo_image">
     <property name="visible">True</property>
     <property name="stock">gtk-edit</property>
   </object>

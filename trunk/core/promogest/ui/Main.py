@@ -1,10 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Francesco Meloni <francesco@promotux.it>
-# License GNU Gplv2
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import locale
 import gtk
@@ -14,12 +28,12 @@ import glob
 try:
     import ho.pisa as pisa
 except:
-    print "ERRORE NELL'IMPORT DI PISA"
+    print """ERRORE NELL'IMPORT DI PISA prova a digitare "sudo
+ apt-get install python-pisa" nel terminale"""
     import pisaLib.ho.pisa as pisa
 import calendar
 from promogest.lib.relativedelta import relativedelta
-from datetime import datetime, timedelta
-import time
+from datetime import datetime
 import webbrowser
 from  subprocess import *
 from promogest import Environment
@@ -31,14 +45,12 @@ from promogest.ui.SendEmail import SendEmail
 from promogest.lib import feedparser
 from promogest.ui.PrintDialog import PrintDialogHandler
 from utils import hasAction,fenceDialog, aggiorna, updateScadenzePromemoria,\
-                     setconf, dateTimeToString, dateToString,last_day_of_month, date_range
+         setconf, dateTimeToString, dateToString,last_day_of_month, date_range
 from utilsCombobox import *
 from ParametriFrame import ParametriFrame
 from SetConf import SetConfUI
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
-from promogest.lib.HtmlViewer import HtmlViewer
 from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
-import Login
 import promogest.dao.Promemoria
 from promogest.dao.Promemoria import Promemoria
 from promogest.ui.AnagraficaPromemoria import AnagraficaPromemoria
@@ -95,38 +107,57 @@ class Main(GladeWidget):
 #        self.main_notebook.set_current_page(self.main_notebook.page_num(self.notifica_allarmi_frame))
 #        self.main_notebook.set_current_page(0)
         if not WEBKIT:
-            self.main_notebook.remove_page(2)
-            self.main_notebook.remove_page(2)
+            self.main_notebook.remove_page(3)
+            self.main_notebook.remove_page(3)
         else:
             self.htmlPlanningWidget = createHtmlObj(self)
             self.planning_scrolled.add(self.htmlPlanningWidget)
             self.create_planning_frame()
             gobject.idle_add(self.create_news_frame)
-        gobject.idle_add(checkPan, self)
+#        self.pp = gobject.idle_add(checkPan, self)
+        self.pp = checkPan(self)
+        ll = gtk.Label()
+        ll.set_text("MAGAZZINI")
+        self.main_notebook.append_page(self.create_magazzini_frame(),ll)
+        mm = gtk.Label()
+        mm.set_text("LISTINI")
+        self.main_notebook.append_page(self.create_listini_frame(),mm)
         self.updates()
 
     def show(self):
         """ Visualizza la finestra """
         self.anno_lavoro_label.set_markup('<b>Anno di lavoro:   ' + Environment.workingYear + '</b>')
-        model = gtk.ListStore(int, str, gtk.gdk.Pixbuf)
-
-        pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'anagrafica48x48.png')
-        model.append([0, "Anagrafiche", pbuf])
-
-        pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'magazzino48x48.png')
-        model.append([1, "Magazzini", pbuf])
-
-        pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'listino48x48.png')
-        model.append([2, "Listini", pbuf])
+        model = gtk.ListStore(int, str, gtk.gdk.Pixbuf,object)
 
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'documento48x48.png')
-        model.append([3, "Documenti", pbuf])
+        model.append([3, "Documenti", pbuf,None])
 
-        pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'parametri48x48.png')
-        model.append([4, "Parametri", pbuf])
+        pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'primanota_48X48.png')
+        model.append([4, "Prima Nota", pbuf,None])
 
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'promemoria48x48.png')
-        model.append([5, "Promemoria", pbuf])
+        model.append([5, "Promemoria", pbuf,None])
+
+        # right vertical icon list  adding modules
+#        model_right = gtk.ListStore(int, str, gtk.gdk.Pixbuf, object)
+        ind = 6
+        for mod in self.anagrafiche_dirette_modules.keys():
+            currModule = self.anagrafiche_dirette_modules[mod]
+            if self.shop and currModule["module"].VIEW_TYPE[1] =="Vendita Dettaglio":
+                anag = currModule["module"].getApplication()
+                showAnagrafica(self.getTopLevel(), anag, mainClass=self)
+                #icon_view.unselect_all()
+                return
+            pbuf = gtk.gdk.pixbuf_new_from_file(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
+            row = (ind, currModule['module'].VIEW_TYPE[1], pbuf, currModule['module'])
+            model.append(row)
+            ind += 1
+        for mod in self.frame_modules.keys():
+            currModule = self.frame_modules[mod]
+            pbuf = gtk.gdk.pixbuf_new_from_file(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
+            row =(ind, currModule['module'].VIEW_TYPE[1], pbuf, currModule['module'])
+            model.append(row)
+            ind += 1
 
         self.main_iconview.set_model(model)
         self.main_iconview.set_text_column(1)
@@ -138,40 +169,10 @@ class Main(GladeWidget):
         self.main_iconview.set_item_width(80)
         self.main_iconview.set_size_request(95, -1)
 
-        # right vertical icon list  adding modules
-        model_right = gtk.ListStore(int, str, gtk.gdk.Pixbuf, object)
-        ind = 0
-        for mod in self.anagrafiche_dirette_modules.keys():
-            currModule = self.anagrafiche_dirette_modules[mod]
-            if self.shop and currModule["module"].VIEW_TYPE[1] =="Vendita Dettaglio":
-                anag = currModule["module"].getApplication()
-                showAnagrafica(self.getTopLevel(), anag, mainClass=self)
-                #icon_view.unselect_all()
-                return
-            pbuf = gtk.gdk.pixbuf_new_from_file(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
-            row = (ind, currModule['module'].VIEW_TYPE[1], pbuf, currModule['module'])
-            model_right.append(row)
-            ind += 1
-        for mod in self.frame_modules.keys():
-            currModule = self.frame_modules[mod]
-            pbuf = gtk.gdk.pixbuf_new_from_file(currModule['guiDir']+ currModule['module'].VIEW_TYPE[2])
-            row =(ind, currModule['module'].VIEW_TYPE[1], pbuf, currModule['module'])
-            model_right.append(row)
-            ind += 1
-
-        self.main_iconview_right.set_model(model_right)
-        self.main_iconview_right.set_text_column(1)
-        self.main_iconview_right.set_pixbuf_column(2)
-        self.main_iconview_right.connect('selection-changed',
-                                   self.on_main_iconview_right_select, model_right)
-
-        self.main_iconview_right.set_columns(1)
-        self.main_iconview_right.set_item_width(80)
-        self.main_iconview_right.set_size_request(95, -1)
-        #load the alarm notification frame (AKA MainWindowFrame)
         if self.currentFrame is None:
 #            self.main_hbox.remove(self.box_immagini_iniziali)
             self._refresh()
+        self.setModulesButtons()
         self.placeWindow(self.main_window)
         self.main_window.show_all()
         self.on_button_refresh_clicked()
@@ -180,7 +181,9 @@ class Main(GladeWidget):
         """ Aggiornamenti e controlli da fare all'avvio del programma
         """
         #Aggiornamento scadenze promemoria
-        if "Promemoria" or "pan" in Environment.modulesList:
+        if ("Promemoria" in Environment.modulesList) or \
+            ("pan" in Environment.modulesList) or \
+            ("basic" in Environment.modulesList):
             updateScadenzePromemoria()
 
     def _refresh(self):
@@ -188,24 +191,6 @@ class Main(GladeWidget):
         Update the window, setting the appropriate frame
         """
         self.main_iconview.unselect_all()
-#        if self.currentFrame is None:
-#        self.currentFrame = self.create_main_window_frame()
-#        self.main_notebook = gtk.Notebook()
-#        if len(self.permanent_frames) > 0:
-#            self.main_notebook.append_page(self.currentFrame, 'Home')
-#            for module in self.pemanent_frames.iteritems():
-#                frame = module[1]['module'].getApplication().getTopLevel()
-#                self.main_notebook.append_page(frame,module[1]['module'].VIEW_TYPE[1])
-#            self.main_hbox.pack_start(self.main_notebook, fill=True, expand=True)
-#        else:
-#            self.main_notebook.set_current_page(1)
-#        self.main_viewport.remove(self.main_label1)
-#        self.main_viewport.add(self.currentFrame.notizie_frame)
-#        self.nb_label1.set_text("NOTIZIE")
-#        self.main_viewport2.remove(self.main_label2)
-#        self.main_viewport2.add(self.currentFrame.notifica_allarmi_frame)
-#        self.nb_label2.set_text("NOTIFICHE ALLARMI")
-#            self.main_hbox.pack_start(self.currentFrame, fill=True, expand=True)
         self.main_hbox.show_all()
 
     def on_button_help_clicked(self, button):
@@ -220,38 +205,15 @@ class Main(GladeWidget):
         self._refresh()
 
     def on_main_iconview_select(self, icon_view, model=None):
+        ll = gtk.Label()
+
         selected = icon_view.get_selected_items()
         if len(selected) == 0:
             return
         i = selected[0][0]
         selection = model[i][0]
 
-        if selection == 0:
-            if not self.creata:
-                self.main_notebook.prepend_page(self.create_anagrafiche_principali_frame())
-                self.creata = True
-            else:
-                self.main_notebook.remove_page(0)
-                self.main_notebook.prepend_page(self.create_anagrafiche_principali_frame())
-
-#            self.currentFrame = self.create_anagrafiche_principali_frame()
-        elif selection == 1:
-            if not self.creata:
-                self.main_notebook.prepend_page(self.create_magazzini_frame())
-                self.creata = True
-            else:
-                self.main_notebook.remove_page(0)
-                self.main_notebook.prepend_page(self.create_magazzini_frame())
-#            self.currentFrame = self.create_magazzini_frame()
-        elif selection == 2:
-            if not self.creata:
-                self.main_notebook.prepend_page(self.create_listini_frame())
-                self.creata = True
-            else:
-                self.main_notebook.remove_page(0)
-                self.main_notebook.prepend_page(self.create_listini_frame())
-#            self.currentFrame = self.create_listini_frame()
-        elif selection == 3:
+        if selection == 3:
             #self.currentFrame = self.create_registrazioni_frame()
             # Andrea
             # richiamo diretto dei documenti: evita di dover premere il
@@ -263,13 +225,13 @@ class Main(GladeWidget):
             icon_view.unselect_all()
             return
         elif selection == 4:
-            if not self.creata:
-                self.main_notebook.prepend_page(self.create_parametri_frame())
-                self.creata = True
-            else:
-                self.main_notebook.remove_page(0)
-                self.main_notebook.prepend_page(self.create_parametri_frame())
-#            self.currentFrame = self.create_parametri_frame()
+            if not hasAction(actionID=2):return
+            from AnagraficaPrimaNota import AnagraficaPrimaNota
+            anag = AnagraficaPrimaNota(aziendaStr=self.aziendaStr)
+            showAnagrafica(self.getTopLevel(), anag, mainClass=self)
+            icon_view.unselect_all()
+            return
+
         elif selection == 5:
 #            if "Promemoria" in Environment.modulesList:
             from AnagraficaPromemoria import AnagraficaPromemoria
@@ -279,8 +241,208 @@ class Main(GladeWidget):
 #                return
 #            else:
 #                fenceDialog()
+        else:
+            i = selected[0][0]
+            selection = model[i][0]
+            module = model[i][3]
+
+            if self.currentFrame is not None:
+                self.main_hbox.remove(self.currentFrame)
+                self.currentFrame.destroy()
+                self.currentFrame = None
+            if module.VIEW_TYPE[0] == 'anagrafica_diretta':
+                anag = module.getApplication()
+                showAnagrafica(self.getTopLevel(), anag, mainClass=self)
+                icon_view.unselect_all()
+                return
+            elif module.VIEW_TYPE[0] == 'frame':
+                frame = module.getApplication()
+                self.currentFrame = frame.getTopLevel()
         self.main_notebook.set_current_page(0)
         self._refresh()
+
+#    def on_main_notebook_switch_page(self, notebook, page, page_num):
+#        print "CCCCCCCCCCCCCCCCCCCCC", notebook, page, page_num
+
+    def setModulesButtons(self):
+
+        if self.anagrafiche_modules is not None:
+            for module in self.anagrafiche_modules.iteritems():
+                module_button = gtk.Button()
+                module_butt_image = gtk.Image()
+                module_butt_image.set_from_file(module[1]['guiDir']+'/'+module[1]['module'].VIEW_TYPE[2])
+                module_button.set_image(module_butt_image)
+                module_button.set_label(module[1]['module'].VIEW_TYPE[1])
+                module_button.connect('clicked', self.on_module_button_clicked)
+                self.anagrafiche_moduli_vbox.pack_start(module_button, False, False)
+            return
+        else:
+            return
+
+    def on_module_button_clicked(self, button):
+        label = button.get_label()
+        for mk in self.anagrafiche_modules.iteritems():
+            module = mk[1]['module']
+            if label == module.VIEW_TYPE[1]:
+                #chiave di tutto il richiamo di passaggio alla classe in module.py che poi fa la vera istanza"
+                anag = module.getApplication()
+                showAnagrafica(self.getTopLevel(), anag, button=None, mainClass=self)
+
+    def on_articoli_button_clicked(self, toggleButton):
+        if not hasAction(actionID=2): return
+        if toggleButton.get_property('active') is False:
+            return
+        from AnagraficaArticoli import AnagraficaArticoli
+        anag = AnagraficaArticoli(aziendaStr=self.aziendaStr)
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+    def on_forniture_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from AnagraficaForniture import AnagraficaForniture
+        anag = AnagraficaForniture(aziendaStr=self.aziendaStr)
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+    def on_clienti_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from AnagraficaClienti import AnagraficaClienti
+        anag = AnagraficaClienti(aziendaStr=self.aziendaStr)
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+    def on_fornitori_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from AnagraficaFornitori import AnagraficaFornitori
+        anag = AnagraficaFornitori(aziendaStr=self.aziendaStr)
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+    def on_vettori_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from AnagraficaVettori import AnagraficaVettori
+        anag = AnagraficaVettori(aziendaStr=self.aziendaStr)
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+    def on_agenti_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        if "Agenti" or "pan" in Environment.modulesList:
+            from promogest.modules.Agenti.ui.AnagraficaAgenti import AnagraficaAgenti
+            anag = AnagraficaAgenti(aziendaStr=self.aziendaStr)
+            showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+        else:
+            fenceDialog()
+            toggleButton.set_active(False)
+
+    def on_categorie_articoli_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from AnagraficaCategorieArticoli import AnagraficaCategorieArticoli
+        anag = AnagraficaCategorieArticoli()
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+    def on_famiglie_articoli_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from AnagraficaFamiglieArticoli import AnagraficaFamiglieArticoli
+        anag = AnagraficaFamiglieArticoli()
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+    def on_categorie_clienti_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from AnagraficaCategorieClienti import AnagraficaCategorieClienti
+        anag = AnagraficaCategorieClienti()
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+    def on_categorie_fornitori_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from AnagraficaCategorieFornitori import AnagraficaCategorieFornitori
+        anag = AnagraficaCategorieFornitori()
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+    def on_utenti_button_toggled(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        if ("RuoliAzioni" in Environment.modulesList) or \
+                ("pan" in Environment.modulesList):
+            from promogest.modules.RuoliAzioni.ui.AnagraficaUtenti import AnagraficaUtenti
+            anag = AnagraficaUtenti()
+            showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+        else:
+            fenceDialog()
+            toggleButton.set_property('active',False)
+
+    def on_ruoli_button_toggled(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        if ("RuoliAzioni" in Environment.modulesList) or \
+                ("pan" in Environment.modulesList):
+            from promogest.modules.RuoliAzioni.ui.AnagraficaRuoli import AnagraficaRuoli
+            anag = AnagraficaRuoli()
+            showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+        else:
+            fenceDialog()
+            toggleButton.set_property('active',False)
+
+    def on_ruoli_azioni_button_toggled(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        if ("RuoliAzioni" in Environment.modulesList) or \
+                ("pan" in Environment.modulesList):
+            from promogest.modules.RuoliAzioni.ui.ManageRoleAction import ManageRuoloAzioni
+            anag = ManageRuoloAzioni()
+            showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+        else:
+            fenceDialog()
+            toggleButton.set_property('active',False)
+
+    def on_multipli_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from AnagraficaMultipli import AnagraficaMultipli
+        anag = AnagraficaMultipli()
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+    def on_pagamenti_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from AnagraficaPagamenti import AnagraficaPagamenti
+        anag = AnagraficaPagamenti()
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+
+    def on_banche_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from AnagraficaBanche import AnagraficaBanche
+        anag = AnagraficaBanche()
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+
+    def on_categorie_contatti_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from AnagraficaCategorieContatti import AnagraficaCategorieContatti
+        anag = AnagraficaCategorieContatti()
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+
+    def on_aliquote_iva_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from AnagraficaAliquoteIva import AnagraficaAliquoteIva
+        anag = AnagraficaAliquoteIva()
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+    def on_imballaggi_button_clicked(self, toggleButton):
+        if toggleButton.get_property('active') is False:
+            return
+        from AnagraficaImballaggi import AnagraficaImballaggi
+        anag = AnagraficaImballaggi()
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
     def on_main_iconview_right_select(self, icon_view, model=None):
         selected = icon_view.get_selected_items()
@@ -383,7 +545,7 @@ class Main(GladeWidget):
         workinDay = Environment.workinDay = d
         if os.name=="nt":
             dayName2 = calendar.day_name
-            dayName = [ x.decode("iso8859-1") for x in dayName2]
+            dayName = [x.decode("iso8859-1") for x in dayName2]
         else:
             dayName = calendar.day_name
         monthName = calendar.month_name
@@ -1114,72 +1276,72 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
         anag = StatisticheMagazzino(idMagazzino=None)
         anagWindow = anag.getTopLevel()
 
-    def on_main_window_key_press_event(self, widget, event):
-        if event.type == gtk.gdk.KEY_PRESS:
-            if event.state & gtk.gdk.CONTROL_MASK and (
-                (event.state & gtk.gdk.MOD2_MASK) or (event.state & gtk.gdk.MOD1_MASK)):
-                if gtk.gdk.keyval_name(event.keyval) == "m":
-                    # easter egg
+#    def on_main_window_key_press_event(self, widget, event):
+#        if event.type == gtk.gdk.KEY_PRESS:
+#            if event.state & gtk.gdk.CONTROL_MASK and (
+#                (event.state & gtk.gdk.MOD2_MASK) or (event.state & gtk.gdk.MOD1_MASK)):
+#                if gtk.gdk.keyval_name(event.keyval) == "m":
+#                    # easter egg
 
-                    def menuitem_response(game):
-                        games_menu.hide()
-                        os.system(game)
+#                    def menuitem_response(game):
+#                        games_menu.hide()
+#                        os.system(game)
 
-                    tetris_games = (
-                        'gnometris','ksirtet','xtris','kcalc','emacs','ksmiletris','ltris')
-                    games_menu = gtk.Menu()
-                    for game in tetris_games:
-                        ret = os.system('which ' + game + ' > /dev/null')
-                        if ret==0:
-                            item = gtk.MenuItem(game)
-                            games_menu.append(item)
-                            item.connect_object("activate", menuitem_response, game)
-                            item.show()
-                    games_menu.popup(None, None, None, 3, event.time)
-                    return True
-                elif gtk.gdk.keyval_name(event.keyval) == "u":
-                    # easter egg
+#                    tetris_games = (
+#                        'gnometris','ksirtet','xtris','kcalc','emacs','ksmiletris','ltris')
+#                    games_menu = gtk.Menu()
+#                    for game in tetris_games:
+#                        ret = os.system('which ' + game + ' > /dev/null')
+#                        if ret==0:
+#                            item = gtk.MenuItem(game)
+#                            games_menu.append(item)
+#                            item.connect_object("activate", menuitem_response, game)
+#                            item.show()
+#                    games_menu.popup(None, None, None, 3, event.time)
+#                    return True
+#                elif gtk.gdk.keyval_name(event.keyval) == "u":
+#                    # easter egg
 
-                    def menuitem_response(utilities):
-                        utilities_menu.hide()
-                        os.system(utilities)
+#                    def menuitem_response(utilities):
+#                        utilities_menu.hide()
+#                        os.system(utilities)
 
-                    utils = (
-                        'firefox','konqueror','thunderbird','kcalc','kate','gcalctool', "gedit")
-                    utilities_menu = gtk.Menu()
-                    for util in utils:
-                        ret = os.system('which ' + util + ' > /dev/null')
-                        if ret==0:
-                            item = gtk.MenuItem(util)
-                            utilities_menu.append(item)
-                            item.connect_object("activate", menuitem_response, util)
-                            item.show()
-                    utilities_menu.popup(None, None, None, 3, event.time)
-                    return True
-            elif gtk.gdk.keyval_name(event.keyval) == "t":
-                import random
-                msg= """
-Il Promogest2 "MentoR" ha generato per te due sestine
-"vincenti" per il prossimo concorso del superenalotto
-giocale e facci sapere .....
-Mi raccomando se dovessi vincere ricordati di noi :)
+#                    utils = (
+#                        'firefox','konqueror','thunderbird','kcalc','kate','gcalctool', "gedit")
+#                    utilities_menu = gtk.Menu()
+#                    for util in utils:
+#                        ret = os.system('which ' + util + ' > /dev/null')
+#                        if ret==0:
+#                            item = gtk.MenuItem(util)
+#                            utilities_menu.append(item)
+#                            item.connect_object("activate", menuitem_response, util)
+#                            item.show()
+#                    utilities_menu.popup(None, None, None, 3, event.time)
+#                    return True
+#            elif gtk.gdk.keyval_name(event.keyval) == "t":
+#                import random
+#                msg= """
+#Il Promogest2 "MentoR" ha generato per te due sestine
+#"vincenti" per il prossimo concorso del superenalotto
+#giocale e facci sapere .....
+#Mi raccomando se dovessi vincere ricordati di noi :)
 
-Il Team:
+#Il Team:
 
-I Numeri:   %s
-                %s
-""" %(str(random.sample(xrange(90), 6))[1:-1],str(random.sample(xrange(90), 6))[1:-1])
-                dialog = gtk.MessageDialog(self.getTopLevel(),
-                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_INFO,
-                                   gtk.BUTTONS_OK,
-                                   msg)
-                dialog.run()
-                dialog.destroy()
+#I Numeri:   %s
+#                %s
+#""" %(str(random.sample(xrange(90), 6))[1:-1],str(random.sample(xrange(90), 6))[1:-1])
+#                dialog = gtk.MessageDialog(self.getTopLevel(),
+#                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+#                                   gtk.MESSAGE_INFO,
+#                                   gtk.BUTTONS_OK,
+#                                   msg)
+#                dialog.run()
+#                dialog.destroy()
 
-            return True
-        else:
-            return False
+#            return True
+#        else:
+#            return False
 
     def on_disconnect(self, widget=None):
         dialog = gtk.MessageDialog(self.getTopLevel(),

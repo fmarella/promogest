@@ -1,0 +1,439 @@
+<?xml version="1.0"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-requires pythonplugin 0.0 -->
+  <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkTable" id="anagrafica_variazioni_listini_detail_table">
+    <property name="visible">True</property>
+    <property name="border_width">6</property>
+    <property name="n_rows">9</property>
+    <property name="n_columns">2</property>
+    <property name="row_spacing">6</property>
+    <child>
+      <object class="GtkAlignment" id="alignment375">
+        <property name="width_request">50</property>
+        <property name="visible">True</property>
+        <property name="xalign">0</property>
+        <property name="xscale">0</property>
+        <child>
+          <object class="DateTimeWidget" id="data_fine_datetimewidget">
+            <property name="visible">True</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">2</property>
+        <property name="bottom_attach">3</property>
+        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkEntry" id="denominazione_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="tooltip_text" translatable="yes">Descrizione della aliquota (max 100 )</property>
+        <property name="invisible_char">&#x2022;</property>
+        <property name="secondary_icon_stock">gtk-clear</property>
+        <property name="secondary_icon_activatable">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="button_press_event" handler="on_button_press_event"/>
+        <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
+        <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
+        <signal name="icon_press" handler="on_icon_press"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="sconto_label">
+        <property name="visible">True</property>
+        <property name="xalign">0</property>
+        <property name="yalign">0.47999998927116394</property>
+        <property name="ypad">2</property>
+        <property name="label" translatable="yes">A Valore o Percentuale</property>
+      </object>
+      <packing>
+        <property name="top_attach">4</property>
+        <property name="bottom_attach">5</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"></property>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="data_fine_label">
+        <property name="visible">True</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">&lt;b&gt;A data&lt;/b&gt;</property>
+        <property name="use_markup">True</property>
+      </object>
+      <packing>
+        <property name="top_attach">2</property>
+        <property name="bottom_attach">3</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"></property>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkAlignment" id="alignment55">
+        <property name="visible">True</property>
+        <property name="xalign">0</property>
+        <property name="xscale">0</property>
+        <child>
+          <object class="DateTimeWidget" id="data_inizio_datetimewidget">
+            <property name="visible">True</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">1</property>
+        <property name="bottom_attach">2</property>
+        <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="data_inizio_label">
+        <property name="visible">True</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">&lt;b&gt;Da data&lt;/b&gt;</property>
+        <property name="use_markup">True</property>
+      </object>
+      <packing>
+        <property name="top_attach">1</property>
+        <property name="bottom_attach">2</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"></property>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="denominazione_label">
+        <property name="visible">True</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">&lt;b&gt;Denominazione&lt;/b&gt;</property>
+        <property name="use_markup">True</property>
+      </object>
+      <packing>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"></property>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkHBox" id="hbox1">
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkEntry" id="primo_moltiplicatore_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="invisible_char">&#x25CF;</property>
+          </object>
+          <packing>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="x_label">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">X</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="secondo_moltiplicatore_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="invisible_char">&#x25CF;</property>
+          </object>
+          <packing>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">6</property>
+        <property name="bottom_attach">7</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="a_moltiplicatore_label">
+        <property name="visible">True</property>
+        <property name="xalign">0</property>
+        <property name="yalign">0.47999998927116394</property>
+        <property name="label" translatable="yes">A Moltiplicazione</property>
+      </object>
+      <packing>
+        <property name="top_attach">6</property>
+        <property name="bottom_attach">7</property>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"></property>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="a_sconto_radiobutton">
+        <property name="label" translatable="yes">a sconto</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="active">True</property>
+        <property name="draw_indicator">True</property>
+        <signal name="toggled" handler="on_a_sconto_radiobutton_toggled"/>
+      </object>
+      <packing>
+        <property name="top_attach">3</property>
+        <property name="bottom_attach">4</property>
+        <property name="y_options"></property>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="a_moltiplicatore_radiobutton">
+        <property name="label" translatable="yes">a moltiplicatore</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="active">True</property>
+        <property name="draw_indicator">True</property>
+        <property name="group">a_sconto_radiobutton</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">3</property>
+        <property name="bottom_attach">4</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="stesso_articolo_radiobutton">
+        <property name="label" translatable="yes">stesso articolo </property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="active">True</property>
+        <property name="draw_indicator">True</property>
+      </object>
+      <packing>
+        <property name="top_attach">7</property>
+        <property name="bottom_attach">8</property>
+        <property name="y_options"></property>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="ogni_articolo_radiobutton">
+        <property name="label" translatable="yes">ogni articolo</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="active">True</property>
+        <property name="draw_indicator">True</property>
+        <property name="group">stesso_articolo_radiobutton</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">7</property>
+        <property name="bottom_attach">8</property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkCheckButton" id="priorita_checkbutton">
+        <property name="label" translatable="yes">Massima priorit&#xE0;</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="active">True</property>
+        <property name="draw_indicator">True</property>
+      </object>
+      <packing>
+        <property name="top_attach">8</property>
+        <property name="bottom_attach">9</property>
+      </packing>
+    </child>
+    <child>
+      <object class="ScontoWidget" id="a_valore_scontowidget">
+        <property name="visible">True</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">4</property>
+        <property name="bottom_attach">5</property>
+      </packing>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="minus_radio">
+        <property name="label" translatable="yes">segno ( - )  </property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="active">True</property>
+        <property name="draw_indicator">True</property>
+      </object>
+      <packing>
+        <property name="top_attach">5</property>
+        <property name="bottom_attach">6</property>
+        <property name="y_options"></property>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRadioButton" id="plus_radio">
+        <property name="label" translatable="yes">segno ( + ) </property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">False</property>
+        <property name="active">True</property>
+        <property name="draw_indicator">True</property>
+        <property name="group">minus_radio</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">5</property>
+        <property name="bottom_attach">6</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkTable" id="anagrafica_variazioni_listini_filter_table">
+    <property name="height_request">130</property>
+    <property name="visible">True</property>
+    <property name="n_rows">5</property>
+    <property name="n_columns">2</property>
+    <child>
+      <object class="GtkEntry" id="denominazione_filter_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">&#x2022;</property>
+        <signal name="button_press_event" handler="on_button_press_event"/>
+        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+        <signal name="focus_out_event" handler="on_focus_out_event"/>
+        <signal name="focus_in_event" handler="on_focus_in_event"/>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="descrizione_label">
+        <property name="visible">True</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">Denominazione</property>
+      </object>
+      <packing>
+        <property name="x_options">GTK_FILL</property>
+        <property name="y_options"></property>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="da_data_inizio_label">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Da data inizio</property>
+      </object>
+      <packing>
+        <property name="top_attach">1</property>
+        <property name="bottom_attach">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="a_data_inizio_label">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">A data inizio</property>
+      </object>
+      <packing>
+        <property name="top_attach">2</property>
+        <property name="bottom_attach">3</property>
+      </packing>
+    </child>
+    <child>
+      <object class="DateTimeWidget" id="da_data_inizio_datetimewidget">
+        <property name="visible">True</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">1</property>
+        <property name="bottom_attach">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="DateTimeWidget" id="a_data_inizio_datetimewidget">
+        <property name="visible">True</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">2</property>
+        <property name="bottom_attach">3</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="da_data_fine_label">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Da data fine</property>
+      </object>
+      <packing>
+        <property name="top_attach">3</property>
+        <property name="bottom_attach">4</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="a_data_fine_label">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">A data fine</property>
+      </object>
+      <packing>
+        <property name="top_attach">4</property>
+        <property name="bottom_attach">5</property>
+      </packing>
+    </child>
+    <child>
+      <object class="DateTimeWidget" id="da_data_fine_datetimewidget">
+        <property name="visible">True</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">3</property>
+        <property name="bottom_attach">4</property>
+      </packing>
+    </child>
+    <child>
+      <object class="DateTimeWidget" id="a_data_fine_datetimewidget">
+        <property name="visible">True</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">4</property>
+        <property name="bottom_attach">5</property>
+      </packing>
+    </child>
+  </object>
+</interface>

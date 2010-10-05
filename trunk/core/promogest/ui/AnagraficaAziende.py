@@ -1,23 +1,33 @@
 # -*- coding: utf-8 -*-
 
-"""
- Promogest
- Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
- Author: Andrea Argiolas <andrea@promotux.it>
- Author: Francesco Meloni <francesco@promotux.it>
- License: GNU GPLv2
- """
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
-import gtk
-import gobject
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Andrea Argiolas  <andrea@promotux.it>
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
 from GladeWidget import GladeWidget
-
+import Image
+import os
 from promogest import Environment
-from promogest.dao.Dao import Dao
 import promogest.dao.Azienda
 from promogest.dao.Azienda import Azienda
 
-from utils import dateToString, stringToDate, checkCodFisc, checkPartIva, showAnagraficaRichiamata, fenceDialog
+from utils import dateToString, stringToDate, checkCodFisc, checkPartIva, showAnagraficaRichiamata, fenceDialog, setconf
 #from utilsCombobox import *
 
 
@@ -79,8 +89,8 @@ class AnagraficaAziende(GladeWidget):
         self.numero_conto_entry.set_text(self.dao.numero_conto or '')
         self.cin_entry.set_text(self.dao.cin or '')
         self.iban_entry.set_text(self.dao.iban or '')
-        self.logo_filechooserbutton.set_filename(self.dao.percorso_immagine or '')
-        self.logo_azienda.set_from_file(self.dao.percorso_immagine)
+        self.path_label.set_text(self.dao.percorso_immagine or '')
+        self.logo_azienda.set_from_file(self.resizeImgThumbnailGeneric(filename =self.dao.percorso_immagine))
 
         #self.percorso_immagine_entry.set_text(self.dao.percorso_immagine or '')
 
@@ -109,8 +119,8 @@ class AnagraficaAziende(GladeWidget):
         self.dao.numero_conto = self.numero_conto_entry.get_text()
         self.dao.cin = self.cin_entry.get_text()
         self.dao.iban = self.iban_entry.get_text()
-        self.dao.percorso_immagine = self.logo_filechooserbutton.get_filename()
-        self.logo_azienda.set_from_file(self.dao.percorso_immagine)
+        self.dao.percorso_immagine = self.path_label.get_text() #+"/"+self.filena
+#        self.logo_azienda.set_from_file(self.resizeImgThumbnailGeneric(filename =self.dao.percorso_immagine))
         if self.dao.codice_fiscale != '':
             codfis = checkCodFisc(self.dao.codice_fiscale)
             if not codfis:
@@ -120,6 +130,52 @@ class AnagraficaAziende(GladeWidget):
             if not partiva:
                 return False
         return True
+
+    def on_logo_button_clicked(self, widget):
+        self.logo_filechooserdialog.run()
+        self.logo_filechooserdialog.set_filename(self.dao.percorso_immagine)
+
+#    def on_logo_filechooserdialog_file_activated(self, widget):
+#        filename = self.logo_filechooserdialog.get_filename()
+#        self.path_label.set_text(filename)
+#        f = self.resizeImgThumbnailGeneric(filename = filename)
+##        self.logo_azienda.set_from_file(f)
+#        self.logo_image2.set_from_file(f)
+
+    def on_chiudi_button_clicked(self, button):
+        self.logo_filechooserdialog.hide()
+
+    def on_apri_button_clicked(self,button):
+        filename = self.logo_filechooserdialog.get_filename()
+        print "FILENAMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", filename
+        self.path_label.set_text(filename)
+        f = self.resizeImgThumbnailGeneric(filename = filename)
+        self.logo_azienda.set_from_file(f)
+        self.logo_filechooserdialog.hide()
+
+    def on_rimuovi_logo_clicked(self, button):
+        self.logo_azienda.set_from_file(None)
+        self.path_label.set_text("")
+
+
+
+    def resizeImgThumbnailGeneric(self, req=None, filename=None):
+        """
+        funzione di ridimensionamento immagine per la lista, di fatto
+        crea un thumnail dell'immagine stessa
+        """
+        if filename:
+            self.filena = filename.split("/")[-1]
+            im1 = Image.open(filename)
+            width = int(setconf("Documenti", "larghezza_logo"))
+            height = int(setconf("Documenti", "altezza_logo"))
+            im5 = im1.resize((width, height), Image.ANTIALIAS)
+            newname= 'resize_'+ self.filena
+            p = os.path.dirname(filename)
+            im5.save(p +"/"+ newname)
+            return p +"/"+ newname
+        return ""
+
 
 
     def on_apply_button_clicked(self, button):
@@ -138,7 +194,9 @@ class AnagraficaAziende(GladeWidget):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
-        if "Contatti" or "pan" in Environment.modulesList:
+        if ("Contatti" in Environment.modulesList) or \
+            ("pan" in Environment.modulesList) or \
+            ("basic" in Environment.modulesList):
             from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
             anag = AnagraficaContatti(self.dao.schemaa, 'azienda')
             anagWindow = anag.getTopLevel()

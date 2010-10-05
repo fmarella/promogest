@@ -8,7 +8,7 @@ azienda= azienda_mentor
 tipodb = sqlite
 pw = No
 [RuoliAzioni]
-mod_enable=No
+mod_enable=yes
 
 [Magazzini]
 mod_enable=Yes
@@ -21,8 +21,7 @@ mod_enable=Yes
 #                                            lower ( Minuscolizza tutto il codice)
 
 
-[Numbers]
-decimals = 2
+
 
 [Documenti]
 cartella_predefinita =

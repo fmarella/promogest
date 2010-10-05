@@ -8,7 +8,6 @@
     <child>
       <object class="GtkVBox" id="vbox2">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkLabel" id="titolo">
             <property name="visible">True</property>
@@ -41,6 +40,9 @@
             <child>
               <object class="GtkComboBox" id="id_role_filter_combobox">
                 <property name="visible">True</property>
+                <property name="tooltip_text" translatable="yes">Selezionare il ruolo e premere "abbina" 
+per poi assegnare le diverse azioni 
+possibili</property>
               </object>
               <packing>
                 <property name="position">1</property>
@@ -52,6 +54,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Riempie lo spazio sottostante 
+con le azioni possibili</property>
                 <signal name="clicked" handler="on_abbina_button_clicked"/>
               </object>
               <packing>
@@ -92,8 +96,6 @@
         <child>
           <object class="GtkHBox" id="hbox2">
             <property name="visible">True</property>
-            <property name="spacing">6</property>
-            <property name="homogeneous">True</property>
             <child>
               <placeholder/>
             </child>

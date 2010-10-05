@@ -1,10 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Francesco Meloni <francesco@promotux.it>
-# License GNU Gplv2
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import locale
 import gtk, gobject
@@ -42,7 +56,7 @@ class AnagrafichePrincipaliFrame(GladeWidget):
                 module_button.set_image(module_butt_image)
                 module_button.set_label(module[1]['module'].VIEW_TYPE[1])
                 module_button.connect('clicked', self.on_module_button_clicked)
-                self.vbox1.pack_start(module_button, False, False)
+                self.anagrafiche_moduli_vbox.pack_start(module_button, False, False)
             return
         else:
             return
@@ -109,23 +123,14 @@ class AnagrafichePrincipaliFrame(GladeWidget):
     def on_agenti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        if "Agenti" or "pan" in Environment.modulesList:
+        if "Agenti" in Environment.modulesList \
+                or "pan" in Environment.modulesList:
             from promogest.modules.Agenti.ui.AnagraficaAgenti import AnagraficaAgenti
             anag = AnagraficaAgenti(aziendaStr=self.aziendaStr)
             showAnagrafica(self.mainWindow, anag, toggleButton)
         else:
             fenceDialog()
             toggleButton.set_active(False)
-
-
-    #def on_contatti_button_clicked(self, toggleButton):
-        #if toggleButton.get_property('active') is False:
-            #return
-
-        #from AnagraficaContatti import AnagraficaContatti
-        #anag = AnagraficaContatti(aziendaStr=self.aziendaStr)
-
-        #showAnagrafica(self.mainWindow, anag, toggleButton)
 
 def on_anagrafica_destroyed(anagrafica_window, argList):
     mainWindow = argList[0]

@@ -1,12 +1,24 @@
 # -*- coding: utf-8 -*-
 
-"""
- Promogest
- Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
- Author: Andrea Argiolas <andrea@promotux.it>
- Author: Francesco Meloni <francesco@promotux.it>
- License: GNU GPLv2
- """
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
 from sqlalchemy import *
@@ -17,6 +29,7 @@ from promogest.dao.Listino import Listino
 from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
 from promogest.dao.ListinoMagazzino import ListinoMagazzino
 from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
+from promogest.ui.AnagraficaVariazioniListini import AnagraficaVariazioniListini
 from utils import *
 from utilsCombobox import *
 
@@ -34,6 +47,18 @@ class AnagraficaListini(Anagrafica):
                             reportHandler=AnagraficaListiniReport(self),
                             editElement=AnagraficaListiniEdit(self),
                             aziendaStr=aziendaStr)
+        self.record_duplicate_menu.set_property('visible', True)
+
+    def duplicate(self, dao):
+        """ Duplica le informazioni relative ad un documento scelto su uno nuovo
+        """
+        if dao is None:
+            return
+
+        from DuplicazioneListino import DuplicazioneListino
+        anag = DuplicazioneListino(dao, self)
+        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), None, self.filter.refresh)
+
 
 
 class AnagraficaListiniFilter(AnagraficaFilter):
@@ -109,7 +134,7 @@ class AnagraficaListiniFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return Listino().select( denominazione=denominazione,
+            return Listino().select(denominazione=denominazione,
                                                 orderBy=self.orderBy,
                                                 offset=offset,
                                                 batchSize=batchSize)
@@ -119,11 +144,13 @@ class AnagraficaListiniFilter(AnagraficaFilter):
         liss = self.runFilter()
 
         self._treeViewModel.clear()
-        if Environment.tipo_eng =="sqlite" and Listino().count() >=1 and not Environment.listini:
-        #if Environment.tipo_eng =="sqlite":
+        if (not "pan" in Environment.modulesList) and \
+            (not "basic" in  Environment.modulesList) and \
+                Listino().count() >1 \
+                and Environment.tipodb =="sqlite"\
+                and not Environment.listini:
             if len(liss) >1:
-                print "SPARIAMO UN MESSAGGIO"
-                liss = liss[0]
+                liss = [liss[0]]
         for l in liss:
             self._treeViewModel.append((l,
                                         (l.denominazione or ''),
@@ -234,9 +261,12 @@ class AnagraficaListiniEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            if Environment.tipo_eng =="sqlite" and Listino().count() >=1 and not Environment.listini:
-            #if Environment.tipo_eng =="sqlite" and Listino().count() >=1:
-                self.destroy()
+            if (not "pan" in Environment.modulesList) and \
+                (not "basic" in  Environment.modulesList) and \
+                    Listino().count() >=1 \
+                    and Environment.tipodb =="sqlite"\
+                    and not Environment.listini:
+                self.hide()
                 fenceDialog()
             else:
                 self.dao = Listino()
@@ -299,7 +329,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             listino_sequence = Sequence("listino_id_seq", schema=Environment.params['schema'])
             self.dao.id = Environment.params['session'].connection().execute(listino_sequence)
         if Environment.tipo_eng =="sqlite" and not self.dao.id:
-            listini = Listino().select(orderBy=Listino.id)
+            listini = Listino().select(orderBy=Listino.id, batchSize=None)
             if not listini:
                 self.dao.id = 1
             else:
@@ -506,7 +536,8 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         (model, iterator) = sel.get_selected()
         if iterator is not None:
             idMagazzino = model.get_value(iterator, 0)
-            findComboboxRowFromId(self.id_magazzino_customcombobox.combobox, idMagazzino)
+            findComboboxRowFromId(self.id_magazzino_customcombobox.combobox,
+                                                         idMagazzino)
             status = model.get_value(iterator, 3)
             self.delete_row_magazzino_button.set_sensitive(status != 'deleted')
             self.undelete_row_magazzino_button.set_sensitive(status == 'deleted')
@@ -516,7 +547,8 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         (model, iterator) = sel.get_selected()
         if iterator is not None:
             idListino = model.get_value(iterator, 0)
-            findComboboxRowFromId(self.id_listino_customcombobox.combobox, idListino)
+            findComboboxRowFromId(self.id_listino_customcombobox.combobox,
+                                                             idListino)
             status = model.get_value(iterator, 3)
             self.delete_listino_button.set_sensitive(status != 'deleted')
             self.undelete_listino_button.set_sensitive(status == 'deleted')
@@ -540,8 +572,14 @@ class AnagraficaListiniEdit(AnagraficaEdit):
 
         from AnagraficaListiniArticoli import AnagraficaListiniArticoli
         anag = AnagraficaListiniArticoli(idListino=self.dao.id)
-        anagWindow = anag.getTopLevel()
+#        anagWindow = anag.getTopLevel()
 
+#        showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+
+
+    def on_variazioni_togglebutton_toggled(self, toggleButton):
+        anag = AnagraficaVariazioniListini(idListino=self.dao.id)
+        anagWindow = anag.getTopLevel()
         showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
 
     def on_check_pricelist_togglebutton_toggled(self, toggleButton):

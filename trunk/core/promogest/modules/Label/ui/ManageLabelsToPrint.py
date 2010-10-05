@@ -107,6 +107,7 @@ class ManageLabelsToPrint(GladeWidget):
         self.id_magazzino_label_combobox.set_active(0)
         modek = self.select_template_combobox.get_model()
         path=Environment.labelTemplatesDir  # insert the path to the directory of interest
+        # preleva i file .sla dalla cartella
         dirList=os.listdir(path)
         print dirList
         for fname in dirList:
@@ -135,7 +136,6 @@ class ManageLabelsToPrint(GladeWidget):
         if active < 0:
             return None
         return model[active][0]
-
 
 
     def on_ok_button_clicked(self,button):
@@ -228,15 +228,16 @@ class ManageLabelsToPrint(GladeWidget):
                 self.daos.append(artilist[0])
                 self.refresh()
 
-
+    # Funzione utile. Gestione inserimento testo nella entry
     def on_articolo_entry_insert_text(self, text):
+        # Assegna il testo della entri ad una variabile
         stringa = text.get_text()
 #        print "AJAJAAJAJAJAJAJ", stringa, self.mattu,self.ricerca
         if self.mattu:
             text.set_text(stringa.split(self.sepric)[0])
         model = gtk.ListStore(str,object)
-        vediamo = self.completion.get_model()
-        vediamo.clear()
+        #vediamo = self.completion.get_model()
+        #vediamo.clear()
         art = []
         if stringa ==[] or len(stringa)<2:
             return
@@ -294,7 +295,6 @@ class ManageLabelsToPrint(GladeWidget):
         self.mattu = True
         self.articolo_matchato = model[iter][1]
         self.articolo_entry.set_position(-1)
-
 
 
     def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):

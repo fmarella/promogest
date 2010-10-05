@@ -58,9 +58,9 @@ class SetConfUI(GladeWidget):
         celltext.connect('edited', self.on_column_codice_edited, self.treeview, True)
         column = gtk.TreeViewColumn('Valore', celltext, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(50)
+#        column.set_resizable(True)
+#        column.set_expand(True)
+#        column.set_min_width(50)
         self.treeview.append_column(column)
 
         rendererSx = gtk.CellRendererText()
@@ -70,22 +70,22 @@ class SetConfUI(GladeWidget):
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
-        column.set_min_width(70)
+        column.set_min_width(300)
         self.treeview.append_column(column)
 
         rendererSx = gtk.CellRendererText()
         column = gtk.TreeViewColumn("Tipo Sezione", rendererSx, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+#        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
-        column.set_resizable(True)
+#        column.set_resizable(True)
         column.set_min_width(70)
         self.treeview.append_column(column)
 
         rendererSx = gtk.CellRendererText()
         column = gtk.TreeViewColumn("Tipo Chiave", rendererSx, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+#        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
-        column.set_resizable(True)
+#        column.set_resizable(True)
         column.set_min_width(70)
         self.treeview.append_column(column)
 
@@ -94,10 +94,10 @@ class SetConfUI(GladeWidget):
         cellspin.connect('toggled', self.on_column_selected_edited, self.treeview, True)
         column = gtk.TreeViewColumn('Attiva', cellspin)
         column.add_attribute( cellspin, "active", 8)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        #column.set_expand(True)
-        #column.set_min_width(40)
+#        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        column.set_resizable(False)
+        column.set_expand(False)
+        column.set_min_width(70)
         self.treeview.append_column(column)
 
         self._treeViewModel = gtk.TreeStore(object,str,str,str, str,str,str,str,bool)
@@ -127,7 +127,10 @@ class SetConfUI(GladeWidget):
                                             False))
             ss = SetConf().select(section=s,batchSize=None, orderBy=SetConf.section)
             for s in ss:
-                if s.key != "install_code":
+                if (s.key != "install_code") and\
+                        (s.key !="pan") and \
+                            (s.key != "password") and\
+                                (s.key != "username") :
                     if s.tipo == "BOOLEAN":
                         valore = "USARE 'ATTIVA' PER ATTIVARE / DISATTIVARE"
                     else:
@@ -220,6 +223,26 @@ if not SetConf().select(key="tipo_documento_predefinito",section="Documenti"):
     k.value =""
     k.section = "Documenti"
     k.description = "eventuale tipo documento preferenziale da preimpostare"
+    k.tipo_section = "Generico"
+    k.active = True
+    k.date = datetime.datetime.now()
+    k.persist()
+if not SetConf().select(key="altezza_logo",section="Documenti"):
+    k = SetConf()
+    k.key = "altezza_logo"
+    k.value ="110"
+    k.section = "Documenti"
+    k.description = "altezza logo documento"
+    k.tipo_section = "Generico"
+    k.active = True
+    k.date = datetime.datetime.now()
+    k.persist()
+if not SetConf().select(key="larghezza_logo",section="Documenti"):
+    k = SetConf()
+    k.key = "larghezza_logo"
+    k.value ="300"
+    k.section = "Documenti"
+    k.description = "larghezza logo documento"
     k.tipo_section = "Generico"
     k.active = True
     k.date = datetime.datetime.now()
@@ -338,6 +361,16 @@ if not SetConf().select(key="combo_column", section="Numbers"):
     k.section = "Numbers"
     k.tipo_section = "Generico"
     k.description = "Gestione dei combo_column cioè le colonne nelle combobox"
+    k.active = True
+    k.date = datetime.datetime.now()
+    k.persist()
+if not SetConf().select(key="rotazione_primanota", section="Primanota"):
+    k = SetConf()
+    k.key = "rotazione_primanota"
+    k.value ="mensile"
+    k.section = "Primanota"
+    k.tipo_section = "Generico"
+    k.description = "Gestione della creazione della prima nota, valori ammessi, MESE, SETTIMANA, TRIMESTRE"
     k.active = True
     k.date = datetime.datetime.now()
     k.persist()

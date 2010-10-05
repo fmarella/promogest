@@ -1,10 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Francesco Meloni <francesco@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
 from promogest.ui.AnagraficaComplessa import Anagrafica,\
@@ -64,10 +78,10 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_taglie_filter_table',
-                                  gladeFile='PromoWear/gui/_anagrafica_taglie_elements.glade',
-                                  module=True)
+                  anagrafica,
+                  'anagrafica_taglie_filter_table',
+                  gladeFile='PromoWear/gui/_anagrafica_taglie_elements.glade',
+                  module=True)
         self._widgetFirstFocus = self.denominazione_filter_entry
         self.orderBy = 'denominazione'
 
@@ -124,7 +138,8 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return GruppoTagliaTaglia().select(batchSize=None,
-                                        orderBy=[GruppoTagliaTaglia.id_gruppo_taglia,GruppoTagliaTaglia.ordine])
+                                orderBy=[GruppoTagliaTaglia.id_gruppo_taglia,
+                                GruppoTagliaTaglia.ordine])
 
         self._filterClosure = filterClosure
 
@@ -139,10 +154,10 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
                 gruppiTaglie.add(gruppoTagliaTaglia.id_gruppo_taglia)
                 gruppoTaglia = GruppoTaglia().getRecord(id =gruppoTagliaTaglia.id_gruppo_taglia)
                 parentNode = self._treeViewModel.append(None,
-                                                        (gruppoTaglia,
-                                                         gruppoTaglia.denominazione,
-                                                         gruppoTaglia.denominazione_breve,
-                                                         None))
+                                            (gruppoTaglia,
+                                             gruppoTaglia.denominazione,
+                                             gruppoTaglia.denominazione_breve,
+                                             None))
                 parentNodes[gruppoTagliaTaglia.id_gruppo_taglia] = parentNode
             taglia = Taglia().getRecord(id=gruppoTagliaTaglia.id_taglia)
             #print "TAGLIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", taglia.numero_ordine
@@ -217,7 +232,8 @@ class AnagraficaTaglieEdit(AnagraficaEdit):
             self.dao = GruppoTagliaTaglia()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = GruppoTagliaTaglia().getRecord(id=[dao.id_gruppo_taglia, dao.id_taglia])
+            self.dao = GruppoTagliaTaglia().getRecord(id=[dao.id_gruppo_taglia,
+                                                        dao.id_taglia])
         self.taglia = None
         self._refresh()
 
@@ -229,7 +245,8 @@ class AnagraficaTaglieEdit(AnagraficaEdit):
         self.denominazione_entry.set_text(self.taglia.denominazione or '')
         self.denominazione_breve_entry.set_text(self.taglia.denominazione_breve or '')
         fillComboboxGruppiTaglia(self.gruppo_taglia_combobox)
-        findComboboxRowFromId(self.gruppo_taglia_combobox, self.dao.id_gruppo_taglia)
+        findComboboxRowFromId(self.gruppo_taglia_combobox,
+                                                self.dao.id_gruppo_taglia)
         self.ordine_spinbutton.set_value(self.dao.ordine or 1)
 
     def saveDao(self):

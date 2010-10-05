@@ -1,23 +1,30 @@
 # -*- coding: utf-8 -*-
 
-"""
- Promogest
- Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
- Author: Andrea Argiolas <andrea@promotux.it>
- Author: Francesco Meloni <francesco@promotux.it>
- License: GNU GPLv2
-"""
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                       di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Andrea Argiolas <andrea@promotux.it>
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
 import gobject
-
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
-
-from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.AliquotaIva
+from AnagraficaComplessa import Anagrafica, AnagraficaFilter, \
+                            AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 from promogest.dao.AliquotaIva import AliquotaIva
-
 from utils import *
 from utilsCombobox import *
 
@@ -41,11 +48,10 @@ class AnagraficaAliquoteIvaFilter(AnagraficaFilter):
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_aliquote_iva_filter_table',
-                                  gladeFile='_anagrafica_aliquote_iva_elements.glade')
+                          anagrafica,
+                          'anagrafica_aliquote_iva_filter_table',
+                          gladeFile='_anagrafica_aliquote_iva_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
-
 
     def draw(self):
         # Colonne della Treeview per il filtro
@@ -61,7 +67,7 @@ class AnagraficaAliquoteIvaFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Descrizione breve', renderer,text=2)
+        column = gtk.TreeViewColumn('Descrizione breve', renderer, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect('clicked', self._changeOrderBy, (None, 'denominazione_breve'))
@@ -70,7 +76,7 @@ class AnagraficaAliquoteIvaFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('%', renderer,text=3)
+        column = gtk.TreeViewColumn('%', renderer, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect('clicked', self._changeOrderBy, (None, 'percentuale'))
@@ -86,17 +92,16 @@ class AnagraficaAliquoteIvaFilter(AnagraficaFilter):
 
         self.refresh()
 
-
     def clear(self):
         # Annullamento filtro
         self.denominazione_filter_entry.set_text('')
         self.refresh()
 
-
     def refresh(self):
         # Aggiornamento TreeView
         denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
         aliquota_iva = AliquotaIva()
+
         def filterCountClosure():
             return aliquota_iva.count(denominazione=denominazione)
 
@@ -118,7 +123,6 @@ class AnagraficaAliquoteIvaFilter(AnagraficaFilter):
         ivas = self.runFilter()
 
         self._treeViewModel.clear()
-
         for i in ivas:
             self._treeViewModel.append((i,
                                         (i.denominazione or ''),
@@ -126,22 +130,21 @@ class AnagraficaAliquoteIvaFilter(AnagraficaFilter):
                                         (('%5.2f') % (i.percentuale or 0))))
 
 
-
 class AnagraficaAliquoteIvaHtml(AnagraficaHtml):
+
     def __init__(self, anagrafica):
         AnagraficaHtml.__init__(self, anagrafica, 'aliquota_iva',
                                 'Dettaglio aliquota IVA')
 
 
-
 class AnagraficaAliquoteIvaReport(AnagraficaReport):
+
     def __init__(self, anagrafica):
         AnagraficaReport.__init__(self, anagrafica=anagrafica,
                                   description='Elenco delle aliquote I.V.A.',
                                   defaultFileName='aliquote_iva',
                                   htmlTemplate='aliquote_iva',
                                   sxwTemplate='aliquote_iva')
-
 
 
 class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
@@ -155,11 +158,9 @@ class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
                                 gladeFile='_anagrafica_aliquote_iva_elements.glade')
         self._widgetFirstFocus = self.denominazione_entry
 
-
-    def draw(self,cplx=False):
+    def draw(self, cplx=False):
         #Popola combobox tipi aliquote iva
         fillComboboxTipiAliquoteIva(self.id_tipo_combobox)
-
 
     def setDao(self, dao):
         if dao is None:
@@ -170,7 +171,6 @@ class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
             self.dao = AliquotaIva().getRecord(id=dao.id)
         self._refresh()
 
-
     def _refresh(self):
         self.denominazione_entry.set_text(self.dao.denominazione or '')
         self.denominazione_breve_entry.set_text(self.dao.denominazione_breve or '')
@@ -180,7 +180,6 @@ class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
         self.percentuale_detrazione_entry.set_text(('%-5.2f') % percentuale_detrazione)
         self.descrizione_detrazione_entry.set_text(self.dao.descrizione_detrazione or '')
         findComboboxRowFromId(self.id_tipo_combobox, self.dao.id_tipo)
-
 
     def saveDao(self):
         if (self.denominazione_entry.get_text() == ''):

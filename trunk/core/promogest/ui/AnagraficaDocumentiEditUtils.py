@@ -1,8 +1,26 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
+
 import gtk
 from math import sqrt
 from GladeWidget import GladeWidget
@@ -18,7 +36,9 @@ if "SuMisura" in Environment.modulesList:
     from promogest.modules.SuMisura.ui import AnagraficaDocumentiEditSuMisuraExt
 if "GestioneNoleggio" in Environment.modulesList:
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
-if "Pagamenti" or "pan" in Environment.modulesList:
+if ("Pagamenti" in Environment.modulesList) or \
+    ("pan" in Environment.modulesList) or \
+    ("basic" in Environment.modulesList):
     from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 
 
@@ -196,7 +216,9 @@ def drawPart(anaedit):
             anaedit.on_sconti_widget_button_toggled)
     anaedit.sconti_testata_widget.button.connect('toggled',
             anaedit.on_sconti_testata_widget_button_toggled)
-    if "Pagamenti" or "pan" in Environment.modulesList:
+    if ("Pagamenti" in Environment.modulesList) or \
+        ("pan" in Environment.modulesList) or \
+        ("basic" in Environment.modulesList):
         AnagraficadocumentiPagamentExt.connectEntryPag(anaedit)
 
 

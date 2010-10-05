@@ -1,12 +1,28 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: JJDaNiMoTh <jjdanimoth@gmail.com>
 # Author: Dr astico <zoccolodignu@gmail.com>
 # Author: Francesco Meloni <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
 
 from AnagraficaComplessa import AnagraficaFilter
 import gtk
@@ -119,7 +135,9 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         column.set_expand(True)
         column.set_min_width(200)
         treeview.append_column(column)
-        if "Pagamenti" or "pan" in Environment.modulesList:
+        if ("Pagamenti" in Environment.modulesList) or \
+                ("pan" in Environment.modulesList) or \
+                ("basic" in Environment.modulesList):
             column = gtk.TreeViewColumn('Saldato', rendererSx, text=10)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
             column.set_clickable(False)
@@ -172,7 +190,9 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.id_cliente_filter_customcombobox.set_active(0)
         self.id_fornitore_filter_customcombobox.set_active(0)
         self.id_agente_filter_customcombobox.set_active(0)
-        if "Pagamenti" or "pan" in Environment.modulesList:
+        if ("Pagamenti" in Environment.modulesList) or \
+                 ("pan" in Environment.modulesList) or \
+                                ("basic" in Environment.modulesList):
             self.stato_documento_filter_combobox.set_active(-1)
         if "GestioneNoleggio" in Environment.modulesList:
             self.a_data_inizio_noleggio_filter_entry.set_text('')

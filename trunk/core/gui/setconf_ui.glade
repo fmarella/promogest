@@ -3,9 +3,11 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="setconf_window">
+    <property name="title" translatable="yes">SETUP PromoGest2</property>
     <property name="window_position">center-always</property>
     <property name="default_width">800</property>
     <property name="default_height">600</property>
+    <property name="gravity">center</property>
     <child>
       <object class="GtkVBox" id="setconf_vbox">
         <property name="visible">True</property>
@@ -44,7 +46,7 @@
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <signal name="toggled" handler="on_edit_togglebutton_toggled" swapped="no"/>
+                <signal name="toggled" handler="on_edit_togglebutton_toggled"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -72,6 +74,7 @@
                 <property name="rules_hint">True</property>
                 <property name="level_indentation">1</property>
                 <property name="enable_grid_lines">both</property>
+                <property name="enable_tree_lines">True</property>
               </object>
             </child>
           </object>
@@ -90,9 +93,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_save_button_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_save_button_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -106,9 +108,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_close_button_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_close_button_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <interface>
-  <!-- interface-requires gtk+ 2.6 -->
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkFrame" id="elenco_listini_frame">
     <property name="visible">True</property>
@@ -46,6 +46,10 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Gestione dei Listini
+Ricordiamo che nella 
+versione lite senza opzioni attivate &#xE8; possibile avere un solo 
+listino di vendita </property>
                     <signal name="clicked" handler="on_listini_togglebutton_clicked"/>
                     <child>
                       <object class="GtkAlignment" id="alignment126">
@@ -96,6 +100,9 @@ listino</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Composizione dei listini
+con l'inserimento degli 
+articoli presenti in anagrafica</property>
                     <signal name="clicked" handler="on_articoli_listino_togglebutton_clicked"/>
                     <child>
                       <object class="GtkAlignment" id="alignment127">
@@ -147,6 +154,10 @@ listino</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="tooltip_text" translatable="yes">Accesso al modulo 
+di importazione listini e creazione 
+anagrafica articolo.
+Accetta file csv</property>
                     <signal name="clicked" handler="on_importazione_listini_togglebutton_clicked"/>
                     <child>
                       <object class="GtkAlignment" id="alignment7">
@@ -197,6 +208,10 @@ listino</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="tooltip_text" translatable="yes">Interfaccia di creazione delle frontaline
+o label per la vendita, con prezzo, iva e 
+codici a barre. Serve un modulo 
+apposito per averne pieno accesso</property>
                     <signal name="clicked" handler="on_stampa_frontaline_togglebutton_clicked"/>
                     <child>
                       <object class="GtkAlignment" id="alignment1">

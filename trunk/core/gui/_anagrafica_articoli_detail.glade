@@ -5,7 +5,6 @@
   <!-- interface-naming-policy project-wide -->
   <object class="GtkVBox" id="anagrafica_articoli_detail_table">
     <property name="visible">True</property>
-    <property name="orientation">vertical</property>
     <child>
       <object class="GtkTable" id="table2">
         <property name="visible">True</property>
@@ -14,10 +13,11 @@
         <property name="column_spacing">6</property>
         <property name="row_spacing">6</property>
         <child>
-          <object class="GtkLabel" id="label53">
+          <object class="GtkLabel" id="codice_articolo_label">
             <property name="visible">True</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes">Codice</property>
+            <property name="label" translatable="yes">&lt;b&gt;Codice&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
           </object>
           <packing>
             <property name="x_options">GTK_FILL</property>
@@ -26,10 +26,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label56">
+          <object class="GtkLabel" id="famiglia_label">
             <property name="visible">True</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes">Famiglia merceologica</property>
+            <property name="label" translatable="yes">&lt;b&gt;Famiglia merceologica&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
           </object>
           <packing>
             <property name="top_attach">3</property>
@@ -40,7 +41,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label58">
+          <object class="GtkLabel" id="stato_label">
             <property name="visible">True</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Stato</property>
@@ -59,6 +60,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
+            <property name="tooltip_text" translatable="yes">Cliccare per dare lo stato di sospeso</property>
             <property name="use_underline">True</property>
             <property name="draw_indicator">True</property>
           </object>
@@ -74,6 +76,7 @@
         <child>
           <object class="GtkComboBox" id="id_stato_articolo_combobox">
             <property name="visible">True</property>
+            <property name="tooltip_text" translatable="yes">Permette di associare degli stati all'articolo </property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -85,10 +88,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label54">
+          <object class="GtkLabel" id="descrizione_label">
             <property name="visible">True</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes">Descrizione</property>
+            <property name="label" translatable="yes">&lt;b&gt;Descrizione&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
           </object>
           <packing>
             <property name="top_attach">1</property>
@@ -102,6 +106,7 @@
           <object class="GtkEntry" id="denominazione_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="tooltip_text" translatable="yes">Inserire la descrizione o denominazione dell'articolo</property>
             <property name="invisible_char">&#x2022;</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
@@ -121,10 +126,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label55">
+          <object class="GtkLabel" id="aliquota_iva_label">
             <property name="visible">True</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes">Aliquota IVA</property>
+            <property name="label" translatable="yes">&lt;b&gt;Aliquota IVA&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
           </object>
           <packing>
             <property name="top_attach">5</property>
@@ -135,10 +141,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label57">
+          <object class="GtkLabel" id="categoria_label">
             <property name="visible">True</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes">Categoria</property>
+            <property name="label" translatable="yes">&lt;b&gt;Categoria&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
           </object>
           <packing>
             <property name="top_attach">4</property>
@@ -149,7 +156,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="label249">
+          <object class="GtkLabel" id="produttore_label">
             <property name="visible">True</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Produttore</property>
@@ -166,6 +173,8 @@
           <object class="GtkEntry" id="produttore_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="tooltip_text" translatable="yes">Produttore ( diverso dal fornitore ) 
+dell'articolo </property>
             <property name="max_length">149</property>
             <property name="invisible_char">&#x2022;</property>
             <property name="secondary_icon_stock">gtk-clear</property>
@@ -193,6 +202,10 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Accesso all'interfaccia di 
+inserimento di articoli nel listino 
+di vendita
+</property>
                 <signal name="clicked" handler="on_listini_togglebutton_clicked"/>
                 <child>
                   <object class="GtkAlignment" id="alignment48">
@@ -242,6 +255,9 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Gestione delle forniture
+articolo derivate da inserimenti manuali 
+o da movimenti o documenti di carico</property>
                 <signal name="clicked" handler="on_forniture_togglebutton_clicked"/>
                 <child>
                   <object class="GtkAlignment" id="alignment92">
@@ -291,6 +307,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Elenco dei movimenti in cui &#xE8; presente 
+l'articolo con un totale giacenza</property>
                 <signal name="clicked" handler="on_stoccaggi_togglebutton_clicked"/>
                 <child>
                   <object class="GtkAlignment" id="alignment46">
@@ -358,6 +376,10 @@
                   <object class="GtkEntry" id="codice_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes">Codice Articolo 
+se non ne avesse uno potete 
+cliccare a sinistra per farne 
+generare uno dal programma</property>
                     <property name="max_length">20</property>
                     <property name="invisible_char">&#x2022;</property>
                     <property name="primary_icon_stock">gtk-new</property>
@@ -386,6 +408,9 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Pulsante per l'inserimento 
+di uno o pi&#xF9; codici a barre abbinati
+( l'articolo dev'essere gi&#xE0; stato salvato )</property>
                     <signal name="clicked" handler="on_codici_a_barre_togglebutton_clicked"/>
                     <child>
                       <object class="GtkAlignment" id="alignment32">
@@ -442,7 +467,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox2">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">3</property>
                             <child>
                               <object class="GtkHBox" id="hbox5">
@@ -455,6 +479,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="tooltip_text" translatable="yes">Articolo normale senza attributi e senza varianti</property>
                                     <property name="use_underline">True</property>
                                     <property name="active">True</property>
                                     <property name="draw_indicator">True</property>
@@ -471,6 +496,9 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="tooltip_text" translatable="yes">Selezionare per creare 
+un articolo con degli attributi come taglia e colore 
+ma senza figli</property>
                                     <property name="use_underline">True</property>
                                     <property name="draw_indicator">True</property>
                                     <property name="group">normale_radiobutton</property>
@@ -487,6 +515,8 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="tooltip_text" translatable="yes">Selezionare per creare un articolo PADRE
+che abbia poi figli con variazione di taglia e colore</property>
                                     <property name="use_underline">True</property>
                                     <property name="draw_indicator">True</property>
                                     <property name="group">normale_radiobutton</property>
@@ -531,6 +561,9 @@
                                     <property name="sensitive">False</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <property name="tooltip_text" translatable="yes">Pulsante di accesso all'interfaccia 
+di inserimento e creazione delle 
+varianti di taglia e colore </property>
                                     <signal name="toggled" handler="on_taglie_colori_togglebutton_clicked"/>
                                     <child>
                                       <object class="GtkAlignment" id="alignment6">
@@ -609,7 +642,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkFrame" id="frame1">
+          <object class="GtkFrame" id="info_articolo_frame">
             <property name="visible">True</property>
             <property name="label_xalign">0</property>
             <property name="shadow_type">in</property>
@@ -622,7 +655,7 @@
               </object>
             </child>
             <child type="label">
-              <object class="GtkLabel" id="label12">
+              <object class="GtkLabel" id="info_articolo_frame_label">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">&lt;b&gt;Info Articolo&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
@@ -640,6 +673,11 @@
           <object class="CustomComboBoxModify" id="id_famiglia_articolo_customcombobox">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="tooltip_text" translatable="yes">Associazione di una Famiglia o 
+di una sottofamiglia  
+merceologica all'articolo
+se non ne avesse ancora una 
+cliccare sul piccolo pulsante di fianco </property>
             <child>
               <placeholder/>
             </child>
@@ -655,6 +693,10 @@
           <object class="CustomComboBoxModify" id="id_categoria_articolo_customcombobox">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="tooltip_text" translatable="yes">Associazione di una Categoria 
+all'articolo. Se non ne avesse ancora
+una cliccare su pulsante piccolo 
+di fianco</property>
             <child>
               <placeholder/>
             </child>
@@ -670,6 +712,9 @@
           <object class="CustomComboBoxModify" id="id_aliquota_iva_customcombobox">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="tooltip_text" translatable="yes">Associa una aliquota iva al nostro 
+articolo. Se non ne avesse potete cliccare 
+sul pulsante di fianco</property>
             <child>
               <placeholder/>
             </child>
@@ -723,7 +768,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label2">
+              <object class="GtkLabel" id="quantita_minima_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Quantita' minima</property>
@@ -736,7 +781,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label59">
+              <object class="GtkLabel" id="unita_di_misura_dimensione_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Unit&#xE0; di misura dimensioni</property>
@@ -751,7 +796,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label63">
+              <object class="GtkLabel" id="unita_di_misura_peso_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Unit&#xE0; di misura peso</property>
@@ -764,7 +809,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label65">
+              <object class="GtkLabel" id="unita_di_misura_volume_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Unit&#xE0; di misura volume</property>
@@ -777,7 +822,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label67">
+              <object class="GtkLabel" id="imballaggio_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Imballaggio</property>
@@ -790,7 +835,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label73">
+              <object class="GtkLabel" id="unita_di_misura_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Unit&#xE0; di misura base</property>
@@ -801,7 +846,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label60">
+              <object class="GtkLabel" id="lunghezza_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Lunghezza</property>
@@ -817,7 +862,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label62">
+              <object class="GtkLabel" id="altezza_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Altezza</property>
@@ -833,7 +878,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label66">
+              <object class="GtkLabel" id="volume_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Volume</property>
@@ -849,7 +894,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label64">
+              <object class="GtkLabel" id="peso_lordo_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Peso lordo</property>
@@ -866,7 +911,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label68">
+              <object class="GtkLabel" id="peso_imballaggio_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Peso imballaggio</property>
@@ -882,7 +927,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label61">
+              <object class="GtkLabel" id="larghezza_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Larghezza</property>
@@ -900,6 +945,7 @@
             <child>
               <object class="GtkComboBoxEntry" id="unita_dimensioni_comboboxentry">
                 <property name="visible">True</property>
+                <property name="tooltip_text" translatable="yes">Unit&#xE0; di misura per le sue dimensioni</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
                 <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -916,6 +962,7 @@
             <child>
               <object class="GtkComboBoxEntry" id="unita_volume_comboboxentry">
                 <property name="visible">True</property>
+                <property name="tooltip_text" translatable="yes">Sceglie l'unita di misura del volume</property>
                 <property name="focus_on_click">False</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
@@ -933,6 +980,7 @@
             <child>
               <object class="GtkComboBoxEntry" id="unita_peso_comboboxentry">
                 <property name="visible">True</property>
+                <property name="tooltip_text" translatable="yes">unita di misura peso</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
                 <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -949,6 +997,7 @@
             <child>
               <object class="GtkComboBox" id="id_unita_base_combobox">
                 <property name="visible">True</property>
+                <property name="tooltip_text" translatable="yes">Unit&#xE0; di misura generale dell'articolo</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -978,7 +1027,9 @@
                   <object class="UnsignedDecimalEntryField" id="peso_imballaggio_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes">Peso dell'imballaggio articolo</property>
                     <property name="invisible_char">&#x2022;</property>
+                    <property name="text" translatable="yes">0.00      </property>
                   </object>
                 </child>
               </object>
@@ -1001,6 +1052,7 @@
                   <object class="UnsignedDecimalEntryField" id="peso_lordo_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip_markup">Peso lordo articolo</property>
                     <property name="invisible_char">&#x2022;</property>
                   </object>
                 </child>
@@ -1024,6 +1076,7 @@
                   <object class="UnsignedDecimalEntryField" id="volume_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip_markup">Volume articolo</property>
                     <property name="invisible_char">&#x2022;</property>
                   </object>
                 </child>
@@ -1047,6 +1100,7 @@
                   <object class="UnsignedDecimalEntryField" id="altezza_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip_markup">Altezza articolo</property>
                     <property name="invisible_char">&#x2022;</property>
                   </object>
                 </child>
@@ -1070,6 +1124,7 @@
                   <object class="UnsignedDecimalEntryField" id="larghezza_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip_markup">Larghezza articolo</property>
                     <property name="invisible_char">&#x2022;</property>
                   </object>
                 </child>
@@ -1093,6 +1148,7 @@
                   <object class="UnsignedDecimalEntryField" id="lunghezza_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes">Lunghezza articolo</property>
                     <property name="invisible_char">&#x2022;</property>
                   </object>
                 </child>
@@ -1116,6 +1172,10 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Abbinamento di una eventuale unit&#xE0; di misura
+derivata, potrebbe anche essere 
+il bancale che risulta essere 40X rispetto 
+alla semplice unit&#xE0;</property>
                     <signal name="clicked" handler="on_multipli_togglebutton_clicked"/>
                     <child>
                       <object class="GtkAlignment" id="alignment34">
@@ -1138,7 +1198,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label105">
+                              <object class="GtkLabel" id="unita_di_misura_derivate_label">
                                 <property name="visible">True</property>
                                 <property name="label" translatable="yes">Unit&#xE0; di misura derivate</property>
                                 <property name="use_underline">True</property>
@@ -1167,6 +1227,9 @@
               <object class="UnsignedDecimalEntryField" id="quantita_minima_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="tooltip_text" translatable="yes">Campo necessario per il modulo su misura 
+indica una quantit&#xE0; minima vendibile 
+utile quando si vende materiale a metraggio</property>
                 <property name="invisible_char">&#x2022;</property>
               </object>
               <packing>
@@ -1181,6 +1244,9 @@
               <object class="CustomComboBoxModify" id="id_imballaggio_customcombobox">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="tooltip_text" translatable="yes">Abbinare un tipo di imballaggio
+Se non ne avesse inserirne uno o pi&#xF9; cliccando
+sul piccolo bottone di fianco</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -1197,7 +1263,12 @@
               <object class="UnsignedDecimalEntryField" id="divisore_noleggio_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="tooltip_text" translatable="yes">Necessario per 
+il modulo di gestione noleggio 
+&#xE8; un divisore per il calcolo 
+dell'mmortamento </property>
                 <property name="invisible_char">&#x2022;</property>
+                <property name="text" translatable="yes">0.00      </property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -1210,7 +1281,7 @@
           </object>
         </child>
         <child type="tab">
-          <object class="GtkLabel" id="label50">
+          <object class="GtkLabel" id="caratteristiche_difiche_label">
             <property name="visible">True</property>
             <property name="label" translatable="yes">Caratteristiche fisiche</property>
           </object>
@@ -1227,7 +1298,7 @@
             <property name="column_spacing">6</property>
             <property name="row_spacing">6</property>
             <child>
-              <object class="GtkLabel" id="label70">
+              <object class="GtkLabel" id="descrizione_listino_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Descrizione nel listino</property>
@@ -1238,7 +1309,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label69">
+              <object class="GtkLabel" id="codice_etichetta_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Codice etichetta</property>
@@ -1251,7 +1322,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label71">
+              <object class="GtkLabel" id="descrizione_etichetta_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Descrizione etichetta</property>
@@ -1267,6 +1338,8 @@
               <object class="GtkEntry" id="descrizione_listino_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="tooltip_text" translatable="yes">Eventuale descrizione da inserire 
+nel listino di vendita</property>
                 <property name="invisible_char">&#x2022;</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="secondary_icon_activatable">True</property>
@@ -1329,6 +1402,10 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
+                <property name="tooltip_text" translatable="yes">Selezionare se si vuole che 
+nel caso serva 
+si usi la descrizione ridotta 
+inserita poso sopra</property>
                 <property name="use_underline">True</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
@@ -1344,6 +1421,11 @@
               <object class="GtkEntry" id="descrizione_etichetta_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="tooltip_text" translatable="yes">Da usare in abbinamento con 
+il modulo Label per la creazone di etichette 
+per la vendita. E, normalmente 
+una descrizione ridotta o comunque 
+pi&#xF9; corta</property>
                 <property name="invisible_char">&#x2022;</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="secondary_icon_activatable">True</property>
@@ -1363,7 +1445,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label3">
+              <object class="GtkLabel" id="indirizzo_immagine_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
                 <property name="label" translatable="yes">Indirizzo Immagine</property>
@@ -1379,6 +1461,11 @@
               <object class="GtkEntry" id="url_articolo_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="tooltip_text" translatable="yes">Inserisce un indirizzo per una immagine 
+pu&#xF2; essere di due tipi:
+http:// o file:/// 
+l'immagine verr&#xE0; poi visualizzata nella scheda 
+articolo</property>
                 <property name="invisible_char">&#x2022;</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="secondary_icon_activatable">True</property>
@@ -1427,7 +1514,7 @@
           </packing>
         </child>
         <child type="tab">
-          <object class="GtkLabel" id="label51">
+          <object class="GtkLabel" id="informazioni_listini_etichette_label">
             <property name="visible">True</property>
             <property name="label" translatable="yes">Informazioni listini e etichette</property>
           </object>
@@ -1458,7 +1545,7 @@
           </packing>
         </child>
         <child type="tab">
-          <object class="GtkLabel" id="label72">
+          <object class="GtkLabel" id="note_label">
             <property name="visible">True</property>
             <property name="label" translatable="yes">Note</property>
           </object>
@@ -1519,6 +1606,7 @@
                           <object class="CustomComboBoxModify" id="id_modello_customcombobox">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="tooltip_text" translatable="yes">Selezione modello</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1568,6 +1656,7 @@
                           <object class="CustomComboBoxModify" id="id_taglia_customcombobox">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="tooltip_text" translatable="yes">Selezione taglia </property>
                             <child>
                               <placeholder/>
                             </child>
@@ -1651,6 +1740,8 @@
                               <object class="GtkComboBox" id="id_stagione_combobox">
                                 <property name="width_request">200</property>
                                 <property name="visible">True</property>
+                                <property name="tooltip_text" translatable="yes">selezione della stagione dell'articolo 
+padre</property>
                               </object>
                               <packing>
                                 <property name="position">0</property>
@@ -1660,6 +1751,8 @@
                               <object class="GtkComboBox" id="id_anno_combobox">
                                 <property name="width_request">70</property>
                                 <property name="visible">True</property>
+                                <property name="tooltip_text" translatable="yes">Selezione dell'anno 
+dell'articolo padre</property>
                               </object>
                               <packing>
                                 <property name="position">1</property>

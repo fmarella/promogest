@@ -1,0 +1,997 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-requires pythonplugin 0.0 -->
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkTable" id="anagrafica_prima_nota_filter_table">
+    <property name="height_request">130</property>
+    <property name="visible">True</property>
+    <property name="n_rows">5</property>
+    <property name="n_columns">2</property>
+    <child>
+      <object class="GtkEntry" id="numero_filter_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">●</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="numerolabel">
+        <property name="visible">True</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">Denominazione</property>
+      </object>
+      <packing>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="da_data_inizio_label">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Da data inizio</property>
+      </object>
+      <packing>
+        <property name="top_attach">1</property>
+        <property name="bottom_attach">2</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="a_data_inizio_label">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">A data inizio</property>
+      </object>
+      <packing>
+        <property name="top_attach">2</property>
+        <property name="bottom_attach">3</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="DateTimeWidget" id="da_data_inizio_datetimewidget">
+        <property name="visible">True</property>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">1</property>
+        <property name="bottom_attach">2</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="DateTimeWidget" id="a_data_inizio_datetimewidget">
+        <property name="visible">True</property>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">2</property>
+        <property name="bottom_attach">3</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="da_data_fine_label">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">Da data fine</property>
+      </object>
+      <packing>
+        <property name="top_attach">3</property>
+        <property name="bottom_attach">4</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="a_data_fine_label">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">A data fine</property>
+      </object>
+      <packing>
+        <property name="top_attach">4</property>
+        <property name="bottom_attach">5</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="DateTimeWidget" id="da_data_fine_datetimewidget">
+        <property name="visible">True</property>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">3</property>
+        <property name="bottom_attach">4</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="DateTimeWidget" id="a_data_fine_datetimewidget">
+        <property name="visible">True</property>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">4</property>
+        <property name="bottom_attach">5</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkVBox" id="anagrafica_prima_nota_detail_vbox">
+    <property name="visible">True</property>
+    <property name="border_width">5</property>
+    <property name="spacing">4</property>
+    <child>
+      <object class="GtkFrame" id="info_testata_frame">
+        <property name="visible">True</property>
+        <property name="label_xalign">0</property>
+        <property name="shadow_type">in</property>
+        <child>
+          <object class="GtkAlignment" id="alignment1">
+            <property name="visible">True</property>
+            <property name="left_padding">12</property>
+            <child>
+              <object class="GtkVBox" id="vbox1">
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkHBox" id="hbox6">
+                    <property name="visible">True</property>
+                    <property name="border_width">5</property>
+                    <child>
+                      <object class="GtkLabel" id="numero_label_label">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">&lt;b&gt;NUMERO&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="padding">5</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="numero_label">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">---</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">10</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkHSeparator" id="hseparator6">
+                        <property name="visible">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="data_inizio_label_label">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">&lt;b&gt;DATA INIZIO:&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">5</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="data_inizio_label">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">--/--/----</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">10</property>
+                        <property name="position">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="data_fine_label_label">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">&lt;b&gt;DATA FINE:&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">5</property>
+                        <property name="position">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="data_fine_label">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">--/--/----</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">10</property>
+                        <property name="position">6</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkHSeparator" id="hseparator5">
+                        <property name="visible">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">7</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="saldo_precedente_label_label">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">&lt;b&gt;SALDO PRECEDENTE:&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">8</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="saldo_precedente_label">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">0.00</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">10</property>
+                        <property name="position">9</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="riattiva_button">
+                        <property name="label" translatable="yes">Riattiva</property>
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">Riattiva la parte di gestione 
+delle righe di prima nota 
+su una Prima nota già chiusa</property>
+                        <property name="image">image1</property>
+                        <signal name="clicked" handler="on_riattiva_button_clicked"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">10</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="forza_chiusura_button">
+                        <property name="label" translatable="yes">Forza chiusura</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">Forza la chiusura di una prima nota</property>
+                        <signal name="clicked" handler="on_forza_chiusura_button_clicked"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">11</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox9">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkLabel" id="note_label">
+                        <property name="visible">True</property>
+                        <property name="xpad">3</property>
+                        <property name="label" translatable="yes">Note</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="note_entry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">Eventuale descrizione di prima nota</property>
+                        <property name="invisible_char">●</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="label">
+          <object class="GtkLabel" id="testata_info">
+            <property name="visible">True</property>
+            <property name="xpad">22</property>
+            <property name="label" translatable="yes">&lt;b&gt;Informazioni generali prima nota&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">False</property>
+        <property name="padding">5</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkFrame" id="riga_primanota_frame">
+        <property name="visible">True</property>
+        <property name="label_xalign">0</property>
+        <property name="shadow_type">in</property>
+        <child>
+          <object class="GtkVBox" id="vbox2">
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkHBox" id="hbox1">
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkLabel" id="data_pn_label">
+                    <property name="visible">True</property>
+                    <property name="xpad">10</property>
+                    <property name="label" translatable="yes">Data operazione</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="DateWidget" id="data_inserimento_datewidget">
+                    <property name="visible">True</property>
+                    <property name="tooltip_text" translatable="yes">Data dell'operazione</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="hbox2">
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkLabel" id="descrizione_pn_label">
+                    <property name="visible">True</property>
+                    <property name="xpad">9</property>
+                    <property name="label" translatable="yes">Descrizione</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="denominazione_entry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes">Descrizione della prima nota</property>
+                    <property name="invisible_char">●</property>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="hbox3">
+                <property name="visible">True</property>
+                <property name="border_width">10</property>
+                <property name="spacing">2</property>
+                <child>
+                  <object class="GtkLabel" id="cassa_label">
+                    <property name="visible">True</property>
+                    <property name="ypad">2</property>
+                    <property name="label" translatable="yes">&lt;b&gt;CASSA&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkVSeparator" id="vseparator3">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="banca_label">
+                    <property name="visible">True</property>
+                    <property name="ypad">2</property>
+                    <property name="label" translatable="yes">&lt;b&gt;BANCA&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                  <packing>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="CustomComboBoxModify" id="id_banca_customcombobox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="padding">4</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="hbox4">
+                <property name="visible">True</property>
+                <property name="border_width">3</property>
+                <child>
+                  <object class="GtkRadioButton" id="entrata_cassa_radio">
+                    <property name="label" translatable="yes">Entrata </property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="active">True</property>
+                    <property name="draw_indicator">False</property>
+                    <signal name="toggled" handler="on_entrata_cassa_radio_toggled"/>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkRadioButton" id="uscita_cassa_radio">
+                    <property name="label" translatable="yes">Uscita</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="active">True</property>
+                    <property name="draw_indicator">False</property>
+                    <property name="group">entrata_cassa_radio</property>
+                    <signal name="toggled" handler="on_entrata_cassa_radio_toggled"/>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkVSeparator" id="vseparator2">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkRadioButton" id="entrata_banca_radio">
+                    <property name="label" translatable="yes">Entrata</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="active">True</property>
+                    <property name="draw_indicator">False</property>
+                    <property name="group">entrata_cassa_radio</property>
+                    <signal name="toggled" handler="on_entrata_cassa_radio_toggled"/>
+                  </object>
+                  <packing>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkRadioButton" id="uscita_banca_radio">
+                    <property name="label" translatable="yes">Uscita</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="active">True</property>
+                    <property name="draw_indicator">False</property>
+                    <property name="group">entrata_cassa_radio</property>
+                    <signal name="toggled" handler="on_entrata_cassa_radio_toggled"/>
+                  </object>
+                  <packing>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="hbox5">
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkEntry" id="entrata_cassa_entry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes">Valore di entrata cassa</property>
+                    <property name="invisible_char">●</property>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="uscita_cassa_entry">
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes">Valore di uscita cassa</property>
+                    <property name="invisible_char">●</property>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkVSeparator" id="vseparator1">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entrata_banca_entry">
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes">Valore di entrata banca</property>
+                    <property name="invisible_char">●</property>
+                  </object>
+                  <packing>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="uscita_banca_entry">
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes">Valore di uscita banca</property>
+                    <property name="invisible_char">●</property>
+                  </object>
+                  <packing>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="padding">1</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHButtonBox" id="hbuttonbox1">
+                <property name="visible">True</property>
+                <property name="homogeneous">True</property>
+                <property name="layout_style">center</property>
+                <child>
+                  <object class="GtkButton" id="aggiungi_button">
+                    <property name="label">gtk-add</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Aggiunge la riga inserita </property>
+                    <property name="use_stock">True</property>
+                    <signal name="clicked" handler="on_aggiungi_button_clicked"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="rimuovi_button">
+                    <property name="label">gtk-remove</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Elimina la riga di prima nota selezionata</property>
+                    <property name="use_stock">True</property>
+                    <signal name="clicked" handler="on_rimuovi_button_clicked"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow" id="scrolledwindow1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <property name="shadow_type">in</property>
+                <child>
+                  <object class="GtkTreeView" id="riga_primanota_treeview">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="enable_grid_lines">both</property>
+                    <signal name="row_activated" handler="on_riga_primanota_treeview_row_activated"/>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="position">6</property>
+              </packing>
+            </child>
+          </object>
+        </child>
+        <child type="label">
+          <object class="GtkLabel" id="riga_label">
+            <property name="visible">True</property>
+            <property name="xpad">11</property>
+            <property name="label" translatable="yes">&lt;b&gt;Dati rigaprima nota&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkHBox" id="hbox7">
+        <property name="visible">True</property>
+        <property name="spacing">1</property>
+        <child>
+          <object class="GtkLabel" id="totale_righe_label_label">
+            <property name="visible">True</property>
+            <property name="xpad">1</property>
+            <property name="label" translatable="yes">&lt;b&gt;TOT RIGHE:&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">1</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="totale_righe_label">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">---</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">10</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="totale_entrate_cassa_label_label">
+            <property name="visible">True</property>
+            <property name="xpad">1</property>
+            <property name="label" translatable="yes">&lt;b&gt;TOT ENTRATE CASSA:&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="totale_entrate_cassa_label">
+            <property name="visible">True</property>
+            <property name="xpad">3</property>
+            <property name="label" translatable="yes">0.00</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">10</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="totale_uscite_cassa_label_label">
+            <property name="visible">True</property>
+            <property name="xalign">0.49000000953674316</property>
+            <property name="xpad">2</property>
+            <property name="label" translatable="yes">&lt;b&gt;TOT USCITE CASSA:&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="totale_uscite_cassa_label">
+            <property name="visible">True</property>
+            <property name="xpad">3</property>
+            <property name="label" translatable="yes">0.00</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">10</property>
+            <property name="position">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="totale_entrate_banca_label_label">
+            <property name="visible">True</property>
+            <property name="xpad">1</property>
+            <property name="label" translatable="yes">&lt;b&gt;TOT ENTRATE BANCA:&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="position">6</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="totale_entrate_banca_label">
+            <property name="visible">True</property>
+            <property name="xpad">3</property>
+            <property name="label" translatable="yes">0.00</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">10</property>
+            <property name="position">7</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="totale_uscite_banca_label_label">
+            <property name="visible">True</property>
+            <property name="xpad">1</property>
+            <property name="label" translatable="yes">&lt;b&gt;TOT USCITE BANCA:&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="position">8</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="totale_uscite_banca_label">
+            <property name="visible">True</property>
+            <property name="xpad">3</property>
+            <property name="label" translatable="yes">0.00</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">10</property>
+            <property name="position">9</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">False</property>
+        <property name="position">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkHBox" id="hbox8">
+        <property name="visible">True</property>
+        <property name="spacing">1</property>
+        <child>
+          <object class="GtkLabel" id="totale_cassa_label_label">
+            <property name="visible">True</property>
+            <property name="xpad">1</property>
+            <property name="label" translatable="yes">&lt;b&gt;TOT CASSA:&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">1</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="totale_cassa_label">
+            <property name="visible">True</property>
+            <property name="xpad">3</property>
+            <property name="label" translatable="yes">0.00</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">10</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="totale_banca_label_label">
+            <property name="visible">True</property>
+            <property name="xpad">1</property>
+            <property name="label" translatable="yes">&lt;b&gt;TOT BANCA:&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="totale_banca_label">
+            <property name="visible">True</property>
+            <property name="xpad">3</property>
+            <property name="label" translatable="yes">0.00</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">10</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHSeparator" id="hseparator1">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="totale_saldo_label_label">
+            <property name="visible">True</property>
+            <property name="xpad">1</property>
+            <property name="label" translatable="yes">&lt;b&gt;TOTALE PARZIALE :&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">10</property>
+            <property name="position">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="totale_saldo_label">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">0.00</property>
+          </object>
+          <packing>
+            <property name="position">6</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHSeparator" id="hseparator2">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="position">7</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="saldo_label_label">
+            <property name="visible">True</property>
+            <property name="xpad">10</property>
+            <property name="label" translatable="yes">&lt;b&gt;SALDO ATTUALE&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="position">8</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="saldo_label">
+            <property name="visible">True</property>
+            <property name="xpad">10</property>
+            <property name="label" translatable="yes">0.00</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">9</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">False</property>
+        <property name="position">3</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="stock">gtk-edit</property>
+  </object>
+</interface>

@@ -1,23 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
 import gobject
@@ -97,7 +98,13 @@ class ElencoListini(GladeWidget):
         liss = Listino().select(orderBy='denominazione',
                                             batchSize=None,
                                             offset=None)
-
+        if (not "pan" in Environment.modulesList) and \
+            (not "basic" in  Environment.modulesList) and \
+                Listino().count() >1 \
+                and Environment.tipodb =="sqlite"\
+                and not Environment.listini:
+            if len(liss) >1:
+                liss = [liss[0]]
         for l in liss:
             model.append((l,
                           (l.denominazione or ''),
@@ -123,7 +130,8 @@ class ElencoListini(GladeWidget):
 
 
     def on_stampa_frontaline_togglebutton_clicked(self, toggleButton):
-        if "Label" or "pan" in Environment.modulesList:
+        if ("Label" in Environment.modulesList) or \
+            ("pan" in Environment.modulesList):
             from promogest.modules.Label.ui.ManageLabelsToPrint import ManageLabelsToPrint
             a = ManageLabelsToPrint(mainWindow=self,daos=[])
             anagWindow = a.getTopLevel()
@@ -165,7 +173,8 @@ class ElencoListini(GladeWidget):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
-        if "ImportPriceList" or "pan" in Environment.modulesList:
+        if ("ImportPriceList" in Environment.modulesList) or \
+            ("pan" in Environment.modulesList):
             from promogest.modules.ImportPriceList.ui.ImportPriceList import ImportPriceList
             idListino = None
             if self._currentDao:

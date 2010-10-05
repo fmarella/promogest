@@ -14,7 +14,6 @@
           <object class="GtkVBox" id="vbox4">
             <property name="visible">True</property>
             <property name="border_width">6</property>
-            <property name="orientation">vertical</property>
             <property name="spacing">10</property>
             <child>
               <object class="GtkToggleButton" id="articoli_button">
@@ -121,10 +120,9 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox1">
+          <object class="GtkVBox" id="anagrafiche_moduli_vbox">
             <property name="visible">True</property>
             <property name="border_width">6</property>
-            <property name="orientation">vertical</property>
             <property name="spacing">10</property>
             <child>
               <placeholder/>

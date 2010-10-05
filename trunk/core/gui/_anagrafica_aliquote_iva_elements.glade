@@ -18,6 +18,9 @@
           <object class="GtkComboBox" id="id_tipo_combobox">
             <property name="width_request">150</property>
             <property name="visible">True</property>
+            <property name="tooltip_text" translatable="yes">Tipologie 
+di aliquota iva gestite 
+dal programma</property>
           </object>
         </child>
       </object>
@@ -40,6 +43,9 @@
           <object class="UnsignedDecimalEntryField" id="percentuale_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="tooltip_text" translatable="yes">Percentuale della aliquota
+quando presente e non 
+esente</property>
             <property name="invisible_char">&#x2022;</property>
             <property name="text" translatable="yes">0.00      </property>
             <property name="secondary_icon_stock">gtk-clear</property>
@@ -62,6 +68,7 @@
       <object class="GtkEntry" id="denominazione_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
+        <property name="tooltip_text" translatable="yes">Descrizione della aliquota (max 100 )</property>
         <property name="invisible_char">&#x2022;</property>
         <property name="secondary_icon_stock">gtk-clear</property>
         <property name="secondary_icon_activatable">True</property>
@@ -88,6 +95,8 @@
           <object class="UnsignedDecimalEntryField" id="percentuale_detrazione_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="tooltip_text" translatable="yes">Percentuale di detrazione 
+quando presente</property>
             <property name="invisible_char">&#x2022;</property>
             <property name="text" translatable="yes">0.00      </property>
             <property name="secondary_icon_stock">gtk-clear</property>
@@ -110,6 +119,7 @@
       <object class="GtkEntry" id="descrizione_detrazione_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
+        <property name="tooltip_text" translatable="yes">Descrizione della detrazione</property>
         <property name="invisible_char">&#x2022;</property>
         <property name="secondary_icon_stock">gtk-clear</property>
         <property name="secondary_icon_activatable">True</property>
@@ -129,10 +139,11 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label46">
+      <object class="GtkLabel" id="tipo_aliquota_label">
         <property name="visible">True</property>
         <property name="xalign">0</property>
-        <property name="label" translatable="yes">Tipo Aliquota</property>
+        <property name="label" translatable="yes">&lt;b&gt;Tipo Aliquota&lt;/b&gt;</property>
+        <property name="use_markup">True</property>
       </object>
       <packing>
         <property name="top_attach">5</property>
@@ -143,7 +154,7 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label45">
+      <object class="GtkLabel" id="descrizione_dotazioni_label">
         <property name="visible">True</property>
         <property name="xalign">0</property>
         <property name="yalign">0.47999998927116394</property>
@@ -158,7 +169,7 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label44">
+      <object class="GtkLabel" id="percentuale_detrazione_label">
         <property name="visible">True</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">% Detrazione</property>
@@ -172,7 +183,7 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label43">
+      <object class="GtkLabel" id="percentuale_aliquota_label">
         <property name="visible">True</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">% Aliquota IVA</property>
@@ -194,6 +205,7 @@
           <object class="GtkEntry" id="denominazione_breve_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="tooltip_text" translatable="yes">Descrizione Breve ( max 10 )</property>
             <property name="max_length">10</property>
             <property name="invisible_char">&#x2022;</property>
             <property name="secondary_icon_stock">gtk-clear</property>
@@ -216,10 +228,11 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label36">
+      <object class="GtkLabel" id="descrizione_breve_aliquota_iva_label">
         <property name="visible">True</property>
         <property name="xalign">0</property>
-        <property name="label" translatable="yes">Descrizione breve</property>
+        <property name="label" translatable="yes">&lt;b&gt;Descrizione breve&lt;/b&gt;</property>
+        <property name="use_markup">True</property>
       </object>
       <packing>
         <property name="top_attach">1</property>
@@ -230,10 +243,11 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label35">
+      <object class="GtkLabel" id="descrizione_aliquota_iva_label">
         <property name="visible">True</property>
         <property name="xalign">0</property>
-        <property name="label" translatable="yes">Descrizione</property>
+        <property name="label" translatable="yes">&lt;b&gt;Descrizione&lt;/b&gt;</property>
+        <property name="use_markup">True</property>
       </object>
       <packing>
         <property name="x_options">GTK_FILL</property>

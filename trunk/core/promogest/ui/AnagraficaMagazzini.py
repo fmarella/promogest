@@ -1,12 +1,26 @@
 # -*- coding: utf-8 -*-
 
-"""
- Promogest
- Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
- Author: Andrea Argiolas <andrea@promotux.it>
- Author: Francesco Meloni <francesco@promotux.it>
- License: GNU GPLv2
- """
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
+
 import gtk
 import gobject
 
@@ -102,7 +116,11 @@ class AnagraficaMagazziniFilter(AnagraficaFilter):
         mags = self.runFilter()
 
         self._treeViewModel.clear()
-        if Environment.tipo_eng =="sqlite" and not Environment.magazzini:
+        if (not "pan" in Environment.modulesList) and \
+            (not "basic" in  Environment.modulesList) and \
+                Magazzino().count() >1 and \
+                 Environment.tipodb =="sqlite"\
+                and not Environment.magazzini:
             if len(mags) >1:
                 mags = [mags[0]]
         for m in mags:
@@ -145,7 +163,11 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            if Environment.tipo_eng =="sqlite" and Magazzino().count() >=1 and not Environment.magazzini:
+            if (not "pan" in Environment.modulesList) and \
+            (not "basic" in  Environment.modulesList) and \
+                Magazzino().count() >1 and \
+                 Environment.tipodb =="sqlite"\
+                and not Environment.magazzini:
                 self.destroy()
                 fenceDialog()
             else:
@@ -174,13 +196,19 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
         self.dao.cap = self.cap_entry.get_text()
         self.dao.provincia = self.provincia_entry.get_text()
         self.dao.pvcode = self.pvcode_entry.get_text()
-        if Environment.tipo_eng =="sqlite" and Magazzino().count() >=1 and not Environment.magazzini:
+        if (not "pan" in Environment.modulesList) and \
+            (not "basic" in  Environment.modulesList) and \
+                Magazzino().count() >1 and \
+                 Environment.tipodb =="sqlite"\
+                and not Environment.magazzini:
             return
         self.dao.persist()
 
 
     def on_contatti_togglebutton_clicked(self, toggleButton):
-        if "Contatti" or "pan" in Environment.modulesList:
+        if ("Contatti" in Environment.modulesList) or \
+            ("pan" in Environment.modulesList) or \
+            ("basic" in Environment.modulesList):
             if not(toggleButton.get_active()):
                 toggleButton.set_active(False)
                 return

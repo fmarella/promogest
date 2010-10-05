@@ -64,8 +64,8 @@ class ScontoWidget(gtk.HBox):
             self.tipoSconto = 'valore'
             return True
 
-    def do_focus_out_event(self, widget, entry):
-        self.emit('focus_out_event', entry)
+#    def do_focus_out_event(self, widget, entry):
+#        self.emit('focus_out_event', widget, entry)
 
     def _getTipoSconto(self):
         if self.buttonPerc.get_active():

@@ -10,13 +10,11 @@
 
     <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-            <td colspan="2" class="table-header">Dati documento</td></tr>
+            <td colspan="4" class="table-header">Dati documento</td></tr>
         <tr>
-            <td width="140px" class="even-detail">Operazione</td>
+            <td class="even-detail">Operazione</td>
             <td class="odd-detail">
                 <strong> {{dao.operazione}}</strong></td>
-        </tr>
-        <tr>
             <td class="even-detail">Data documento</td>
             <td class="odd-detail"><strong>{{utils.dateToString(dao.data_documento)}}</strong></td>
         </tr>
@@ -36,28 +34,21 @@
     <br />
             <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td colspan="2" class="table-header">TOTALI DOCUMENTO</td>
+                    <td colspan="8" class="table-header">TOTALI DOCUMENTO</td>
                 </tr>
                 <tr>
-                    <td width="140px" class="even-detail">Totale Imponibile Lordo:</td>
+                    <td class="even-detail">TOTALE IMPONIBILE LORDO:</td>
                     <td class="odd-detail"><strong> {{ utils.mN(dao._totaleImponibile,2)}}</strong></td>
-                </tr>
-                                <tr>
-                    <td width="140px" class="even-detail">Sconto testata documento:</td>
+                    <td class="even-detail">SCONTO TESTATA DOCUMENTO:</td>
                     <td class="odd-detail"><strong> {{ utils.getStringaSconti(utils.getScontiFromDao(dao.sconti, dao.applicazione_sconti)[0])}}{{ utils.getScontiFromDao(dao.sconti, dao.applicazione_sconti)[1]}}</strong></td>
-                </tr>
-
-                <tr>
-                    <td width="140px" class="even-detail">Totale Imponibile:</td>
+                    <td class="even-detail">TOTALE IMPONIBILE:</td>
                     <td class="odd-detail"><strong> {{ utils.mN(dao._totaleImponibileScontato,2)}}</strong></td>
-                </tr>
-                <tr>
-                    <td class="even-detail">Totale Imposta:</td>
+                    <td class="even-detail">TOTALE IMPOSTA:</td>
                     <td class="odd-detail"><strong>{{ utils.mN(dao._totaleImpostaScontata,2)}}</strong></td>
                 </tr>
                 <tr>
-                    <td class="even-detail">Totale:</td>
-                    <td class="odd-detail"><strong>{{utils.mN(dao._totaleScontato,2)}}</strong></td>
+                    <td  class="even-detail">TOTALE DOCUMENTO:</td>
+                    <td colspan="7"class="odd-detail" style="font-size:20px;color:blue;"><strong>{{utils.mN(dao._totaleScontato,2)}}</strong></td>
                 </tr>
 </table>
     <br />
@@ -141,11 +132,11 @@
             <td class="even-detail" colspan="2">Totale Sospeso</td>
             <td class="odd-detail">
                 <strong py:if="conf.hasPagamenti == True">
-                    <strong>{{dao.totale_sospeso}}</strong></strong></td>
+                    <strong>{{dao.totale_sospeso|nonone}}</strong></strong></td>
             <td class="even-detail" colspan="2">Totale Pagato</td>
             <td class="odd-detail">
                 <strong py:if="conf.hasPagamenti == True">
-                    <strong>{{dao.totale_pagato}}</strong></strong></td>
+                    <strong>{{dao.totale_pagato|nonone}}</strong></strong></td>
         </tr>
     </table>
 	<table cellpadding="0" cellspacing="0" border="0">

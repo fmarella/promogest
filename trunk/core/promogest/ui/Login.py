@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux di Francesco Meloni snc - http://www.promotux.it/
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
 
@@ -39,7 +40,7 @@ from promogest.lib import feedparser
 from promogest.lib import HtmlHandler
 from promogest.ui.StatusBar import Pg2StatusIcon
 
-
+#754181316
 
 class Login(GladeApp):
 

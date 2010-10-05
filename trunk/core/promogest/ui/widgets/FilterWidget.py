@@ -1,11 +1,25 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005-2009 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Francesco Meloni <francesco@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author  Andrea Argiolas   <andrea@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
 import math
@@ -25,7 +39,7 @@ class FilterWidget(GladeWidget):
         self.filtersElement = None
         self.resultsElement = None
         self.join = None
-        self.orderBy = None
+        self.orderBy = False
         self.flag = False
         self.batchSize = int(setconf("Numbers", "batch_size"))
         self.offset = 0
@@ -239,8 +253,9 @@ class FilterWidget(GladeWidget):
 
     def _changeOrderBy(self, widget, fieldsString):
         """ Changes results order
+        RITOCCO fatto per SA 0.6.3 ...ancora da approfondire
         """
-        if self.orderBy == fieldsString[1]:
+        if (self.orderBy is not None ) == (fieldsString[1] is not None):
             if self.flag == False:
                 self.orderBy = asc(fieldsString[1])
                 self.flag = True
@@ -249,7 +264,7 @@ class FilterWidget(GladeWidget):
                 self.flag = False
         else:
             self.orderBy = fieldsString[1]
-        if fieldsString[0]:
+        if fieldsString[0] is not None:
             self.join = fieldsString[0]
         self.refresh()
 
