@@ -2787,7 +2787,7 @@ def scribusVersion(slafile):
     slaversion = root.get('Version')
     print "FILE SLA DA VERIFICARE PRIMA DLLA STAMPA", slafile
     print "VERSIONE SLA", slaversion
-    if "1.3.6" in slaversion or "1.3.7" in slaversion:
+    if "1.3.6" in slaversion or "1.3.7" in slaversion or "1.3.8" in slaversion:
         Environment.new_print_enjine=True
         return True
     elif "1.3.5.1" in slaversion or "1.3.5svn" in slaversion:
