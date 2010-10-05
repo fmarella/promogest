@@ -578,7 +578,7 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
             self.uscita_cassa_radio.set_active(True)
         if self.rigaIter[6] != "0":
             self.entrata_banca_radio.set_active(True)
-            findComboboxRowFromId(self.id_banca_customcombobox.com, self.rigaIter[0].id_banca)
+            findComboboxRowFromId(self.id_banca_customcombobox.combobox, self.rigaIter[0].id_banca)
         if self.rigaIter[7] != "0":
             self.uscita_banca_radio.set_active(True)
             findComboboxRowFromId(self.id_banca_customcombobox.combobox, self.rigaIter[0].id_banca)
@@ -594,18 +594,18 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
 
     def saveDao(self, chiusura=False):
 #        self.dao.righeprimanota = []
-        if "Primanota" in Environment.modulesList or \
-            "pan" in Environment.modulesList:
+#        if "Primanota" in Environment.modulesList or \
+#            "pan" in Environment.modulesList:
 
-            model = self.riga_primanota_treeview.get_model()
-            righe_ = []
-            for m in model:
-                righe_.append(m[0])
-            self.dao.note = self.note_entry.get_text()
-            self.dao.righeprimanota = righe_
-            if chiusura:
-                self.dao.data_fine = datetime.datetime.now()
-            self.dao.persist()
-        else:
-            fenceDialog()
+        model = self.riga_primanota_treeview.get_model()
+        righe_ = []
+        for m in model:
+            righe_.append(m[0])
+        self.dao.note = self.note_entry.get_text()
+        self.dao.righeprimanota = righe_
+        if chiusura:
+            self.dao.data_fine = datetime.datetime.now()
+        self.dao.persist()
+#        else:
+#            fenceDialog()
         self.clear()
