@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
@@ -14,6 +14,7 @@
     <property name="default_height">270</property>
     <property name="destroy_with_parent">True</property>
     <property name="icon">bancomat12x12.png</property>
+    <property name="type_hint">dialog</property>
     <property name="urgency_hint">True</property>
     <property name="gravity">center</property>
     <child>
@@ -42,12 +43,22 @@
                   <object class="GtkEntry" id="denominazione_banca_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="invisible_char">●</property>
                   </object>
                   <packing>
                     <property name="position">1</property>
                   </packing>
                 </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="hbox2">
+                <property name="visible">True</property>
                 <child>
                   <object class="GtkLabel" id="agenzia_label">
                     <property name="visible">True</property>
@@ -57,24 +68,22 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">2</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="agenzia_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="invisible_char">●</property>
                   </object>
                   <packing>
-                    <property name="position">3</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child>
@@ -96,7 +105,7 @@
                   <object class="GtkEntry" id="iban_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="invisible_char">●</property>
                   </object>
                   <packing>
                     <property name="position">1</property>
@@ -119,7 +128,7 @@
                 </child>
               </object>
               <packing>
-                <property name="position">1</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child>
@@ -221,7 +230,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">2</property>
+                <property name="position">3</property>
               </packing>
             </child>
           </object>
