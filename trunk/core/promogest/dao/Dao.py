@@ -44,10 +44,16 @@ class Dao(object):
         ed è molto più flessibile
         """
         filter1 = filter2 = None
-        if complexFilter is not None:
-            filter1 = complexFilter
+        if sqlalchemy.__version__ > 0.6:
+            if complexFilter is not None:
+                filter1 = complexFilter
+            else:
+                filter2= self.prepareFilter(kwargs)
         else:
-            filter2= self.prepareFilter(kwargs)
+            if complexFilter:
+                filter1 = complexFilter
+            else:
+                filter2= self.prepareFilter(kwargs)
         filter = and_(filter1,filter2)
         #print filter
 #        try:
@@ -102,16 +108,28 @@ class Dao(object):
         Restituisce il numero delle righe
         """
         _numRecords = 0
-        if complexFilter is not None:
-            filter = complexFilter
+        if sqlalchemy.__version__ > 0.6:
+            if complexFilter is not None:
+                filter = complexFilter
+            else:
+                filter= self.prepareFilter(kwargs)
         else:
-            filter= self.prepareFilter(kwargs)
+            if complexFilter:
+                filter = complexFilter
+            else:
+                filter= self.prepareFilter(kwargs)
         try:
             dao = self.session.query(self.DaoModule)
-            if filter is not None:
-                dao = dao.filter(filter)
-            if distinct is not None:
-                dao = dao.distinct()
+            if sqlalchemy.__version__ > 0.6:
+                if filter is not None:
+                    dao = dao.filter(filter)
+                if distinct is not None:
+                    dao = dao.distinct()
+            else:
+                if filter:
+                    dao = dao.filter(filter)
+                if distinct:
+                    dao = dao.distinct()
             _numRecords = dao.count()
             if _numRecords > 0:
                 self.numRecords = _numRecords
