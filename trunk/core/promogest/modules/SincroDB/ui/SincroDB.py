@@ -19,7 +19,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
+import random
 import sys
 import gobject
 import datetime
@@ -207,7 +207,7 @@ class SincroDB(GladeWidget):
                 self.logica(remote=remote, locale=locale,dao=dg[0], all=True)
         return True
 
-    def daosScheme(self, tables=None, offsett=None):
+    def daosScheme(self, tables=None, offsett=0):
         """ Crea le liste delle query ciclando nelle tabelle """
         blocSize = int(Environment.conf.SincroDB.offset)
         #blocSize = 500
@@ -225,7 +225,7 @@ class SincroDB(GladeWidget):
                     blocchi = abs(conteggia/blocSize)
                     for j in range(0,blocchi+1):
                         self.avanzamento_pgbar.pulse()
-                        offset = j*blocSize
+                        offset = j*blocSize+offsett
                         print "OFFSET", offset , datetime.datetime.now(), "TABELLA", dg[0]
                         exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
                         exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
@@ -388,8 +388,7 @@ class SincroDB(GladeWidget):
         self.promeid = prome.id
 
     def fixToTable(self, soup =None,soupLocale=None, op=None, row=None,rowLocale=None, dao=None, save=False, offset=None, dao_locale_ex=None):
-        """
-        rimanda alla gestione delle singole tabelle con le operazioni da fare
+        """rimanda alla gestione delle singole tabelle con le operazioni da fare
         """
         #soupLocale.clear()
 
@@ -422,7 +421,7 @@ class SincroDB(GladeWidget):
                         record_codice = self.pg_db_server_locale.articolo.filter_by(codice=row.codice).one()
                         if record_codice:
                             print "CODICE DUPLICATO ...DEVO INTERVENIRE MODIFICANDO IL CODICE E RILANCIANDO "
-                            record_codice.codice = str(record_codice.codice)+"_ex_id_"+str(record_codice.id)
+                            record_codice.codice = str(record_codice.codice)+"_ex_id_"+str(random.sample(xrange(90), 6))
                             sqlalchemy.ext.sqlsoup.Session.add(record_codice)
                             sqlalchemy.ext.sqlsoup.Session.commit()
                             for i in rowLocale.c:
@@ -469,6 +468,13 @@ class SincroDB(GladeWidget):
                 sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
                 if dao == "articolo":
                     sqlalchemy.ext.sqlsoup.Session.commit()
+                    sqlalchemy.ext.sqlsoup.Session.flush()
+                    print "UPDATE ANDATO A BUON FINE"
+                    if rowLocale.id > 500:
+                        iddi = rowLocale.id - 500
+                    else:
+                        iddi = 0
+                    self.daosScheme(tables=[("articolo","id")],offsett=iddi)
                 if dao_locale_ex is not None:
                     self.promemoriaInserAlert(rowLocale, dao_locale_ex)
             except Exception,e :
@@ -486,7 +492,7 @@ class SincroDB(GladeWidget):
                         record_codice = self.pg_db_server_locale.articolo.filter_by(codice=row.codice).one()
                         if record_codice:
                             print "CODICE DUPLICATO ...DEVO INTERVENIRE MODIFICANDO IL CODICE E RILANCIANDO "
-                            record_codice.codice = str(record_codice.codice)+"_ex_id_"+str(record_codice.id)
+                            record_codice.codice = str(record_codice.codice)+"_ex_id_"+str(random.sample(xrange(90), 6))
                             sqlalchemy.ext.sqlsoup.Session.add(record_codice)
                             sqlalchemy.ext.sqlsoup.Session.commit()
                             for i in rowLocale.c:
@@ -494,11 +500,17 @@ class SincroDB(GladeWidget):
                                 setattr(rowLocale, t, getattr(row, t))
                             sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
                             sqlalchemy.ext.sqlsoup.Session.commit()
+                            sqlalchemy.ext.sqlsoup.Session.flush()
+                            if rowLocale.id > 500:
+                                iddi = rowLocale.id - 500
+                            else:
+                                iddi = 0
+                            self.daosScheme(tables=[("articolo","id")],offsett=iddi)
                             return
                     except:
                         pass
                     try:
-                        print "SONO NELL try dentro l'ecept che gestisce la particolarità articolo"
+                        print "SONO NEL try dentro l'except che gestisce la particolarità articolo"
                         sqlalchemy.ext.sqlsoup.Session.rollback()
                         record_id1 = self.pg_db_server_locale.articolo.get(row.id)
                         record_id2 = self.pg_db_server_locale.articolo.get(rowLocale.id)
