@@ -398,66 +398,66 @@ class SincroDB(GladeWidget):
             sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
             sqlalchemy.ext.sqlsoup.Session.commit()
         elif op == "INSERT":
-            try:
-                exec ("rowLocale = soupLocale.%s.insert()") %dao
-                for i in rowLocale.c:
-                    t = str(i).split(".")[1] #mi serve solo il nome tabella
-                    setattr(rowLocale, t, getattr(row, t))
-                sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
-                if dao == "articolo":
-                    sqlalchemy.ext.sqlsoup.Session.commit()
-            except Exception,e :
-                print "ERRORE",e
-                print "QUALCOSA NELL'UPDATE NON È ANDATO BENE ....VERIFICHIAMO"
-                sqlalchemy.ext.sqlsoup.Session.rollback()
-                print "FATTO IL ROOLBACK"
-                print
-                print "RIGA LOCALE", rowLocale
-                print
-                print "RIGA REMOTA", row
-                print
-                if dao == "articolo":
-                    try:
-                        record_codice = self.pg_db_server_locale.articolo.filter_by(codice=row.codice).one()
-                        if record_codice:
-                            print "CODICE DUPLICATO ...DEVO INTERVENIRE MODIFICANDO IL CODICE E RILANCIANDO "
-                            record_codice.codice = str(record_codice.codice)+"_ex_id_"+str(random.sample(xrange(90), 6))
-                            sqlalchemy.ext.sqlsoup.Session.add(record_codice)
-                            sqlalchemy.ext.sqlsoup.Session.commit()
-                            for i in rowLocale.c:
-                                t = str(i).split(".")[1] #mi serve solo il nome colonna
-                                setattr(rowLocale, t, getattr(row, t))
-                            sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
-                            sqlalchemy.ext.sqlsoup.Session.commit()
-                            return
-                    except:
-                        pass
-                    try:
-                        print "SONO NELL try dentro l'ecept che gestisce la particolarità articolo"
-                        sqlalchemy.ext.sqlsoup.Session.rollback()
-                        record_id1 = self.pg_db_server_locale.articolo.get(row.id)
-                        record_id2 = self.pg_db_server_locale.articolo.get(rowLocale.id)
-                        sqlalchemy.ext.sqlsoup.Session.delete(record_id2)
-                        sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
-                        sqlalchemy.ext.sqlsoup.Session.commit()
-                        return
-                    except:
-                        print "SECONTO TRY INUTILE"
-                        pass
+#            try:
+            exec ("rowLocale = soupLocale.%s.insert()") %dao
+            for i in rowLocale.c:
+                t = str(i).split(".")[1] #mi serve solo il nome tabella
+                setattr(rowLocale, t, getattr(row, t))
+            sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
+            if dao == "articolo":
+                sqlalchemy.ext.sqlsoup.Session.commit()
+#            except Exception,e :
+#                print "ERRORE",e
+#                print "QUALCOSA NELL'INSERT NON È ANDATO BENE ....VERIFICHIAMO"
+#                sqlalchemy.ext.sqlsoup.Session.rollback()
+#                print "FATTO IL ROOLBACK"
+#                print
+#                print "RIGA LOCALE", rowLocale
+#                print
+#                print "RIGA REMOTA", row
+#                print
+#                if dao == "articolo":
+#                    try:
+#                        record_codice = self.pg_db_server_locale.articolo.filter_by(codice=row.codice).one()
+#                        if record_codice:
+#                            print "CODICE DUPLICATO ...DEVO INTERVENIRE MODIFICANDO IL CODICE E RILANCIANDO "
+#                            record_codice.codice = str(record_codice.codice)+"_ex_id_"+str(random.sample(xrange(90), 6))
+#                            sqlalchemy.ext.sqlsoup.Session.add(record_codice)
+#                            sqlalchemy.ext.sqlsoup.Session.commit()
+#                            for i in rowLocale.c:
+#                                t = str(i).split(".")[1] #mi serve solo il nome colonna
+#                                setattr(rowLocale, t, getattr(row, t))
+#                            sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
+#                            sqlalchemy.ext.sqlsoup.Session.commit()
+#                            return
+#                    except:
+#                        pass
+#                    try:
+#                        print "SONO NELL try dentro l'ecept che gestisce la particolarità articolo"
+#                        sqlalchemy.ext.sqlsoup.Session.rollback()
+#                        record_id1 = self.pg_db_server_locale.articolo.get(row.id)
+#                        record_id2 = self.pg_db_server_locale.articolo.get(rowLocale.id)
+#                        sqlalchemy.ext.sqlsoup.Session.delete(record_id2)
+#                        sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
+#                        sqlalchemy.ext.sqlsoup.Session.commit()
+#                        return
+#                    except:
+#                        print "SECONTO TRY INUTILE"
+#                        pass
 
-                    try:
-                        sqlalchemy.ext.sqlsoup.Session.rollback()
-                        riga_scontr = self.pg_db_server_locale.riga_scontrino.filter_by(id_articolo=rowLocale.id)
-                        if riga_scontr:
-                            riga_scontr = riga_scontr[0]
-                        riga_scontr.id_articolo = row.id
-                        sqlalchemy.ext.sqlsoup.Session.add(riga_scontr)
-                        sqlalchemy.ext.sqlsoup.Session.commit()
-                        sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
-                        sqlalchemy.ext.sqlsoup.Session.commit()
-                        return
-                    except:
-                        print "terzo try"
+#                    try:
+#                        sqlalchemy.ext.sqlsoup.Session.rollback()
+#                        riga_scontr = self.pg_db_server_locale.riga_scontrino.filter_by(id_articolo=rowLocale.id)
+#                        if riga_scontr:
+#                            riga_scontr = riga_scontr[0]
+#                        riga_scontr.id_articolo = row.id
+#                        sqlalchemy.ext.sqlsoup.Session.add(riga_scontr)
+#                        sqlalchemy.ext.sqlsoup.Session.commit()
+#                        sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
+#                        sqlalchemy.ext.sqlsoup.Session.commit()
+#                        return
+#                    except:
+#                        print "terzo try"
                 return
         elif op == "UPDATE":
             try:
@@ -501,11 +501,11 @@ class SincroDB(GladeWidget):
                             sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
                             sqlalchemy.ext.sqlsoup.Session.commit()
                             sqlalchemy.ext.sqlsoup.Session.flush()
-                            if rowLocale.id > 500:
-                                iddi = rowLocale.id - 500
-                            else:
-                                iddi = 0
-                            self.daosScheme(tables=[("articolo","id")],offsett=iddi)
+#                        if rowLocale.id > 500:
+#                            iddi = rowLocale.id - 500
+#                        else:
+#                            iddi = 0
+#                        self.daosScheme(tables=[("articolo","id")],offsett=iddi)
                             return
                     except:
                         pass
