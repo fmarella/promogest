@@ -23,6 +23,7 @@
 
 import gtk
 import math
+import sqlalchemy
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.ui.GladeWidget import GladeWidget
@@ -255,17 +256,30 @@ class FilterWidget(GladeWidget):
         """ Changes results order
         RITOCCO fatto per SA 0.6.3 ...ancora da approfondire
         """
-        if (self.orderBy is not None ) == (fieldsString[1] is not None):
-            if self.flag == False:
-                self.orderBy = asc(fieldsString[1])
-                self.flag = True
+        if sqlalchemy.__version__ > 0.6:
+            if (self.orderBy is not None ) == (fieldsString[1] is not None):
+                if self.flag == False:
+                    self.orderBy = asc(fieldsString[1])
+                    self.flag = True
+                else:
+                    self.orderBy = desc(fieldsString[1])
+                    self.flag = False
             else:
-                self.orderBy = desc(fieldsString[1])
-                self.flag = False
+                self.orderBy = fieldsString[1]
+            if fieldsString[0] is not None:
+                self.join = fieldsString[0]
         else:
-            self.orderBy = fieldsString[1]
-        if fieldsString[0] is not None:
-            self.join = fieldsString[0]
+            if self.orderBy == fieldsString[1]:
+                if self.flag == False:
+                    self.orderBy = asc(fieldsString[1])
+                    self.flag = True
+                else:
+                    self.orderBy = desc(fieldsString[1])
+                    self.flag = False
+            else:
+                self.orderBy = fieldsString[1]
+            if fieldsString[0]:
+                self.join = fieldsString[0]
         self.refresh()
 
     def setFocus(self, widget=None):
