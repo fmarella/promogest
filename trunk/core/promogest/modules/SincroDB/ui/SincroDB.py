@@ -297,6 +297,7 @@ class SincroDB(GladeWidget):
                                         offset=offset,
                                         dao_locale_ex = dao_locale_ex)
                         print " FATTO"
+                        do = False
 #                    else:
 #                        continue
 #                    except:
