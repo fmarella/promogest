@@ -77,7 +77,7 @@ class Dao(object):
                 self.record = self.record.join(join)
             if filter is not None:
                 self.record = self.record.filter(filter)
-            if sqlalchemy.__version__ < 0.6:
+            if sqlalchemy.__version__ > 0.6:
                 if orderBy is not None:
                     self.record = self.record.order_by(orderBy)
             else:
