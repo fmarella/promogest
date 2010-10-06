@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
@@ -213,7 +213,7 @@ Promogest ha generato il file per la stampa.</property>
                             <property name="xalign">0.10999999940395355</property>
                             <property name="xpad">6</property>
                             <property name="ypad">4</property>
-                            <property name="label" translatable="yes">Per inviare il file tramite email &#xE8; possibile selezionare l'indirizzo del
+                            <property name="label" translatable="yes">Per inviare il file tramite email è possibile selezionare l'indirizzo del
 destinatario dalla rubrica contatti</property>
                             <property name="use_markup">True</property>
                           </object>

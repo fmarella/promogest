@@ -8,6 +8,7 @@
 import gtk
 import datetime
 import hashlib
+import sqlalchemy
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.ext.serializer import loads, dumps
@@ -76,9 +77,12 @@ class Dao(object):
                 self.record = self.record.join(join)
             if filter is not None:
                 self.record = self.record.filter(filter)
-            if orderBy is not None:
-#                print "ORDERRRRRBY" , type(orderBy)
-                self.record = self.record.order_by(orderBy)
+            if sqlalchemy.__version__ < 0.6:
+                if orderBy is not None:
+                    self.record = self.record.order_by(orderBy)
+            else:
+                if orderBy:
+                    self.record = self.record.order_by(orderBy)
             if batchSize is not None:
                 self.record = self.record.limit(batchSize)
             if distinct is not None:
