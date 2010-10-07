@@ -79,24 +79,36 @@ class Dao(object):
 
         try:
             self.record= self.session.query(self.DaoModule)
-            if join is not None:
-                self.record = self.record.join(join)
-            if filter is not None:
-                self.record = self.record.filter(filter)
             if sqlalchemy.__version__ > 0.6:
+                if join is not None:
+                    self.record = self.record.join(join)
+                if filter is not None:
+                    self.record = self.record.filter(filter)
                 if orderBy is not None:
                     self.record = self.record.order_by(orderBy)
+                if batchSize is not None:
+                    self.record = self.record.limit(batchSize)
+                if distinct is not None:
+                    self.record = self.record.distinct(distinct)
+                if offset is not None:
+                    self.record = self.record.offset(offset)
+                if groupBy is not None:
+                    self.record = self.record.group_by(groupBy)
             else:
+                if join::
+                    self.record = self.record.join(join)
+                if filter:
+                    self.record = self.record.filter(filter)
                 if orderBy:
                     self.record = self.record.order_by(orderBy)
-            if batchSize is not None:
-                self.record = self.record.limit(batchSize)
-            if distinct is not None:
-                self.record = self.record.distinct(distinct)
-            if offset is not None:
-                self.record = self.record.offset(offset)
-            if groupBy is not None:
-                self.record = self.record.group_by(groupBy)
+                if batchSize:
+                    self.record = self.record.limit(batchSize)
+                if distinct:
+                    self.record = self.record.distinct(distinct)
+                if offset:
+                    self.record = self.record.offset(offset)
+                if groupBy:
+                    self.record = self.record.group_by(groupBy)
             return self.record.all()
         except Exception, e:
             self.raiseException(e)
