@@ -28,8 +28,8 @@ import glob
 try:
     import ho.pisa as pisa
 except:
-    print """ERRORE NELL'IMPORT DI PISA prova a digitare "sudo
- apt-get install python-pisa" nel terminale"""
+    print """ERRORE NELL'IMPORT DI PISA prova a digitare
+'sudo apt-get install python-pisa" nel terminale' """
     import pisaLib.ho.pisa as pisa
 import calendar
 from promogest.lib.relativedelta import relativedelta
