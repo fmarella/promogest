@@ -95,7 +95,7 @@ class Dao(object):
                 if groupBy is not None:
                     self.record = self.record.group_by(groupBy)
             else:
-                if join::
+                if join:
                     self.record = self.record.join(join)
                 if filter:
                     self.record = self.record.filter(filter)
