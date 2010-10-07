@@ -230,10 +230,12 @@ class SincroDB(GladeWidget):
                         exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
                         exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
                         self.logica(remote=remote, locale=locale,dao=dg[0], all=True, offset=offset)
+                    offsett = 0
                 elif conteggia < blocSize: # SI FA LA QUERY IN UN UNICI BOCCONE
                     exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).all()") %(dg[0],dg[0],dg[1])
                     exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).all()") %(dg[0],dg[0],dg[1])
                     self.logica(remote=remote, locale=locale,dao=dg[0], all=True)
+
         print "<<<<<<<< FINITO CON LO SCHEMA AZIENDA >>>>>>>>"
         print "<<<<<<< INIZIATO :", self.tempo_inizio, " FINITO:", datetime.datetime.now() , ">>>>>>>>>>>>>"
         self.run =False
@@ -458,7 +460,7 @@ class SincroDB(GladeWidget):
 #                        return
 #                    except:
 #                        print "terzo try"
-                return
+            return
         elif op == "UPDATE":
             try:
                 for i in rowLocale.c:
@@ -468,7 +470,7 @@ class SincroDB(GladeWidget):
                 sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
                 if dao == "articolo":
                     sqlalchemy.ext.sqlsoup.Session.commit()
-                    sqlalchemy.ext.sqlsoup.Session.flush()
+#                    sqlalchemy.ext.sqlsoup.Session.flush()
                     print "UPDATE ANDATO A BUON FINE"
                     if rowLocale.id > 500:
                         iddi = rowLocale.id - 500
@@ -500,7 +502,7 @@ class SincroDB(GladeWidget):
                                 setattr(rowLocale, t, getattr(row, t))
                             sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
                             sqlalchemy.ext.sqlsoup.Session.commit()
-                            sqlalchemy.ext.sqlsoup.Session.flush()
+#                            sqlalchemy.ext.sqlsoup.Session.flush()
 #                        if rowLocale.id > 500:
 #                            iddi = rowLocale.id - 500
 #                        else:
