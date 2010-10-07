@@ -55,6 +55,7 @@ import promogest.dao.Promemoria
 from promogest.dao.Promemoria import Promemoria
 from promogest.ui.AnagraficaPromemoria import AnagraficaPromemoria
 from promogest.dao.TestataDocumento import TestataDocumento
+from promogest.dao.VariazioneListino import VariazioneListino
 from ConfiguraWindow import ConfiguraWindow
 from promogest.ui.PanUi import PanUi, checkPan
 #inizializzano il customwidget
