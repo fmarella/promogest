@@ -36,7 +36,7 @@ from promogest.lib.XmlGenerator import XlsXmlGenerator
 from promogest.lib.CsvGenerator import CsvFileGenerator
 from utils import *
 import Login
-import subprocess
+import subprocess ,shlex
 from promogest import Environment
 from calendar import Calendar
 #if Environment.new_print_enjine:
@@ -76,7 +76,7 @@ class Anagrafica(GladeWidget):
         self._setLabelHandler(labelHandler)
         self._selectedDao = None
         # Initial (in)sensitive widgets
-        textStatusBar = "     *****   PromoGest2 - 895 6060615 - www.promotux.it - info@promotux.it  *****     "
+        textStatusBar = "     *****   PromoGest - 800 034561 - www.promotux.it - info@promotux.it  *****     "
         context_id =  self.pg2_statusbar.get_context_id("anagrafica_complessa_windows")
         self.pg2_statusbar.push(context_id,textStatusBar)
         self.record_delete_button.set_sensitive(False)
@@ -645,7 +645,9 @@ Verificare i permessi della cartella"""
             return
 
     def on_send_email_button_clicked(self, widget):
-
+        """ ATTENZIONE: l'errore parrebbe corretto nel launchpad ma ancora non funziona
+        con thunderbird controllando in simplescan dà lo stesso errore che riscontro io
+        aspettiamo...."""
         self.email = self.printDialog.riferimento2_combobox_entry.\
                                                                 get_active_text()
         pdfFile = os.path.join(self._folder + self._pdfName +'.pdf')
@@ -658,6 +660,7 @@ Verificare i permessi della cartella"""
             arghi = "xdg-email --attach '%s' --subject '%s' --body '%s' '%s'" %(str(pdfFile),subject,body,self.email)
         else:
             arghi = "xdg-email --attach '%s' --subject '%s' --body '%s'" %(str(pdfFile),subject,body)
+        args = shlex.split(arghi)
         subprocess.Popen(arghi, shell=True)
 
     def on_close_button_clicked(self,widget):

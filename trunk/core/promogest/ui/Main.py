@@ -1373,7 +1373,7 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
             return
 
     def statusBarHandler(self):
-        textStatusBar = "    PromoGest2 - 8956060615 - www.promotux.it - info@promotux.it     "
+        textStatusBar = "    PromoGest2 - 800 034561 - www.promotux.it - info@promotux.it     "
         context_id =  self.pg2_statusbar.get_context_id("main_window")
         self.pg2_statusbar.push(context_id,textStatusBar)
 

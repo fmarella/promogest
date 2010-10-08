@@ -696,9 +696,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
     def setDao(self, dao):
         """
-        FIXME
-        @param dao:
-        @type dao:
         """
         if dao is None:
             # Crea un nuovo Dao vuoto
@@ -711,6 +708,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                                     idArticolo=dao.id_articolo,
                                     orderBy=ListinoArticolo.id_articolo)[0]
         self._refresh()
+        return self.dao
 
 
     def _refresh(self):

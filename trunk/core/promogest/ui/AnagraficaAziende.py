@@ -71,15 +71,15 @@ class AnagraficaAziende(GladeWidget):
         self.localita_sede_operativa_entry.set_text(self.dao.sede_operativa_localita or '')
         self.indirizzo_sede_operativa_entry.set_text(self.dao.sede_operativa_indirizzo or '')
         self.numero_sede_operativa_entry.set_text(self.dao.sede_operativa_numero or '')
-        self.cap_sede_operativa_entry.set_text(self.dao.sede_operativa_cap or '00000')
+        self.cap_sede_operativa_entry.set_text(self.dao.sede_operativa_cap or '')
         self.provincia_sede_operativa_entry.set_text(self.dao.sede_operativa_provincia or '')
         self.localita_sede_legale_entry.set_text(self.dao.sede_legale_localita or '')
         self.indirizzo_sede_legale_entry.set_text(self.dao.sede_legale_indirizzo or '')
         self.numero_sede_legale_entry.set_text(self.dao.sede_legale_numero or '')
-        self.cap_sede_legale_entry.set_text(self.dao.sede_legale_cap or '00000')
+        self.cap_sede_legale_entry.set_text(self.dao.sede_legale_cap or '')
         self.provincia_sede_legale_entry.set_text(self.dao.sede_legale_provincia or '')
         self.codice_fiscale_entry.set_text(self.dao.codice_fiscale or '')
-        self.partita_iva_entry.set_text(self.dao.partita_iva or '0000000000')
+        self.partita_iva_entry.set_text(self.dao.partita_iva or '')
         self.data_iscrizione_cciaa_entry.set_text(dateToString(self.dao.iscrizione_cciaa_data or ''))
         self.numero_iscrizione_cciaa_entry.set_text(self.dao.iscrizione_cciaa_numero or '')
         self.data_iscrizione_tribunale_entry.set_text(dateToString(self.dao.iscrizione_tribunale_data or ''))
@@ -147,7 +147,6 @@ class AnagraficaAziende(GladeWidget):
 
     def on_apri_button_clicked(self,button):
         filename = self.logo_filechooserdialog.get_filename()
-        print "FILENAMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", filename
         self.path_label.set_text(filename)
         f = self.resizeImgThumbnailGeneric(filename = filename)
         self.logo_azienda.set_from_file(f)

@@ -236,15 +236,15 @@ def set_configuration(company=None, year = None):
             conf.subject = conf.Composer.subject
         except:
             conf.subject = "[ Invio Doc: %s ]"
-        try:
-            conf.signature = conf.Composer.signature
-        except:
-            conf.signature = """Invio elettronico di  %s   effettuato tramite software gestionale PromoGest """
-        try :
-            conf.bodytemplate = conf.Composer.bodytemplate
-        except:
-            conf.bodytemplate = ""
-        conf.body = conf.bodytemplate + conf.signature
+#        try:
+#            conf.signature = conf.Composer.signature
+#        except:
+        conf.signature = """Invio elettronico di  %s   effettuato tramite software gestionale PromoGest """
+#        try :
+#            conf.bodytemplate = conf.Composer.bodytemplate
+#        except:
+#            conf.bodytemplate = ""
+        conf.body = conf.signature
     else:
         emailcompose = None
 
