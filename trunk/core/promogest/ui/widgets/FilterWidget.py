@@ -256,7 +256,7 @@ class FilterWidget(GladeWidget):
         """ Changes results order
         RITOCCO fatto per SA 0.6.3 ...ancora da approfondire
         """
-        if sqlalchemy.__version__ > 0.6:
+        if sqlalchemy.__version__ > "0.6.0":
             if (self.orderBy is not None ) == (fieldsString[1] is not None):
                 if self.flag == False:
                     self.orderBy = asc(fieldsString[1])

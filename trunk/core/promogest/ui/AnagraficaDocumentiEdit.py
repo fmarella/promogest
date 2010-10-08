@@ -1610,7 +1610,6 @@ del documento.
     def persona_giuridica_changed(self):
         if self._loading:
             return
-
         inseritoIntestatario = (self.id_persona_giuridica_customcombobox.getId() is not None)
         if inseritoIntestatario:
             datiIntestatario = self.id_persona_giuridica_customcombobox.getData()
