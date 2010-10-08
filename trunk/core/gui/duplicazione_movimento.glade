@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
@@ -12,7 +12,6 @@
     <child>
       <object class="GtkVBox" id="vbox30">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkFrame" id="frame14">
             <property name="visible">True</property>
@@ -178,9 +177,6 @@
                       </packing>
                     </child>
                     <child>
-                      <placeholder/>
-                    </child>
-                    <child>
                       <object class="PersonaGiuridicaSearchWidget" id="id_persona_giuridica_customcombobox">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -191,6 +187,9 @@
                         <property name="top_attach">5</property>
                         <property name="bottom_attach">6</property>
                       </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
                     </child>
                   </object>
                 </child>

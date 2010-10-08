@@ -1,9 +1,26 @@
 # -*- coding: utf-8 -*-
-# Promogest
-#
-# Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
+
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+# Author: Alceste Scalas <alceste@promotux.it>
 # Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Francesco Meloni <francesco@promotux.it>
+# Author: Francesco Meloni <francesco@promotux.it
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
 from GladeWidget import GladeWidget
@@ -88,7 +105,7 @@ class DuplicazioneMovimento(GladeWidget):
 
         newDao = TestataMovimento()
         newDao.data_movimento = stringToDate(self.data_movimento_entry.get_text())
-        newDao.numero = self.dao.numero
+#        newDao.numero = self.dao.numero
         newDao.parte = self.dao.parte
         newDao.registro_numerazione = self.dao.registro_numerazione
         newDao.operazione = findIdFromCombobox(self.id_operazione_combobox)
@@ -161,9 +178,9 @@ class DuplicazioneMovimento(GladeWidget):
         newDao.righeMovimento = righeMovimento
         newDao.persist()
 
-        res = TestataMovimento(newDao.id)
+#        res = TestataMovimento(newDao.id)
 
-        msg = "Nuovo movimento creato !\n\nIl nuovo movimento e' il n. " + str(res.numero) + " del " + dateToString(res.data_movimento) + " (" + newDao.operazione + ")"
+        msg = "Nuovo movimento creato !\n\nIl nuovo movimento e' il n. " + str(newDao.numero) + " del " + dateToString(newDao.data_movimento) + " (" + newDao.operazione + ")"
         dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
         response = dialog.run()

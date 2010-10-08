@@ -172,8 +172,7 @@ class TestataMovimento(Dao):
         #from promogest.dao.RigaMovimento import RigaMovimento
         row = RigaMovimento().select(idTestataMovimento= id,
                                     offset = None,
-                                    batchSize = None
-)
+                                    batchSize = None)
         if row:
             for r in row:
                 if "SuMisura" in modulesList:
@@ -251,7 +250,8 @@ class TestataMovimento(Dao):
                         else:
                             daoFornitura.data_fornitura = self.data_movimento
                         daoFornitura.data_prezzo = self.data_movimento
-                        daoFornitura.codice_articolo_fornitore = riga.__dict__["_RigaMovimento__codiceArticoloFornitore"]
+                        if "_RigaMovimento__codiceArticoloFornitore" in riga.__dict__:
+                            daoFornitura.codice_articolo_fornitore = riga.__dict__["_RigaMovimento__codiceArticoloFornitore"]
                         daoFornitura.prezzo_lordo = riga.valore_unitario_lordo
                         daoFornitura.prezzo_netto = riga.valore_unitario_netto
                         daoFornitura.percentuale_iva = riga.percentuale_iva
