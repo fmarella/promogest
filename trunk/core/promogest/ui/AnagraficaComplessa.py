@@ -1360,7 +1360,8 @@ class AnagraficaPrintPreview(GladeWidget):
                 import ho.pisa as pisa
             except:
                 print "ERRORE NELL'IMPORT DI PISA"
-                import pisaLib.ho.pisa as pisa
+#                import pisaLib.ho.pisa as pisa
+                return
             f = self.html_code
             g = file(".temp.pdf", "wb")
             pdf = pisa.CreatePDF(str(f),g)
