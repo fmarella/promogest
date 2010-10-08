@@ -44,7 +44,7 @@ class Dao(object):
         ed è molto più flessibile
         """
         filter1 = filter2 = None
-        if sqlalchemy.__version__ > 0.6:
+        if sqlalchemy.__version__ > "0.6.0":
             if complexFilter is not None:
                 filter1 = complexFilter
             else:
