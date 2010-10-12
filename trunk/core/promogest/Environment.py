@@ -135,7 +135,7 @@ def set_configuration(company=None, year = None):
                 emailmittente, smtpServer, cliente_predefinito, tipo_documento_predefinito,\
                 multilinelimit, mltext, sistemaColonnaFrontaline, sistemaRigaFrontaline,\
                 imagesDir, labelTemplatesDir, templatesDir, documentsDir, reportTemplatesDir,\
-                bordoDestro, bordoSinistro, magazzini, listini
+                bordoDestro, bordoSinistro, magazzini, listini, tempDir
 
     try:
         dire = getConfigureDir(company)

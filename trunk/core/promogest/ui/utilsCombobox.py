@@ -1072,7 +1072,7 @@ def gestione_testo(gest_entry, event, filtro):
     # aggiorna la liststore con gli oggetti in articoli
     for n in articoli:
         print "Il record " + repr(i) + " contiene: " + n.codice
-        if filtro == "codice": 
+        if filtro == "codice":
             gest_liststore.append([n.codice, n])
         elif filtro == "denominazione":
             gest_liststore.append([n.denominazione, n])

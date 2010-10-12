@@ -2276,8 +2276,7 @@ def getCategorieContatto(id=None):
     """
     from promogest.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
     dbCategorieContatto = ContattoCategoriaContatto().select(id=id,
-                                                            batchSize=None,
-                                                            orderBy=CategoriaContatto.id_contatto)
+                                                            batchSize=None)
     return dbCategorieContatto
 
 def getRecapitiContatto(id=None):

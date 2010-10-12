@@ -686,6 +686,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.oneshot = False
             self._oldDaoRicreato = True #il dao è nuovo il controllo sul nuovo codice non  è necessario
         self._refresh()
+        return self.dao
 
     def saveDao(self):
         """ Salvataggio del Dao
@@ -1610,6 +1611,7 @@ del documento.
     def persona_giuridica_changed(self):
         if self._loading:
             return
+
         inseritoIntestatario = (self.id_persona_giuridica_customcombobox.getId() is not None)
         if inseritoIntestatario:
             datiIntestatario = self.id_persona_giuridica_customcombobox.getData()

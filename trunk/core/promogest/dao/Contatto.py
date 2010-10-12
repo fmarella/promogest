@@ -86,7 +86,7 @@ class Contatto(Dao):
         params['session'].delete(self)
         params['session'].commit()
         #params["session"].refresh(self)
-        params["session"].clear()
+#        params["session"].clear()
 
 
 contatto=Table('contatto',

@@ -135,6 +135,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.dao = Articolo().getRecord(id=dao.id)
             self.new=False
         self._refresh()
+        return self.dao
 
 
     def _refresh(self):

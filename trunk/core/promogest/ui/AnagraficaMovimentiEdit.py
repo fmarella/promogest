@@ -655,6 +655,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = TestataMovimento().getRecord(id=dao.id)
         self._refresh()
+        return self.dao
 
     def saveDao(self):
         """

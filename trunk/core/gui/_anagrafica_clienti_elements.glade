@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
@@ -85,7 +85,7 @@
                 <property name="can_focus">True</property>
                 <property name="tooltip_text" translatable="yes">Provincia sede operativa</property>
                 <property name="max_length">2</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
               </object>
             </child>
           </object>
@@ -104,10 +104,10 @@
             <property name="can_focus">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <property name="tooltip_text" translatable="yes">Saldo del totale di 
-ci&#xF2; che si &#xE8; venduto a questo cliente 
+ciò che si è venduto a questo cliente 
 calcolato sulla base dei documenti dell'anno di lavoro</property>
             <property name="editable">False</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <signal name="focus_in_event" handler="on_focus_in_event"/>
             <signal name="focus_out_event" handler="on_focus_out_event"/>
           </object>
@@ -134,7 +134,7 @@ calcolato sulla base dei documenti dell'anno di lavoro</property>
         <child>
           <object class="GtkLabel" id="codice_label">
             <property name="visible">True</property>
-            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio &#xE8; uno tra:
+            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
@@ -152,7 +152,7 @@ Nome</property>
         <child>
           <object class="GtkLabel" id="ragione_sociale_label">
             <property name="visible">True</property>
-            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio &#xE8; uno tra:
+            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
@@ -172,7 +172,7 @@ Nome</property>
         <child>
           <object class="GtkLabel" id="insegna_label">
             <property name="visible">True</property>
-            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio &#xE8; uno tra:
+            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
@@ -192,7 +192,7 @@ Nome</property>
         <child>
           <object class="GtkLabel" id="cognome_label">
             <property name="visible">True</property>
-            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio &#xE8; uno tra:
+            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
@@ -212,7 +212,7 @@ Nome</property>
         <child>
           <object class="GtkLabel" id="nome_label">
             <property name="visible">True</property>
-            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio &#xE8; uno tra:
+            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
@@ -363,7 +363,7 @@ Nome</property>
             <property name="tooltip_text" translatable="yes">Inserire l'indirizzo di una eventuale sede operativa 
 se diverso da quella legale</property>
             <property name="max_length">200</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
             <property name="secondary_icon_sensitive">True</property>
@@ -399,9 +399,9 @@ se diverso da quella legale</property>
           <object class="GtkEntry" id="localita_sede_operativa_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Localit&#xE0; sede operativa se diverso da quello legale</property>
+            <property name="tooltip_text" translatable="yes">Località sede operativa se diverso da quello legale</property>
             <property name="max_length">100</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
             <property name="secondary_icon_sensitive">True</property>
@@ -503,7 +503,7 @@ se diverso da quella legale</property>
 se non ne avete uno premere sulla piccola 
 icona a sinistra per farne generare uno nuovo dal promogest</property>
                 <property name="max_length">100</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
                 <property name="primary_icon_stock">gtk-new</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="primary_icon_activatable">True</property>
@@ -529,13 +529,13 @@ icona a sinistra per farne generare uno nuovo dal promogest</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="tooltip_text" translatable="yes">Inserire la Ragione sociale 
-Il  campo obbligatorio &#xE8; uno tra:
+Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
 Nome</property>
             <property name="max_length">200</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
             <property name="secondary_icon_sensitive">True</property>
@@ -557,16 +557,16 @@ Nome</property>
           <object class="GtkEntry" id="insegna_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Inserire l'insegna cio&#xE8; il nome pubblico dell'azienda, spesso 
+            <property name="tooltip_text" translatable="yes">Inserire l'insegna cioè il nome pubblico dell'azienda, spesso 
 la ragione sociale differisce dal nome comune
-Il  campo obbligatorio &#xE8; uno tra:
+Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
 Nome
 </property>
             <property name="max_length">200</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
             <property name="secondary_icon_sensitive">True</property>
@@ -588,13 +588,13 @@ Nome
           <object class="GtkEntry" id="cognome_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio &#xE8; uno tra:
+            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
 Nome</property>
             <property name="max_length">100</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
             <property name="secondary_icon_sensitive">True</property>
@@ -616,13 +616,13 @@ Nome</property>
           <object class="GtkEntry" id="nome_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio &#xE8; uno tra:
+            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
 Nome</property>
             <property name="max_length">100</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
             <property name="secondary_icon_sensitive">True</property>
@@ -651,7 +651,7 @@ Nome</property>
                 <property name="can_focus">True</property>
                 <property name="tooltip_text" translatable="yes">Inserire il codice fiscale</property>
                 <property name="max_length">16</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="secondary_icon_activatable">True</property>
                 <property name="secondary_icon_sensitive">True</property>
@@ -678,7 +678,7 @@ Nome</property>
             <property name="tooltip_text" translatable="yes">Inserimento dell'indirizzo della 
 sede legale del cliente</property>
             <property name="max_length">200</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
             <property name="secondary_icon_sensitive">True</property>
@@ -703,7 +703,7 @@ sede legale del cliente</property>
             <property name="tooltip_text" translatable="yes">Inserimento della localita 
 della sede legale del cliente</property>
             <property name="max_length">100</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
             <property name="secondary_icon_sensitive">True</property>
@@ -732,7 +732,7 @@ della sede legale del cliente</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">2</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
                 <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -760,7 +760,7 @@ della sede legale del cliente</property>
                 <property name="can_focus">True</property>
                 <property name="tooltip_text" translatable="yes">Inserimento della partita iva del cliente</property>
                 <property name="max_length">11</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
               </object>
             </child>
           </object>
@@ -784,7 +784,7 @@ della sede legale del cliente</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">5</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
               </object>
             </child>
           </object>
@@ -808,7 +808,7 @@ della sede legale del cliente</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">5</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
               </object>
             </child>
           </object>
@@ -836,7 +836,7 @@ della sede legale del cliente</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Permette di associare al cliente 
-uno o pi&#xF9; contatti sia aziendali che personali 
+uno o più contatti sia aziendali che personali 
 con i relativi recapiti telefonici, email, msn 
 </property>
                     <signal name="clicked" handler="on_contatti_togglebutton_clicked"/>
@@ -1019,7 +1019,7 @@ che lo coinvolgono </property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <property name="tooltip_text" translatable="yes">Residuo non ancora pagato dal cliente</property>
             <property name="editable">False</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -1495,7 +1495,7 @@ da cui prelevare la merce in vendita</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="tooltip_text" translatable="yes">Associare un listino preferenziale 
-con cui vendere al cliente questo prevarr&#xE0; 
+con cui vendere al cliente questo prevarrà 
 su una eventuale associazione della ctegoria cliente 
 con altri listini</property>
                   </object>
@@ -1574,8 +1574,8 @@ con altri listini</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="tooltip_text" translatable="yes">Selezione di una aliquota iva preferenziale
-Questa selezione prevarr&#xE0; sull'aliquota iva dell'articolo 
-ed andr&#xE0; a settare la gestione generale iva
+Questa selezione prevarrà sull'aliquota iva dell'articolo 
+ed andrà a settare la gestione generale iva
 presente in testata documento</property>
                   </object>
                 </child>
