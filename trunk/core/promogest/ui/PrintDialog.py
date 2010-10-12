@@ -16,7 +16,7 @@ from GladeWidget import GladeWidget
 
 class PrintDialogHandler(GladeWidget):
 
-    def __init__(self,anacomplex,nome, pdfGenerator=None, report=None, daos=None, label=None ):
+    def __init__(self,anacomplex,nome, pdfGenerator=None, report=None, daos=None, label=None, tempFile=None ):
         GladeWidget.__init__(self, 'records_print_dialog',fileName='records_print_dialog.glade')
         try:
             self._pdfName = nome.replace(" ","_") + '_report_' + time.strftime('%d-%m-%Y')
@@ -31,7 +31,10 @@ class PrintDialogHandler(GladeWidget):
             elif os.name == 'nt':
                 self._folder = os.environ['USERPROFILE']
         self.__pdfGenerator = pdfGenerator
-        filetemp= file(".temp.pdf","r")
+        if tempFile:
+            filetemp= file(tempFile,"r")
+        else:
+            filetemp=file(".temp.pdf", "r")
         self.__pdfReport= filetemp.read()
         filetemp.close()
         self.records_print_dialog_size_label.set_markup('<span weight="bold">' + str(len(self.__pdfReport) / 1024) + ' Kb</span>')

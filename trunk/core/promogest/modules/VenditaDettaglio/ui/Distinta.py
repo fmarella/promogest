@@ -1,17 +1,34 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
-# Author: Francesco Meloni <francescoo@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
+from promogest import Environment
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
 from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.ui.PrintDialog import PrintDialogHandler
+
 
 
 class Distinta(GladeWidget):
@@ -125,12 +142,17 @@ class Distinta(GladeWidget):
         renderHTML(self.detail,self.html)
 
     def on_pdf_button_clicked(self, button):
-        import ho.pisa as pisa
-        f = self.html
-        g = file(".temp.pdf", "wb")
+        try:
+            import ho.pisa as pisa
+        except:
+            return
+        f = str(self.html)
+#        f = "Hello <strong>World</strong>"
+        filename =Environment.tempDir + "distintaTemp.pdf"
+        g = file(filename, "wb")
         pdf = pisa.CreatePDF(f,g)
         g .close()
-        anag = PrintDialogHandler(self,self.windowTitle)
+        anag = PrintDialogHandler(self,self.windowTitle, tempFile=Environment.tempDir + "distintaTemp.pdf")
         anagWindow = anag.getTopLevel()
         returnWindow = self.getTopLevel().get_toplevel()
         anagWindow.set_transient_for(returnWindow)
