@@ -2006,16 +2006,14 @@ def insertFileTypeChooser(filechooser,typeList):
 
 def multilinedirtywork( param):
     """
-    FIXME
-    @param param:
-    @type param:
+    Funzione che gestisce la suddivisione in multirighe
     """
     for i in param:
         try:
             lista = i['righe']
             for x in lista:
-    #            try:
-                if len(x["descrizione"]) > int(setconf("Multilinea","multilinealimite")):
+                if len(x["descrizione"]) > int(setconf("Multilinea","multilinealimite"))\
+                and "\n" not in x["descrizione"]:
                     wrapper = TextWrapper()
                     wrapper.width = int(setconf("Multilinea","multilinealimite"))
                     x["descrizione"] = "\n".join(wrapper.wrap(x["descrizione"]))
@@ -2035,8 +2033,6 @@ def multilinedirtywork( param):
                         lista.insert(o+p,c)
         except:
            print " NON e' una riga"
-#        except:
-#            pass
     return param
 
 
