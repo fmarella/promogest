@@ -164,15 +164,18 @@ class AnagraficaAziende(GladeWidget):
         crea un thumnail dell'immagine stessa
         """
         if filename:
-            self.filena = filename.split("/")[-1]
-            im1 = Image.open(filename)
-            width = int(setconf("Documenti", "larghezza_logo"))
-            height = int(setconf("Documenti", "altezza_logo"))
-            im5 = im1.resize((width, height), Image.ANTIALIAS)
-            newname= 'resize_'+ self.filena
-            p = os.path.dirname(filename)
-            im5.save(p +"/"+ newname)
-            return p +"/"+ newname
+            try:
+                self.filena = filename.split("/")[-1]
+                im1 = Image.open(filename)
+                width = int(setconf("Documenti", "larghezza_logo"))
+                height = int(setconf("Documenti", "altezza_logo"))
+                im5 = im1.resize((width, height), Image.ANTIALIAS)
+                newname= 'resize_'+ self.filena
+                p = os.path.dirname(filename)
+                im5.save(p +"/"+ newname)
+                return p +"/"+ newname
+            except:
+                print "ERRORE NEL LOGO", filename
         return ""
 
 
