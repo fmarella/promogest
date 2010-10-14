@@ -1,10 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Francesco Meloni  <francesco@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import gtk
@@ -32,6 +46,7 @@ class StatisticheMagazzino(GladeWidget):
         self.placeWindow(self.getTopLevel())
         self.da_data__entry.set_text('01/01/' + Environment.workingYear)
         self.a_data__entry.set_text(dateToString(datetime.datetime.now()))
+        fillComboboxMagazzini(self.magazzino_combobox)
         self._idMagazzino = idMagazzino
         self.da_data__entry.show_all()
         self.a_data__entry.show_all()
@@ -67,7 +82,7 @@ class StatisticheMagazzino(GladeWidget):
     def on_salva_file_clicked(self, button):
         filename = self.filechooserdialog_stats.get_filename()
         self.exportss(filename)
-        self.filechooserdialog_stats.destroy()
+        self.filechooserdialog_stats.hide()
 
     def on_cancella_file_clicked(self, button):
         self.filechooserdialog_stats.hide()
@@ -77,24 +92,27 @@ class StatisticheMagazzino(GladeWidget):
         self.res = []
         daData = stringToDate(self.da_data__entry.get_text())
         aData = stringToDate(self.a_data__entry.get_text())
-        if self.allmag_checkbutton:
-            magazzini = Environment.params["session"].query(Magazzino.id).all()
+
+        id = findIdFromCombobox(self.magazzino_combobox)
+        if id :
+            magazzini = [Magazzino().getRecord(id=id)]
         else:
-            magazzini = [1]
-        idArticolo=None
-        idArticoli = Environment.params["session"].query(Stoccaggio.id_articolo).filter(Stoccaggio.id_magazzino==magazzini[0][0]).all()
+            magazzini = Magazzino().select(batchSize=None)
+        arti = []
+        for mag in magazzini:
+            idArticolo = None
+            idArticoli = Environment.params["session"].query(Stoccaggio.id_articolo).filter(Stoccaggio.id_magazzino==mag.id).all()
+            for idArticolo in idArticoli:
+                arti = leggiArticolo(idArticolo)
+                righeArticoloMovimentate= Environment.params["session"]\
+                        .query(RigaMovimento,TestataMovimento)\
+                        .filter(TestataMovimento.data_movimento.between(daData, aData))\
+                        .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
+                        .filter(Riga.id_articolo==idArticolo[0])\
+                        .filter(Riga.id_magazzino ==mag.id)\
+                        .all()
 
-        for idArticolo in idArticoli:
-            arti = leggiArticolo(idArticolo)
-            righeArticoloMovimentate= Environment.params["session"]\
-                    .query(RigaMovimento,TestataMovimento)\
-                    .filter(TestataMovimento.data_movimento.between(daData, aData))\
-                    .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
-                    .filter(Riga.id_articolo==idArticolo[0])\
-                    .filter(Riga.id_magazzino.in_(magazzini[0]))\
-                    .all()
-
-            arti= articoloStatistiche(arti=arti, righe=righeArticoloMovimentate)
+                arti= articoloStatistiche(arti=arti, righe=righeArticoloMovimentate)
 
             self.res.append(arti)
         c = csv.writer(open(filename, "wb"),dialect='excel',delimiter=';')
