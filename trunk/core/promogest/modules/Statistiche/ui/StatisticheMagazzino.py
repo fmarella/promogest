@@ -103,7 +103,7 @@ class StatisticheMagazzino(GladeWidget):
             idArticolo = None
             idArticoli = Environment.params["session"].query(Stoccaggio.id_articolo).filter(Stoccaggio.id_magazzino==mag.id).all()
             for idArticolo in idArticoli:
-                arti = leggiArticolo(idArticolo)
+                artid = leggiArticolo(idArticolo)
                 righeArticoloMovimentate= Environment.params["session"]\
                         .query(RigaMovimento,TestataMovimento)\
                         .filter(TestataMovimento.data_movimento.between(daData, aData))\
@@ -112,9 +112,8 @@ class StatisticheMagazzino(GladeWidget):
                         .filter(Riga.id_magazzino ==mag.id)\
                         .all()
 
-                arti= articoloStatistiche(arti=arti, righe=righeArticoloMovimentate)
-
-            self.res.append(arti)
+                arti= articoloStatistiche(arti=artid, righe=righeArticoloMovimentate)
+                self.res.append(arti)
         c = csv.writer(open(filename, "wb"),dialect='excel',delimiter=';')
         rigga = ["ID","CODICE","DENOMINAZIONE","QUANTITA' VENDUTA", "QUANTITA' ACQUISTATA","DATA ULTIMO ACQUISTO",
                     "DATA ULTIMA VENDITA", "PREZZO ULTIMA VENDITA",  "PREZZO ULTIMO ACQUISTO",
