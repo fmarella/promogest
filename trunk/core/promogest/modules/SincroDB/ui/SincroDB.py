@@ -462,6 +462,7 @@ class SincroDB(GladeWidget):
 #                        print "terzo try"
             return
         elif op == "UPDATE":
+            print "prima qui"
             try:
                 for i in rowLocale.c:
                     #mi serve solo il nome colonna
@@ -469,11 +470,12 @@ class SincroDB(GladeWidget):
                     setattr(rowLocale, t, getattr(row, t))
                 sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
                 if dao == "articolo":
+                    print "pippo"
                     sqlalchemy.ext.sqlsoup.Session.commit()
 #                    sqlalchemy.ext.sqlsoup.Session.flush()
                     print "UPDATE ANDATO A BUON FINE"
                     if rowLocale.id > 500:
-                        iddi = rowLocale.id - 500
+                        iddi = rowLocale.id - 100
                     else:
                         iddi = 0
                     self.daosScheme(tables=[("articolo","id")],offsett=iddi)
@@ -502,12 +504,11 @@ class SincroDB(GladeWidget):
                                 setattr(rowLocale, t, getattr(row, t))
                             sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
                             sqlalchemy.ext.sqlsoup.Session.commit()
-#                            sqlalchemy.ext.sqlsoup.Session.flush()
-#                        if rowLocale.id > 500:
-#                            iddi = rowLocale.id - 500
-#                        else:
-#                            iddi = 0
-#                        self.daosScheme(tables=[("articolo","id")],offsett=iddi)
+                        if rowLocale.id > 500:
+                            iddi = rowLocale.id - 100
+                        else:
+                            iddi = 0
+                        self.daosScheme(tables=[("articolo","id")],offsett=iddi)
                             return
                     except:
                         pass
