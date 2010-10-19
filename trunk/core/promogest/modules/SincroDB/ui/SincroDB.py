@@ -511,7 +511,7 @@ class SincroDB(GladeWidget):
                         self.daosScheme(tables=[("articolo","id")],offsett=iddi)
                         return
                     except:
-                        pass
+                        sqlalchemy.ext.sqlsoup.Session.rollback()
                     try:
                         print "SONO NEL try dentro l'except che gestisce la particolarità articolo"
                         sqlalchemy.ext.sqlsoup.Session.rollback()
@@ -523,7 +523,7 @@ class SincroDB(GladeWidget):
                         return
                     except:
                         print "SECONTO TRY INUTILE"
-                        pass
+                        sqlalchemy.ext.sqlsoup.Session.rollback()
 
                     try:
                         sqlalchemy.ext.sqlsoup.Session.rollback()
@@ -537,6 +537,7 @@ class SincroDB(GladeWidget):
                         sqlalchemy.ext.sqlsoup.Session.commit()
                         return
                     except:
+                        sqlalchemy.ext.sqlsoup.Session.rollback()
                         print "terzo try"
                     if self.batch:
                         self.runBatch()
