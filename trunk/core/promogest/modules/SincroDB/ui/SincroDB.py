@@ -509,7 +509,7 @@ class SincroDB(GladeWidget):
                         else:
                             iddi = 0
                         self.daosScheme(tables=[("articolo","id")],offsett=iddi)
-                            return
+                        return
                     except:
                         pass
                     try:
