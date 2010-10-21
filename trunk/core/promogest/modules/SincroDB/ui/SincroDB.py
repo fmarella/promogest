@@ -200,14 +200,17 @@ class SincroDB(GladeWidget):
                                     self.pg_db_server_locale.listino_articolo.data_listino_articolo).\
                             limit(blocSize).\
                             offset(offset).all()
-                    self.logica(remote=remote, locale=locale,dao=dg[0], all=True, offset=None)
+
+                    self.manageListinoArticoloSafe(remote)
+#                    self.logica(remote=remote, locale=locale,dao=dg[0], all=True, offset=None)
             elif conteggia < blocSize:
                 remote=self.pg_db_server_remote.listino_articolo.filter_by(id_listino=li.id).order_by(self.pg_db_server_remote.listino_articolo.id_articolo,self.pg_db_server_remote.listino_articolo.data_listino_articolo).all()
                 locale=self.pg_db_server_locale.listino_articolo.filter_by(id_listino=li.id).order_by(self.pg_db_server_remote.listino_articolo.id_articolo,self.pg_db_server_locale.listino_articolo.data_listino_articolo).all()
-                self.logica(remote=remote, locale=locale,dao=dg[0], all=True)
+                self.manageListinoArticoloSafe(remote)
+#                self.logica(remote=remote, locale=locale,dao=dg[0], all=True)
         return True
 
-    def daosScheme(self, tables=None, offsett=0):
+    def daosScheme(self, tables=None, scarto=0):
         """ Crea le liste delle query ciclando nelle tabelle """
         blocSize = int(Environment.conf.SincroDB.offset)
         #blocSize = 500
@@ -217,20 +220,39 @@ class SincroDB(GladeWidget):
             if dg[0] =="listino_articolo":
                 self.gestisciListinoArticolo(dg)
             else:
-                self.avanzamento_pgbar.pulse()
+#                self.avanzamento_pgbar.pulse()
                 print "TABELLA IN LAVORAZIONE :", dg[0]
                 conteggia = self.pg_db_server_remote.entity(dg[0]).count() # serve per poter affettare le select
                 print "NUMERO DEI RECORD PRESENTI:", conteggia
                 if conteggia >= blocSize:
                     blocchi = abs(conteggia/blocSize)
                     for j in range(0,blocchi+1):
-                        self.avanzamento_pgbar.pulse()
-                        offset = j*blocSize+offsett
+                        offset = j*blocSize
                         print "OFFSET", offset , datetime.datetime.now(), "TABELLA", dg[0]
                         exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
                         exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).limit(blocSize).offset(offset).all()") %(dg[0],dg[0],dg[1])
-                        self.logica(remote=remote, locale=locale,dao=dg[0], all=True, offset=offset)
-                    offsett = 0
+                        if str(remote[0]._table).split(".")[1] =="articolo":
+                            self.manageArticoloSafe(remote)
+                        elif str(remote[0]._table).split(".")[1] =="codice_a_barre_articolo":
+                            self.manageCodBarreSafe(remote)
+                        elif str(remote[0]._table).split(".")[1] =="fornitura":
+                            self.manageFornituraSafe(remote)
+                        elif str(remote[0]._table).split(".")[1] =="sconto":
+                            self.manageScontoSafe(remote)
+                        elif str(remote[0]._table).split(".")[1] =="listino_complesso_listino":
+                            self.manageListinoComplessoListinoSafe(remote)
+                        elif str(remote[0]._table).split(".")[1] =="stoccaggio":
+                            self.manageStoccaggioSafe(remote)
+                        elif str(remote[0]._table).split(".")[1] =="sconti_vendita_dettaglio":
+                            self.manageScontiVenditaDettaglioSafe(remote)
+                        elif str(remote[0]._table).split(".")[1] =="sconti_vendita_ingrosso":
+                            self.manageScontiVenditaIngrossoSafe(remote)
+                        elif str(remote[0]._table).split(".")[1] =="listino_magazzino":
+                            self.manageListinoMagazzinoSafe(remote)
+                        else:
+
+                            self.logica(remote=remote, locale=locale,dao=dg[0], all=True, offset=offset)
+
                 elif conteggia < blocSize: # SI FA LA QUERY IN UN UNICI BOCCONE
                     exec ("remote=self.pg_db_server_remote.%s.order_by(self.pg_db_server_remote.%s.%s).all()") %(dg[0],dg[0],dg[1])
                     exec ("locale=self.pg_db_server_locale.%s.order_by(self.pg_db_server_locale.%s.%s).all()") %(dg[0],dg[0],dg[1])
@@ -265,60 +287,59 @@ class SincroDB(GladeWidget):
             else:
                 print "IL DB LOCALE CONTIENE PIU' RECORD", len(remote), "vs", len(locale)
                 deleteRow=True
-            for i in range(0,(len(remote))):
-                self.tabe = str(remote[i]._table).split(".")[1]
-                if i <= (len(locale)-1):
-#                    try:
-                    # comparo gli elementi con lo stesso indice che è
-                    # la cosa più semplice
-                    do = False
-                    dao_locale_ex = None
-                    rem_dic = remote[i].__dict__
-                    loc_dic = locale[i].__dict__
-                    for k,v in rem_dic.items():
-                        if k != "_sa_instance_state":
-                            if rem_dic[k] != loc_dic[k]:
-                                do = True
-                                tabe = str(remote[i]._table).split(".")[1]
-                                if tabe == "articolo" and k =="denominazione":
-                                    dao_locale_ex = locale[i]
-                                elif tabe == "listino_articolo":
-                                    dao_locale_ex = locale[i]
-                    if  do:
-                        print "PROCEDO CON UN UPDATE", str(remote[i]._table).split(".")[1]
-                        print
-                        print "REMOTE:", remote[i]
-                        print
-                        print "LOCALE:", locale[i]
-                        self.fixToTable(soupLocale=soupLocale,
-                                        row=remote[i],
-                                        rowLocale=locale[i],
-                                        op="UPDATE",
-                                        dao=str(remote[i]._table).split(".")[1],
-                                        save=True,
-                                        offset=offset,
-                                        dao_locale_ex = dao_locale_ex)
-                        print " FATTO"
+            if 5==3:
+                pass
+            else:
+                for i in range(0,(len(remote))):
+                    self.tabe = str(remote[i]._table).split(".")[1]
+                    if i <= (len(locale)-1):
+    #                    try:
+                        # comparo gli elementi con lo stesso indice che è
+                        # la cosa più semplice
                         do = False
-#                    else:
-#                        continue
-#                    except:
-#                            self.fixToTable(soupLocale=soupLocale,
-#                                            row=remote[i],
-#                                            rowLocale=locale[i],
-#                                            op="UPDATE",
-#                                            dao=str(remote[i]._table).split(".")[1],
-#                                            save=True,
-#                                            offset=offset)
+                        dao_locale_ex = None
+    #                    print "LEN LOCALE",i
+                        rem_dic = remote[i].__dict__
+                        loc_dic = locale[i].__dict__
+    #                    print rem_dic, loc_dic
+                        for k,v in rem_dic.items():
+                            if k != "_sa_instance_state":
+                                if rem_dic[k] != loc_dic[k]:
+    #                                print "ORAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", rem_dic[k], loc_dic[k]
+                                    do = True
+                                    tabe = str(remote[i]._table).split(".")[1]
+                                    if tabe == "articolo" and k =="denominazione":
+                                        dao_locale_ex = locale[i]
+                                    elif tabe == "listino_articolo":
+                                        dao_locale_ex = locale[i]
+                                    break
+                        if  do:
+                            print "PROCEDO CON UN UPDATE", str(remote[i]._table).split(".")[1]
+    #                        print
+    #                        print "LOCALE:", locale[i]
+    #                        print
+    #                        print "REMOTE:", remote[i]
+                            self.fixToTable(soupLocale=soupLocale,
+                                            rowMaster=remote[i],
+                                            rowSlave=locale[i],
+                                            op="UPDATE",
+                                            dao=str(remote[i]._table).split(".")[1],
+                                            save=True,
+                                            offset=offset,
+                                            dao_locale_ex = dao_locale_ex)
+    #                    print " FATTO"
+                        do = False
+                        continue
 
-                else:
-                    print " ", str(remote[i]._table).split(".")[1], "INSERT"
-                    #print " RIGA REMOTE", remote[i]
-                    self.fixToTable(soupLocale=soupLocale,
-                                    row=remote[i],
-                                    op="INSERT",
-                                    dao=str(remote[i]._table).split(".")[1],
-                                    save=False)
+
+                    else:
+                        print " ", str(remote[i]._table).split(".")[1], "INSERT", i
+                        #print " RIGA REMOTE", remote[i]
+                        self.fixToTable(soupLocale=soupLocale,
+                                        rowMaster=remote[i],
+                                        op="INSERT",
+                                        dao=str(remote[i]._table).split(".")[1],
+                                        save=False)
 
             if self.tabe != "articolo":
                 try:
@@ -328,23 +349,23 @@ class SincroDB(GladeWidget):
                         print "ERRORE NEI LISTINI", e
                         sqlalchemy.ext.sqlsoup.Session.rollback()
                         record_id1 = self.pg_db_server_locale.listino_articolo.filter_by(id_listino=remote[i].id_listino).all()
-#                        print "RECOOOOOOOOOOOOOOOOORD", record_id1
+    #                        print "RECOOOOOOOOOOOOOOOOORD", record_id1
                         if record_id1:
                             for r in record_id1:
                                 sqlalchemy.ext.sqlsoup.Session.delete(r)
                             sqlalchemy.ext.sqlsoup.Session.commit()
-#                            print "QUIIII"
+    #                            print "QUIIII"
                             self.daosScheme(tables=[("listino_articolo","id_listino")])
                     else:
                         print "ERRORE NEL SALVATAGGIO DEI RECORD", e
                         sqlalchemy.ext.sqlsoup.Session.rollback()
                         self.azzeraTable(table=dao)
-            if deleteRow:
+            if deleteRow and self.tabe !="articolo":
                 for i in range(len(remote),len(locale)):
                     print "QUESTA È LA RIGA DA rimuovere ", str(locale[i]._table).split(".")[1], "Operazione DELETE"
                     self.fixToTable(soupLocale=soupLocale,
                                     #row=locale[i],
-                                    rowLocale = locale[i],
+                                    rowSlave = locale[i],
                                     op="DELETE",
                                     dao=str(locale[i]._table).split(".")[1],
                                     save=True)
@@ -389,162 +410,403 @@ class SincroDB(GladeWidget):
         sqlalchemy.ext.sqlsoup.Session.commit()
         self.promeid = prome.id
 
-    def fixToTable(self, soup =None,soupLocale=None, op=None, row=None,rowLocale=None, dao=None, save=False, offset=None, dao_locale_ex=None):
+    def createRandomString(self, num=5):
+        b = ""
+        for c in range(num):
+            a = random.choice('1234567890abcdefghilmnopqrstuvz')
+            b = b + a
+        return b
+
+
+    def manageArticoloSafe(self, remote):
+        do = False
+        for r in remote:
+            loc = self.pg_db_server_locale.articolo.get(r.id)
+            if loc:
+                for a in r.c:
+                    t = str(a).split(".")[1]
+#                    print "AAAAAAAAAAAAAAAAAAAA", a
+                    if getattr(r, t) !=  getattr(loc, t):
+                        print "DIVERSO" , getattr(r, t), getattr(loc, t)
+                        do = True
+                if do:
+                    for i in loc.c:
+                        ti = str(i).split(".")[1]
+                        setattr(loc, ti, getattr(r, ti))
+                    sqlalchemy.ext.sqlsoup.Session.add(loc)
+                    try:
+                        print "LOCA", loc, r
+                        sqlalchemy.ext.sqlsoup.Session.commit()
+                        do = False
+                    except Exception,e :
+                        print "ERRORE",e
+                        sqlalchemy.ext.sqlsoup.Session.rollback()
+                        print "FATTO IL ROOLBACK"
+                        record_codice = self.pg_db_server_locale.articolo.filter_by(codice=r.codice).all()
+                        if record_codice:
+                            print " ABBIAMO UN CODICE GIA PRESENTE"
+                            riga_scontr1 = self.pg_db_server_locale.riga_scontrino.filter_by(id_articolo=record_codice[0].id).all()
+                            if riga_scontr1:
+                                for r in riga_scontr1:
+                                    r.id_articolo = 19746
+                                    sqlalchemy.ext.sqlsoup.Session.add(r)
+                                    sqlalchemy.ext.sqlsoup.Session.commit()
+                            sqlalchemy.ext.sqlsoup.Session.delete(record_codice[0])
+                            sqlalchemy.ext.sqlsoup.Session.commit()
+                            if self.batch:
+                                self.runBatch()
+                            else:
+                                self.test()
+            else:
+                print "ARTICOLO DA INSERIRE"
+                soupLocale = self.dammiSoupLocale("articolo")
+                newloc = soupLocale.articolo.insert()
+                for i in newloc.c:
+                    t = str(i).split(".")[1] #mi serve solo il nome tabella
+                    setattr(newloc, t, getattr(r, t))
+                sqlalchemy.ext.sqlsoup.Session.add(newloc)
+#                print "QUESTO E DA INSERIRE", newloc
+                try:
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+                except Exception,e :
+                    print "ERRORE",e
+                    sqlalchemy.ext.sqlsoup.Session.rollback()
+                    print "FATTO IL ROOLBACK"
+                    record_codice = self.pg_db_server_locale.articolo.filter_by(codice=r.codice).all()
+                    if record_codice:
+                        print " ABBIAMO UN CODICE GIA PRESENTE"
+                        riga_scontr1 = self.pg_db_server_locale.riga_scontrino.filter_by(id_articolo=record_codice[0].id).all()
+                        if riga_scontr1:
+                            for r in riga_scontr1:
+                                r.id_articolo = 19746
+                                sqlalchemy.ext.sqlsoup.Session.add(r)
+                                sqlalchemy.ext.sqlsoup.Session.commit()
+                        sqlalchemy.ext.sqlsoup.Session.delete(record_codice[0])
+                        sqlalchemy.ext.sqlsoup.Session.commit()
+                        if self.batch:
+                            self.runBatch()
+                        else:
+                            self.test()
+#        if len(locale)>len(remote):
+#            print "CI SONO PIU RECORD IN LOCALE"
+#            for l in locale:
+#                loc = self.pg_db_server_locale.articolo.get(l.id)
+#                if loc:
+#                    ro = True
+#                    for r in remote:
+#                        if r.id == l.id:
+#                            ro = False
+#                    if ro:
+#                        print "ELLE", l
+#                        sqlalchemy.ext.sqlsoup.Session.delete(l)
+#                        sqlalchemy.ext.sqlsoup.Session.commit()
+#                        ro = True
+
+
+    def manageListinoArticoloSafe(self, remote):
+        do = False
+        for r in remote:
+            loc = self.pg_db_server_locale.listino_articolo.get([r.id_listino, r.id_articolo, r.data_listino_articolo])
+            if loc:
+                for a in r.c:
+                    t = str(a).split(".")[1]
+                    if getattr(r, t) !=  getattr(loc, t):
+                        print "DIVERSO" , getattr(r, t), getattr(loc, t)
+                        do = True
+                if do:
+                    for i in loc.c:
+                        ti = str(i).split(".")[1]
+                        setattr(loc, ti, getattr(r, ti))
+                    sqlalchemy.ext.sqlsoup.Session.add(loc)
+#                    sqlalchemy.ext.sqlsoup.Session.commit()
+#                    do = False
+            else:
+                do = True
+                soupLocale = self.dammiSoupLocale("listino_articolo")
+                newloc = soupLocale.listino_articolo.insert()
+                for i in newloc.c:
+                    t = str(i).split(".")[1] #mi serve solo il nome tabella
+                    setattr(newloc, t, getattr(r, t))
+                sqlalchemy.ext.sqlsoup.Session.add(newloc)
+#                sqlalchemy.ext.sqlsoup.Session.commit()
+                print "INSERISCO LSTART"
+        if do:
+            sqlalchemy.ext.sqlsoup.Session.commit()
+            do = False
+
+
+    def manageListinoMagazzinoSafe(self, remote):
+        do = False
+        for r in remote:
+            loc = self.pg_db_server_locale.listino_magazzino.get(r.id)
+            if loc:
+                for a in r.c:
+                    t = str(a).split(".")[1]
+                    if getattr(r, t) !=  getattr(loc, t):
+                        print "DIVERSO" , getattr(r, t), getattr(loc, t)
+                        do = True
+                if do:
+                    for i in loc.c:
+                        ti = str(i).split(".")[1]
+                        setattr(loc, ti, getattr(r, ti))
+                    sqlalchemy.ext.sqlsoup.Session.add(loc)
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+                    do = False
+            else:
+                soupLocale = self.dammiSoupLocale("listino_magazzino")
+                newloc = soupLocale.listino_magazzino.insert()
+                for i in newloc.c:
+                    t = str(i).split(".")[1] #mi serve solo il nome tabella
+                    setattr(newloc, t, getattr(r, t))
+                sqlalchemy.ext.sqlsoup.Session.add(newloc)
+                sqlalchemy.ext.sqlsoup.Session.commit()
+                print "INSERISCO SCO VE INGR"
+
+
+    def manageScontiVenditaIngrossoSafe(self, remote):
+        do = False
+        for r in remote:
+            loc = self.pg_db_server_locale.sconti_vendita_ingrosso.get(r.id)
+            if loc:
+                for a in r.c:
+                    t = str(a).split(".")[1]
+                    if getattr(r, t) !=  getattr(loc, t):
+                        print "DIVERSO" , getattr(r, t), getattr(loc, t)
+                        do = True
+                if do:
+                    for i in loc.c:
+                        ti = str(i).split(".")[1]
+                        setattr(loc, ti, getattr(r, ti))
+                    sqlalchemy.ext.sqlsoup.Session.add(loc)
+#                    sqlalchemy.ext.sqlsoup.Session.commit()
+#                    do = False
+            else:
+                do = True
+                soupLocale = self.dammiSoupLocale("sconti_vendita_ingrosso")
+                newloc = soupLocale.sconti_vendita_ingrosso.insert()
+                for i in newloc.c:
+                    t = str(i).split(".")[1] #mi serve solo il nome tabella
+                    setattr(newloc, t, getattr(r, t))
+                sqlalchemy.ext.sqlsoup.Session.add(newloc)
+#                sqlalchemy.ext.sqlsoup.Session.commit()
+                print "INSERISCO SCO VE INGR"
+        if do:
+            sqlalchemy.ext.sqlsoup.Session.commit()
+            do = False
+
+    def manageScontiVenditaDettaglioSafe(self, remote):
+        do = False
+        for r in remote:
+            loc = self.pg_db_server_locale.sconti_vendita_dettaglio.get(r.id)
+            if loc:
+                for a in r.c:
+                    t = str(a).split(".")[1]
+                    if getattr(r, t) !=  getattr(loc, t):
+                        print "DIVERSO" , getattr(r, t), getattr(loc, t)
+                        do = True
+                if do:
+                    for i in loc.c:
+                        ti = str(i).split(".")[1]
+                        setattr(loc, ti, getattr(r, ti))
+                    sqlalchemy.ext.sqlsoup.Session.add(loc)
+#                    sqlalchemy.ext.sqlsoup.Session.commit()
+#                    do = False
+            else:
+                do = True
+                soupLocale = self.dammiSoupLocale("sconti_vendita_dettaglio")
+                newloc = soupLocale.sconti_vendita_dettaglio.insert()
+                for i in newloc.c:
+                    t = str(i).split(".")[1] #mi serve solo il nome tabella
+                    setattr(newloc, t, getattr(r, t))
+                sqlalchemy.ext.sqlsoup.Session.add(newloc)
+#                sqlalchemy.ext.sqlsoup.Session.commit()
+                print "INSERISCO SCO VE DETT"
+        if do:
+            sqlalchemy.ext.sqlsoup.Session.commit()
+            do = False
+
+    def manageFornituraSafe(self, remote):
+        do = False
+        for r in remote:
+            loc = self.pg_db_server_locale.fornitura.get(r.id)
+            if loc:
+                for a in r.c:
+                    t = str(a).split(".")[1]
+                    if getattr(r, t) !=  getattr(loc, t):
+                        print "DIVERSO" , getattr(r, t), getattr(loc, t)
+                        do = True
+                if do:
+                    for i in loc.c:
+                        ti = str(i).split(".")[1]
+                        setattr(loc, ti, getattr(r, ti))
+                    sqlalchemy.ext.sqlsoup.Session.add(loc)
+#                    sqlalchemy.ext.sqlsoup.Session.commit()
+#                    do = False
+            else:
+                do = True
+                soupLocale = self.dammiSoupLocale("fornitura")
+                newloc = soupLocale.fornitura.insert()
+                for i in newloc.c:
+                    t = str(i).split(".")[1] #mi serve solo il nome tabella
+                    setattr(newloc, t, getattr(r, t))
+                sqlalchemy.ext.sqlsoup.Session.add(newloc)
+                print "INSERISCO FORNITURA"
+        if do:
+            sqlalchemy.ext.sqlsoup.Session.commit()
+            do = False
+
+
+    def manageStoccaggioSafe(self, remote):
+        do = False
+        for r in remote:
+            loc = self.pg_db_server_locale.stoccaggio.get(r.id)
+            if loc:
+                for a in r.c:
+                    t = str(a).split(".")[1]
+                    if getattr(r, t) !=  getattr(loc, t):
+                        print "DIVERSO" , getattr(r, t), getattr(loc, t)
+                        do = True
+                if do:
+                    for i in loc.c:
+                        ti = str(i).split(".")[1]
+                        setattr(loc, ti, getattr(r, ti))
+                    sqlalchemy.ext.sqlsoup.Session.add(loc)
+#                    sqlalchemy.ext.sqlsoup.Session.commit()
+#                    do = False
+            else:
+                do = True
+                print "INSERISCO STOCCAGGIO"
+                soupLocale = self.dammiSoupLocale("sconto")
+                newloc = soupLocale.stoccaggio.insert()
+                for i in newloc.c:
+                    t = str(i).split(".")[1] #mi serve solo il nome tabella
+                    setattr(newloc, t, getattr(r, t))
+                sqlalchemy.ext.sqlsoup.Session.add(newloc)
+#                sqlalchemy.ext.sqlsoup.Session.commit()
+        if do:
+            sqlalchemy.ext.sqlsoup.Session.commit()
+            do = False
+
+
+    def manageScontoSafe(self, remote):
+        do = False
+        for r in remote:
+            loc = self.pg_db_server_locale.sconto.get(r.id)
+            if loc:
+                for a in r.c:
+                    t = str(a).split(".")[1]
+                    if getattr(r, t) !=  getattr(loc, t):
+                        print "DIVERSO" , getattr(r, t), getattr(loc, t)
+                        do = True
+                if do:
+                    for i in loc.c:
+                        ti = str(i).split(".")[1]
+                        setattr(loc, ti, getattr(r, ti))
+                    sqlalchemy.ext.sqlsoup.Session.add(loc)
+#                    sqlalchemy.ext.sqlsoup.Session.commit()
+#                    do = False
+            else:
+                do =True
+                print "INSERISCO SCONTO"
+                soupLocale = self.dammiSoupLocale("sconto")
+                newloc = soupLocale.sconto.insert()
+                for i in newloc.c:
+                    t = str(i).split(".")[1] #mi serve solo il nome tabella
+                    setattr(newloc, t, getattr(r, t))
+                sqlalchemy.ext.sqlsoup.Session.add(newloc)
+#                sqlalchemy.ext.sqlsoup.Session.commit()
+        if do:
+            sqlalchemy.ext.sqlsoup.Session.commit()
+            do = False
+
+
+    def manageListinoComplessoListinoSafe(self, remote):
+        do = False
+        for r in remote:
+            loc = self.pg_db_server_locale.listino_complesso_listino.get([r.id_listino, r.id_listino_complesso])
+            if loc:
+                for a in r.c:
+                    t = str(a).split(".")[1]
+                    if getattr(r, t) !=  getattr(loc, t):
+                        print "DIVERSO" , getattr(r, t), getattr(loc, t)
+                        do = True
+                if do:
+                    for i in loc.c:
+                        ti = str(i).split(".")[1]
+                        setattr(loc, ti, getattr(r, ti))
+                    sqlalchemy.ext.sqlsoup.Session.add(loc)
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+                    do = False
+            else:
+                print "INSERISCO LISTINO COMPLESSO"
+                soupLocale = self.dammiSoupLocale("listino_complesso_listino")
+                newloc = soupLocale.listino_complesso_listino.insert()
+                for i in newloc.c:
+                    t = str(i).split(".")[1] #mi serve solo il nome tabella
+                    setattr(newloc, t, getattr(r, t))
+                sqlalchemy.ext.sqlsoup.Session.add(newloc)
+                sqlalchemy.ext.sqlsoup.Session.commit()
+
+
+    def manageCodBarreSafe(self, remote):
+        do = False
+        for r in remote:
+            loc = self.pg_db_server_locale.codice_a_barre_articolo.get(r.id)
+            if loc:
+                for a in r.c:
+                    t = str(a).split(".")[1]
+                    if getattr(r, t) !=  getattr(loc, t):
+                        print "DIVERSO" , getattr(r, t), getattr(loc, t)
+                        do = True
+                if do:
+                    for i in loc.c:
+                        ti = str(i).split(".")[1]
+                        setattr(loc, ti, getattr(r, ti))
+                    sqlalchemy.ext.sqlsoup.Session.add(loc)
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+                    do = False
+            else:
+                print "INSERISCO CODICE A BARRE"
+                soupLocale = self.dammiSoupLocale("codice_a_barre_articolo")
+                newloc = soupLocale.codice_a_barre_articolo.insert()
+                for i in newloc.c:
+                    t = str(i).split(".")[1] #mi serve solo il nome tabella
+                    setattr(newloc, t, getattr(r, t))
+                sqlalchemy.ext.sqlsoup.Session.add(newloc)
+                sqlalchemy.ext.sqlsoup.Session.commit()
+
+
+    def fixToTable(self, soup =None,soupLocale=None, op=None, rowMaster=None,rowSlave=None, dao=None, save=False, offset=None, dao_locale_ex=None):
         """rimanda alla gestione delle singole tabelle con le operazioni da fare
         """
-        #soupLocale.clear()
-
         soupLocale = self.dammiSoupLocale(dao)
 
         if op =="DELETE":
-            sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
+            sqlalchemy.ext.sqlsoup.Session.delete(rowSlave)
             sqlalchemy.ext.sqlsoup.Session.commit()
         elif op == "INSERT":
-#            try:
-            exec ("rowLocale = soupLocale.%s.insert()") %dao
-            for i in rowLocale.c:
+            exec ("rowSlaveInsert = soupLocale.%s.insert()") %dao
+            for i in rowMaster.c:
                 t = str(i).split(".")[1] #mi serve solo il nome tabella
-                setattr(rowLocale, t, getattr(row, t))
-            sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
-            if dao == "articolo":
-                sqlalchemy.ext.sqlsoup.Session.commit()
-#            except Exception,e :
-#                print "ERRORE",e
-#                print "QUALCOSA NELL'INSERT NON È ANDATO BENE ....VERIFICHIAMO"
-#                sqlalchemy.ext.sqlsoup.Session.rollback()
-#                print "FATTO IL ROOLBACK"
-#                print
-#                print "RIGA LOCALE", rowLocale
-#                print
-#                print "RIGA REMOTA", row
-#                print
-#                if dao == "articolo":
-#                    try:
-#                        record_codice = self.pg_db_server_locale.articolo.filter_by(codice=row.codice).one()
-#                        if record_codice:
-#                            print "CODICE DUPLICATO ...DEVO INTERVENIRE MODIFICANDO IL CODICE E RILANCIANDO "
-#                            record_codice.codice = str(record_codice.codice)+"_ex_id_"+str(random.sample(xrange(90), 6))
-#                            sqlalchemy.ext.sqlsoup.Session.add(record_codice)
-#                            sqlalchemy.ext.sqlsoup.Session.commit()
-#                            for i in rowLocale.c:
-#                                t = str(i).split(".")[1] #mi serve solo il nome colonna
-#                                setattr(rowLocale, t, getattr(row, t))
-#                            sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
-#                            sqlalchemy.ext.sqlsoup.Session.commit()
-#                            return
-#                    except:
-#                        pass
-#                    try:
-#                        print "SONO NELL try dentro l'ecept che gestisce la particolarità articolo"
-#                        sqlalchemy.ext.sqlsoup.Session.rollback()
-#                        record_id1 = self.pg_db_server_locale.articolo.get(row.id)
-#                        record_id2 = self.pg_db_server_locale.articolo.get(rowLocale.id)
-#                        sqlalchemy.ext.sqlsoup.Session.delete(record_id2)
-#                        sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
-#                        sqlalchemy.ext.sqlsoup.Session.commit()
-#                        return
-#                    except:
-#                        print "SECONTO TRY INUTILE"
-#                        pass
-
-#                    try:
-#                        sqlalchemy.ext.sqlsoup.Session.rollback()
-#                        riga_scontr = self.pg_db_server_locale.riga_scontrino.filter_by(id_articolo=rowLocale.id)
-#                        if riga_scontr:
-#                            riga_scontr = riga_scontr[0]
-#                        riga_scontr.id_articolo = row.id
-#                        sqlalchemy.ext.sqlsoup.Session.add(riga_scontr)
-#                        sqlalchemy.ext.sqlsoup.Session.commit()
-#                        sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
-#                        sqlalchemy.ext.sqlsoup.Session.commit()
-#                        return
-#                    except:
-#                        print "terzo try"
-            return
+                setattr(rowSlaveInsert, t, getattr(rowMaster, t))
+            sqlalchemy.ext.sqlsoup.Session.add(rowSlaveInsert)
         elif op == "UPDATE":
-            print "prima qui"
             try:
-                for i in rowLocale.c:
+                for i in rowSlave.c:
                     #mi serve solo il nome colonna
                     t = str(i).split(".")[1]
-                    setattr(rowLocale, t, getattr(row, t))
-                sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
-                if dao == "articolo":
-                    print "pippo"
-                    sqlalchemy.ext.sqlsoup.Session.commit()
-#                    sqlalchemy.ext.sqlsoup.Session.flush()
-                    print "UPDATE ANDATO A BUON FINE"
-                    if rowLocale.id > 500:
-                        iddi = rowLocale.id - 100
-                    else:
-                        iddi = 0
-                    self.daosScheme(tables=[("articolo","id")],offsett=iddi)
-                if dao_locale_ex is not None:
-                    self.promemoriaInserAlert(rowLocale, dao_locale_ex)
+                    setattr(rowSlave, t, getattr(rowMaster, t))
+                sqlalchemy.ext.sqlsoup.Session.add(rowSlave)
             except Exception,e :
-                print "ERRORE",e
-                print "QUALCOSA NELL'UPDATE NON È ANDATO BENE ....VERIFICHIAMO"
+                print "QUALCOSA NELL'UPDATE NON È ANDATO BENE ERRORE",e
                 sqlalchemy.ext.sqlsoup.Session.rollback()
                 print "FATTO IL ROOLBACK"
                 print
-                print "RIGA LOCALE", rowLocale
+                print "RIGA LOCALE", rowSlave
                 print
-                print "RIGA REMOTA", row
+                print "RIGA REMOTA", rowMaster
                 print
-                if dao == "articolo":
-                    try:
-                        record_codice = self.pg_db_server_locale.articolo.filter_by(codice=row.codice).one()
-                        if record_codice:
-                            print "CODICE DUPLICATO ...DEVO INTERVENIRE MODIFICANDO IL CODICE E RILANCIANDO "
-                            record_codice.codice = str(record_codice.codice)+"_ex_id_"+str(random.sample(xrange(90), 6))
-                            sqlalchemy.ext.sqlsoup.Session.add(record_codice)
-                            sqlalchemy.ext.sqlsoup.Session.commit()
-                            for i in rowLocale.c:
-                                t = str(i).split(".")[1] #mi serve solo il nome colonna
-                                setattr(rowLocale, t, getattr(row, t))
-                            sqlalchemy.ext.sqlsoup.Session.add(rowLocale)
-                            sqlalchemy.ext.sqlsoup.Session.commit()
-                        if rowLocale.id > 500:
-                            iddi = rowLocale.id - 100
-                        else:
-                            iddi = 0
-                        self.daosScheme(tables=[("articolo","id")],offsett=iddi)
-                        return
-                    except:
-                        sqlalchemy.ext.sqlsoup.Session.rollback()
-                    try:
-                        print "SONO NEL try dentro l'except che gestisce la particolarità articolo"
-                        sqlalchemy.ext.sqlsoup.Session.rollback()
-                        record_id1 = self.pg_db_server_locale.articolo.get(row.id)
-                        record_id2 = self.pg_db_server_locale.articolo.get(rowLocale.id)
-                        sqlalchemy.ext.sqlsoup.Session.delete(record_id2)
-                        sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
-                        sqlalchemy.ext.sqlsoup.Session.commit()
-                        return
-                    except:
-                        print "SECONTO TRY INUTILE"
-                        sqlalchemy.ext.sqlsoup.Session.rollback()
-
-                    try:
-                        sqlalchemy.ext.sqlsoup.Session.rollback()
-                        riga_scontr = self.pg_db_server_locale.riga_scontrino.filter_by(id_articolo=rowLocale.id)
-                        if riga_scontr:
-                            riga_scontr = riga_scontr[0]
-                        riga_scontr.id_articolo = row.id
-                        sqlalchemy.ext.sqlsoup.Session.add(riga_scontr)
-                        sqlalchemy.ext.sqlsoup.Session.commit()
-                        sqlalchemy.ext.sqlsoup.Session.delete(rowLocale)
-                        sqlalchemy.ext.sqlsoup.Session.commit()
-                        return
-                    except:
-                        sqlalchemy.ext.sqlsoup.Session.rollback()
-                        print "terzo try"
-                    if self.batch:
-                        self.runBatch()
-                    else:
-                        self.test()
-                else:
-                    self.azzeraTable(table=dao)
+                self.azzeraTable(table=dao)
 
     def azzeraTable(self, table=None):
         if table in ["operazione","tipo_aliquota_iva","stato_articolo","unita_base",
@@ -561,9 +823,7 @@ class SincroDB(GladeWidget):
             for l in record:
                 self.pg_db_server_locale.delete(l)
                 sqlalchemy.ext.sqlsoup.Session.delete(l)
-            #print "cancello",  l
             sqlalchemy.ext.sqlsoup.Session.commit()
-#            sqlalchemy.ext.sqlsoup.Session.flush()
 
         if table in ["operazione","tipo_aliquota_iva","stato_articolo","unita_base",
             "tipo_recapito","denominazione"]:
