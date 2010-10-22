@@ -23,7 +23,8 @@
 import gtk
 import gobject
 
-from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter,\
+                         AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
 #from promogest.dao.Dao import Dao
@@ -47,7 +48,8 @@ class AnagraficaContatti(Anagrafica):
         self._ownerKey = None
         self._ownerType = None
         if (((ownerType == 'cliente') or (ownerType == 'fornitore') or
-             (ownerType == 'magazzino') or (ownerType == 'azienda')) and (ownerKey is not None)):
+             (ownerType == 'magazzino') or (ownerType == 'azienda')) and\
+                                             (ownerKey is not None)):
             self._ownerKey = ownerKey
             self._ownerType = ownerType
 
@@ -66,10 +68,10 @@ class AnagraficaContattiFilter(AnagraficaFilter):
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_contatti_filter_table',
-                                  gladeFile='Contatti/gui/_anagrafica_contatti_elements.glade',
-                                   module=True )
+                  anagrafica,
+                  'anagrafica_contatti_filter_table',
+                  gladeFile='Contatti/gui/_anagrafica_contatti_elements.glade',
+                   module=True)
         self._widgetFirstFocus = self.appartenenza_filter_entry
 
     def draw(self, cplx=False):
@@ -77,16 +79,17 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         treeview = self._anagrafica.anagrafica_filter_treeview
         renderer = gtk.CellRendererText()
 
-        column = gtk.TreeViewColumn('Cognome - Nome', renderer,text=1)
+        column = gtk.TreeViewColumn('Cognome - Nome', renderer, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, Contatto.cognome))
+        column.connect("clicked", self._changeOrderBy,
+                                            (None, Contatto.cognome))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(300)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Ruolo', renderer,text=2)
+        column = gtk.TreeViewColumn('Ruolo', renderer, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None, Contatto.ruolo))
@@ -95,16 +98,17 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         column.set_min_width(150)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Descrizione', renderer,text=3)
+        column = gtk.TreeViewColumn('Descrizione', renderer, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, Contatto.descrizione))
+        column.connect("clicked", self._changeOrderBy,
+                                            (None, Contatto.descrizione))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(150)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Relativo a', renderer,text=4)
+        column = gtk.TreeViewColumn('Relativo a', renderer, text=4)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -705,6 +709,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
 
 
     def on_appartenenza_customcombobox_changed(self, combobox):
+        """ Funzioni generiche messe in utils"""
         if self.cliente_radiobutton.get_active():
             on_combobox_cliente_search_clicked(combobox)
         elif self.fornitore_radiobutton.get_active():

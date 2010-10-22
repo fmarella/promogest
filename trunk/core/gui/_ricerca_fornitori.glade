@@ -1,14 +1,12 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkVBox" id="anagrafica_fornitori_filter_vbox">
     <property name="visible">True</property>
-    <property name="orientation">vertical</property>
     <child>
       <object class="GtkVBox" id="ricerca_semplice_fornitori_filter_vbox">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkTable" id="anagrafica_fornitori_filter_table">
             <property name="visible">True</property>
@@ -128,7 +126,7 @@
               <object class="GtkEntry" id="ragione_sociale_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
@@ -145,7 +143,7 @@
               <object class="GtkEntry" id="insegna_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
@@ -164,7 +162,7 @@
               <object class="GtkEntry" id="cognome_nome_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
@@ -183,7 +181,7 @@
               <object class="GtkEntry" id="codice_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
@@ -202,7 +200,7 @@
               <object class="GtkEntry" id="localita_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
@@ -221,7 +219,7 @@
               <object class="GtkEntry" id="codice_fiscale_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
@@ -240,7 +238,7 @@
               <object class="GtkEntry" id="partita_iva_filter_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
@@ -275,7 +273,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkAlignment" id="alignment495">
+          <object class="GtkAlignment" id="ricerca_alignment">
             <property name="visible">True</property>
             <property name="top_padding">3</property>
             <child>
@@ -319,11 +317,9 @@
     <child>
       <object class="GtkVBox" id="ricerca_avanzata_fornitori_filter_vbox">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="ricerca_avanzata_fornitori_filter_elements">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
             <child>
               <object class="GtkExpander" id="ragione_sociale_fornitore_filter_expander">
                 <property name="visible">True</property>
@@ -360,7 +356,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox69">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">3</property>
                             <child>
                               <object class="GtkButton" id="nuova_ragione_sociale_fornitore_filter_button">
@@ -456,7 +451,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox70">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">3</property>
                             <child>
                               <object class="GtkButton" id="nuova_insegna_fornitore_filter_button">
@@ -552,7 +546,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox71">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">3</property>
                             <child>
                               <object class="GtkButton" id="nuovo_cognome_nome_fornitore_filter_button">
@@ -648,7 +641,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox68">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">3</property>
                             <child>
                               <object class="GtkButton" id="nuovo_codice_fornitore_filter_button">
@@ -744,7 +736,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox75">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">3</property>
                             <child>
                               <object class="GtkButton" id="nuova_localita_fornitore_filter_button">
@@ -840,7 +831,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox74">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">3</property>
                             <child>
                               <object class="GtkButton" id="nuovo_indirizzo_fornitore_filter_button">
@@ -936,7 +926,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox72">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">3</property>
                             <child>
                               <object class="GtkButton" id="nuovo_codice_fiscale_fornitore_filter_button">
@@ -1032,7 +1021,6 @@
                         <child>
                           <object class="GtkVBox" id="vbox73">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">3</property>
                             <child>
                               <object class="GtkButton" id="nuova_partita_iva_fornitore_filter_button">
@@ -1210,7 +1198,6 @@
             <child>
               <object class="GtkVBox" id="riepilogo_fornitore_filter_vbox">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkAlignment" id="alignment498">
                     <property name="visible">True</property>

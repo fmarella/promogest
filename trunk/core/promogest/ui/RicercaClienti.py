@@ -1,21 +1,31 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author  Andrea Argiolas   <andrea@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-import gobject
 from Ricerca import Ricerca, RicercaFilter
-
-from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Cliente
 from promogest.dao.Cliente import Cliente
-
-from utils import *
-
+from utils import showAnagraficaRichiamata, fillComboboxCategorieClienti,\
+                    prepareFilterString, findIdFromCombobox
 
 class RicercaClienti(Ricerca):
     """ Ricerca clienti """
@@ -47,8 +57,10 @@ class RicercaClientiFilter(RicercaFilter):
 
     def __init__(self, ricerca):
         RicercaFilter.__init__(self, ricerca,
-                               'anagrafica_clienti_filter_table',
-                               fileName='_anagrafica_clienti_elements.glade')
+                             "anagrafica_clienti_filter_vbox",
+                               fileName='_ricerca_clienti.glade')
+        self.ricerca_avanzata_clienti_filter_vbox.destroy()
+        self.ricerca_alignment.destroy()
 
 
     def draw(self):

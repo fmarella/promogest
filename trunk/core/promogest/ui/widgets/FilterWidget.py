@@ -24,18 +24,18 @@
 import gtk
 import math
 import sqlalchemy
-from sqlalchemy import *
-from sqlalchemy.orm import *
+from sqlalchemy import asc, desc
 from promogest.ui.GladeWidget import GladeWidget
-from promogest import Environment
 from promogest.lib.HtmlHandler import createHtmlObj, renderHTML
 from promogest.ui.utils import setconf
+
 
 class FilterWidget(GladeWidget):
     """ Base Class for filter part of windows/dialogs """
 
     def __init__(self, owner, filtersElement=None, resultsElement='grid'):
-        GladeWidget.__init__(self, 'filter_vbox', fileName='_filter_elements.glade')
+        GladeWidget.__init__(self, 'filter_vbox',
+                            fileName='_filter_elements.glade')
         self._owner = owner
         self.filtersElement = None
         self.resultsElement = None
@@ -50,7 +50,8 @@ class FilterWidget(GladeWidget):
         self._firstFocusWidget = None
 
         self.filter_current_page_entry.set_alignment(xalign=1)
-        self.filter_current_page_entry.connect('key_press_event', self.on_filter_current_page_entry_key_press_event)
+        self.filter_current_page_entry.connect('key_press_event',
+                            self.on_filter_current_page_entry_key_press_event)
 
         if filtersElement is None:
             self.filter_frame.set_no_show_all(True)
@@ -68,7 +69,6 @@ class FilterWidget(GladeWidget):
 
         self.setFocus()
 
-
     def _setFiltersElement(self, filtersElement):
         """
         Put filter elements into frame
@@ -77,7 +77,6 @@ class FilterWidget(GladeWidget):
         self.filtersElementTopLevel = self.filtersElement.getTopLevel()
         self.filter_frame_vbox.pack_start(self.filtersElementTopLevel)
         self.filtersElementTopLevel.set_sensitive(True)
-
 
     def _setResultsElement(self, widgetType):
         """
@@ -95,13 +94,11 @@ class FilterWidget(GladeWidget):
         else:
             raise Exception('Results widget undefined !!')
 
-
     def draw(self):
         """
         Designs results layout
         """
         self._owner.draw()
-
 
     def on_filter_search_button_clicked(self, widget):
         """
@@ -109,14 +106,12 @@ class FilterWidget(GladeWidget):
         """
         self.gotoFirstPage()
 
-
     def on_filter_clear_button_clicked(self, widget):
         """
         Clear button response
         """
         self.clear()
         self.gotoFirstPage()
-
 
     def on_filter_element_key_press_event(self, widget, event):
         """
@@ -133,13 +128,11 @@ class FilterWidget(GladeWidget):
         else:
             return False
 
-
     def on_filter_first_button_clicked(self, widget):
         """
         First page button response
         """
         self.gotoFirstPage()
-
 
     def on_filter_prev_button_clicked(self, widget):
         """
@@ -147,20 +140,17 @@ class FilterWidget(GladeWidget):
         """
         self.gotoPrevPage()
 
-
     def on_filter_next_button_clicked(self, widget):
         """
         Next page button response
         """
         self.gotoNextPage()
 
-
     def on_filter_last_button_clicked(self, widget):
         """
         Last page button response
         """
         self.gotoLastPage()
-
 
     def on_filter_current_page_entry_key_press_event(self, widget, event):
         """
@@ -171,14 +161,12 @@ class FilterWidget(GladeWidget):
             page = int(self.filter_current_page_entry.get_text())
             self.gotoPage(int(page))
 
-
     def gotoFirstPage(self):
         """
         First page
         """
         self.offset = 0
         self._refreshCurrentPage()
-
 
     def gotoPrevPage(self):
         """
@@ -188,7 +176,6 @@ class FilterWidget(GladeWidget):
             self.offset -= self.batchSize
         self._refreshCurrentPage()
 
-
     def gotoPage(self, pagina):
         """
         Page number calculation
@@ -196,7 +183,6 @@ class FilterWidget(GladeWidget):
         if pagina <= math.ceil(float(self.numRecords) / float(self.batchSize)):
             self.offset = (pagina - 1) * self.batchSize
             self._refreshCurrentPage()
-
 
     def gotoNextPage(self):
         """
@@ -206,14 +192,12 @@ class FilterWidget(GladeWidget):
             self.offset += self.batchSize
         self._refreshCurrentPage()
 
-
     def gotoLastPage(self):
         """
         Last page
         """
         self.offset = (self._getPageCount() - 1) * self.batchSize
         self._refreshCurrentPage()
-
 
     def _getCurrentPage(self):
         """
@@ -225,7 +209,6 @@ class FilterWidget(GladeWidget):
         """
         Calculate how much pages we have
         """
-        #print self.numRecords
         return int(math.ceil(float(self.numRecords or 0)
                              / float(self.batchSize)) or '1')
 
@@ -257,7 +240,7 @@ class FilterWidget(GladeWidget):
         RITOCCO fatto per SA 0.6.3 ...ancora da approfondire
         """
         if sqlalchemy.__version__ > "0.6.0":
-            if (self.orderBy is not None ) == (fieldsString[1] is not None):
+            if (self.orderBy is not None) == (fieldsString[1] is not None):
                 if self.flag == False:
                     self.orderBy = asc(fieldsString[1])
                     self.flag = True
@@ -297,7 +280,6 @@ class FilterWidget(GladeWidget):
         """
         self._owner.clear()
 
-
     def refresh(self):
         """
         Refresh of results output
@@ -307,7 +289,6 @@ class FilterWidget(GladeWidget):
         self._owner.offset = self.offset
         self._owner.join = self.join
         self._owner.refresh()
-
 
     def runFilter(self, offset='__default__', batchSize='__default__',
                   progressCB=None, progressBatchSize=0, filterClosure=None):
@@ -329,14 +310,13 @@ class FilterWidget(GladeWidget):
         if batchSize == '__default__':
             batchSize = self.batchSize
 
-        objList =  filterClosure(offset, batchSize)
+        objList = filterClosure(offset, batchSize)
 
         #objList = Dao.select(cursor=cursor, daoClass=daoClass,
                              #progressCB=progressCB,
                              #progressBatchSize=progressBatchSize)
 
         return objList
-
 
     def countFilterResults(self, filterCountClosure=None):
         """
@@ -376,12 +356,11 @@ class FilterWidget(GladeWidget):
         selection.connect('changed', self.on_filter_treeview_selection_changed)
         return treeview
 
-
     def getHtmlFilterResultsWidget(self):
         """ Return a treeview widget for filter results """
         self.html = createHtmlObj(self)
         html = """<html><body></body></html>"""
-        renderHTML(self.html,html)
+        renderHTML(self.html, html)
         return self.html
 
     def on_filter_treeview_row_activated(self, treeview, path, column):
@@ -398,8 +377,6 @@ class FilterWidget(GladeWidget):
         """
         Row selection event response
         """
-#        print " PASSS"
-
         self._owner.on_filter_treeview_selection_changed(treeSelection)
 
     def on_filter_treeview_keypress_event(self, treeview, event):

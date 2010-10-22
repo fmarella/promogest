@@ -764,13 +764,11 @@ def on_combobox_azienda_search_clicked(combobox, callName=None):
 
 def on_combobox_cliente_search_clicked(combobox, callName=None):
     """
-    richiama la ricerca dei clienti
+    richiama la ricerca dei clienti per esempio nel form contatti
     """
 
     def refresh_combobox_cliente(anagWindow):
-        """
-        FIXME
-        """
+        """ """
         if anag.dao is None:
             id = None
         else:
@@ -783,7 +781,6 @@ def on_combobox_cliente_search_clicked(combobox, callName=None):
         anagWindow.destroy()
         if callName is not None:
             callName()
-
 
     if combobox.on_selection_changed():
         from RicercaClienti import RicercaClienti
@@ -807,9 +804,6 @@ def on_combobox_fornitore_search_clicked(combobox, callName=None):
 
     def refresh_combobox_fornitore(anagWindow):
         """
-        FIXME
-        @param anagWindow:
-        @type anagWindow:
         """
         if anag.dao is None:
             id = None

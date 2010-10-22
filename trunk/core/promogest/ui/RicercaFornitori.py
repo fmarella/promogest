@@ -1,22 +1,31 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author  Andrea Argiolas   <andrea@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-import gobject
 from Ricerca import Ricerca, RicercaFilter
-
-from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Fornitore
 from promogest.dao.Fornitore import Fornitore
-
-from utils import *
-
+from utils import showAnagraficaRichiamata, fillComboboxCategorieFornitori,\
+                    prepareFilterString, findIdFromCombobox
 
 
 class RicercaFornitori(Ricerca):
@@ -27,9 +36,9 @@ class RicercaFornitori(Ricerca):
                          RicercaFornitoriFilter(self))
         #self.ricerca_html.destroy()
 
+
     def insert(self, toggleButton, returnWindow):
         # Richiamo anagrafica di competenza
-
         def refresh():
             self.filter.refresh()
             self.filter.ragione_sociale_filter_entry.grab_focus()
@@ -43,22 +52,22 @@ class RicercaFornitori(Ricerca):
         anag.on_record_new_activate(anag.record_new_button)
 
 
-
 class RicercaFornitoriFilter(RicercaFilter):
     """ Filtro per la ricerca degli Fornitori """
 
     def __init__(self, ricerca):
         RicercaFilter.__init__(self, ricerca,
-                               'anagrafica_fornitori_filter_table',
-                               fileName='_anagrafica_fornitori_elements.glade')
-
+                               'anagrafica_fornitori_filter_vbox',
+                               fileName='_ricerca_fornitori.glade')
+        self.ricerca_avanzata_fornitori_filter_vbox.destroy()
+        self.ricerca_alignment.destroy()
 
     def draw(self):
         # Colonne della Treeview per il filtro
         treeview = self._ricerca.ricerca_filter_treeview
         renderer = gtk.CellRendererText()
 
-        column = gtk.TreeViewColumn('Codice', renderer,text=1)
+        column = gtk.TreeViewColumn('Codice', renderer, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, 'codice')
@@ -74,7 +83,7 @@ class RicercaFornitoriFilter(RicercaFilter):
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Cognome - Nome', renderer,text=3)
+        column = gtk.TreeViewColumn('Cognome - Nome', renderer, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, 'cognome, nome')
@@ -82,7 +91,7 @@ class RicercaFornitoriFilter(RicercaFilter):
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Localita', renderer,text=4)
+        column = gtk.TreeViewColumn('Localita', renderer, text=4)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, 'localita')
@@ -95,7 +104,6 @@ class RicercaFornitoriFilter(RicercaFilter):
         fillComboboxCategorieFornitori(self.id_categoria_fornitore_filter_combobox, True)
 
         self.clear()
-
 
     def clear(self):
         # Annullamento filtro
@@ -110,7 +118,6 @@ class RicercaFornitoriFilter(RicercaFilter):
         self.ragione_sociale_filter_entry.grab_focus()
         self.refresh()
 
-
     def refresh(self):
         # Aggiornamento TreeView
         codice = prepareFilterString(self.codice_filter_entry.get_text())
@@ -123,13 +130,13 @@ class RicercaFornitoriFilter(RicercaFilter):
         idCategoria = findIdFromCombobox(self.id_categoria_fornitore_filter_combobox)
 
         self.numRecords = Fornitore().count(codice=codice,
-                                                    ragioneSociale=ragioneSociale,
-                                                    insegna=insegna,
-                                                    cognomeNome=cognomeNome,
-                                                    localita=localita,
-                                                    partitaIva=partitaIva,
-                                                    codiceFiscale=codiceFiscale,
-                                                    idCategoria=idCategoria)
+                                            ragioneSociale=ragioneSociale,
+                                            insegna=insegna,
+                                            cognomeNome=cognomeNome,
+                                            localita=localita,
+                                            partitaIva=partitaIva,
+                                            codiceFiscale=codiceFiscale,
+                                            idCategoria=idCategoria)
 
         self._refreshPageCount()
 

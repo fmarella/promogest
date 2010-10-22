@@ -346,7 +346,6 @@ class SetTextFactory(PoolListener):
 if tipodb == "sqlite":
     azienda = None
     mainSchema = None
-    print "startdir()", startdir()
     engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()])
 else:
     mainSchema = "promogest2"

@@ -5,6 +5,7 @@
 # Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
 # Author: francesco Meloni <francesco@promotux.it>
 
+
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *

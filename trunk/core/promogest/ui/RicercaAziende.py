@@ -31,7 +31,6 @@ class RicercaAziende(Ricerca):
         pass
 
 
-
 class RicercaAziendeFilter(RicercaFilter):
     """ Filtro per la ricerca delle aziende """
 
