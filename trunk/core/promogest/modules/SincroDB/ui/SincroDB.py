@@ -763,8 +763,18 @@ class SincroDB(GladeWidget):
                         ti = str(i).split(".")[1]
                         setattr(loc, ti, getattr(r, ti))
                     sqlalchemy.ext.sqlsoup.Session.add(loc)
-                    sqlalchemy.ext.sqlsoup.Session.commit()
-                    do = False
+                    try:
+                        sqlalchemy.ext.sqlsoup.Session.commit()
+                    except Exception,e :
+                        print "ERRORE",e
+                        sqlalchemy.ext.sqlsoup.Session.rollback()
+                        print "FATTO IL ROOLBACK"
+                        record_codice = self.pg_db_server_locale.codice_a_barre_articolo.filter_by(codice=r.codice).all()
+                        if record_codice:
+                            print " ABBIAMO UN CODICE GIA PRESENTE"
+                            sqlalchemy.ext.sqlsoup.Session.delete(record_codice[0])
+                            sqlalchemy.ext.sqlsoup.Session.commit()
+                        do = False
             else:
                 print "INSERISCO CODICE A BARRE"
                 soupLocale = self.dammiSoupLocale("codice_a_barre_articolo")
@@ -773,7 +783,18 @@ class SincroDB(GladeWidget):
                     t = str(i).split(".")[1] #mi serve solo il nome tabella
                     setattr(newloc, t, getattr(r, t))
                 sqlalchemy.ext.sqlsoup.Session.add(newloc)
-                sqlalchemy.ext.sqlsoup.Session.commit()
+                try:
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+                except Exception,e :
+                    print "ERRORE",e
+                    sqlalchemy.ext.sqlsoup.Session.rollback()
+                    print "FATTO IL ROOLBACK"
+                    record_codice = self.pg_db_server_locale.codice_a_barre_articolo.filter_by(codice=r.codice).all()
+                    if record_codice:
+                        print " ABBIAMO UN CODICE GIA PRESENTE"
+                        sqlalchemy.ext.sqlsoup.Session.delete(record_codice[0])
+                        sqlalchemy.ext.sqlsoup.Session.commit()
+                    do = False
 
 
     def fixToTable(self, soup =None,soupLocale=None, op=None, rowMaster=None,rowSlave=None, dao=None, save=False, offset=None, dao_locale_ex=None):
