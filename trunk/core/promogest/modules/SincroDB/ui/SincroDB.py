@@ -640,8 +640,24 @@ class SincroDB(GladeWidget):
                         ti = str(i).split(".")[1]
                         setattr(loc, ti, getattr(r, ti))
                     sqlalchemy.ext.sqlsoup.Session.add(loc)
-#                    sqlalchemy.ext.sqlsoup.Session.commit()
-#                    do = False
+                    try:
+                        sqlalchemy.ext.sqlsoup.Session.commit()
+                    except Exception,e :
+                        print "ERRORE",e
+                        sqlalchemy.ext.sqlsoup.Session.rollback()
+                        print "FATTO IL ROOLBACK", 'id_fornitore', 'id_articolo', 'data_prezzo'
+                        record_codice = self.pg_db_server_locale.fornitura.filter_by(id_fornitore=r.id_fornitore,
+                                                                                    id_articolo=r.id_articolo,
+                                                                                    data_prezzo= r.data_prezzo).all()
+                        if record_codice:
+                            print " ABBIAMO UN CODICE GIA PRESENTE"
+                            sqlalchemy.ext.sqlsoup.Session.delete(record_codice[0])
+                            sqlalchemy.ext.sqlsoup.Session.commit()
+                        do = False
+                        if self.batch:
+                            self.runBatch()
+                        else:
+                            self.test()
             else:
                 do = True
                 soupLocale = self.dammiSoupLocale("fornitura")
@@ -650,10 +666,24 @@ class SincroDB(GladeWidget):
                     t = str(i).split(".")[1] #mi serve solo il nome tabella
                     setattr(newloc, t, getattr(r, t))
                 sqlalchemy.ext.sqlsoup.Session.add(newloc)
-                print "INSERISCO FORNITURA"
-        if do:
-            sqlalchemy.ext.sqlsoup.Session.commit()
-            do = False
+                try:
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+                except Exception,e :
+                    print "ERRORE",e
+                    sqlalchemy.ext.sqlsoup.Session.rollback()
+                    print "FATTO IL ROOLBACK", 'id_fornitore', 'id_articolo', 'data_prezzo'
+                    record_codice = self.pg_db_server_locale.fornitura.filter_by(id_fornitore=r.id_fornitore,
+                                                                                id_articolo=r.id_articolo,
+                                                                                data_prezzo= r.data_prezzo).all()
+                    if record_codice:
+                        print " ABBIAMO UN CODICE GIA PRESENTE"
+                        sqlalchemy.ext.sqlsoup.Session.delete(record_codice[0])
+                        sqlalchemy.ext.sqlsoup.Session.commit()
+                    do = False
+                    if self.batch:
+                        self.runBatch()
+                    else:
+                        self.test()
 
 
     def manageStoccaggioSafe(self, remote):
