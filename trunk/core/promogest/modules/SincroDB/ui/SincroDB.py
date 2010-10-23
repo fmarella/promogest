@@ -775,6 +775,10 @@ class SincroDB(GladeWidget):
                             sqlalchemy.ext.sqlsoup.Session.delete(record_codice[0])
                             sqlalchemy.ext.sqlsoup.Session.commit()
                         do = False
+                        if self.batch:
+                            self.runBatch()
+                        else:
+                            self.test()
             else:
                 print "INSERISCO CODICE A BARRE"
                 soupLocale = self.dammiSoupLocale("codice_a_barre_articolo")
@@ -795,6 +799,10 @@ class SincroDB(GladeWidget):
                         sqlalchemy.ext.sqlsoup.Session.delete(record_codice[0])
                         sqlalchemy.ext.sqlsoup.Session.commit()
                     do = False
+                    if self.batch:
+                        self.runBatch()
+                    else:
+                        self.test()
 
 
     def fixToTable(self, soup =None,soupLocale=None, op=None, rowMaster=None,rowSlave=None, dao=None, save=False, offset=None, dao_locale_ex=None):
