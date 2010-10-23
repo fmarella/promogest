@@ -654,10 +654,10 @@ class SincroDB(GladeWidget):
                             sqlalchemy.ext.sqlsoup.Session.delete(record_codice[0])
                             sqlalchemy.ext.sqlsoup.Session.commit()
                         do = False
-                        if self.batch:
-                            self.runBatch()
-                        else:
-                            self.test()
+#                        if self.batch:
+#                            self.runBatch()
+#                        else:
+#                            self.test()
             else:
                 do = True
                 soupLocale = self.dammiSoupLocale("fornitura")
@@ -680,10 +680,10 @@ class SincroDB(GladeWidget):
                         sqlalchemy.ext.sqlsoup.Session.delete(record_codice[0])
                         sqlalchemy.ext.sqlsoup.Session.commit()
                     do = False
-                    if self.batch:
-                        self.runBatch()
-                    else:
-                        self.test()
+#                    if self.batch:
+#                        self.runBatch()
+#                    else:
+#                        self.test()
 
 
     def manageStoccaggioSafe(self, remote):
