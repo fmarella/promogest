@@ -513,9 +513,9 @@ class SincroDB(GladeWidget):
 
 
     def manageListinoArticoloSafe(self, remote, locale, safer=None):
+        print "SUPER SAFER AL LAVORO?" safer
         do = False
         if safer:
-            print "SUPER SAFER AL LAVORO"
             for l in locale:
                 rem = self.pg_db_server_remote.listino_articolo.get([l.id_listino,l.id_articolo, l.data_listino_articolo])
                 if not rem:
