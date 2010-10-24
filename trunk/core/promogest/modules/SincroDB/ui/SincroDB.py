@@ -180,7 +180,7 @@ class SincroDB(GladeWidget):
         for li in listini:
             self.avanzamento_pgbar.pulse()
             conteggia = self.pg_db_server_remote.entity("listino_articolo").filter_by(id_listino=li.id).count()
-            conteggia_locale = self.pg_db_server_remote.entity("listino_articolo").filter_by(id_listino=li.id).count()
+            conteggia_locale = self.pg_db_server_locale.entity("listino_articolo").filter_by(id_listino=li.id).count()
             safer = False
             if conteggia_locale>conteggia:
                 safer=True
@@ -513,9 +513,9 @@ class SincroDB(GladeWidget):
 
 
     def manageListinoArticoloSafe(self, remote, locale, safer=None):
-        print "SUPER SAFER AL LAVORO?" safer
         do = False
         if safer:
+            print "SUPER SAFER AL LAVORO?",safer
             for l in locale:
                 rem = self.pg_db_server_remote.listino_articolo.get([l.id_listino,l.id_articolo, l.data_listino_articolo])
                 if not rem:
