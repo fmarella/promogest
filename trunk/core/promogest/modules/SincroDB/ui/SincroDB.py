@@ -434,7 +434,6 @@ class SincroDB(GladeWidget):
             if loc:
                 for a in r.c:
                     t = str(a).split(".")[1]
-#                    print "AAAAAAAAAAAAAAAAAAAA", a
                     if getattr(r, t) !=  getattr(loc, t):
                         print "DIVERSO" , getattr(r, t), getattr(loc, t)
                         do = True
