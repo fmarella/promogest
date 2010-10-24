@@ -232,6 +232,10 @@ class SincroDB(GladeWidget):
 #                self.avanzamento_pgbar.pulse()
                 print "TABELLA IN LAVORAZIONE :", dg[0]
                 conteggia = self.pg_db_server_remote.entity(dg[0]).count() # serve per poter affettare le select
+                conteggia_locale = self.pg_db_server_locale.entity(dg[0]).count()
+                safer = False
+                if conteggia_locale>conteggia:
+                    safer=True
                 print "NUMERO DEI RECORD PRESENTI:", conteggia
                 if conteggia >= blocSize:
                     blocchi = abs(conteggia/blocSize)
@@ -243,17 +247,17 @@ class SincroDB(GladeWidget):
                         if str(remote[0]._table).split(".")[1] =="articolo":
                             self.manageArticoloSafe(remote)
                         elif str(remote[0]._table).split(".")[1] =="codice_a_barre_articolo":
-                            self.manageCodBarreSafe(remote)
+                            self.manageCodBarreSafe(remote, locale, safer=safer)
                         elif str(remote[0]._table).split(".")[1] =="fornitura":
                             self.manageFornituraSafe(remote)
                         elif str(remote[0]._table).split(".")[1] =="sconto":
-                            self.manageScontoSafe(remote)
+                            self.manageScontoSafe(remote, locale, safer=safer)
                         elif str(remote[0]._table).split(".")[1] =="listino_complesso_listino":
                             self.manageListinoComplessoListinoSafe(remote)
                         elif str(remote[0]._table).split(".")[1] =="stoccaggio":
                             self.manageStoccaggioSafe(remote)
                         elif str(remote[0]._table).split(".")[1] =="sconti_vendita_dettaglio":
-                            self.manageScontiVenditaDettaglioSafe(remote)
+                            self.manageScontiVenditaDettaglioSafe(remote, locale, safer=safer)
                         elif str(remote[0]._table).split(".")[1] =="sconti_vendita_ingrosso":
                             self.manageScontiVenditaIngrossoSafe(remote)
                         elif str(remote[0]._table).split(".")[1] =="listino_magazzino":
@@ -358,12 +362,10 @@ class SincroDB(GladeWidget):
                         print "ERRORE NEI LISTINI", e
                         sqlalchemy.ext.sqlsoup.Session.rollback()
                         record_id1 = self.pg_db_server_locale.listino_articolo.filter_by(id_listino=remote[i].id_listino).all()
-    #                        print "RECOOOOOOOOOOOOOOOOORD", record_id1
                         if record_id1:
                             for r in record_id1:
                                 sqlalchemy.ext.sqlsoup.Session.delete(r)
                             sqlalchemy.ext.sqlsoup.Session.commit()
-    #                            print "QUIIII"
                             self.daosScheme(tables=[("listino_articolo","id_listino")])
                     else:
                         print "ERRORE NEL SALVATAGGIO DEI RECORD", e
@@ -609,8 +611,17 @@ class SincroDB(GladeWidget):
             sqlalchemy.ext.sqlsoup.Session.commit()
             do = False
 
-    def manageScontiVenditaDettaglioSafe(self, remote):
+    def manageScontiVenditaDettaglioSafe(self, remote, locale, safer=False):
         do = False
+        if safer:
+            print "SUPER SAFER AL LAVORO?",safer
+            for l in locale:
+                rem = self.pg_db_server_remote.sconti_vendita_dettaglio.get(l.id)
+                if not rem:
+                    print "ECCODIC CHE RIMUOVIAMO", l
+                    sqlalchemy.ext.sqlsoup.Session.delete(l)
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+
         for r in remote:
             loc = self.pg_db_server_locale.sconti_vendita_dettaglio.get(r.id)
             if loc:
@@ -733,8 +744,17 @@ class SincroDB(GladeWidget):
             do = False
 
 
-    def manageScontoSafe(self, remote):
+    def manageScontoSafe(self, remote, locale, safer=False):
         do = False
+        if safer:
+            print "SUPER SAFER AL LAVORO?",safer
+            for l in locale:
+                rem = self.pg_db_server_remote.sconto.get(l.id)
+                if not rem:
+                    print "ECCODIC CHE RIMUOVIAMO", l
+                    sqlalchemy.ext.sqlsoup.Session.delete(l)
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+
         for r in remote:
             loc = self.pg_db_server_locale.sconto.get(r.id)
             if loc:
@@ -793,8 +813,16 @@ class SincroDB(GladeWidget):
                 sqlalchemy.ext.sqlsoup.Session.commit()
 
 
-    def manageCodBarreSafe(self, remote):
+    def manageCodBarreSafe(self, remote, locale, safer=None):
         do = False
+        if safer:
+            print "SUPER SAFER AL LAVORO?",safer
+            for l in locale:
+                rem = self.pg_db_server_remote.codice_a_barre_articolo.get(l.id)
+                if not rem:
+                    print "ECCODIC CHE RIMUOVIAMO", l
+                    sqlalchemy.ext.sqlsoup.Session.delete(l)
+                    sqlalchemy.ext.sqlsoup.Session.commit()
         for r in remote:
             loc = self.pg_db_server_locale.codice_a_barre_articolo.get(r.id)
             if loc:
