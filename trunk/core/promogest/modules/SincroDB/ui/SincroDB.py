@@ -506,7 +506,7 @@ class SincroDB(GladeWidget):
     def manageListinoArticoloSafe(self, remote):
         do = False
         for r in remote:
-            loc = self.pg_db_server_locale.listino_articolo.get([r.id_listino, r.id_articolo, r.data_listino_articolo])
+            loc = self.pg_db_server_locale.listino_articolo.filter_by(id_listino = r.id_listino, id_articolo= r.id_articolo).all()
             if loc:
                 for a in r.c:
                     t = str(a).split(".")[1]
