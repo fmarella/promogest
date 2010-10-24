@@ -180,6 +180,10 @@ class SincroDB(GladeWidget):
         for li in listini:
             self.avanzamento_pgbar.pulse()
             conteggia = self.pg_db_server_remote.entity("listino_articolo").filter_by(id_listino=li.id).count()
+            conteggia_locale = self.pg_db_server_remote.entity("listino_articolo").filter_by(id_listino=li.id).count()
+            safer = False
+            if conteggia_locale>conteggia:
+                safer=True
             print "GLI ARTICOLI SONO:",conteggia, "ID LISTINO", li.id
             if conteggia >= blocSize:
                 blocchi = abs(conteggia/blocSize)
@@ -203,7 +207,7 @@ class SincroDB(GladeWidget):
                     print "REMOTEEEE", len(remote), "LOCALEEEEEE", len(locale)
                     if len(locale)>len(remote):
                         print "ATTENZIONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", len(remote), len(locale)
-                    self.manageListinoArticoloSafe(remote, locale)
+                    self.manageListinoArticoloSafe(remote, locale, safer=safer)
 #                    self.logica(remote=remote, locale=locale,dao=dg[0], all=True, offset=None)
             elif conteggia < blocSize:
                 remote=self.pg_db_server_remote.listino_articolo.filter_by(id_listino=li.id).order_by(self.pg_db_server_remote.listino_articolo.id_articolo,self.pg_db_server_remote.listino_articolo.data_listino_articolo).all()
@@ -211,7 +215,7 @@ class SincroDB(GladeWidget):
                 print "REMOTEEEE", len(remote), "LOCALEEEEEE", len(locale), "NON SPACCHETTATO"
                 if len(locale)>len(remote):
                     print "ATTENZIONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", len(remote), len(locale)
-                self.manageListinoArticoloSafe(remote, locale)
+                self.manageListinoArticoloSafe(remote, locale, safer=safer)
 #                self.logica(remote=remote, locale=locale,dao=dg[0], all=True)
         return True
 
@@ -509,14 +513,15 @@ class SincroDB(GladeWidget):
 #                        ro = True
 
 
-    def manageListinoArticoloSafe(self, remote, locale):
+    def manageListinoArticoloSafe(self, remote, locale, safer=None):
         do = False
-        for l in locale:
-            rem = self.pg_db_server_remote.listino_articolo.get([l.id_listino,l.id_articolo, l.data_listino_articolo])
-            if not rem:
-                print "ECCODIC CHE RIMUOVIAMO000000000000000000000000000000000000000000000000", l
-                sqlalchemy.ext.sqlsoup.Session.delete(l)
-                sqlalchemy.ext.sqlsoup.Session.commit()
+        if safer:
+            for l in locale:
+                rem = self.pg_db_server_remote.listino_articolo.get([l.id_listino,l.id_articolo, l.data_listino_articolo])
+                if not rem:
+                    print "ECCODIC CHE RIMUOVIAMO000000000000000000000000000000000000000000000000", l
+                    sqlalchemy.ext.sqlsoup.Session.delete(l)
+                    sqlalchemy.ext.sqlsoup.Session.commit()
 
         for r in remote:
             loc = self.pg_db_server_locale.listino_articolo.get([r.id_listino,r.id_articolo, r.data_listino_articolo])
