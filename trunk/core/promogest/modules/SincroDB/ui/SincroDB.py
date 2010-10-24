@@ -200,13 +200,18 @@ class SincroDB(GladeWidget):
                                     self.pg_db_server_locale.listino_articolo.data_listino_articolo).\
                             limit(blocSize).\
                             offset(offset).all()
-
-                    self.manageListinoArticoloSafe(remote)
+                    print "REMOTEEEE", len(remote), "LOCALEEEEEE", len(locale)
+                    if len(locale)>len(remote):
+                        print "ATTENZIONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", len(remote), len(locale)
+                    self.manageListinoArticoloSafe(remote, locale)
 #                    self.logica(remote=remote, locale=locale,dao=dg[0], all=True, offset=None)
             elif conteggia < blocSize:
                 remote=self.pg_db_server_remote.listino_articolo.filter_by(id_listino=li.id).order_by(self.pg_db_server_remote.listino_articolo.id_articolo,self.pg_db_server_remote.listino_articolo.data_listino_articolo).all()
                 locale=self.pg_db_server_locale.listino_articolo.filter_by(id_listino=li.id).order_by(self.pg_db_server_remote.listino_articolo.id_articolo,self.pg_db_server_locale.listino_articolo.data_listino_articolo).all()
-                self.manageListinoArticoloSafe(remote)
+                print "REMOTEEEE", len(remote), "LOCALEEEEEE", len(locale), "NON SPACCHETTATO"
+                if len(locale)>len(remote):
+                    print "ATTENZIONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", len(remote), len(locale)
+                self.manageListinoArticoloSafe(remote, locale)
 #                self.logica(remote=remote, locale=locale,dao=dg[0], all=True)
         return True
 
@@ -488,6 +493,7 @@ class SincroDB(GladeWidget):
                         else:
                             self.test()
 #        if len(locale)>len(remote):
+
 #            print "CI SONO PIU RECORD IN LOCALE"
 #            for l in locale:
 #                loc = self.pg_db_server_locale.articolo.get(l.id)
@@ -503,25 +509,30 @@ class SincroDB(GladeWidget):
 #                        ro = True
 
 
-    def manageListinoArticoloSafe(self, remote):
+    def manageListinoArticoloSafe(self, remote, locale):
         do = False
+        for l in locale:
+            rem = self.pg_db_server_remote.listino_articolo.get([l.id_listino,l.id_articolo, l.data_listino_articolo])
+            if not rem:
+                print "ECCODIC CHE RIMUOVIAMO000000000000000000000000000000000000000000000000", l
+                sqlalchemy.ext.sqlsoup.Session.delete(l)
+                sqlalchemy.ext.sqlsoup.Session.commit()
+
         for r in remote:
-            loc = self.pg_db_server_locale.listino_articolo.filter_by(id_listino = r.id_listino, id_articolo= r.id_articolo).all()
-            if len(loc)>1:
-                print "ESISTONO PIU ENTRY DI QUESTO ARTICOLO NEL LISTINO", loc
+            loc = self.pg_db_server_locale.listino_articolo.get([r.id_listino,r.id_articolo, r.data_listino_articolo])
             if loc:
                 for a in r.c:
                     t = str(a).split(".")[1]
-                    if getattr(r, t) !=  getattr(loc[0], t):
-                        print "DIVERSO" , getattr(r, t), getattr(loc[0], t)
+                    if getattr(r, t) !=  getattr(loc, t):
+                        print "DIVERSO" , getattr(r, t), getattr(loc, t)
                         do = True
                 if do:
-                    for i in loc[0].c:
+                    for i in loc.c:
                         ti = str(i).split(".")[1]
-                        setattr(loc[0], ti, getattr(r, ti))
-                    sqlalchemy.ext.sqlsoup.Session.add(loc[0])
-#                    sqlalchemy.ext.sqlsoup.Session.commit()
-#                    do = False
+                        setattr(loc, ti, getattr(r, ti))
+                    sqlalchemy.ext.sqlsoup.Session.add(loc)
+                    sqlalchemy.ext.sqlsoup.Session.commit()
+                    do = False
             else:
                 do = True
                 soupLocale = self.dammiSoupLocale("listino_articolo")
@@ -530,11 +541,8 @@ class SincroDB(GladeWidget):
                     t = str(i).split(".")[1] #mi serve solo il nome tabella
                     setattr(newloc, t, getattr(r, t))
                 sqlalchemy.ext.sqlsoup.Session.add(newloc)
-#                sqlalchemy.ext.sqlsoup.Session.commit()
+                sqlalchemy.ext.sqlsoup.Session.commit()
                 print "INSERISCO LSTART"
-        if do:
-            sqlalchemy.ext.sqlsoup.Session.commit()
-            do = False
 
 
     def manageListinoMagazzinoSafe(self, remote):
