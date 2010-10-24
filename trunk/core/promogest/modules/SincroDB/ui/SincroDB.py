@@ -507,17 +507,19 @@ class SincroDB(GladeWidget):
         do = False
         for r in remote:
             loc = self.pg_db_server_locale.listino_articolo.filter_by(id_listino = r.id_listino, id_articolo= r.id_articolo).all()
+            if len(loc)>1:
+                print "ESISTONO PIU ENTRY DI QUESTO ARTICOLO NEL LISTINO", loc
             if loc:
                 for a in r.c:
                     t = str(a).split(".")[1]
-                    if getattr(r, t) !=  getattr(loc, t):
-                        print "DIVERSO" , getattr(r, t), getattr(loc, t)
+                    if getattr(r, t) !=  getattr(loc[0], t):
+                        print "DIVERSO" , getattr(r, t), getattr(loc[0], t)
                         do = True
                 if do:
-                    for i in loc.c:
+                    for i in loc[0].c:
                         ti = str(i).split(".")[1]
-                        setattr(loc, ti, getattr(r, ti))
-                    sqlalchemy.ext.sqlsoup.Session.add(loc)
+                        setattr(loc[0], ti, getattr(r, ti))
+                    sqlalchemy.ext.sqlsoup.Session.add(loc[0])
 #                    sqlalchemy.ext.sqlsoup.Session.commit()
 #                    do = False
             else:
