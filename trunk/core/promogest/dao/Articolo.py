@@ -297,6 +297,8 @@ class Articolo(Dao):
                     return self.ATC[0].denominazione_taglia
                 except:
                     return self.ATC.denominazione_taglia
+            else:
+                return ""
 
         @property
         def denominazione_breve_taglia(self):

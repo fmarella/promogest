@@ -126,6 +126,35 @@ class RigaDocumento(Dao):
         else: return ""
     codice_articolo= property(__codiceArticolo)
 
+    if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
+        def _denominazione_gruppo_taglia(self):
+            return ""
+        denominazione_gruppo_taglia = property(_denominazione_gruppo_taglia)
+
+        def _denominazione_taglia(self):
+            return ""
+        denominazione_taglia = property(_denominazione_taglia)
+
+        def _denominazione_colore(self):
+            return ""
+        denominazione_colore = property(_denominazione_colore)
+
+        def _anno(self):
+            return ""
+        anno = property(_anno)
+
+        def _stagione(self):
+            return ""
+        stagione = property(_stagione)
+
+        def _genere(self):
+            return ""
+        genere = property(_genere)
+
+        def _modello(self):
+            return ""
+        denominazione_modello = property(_modello)
+
     if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
 
         def _get_coeficente_noleggio(self):
