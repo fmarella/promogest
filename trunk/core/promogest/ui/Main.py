@@ -167,8 +167,8 @@ class Main(GladeWidget):
                                    self.on_main_iconview_select, model)
 
         self.main_iconview.set_columns(1)
-        self.main_iconview.set_item_width(80)
-        self.main_iconview.set_size_request(95, -1)
+        self.main_iconview.set_item_width(85)
+        self.main_iconview.set_size_request(120, -1)
 
         if self.currentFrame is None:
 #            self.main_hbox.remove(self.box_immagini_iniziali)
