@@ -118,10 +118,10 @@ class Main(GladeWidget):
 #        self.pp = gobject.idle_add(checkPan, self)
         self.pp = checkPan(self)
         ll = gtk.Label()
-        ll.set_markup("<b>MAGAZZINI</b>\n(Movimenti\nInventario)")
+        ll.set_markup("<b>MAGAZZINI</b>")
         self.main_notebook.append_page(self.create_magazzini_frame(),ll)
         mm = gtk.Label()
-        mm.set_markup("<b>LISTINI</b>\n(Importazione\nEtichette)")
+        mm.set_markup("<b>LISTINI</b>")
         self.main_notebook.append_page(self.create_listini_frame(),mm)
         self.updates()
 

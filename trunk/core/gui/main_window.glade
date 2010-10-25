@@ -424,9 +424,7 @@ articoli per un certo </property>
                       <object class="GtkLabel" id="label5">
                         <property name="visible">True</property>
                         <property name="xpad">2</property>
-                        <property name="label" translatable="yes">&lt;b&gt;ANAGRAFICHE&lt;/b&gt;
-Articoli-Clienti
-Fornitori-Vettori ..</property>
+                        <property name="label" translatable="yes">&lt;b&gt;ANAGRAFICHE&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
                       <packing>
@@ -711,8 +709,7 @@ Fornitori-Vettori ..</property>
                       <object class="GtkLabel" id="azioni_veloci_label">
                         <property name="visible">True</property>
                         <property name="xpad">2</property>
-                        <property name="label" translatable="yes">&lt;b&gt;AZIONI
-VELOCI&lt;/b&gt;</property>
+                        <property name="label" translatable="yes">&lt;b&gt;AZIONI VELOCI&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
                       <packing>
@@ -1258,8 +1255,7 @@ Promemoria in scadenza. Verificare?!?</property>
                       <object class="GtkLabel" id="label4">
                         <property name="visible">True</property>
                         <property name="xpad">2</property>
-                        <property name="label" translatable="yes">&lt;b&gt;CALENDARIO
-PLANNING&lt;/b&gt;</property>
+                        <property name="label" translatable="yes">&lt;b&gt;CALENDARIO&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
                       <packing>
@@ -2064,9 +2060,7 @@ PLANNING&lt;/b&gt;</property>
                       <object class="GtkLabel" id="parametri_label">
                         <property name="visible">True</property>
                         <property name="xpad">2</property>
-                        <property name="label" translatable="yes">&lt;b&gt;PARAMETRI&lt;/b&gt;
-Categorie-Famiglie
-Banche-Aliquote ..</property>
+                        <property name="label" translatable="yes">&lt;b&gt;PARAMETRI&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
                       <packing>
