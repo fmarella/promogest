@@ -118,10 +118,10 @@ class Main(GladeWidget):
 #        self.pp = gobject.idle_add(checkPan, self)
         self.pp = checkPan(self)
         ll = gtk.Label()
-        ll.set_text("MAGAZZINI")
+        ll.set_markup("<b>MAGAZZINI</b>\n(Movimenti\nInventario)")
         self.main_notebook.append_page(self.create_magazzini_frame(),ll)
         mm = gtk.Label()
-        mm.set_text("LISTINI")
+        mm.set_markup("<b>LISTINI</b>\n(Importazione\nEtichette)")
         self.main_notebook.append_page(self.create_listini_frame(),mm)
         self.updates()
 
@@ -131,7 +131,7 @@ class Main(GladeWidget):
         model = gtk.ListStore(int, str, gtk.gdk.Pixbuf,object)
 
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'documento48x48.png')
-        model.append([3, "Documenti", pbuf,None])
+        model.append([3, "Documenti\n(Fatture,DDT\nPreventivi)", pbuf,None])
 
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'primanota_48X48.png')
         model.append([4, "Prima Nota", pbuf,None])
@@ -294,7 +294,7 @@ class Main(GladeWidget):
         if toggleButton.get_property('active') is False:
             return
         from AnagraficaArticoli import AnagraficaArticoli
-        anag = AnagraficaArticoli(aziendaStr=self.aziendaStr)
+        anag = AnagraficaArticoli(aziendaStr=Environment.azienda)
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
     def on_forniture_button_clicked(self, toggleButton):

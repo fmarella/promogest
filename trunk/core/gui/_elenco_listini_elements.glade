@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
@@ -48,7 +48,7 @@
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Gestione dei Listini
 Ricordiamo che nella 
-versione lite senza opzioni attivate &#xE8; possibile avere un solo 
+versione lite senza opzioni attivate è possibile avere un solo 
 listino di vendita </property>
                     <signal name="clicked" handler="on_listini_togglebutton_clicked"/>
                     <child>
@@ -271,7 +271,7 @@ frontaline</property>
       <object class="GtkLabel" id="label245">
         <property name="visible">True</property>
         <property name="xpad">5</property>
-        <property name="label" translatable="yes">Elenco listini</property>
+        <property name="label" translatable="yes">&lt;b&gt; Elenco listini &lt;/b&gt;</property>
         <property name="use_markup">True</property>
       </object>
     </child>

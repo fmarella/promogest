@@ -3,8 +3,7 @@
 #    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Dr astico <zoccolodignu@gmail.com>
+# Author: Francesco Meloni <francesco@promotux.it>
 
 #    This file is part of Promogest.
 

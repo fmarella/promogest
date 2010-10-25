@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
@@ -15,12 +15,12 @@
         <property name="can_focus">True</property>
         <property name="receives_default">True</property>
         <property name="tooltip_text" translatable="yes">Bottone di accesso ad una
-interfaccia in cui &#xE8; possibile 
+interfaccia in cui è possibile 
 incrociare la presenza di articoli
-in pi&#xF9; listini e selezionare quale listino 
+in più listini e selezionare quale listino 
 far prevalere. Utile per esempio quando 
 si usa la vendita al dettaglio ed un articoli 
-pu&#xF2; essere presente in pi&#xF9; listini e si deve decidere
+può essere presente in più listini e si deve decidere
 quale usare per la vendita</property>
         <signal name="toggled" handler="on_check_pricelist_togglebutton_toggled"/>
         <child>
@@ -75,49 +75,15 @@ quale usare per la vendita</property>
         <property name="homogeneous">True</property>
         <child>
           <object class="GtkButton" id="add_listino_button">
+            <property name="label">gtk-add</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Aggiunge un listino alla composizione 
 del listino complesso: ES: il listino vendita dettaglio 
-pu&#xF2; essere composto da cinque o sei listini distinti</property>
+può essere composto da cinque o sei listini distinti</property>
+            <property name="use_stock">True</property>
             <signal name="clicked" handler="on_add_row_listino_complesso_button_clicked"/>
-            <child>
-              <object class="GtkAlignment" id="alignment1">
-                <property name="visible">True</property>
-                <property name="xscale">0</property>
-                <property name="yscale">0</property>
-                <child>
-                  <object class="GtkHBox" id="hbox2">
-                    <property name="visible">True</property>
-                    <property name="spacing">2</property>
-                    <child>
-                      <object class="GtkImage" id="image1">
-                        <property name="visible">True</property>
-                        <property name="pixbuf">aggiungi16x16.png</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label3">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Aggiungi</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -127,48 +93,14 @@ pu&#xF2; essere composto da cinque o sei listini distinti</property>
         </child>
         <child>
           <object class="GtkButton" id="delete_listino_button">
+            <property name="label">gtk-delete</property>
             <property name="visible">True</property>
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Rimuove un listino associato</property>
+            <property name="use_stock">True</property>
             <signal name="clicked" handler="on_delete_row_listino_complesso_button_clicked"/>
-            <child>
-              <object class="GtkAlignment" id="alignment2">
-                <property name="visible">True</property>
-                <property name="xscale">0</property>
-                <property name="yscale">0</property>
-                <child>
-                  <object class="GtkHBox" id="hbox3">
-                    <property name="visible">True</property>
-                    <property name="spacing">2</property>
-                    <child>
-                      <object class="GtkImage" id="image2">
-                        <property name="visible">True</property>
-                        <property name="pixbuf">sottrai16X16.png</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label4">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Elimina</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -178,49 +110,15 @@ pu&#xF2; essere composto da cinque o sei listini distinti</property>
         </child>
         <child>
           <object class="GtkButton" id="undelete_listino_button">
+            <property name="label">gtk-revert-to-saved</property>
             <property name="visible">True</property>
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Riporta la situazione dei listini 
 associati all'inizio</property>
+            <property name="use_stock">True</property>
             <signal name="clicked" handler="on_undelete_row_listino_complesso_button_clicked"/>
-            <child>
-              <object class="GtkAlignment" id="alignment3">
-                <property name="visible">True</property>
-                <property name="xscale">0</property>
-                <property name="yscale">0</property>
-                <child>
-                  <object class="GtkHBox" id="hbox4">
-                    <property name="visible">True</property>
-                    <property name="spacing">2</property>
-                    <child>
-                      <object class="GtkImage" id="image3">
-                        <property name="visible">True</property>
-                        <property name="pixbuf">annulla16x16.png</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label5">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Ripristina</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -328,7 +226,7 @@ associati all'inizio</property>
         <property name="can_focus">True</property>
         <property name="tooltip_text" translatable="yes">Inserire la denominazione 
 del listino</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -429,48 +327,14 @@ nel listino articolo appena creato</property>
         <property name="homogeneous">True</property>
         <child>
           <object class="GtkButton" id="add_row_magazzino_button">
+            <property name="label">gtk-add</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Aggiungi un magazzino 
 associato</property>
+            <property name="use_stock">True</property>
             <signal name="clicked" handler="on_add_row_magazzino_button_clicked"/>
-            <child>
-              <object class="GtkAlignment" id="alignment169">
-                <property name="visible">True</property>
-                <property name="xscale">0</property>
-                <property name="yscale">0</property>
-                <child>
-                  <object class="GtkHBox" id="hbox140">
-                    <property name="visible">True</property>
-                    <property name="spacing">2</property>
-                    <child>
-                      <object class="GtkImage" id="image94">
-                        <property name="visible">True</property>
-                        <property name="pixbuf">aggiungi16x16.png</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label326">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Aggiungi</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -480,49 +344,15 @@ associato</property>
         </child>
         <child>
           <object class="GtkButton" id="delete_row_magazzino_button">
+            <property name="label">gtk-delete</property>
             <property name="visible">True</property>
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Elimina un Magazzino 
 associato </property>
+            <property name="use_stock">True</property>
             <signal name="clicked" handler="on_delete_row_magazzino_button_clicked"/>
-            <child>
-              <object class="GtkAlignment" id="alignment170">
-                <property name="visible">True</property>
-                <property name="xscale">0</property>
-                <property name="yscale">0</property>
-                <child>
-                  <object class="GtkHBox" id="hbox141">
-                    <property name="visible">True</property>
-                    <property name="spacing">2</property>
-                    <child>
-                      <object class="GtkImage" id="image95">
-                        <property name="visible">True</property>
-                        <property name="pixbuf">sottrai16X16.png</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label327">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Elimina</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -532,49 +362,15 @@ associato </property>
         </child>
         <child>
           <object class="GtkButton" id="undelete_row_magazzino_button">
+            <property name="label">gtk-revert-to-saved</property>
             <property name="visible">True</property>
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Riporta la situazione 
 dei magazzini associati all'inizio</property>
+            <property name="use_stock">True</property>
             <signal name="clicked" handler="on_undelete_row_magazzino_button_clicked"/>
-            <child>
-              <object class="GtkAlignment" id="alignment171">
-                <property name="visible">True</property>
-                <property name="xscale">0</property>
-                <property name="yscale">0</property>
-                <child>
-                  <object class="GtkHBox" id="hbox142">
-                    <property name="visible">True</property>
-                    <property name="spacing">2</property>
-                    <child>
-                      <object class="GtkImage" id="image96">
-                        <property name="visible">True</property>
-                        <property name="pixbuf">annulla16x16.png</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label328">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Ripristina</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -599,50 +395,16 @@ dei magazzini associati all'inizio</property>
         <property name="homogeneous">True</property>
         <child>
           <object class="GtkButton" id="add_row_categoria_button">
+            <property name="label">gtk-add</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Aggiungi abbinamento ad una categoria 
-cliente. Se il cliente &#xE8; inserito in quella categoria
-si trover&#xE0; preselezionato il listino durante 
+cliente. Se il cliente è inserito in quella categoria
+si troverà preselezionato il listino durante 
 la creazione di un movimento o di un documento</property>
+            <property name="use_stock">True</property>
             <signal name="clicked" handler="on_add_row_categoria_button_clicked"/>
-            <child>
-              <object class="GtkAlignment" id="alignment166">
-                <property name="visible">True</property>
-                <property name="xscale">0</property>
-                <property name="yscale">0</property>
-                <child>
-                  <object class="GtkHBox" id="hbox136">
-                    <property name="visible">True</property>
-                    <property name="spacing">2</property>
-                    <child>
-                      <object class="GtkImage" id="image91">
-                        <property name="visible">True</property>
-                        <property name="pixbuf">aggiungi16x16.png</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label321">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Aggiungi</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -652,48 +414,14 @@ la creazione di un movimento o di un documento</property>
         </child>
         <child>
           <object class="GtkButton" id="delete_row_categoria_button">
+            <property name="label">gtk-delete</property>
             <property name="visible">True</property>
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="tooltip_text" translatable="yes">Rimuovi associazione cliente </property>
+            <property name="use_stock">True</property>
             <signal name="clicked" handler="on_delete_row_categoria_button_clicked"/>
-            <child>
-              <object class="GtkAlignment" id="alignment167">
-                <property name="visible">True</property>
-                <property name="xscale">0</property>
-                <property name="yscale">0</property>
-                <child>
-                  <object class="GtkHBox" id="hbox137">
-                    <property name="visible">True</property>
-                    <property name="spacing">2</property>
-                    <child>
-                      <object class="GtkImage" id="image92">
-                        <property name="visible">True</property>
-                        <property name="pixbuf">sottrai16X16.png</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label322">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Elimina</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -703,47 +431,13 @@ la creazione di un movimento o di un documento</property>
         </child>
         <child>
           <object class="GtkButton" id="undelete_row_categoria_button">
+            <property name="label">gtk-revert-to-saved</property>
             <property name="visible">True</property>
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="use_stock">True</property>
             <signal name="clicked" handler="on_undelete_row_categoria_button_clicked"/>
-            <child>
-              <object class="GtkAlignment" id="alignment168">
-                <property name="visible">True</property>
-                <property name="xscale">0</property>
-                <property name="yscale">0</property>
-                <child>
-                  <object class="GtkHBox" id="hbox138">
-                    <property name="visible">True</property>
-                    <property name="spacing">2</property>
-                    <child>
-                      <object class="GtkImage" id="image93">
-                        <property name="visible">True</property>
-                        <property name="pixbuf">annulla16x16.png</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="label323">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Ripristina</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -796,7 +490,7 @@ la creazione di un movimento o di un documento</property>
         <property name="tooltip_text" translatable="yes">Inserire la descrizione 
 dettagliata del listino 
 400 caratteri a disposizione</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -931,8 +625,8 @@ dettagliata del listino
         <property name="tooltip_text" translatable="yes">Combo di aggiunta di una categoria 
 cliente da associare al listino come 
 preferenziale 
-Se il cliente sar&#xE0; abbinato alla stessa categoria 
-avr&#xE0; automaticamente quel listino preselezionato 
+Se il cliente sarà abbinato alla stessa categoria 
+avrà automaticamente quel listino preselezionato 
 nei documenti. Se non aveste la categoria cliente
 che volete potete aggiungerla premendo nel piccolo 
 pulsante di fianco</property>

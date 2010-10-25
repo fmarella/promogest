@@ -424,7 +424,10 @@ articoli per un certo </property>
                       <object class="GtkLabel" id="label5">
                         <property name="visible">True</property>
                         <property name="xpad">2</property>
-                        <property name="label" translatable="yes">ANAGRAFICHE</property>
+                        <property name="label" translatable="yes">&lt;b&gt;ANAGRAFICHE&lt;/b&gt;
+Articoli-Clienti
+Fornitori-Vettori ..</property>
+                        <property name="use_markup">True</property>
                       </object>
                       <packing>
                         <property name="position">1</property>
@@ -705,10 +708,12 @@ articoli per un certo </property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="opzioni_acq_label">
+                      <object class="GtkLabel" id="azioni_veloci_label">
                         <property name="visible">True</property>
                         <property name="xpad">2</property>
-                        <property name="label" translatable="yes">AZIONI VELOCI</property>
+                        <property name="label" translatable="yes">&lt;b&gt;AZIONI
+VELOCI&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
                       </object>
                       <packing>
                         <property name="position">1</property>
@@ -943,7 +948,8 @@ Promemoria in scadenza. Verificare?!?</property>
                       <object class="GtkLabel" id="label3">
                         <property name="visible">True</property>
                         <property name="xpad">2</property>
-                        <property name="label" translatable="yes">ALLARMI</property>
+                        <property name="label" translatable="yes">&lt;b&gt;ALLARMI&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
                       </object>
                       <packing>
                         <property name="position">1</property>
@@ -1252,7 +1258,9 @@ Promemoria in scadenza. Verificare?!?</property>
                       <object class="GtkLabel" id="label4">
                         <property name="visible">True</property>
                         <property name="xpad">2</property>
-                        <property name="label" translatable="yes">CALENDARIO</property>
+                        <property name="label" translatable="yes">&lt;b&gt;CALENDARIO
+PLANNING&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
                       </object>
                       <packing>
                         <property name="position">1</property>
@@ -1325,7 +1333,8 @@ Promemoria in scadenza. Verificare?!?</property>
                       <object class="GtkLabel" id="allarmi_label">
                         <property name="visible">True</property>
                         <property name="xpad">2</property>
-                        <property name="label" translatable="yes">NEWS</property>
+                        <property name="label" translatable="yes">&lt;b&gt;NEWS&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
                       </object>
                       <packing>
                         <property name="position">1</property>
@@ -2055,7 +2064,10 @@ Promemoria in scadenza. Verificare?!?</property>
                       <object class="GtkLabel" id="parametri_label">
                         <property name="visible">True</property>
                         <property name="xpad">2</property>
-                        <property name="label" translatable="yes">PARAMETRI</property>
+                        <property name="label" translatable="yes">&lt;b&gt;PARAMETRI&lt;/b&gt;
+Categorie-Famiglie
+Banche-Aliquote ..</property>
+                        <property name="use_markup">True</property>
                       </object>
                       <packing>
                         <property name="position">1</property>
