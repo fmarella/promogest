@@ -576,10 +576,8 @@ def on_quantita_entry_focus_out_eventPart(anaedit, entry, event):
         articolo = Articolo().getRecord(id=id)
     else:
         return
-    molti = anaedit.moltiplicatore_entry.get_text()
-    if "SuMisura" in Environment.modulesList and molti and float(molti) ==0:
-        return
-    elif "SuMisura" in Environment.modulesList and molti and float(molti) >0:
+    molti = anaedit.moltiplicatore_entry.get_text() #pezzi
+    if float(molti) >0: #se pezzi è maggiore di uno o esiste vuol dire che suMisura è attivo
         pezzi = float(molti)
         if articolo:
             try:
@@ -607,7 +605,11 @@ Inserire comunque?""" % (str(quantita), str(quantita_minima))
                         #return
         elif response == gtk.RESPONSE_OK:
             anaedit.quantita_entry.set_text(str(quantita))
-        anaedit.on_show_totali_riga(anaedit)
+    elif pezzi:
+        newquantita = pezzi*quantita
+        anaedit.quantita_entry.set_text(str(newquantita))
+    anaedit.on_show_totali_riga(anaedit)
+
 
 def hidePromoWear(ui):
     """ Hide and destroy labels and button if promowear is not present """
