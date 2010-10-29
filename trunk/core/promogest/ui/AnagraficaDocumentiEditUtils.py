@@ -586,8 +586,8 @@ def on_quantita_entry_focus_out_eventPart(anaedit, entry, event):
                 if quantita is not None:
                     da_stamp = moltiplicatore * float(quantita)
                     anaedit.quantita_entry.set_text(str(da_stamp))
-    else:
-        quantita = float(anaedit.quantita_entry.get_text())
+#    else:
+    quantita = float(anaedit.quantita_entry.get_text())
     id = anaedit._righe[0]["idArticolo"]
     if id is not None:
         articolo = Articolo().getRecord(id=id)
@@ -609,6 +609,7 @@ def on_quantita_entry_focus_out_eventPart(anaedit, entry, event):
                 quantita_minima = float(articolo.quantita_minima)
             except:
                 quantita_minima = None
+#    print "PPPOOSOSSOSO", quantita_minima, quantita
     if quantita_minima and quantita < quantita_minima :
         msg = """Attenzione!
 La quantità inserita:  %s è inferiore
@@ -625,22 +626,22 @@ Inserire comunque?""" % (str(quantita), str(quantita_minima))
         elif response == gtk.RESPONSE_OK:
             anaedit.quantita_entry.set_text(str(quantita))
     elif molti and float(molti) >0:
-        from promogest.modules.SuMisura.ui.SuMisura import CalcolaArea, CalcolaPerimetro
-        altezza = float(anaedit.altezza_entry.get_text() or 0)
-        moltiplicatore = float(anaedit.moltiplicatore_entry.get_text() or 1)
-        if altezza != 0:
-            larghezza = float(anaedit.larghezza_entry.get_text() or 0)
-            if larghezza != 0:
-                if anaedit._righe[0]["unitaBase"] == "Metri Quadri":
-                    quantita = CalcolaArea(altezza, larghezza)
+#        from promogest.modules.SuMisura.ui.SuMisura import CalcolaArea, CalcolaPerimetro
+#        altezza = float(anaedit.altezza_entry.get_text() or 0)
+#        moltiplicatore = float(anaedit.moltiplicatore_entry.get_text() or 1)
+#        if altezza != 0:
+#            larghezza = float(anaedit.larghezza_entry.get_text() or 0)
+#            if larghezza != 0:
+#                if anaedit._righe[0]["unitaBase"] == "Metri Quadri":
+#                    quantita = CalcolaArea(altezza, larghezza)
 
-                elif anaedit._righe[0]["unitaBase"] == "Metri":
-                    quantita = CalcolaPerimetro(altezza, larghezza)
-                else:
-                    quantita = None
-                if quantita is not None:
-                    da_stamp = moltiplicatore * float(quantita)
-                    anaedit.quantita_entry.set_text(str(da_stamp))
+#                elif anaedit._righe[0]["unitaBase"] == "Metri":
+#                    quantita = CalcolaPerimetro(altezza, larghezza)
+#                else:
+#                    quantita = None
+#                if quantita is not None:
+#                    da_stamp = moltiplicatore * float(quantita)
+#                    anaedit.quantita_entry.set_text(str(da_stamp))
         newquantita = float(molti)*float(quantita)
         anaedit.quantita_entry.set_text(str(newquantita))
     anaedit.on_show_totali_riga(anaedit)
