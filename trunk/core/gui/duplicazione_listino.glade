@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
@@ -96,7 +96,7 @@ originale. </property>
                       <object class="GtkEntry" id="nome_listino_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="invisible_char">&#x25CF;</property>
+                        <property name="invisible_char">●</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -109,7 +109,7 @@ originale. </property>
                       <object class="GtkEntry" id="descrizione_listino_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="invisible_char">&#x25CF;</property>
+                        <property name="invisible_char">●</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -178,7 +178,7 @@ originale. </property>
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="tieni_data_check">
-                        <property name="label" translatable="yes">Mantieni la data del listino articolo derivato (se non selezionato verr&#xE0; usata quella attuale)</property>
+                        <property name="label" translatable="yes">Mantieni la data del listino articolo derivato (se non selezionato verrà usata quella attuale)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -271,14 +271,14 @@ originale. </property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="confirm_button">
+              <object class="GtkButton" id="confirms_button">
                 <property name="label">gtk-ok</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_confirm_button_clicked"/>
+                <signal name="clicked" handler="on_confirms_button_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>

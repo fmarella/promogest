@@ -41,17 +41,20 @@ class DuplicazioneListino(GladeWidget):
         self.anagrafica_listini = anagraficaListino
 
         GladeWidget.__init__(self, 'duplicazione_listino_window',
-                                            'duplicazione_listino.glade')
+                                    'duplicazione_listino.glade')
         self.placeWindow(self.getTopLevel())
+        dir(self), dir(self.anagrafica_listini)
         self.draw()
 
     def draw(self):
         self.dati_vecchio_listino_label.set_text(self.dao.denominazione + \
                         " DEL: "+ dateTimeToString(self.dao.data_listino))
 
-    def on_confirm_button_clicked(self, button=None):
+    def on_confirms_button_clicked(self, button=None):
 
-        if (self.data_listino_duplicato_entry.get_text() == ''):
+#                 data_listino_duplicato_entry
+        print "dir", dir(self), dir(self.anagrafica_listini)
+        if self.data_listino_duplicato_entry.get_text() == '':
             obligatoryField(self.getTopLevel(),
                                  self.data_listino_duplicato_entry)
 
