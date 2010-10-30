@@ -10,7 +10,6 @@
     <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
     <property name="icon">promogest.png</property>
-    <property name="type_hint">dialog</property>
     <property name="urgency_hint">True</property>
     <property name="gravity">center</property>
     <signal name="destroy_event" handler="on_duplicazione_listino_window_destroy_event"/>

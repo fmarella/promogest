@@ -43,7 +43,7 @@ class DuplicazioneListino(GladeWidget):
         GladeWidget.__init__(self, 'duplicazione_listino_window',
                                     'duplicazione_listino.glade')
 #        self.placeWindow(self.getTopLevel())
-        self.getTopLevel().set_transient_for(anagraficaListino.getTopLevel())
+#        self.getTopLevel().set_transient_for(anagraficaListino.getTopLevel())
         self.getTopLevel().show_all()
         print "OOOOOOOOOO", self.getTopLevel()
         self.dati_vecchio_listino_label.set_text(self.dao.denominazione + \
