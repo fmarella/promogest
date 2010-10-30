@@ -57,7 +57,8 @@ class AnagraficaListini(Anagrafica):
 
         from DuplicazioneListino import DuplicazioneListino
         anag = DuplicazioneListino(dao, self)
-        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), None, self.filter.refresh)
+#        anag.run()
+#        showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), None, self.filter.refresh)
 
 
 

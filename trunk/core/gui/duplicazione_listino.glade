@@ -8,16 +8,18 @@
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
+    <property name="destroy_with_parent">True</property>
     <property name="icon">promogest.png</property>
     <property name="type_hint">dialog</property>
+    <property name="urgency_hint">True</property>
     <property name="gravity">center</property>
-    <signal name="destroy_event" handler="on_duplicazione_documento_window_close"/>
-    <signal name="delete_event" handler="on_duplicazione_documento_window_close"/>
+    <signal name="destroy_event" handler="on_duplicazione_listino_window_destroy_event"/>
+    <signal name="delete_event" handler="on_duplicazione_listino_window_delete_event"/>
     <child>
       <object class="GtkVBox" id="duplica_listino_vbox">
         <property name="visible">True</property>
         <child>
-          <object class="GtkFrame" id="duplicalistino_frame14">
+          <object class="GtkFrame" id="duplica_listino_frame">
             <property name="visible">True</property>
             <property name="border_width">5</property>
             <property name="label_xalign">0</property>
@@ -28,13 +30,13 @@
                 <property name="left_padding">5</property>
                 <property name="right_padding">5</property>
                 <child>
-                  <object class="GtkTable" id="duplica_listnio_table">
+                  <object class="GtkTable" id="duplica_listino_table">
                     <property name="visible">True</property>
                     <property name="n_rows">8</property>
                     <property name="n_columns">2</property>
                     <property name="row_spacing">2</property>
                     <child>
-                      <object class="GtkLabel" id="nome_listino_label">
+                      <object class="GtkLabel" id="nome_listino_duplicato_label_label">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Denominazione</property>
@@ -48,7 +50,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="data_listino_label">
+                      <object class="GtkLabel" id="data_listino_duplicato_label_label">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Data</property>
@@ -62,7 +64,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="descrizione_listino_label">
+                      <object class="GtkLabel" id="descrizione_listino_duplicat_label">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="yalign">0.44999998807907104</property>
@@ -141,14 +143,11 @@ originale. </property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="label1">
+                      <object class="GtkLabel" id="listino_origine_label">
                         <property name="visible">True</property>
                         <property name="xalign">0.029999999329447746</property>
                         <property name="label" translatable="yes">Listino d'origine:</property>
                       </object>
-                      <packing>
-                        <property name="x_options">GTK_FILL</property>
-                      </packing>
                     </child>
                     <child>
                       <object class="GtkLabel" id="dati_vecchio_listino_label">
@@ -162,7 +161,7 @@ originale. </property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkCheckButton" id="tutto_check">
+                      <object class="GtkCheckButton" id="tutto_duplicato_check">
                         <property name="label" translatable="yes">Duplica anche le altre opzioni come categoriecliente o magazzini</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>

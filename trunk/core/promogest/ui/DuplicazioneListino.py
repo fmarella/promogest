@@ -38,26 +38,24 @@ class DuplicazioneListino(GladeWidget):
     def __init__(self, daoListino, anagraficaListino):
 
         self.dao = daoListino
-        self.anagrafica_listini = anagraficaListino
-
+#        self.anagrafica_listini = anagraficaListino
+        print "PPPPPPPPPPPPPPPPPPP", anagraficaListino
         GladeWidget.__init__(self, 'duplicazione_listino_window',
                                     'duplicazione_listino.glade')
-        self.placeWindow(self.getTopLevel())
-        dir(self), dir(self.anagrafica_listini)
-        self.draw()
-
-    def draw(self):
+#        self.placeWindow(self.getTopLevel())
+        self.getTopLevel().set_transient_for(anagraficaListino.getTopLevel())
+        self.getTopLevel().show_all()
+        print "OOOOOOOOOO", self.getTopLevel()
         self.dati_vecchio_listino_label.set_text(self.dao.denominazione + \
                         " DEL: "+ dateTimeToString(self.dao.data_listino))
 
-    def on_confirms_button_clicked(self, button=None):
 
-#                 data_listino_duplicato_entry
-        print "dir", dir(self), dir(self.anagrafica_listini)
+
+    def on_confirms_button_clicked(self, button):
+#        print dir(self.getTopLevel())
         if self.data_listino_duplicato_entry.get_text() == '':
             obligatoryField(self.getTopLevel(),
                                  self.data_listino_duplicato_entry)
-
         if (self.nome_listino_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel, self.nome_listino_entry)
 
@@ -65,7 +63,7 @@ class DuplicazioneListino(GladeWidget):
             obligatoryField(self.dialogTopLevel,
                                             self.descrizione_listino_entry)
 
-        tutto = self.tutto_check.get_active()
+        tutto = self.tutto_duplicato_check.get_active()
         tieni_data = self.tieni_data_check.get_active()
         sconto = self.duplica_listini_scontowidget.get_text()
         tiposconto = self.duplica_listini_scontowidget.tipoSconto
@@ -156,8 +154,8 @@ class DuplicazioneListino(GladeWidget):
         msg = "Nuovo Listino creato"
         messageInfo(msg)
 
-        self.destroy()
+        self.getTopLevel().hide()
 
     def on_chiudi_button_clicked(self, widget, event=None):
-        self.destroy()
+        self.getTopLevel().hide()
         return None
