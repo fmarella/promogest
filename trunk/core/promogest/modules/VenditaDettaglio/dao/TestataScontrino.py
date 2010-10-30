@@ -66,6 +66,14 @@ class TestataScontrino(Dao):
         else: return ""
     numero_movimento=property(_numeroMovimento)
 
+    def _operatore(self):
+        operatore = User().getRecord(id=self.id_user)
+        if operatore:
+            return operatore.username
+        else:
+            return "NON DISPONIBILE"
+    operatore=property(_operatore)
+
     def _getScontiTestataScontrino(self):
         if self.id:
             self.__dbScontiTestataScontrino = ScontoTestataScontrino().select(join = ScontoTestataScontrino.TS,
@@ -162,9 +170,9 @@ std_mapper = mapper(TestataScontrino, testata_scontrino,properties={
         "cctypee":relation(CCardType,primaryjoin=(testata_scontrino.c.id_ccardtype==CCardType.id)),
         "mag":relation(Magazzino,primaryjoin=(testata_scontrino.c.id_magazzino==Magazzino.id)),
 
-         'usr': relation(User, primaryjoin=
-                testata_scontrino.c.id_user==User.id,
-                foreign_keys=[User.id]),
+#         'usr': relation(User, primaryjoin=
+#                testata_scontrino.c.id_user==User.id,
+#                foreign_keys=[User.id]),
 
 
 
