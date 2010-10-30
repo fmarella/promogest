@@ -576,7 +576,7 @@ class Anagrafica(GladeWidget):
 
     def on_records_print_on_screen_activate(self, widget):
         previewDialog = self.reportHandler.buildPreviewWidget()
-        previewDialog.getTopLevel().show_all()
+#        previewDialog.getTopLevel().show_all()
 
     def on_records_print_progress_dialog_response(self, dialog, responseId):
         if responseId == gtk.RESPONSE_CANCEL:
@@ -1317,15 +1317,15 @@ class AnagraficaPrintPreview(GladeWidget):
     # FIXME: a lot of duplicated code from AnagraficaFilter here!
 
     def __init__(self, anagrafica, windowTitle, previewTemplate):
-        GladeWidget.__init__(self, 'print_on_screen_dialog')
+        GladeWidget.__init__(self, 'htmlviewer')
         self.windowTitle = windowTitle
-        self.print_on_screen_dialog.set_title(windowTitle)
+        self.visualizzatore_html.set_title(windowTitle)
         self._anagrafica = anagrafica
 
         self.bodyWidget = FilterWidget(owner=self, resultsElement='html')
-        self.print_on_screen_viewport.add(self.bodyWidget.getTopLevel())
-        self.bodyWidget.filter_body_label.set_no_show_all(True)
-        self.bodyWidget.filter_body_label.set_property('visible', False)
+        self.html_scrolledwindow.add(self.bodyWidget.getTopLevel())
+#        self.bodyWidget.filter_body_label.set_no_show_all(True)
+#        self.bodyWidget.filter_body_label.set_property('visible', False)
 
         self.print_on_screen_html = self.bodyWidget.resultsElement
         self._gtkHtmlDocuments = None # Will be filled later
@@ -1339,8 +1339,8 @@ class AnagraficaPrintPreview(GladeWidget):
         self._filterClosure = self._anagrafica.filter._filterClosure
         self._filterCountClosure = self._anagrafica.filter._filterCountClosure
         #self._allResultForHtml = self._anagrafica.filter._allResultForHtml
-        self.print_on_screen_dialog.set_transient_for(self._anagrafica.getTopLevel())
-        self.placeWindow(self.print_on_screen_dialog)
+#        self.visualizzatore_html.set_transient_for(self._anagrafica.getTopLevel())
+        self.placeWindow(self.visualizzatore_html)
 
 
         self.codBar_combo = gtk.combo_box_new_text()
@@ -1355,6 +1355,28 @@ class AnagraficaPrintPreview(GladeWidget):
         #generaButton.connect('clicked', self.on_generic_button_clicked )
         #generaButton.set_label("Genera Pdf Anteprima Html")
         self.refresh()
+
+    def on_pdf_button_clicked(self, button):
+        from PrintDialog import PrintDialogHandler
+        try:
+            import ho.pisa as pisa
+        except:
+            print "ERRORE NELL'IMPORT DI PISA"
+#                import pisaLib.ho.pisa as pisa
+            return
+        f = self.html_code
+        g = file(Environment.tempDir+".temp.pdf", "wb")
+        pdf = pisa.CreatePDF(str(f),g)
+        g .close()
+        anag = PrintDialogHandler(self,self.windowTitle)
+        anagWindow = anag.getTopLevel()
+        returnWindow = self.bodyWidget.getTopLevel().get_toplevel()
+        anagWindow.set_transient_for(returnWindow)
+        anagWindow.show_all()
+
+    def on_csv_button_clicked(self, button):
+        messageInfo(msg="NON ANCORA IMPLEMENTATO")
+
 
     def on_generic_combobox_changed(self,combobox):
         if self.codBar_combo.get_active()==0:

@@ -4,55 +4,58 @@
         <table cellpadding="0" cellspacing="3" border="0">
             <tr>
                 <th style="30px;">N</th>
-                <th>Operazione</th>
-                <th>Data docum.</th>
-                <th>Cliente/Fornitore</th>
-                 <th>Totale Imponibile</th>
-                <th>Totale Imposta</th>
-                <th>Totale </th>
-                <th>Totale sospeso</th>
-                <th>Totale Saldato</th>
-                <th>Pagamento</th>
-                <th>Banca</th>
+                <th class="detail">Operazione</th>
+                <th class="detail">Data docum.</th>
+                <th class="detail">Cliente/Fornitore</th>
+                 <th class="detail">Totale Imponibile</th>
+                <th class="detail">Totale Imposta</th>
+                <th class="detail">Totale </th>
+                <th class="detail">Totale sospeso</th>
+                <th class="detail">Totale Saldato</th>
+                <th class="detail">Pagamento</th>
+                <th class="detail">Banca</th>
             </tr>
             {% for dao in objects %}
             {% set tota = dao.totali %}
             <tr class="row">
-                <td >{{dao.numero|string + ' ' + (dao.parte or '')|string}}</td>
+                <td style="30px;">{{dao.numero|string + ' ' + (dao.parte or '')|string}}</td>
 
                 <td class="detail">{{dao.operazione}}</td>
                 <td class="detail">{{utils.dateToString(dao.data_documento)}}</td>
                 <td class="detail">{{dao.intestatario}}</td>
-                <td class="detail">{{dao._totaleImponibile}}</td>
-                <td class="detail">{{dao._totaleImposta}}</td>
-                <td class="detail">{{dao._totaleNonScontato}}</td>
-                <td class="detail">{{dao.totale_sospeso}}</td>
-                <td class="detail">{{dao.totale_pagato}}</td>
+                <td class="detail">{{utils.mN(dao._totaleImponibile,2)}}</td>
+                <td class="detail">{{utils.mN(dao._totaleImposta,2)}}</td>
+                <td class="detail">{{utils.mN(dao._totaleNonScontato,2)}}</td>
+                <td class="detail">{{utils.mN(dao.totale_sospeso,2)}}</td>
+                <td class="detail">{{utils.mN(dao.totale_pagato,2)}}</td>
                 <td class="detail">{{dao.pagamento}}</td>
                 <td class="detail">{{dao.banca}}</td>
             </tr>
             {% endfor %}
+            </table>
+            <hr></hr><h2 align="center">TOTALI</h2>
+            <table>
             <tr>
-                <th>TOTALE IMPONIBILE NON SCONTATO</th>
-                <th>TOTALE IMPOSTA NON SCONTATA</th>
-                <th>TOTALE GENERALE NON SCONTATO </th>
-                <th>TOTALE IMPONIBILE SCONTATO</th>
-                <th>TOTALE IMPOSTA SCONTATA </th>
-                <th>TOTALE GENERALE SCONTATO</th>
-                <th>TOTALE SOSPESO</th>
-                <th>TOTALE PAGATO</th>
+                <th class="detail" >TOT IMPON. NON SCONT.</th>
+                <th class="detail">TOT IMPOSTA NON SCONT.</th>
+                <th class="detail">TOT GENERALE NON SCONT. </th>
+                <th class="detail">TOT IMPON. SCONT.</th>
+                <th class="detail">TOT IMPOSTA SCONT. </th>
+                <th class="detail">TOT GENERALE SCONT.</th>
+                <th class="detail">TOT SOSPESO</th>
+                <th class="detail">TOT PAGATO</th>
             </tr>
+
             {% set tot = utils.calcolaTotali(objects) %}
             <tr>
-            <td class="detail">{{tot["totale_imponibile_non_scontato"]}}</td>
-            <td class="detail">{{tot["totale_imposta_non_scontata"]}}</td>
-            <td class="detail">{{tot["totale_non_scontato"]}}</td>
-            <td class="detail">{{tot["totale_imponibile_scontato"]}}</td>
-            <td class="detail">{{tot["totale_imposta_scontata"]}}</td>
-            <td class="detail">{{tot["totale_scontato"]}}</td>
-            <td class="detail">{{tot["totale_sospeso"]}}</td>
-            <td class="detail">{{tot["totale_pagato"]}}</td>
-
+            <td class="detail" align="center" ><b>{{utils.mN(tot["totale_imponibile_non_scontato"],2)}}</b></td>
+            <td class="detail" align="center"><b>{{utils.mN(tot["totale_imposta_non_scontata"],2)}}</b></td>
+            <td class="detail" align="center"><b>{{utils.mN(tot["totale_non_scontato"],2)}}</b></td>
+            <td class="detail" align="center"><b>{{utils.mN(tot["totale_imponibile_scontato"],2)}}</b></td>
+            <td class="detail" align="center"><b>{{utils.mN(tot["totale_imposta_scontata"],2)}}</b></td>
+            <td class="detail" align="center"><b>{{utils.mN(tot["totale_scontato"],2)}}</b></td>
+            <td class="detail" align="center"><b>{{utils.mN(tot["totale_sospeso"],2)}}</b></td>
+            <td class="detail" align="center"><b>{{utils.mN(tot["totale_pagato"],2)}}</b></td>
             </tr>
         </table>
 {% endblock %}

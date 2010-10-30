@@ -44,7 +44,6 @@ class HtmlViewer(GladeWidget):
         self.refreshHtml()
 
     def on_pdf_button_clicked(self, button):
-        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.html
         f = self.html
         g = file(Environment.tempDir+".temp.pdf", "wb")
         pdf = pisa.CreatePDF(str(f), g)
