@@ -176,7 +176,7 @@ class ManageLabelsToPrint(GladeWidget):
                                     classic=classic,
                                     template_file=template_file)
         ecco= Sla2Pdf_ng(slafile=self._folder+"_temppp.sla").translate()
-        g = file(".temp.pdf", "wb")
+        g = file(Environment.tempDir+".temp.pdf", "wb")
         g.write(ecco)
         g.close()
         anag = PrintDialogHandler(self,g)

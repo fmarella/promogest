@@ -494,7 +494,7 @@ class Main(GladeWidget):
 
     def on_print_button_clicked(self, button):
         nomefile = "planner"+dateToString(Environment.currentData).replace("/","_")+"_"+Environment.view
-        g = file(".temp.pdf", "wb")
+        g = file(Environment.tempDir+".temp.pdf", "wb")
         pdf = pisa.CreatePDF(str(self.hhttmmll),g)
         g.close()
         anag = PrintDialogHandler(self.main_window, nomefile)

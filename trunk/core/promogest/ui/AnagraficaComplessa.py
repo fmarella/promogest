@@ -1366,7 +1366,7 @@ class AnagraficaPrintPreview(GladeWidget):
 #                import pisaLib.ho.pisa as pisa
                 return
             f = self.html_code
-            g = file(".temp.pdf", "wb")
+            g = file(Environment.tempDir+".temp.pdf", "wb")
             pdf = pisa.CreatePDF(str(f),g)
             g .close()
             anag = PrintDialogHandler(self,self.windowTitle)

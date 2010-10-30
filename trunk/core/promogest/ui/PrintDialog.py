@@ -34,7 +34,7 @@ class PrintDialogHandler(GladeWidget):
         if tempFile:
             filetemp= file(tempFile,"r")
         else:
-            filetemp=file(".temp.pdf", "r")
+            filetemp=file(Environment.tempDir+".temp.pdf", "r")
         self.__pdfReport= filetemp.read()
         filetemp.close()
         self.records_print_dialog_size_label.set_markup('<span weight="bold">' + str(len(self.__pdfReport) / 1024) + ' Kb</span>')

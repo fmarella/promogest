@@ -34,6 +34,7 @@ class HtmlViewer(GladeWidget):
         self.windowTitle = "Statistiche"
         self.placeWindow(self._window)
         self.pageData= pageData
+        self.html = ""
         self.drawHtml()
 
     def drawHtml(self):
@@ -43,9 +44,9 @@ class HtmlViewer(GladeWidget):
         self.refreshHtml()
 
     def on_pdf_button_clicked(self, button):
-
+        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.html
         f = self.html
-        g = file(".temp.pdf", "wb")
+        g = file(Environment.tempDir+".temp.pdf", "wb")
         pdf = pisa.CreatePDF(str(f), g)
         g .close()
         anag = PrintDialogHandler(self, self.windowTitle)
