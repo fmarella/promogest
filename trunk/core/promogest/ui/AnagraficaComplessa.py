@@ -1035,9 +1035,6 @@ class AnagraficaHtml(object):
             Environment.pg2log.info("UTILIZZO il documento.sla normale per la stampa")
             self._slaTemplate = Environment.templatesDir + self.defaultFileName + '.sla'
         """ Restituisce una stringa contenente il report in formato PDF """
-        if hasattr(Environment.conf.Documenti,"jnet"):
-            from promogest.modules.NumerazioneComplessa.jnet import remapNumerazione
-            numero_n = remapNumerazione(self.dao)
 
         param = [self.dao.dictionary(complete=True)]
         multilinedirtywork(param)
