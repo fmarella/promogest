@@ -44,10 +44,11 @@
     }
 
     th {
-        padding-left: 0px;
+        padding-left: 1px;
         font-weight: normal;
 /*         font-style: italic; */
         font-size: 1.1em;
+        background: #efefef;
     }
 
 /*     th.left {font-weight: normal;} */

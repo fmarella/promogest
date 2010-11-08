@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
@@ -134,7 +134,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="has_tooltip">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="invisible_char">●</property>
                                 <property name="primary_icon_stock">gtk-find</property>
                                 <property name="secondary_icon_stock">gtk-clear</property>
                                 <property name="secondary_icon_activatable">True</property>
@@ -196,8 +196,8 @@
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="use_stock">True</property>
-                                <accelerator key="KP_Enter" signal="clicked"/>
                                 <accelerator key="Return" signal="clicked"/>
+                                <accelerator key="KP_Enter" signal="clicked"/>
                                 <signal name="clicked" handler="on_add_button_clicked"/>
                               </object>
                               <packing>
@@ -226,7 +226,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="editable">False</property>
-                        <property name="invisible_char">&#x25CF;</property>
+                        <property name="invisible_char">●</property>
                       </object>
                       <packing>
                         <property name="position">0</property>
@@ -344,7 +344,7 @@
                               <object class="GtkEntry" id="quantita_entry">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x2022;</property>
+                                <property name="invisible_char">•</property>
                                 <property name="secondary_icon_stock">gtk-clear</property>
                                 <property name="secondary_icon_activatable">True</property>
                                 <property name="secondary_icon_sensitive">True</property>
@@ -420,7 +420,7 @@
                     <property name="visible">True</property>
                     <property name="xpad">10</property>
                     <property name="ypad">3</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Criterio  di gestione quantit&#xE0;&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Criterio  di gestione quantità&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                 </child>
@@ -588,6 +588,16 @@
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
+              <object class="GtkProgressBar" id="pbar">
+                <property name="visible">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkButton" id="discard_button">
                 <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
@@ -599,7 +609,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">0</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child>
@@ -614,7 +624,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">1</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child>
@@ -629,7 +639,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">2</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>
@@ -644,7 +654,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
             </child>
           </object>

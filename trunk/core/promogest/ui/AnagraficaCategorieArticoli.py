@@ -125,6 +125,7 @@ class AnagraficaCategorieArticoliDetail(AnagraficaDetail):
             self._refresh()
         else:
             self.dao = dao
+        return self.dao
 
 
     def updateDao(self):

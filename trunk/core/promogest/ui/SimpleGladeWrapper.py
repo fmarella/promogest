@@ -32,6 +32,7 @@ import gtk
 import weakref
 import inspect
 import os.path, glob, zipfile, warnings
+from promogest import Environment
 
 __version__ = "1.0"
 __author__ = 'Sandino "tigrux" Flores-Moreno'
@@ -119,8 +120,9 @@ class SimpleGladeWrapper:
         if not gl:
             gl = gtk.Builder()
             #self.builda = gtk.Buildable()
-#        print "FILE GLADE: ", self.glade_path
         gl.add_from_file(self.glade_path)
+        print "FILE GLADE:"+str(self.glade_path)
+        Environment.pg2log.info("FILE GLADE:"+str(self.glade_path))
         self.widgets = gl.get_objects()
         if root:
             self.main_widget = gl.get_object(root)

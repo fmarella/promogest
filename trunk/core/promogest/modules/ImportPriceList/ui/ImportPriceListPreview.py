@@ -82,11 +82,13 @@ class ImportPreview(GladeWidget):
                                 createData= True)
         print "PRONTO A CICLARE RIGA PER RIGA"
         for product in self.productList: #andiamo a salvare il dato ....
+            pbar(self.pbar,parziale=self.productList.index(product), totale=len(self.productList), text="IMPORTO CSV")
             ProductFromCsv(PLModel=self.PLModel,
                             promoPriceList=self.promoPriceList,
                             idfornitore=self.fornitore,
                             dataListino=self.data_listino,).save(product)
             savedlines += 1
+        pbar(self.dialog.pbar,stop=True)
         if err_count > 0:
             msg = """Si è verificato un errore nel salvataggio dei dati di qualche prodotto.
 È stato creato un nuovo file CSV con questi prodotti nella cartella documenti.

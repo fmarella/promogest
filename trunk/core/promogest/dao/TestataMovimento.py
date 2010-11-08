@@ -189,7 +189,7 @@ class TestataMovimento(Dao):
     def persist(self):
         """cancellazione righe associate alla testata
             conn.execStoredProcedure('RigheMovimentoDel',(self.id, ))"""
-        pg2log.debug("DENTRO IL TESTATA MOVIMENTO")
+        pg2log.info("DENTRO IL TESTATA MOVIMENTO")
         if not self.numero:
             valori = numeroRegistroGet(tipo="Movimento", date=self.data_movimento)
             self.numero = valori[0]

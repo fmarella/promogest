@@ -29,6 +29,7 @@ from utils import *
 from utilsCombobox import *
 from promogest.dao.Articolo import Articolo
 from promogest.dao.DaoUtils import giacenzaArticolo
+from promogest.dao.Pagamento import Pagamento
 
 if "PromoWear" in Environment.modulesList:
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
@@ -328,6 +329,14 @@ def calcolaTotalePart(anaedit, dao=None):
     anaedit.totale_imponibile_scontato_riepiloghi_label.set_text(str(mN(totaleImponibileScontato,2)))
     anaedit.totale_imposta_scontata_riepiloghi_label.set_text(str(mN(totaleImpostaScontata,2)))
     anaedit.totale_scontato_riepiloghi_label.set_text(str(totaleScontato))
+    anaedit.totale_in_pagamenti_label.set_markup('<b><span foreground="black" size="24000">'+str(totaleScontato)+'</span></b>')
+    id_pag = anaedit._id_pagamento
+    pago = Pagamento().getRecord(id=id_pag)
+    if pago:
+        anaedit.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
+    else:
+        anaedit.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str("NESSUNO?")+'</span></b>')
+
 
     model = anaedit.riepiloghi_iva_treeview.get_model()
     model.clear()
@@ -514,8 +523,6 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit._righe[0]["applicazioneSconti"] = 'scalare'
         anaedit._righe[0]["totale"] = 0
 
-
-
     if anaedit._tipoPersonaGiuridica == "cliente":
         anaedit.id_listino_customcombobox.combobox.grab_focus()
     elif anaedit._tipoPersonaGiuridica == "fornitore":
@@ -567,26 +574,29 @@ def on_multi_line_button_clickedPart(anaedit, widget):
     button.connect("clicked", on_ok_button_clicked)
     mleditor.multi_line_editor_textview.connect("key-press-event", test)
 
-def on_quantita_entry_focus_out_eventPart(anaedit, entry, event):
-    """ Funzione di controllo della quantità minima con dialog """
-    if "suMisura" in Environment.modulesList:
-        from promogest.modules.SuMisura.ui.SuMisura import CalcolaArea, CalcolaPerimetro
-        altezza = float(anaedit.altezza_entry.get_text() or 0)
-        moltiplicatore = float(anaedit.moltiplicatore_entry.get_text() or 1)
-        if altezza != 0:
-            larghezza = float(anaedit.larghezza_entry.get_text() or 0)
-            if larghezza != 0:
-                if anaedit._righe[0]["unitaBase"] == "Metri Quadri":
-                    quantita = CalcolaArea(altezza, larghezza)
+QMIN = False
 
-                elif anaedit._righe[0]["unitaBase"] == "Metri":
-                    quantita = CalcolaPerimetro(altezza, larghezza)
-                else:
-                    quantita = None
-                if quantita is not None:
-                    da_stamp = moltiplicatore * float(quantita)
-                    anaedit.quantita_entry.set_text(str(da_stamp))
-#    else:
+def on_moltiplicatore_entry_focus_out_eventPart(anaedit, entry, event):
+    """ funzione di controllo per quantià superiori a uno """
+#    if "suMisura" in Environment.modulesList:
+    from promogest.modules.SuMisura.ui.SuMisura import CalcolaArea, CalcolaPerimetro
+    altezza = float(anaedit.altezza_entry.get_text() or 0)
+    molti = float(anaedit.moltiplicatore_entry.get_text() or 1)
+    larghezza = float(anaedit.larghezza_entry.get_text() or 0)
+    if anaedit._righe[0]["unitaBase"] == "Metri Quadri":
+        quantita = CalcolaArea(altezza, larghezza)
+    elif anaedit._righe[0]["unitaBase"] == "Metri":
+        quantita = CalcolaPerimetro(altezza, larghezza)
+    if quantita:
+        da_stamp = molti * float(quantita)
+        anaedit.quantita_entry.set_text(str(da_stamp))
+    on_quantita_entry_focus_out_eventPart(anaedit, anaedit.quantita_entry, event=None)
+#    anaedit.on_show_totali_riga(anaedit)
+
+
+def on_quantita_entry_focus_out_eventPart(anaedit, entry, event=None):
+    """ Funzione di controllo della quantità minima con dialog """
+
     quantita = float(anaedit.quantita_entry.get_text())
     id = anaedit._righe[0]["idArticolo"]
     if id is not None:
@@ -594,7 +604,6 @@ def on_quantita_entry_focus_out_eventPart(anaedit, entry, event):
     else:
         return
     molti = anaedit.moltiplicatore_entry.get_text() #pezzi
-#    print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", molti, quantita
     pezzi = 0
     if molti and float(molti) >0: #se pezzi è maggiore di uno o esiste vuol dire che suMisura è attivo
         pezzi = float(molti)
@@ -609,7 +618,6 @@ def on_quantita_entry_focus_out_eventPart(anaedit, entry, event):
                 quantita_minima = float(articolo.quantita_minima)
             except:
                 quantita_minima = None
-#    print "PPPOOSOSSOSO", quantita_minima, quantita
     if quantita_minima and quantita < quantita_minima :
         msg = """Attenzione!
 La quantità inserita:  %s è inferiore
@@ -617,33 +625,15 @@ a %s definita come minima di default.
 Inserire comunque?""" % (str(quantita), str(quantita_minima))
 
         dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK_CANCEL, msg)
+                                gtk.MESSAGE_INFO, gtk.BUTTONS_YES_NO, msg)
         response = dialog.run()
         dialog.destroy()
-        if response == gtk.RESPONSE_NONE or response == gtk.RESPONSE_CANCEL:
+        if response == gtk.RESPONSE_NONE or response == gtk.RESPONSE_NO:
             anaedit.quantita_entry.set_text(str(quantita_minima))
-                        #return
-        elif response == gtk.RESPONSE_OK:
+            QMIN =True
+        elif response == gtk.RESPONSE_YES:
             anaedit.quantita_entry.set_text(str(quantita))
-    elif molti and float(molti) >0:
-#        from promogest.modules.SuMisura.ui.SuMisura import CalcolaArea, CalcolaPerimetro
-#        altezza = float(anaedit.altezza_entry.get_text() or 0)
-#        moltiplicatore = float(anaedit.moltiplicatore_entry.get_text() or 1)
-#        if altezza != 0:
-#            larghezza = float(anaedit.larghezza_entry.get_text() or 0)
-#            if larghezza != 0:
-#                if anaedit._righe[0]["unitaBase"] == "Metri Quadri":
-#                    quantita = CalcolaArea(altezza, larghezza)
-
-#                elif anaedit._righe[0]["unitaBase"] == "Metri":
-#                    quantita = CalcolaPerimetro(altezza, larghezza)
-#                else:
-#                    quantita = None
-#                if quantita is not None:
-#                    da_stamp = moltiplicatore * float(quantita)
-#                    anaedit.quantita_entry.set_text(str(da_stamp))
-        newquantita = float(molti)*float(quantita)
-        anaedit.quantita_entry.set_text(str(newquantita))
+            QMIN = False
     anaedit.on_show_totali_riga(anaedit)
 
 

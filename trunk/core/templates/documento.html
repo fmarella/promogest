@@ -57,36 +57,38 @@
                 <td colspan="20" class="table-header">Dettaglio documento</td>
             </tr>
             <tr>
-                <td colspan="2" class="even-detail">MAGAZZINO</td>
-                <td class="even-detail">CODICE ART</td>
-                <td class="even-detail">DESCRIZIONE ARTICOLO</td>
-        <td colspan="2" class="even-detail">LISTINO</td>
-        <td colspan="2" class="even-number">Prezzo Lordo</td>
-                <td colspan="2" class="even-number">Sconto</td>
-                        <td colspan="2" class="even-number">Prezzo Netto</td>
-        <td colspan="2" class="even-number">Quantita'</td>
-                <td colspan="2" class="even-number">M.plo</td>
-                <td colspan="2" class="even-number">% Iva</td>
-                <td colspan="3" class="even-number">Totale</td>
+                <th class="even-detail">N.</th>
+                <th class="even-detail">MAGAZZINO</th>
+                <th class="even-detail">CODICE ART</th>
+                <th class="even-detail" align="center">DESCRIZIONE ARTICOLO</th>
+        <th colspan="2" class="even-detail">LISTINO</th>
+        <th colspan="2" class="even-number">Prezzo Lordo</th>
+                <th colspan="2" class="even-number">Sconto</th>
+                        <th colspan="2" class="even-number">Prezzo Netto</th>
+        <th colspan="2" class="even-number">Quantita'</th>
+                <th colspan="2" class="even-number">M.plo</th>
+                <th colspan="2" class="even-number">% Iva</th>
+                <th colspan="3" class="even-number">Totale</th>
             </tr>
 
         {% for riga in dao.righe %}
             <tr >
-                <td colspan="2" class="odd-detail">{{(riga.magazzino|nonone)[:25]}}</td>
+                <td class="odd-detail">{{loop.index}}</td>
+                <td class="odd-detail">{{(riga.magazzino|nonone)[:15]}}</td>
                 <td class="odd-detail"><b><a href="program:/articoloId={{riga.id_articolo}}">{{riga.codice_articolo}}</a></b></td>
                 <td class="odd-detail">{{riga.descrizione|nonone}}</td>
                 <td class="odd-detail" colspan="2">{{riga.listino}}</td>
-                <td class="odd-number" colspan="2">{{utils.mN(riga.valore_unitario_lordo,2)}}</td>
+                <td class="odd-number" colspan="2">€{{utils.mN(riga.valore_unitario_lordo,2)}}</td>
                 <td class="odd-detail" colspan="2">{{utils.getStringaSconti(utils.getScontiFromDao(riga.sconti)[0])}}</td>
-                <td class="odd-number" colspan="2">{{riga.valore_unitario_netto}}</td>
+                <td class="odd-number" colspan="2">€{{utils.mN(riga.valore_unitario_netto,2)}}</td>
                 <td class="odd-number" colspan="2" >{{utils.mN(riga.quantita,2)}}</td>
                 {% if riga.moltiplicatore > 1 %}
                 <td class="odd-number" colspan="2">{{riga.multiplo}} ( {{utils.mN(riga.moltiplicatore,2)}} )</td>
                 {% else %}
                 <td class="odd-number" colspan="2"></td>
                 {% endif %}
-                <td class="odd-number" colspan="2">{{environment.conf.number_format % riga.percentuale_iva}}</td>
-                <td class="odd-number" colspan="3">{{utils.mN(( riga.quantita*  riga.moltiplicatore * riga.valore_unitario_netto ),2)}}</td>
+                <td class="odd-number" colspan="2">{{riga.percentuale_iva|int}}</td>
+                <td class="odd-number" colspan="3">€<strong>{{utils.mN(( riga.quantita*  riga.moltiplicatore * riga.valore_unitario_netto ),2)}}<strong></td>
             </tr>
             {% endfor %}
         </table>
@@ -132,11 +134,11 @@
             <td class="even-detail" colspan="2">Totale Sospeso</td>
             <td class="odd-detail">
                 <strong py:if="conf.hasPagamenti == True">
-                    <strong>{{dao.totale_sospeso|nonone}}</strong></strong></td>
+                    <strong>{{utils.mN(dao.totale_sospeso|nonone,2)}}</strong></strong></td>
             <td class="even-detail" colspan="2">Totale Pagato</td>
             <td class="odd-detail">
                 <strong py:if="conf.hasPagamenti == True">
-                    <strong>{{dao.totale_pagato|nonone}}</strong></strong></td>
+                    <strong>{{utils.mN(dao.totale_pagato|nonone,2)}}</strong></strong></td>
         </tr>
     </table>
 	<table cellpadding="0" cellspacing="0" border="0">
@@ -188,8 +190,8 @@
                 <td colspan="2" class="table-header">Note</td>
             </tr>
             <tr>
-                <td width="50px" class="even-detail">Note interne</td>
-                <td width="150px" class="odd-detail"><strong>{{dao.note_interne}}</strong></td>
+                <td width="10%" class="even-detail">Note interne</td>
+                <td width="88%" class="odd-detail"><strong>{{dao.note_interne}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Note pie' pagina</td>

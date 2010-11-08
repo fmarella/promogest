@@ -28,6 +28,7 @@ class AnagraficaFamiglieArticoli(Anagrafica):
                             reportHandler=AnagraficaFamiglieArticoliReport(self),
                             editElement=AnagraficaFamiglieArticoliEdit(self))
         self.hideNavigator()
+        self.records_file_export.set_sensitive(True)
 
     def on_record_delete_activate(self, widget):
         dialog = gtk.MessageDialog(self.getTopLevel(),
@@ -272,6 +273,7 @@ class AnagraficaFamiglieArticoliEdit(AnagraficaEdit):
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = FamigliaArticolo().getRecord(id = dao.id)
         self._refresh()
+        return self.dao
 
     def _refresh(self):
         self.codice_entry.set_text(self.dao.codice or '')

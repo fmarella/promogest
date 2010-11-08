@@ -47,7 +47,7 @@ class AnagraficaDestinazioniMerce(Anagrafica):
                             reportHandler=AnagraficaDestinazioniMerceReport(self),
                             editElement=AnagraficaDestinazioniMerceEdit(self),
                             aziendaStr=aziendaStr)
-
+        self.records_file_export.set_sensitive(True)
 
 
 class AnagraficaDestinazioniMerceFilter(AnagraficaFilter):
@@ -196,7 +196,7 @@ class AnagraficaDestinazioniMerceEdit(AnagraficaEdit):
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = DestinazioneMerce().getRecord(id= dao.id)
         self._refresh()
-
+        return self.dao
 
     def _refresh(self):
         self.denominazione_entry.set_text(self.dao.denominazione or '')

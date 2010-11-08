@@ -1,11 +1,10 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkVBox" id="filter_vbox">
     <property name="visible">True</property>
     <property name="border_width">5</property>
-    <property name="orientation">vertical</property>
     <property name="spacing">2</property>
     <child>
       <object class="GtkFrame" id="filter_frame">
@@ -21,7 +20,6 @@
             <child>
               <object class="GtkVBox" id="filter_frame_vbox">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -61,10 +59,10 @@
                         <property name="events">GDK_KEY_PRESS_MASK | GDK_STRUCTURE_MASK</property>
                         <property name="tooltip_markup">Premi ( F3 )  o invio per avviare la ricerca</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="Return" signal="clicked"/>
-                        <accelerator key="KP_Enter" signal="clicked"/>
-                        <accelerator key="KP_F3" signal="clicked"/>
                         <accelerator key="F3" signal="clicked"/>
+                        <accelerator key="KP_F3" signal="clicked"/>
+                        <accelerator key="KP_Enter" signal="clicked"/>
+                        <accelerator key="Return" signal="clicked"/>
                         <signal name="clicked" handler="on_filter_search_button_clicked"/>
                       </object>
                       <packing>
@@ -141,7 +139,6 @@
     <child>
       <object class="GtkVBox" id="filter_list_vbox">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkScrolledWindow" id="filter_scrolledwindow">
             <property name="visible">True</property>
@@ -241,12 +238,10 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="has_frame">False</property>
-                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="invisible_char">●</property>
                     <property name="width_chars">4</property>
                     <property name="text" translatable="yes">1</property>
                     <signal name="key_press_event" handler="on_filter_current_page_entry_key_press_event"/>
-                    <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-                    <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
                   </object>
                   <packing>
                     <property name="position">1</property>

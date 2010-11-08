@@ -46,7 +46,7 @@ class AnagraficaMagazzini(Anagrafica):
                             reportHandler=AnagraficaMagazziniReport(self),
                             editElement=AnagraficaMagazziniEdit(self),
                             aziendaStr=aziendaStr)
-
+        self.records_file_export.set_sensitive(True)
 
 class AnagraficaMagazziniFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei magazzini """
@@ -177,6 +177,8 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Magazzino().getRecord(id=dao.id)
             self._refresh()
+        return self.dao
+
 
     def _refresh(self):
         self.denominazione_entry.set_text(self.dao.denominazione or '')

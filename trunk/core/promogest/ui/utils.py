@@ -2764,6 +2764,68 @@ def dateToOrdinal(anno):
                         dd.append((c.toordinal(),c))
     return dd
 
+
+def format_sec(sec):
+    sec = int(sec)
+    min_, sec = divmod(sec, 60)
+    hour, min_ = divmod(min_, 60)
+    return '%d:%02d:%02d' % (hour, min_, sec)
+
+def pbar(pbar,parziale=1, totale=1, pulse=False, stop=False, text=""):
+    if stop:
+        pbar.grab_add()
+        pbar.set_fraction(0)
+        pbar.set_text("Finito")
+        while gtk.events_pending():
+            gtk.main_iteration_do(False)
+        pbar.grab_remove()
+        return
+    if not pulse:
+        x = (parziale*100)/totale
+        if not Environment.puntoA:
+            Environment.puntoA = time.time()
+            delta = 0
+        else:
+            puntoA = Environment.puntoA
+            puntoB = time.time()
+            Environment.puntoA = puntoB
+            Environment.puntoB = time.time()
+            delta = puntoB-puntoA
+        if not Environment.puntoP:
+            Environment.puntoP = x
+            eta = Environment.eta
+        else:
+            if x != Environment.puntoP:
+                Environment.puntoP = x
+                if delta:
+                    eta = format_sec((totale*delta)-(parziale*delta))
+                    Environment.eta = eta
+                else:
+                    eta= 0
+            else:
+                eta = Environment.eta
+        pbar.grab_add()
+        if text:
+            pbar.set_text(text+" "+str(x)+"% ETA: "+str(eta))
+        else:
+            pbar.set_text(str(x)+"% ETA: "+str(eta))
+        if parziale == 0: parziale=1
+        if totale ==0 :totale =1
+        if totale - 1.0 >0:
+            pbar.set_fraction(parziale/(totale - 1.0))
+        while gtk.events_pending():
+             gtk.main_iteration_do(False)
+        pbar.grab_remove()
+    else:
+        pbar.grab_add()
+        if text:
+            pbar.set_text(text)
+        pbar.pulse()
+        while gtk.events_pending():
+             gtk.main_iteration_do(False)
+        pbar.grab_remove()
+
+
 def b(stringa):
     if stringa:
         stringa = "<b>"+stringa+"</b>"

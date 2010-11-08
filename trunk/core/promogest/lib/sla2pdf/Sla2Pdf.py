@@ -107,7 +107,7 @@ class Sla2Pdf(object):
     def toPdf(self):
         #if version ==True:
         from Sla2Pdf_ng import Sla2Pdf_ng
-        slatopdf = Sla2Pdf_ng( slafile=self.slafile)
+        slatopdf = Sla2Pdf_ng(slafile=self.slafile).translate()
         return slatopdf
         #else:
 

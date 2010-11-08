@@ -35,6 +35,12 @@ try:
     from promogest import Environment
 except:
     print "NESSUN ENV "
+
+try:
+    from promogest.ui.utils import pbar
+except:
+    pass
+
 import Sla2pdfUtils
 import ColorDicTFull
 from SlaParser import SlaParser
@@ -43,7 +49,7 @@ class Sla2Pdf_ng(SlaParser):
     """ sla to pdf format translation """
 
     def __init__(self, pdfFolder=None, slaFileName = None, fileName= None,
-                                                            slafile = None):
+                                                    slafile = None, pbar=None):
         """
         Build a template object based on the specified file-like
         object and sequence of objects
@@ -51,7 +57,7 @@ class Sla2Pdf_ng(SlaParser):
 
         self.pdfFolder = pdfFolder
         self.slaFileName = slaFileName
-
+        self.pbar = pbar
         SlaParser.__init__(self, slaFileName=slaFileName,
                                     pdfFolder=pdfFolder,
                                     slafile=slafile)
@@ -239,7 +245,6 @@ class Sla2Pdf_ng(SlaParser):
 
     def translate(self):
         # begin translate
-
         self.pageProperties = Sla2pdfUtils.pageProFunc(self.slaDocumentTag())
         self.canvas = Canvas(filename = self.slafile + '.pdf', pagesize=(self.pageProperties[0][8],self.pageProperties[0][7]))
         # Page's table
@@ -250,6 +255,8 @@ class Sla2Pdf_ng(SlaParser):
         for self.pdfPage in xrange(0, self.numPages):
             for tableproperty in tablepropertys:
                 for group in tableproperty.keys():
+                    if self.pbar:
+                        pbar(self.pbar,pulse=True,text="GEN STAMPA ATTENDERE 2 di 2")
                     tabpro = tableproperty[group]
                     try:
                         group= group.strip().split('%%%')[0]
@@ -276,10 +283,11 @@ class Sla2Pdf_ng(SlaParser):
         # temporary pdf file is removed immediately
 #        filename = self.pdfFolder + self.pdfFileName + '.pdf'
         filename = self.slafile + '.pdf'
+
         f = file(filename, 'rb')
         result = f.read()
         f.close()
-        os.remove(filename)
+#        os.remove(filename)
         return result
 
     # ATTENZIONE !!!   this part above is for generic function.

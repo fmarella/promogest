@@ -116,7 +116,7 @@ class AnagraficaCategorieContattiDetail(AnagraficaDetail):
             self._refresh()
         else:
             self.dao = dao
-
+        return self.dao
 
     def updateDao(self):
         self.dao = CategoriaContatto().getRecord(id=self.dao.id)

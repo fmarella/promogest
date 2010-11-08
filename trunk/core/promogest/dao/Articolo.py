@@ -52,17 +52,17 @@ class Articolo(Dao):
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
         self.__articoloTagliaColore = None
-        self.codibar = None
+        self.__codibar = None
 
     @reconstructor
     def init_on_load(self):
-        self.codibar = None
+        self.__codibar = None
         self.__articoloTagliaColore = None
 
     def cod_bar(self):
-        if not self.codibar:
-            self.codibar = params["session"].query(CodiceABarreArticolo).with_parent(self).filter(articolo.c.id==CodiceABarreArticolo.id_articolo)
-        return self.codibar
+        if not self.__codibar:
+            self.__codibar = params["session"].query(CodiceABarreArticolo).with_parent(self).filter(articolo.c.id==CodiceABarreArticolo.id_articolo)
+        return self.__codibar
 
     @property
     def codice_a_barre(self):

@@ -43,7 +43,7 @@ class AnagraficaPromemoria(Anagrafica):
                             reportHandler=AnagraficaPromemoriaReport(self),
                             editElement=AnagraficaPromemoriaEdit(self, selectedData=selectedData),
                             aziendaStr=aziendaStr)
-
+        self.records_file_export.set_sensitive(True)
 
 class AnagraficaPromemoriaFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei clienti """
@@ -304,6 +304,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
             self.dao = Promemoria().getRecord(id= dao.id)
             self._is_changing = True
         self._refresh()
+        return self.dao
 
     def setPreavvisoSpinLimit(self, diffe):
         adj = self.giorni_preavviso_entry.get_adjustment()

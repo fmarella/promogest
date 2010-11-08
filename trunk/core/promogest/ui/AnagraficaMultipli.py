@@ -56,7 +56,7 @@ class AnagraficaMultipli(Anagrafica):
                             htmlHandler=AnagraficaMultipliHtml(self),
                             reportHandler=AnagraficaMultipliReport(self),
                             editElement=AnagraficaMultipliEdit(self))
-
+        self.records_file_export.set_sensitive(True)
 
     def on_record_edit_activate(self, widget, path=None, column=None):
         dao = self.filter.getSelectedDao()
@@ -236,7 +236,7 @@ class AnagraficaMultipliEdit(AnagraficaEdit):
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Multiplo().getRecord(id=dao.id)
         self._refresh()
-
+        return self.dao
 
     def _refresh(self):
         self.denominazione_entry.set_text(self.dao.denominazione or '')

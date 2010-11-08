@@ -39,8 +39,11 @@ from RigaMovimento import RigaMovimento
 from Banca import Banca
 from Riga import Riga
 from Articolo import Articolo
+from TestataPrimaNota import TestataPrimaNota
+from promogest.dao.RigaPrimaNota import RigaPrimaNota
+from RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from ScontoRigaMovimento import ScontoRigaMovimento
-from TestataDocumentoScadenza import TestataDocumentoScadenza
+from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 
 #from DaoUtils import *
 from decimal import *
@@ -112,11 +115,11 @@ class TestataDocumento(Dao):
 
     def _getRigheDocumento(self):
         if self.id:
-            self.__dbRigheDocumentoPart = params['session']\
+            self.__dbRigheDocumentoPart = object_session(self)\
                                         .query(RigaDocumento )\
                                         .filter(RigaDocumento.id_testata_documento == self.id).all()
             try:
-                self.__dbRigheMovimentoPart = params['session']\
+                self.__dbRigheMovimentoPart = object_session(self)\
                                 .query(RigaMovimento)\
                                 .join(RigaMovimento.testata_movimento)\
                                 .filter(RigaMovimento.id_testata_movimento==select([TestataMovimento.id], \
@@ -125,9 +128,9 @@ class TestataDocumento(Dao):
                 self.rollback()
                 test = TestataMovimento().select(idTestataDocumento = self.id)
                 if len(test) >1:
-                    Environment.pg2log.debug("ATTENZIONEEEEEEEEE due movimenti fanno riferimento ad una sola testata documento:"+str(self.id))
+                    Environment.pg2log.info("ATTENZIONE due movimenti fanno riferimento ad una sola testata documento:"+str(self.id))
                     for t in test:
-                        Environment.pg2log.debug("DATI MOVIMENTO ERRATI id:"+str(t.id))
+                        Environment.pg2log.info("DATI MOVIMENTO ERRATI id:"+str(t.id))
                     messageInfo(msg="""ATTENZIONE, Più di un movimento fa riferimento
                                                     allo stesso documento.
                                                     Contattare l'assistenza con urgenza""")
@@ -156,6 +159,23 @@ class TestataDocumento(Dao):
 
     totalConfections = property(_getDocumentTotalConfections)
 
+#    def _getRigheInPrimaNota(self):
+#        """
+#        Ritorna le righe in prima nota in cui questo documento è presente
+#        """
+#        __righePrimaNota = []
+#        tdscad = TestataDocumentoScadenza().select(idTestataDocumento=self.id, batchSize=None)
+#        if tdscad:
+#            for r in tdscad:
+#                rpn_in_tdsc = RigaPrimaNotaTestataDocumentoScadenza().select(idTestataDocumentoScadenza = r.id, batchSize=None)
+#                if rpn_in_tdsc:
+#                    for c in rpn_in_tdsc:
+#                        rpn = RigaPrimaNota().select(id=c.id_riga_prima_nota)
+#                        __righePrimaNota.append(rpn)
+#        return __righePrimaNota
+#    righeinprimanota = property(_getRigheInPrimaNota)
+
+
     def _getNumeroMagazzini(self):
         """
         Restituisce il numero di magazzini presenti nel documento. Ci serve per poter effettuare
@@ -166,7 +186,6 @@ class TestataDocumento(Dao):
             if riga.id_magazzino not in __numeroMagazzini and riga.id_magazzino !=None:
                 __numeroMagazzini.append(riga.id_magazzino)
         return len(__numeroMagazzini)
-
     numeroMagazzini = property(_getNumeroMagazzini)
 
     def _getScontiTestataDocumento(self):
@@ -368,10 +387,11 @@ class TestataDocumento(Dao):
         params["session"].add(self)
         params["session"].commit()
 
-        Environment.pg2log.debug("INIZIO SALVATAGGIO DOCUMENTO")
+        Environment.pg2log.info("INIZIO SALVATAGGIO DOCUMENTO")
+
         self.scontiTestataDocumentoDel(id=self.id)
 
-        self.testataDocumentoScadenzaDel(id=self.id)
+
         if "GestioneNoleggio"in Environment.modulesList:
             self.testataDocumentoGestioneNoleggioDel(id=self.id)
         self.righeDocumentoDel(id=self.id)
@@ -464,7 +484,7 @@ class TestataDocumento(Dao):
                     righeMovimento.append(daoRigaMovimento)
                     #righeMovimento.scontiRigheMovimento = scontiRigaMovimento
                 else:
-                    Environment.pg2log.debug("RIGA SENZA RIFERMENTO ARTICOLO QUINDI DESCRITTIVA, SALVO IN RIGADOCUMENTO")
+                    Environment.pg2log.info("RIGA SENZA RIFERMENTO ARTICOLO QUINDI DESCRITTIVA, SALVO IN RIGADOCUMENTO")
                     #annullamento id della riga
                     #row._resetId()
                     #associazione alla riga della testata
@@ -484,9 +504,9 @@ class TestataDocumento(Dao):
 
         if self.__ScadenzeDocumento:
             for scad in self.__ScadenzeDocumento:
-                scad._resetId()
                 scad.id_testata_documento = self.id
-                scad.persist()
+                Environment.session.add(scad)
+            Environment.session.commit()
         #print "DOPO SCADENZE", tempo()
 
         if self.__data_fine_noleggio and self.__data_inizio_noleggio:
@@ -498,7 +518,6 @@ class TestataDocumento(Dao):
         #print "DOPO FINE NOLEGGIO", tempo()
 
         if self.scontiSuTotale:
-#            print "OLLELLEEEEEEEEEEEEEEOLLALLAAAAAAAAAAAA", self.scontiSuTotale
             self.scontiTestataDocumentoDel(id=self.id)
             for scontisutot in self.scontiSuTotale:
                 scontisutot.id_testata_documento = self.id
@@ -507,7 +526,7 @@ class TestataDocumento(Dao):
             self.sconti = []
             self.scontiSuTotale = []
 #                scontisutot.persist()
-        Environment.pg2log.debug("FINE SALVATAGGIO DOCUMENTO")
+        Environment.pg2log.info("FINE SALVATAGGIO DOCUMENTO")
 
 
     def righeDocumentoDel(self, id=None):
@@ -534,9 +553,9 @@ class TestataDocumento(Dao):
         Cancella gli sconti associati ad un documento
         """
         row = ScontoTestataDocumento().select(idScontoTestataDocumento= id,
-                                                        offset = None,
-                                                        batchSize = None,
-                                                        orderBy=ScontoTestataDocumento.id_testata_documento)
+                            offset = None,
+                            batchSize = None,
+                            orderBy=ScontoTestataDocumento.id_testata_documento)
         if row:
             for r in row:
                 params['session'].delete(r)
@@ -548,10 +567,9 @@ class TestataDocumento(Dao):
         """
         Cancella la scadenza documento associato ad un documento
         """
-        row = TestataDocumentoScadenza().select(idTestataDocumentoScadenza= id,
-                                                                    offset = None,
-                                                                    batchSize = None,
-                                                                    orderBy=TestataDocumentoScadenza.id_testata_documento)
+        row = TestataDocumentoScadenza().select(idTestataDocumento= id,
+                        offset = None,
+                        batchSize = None)
         for r in row:
             params['session'].delete(r)
         params["session"].commit()
@@ -562,9 +580,9 @@ class TestataDocumento(Dao):
         Cancella la gestione noleggio
         """
         row = TestataGestioneNoleggio().select(idTestataDocumento= id,
-                                                                    offset = None,
-                                                                    batchSize = None,
-                                                                    orderBy=TestataGestioneNoleggio.id_testata_documento)
+                        offset = None,
+                        batchSize = None,
+                        orderBy=TestataGestioneNoleggio.id_testata_documento)
         if row:
             for r in row:
                 params['session'].delete(r)
@@ -649,6 +667,11 @@ class TestataDocumento(Dao):
         else:return ""
     pagamento = property(_pagamento)
 
+    #property pagamento_tipo
+    def _pagamento_tipo(self):
+        if self.PG: return self.PG.tipo
+        else:return ""
+    pagamento_tipo = property(_pagamento_tipo)
 
 
     #property cliente

@@ -149,6 +149,18 @@ class Anagrafica(GladeWidget):
         self.anagrafica_complessa_window.show_all()
 
     def on_records_file_export_clicked(self, widget):
+        dao = self.editElement.setDao(None)
+        print "DAOO", dao
+#        data = self.set_export_data()
+#        data_export = self.filter.xptDaoList
+
+#        values = self.set_data_list(data_export)
+
+        from ExportCsv import ExportCsv
+        anag = ExportCsv(self, dao=dao)
+        dao=None
+        return
+
         data = self.set_export_data()
         saveDialog = gtk.FileChooserDialog("export in a file...",
                                             None,
@@ -1023,10 +1035,15 @@ class AnagraficaHtml(object):
             Environment.pg2log.info("UTILIZZO il documento.sla normale per la stampa")
             self._slaTemplate = Environment.templatesDir + self.defaultFileName + '.sla'
         """ Restituisce una stringa contenente il report in formato PDF """
+        if hasattr(Environment.conf.Documenti,"jnet"):
+            from promogest.modules.NumerazioneComplessa.jnet import remapNumerazione
+            numero_n = remapNumerazione(self.dao)
 
         param = [self.dao.dictionary(complete=True)]
         multilinedirtywork(param)
-
+        if hasattr(Environment.conf.Documenti,"jnet"):
+            from promogest.modules.NumerazioneComplessa.jnet import numerazioneJnet
+            param[0]["numero"]= numerazioneJnet(self.dao)
         if azienda:
             azidict = azienda.dictionary(complete=True)
             for a,b in azidict.items():
@@ -1039,7 +1056,6 @@ class AnagraficaHtml(object):
                      param[0]["operazione"] =="DDT acquisto") and \
                                      param[0]["causale_trasporto"] != "":
                 param[0]["operazione"] = "DDT"
-
         # controllo la versione dello sla che devo elaborare
         versione = scribusVersion(self._slaTemplate)
 

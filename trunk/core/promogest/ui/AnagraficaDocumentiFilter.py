@@ -60,7 +60,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         rendererDx = gtk.CellRendererText()
         rendererDx.set_property('xalign', 1)
 
-        column = gtk.TreeViewColumn('Data', rendererSx, text=1)
+        column = gtk.TreeViewColumn('Data', rendererSx, text=1, background=10)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None, 'data_documento'))
@@ -69,7 +69,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Numero', rendererSx, text=2)
+        column = gtk.TreeViewColumn('Numero', rendererSx, text=2, background=10)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None,'numero'))
@@ -78,7 +78,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Tipo documento', rendererSx, text=3)
+        column = gtk.TreeViewColumn('Tipo documento', rendererSx, text=3, background=10)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None, 'operazione'))
@@ -87,7 +87,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         column.set_min_width(150)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Cliente / Fornitore', rendererSx, text=4)
+        column = gtk.TreeViewColumn('Cliente / Fornitore', rendererSx, text=4, background=10)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -95,7 +95,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         column.set_min_width(250)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Rif. doc. fornitore', rendererSx, text=5)
+        column = gtk.TreeViewColumn('Rif. doc. fornitore', rendererSx, text=5, background=10)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.connect("clicked", self._changeOrderBy, (None, 'protocollo'))
@@ -104,7 +104,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Imponibile', rendererDx, text=6)
+        column = gtk.TreeViewColumn('Imponibile', rendererDx, text=6, background=10)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -112,7 +112,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Imposta', rendererDx, text=7)
+        column = gtk.TreeViewColumn('Imposta', rendererDx, text=7, background=10)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -120,7 +120,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Totale', rendererDx, text=8)
+        column = gtk.TreeViewColumn('Totale', rendererDx, text=8, background=10)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -128,7 +128,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Note interne', rendererSx, text=9)
+        column = gtk.TreeViewColumn('Note interne', rendererSx, text=9, background=10)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -138,7 +138,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         if ("Pagamenti" in Environment.modulesList) or \
                 ("pan" in Environment.modulesList) or \
                 ("basic" in Environment.modulesList):
-            column = gtk.TreeViewColumn('Saldato', rendererSx, text=10)
+            column = gtk.TreeViewColumn('Saldato', rendererSx, text=11, background=10)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
             column.set_clickable(False)
             column.set_resizable(True)
@@ -149,7 +149,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             self.stato_documento_filter_combobox.destroy()
             self.statoDocumento_label.destroy()
 
-        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str, str,str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         fillComboboxOperazioni(self.id_operazione_filter_combobox, 'documento',True)
@@ -270,18 +270,26 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self._filterClosure = filterClosure
         #self._allResultForHtml = self.runFilter(offset=None, batchSize=None)
         tdos = self.runFilter()
-        self.xptDaoList = self.runFilter(offset=None, batchSize=None)
+#        self.xptDaoList = self.runFilter(offset=None, batchSize=None)
         self._treeViewModel.clear()
         for t in tdos:
             totali = t.totali
             totaleImponibile = mN(t._totaleImponibileScontato,2) or 0
             totaleImposta = mN(t._totaleImpostaScontata,2) or 0
             totale = mN(t._totaleScontato,2) or 0
-
+            col = None
             if Environment.conf.hasPagamenti == True and t.documento_saldato == 1:
                 documento_saldato_filter = "Si"
+                if t.operazione in Environment.hapag:
+                    col = "#CCFFAA"
+                else:
+                    col = None
             elif Environment.conf.hasPagamenti == True and t.documento_saldato == 0:
                 documento_saldato_filter = "No"
+                if t.operazione in Environment.hapag:
+                    col = "#FFD7D7"
+                else:
+                    col = None
             else:
                 documento_saldato_filter = ''
             self._treeViewModel.append((t,
@@ -294,6 +302,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                     totaleImposta,
                                     totale,
                                     (t.note_interne or ''),
+                                    col,
                                     (documento_saldato_filter or '')
                                     ))
 

@@ -43,6 +43,7 @@ class AnagraficaTaglie(Anagrafica):
                             reportHandler=AnagraficaTaglieReport(self),
                             editElement=AnagraficaTaglieEdit(self))
         self.hideNavigator()
+        self.records_file_export.set_sensitive(True)
 
     def on_anagrafica_filter_treeview_selection_changed(self, treeSelection):
         (model, iterator) = treeSelection.get_selected()
@@ -236,6 +237,7 @@ class AnagraficaTaglieEdit(AnagraficaEdit):
                                                         dao.id_taglia])
         self.taglia = None
         self._refresh()
+        return self.dao
 
     def _refresh(self):
         if self.dao.id_taglia is not None:

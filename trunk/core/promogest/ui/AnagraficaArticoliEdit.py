@@ -223,6 +223,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             obligatoryField(self.dialogTopLevel,
                             self.id_unita_base_combobox,
                             msg='Campo obbligatorio !\n\nUnita\' base')
+        pbar(self.dialog.pbar,parziale=1, totale=4)
         if "PromoWear" in Environment.modulesList and (articleType(self.dao) == "plus" or self.plus_radiobutton.get_active()):
             articoloTagliaColore = ArticoloTagliaColore()
             articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
@@ -286,7 +287,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             articoloTagliaColore.id_genere = findIdFromCombobox(self.id_genere_combobox)
             self.dao.articoloTagliaColore = articoloTagliaColore
             articoloTagliaColore = None
-
+        pbar(self.dialog.pbar,parziale=2, totale=4)
         self.dao.codice = str(self.codice_entry.get_text()).strip()
         cod=checkCodiceDuplicato(codice=self.dao.codice,id=self.dao.id, tipo="Articolo")
         if not cod:
@@ -346,7 +347,12 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if self.dao.aggiornamento_listino_auto == None:
             self.dao.aggiornamento_listino_auto = False
         self.dao.url_immagine = self.url_articolo_entry.get_text()
+        pbar(self.dialog.pbar,parziale=3, totale=4)
         self.dao.persist()
+        pbar(self.dialog.pbar,parziale=4, totale=4)
+        pbar(self.dialog.pbar,stop=True)
+
+
 
         if self._duplicatedDaoId is not None:
             self.duplicaListini()

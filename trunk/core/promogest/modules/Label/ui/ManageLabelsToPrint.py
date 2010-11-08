@@ -160,6 +160,7 @@ class ManageLabelsToPrint(GladeWidget):
         for d in self.resultList:
             d.resolveProperties()
             param.append(d.dictionary(complete=True))
+            pbar(self.pbar,parziale=self.resultList.index(d), totale=len(self.resultList),text="GENERAZIONE DATI")
         if self.classic_radio.get_active():
             classic = True
         template_file= self.get_active_text(self.select_template_combobox)
@@ -167,6 +168,7 @@ class ManageLabelsToPrint(GladeWidget):
             slafile = Environment.labelTemplatesDir +template_file
         else:
             slafile = self._slaTemplate
+        pbar(self.pbar,pulse=True,text="GENERAZIONE STAMPA ATTENDERE")
         stpl2sla = SlaTpl2Sla_ng(slafile=None,label=True,
                                     report=False,
                                     objects=param,
@@ -174,11 +176,14 @@ class ManageLabelsToPrint(GladeWidget):
                                     slaFileName=slafile,
                                     pdfFolder=self._folder,
                                     classic=classic,
-                                    template_file=template_file)
-        ecco= Sla2Pdf_ng(slafile=self._folder+"_temppp.sla").translate()
+                                    template_file=template_file,
+                                    pbar=self.pbar)
+        pbar(self.pbar,pulse=True,text="GENERAZIONE STAMPA ATTENDERE")
+        ecco= Sla2Pdf_ng(slafile=self._folder+"_temppp.sla", pbar=self.pbar).translate()
         g = file(Environment.tempDir+".temp.pdf", "wb")
         g.write(ecco)
         g.close()
+        pbar(self.pbar,stop=True)
         anag = PrintDialogHandler(self,g)
 
 

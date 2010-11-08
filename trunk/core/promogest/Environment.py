@@ -30,6 +30,7 @@ import getopt, sys
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.interfaces import PoolListener
+from sqlalchemy.pool import NullPool
 import logging
 import logging.handlers
 
@@ -82,9 +83,18 @@ rev_remota = None
 magazzino_pos = None
 windowGroup = []
 view = "month"
+puntoA = None
+puntoB = None
+puntoP = None
+eta = 0
+hapag = ["Fattura accompagnatoria","Fattura acquisto","Fattura differita acquisto",
+"Fattura differita vendita","Fattura vendita","Ricevuta Fiscale","Vendita dettaglio",
+"Nota di credito a cliente","Nota di credito da fornitore"]
+
+
+
 mm = {'3996679c06ebc369feefc92063644d83':'e4da3b7fbbce2345d7772b0674a318d5', #Contatto = 5
         'cfe6753e5e82f522119e09df7b726e4a':'eccbc87e4b5ce2fe28308fd9f2a7baf3'} #Promemoria = 3
-
 
 def getConfigureDir(company='__default__'):
     """ Tests if another configuration folder was indicated """
@@ -106,6 +116,95 @@ def startdir():
     startDir = getConfigureDir()
     promogestStartDir = os.path.expanduser('~') + os.sep + startDir + os.sep
     return promogestStartDir
+
+LOG_FILENAME = startdir()+'pg2.log'
+
+# Set up a specific logger with our desired output level
+pg2log = logging.getLogger('PromoGest2')
+pg2log.setLevel(logging.INFO)
+
+# Add the log message handler to the logger
+handler = logging.handlers.RotatingFileHandler(
+              LOG_FILENAME, maxBytes=400000, backupCount=3)
+
+formatter = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(pathname)s - %(funcName)s - %(lineno)d")
+# add formatter to ch
+handler.setFormatter(formatter)
+pg2log.addHandler(handler)
+pg2log.info("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
+
+def hook(et, ev, eb):
+    import traceback
+    pg2log.info("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
+    print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE"
+
+sys.excepthook = hook
+
+def _pg8000():
+    try:
+        engine = create_engine('postgresql+pg8000:'+'//'
+                    +user+':'
+                    + password+ '@'
+                    + host + ':'
+                    + port + '/'
+                    + database,
+                    encoding='utf-8',
+                    convert_unicode=True )
+        pg2log.info("PG8000")
+        return engine
+    except:
+        pg2log.info("PG8000 NON PRESENTE")
+        return False
+
+def _py_postgresql():
+    try:
+        engine = create_engine('postgresql+pypostgresql:'+'//'
+                    +user+':'
+                    + password+ '@'
+                    + host + ':'
+                    + port + '/'
+                    + database,
+                    encoding='utf-8',
+                    convert_unicode=True )
+        pg2log.info("PY-POSTGRESQL")
+        return engine
+    except:
+        pg2log.info("PY-POSTGRESQL NON PRESENTE")
+        return False
+
+def _psycopg2new():
+    try:
+        engine = create_engine('postgresql:'+'//'
+                    +user+':'
+                    + password+ '@'
+                    + host + ':'
+                    + port + '/'
+                    + database,
+                    encoding='utf-8',
+                    convert_unicode=True )
+        pg2log.info("PSYCOPG2 NEW")
+        return engine
+    except:
+        pg2log.info("PSYCOPG2 NEW NON PRESENTE")
+        return False
+
+def _psycopg2old():
+    try:
+        engine = create_engine('postgres:'+'//'
+                    +user+':'
+                    + password+ '@'
+                    + host + ':'
+                    + port + '/'
+                    + database,
+                    encoding='utf-8',
+                    convert_unicode=True )
+        print "PSYCOPG2 OLD"
+        pg2log.info("PSYCOPG2 OLD")
+        return engine
+    except:
+        pg2log.info("PSYCOPG2 OLD NON PRESENTE")
+        return False
 
 
 try:
@@ -336,40 +435,24 @@ password = conf.Database.password
 host = conf.Database.host
 userdata = ["","","",user]
 
-
-
 class SetTextFactory(PoolListener):
      def connect(self, dbapi_con, con_record):
          dbapi_con.text_factory = str
 
-
 if tipodb == "sqlite":
     azienda = None
     mainSchema = None
-    engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()])
+    engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()], poolclass=NullPool, connect_args={'timeout':30})
 else:
     mainSchema = "promogest2"
-    #azienda=conf.Database.azienda
-    try:
-        engine = create_engine('postgresql+pg8000:'+'//'
-                    +user+':'
-                    + password+ '@'
-                    + host + ':'
-                    + port + '/'
-                    + database,
-                    encoding='utf-8',
-                    convert_unicode=True )
-        print "PG8000"
-    except:
-        engine = create_engine('postgres:'+'//'
-                        +user+':'
-                        + password+ '@'
-                        + host + ':'
-                        + port + '/'
-                        + database,
-                        encoding='utf-8',
-                        convert_unicode=True )
-        print "PSYCOPG2"
+    engine = _pg8000()
+    if not engine:
+        engine = _py_postgresql()
+    if not engine:
+        engine = _psycopg2new()
+    if not engine:
+        engine = _psycopg2old()
+
 tipo_eng = engine.name
 engine.echo = False
 meta = MetaData(engine)
@@ -398,29 +481,3 @@ params = {'engine': engine ,
 loc = locale.setlocale(locale.LC_ALL, '')
 conf.windowsrc = os.path.expanduser('~') + os.sep + 'promogest2/windowsrc.xml'
 conf.guiDir = '.' + os.sep + 'gui' + os.sep
-#conf.windowsrc = promogestDir + 'windowsrc.xml'
-#conf.guiDir = '.' + os.sep + 'gui' + os.sep
-
-LOG_FILENAME = startdir()+'pg2.log'
-
-# Set up a specific logger with our desired output level
-pg2log = logging.getLogger('PromoGest2')
-pg2log.setLevel(logging.DEBUG)
-
-# Add the log message handler to the logger
-handler = logging.handlers.RotatingFileHandler(
-              LOG_FILENAME, maxBytes=400000, backupCount=3)
-
-formatter = logging.Formatter(
-    "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(pathname)s - %(funcName)s - %(lineno)d")
-# add formatter to ch
-handler.setFormatter(formatter)
-pg2log.addHandler(handler)
-pg2log.debug("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
-
-
-def hook(et, ev, eb):
-    import traceback
-    pg2log.debug("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
-    print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE"
-sys.excepthook = hook

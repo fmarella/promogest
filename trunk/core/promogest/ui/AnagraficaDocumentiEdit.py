@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux di Francesco Meloni snc - http://www.promotux.it/
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010
+#by Promotux di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Andrea Argiolas <andrea@promotux.it>
 #    Author: JJDaNiMoTh <jjdanimoth@gmail.com>
@@ -23,10 +24,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
 import gtk
 import datetime
-from math import sqrt
 
 from promogest import Environment
 from GladeWidget import GladeWidget
@@ -46,6 +45,7 @@ from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Operazione import Operazione
 from promogest.dao.Cliente import Cliente
 from promogest.dao.Multiplo import Multiplo
+from promogest.dao.Pagamento import Pagamento
 
 from utils import *
 from utilsCombobox import *
@@ -410,7 +410,18 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self.calcola_importi_scadenza_button.set_sensitive(False)
                 self.controlla_rate_scadenza_button.set_sensitive(False)
                 self.pulisci_scadenza_button.set_sensitive(False)
-
+            else:
+                id_pag = findIdFromCombobox(self.id_pagamento_customcombobox.combobox)
+                pago = Pagamento().getRecord(id=id_pag)
+                if pago:
+                    self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
+                else:
+                    self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str("NESSUNO?")+'</span></b>')
+                self.on_aggiorna_pagamenti_button_clicked(self.aggiorna_pagamenti_button)
+                if self.dao.documento_saldato:
+                    self.chiudi_pagamento_documento_button.set_sensitive(False)
+                else:
+                    self.apri_pagamento_documento_button.set_sensitive(False)
             #print "passato al terzo tab"
 
     def on_rent_checkbutton_toggled(self, checkbutton=None):
@@ -480,8 +491,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.start_rent_entry.set_text(dateTimeToString(self.dao.data_inizio_noleggio))
             self.end_rent_entry.set_text(dateTimeToString(self.dao.data_fine_noleggio))
 #            self.on_end_rent_entry_focus_out_event()
-
-        findComboboxRowFromId(self.id_pagamento_customcombobox.combobox, (self.dao.id_pagamento or -1))
+        findComboboxRowFromId(self.id_pagamento_customcombobox.combobox, self.dao.id_pagamento)
         findComboboxRowFromId(self.id_banca_customcombobox.combobox, (self.dao.id_banca or -1) )
         findComboboxRowFromId(self.id_aliquota_iva_esenzione_customcombobox.combobox,
                 (self.dao.id_aliquota_iva_esenzione or -1))
@@ -691,6 +701,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def saveDao(self):
         """ Salvataggio del Dao
         """
+
         scontiRigaDocumentoList = {}
         if not(len(self._righe) > 1):
             messageInfo(msg="TENTATIVO DI SALVATAGGIO DOCUMENTO SENZA RIGHE???")
@@ -747,6 +758,7 @@ del documento.
 
                 self.dao.numero = numero
         self.dao.operazione = self._operazione
+        pbar(self.dialog.pbar,parziale=1, totale=4)
         if self._tipoPersonaGiuridica == "fornitore":
             self.dao.id_fornitore = self.id_persona_giuridica_customcombobox.getId()
             self.dao.id_cliente = None
@@ -755,7 +767,6 @@ del documento.
             self.dao.id_cliente = self.id_persona_giuridica_customcombobox.getId()
             self.dao.id_fornitore = None
             self.dao.id_destinazione_merce = findIdFromCombobox(self.id_destinazione_merce_customcombobox.combobox)
-
         self.dao.id_pagamento = findIdFromCombobox(self.id_pagamento_customcombobox.combobox)
         self.dao.id_banca = findIdFromCombobox(self.id_banca_customcombobox.combobox)
         self.dao.id_aliquota_iva_esenzione = findIdFromCombobox(self.id_aliquota_iva_esenzione_customcombobox.combobox)
@@ -785,7 +796,7 @@ del documento.
             self.dao.id_vettore = None
             self.dao.incaricato_trasporto = 'destinatario'
             self.dao.porto = 'Assegnato'
-        self.dao.totale_colli = self.totale_colli_entry.get_text()
+        self.dao.totale_colli = float(self.totale_colli_entry.get_text())or 0
         self.dao.totale_peso = self.totale_peso_entry.get_text()
         textBuffer = self.note_interne_textview.get_buffer()
         self.dao.note_interne = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter())
@@ -794,9 +805,9 @@ del documento.
         if "GestioneNoleggio" in Environment.modulesList:
             self.dao.data_inizio_noleggio= self.start_rent_entry.get_text()
             self.dao.data_fine_noleggio = self.end_rent_entry.get_text()
+        pbar(self.dialog.pbar,parziale=2, totale=4)
 
         scontiSuTotale = []
-
         res = self.sconti_testata_widget.getSconti()
         if res:
             for scrow in res:
@@ -809,6 +820,7 @@ del documento.
         scontiRigaDocumento=[]
         righeDocumento = []
         for i in range(1, len(self._righe)):
+            pbar(self.dialog.pbar,parziale=(3+(i/100)), totale=4)
             daoRiga = RigaDocumento()
             daoRiga.id_testata_documento = self.dao.id
             daoRiga.id_articolo = self._righe[i]["idArticolo"]
@@ -823,7 +835,7 @@ del documento.
             daoRiga.moltiplicatore = self._righe[i]["moltiplicatore"]
             daoRiga.valore_unitario_lordo = self._righe[i]["prezzoLordo"]
             daoRiga.valore_unitario_netto = self._righe[i]["prezzoNetto"]
-
+#            pbar(self.dialog.pbar,pulse=True)
             if "GestioneNoleggio" in Environment.modulesList:
                 daoRiga.prezzo_acquisto_noleggio = self._righe[i]["prezzo_acquisto"]
                 daoRiga.coeficente_noleggio = self._righe[i]["divisore_noleggio"]
@@ -854,7 +866,6 @@ del documento.
             #righe[i]=daoRiga
             righeDocumento.append(daoRiga)
         self.dao.righeDocumento = righeDocumento
-
         if ("Pagamenti" in Environment.modulesList) or \
                 ("pan" in Environment.modulesList) or \
                 ("basic" in Environment.modulesList):
@@ -868,12 +879,12 @@ del documento.
             self.dao.registro_numerazione= valori[1]
         #porto in persist tre dizionari: uno per gli sconti sul totale, l'altro per gli sconti sulle righe e le righe stesse
         self.dao.persist()
-
+        pbar(self.dialog.pbar,parziale=4, totale=4)
         self.label_numero_righe.hide()
         text = str(len(self.dao.righe))
         self.label_numero_righe.set_text(text)
         self.label_numero_righe.show()
-
+        pbar(self.dialog.pbar,stop=True)
 
     def on_importo_da_ripartire_entry_changed(self, entry):
         self.dao.removeDividedCost()
@@ -882,12 +893,6 @@ del documento.
         self.dao.costo_da_ripartire = Decimal(self.importo_da_ripartire_entry.get_text())
 
         self.importo_sovrapprezzo_label.set_text(str((mN(self.dao.costo_da_ripartire) or 0)/self.dao.totalConfections))
-
-    #def on_righe_treeview_drag_data_received(self, treeview,drag_context, x, y, selection, info, eventtime):
-        #path, pos = treeview.get_dest_row_at_pos(x, y)
-        #model = treeview.get_model()
-        #if path:
-            #self.target_iter___ = model.get_iter(path)
 
     def on_righe_treeview_drag_begin(self, treeview, drag_context):
         """ starting dragging func, just give the row start to drag """
@@ -1372,9 +1377,6 @@ del documento.
         self.calcolaTotaleRiga()
         return False
 
-
-
-
     def calcolaTotaleRiga(self):
         """ calcola il totale riga """
 
@@ -1551,6 +1553,8 @@ del documento.
     def on_id_operazione_combobox_changed(self, combobox):
         """ Funzione di gestione cambiamento combo operazione"""
         self._operazione = findIdFromCombobox(self.id_operazione_combobox)
+        if self.dao.operazione not in Environment.hapag:
+            self.notebook.remove_page(3)
         #operazione = leggiOperazione(self._operazione)
         operazione = Operazione().getRecord(id=self._operazione)
         if operazione:
@@ -1695,6 +1699,9 @@ del documento.
     def on_quantita_entry_focus_out_event(self, entry, event):
         on_quantita_entry_focus_out_eventPart(self, entry, event)
 
+    def on_moltiplicatore_entry_focus_out_event(self, entry, event):
+        on_moltiplicatore_entry_focus_out_eventPart(self, entry, event)
+
     def on_end_rent_entry_focus_out_event(self, entry=None, event=None):
         if self.end_rent_entry.entry.get_text() and self.start_rent_entry.entry.get_text():
             self._durataNoleggio = stringToDateTime(self.end_rent_entry.get_text())- stringToDateTime(self.start_rent_entry.get_text())
@@ -1741,8 +1748,26 @@ del documento.
 
     def on_calcola_importi_scadenza_button_clicked(self, button):
         """calcola importi scadenza pagamenti """
+        id_pag = findIdFromCombobox(self.id_pagamento_customcombobox.combobox)
+        if id_pag == -1 or id_pag==0 or id_pag==None:
+            messageInfo(msg="NESSUN METODO DI PAGAMENTO SELEZIONATO\n NON POSSO AGIRE")
+            return
+        if self.dao.documento_saldato:
+            msg = 'Attenzione! Stai per riaprire un documento già saldato.\n Continuare ?'
+            dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                       gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+            response = dialog.run()
+            dialog.destroy()
+            if response == gtk.RESPONSE_YES:
+                self.stato_label.set_markup('<b><span foreground="#B40000" size="24000">APERTO</span></b>')
+            else:
+                return
         AnagraficadocumentiPagamentExt.attiva_scadenze(self)
         AnagraficadocumentiPagamentExt.dividi_importo(self)
+        AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self)
+
+    def on_aggiorna_pagamenti_button_clicked(self, button):
+        "refresha la parte dei pagamenti"
         AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self)
 
     def on_seleziona_prima_nota_button_clicked(self, button):
@@ -1767,7 +1792,47 @@ del documento.
     def on_data_pagamento_quarta_scadenza_entry_changed(self, entry):
         AnagraficadocumentiPagamentExt.ricalcola_sospeso_e_pagato(self)
 
+    def on_primanota_button_clicked(self, button):
+        AnagraficadocumentiPagamentExt.on_primanota_button_clicked(self, button)
+
+    def on_chiudi_pagamento_documento_button_clicked(self, button):
+        AnagraficadocumentiPagamentExt.on_chiudi_pagamento_documento_button_clicked(self, button)
+
+    def on_apri_pagamento_documento_button_clicked(self, button):
+        AnagraficadocumentiPagamentExt.on_apri_pagamento_documento_button_clicked(self, button)
+
+    def on_edit_prima_rata_button_clicked(self, button):
+        AnagraficadocumentiPagamentExt.on_edit_prima_rata_button_clicked(self, button)
+
+    def on_edit_seconda_rata_button_clicked(self, button):
+        AnagraficadocumentiPagamentExt.on_edit_seconda_rata_button_clicked(self, button)
+
+    def on_edit_terza_rata_button_clicked(self, button):
+        AnagraficadocumentiPagamentExt.on_edit_terza_rata_button_clicked(self, button)
+
+    def on_edit_quarta_rata_button_clicked(self, button):
+        AnagraficadocumentiPagamentExt.on_edit_quarta_rata_button_clicked(self, button)
+
+    def on_edit_acconto_button_clicked(self, button):
+        AnagraficadocumentiPagamentExt.on_edit_acconto_button_clicked(self, button)
+
+    def on_pulisci_acconto_button_clicked(self, button):
+        AnagraficadocumentiPagamentExt.on_pulisci_acconto_button_clicked(self, button)
+
+    def on_pulisci_prima_rata_button_clicked(self, button):
+        AnagraficadocumentiPagamentExt.on_pulisci_prima_rata_button_clicked(self, button)
+
+    def on_pulisci_seconda_rata_button_clicked(self, button):
+        AnagraficadocumentiPagamentExt.on_pulisci_seconda_rata_button_clicked(self, button)
+
+    def on_pulisci_terza_rata_button_clicked(self, button):
+        AnagraficadocumentiPagamentExt.on_pulisci_terza_rata_button_clicked(self, button)
+
+    def on_pulisci_quarta_rata_button_clicked(self, button):
+        AnagraficadocumentiPagamentExt.on_pulisci_quarta_rata_button_clicked(self, button)
+
     # NOTEBOOK FINE TAB 3
+
 
     def showMessage(self, msg):
         """ Generic Show dialog func """
@@ -1798,5 +1863,3 @@ del documento.
         Bug 607492 - widget.get_name() """
         if toggled.get_active():
             self.ricerca = gtk.Buildable.get_name(toggled)
-#            self.ricerca = toggled.get_name()
-#            self.ricerca = toggled.get_tooltip_text()

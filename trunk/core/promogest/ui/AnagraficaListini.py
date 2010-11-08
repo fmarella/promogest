@@ -48,6 +48,7 @@ class AnagraficaListini(Anagrafica):
                             editElement=AnagraficaListiniEdit(self),
                             aziendaStr=aziendaStr)
         self.record_duplicate_menu.set_property('visible', True)
+        self.records_file_export.set_sensitive(True)
 
     def duplicate(self, dao):
         """ Duplica le informazioni relative ad un documento scelto su uno nuovo
@@ -276,6 +277,8 @@ class AnagraficaListiniEdit(AnagraficaEdit):
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Listino().select(id=dao.id)[0]
             self._refresh()
+        return self.dao
+
 
     def _refresh(self):
         self.denominazione_entry.set_text(self.dao.denominazione or '')

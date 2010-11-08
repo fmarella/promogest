@@ -27,7 +27,10 @@ import xml.etree.cElementTree as ElementTree
 from promogest import Environment
 import Sla2pdfUtils
 from SlaParser import SlaParser
-
+try:
+    from promogest.ui.utils import pbar
+except:
+    pass
 
 class SlaTpl2Sla(SlaParser):
     """
@@ -37,7 +40,7 @@ class SlaTpl2Sla(SlaParser):
 
     def __init__(self,slafile=None,label=None, report=None, objects=None,
                     daos=None, slaFileName=None, pdfFolder=None, classic=None,
-                    template_file=None):
+                    template_file=None, pbar=None):
 
 
         SlaParser.__init__(self, slaFileName=slaFileName,
@@ -49,6 +52,7 @@ class SlaTpl2Sla(SlaParser):
         self.template_file = template_file
         self.daos = daos
         self.objects = objects
+        self.pbar = pbar
         self.label = label
         self.formatFunctions = ['trunc','approx','itformat','itformatdataora','itformatdata', 'bcview']
         self.timeTags = ['date','time','datetime']
@@ -163,6 +167,8 @@ class SlaTpl2Sla(SlaParser):
         adesso = self.slaPageObjects()
         for j in range(1,pages):
             for pageObject in adesso:
+                if self.pbar:
+                    pbar(self.pbar,pulse=True,text="GEN.STAMPA ATTENDERE 1 DI 2")
                 # Creating dictionary attributes pageobject
                 attributes = pageObject.items()
                 dictionary = {}
@@ -366,6 +372,8 @@ class SlaTpl2Sla(SlaParser):
         self.pageObjects = self.slaPageObjects()
         iterator = 0
         while iterator < self.lenPageObjects():
+            if self.pbar:
+                pbar(self.pbar,pulse=True,text="GENERAZIONE STAMPA ATTENDERE %s") %(str(iterator))
             pageObject = self.pageObjects[iterator]
             isTableItem = pageObject.get('isTableItem')
             isGroupControl = pageObject.get('isGroupControl')

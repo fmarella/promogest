@@ -47,7 +47,7 @@ class AnagraficaClienti(Anagrafica):
                             reportHandler=AnagraficaClientiReport(self),
                             editElement=AnagraficaClientiEdit(self),
                             aziendaStr=aziendaStr)
-
+        self.records_file_export.set_sensitive(True)
 
 class AnagraficaClientiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei clienti """
@@ -342,6 +342,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             self.dao = Cliente().getRecord(id=dao.id)
             self._oldDaoRicreato = True
         self._refresh()
+        return self.dao
 
     def _refresh(self):
         self.codice_entry.set_text(self.dao.codice or '')

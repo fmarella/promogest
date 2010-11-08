@@ -7,7 +7,7 @@
     <property name="upper">9999</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-    <property name="page_size">10</property>
+    <property name="page_size">0</property>
     <signal name="value_changed" handler="on_anno_calendar_spinbutton_change_value"/>
   </object>
   <object class="GtkListStore" id="liststore1">
@@ -31,10 +31,7 @@
     <property name="title" translatable="yes">PromoGest2</property>
     <property name="window_position">center</property>
     <property name="icon">promogest.png</property>
-    <signal name="destroy" handler="on_main_window_destroy"/>
     <signal name="key_press_event" handler="on_main_window_key_press_event"/>
-    <signal name="close" handler="on_main_window_destroy"/>
-    <signal name="window_state_event" handler="on_main_window_window_state_event"/>
     <child>
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
@@ -158,8 +155,8 @@
                     <child>
                       <object class="GtkMenuItem" id="export_magazzino">
                         <property name="visible">True</property>
-                        <property name="tooltip_text" translatable="yes">Esport una CSV abbastanza 
-generico del magazzino 
+                        <property name="tooltip_text" translatable="yes">Esport una CSV abbastanza
+generico del magazzino
 articoli per un certo </property>
                         <property name="label" translatable="yes">EXPORT MAGAZZINO</property>
                         <property name="use_underline">True</property>
@@ -262,9 +259,6 @@ articoli per un certo </property>
               <object class="GtkNotebook" id="main_notebook">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <signal name="switch_page" handler="on_main_notebook_switch_page"/>
-                <signal name="select_page" handler="on_main_notebook_select_page"/>
-                <signal name="change_current_page" handler="on_main_notebook_change_current_page"/>
                 <child>
                   <object class="GtkFrame" id="anagrafiche_principali_select_frame">
                     <property name="visible">True</property>
@@ -743,7 +737,7 @@ articoli per un certo </property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <property name="xpad">8</property>
                                 <property name="ypad">4</property>
-                                <property name="label" translatable="yes"> &lt;b&gt;Attenzione!&lt;/b&gt; 
+                                <property name="label" translatable="yes"> &lt;b&gt;Attenzione!&lt;/b&gt;
 Promemoria in scadenza. Verificare?!?</property>
                                 <property name="use_markup">True</property>
                                 <property name="justify">center</property>
@@ -2268,66 +2262,6 @@ Rosso: PromoGest2 Da Aggiornare</property>
       </object>
     </child>
   </object>
-  <object class="GtkImage" id="articolo_image1">
-    <property name="visible">True</property>
-    <property name="pixbuf">articolo24x24.png</property>
-  </object>
-  <object class="GtkImage" id="cliente_image2">
-    <property name="visible">True</property>
-    <property name="pixbuf">cliente24x24.png</property>
-  </object>
-  <object class="GtkImage" id="fornitore_image3">
-    <property name="visible">True</property>
-    <property name="pixbuf">fornitore24x24.png</property>
-  </object>
-  <object class="GtkImage" id="promemoria_image1">
-    <property name="visible">True</property>
-    <property name="pixbuf">promemoria24x24.png</property>
-  </object>
-  <object class="GtkImage" id="preventivo_image1">
-    <property name="visible">True</property>
-    <property name="pixbuf">duplica24x24.png</property>
-  </object>
-  <object class="GtkImage" id="ordine_da_cliente_image">
-    <property name="visible">True</property>
-    <property name="pixbuf">duplica24x24.png</property>
-  </object>
-  <object class="GtkImage" id="ddt_vendita_image1">
-    <property name="visible">True</property>
-    <property name="pixbuf">duplica24x24.png</property>
-  </object>
-  <object class="GtkImage" id="promotux_image1">
-    <property name="visible">True</property>
-    <property name="pixbuf">mask_24.png</property>
-  </object>
-  <object class="GtkImage" id="promogest_image1">
-    <property name="visible">True</property>
-    <property name="pixbuf">mask_24.png</property>
-  </object>
-  <object class="GtkImage" id="contatto_image">
-    <property name="visible">True</property>
-    <property name="pixbuf">contatto24x24.png</property>
-  </object>
-  <object class="GtkImage" id="fattura_acquisto_image1">
-    <property name="visible">True</property>
-    <property name="pixbuf">duplica16x16.png</property>
-  </object>
-  <object class="GtkImage" id="email_image">
-    <property name="visible">True</property>
-    <property name="pixbuf">spedisci24x24.png</property>
-  </object>
-  <object class="GtkImage" id="ddt_acquisto_image">
-    <property name="visible">True</property>
-    <property name="pixbuf">duplica24x24.png</property>
-  </object>
-  <object class="GtkImage" id="ddt_reso_a_fornitore_image">
-    <property name="visible">True</property>
-    <property name="pixbuf">duplica24x24.png</property>
-  </object>
-  <object class="GtkImage" id="fattura_vendita_image1">
-    <property name="visible">True</property>
-    <property name="pixbuf">duplica24x24.png</property>
-  </object>
   <object class="GtkImage" id="prova_promowear_image">
     <property name="visible">True</property>
     <property name="pixbuf">taglia_colore16x16.png</property>
@@ -2355,5 +2289,65 @@ Rosso: PromoGest2 Da Aggiornare</property>
   <object class="GtkImage" id="image6">
     <property name="visible">True</property>
     <property name="pixbuf">agente48x48.png</property>
+  </object>
+  <object class="GtkImage" id="articolo_image1">
+    <property name="visible">True</property>
+    <property name="pixbuf">articolo24x24.png</property>
+  </object>
+  <object class="GtkImage" id="cliente_image2">
+    <property name="visible">True</property>
+    <property name="pixbuf">cliente24x24.png</property>
+  </object>
+  <object class="GtkImage" id="fornitore_image3">
+    <property name="visible">True</property>
+    <property name="pixbuf">fornitore24x24.png</property>
+  </object>
+  <object class="GtkImage" id="ordine_da_cliente_image">
+    <property name="visible">True</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="ddt_reso_a_fornitore_image">
+    <property name="visible">True</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="ddt_vendita_image1">
+    <property name="visible">True</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="ddt_acquisto_image">
+    <property name="visible">True</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="fattura_vendita_image1">
+    <property name="visible">True</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="promemoria_image1">
+    <property name="visible">True</property>
+    <property name="pixbuf">promemoria24x24.png</property>
+  </object>
+  <object class="GtkImage" id="contatto_image">
+    <property name="visible">True</property>
+    <property name="pixbuf">contatto24x24.png</property>
+  </object>
+  <object class="GtkImage" id="fattura_acquisto_image1">
+    <property name="visible">True</property>
+    <property name="pixbuf">duplica16x16.png</property>
+  </object>
+  <object class="GtkImage" id="preventivo_image1">
+    <property name="visible">True</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="promotux_image1">
+    <property name="visible">True</property>
+    <property name="pixbuf">mask_24.png</property>
+  </object>
+  <object class="GtkImage" id="promogest_image1">
+    <property name="visible">True</property>
+    <property name="pixbuf">mask_24.png</property>
+  </object>
+  <object class="GtkImage" id="email_image">
+    <property name="visible">True</property>
+    <property name="pixbuf">spedisci24x24.png</property>
   </object>
 </interface>

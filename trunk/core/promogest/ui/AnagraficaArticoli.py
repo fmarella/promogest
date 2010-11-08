@@ -56,6 +56,7 @@ class AnagraficaArticoli(Anagrafica):
                             aziendaStr=aziendaStr)
         checkCodBarOrphan = removeCodBarorphan()
         self.record_duplicate_menu.set_property('visible', True)
+        self.records_file_export.set_sensitive(True)
 
     def on_record_edit_activate(self, widget, path=None, column=None, dao=None):
         if not dao:

@@ -11,6 +11,8 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
+from migrate import *
+
 
 class Pagamento(Dao):
 
@@ -18,12 +20,19 @@ class Pagamento(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {'denominazione' : pagamento.c.denominazione.ilike("%"+v+"%")}
+        if k == "denominazione":
+            dic= {k : pagamento.c.denominazione.ilike("%"+v+"%")}
+        elif k == "tipo":
+            dic= {k : pagamento.c.tipo == v} # cassa o banca
         return  dic[k]
 
 pagamento=Table('pagamento',
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
+
+if "tipo" not in [c.name for c in pagamento.columns]:
+    col = Column('tipo', String, default='banca')
+    col.create(pagamento, populate_default=True)
 
 std_mapper = mapper(Pagamento, pagamento, order_by=pagamento.c.id)

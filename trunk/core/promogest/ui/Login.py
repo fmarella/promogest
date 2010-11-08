@@ -31,11 +31,11 @@ from promogest import Environment
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from GtkExceptionHandler import GtkExceptionHandler
-from utils import hasAction,on_status_activate, checkAggiorna, aggiorna, checkInstallation, setconf
+from utils import hasAction,checkAggiorna, aggiorna, checkInstallation, setconf
 from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
 import sqlalchemy
-print "SQLALCHEMY:", sqlalchemy.__version__
+Environment.pg2log.info("SQLALCHEMY:"+str(sqlalchemy.__version__))
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.lib import feedparser
@@ -141,8 +141,6 @@ class Login(GladeApp):
 
     def on_button_login_clicked(self, button=None):
         """
-        Button login signal clicked
-        @type button=None: gtk.Button
         """
         username = self.username_comboxentry.child.get_text()
         password = self.password_entry.get_text()
@@ -218,11 +216,11 @@ class Login(GladeApp):
                         self.login_window.hide()
                         Environment.windowGroup.remove(self.getTopLevel())
 
-                        from promogest.lib.UpdateDB import *
+                        import promogest.lib.UpdateDB
                         self.importModulesFromDir('promogest/modules')
                         #saveAppLog(action="login", status=True,value=username)
                         Environment.pg2log.info("LOGIN  id, user, role azienda: %s, %s" %(repr(Environment.params['usernameLoggedList']),self.azienda) )
-                        from SetConf import *
+                        import promogest.ui.SetConf
                         checkInstallation()
                         from Main import Main
                         main = Main(self.azienda,

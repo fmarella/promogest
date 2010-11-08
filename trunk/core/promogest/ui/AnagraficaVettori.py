@@ -46,7 +46,7 @@ class AnagraficaVettori(Anagrafica):
                             reportHandler=AnagraficaVettoriReport(self),
                             editElement=AnagraficaVettoriEdit(self),
                             aziendaStr=aziendaStr)
-
+        self.records_file_export.set_sensitive(True)
 
 
 class AnagraficaVettoriFilter(AnagraficaFilter):
@@ -245,7 +245,7 @@ class AnagraficaVettoriEdit(AnagraficaEdit):
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Vettore().getRecord(id=dao.id)
         self._refresh()
-
+        return self.dao
 
     def _refresh(self):
         self.codice_entry.set_text(self.dao.codice or '')

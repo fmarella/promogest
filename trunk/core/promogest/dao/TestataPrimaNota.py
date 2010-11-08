@@ -60,8 +60,8 @@ class TestataPrimaNota(Dao):
         self.__dbRighePrimaNota = []
 
     def _getRighePrimanota(self):
-        if not self.__righePrimaNota:
-            self.__dbRighePrimaNota = params['session'].query(RigaPrimaNota)\
+#        if not self.__righePrimaNota:
+        self.__dbRighePrimaNota = object_session(self).query(RigaPrimaNota)\
                                             .with_parent(self)\
                                             .filter_by(id_testata_prima_nota=self.id)\
                                             .all()
@@ -148,22 +148,14 @@ class TestataPrimaNota(Dao):
         return totali
     totali = property(__TotalePrimaNota)
 
-
-
     def persist(self):
         """ cancellazione righe associate alla testata """
-        pg2log.debug("DENTRO IL TESTATA PRIMA NOTA CASSA")
+        pg2log.info("DENTRO IL TESTATA PRIMA NOTA CASSA")
         params["session"].add(self)
         params["session"].commit()
-#        self.righePrimaNotaDel(id=self.id)
         if self.__righePrimaNota:
-            #print "DOPO CANCELLA RIGHE MOV", tempo()
             for riga in self.__righePrimaNota:
                 riga.id_testata_prima_nota = self.id
-                #salvataggio riga
-#                params["session"].add(riga)
-#                params["session"].commit()
-#                params["session"].flush()
                 riga.persist()
         self.__righePrimaNota = []
 

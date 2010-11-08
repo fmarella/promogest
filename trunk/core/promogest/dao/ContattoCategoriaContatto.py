@@ -1,10 +1,24 @@
-#-*- coding: utf-8 -*-
-#
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
+# -*- coding: utf-8 -*-
+
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010
+#by Promotux di Francesco Meloni snc - http://www.promotux.it/
+
 # Author: Francesco Meloni <francesco@promotux.it>
 
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation, backref
@@ -36,6 +50,3 @@ contatto_categoria_contatto=Table('contatto_categoria_contatto',
 std_mapper= mapper(ContattoCategoriaContatto, contatto_categoria_contatto,properties={
 "categoria_con":relation(CategoriaContatto,backref=backref("contatto_categoria_contatto"))},
                     order_by=contatto_categoria_contatto.c.id_contatto)
-
-
-

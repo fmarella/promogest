@@ -20,16 +20,16 @@ class Dao(object):
     Astrazione generica di ciò˛ che fu il vecchio dao basata su sqlAlchemy
     """
     def __init__(self, entity=None, exceptionHandler=None):
-        self.session = params["session"]
-        self.metadata = params["metadata"]
-        self.numRecords = None
-        self.DaoModule = entity.__class__
+        self._session = params["session"]
+#        self._metadata = params["metadata"]
+        self._numRecords = None
+        self._DaoModule = entity.__class__
         self._exceptionHandler = exceptionHandler
 
     def getRecord(self,id=None):
         """ Restituisce un record ( necessita di un ID )"""
         if id:
-            _record = self.session.query(self.DaoModule).get(id)
+            _record = self._session.query(self._DaoModule).get(id)
         else:
             return None
         return _record
@@ -44,7 +44,7 @@ class Dao(object):
         ed è molto più flessibile
         """
         filter1 = filter2 = None
-        if sqlalchemy.__version__ > "0.6.0":
+        if sqlalchemy.__version__ > 0.6:
             if complexFilter is not None:
                 filter1 = complexFilter
             else:
@@ -58,60 +58,60 @@ class Dao(object):
         #print filter
 #        try:
 #            if join and filter and orderBy:
-#                self.record= self.session.query(self.DaoModule).join(join).filter(filter).order_by(orderBy).limit(batchSize).offset(offset).all()
+#                self.record= self._session.query(self._DaoModule).join(join).filter(filter).order_by(orderBy).limit(batchSize).offset(offset).all()
 #            elif filter and orderBy:
-#                self.record= self.session.query(self.DaoModule).filter(filter).order_by(orderBy).limit(batchSize).offset(offset).all()
+#                self.record= self._session.query(self._DaoModule).filter(filter).order_by(orderBy).limit(batchSize).offset(offset).all()
 #            elif join and orderBy:
-#                self.record= self.session.query(self.DaoModule).join(join).order_by(orderBy).limit(batchSize).offset(offset).all()
+#                self.record= self._session.query(self._DaoModule).join(join).order_by(orderBy).limit(batchSize).offset(offset).all()
 #            elif filter and join:
-#                self.record= self.session.query(self.DaoModule).join(join).filter(filter).limit(batchSize).offset(offset).all()
+#                self.record= self._session.query(self._DaoModule).join(join).filter(filter).limit(batchSize).offset(offset).all()
 #            elif filter:
-#                self.record= self.session.query(self.DaoModule).filter(filter).limit(batchSize).offset(offset).all()
+#                self.record= self._session.query(self._DaoModule).filter(filter).limit(batchSize).offset(offset).all()
 #            elif join:
-#                self.record= self.session.query(self.DaoModule).join(join).limit(batchSize).offset(offset).all()
+#                self.record= self._session.query(self._DaoModule).join(join).limit(batchSize).offset(offset).all()
 #            elif orderBy:
-#                self.record= self.session.query(self.DaoModule).order_by(orderBy).limit(batchSize).offset(offset).all()
+#                self.record= self._session.query(self._DaoModule).order_by(orderBy).limit(batchSize).offset(offset).all()
 #            else:
-#                self.record= self.session.query(self.DaoModule).limit(batchSize).offset(offset).all()
+#                self.record= self._session.query(self._DaoModule).limit(batchSize).offset(offset).all()
 #            return self.record
 #        except Exception, e:
 #            self.raiseException(e)
 
-        try:
-            self.record= self.session.query(self.DaoModule)
-            if sqlalchemy.__version__ > "0.6.0":
-                if join is not None:
-                    self.record = self.record.join(join)
-                if filter is not None:
-                    self.record = self.record.filter(filter)
-                if orderBy is not None:
-                    self.record = self.record.order_by(orderBy)
-                if batchSize is not None:
-                    self.record = self.record.limit(batchSize)
-                if distinct is not None:
-                    self.record = self.record.distinct(distinct)
-                if offset is not None:
-                    self.record = self.record.offset(offset)
-                if groupBy is not None:
-                    self.record = self.record.group_by(groupBy)
-            else:
-                if join:
-                    self.record = self.record.join(join)
-                if filter:
-                    self.record = self.record.filter(filter)
-                if orderBy:
-                    self.record = self.record.order_by(orderBy)
-                if batchSize:
-                    self.record = self.record.limit(batchSize)
-                if distinct:
-                    self.record = self.record.distinct(distinct)
-                if offset:
-                    self.record = self.record.offset(offset)
-                if groupBy:
-                    self.record = self.record.group_by(groupBy)
-            return self.record.all()
-        except Exception, e:
-            self.raiseException(e)
+#        try:
+        self.record= self._session.query(self._DaoModule)
+        if sqlalchemy.__version__ > 0.6:
+            if join is not None:
+                self.record = self.record.join(join)
+            if filter is not None:
+                self.record = self.record.filter(filter)
+            if orderBy is not None:
+                self.record = self.record.order_by(orderBy)
+            if batchSize is not None:
+                self.record = self.record.limit(batchSize)
+            if distinct is not None:
+                self.record = self.record.distinct(distinct)
+            if offset is not None:
+                self.record = self.record.offset(offset)
+            if groupBy is not None:
+                self.record = self.record.group_by(groupBy)
+#            else:
+#                if join:
+#                    self.record = self.record.join(join)
+#                if filter:
+#                    self.record = self.record.filter(filter)
+#                if orderBy:
+#                    self.record = self.record.order_by(orderBy)
+#                if batchSize:
+#                    self.record = self.record.limit(batchSize)
+#                if distinct:
+#                    self.record = self.record.distinct(distinct)
+#                if offset:
+#                    self.record = self.record.offset(offset)
+#                if groupBy:
+#                    self.record = self.record.group_by(groupBy)
+        return self.record.all()
+#        except Exception, e:
+#            self.raiseException(e)
 
 
 
@@ -119,8 +119,8 @@ class Dao(object):
         """
         Restituisce il numero delle righe
         """
-        _numRecords = 0
-        if sqlalchemy.__version__ > "0.6.0":
+        __numRecords = 0
+        if sqlalchemy.__version__ > 0.6:
             if complexFilter is not None:
                 filter = complexFilter
             else:
@@ -131,8 +131,8 @@ class Dao(object):
             else:
                 filter= self.prepareFilter(kwargs)
         try:
-            dao = self.session.query(self.DaoModule)
-            if sqlalchemy.__version__ > "0.6.0":
+            dao = self._session.query(self._DaoModule)
+            if sqlalchemy.__version__ > 0.6:
                 if filter is not None:
                     dao = dao.filter(filter)
                 if distinct is not None:
@@ -142,14 +142,15 @@ class Dao(object):
                     dao = dao.filter(filter)
                 if distinct:
                     dao = dao.distinct()
-            _numRecords = dao.count()
-            if _numRecords > 0:
-                self.numRecords = _numRecords
-            return self.numRecords
+            __numRecords = dao.count()
+            if __numRecords > 0:
+                self._numRecords = __numRecords
+            return self._numRecords
         except Exception, e:
             self.raiseException(e)
 
     def persist(self,multiple=False, record=True):
+#        print "SEEEEEEEEEEEEEEEEEEEEEEEEEEEL111111", self.__class__.__name__
         if self.dd(self.__class__.__name__):
             params["session"].add(self)
             self.saveAppLog(self)
@@ -161,6 +162,7 @@ class Dao(object):
         self.saveAppLog(self)
 
     def add(self,multiple=False, record=True):
+#        print "SEEEEEEEEEEEEEEEEEEEEEEEEEEEL22222", self, dir(self), self.__dict__
         params["session"].add(self)
         self.saveAppLog(self)
 
@@ -203,19 +205,19 @@ class Dao(object):
             params["session"].rollback()
             params["session"].clear()
             Session = scoped_session(sessionmaker(bind=engine))
-            session = Session()
-            params["session"] = session
+            _session = Session()
+            params["session"] = _session
             return 0
 
     def dd(self,clase):
-        clasemd5 = hashlib.md5(clase).hexdigest()
-        print "okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", clasemd5, mm
+#        clasemd5 = hashlib.md5(clase).hexdigest()
+#        print "okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", clasemd5, mm
         return True
-        if clasemd5 in mm:
-#            print "OLLELLE OLLALLA", self.count()
-            if hashlib.md5(str(self.count())).hexdigest() == mm[clasemd5]:
-                from promogest.ui.utils import fenceDialog
-                fenceDialog()
+#        if clasemd5 in mm:
+##            print "OLLELLE OLLALLA", self.count()
+#            if hashlib.md5(str(self.count())).hexdigest() == mm[clasemd5]:
+#                from promogest.ui.utils import fenceDialog
+#                fenceDialog()
 
 
 
@@ -289,6 +291,17 @@ class Dao(object):
         sqlDict.update(props)
         sqlDict.update(attrs)
 
+        relat = []
+        try:
+            for a in self._DaoModule._sa_class_manager.mapper.iterate_properties:
+                if a.__class__.__name__ =="RelationshipProperty":
+                    relat.append(a.__dict__["key"])
+            for q in relat:
+                if q in sqlDict:
+                    del sqlDict[q]
+        except:
+            pass
+
         return sqlDict
 
     def resolveProperties(self):
@@ -333,7 +346,7 @@ class Dao(object):
                     filter_parameters.append((value,key,"s"))
         if filter_parameters != []:
             if debugFilter:
-                print "FILTER PARAM:",self.DaoModule.__name__, filter_parameters
+                print "FILTER PARAM:",self._DaoModule.__name__, filter_parameters
             filter = self.getFilter(filter_parameters)
             return filter
         return

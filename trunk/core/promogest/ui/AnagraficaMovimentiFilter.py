@@ -181,7 +181,7 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
 
         self._filterClosure = filterClosure
         tdos = self.runFilter()
-        self.xptDaoList = self.runFilter(offset=None, batchSize=None)
+#        self.xptDaoList = self.runFilter(offset=None, batchSize=None)
 #        self.xptDaoList =None
         self._treeViewModel.clear()
         for t in tdos:

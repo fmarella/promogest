@@ -307,6 +307,13 @@ class Anagrafica(GladeWidget):
         self.setToolTip(False)
         self.setFocus()
 
+    def on_export_csv_button_clicked(self, button):
+        dao = self.detail.setDao(None)
+        from ExportCsv import ExportCsv
+        anag = ExportCsv(self, dao=dao)
+        dao=None
+        return
+
 
     def on_record_undo_activate(self, widget):
         """ Rilettura record """

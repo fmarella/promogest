@@ -21,13 +21,11 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 import gtk
-import gobject
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 from promogest import Environment
 from promogest.dao.Pagamento import Pagamento
 
-from utils import *
-
+from utils import prepareFilterString, fenceDialog, obligatoryField
 
 
 class AnagraficaPagamenti(Anagrafica):
@@ -38,7 +36,6 @@ class AnagraficaPagamenti(Anagrafica):
                             '_Pagamenti',
                             AnagraficaPagamentiFilter(self),
                             AnagraficaPagamentiDetail(self))
-
 
     def draw(self):
         # Colonne della Treeview per il filtro
@@ -57,13 +54,34 @@ class AnagraficaPagamenti(Anagrafica):
         column.set_expand(True)
         treeview.append_column(column)
 
+        self.lsmodel = gtk.ListStore(str)
+        self.lsmodel.append(["cassa"])
+        self.lsmodel.append(["banca"])
+        cellcombo1= gtk.CellRendererCombo()
+        cellcombo1.set_property("editable", True)
+        cellcombo1.set_property("visible", True)
+        cellcombo1.set_property("text-column", 0)
+        cellcombo1.set_property("editable", True)
+        cellcombo1.set_property("has-entry", False)
+        cellcombo1.set_property("model", self.lsmodel)
+        cellcombo1.connect('edited', self.on_column_listinoRiga_edited, treeview, True)
+        column = gtk.TreeViewColumn('tipo', cellcombo1, text=2)
+        column.set_clickable(True)
+        column.set_resizable(True)
+        column.set_expand(False)
+        column.set_min_width(60)
+        treeview.append_column(column)
+
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.ListStore(object, str)
+        self._treeViewModel = gtk.ListStore(object, str,str)
         treeview.set_model(self._treeViewModel)
 
         self.refresh()
 
+    def on_column_listinoRiga_edited(self, cell, path, value, treeview, editNext=True):
+        model = treeview.get_model()
+        model[path][2] = value
 
     def refresh(self):
         # Aggiornamento TreeView
@@ -87,8 +105,8 @@ class AnagraficaPagamenti(Anagrafica):
 
         for p in pags:
             self._treeViewModel.append((p,
-                                        (p.denominazione or '')))
-
+                                        (p.denominazione or ''),
+                                        (p.tipo or '')))
 
 
 class AnagraficaPagamentiFilter(AnagraficaFilter):
@@ -96,11 +114,10 @@ class AnagraficaPagamentiFilter(AnagraficaFilter):
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
-                                  anagrafica,
-                                  'anagrafica_pagamenti_filter_table',
-                                  gladeFile='_anagrafica_pagamenti_elements.glade')
+                          anagrafica,
+                          'anagrafica_pagamenti_filter_table',
+                          gladeFile='_anagrafica_pagamenti_elements.glade')
         self._widgetFirstFocus = self.denominazione_filter_entry
-
 
     def clear(self):
         # Annullamento filtro
@@ -114,46 +131,50 @@ class AnagraficaPagamentiDetail(AnagraficaDetail):
 
     def __init__(self, anagrafica):
         AnagraficaDetail.__init__(self,
-                                  anagrafica, gladeFile='_anagrafica_pagamenti_elements.glade')
+                          anagrafica,
+                          gladeFile='_anagrafica_pagamenti_elements.glade')
 
     def setDao(self, dao):
         if dao is None:
-            if "Pagamentilite" in dir(Environment.conf) and Environment.conf.Pagamentilite.mod_enable =="yes":
+            if "Pagamentilite" in dir(Environment.conf) and\
+                         Environment.conf.Pagamentilite.mod_enable =="yes":
                 self.dao = Pagamento()
                 self._anagrafica._newRow((self.dao, ''))
                 self._refresh()
-            elif Environment.engine.name =="sqlite" and Pagamento().count() >= 3:
+            elif Environment.engine.name =="sqlite" and\
+                                         Pagamento().count() >= 3:
                 fenceDialog()
                 return
             else:
                 self.dao = Pagamento()
-                self._anagrafica._newRow((self.dao, ''))
+                self._anagrafica._newRow((self.dao, '',''))
                 self._refresh()
         else:
             self.dao = dao
-
+        return self.dao
 
     def updateDao(self):
         self.dao = Pagamento().getRecord(id=self.dao.id)
         self._refresh()
-
 
     def _refresh(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
         model.set_value(iterator, 0, self.dao)
         model.set_value(iterator, 1, self.dao.denominazione)
-
+        model.set_value(iterator, 2, self.dao.tipo)
 
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
         denominazione = model.get_value(iterator, 1) or ''
+        tipo = model.get_value(iterator, 2) or ''
         if (denominazione == ''):
-            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
+            obligatoryField(self._anagrafica.getTopLevel(),
+                                        self._anagrafica.anagrafica_treeview)
         self.dao.denominazione = denominazione
+        self.dao.tipo = tipo
         self.dao.persist()
-
 
     def deleteDao(self):
         self.dao.delete()

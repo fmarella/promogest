@@ -678,6 +678,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             self.dao.numero = self.numero_movimento_entry.get_text()
 
         self.dao.operazione = self._operazione
+        pbar(self.dialog.pbar,parziale=1, totale=4)
         if self._tipoPersonaGiuridica == "fornitore":
             self.dao.id_fornitore = self.id_persona_giuridica_customcombobox.getId()
             self.dao.id_cliente = None
@@ -690,6 +691,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         righeMovimento = []
         scontiRigheMovimento= []
         #righe = []
+        pbar(self.dialog.pbar,parziale=2, totale=4)
         for i in range(1, len(self._righe)):
             daoRiga = RigaMovimento()
             daoRiga.id_testata_movimento = self.dao.id
@@ -718,15 +720,16 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
             daoRiga.scontiRigheMovimento = scontiRigheMovimento
             #righeMovimento[i] = daoRiga
             righeMovimento.append(daoRiga)
-
+        pbar(self.dialog.pbar,parziale=3, totale=4)
         self.dao.righeMovimento = righeMovimento
 
         self.dao.persist()
+        pbar(self.dialog.pbar,parziale=4, totale=4)
         self.label_numero_righe.hide()
         text = str(len(self.dao.righe))
         self.label_numero_righe.set_text(text)
         self.label_numero_righe.show()
-
+        pbar(self.dialog.pbar,stop=True)
 
     def on_righe_treeview_row_activated(self, treeview, path, column):
         """

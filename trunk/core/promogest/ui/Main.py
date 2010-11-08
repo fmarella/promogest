@@ -167,8 +167,8 @@ class Main(GladeWidget):
                                    self.on_main_iconview_select, model)
 
         self.main_iconview.set_columns(1)
-        self.main_iconview.set_item_width(85)
-        self.main_iconview.set_size_request(120, -1)
+        self.main_iconview.set_item_width(95)
+        self.main_iconview.set_size_request(115, -1)
 
         if self.currentFrame is None:
 #            self.main_hbox.remove(self.box_immagini_iniziali)
@@ -820,7 +820,7 @@ class Main(GladeWidget):
                 try:
                     gobject.idle_add(self.getfeedFromSite)
                 except:
-                    Environment.pg2log.debug("LEGGERO RITARDO NEL RECUPERO DEI FEED")
+                    Environment.pg2log.info("LEGGERO RITARDO NEL RECUPERO DEI FEED")
 
     def renderPage(self, feedToHtml):
         """ show the html page in the custom widget"""
@@ -1268,6 +1268,9 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
         anag = StatisticaGenerale(idMagazzino=None, nome="RICARICO MEDIO e INFLUENZA SULLE VENDITE")
         anagWindow = anag.getTopLevel()
 
+    def on_controllo_fatturato_activate(self, widget):
+        print "CONTROLLO FATTURATO NON GESTITO"
+
     def on_whatcant_button_clicked(self, button):
         url ="http://www.promotux.it/promoGest/whatCanT"
         webbrowser.open_new_tab(url)
@@ -1277,7 +1280,8 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
         anag = StatisticheMagazzino(idMagazzino=None)
         anagWindow = anag.getTopLevel()
 
-#    def on_main_window_key_press_event(self, widget, event):
+    def on_main_window_key_press_event(self, widget, event):
+        return
 #        if event.type == gtk.gdk.KEY_PRESS:
 #            if event.state & gtk.gdk.CONTROL_MASK and (
 #                (event.state & gtk.gdk.MOD2_MASK) or (event.state & gtk.gdk.MOD1_MASK)):

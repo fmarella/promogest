@@ -366,41 +366,60 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHButtonBox" id="export_csv_hbuttonbox">
+          <object class="GtkHBox" id="hbox3">
             <property name="visible">True</property>
-            <property name="spacing">2</property>
-            <property name="layout_style">end</property>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <object class="GtkButton" id="chiudi_button">
-                <property name="label">gtk-close</property>
+              <object class="GtkProgressBar" id="generic_progressbar">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_chiudi_button_clicked"/>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">1</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="esporta_button">
-                <property name="label" translatable="yes">Esporta</property>
+              <object class="GtkHButtonBox" id="export_csv_hbuttonbox">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="image">esporta_img</property>
-                <signal name="clicked" handler="on_esporta_button_clicked"/>
+                <property name="spacing">2</property>
+                <property name="layout_style">end</property>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <object class="GtkButton" id="chiudi_button">
+                    <property name="label">gtk-close</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="use_stock">True</property>
+                    <signal name="clicked" handler="on_chiudi_button_clicked"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="esporta_button">
+                    <property name="label" translatable="yes">Esporta</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">esporta_img</property>
+                    <signal name="clicked" handler="on_esporta_button_clicked"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">2</property>
+                <property name="padding">1</property>
+                <property name="position">1</property>
               </packing>
             </child>
           </object>

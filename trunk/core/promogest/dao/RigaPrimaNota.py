@@ -24,9 +24,20 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
+from migrate import *
+
 
 userTableTable = Table('testata_documento', params['metadata'], autoload=True, schema=params['schema'])
 testata_prima_notaTable=Table('testata_prima_nota', params['metadata'],schema = params['schema'],autoload=True)
+
+if params["tipo_db"] == "sqlite":
+    primanotaFK ='testata_prima_nota.id'
+    testatadocumentoFK ='testata_documento.id'
+    bancaFK = "banca.id"
+else:
+    primanotaFK =params['schema']+'.testata_prima_nota.id'
+    testatadocumentoFK =params['schema']+'.testata_documento.id'
+    bancaFK = params["schema"]+".banca.id"
 
 try:
     rigaprimanota=Table('riga_prima_nota',
@@ -34,15 +45,6 @@ try:
                 schema = params['schema'],
                 autoload=True)
 except:
-    if params["tipo_db"] == "sqlite":
-        primanotaFK ='testata_prima_nota.id'
-        testatadocumentoFK ='testata_documento.id'
-        bancaFK = "banca.id"
-    else:
-        primanotaFK =params['schema']+'.testata_prima_nota.id'
-        testatadocumentoFK =params['schema']+'.testata_documento.id'
-        bancaFK = params["schema"]+".banca.id"
-
     rigaprimanota = Table('riga_prima_nota', params["metadata"],
             Column('id', Integer, primary_key=True),
             Column('denominazione', String(300), nullable=False),
@@ -57,6 +59,10 @@ except:
             schema=params["schema"],
             useexisting=True)
     rigaprimanota.create(checkfirst=True)
+
+if "id_banca" not in [c.name for c in rigaprimanota.columns]:
+    col = Column('id_banca', Integer,ForeignKey(bancaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True)
+    col.create(rigaprimanota)
 
 class RigaPrimaNota(Dao):
 
@@ -75,6 +81,7 @@ class RigaPrimaNota(Dao):
         elif k == 'idTestataPrimaNota':
             dic = {k:rigaprimanota.c.id_testata_prima_nota==v}
         return  dic[k]
+
 
 std_mapper = mapper(RigaPrimaNota,rigaprimanota,properties={
         }, order_by=rigaprimanota.c.id)

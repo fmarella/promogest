@@ -1,10 +1,27 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
-# Author: Dr astico (Pinna Marco) <zoccolodignu@gmail.com>
-# Author: M3nt0r3 <m3nt0r3@gmail.com>
+
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: JJDaNiMoTh <jjdanimoth@gmail.com>
+#    Author: Dr astico  (Marco Pinna)<marco@promotux.it>
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
 
 import gobject
 import datetime
@@ -545,7 +562,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                 obligatoryField(None, msg='Bomboniera nel cliché?')
         if not self.dao.righe and not self.righeTEMP:
             obligatoryField(None, msg='Si sta cercando di creare un documento vuoto.\nInserire le righe della scheda.')
-
+        pbar(self.dialog.pbar,parziale=1, totale=4)
 
         allarmi = []
         if self.dao.numero is None:
@@ -601,7 +618,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                     setPromemoriaSchedaData()
                     allarmi.append(allarme)
         self.dao.promemoria = allarmi
-
+        pbar(self.dialog.pbar,parziale=2, totale=4)
         self.righeTEMP = []
         scontiSuTotale = []#{}
 
@@ -623,7 +640,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
             dialog.destroy()
         self.dao.scontiSuTotale = scontiSuTotale
         self.scontiTEMP = scontiSuTotale
-
+        pbar(self.dialog.pbar,parziale=3, totale=4)
         model = self.articoli_treeview.get_model()
         for m in model:
             self.setRigaTreeview(modelRow = m)
@@ -634,8 +651,9 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.dao.sconti = self.scontiSuTotale
         #self.dao.scontiSuTotale = self.scontiSuTotale
         self.dao.persist()
-
+        pbar(self.dialog.pbar,parziale=4, totale=4)
         #self._refresh()
+        pbar(self.dialog.pbar,stop=True)
 
     def on_associazione_articoli_comboboxentry_changed(self, combobox=None, codart=None):
         if self._loading:

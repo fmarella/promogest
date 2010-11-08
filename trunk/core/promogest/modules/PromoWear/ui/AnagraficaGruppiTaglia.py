@@ -19,6 +19,8 @@
 
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
+
 import gtk
 import gobject
 from promogest.ui.AnagraficaSemplice import Anagrafica,\
@@ -137,6 +139,7 @@ class AnagraficaGruppoTagliaDetail(AnagraficaDetail):
             self._refresh()
         else:
             self.dao = dao
+        return self.dao
 
     def updateDao(self):
         if self.dao is not None:

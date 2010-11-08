@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 2.6 -->
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkDialog" id="print_on_screen_dialog">
     <property name="modal">True</property>
@@ -38,47 +38,13 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="print_on_screen_close_button">
+                <property name="label">gtk-close</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
+                <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_print_on_screen_close_button_clicked"/>
-                <child>
-                  <object class="GtkAlignment" id="alignment524">
-                    <property name="visible">True</property>
-                    <property name="xscale">0</property>
-                    <property name="yscale">0</property>
-                    <child>
-                      <object class="GtkHBox" id="hbox392">
-                        <property name="visible">True</property>
-                        <property name="spacing">2</property>
-                        <child>
-                          <object class="GtkImage" id="image419">
-                            <property name="visible">True</property>
-                            <property name="pixbuf">chiudi16x16.png</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label3479">
-                            <property name="visible">True</property>
-                            <property name="label">C_hiudi</property>
-                            <property name="use_underline">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
               </object>
               <packing>
                 <property name="expand">False</property>

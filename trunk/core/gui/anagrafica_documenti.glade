@@ -11,9 +11,53 @@
     <property name="visible">True</property>
     <property name="stock">gtk-dialog-warning</property>
   </object>
+  <object class="GtkListStore" id="liststore_iva">
+    <columns>
+      <!-- column-name aliquota -->
+      <column type="gchararray"/>
+      <!-- column-name imponibile -->
+      <column type="gchararray"/>
+      <!-- column-name imposta -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Tutti</col>
+        <col id="1" translatable="yes"></col>
+        <col id="2" translatable="yes"></col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Aperto</col>
+        <col id="1" translatable="yes"></col>
+        <col id="2" translatable="yes"></col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Saldato</col>
+        <col id="1" translatable="yes"></col>
+        <col id="2" translatable="yes"></col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name item -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes"></col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Franco</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Assegnato</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkVBox" id="anagrafica_documenti_detail_vbox">
     <property name="visible">True</property>
-    <signal name="key-press-event" handler="on_anagrafica_documenti_detail_vbox_key_press_event" swapped="no"/>
+    <signal name="key_press_event" handler="on_anagrafica_documenti_detail_vbox_key_press_event"/>
     <child>
       <object class="GtkHBox" id="hbox257">
         <property name="visible">True</property>
@@ -59,7 +103,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="relief">none</property>
-                        <signal name="clicked" handler="on_edit_date_and_number_button_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_edit_date_and_number_button_clicked"/>
                         <child>
                           <object class="GtkImage" id="image124">
                             <property name="visible">True</property>
@@ -90,7 +134,7 @@
                       <object class="GtkComboBox" id="id_operazione_combobox">
                         <property name="visible">True</property>
                         <property name="border_width">1</property>
-                        <signal name="changed" handler="on_id_operazione_combobox_changed" swapped="no"/>
+                        <signal name="changed" handler="on_id_operazione_combobox_changed"/>
                       </object>
                       <packing>
                         <property name="position">0</property>
@@ -149,10 +193,10 @@
                 <property name="invisible_char">●</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="secondary_icon_activatable">True</property>
-                <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-                <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-                <signal name="icon-press" handler="on_icon_press" swapped="no"/>
-                <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                <signal name="button_press_event" handler="on_button_press_event"/>
+                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                <signal name="icon_press" handler="on_icon_press"/>
+                <signal name="focus_out_event" handler="on_focus_out_event"/>
               </object>
               <packing>
                 <property name="left_attach">3</property>
@@ -210,7 +254,7 @@
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
                 <property name="shadow_type">in</property>
-                <signal name="focus-out-event" handler="on_end_rent_entry_focus_out_event" swapped="no"/>
+                <signal name="focus_out_event" handler="on_end_rent_entry_focus_out_event"/>
                 <child>
                   <object class="GtkAlignment" id="alignment25">
                     <property name="visible">True</property>
@@ -221,7 +265,7 @@
                         <child>
                           <object class="GtkVBox" id="vbox5">
                             <property name="visible">True</property>
-                            <signal name="focus-out-event" handler="on_end_rent_entry_focus_out_event" swapped="no"/>
+                            <signal name="focus_out_event" handler="on_end_rent_entry_focus_out_event"/>
                             <child>
                               <object class="GtkHBox" id="hbox35_">
                                 <property name="visible">True</property>
@@ -292,7 +336,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">at_image</property>
-                            <signal name="clicked" handler="on_end_rent_entry_focus_out_event" swapped="no"/>
+                            <signal name="clicked" handler="on_end_rent_entry_focus_out_event"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -362,8 +406,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
-                        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-                        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                        <signal name="focus_out_event" handler="on_focus_out_event"/>
                       </object>
                     </child>
                   </object>
@@ -423,8 +467,8 @@
         <property name="tab_hborder">5</property>
         <property name="tab_vborder">1</property>
         <property name="homogeneous">True</property>
-        <signal name="switch-page" handler="on_notebook_switch_page" swapped="no"/>
-        <signal name="select-page" handler="on_notebook_select_page" swapped="no"/>
+        <signal name="switch_page" handler="on_notebook_switch_page"/>
+        <signal name="select_page" handler="on_notebook_select_page"/>
         <child>
           <object class="GtkVBox" id="vbox27">
             <property name="visible">True</property>
@@ -460,7 +504,7 @@
                                     <property name="use_underline">True</property>
                                     <property name="active">True</property>
                                     <property name="draw_indicator">True</property>
-                                    <signal name="toggled" handler="on_codice_item_toggled" swapped="no"/>
+                                    <signal name="toggled" handler="on_codice_item_toggled"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -478,7 +522,7 @@
                                     <property name="use_underline">True</property>
                                     <property name="draw_indicator">True</property>
                                     <property name="group">ricerca_codice_button</property>
-                                    <signal name="toggled" handler="on_codice_item_toggled" swapped="no"/>
+                                    <signal name="toggled" handler="on_codice_item_toggled"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -496,7 +540,7 @@
                                     <property name="use_underline">True</property>
                                     <property name="draw_indicator">True</property>
                                     <property name="group">ricerca_codice_button</property>
-                                    <signal name="toggled" handler="on_codice_item_toggled" swapped="no"/>
+                                    <signal name="toggled" handler="on_codice_item_toggled"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -514,7 +558,7 @@
                                     <property name="use_underline">True</property>
                                     <property name="draw_indicator">True</property>
                                     <property name="group">ricerca_codice_button</property>
-                                    <signal name="toggled" handler="on_codice_item_toggled" swapped="no"/>
+                                    <signal name="toggled" handler="on_codice_item_toggled"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -552,13 +596,13 @@
                                 <property name="secondary_icon_activatable">True</property>
                                 <property name="primary_icon_tooltip_text">Clicca qui per la ricerca</property>
                                 <property name="primary_icon_tooltip_markup">Clicca qui per la ricerca</property>
-                                <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-                                <signal name="changed" handler="on_articolo_entry_insert_text" swapped="no"/>
-                                <signal name="key-press-event" handler="on_articolo_entry_key_press_event" swapped="no"/>
-                                <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-                                <signal name="focus-in-event" handler="on_articolo_entry_focus_in_event" swapped="no"/>
-                                <signal name="icon-press" handler="on_articolo_entry_icon_press" swapped="no"/>
-                                <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                                <signal name="button_press_event" handler="on_button_press_event"/>
+                                <signal name="changed" handler="on_articolo_entry_insert_text"/>
+                                <signal name="key_press_event" handler="on_articolo_entry_key_press_event"/>
+                                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                <signal name="focus_in_event" handler="on_articolo_entry_focus_in_event"/>
+                                <signal name="icon_press" handler="on_articolo_entry_icon_press"/>
+                                <signal name="focus_out_event" handler="on_focus_out_event"/>
                               </object>
                               <packing>
                                 <property name="position">2</property>
@@ -574,7 +618,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="use_stock">True</property>
-                                    <signal name="clicked" handler="on_search_row_button_clicked" swapped="no"/>
+                                    <signal name="clicked" handler="on_search_row_button_clicked"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -594,7 +638,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="toggled" handler="on_promowear_manager_taglia_colore_togglebutton_toggled" swapped="no"/>
+                                <signal name="toggled" handler="on_promowear_manager_taglia_colore_togglebutton_toggled"/>
                                 <child>
                                   <object class="GtkImage" id="promowear_manager_taglia_colore_image">
                                     <property name="visible">True</property>
@@ -663,7 +707,7 @@
                             <child>
                               <object class="GtkComboBox" id="id_magazzino_combobox">
                                 <property name="visible">True</property>
-                                <signal name="changed" handler="on_id_magazzino_combobox_changed" swapped="no"/>
+                                <signal name="changed" handler="on_id_magazzino_combobox_changed"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -690,11 +734,11 @@
                                 <property name="invisible_char">●</property>
                                 <property name="secondary_icon_stock">gtk-clear</property>
                                 <property name="secondary_icon_activatable">True</property>
-                                <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-                                <signal name="insert-text" handler="on_number_insert_text" swapped="no"/>
-                                <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-                                <signal name="icon-press" handler="on_descrizione_entry_icon_press" swapped="no"/>
-                                <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                                <signal name="button_press_event" handler="on_button_press_event"/>
+                                <signal name="insert_text" handler="on_number_insert_text"/>
+                                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                <signal name="icon_press" handler="on_descrizione_entry_icon_press"/>
+                                <signal name="focus_out_event" handler="on_focus_out_event"/>
                               </object>
                               <packing>
                                 <property name="position">3</property>
@@ -705,7 +749,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_multi_line_button_clicked" swapped="no"/>
+                                <signal name="clicked" handler="on_multi_line_button_clicked"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment3">
                                     <property name="visible">True</property>
@@ -1031,9 +1075,9 @@
                                         <property name="can_focus">True</property>
                                         <property name="invisible_char">●</property>
                                         <property name="text" translatable="yes">0.00      </property>
-                                        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-                                        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
-                                        <signal name="focus-out-event" handler="on_show_totali_riga" swapped="no"/>
+                                        <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                        <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                        <signal name="focus_out_event" handler="on_show_totali_riga"/>
                                       </object>
                                     </child>
                                   </object>
@@ -1063,10 +1107,10 @@
                                     <property name="invisible_char">●</property>
                                     <property name="secondary_icon_stock">gtk-clear</property>
                                     <property name="secondary_icon_activatable">True</property>
-                                    <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-                                    <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-                                    <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
-                                    <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+                                    <signal name="button_press_event" handler="on_button_press_event"/>
+                                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                    <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                    <signal name="icon_press" handler="on_icon_press"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1097,7 +1141,7 @@
                                       <object class="CustomComboBoxModify" id="id_listino_customcombobox">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <signal name="clicked" handler="on_id_listino_customcombobox_button_clicked" swapped="no"/>
+                                        <signal name="clicked" handler="on_id_listino_customcombobox_button_clicked"/>
                                       </object>
                                     </child>
                                   </object>
@@ -1139,9 +1183,9 @@
                                                 <property name="can_focus">True</property>
                                                 <property name="invisible_char">●</property>
                                                 <property name="text" translatable="yes">0.00      </property>
-                                                <signal name="key-press-event" handler="on_larghezza_entry_key_press_event" swapped="no"/>
-                                                <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-                                                <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                                                <signal name="key_press_event" handler="on_larghezza_entry_key_press_event"/>
+                                                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                                <signal name="focus_out_event" handler="on_focus_out_event"/>
                                               </object>
                                               <packing>
                                                 <property name="position">1</property>
@@ -1163,9 +1207,9 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="invisible_char">●</property>
-                                                <signal name="key-press-event" handler="on_altezza_entry_key_press_event" swapped="no"/>
-                                                <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-                                                <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                                                <signal name="key_press_event" handler="on_altezza_entry_key_press_event"/>
+                                                <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                                <signal name="focus_out_event" handler="on_focus_out_event"/>
                                               </object>
                                               <packing>
                                                 <property name="position">3</property>
@@ -1286,10 +1330,11 @@
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="invisible_char">●</property>
-                                                    <signal name="focus-out-event" handler="on_quantita_entry_focus_out_event" swapped="no"/>
-                                                    <signal name="focus-out-event" handler="on_show_totali_riga" swapped="no"/>
-                                                    <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
-                                                    <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                                                    <property name="text" translatable="yes">0.00      </property>
+                                                    <signal name="focus_out_event" handler="on_quantita_entry_focus_out_event"/>
+                                                    <signal name="focus_out_event" handler="on_show_totali_riga"/>
+                                                    <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                                    <signal name="focus_in_event" handler="on_focus_in_event"/>
                                                   </object>
                                                 </child>
                                               </object>
@@ -1314,10 +1359,10 @@
                                                     <property name="can_focus">True</property>
                                                     <property name="invisible_char">●</property>
                                                     <property name="text" translatable="yes">0.00      </property>
-                                                    <signal name="key-press-event" handler="on_prezzo_lordo_entry_key_press_event" swapped="no"/>
-                                                    <signal name="focus-out-event" handler="on_show_totali_riga" swapped="no"/>
-                                                    <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
-                                                    <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                                                    <signal name="key_press_event" handler="on_prezzo_lordo_entry_key_press_event"/>
+                                                    <signal name="focus_out_event" handler="on_show_totali_riga"/>
+                                                    <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                                    <signal name="focus_in_event" handler="on_focus_in_event"/>
                                                   </object>
                                                 </child>
                                               </object>
@@ -1339,7 +1384,7 @@
                                                   <object class="CustomComboBoxModify" id="id_multiplo_customcombobox">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <signal name="clicked" handler="on_id_multiplo_customcombobox_button_clicked" swapped="no"/>
+                                                    <signal name="clicked" handler="on_id_multiplo_customcombobox_button_clicked"/>
                                                   </object>
                                                 </child>
                                               </object>
@@ -1364,9 +1409,9 @@
                                                     <property name="can_focus">True</property>
                                                     <property name="invisible_char">●</property>
                                                     <property name="text" translatable="yes">0.00      </property>
-                                                    <signal name="focus-out-event" handler="on_quantita_entry_focus_out_event" swapped="no"/>
-                                                    <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
-                                                    <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                                                    <signal name="focus_out_event" handler="on_moltiplicatore_entry_focus_out_event"/>
+                                                    <signal name="focus_out_event" handler="on_focus_out_event"/>
+                                                    <signal name="focus_in_event" handler="on_focus_in_event"/>
                                                   </object>
                                                 </child>
                                               </object>
@@ -1401,8 +1446,8 @@
                                                     <property name="can_focus">True</property>
                                                     <property name="max_length">3</property>
                                                     <property name="invisible_char">●</property>
-                                                    <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-                                                    <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+                                                    <signal name="focus_in_event" handler="on_focus_in_event"/>
+                                                    <signal name="focus_out_event" handler="on_focus_out_event"/>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -1499,7 +1544,7 @@
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">False</property>
                                                 <property name="draw_indicator">True</property>
-                                                <signal name="toggled" handler="on_rent_checkbutton_toggled" swapped="no"/>
+                                                <signal name="toggled" handler="on_rent_checkbutton_toggled"/>
                                               </object>
                                               <packing>
                                                 <property name="left_attach">2</property>
@@ -1530,7 +1575,7 @@
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">True</property>
                                                     <accelerator key="F11" signal="clicked"/>
-                                                    <signal name="clicked" handler="on_scorporo_button_clicked" swapped="no"/>
+                                                    <signal name="clicked" handler="on_scorporo_button_clicked"/>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -1751,7 +1796,7 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">True</property>
-                                                <signal name="clicked" handler="on_variazione_listini_button_clicked" swapped="no"/>
+                                                <signal name="clicked" handler="on_variazione_listini_button_clicked"/>
                                                 <child>
                                                   <object class="GtkAlignment" id="alignment216">
                                                     <property name="visible">True</property>
@@ -1800,7 +1845,7 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">True</property>
-                                                <signal name="clicked" handler="on_storico_listini_button_clicked" swapped="no"/>
+                                                <signal name="clicked" handler="on_storico_listini_button_clicked"/>
                                                 <child>
                                                   <object class="GtkAlignment" id="alignment196">
                                                     <property name="visible">True</property>
@@ -1849,7 +1894,7 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">True</property>
-                                                <signal name="clicked" handler="on_storico_costi_button_clicked" swapped="no"/>
+                                                <signal name="clicked" handler="on_storico_costi_button_clicked"/>
                                                 <child>
                                                   <object class="GtkAlignment" id="alignment195">
                                                     <property name="visible">True</property>
@@ -1985,10 +2030,9 @@
                         <property name="enable_search">False</property>
                         <property name="show_expanders">False</property>
                         <property name="enable_grid_lines">both</property>
-                        <signal name="drag-begin" handler="on_righe_treeview_drag_begin" swapped="no"/>
-                        <signal name="row-activated" handler="on_righe_treeview_row_activated" swapped="no"/>
-                        <signal name="drag-data-received" handler="on_righe_treeview_drag_data_received" swapped="no"/>
-                        <signal name="drag-leave" handler="on_righe_treeview_drag_leave" swapped="no"/>
+                        <signal name="drag_begin" handler="on_righe_treeview_drag_begin"/>
+                        <signal name="row_activated" handler="on_righe_treeview_row_activated"/>
+                        <signal name="drag_leave" handler="on_righe_treeview_drag_leave"/>
                       </object>
                     </child>
                   </object>
@@ -2010,7 +2054,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <accelerator key="F6" signal="clicked"/>
-                        <signal name="clicked" handler="on_confirm_row_withoutclean_button_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_confirm_row_withoutclean_button_clicked"/>
                         <child>
                           <object class="GtkAlignment" id="alignment10">
                             <property name="visible">True</property>
@@ -2061,7 +2105,7 @@
                         <property name="receives_default">True</property>
                         <property name="has_tooltip">True</property>
                         <accelerator key="F4" signal="clicked"/>
-                        <signal name="clicked" handler="on_confirm_row_button_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_confirm_row_button_clicked"/>
                         <child>
                           <object class="GtkAlignment" id="alignment49">
                             <property name="visible">True</property>
@@ -2110,7 +2154,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_undo_row_button_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_undo_row_button_clicked"/>
                         <child>
                           <object class="GtkAlignment" id="alignment86">
                             <property name="visible">True</property>
@@ -2158,7 +2202,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_new_row_button_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_new_row_button_clicked"/>
                         <child>
                           <object class="GtkAlignment" id="alignment87">
                             <property name="visible">True</property>
@@ -2206,7 +2250,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_delete_row_button_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_delete_row_button_clicked"/>
                         <child>
                           <object class="GtkAlignment" id="alignment50">
                             <property name="visible">True</property>
@@ -2358,7 +2402,7 @@
 I Totali sono frutto di una variazione sconto visibile
 nella sezione riepiloghi</property>
                         <property name="image">avvertimento_sconto_image</property>
-                        <signal name="clicked" handler="on_avvertimento_sconti_button_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_avvertimento_sconti_button_clicked"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -2529,7 +2573,7 @@ _
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_incaricato_trasporto_radiobutton_toggled" swapped="no"/>
+                        <signal name="toggled" handler="on_incaricato_trasporto_radiobutton_toggled"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -2546,7 +2590,7 @@ _
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">destinatario_radiobutton</property>
-                        <signal name="toggled" handler="on_incaricato_trasporto_radiobutton_toggled" swapped="no"/>
+                        <signal name="toggled" handler="on_incaricato_trasporto_radiobutton_toggled"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -2563,7 +2607,7 @@ _
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">destinatario_radiobutton</property>
-                        <signal name="toggled" handler="on_incaricato_trasporto_radiobutton_toggled" swapped="no"/>
+                        <signal name="toggled" handler="on_incaricato_trasporto_radiobutton_toggled"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -2718,7 +2762,7 @@ _
                 <property name="invisible_char">●</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="secondary_icon_activatable">True</property>
-                <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+                <signal name="icon_press" handler="on_icon_press"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -2882,7 +2926,7 @@ _
               <object class="CustomComboBoxModify" id="id_destinazione_merce_customcombobox">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <signal name="clicked" handler="on_id_destinazione_merce_customcombobox_button_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_id_destinazione_merce_customcombobox_button_clicked"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -2933,7 +2977,7 @@ _
               <object class="CustomComboBoxSearch" id="id_vettore_customcombobox">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <signal name="changed" handler="on_combobox_vettore_search_clicked" swapped="no"/>
+                <signal name="changed" handler="on_combobox_vettore_search_clicked"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -3522,145 +3566,13 @@ _
           </packing>
         </child>
         <child>
-          <object class="GtkTable" id="table29">
+          <object class="GtkVBox" id="pagamenti_vbox">
             <property name="visible">True</property>
-            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-            <property name="n_rows">15</property>
-            <property name="n_columns">8</property>
-            <property name="column_spacing">1</property>
-            <property name="row_spacing">2</property>
-            <child>
-              <object class="GtkFrame" id="totali_frame">
-                <property name="visible">True</property>
-                <property name="label_xalign">0</property>
-                <property name="shadow_type">in</property>
-                <child>
-                  <object class="GtkAlignment" id="alignment19">
-                    <property name="visible">True</property>
-                    <property name="left_padding">12</property>
-                    <child>
-                      <object class="GtkHBox" id="hbox24">
-                        <property name="visible">True</property>
-                        <child>
-                          <object class="GtkLabel" id="label284">
-                            <property name="visible">True</property>
-                            <property name="xalign">0</property>
-                            <property name="label" translatable="yes">&lt;span weight="bold"&gt;Totale Pagato:&lt;/span&gt;</property>
-                            <property name="use_markup">True</property>
-                          </object>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="totale_pagato_scadenza_label">
-                            <property name="visible">True</property>
-                            <property name="xalign">0</property>
-                            <property name="use_markup">True</property>
-                          </object>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label283">
-                            <property name="visible">True</property>
-                            <property name="xalign">0</property>
-                            <property name="label" translatable="yes"> &lt;span weight="bold"&gt;Totale Sospeso&lt;/span&gt;</property>
-                            <property name="use_markup">True</property>
-                          </object>
-                          <packing>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="totale_sospeso_scadenza_label">
-                            <property name="visible">True</property>
-                            <property name="xalign">0</property>
-                            <property name="use_markup">True</property>
-                          </object>
-                          <packing>
-                            <property name="position">3</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="label">
-                  <object class="GtkLabel" id="label23">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Totali&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="top_attach">4</property>
-                <property name="bottom_attach">5</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkFrame" id="stato_pagamento_frame">
-                <property name="visible">True</property>
-                <property name="label_xalign">0</property>
-                <property name="shadow_type">in</property>
-                <child>
-                  <object class="GtkAlignment" id="alignment18">
-                    <property name="visible">True</property>
-                    <property name="left_padding">12</property>
-                    <child>
-                      <object class="GtkVBox" id="vbox4">
-                        <property name="visible">True</property>
-                        <child>
-                          <object class="GtkComboBox" id="stato_pagamento_combbox">
-                            <property name="visible">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkCheckButton" id="saldato_scadenza_checkbutton">
-                            <property name="label" translatable="yes">Documento Saldato</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="use_underline">True</property>
-                            <property name="draw_indicator">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child type="label">
-                  <object class="GtkLabel" id="label22">
-                    <property name="visible">True</property>
-                    <property name="xpad">6</property>
-                    <property name="ypad">2</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Stato pagamento&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="right_attach">2</property>
-                <property name="x_options">GTK_FILL</property>
-              </packing>
-            </child>
             <child>
               <object class="GtkFrame" id="scadenze_pagamenti_frame">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
-                <property name="shadow_type">none</property>
+                <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkAlignment" id="alignment17">
                     <property name="visible">True</property>
@@ -3668,235 +3580,517 @@ _
                     <child>
                       <object class="GtkVBox" id="vbox3">
                         <property name="visible">True</property>
+                        <property name="spacing">5</property>
                         <child>
                           <object class="GtkHBox" id="hbox21">
                             <property name="visible">True</property>
+                            <property name="spacing">5</property>
                             <child>
-                              <object class="GtkLabel" id="label312">
+                              <object class="GtkLabel" id="data_acconto_label">
+                                <property name="width_request">130</property>
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
                                 <property name="label" translatable="yes">  Acconto del </property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
                               <object class="DateWidget" id="data_acconto_entry">
+                                <property name="width_request">150</property>
                                 <property name="visible">True</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label311">
+                              <object class="GtkLabel" id="importo_acconto_scadenza_label">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="xpad">2</property>
-                                <property name="ypad">2</property>
-                                <property name="label" translatable="yes">  Importo</property>
+                                <property name="label" translatable="yes">Importo</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
                             <child>
                               <object class="UnsignedMoneyEntryField" id="importo_acconto_scadenza_entry">
+                                <property name="width_request">100</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
+                                <property name="text" translatable="yes">0.00      </property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">3</property>
                               </packing>
                             </child>
                             <child>
-                              <placeholder/>
+                              <object class="GtkLabel" id="primo_pagamento_label1">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Pagata per:</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">4</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder/>
+                              <object class="CustomComboBoxModify" id="id_pagamento_acconto_customcombobox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">5</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder/>
+                              <object class="GtkLabel" id="data_pagamento_acconto_label">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">il</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">6</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder/>
+                              <object class="DateWidget" id="data_pagamento_acconto_entry">
+                                <property name="width_request">150</property>
+                                <property name="visible">True</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">7</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="edit_acconto_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="relief">none</property>
+                                <signal name="clicked" handler="on_edit_acconto_button_clicked"/>
+                                <child>
+                                  <object class="GtkImage" id="image10">
+                                    <property name="visible">True</property>
+                                    <property name="pixbuf">modifica24x24.png</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">8</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="pulisci_acconto_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="image">pulisci_prima_rata_image1</property>
+                                <signal name="clicked" handler="on_pulisci_acconto_button_clicked"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">9</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="pn_label_acconto">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">PN</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">10</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="pn_acconto_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="relief">none</property>
+                                <signal name="clicked" handler="on_pn_acconto_button_clicked"/>
+                                <child>
+                                  <object class="GtkImage" id="pn_quarta_rata_image4">
+                                    <property name="visible">True</property>
+                                    <property name="pixbuf">active_on.png</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">11</property>
+                              </packing>
                             </child>
                           </object>
                           <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkHBox" id="hbox13">
+                          <object class="GtkHBox" id="prima_scadenza_hbox">
                             <property name="visible">True</property>
-                            <property name="spacing">2</property>
+                            <property name="spacing">5</property>
                             <child>
-                              <object class="GtkLabel" id="label310">
+                              <object class="GtkLabel" id="data_prima_scadenza_label">
+                                <property name="width_request">130</property>
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">  Prima scadenza</property>
+                                <property name="label" translatable="yes">Prima scadenza</property>
                               </object>
                               <packing>
-                                <property name="padding">8</property>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
                               <object class="DateWidget" id="data_prima_scadenza_entry">
+                                <property name="width_request">150</property>
                                 <property name="visible">True</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label306">
+                              <object class="GtkLabel" id="importo_prima_scadenza_label">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="xpad">2</property>
-                                <property name="ypad">2</property>
-                                <property name="label" translatable="yes"> Importo</property>
+                                <property name="label" translatable="yes">Importo</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
                             <child>
                               <object class="UnsignedMoneyEntryField" id="importo_prima_scadenza_entry">
+                                <property name="width_request">100</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
+                                <property name="text" translatable="yes">0.00      </property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">3</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label302">
+                              <object class="GtkLabel" id="primo_pagamento_label">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">  Pagata per:</property>
+                                <property name="label" translatable="yes">Pagata per:</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">4</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkEntry" id="primo_pagamento_entry">
+                              <object class="CustomComboBoxModify" id="id_pagamento_prima_scadenza_customcombobox">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <property name="invisible_char">●</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">5</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label296">
+                              <object class="GtkLabel" id="data_pagamento_prima_scadenza_label">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">  il</property>
+                                <property name="label" translatable="yes">il</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">6</property>
                               </packing>
                             </child>
                             <child>
                               <object class="DateWidget" id="data_pagamento_prima_scadenza_entry">
+                                <property name="width_request">150</property>
                                 <property name="visible">True</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">7</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="edit_prima_rata_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="relief">none</property>
+                                <signal name="clicked" handler="on_edit_prima_rata_button_clicked"/>
+                                <child>
+                                  <object class="GtkImage" id="image6">
+                                    <property name="visible">True</property>
+                                    <property name="pixbuf">modifica24x24.png</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">8</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="pulisci_prima_rata_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="image">pulisci_prima_rata_image</property>
+                                <signal name="clicked" handler="on_pulisci_prima_rata_button_clicked"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">9</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="pn_label_quattro3">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">PN</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">10</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="pn_prima_rata_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="relief">none</property>
+                                <signal name="clicked" handler="on_pn_prima_rata_button_clicked"/>
+                                <child>
+                                  <object class="GtkImage" id="pn_quarta_rata_image2">
+                                    <property name="visible">True</property>
+                                    <property name="pixbuf">active_on.png</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">11</property>
                               </packing>
                             </child>
                           </object>
                           <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
                           <object class="GtkHBox" id="hbox14">
                             <property name="visible">True</property>
+                            <property name="spacing">5</property>
                             <child>
-                              <object class="GtkLabel" id="label309">
+                              <object class="GtkLabel" id="data_seconda_scadenza_label">
+                                <property name="width_request">130</property>
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">  Seconda scadenza</property>
+                                <property name="label" translatable="yes">Seconda scadenza</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
                               <object class="DateWidget" id="data_seconda_scadenza_entry">
+                                <property name="width_request">150</property>
                                 <property name="visible">True</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label305">
+                              <object class="GtkLabel" id="importo_seconda_scadenza_label">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="xpad">2</property>
-                                <property name="ypad">2</property>
-                                <property name="label" translatable="yes"> Importo</property>
+                                <property name="label" translatable="yes">Importo</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
                             <child>
                               <object class="UnsignedMoneyEntryField" id="importo_seconda_scadenza_entry">
+                                <property name="width_request">100</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
+                                <property name="text" translatable="yes">0.00      </property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">3</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label301">
+                              <object class="GtkLabel" id="secondo_pagamento_label">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">  Pagata per:</property>
+                                <property name="label" translatable="yes">Pagata per:</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">4</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkEntry" id="secondo_pagamento_entry">
+                              <object class="CustomComboBoxModify" id="id_pagamento_seconda_scadenza_customcombobox">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <property name="invisible_char">●</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">5</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label289">
+                              <object class="GtkLabel" id="data_pagamento_seconda_scadenza_label">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">  il</property>
+                                <property name="label" translatable="yes">il</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">6</property>
                               </packing>
                             </child>
                             <child>
                               <object class="DateWidget" id="data_pagamento_seconda_scadenza_entry">
+                                <property name="width_request">150</property>
                                 <property name="visible">True</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">7</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="edit_seconda_rata_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="relief">none</property>
+                                <signal name="clicked" handler="on_edit_seconda_rata_button_clicked"/>
+                                <child>
+                                  <object class="GtkImage" id="image7">
+                                    <property name="visible">True</property>
+                                    <property name="pixbuf">modifica24x24.png</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">8</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="pulisci_seconda_rata_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="image">pulisci_seconda_rata_image</property>
+                                <signal name="clicked" handler="on_pulisci_seconda_rata_button_clicked"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">9</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="pn_label_quattro2">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">PN</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">10</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="pn_seconda_rata_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="relief">none</property>
+                                <signal name="clicked" handler="on_pn_seconda_rata_button_clicked"/>
+                                <child>
+                                  <object class="GtkImage" id="pn_quarta_rata_image1">
+                                    <property name="visible">True</property>
+                                    <property name="pixbuf">active_on.png</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">11</property>
                               </packing>
                             </child>
                           </object>
@@ -3905,86 +4099,168 @@ _
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkHBox" id="hbox15">
+                          <object class="GtkHBox" id="terza_scadenza_hbox">
                             <property name="visible">True</property>
+                            <property name="spacing">5</property>
                             <child>
-                              <object class="GtkLabel" id="label308">
+                              <object class="GtkLabel" id="data_terza_scadenza_label">
+                                <property name="width_request">130</property>
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">  Terza scadenza</property>
+                                <property name="label" translatable="yes">Terza scadenza</property>
                               </object>
                               <packing>
-                                <property name="padding">10</property>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
                               <object class="DateWidget" id="data_terza_scadenza_entry">
+                                <property name="width_request">150</property>
                                 <property name="visible">True</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label304">
+                              <object class="GtkLabel" id="importo_terza_scadenza_label">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="xpad">2</property>
-                                <property name="ypad">2</property>
-                                <property name="label" translatable="yes"> Importo</property>
+                                <property name="label" translatable="yes">Importo</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
                             <child>
                               <object class="UnsignedMoneyEntryField" id="importo_terza_scadenza_entry">
+                                <property name="width_request">100</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
+                                <property name="text" translatable="yes">0.00      </property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">3</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label300">
+                              <object class="GtkLabel" id="terzo_pagamento_label">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">  Pagata per:</property>
+                                <property name="label" translatable="yes">Pagata per:</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">4</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkEntry" id="terzo_pagamento_entry">
+                              <object class="CustomComboBoxModify" id="id_pagamento_terza_scadenza_customcombobox">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <property name="invisible_char">●</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">5</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label288">
+                              <object class="GtkLabel" id="data_pagamento_terza_scadenza_label">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">  il</property>
+                                <property name="label" translatable="yes">il</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">6</property>
                               </packing>
                             </child>
                             <child>
                               <object class="DateWidget" id="data_pagamento_terza_scadenza_entry">
+                                <property name="width_request">150</property>
                                 <property name="visible">True</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">7</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="edit_terza_rata_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="relief">none</property>
+                                <signal name="clicked" handler="on_edit_terza_rata_button_clicked"/>
+                                <child>
+                                  <object class="GtkImage" id="image8">
+                                    <property name="visible">True</property>
+                                    <property name="pixbuf">modifica24x24.png</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">8</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="pulisci_terza_rata_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="image">pulisci_seconda_rata_image1</property>
+                                <signal name="clicked" handler="on_pulisci_terza_rata_button_clicked"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">9</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="pn_label_quattro1">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">PN</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">10</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="pn_terza_rata_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="relief">none</property>
+                                <signal name="clicked" handler="on_pn_terza_rata_button_clicked"/>
+                                <child>
+                                  <object class="GtkImage" id="pn_quarta_rata_image3">
+                                    <property name="visible">True</property>
+                                    <property name="pixbuf">active_on.png</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">11</property>
                               </packing>
                             </child>
                           </object>
@@ -3995,84 +4271,166 @@ _
                         <child>
                           <object class="GtkHBox" id="hbox16">
                             <property name="visible">True</property>
+                            <property name="spacing">5</property>
                             <child>
-                              <object class="GtkLabel" id="label307">
+                              <object class="GtkLabel" id="quarta_scadenza_label">
+                                <property name="width_request">130</property>
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">  Quarta scadenza</property>
+                                <property name="label" translatable="yes">Quarta scadenza</property>
                               </object>
                               <packing>
-                                <property name="padding">5</property>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
                               <object class="DateWidget" id="data_quarta_scadenza_entry">
+                                <property name="width_request">150</property>
                                 <property name="visible">True</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label303">
+                              <object class="GtkLabel" id="importo_quarta_scadenza_label">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="xpad">2</property>
-                                <property name="ypad">2</property>
-                                <property name="label" translatable="yes"> Importo</property>
+                                <property name="label" translatable="yes">Importo</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
                             <child>
                               <object class="UnsignedMoneyEntryField" id="importo_quarta_scadenza_entry">
+                                <property name="width_request">100</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
+                                <property name="text" translatable="yes">0.00      </property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">3</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label297">
+                              <object class="GtkLabel" id="quarto_pagamento_label">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">  Pagata per:</property>
+                                <property name="label" translatable="yes">Pagata per:</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">4</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkEntry" id="quarto_pagamento_entry">
+                              <object class="CustomComboBoxModify" id="id_pagamento_quarta_scadenza_customcombobox">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <property name="invisible_char">●</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">5</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="label287">
+                              <object class="GtkLabel" id="data_pagamento_quarta_scadenza_label">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">  il</property>
+                                <property name="label" translatable="yes">il</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">6</property>
                               </packing>
                             </child>
                             <child>
                               <object class="DateWidget" id="data_pagamento_quarta_scadenza_entry">
+                                <property name="width_request">150</property>
                                 <property name="visible">True</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">7</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="edit_quarta_rata_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="relief">none</property>
+                                <signal name="clicked" handler="on_edit_quarta_rata_button_clicked"/>
+                                <child>
+                                  <object class="GtkImage" id="image9">
+                                    <property name="visible">True</property>
+                                    <property name="pixbuf">modifica24x24.png</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">8</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="pulisci_quarta_rata_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="image">pulisci_seconda_rata_image2</property>
+                                <signal name="clicked" handler="on_pulisci_quarta_rata_button_clicked"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">9</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="pn_label_quattro">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">PN</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">10</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="pn_quarta_rata_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="relief">none</property>
+                                <signal name="clicked" handler="on_pn_quarta_rata_button_clicked"/>
+                                <child>
+                                  <object class="GtkImage" id="pn_quarta_rata_image">
+                                    <property name="visible">True</property>
+                                    <property name="pixbuf">active_on.png</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">11</property>
                               </packing>
                             </child>
                           </object>
@@ -4087,7 +4445,7 @@ _
                 <child type="label">
                   <object class="GtkLabel" id="label19">
                     <property name="visible">True</property>
-                    <property name="xpad">5</property>
+                    <property name="xpad">10</property>
                     <property name="ypad">2</property>
                     <property name="label" translatable="yes">&lt;b&gt;Scadenze e Pagamenti&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
@@ -4095,9 +4453,9 @@ _
                 </child>
               </object>
               <packing>
-                <property name="right_attach">8</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">3</property>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -4115,17 +4473,18 @@ _
                         <child>
                           <object class="GtkHBox" id="hbox18">
                             <property name="visible">True</property>
-                            <property name="spacing">2</property>
+                            <property name="spacing">5</property>
                             <child>
                               <object class="GtkLabel" id="label26">
+                                <property name="width_request">130</property>
                                 <property name="visible">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">Nota di Credito n. </property>
+                                <property name="label" translatable="yes">Nota di Credito n.</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
-                                <property name="padding">3</property>
+                                <property name="fill">False</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
@@ -4136,6 +4495,8 @@ _
                                 <property name="invisible_char">●</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -4145,7 +4506,7 @@ _
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <signal name="clicked" handler="on_seleziona_prima_nota_button_clicked" swapped="no"/>
+                                <signal name="clicked" handler="on_seleziona_prima_nota_button_clicked"/>
                                 <child>
                                   <object class="GtkHBox" id="hbox25">
                                     <property name="visible">True</property>
@@ -4175,6 +4536,7 @@ _
                               </object>
                               <packing>
                                 <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -4183,11 +4545,11 @@ _
                                 <property name="visible">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <property name="xalign">0</property>
-                                <property name="xpad">2</property>
-                                <property name="label" translatable="yes">  Importo:</property>
+                                <property name="label" translatable="yes">Importo:</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">3</property>
                               </packing>
                             </child>
@@ -4196,22 +4558,28 @@ _
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
+                                <property name="text" translatable="yes">0.00      </property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">4</property>
                               </packing>
                             </child>
                           </object>
                           <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
                           <object class="GtkHBox" id="hbox20">
                             <property name="visible">True</property>
-                            <property name="spacing">2</property>
+                            <property name="spacing">5</property>
                             <child>
                               <object class="GtkLabel" id="label39">
+                                <property name="width_request">130</property>
                                 <property name="visible">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <property name="xalign">0</property>
@@ -4219,7 +4587,7 @@ _
                               </object>
                               <packing>
                                 <property name="expand">False</property>
-                                <property name="padding">4</property>
+                                <property name="fill">False</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
@@ -4230,6 +4598,8 @@ _
                                 <property name="invisible_char">●</property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -4240,7 +4610,7 @@ _
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <signal name="clicked" handler="on_seleziona_seconda_nota_button_clicked" swapped="no"/>
+                                <signal name="clicked" handler="on_seleziona_seconda_nota_button_clicked"/>
                                 <child>
                                   <object class="GtkHBox" id="hbox26">
                                     <property name="visible">True</property>
@@ -4270,6 +4640,7 @@ _
                               </object>
                               <packing>
                                 <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -4279,10 +4650,11 @@ _
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <property name="xalign">0</property>
                                 <property name="xpad">2</property>
-                                <property name="label" translatable="yes">  Importo:</property>
+                                <property name="label" translatable="yes">Importo:</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">3</property>
                               </packing>
                             </child>
@@ -4291,13 +4663,19 @@ _
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
+                                <property name="text" translatable="yes">0.00      </property>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
                                 <property name="position">4</property>
                               </packing>
                             </child>
                           </object>
                           <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="padding">5</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
@@ -4316,412 +4694,318 @@ _
                 </child>
               </object>
               <packing>
-                <property name="right_attach">5</property>
-                <property name="top_attach">3</property>
-                <property name="bottom_attach">4</property>
-                <property name="y_options"></property>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="hbox8">
+              <object class="GtkFrame" id="totali_frame">
                 <property name="visible">True</property>
-                <property name="spacing">10</property>
-                <property name="homogeneous">True</property>
+                <property name="label_xalign">0</property>
+                <property name="shadow_type">in</property>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <object class="GtkButton" id="calcola_importi_scadenza_button">
+                  <object class="GtkAlignment" id="alignment19">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                    <signal name="clicked" handler="on_calcola_importi_scadenza_button_clicked" swapped="no"/>
+                    <property name="left_padding">12</property>
                     <child>
-                      <object class="GtkHBox" id="hbox23">
+                      <object class="GtkVBox" id="vbox7">
                         <property name="visible">True</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <child>
-                          <object class="GtkImage" id="image19">
+                          <object class="GtkHBox" id="hbox24">
                             <property name="visible">True</property>
-                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="pixbuf">totale24x24.png</property>
+                            <property name="spacing">5</property>
+                            <child>
+                              <object class="GtkLabel" id="totale_label_label">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">&lt;span size="xx-large" weight="bold"&gt;Totale Doc&lt;/span&gt;</property>
+                                <property name="use_markup">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="totale_in_pagamenti_label">
+                                <property name="visible">True</property>
+                                <property name="xalign">0.029999999329447746</property>
+                                <property name="label" translatable="yes">0</property>
+                                <property name="use_markup">True</property>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="totale_pagato_label_label">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">&lt;span size="xx-large" weight="bold"&gt;Totale Pagato:&lt;/span&gt;</property>
+                                <property name="use_markup">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="totale_pagato_scadenza_label">
+                                <property name="visible">True</property>
+                                <property name="xalign">0.049999997019767761</property>
+                                <property name="label" translatable="yes">0</property>
+                                <property name="use_markup">True</property>
+                              </object>
+                              <packing>
+                                <property name="position">3</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="totale_sospeso_label_label">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes"> &lt;span size="xx-large" weight="bold"&gt;Totale Sospeso&lt;/span&gt;</property>
+                                <property name="use_markup">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">4</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="totale_sospeso_scadenza_label">
+                                <property name="visible">True</property>
+                                <property name="xalign">0.049999997019767761</property>
+                                <property name="label" translatable="yes">0</property>
+                                <property name="use_markup">True</property>
+                              </object>
+                              <packing>
+                                <property name="position">5</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
+                            <property name="padding">4</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="label20">
+                          <object class="GtkHBox" id="hbox7">
                             <property name="visible">True</property>
-                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="label" translatable="yes">Calcola Importi Scadenza</property>
+                            <child>
+                              <object class="GtkLabel" id="stato_label_label">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">&lt;span size="xx-large" weight="bold"&gt;Stato:&lt;/span&gt;</property>
+                                <property name="use_markup">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="stato_label">
+                                <property name="visible">True</property>
+                                <property name="xalign">0.029999999329447746</property>
+                                <property name="label" translatable="yes">STATO</property>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="metodo_pagamento_label_label">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">&lt;span size="xx-large" weight="bold"&gt;Metodo di Pagamento:&lt;/span&gt;</property>
+                                <property name="use_markup">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="metodo_pagamento_label">
+                                <property name="visible">True</property>
+                                <property name="xalign">0.029999999329447746</property>
+                                <property name="label" translatable="yes">Metodo pagamento</property>
+                              </object>
+                              <packing>
+                                <property name="position">3</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
                             <property name="position">1</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkHBox" id="hbox8">
+                            <property name="visible">True</property>
+                            <child>
+                              <object class="GtkLabel" id="stato_label_label1">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">&lt;span size="xx-large" weight="bold"&gt;Note:&lt;/span&gt;</property>
+                                <property name="use_markup">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="stato_label1">
+                                <property name="visible">True</property>
+                                <property name="xalign">0.029999999329447746</property>
+                                <property name="label" translatable="yes">NOTE</property>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
                       </object>
                     </child>
                   </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLabel" id="label23">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Totali&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHButtonBox" id="hbuttonbox1">
+                <property name="visible">True</property>
+                <property name="spacing">1</property>
+                <property name="layout_style">center</property>
+                <child>
+                  <object class="GtkButton" id="aggiorna_pagamenti_button">
+                    <property name="label">gtk-refresh</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="use_stock">True</property>
+                    <signal name="clicked" handler="on_aggiorna_pagamenti_button_clicked"/>
+                  </object>
                   <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="calcola_importi_scadenza_button">
+                    <property name="label" translatable="yes">(Ri) Calcola Importi
+Automaticamente</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                    <property name="image">calcola_importi_image</property>
+                    <signal name="clicked" handler="on_calcola_importi_scadenza_button_clicked"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="controlla_rate_scadenza_button">
+                  <object class="GtkButton" id="pulisci_scadenza_button">
+                    <property name="label">gtk-clear</property>
                     <property name="height_request">40</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                    <signal name="clicked" handler="on_controlla_rate_scadenza_button_clicked" swapped="no"/>
-                    <child>
-                      <object class="GtkHBox" id="hbox17">
-                        <property name="visible">True</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                        <child>
-                          <object class="GtkImage" id="image11">
-                            <property name="visible">True</property>
-                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="pixbuf">modifica24x24.png</property>
-                          </object>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label16">
-                            <property name="visible">True</property>
-                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="label" translatable="yes">Controlla Rate</property>
-                          </object>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
+                    <property name="use_stock">True</property>
+                    <signal name="clicked" handler="on_pulisci_scadenza_button_clicked"/>
                   </object>
                   <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
                     <property name="position">2</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="pulisci_scadenza_button">
-                    <property name="height_request">40</property>
+                  <object class="GtkButton" id="apri_pagamento_documento_button">
+                    <property name="label" translatable="yes">(Ri) Apri Pagamento
+    Documento</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                    <signal name="clicked" handler="on_pulisci_scadenza_button_clicked" swapped="no"/>
-                    <child>
-                      <object class="GtkHBox" id="hbox19">
-                        <property name="visible">True</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                        <child>
-                          <object class="GtkImage" id="image28">
-                            <property name="visible">True</property>
-                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="pixbuf">pulisci24x24.png</property>
-                          </object>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label21">
-                            <property name="visible">True</property>
-                            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                            <property name="label" translatable="yes">Pulisci</property>
-                          </object>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
+                    <signal name="clicked" handler="on_apri_pagamento_documento_button_clicked"/>
                   </object>
                   <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
                     <property name="position">3</property>
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkButton" id="chiudi_pagamento_documento_button">
+                    <property name="label" translatable="yes">(Ri) Chiudi Pagamento
+    Documento</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="clicked" handler="on_chiudi_pagamento_documento_button_clicked"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="primanota_button">
+                    <property name="label" translatable="yes">Inserisci in
+prima-nota</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="clicked" handler="on_primanota_button_clicked"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">5</property>
+                  </packing>
                 </child>
               </object>
               <packing>
-                <property name="right_attach">8</property>
-                <property name="top_attach">13</property>
-                <property name="bottom_attach">14</property>
-                <property name="x_options"></property>
-                <property name="y_options"></property>
-                <property name="y_padding">3</property>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">3</property>
               </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
             </child>
           </object>
           <packing>
@@ -4744,48 +5028,28 @@ _
       </packing>
     </child>
   </object>
-  <object class="GtkListStore" id="liststore_iva">
-    <columns>
-      <!-- column-name aliquota -->
-      <column type="gchararray"/>
-      <!-- column-name imponibile -->
-      <column type="gchararray"/>
-      <!-- column-name imposta -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">Tutti</col>
-        <col id="1" translatable="yes"></col>
-        <col id="2" translatable="yes"></col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Aperto</col>
-        <col id="1" translatable="yes"></col>
-        <col id="2" translatable="yes"></col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Saldato</col>
-        <col id="1" translatable="yes"></col>
-        <col id="2" translatable="yes"></col>
-      </row>
-    </data>
+  <object class="GtkImage" id="calcola_importi_image">
+    <property name="visible">True</property>
+    <property name="stock">gtk-execute</property>
   </object>
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name item -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes"></col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Franco</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Assegnato</col>
-      </row>
-    </data>
+  <object class="GtkImage" id="pulisci_seconda_rata_image">
+    <property name="visible">True</property>
+    <property name="stock">gtk-clear</property>
+  </object>
+  <object class="GtkImage" id="pulisci_prima_rata_image">
+    <property name="visible">True</property>
+    <property name="stock">gtk-clear</property>
+  </object>
+  <object class="GtkImage" id="pulisci_seconda_rata_image1">
+    <property name="visible">True</property>
+    <property name="stock">gtk-clear</property>
+  </object>
+  <object class="GtkImage" id="pulisci_seconda_rata_image2">
+    <property name="visible">True</property>
+    <property name="stock">gtk-clear</property>
+  </object>
+  <object class="GtkImage" id="pulisci_prima_rata_image1">
+    <property name="visible">True</property>
+    <property name="stock">gtk-clear</property>
   </object>
 </interface>

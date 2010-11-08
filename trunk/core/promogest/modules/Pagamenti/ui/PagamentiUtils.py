@@ -1,13 +1,27 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2007 by Promotux Informatica - http://www.promotux.it/
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux di Francesco Meloni snc - http://www.promotux.it/
+
 # Author: Andrea Argiolas <andrea@promotux.it>
 # Author: JJDaNiMoTh <jjdanimoth@gmail.com>
 # Author: Dr astico <zoccolodignu@gmail.com>
 
+#    This file is part of Promogest.
 
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
+from promogest.dao.Pagamento import Pagamento
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.ui.utils import *
@@ -15,6 +29,22 @@ from promogest.ui.utils import *
 class Pagamenti(object):
     def __init__(self, anagrafica):
         self.anagrafica = anagrafica
+
+
+    def attiva_acconto(self, action, disable = True):
+        """
+        Attiva i campi relativi alla prima scadenza nella tab Pagamenti
+        Se action e` False, disattiva e pulisce i campi riguardanti la prima scadenza.
+        """
+
+        if disable == True:
+            self.anagrafica.data_acconto_entry.set_sensitive(action)
+            self.anagrafica.importo_acconto_scadenza_entry.set_sensitive(action)
+            self.anagrafica.pn_acconto_button.set_sensitive(action)
+        if action == False:
+            self.anagrafica.data_acconto_entry.set_text("")
+            self.anagrafica.importo_acconto_scadenza_entry.set_text("")
+
 
     def attiva_prima_scadenza(self, action, disable = True):
         """
@@ -25,15 +55,16 @@ class Pagamenti(object):
         if disable == True:
             self.anagrafica.data_acconto_entry.set_sensitive(action)
             self.anagrafica.data_prima_scadenza_entry.set_sensitive(action)
-            self.anagrafica.primo_pagamento_entry.set_sensitive(action)
+#            self.anagrafica.primo_pagamento_entry.set_sensitive(action)
             self.anagrafica.data_pagamento_prima_scadenza_entry.set_sensitive(action)
             self.anagrafica.importo_acconto_scadenza_entry.set_sensitive(action)
             self.anagrafica.importo_prima_scadenza_entry.set_sensitive(action)
+            self.anagrafica.pn_prima_rata_button.set_sensitive(action)
 
         if action == False:
             self.anagrafica.data_acconto_entry.set_text("")
             self.anagrafica.data_prima_scadenza_entry.set_text("")
-            self.anagrafica.primo_pagamento_entry.set_text("")
+#            self.anagrafica.primo_pagamento_entry.set_text("")
             self.anagrafica.data_pagamento_prima_scadenza_entry.set_text("")
             self.anagrafica.importo_acconto_scadenza_entry.set_text("")
             self.anagrafica.importo_prima_scadenza_entry.set_text("")
@@ -47,13 +78,13 @@ class Pagamenti(object):
         if disable == True:
             self.anagrafica.data_seconda_scadenza_entry.set_sensitive(action)
             self.anagrafica.importo_seconda_scadenza_entry.set_sensitive(action)
-            self.anagrafica.secondo_pagamento_entry.set_sensitive(action)
+#            self.anagrafica.secondo_pagamento_entry.set_sensitive(action)
             self.anagrafica.data_pagamento_seconda_scadenza_entry.set_sensitive(action)
-
+            self.anagrafica.pn_seconda_rata_button.set_sensitive(action)
         if action == False:
             self.anagrafica.data_seconda_scadenza_entry.set_text("")
             self.anagrafica.importo_seconda_scadenza_entry.set_text("")
-            self.anagrafica.secondo_pagamento_entry.set_text("")
+#            self.anagrafica.secondo_pagamento_entry.set_text("")
             self.anagrafica.data_pagamento_seconda_scadenza_entry.set_text("")
 
     def attiva_terza_scadenza(self, action, disable = True):
@@ -65,13 +96,13 @@ class Pagamenti(object):
         if disable == True:
             self.anagrafica.data_terza_scadenza_entry.set_sensitive(action)
             self.anagrafica.importo_terza_scadenza_entry.set_sensitive(action)
-            self.anagrafica.terzo_pagamento_entry.set_sensitive(action)
+#            self.anagrafica.terzo_pagamento_entry.set_sensitive(action)
             self.anagrafica.data_pagamento_terza_scadenza_entry.set_sensitive(action)
-
+            self.anagrafica.pn_terza_rata_button.set_sensitive(action)
         if action == False:
             self.anagrafica.data_terza_scadenza_entry.set_text("")
             self.anagrafica.importo_terza_scadenza_entry.set_text("")
-            self.anagrafica.terzo_pagamento_entry.set_text("")
+#            self.anagrafica.terzo_pagamento_entry.set_text("")
             self.anagrafica.data_pagamento_terza_scadenza_entry.set_text("")
 
     def attiva_quarta_scadenza(self, action, disable = True):
@@ -83,19 +114,20 @@ class Pagamenti(object):
         if disable == True:
             self.anagrafica.data_quarta_scadenza_entry.set_sensitive(action)
             self.anagrafica.importo_quarta_scadenza_entry.set_sensitive(action)
-            self.anagrafica.quarto_pagamento_entry.set_sensitive(action)
+#            self.anagrafica.quarto_pagamento_entry.set_sensitive(action)
             self.anagrafica.data_pagamento_quarta_scadenza_entry.set_sensitive(action)
-
+            self.anagrafica.pn_quarta_rata_button.set_sensitive(action)
         if action == False:
             self.anagrafica.data_quarta_scadenza_entry.set_text("")
             self.anagrafica.importo_quarta_scadenza_entry.set_text("")
-            self.anagrafica.quarto_pagamento_entry.set_text("")
+#            self.anagrafica.quarto_pagamento_entry.set_text("")
             self.anagrafica.data_pagamento_quarta_scadenza_entry.set_text("")
 
     def dividi_importo(self):
         """
         Divide l'importo passato per il numero delle scadenze. Se viene passato un argomento, che indica
         il valore di una rata, ricalcola gli altri tenendo conto del valore modificato
+        TODO: Passare i valori valuta a mN
         """
 
         importodoc = float(self.anagrafica.totale_scontato_riepiloghi_label.get_text() or 0)
@@ -148,8 +180,10 @@ class Pagamenti(object):
         importo_immesso_seconda = float(self.anagrafica.importo_seconda_scadenza_entry.get_text() or 0)
         importo_immesso_terza = float(self.anagrafica.importo_terza_scadenza_entry.get_text() or 0)
         importo_immesso_quarta = float(self.anagrafica.importo_quarta_scadenza_entry.get_text() or 0)
+
         importo_primo_riferimento = float(self.anagrafica.importo_primo_documento_entry.get_text() or 0)
         importo_secondo_riferimento = float(self.anagrafica.importo_secondo_documento_entry.get_text() or 0)
+
         differenza_importi = (importo_immesso_acconto + importo_immesso_prima + importo_immesso_seconda +
             importo_immesso_terza + importo_immesso_quarta + importo_primo_riferimento +
             importo_secondo_riferimento) - importotot
@@ -223,14 +257,16 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
         data_documento = daoTestata.data_documento
 
         if totale_sospeso != 0:
-            self.anagrafica.showMessage("Attenzione. Risulta che il documento da Lei scelto abbia ancora un importo in sospeso. Il documento, per poter essere collegato, deve essere completamente saldato")
+            self.anagrafica.showMessage("""Attenzione. Risulta che il documento da Lei scelto abbia ancora
+un importo in sospeso. Il documento, per poter essere collegato, deve essere completamente saldato""")
             return False
 
         return totale_pagato
 
     def ricalcola_sospeso_e_pagato(self):
         """
-        Ricalcola i totali sospeso e pagato in base alle scadenze ancora da saldare
+        Ricalcola i totali sospeso e pagato in base alle
+        scadenze ancora da saldare
         """
 
         if self.anagrafica.data_pagamento_prima_scadenza_entry.get_text() != "":
@@ -240,7 +276,7 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
         else:
             totalepagato = float(self.anagrafica.importo_acconto_scadenza_entry.get_text() or '0')
             totalesospeso = float(self.anagrafica.importo_prima_scadenza_entry.get_text() or '0')
-            self.anagrafica.saldato_scadenza_checkbutton.set_active(0)
+            self.anagrafica.stato_label.set_markup('<b><span foreground="#B40000" size="24000">APERTO</span></b>')
         if self.anagrafica.data_pagamento_seconda_scadenza_entry.get_text() != "":
             totalepagato = totalepagato + float(self.anagrafica.importo_seconda_scadenza_entry.get_text() or '0')
         else:
@@ -257,15 +293,31 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
         totalepagato = totalepagato + float(self.anagrafica.importo_primo_documento_entry.get_text() or '0')
         totalepagato = totalepagato + float(self.anagrafica.importo_secondo_documento_entry.get_text() or '0')
 
-        self.anagrafica.totale_pagato_scadenza_label.set_text('%.2f' % totalepagato)
-        self.anagrafica.totale_sospeso_scadenza_label.set_text('%.2f' % totalesospeso)
+        self.anagrafica.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">'+str(mN(totalepagato,2))+'</span></b>')
 
+        if totalepagato ==0:
+            totalesospeso = float(self.anagrafica.totale_in_pagamenti_label.get_text())
+        if totalesospeso == 0:
+            totalesospeso = float(self.anagrafica.totale_in_pagamenti_label.get_text()) - totalepagato
+        self.anagrafica.totale_sospeso_scadenza_label.set_markup('<b><span foreground="#B40000" size="24000">'+str(mN(totalesospeso,2))+'</span></b>')
         if totalepagato == 0 and totalesospeso == 0:
             self.attiva_prima_scadenza(False, True)
             self.attiva_seconda_scadenza(False, True)
             self.attiva_terza_scadenza(False, True)
             self.attiva_quarta_scadenza(False, True)
-            self.anagrafica.saldato_scadenza_checkbutton.set_active(0)
+            self.anagrafica.stato_label.set_markup('<b><span foreground="#B40000" size="24000">APERTO</span></b>')
+        if totalepagato == float(self.anagrafica.totale_in_pagamenti_label.get_text()) and\
+                        self.anagrafica.stato_label.get_text() == "APERTO" and \
+                        self.anagrafica.notebook.get_current_page() ==3:
+            msg = """Attenzione! L'importo in sospeso è pari a 0 e
+l'importo pagato è uguale al totale documento.
+Procedere con la "chiusura" del Pagamento?"""
+            dialog = gtk.MessageDialog(self.anagrafica.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                               gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+            response = dialog.run()
+            dialog.destroy()
+            if response == gtk.RESPONSE_YES:
+                self.anagrafica.stato_label.set_markup('<b><span foreground="#338000" size="24000">PAGATO</span></b>')
 
     def attiva_scadenze(self):
         """
@@ -374,35 +426,34 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
                 if scadenza.numero_scadenza == 0:
                     self.anagrafica.data_acconto_entry.set_text(dateToString(scadenza.data) or '')
                     self.anagrafica.importo_acconto_scadenza_entry.set_text(str(scadenza.importo or ''))
+                    findComboboxRowFromStr(self.anagrafica.id_pagamento_acconto_customcombobox.combobox, scadenza.pagamento,2)
+                    self.anagrafica.data_pagamento_acconto_entry.set_text(dateToString
+                        (scadenza.data_pagamento or ''))
                 elif scadenza.numero_scadenza == 1:
                     self.anagrafica.data_prima_scadenza_entry.set_text(dateToString(scadenza.data) or '')
                     self.anagrafica.importo_prima_scadenza_entry.set_text(str(scadenza.importo or ''))
-                    self.anagrafica.primo_pagamento_entry.set_text(str(scadenza.pagamento or ''))
+                    findComboboxRowFromStr(self.anagrafica.id_pagamento_prima_scadenza_customcombobox.combobox, scadenza.pagamento,2)
                     self.anagrafica.data_pagamento_prima_scadenza_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
                 elif scadenza.numero_scadenza == 2:
                     self.anagrafica.data_seconda_scadenza_entry.set_text(dateToString
                         (scadenza.data or ''))
                     self.anagrafica.importo_seconda_scadenza_entry.set_text(str(scadenza.importo or ''))
-                    self.anagrafica.secondo_pagamento_entry.set_text(str(scadenza.pagamento or ''))
+                    findComboboxRowFromStr(self.anagrafica.id_pagamento_seconda_scadenza_customcombobox.combobox, scadenza.pagamento,2)
                     self.anagrafica.data_pagamento_seconda_scadenza_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
                 elif scadenza.numero_scadenza == 3:
                     self.anagrafica.data_terza_scadenza_entry.set_text(dateToString
                         (scadenza.data or ''))
-                    self.anagrafica.importo_terza_scadenza_entry.set_text(str
-                        (scadenza.importo or ''))
-                    self.anagrafica.terzo_pagamento_entry.set_text(str
-                        (scadenza.pagamento or ''))
+                    self.anagrafica.importo_terza_scadenza_entry.set_text(str(scadenza.importo or ''))
+                    findComboboxRowFromStr(self.anagrafica.id_pagamento_terza_scadenza_customcombobox.combobox, scadenza.pagamento,2)
                     self.anagrafica.data_pagamento_terza_scadenza_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
                 elif scadenza.numero_scadenza == 4:
                     self.anagrafica.data_quarta_scadenza_entry.set_text(dateToString
                         (scadenza.data or ''))
-                    self.anagrafica.importo_quarta_scadenza_entry.set_text(str
-                        (scadenza.importo or ''))
-                    self.anagrafica.quarto_pagamento_entry.set_text(str
-                        (scadenza.pagamento or ''))
+                    self.anagrafica.importo_quarta_scadenza_entry.set_text(str(scadenza.importo or ''))
+                    findComboboxRowFromStr(self.anagrafica.id_pagamento_quarta_scadenza_customcombobox.combobox, scadenza.pagamento,2)
                     self.anagrafica.data_pagamento_quarta_scadenza_entry.set_text(dateToString
                         (scadenza.data_pagamento or ''))
 
@@ -416,12 +467,20 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
             self.attiva_terza_scadenza(True,True)
         if self.anagrafica.importo_quarta_scadenza_entry.get_text() != '':
             self.attiva_quarta_scadenza(True,True)
-        self.anagrafica.saldato_scadenza_checkbutton.set_active(
-            self.anagrafica.dao.documento_saldato or 0)
-        self.anagrafica.totale_pagato_scadenza_label.set_text(str(
-            self.anagrafica.dao.totale_pagato or 0))
-        self.anagrafica.totale_sospeso_scadenza_label.set_text(str(
-            self.anagrafica.dao.totale_sospeso or 0))
+        if self.anagrafica.dao.documento_saldato:
+            self.anagrafica.stato_label.set_markup('<b><span foreground="#338000" size="24000">PAGATO</span></b>')
+        else:
+            self.anagrafica.stato_label.set_markup('<b><span foreground="#B40000" size="24000">APERTO</span></b>')
+        self.anagrafica.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">'+str(
+            self.anagrafica.dao.totale_pagato or 0)+'</span></b>')
+
+        if (self.anagrafica.dao.totale_sospeso is None)  or (self.anagrafica.dao.totale_sospeso == 0):
+            totaleSospeso = Decimal(self.anagrafica.totale_scontato_riepiloghi_label.get_text()) - Decimal(self.anagrafica.dao.totale_pagato or 0)
+        else:
+            totaleSospeso = self.anagrafica.dao.totale_sospeso
+
+        self.anagrafica.totale_sospeso_scadenza_label.set_markup('<b><span foreground="#B40000" size="24000">'+str(
+            totaleSospeso)+'</span></b>')
         if self.anagrafica.dao.id_primo_riferimento != None:
             doc = TestataDocumento().getRecord(id=self.anagrafica.dao.id_primo_riferimento)
             self.anagrafica.importo_primo_documento_entry.set_text(str(doc.totale_pagato) or '')
@@ -443,73 +502,131 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
             self.anagrafica.numero_secondo_documento_entry.set_text('')
 
     def saveScadenze(self):
-
+        """ Di fatto è la parte che gestisce il salvataggio dei dati
+        di pagamento
+        TODO: aggiungere la cancellazione se vengono trovate più righe?"""
         self.anagrafica.dao.totale_pagato = float(self.anagrafica.totale_pagato_scadenza_label.get_text())
         self.anagrafica.dao.totale_sospeso = float(self.anagrafica.totale_sospeso_scadenza_label.get_text())
-        self.anagrafica.dao.documento_saldato = self.anagrafica.saldato_scadenza_checkbutton.get_active()
+        if self.anagrafica.stato_label.get_text() == "PAGATO":
+            self.anagrafica.dao.documento_saldato = True
+        else:
+            self.anagrafica.dao.documento_saldato = False
 
         scadenze = []
-
+        accontoDao0= TestataDocumentoScadenza().select(idTestataDocumento=self.anagrafica.dao.id, numeroScadenza=0)
         if self.anagrafica.data_acconto_entry.get_text() != "":
-            daoTestataDocumentoScadenza = TestataDocumentoScadenza()
+            if accontoDao0:
+                daoTestataDocumentoScadenza = accontoDao0[0]
+            else:
+                daoTestataDocumentoScadenza = TestataDocumentoScadenza()
             daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
             daoTestataDocumentoScadenza.data = stringToDate(self.anagrafica.data_acconto_entry.get_text())
             daoTestataDocumentoScadenza.importo = float(self.anagrafica.importo_acconto_scadenza_entry.get_text() or '0')
-            daoTestataDocumentoScadenza.pagamento = ""
+            idpag0 = findIdFromCombobox(self.anagrafica.id_pagamento_acconto_customcombobox.combobox)
+            if idpag0:
+                p0 = Pagamento().getRecord(id=idpag0)
+            daoTestataDocumentoScadenza.pagamento = p0.denominazione
             daoTestataDocumentoScadenza.data_pagamento = daoTestataDocumentoScadenza.data
-            daoTestataDocumentoScadenza.numero_scadenza = "0"
+            daoTestataDocumentoScadenza.numero_scadenza = 0
             scadenze.append(daoTestataDocumentoScadenza)
+        else:
+            if accontoDao0:
+                accontoDao0[0].delete()
         # Se c'e`, salviamo la prima scadenza
+        accontoDao1= TestataDocumentoScadenza().select(idTestataDocumento=self.anagrafica.dao.id, numeroScadenza=1)
         if self.anagrafica.data_prima_scadenza_entry.get_text() != "":
-            daoTestataDocumentoScadenza = TestataDocumentoScadenza()
+            if accontoDao1:
+                daoTestataDocumentoScadenza = accontoDao1[0]
+            else:
+                daoTestataDocumentoScadenza = TestataDocumentoScadenza()
             daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
             daoTestataDocumentoScadenza.data = stringToDate(self.anagrafica.data_prima_scadenza_entry.get_text())
             daoTestataDocumentoScadenza.importo = float(self.anagrafica.importo_prima_scadenza_entry.get_text() or '0')
-            daoTestataDocumentoScadenza.pagamento = (self.anagrafica.primo_pagamento_entry.get_text() or '')
+            idpag1 = findIdFromCombobox(self.anagrafica.id_pagamento_prima_scadenza_customcombobox.combobox)
+            if idpag1:
+                p1 = Pagamento().getRecord(id=idpag1)
+                daoTestataDocumentoScadenza.pagamento = p1.denominazione
+
             daoTestataDocumentoScadenza.data_pagamento = stringToDate(
                     self.anagrafica.data_pagamento_prima_scadenza_entry.get_text())
-            daoTestataDocumentoScadenza.numero_scadenza = "1"
+            daoTestataDocumentoScadenza.numero_scadenza = 1
             scadenze.append(daoTestataDocumentoScadenza)
-            if self.anagrafica.data_seconda_scadenza_entry.get_text() != "":
+        else:
+            if accontoDao1:
+                accontoDao1[0].delete()
+        #seconda rata scadenza
+        accontoDao2= TestataDocumentoScadenza().select(idTestataDocumento=self.anagrafica.dao.id, numeroScadenza=2)
+        if self.anagrafica.data_seconda_scadenza_entry.get_text() != "":
+            if accontoDao2:
+                daoTestataDocumentoScadenza = accontoDao2[0]
+            else:
                 daoTestataDocumentoScadenza = TestataDocumentoScadenza()
-                daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
-                daoTestataDocumentoScadenza.data = stringToDate(
-                        self.anagrafica.data_seconda_scadenza_entry.get_text())
-                daoTestataDocumentoScadenza.importo = float(
-                        self.anagrafica.importo_seconda_scadenza_entry.get_text() or '0')
-                daoTestataDocumentoScadenza.pagamento = (
-                        self.anagrafica.secondo_pagamento_entry.get_text() or '')
-                daoTestataDocumentoScadenza.data_pagamento = stringToDate(
-                        self.anagrafica.data_pagamento_seconda_scadenza_entry.get_text())
-                daoTestataDocumentoScadenza.numero_scadenza = "2"
-                scadenze.append(daoTestataDocumentoScadenza)
-                if self.anagrafica.data_terza_scadenza_entry.get_text() != "":
-                    daoTestataDocumentoScadenza = TestataDocumentoScadenza()
-                    daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
-                    daoTestataDocumentoScadenza.data = stringToDate(
-                            self.anagrafica.data_terza_scadenza_entry.get_text())
-                    daoTestataDocumentoScadenza.importo = float(
-                            self.anagrafica.importo_terza_scadenza_entry.get_text() or '0')
-                    daoTestataDocumentoScadenza.pagamento = (
-                            self.anagrafica.terzo_pagamento_entry.get_text() or '')
-                    daoTestataDocumentoScadenza.data_pagamento = stringToDate(
-                            self.anagrafica.data_pagamento_terza_scadenza_entry.get_text())
-                    daoTestataDocumentoScadenza.numero_scadenza = "3"
-                    scadenze.append(daoTestataDocumentoScadenza)
-                    if self.anagrafica.data_quarta_scadenza_entry.get_text() != "":
-                        daoTestataDocumentoScadenza = TestataDocumentoScadenza()
-                        daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
-                        daoTestataDocumentoScadenza.data = stringToDate(
-                                self.anagrafica.data_quarta_scadenza_entry.get_text())
-                        daoTestataDocumentoScadenza.importo = float(
-                                self.anagrafica.importo_quarta_scadenza_entry.get_text() or '0')
-                        daoTestataDocumentoScadenza.pagamento = (
-                                self.anagrafica.quarto_pagamento_entry.get_text() or '')
-                        daoTestataDocumentoScadenza.data_pagamento = stringToDate(
-                                self.anagrafica.data_pagamento_quarta_scadenza_entry.get_text())
-                        daoTestataDocumentoScadenza.numero_scadenza = "4"
-                        scadenze.append(daoTestataDocumentoScadenza)
+            daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
+            daoTestataDocumentoScadenza.data = stringToDate(
+                    self.anagrafica.data_seconda_scadenza_entry.get_text())
+            daoTestataDocumentoScadenza.importo = float(
+                    self.anagrafica.importo_seconda_scadenza_entry.get_text() or '0')
+            idpag2 = findIdFromCombobox(self.anagrafica.id_pagamento_seconda_scadenza_customcombobox.combobox)
+            if idpag2:
+                p2 = Pagamento().getRecord(id=idpag2)
+                daoTestataDocumentoScadenza.pagamento = p2.denominazione
+            daoTestataDocumentoScadenza.data_pagamento = stringToDate(
+                    self.anagrafica.data_pagamento_seconda_scadenza_entry.get_text())
+            daoTestataDocumentoScadenza.numero_scadenza = 2
+            scadenze.append(daoTestataDocumentoScadenza)
+        else:
+            if accontoDao2:
+                accontoDao2[0].delete()
+        #terza rata scadenza
+        accontoDao3= TestataDocumentoScadenza().select(idTestataDocumento=self.anagrafica.dao.id, numeroScadenza=3)
+        if self.anagrafica.data_terza_scadenza_entry.get_text() != "":
+            if accontoDao3:
+                daoTestataDocumentoScadenza = accontoDao3[0]
+            else:
+                daoTestataDocumentoScadenza = TestataDocumentoScadenza()
+            daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
+            daoTestataDocumentoScadenza.data = stringToDate(
+                    self.anagrafica.data_terza_scadenza_entry.get_text())
+            daoTestataDocumentoScadenza.importo = float(
+                    self.anagrafica.importo_terza_scadenza_entry.get_text() or '0')
+            idpag3 = findIdFromCombobox(self.anagrafica.id_pagamento_terza_scadenza_customcombobox.combobox)
+            if idpag3:
+                p3 = Pagamento().getRecord(id=idpag3)
+                daoTestataDocumentoScadenza.pagamento = p3.denominazione
+            daoTestataDocumentoScadenza.data_pagamento = stringToDate(
+                    self.anagrafica.data_pagamento_terza_scadenza_entry.get_text())
+            daoTestataDocumentoScadenza.numero_scadenza = 3
+            scadenze.append(daoTestataDocumentoScadenza)
+        else:
+            if accontoDao3:
+                accontoDao3[0].delete()
+        #quarta rata scadenza
+        accontoDao4= TestataDocumentoScadenza().select(idTestataDocumento=self.anagrafica.dao.id, numeroScadenza=4)
+        if self.anagrafica.data_quarta_scadenza_entry.get_text() != "":
+            if accontoDao4:
+                daoTestataDocumentoScadenza = accontoDao4[0]
+            else:
+                daoTestataDocumentoScadenza = TestataDocumentoScadenza()
+            daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
+            daoTestataDocumentoScadenza.data = stringToDate(
+                    self.anagrafica.data_quarta_scadenza_entry.get_text())
+            daoTestataDocumentoScadenza.importo = float(
+                    self.anagrafica.importo_quarta_scadenza_entry.get_text() or '0')
+            idpag4 = findIdFromCombobox(self.anagrafica.id_pagamento_quarto_scadenza_customcombobox.combobox)
+            if idpag4:
+                p4 = Pagamento().getRecord(id=idpag4)
+                daoTestataDocumentoScadenza.pagamento = p4.denominazione
+            daoTestataDocumentoScadenza.data_pagamento = stringToDate(
+                    self.anagrafica.data_pagamento_quarta_scadenza_entry.get_text())
+            daoTestataDocumentoScadenza.numero_scadenza = 4
+            scadenze.append(daoTestataDocumentoScadenza)
+        else:
+            if accontoDao4:
+                accontoDao4[0].delete()
         self.anagrafica.dao.scadenze = scadenze
+
+        #TODO: finire di sistemare questa parte ......
+
         doc = self.anagrafica.numero_primo_documento_entry.get_text()
         if doc != "" and doc != "0":
             documentocollegato = self.getDocumentoCollegato(int(doc))
@@ -518,6 +635,7 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
             if doc2 != "" and doc2 != "0":
                 documentocollegato = self.getDocumentoCollegato(int(doc2))
                 self.anagrafica.dao.id_secondo_riferimento = documentocollegato[0].id
+
 
     def connectEntryPag(self):
         self.anagrafica.data_pagamento_prima_scadenza_entry.entry.connect('changed',
@@ -529,9 +647,16 @@ Per l'esattezza, l'errore e` di %.2f""" % differenza_importi)
         self.anagrafica.data_pagamento_quarta_scadenza_entry.entry.connect('changed',
                 self.anagrafica.on_data_pagamento_quarta_scadenza_entry_changed)
 
-        self.anagrafica.totale_pagato_scadenza_label.set_text('0')
-        self.anagrafica.totale_sospeso_scadenza_label.set_text('0')
+        self.anagrafica.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">'+str(
+            0)+'</span></b>')
+        self.anagrafica.totale_sospeso_scadenza_label.set_markup('<b><span foreground="#B40000" size="24000">'+str(
+            0)+'</span></b>')
         self.anagrafica.importo_primo_documento_entry.set_text('')
         self.anagrafica.importo_secondo_documento_entry.set_text('')
         self.anagrafica.numero_primo_documento_entry.set_text('')
         self.anagrafica.numero_secondo_documento_entry.set_text('')
+        fillComboboxPagamenti(self.anagrafica.id_pagamento_acconto_customcombobox.combobox)
+        fillComboboxPagamenti(self.anagrafica.id_pagamento_prima_scadenza_customcombobox.combobox)
+        fillComboboxPagamenti(self.anagrafica.id_pagamento_seconda_scadenza_customcombobox.combobox)
+        fillComboboxPagamenti(self.anagrafica.id_pagamento_terza_scadenza_customcombobox.combobox)
+        fillComboboxPagamenti(self.anagrafica.id_pagamento_quarta_scadenza_customcombobox.combobox)

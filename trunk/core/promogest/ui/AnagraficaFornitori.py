@@ -45,6 +45,7 @@ class AnagraficaFornitori(Anagrafica):
                             reportHandler=AnagraficaFornitoriReport(self),
                             editElement=AnagraficaFornitoriEdit(self),
                             aziendaStr=aziendaStr)
+        self.records_file_export.set_sensitive(True)
 
 class AnagraficaFornitoriFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei fornitori """
@@ -245,7 +246,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Fornitore().getRecord(id=dao.id)
         self._refresh()
-
+        return self.dao
 
     def _refresh(self):
         self.codice_entry.set_text(self.dao.codice or '')

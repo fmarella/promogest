@@ -320,7 +320,7 @@ def testataDocumentoScadenzaDel(id=None):
     """
     Cancella la scadenza documento associato ad un documento
     """
-    from promogest.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
+    from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
     row = TestataDocumentoScadenza().select(idTestataDocumentoScadenza= id,
                                                                 offset = None,
                                                                 batchSize = None,

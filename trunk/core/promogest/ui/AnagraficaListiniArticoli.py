@@ -66,88 +66,88 @@ class AnagraficaListiniArticoli(Anagrafica):
             #self.Stampa_Frontaline.set_sensitive(False)
         self.records_file_export.set_sensitive(True)
 
-    def set_data_list(self, data):
-        """
-        """
-        rowlist=[]
-        for d in data:
-            #print "DDDDDDDDDDDD", dir(d.arti),
-            denominazione = d.denominazione or ''
-            codice_articolo = d.codice_articolo or ''
-            articolo = d.articolo or ''
-            data = dateToString(d.data_listino_articolo)
-            prezzo_dettaglio = mN(str(d.prezzo_dettaglio)) or 0
-            sconto_dettaglio = []
-            for sconto_det in d.sconto_vendita_dettaglio:
-                sconto_dettaglio.append(str(mN(str(sconto_det.valore))) or 0)
-            sconto_dettagliostr = string.join( sconto_dettaglio, '' )
-            #sconto_dettaglio = mN(d.sconto_vendita_dettaglio) or 0
-            prezzo_ingrosso = mN(str(d.prezzo_ingrosso)) or 0
-            sconto_ingrosso = []
-            for sconto_ing in d.sconto_vendita_ingrosso:
-                sconto_ingrosso.append(str(mN(str(sconto_ing.valore))) or 0)
-            sconto_ingrossostr = string.join( sconto_ingrosso, '' )
-            if sconto_dettagliostr == "[]":
-                sconto_dettagliostr == ""
-            if sconto_ingrossostr == "[]":
-                sconto_ingrossostr = ""
-            try:
-                categoria = d.arti.denominazione_categoria
-            except:
-                categoria = ""
-            try:
-                famiglia = d.arti.denominazione_famiglia
-            except:
-                famiglia =""
-            try:
-                percentuale_iva = d.percentuale_iva
-            except:
-                percentuale_iva =""
-            #sconto_ingrosso = mN(d.sconto_vendita_ingrosso[0]) or 0
-            datalist=[denominazione,codice_articolo,articolo,data,prezzo_dettaglio,
-                        sconto_dettagliostr,prezzo_ingrosso,sconto_ingrossostr,
-                        categoria, famiglia, percentuale_iva]
-            if "PromoWear" in Environment.modulesList:
-                if d.id_articolo_padre:
-                    codiceArticoloPAdre = Articolo().getRecord(id=d.id_articolo_padre).codice
-                else:
-                    codiceArticoloPAdre = ""
-                datalist = datalist + [d.denominazione_gruppo_taglia,
-                                        d.denominazione_taglia,
-                                        d.denominazione_colore,
-                                        str(d.anno),
-                                        d.stagione,
-                                        d.genere,
-                                        d.denominazione_modello,
-                                        codiceArticoloPAdre]
+#    def set_data_list(self, data):
+#        """
+#        """
+#        rowlist=[]
+#        for d in data:
+#            #print "DDDDDDDDDDDD", dir(d.arti),
+#            denominazione = d.denominazione or ''
+#            codice_articolo = d.codice_articolo or ''
+#            articolo = d.articolo or ''
+#            data = dateToString(d.data_listino_articolo)
+#            prezzo_dettaglio = mN(str(d.prezzo_dettaglio)) or 0
+#            sconto_dettaglio = []
+#            for sconto_det in d.sconto_vendita_dettaglio:
+#                sconto_dettaglio.append(str(mN(str(sconto_det.valore))) or 0)
+#            sconto_dettagliostr = string.join( sconto_dettaglio, '' )
+#            #sconto_dettaglio = mN(d.sconto_vendita_dettaglio) or 0
+#            prezzo_ingrosso = mN(str(d.prezzo_ingrosso)) or 0
+#            sconto_ingrosso = []
+#            for sconto_ing in d.sconto_vendita_ingrosso:
+#                sconto_ingrosso.append(str(mN(str(sconto_ing.valore))) or 0)
+#            sconto_ingrossostr = string.join( sconto_ingrosso, '' )
+#            if sconto_dettagliostr == "[]":
+#                sconto_dettagliostr == ""
+#            if sconto_ingrossostr == "[]":
+#                sconto_ingrossostr = ""
+#            try:
+#                categoria = d.arti.denominazione_categoria
+#            except:
+#                categoria = ""
+#            try:
+#                famiglia = d.arti.denominazione_famiglia
+#            except:
+#                famiglia =""
+#            try:
+#                percentuale_iva = d.percentuale_iva
+#            except:
+#                percentuale_iva =""
+#            #sconto_ingrosso = mN(d.sconto_vendita_ingrosso[0]) or 0
+#            datalist=[denominazione,codice_articolo,articolo,data,prezzo_dettaglio,
+#                        sconto_dettagliostr,prezzo_ingrosso,sconto_ingrossostr,
+#                        categoria, famiglia, percentuale_iva]
+#            if "PromoWear" in Environment.modulesList:
+#                if d.id_articolo_padre:
+#                    codiceArticoloPAdre = Articolo().getRecord(id=d.id_articolo_padre).codice
+#                else:
+#                    codiceArticoloPAdre = ""
+#                datalist = datalist + [d.denominazione_gruppo_taglia,
+#                                        d.denominazione_taglia,
+#                                        d.denominazione_colore,
+#                                        str(d.anno),
+#                                        d.stagione,
+#                                        d.genere,
+#                                        d.denominazione_modello,
+#                                        codiceArticoloPAdre]
 
-            rowlist.append(datalist)
-        return rowlist
+#            rowlist.append(datalist)
+#        return rowlist
 
-    def set_export_data(self):
-        """
-        Raccoglie informazioni specifiche per l'anagrafica restituite all'interno di un dizionario
-        """
-        data_details = {}
-        data = datetime.datetime.today()
-        curr_date = string.zfill(str(data.day), 2) + '-' + string.zfill(str(data.month),2) + '-' + string.zfill(str(data.year),4)
-        data_details['curr_date'] = curr_date
-        data_details['currentName'] = 'Listino_Articoli_aggiornato_al_'+curr_date+'.xml'
-        FieldsList = ['Listino','Codice Articolo','Articolo','Data Variazione','Prezzo Dettaglio', 'Sconto Dettaglio',
-                            'Prezzo Ingrosso', 'Sconto Ingrosso', "Categoria", "Famiglia", "Iva"]
-        colData= [0,0,0,1,2,0,2,0]
-        colWidth_Align = [('130','l'),('100','c'),('250','l'),('100','c'),('100','r'),('100','r'),
-                            ('100','r'),('100','r'),('100','r'),('100','r'),('100','r')]
-        if "PromoWear" in Environment.modulesList:
-            FieldsList = FieldsList +["Gruppo Taglia","Taglia","Colore","Anno",
-                                        "Stagione","Genere","Modello","Codice Padre"]
-            colData = colData+[0,0,0,0,0,0,0,0]
-            colWidth_Align = colWidth_Align+ [('100','r'),('100','r'),('100','r'),
-                                                ('100','r'),('100','r'),('100','r'),
-                                                ('100','r'),('100','r')]
+#    def set_export_data(self):
+#        """
+#        Raccoglie informazioni specifiche per l'anagrafica restituite all'interno di un dizionario
+#        """
+#        data_details = {}
+#        data = datetime.datetime.today()
+#        curr_date = string.zfill(str(data.day), 2) + '-' + string.zfill(str(data.month),2) + '-' + string.zfill(str(data.year),4)
+#        data_details['curr_date'] = curr_date
+#        data_details['currentName'] = 'Listino_Articoli_aggiornato_al_'+curr_date+'.xml'
+#        FieldsList = ['Listino','Codice Articolo','Articolo','Data Variazione','Prezzo Dettaglio', 'Sconto Dettaglio',
+#                            'Prezzo Ingrosso', 'Sconto Ingrosso', "Categoria", "Famiglia", "Iva"]
+#        colData= [0,0,0,1,2,0,2,0]
+#        colWidth_Align = [('130','l'),('100','c'),('250','l'),('100','c'),('100','r'),('100','r'),
+#                            ('100','r'),('100','r'),('100','r'),('100','r'),('100','r')]
+#        if "PromoWear" in Environment.modulesList:
+#            FieldsList = FieldsList +["Gruppo Taglia","Taglia","Colore","Anno",
+#                                        "Stagione","Genere","Modello","Codice Padre"]
+#            colData = colData+[0,0,0,0,0,0,0,0]
+#            colWidth_Align = colWidth_Align+ [('100','r'),('100','r'),('100','r'),
+#                                                ('100','r'),('100','r'),('100','r'),
+#                                                ('100','r'),('100','r')]
 
-        data_details['XmlMarkup'] = (FieldsList, colData, colWidth_Align)
-        return data_details
+#        data_details['XmlMarkup'] = (FieldsList, colData, colWidth_Align)
+#        return data_details
 
 
 class AnagraficaListiniArticoliFilter(AnagraficaFilter):
@@ -321,7 +321,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
 
         self._filterClosure = filterClosure
         self.liss = self.runFilter()
-        self.xptDaoList = self.runFilter(offset=None, batchSize=None)
+#        self.xptDaoList = self.runFilter(offset=None, batchSize=None)
         modelRow = []
         modelRowPromoWear = []
         self._treeViewModel.clear()

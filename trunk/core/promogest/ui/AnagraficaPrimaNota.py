@@ -26,6 +26,7 @@ from AnagraficaComplessa import Anagrafica, AnagraficaFilter, \
 from promogest.dao.TestataPrimaNota import TestataPrimaNota
 from promogest.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.dao.Banca import Banca
+from promogest.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from promogest.lib.relativedelta import relativedelta
 from utils import *
 from utilsCombobox import *
@@ -43,6 +44,8 @@ class AnagraficaPrimaNota(Anagrafica):
                             reportHandler=AnagraficaPrimaNotaReport(self),
                             editElement=AnagraficaPrimaNotaEdit(self),
                             aziendaStr=aziendaStr)
+        self.records_file_export.set_sensitive(True)
+
 
 class AnagraficaPrimaNotaFilter(AnagraficaFilter):
     """ Filtro per la ricerca nella prim nota cassa """
@@ -103,7 +106,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
 
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str,str, str, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str,str, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         self.refresh()
@@ -158,7 +161,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         for i in valis:
             col = None
             if not i.data_fine:
-                col = "green"
+                col = "#CCFFAA"
             valore += mN(i.totali["totale"]) or 0
             self._treeViewModel.append((i,col,
                                         (i.numero or ''),
@@ -197,12 +200,11 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
                                 gladeFile='_anagrafica_primanota_elements.glade')
         self._widgetFirstFocus = self.data_inserimento_datewidget
         self.anagrafica = anagrafica
-        self.editRiga = False
+        self.editRiga = None
         self.rotazione = setconf("rotazione_primanota","Primanota")
         fillComboboxBanche(self.id_banca_customcombobox.combobox)
         self.id_banca_customcombobox.connect('clicked',
                                  on_id_banca_customcombobox_clicked)
-
 #        self.id_banca_customcombobox.set_sensitive(False)
 
     def draw(self, cplx=False):
@@ -331,9 +333,8 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
             self.dao = TestataPrimaNota().getRecord(id=dao.id)
             print "ROTAZION", self.rotazione
 #            ultimadatachiusa = TestataPrimaNota().ultimaNota()
-
         self._refresh()
-
+        return self.dao
 
     def on_entrata_cassa_radio_toggled(self, toggled):
         if self.entrata_cassa_radio.get_active():
@@ -531,35 +532,39 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
         tot_saldo = 0
         for a in model:
             tot_ent_cassa += float(a[4] or 0)
-            self.totale_entrate_cassa_label.set_markup(c(str(mN(tot_ent_cassa)),"green"))
+            self.totale_entrate_cassa_label.set_markup(c(str(mN(tot_ent_cassa)),"#00AA00"))
             tot_ent_banca += float(a[6] or 0)
-            self.totale_entrate_banca_label.set_markup(c(str(mN(tot_ent_banca)),"green"))
+            self.totale_entrate_banca_label.set_markup(c(str(mN(tot_ent_banca)),"#00AA00"))
             tot_usc_cassa += float(a[5] or 0)
-            self.totale_uscite_cassa_label.set_markup(c(str(mN(tot_usc_cassa)),"red"))
+            self.totale_uscite_cassa_label.set_markup(c(str(mN(tot_usc_cassa)),"#FFD7D7"))
             tot_usc_banca += float(a[7] or 0)
-            self.totale_uscite_banca_label.set_markup(c(str(mN(tot_usc_banca)),"red"))
+            self.totale_uscite_banca_label.set_markup(c(str(mN(tot_usc_banca)),"#FFD7D7"))
 
         tot_banca = tot_ent_banca - tot_usc_banca
         if tot_banca >0:
-            self.totale_banca_label.set_markup(c(str(mN(tot_banca)),"green"))
+            self.totale_banca_label.set_markup(c(str(mN(tot_banca)),"#00AA00"))
         else:
-            self.totale_banca_label.set_markup(c(str(mN(tot_banca)),"red"))
+            self.totale_banca_label.set_markup(c(str(mN(tot_banca)),"#FFD7D7"))
         tot_cassa = tot_ent_cassa - tot_usc_cassa
         if tot_cassa >0:
-            self.totale_cassa_label.set_markup(c(str(mN(tot_cassa)),"green"))
+            self.totale_cassa_label.set_markup(c(str(mN(tot_cassa)),"#FFD7D7"))
         else:
-            self.totale_cassa_label.set_markup(c(str(mN(tot_cassa)),"red"))
+            self.totale_cassa_label.set_markup(c(str(mN(tot_cassa)),"#00AA00"))
         tot_saldo = (tot_ent_banca+tot_ent_cassa)-(tot_usc_banca+tot_usc_cassa)
 
         if tot_saldo >0:
-            self.totale_saldo_label.set_markup(b(c(str(mN(tot_saldo)),"green")))
+            self.totale_saldo_label.set_markup(b(c(str(mN(tot_saldo)),"#FFD7D7")))
         else:
-            self.totale_saldo_label.set_markup(b(c(str(mN(tot_saldo)),"red")))
+            self.totale_saldo_label.set_markup(b(c(str(mN(tot_saldo)),"#FFD7D7")))
         self.saldo_label.set_markup(b(c(str(mN(self.saldo())+mN(tot_saldo)), "blue")))
 
     def on_rimuovi_button_clicked(self, button):
         """ Elimina la riga di prima nota selezioata"""
         dao = RigaPrimaNota().getRecord(id=self.editRiga.id)
+        rpn = RigaPrimaNotaTestataDocumentoScadenza().select(idRigaPrimaNota=dao.id)
+        if rpn:
+            for r in rpn:
+                r.delete()
         dao.delete()
         self._editModel.remove(self._editIterator)
         self.clear()
@@ -587,8 +592,6 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
         self.entrata_banca_entry.set_text(self.rigaIter[6])
         self.uscita_banca_entry.set_text(self.rigaIter[7])
         self.denominazione_entry.set_text(self.rigaIter[3])
-
-
 
         self.editRiga = self.rigaIter[0]
 

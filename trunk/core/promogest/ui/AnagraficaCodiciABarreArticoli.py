@@ -149,7 +149,7 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
             self._refresh()
         else:
             self.dao = dao
-
+        return self.dao
 
     def updateDao(self):
         self.dao = CodiceABarreArticolo().getRecord(id=self.dao.id)
