@@ -117,29 +117,7 @@ def startdir():
     promogestStartDir = os.path.expanduser('~') + os.sep + startDir + os.sep
     return promogestStartDir
 
-LOG_FILENAME = startdir()+'pg2.log'
 
-# Set up a specific logger with our desired output level
-pg2log = logging.getLogger('PromoGest2')
-pg2log.setLevel(logging.INFO)
-
-# Add the log message handler to the logger
-handler = logging.handlers.RotatingFileHandler(
-              LOG_FILENAME, maxBytes=400000, backupCount=3)
-
-formatter = logging.Formatter(
-    "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(pathname)s - %(funcName)s - %(lineno)d")
-# add formatter to ch
-handler.setFormatter(formatter)
-pg2log.addHandler(handler)
-pg2log.info("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
-
-def hook(et, ev, eb):
-    import traceback
-    pg2log.info("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
-    print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE"
-
-sys.excepthook = hook
 
 def _pg8000():
     try:
@@ -151,10 +129,10 @@ def _pg8000():
                     + database,
                     encoding='utf-8',
                     convert_unicode=True )
-        pg2log.info("PG8000")
+#        pg2log.info("PG8000")
         return engine
     except:
-        pg2log.info("PG8000 NON PRESENTE")
+#        pg2log.info("PG8000 NON PRESENTE")
         return False
 
 def _py_postgresql():
@@ -167,10 +145,10 @@ def _py_postgresql():
                     + database,
                     encoding='utf-8',
                     convert_unicode=True )
-        pg2log.info("PY-POSTGRESQL")
+#        pg2log.info("PY-POSTGRESQL")
         return engine
     except:
-        pg2log.info("PY-POSTGRESQL NON PRESENTE")
+#        pg2log.info("PY-POSTGRESQL NON PRESENTE")
         return False
 
 def _psycopg2new():
@@ -183,10 +161,10 @@ def _psycopg2new():
                     + database,
                     encoding='utf-8',
                     convert_unicode=True )
-        pg2log.info("PSYCOPG2 NEW")
+#        pg2log.info("PSYCOPG2 NEW")
         return engine
     except:
-        pg2log.info("PSYCOPG2 NEW NON PRESENTE")
+#        pg2log.info("PSYCOPG2 NEW NON PRESENTE")
         return False
 
 def _psycopg2old():
@@ -199,11 +177,11 @@ def _psycopg2old():
                     + database,
                     encoding='utf-8',
                     convert_unicode=True )
-        print "PSYCOPG2 OLD"
+#        print "PSYCOPG2 OLD"
         pg2log.info("PSYCOPG2 OLD")
         return engine
     except:
-        pg2log.info("PSYCOPG2 OLD NON PRESENTE")
+#        pg2log.info("PSYCOPG2 OLD NON PRESENTE")
         return False
 
 
@@ -481,3 +459,27 @@ params = {'engine': engine ,
 loc = locale.setlocale(locale.LC_ALL, '')
 conf.windowsrc = os.path.expanduser('~') + os.sep + 'promogest2/windowsrc.xml'
 conf.guiDir = '.' + os.sep + 'gui' + os.sep
+
+LOG_FILENAME = startdir()+'pg2.log'
+
+# Set up a specific logger with our desired output level
+pg2log = logging.getLogger('PromoGest2')
+pg2log.setLevel(logging.INFO)
+
+# Add the log message handler to the logger
+handler = logging.handlers.RotatingFileHandler(
+              LOG_FILENAME, maxBytes=400000, backupCount=3)
+
+formatter = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(pathname)s - %(funcName)s - %(lineno)d")
+# add formatter to ch
+handler.setFormatter(formatter)
+pg2log.addHandler(handler)
+pg2log.info("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
+
+def hook(et, ev, eb):
+    import traceback
+    pg2log.info("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
+    print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE"
+
+sys.excepthook = hook
