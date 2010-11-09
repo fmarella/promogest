@@ -839,7 +839,7 @@ class Main(GladeWidget):
             d = Environment.feedAll
         feedList = d['entries']
         feedToHtml = []
-        for feed in feedList[:-1]:
+        for feed in feedList[0:3]:
             try:
                 body = feed['content'][0]['value']
             except:

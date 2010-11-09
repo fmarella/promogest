@@ -814,13 +814,9 @@ def fillComboboxDestinazioniMerce(combobox, idCliente=None, filter=False):
 def fillComboboxAutoriPromemoria(combobox):
     """ Crea l'elenco degli autori gia'inseriti """
     from promogest.dao.Promemoria import Promemoria
-    #argList = []
     #autors = Promemoria().select(orderBy="autore")
     res = Environment.params['session'].query(Promemoria.autore).distinct()
     model = gtk.ListStore(str)
-    #for a in autors:
-        #argList.append(a.autore)
-    #b = list(set(argList))
     for c in res:
         model.append([c.autore])
     combobox.clear()
@@ -830,6 +826,25 @@ def fillComboboxAutoriPromemoria(combobox):
     combobox.set_model(model)
     if combobox.__class__ is gtk.ComboBoxEntry:
         combobox.set_text_column(0)
+
+def fillComboboxNotePiePaginaTestataDocumento(combobox):
+    """ Crea l'elenco degli autori gia'inseriti """
+    from promogest.dao.TestataDocumento import TestataDocumento
+    #autors = Promemoria().select(orderBy="autore")
+    res = Environment.params['session'].query(TestataDocumento.note_pie_pagina).distinct()
+    model = gtk.ListStore(str)
+    for c in res:
+        if "Rif. DDT" not in c.note_pie_pagina:
+            model.append([c.note_pie_pagina])
+    combobox.clear()
+    renderer = gtk.CellRendererText()
+    combobox.pack_start(renderer, True)
+    combobox.add_attribute(renderer, 'text', 0)
+    combobox.set_model(model)
+    if combobox.__class__ is gtk.ComboBoxEntry:
+        combobox.set_text_column(0)
+
+
 
 def fillComboboxIncaricatiPromemoria(combobox):
     """

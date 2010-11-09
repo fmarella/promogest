@@ -499,7 +499,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         insertComboboxSearchAgente(self.id_agente_customcombobox,
                 self.dao.id_agente)
         self.protocollo_entry1.set_text(self.dao.protocollo or '')
-        self.note_pie_pagina_entry.set_text(self.dao.note_pie_pagina or '')
+        self.note_pie_pagina_comboboxentry.child.set_text(self.dao.note_pie_pagina or '')
         textBuffer = self.note_interne_textview.get_buffer()
         if self.dao.note_interne is not None:
             textBuffer.set_text(self.dao.note_interne)
@@ -800,7 +800,7 @@ del documento.
         self.dao.totale_peso = self.totale_peso_entry.get_text()
         textBuffer = self.note_interne_textview.get_buffer()
         self.dao.note_interne = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter())
-        self.dao.note_pie_pagina = self.note_pie_pagina_entry.get_text()
+        self.dao.note_pie_pagina = self.note_pie_pagina_comboboxentry.get_active_text()
         self.dao.applicazione_sconti = self.sconti_testata_widget.getApplicazione()
         if "GestioneNoleggio" in Environment.modulesList:
             self.dao.data_inizio_noleggio= self.start_rent_entry.get_text()

@@ -156,7 +156,7 @@ def drawPart(anaedit):
     anaedit.id_operazione_combobox.set_wrap_width(int(setconf("Numbers", "combo_column")))
     anaedit.porto_combobox.set_active(-1)
     anaedit.porto_combobox.set_sensitive(False)
-
+    fillComboboxNotePiePaginaTestataDocumento(anaedit.note_pie_pagina_comboboxentry)
     """ modello righe: magazzino, codice articolo,
     descrizione, percentuale iva, unita base, multiplo, listino,
     quantita, prezzo lordo, sconti, prezzo netto, totale, altezza, larghezza,molt_pezzi

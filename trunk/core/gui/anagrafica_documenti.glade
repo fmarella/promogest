@@ -2756,24 +2756,6 @@ _
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="note_pie_pagina_entry">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="invisible_char">●</property>
-                <property name="secondary_icon_stock">gtk-clear</property>
-                <property name="secondary_icon_activatable">True</property>
-                <signal name="icon_press" handler="on_icon_press"/>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">5</property>
-                <property name="bottom_attach">6</property>
-                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkComboBoxEntry" id="aspetto_esteriore_beni_comboboxentry">
                 <property name="visible">True</property>
               </object>
@@ -3017,6 +2999,19 @@ _
             </child>
             <child>
               <placeholder/>
+            </child>
+            <child>
+              <object class="GtkComboBoxEntry" id="note_pie_pagina_comboboxentry">
+                <property name="visible">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">5</property>
+                <property name="bottom_attach">6</property>
+                <property name="x_options">GTK_SHRINK | GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
             </child>
           </object>
           <packing>
