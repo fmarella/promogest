@@ -55,7 +55,7 @@ except:
             Column('data_registrazione', DateTime, nullable=True),
             Column('tipo', String(25), nullable=False),
             Column('segno', String(25), nullable=False),
-            Column('valore', Numeric(8,4), nullable=False),
+            Column('valore', Numeric(16,4), nullable=False),
             schema=params["schema"],
             useexisting=True)
     rigaprimanota.create(checkfirst=True)
@@ -63,6 +63,9 @@ except:
 if "id_banca" not in [c.name for c in rigaprimanota.columns]:
     col = Column('id_banca', Integer,ForeignKey(bancaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True)
     col.create(rigaprimanota)
+
+rigaprimanota.c.valore.alter(Numeric(16,4), nullable=False)
+
 
 class RigaPrimaNota(Dao):
 

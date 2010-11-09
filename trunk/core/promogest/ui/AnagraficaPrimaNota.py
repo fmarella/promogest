@@ -21,6 +21,7 @@
 
 import gtk
 import gobject
+from decimal import *
 from AnagraficaComplessa import Anagrafica, AnagraficaFilter, \
                             AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 from promogest.dao.TestataPrimaNota import TestataPrimaNota
@@ -456,10 +457,10 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
         riga.data_registrazione = data_registrazione
         denominazione = self.denominazione_entry.get_text()
         riga.denominazione = denominazione
-        cassa_entrata = self.entrata_cassa_entry.get_text().replace(",",".").strip()
-        cassa_uscita = self.uscita_cassa_entry.get_text().replace(",",".").strip()
-        banca_entrata = self.entrata_banca_entry.get_text().replace(",",".").strip()
-        banca_uscita = self.uscita_banca_entry.get_text().replace(",",".").strip()
+        cassa_entrata = Decimal(self.entrata_cassa_entry.get_text().replace(",",".").strip() or 0)
+        cassa_uscita = Decimal(self.uscita_cassa_entry.get_text().replace(",",".").strip() or 0)
+        banca_entrata = Decimal(self.entrata_banca_entry.get_text().replace(",",".").strip() or 0)
+        banca_uscita = Decimal(self.uscita_banca_entry.get_text().replace(",",".").strip() or 0)
         riferimento = None
         if cassa_entrata:
             riga.valore = cassa_entrata
