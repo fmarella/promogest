@@ -420,7 +420,7 @@ class SetTextFactory(PoolListener):
 if tipodb == "sqlite":
     azienda = None
     mainSchema = None
-    engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()]})
+    engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()])
 else:
     mainSchema = "promogest2"
     engine = _pg8000()
