@@ -178,7 +178,7 @@ def _psycopg2old():
                     encoding='utf-8',
                     convert_unicode=True )
 #        print "PSYCOPG2 OLD"
-        pg2log.info("PSYCOPG2 OLD")
+#        pg2log.info("PSYCOPG2 OLD")
         return engine
     except:
 #        pg2log.info("PSYCOPG2 OLD NON PRESENTE")
@@ -420,7 +420,7 @@ class SetTextFactory(PoolListener):
 if tipodb == "sqlite":
     azienda = None
     mainSchema = None
-    engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()], poolclass=NullPool, connect_args={'timeout':30})
+    engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()]})
 else:
     mainSchema = "promogest2"
     engine = _pg8000()
