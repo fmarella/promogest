@@ -456,10 +456,10 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
         riga.data_registrazione = data_registrazione
         denominazione = self.denominazione_entry.get_text()
         riga.denominazione = denominazione
-        cassa_entrata = self.entrata_cassa_entry.get_text()
-        cassa_uscita = self.uscita_cassa_entry.get_text()
-        banca_entrata = self.entrata_banca_entry.get_text()
-        banca_uscita = self.uscita_banca_entry.get_text()
+        cassa_entrata = self.entrata_cassa_entry.get_text().replace(",",".").strip()
+        cassa_uscita = self.uscita_cassa_entry.get_text().replace(",",".").strip()
+        banca_entrata = self.entrata_banca_entry.get_text().replace(",",".").strip()
+        banca_uscita = self.uscita_banca_entry.get_text().replace(",",".").strip()
         riferimento = None
         if cassa_entrata:
             riga.valore = cassa_entrata
