@@ -525,7 +525,9 @@ Procedere con la "chiusura" del Pagamento?"""
             idpag0 = findIdFromCombobox(self.anagrafica.id_pagamento_acconto_customcombobox.combobox)
             if idpag0:
                 p0 = Pagamento().getRecord(id=idpag0)
-            daoTestataDocumentoScadenza.pagamento = p0.denominazione
+                daoTestataDocumentoScadenza.pagamento = p0.denominazione
+            else:
+                daoTestataDocumentoScadenza.pagamento = ""
             daoTestataDocumentoScadenza.data_pagamento = daoTestataDocumentoScadenza.data
             daoTestataDocumentoScadenza.numero_scadenza = 0
             scadenze.append(daoTestataDocumentoScadenza)
