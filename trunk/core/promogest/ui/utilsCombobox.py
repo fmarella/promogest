@@ -834,8 +834,9 @@ def fillComboboxNotePiePaginaTestataDocumento(combobox):
     res = Environment.params['session'].query(TestataDocumento.note_pie_pagina).distinct()
     model = gtk.ListStore(str)
     for c in res:
-        if "Rif. DDT" not in c.note_pie_pagina:
-            model.append([c.note_pie_pagina])
+        if c.note_pie_pagina:
+            if "Rif. DDT" not in c.note_pie_pagina:
+                model.append([c.note_pie_pagina])
     combobox.clear()
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)
