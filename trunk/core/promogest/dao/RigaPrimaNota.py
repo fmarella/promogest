@@ -39,26 +39,26 @@ else:
     testatadocumentoFK =params['schema']+'.testata_documento.id'
     bancaFK = params["schema"]+".banca.id"
 
-#try:
-#    rigaprimanota=Table('riga_prima_nota',
-#                params['metadata'],
-#                schema = params['schema'],
-#                autoload=True)
-#except:
-rigaprimanota = Table('riga_prima_nota', params["metadata"],
-        Column('id', Integer, primary_key=True),
-        Column('denominazione', String(300), nullable=False),
-        Column('id_testata_prima_nota', Integer,ForeignKey(primanotaFK,onupdate="CASCADE",ondelete="CASCADE")),
-        Column('id_testata_documento', Integer,ForeignKey(testatadocumentoFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
-        Column('id_banca', Integer,ForeignKey(bancaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
-        Column('numero', Integer, nullable=False),
-        Column('data_registrazione', DateTime, nullable=True),
-        Column('tipo', String(25), nullable=False),
-        Column('segno', String(25), nullable=False),
-        Column('valore', Numeric(16,4), nullable=False),
-        schema=params["schema"],
-        useexisting=True)
-rigaprimanota.create(checkfirst=True)
+try:
+    rigaprimanota=Table('riga_prima_nota',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+except:
+    rigaprimanota = Table('riga_prima_nota', params["metadata"],
+            Column('id', Integer, primary_key=True),
+            Column('denominazione', String(300), nullable=False),
+            Column('id_testata_prima_nota', Integer,ForeignKey(primanotaFK,onupdate="CASCADE",ondelete="CASCADE")),
+            Column('id_testata_documento', Integer,ForeignKey(testatadocumentoFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
+            Column('id_banca', Integer,ForeignKey(bancaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
+            Column('numero', Integer, nullable=False),
+            Column('data_registrazione', DateTime, nullable=True),
+            Column('tipo', String(25), nullable=False),
+            Column('segno', String(25), nullable=False),
+            Column('valore', Numeric(16,4), nullable=False),
+            schema=params["schema"],
+            useexisting=True)
+    rigaprimanota.create(checkfirst=True)
 
 if "id_banca" not in [c.name for c in rigaprimanota.columns]:
     col = Column('id_banca', Integer,ForeignKey(bancaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True)
