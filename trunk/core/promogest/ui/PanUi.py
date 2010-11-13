@@ -35,9 +35,9 @@ except:
 
 def checkPan(main):
     if setconf("Master","pan") =="PAN" or setconf("Master","pan") == "BASIC":
-        username = setconf("Master", "username")
-        password = setconf("Master", "password")
-        company = Environment.azienda
+#        username = setconf("Master", "username")
+#        password = setconf("Master", "password")
+#        company = Environment.azienda
         azione = setconf("Master","pan")
         data = {"username" : username,"password":password, "company":company,
                         "pan":azione}
@@ -88,9 +88,9 @@ class PanUi(GladeWidget):
 #        self.placeWindow(self.getTopLevel())
         self.rowBackGround = None
         self.main = main
-        username = setconf("Master", "username")
-        password = setconf("Master", "password")
-        self.pan_entry_username.set_text(username)
+#        username = setconf("Master", "username")
+#        password = setconf("Master", "password")
+#        self.pan_entry_username.set_text(username)
 #        if setconf("Master","pan") =="SI":
 #            self.pan_radio_si.set_active = True
 #        else:
@@ -105,13 +105,33 @@ class PanUi(GladeWidget):
         url ="http://www.promotux.it/userRegistration"
         webbrowser.open_new_tab(url)
 
-    def on_pan_info_button_clicked(self, button):
-        url ="http://www.promotux.it/promoGest/cms/pagamento-opzione-pan"
-        webbrowser.open_new_tab(url)
+#    def on_pan_info_button_clicked(self, button):
+#        url ="http://www.promotux.it/promoGest/cms/pagamento-opzione-pan"
+#        webbrowser.open_new_tab(url)
 
-    def on_preventivo_button_clicked(self, button):
-        url ="http://www.promotux.it/promoGest/preventivo_online1"
-        webbrowser.open_new_tab(url)
+#    def on_preventivo_button_clicked(self, button):
+#        url ="http://www.promotux.it/promoGest/preventivo_online1"
+#        webbrowser.open_new_tab(url)
+
+
+    def on_acquista_button_clicked(self, button):
+        if self.main.pp.lite_radio.get_active():
+            url ="http://www.promotux.it/promoGest/preventivo_lite"
+            webbrowser.open_new_tab(url)
+        elif self.main.pp.pro_radio.get_active():
+            url ="http://www.promotux.it/promoGest/preventivo_pro"
+            webbrowser.open_new_tab(url)
+        elif self.main.pp.promowear_radio.get_active():
+            messageInfo(msg="NON ancora disponibile")
+            return
+            url ="http://www.promotux.it/promoGest/preventivo_promowear"
+            webbrowser.open_new_tab(url)
+        elif self.main.pp.promoshop_radio.get_active():
+            messageInfo(msg="NON ancora disponibile")
+            return
+            url ="http://www.promotux.it/promoGest/preventivo_promoshop"
+            webbrowser.open_new_tab(url)
+
 
     def on_pan_esegui_button_clicked(self,button):
         username = self.main.pp.pan_entry_username.get_text()

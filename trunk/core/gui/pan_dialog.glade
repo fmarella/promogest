@@ -26,7 +26,7 @@
         <child>
           <object class="GtkLabel" id="generic_label_pan">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">&lt;b&gt;Vuoi attivare l'opzione "PAN" o "BASIC" come prova gratuita per 30 giorni?&lt;/b&gt;</property>
+            <property name="label" translatable="yes">&lt;b&gt;QUESTE SONO LE VARIANTI PRINCIPALI DEL GESTIONALE. Per i moduli singoli consultate il sito web&lt;/b&gt;</property>
             <property name="use_markup">True</property>
           </object>
           <packing>
@@ -35,80 +35,13 @@
           </packing>
         </child>
         <child>
-          <placeholder/>
-        </child>
-        <child>
-          <object class="GtkHBox" id="pan_hbox2">
-            <property name="visible">True</property>
-            <child>
-              <object class="GtkLabel" id="pan_label_username">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Username sito</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="padding">3</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="pan_entry_username">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="editing_canceled">True</property>
-                <property name="invisible_char">●</property>
-              </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">3</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHBox" id="pan_hbox1">
-            <property name="visible">True</property>
-            <child>
-              <object class="GtkLabel" id="pan_label_password">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Password sito</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="padding">6</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="pan_password_entry">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="visibility">False</property>
-                <property name="invisible_char">●</property>
-              </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">4</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHBox" id="pan_hbox">
+          <object class="GtkHBox" id="lite_hbox">
             <property name="visible">True</property>
             <property name="spacing">3</property>
             <child>
-              <object class="GtkImage" id="image1__">
+              <object class="GtkImage" id="image1__1">
                 <property name="visible">True</property>
-                <property name="pixbuf">pg2PAN4.png</property>
+                <property name="pixbuf">pg2BAS3.png</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -117,8 +50,9 @@
               </packing>
             </child>
             <child>
-              <object class="GtkRadioButton" id="pan_radio_si">
-                <property name="label" translatable="yes">PAN   </property>
+              <object class="GtkRadioButton" id="lite_radio">
+                <property name="label" translatable="yes">LITE</property>
+                <property name="width_request">120</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -133,14 +67,183 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="pan_description">
+              <object class="GtkLabel" id="lite_description">
                 <property name="visible">True</property>
                 <property name="ypad">4</property>
-                <property name="label" translatable="yes">L'opzione "PAN" permette di accedere &lt;b&gt;gratuitamente&lt;/b&gt; ai moduli : 
-&lt;b&gt;Multi Listino&lt;/b&gt;, &lt;b&gt;Multi Magazzino&lt;/b&gt;, &lt;b&gt;Label&lt;/b&gt;, &lt;b&gt;Contatti&lt;/b&gt;, 
-&lt;b&gt;Multi Pagamento&lt;/b&gt;, &lt;b&gt;Inventario&lt;/b&gt;, &lt;b&gt;Importazione Listini&lt;/b&gt;, &lt;b&gt;Promemoria&lt;/b&gt;,&lt;b&gt;Pagamenti&lt;/b&gt;,
-&lt;b&gt;Agenti&lt;/b&gt;,&lt;b&gt;Vettori&lt;/b&gt;,&lt;b&gt;Prima Nota Cassa&lt;/b&gt;. Sbloccando le limitazioni della &lt;b&gt;Lite&lt;/b&gt; e dandovi la possibilità di provarli.
-L'acquisto dell'opzione dopo il primo mese costa &lt;b&gt;solo € 42/mese iva inclusa&lt;/b&gt;</property>
+                <property name="label" translatable="yes">La versione &lt;b&gt;LITE&lt;/b&gt; è gratuita. Sono disponibili per l'acqusto due versioni ( BASIC e PAN) che attivano nuovi moduli 
+espandendo ed aumentantone il potenziale. Clicka su "Acquista" per verificare il dettaglio delle caratteristiche 
+e quello dei costi. </property>
+                <property name="use_markup">True</property>
+                <property name="selectable">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="pro_hbox">
+            <property name="visible">True</property>
+            <property name="spacing">3</property>
+            <child>
+              <object class="GtkImage" id="image1__2">
+                <property name="visible">True</property>
+                <property name="pixbuf">pg2PAN4.png</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="pro_radio">
+                <property name="label" translatable="yes">PRO</property>
+                <property name="width_request">120</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">True</property>
+                <property name="group">lite_radio</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="padding">5</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="pro_description">
+                <property name="visible">True</property>
+                <property name="ypad">4</property>
+                <property name="label" translatable="yes">La versione &lt;b&gt;PRO&lt;/b&gt; è la nostra versione di punta. Utilizza un database dalle prestazioni superiori
+ed offre nativamente alcune caratteristiche importanti. Se vuoi utilizzare il Promogest su più
+postazioni questa dev'essere la tua scelta. Clicca sul pulsante acquista per accedere alla pagina
+dei dettagli.</property>
+                <property name="use_markup">True</property>
+                <property name="selectable">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="promowear_hbox">
+            <property name="visible">True</property>
+            <property name="spacing">3</property>
+            <child>
+              <object class="GtkImage" id="image1__3">
+                <property name="visible">True</property>
+                <property name="xpad">8</property>
+                <property name="pixbuf">colore48x48.png</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="promowear_radio">
+                <property name="label" translatable="yes">PROMOWEAR</property>
+                <property name="width_request">120</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">True</property>
+                <property name="group">lite_radio</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="padding">5</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="promowear_description">
+                <property name="visible">True</property>
+                <property name="ypad">4</property>
+                <property name="label" translatable="yes">Il &lt;b&gt;PROMOWEAR&lt;/b&gt; è il nostro allestimento per le attività di abbigliamento 
+e calzature. Offre tutte le possibilità legate alla gestione delle taglie e dei colori
+e delle loro varianti. Clicka su "Acquista" per maggiori informazioni</property>
+                <property name="use_markup">True</property>
+                <property name="selectable">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="promoshop_hbox">
+            <property name="visible">True</property>
+            <property name="spacing">3</property>
+            <child>
+              <object class="GtkImage" id="image1__">
+                <property name="visible">True</property>
+                <property name="xpad">8</property>
+                <property name="pixbuf">vendita_dettaglio48x48.png</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="promoshop_radio">
+                <property name="label" translatable="yes">PROMOSHOP</property>
+                <property name="width_request">120</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">True</property>
+                <property name="group">lite_radio</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="padding">5</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="promoshop_description">
+                <property name="visible">True</property>
+                <property name="ypad">4</property>
+                <property name="label" translatable="yes">Il &lt;b&gt;PROMOSHOP&lt;/b&gt; aggiunge al Promogest una comoda e potente sezione dedicata 
+alla vendita al dettaglio ed al collegamento con il registratore di cassa ed il lettore
+di codici a barre. Se hai una attività commerciale questo è il tuo prodotto.</property>
                 <property name="use_markup">True</property>
                 <property name="selectable">True</property>
               </object>
@@ -158,64 +261,12 @@ L'acquisto dell'opzione dopo il primo mese costa &lt;b&gt;solo € 42/mese iva i
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="basic_hbox">
-            <property name="visible">True</property>
-            <property name="spacing">3</property>
-            <child>
-              <object class="GtkImage" id="image2__">
-                <property name="visible">True</property>
-                <property name="pixbuf">pg2BAS4.png</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkRadioButton" id="basic_radio">
-                <property name="label" translatable="yes">BASIC</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="draw_indicator">True</property>
-                <property name="group">pan_radio_si</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="padding">5</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="pan_description1">
-                <property name="visible">True</property>
-                <property name="ypad">3</property>
-                <property name="label" translatable="yes">L'opzione "BASIC" permette di accedere &lt;b&gt;gratuitamente&lt;/b&gt; ai moduli : 
-&lt;b&gt;Multi Listino&lt;/b&gt;, &lt;b&gt;Multi Magazzino&lt;/b&gt;, &lt;b&gt;Contatti&lt;/b&gt;, 
-&lt;b&gt;Multi Pagamento&lt;/b&gt;, &lt;b&gt;Promemoria&lt;/b&gt; e &lt;b&gt;Pagamenti&lt;/b&gt;,
-Vettori. Sbloccando tutte le limitazioni della &lt;b&gt;Lite&lt;/b&gt; e dandovi la possibilità di provarli.
-L'acquisto dell'opzione dopo il primo mese costa &lt;b&gt;solo € 24/mese iva inclusa&lt;/b&gt;
-</property>
-                <property name="use_markup">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">6</property>
-          </packing>
+          <placeholder/>
         </child>
         <child>
           <object class="GtkHButtonBox" id="hbuttonbox1">
             <property name="visible">True</property>
-            <property name="spacing">2</property>
+            <property name="spacing">3</property>
             <property name="layout_style">center</property>
             <child>
               <object class="GtkButton" id="registrati_button">
@@ -233,13 +284,13 @@ L'acquisto dell'opzione dopo il primo mese costa &lt;b&gt;solo € 24/mese iva i
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="preventivo_button">
-                <property name="label" translatable="yes">Preventivo Online</property>
+              <object class="GtkButton" id="pan_info_button">
+                <property name="label">Acquista</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="image">preventivo_image</property>
-                <signal name="clicked" handler="on_preventivo_button_clicked"/>
+                <property name="image">acquista_image</property>
+                <signal name="clicked" handler="on_acquista_button_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -247,41 +298,9 @@ L'acquisto dell'opzione dopo il primo mese costa &lt;b&gt;solo € 24/mese iva i
                 <property name="position">1</property>
               </packing>
             </child>
-            <child>
-              <object class="GtkButton" id="pan_info_button">
-                <property name="label">Acquista</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="image">acquista_image</property>
-                <signal name="clicked" handler="on_pan_info_button_clicked"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="pan_esegui_button">
-                <property name="label">Attiva</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="image">attiva_image</property>
-                <signal name="clicked" handler="on_pan_esegui_button_clicked"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">3</property>
-              </packing>
-            </child>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="padding">1</property>
+            <property name="padding">4</property>
             <property name="position">7</property>
           </packing>
         </child>
@@ -299,14 +318,6 @@ L'acquisto dell'opzione dopo il primo mese costa &lt;b&gt;solo € 24/mese iva i
     <property name="pixbuf">carte16x16.png</property>
   </object>
   <object class="GtkImage" id="regstrati_image">
-    <property name="visible">True</property>
-    <property name="stock">gtk-edit</property>
-  </object>
-  <object class="GtkImage" id="attiva_image">
-    <property name="visible">True</property>
-    <property name="stock">gtk-apply</property>
-  </object>
-  <object class="GtkImage" id="preventivo_image">
     <property name="visible">True</property>
     <property name="stock">gtk-edit</property>
   </object>

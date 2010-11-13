@@ -7,7 +7,6 @@
     <property name="upper">9999</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-    <property name="page_size">0</property>
     <signal name="value_changed" handler="on_anno_calendar_spinbutton_change_value"/>
   </object>
   <object class="GtkListStore" id="liststore1">
@@ -2112,14 +2111,14 @@ Promemoria in scadenza. Verificare?!?</property>
             </child>
             <child>
               <object class="GtkButton" id="whatcant_button">
-                <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <signal name="clicked" handler="on_whatcant_button_clicked"/>
                 <child>
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">&lt;span foreground="red"&gt;&lt;big&gt;&lt;b&gt;PERCHE UNA VERSIONE LITE?&lt;/b&gt;&lt;/big&gt;&lt;/span&gt;</property>
+                    <property name="label" translatable="yes">&lt;span foreground="red"&gt;&lt;big&gt;&lt;b&gt;&lt;/b&gt;&lt;/big&gt;&lt;/span&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                 </child>
