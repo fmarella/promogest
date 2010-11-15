@@ -47,4 +47,15 @@ if (u'Fattura pro-forma.registro',) not in s or s==[]:
     settinggg.execute(key = "Fattura pro-forma.registro", description = "Registro associato a Fattura pro-forma", value= "registro_fattura_pro-forma")
     settinggg.execute(key = "registro_fattura_pro-forma.rotazione", description = "Tipologia di rotazione registro associato a Fattura pro-forma ", value= "annuale")
 
+if (u'Ordine a magazzino.registro',) not in s or s==[]:
+    settinggg  = settingg.insert()
+    settinggg.execute(key = "Ordine a magazzino.registro", description = "Registro associato a Ordine a magazzino", value= "registro_ordine_a_magazzino")
+    settinggg.execute(key = "registro_ordine_a_magazzino.rotazione", description = "Tipologia di rotazione registro associato a Ordine a magazzino ", value= "annuale")
+
+if (u'Ordine beni strumentali.registro',) not in s or s==[]:
+    settinggg  = settingg.insert()
+    settinggg.execute(key = "Ordine beni strumentali.registro", description = "Registro associato a Ordine beni strumentali", value= "registro_ordine_beni_strumentali")
+    settinggg.execute(key = "registro_ordine_beni_strumentali.rotazione", description = "Tipologia di rotazione registro associato a Ordine beni strumentali ", value= "annuale")
+
+
 std_mapper = mapper(Setting, settingg, order_by=settingg.c.key)

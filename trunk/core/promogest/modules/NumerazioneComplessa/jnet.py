@@ -43,5 +43,9 @@ def numerazioneJnet(dao):
         return str(new)+"JN"+str(Environment.workingYear)[:-2]+"-DDT"
     elif dao.operazione == "Ordine a fornitore":
         return str(new)+"00-JN"+str(Environment.workingYear)
+    elif dao.operazione == "Ordine a magazzino":
+        return str(new)+"00-MA"+str(Environment.workingYear)
+    elif dao.operazione == "Ordine beni strumentali":
+        return str(new)+"00-BS"+str(Environment.workingYear)
     elif "Preventivo" in dao.operazione:
         return new+"JN"+str(Environment.workingYear)

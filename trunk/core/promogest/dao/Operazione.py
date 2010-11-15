@@ -50,6 +50,15 @@ s= select([operazione.c.denominazione]).execute().fetchall()
 if (u'Fattura pro-forma',) not in s or s==[]:
     ope  = operazione.insert()
     ope.execute(denominazione = "Fattura pro-forma", fonte_valore = "vendita_senza_iva", tipo_persona_giuridica="cliente", tipo_operazione="documento")
+
+if (u'Ordine a magazzino',) not in s or s==[]:
+    ope  = operazione.insert()
+    ope.execute(denominazione = "Ordine a magazzino", fonte_valore = "acquisto_senza_iva")
+
+if (u'Ordine beni strumentali',) not in s or s==[]:
+    ope  = operazione.insert()
+    ope.execute(denominazione = "Ordine beni strumentali", fonte_valore = "acquisto_senza_iva")
+
 #    setting.execute(key = "registro_fattura_proforma.rotazione", description = "Tipologia di rotazione registro associato a Fattura proforma ", value= "annuale")
 
 
