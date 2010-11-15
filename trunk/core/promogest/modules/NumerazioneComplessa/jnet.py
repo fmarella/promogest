@@ -48,4 +48,4 @@ def numerazioneJnet(dao):
     elif dao.operazione == "Ordine beni strumentali":
         return str(new)+"00-BS"+str(Environment.workingYear)
     elif "Preventivo" in dao.operazione:
-        return new+"JN"+str(Environment.workingYear)
+        return str(new)+"JN"+str(Environment.workingYear)
