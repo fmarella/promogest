@@ -54,7 +54,7 @@ class AnagraficaArticoli(Anagrafica):
                             reportHandler=AnagraficaArticoliReport(self),
                             editElement=AnagraficaArticoliEdit(self),
                             aziendaStr=aziendaStr)
-        checkCodBarOrphan = removeCodBarorphan()
+#        checkCodBarOrphan = removeCodBarorphan()
         self.record_duplicate_menu.set_property('visible', True)
         self.records_file_export.set_sensitive(True)
 

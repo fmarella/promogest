@@ -34,49 +34,69 @@ except:
     None
 
 def checkPan(main):
-    if setconf("Master","pan") =="PAN" or setconf("Master","pan") == "BASIC":
-#        username = setconf("Master", "username")
-#        password = setconf("Master", "password")
-#        company = Environment.azienda
-        azione = setconf("Master","pan")
-        data = {"username" : username,"password":password, "company":company,
-                        "pan":azione}
-        url = "http://www.promotux.it/trial"
-#        url = "http://localhost:8080/trial"
-        values = urllib.urlencode(data)
-        try:
-            req = urllib2.Request(url, values)
-            response = urllib2.urlopen(req)
-            content = response.read()
-            conte = json.loads(content)
-            if str(conte["pan"]) == "BASIC":
-                Environment.modulesList.append("basic")
-                azione = "BASIC"
-            elif str(conte["pan"]) == "PAN":
-                azione = "PAN"
-                Environment.modulesList.append("pan")
-            text = "OPZIONE:<b>%s!</b>,GIORNI RESIDUI:<b> %s</b>" %(azione,str(conte["residui"]))
-            main.pan_label_info.set_markup(text)
-        except:
-            print " ERRORE NELLA GESTIONE DEL PAN"
-            if azione == "BASIC":
-                Environment.modulesList.append("basic")
-            elif azione == "PAN":
-                Environment.modulesList.append("pan")
-            text = "OPZIONE:<b>SI!</b>  GIORNI RESIDUI: <b>ND</b>"
-            main.pan_label_info.set_markup(text)
-    if ("Pagamenti" not in Environment.modulesList) and \
-            ("Promemoria" not in Environment.modulesList) and \
-            ("pan" not in Environment.modulesList) and\
-                            ("basic" not in Environment.modulesList):
+    print "TIPO PG", Environment.tipo_pg
+    if "Pagamenti" not in  Environment.modulesList and \
+        "Promemoria" not in Environment.modulesList and \
+        "LITE_BASIC" not in Environment.modulesList and \
+        "LITE_PAN" not in Environment.modulesList and \
+        "PRO" not in Environment.modulesList and \
+        "PRO_BASIC" not in  Environment.modulesList:
         pp = PanUi(main).draw()
         a = gtk.Label()
         a.set_text("OPZIONI MODULI")
         main.main_notebook.prepend_page(pp.pan_frame, a)
         main.main_notebook.set_current_page(0)
+        text = "OPZIONE:<b>%s!</b>" %("NESSUNA")
+        main.pan_label_info.set_markup(text)
         return pp
     else:
+        text = "OPZIONE:<b>%s!</b>" %(Environment.tipo_pg)
+        main.pan_label_info.set_markup(text)
         main.main_notebook.set_current_page(4)
+#def checkPan(main):
+#    if setconf("Master","pan") =="PAN" or setconf("Master","pan") == "BASIC":
+##        username = setconf("Master", "username")
+##        password = setconf("Master", "password")
+##        company = Environment.azienda
+#        azione = setconf("Master","pan")
+#        data = {"username" : username,"password":password, "company":company,
+#                        "pan":azione}
+#        url = "http://www.promotux.it/trial"
+##        url = "http://localhost:8080/trial"
+#        values = urllib.urlencode(data)
+#        try:
+#            req = urllib2.Request(url, values)
+#            response = urllib2.urlopen(req)
+#            content = response.read()
+#            conte = json.loads(content)
+#            if str(conte["pan"]) == "BASIC":
+#                Environment.modulesList.append("basic")
+#                azione = "BASIC"
+#            elif str(conte["pan"]) == "PAN":
+#                azione = "PAN"
+#                Environment.modulesList.append("pan")
+#            text = "OPZIONE:<b>%s!</b>,GIORNI RESIDUI:<b> %s</b>" %(azione,str(conte["residui"]))
+#            main.pan_label_info.set_markup(text)
+#        except:
+#            print " ERRORE NELLA GESTIONE DEL PAN"
+#            if azione == "BASIC":
+#                Environment.modulesList.append("basic")
+#            elif azione == "PAN":
+#                Environment.modulesList.append("pan")
+#            text = "OPZIONE:<b>SI!</b>  GIORNI RESIDUI: <b>ND</b>"
+#            main.pan_label_info.set_markup(text)
+#    if ("Pagamenti" not in Environment.modulesList) and \
+#            ("Promemoria" not in Environment.modulesList) and \
+#            ("pan" not in Environment.modulesList) and\
+#                            ("basic" not in Environment.modulesList):
+#        pp = PanUi(main).draw()
+#        a = gtk.Label()
+#        a.set_text("OPZIONI MODULI")
+#        main.main_notebook.prepend_page(pp.pan_frame, a)
+#        main.main_notebook.set_current_page(0)
+#        return pp
+#    else:
+#        main.main_notebook.set_current_page(4)
 
 
 class PanUi(GladeWidget):

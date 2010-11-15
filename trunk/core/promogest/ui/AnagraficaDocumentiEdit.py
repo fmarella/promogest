@@ -1554,10 +1554,11 @@ del documento.
         """ Funzione di gestione cambiamento combo operazione"""
         self._operazione = findIdFromCombobox(self.id_operazione_combobox)
         page = self.notebook.get_nth_page(3)
-        if self._operazione not in Environment.hapag:
-            page.set_visible(False)
-        else:
-            page.set_visible(True)
+        if page:
+            if self._operazione not in Environment.hapag:
+                page.set_visible(False)
+            else:
+                page.set_visible(True)
         #operazione = leggiOperazione(self._operazione)
         operazione = Operazione().getRecord(id=self._operazione)
         if operazione:

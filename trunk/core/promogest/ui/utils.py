@@ -2700,17 +2700,63 @@ def orda(name):
      return a
 
 def checkInstallation():
+    """ TODO: Aggiungere una funzione che tenga conto delle volte in cui
+    fallisce il check """
     from promogest.dao.Setconf import SetConf
     try:
-        url = "http://localhost:8080/check"
+#        url = "http://localhost:8080/check"
+        url = "http://www.promotux.it/check"
         data = {"masterkey" : SetConf().select(key="install_code",section="Master")[0].value}
         values = urllib.urlencode(data)
         req = urllib2.Request(url, values)
         response = urllib2.urlopen(req)
         content = response.read()
         conte = json.loads(content)
+        if conte == {}:
+            print "CODICE NON PRESENTE DARE UN MESSAGGIO"
+        else:
+            print " CODICE TROVATO",conte
+            confy = SetConf().select(key="tipo",section="Master")
+            if confy:
+                if confy[0].value != conte["tipo"]:
+                    confy[0].value = conte["tipo"]
+                    confy[0].tipo = conte["tipo"]
+                    confy[0].persist()
+            else:
+                k = SetConf()
+                k.key = "tipo"
+                k.value =conte["tipo"]
+                k.section = "Master"
+                k.description = "tipo"
+                k.tipo_section = "General"
+                k.tipo = conte["tipo"]
+                k.active = True
+                k.date = datetime.datetime.now()
+                k.persist()
+            Environment.modulesList.append(str(conte["tipo"]))
+            Environment.tipo_pg= str(conte["tipo"])
+
     except:
         print "ERRORE NEL COLLEGAMENTO AL CHECK INSTALLAZIONE"
+        data = SetConf().select(key="tipo",section="Master")
+        if data:
+            Environment.modulesList.append(str(data[0].tipo))
+            Environment.tipo_pg= str(data[0].tipo)
+            a = SetConf().select(key="errcheck",section="Master")
+            if a :
+                a[0].value +=1
+                a[0].persist()
+            else:
+                k = SetConf()
+                k.key = "errcheck"
+                k.value =1
+                k.section = "Master"
+                k.description = "errcheck"
+                k.tipo_section = "General"
+                k.tipo = ""
+                k.active = True
+                k.date = datetime.datetime.now()
+                k.persist()
 
 def updateScadenzePromemoria():
     """ Segna quali promemoria entrano nel periodo in scadenza,

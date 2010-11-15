@@ -167,6 +167,27 @@ articoli per un certo </property>
               </object>
             </child>
             <child>
+              <object class="GtkMenuItem" id="codice">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">codice</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="codice_menu">
+                    <property name="visible">True</property>
+                    <property name="ubuntu_local">True</property>
+                    <child>
+                      <object class="GtkMenuItem" id="inserimento_codice">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Inserimento codice</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_inserimento_codice_activate"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
               <object class="GtkMenuItem" id="aiuto_menu">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">A_iuto</property>

@@ -183,10 +183,12 @@ class SetConfUI(GladeWidget):
     def on_close_button_clicked(self, button):
         self.destroy()
 
+
+
 if not SetConf().select(key="install_code",section="Master"):
     k = SetConf()
     k.key = "install_code"
-    k.value =str(hashlib.sha224("aziendaPromo"+orda("aziendaPromo")).hexdigest())
+    k.value =str(hashlib.sha224("aziendapromo"+orda("aziendapromo")).hexdigest())
     k.section = "Master"
     k.description = "codice identificativo della propria installazione"
     k.tipo_section = "General"
@@ -195,6 +197,11 @@ if not SetConf().select(key="install_code",section="Master"):
     k.date = datetime.datetime.now()
     k.persist()
 
+codice=  SetConf().select(key="install_code",section="Master")
+if codice:
+    if codice[0].value =="ad2a57ed2bd4d4df494e174b576cf8e822a18be2e1b074871c69b31f":
+        codice[0].value = "8f0eff136d1fb1d2b76fde5de7c83eb60d558c4f155ee687dcac5504"
+        codice[0].persist()
 
 
 if not SetConf().select(key="fornitore_predefinito",section="Documenti"):

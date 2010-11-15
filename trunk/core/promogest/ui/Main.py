@@ -45,7 +45,7 @@ from promogest.ui.SendEmail import SendEmail
 from promogest.lib import feedparser
 from promogest.ui.PrintDialog import PrintDialogHandler
 from utils import hasAction,fenceDialog, aggiorna, updateScadenzePromemoria,\
-         setconf, dateTimeToString, dateToString,last_day_of_month, date_range
+         setconf, dateTimeToString, dateToString,last_day_of_month, date_range,orda
 from utilsCombobox import *
 from ParametriFrame import ParametriFrame
 from SetConf import SetConfUI
@@ -1097,6 +1097,41 @@ class Main(GladeWidget):
         if response == gtk.RESPONSE_OK:
             creditsDialog.credits_dialog.destroy()
 
+    def on_inserimento_codice_activate(self,widget):
+        from promogest.dao.Setconf import SetConf
+        dialog = gtk.MessageDialog(self.getTopLevel(),
+                                   gtk.DIALOG_MODAL
+                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
+        dialog.set_markup("""<b>CODICE ATTIVAZIONE PACCHETTO</b>""")
+        hbox = gtk.HBox()
+        entry___ = gtk.Entry()
+
+        label = gtk.Label(False)
+        label.set_markup("<b>   Inserisci codice</b>")
+        hbox.pack_start(label)
+        hbox.pack_start(entry___)
+        dialog.vbox.pack_start(hbox)
+        dialog.show_all()
+        response = dialog.run()
+        codice = entry___.get_text()
+#        hascode = str(hashlib.sha224(codice+orda(codice)).hexdigest())
+        sets = SetConf().select(key="install_code",section="Master")
+        if sets:
+            sets[0].delete()
+        k = SetConf()
+        k.key = "install_code"
+        k.value =str(hashlib.sha224(codice+orda(codice)).hexdigest())
+        k.section = "Master"
+        k.description = "codice identificativo della propria installazione"
+        k.tipo_section = "General"
+        k.tipo = "Lite"
+        k.active = True
+        k.date = datetime.datetime.now()
+        k.persist()
+        dialog.destroy()
+
+
     def on_licenza_menu_activate(self, widget):
         licenzaDialog = GladeWidget('licenza_dialog', callbacks_proxy=self)
         licenzaDialog.getTopLevel().set_transient_for(self.getTopLevel())
@@ -1177,12 +1212,11 @@ ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDum
 
 
     def on_seriale_menu_activate(self, widget):
+        from promogest.dao.Setconf import SetConf
         try:
-            fileName = Environment.conf.guiDir + 'logo_promogest.png'
-            f = open(fileName,'rb')
-            content = f.read()
-            f.close()
-            msg = 'Codice installazione:\n\n' + str(hashlib.md5(content).hexdigest().upper())
+            data = SetConf().select(key="install_code",section="Master")
+            codice = data[0].value
+            msg = 'Codice installazione:\n\n' + str(codice)
         except:
             msg = 'Impossibile generare il codice !!!'
         dialog = gtk.MessageDialog(self.getTopLevel(),
