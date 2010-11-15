@@ -54,12 +54,12 @@ if (u'Fattura pro-forma',) not in s or s==[]:
 if (u'Ordine a magazzino',) not in s or s==[]:
     ope  = operazione.insert()
     ope.execute(denominazione = "Ordine a magazzino", fonte_valore = "acquisto_senza_iva",
-    tipo_persona_giuridica="fornitore",tipo_operazione"documento")
+    tipo_persona_giuridica="fornitore",tipo_operazione="documento")
 
 if (u'Ordine beni strumentali',) not in s or s==[]:
     ope  = operazione.insert()
     ope.execute(denominazione = "Ordine beni strumentali", fonte_valore = "acquisto_senza_iva",
-    tipo_persona_giuridica="fornitore",tipo_operazione"documento")
+    tipo_persona_giuridica="fornitore",tipo_operazione="documento")
 
 #    setting.execute(key = "registro_fattura_proforma.rotazione", description = "Tipologia di rotazione registro associato a Fattura proforma ", value= "annuale")
 
