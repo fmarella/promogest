@@ -37,6 +37,9 @@ def numerazioneJnet(dao):
         new = "00"+str(numero)
     elif numero <100:
         new = "0"+str(numero)
+    else:
+        new = str(numero)
+
     if dao.operazione == "Fattura vendita":
         return "F"+str(new)+"JN"+str(Environment.workingYear)
     elif "DDT" in dao.operazione:
