@@ -41,6 +41,7 @@ import string, re
 import pysvn
 import xml.etree.ElementTree as ET
 import unicodedata
+import socket
 import urllib, urllib2
 try:
     import json
@@ -2709,7 +2710,7 @@ def checkInstallation():
         data = {"masterkey" : SetConf().select(key="install_code",section="Master")[0].value}
         values = urllib.urlencode(data)
         req = urllib2.Request(url, values)
-        response = urllib2.urlopen(req)
+        response = urllib2.urlopen(req,timeout=5)
         content = response.read()
         conte = json.loads(content)
         if conte == {}:
@@ -2744,12 +2745,12 @@ def checkInstallation():
             Environment.tipo_pg= str(data[0].tipo)
             a = SetConf().select(key="errcheck",section="Master")
             if a :
-                a[0].value +=1
+                a[0].value = str(int(a[0].value)+1)
                 a[0].persist()
             else:
                 k = SetConf()
                 k.key = "errcheck"
-                k.value =1
+                k.value ="1"
                 k.section = "Master"
                 k.description = "errcheck"
                 k.tipo_section = "General"

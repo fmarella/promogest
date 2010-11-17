@@ -200,7 +200,7 @@ se non sei registrato fallo premendo il pulsante 'registrati sito'""")
             if azione =="PAN" or azione == "BASIC":
                 values = urllib.urlencode(data)
                 req = urllib2.Request(url, values)
-                response = urllib2.urlopen(req)
+                response = urllib2.urlopen(req,timeout=5)
                 content = response.read()
                 conte = json.loads(content)
                 if conte["rows"] > 0 and (conte["pan"] == "PAN" or conte["pan"] == "BASIC"):

@@ -171,7 +171,7 @@ def _on_html_request_url(document, url, stream):
             stream.close()
         except:
             req = urllib2.Request(url)
-            response = urllib2.urlopen(req)
+            response = urllib2.urlopen(req,timeout=5)
             html = response.read()
             stream.write(html)
             stream.close()
