@@ -2103,6 +2103,21 @@ Promemoria in scadenza. Verificare?!?</property>
             <property name="border_width">2</property>
             <property name="spacing">2</property>
             <child>
+              <object class="GtkButton" id="registrati_button">
+                <property name="label" translatable="yes">Registrati sul sito</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">regstrati_image</property>
+                <signal name="clicked" handler="on_registrati_button_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkLabel" id="pan_label_info">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">&lt;b&gt;NOVITÀ&lt;/b&gt; PAN E BASIC</property>
@@ -2128,25 +2143,6 @@ Promemoria in scadenza. Verificare?!?</property>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
                 <property name="position">5</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="whatcant_button">
-                <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_whatcant_button_clicked"/>
-                <child>
-                  <object class="GtkLabel" id="label1">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">&lt;span foreground="red"&gt;&lt;big&gt;&lt;b&gt;&lt;/b&gt;&lt;/big&gt;&lt;/span&gt;</property>
-                    <property name="use_markup">True</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="pack_type">end</property>
-                <property name="position">3</property>
               </packing>
             </child>
             <child>
@@ -2369,5 +2365,9 @@ Rosso: PromoGest2 Da Aggiornare</property>
   <object class="GtkImage" id="email_image">
     <property name="visible">True</property>
     <property name="pixbuf">spedisci24x24.png</property>
+  </object>
+  <object class="GtkImage" id="regstrati_image">
+    <property name="visible">True</property>
+    <property name="stock">gtk-edit</property>
   </object>
 </interface>

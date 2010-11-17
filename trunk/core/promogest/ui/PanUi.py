@@ -125,13 +125,38 @@ class PanUi(GladeWidget):
         url ="http://www.promotux.it/userRegistration"
         webbrowser.open_new_tab(url)
 
-#    def on_pan_info_button_clicked(self, button):
-#        url ="http://www.promotux.it/promoGest/cms/pagamento-opzione-pan"
-#        webbrowser.open_new_tab(url)
+    def on_one_main_button_clicked(self, button):
+        url ="http://www.promotux.it/promoGest/preventivo_one"
+        webbrowser.open_new_tab(url)
 
-#    def on_preventivo_button_clicked(self, button):
-#        url ="http://www.promotux.it/promoGest/preventivo_online1"
-#        webbrowser.open_new_tab(url)
+    def on_pro_main_button_clicked(self, button):
+        url ="http://www.promotux.it/promoGest/preventivo_pro"
+        webbrowser.open_new_tab(url)
+
+    def on_promowear_main_button_clicked(self, button):
+        url ="http://www.promotux.it/promoGest/preventivo_pro"
+        webbrowser.open_new_tab(url)
+
+    def on_promoshop_main_button_clicked(self, button):
+        url ="http://www.promotux.it/promoGest/preventivo_pro"
+        webbrowser.open_new_tab(url)
+
+    def on_promowear_one_button_clicked(self, button):
+        url ="http://www.promotux.it/promoGest/preventivo_one"
+        webbrowser.open_new_tab(url)
+
+
+    def on_promowear_pro_button_clicked(self, button):
+        url ="http://www.promotux.it/promoGest/preventivo_pro"
+        webbrowser.open_new_tab(url)
+
+    def on_promoshop_one_button_clicked(self, button):
+        url ="http://www.promotux.it/promoGest/preventivo_one"
+        webbrowser.open_new_tab(url)
+
+    def on_promoshop_pro_button_clicked(self, button):
+        url ="http://www.promotux.it/promoGest/preventivo_pro"
+        webbrowser.open_new_tab(url)
 
 
     def on_acquista_button_clicked(self, button):
