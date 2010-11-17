@@ -63,7 +63,7 @@
                 <property name="visible">True</property>
                 <property name="xalign">0.10000000149011612</property>
                 <property name="ypad">4</property>
-                <property name="label" translatable="yes">La versione &lt;b&gt;LITE&lt;/b&gt; è gratuita. Sono disponibili per l'acqusto due versioni ( BASIC e PAN) che attivano nuovi moduli espandendo ed aumentantone il potenziale. Clicka su "Acquista" per verificare il dettaglio delle caratteristiche e quello dei costi. </property>
+                <property name="label" translatable="yes">La versione &lt;b&gt;ONE&lt;/b&gt; è gratuita. Sono disponibili per l'acqusto due versioni ( STANDARD e FULL) che attivano nuovi moduli espandendo ed aumentantone il potenziale.</property>
                 <property name="use_markup">True</property>
                 <property name="justify">fill</property>
                 <property name="wrap">True</property>
@@ -108,7 +108,7 @@
                 <property name="visible">True</property>
                 <property name="xalign">0.10000000149011612</property>
                 <property name="ypad">4</property>
-                <property name="label" translatable="yes">La versione &lt;b&gt;PRO&lt;/b&gt; è la nostra versione di punta. Utilizza un database dalle prestazioni superiori ed offre nativamente alcune caratteristiche importanti. Se vuoi utilizzare il Promogest su più postazioni questa dev'essere la tua scelta. Clicca sul pulsante acquista per accedere alla pagina dei dettagli.</property>
+                <property name="label" translatable="yes">La versione &lt;b&gt;PRO&lt;/b&gt; è la nostra versione di punta. Se vuoi utilizzare il Promogest su più postazioni questa dev'essere la tua scelta.</property>
                 <property name="use_markup">True</property>
                 <property name="justify">fill</property>
                 <property name="wrap">True</property>
@@ -153,7 +153,7 @@
                 <property name="visible">True</property>
                 <property name="xalign">0.10000000149011612</property>
                 <property name="ypad">4</property>
-                <property name="label" translatable="yes">Il &lt;b&gt;PROMOWEAR&lt;/b&gt; è il nostro allestimento per le attività di abbigliamento e calzature. Offre tutte le possibilità legate alla gestione delle taglie e dei colori e delle loro varianti. Clicka su "Acquista" per maggiori informazioni</property>
+                <property name="label" translatable="yes">Il &lt;b&gt;PROMOWEAR&lt;/b&gt; è il nostro allestimento per le attività di abbigliamento e calzature. Offre tutte le possibilità legate alla gestione delle taglie e dei colori e delle loro varianti.</property>
                 <property name="use_markup">True</property>
                 <property name="justify">fill</property>
                 <property name="wrap">True</property>
