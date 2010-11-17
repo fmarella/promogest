@@ -102,7 +102,7 @@ class Main(GladeWidget):
         elif "SincroDB" in Environment.modulesList and Environment.conf.SincroDB.tipo =="server":
             self.client_sincro_db.destroy()
         if Environment.tipodb =="postgresql":
-            self.whatcant_button.destroy()
+#            self.whatcant_button.destroy()
             self.test_promowear_button.destroy()
         self.create_allarmi_frame()
 #        self.main_notebook.set_current_page(self.main_notebook.page_num(self.notifica_allarmi_frame))
