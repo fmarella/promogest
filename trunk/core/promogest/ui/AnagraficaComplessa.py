@@ -1031,6 +1031,8 @@ class AnagraficaHtml(object):
         print "PER LA STAMPA", operationNameUnderscored, Environment.templatesDir + operationNameUnderscored + '.sla'
         if os.path.exists(Environment.templatesDir + operationNameUnderscored + '.sla'):
             self._slaTemplate = Environment.templatesDir + operationNameUnderscored + '.sla'
+        elif "DDT" in operationName and os.path.exists(Environment.templatesDir + 'ddt.sla'):
+            self._slaTemplate = Environment.templatesDir + 'ddt.sla'
         else:
             Environment.pg2log.info("UTILIZZO il documento.sla normale per la stampa")
             self._slaTemplate = Environment.templatesDir + self.defaultFileName + '.sla'
