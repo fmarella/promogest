@@ -25,9 +25,7 @@ import gobject
 from Ricerca import Ricerca, RicercaFilter
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
-import promogest.dao.Agente
-from promogest.dao.Agente import Agente
+from promogest.modules.Agenti.dao.Agente import Agente
 
 from utils import *
 
@@ -49,7 +47,7 @@ class RicercaAgenti(Ricerca):
             self.filter.refresh()
             self.filter.ragione_sociale_filter_entry.grab_focus()
         if ("Agenti" in Environment.modulesList) or \
-            ("pan" in Environment.modulesList):
+            ("ONE FULL" in Environment.modulesList):
             from promogest.modules.Agenti.ui.AnagraficaAgenti import AnagraficaAgenti
             anag = AnagraficaAgenti()
             anagWindow = anag.getTopLevel()
