@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
@@ -14,7 +14,6 @@
       <object class="GtkVBox" id="ricerca_main_vbox">
         <property name="visible">True</property>
         <property name="border_width">3</property>
-        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkHBox" id="ricerca_main_hbox">
@@ -37,7 +36,6 @@
               <object class="GtkVBox" id="vbox1">
                 <property name="visible">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkViewport" id="ricerca_viewport">
                     <property name="visible">True</property>
@@ -47,6 +45,68 @@
                   </object>
                   <packing>
                     <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="visualizzati_hbox1">
+                    <property name="visible">True</property>
+                    <property name="spacing">3</property>
+                    <child>
+                      <object class="GtkLabel" id="visualizzati_label">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">N° righe </property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="batchsize_combo">
+                        <property name="visible">True</property>
+                        <property name="model">liststore1</property>
+                        <child>
+                          <object class="GtkCellRendererSpin" id="cellrenderertext1"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="records_labe_label">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Tot righe:</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="tot_daos_label">
+                        <property name="visible">True</property>
+                        <property name="xpad">2</property>
+                        <property name="label" translatable="yes">-</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
               </object>
@@ -161,5 +221,46 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name gint1 -->
+      <column type="gint"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0">10</col>
+      </row>
+      <row>
+        <col id="0">15</col>
+      </row>
+      <row>
+        <col id="0">20</col>
+      </row>
+      <row>
+        <col id="0">30</col>
+      </row>
+      <row>
+        <col id="0">50</col>
+      </row>
+      <row>
+        <col id="0">100</col>
+      </row>
+      <row>
+        <col id="0">200</col>
+      </row>
+      <row>
+        <col id="0">500</col>
+      </row>
+      <row>
+        <col id="0">700</col>
+      </row>
+      <row>
+        <col id="0">1000</col>
+      </row>
+      <row>
+        <col id="0">10000</col>
+      </row>
+    </data>
   </object>
 </interface>

@@ -54,6 +54,12 @@ class FilterWidget(GladeWidget):
         self.filter_current_page_entry.connect('key_press_event',
                             self.on_filter_current_page_entry_key_event)
 
+#        batchSize =  setconf("Numbers", "batch_size")
+#        model = self._owner.batchsize_combo.get_model()
+#        for r in model:
+#            if r[0] == int(batchSize):
+#                self._owner.batchsize_combo.set_active_iter(r.iter)
+
         if filtersElement is None:
             self.filter_frame.set_no_show_all(True)
             self.filter_frame.set_property('visible', False)
@@ -151,7 +157,6 @@ class FilterWidget(GladeWidget):
         """
         Last page button response
         """
-        print "OKOKOKOKOKO"
         self.gotoLastPage()
 
 
@@ -295,6 +300,12 @@ class FilterWidget(GladeWidget):
                 if iterator is not None:
                     self.batchSize = model.get_value(iterator, 0)
         except:
+            self._owner.tot_daos_label.set_text(str(self.numRecords))
+            if self._owner.batchsize_combo.get_active_iter():
+                iterator = self._owner.batchsize_combo.get_active_iter()
+                model = self._owner.batchsize_combo.get_model()
+                if iterator is not None:
+                    self.batchSize = model.get_value(iterator, 0)
             Environment.pg2log.info("combo per la selezione del batch non ancora implementata")
         self._owner.batchSize = self.batchSize
         self._owner.offset = self.offset
