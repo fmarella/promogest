@@ -600,7 +600,7 @@ class Anagrafica(GladeWidget):
                 gobject.source_remove(self.__pulseSourceTag)
 
             self.on_records_print_dialog_close(dialog)
-            del self.__pdfReport
+#            del self.__pdfReport
             del self.__pdfGenerator
 
 

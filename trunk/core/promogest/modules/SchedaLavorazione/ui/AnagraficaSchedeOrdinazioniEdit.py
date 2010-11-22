@@ -726,6 +726,8 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.rimuovi_articolo_button.set_sensitive(True)
         selection = self.articoli_treeview.get_selection()
         model, iter = selection.get_selected()
+        print "MODELLLL", model, model.get_path(iter), iter
+        Environment.pg2log.info("IN SCHEDA LAVORAZIONE"+repr(model)+repr(model.get_path(iter))+ repr(iter))
         index = model.get_path(iter)[0]
         value = model[index][1]
         if "Stampa" != model[index][2]:
