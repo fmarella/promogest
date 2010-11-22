@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
@@ -11,7 +11,7 @@
       <object class="GtkEntry" id="partita_iva_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
       </object>
       <packing>
@@ -27,7 +27,7 @@
       <object class="GtkEntry" id="codice_fiscale_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
       </object>
       <packing>
@@ -43,7 +43,7 @@
       <object class="GtkEntry" id="localita_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
       </object>
       <packing>
@@ -59,7 +59,7 @@
       <object class="GtkEntry" id="codice_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
       </object>
       <packing>
@@ -75,7 +75,7 @@
       <object class="GtkEntry" id="cognome_nome_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
       </object>
       <packing>
@@ -91,7 +91,7 @@
       <object class="GtkEntry" id="insegna_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
       </object>
       <packing>
@@ -107,7 +107,7 @@
       <object class="GtkEntry" id="ragione_sociale_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
         <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
       </object>
       <packing>
@@ -230,7 +230,7 @@
           <object class="UnsignedIntegerEntryField" id="partita_iva_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
           </object>
         </child>
       </object>
@@ -253,7 +253,7 @@
           <object class="UnsignedIntegerEntryField" id="cap_sede_legale_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
           </object>
         </child>
       </object>
@@ -276,7 +276,7 @@
           <object class="UnsignedIntegerEntryField" id="cap_sede_operativa_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
           </object>
         </child>
       </object>
@@ -299,7 +299,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">100</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
           </object>
         </child>
       </object>
@@ -315,7 +315,7 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">200</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
         <property name="secondary_icon_activatable">True</property>
         <property name="secondary_icon_sensitive">True</property>
         <signal name="icon_press" handler="on_icon_press"/>
@@ -334,7 +334,7 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">200</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -350,7 +350,7 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">100</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -366,7 +366,7 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">100</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -387,7 +387,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">16</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
           </object>
         </child>
       </object>
@@ -405,7 +405,7 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">200</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -421,7 +421,7 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">100</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -437,7 +437,7 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">100</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -459,7 +459,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">2</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
           </object>
         </child>
       </object>
@@ -476,7 +476,7 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">200</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -599,7 +599,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">2</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
           </object>
         </child>
       </object>
