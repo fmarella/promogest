@@ -62,7 +62,7 @@ class TestataPrimaNota(Dao):
 
     def _getRighePrimanota(self):
 #        if not self.__righePrimaNota:
-        self.__dbRighePrimaNota = object_session(self).query(RigaPrimaNota)\
+        self.__dbRighePrimaNota = session.query(RigaPrimaNota)\
                                             .with_parent(self)\
                                             .filter_by(id_testata_prima_nota=self.id)\
                                             .all()

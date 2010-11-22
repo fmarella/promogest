@@ -45,6 +45,8 @@ class AnagraficaPrimaNota(Anagrafica):
                             reportHandler=AnagraficaPrimaNotaReport(self),
                             editElement=AnagraficaPrimaNotaEdit(self),
                             aziendaStr=aziendaStr)
+        self.records_print_on_screen_button.set_sensitive(False)
+        self.records_print_button.set_sensitive(False)
         self.records_file_export.set_sensitive(True)
 
 
