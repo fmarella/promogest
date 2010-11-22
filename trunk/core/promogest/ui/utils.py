@@ -67,19 +67,19 @@ def articleType(dao):
     if dao and "PromoWear" in Environment.modulesList:
         #print "AAAAAAA", dao.id, dao.id_articolo_taglia_colore, dao.id_articolo_padre_taglia_colore, dao.articoliTagliaColore, "AAAAAA"
         if (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre is None) and (dao.articoliTagliaColore):
-            print "ARTICOLO FATHER"
+#            print "ARTICOLO FATHER"
             return "father"
         elif (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre_taglia_colore is not None):
-            print "ARTICOLO SON"
+#            print "ARTICOLO SON"
             return "son"
         elif (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre is None) and (not dao.articoliTagliaColore):
-            print "ARTICOLO PLUS"
+#            print "ARTICOLO PLUS"
             return "plus"
         elif (dao.id) and (dao.id_articolo_taglia_colore is None) and (dao.id_articolo_padre is None) and (not dao.articoliTagliaColore):
-            print "ARTICOLO NORMAL"
+#            print "ARTICOLO NORMAL"
             return "normal"
         elif not dao.id:
-            print "ARTICOLO NEW NORMAL"
+#            print "ARTICOLO NEW NORMAL"
             return "new"
 
 
