@@ -282,8 +282,8 @@
         <child>
           <object class="DateTimeWidget" id="data_scadenza_entry">
             <property name="visible">True</property>
-            <signal name="focus" handler="on_data_scadenza_entry_focus_out_event" swapped="no"/>
-            <signal name="focus-out-event" handler="cicciocccc" swapped="no"/>
+            <signal name="focus" handler="on_data_scadenza_entry_focus_out_event"/>
+            <signal name="focus_out_event" handler="cicciocccc"/>
           </object>
         </child>
       </object>
@@ -301,7 +301,7 @@
         <property name="visible">True</property>
         <property name="model">liststore2</property>
         <property name="text_column">0</property>
-        <signal name="changed" handler="on_riferimento_combobox_entry_changed" swapped="no"/>
+        <signal name="changed" handler="on_riferimento_combobox_entry_changed"/>
         <child>
           <object class="GtkCellRendererText" id="tipo_riferimento_cellrenderer"/>
           <attributes>
@@ -449,7 +449,7 @@
     <child>
       <object class="GtkComboBoxEntry" id="autore_combobox_filter_entry">
         <property name="visible">True</property>
-        <signal name="changed" handler="on_autore_combobox_entry_changed" swapped="no"/>
+        <signal name="changed" handler="on_autore_combobox_entry_changed"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -463,7 +463,7 @@
     <child>
       <object class="GtkComboBoxEntry" id="incaricato_combobox_filter_entry">
         <property name="visible">True</property>
-        <signal name="changed" handler="on_incaricato_combobox_entry_changed" swapped="no"/>
+        <signal name="changed" handler="on_incaricato_combobox_entry_changed"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -501,7 +501,7 @@
         <property name="right_attach">2</property>
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
-        <property name="x_options">GTK_FILL</property>
+        <property name="x_options"></property>
         <property name="y_options"></property>
       </packing>
     </child>
@@ -515,7 +515,7 @@
       <packing>
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
-        <property name="x_options">GTK_FILL</property>
+        <property name="x_options"></property>
         <property name="y_options"></property>
       </packing>
     </child>
@@ -769,9 +769,9 @@
         <property name="right_attach">4</property>
         <property name="top_attach">1</property>
         <property name="bottom_attach">2</property>
-        <property name="x_options">GTK_FILL</property>
+        <property name="x_options"></property>
         <property name="y_options"></property>
-        <property name="x_padding">10</property>
+        <property name="x_padding">3</property>
       </packing>
     </child>
     <child>
@@ -784,9 +784,9 @@
       <packing>
         <property name="left_attach">3</property>
         <property name="right_attach">4</property>
-        <property name="x_options">GTK_FILL</property>
+        <property name="x_options"></property>
         <property name="y_options"></property>
-        <property name="x_padding">10</property>
+        <property name="x_padding">3</property>
       </packing>
     </child>
     <child>

@@ -1,9 +1,15 @@
 {% extends 'index.html' %}
 
 {% block body %}
+<style>
+@page {
+size: A4 portrait;
+margin: 1cm;
+}
+</style>
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>
-                <td width="50%" class="report-header"><h3><img src= "gui/promemoria48x48.png"> Incaricato: <strong>{{dao.incaricato}}</strong></h3></td>
+                <td width="50%" class="report-header"><h3>Incaricato: <strong>{{dao.incaricato}}</strong></h3></td>
     		<td class="report-header"><h3>Data scadenza: <strong>{{utils.dateTimeToString(dao.data_scadenza)}}</strong></h3></td>
             </tr>
             <tr>

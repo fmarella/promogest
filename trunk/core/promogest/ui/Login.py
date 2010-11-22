@@ -25,13 +25,15 @@ import os
 import gtk
 import datetime
 import threading
-from  subprocess import *
+import webbrowser
+#from  subprocess import *
 from GladeApp import GladeApp
 from promogest import Environment
 from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from GtkExceptionHandler import GtkExceptionHandler
-from utils import hasAction,checkAggiorna, aggiorna, checkInstallation, setconf
+from utils import hasAction, checkAggiorna, aggiorna, \
+                                checkInstallation, setconf
 from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
 import sqlalchemy
@@ -66,19 +68,22 @@ class Login(GladeApp):
         self.draw()
         self.getTopLevel().show_all()
 
-
     def draw(self):
         model = gtk.ListStore(str, str)
         model.clear()
         usrs = User().select(batchSize = None)
-        azs = Azienda().select(batchSize = None,orderBy=Azienda.schemaa) #lista aziende
+        azs = Azienda().select(batchSize = None, orderBy=Azienda.schemaa)
         for a in azs:
             model.append((a.schemaa, a.denominazione))
         Environment.windowGroup.append(self.getTopLevel())
         if Environment.engine.name == "sqlite": #forzo lo splash per lite
             fileSplashImage = "gui/splash_pg2_lite.png"
+            self.login_tipo_label.set_markup("<b>PromoGest 'ONE'</b>")
+            self.urll = "http://www.promotux.it/promoGest/preventivo_one"
         else:
             fileSplashImage=self.randomSplash() #splash random
+            self.login_tipo_label.set_markup("<b>PromoGest 'PRO'</b>")
+            self.urll = "http://www.promotux.it/promoGest/preventivo_pro"
         self.splash_image.set_from_file(fileSplashImage)
         dateTimeLabel = datetime.datetime.now().strftime('%d/%m/%Y  %H:%M')
         self.date_label.set_text(dateTimeLabel)
@@ -91,7 +96,8 @@ class Login(GladeApp):
         #ATTENZIONE METTO COME RUOLO ADMIN PER IL MOMENTO RICONTROLLARE
         model_usr = gtk.ListStore(str, str)
         model_usr.clear()
-        if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
+        if hasattr(Environment.conf, "RuoliAzioni") and \
+                getattr(Environment.conf.RuoliAzioni, 'mod_enable')=="yes":
             for a in usrs:
                 model_usr.append((a.username, a.email))
         else:
@@ -107,12 +113,16 @@ class Login(GladeApp):
         data = datetime.datetime.now()
         self.anno_lavoro_spinbutton.set_value(data.year)
 
+
+    def on_logo_button_clicked(self, button):
+        webbrowser.open_new_tab(self.urll)
+
     def randomSplash(self):
         """
         take a random splash for pg2 login window
         """
         import random
-        randomFile = random.sample([1,2,3,4,5,6,7,8],1)[0]
+        randomFile = random.sample([1, 2, 3, 4, 5, 6, 7, 8], 1)[0]
         fileName = Environment.conf.guiDir + "splash["+str(randomFile)+"].png"
         return fileName
 
@@ -132,12 +142,6 @@ class Login(GladeApp):
 
     def on_help_button_clicked(self, button):
         return
-        #"""
-        #Help button, open sendmail widget
-        #"""
-        #docu = DocuView()
-        ##sendemail = SendEmail()
-        ##print "INIZIAMO MALE"
 
     def on_button_login_clicked(self, button=None):
         """
@@ -169,16 +173,16 @@ class Login(GladeApp):
             found = self.azienda_comboboxentry.get_active() != -1
             if not found:
                 dialog = gtk.MessageDialog(self.getTopLevel(),
-                                            gtk.DIALOG_MODAL
-                                            | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                            gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
-                                            "Selezionare un'azienda esistente")
+                                        gtk.DIALOG_MODAL
+                                        | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                        gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
+                                        "Selezionare un'azienda esistente")
                 response = dialog.run()
                 dialog.destroy()
                 do_login = False
         if do_login: #superati i check di login
             users = User().select(username=username,
-                                        password=hashlib.md5(username+password).hexdigest())
+                        password=hashlib.md5(username+password).hexdigest())
             if len(users) ==1:
                 if users[0].active == False:
                     dialog = gtk.MessageDialog(self.getTopLevel(),
@@ -205,7 +209,8 @@ class Login(GladeApp):
                     Environment.params['usernameLoggedList'][0] = users[0].id
                     Environment.params['usernameLoggedList'][1] = users[0].username
 
-                    if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
+                    if hasattr(Environment.conf, "RuoliAzioni") and \
+                        getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
                         #from promogest.modules.RuoliAzioni.dao.Role import Role
                         #idruolo = Role().select(denominazione=users[0].id_role)
                         #if idruolo:

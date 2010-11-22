@@ -33,10 +33,20 @@ from sqlalchemy.interfaces import PoolListener
 from sqlalchemy.pool import NullPool
 import logging
 import logging.handlers
+import smtplib
+import string
+from email.MIMEBase import MIMEBase
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEBase import MIMEBase
+from email.MIMEText import MIMEText
+from email.Utils import COMMASPACE, formatdate
+from email.mime.image import MIMEImage
+from email.Header import Header
+from email import Encoders
+import datetime
 
-
-PRODOTTO = "PromoTux - Virtual Company"
-VERSIONE = "PromoGest2"
+PRODOTTO = "PromoTux"
+VERSIONE = "PromoGest 2.6.3.3"
 debugFilter = False
 debugDao = False
 debugSQL = False
@@ -91,6 +101,12 @@ tipo_pg = None
 hapag = ["Fattura accompagnatoria","Fattura acquisto","Fattura differita acquisto",
 "Fattura differita vendita","Fattura vendita","Ricevuta Fiscale","Vendita dettaglio",
 "Nota di credito a cliente","Nota di credito da fornitore"]
+
+fromHtmlLits = ["Promemoria", "TestataPrimaNota","Articolo", "Cliente",
+                "Contatto", "Fornitore"]
+
+package = ["ONE BASIC", "ONE FULL", "ONE STANDARD", "PRO BASIC", "PRO STANDARD",
+            "ONE PROMOWEAR", "ONE PROMOSHOP", "PRO PROMOWEAR", "PRO PROMOSHOP"]
 
 loc = locale.setlocale(locale.LC_ALL, '')
 
@@ -469,7 +485,7 @@ pg2log.setLevel(logging.INFO)
 
 # Add the log message handler to the logger
 handler = logging.handlers.RotatingFileHandler(
-              LOG_FILENAME, maxBytes=400000, backupCount=3)
+              LOG_FILENAME, maxBytes=100000, backupCount=6)
 
 formatter = logging.Formatter(
     "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(pathname)s - %(funcName)s - %(lineno)d")
@@ -478,9 +494,38 @@ handler.setFormatter(formatter)
 pg2log.addHandler(handler)
 pg2log.info("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
 
+def _msgDef(text="", html="",img="", subject=""):
+    msgg = MIMEMultipart()
+    msgg['Subject'] = azienda+"  "+str(datetime.datetime.now().strftime('%d_%m_%Y_%H_%M'))
+    msgg['From'] = "promogestlogs@gmail.com"
+    msgg['To'] = "promogestlogs@gmail.com"
+    msgg.attach(MIMEText("LOG"))
+#        fp = open(self.stname, 'rb')
+    part = MIMEBase('application','octet-stream')
+    fp =open(LOG_FILENAME, 'rb')
+    part.set_payload(fp.read())
+    fp.close()
+    Encoders.encode_base64(part)
+    part.add_header('Content-Disposition','attachment', filename=LOG_FILENAME)
+    msgg.attach(part)
+
+    _send(fromaddr="promogestlogs@gmail.com", total_addrs="promogestlogs@gmail.com", msg=msgg)
+
+def sendmail():
+    msg = azienda
+    return _msgDef(text=msg)
+
+def _send(fromaddr=None, total_addrs=None, msg=None):
+    server = smtplib.SMTP("smtp.gmail.com")
+    server.ehlo()
+    server.starttls()
+    server.ehlo()
+    server.login("promogestlogs@gmail.com", "pr0m0t0x")
+    return server.sendmail("promogestlogs@gmail.com", "promogestlogs@gmail.com" , msg.as_string())
+
 def hook(et, ev, eb):
     import traceback
     pg2log.info("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
     print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE"
-
+    sendmail()
 sys.excepthook = hook

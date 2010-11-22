@@ -119,10 +119,10 @@ class Anagrafica(GladeWidget):
                             accelGroup, gtk.keysyms.Escape, 0, gtk.ACCEL_VISIBLE)
         self.bodyWidget.filter_search_button.add_accelerator('clicked',
                             accelGroup, gtk.keysyms.F3, 0, gtk.ACCEL_VISIBLE)
-        self.bodyWidget.filter_search_button.add_accelerator('clicked',
-                            accelGroup, gtk.keysyms.KP_Enter, 0, gtk.ACCEL_VISIBLE)
-        self.bodyWidget.filter_search_button.add_accelerator('clicked',
-                            accelGroup, gtk.keysyms.Return, 0, gtk.ACCEL_VISIBLE)
+#        self.bodyWidget.filter_search_button.add_accelerator('clicked',
+#                            accelGroup, gtk.keysyms.KP_Enter, 0, gtk.ACCEL_VISIBLE)
+#        self.bodyWidget.filter_search_button.add_accelerator('clicked',
+#                            accelGroup, gtk.keysyms.Return, 0, gtk.ACCEL_VISIBLE)
 
     def _setHtmlHandler(self, htmlHandler):
         self.htmlHandler = htmlHandler
@@ -841,12 +841,16 @@ class AnagraficaFilter(GladeWidget):
     def build(self):
         """ reindirizza alcuni campi e metodi dal filterWidget """
         self.bodyWidget = self._anagrafica.bodyWidget
-
         # mapping fields and methods from bodyWidget to this class
         self._changeOrderBy = self.bodyWidget._changeOrderBy
         self.orderBy = self.bodyWidget.orderBy = None
         self.join =self.bodyWidget.join =None
         self.batchSize =  setconf("Numbers", "batch_size")
+        model = self._anagrafica.batchsize_combo.get_model()
+        for r in model:
+            if r[0] == int(self.batchSize):
+                self._anagrafica.batchsize_combo.set_active_iter(r.iter)
+
         self.offset = self.bodyWidget.offset = 0
         self.numRecords = self.bodyWidget.numRecords = 0
 
@@ -884,13 +888,20 @@ class AnagraficaFilter(GladeWidget):
                                       progressCB=None, progressBatchSize=0):
         """ Recupera i dati """
         self.bodyWidget.orderBy = self.orderBy
+        if self._anagrafica.batchsize_combo.get_active_iter():
+            iterator = self._anagrafica.batchsize_combo.get_active_iter()
+            model = self._anagrafica.batchsize_combo.get_model()
+            if iterator is not None:
+                batchSize = model.get_value(iterator, 0)
         return self.bodyWidget.runFilter(offset=offset, batchSize=batchSize,
                                          progressCB=progressCB, progressBatchSize=progressBatchSize,
                                          filterClosure=self._filterClosure)
 
     def countFilterResults(self):
         """ Conta i dati """
-        return self.bodyWidget.countFilterResults(self._filterCountClosure)
+        totale_daos = self.bodyWidget.countFilterResults(self._filterCountClosure)
+        self._anagrafica.tot_daos_label.set_markup(" <b>"+str(totale_daos or "Nessuno")+"</b>")
+        return totale_daos
 
     def _refreshPageCount(self):
         """ Aggiorna la paginazione """
@@ -1015,6 +1026,7 @@ class AnagraficaHtml(object):
                     "calendarioDatetime": calendarioDatetime,
                     }
             html = renderTemplate(pageData)
+        self.hh = html
         renderHTML(self._gtkHtml,html)
 
     def setObjects(self, objects):
@@ -1038,6 +1050,22 @@ class AnagraficaHtml(object):
             self._slaTemplate = Environment.templatesDir + self.defaultFileName + '.sla'
         """ Restituisce una stringa contenente il report in formato PDF """
 
+        print "DAO", self.dao.__class__.__name__
+
+        if self.dao.__class__.__name__ in Environment.fromHtmlLits:
+#            try:
+            import ho.pisa as pisa
+#            except:
+#                print "ERRORE NELL'IMPORT DI PISA"
+#            return
+            f = self.hh
+            g = file(Environment.tempDir+".temp.pdf", "wb")
+            pdf = pisa.CreatePDF(str(f),g)
+            g .close()
+            g=file(Environment.tempDir+".temp.pdf", "r")
+            f= g.read()
+            g.close()
+            return f
         param = [self.dao.dictionary(complete=True)]
         multilinedirtywork(param)
         if hasattr(Environment.conf.Documenti,"jnet"):

@@ -383,6 +383,8 @@ class TestataDocumento(Dao):
 
     #Salvataggi subordinati alla testata Documento, iniziamo da righe documento e poi righe
     def persist(self):
+        if not self.ckdd(self):
+            return
         DaoTestataMovimento = None
         params["session"].add(self)
         params["session"].commit()
@@ -938,7 +940,7 @@ std_mapper = mapper(TestataDocumento, testata_documento, properties={
         "OP":relation(Operazione,primaryjoin = (testata_documento.c.operazione==Operazione.denominazione), backref="TD"),
         "STD":relation(ScontoTestataDocumento,primaryjoin = (testata_documento.c.id==ScontoTestataDocumento.id_testata_documento),cascade="all, delete", backref="TD"),
         #'lang':relation(Language, backref='user')
-        }, order_by=testata_documento.c.numero)
+        }, order_by=testata_documento.c.data_documento.desc())
 
 if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio

@@ -32,7 +32,10 @@ from promogest import Environment
 #Fatture: F212JN2010 (F fisso, 212 progressivo, JN fisso, 2010 è l’anno)
 
 def numerazioneJnet(dao):
-    numero = dao.numero
+    try:
+        numero = dao.numero
+    except:
+        return
     if numero <10:
         new = "00"+str(numero)
     elif numero <100:

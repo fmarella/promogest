@@ -27,44 +27,44 @@ from promogest.dao.Dao import Dao
 from migrate import *
 
 
-userTableTable = Table('testata_documento', params['metadata'], autoload=True, schema=params['schema'])
-testata_prima_notaTable=Table('testata_prima_nota', params['metadata'],schema = params['schema'],autoload=True)
+try:
+    rigaprimanota=Table('riga_prima_nota',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+    if "id_banca" not in [c.name for c in rigaprimanota.columns]:
+        col = Column('id_banca', Integer,ForeignKey(bancaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True)
+        col.create(rigaprimanota)
 
-if params["tipo_db"] == "sqlite":
-    primanotaFK ='testata_prima_nota.id'
-    testatadocumentoFK ='testata_documento.id'
-    bancaFK = "banca.id"
-else:
-    primanotaFK =params['schema']+'.testata_prima_nota.id'
-    testatadocumentoFK =params['schema']+'.testata_documento.id'
-    bancaFK = params["schema"]+".banca.id"
+    rigaprimanota.c.valore.alter(Numeric(16,4), nullable=False)
 
-#try:
-#    rigaprimanota=Table('riga_prima_nota',
-#                params['metadata'],
-#                schema = params['schema'],
-#                autoload=True)
-#except:
-rigaprimanota = Table('riga_prima_nota', params["metadata"],
-        Column('id', Integer, primary_key=True),
-        Column('denominazione', String(300), nullable=False),
-        Column('id_testata_prima_nota', Integer,ForeignKey(primanotaFK,onupdate="CASCADE",ondelete="CASCADE")),
-        Column('id_testata_documento', Integer,ForeignKey(testatadocumentoFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
-        Column('id_banca', Integer,ForeignKey(bancaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
-        Column('numero', Integer, nullable=False),
-        Column('data_registrazione', DateTime, nullable=True),
-        Column('tipo', String(25), nullable=False),
-        Column('segno', String(25), nullable=False),
-        Column('valore', Numeric(16,4), nullable=False),
-        schema=params["schema"],
-        useexisting=True)
-rigaprimanota.create(checkfirst=True)
+except:
+    userTableTable = Table('testata_documento', params['metadata'], autoload=True, schema=params['schema'])
+    testata_prima_notaTable=Table('testata_prima_nota', params['metadata'],schema = params['schema'],autoload=True)
 
-if "id_banca" not in [c.name for c in rigaprimanota.columns]:
-    col = Column('id_banca', Integer,ForeignKey(bancaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True)
-    col.create(rigaprimanota)
+    if params["tipo_db"] == "sqlite":
+        primanotaFK ='testata_prima_nota.id'
+        testatadocumentoFK ='testata_documento.id'
+        bancaFK = "banca.id"
+    else:
+        primanotaFK =params['schema']+'.testata_prima_nota.id'
+        testatadocumentoFK =params['schema']+'.testata_documento.id'
+        bancaFK = params["schema"]+".banca.id"
 
-rigaprimanota.c.valore.alter(Numeric(16,4), nullable=False)
+    rigaprimanota = Table('riga_prima_nota', params["metadata"],
+            Column('id', Integer, primary_key=True),
+            Column('denominazione', String(300), nullable=False),
+            Column('id_testata_prima_nota', Integer,ForeignKey(primanotaFK,onupdate="CASCADE",ondelete="CASCADE")),
+            Column('id_testata_documento', Integer,ForeignKey(testatadocumentoFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
+            Column('id_banca', Integer,ForeignKey(bancaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
+            Column('numero', Integer, nullable=False),
+            Column('data_registrazione', DateTime, nullable=True),
+            Column('tipo', String(25), nullable=False),
+            Column('segno', String(25), nullable=False),
+            Column('valore', Numeric(16,4), nullable=False),
+            schema=params["schema"],
+            useexisting=True)
+    rigaprimanota.create(checkfirst=True)
 
 
 class RigaPrimaNota(Dao):

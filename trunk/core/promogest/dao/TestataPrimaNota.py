@@ -30,6 +30,7 @@ from promogest.ui.utils import *
 
 
 try:
+
     testataprimanota=Table('testata_prima_nota',
             params['metadata'],
             schema = params['schema'],
@@ -162,6 +163,6 @@ class TestataPrimaNota(Dao):
 std_mapper = mapper(TestataPrimaNota, testataprimanota,properties={
         "rigatest": relation(RigaPrimaNota,primaryjoin=
                 testataprimanota.c.id==RigaPrimaNota.id_testata_prima_nota,
-                cascade="all, delete",
-                backref="tprimanota")},
+                foreign_keys=[RigaPrimaNota.id_testata_prima_nota],
+                cascade="all, delete")},
                 order_by=testataprimanota.c.id)

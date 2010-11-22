@@ -1,19 +1,29 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
-"""
- Promogest
- Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
- Author: Francesco Meloni <francesco@promotux.it>
- License: GNU GPLv2
-"""
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                       di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import *
-import types
+from promogest import Environment
 import datetime
-from sqlalchemy.ext.serializer import loads, dumps
-
+import gtk
 
 def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     """
@@ -32,10 +42,10 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     from Riga import Riga
     from promogest.dao.Magazzino import Magazzino
     if allMag:
-        magazzini = params["session"].query(Magazzino.id).all()[0]
+        magazzini = Environment.params["session"].query(Magazzino.id).all()[0]
     else:
         magazzini = [idMagazzino]
-    righeArticoloMovimentate= params["session"]\
+    righeArticoloMovimentate= Environment.params["session"]\
             .query(RigaMovimento,TestataMovimento)\
             .filter(TestataMovimento.data_movimento.between(datetime.date(int(year), 1, 1), datetime.date(int(year) + 1, 1, 1)))\
             .filter(RigaMovimento.id_testata_movimento == TestataMovimento.id)\
@@ -229,21 +239,21 @@ def righeDocumentoDel(id=None):
     Cancella le righe associate ad un documento
     """
     from promogest.dao.RigaDocumento import RigaDocumento
-    if "SuMisura" in modulesList:
+    if "SuMisura" in Environment.modulesList:
         from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
     row = RigaDocumento().select(idTestataDocumento= id,
                                                 offset = None,
                                                 batchSize = None)
     if row:
         for r in row:
-            if "SuMisura" in modulesList:
+            if "SuMisura" in Environment.modulesList:
                 mp = MisuraPezzo().select(idRiga=r.id)
                 if mp:
                     for m in mp:
-                        params['session'].delete(m)
-                    params["session"].commit()
-            params['session'].delete(r)
-        params["session"].commit()
+                        Environment.params['session'].delete(m)
+                    Environment.params["session"].commit()
+            Environment.params['session'].delete(r)
+        Environment.params["session"].commit()
         return True
 
 def righeMovimentoDel(id=None):
@@ -251,21 +261,21 @@ def righeMovimentoDel(id=None):
     Cancella le righe associate ad un documento
     """
     from promogest.dao.RigaMovimento import RigaMovimento
-    if "SuMisura" in modulesList:
+    if "SuMisura" in Environment.modulesList:
         from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
     row = RigaMovimento().select(idTestataMovimento= id,
                                 offset = None,
                                 batchSize = None)
     if row:
         for r in row:
-            if "SuMisura" in modulesList:
+            if "SuMisura" in Environment.modulesList:
                 mp = MisuraPezzo().select(idRiga=r.id)
                 if mp:
                     for m in mp:
-                        params['session'].delete(m)
-                    params["session"].commit()
-            params['session'].delete(r)
-        params["session"].commit()
+                        Environment.params['session'].delete(m)
+                    Environment.params["session"].commit()
+            Environment.params['session'].delete(r)
+        Environment.params["session"].commit()
         return True
 
 def scontiTestataDocumentoDel(id=None):
@@ -278,8 +288,8 @@ def scontiTestataDocumentoDel(id=None):
                                                     batchSize = None)
     if row:
         for r in row:
-            params['session'].delete(r)
-        params["session"].commit()
+            Environment.params['session'].delete(r)
+        Environment.params["session"].commit()
         return True
 
 def scontiVenditaDettaglioDel(idListino=None,idArticolo=None,dataListinoArticolo=None):
@@ -295,8 +305,8 @@ def scontiVenditaDettaglioDel(idListino=None,idArticolo=None,dataListinoArticolo
                                             orderBy=ScontoVenditaDettaglio.id_listino)
     if row:
         for r in row:
-            params['session'].delete(r)
-        params["session"].commit()
+            Environment.params['session'].delete(r)
+        Environment.params["session"].commit()
         return True
 
 def scontiVenditaIngrossoDel(idListino=None,idArticolo=None,dataListinoArticolo=None):
@@ -312,8 +322,8 @@ def scontiVenditaIngrossoDel(idListino=None,idArticolo=None,dataListinoArticolo=
                                                     orderBy=ScontoVenditaIngrosso.id_listino)
     if row:
         for r in row:
-            params['session'].delete(r)
-        params["session"].commit()
+            Environment.params['session'].delete(r)
+        Environment.params["session"].commit()
         return True
 
 def testataDocumentoScadenzaDel(id=None):
@@ -326,8 +336,8 @@ def testataDocumentoScadenzaDel(id=None):
                                                                 batchSize = None,
                                                                 orderBy=TestataDocumentoScadenza.id_testata_documento)
     for r in row:
-        params['session'].delete(r)
-    params["session"].commit()
+        Environment.params['session'].delete(r)
+    Environment.params["session"].commit()
     return True
 
 def scontiRigaDocumentoDel(id=None):
@@ -340,8 +350,8 @@ def scontiRigaDocumentoDel(id=None):
                                                 batchSize = None)
     if row:
         for r in row:
-            params['session'].delete(r)
-        params["session"].commit()
+            Environment.params['session'].delete(r)
+        Environment.params["session"].commit()
         return True
 
 def scontiRigaMovimentoDel(id=None):
@@ -354,6 +364,63 @@ def scontiRigaMovimentoDel(id=None):
                                         batchSize = None)
     if row:
         for r in row:
-            params['session'].delete(r)
-        params["session"].commit()
+            Environment.params['session'].delete(r)
+        Environment.params["session"].commit()
         return True
+
+def ckd(dao):
+    classe = dao.__class__.__name__
+    print "LISTA MODULI",Environment.modulesList,Environment.tipo_pg
+    stopp = False
+    if "ONE BASIC" in Environment.modulesList and Environment.tipodb =="sqlite":
+        records = Environment.session.query(dao.__class__).count()
+        if "TestataDocumento" in classe:
+            if records > 50: stopp = True
+        if "Listino" in classe:
+            if records > 1: stopp = True
+        if "Promemoria" in classe:
+            if records > 5: stopp = True
+        if "Articolo" in classe:
+            if records > 500: stopp = True
+        if "Banca" in classe:
+            if records > 1: stopp = True
+        if "CategoriaArticolo" in classe:
+            if records > 3: stopp = True
+        if "FamigliaArticolo" in classe:
+            if records > 3: stopp = True
+        if "Cliente" in classe:
+            if records > 50: stopp = True
+        if "Fornitore" in classe:
+            if records > 10: stopp = True
+        if "Magazzino" in classe:
+            if records > 1: stopp = True
+        if "Pagamento" in classe:
+            if records > 3: stopp = True
+        if "Vettore" in classe:
+            if records > 1: stopp = True
+        if "Colore" in classe:
+            if records > 5: stopp = True
+        if "Taglia" in classe:
+            if records > 5: stopp = True
+        if stopp:
+            msg = """HAI RAGGIUNTO IL LIMITE MASSIMO CONSENTITO
+DALLA VERSIONE ONE BASIC GRATUITA PER QUESTA OPERAZIONE, ACQUISTA
+LA VERSIONE "ONE STANDARD" PER ELIMINARE TUTTI I LIMITI
+O LA "ONE FULL" PER ATTIVARE ANCHE TUTTI I MODULI"""
+            dialoggg = gtk.MessageDialog(None,
+                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                    gtk.MESSAGE_INFO,
+                    gtk.BUTTONS_OK,
+                    msg)
+            dialoggg.run()
+            dialoggg.destroy()
+            return False
+    elif "ONE STANDARD" in Environment.modulesList:
+#        records = Environment.session.query(dao.__class__).count()
+#        if "TestataDocumento" in classe:
+#            if records > 50: stopp = True
+        print "VERSIONE STANDARD", classe
+
+    else:
+        print " TUTTO OK PUOI ANDARE"
+    return True

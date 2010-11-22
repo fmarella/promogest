@@ -127,6 +127,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         self.insegna_filter_entry.set_text('')
         self.cognome_nome_filter_entry.set_text('')
         self.localita_filter_entry.set_text('')
+        self.provincia_filter_entry.set_text('')
         self.codice_fiscale_filter_entry.set_text('')
         self.partita_iva_filter_entry.set_text('')
         fillComboboxCategorieClienti(self.id_categoria_cliente_filter_combobox, True)
@@ -142,6 +143,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
         insegna = prepareFilterString(self.insegna_filter_entry.get_text())
         cognomeNome = prepareFilterString(self.cognome_nome_filter_entry.get_text())
         localita = prepareFilterString(self.localita_filter_entry.get_text())
+        provincia = prepareFilterString(self.provincia_filter_entry.get_text())
         partitaIva = prepareFilterString(self.partita_iva_filter_entry.get_text())
         codiceFiscale = prepareFilterString(self.codice_fiscale_filter_entry.get_text())
         idCategoria = findIdFromCombobox(self.id_categoria_cliente_filter_combobox)
@@ -152,6 +154,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
                                     insegna=insegna,
                                     cognomeNome=cognomeNome,
                                     localita=localita,
+                                    provincia=provincia,
                                     partitaIva=partitaIva,
                                     codiceFiscale=codiceFiscale,
                                     idCategoria=idCategoria)
@@ -171,6 +174,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
                                     insegna=insegna,
                                     cognomeNome=cognomeNome,
                                     localita=localita,
+                                    provincia=provincia,
                                     partitaIva=partitaIva,
                                     codiceFiscale=codiceFiscale,
                                     idCategoria=idCategoria,

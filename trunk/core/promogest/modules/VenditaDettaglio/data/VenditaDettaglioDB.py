@@ -30,7 +30,7 @@ if hasattr(conf, 'VenditaDettaglio'):
 
     testataScontrinoTable = Table('testata_scontrino', params['metadata'],
                 Column('id',Integer,primary_key=True),
-                Column('data_inserimento',DateTime,PassiveDefault(func.now()),nullable=False),
+                Column('data_inserimento',DateTime,DefaultClause(func.now()),nullable=False),
                 Column('totale_scontrino',Numeric(16,4),nullable=False),
                 Column('totale_contanti',Numeric(16,4),nullable=False),
                 Column('totale_assegni',Numeric(16,4),nullable=False),

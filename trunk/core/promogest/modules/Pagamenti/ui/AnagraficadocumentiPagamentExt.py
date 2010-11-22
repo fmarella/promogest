@@ -143,7 +143,7 @@ CONTINUARE?"""
     response = dialog.run()
     dialog.destroy()
     if response == gtk.RESPONSE_YES:
-        pbar(anaedit.pbar,parziale=1, totale=5)
+#        pbar(anaedit.pbar,parziale=1, totale=5)
 
         if anaedit.importo_acconto_scadenza_entry.get_text() and \
                             anaedit.data_pagamento_acconto_entry.get_text():
@@ -160,7 +160,7 @@ CONTINUARE?"""
                     creaRigaPrimaNotaTestataDocScad(idrigapn,idpag0)
             else:
                 messageInfo(msg= "PREMERE PRIMA APPLICA PER SALVARE IL DOCUMENTO ED I PAGAMENTI")
-        pbar(anaedit.pbar,parziale=2, totale=5)
+#        pbar(anaedit.pbar,parziale=2, totale=5)
         if anaedit.importo_prima_scadenza_entry.get_text() and \
                             anaedit.data_pagamento_prima_scadenza_entry.get_text():
             accontoDao1= TestataDocumentoScadenza().select(idTestataDocumento=anaedit.dao.id, numeroScadenza=1)
@@ -176,7 +176,7 @@ CONTINUARE?"""
                     creaRigaPrimaNotaTestataDocScad(idrigapn,idpag1)
             else:
                 messageInfo(msg= "PREMERE PRIMA APPLICA PER SALVARE IL DOCUMENTO ED I PAGAMENTI")
-        pbar(anaedit.pbar,parziale=3, totale=5)
+#        pbar(anaedit.pbar,parziale=3, totale=5)
         if anaedit.importo_seconda_scadenza_entry.get_text() and \
                             anaedit.data_pagamento_seconda_scadenza_entry.get_text():
             accontoDao2= TestataDocumentoScadenza().select(idTestataDocumento=anaedit.dao.id, numeroScadenza=2)
@@ -193,7 +193,7 @@ CONTINUARE?"""
             else:
                 messageInfo(msg= "PREMERE PRIMA APPLICA PER SALVARE IL DOCUMENTO ED I PAGAMENTI")
 
-        pbar(anaedit.pbar,parziale=4, totale=5)
+#        pbar(anaedit.pbar,parziale=4, totale=5)
         if anaedit.importo_terza_scadenza_entry.get_text() and \
                             anaedit.data_pagamento_terza_scadenza_entry.get_text():
             accontoDao3= TestataDocumentoScadenza().select(idTestataDocumento=anaedit.dao.id, numeroScadenza=3)
@@ -209,7 +209,7 @@ CONTINUARE?"""
                     creaRigaPrimaNotaTestataDocScad(idrigapn,idpag3)
             else:
                 messageInfo(msg= "PREMERE PRIMA APPLICA PER SALVARE IL DOCUMENTO ED I PAGAMENTI")
-        pbar(anaedit.pbar,parziale=5, totale=5)
+#        pbar(anaedit.pbar,parziale=5, totale=5)
         if anaedit.importo_quarta_scadenza_entry.get_text() and \
                             anaedit.data_pagamento_quarta_scadenza_entry.get_text():
             accontoDao4= TestataDocumentoScadenza().select(idTestataDocumento=anaedit.dao.id, numeroScadenza=4)
@@ -225,7 +225,7 @@ CONTINUARE?"""
                     creaRigaPrimaNotaTestataDocScad(idrigapn,idpag4)
             else:
                 messageInfo(msg= "PREMERE PRIMA APPLICA PER SALVARE IL DOCUMENTO ED I PAGAMENTI")
-        pbar(anaedit.pbar,stop=True)
+#        pbar(anaedit.pbar,stop=True)
         messageInfo(msg = "FINITO")
 
 def creaRigaPrimaNotaTestataDocScad(idrigapn, idpag):
@@ -271,7 +271,10 @@ def creaRigaPrimaNota(anaedit, numero_paga):
         stringa = "%s N.%s del. %s da %s, %s"    %(anaedit.dao.operazione, str(anaedit.dao.numero), dateToString(anaedit.dao.data_documento), anaedit.dao.intestatario, tipo_pag)
         segno = "uscita"
     tpn = TestataPrimaNota().select(datafinecheck = True)
-    numero = max(a.numero for a in RigaPrimaNota().select(idTestataPrimaNota=tpn[0].id, batchSize=None))
+    try:
+        numero = max(a.numero for a in RigaPrimaNota().select(idTestataPrimaNota=tpn[0].id, batchSize=None))
+    except:
+        numero = 0
     rigaprimanota = RigaPrimaNota()
     rigaprimanota.denominazione = stringa
     rigaprimanota.id_testata_prima_nota = tpn[0].id

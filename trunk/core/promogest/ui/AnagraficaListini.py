@@ -23,7 +23,8 @@
 import gtk
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml,\
+                                     AnagraficaReport, AnagraficaEdit
 from promogest import Environment
 from promogest.dao.Listino import Listino
 from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente

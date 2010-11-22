@@ -160,30 +160,18 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
         """
         Aggiornamento TreeView
         """
-        _da_data_matrimonio = self.da_data_matrimonio_filter_entry.get_text()
-        daDataMatrimonio = stringToDate(_da_data_matrimonio)
-        _a_data_matrimonio = self.a_data_matrimonio_filter_entry.get_text()
-        aDataMatrimonio = stringToDate(_a_data_matrimonio)
-        _da_data_spedizione = self.da_data_spedizione_filter_entry.get_text()
-        daDataSpedizione = stringToDate(_da_data_spedizione)
-        _a_data_spedizione = self.a_data_spedizione_filter_entry.get_text()
-        aDataSpedizione = stringToDate(_a_data_spedizione)
-        _da_data_consegna = self.da_data_consegna_filter_entry.get_text()
-        daDataConsegna = stringToDate(_da_data_consegna)
-        _a_data_consegna = self.a_data_consegna_filter_entry.get_text()
-        aDataConsegna = stringToDate(_a_data_consegna)
-        _da_numero = self.da_numero_filter_entry.get_text()
-        daNumero = prepareFilterString(_da_numero)
-        _a_numero = self.a_numero_filter_entry.get_text()
-        aNumero = prepareFilterString(_a_numero)
-        _codice_spedizione = self.codice_spedizione_filter_entry.get_text()
-        codiceSpedizione = prepareFilterString(_codice_spedizione)
-        _numero_ricevuta = self.numero_ricevuta_filter_entry.get_text()
-        numeroRicevuta = prepareFilterString(_numero_ricevuta)
-        _nome_referente = self.referente_filter_entry.get_text()
-        nomeReferente = prepareFilterString(_nome_referente)
-        _nomi_sposi = self.nome_sposi_filter_entry.get_text()
-        nomiSposi = prepareFilterString(_nomi_sposi)
+        daDataMatrimonio = stringToDate(self.da_data_matrimonio_filter_entry.get_text())
+        aDataMatrimonio = stringToDate(self.a_data_matrimonio_filter_entry.get_text())
+        daDataSpedizione = stringToDate(self.da_data_spedizione_filter_entry.get_text())
+        aDataSpedizione = stringToDate(self.a_data_spedizione_filter_entry.get_text())
+        daDataConsegna = stringToDate(self.da_data_consegna_filter_entry.get_text())
+        aDataConsegna = stringToDate(self.a_data_consegna_filter_entry.get_text())
+        daNumero = prepareFilterString(self.da_numero_filter_entry.get_text())
+        aNumero = prepareFilterString(self.a_numero_filter_entry.get_text())
+        codiceSpedizione = prepareFilterString(self.codice_spedizione_filter_entry.get_text())
+        numeroRicevuta = prepareFilterString(self.numero_ricevuta_filter_entry.get_text())
+        nomeReferente = prepareFilterString(self.referente_filter_entry.get_text())
+        nomiSposi = prepareFilterString(self.nome_sposi_filter_entry.get_text())
         schedeAperte = self.schede_aperte_filter_combobox.get_active()
         if schedeAperte == -1 or schedeAperte == 0:
             schedeAperte = None
@@ -203,21 +191,21 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
 #        print "SCHEDE LAVORAZIONE", schedeAperte
         def filterCountClosure():
             return SchedaOrdinazione().count(daNumero=daNumero,
-                                                aNumero=aNumero,
-                                                daDataMatrimonio=daDataMatrimonio,
-                                                aDataMatrimonio=aDataMatrimonio,
-                                                daDataSpedizione=daDataSpedizione,
-                                                aDataSpedizione=aDataSpedizione,
-                                                daDataConsegna=daDataConsegna,
-                                                aDataConsegna=aDataConsegna,
-                                                codiceSpedizione=codiceSpedizione,
-                                                coloreStampa=coloreStampa,
-                                                carattereStampa=carattereStampa,
-                                                nomiSposi = nomiSposi,
-                                                referente=nomeReferente,
-                                                ricevutaAssociata=numeroRicevuta,
-                                                schedeAperte=schedeAperte,
-                                                idArticolo = idArticolo)
+                                            aNumero=aNumero,
+                                            daDataMatrimonio=daDataMatrimonio,
+                                            aDataMatrimonio=aDataMatrimonio,
+                                            daDataSpedizione=daDataSpedizione,
+                                            aDataSpedizione=aDataSpedizione,
+                                            daDataConsegna=daDataConsegna,
+                                            aDataConsegna=aDataConsegna,
+                                            codiceSpedizione=codiceSpedizione,
+                                            coloreStampa=coloreStampa,
+                                            carattereStampa=carattereStampa,
+                                            nomiSposi = nomiSposi,
+                                            referente=nomeReferente,
+                                            ricevutaAssociata=numeroRicevuta,
+                                            schedeAperte=schedeAperte,
+                                            idArticolo = idArticolo)
 
         self._filterCountClosure = filterCountClosure
         #self.totaleRecords =

@@ -45,6 +45,8 @@ class Cliente(Dao):
             dic = {k:or_(persona_giuridica.c.cognome.ilike("%"+v+"%"),persona_giuridica.c.nome.ilike("%"+v+"%"))}
         elif k == 'localita':
             dic = {k:or_(persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"),persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
+        elif k == 'provincia':
+            dic = {k:or_(persona_giuridica.c.sede_operativa_provincia.ilike("%"+v+"%"),persona_giuridica.c.sede_legale_provincia.ilike("%"+v+"%"))}
         elif k == 'partitaIva':
             dic = {k:persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
         elif k == 'codiceFiscale':
@@ -91,5 +93,3 @@ std_mapper = mapper(Cliente,j, properties={
         "per_giu" :relation(PersonaGiuridica_, backref='cliente_'),
         'cliente_categoria_cliente':relation(ClienteCategoriaCliente, backref='cliente_'),
         }, order_by=cliente.c.id)
-
-

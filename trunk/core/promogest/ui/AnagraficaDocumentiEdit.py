@@ -1355,7 +1355,7 @@ del documento.
 
     def on_show_totali_riga(self, widget = None, event = None):
         """ calcola il prezzo netto """
-        self._righe[0]["quantita"] = Decimal(self.quantita_entry.get_text().strip()) or 0
+        self._righe[0]["quantita"] = Decimal(self.quantita_entry.get_text().strip() or 0)
         self._righe[0]["prezzoLordo"] = Decimal(self.prezzo_lordo_entry.get_text().strip()) or 0
         self._righe[0]["percentualeIva"] = Decimal(self.percentuale_iva_entry.get_text().strip()) or 0
         self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()

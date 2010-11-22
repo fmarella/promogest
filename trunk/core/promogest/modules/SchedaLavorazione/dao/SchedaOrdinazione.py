@@ -557,13 +557,13 @@ class SchedaOrdinazione(Dao):
         elif k== 'carattereStampa':
             dic = {k:schedaordinazione.c.id_carattere_stampa==v}
         elif k== 'nomiSposi':
-            dic = {k:and_(SchedaOrdinazione.id==schedaordinazione.c.id,SchedaOrdinazione.nomi_sposi.ilike("%"+v+"%"))}
+            dic = {k:schedaordinazione.c.nomi_sposi.ilike("%"+v+"%")}
         elif k== 'referente':
-            dic = {k:and_(SchedaOrdinazione.id==schedaordinazione.c.id,SchedaOrdinazione.referente.ilike("%"+v+"%"))}
+            dic = {k:and_(ContattoScheda.id_scheda==schedaordinazione.c.id,ContattoScheda.referente.ilike("%"+v+"%"))}
         elif k== 'ricevutaAssociata':
-            dic = {k:and_(SchedaOrdinazione.id==schedaordinazione.c.id,SchedaOrdinazione.ricevuta_associata.ilike("%"+v+"%"))}
+            dic = {k:schedaordinazione.c.ricevuta_associata.ilike("%"+v+"%")}
         elif k== 'schedeAperte':
-            dic = {k:and_(SchedaOrdinazione.id==schedaordinazione.c.id,SchedaOrdinazione.fattura ==v)}
+            dic = {k:schedaordinazione.c.fattura ==v}
         elif k == 'idArticolo':
             dic = {k: and_(Articolo.id ==Riga.id_articolo,
                             Riga.id==RigaSchedaOrdinazione.id,

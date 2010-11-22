@@ -44,8 +44,9 @@ from VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
 from promogest.lib import feedparser
 from promogest.ui.PrintDialog import PrintDialogHandler
-from utils import hasAction,fenceDialog, aggiorna, updateScadenzePromemoria,\
-         setconf, dateTimeToString, dateToString,last_day_of_month, date_range,orda
+from utils import hasAction, fenceDialog, aggiorna, updateScadenzePromemoria,\
+         setconf, dateTimeToString, dateToString, last_day_of_month, \
+         date_range, orda
 from utilsCombobox import *
 from ParametriFrame import ParametriFrame
 from SetConf import SetConfUI
@@ -64,7 +65,8 @@ from widgets.ClienteSearchWidget import ClienteSearchWidget
 from widgets.FornitoreSearchWidget import FornitoreSearchWidget
 from widgets.PersonaGiuridicaSearchWidget import PersonaGiuridicaSearchWidget
 if "GestioneNoleggio" in Environment.modulesList:
-    from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
+    from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio \
+                            import TestataGestioneNoleggio
 try:
     from webkit import WebView
     WEBKIT = True
@@ -72,19 +74,22 @@ except:
     WEBKIT = False
 
 
-
 class Main(GladeWidget):
 
-    def __init__(self,aziendaStr,anagrafiche_modules,parametri_modules,
-                    anagrafiche_dirette_modules,frame_modules,permanent_frames):
+    def __init__(self, aziendaStr, anagrafiche_modules, parametri_modules,
+                anagrafiche_dirette_modules, frame_modules, permanent_frames):
 
         GladeWidget.__init__(self, 'main_window')
-        self.main_window.set_title('*** PromoGest2 *** Azienda : '+aziendaStr+'  *** Utente : '+Environment.params['usernameLoggedList'][1]+' ***')
+        self.main_window.set_title('*** PromoGest2 *** Azienda : '+aziendaStr+\
+                                '  *** Utente : '+\
+                                Environment.params['usernameLoggedList'][1]+\
+                                ' ***')
         self.aziendaStr = aziendaStr
 
         self.statusBarHandler()
-        for filename in glob.glob(Environment.promogestDir+"/temp/"+'*.cache') :
-            os.remove( filename )
+        for filename in glob.glob(Environment.promogestDir+\
+                                                    "/temp/"+'*.cache'):
+            os.remove(filename)
         Environment.windowGroup.append(self.getTopLevel())
         self.anagrafiche_modules = anagrafiche_modules
         self.parametri_modules = parametri_modules
@@ -97,9 +102,11 @@ class Main(GladeWidget):
         self.creata = False
         if "SincroDB" not in Environment.modulesList:
             self.sincro_db.destroy()
-        elif "SincroDB" in Environment.modulesList and Environment.conf.SincroDB.tipo =="client":
+        elif "SincroDB" in Environment.modulesList and \
+                            Environment.conf.SincroDB.tipo =="client":
             self.master_sincro_db.destroy()
-        elif "SincroDB" in Environment.modulesList and Environment.conf.SincroDB.tipo =="server":
+        elif "SincroDB" in Environment.modulesList and \
+                            Environment.conf.SincroDB.tipo =="server":
             self.client_sincro_db.destroy()
         if Environment.tipodb =="postgresql":
 #            self.whatcant_button.destroy()
@@ -127,7 +134,8 @@ class Main(GladeWidget):
 
     def show(self):
         """ Visualizza la finestra """
-        self.anno_lavoro_label.set_markup('<b>Anno di lavoro:   ' + Environment.workingYear + '</b>')
+        self.anno_lavoro_label.set_markup('<b>Anno di lavoro:   ' + \
+                                        Environment.workingYear + '</b>')
         model = gtk.ListStore(int, str, gtk.gdk.Pixbuf,object)
 
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'documento48x48.png')
@@ -183,8 +191,9 @@ class Main(GladeWidget):
         """
         #Aggiornamento scadenze promemoria
         if ("Promemoria" in Environment.modulesList) or \
-            ("pan" in Environment.modulesList) or \
-            ("basic" in Environment.modulesList):
+            ("ONE FULL" in Environment.modulesList) or \
+            ("ONE STANDARD" in Environment.modulesList):
+            print "VERIFICA DEI PROMEMORIA IN SCADENZA"
             updateScadenzePromemoria()
 
     def _refresh(self):
@@ -232,7 +241,6 @@ class Main(GladeWidget):
             showAnagrafica(self.getTopLevel(), anag, mainClass=self)
             icon_view.unselect_all()
             return
-
         elif selection == 5:
 #            if "Promemoria" in Environment.modulesList:
             from AnagraficaPromemoria import AnagraficaPromemoria

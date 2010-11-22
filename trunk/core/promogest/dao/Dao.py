@@ -1,9 +1,23 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2008 by Promotux Informatica - http://www.promotux.it/
-# Author: Francesco Meloni <francesco@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                       di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
 import datetime
@@ -14,6 +28,7 @@ from sqlalchemy.orm import *
 from sqlalchemy.ext.serializer import loads, dumps
 from promogest.Environment import *
 from promogest.ui.GtkExceptionHandler import GtkExceptionHandler
+from promogest.dao.DaoUtils import ckd
 
 class Dao(object):
     """
@@ -177,8 +192,13 @@ class Dao(object):
     def rollback(self):
         params["session"].rollback()
 
+    def ckdd(self, dao):
+        return ckd(dao)
+
     def commit(self):
         """ Salva i dati nel DB"""
+        if not self.ckdd(self):
+            return
         try:
             params["session"].commit()
             return 1
@@ -226,15 +246,15 @@ class Dao(object):
         Salviamo l'operazione nella tabella di log con un oggetto
         pickeld
         """
-        if params["session"].dirty:
-            message = "UPDATE;"+ self.__class__.__name__
-        elif params["session"].new:
-            message = "INSERT;" + self.__class__.__name__
-        elif params["session"].deleted:
-            message = "DELETE;"+ self.__class__.__name__
-        else:
-            message = "UNKNOWN ACTION;"
-        level = self.commit()
+#        if params["session"].dirty:
+#            message = "UPDATE;"+ self.__class__.__name__
+#        elif params["session"].new:
+#            message = "INSERT;" + self.__class__.__name__
+#        elif params["session"].deleted:
+#            message = "DELETE;"+ self.__class__.__name__
+#        else:
+#            message = "UNKNOWN ACTION;"
+        return self.commit()
 
     def _resetId(self):
         """
@@ -332,7 +352,7 @@ class Dao(object):
         for key,value in kwargs.items():
             if str(key).upper() =="filterDict".upper():
                 for k,v in value.items():
-                    if v:
+                    if v is not None:
                         if type(v)==list:
                             filter_parameters.append((v,k,"Lista"))
                         else:

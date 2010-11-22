@@ -51,7 +51,7 @@ class FilterWidget(GladeWidget):
 
         self.filter_current_page_entry.set_alignment(xalign=1)
         self.filter_current_page_entry.connect('key_press_event',
-                            self.on_filter_current_page_entry_key_press_event)
+                            self.on_filter_current_page_entry_key_event)
 
         if filtersElement is None:
             self.filter_frame.set_no_show_all(True)
@@ -150,9 +150,11 @@ class FilterWidget(GladeWidget):
         """
         Last page button response
         """
+        print "OKOKOKOKOKO"
         self.gotoLastPage()
 
-    def on_filter_current_page_entry_key_press_event(self, widget, event):
+
+    def on_filter_current_page_entry_key_event(self, widget, event):
         """
         Confirms page indication
         """
@@ -285,6 +287,11 @@ class FilterWidget(GladeWidget):
         Refresh of results output
         """
         self._owner.orderBy = self.orderBy
+        if self._owner._anagrafica.batchsize_combo.get_active_iter():
+            iterator = self._owner._anagrafica.batchsize_combo.get_active_iter()
+            model = self._owner._anagrafica.batchsize_combo.get_model()
+            if iterator is not None:
+                self.batchSize = model.get_value(iterator, 0)
         self._owner.batchSize = self.batchSize
         self._owner.offset = self.offset
         self._owner.join = self.join

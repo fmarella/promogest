@@ -192,7 +192,7 @@ if not SetConf().select(key="install_code",section="Master"):
     k.section = "Master"
     k.description = "codice identificativo della propria installazione"
     k.tipo_section = "General"
-    k.tipo = "Lite"
+    k.tipo = "ONE"
     k.active = True
     k.date = datetime.datetime.now()
     k.persist()
