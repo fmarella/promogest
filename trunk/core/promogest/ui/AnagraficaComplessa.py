@@ -405,7 +405,7 @@ class Anagrafica(GladeWidget):
 
     def on_Stampa_Frontaline_clicked(self, widget):
         if ("Label" in Environment.modulesList) or \
-            ("pan" in Environment.modulesList):
+            ("ONE FULL" in Environment.modulesList):
             results = self.filter.runFilter(offset=None, batchSize=None)
             self.manageLabels(results)
         else:
@@ -888,7 +888,7 @@ class AnagraficaFilter(GladeWidget):
                                       progressCB=None, progressBatchSize=0):
         """ Recupera i dati """
         self.bodyWidget.orderBy = self.orderBy
-        if self._anagrafica.batchsize_combo.get_active_iter():
+        if batchSize == '__default__' and  self._anagrafica.batchsize_combo.get_active_iter():
             iterator = self._anagrafica.batchsize_combo.get_active_iter()
             model = self._anagrafica.batchsize_combo.get_model()
             if iterator is not None:

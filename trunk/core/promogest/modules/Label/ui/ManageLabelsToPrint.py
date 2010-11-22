@@ -316,6 +316,7 @@ class ManageLabelsToPrint(GladeWidget):
                 row[5] = quantitagenerale
         elif self.giacenza_radio.get_active():
             for row in self._treeViewModel:
+                pbar(self.pbar,parziale=row.path[0]+1,totale=len(self._treeViewModel))
                 if idMagazzino:
                     giacenza = giacenzaArticolo(year=Environment.workingYear,
                                             idMagazzino=idMagazzino,
@@ -328,10 +329,12 @@ class ManageLabelsToPrint(GladeWidget):
                     row[5] = "1"
                 else:
                     row[5] = str(int(giacenza))
+                pbar(self.pbar,stop=True)
         elif self.movimento_radio.get_active():
             from promogest.dao.TestataMovimento import TestataMovimento
 #            from promogest.dao.TestataDocumento import TestataDocumento
             for row in self._treeViewModel:
+                pbar(self.pbar,parziale=row.path[0]+1,totale=len(self._treeViewModel))
                 docu = TestataMovimento().select(idArticolo=row[0].id_articolo, batchSize=None)
 #                docu = TestataDocumento().select(idArticolo=row[0].id_articolo, batchSize=None)
                 if docu:
@@ -343,6 +346,7 @@ class ManageLabelsToPrint(GladeWidget):
                                 row[5] = "1"
                             else:
                                 row[5] = str(int(quanti))
+            pbar(self.pbar,stop=True)
 
     def on_manuale_radio_toggled(self, radiobutton):
         if not self.manuale_radio.get_active():

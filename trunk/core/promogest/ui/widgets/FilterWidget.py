@@ -24,6 +24,7 @@
 import gtk
 import math
 import sqlalchemy
+from promogest import Environment
 from sqlalchemy import asc, desc
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.lib.HtmlHandler import createHtmlObj, renderHTML
@@ -287,11 +288,14 @@ class FilterWidget(GladeWidget):
         Refresh of results output
         """
         self._owner.orderBy = self.orderBy
-        if self._owner._anagrafica.batchsize_combo.get_active_iter():
-            iterator = self._owner._anagrafica.batchsize_combo.get_active_iter()
-            model = self._owner._anagrafica.batchsize_combo.get_model()
-            if iterator is not None:
-                self.batchSize = model.get_value(iterator, 0)
+        try:
+            if self._owner._anagrafica.batchsize_combo.get_active_iter():
+                iterator = self._owner._anagrafica.batchsize_combo.get_active_iter()
+                model = self._owner._anagrafica.batchsize_combo.get_model()
+                if iterator is not None:
+                    self.batchSize = model.get_value(iterator, 0)
+        except:
+            Environment.pg2log.info("combo per la selezione del batch non ancora implementata")
         self._owner.batchSize = self.batchSize
         self._owner.offset = self.offset
         self._owner.join = self.join

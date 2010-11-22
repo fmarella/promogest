@@ -131,7 +131,7 @@ class ElencoListini(GladeWidget):
 
     def on_stampa_frontaline_togglebutton_clicked(self, toggleButton):
         if ("Label" in Environment.modulesList) or \
-            ("pan" in Environment.modulesList):
+            ("ONE FULL" in Environment.modulesList):
             from promogest.modules.Label.ui.ManageLabelsToPrint import ManageLabelsToPrint
             a = ManageLabelsToPrint(mainWindow=self,daos=[])
             anagWindow = a.getTopLevel()
