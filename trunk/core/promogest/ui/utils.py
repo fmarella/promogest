@@ -265,15 +265,21 @@ def leggiVettore(id):
     from promogest.dao.Vettore import Vettore
     _id = None
     _ragioneSociale = ''
+    _nome = ''
+    _cognome = ''
 
     if id is not None:
         daoVettore = Vettore().getRecord(id=id)
         if daoVettore is not None:
             _id = id
             _ragioneSociale = daoVettore.ragione_sociale or ''
+            _nome = daoVettore.nome or ''
+            _cognome = daoVettore.cognome or ''
 
     return {"id": _id,
-            "ragioneSociale": _ragioneSociale}
+            "ragioneSociale": _ragioneSociale,
+            "nome": _nome,
+            "cognome": _cognome,}
 
 
 def leggiDestinazioneMerce(id):
