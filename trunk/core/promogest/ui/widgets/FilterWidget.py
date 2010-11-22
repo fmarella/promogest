@@ -306,13 +306,7 @@ class FilterWidget(GladeWidget):
                 model = self._owner.batchsize_combo.get_model()
                 if iterator is not None:
                     self.batchSize = model.get_value(iterator, 0)
-        elif hasattr(self, "tot_daos_label"):
-            self.tot_daos_label.set_text(str(self.numRecords))
-            if self.batchsize_combo.get_active_iter():
-                iterator = self.batchsize_combo.get_active_iter()
-                model = self.batchsize_combo.get_model()
-                if iterator is not None:
-                    self.batchSize = model.get_value(iterator, 0)
+                    self._owner.filterss.batchSize = model.get_value(iterator, 0)
         self._owner.batchSize = self.batchSize
         self._owner.offset = self.offset
         self._owner.join = self.join
