@@ -133,7 +133,8 @@ class AnagraficaAziende(GladeWidget):
 
     def on_logo_button_clicked(self, widget):
         self.logo_filechooserdialog.run()
-        self.logo_filechooserdialog.set_filename(self.dao.percorso_immagine)
+        if self.dao.percorso_immagine:
+            self.logo_filechooserdialog.set_filename(self.dao.percorso_immagine)
 
 #    def on_logo_filechooserdialog_file_activated(self, widget):
 #        filename = self.logo_filechooserdialog.get_filename()
@@ -197,8 +198,8 @@ class AnagraficaAziende(GladeWidget):
             toggleButton.set_active(False)
             return
         if ("Contatti" in Environment.modulesList) or \
-            ("pan" in Environment.modulesList) or \
-            ("basic" in Environment.modulesList):
+            ("ONE FULL" in Environment.modulesList) or \
+            ("ONE STANDARD" in Environment.modulesList):
             from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
             anag = AnagraficaContatti(self.dao.schemaa, 'azienda')
             anagWindow = anag.getTopLevel()

@@ -84,7 +84,8 @@ class Config(object):
 
 
     def dump(self):
-        print self._configDict
+#        print self._configDict
+        return
 
 
     def sections(self):
