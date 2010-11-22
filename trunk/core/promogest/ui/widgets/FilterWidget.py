@@ -306,7 +306,7 @@ class FilterWidget(GladeWidget):
                 model = self._owner.batchsize_combo.get_model()
                 if iterator is not None:
                     self.batchSize = model.get_value(iterator, 0)
-            Environment.pg2log.info("combo per la selezione del batch non ancora implementata")
+#            Environment.pg2log.info("combo per la selezione del batch non ancora implementata")
         self._owner.batchSize = self.batchSize
         self._owner.offset = self.offset
         self._owner.join = self.join
