@@ -151,7 +151,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
         column = gtk.TreeViewColumn('Codice articolo fornitore', renderer, text=6, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self.filter._changeOrderBy, (None, Fornitura.codice_articolo_fornitore))
+        column.connect("clicked", self.filter._changeOrderBy, (Fornitura, Fornitura.codice_articolo_fornitore))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
