@@ -196,8 +196,9 @@ class FilterWidget(GladeWidget):
         """
         Next page
         """
-        if self.offset < (self.numRecords-self.batchSize):
-            self.offset += self.batchSize
+        if self.numRecords:
+            if self.offset < (self.numRecords-self.batchSize):
+                self.offset += self.batchSize
         self._refreshCurrentPage()
 
     def gotoLastPage(self):
@@ -306,6 +307,13 @@ class FilterWidget(GladeWidget):
                 model = self._owner.batchsize_combo.get_model()
                 if iterator is not None:
                     self.batchSize = model.get_value(iterator, 0)
+        elif hasattr(self, "tot_daos_label"):
+            self.tot_daos_label.set_text(str(self.numRecords))
+            if self.batchsize_combo.get_active_iter():
+                iterator = self.batchsize_combo.get_active_iter()
+                model = self.batchsize_combo.get_model()
+                if iterator is not None:
+                    print " TUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU", model.get_value(iterator, 0)
                     self._owner.filterss.batchSize = model.get_value(iterator, 0)
         self._owner.batchSize = self.batchSize
         self._owner.offset = self.offset
