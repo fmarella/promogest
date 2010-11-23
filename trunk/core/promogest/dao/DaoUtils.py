@@ -370,7 +370,7 @@ def scontiRigaMovimentoDel(id=None):
 
 def ckd(dao):
     classe = dao.__class__.__name__
-    print "LISTA MODULI",Environment.modulesList,Environment.tipo_pg
+    Environment.pg2log.info("MODULI E OPZIONI" + str(Environment.modulesList) +str(Environment.tipo_pg))
     stopp = False
     if "ONE BASIC" in Environment.modulesList and Environment.tipodb =="sqlite":
         records = Environment.session.query(dao.__class__).count()
