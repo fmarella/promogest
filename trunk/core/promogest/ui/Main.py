@@ -1431,8 +1431,10 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
 
         if Environment.rev_locale < Environment.rev_remota:
             self.active_img.set_from_file("gui/active_off.png")
+            self.aggiornamento_label.set_label("DA AGGIORNARE!!! ")
         else:
             self.active_img.set_from_file("gui/active_on.png")
+            self.aggiornamento_label.set_label("AGGIORNATO ")
 
 class MainWindowFrame(VistaPrincipale):
     def __init__(self, mainWindow, azs):

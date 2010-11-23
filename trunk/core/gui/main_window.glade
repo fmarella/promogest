@@ -2224,7 +2224,7 @@ Promemoria in scadenza. Verificare?!?</property>
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label2">
+              <object class="GtkLabel" id="aggiornamento_label">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Aggiornato:</property>
               </object>

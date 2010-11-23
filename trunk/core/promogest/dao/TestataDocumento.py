@@ -944,7 +944,7 @@ std_mapper = mapper(TestataDocumento, testata_documento, properties={
         #'lang':relation(Language, backref='user')
         }, order_by=testata_documento.c.data_documento.desc())
 
-std_mapper.c.note_pie_pagina.alter(String(800), nullable=True)
+#std_mapper.c.note_pie_pagina.alter(String(800), nullable=True)
 
 if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio

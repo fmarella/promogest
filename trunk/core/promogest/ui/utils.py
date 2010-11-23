@@ -2612,7 +2612,7 @@ def aggiorna(anag):
     La versione attuale è %s mentre quella remota è %s
 
     Volete aggiornare adesso? """ %(str(rl), str(rr))
-            dialog = gtk.MessageDialog(anag.getTopLevel(),
+            dialog = gtk.MessageDialog(None,
                     gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                     gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
             response = dialog.run()
@@ -2624,6 +2624,7 @@ def aggiorna(anag):
                     Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO A BUON FINE")
                     try:
                         anag.active_img.set_from_file("gui/active_on.png")
+                        anag.aggiornamento_label.set_label("AGGIORNATO")
                     except:
                         pass
                 except pysvn.ClientError, e:
@@ -2647,7 +2648,7 @@ def aggiorna(anag):
             dialoggg.run()
             dialoggg.destroy()
     else:
-        msgg = "ERRORE AGGIORNAMENTO FORSE NON C'E' CONNESSIONE?"
+        msgg = "ERRORE AGGIORNAMENTO FORSE NON C'E' CONNESSIONE \nO DEVI ASPETTARE ANCORA QUALCHE SECONDO E RIPROVARE"
         Environment.pg2log.info("SISTEMA  NON IN LINEA PER AGGIORNAMENTO")
         dialogg = gtk.MessageDialog(anag.getTopLevel(),
                         gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
