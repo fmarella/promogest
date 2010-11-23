@@ -601,7 +601,7 @@ class Anagrafica(GladeWidget):
 
             self.on_records_print_dialog_close(dialog)
 #            del self.__pdfReport
-            del self.__pdfGenerator
+#            del self.__pdfGenerator
 
 
     def on_records_print_progress_dialog_close(self, dialog, event=None):
