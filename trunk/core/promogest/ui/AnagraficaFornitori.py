@@ -336,11 +336,11 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
             return
 
         if self.dao.id is None:
-            msg = 'Prima di poter visualizzare la registrazione documenti occorre salvare il cliente.\n Salvare? '
+            msg = 'Prima di poter visualizzare la registrazione documenti occorre salvare il fornitore.\n Salvare? '
             dialog = gtk.MessageDialog(self.dialogTopLevel,
                 gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                 gtk.MESSAGE_QUESTION,
-                gtk.BUTTONS_YES, msg)
+                gtk.BUTTONS_YES_NO, msg)
             response = dialog.run()
             dialog.destroy()
 

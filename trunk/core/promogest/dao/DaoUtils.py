@@ -414,6 +414,7 @@ O LA "ONE FULL" PER ATTIVARE ANCHE TUTTI I MODULI"""
                     msg)
             dialoggg.run()
             dialoggg.destroy()
+            Environment.params["session"].rollback()
             return False
     elif "ONE STANDARD" in Environment.modulesList:
 #        records = Environment.session.query(dao.__class__).count()
