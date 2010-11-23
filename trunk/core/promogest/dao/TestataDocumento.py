@@ -44,7 +44,7 @@ from promogest.dao.RigaPrimaNota import RigaPrimaNota
 from RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-
+from migrate import *
 #from DaoUtils import *
 from decimal import *
 from promogest.ui.utils import *
@@ -936,6 +936,8 @@ std_mapper = mapper(TestataDocumento, testata_documento, properties={
         "STD":relation(ScontoTestataDocumento,primaryjoin = (testata_documento.c.id==ScontoTestataDocumento.id_testata_documento),cascade="all, delete", backref="TD"),
         #'lang':relation(Language, backref='user')
         }, order_by=testata_documento.c.data_documento.desc())
+
+std_mapper.c.note_pie_pagina.alter(String(800), nullable=True)
 
 if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
