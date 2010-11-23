@@ -1169,48 +1169,54 @@ class Main(GladeWidget):
     def on_Back_up_Database_activate(self, widget):
         """ Si prepara un file zip con il dump del DB """
 
-        st= Environment.startdir()
-        nameDump = "promoGest2_dump_"+self.aziendaStr+"_"+datetime.datetime.now().strftime('%d_%m_%Y_%H_%M')
-        msgg = """Il "dump" del database verrà salvato in
-
-%s
-ed avrà il nome
-
-%s.zip
-
-ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDump)
-        dialogg = gtk.MessageDialog(self.getTopLevel(),
-                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_INFO,
-                                gtk.BUTTONS_OK,
-                                msgg)
-        dialogg.run()
-        dialogg.destroy()
-        #if response == gtk.RESPONSE_OK:
-        st= Environment.startdir()
-
-        stname = st+nameDump
-        os.environ["PGPASSWORD"]=Environment.password
-
-        retcode = call(["pg_dump",
-                        "-h",Environment.host,
-                        "-p",Environment.port,
-                        "-U",Environment.user,
-                        "-Z","7",
-                        "-f",stname,
-                        Environment.database])
-
-        Environment.pg2log.info("STO EFFETTUANDO UN BACKUP DEL FILE %s" %stname)
-        #print "YYYYYYYYYYYYYYYYYY", retcode
-        if not retcode:
-            #zfilename = nameDump +".zip"
-            #zout = zipfile.ZipFile(str(stname) +".zip", "w")
-            #zout.write(stname,zfilename,zipfile.ZIP_DEFLATED)
-            #zout.close()
-            Environment.pg2log.info("DUMP EFFETTUATO CON SUCCESSO")
-            #os.remove(stname)
+        if Environment.tipo_db == "sqlite":
+            msg = """NELLA VERSIONE LITE IL BACKUP SI
+EFFETTUA COPIANDO IL FILE db CHE SI TROVA NELLA CARTELLA
+promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
+            messageInfo(msg= MSG)
         else:
-            Environment.pg2log.info("ATTENZIONE DUMP NON RIUSCITO")
+            st= Environment.startdir()
+            nameDump = "promoGest2_dump_"+self.aziendaStr+"_"+datetime.datetime.now().strftime('%d_%m_%Y_%H_%M')
+            msgg = """Il "dump" del database verrà salvato in
+
+    %s
+    ed avrà il nome
+
+    %s.zip
+
+    ATTENZIONE!!!! la procedura potrebbe richiedere diversi minuti.""" %(st, nameDump)
+            dialogg = gtk.MessageDialog(self.getTopLevel(),
+                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                    gtk.MESSAGE_INFO,
+                                    gtk.BUTTONS_OK,
+                                    msgg)
+            dialogg.run()
+            dialogg.destroy()
+            #if response == gtk.RESPONSE_OK:
+            st= Environment.startdir()
+
+            stname = st+nameDump
+            os.environ["PGPASSWORD"]=Environment.password
+
+            retcode = call(["pg_dump",
+                            "-h",Environment.host,
+                            "-p",Environment.port,
+                            "-U",Environment.user,
+                            "-Z","7",
+                            "-f",stname,
+                            Environment.database])
+
+            Environment.pg2log.info("STO EFFETTUANDO UN BACKUP DEL FILE %s" %stname)
+            #print "YYYYYYYYYYYYYYYYYY", retcode
+            if not retcode:
+                #zfilename = nameDump +".zip"
+                #zout = zipfile.ZipFile(str(stname) +".zip", "w")
+                #zout.write(stname,zfilename,zipfile.ZIP_DEFLATED)
+                #zout.close()
+                Environment.pg2log.info("DUMP EFFETTUATO CON SUCCESSO")
+                #os.remove(stname)
+            else:
+                Environment.pg2log.info("ATTENZIONE DUMP NON RIUSCITO")
 
     def on_pan_active_clicked(self, button):
 #        if not hasAction(actionID=14):return
