@@ -489,7 +489,7 @@ def mostraArticoloPart(anaedit, id, art=None):
             anaedit._righe[0]["applicazioneSconti"] = fornitura["applicazioneSconti"]
             anaedit.sconti_widget.setValues(anaedit._righe[0]["sconti"], anaedit._righe[0]["applicazioneSconti"], False)
 #            anaedit._righe[0]["codiceArticoloFornitore"] = fornitura["codiceArticoloFornitore"]
-            anaedit.codice_articolo_fornitore_entry.set_text(anaedit._righe[0]["codiceArticoloFornitore"])
+            anaedit.codice_articolo_fornitore_entry.set_text(anaedit._righe[0]["codiceArticoloFornitore"] or "")
         #vendita
         elif ((anaedit._fonteValore == "vendita_iva") or (anaedit._fonteValore == "vendita_senza_iva")):
             anaedit.refresh_combobox_listini()
