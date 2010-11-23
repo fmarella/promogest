@@ -44,7 +44,7 @@ from promogest.dao.RigaPrimaNota import RigaPrimaNota
 from RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-from migrate import *
+
 #from DaoUtils import *
 from decimal import *
 from promogest.ui.utils import *
@@ -923,28 +923,19 @@ fornitor=Table('fornitore', params['metadata'], schema = params['schema'], autol
 std_mapper = mapper(TestataDocumento, testata_documento, properties={
         "rigadoc": relation(RigaDocumento, cascade="all, delete",backref="testata_documento"),
         "testata_documento_scadenza" :relation(TestataDocumentoScadenza,cascade="all, delete", backref="testata_documento"),
-        "PG":relation(Pagamento,primaryjoin = testata_documento.c.id_pagamento==paga.c.id,
-        foreign_keys=[Pagamento.id]),
-        "BN":relation(Banca,primaryjoin = (testata_documento.c.id_banca==banc.c.id),
-        foreign_keys=[Banca.id]),
-        "AL":relation(AliquotaIva,primaryjoin = (testata_documento.c.id_aliquota_iva_esenzione==AliquotaIva.id),foreign_keys=[AliquotaIva.id]),
-        "PV":relation(Vettore,primaryjoin = (testata_documento.c.id_vettore==vettore.c.id),
-        foreign_keys=[Vettore.id]),
-        "DM":relation(DestinazioneMerce, primaryjoin=(testata_documento.c.id_destinazione_merce==DestinazioneMerce.id),foreign_keys=[DestinazioneMerce.id]),
+        "PG":relation(Pagamento,primaryjoin = testata_documento.c.id_pagamento==paga.c.id),
+        "BN":relation(Banca,primaryjoin = (testata_documento.c.id_banca==banc.c.id)),
+        "AL":relation(AliquotaIva,primaryjoin = (testata_documento.c.id_aliquota_iva_esenzione==AliquotaIva.id)),
+        "PV":relation(Vettore,primaryjoin = (testata_documento.c.id_vettore==vettore.c.id)),
+        "DM":relation(DestinazioneMerce, primaryjoin=(testata_documento.c.id_destinazione_merce==DestinazioneMerce.id)),
         "TM":relation(TestataMovimento,primaryjoin = (testata_documento.c.id==testata_movi.c.id_testata_documento),cascade="all, delete", backref='TD'),
-        "CLI":relation(Cliente,primaryjoin = (testata_documento.c.id_cliente==clie.c.id),
-        foreign_keys=[Cliente.id]),
-        "FORN":relation(Fornitore,primaryjoin = (testata_documento.c.id_fornitore==fornitor.c.id),
-        foreign_keys=[Fornitore.id], uselist=False),
-        "AGE":relation(Agente,primaryjoin = (testata_documento.c.id_agente==agen.c.id),
-        foreign_keys=[Agente.id]),
-        "OP":relation(Operazione,primaryjoin = (testata_documento.c.operazione==Operazione.denominazione),
-        foreign_keys=[Operazione.denominazione], backref="TD"),
+        "CLI":relation(Cliente,primaryjoin = (testata_documento.c.id_cliente==clie.c.id)),
+        "FORN":relation(Fornitore,primaryjoin = (testata_documento.c.id_fornitore==fornitor.c.id)),
+        "AGE":relation(Agente,primaryjoin = (testata_documento.c.id_agente==agen.c.id)),
+        "OP":relation(Operazione,primaryjoin = (testata_documento.c.operazione==Operazione.denominazione), backref="TD"),
         "STD":relation(ScontoTestataDocumento,primaryjoin = (testata_documento.c.id==ScontoTestataDocumento.id_testata_documento),cascade="all, delete", backref="TD"),
         #'lang':relation(Language, backref='user')
         }, order_by=testata_documento.c.data_documento.desc())
-
-#std_mapper.c.note_pie_pagina.alter(String(800), nullable=True)
 
 if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
