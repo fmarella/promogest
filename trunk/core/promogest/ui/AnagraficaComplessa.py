@@ -688,8 +688,8 @@ Verificare i permessi della cartella"""
 
     def on_records_print_dialog_close(self, dialog, event=None):
         dialog.hide()
-        del self.__pdfReport
-        del self.__pdfGenerator
+#        del self.__pdfReport
+#        del self.__pdfGenerator
 
     def __handleOpenResponse(self, dialog):
         """ Qui gestiamo l'apertura
