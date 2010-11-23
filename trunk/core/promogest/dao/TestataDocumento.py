@@ -935,7 +935,7 @@ std_mapper = mapper(TestataDocumento, testata_documento, properties={
         "CLI":relation(Cliente,primaryjoin = (testata_documento.c.id_cliente==clie.c.id),
         foreign_keys=[Cliente.id]),
         "FORN":relation(Fornitore,primaryjoin = (testata_documento.c.id_fornitore==fornitor.c.id),
-        foreign_keys=[Fornitore.id]),
+        foreign_keys=[Fornitore.id], uselist=False),
         "AGE":relation(Agente,primaryjoin = (testata_documento.c.id_agente==agen.c.id),
         foreign_keys=[Agente.id]),
         "OP":relation(Operazione,primaryjoin = (testata_documento.c.operazione==Operazione.denominazione),
