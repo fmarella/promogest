@@ -726,24 +726,23 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         self.rimuovi_articolo_button.set_sensitive(True)
         selection = self.articoli_treeview.get_selection()
         model, iter = selection.get_selected()
-        print "MODELLLL", model, model.get_path(iter), iter
-        Environment.pg2log.info("IN SCHEDA LAVORAZIONE"+repr(model)+repr(model.get_path(iter))+ repr(iter))
-        index = model.get_path(iter)[0]
-        value = model[index][1]
-        if "Stampa" != model[index][2]:
-            giace =giacenzaArticolo(year=Environment.workingYear,
-                                        idMagazzino=self.dao.id_magazzino,
-                                        idArticolo=value)
-            imp= self.impegnatoSuSchedaLavorazione(idArticolo=value)
-        else:
-            giace = "0"
-            imp = "0"
-        residuo = int(giace)-int(imp) or 0
-        valore= mN(residuo) *Decimal(str(model[index][6]))
-        self.giacenza_label.set_text(str(giace))
-        self.impegnato_label.set_text(str(imp))
-        self.residuo_label.set_text(str(residuo))
-        self.valore_label.set_text(str(mN(valore)))
+        if iter:
+            index = model.get_path(iter)[0]
+            value = model[index][1]
+            if "Stampa" != model[index][2]:
+                giace =giacenzaArticolo(year=Environment.workingYear,
+                                            idMagazzino=self.dao.id_magazzino,
+                                            idArticolo=value)
+                imp= self.impegnatoSuSchedaLavorazione(idArticolo=value)
+            else:
+                giace = "0"
+                imp = "0"
+            residuo = int(giace)-int(imp) or 0
+            valore= mN(residuo) *Decimal(str(model[index][6]))
+            self.giacenza_label.set_text(str(giace))
+            self.impegnato_label.set_text(str(imp))
+            self.residuo_label.set_text(str(residuo))
+            self.valore_label.set_text(str(mN(valore)))
 
     def on_articoli_treeview_key_press_event(self, treeview, event):
         """ Gestisce la pressione del tab su una cella """
