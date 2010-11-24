@@ -443,6 +443,8 @@ def leggiListino(idListino=None, idArticolo=None):
                     if len(daoListinoArticolo1) >= 1:
                         #PIÙ DI UN LISTINO ARTICOLO ATTUALE" prendo il primo
                         daoListinoArticolo= daoListinoArticolo1[0]
+                    else:
+                        daoListinoArticolo = None
 
                 if daoListinoArticolo:
                     _prezzoIngrosso = daoListinoArticolo.prezzo_ingrosso
