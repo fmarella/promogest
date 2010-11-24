@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
@@ -16,7 +16,7 @@
           <object class="GtkLabel" id="codice_articolo_label">
             <property name="visible">True</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes">&lt;b&gt;Codice&lt;/b&gt;</property>
+            <property name="label" translatable="yes">Codice *</property>
             <property name="use_markup">True</property>
           </object>
           <packing>
@@ -29,7 +29,7 @@
           <object class="GtkLabel" id="famiglia_label">
             <property name="visible">True</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes">&lt;b&gt;Famiglia merceologica&lt;/b&gt;</property>
+            <property name="label" translatable="yes">Famiglia merceologica *</property>
             <property name="use_markup">True</property>
           </object>
           <packing>
@@ -91,7 +91,7 @@
           <object class="GtkLabel" id="descrizione_label">
             <property name="visible">True</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes">&lt;b&gt;Descrizione&lt;/b&gt;</property>
+            <property name="label" translatable="yes">Descrizione *</property>
             <property name="use_markup">True</property>
           </object>
           <packing>
@@ -107,7 +107,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="tooltip_text" translatable="yes">Inserire la descrizione o denominazione dell'articolo</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
             <property name="secondary_icon_sensitive">True</property>
@@ -129,7 +129,7 @@
           <object class="GtkLabel" id="aliquota_iva_label">
             <property name="visible">True</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes">&lt;b&gt;Aliquota IVA&lt;/b&gt;</property>
+            <property name="label" translatable="yes">Aliquota IVA *</property>
             <property name="use_markup">True</property>
           </object>
           <packing>
@@ -144,7 +144,7 @@
           <object class="GtkLabel" id="categoria_label">
             <property name="visible">True</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes">&lt;b&gt;Categoria&lt;/b&gt;</property>
+            <property name="label" translatable="yes">Categoria *</property>
             <property name="use_markup">True</property>
           </object>
           <packing>
@@ -176,7 +176,7 @@
             <property name="tooltip_text" translatable="yes">Produttore ( diverso dal fornitore ) 
 dell'articolo </property>
             <property name="max_length">149</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
             <property name="secondary_icon_sensitive">True</property>
@@ -307,7 +307,7 @@ o da movimenti o documenti di carico</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Elenco dei movimenti in cui &#xE8; presente 
+                <property name="tooltip_text" translatable="yes">Elenco dei movimenti in cui è presente 
 l'articolo con un totale giacenza</property>
                 <signal name="clicked" handler="on_stoccaggi_togglebutton_clicked"/>
                 <child>
@@ -381,7 +381,7 @@ se non ne avesse uno potete
 cliccare a sinistra per farne 
 generare uno dal programma</property>
                     <property name="max_length">20</property>
-                    <property name="invisible_char">&#x2022;</property>
+                    <property name="invisible_char">•</property>
                     <property name="primary_icon_stock">gtk-new</property>
                     <property name="secondary_icon_stock">gtk-clear</property>
                     <property name="primary_icon_activatable">True</property>
@@ -409,8 +409,8 @@ generare uno dal programma</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Pulsante per l'inserimento 
-di uno o pi&#xF9; codici a barre abbinati
-( l'articolo dev'essere gi&#xE0; stato salvato )</property>
+di uno o più codici a barre abbinati
+( l'articolo dev'essere già stato salvato )</property>
                     <signal name="clicked" handler="on_codici_a_barre_togglebutton_clicked"/>
                     <child>
                       <object class="GtkAlignment" id="alignment32">
@@ -784,7 +784,7 @@ sul pulsante di fianco</property>
               <object class="GtkLabel" id="unita_di_misura_dimensione_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">Unit&#xE0; di misura dimensioni</property>
+                <property name="label" translatable="yes">Unità di misura dimensioni</property>
                 <property name="use_underline">True</property>
                 <property name="mnemonic_widget">unita_dimensioni_comboboxentry</property>
               </object>
@@ -799,7 +799,7 @@ sul pulsante di fianco</property>
               <object class="GtkLabel" id="unita_di_misura_peso_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">Unit&#xE0; di misura peso</property>
+                <property name="label" translatable="yes">Unità di misura peso</property>
               </object>
               <packing>
                 <property name="top_attach">4</property>
@@ -812,7 +812,7 @@ sul pulsante di fianco</property>
               <object class="GtkLabel" id="unita_di_misura_volume_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">Unit&#xE0; di misura volume</property>
+                <property name="label" translatable="yes">Unità di misura volume</property>
               </object>
               <packing>
                 <property name="top_attach">3</property>
@@ -838,7 +838,7 @@ sul pulsante di fianco</property>
               <object class="GtkLabel" id="unita_di_misura_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">Unit&#xE0; di misura base</property>
+                <property name="label" translatable="yes">Unità di misura base</property>
               </object>
               <packing>
                 <property name="x_options">GTK_FILL</property>
@@ -945,7 +945,7 @@ sul pulsante di fianco</property>
             <child>
               <object class="GtkComboBoxEntry" id="unita_dimensioni_comboboxentry">
                 <property name="visible">True</property>
-                <property name="tooltip_text" translatable="yes">Unit&#xE0; di misura per le sue dimensioni</property>
+                <property name="tooltip_text" translatable="yes">Unità di misura per le sue dimensioni</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
                 <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -997,7 +997,7 @@ sul pulsante di fianco</property>
             <child>
               <object class="GtkComboBox" id="id_unita_base_combobox">
                 <property name="visible">True</property>
-                <property name="tooltip_text" translatable="yes">Unit&#xE0; di misura generale dell'articolo</property>
+                <property name="tooltip_text" translatable="yes">Unità di misura generale dell'articolo</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -1028,7 +1028,7 @@ sul pulsante di fianco</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="tooltip_text" translatable="yes">Peso dell'imballaggio articolo</property>
-                    <property name="invisible_char">&#x2022;</property>
+                    <property name="invisible_char">•</property>
                     <property name="text" translatable="yes">0.00      </property>
                   </object>
                 </child>
@@ -1053,7 +1053,7 @@ sul pulsante di fianco</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="tooltip_markup">Peso lordo articolo</property>
-                    <property name="invisible_char">&#x2022;</property>
+                    <property name="invisible_char">•</property>
                   </object>
                 </child>
               </object>
@@ -1077,7 +1077,7 @@ sul pulsante di fianco</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="tooltip_markup">Volume articolo</property>
-                    <property name="invisible_char">&#x2022;</property>
+                    <property name="invisible_char">•</property>
                   </object>
                 </child>
               </object>
@@ -1101,7 +1101,7 @@ sul pulsante di fianco</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="tooltip_markup">Altezza articolo</property>
-                    <property name="invisible_char">&#x2022;</property>
+                    <property name="invisible_char">•</property>
                   </object>
                 </child>
               </object>
@@ -1125,7 +1125,7 @@ sul pulsante di fianco</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="tooltip_markup">Larghezza articolo</property>
-                    <property name="invisible_char">&#x2022;</property>
+                    <property name="invisible_char">•</property>
                   </object>
                 </child>
               </object>
@@ -1149,7 +1149,7 @@ sul pulsante di fianco</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="tooltip_text" translatable="yes">Lunghezza articolo</property>
-                    <property name="invisible_char">&#x2022;</property>
+                    <property name="invisible_char">•</property>
                   </object>
                 </child>
               </object>
@@ -1172,10 +1172,10 @@ sul pulsante di fianco</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Abbinamento di una eventuale unit&#xE0; di misura
+                    <property name="tooltip_text" translatable="yes">Abbinamento di una eventuale unità di misura
 derivata, potrebbe anche essere 
 il bancale che risulta essere 40X rispetto 
-alla semplice unit&#xE0;</property>
+alla semplice unità</property>
                     <signal name="clicked" handler="on_multipli_togglebutton_clicked"/>
                     <child>
                       <object class="GtkAlignment" id="alignment34">
@@ -1200,7 +1200,7 @@ alla semplice unit&#xE0;</property>
                             <child>
                               <object class="GtkLabel" id="unita_di_misura_derivate_label">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">Unit&#xE0; di misura derivate</property>
+                                <property name="label" translatable="yes">Unità di misura derivate</property>
                                 <property name="use_underline">True</property>
                               </object>
                               <packing>
@@ -1228,9 +1228,9 @@ alla semplice unit&#xE0;</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="tooltip_text" translatable="yes">Campo necessario per il modulo su misura 
-indica una quantit&#xE0; minima vendibile 
+indica una quantità minima vendibile 
 utile quando si vende materiale a metraggio</property>
-                <property name="invisible_char">&#x2022;</property>
+                <property name="invisible_char">•</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -1245,7 +1245,7 @@ utile quando si vende materiale a metraggio</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="tooltip_text" translatable="yes">Abbinare un tipo di imballaggio
-Se non ne avesse inserirne uno o pi&#xF9; cliccando
+Se non ne avesse inserirne uno o più cliccando
 sul piccolo bottone di fianco</property>
                 <child>
                   <placeholder/>
@@ -1265,9 +1265,9 @@ sul piccolo bottone di fianco</property>
                 <property name="can_focus">True</property>
                 <property name="tooltip_text" translatable="yes">Necessario per 
 il modulo di gestione noleggio 
-&#xE8; un divisore per il calcolo 
+è un divisore per il calcolo 
 dell'mmortamento </property>
-                <property name="invisible_char">&#x2022;</property>
+                <property name="invisible_char">•</property>
                 <property name="text" translatable="yes">0.00      </property>
               </object>
               <packing>
@@ -1340,7 +1340,7 @@ dell'mmortamento </property>
                 <property name="can_focus">True</property>
                 <property name="tooltip_text" translatable="yes">Eventuale descrizione da inserire 
 nel listino di vendita</property>
-                <property name="invisible_char">&#x2022;</property>
+                <property name="invisible_char">•</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="secondary_icon_activatable">True</property>
                 <property name="secondary_icon_sensitive">True</property>
@@ -1378,7 +1378,7 @@ nel listino di vendita</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">20</property>
-                <property name="invisible_char">&#x2022;</property>
+                <property name="invisible_char">•</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="secondary_icon_activatable">True</property>
                 <property name="secondary_icon_sensitive">True</property>
@@ -1425,8 +1425,8 @@ inserita poso sopra</property>
 il modulo Label per la creazone di etichette 
 per la vendita. E, normalmente 
 una descrizione ridotta o comunque 
-pi&#xF9; corta</property>
-                <property name="invisible_char">&#x2022;</property>
+più corta</property>
+                <property name="invisible_char">•</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="secondary_icon_activatable">True</property>
                 <property name="secondary_icon_sensitive">True</property>
@@ -1462,11 +1462,11 @@ pi&#xF9; corta</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="tooltip_text" translatable="yes">Inserisce un indirizzo per una immagine 
-pu&#xF2; essere di due tipi:
+può essere di due tipi:
 http:// o file:/// 
-l'immagine verr&#xE0; poi visualizzata nella scheda 
+l'immagine verrà poi visualizzata nella scheda 
 articolo</property>
-                <property name="invisible_char">&#x2022;</property>
+                <property name="invisible_char">•</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="secondary_icon_activatable">True</property>
                 <property name="secondary_icon_sensitive">True</property>
