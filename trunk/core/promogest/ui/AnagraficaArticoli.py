@@ -61,23 +61,24 @@ class AnagraficaArticoli(Anagrafica):
     def on_record_edit_activate(self, widget, path=None, column=None, dao=None):
         if not dao:
             dao = self.filter.getSelectedDao()
-        if dao.cancellato:
-            msg = "L'articolo risulta eliminato.\nSi desidera riattivare l'articolo ?"
-            dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                       gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-            response = dialog.run()
-            dialog.destroy()
-            if response == gtk.RESPONSE_YES:
-                daoArticolo = Articolo().getRecord(id= dao.id)
-                daoArticolo.cancellato = False
-                daoArticolo.persist()
+        if dao:
+            if dao.cancellato:
+                msg = "L'articolo risulta eliminato.\nSi desidera riattivare l'articolo ?"
+                dialog = gtk.MessageDialog(self.getTopLevel(), gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                           gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+                response = dialog.run()
+                dialog.destroy()
+                if response == gtk.RESPONSE_YES:
+                    daoArticolo = Articolo().getRecord(id= dao.id)
+                    daoArticolo.cancellato = False
+                    daoArticolo.persist()
 
-                # toglie l'evidenziatura rossa
-                sel = self.anagrafica_filter_treeview.get_selection()
-                (model, iterator) = sel.get_selected()
-                model.set_value(iterator, 1, None)
-            else:
-                return
+                    # toglie l'evidenziatura rossa
+                    sel = self.anagrafica_filter_treeview.get_selection()
+                    (model, iterator) = sel.get_selected()
+                    model.set_value(iterator, 1, None)
+        else:
+            return
         Anagrafica.on_record_edit_activate(self, widget, path, column, dao=dao)
 
     def duplicate(self,dao):
