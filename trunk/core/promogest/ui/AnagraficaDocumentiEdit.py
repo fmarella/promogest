@@ -1850,13 +1850,13 @@ del documento.
         self.notebook.set_current_page(2)
 
     def on_articolo_entry_icon_press(self,entry, position,event ):
-        if position.real == 0:
-            x = int(event.x)
-            y = int(event.y)
-            time = event.time
-            self.menu_ricerca.popup( None, None, None, event.button, time)
-        else:                            #secondary
-            self.articolo_entry.set_text("")
+#        if position.real == 0:
+#            x = int(event.x)
+#            y = int(event.y)
+#            time = event.time
+#            self.menu_ricerca.popup( None, None, None, event.button, time)
+#        else:                            #secondary
+        self.articolo_entry.set_text("")
 
     def on_descrizione_entry_icon_press(self,entry, position,event ):
         if position.real == 1:
