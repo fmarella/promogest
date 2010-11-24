@@ -362,7 +362,7 @@ def leggiListino(idListino=None, idArticolo=None):
     from promogest.dao.Listino import Listino
     from promogest.dao.ListinoArticolo import ListinoArticolo
     from promogest.dao.ListinoComplessoArticoloPrevalente import ListinoComplessoArticoloPrevalente
-
+    daoListinoArticolo = None
     liss = Listino().select(batchSize=None)
     # select dei listini
     for l in liss:
