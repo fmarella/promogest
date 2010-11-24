@@ -7,32 +7,27 @@ size: A4 portrait;
 margin: 1cm;
 }
 </style>
-        <table cellpadding="0" cellspacing="0" border="0">
-            <tr>
-        <td class= "report-header" colspan="8"><h3></h3></td>
-                <td class="report-header" colspan="8"><h3>Numero: <strong>{{dao.numero}}</strong> /
-                </h3></td>
-            </tr>
-    </table>
-
+<h3 ><strong>DATI PRIMA NOTA</strong></h3>
+<table>
+<th width="200">NUMERO</th>
+<th width="200">DATA INIZIO</th>
+<th width="200">DATA FINE</th>
+<tr>
+<td ><strong>{{dao.numero}}</strong></td>
+<td ><strong>{{utils.dateToString(dao.data_inizio)}}</strong></td>
+<td ><strong>{{utils.dateToString(dao.data_fine)}}</strong></td>
+</tr>
+</table>
+<br /><br />
     <table cellpadding="0" cellspacing="0" border="0">
-            <tr>
-                <td colspan="8" class="table-header">Dati Prima Nota</td>
-            </tr>
-        <tr>
-            <td class="even-detail">Data inizio:</td>
-                <td class="even-detail">
-                        <strong>{{utils.dateToString(dao.data_inizio)}}</strong>
-                </td>
-    </tr>
-        <tr>
-            <td class="even-detail">Data fine</td>
-                <td lass="even-detail">
-                        <strong>{{utils.dateToString(dao.data_fine)}}</strong>
-                </td>
-    </tr>
-        <tr>
-        <td><b>NUMERO</b></td><td><b>DATA</b></td><td><b>DESCRIZIONE</b></td><td><b>ENT CASSA</b></td><td><b>USC CASSA</b></td><td><b>ENTR BANCA</b></td><td><b>USC BANCA</b></td><td><b>RIF.</b></td>
+        <th><b>NUMERO</b></th>
+        <th><b>DATA</b></th>
+        <th><b>DESCRIZIONE</b></th>
+        <th><b>ENT CASSA</b></th>
+        <th><b>USC CASSA</b></th>
+        <th><b>ENTR BANCA</b></th>
+        <th><b>USC BANCA</b></th>
+        <th><b>RIF.</b></th>
 
         {% for riga in dao.righeprimanota %}
         <tr >
@@ -51,28 +46,42 @@ margin: 1cm;
         </tr>
         {% endfor %}
                 </table>
-        <table cellpadding="0" cellspacing="0" border="0">
-        <tr>
-        <td><b>TOTALE ENTRATE CASSA</b></td>
-        <td><b>TOTALE USCITE CASSA</b></td>
-        <td><b>TOTALE ENTRATE BANCA</b></td>
-        <td><b>TOTALE USCITE BANCA</b></td>
-        <td><b>TOTALE ENTRATE</b></td>
-        <td><b>TOTALE USCITE</b></td>
-        <td><b>SALDO</b></td>
-        </tr>
-        <tr>
-        <td style="color:green;text-align:center" >{{utils.mN(dao.totali["tot_entrate_cassa"])}}</td>
-        <td style="color:red;text-align:center">{{utils.mN(dao.totali["tot_uscite_cassa"])}}</td>
-        <td style="color:green;text-align:center">{{utils.mN(dao.totali["tot_entrate_banca"])}}</td>
-        <td style="color:red;text-align:center">{{utils.mN(dao.totali["tot_uscite_banca"])}}</td>
-        <td style="color:green;text-align:center">{{utils.mN(dao.totali["tot_entrate"])}}</td>
-        <td style="color:red;text-align:center">{{utils.mN(dao.totali["tot_uscite"])}}</td>
+<br /><br />
+<table>
+<tr>
+        <td width ="200"><b>TOTALE ENTRATE CASSA</b></td>
+<td style="color:green" >{{utils.mN(dao.totali["tot_entrate_cassa"])}}</td>
+</tr>
+<tr>
+        <td width ="200"><b>TOTALE USCITE CASSA</b></td>
+        <td style="color:red">{{utils.mN(dao.totali["tot_uscite_cassa"])}}</td>
+</tr>
+<tr>
+        <td width ="200"><b>TOTALE ENTRATE BANCA</b></td>
+        <td style="color:green">{{utils.mN(dao.totali["tot_entrate_banca"])}}</td>
+</tr>
+<tr>
+        <td width ="200"><b>TOTALE USCITE BANCA</b></td>
+        <td style="color:red">{{utils.mN(dao.totali["tot_uscite_banca"])}}</td>
+</tr>
+<tr>
+        <td width ="200"><b>TOTALE ENTRATE</b></td>
+        <td style="color:green">{{utils.mN(dao.totali["tot_entrate"])}}</td>
+</tr>
+<tr>
+        <td width ="200"><b>TOTALE USCITE</b></td>
+        <td style="color:red">{{utils.mN(dao.totali["tot_uscite"])}}</td>
+</tr>
+<tr>
+        <td width ="200"><b>SALDO</b></td>
         {% if dao.totali["totale"] > 0 %}
-        <td style="color:green;text-align:center"><b>{{utils.mN(dao.totali["totale"])}}</b></td>
+        <td style="color:green"><b>{{utils.mN(dao.totali["totale"])}}</b></td>
         {% else %}
-        <td style="color:red;text-align:center" ><b>{{utils.mN(dao.totali["totale"])}}</b></td>
+        <td style="color:red" ><b>{{utils.mN(dao.totali["totale"])}}</b></td>
          {% endif %}
-        </tr>
-        </table>
+</tr>
+</table>        
+        
+        
+        
 {% endblock %}

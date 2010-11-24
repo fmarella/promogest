@@ -73,8 +73,12 @@ class Login(GladeApp):
         model.clear()
         usrs = User().select(batchSize = None)
         azs = Azienda().select(batchSize = None, orderBy=Azienda.schemaa)
+        ultima_azienda = None
         for a in azs:
+            if a.tipo_schemaa == "last":
+                ultima_azienda = a.schemaa
             model.append((a.schemaa, a.denominazione))
+
         Environment.windowGroup.append(self.getTopLevel())
         if Environment.engine.name == "sqlite": #forzo lo splash per lite
             fileSplashImage = "gui/splash_pg2_lite.png"
@@ -92,7 +96,12 @@ class Login(GladeApp):
         self.azienda_comboboxentry.add_attribute(renderer, 'text', 0)
         self.azienda_comboboxentry.set_model(model)
         self.azienda_comboboxentry.set_text_column(0)
-        self.azienda_comboboxentry.set_active(0)
+        if ultima_azienda:
+            for r in model:
+                if r[0] == ultima_azienda:
+                    self.azienda_comboboxentry.set_active_iter(r.iter)
+        else:
+            self.azienda_comboboxentry.set_active(0)
         #ATTENZIONE METTO COME RUOLO ADMIN PER IL MOMENTO RICONTROLLARE
         model_usr = gtk.ListStore(str, str)
         model_usr.clear()
@@ -197,6 +206,13 @@ class Login(GladeApp):
                 else:
                     Environment.workingYear = str(self.anno_lavoro_spinbutton.get_value_as_int())
                     Environment.azienda = self.azienda
+                    azs = Azienda().select(batchSize = None)
+                    for a in azs:
+                        a.tipo_schemaa = ""
+                        a.persist()
+                    uaz = Azienda().getRecord(id =self.azienda)
+                    uaz.tipo_schemaa = "last"
+                    uaz.persist()
                     if Environment.tipodb !="sqlite":
                         Environment.params["schema"]=self.azienda
                     # Lancio la funzione di generazione della dir di configurazione
