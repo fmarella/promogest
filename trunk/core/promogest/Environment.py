@@ -485,7 +485,7 @@ pg2log.setLevel(logging.INFO)
 
 # Add the log message handler to the logger
 handler = logging.handlers.RotatingFileHandler(
-              LOG_FILENAME, maxBytes=50000, backupCount=6)
+              LOG_FILENAME, maxBytes=20000, backupCount=6)
 
 formatter = logging.Formatter(
     "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(pathname)s - %(funcName)s - %(lineno)d")

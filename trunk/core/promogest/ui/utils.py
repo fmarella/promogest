@@ -2588,7 +2588,8 @@ def checkAggiorna():
             #print "FFFFFFFFFFFFFFFFFFFFFFFFF", Environment.rev_locale, client.info(".").__dict__
         if not Environment.rev_remota:
             Environment.rev_remota= pysvn.Client().info2("http://svn.promotux.it/svn/promogest2/trunk/", recurse=False)[0][1]["rev"].number
-    Environment.pg2log.info("VERSIONE IN USO LOCAL E REMOTA"+str(Environment.rev_locale)+str(Environment.rev_remota))
+        Environment.pg2log.info("VERSIONE IN USO LOCALE E REMOTA "+str(Environment.rev_locale)+" "+str(Environment.rev_remota))
+
     #if Environment.rev_remota > Environment.rev_locale:
         #return (True, rev_locale, rev_remota)
     #else:

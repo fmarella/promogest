@@ -221,7 +221,7 @@ class Dao(object):
                                                     gtk.BUTTONS_CANCEL, msg)
             response = overDialog.run()
             overDialog.destroy()
-            pg2log.info("ERRORE IN DAO "+str(e))
+            pg2log.info("ERRORE IN DAO COMMIT  "+str(e))
             params["session"].rollback()
 #            params["session"].clear()
 #            Session = scoped_session(sessionmaker(bind=engine))
