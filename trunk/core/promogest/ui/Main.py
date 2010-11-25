@@ -1169,7 +1169,7 @@ class Main(GladeWidget):
     def on_Back_up_Database_activate(self, widget):
         """ Si prepara un file zip con il dump del DB """
 
-        if Environment.tipo_db == "sqlite":
+        if Environment.tipodb == "sqlite":
             msg = """NELLA VERSIONE LITE IL BACKUP SI
 EFFETTUA COPIANDO IL FILE db CHE SI TROVA NELLA CARTELLA
 promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
