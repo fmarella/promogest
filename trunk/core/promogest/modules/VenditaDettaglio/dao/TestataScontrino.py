@@ -108,6 +108,8 @@ class TestataScontrino(Dao):
             dic = {k: testata_scontrino.c.id_pos == v}
         elif k== 'idArticolo':
             dic = {k: and_(testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino, riga_scontrinoo.c.id_articolo==v)}
+        elif k=='idArticoloList':
+            dic={ k :and_(testata_scontrino.c.id==riga_scontrinoo.c.id_testata_scontrino, riga_scontrinoo.c.id_articolo.in_(v))}
         return  dic[k]
 
     def update(self):

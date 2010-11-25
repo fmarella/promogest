@@ -192,7 +192,6 @@ class GestioneScontrini(GladeWidget):
         aData = stringToDateBumped(self.filters.a_data_filter_entry.get_text())
         idPuntoCassa = findIdFromCombobox(self.filters.id_pos_filter_combobox)
         idMagazzino = findIdFromCombobox(self.filters.id_magazzino_filter_combobox)
-
         self.filterss.numRecords = TestataScontrino().count(idArticolo=idArticolo,
                                                                       daData=daData,
                                                                       aData=aData,
