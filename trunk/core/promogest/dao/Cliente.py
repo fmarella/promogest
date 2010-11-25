@@ -9,7 +9,7 @@
 
 from sqlalchemy import Table, or_,and_
 from sqlalchemy.orm import mapper, join, relation
-from promogest.Environment import params, conf
+from promogest.Environment import params, conf,session
 from Dao import Dao
 from ClienteCategoriaCliente import ClienteCategoriaCliente
 from PersonaGiuridica import PersonaGiuridica_
@@ -31,6 +31,15 @@ class Cliente(Dao):
     def _setCategorieCliente(self, value):
         self.__categorieCliente = value
     categorieCliente = property(_getCategorieCliente, _setCategorieCliente)
+
+    def delete(self):
+        categ = self._getCategorieCliente()
+        if categ:
+            for c in categ:
+                c.delete()
+        session.delete(self)
+        session.commit()
+
 
     def filter_values(self,k,v):
         if k == 'codice':
