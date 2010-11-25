@@ -421,9 +421,7 @@ class Anagrafica(GladeWidget):
         (model, iterator) = sel.get_selected()
 
         if self._rowEditingPath is not None:
-            if iterator is None:
-                print 'Anagrafica.on_filter_treeview_cursor_changed(): FIXME: iterator is None!'
-            else:
+            if iterator:
                 row = model[iterator]
                 if row.path != self._rowEditingPath:
                     sel.select_path(self._rowEditingPath)
@@ -431,7 +429,6 @@ class Anagrafica(GladeWidget):
                 return
         else:
             if iterator is None:
-                print 'Anagrafica.on_filter_treeview_cursor_changed(): FIXME: iterator is None!'
                 return
 
             dao = model.get_value(iterator, 0)
