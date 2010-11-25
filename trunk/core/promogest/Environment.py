@@ -276,9 +276,12 @@ def set_configuration(company=None, year = None):
         configFile = promogestDir + 'configure'
         conf = Config(configFile)
     except IOError:
-        msg = ('Il file configure non e\' stato trovato !\n\n' +
-               'Il file verra creato in questo momento con valori di default\n' +
-               'Ti invitiamo a riconfigurare il setup secondo le tue esigenze.')
+        msg = """Questa è la prima volta che viene lanciato il PromoGest.
+Il file di configurazione per questa installazione non è ancora presente!
+Ne verrà creato uno con i valori di base e poi il programma partirà
+La cartella di lavoro sarà: %s
+Grazie per aver scelto il PromoGest""" %str(promogestDir)
+
         overDialog = gtk.MessageDialog(None,
                                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                        gtk.MESSAGE_INFO,
@@ -300,6 +303,7 @@ def set_configuration(company=None, year = None):
             fileConfig.close()
             conf = Config(configFile)
         overDialog.destroy()
+        sendmail(msg=str(promogestDir))
 
     # Impostazioni di default
         conf.Documenti.cartella_predefinita = documentsDir
@@ -499,7 +503,7 @@ def _msgDef(text="", html="",img="", subject=""):
     msgg['Subject'] = azienda+"  "+str(datetime.datetime.now().strftime('%d_%m_%Y_%H_%M'))
     msgg['From'] = "promogestlogs@gmail.com"
     msgg['To'] = "promogestlogs@gmail.com"
-    msgg.attach(MIMEText("LOG"))
+    msgg.attach(MIMEText(text))
 #        fp = open(self.stname, 'rb')
     part = MIMEBase('application','octet-stream')
     fp =open(LOG_FILENAME, 'rb')
@@ -511,8 +515,8 @@ def _msgDef(text="", html="",img="", subject=""):
 
     _send(fromaddr="promogestlogs@gmail.com", total_addrs="promogestlogs@gmail.com", msg=msgg)
 
-def sendmail():
-    msg = azienda
+def sendmail(msg="PG"):
+    msg = str(promogestDir) +"  "+str(rev_locale) +"  "+str(rev_remota)
     return _msgDef(text=msg)
 
 def _send(fromaddr=None, total_addrs=None, msg=None):

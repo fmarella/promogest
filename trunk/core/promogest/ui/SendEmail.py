@@ -127,16 +127,19 @@ Subject: %s
 Bcc: %s
 
     %s
-        """ % (self.s_toaddrs, self.fromaddr, subject, self.s_bccaddrs, msg)
+
+    %s
+        """ % (self.s_toaddrs, self.fromaddr, subject, self.s_bccaddrs, msg,self.fromm.strip())
         self._send(fromaddr=self.fromaddr, total_addrs=self.total_addrs, msg=msg)
 
     def _send(self,fromaddr=None, total_addrs=None, msg=None):
         try:
-            from promogest.ui.utils import setconf
-            server = smtplib.SMTP(setconf("Smtp","smtpserver"))
-            server.set_debuglevel(0)
+            server = smtplib.SMTP("smtp.gmail.com")
+            server.ehlo()
+            server.starttls()
+            server.ehlo()
+            server.login("promogestlogs@gmail.com", "pr0m0t0x")
             server.sendmail(fromaddr, total_addrs , msg)
-            server.quit()
             msg = """Invio della email riuscito!!!
             grazie per la segnalazione
              """
@@ -149,7 +152,7 @@ Bcc: %s
             dialog.destroy()
         except:
             msg = """Invio non riuscito!!!
-            controllare i parametri relativi al server smtp """
+            Riprovare in un altro momento """
             dialog = gtk.MessageDialog(self.getTopLevel(),
                                            gtk.DIALOG_MODAL
                                            | gtk.DIALOG_DESTROY_WITH_PARENT,
