@@ -1,10 +1,8 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 2.6 -->
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkDialog" id="credits_dialog">
-    <property name="width_request">600</property>
-    <property name="height_request">430</property>
     <property name="visible">True</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Credits</property>
@@ -17,7 +15,6 @@
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox3">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkHBox" id="hbox328">
             <property name="visible">True</property>
@@ -25,7 +22,6 @@
             <child>
               <object class="GtkVBox" id="vbox55">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkImage" id="image221">
                     <property name="visible">True</property>
@@ -55,17 +51,15 @@
                     <property name="visible">True</property>
                     <property name="xpad">3</property>
                     <property name="label" translatable="yes">
-&lt;b&gt;      PROMOGEST2" MentoR&lt;/b&gt;
+&lt;b&gt;      PROMOGEST&lt;/b&gt;
 software gestionale per aziende
 
-&#xA9;2005- 2008 PROMOTUX S.N.C.
+©2005- 2010 PROMOTUX S.N.C.
 
 Segnalazioni info@promotux.it
 Numero verde 800 034561
 
 http://promogest.promotux.it
-
-Dettagli Versione in uso:
 </property>
                     <property name="use_markup">True</property>
                   </object>
@@ -76,33 +70,6 @@ Dettagli Versione in uso:
               </object>
               <packing>
                 <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkVBox" id="vbox53">
-                <property name="visible">True</property>
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkScrolledWindow" id="scrolledwindow1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="hscrollbar_policy">automatic</property>
-                    <property name="vscrollbar_policy">automatic</property>
-                    <property name="shadow_type">in</property>
-                    <child>
-                      <object class="GtkTextView" id="svn_info_textview">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="position">1</property>
               </packing>
             </child>
           </object>

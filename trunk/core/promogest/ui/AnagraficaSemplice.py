@@ -88,17 +88,6 @@ class Anagrafica(GladeWidget):
         creditsDialog = GladeWidget('credits_dialog', callbacks_proxy=self)
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
         creditsDialog.getTopLevel().show_all()
-        try:
-            query = "SELECT value FROM " +  Environment.connection._schemaAzienda + ".setting WHERE key = 'update_db_version';"
-
-            argList = []
-            Environment.connection._cursor.execute(query,argList)
-            res = Environment.connection._cursor.fetchall()
-            version = res[0]['value']
-
-            creditsDialog.label_db_version.set_text('Versione database                   ' + version)
-        except:
-            creditsDialog.label_db_version.set_text('')
         response = creditsDialog.credits_dialog.run()
         if response == gtk.RESPONSE_OK:
             creditsDialog.credits_dialog.destroy()

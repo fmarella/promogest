@@ -2590,12 +2590,6 @@ def checkAggiorna():
             Environment.rev_remota= pysvn.Client().info2("http://svn.promotux.it/svn/promogest2/trunk/", recurse=False)[0][1]["rev"].number
         Environment.pg2log.info("VERSIONE IN USO LOCALE E REMOTA "+str(Environment.rev_locale)+" "+str(Environment.rev_remota))
 
-    #if Environment.rev_remota > Environment.rev_locale:
-        #return (True, rev_locale, rev_remota)
-    #else:
-        #return (False,rev_locale, rev_remota)
-    #gobject.threads_init()
-    #gobject.idle_add(agg)
     thread = threading.Thread(target=agg)
     thread.start()
 
@@ -2604,12 +2598,10 @@ def aggiorna(anag):
     """ Funzione di gestione del processo di aggiornamento"""
     client = pysvn.Client()
     client.exception_style = 0
-    #rev_locale= client.info(".").revision.number
-    #rev_remota= pysvn.Client().info2("http://svn.promotux.it/svn/promogest2/trunk/", recurse=False)[0][1]["rev"].number
     if Environment.rev_locale and Environment.rev_remota:
         rl = Environment.rev_locale
         rr = Environment.rev_remota
-        Environment.pg2log.info("VERSIONE IN USO LOCAL E REMOTA"+str(rl)+str(rr))
+        Environment.pg2log.info("VERSIONE IN USO DOPO AGGIORNAMENTO LOCAL E REMOTA"+str(rl)+str(rr))
         if rl < rr:
             msg = """ ATTENZIONE!!
     Ci sono degli aggiornamenti disponibili.

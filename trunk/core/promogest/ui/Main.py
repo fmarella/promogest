@@ -1079,28 +1079,9 @@ class Main(GladeWidget):
             fileDialog.destroy()
 
     def on_credits_menu_activate(self, widget):
-        context_id =  self.pg2_statusbar.get_context_id("GENERICO")
-        self.pg2_statusbar.push(context_id,"PROVIAMO")
-        from promogest.dao.Setting import Setting
         creditsDialog = GladeWidget('credits_dialog', callbacks_proxy=self)
         creditsDialog.getTopLevel().set_transient_for(self.getTopLevel())
         creditsDialog.getTopLevel().show_all()
-        self.pg2_statusbar.push(context_id,"SECONDO")
-        encoding = locale.getlocale()[1]
-        utf8conv = lambda x : unicode(x, encoding).encode('utf8')
-        licenseText = ''
-        textBuffer = creditsDialog.svn_info_textview.get_buffer()
-        textBuffer.set_text(licenseText)
-        command = ' info ~/pg2'
-        p = Popen(command, shell=True,stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
-        (stdin, stdouterr) = (p.stdin, p.stdout)
-        for line in stdouterr.readlines():
-            textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
-        textBuffer.insert(textBuffer.get_end_iter(),"""I moduli installati sono :
-            """)
-#        self.pg2_statusbar.push(context_id,"TERZO")
-        for line in Environment.modulesList:
-            textBuffer.insert(textBuffer.get_end_iter(), utf8conv(line))
         response = creditsDialog.credits_dialog.run()
         if response == gtk.RESPONSE_OK:
             creditsDialog.credits_dialog.destroy()
