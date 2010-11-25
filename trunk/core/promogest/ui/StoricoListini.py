@@ -38,6 +38,10 @@ class StoricoListiniFilter(VisualizzazioneFilter):
         self.orderBy = 'data_listino'
 
 
+    def on_filter_treeview_selection_changed(self, treeview):
+        pass
+
+
     def draw(self):
         # Colonne della Treeview per il filtro
         treeview = self._visualizzazione.visualizzazione_filter_treeview

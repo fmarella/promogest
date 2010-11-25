@@ -42,6 +42,9 @@ class StoricoFornitureFilter(VisualizzazioneFilter):
                                          'anagrafica_forniture_filter_table')
         self.orderBy = 'data_prezzo'
 
+    def on_filter_treeview_selection_changed(self, treeview):
+        pass
+
     def draw(self):
         # Colonne della Treeview per il filtro
         treeview = self._visualizzazione.visualizzazione_filter_treeview
