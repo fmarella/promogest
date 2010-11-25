@@ -22,7 +22,8 @@ class ContattoFornitore(Dao):
 
 
     def _getRecapitiContatto(self):
-        self.__dbRecapitiContatto = RecapitoContatto().select(id=self.id)
+        self.__dbRecapitiContatto = RecapitoContatto().\
+                                            select(id=self.id,batchSize=None)
         self.__recapitiContatto = self.__dbRecapitiContatto[:]
         return self.__recapitiContatto
 
@@ -33,8 +34,8 @@ class ContattoFornitore(Dao):
 
 
     def _getCategorieContatto(self):
-        self.__dbCategorieContatto = ContattoCategoriaContatto().select(id=self.id,
-                                                                        orderBy=ContattoFornitore.id_contatto)
+        self.__dbCategorieContatto = ContattoCategoriaContatto().\
+                                            select(id=self.id,batchSize=None)
         self.__categorieContatto = self.__dbCategorieContatto[:]
         return self.__categorieContatto
 
@@ -44,7 +45,8 @@ class ContattoFornitore(Dao):
     categorieContatto = property(_getCategorieContatto, _setCategorieContatto)
 
     def _appartenenza(self):
-        a =  params["session"].query(Fornitore).with_parent(self).filter(self.id_fornitore==Fornitore.id).all()
+        a =  params["session"].query(Fornitore).with_parent(self).\
+                            filter(self.id_fornitore==Fornitore.id).all()
         if not a:
             return a
         else:
@@ -72,9 +74,7 @@ class ContattoFornitore(Dao):
 
 
 contatto=Table('contatto',params['metadata'],schema = params['schema'],autoload=True)
-
 contattofornitore=Table('contatto_fornitore',params['metadata'],schema = params['schema'],autoload=True)
-
 j = join(contatto, contattofornitore)
 
 std_mapper = mapper(ContattoFornitore, j,properties={

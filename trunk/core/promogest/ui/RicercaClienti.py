@@ -62,6 +62,8 @@ class RicercaClientiFilter(RicercaFilter):
         self.ricerca_avanzata_clienti_filter_vbox.destroy()
         self.ricerca_alignment.destroy()
 
+    def on_filter_treeview_selection_changed(self, treeview):
+        pass
 
     def draw(self):
         # Colonne della Treeview per il filtro

@@ -68,6 +68,7 @@ class RicercaAgentiFilter(RicercaFilter):
                                'anagrafica_agenti_filter_table',
                                fileName='Agenti/gui/_anagrafica_agenti_elements.glade',
                             isModule=True)
+
     def on_filter_treeview_selection_changed(self, treeview):
         pass
 
