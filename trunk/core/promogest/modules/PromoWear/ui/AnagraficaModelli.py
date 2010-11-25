@@ -160,7 +160,8 @@ class AnagraficaModelliDetail(AnagraficaDetail):
         (model, iterator) = sel.get_selected()
         self.dao.denominazione = model.get_value(iterator, 1)
         self.dao.denominazione_breve = model.get_value(iterator, 2)
-        if Environment.tipo_eng == "sqlite":
-            if Modello().count() >= 5:
-                return
+        if self.dao.denominazione == '' or self.dao.denominazione == None:
+            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
+        if self.dao.denominazione_breve == '' or self.dao.denominazione_breve == None:
+            obligatoryField(self._anagrafica.getTopLevel(), self._anagrafica.anagrafica_treeview)
         self.dao.persist()
