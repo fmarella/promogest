@@ -116,7 +116,7 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
 
     def clear(self):
         # Annullamento filtro
-        self.denominazione_filter_entry.set_text('')
+        self.numero_filter_entry.set_text('')
         self.da_data_inizio_datetimewidget.set_text('')
         self.a_data_inizio_datetimewidget.set_text('')
         self.da_data_fine_datetimewidget.set_text('')
