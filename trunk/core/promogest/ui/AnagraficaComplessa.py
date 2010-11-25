@@ -1151,7 +1151,7 @@ class AnagraficaReport(object):
             d.resolveProperties()
             param.append(d.dictionary(complete=True))
         multilinedirtywork(param)
-        if azienda:
+        if azienda and param:
             azidict = azienda.dictionary(complete=True)
             for a,b in azidict.items():
                 k = "azi_"+a

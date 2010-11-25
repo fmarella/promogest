@@ -227,6 +227,7 @@ class ExportCsv(GladeWidget):
                 copy2(Environment.tempDir+"tempCSV", filename)
 
     def recordToCSV(self, record):
+        """ TODO: Aggiungere i campi obbligatori"""
         tempFileCsv = Environment.tempDir+"tempCSV"
         separatore = self.separatore_combobox.get_active_text()
         stringa = self.stringa_combobox.get_active_text()
