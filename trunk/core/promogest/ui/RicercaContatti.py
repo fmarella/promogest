@@ -52,8 +52,8 @@ class RicercaContatti(Ricerca):
             self.filter.refresh()
             self.filter.cognome_nome_filter_entry.grab_focus()
         if ("Contatti" in Environment.modulesList) or \
-                ("pan" in Environment.modulesList) or \
-                ("basic" in Environment.modulesList):
+                ("STANDARD" in Environment.modulesList) or \
+                ("FULL" in Environment.modulesList):
             from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
             anag = AnagraficaContatti()
             anagWindow = anag.getTopLevel()
@@ -62,7 +62,7 @@ class RicercaContatti(Ricerca):
 
             anag.on_record_new_activate(anag.record_new_button)
         else:
-            print "MESSAGGIO DI PAT"
+            fencemsg()
 
 
 class RicercaContattiFilter(RicercaFilter):

@@ -621,7 +621,7 @@ class TestataDocumento(Dao):
 
     #property destinazione_merce
     def _destMerc(self):
-        if self.DM: dm = self.DM.denominazione
+        if self.DM: return self.DM.denominazione
         else: return ""
     destinazione_merce = property(_destMerc)
 

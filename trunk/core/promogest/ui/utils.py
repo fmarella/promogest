@@ -2208,25 +2208,22 @@ def hasAction(actionID=None):
     la risposta sia sempre true perchè essendoci solo
     admin ha de facto tutti i privilegi
     """
-    if hasattr(Environment.conf, "RuoliAzioni") and getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
-        from promogest.modules.RuoliAzioni.dao.RoleAction import RoleAction
-        idRole = Environment.params['usernameLoggedList'][2]
-        roleActions = RoleAction().select(id_role=idRole,
-                                                id_action=actionID,
-                                                orderBy=RoleAction.id_role)
-        if roleActions:
-            return True
-        else:
-            dialog = gtk.MessageDialog( None,
-                                    gtk.DIALOG_MODAL |
-                                    gtk.DIALOG_DESTROY_WITH_PARENT,
-                                    gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
-                                    "Permesso negato! L'azione richiesta non è tra quelle che ti son consentite")
-            response = dialog.run()
-            dialog.destroy()
-            return False
-    else:
+    from promogest.modules.RuoliAzioni.dao.RoleAction import RoleAction
+    idRole = Environment.params['usernameLoggedList'][2]
+    roleActions = RoleAction().select(id_role=idRole,
+                                            id_action=actionID,
+                                            )
+    if roleActions:
         return True
+    else:
+        dialog = gtk.MessageDialog( None,
+                                gtk.DIALOG_MODAL |
+                                gtk.DIALOG_DESTROY_WITH_PARENT,
+                                gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
+                                "Permesso negato! L'azione richiesta non è tra quelle che ti son consentite")
+        response = dialog.run()
+        dialog.destroy()
+        return False
 
 def numeroRegistroGet(tipo=None, date=None):
     """
@@ -2917,3 +2914,21 @@ def scribusVersion(slafile):
     elif "1.3.3" in slaversion or "1.3.3.6cvs" in slaversion:
         Environment.new_print_enjine = False
         return False
+
+def posso(mod=None):
+    moduli = Environment.modulesList
+    if mod=="RuoliAzioni":
+        if "RuoliAzioni"in moduli: return True
+        if "ONE FULL" in moduli :return True
+        if "PRO STANDARD" in moduli: return True
+
+
+
+
+def fencemsg():
+    msg = """OPERAZIONE NON CONSENTITA CON IL PACCHETTO
+CHE STAI USANDO, PASSA ALLA "ONE STANDARD"
+O ALLA "ONE FULL" OPPURE ACQUISTA IL MODULO
+DI CUI HAI BISOGNO
+   GRAZIE"""
+    return messageInfo(msg=msg)

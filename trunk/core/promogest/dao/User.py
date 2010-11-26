@@ -51,9 +51,8 @@ class User(Dao):
             dic = {k:user.c.email.ilike("%"+v+"%")}
         elif k == 'active':
             dic = {k:user.c.active == v}
-        if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
-            if k == 'idRole':
-                dic = {k:and_(user.c.id==UserRole.id_user,UserRole.id_role == v)}
+        elif k == 'idRole':
+            dic = {k:and_(user.c.id==UserRole.id_user,UserRole.id_role == v)}
         return  dic[k]
     #if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
         #def _ruolo(self):
@@ -84,16 +83,10 @@ class User(Dao):
             params["session"].commit()
             return True
 
-    if hasattr(conf, "RuoliAzioni") \
-        and hasattr(conf.RuoliAzioni,"mod_enable") \
-        and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
-        try:
-            @property
-            def ruolo(self):
-                if self.role: return self.role.name
-                else: return ""
-        except:
-            print " RUOLIAZIONI ANCORA PROBLEMI"
+    @property
+    def ruolo(self):
+        if self.role: return self.role.name
+        else: return ""
 
     if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
         @property
@@ -105,17 +98,12 @@ class User(Dao):
 user=Table('utente', params['metadata'],schema = params['mainSchema'],autoload=True)
 std_mapper = mapper(User, user, order_by=user.c.username)
 
-if hasattr(conf, "RuoliAzioni") \
-        and hasattr(conf.RuoliAzioni,"mod_enable") \
-        and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
-    try:
-        from promogest.modules.RuoliAzioni.dao.Role import Role
-        if tipodb =="sqlite":
-            std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),foreign_keys=[Role.id],backref="users",uselist=False))
-        else:
-            std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),backref="users",uselist=False))
-    except:
-        print "ATTENZIONE!! RUOLI AZIONI NON È INSTALLATO CORRETTAMENTE"
+from promogest.modules.RuoliAzioni.dao.Role import Role
+if tipodb =="sqlite":
+    std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),foreign_keys=[Role.id],backref="users",uselist=False))
+else:
+    std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),backref="users",uselist=False))
+
 if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
     from promogest.modules.MultiLingua.dao.UserLanguage import UserLanguage
     std_mapper.add_property("userlang",relation(UserLanguage,primaryjoin=(user.c.id==UserLanguage.id_user),backref="users",uselist=False))

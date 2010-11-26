@@ -44,9 +44,9 @@ from VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
 from promogest.lib import feedparser
 from promogest.ui.PrintDialog import PrintDialogHandler
-from utils import hasAction, fenceDialog, aggiorna, updateScadenzePromemoria,\
+from utils import hasAction, fencemsg, aggiorna, updateScadenzePromemoria,\
          setconf, dateTimeToString, dateToString, last_day_of_month, \
-         date_range, orda
+         date_range, orda, posso
 from utilsCombobox import *
 from ParametriFrame import ParametriFrame
 from SetConf import SetConfUI
@@ -373,39 +373,37 @@ class Main(GladeWidget):
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
     def on_utenti_button_toggled(self, toggleButton):
+        print "MOMOMOO", Environment.modulesList
         if toggleButton.get_property('active') is False:
             return
-        if ("RuoliAzioni" in Environment.modulesList) or \
-                ("pan" in Environment.modulesList):
+        if posso("RuoliAzioni"):
             from promogest.modules.RuoliAzioni.ui.AnagraficaUtenti import AnagraficaUtenti
             anag = AnagraficaUtenti()
             showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
         else:
-            fenceDialog()
+            fencemsg()
             toggleButton.set_property('active',False)
 
     def on_ruoli_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        if ("RuoliAzioni" in Environment.modulesList) or \
-                ("pan" in Environment.modulesList):
+        if posso("RuoliAzioni"):
             from promogest.modules.RuoliAzioni.ui.AnagraficaRuoli import AnagraficaRuoli
             anag = AnagraficaRuoli()
             showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
         else:
-            fenceDialog()
+            fencemsg()
             toggleButton.set_property('active',False)
 
     def on_ruoli_azioni_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        if ("RuoliAzioni" in Environment.modulesList) or \
-                ("pan" in Environment.modulesList):
+        if posso("RuoliAzioni"):
             from promogest.modules.RuoliAzioni.ui.ManageRoleAction import ManageRuoloAzioni
             anag = ManageRuoloAzioni()
             showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
         else:
-            fenceDialog()
+            fencemsg()
             toggleButton.set_property('active',False)
 
     def on_multipli_button_clicked(self, toggleButton):

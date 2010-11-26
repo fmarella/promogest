@@ -105,12 +105,8 @@ class Login(GladeApp):
         #ATTENZIONE METTO COME RUOLO ADMIN PER IL MOMENTO RICONTROLLARE
         model_usr = gtk.ListStore(str, str)
         model_usr.clear()
-        if hasattr(Environment.conf, "RuoliAzioni") and \
-                getattr(Environment.conf.RuoliAzioni, 'mod_enable')=="yes":
-            for a in usrs:
-                model_usr.append((a.username, a.email))
-        else:
-            model_usr.append(("admin", "admin"))
+        for a in usrs:
+            model_usr.append((a.username, a.email))
 
         renderer_usr = gtk.CellRendererText()
         self.username_comboxentry.pack_start(renderer_usr, True)
@@ -224,15 +220,7 @@ class Login(GladeApp):
 #                        thread.join(2.3)
                     Environment.params['usernameLoggedList'][0] = users[0].id
                     Environment.params['usernameLoggedList'][1] = users[0].username
-
-                    if hasattr(Environment.conf, "RuoliAzioni") and \
-                        getattr(Environment.conf.RuoliAzioni,'mod_enable')=="yes":
-                        #from promogest.modules.RuoliAzioni.dao.Role import Role
-                        #idruolo = Role().select(denominazione=users[0].id_role)
-                        #if idruolo:
-                        Environment.params['usernameLoggedList'][2] = users[0].id_role
-                    else:
-                        Environment.params['usernameLoggedList'][2] = "Admin"
+                    Environment.params['usernameLoggedList'][2] = users[0].id_role
                     if hasAction(actionID=1):
                         self.login_window.hide()
                         Environment.windowGroup.remove(self.getTopLevel())

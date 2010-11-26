@@ -107,38 +107,37 @@ class ParametriFrame(GladeWidget):
         if toggleButton.get_property('active') is False:
             return
         if ("RuoliAzioni" in Environment.modulesList) or \
-                ("pan" in Environment.modulesList):
+                ("FULL" in Environment.modulesList):
             from promogest.modules.RuoliAzioni.ui.AnagraficaUtenti import AnagraficaUtenti
             anag = AnagraficaUtenti()
             showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
         else:
-            fenceDialog()
+            fencemsg()
             toggleButton.set_property('active',False)
 
     def on_ruoli_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
         if ("RuoliAzioni" in Environment.modulesList) or \
-                ("pan" in Environment.modulesList):
+                ("FULL" in Environment.modulesList):
             from promogest.modules.RuoliAzioni.ui.AnagraficaRuoli import AnagraficaRuoli
             anag = AnagraficaRuoli()
             showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
         else:
-            fenceDialog()
+            fencemsg()
             toggleButton.set_property('active',False)
 
     def on_ruoli_azioni_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
         if ("RuoliAzioni" in Environment.modulesList) or \
-                ("pan" in Environment.modulesList):
+                ("FULL" in Environment.modulesList):
             from promogest.modules.RuoliAzioni.ui.ManageRoleAction import ManageRuoloAzioni
             anag = ManageRuoloAzioni()
             showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
         else:
-            fenceDialog()
             toggleButton.set_property('active',False)
-
+            fencemsg()
 
     def on_multipli_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:

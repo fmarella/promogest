@@ -27,7 +27,6 @@ from promogest.dao.Dao import Dao
 from Role import Role
 from Action import Action
 
-
 try:
     roleaction=Table('roleaction',
                 params['metadata'],
@@ -47,9 +46,6 @@ except:
             ruolieazioni = roleaction.insert()
             for i in range(1,15):
                 ruolieazioni.execute(id_role = 1, id_action =i)
-
-
-
 
 class RoleAction(Dao):
     """ RoleAction class database functions  """

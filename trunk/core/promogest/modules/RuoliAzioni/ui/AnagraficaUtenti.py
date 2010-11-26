@@ -210,7 +210,7 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
             act = 1
         self.active_user_checkbutton.set_active(act)
         findComboboxRowFromId(self.id_role_combobox, self.dao.id_role)
-        findComboboxRowFromId(self.id_language_combobox, self.dao.id_language)
+#        findComboboxRowFromId(self.id_language_combobox, self.dao.id_language)
 
 
     def saveDao(self):
@@ -246,6 +246,6 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
         self.dao.email = self.email_entry.get_text()
         self.dao.photo_src = self.url_entry.get_text()
         self.dao.id_role = findIdFromCombobox(self.id_role_combobox)
-        self.dao.id_language = findIdFromCombobox(self.id_language_combobox)
+#        self.dao.id_language = findIdFromCombobox(self.id_language_combobox)
         self.dao.active = self.active_user_checkbutton.get_active()
         self.dao.persist()

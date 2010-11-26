@@ -47,7 +47,8 @@ class RicercaAgenti(Ricerca):
             self.filter.refresh()
             self.filter.ragione_sociale_filter_entry.grab_focus()
         if ("Agenti" in Environment.modulesList) or \
-            ("ONE FULL" in Environment.modulesList):
+            ("FULL" in Environment.modulesList) or \
+            ("STANDARD" in Environment.modulesList):
             from promogest.modules.Agenti.ui.AnagraficaAgenti import AnagraficaAgenti
             anag = AnagraficaAgenti()
             anagWindow = anag.getTopLevel()
@@ -56,7 +57,7 @@ class RicercaAgenti(Ricerca):
 
             anag.on_record_new_activate(anag.record_new_button)
         else:
-            fenceDialog()
+            fencemsg()
 
 
 
