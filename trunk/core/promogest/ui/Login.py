@@ -220,7 +220,10 @@ class Login(GladeApp):
 #                        thread.join(2.3)
                     Environment.params['usernameLoggedList'][0] = users[0].id
                     Environment.params['usernameLoggedList'][1] = users[0].username
-                    Environment.params['usernameLoggedList'][2] = users[0].id_role
+                    try:
+                        Environment.params['usernameLoggedList'][2] = users[0].id_role
+                    except:
+                        Environment.params['usernameLoggedList'][2] = 1
                     if hasAction(actionID=1):
                         self.login_window.hide()
                         Environment.windowGroup.remove(self.getTopLevel())
