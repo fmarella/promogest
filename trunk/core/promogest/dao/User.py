@@ -100,7 +100,8 @@ std_mapper = mapper(User, user, order_by=user.c.username)
 
 from promogest.modules.RuoliAzioni.dao.Role import Role
 if tipodb =="sqlite":
-    std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),foreign_keys=[Role.id],backref="users",uselist=False))
+    pass
+#    std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),foreign_keys=[Role.id],backref="users",uselist=False))
 else:
     std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),backref="users",uselist=False))
 
