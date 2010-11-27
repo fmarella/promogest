@@ -19,7 +19,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from promogest.ui.utils import codeIncrement, tempo
+from promogest.ui.utils import codeIncrement, tempo, posso
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
