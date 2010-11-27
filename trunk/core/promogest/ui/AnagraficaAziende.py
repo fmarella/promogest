@@ -27,7 +27,7 @@ from promogest import Environment
 import promogest.dao.Azienda
 from promogest.dao.Azienda import Azienda
 
-from utils import dateToString, stringToDate, checkCodFisc, checkPartIva, showAnagraficaRichiamata, fenceDialog, setconf
+from utils import dateToString, stringToDate, checkCodFisc, checkPartIva, showAnagraficaRichiamata, fenceDialog, setconf, posso
 #from utilsCombobox import *
 
 
