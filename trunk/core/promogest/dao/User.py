@@ -104,7 +104,7 @@ try:
     else:
         std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),backref="users",uselist=False))
 except:
-    Environment.pg2log.info("AGGIORNARE SQLALCHEMY RUOLI NON FUNZIONERANNO")
+    pg2log.info("AGGIORNARE SQLALCHEMY RUOLI NON FUNZIONERANNO")
 if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
     from promogest.modules.MultiLingua.dao.UserLanguage import UserLanguage
     std_mapper.add_property("userlang",relation(UserLanguage,primaryjoin=(user.c.id==UserLanguage.id_user),backref="users",uselist=False))
