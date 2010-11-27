@@ -188,9 +188,7 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
 
     def on_contatti_togglebutton_clicked(self, toggleButton):
         if posso("CN"):
-                toggleButton.set_active(False)
-                return
-
+            toggleButton.set_active(False)
             if self.dao.id is None:
                 msg = 'Prima di poter inserire i contatti occorre salvare il magazzino.\n Salvare ?'
                 dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -209,5 +207,5 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
 
             showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
         else:
-            fenceDialog()
+            fencemsg()
             toggleButton.set_active(False)
