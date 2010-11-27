@@ -224,7 +224,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                             self.id_unita_base_combobox,
                             msg='Campo obbligatorio !\n\nUnita\' base')
         pbar(self.dialog.pbar,parziale=1, totale=4)
-        if posso("PW"): and (articleType(self.dao) == "plus" or self.plus_radiobutton.get_active()):
+        if posso("PW") and (articleType(self.dao) == "plus" or self.plus_radiobutton.get_active()):
             articoloTagliaColore = ArticoloTagliaColore()
             articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
             articoloTagliaColore.id_taglia = findIdFromCombobox(self.id_taglia_customcombobox.combobox)
