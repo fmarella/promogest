@@ -499,9 +499,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
-        if ("Contatti" in Environment.modulesList) or \
-                ("pan" in Environment.modulesList) or \
-                ("basic" in Environment.modulesList):
+        if posso("CN"):
             if self.dao.id is None:
                 msg = 'Prima di poter inserire i contatti occorre salvare il cliente.\n Salvare ?'
                 dialog = gtk.MessageDialog(self.dialogTopLevel,

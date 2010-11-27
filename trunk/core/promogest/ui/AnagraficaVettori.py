@@ -231,16 +231,8 @@ class AnagraficaVettoriEdit(AnagraficaEdit):
 
     def setDao(self, dao):
         if dao is None:
-            if (not "pan" in Environment.modulesList) \
-                and (not "basic" in  Environment.modulesList) \
-                and Vettore().count() >= 2 \
-                and Environment.tipodb =="sqlite":
-                fenceDialog()
-                return
-            else:
-                # Crea un nuovo Dao vuoto
-                self.dao = Vettore()
-                self.dao.codice = promogest.dao.Vettore.getNuovoCodiceVettore()
+            self.dao = Vettore()
+            self.dao.codice = promogest.dao.Vettore.getNuovoCodiceVettore()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Vettore().getRecord(id=dao.id)

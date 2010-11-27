@@ -26,7 +26,7 @@ from promogest.ui.utils import *
 import promogest.ui.Login
 #from ImportPriceListPreview import ImportPreview
 from fieldsDict import *
-if "PromoWear" in Environment.modulesList:
+if posso("PW"):
     from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
     from promogest.modules.PromoWear.dao.Modello import Modello
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
@@ -57,7 +57,7 @@ class ProductFromCsv(object):
                 self.price_list_id = liss[0].id
             del self.promoPriceList
         self.defaults = self.PLModel._defaultAttributes
-        if createData and "PromoWear" in Environment.modulesList:
+        if createData and posso("PW"):
             self.addGruppiTaglia()
         self.listaRighe = []
 
@@ -147,7 +147,7 @@ class ProductFromCsv(object):
         if not self.daoArticolo:
             print "ISTANZIO UN NUOVO ARTICOLO"
             self.daoArticolo = Articolo()
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             if self.codice_padre and self.codice_articolo:
                 print "ARTICOLO PADRE"
                 self.tipoArticolo = "FATHER"
@@ -237,7 +237,7 @@ class ProductFromCsv(object):
     def fillDaos(self):
         """fillDaos method fills all Dao related to daoArticolo
         """
-        if "PromoWear" in Environment.modulesList and self.tipoArticolo == "SON":
+        if posso("PW") and self.tipoArticolo == "SON":
             self.daoArticolo.codice = self.articoloPadre.codice + self.gruppo_taglia[0:3] + self.taglia + self.colore
             self.daoArticolo.denominazione = self.articoloPadre.denominazione + ' ' + self.taglia + ' ' + self.colore
             self.codice_articolo = self.articoloPadre

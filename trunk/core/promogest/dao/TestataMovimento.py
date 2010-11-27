@@ -175,7 +175,7 @@ class TestataMovimento(Dao):
                                     batchSize = None)
         if row:
             for r in row:
-                if "SuMisura" in modulesList:
+                if posso("SM"):
                     mp = MisuraPezzo().select(idRiga=r.id)
                     if mp:
                         for m in mp:

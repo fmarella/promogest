@@ -42,7 +42,7 @@ class AnagraficaForniture(Anagrafica):
         self._fornitoreFissato = (idFornitore <> None)
         self._idArticolo=idArticolo
         self._idFornitore=idFornitore
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             import promogest.modules.PromoWear.dao.ArticoloTagliaColore
             from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
         Anagrafica.__init__(self,
@@ -143,7 +143,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         column.set_expand(False)
         column.set_min_width(100)
         treeview.append_column(column)
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             column = gtk.TreeViewColumn('Gruppo taglia', rendererSx, text=8)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
             column.set_clickable(True)
@@ -210,7 +210,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
             column.set_property('visible', False)
             column = self._anagrafica.anagrafica_filter_treeview.get_column(3)
             column.set_property('visible', False)
-            if "PromoWear" in Environment.modulesList:
+            if posso("PW"):
                 column = self._anagrafica.anagrafica_filter_treeview.get_column(7)
                 column.set_property('visible', False)
                 column = self._anagrafica.anagrafica_filter_treeview.get_column(8)
@@ -293,7 +293,7 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
         self._treeViewModel.clear()
 
         for f in fors:
-            if "PromoWear" in Environment.modulesList:
+            if posso("PW"):
                 self._treeViewModel.append((f,
                             (f.fornitore or ''),
                             (f.codice_articolo_fornitore or ''),
@@ -385,7 +385,7 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         self._percentualeIva = res["percentualeAliquotaIva"]
         self.percentuale_aliquota_iva_label.set_text('%5.2f' % self._percentualeIva + ' %')
         fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self.id_articolo_customcombobox.getId())
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             self._refreshTagliaColore(res["id"])
 
     def setDao(self, dao):
@@ -434,7 +434,7 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
                               self.dao.id_multiplo)
         self.sconti_widget.setValues(self.dao.sconti, self.dao.applicazione_sconti)
         self._calcolaPrezzoNetto()
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             self._refreshTagliaColore(self.dao.id_articolo)
 
     def _refreshTagliaColore(self, idArticolo):

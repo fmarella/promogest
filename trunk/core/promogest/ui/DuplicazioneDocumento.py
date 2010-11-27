@@ -200,7 +200,7 @@ class DuplicazioneDocumento(GladeWidget):
             daoRiga.id_multiplo = r.id_multiplo
             daoRiga.moltiplicatore = r.moltiplicatore
             #print "RIGA ARTICOLO", r.descrizione, r.id_articolo
-            if "SuMisura" in Environment.modulesList:
+            if posso("SM"):
                 from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
                 #try:
                 daoMisuraPezzo = MisuraPezzo()
@@ -273,7 +273,7 @@ class DuplicazioneDocumento(GladeWidget):
 
         newDao.persist()
 
-        if "GestioneNoleggio" in Environment.modulesList:
+        if posso("GN"):
             if self.dao.data_inizio_noleggio or self.data_fine_noleggio:
 
                 from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio

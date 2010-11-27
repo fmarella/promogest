@@ -116,13 +116,7 @@ class AnagraficaMagazziniFilter(AnagraficaFilter):
         mags = self.runFilter()
 
         self._treeViewModel.clear()
-        if (not "pan" in Environment.modulesList) and \
-            (not "basic" in  Environment.modulesList) and \
-                Magazzino().count() >1 and \
-                 Environment.tipodb =="sqlite"\
-                and not Environment.magazzini:
-            if len(mags) >1:
-                mags = [mags[0]]
+
         for m in mags:
             self._treeViewModel.append((m,
                                         (m.denominazione or '')))
@@ -162,17 +156,8 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
 
     def setDao(self, dao):
         if dao is None:
-            # Crea un nuovo Dao vuoto
-            if (not "pan" in Environment.modulesList) and \
-            (not "basic" in  Environment.modulesList) and \
-                Magazzino().count() >1 and \
-                 Environment.tipodb =="sqlite"\
-                and not Environment.magazzini:
-                self.destroy()
-                fenceDialog()
-            else:
-                self.dao = Magazzino()
-                self._refresh()
+            self.dao = Magazzino()
+            self._refresh()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Magazzino().getRecord(id=dao.id)
@@ -198,20 +183,11 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
         self.dao.cap = self.cap_entry.get_text()
         self.dao.provincia = self.provincia_entry.get_text()
         self.dao.pvcode = self.pvcode_entry.get_text()
-        if (not "pan" in Environment.modulesList) and \
-            (not "basic" in  Environment.modulesList) and \
-                Magazzino().count() >1 and \
-                 Environment.tipodb =="sqlite"\
-                and not Environment.magazzini:
-            return
         self.dao.persist()
 
 
     def on_contatti_togglebutton_clicked(self, toggleButton):
-        if ("Contatti" in Environment.modulesList) or \
-            ("pan" in Environment.modulesList) or \
-            ("basic" in Environment.modulesList):
-            if not(toggleButton.get_active()):
+        if posso("CN"):
                 toggleButton.set_active(False)
                 return
 

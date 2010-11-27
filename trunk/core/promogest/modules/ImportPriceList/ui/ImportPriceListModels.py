@@ -137,21 +137,21 @@ class ImportPriceListModels(GladeWidget):
                 self.sconto_vendita_dettaglio_cb.set_active(True)
             elif f == 'Sconto Vendita Ingrosso':
                 self.sconto_vendita_ingrosso_cb.set_active(True)
-            elif "PromoWear" in Environment.modulesList and f == "Anno":
+            elif posso("PW") and f == "Anno":
                 self.anno_cb.set_active(True)
-            elif "PromoWear" in Environment.modulesList and f == "Modello":
+            elif posso("PW") and f == "Modello":
                 self.modello_cb.set_active(True)
-            elif "PromoWear" in Environment.modulesList and f == "Genere":
+            elif posso("PW") and f == "Genere":
                 self.genere_cb.set_active(True)
-            elif "PromoWear" in Environment.modulesList and f == "Taglia":
+            elif posso("PW") and f == "Taglia":
                 self.taglia_cb.set_active(True)
-            elif "PromoWear" in Environment.modulesList and f == "Colore":
+            elif posso("PW") and f == "Colore":
                 self.colore_cb.set_active(True)
-            elif "PromoWear" in Environment.modulesList and f == "Codice Padre":
+            elif posso("PW") and f == "Codice Padre":
                 self.codice_padre_cb.set_active(True)
-            elif "PromoWear" in Environment.modulesList and f == "Stagione":
+            elif posso("PW") and f == "Stagione":
                 self.stagione_cb.set_active(True)
-            elif "PromoWear" in Environment.modulesList and f == "Gruppo Taglia":
+            elif posso("PW") and f == "Gruppo Taglia":
                 self.gruppo_taglia_cb.set_active(True)
         def_list = ['Aliquota iva', 'Famiglia', 'Categoria', 'Unita base']
 
@@ -201,7 +201,7 @@ class ImportPriceListModels(GladeWidget):
         self.prezzo_acquisto_ivato_cb.set_active(False)
         self.sconto_vendita_dettaglio_cb.set_active(False)
         self.sconto_vendita_ingrosso_cb.set_active(False)
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             self.modello_cb.set_active(False)
             self.anno_cb.set_active(False)
             self.taglia_cb.set_active(False)

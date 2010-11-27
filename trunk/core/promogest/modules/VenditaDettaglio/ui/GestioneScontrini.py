@@ -386,7 +386,7 @@ TOT CARTA:<b>%s</b> - TOT ASSEGNI:<b>%s</b> - TOT CONT.:<b>%s</b> - TOT SCONTI:<
         response = dialog.run()
         dialog.destroy()
         if response ==  gtk.RESPONSE_YES:
-            if "Inventario" in Environment.modulesList:
+            if posso("IN"):
                 idMagazzinosel = Magazzino().select(denominazione = Environment.conf.VenditaDettaglio.magazzino)
                 if Environment.conf.VenditaDettaglio.jolly:
                     idArticoloGenericoSel = Articolo().select(codiceEM = Environment.conf.VenditaDettaglio.jolly)

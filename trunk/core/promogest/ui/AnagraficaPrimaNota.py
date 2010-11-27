@@ -599,10 +599,6 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
         self.editRiga = self.rigaIter[0]
 
     def saveDao(self, chiusura=False):
-#        self.dao.righeprimanota = []
-#        if "Primanota" in Environment.modulesList or \
-#            "pan" in Environment.modulesList:
-
         model = self.riga_primanota_treeview.get_model()
         righe_ = []
         for m in model:
@@ -612,6 +608,4 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
         if chiusura:
             self.dao.data_fine = datetime.datetime.now()
         self.dao.persist()
-#        else:
-#            fenceDialog()
         self.clear()

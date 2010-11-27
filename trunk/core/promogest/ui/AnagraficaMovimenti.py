@@ -24,14 +24,13 @@ from promogest.dao.Fornitore import Fornitore
 from utils import *
 from utilsCombobox import *
 
-if "PromoWear" in Environment.modulesList:
+if posso("PW"):
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
 
 class AnagraficaMovimenti(Anagrafica):
 
     def __init__(self, idMagazzino=None, aziendaStr=None):
         """
-        FIXME
         """
         self._magazzinoFissato = (idMagazzino <> None)
         self._idMagazzino=idMagazzino

@@ -119,7 +119,7 @@ class StatisticheMagazzino(GladeWidget):
                     "DATA ULTIMA VENDITA", "PREZZO ULTIMA VENDITA",  "PREZZO ULTIMO ACQUISTO",
                     "GIACENZA", "MEDIA PREZZO VENDITA", "MEDIA PREZZO ACQUISTO",
                     "UNITA' BASE", "IVA", "FAMIGLIA", "CATEGORIA"]
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             rigga = rigga + ["COLORE","ANNO",
                     "GRUPPO TAGLIA","GENERE", "TAGLIA", "STAGIONE"]
         c.writerow(rigga)
@@ -141,7 +141,7 @@ class StatisticheMagazzino(GladeWidget):
                 denominazioneBreveAliquotaIva = i["denominazioneBreveAliquotaIva"]
                 famiglia = i["daoArticolo"].denominazione_breve_famiglia
                 categoria = i["daoArticolo"].denominazione_breve_categoria
-                if "PromoWear" in Environment.modulesList:
+                if posso("PW"):
                     colore = i["colore"]
                     anno = i["anno"]
                     gruppoTaglia = i["gruppoTaglia"]
@@ -152,7 +152,7 @@ class StatisticheMagazzino(GladeWidget):
                             data_ultimo_acquisto,data_ultima_vendita, prezzo_ultima_vendita,
                              prezzo_ultimo_acquisto, giacenza, media_vendita, media_acquisto,
                             unita_base, denominazioneBreveAliquotaIva, famiglia, categoria]
-                if "PromoWear" in Environment.modulesList:
+                if posso("PW"):
                     paramRigga = paramRigga + [colore, anno, gruppoTaglia, genere, taglia,stagione]
                 c.writerow(paramRigga)
 

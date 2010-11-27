@@ -51,9 +51,7 @@ class RicercaContatti(Ricerca):
         def refresh():
             self.filter.refresh()
             self.filter.cognome_nome_filter_entry.grab_focus()
-        if ("Contatti" in Environment.modulesList) or \
-                ("STANDARD" in Environment.modulesList) or \
-                ("FULL" in Environment.modulesList):
+        if posso("CN"):
             from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
             anag = AnagraficaContatti()
             anagWindow = anag.getTopLevel()

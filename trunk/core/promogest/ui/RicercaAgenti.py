@@ -46,9 +46,7 @@ class RicercaAgenti(Ricerca):
         def refresh():
             self.filter.refresh()
             self.filter.ragione_sociale_filter_entry.grab_focus()
-        if ("Agenti" in Environment.modulesList) or \
-            ("FULL" in Environment.modulesList) or \
-            ("STANDARD" in Environment.modulesList):
+        if posso("AG")
             from promogest.modules.Agenti.ui.AnagraficaAgenti import AnagraficaAgenti
             anag = AnagraficaAgenti()
             anagWindow = anag.getTopLevel()

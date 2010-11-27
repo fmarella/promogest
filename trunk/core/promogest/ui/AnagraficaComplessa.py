@@ -404,8 +404,7 @@ class Anagrafica(GladeWidget):
         self._handlePrinting(pdfGenerator=self.reportHandler, report=True)
 
     def on_Stampa_Frontaline_clicked(self, widget):
-        if ("Label" in Environment.modulesList) or \
-            ("ONE FULL" in Environment.modulesList):
+        if posso("LA"):
             results = self.filter.runFilter(offset=None, batchSize=None)
             self.manageLabels(results)
         else:
@@ -993,7 +992,7 @@ class AnagraficaHtml(object):
         if not self._gtkHtml:
             self._gtkHtml = self._anagrafica.getHtmlWidget()
         if self.dao:
-            if "GestioneNoleggio" in Environment.modulesList:
+            if posso("GN"):
                 from promogest.dao.TestataDocumento import TestataDocumento
                 from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
                 preves = TestataDocumento().select(daData= stringToDate("1/1/"+Environment.workingYear),

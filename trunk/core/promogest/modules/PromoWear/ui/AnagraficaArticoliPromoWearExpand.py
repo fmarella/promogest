@@ -15,7 +15,7 @@ from promogest.dao.Articolo import Articolo
 
 def treeViewExpand(gtkgui, treeview, renderer):
     """ Expand the normal article treeview """
-    if "PromoWear" in Environment.modulesList:
+    if posso("PW"):
         column = gtk.TreeViewColumn('Gruppo taglia', renderer, text=9, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)

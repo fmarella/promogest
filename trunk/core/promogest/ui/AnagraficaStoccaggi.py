@@ -29,7 +29,7 @@ from promogest.dao.Stoccaggio import Stoccaggio
 
 from utils import *
 from utilsCombobox import *
-if "PromoWear" in Environment.modulesList:
+if posso("PW"):
     from promogest.modules.PromoWear.ui.PromowearUtils import *
     from promogest.modules.PromoWear.ui import AnagraficaArticoliPromoWearExpand
 
@@ -140,7 +140,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
             self.id_magazzino_filter_combobox.set_sensitive(False)
             column = self._anagrafica.anagrafica_filter_treeview.get_column(0)
             column.set_property('visible', False)
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             fillComboboxGruppiTaglia(self.id_gruppo_taglia_articolo_filter_combobox,True)
             self.id_gruppo_taglia_articolo_filter_combobox.set_active(0)
             fillComboboxTaglie(self.id_taglia_articolo_filter_combobox)
@@ -207,7 +207,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
                             "cancellato":cancellato
                             }
 
-#        if "PromoWear" in Environment.modulesList:
+#        if posso("PW"):
 #            AnagraficaArticoliPromoWearExpand.refresh(self)
 
         def filterCountClosure():
@@ -274,7 +274,7 @@ class AnagraficaStoccaggiEdit(AnagraficaEdit):
                                 'Dati stoccaggi',
                                 gladeFile='_anagrafica_stoccaggi_articoli_elements.glade')
         self._widgetFirstFocus = self.id_magazzino_customcombobox
-        if "PromoWear" not in Environment.modulesList:
+        if posso("PW"):
             self.promowear_frame.destroy()
 
 
@@ -328,7 +328,7 @@ class AnagraficaStoccaggiEdit(AnagraficaEdit):
         self.livello_riordino_entry.set_text(str(self.dao.livello_riordino or 0))
         self.data_fine_scorte_entry.set_text(dateToString(self.dao.data_fine_scorte))
         self.data_prossimo_ordine_entry.set_text(dateToString(self.dao.data_prossimo_ordine))
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             self.colore_label.set_text(self.dao.denominazione_colore or "")
             self.stagione_label.set_text(self.dao.stagione or "" )
             self.genere_label.set_text(self.dao.genere or "")

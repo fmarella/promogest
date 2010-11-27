@@ -36,7 +36,7 @@ from promogest.dao.Fornitore import Fornitore
 from utils import *
 from utilsCombobox import *
 
-if "PromoWear" in Environment.modulesList:
+if posso("PW"):
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
 
 class AnagraficaMovimentiEdit(AnagraficaEdit):
@@ -80,7 +80,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self._segno = None
         # caricamento movimento (interrompe l'azione degli eventi on_changed nelle combobox)
         self._loading = False
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
             self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
         else:

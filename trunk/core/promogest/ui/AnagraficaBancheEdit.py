@@ -45,14 +45,7 @@ class AnagraficaBancheEdit(GladeWidget):
 
     def setDao(self, dao):
         if dao is None:
-            if (not "pan" in Environment.modulesList) \
-                and (not "basic" in  Environment.modulesList) \
-                and Banca().count() >= 1 \
-                and Environment.tipodb =="sqlite":
-                fenceDialog()
-                return
-            else:
-                self.dao = Banca()
+            self.dao = Banca()
         else:
             self.dao = dao
 

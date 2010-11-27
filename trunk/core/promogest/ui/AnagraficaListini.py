@@ -147,13 +147,7 @@ class AnagraficaListiniFilter(AnagraficaFilter):
         liss = self.runFilter()
 
         self._treeViewModel.clear()
-        if (not "pan" in Environment.modulesList) and \
-            (not "basic" in  Environment.modulesList) and \
-                Listino().count() >1 \
-                and Environment.tipodb =="sqlite"\
-                and not Environment.listini:
-            if len(liss) >1:
-                liss = [liss[0]]
+
         for l in liss:
             self._treeViewModel.append((l,
                                         (l.denominazione or ''),
@@ -264,16 +258,8 @@ class AnagraficaListiniEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            if (not "pan" in Environment.modulesList) and \
-                (not "basic" in  Environment.modulesList) and \
-                    Listino().count() >=1 \
-                    and Environment.tipodb =="sqlite"\
-                    and not Environment.listini:
-                self.hide()
-                fenceDialog()
-            else:
-                self.dao = Listino()
-                self._refresh()
+            self.dao = Listino()
+            self._refresh()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Listino().select(id=dao.id)[0]

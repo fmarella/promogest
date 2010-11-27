@@ -64,7 +64,7 @@ from widgets.ArticoloSearchWidget import ArticoloSearchWidget
 from widgets.ClienteSearchWidget import ClienteSearchWidget
 from widgets.FornitoreSearchWidget import FornitoreSearchWidget
 from widgets.PersonaGiuridicaSearchWidget import PersonaGiuridicaSearchWidget
-if "GestioneNoleggio" in Environment.modulesList:
+if posso("GN"):
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio \
                             import TestataGestioneNoleggio
 try:
@@ -100,12 +100,12 @@ class Main(GladeWidget):
         self.alarmFrame = None
         self.shop = Environment.shop
         self.creata = False
-        if "SincroDB" not in Environment.modulesList:
+        if posso("SD"):
             self.sincro_db.destroy()
-        elif "SincroDB" in Environment.modulesList and \
+        elif posso("SD") and \
                             Environment.conf.SincroDB.tipo =="client":
             self.master_sincro_db.destroy()
-        elif "SincroDB" in Environment.modulesList and \
+        elif posso("SD") and \
                             Environment.conf.SincroDB.tipo =="server":
             self.client_sincro_db.destroy()
         if Environment.tipodb =="postgresql":
@@ -190,9 +190,7 @@ class Main(GladeWidget):
         """ Aggiornamenti e controlli da fare all'avvio del programma
         """
         #Aggiornamento scadenze promemoria
-        if ("Promemoria" in Environment.modulesList) or \
-            ("ONE FULL" in Environment.modulesList) or \
-            ("ONE STANDARD" in Environment.modulesList):
+        if posso("PR"):
             print "VERIFICA DEI PROMEMORIA IN SCADENZA"
             updateScadenzePromemoria()
 
@@ -242,14 +240,14 @@ class Main(GladeWidget):
             icon_view.unselect_all()
             return
         elif selection == 5:
-#            if "Promemoria" in Environment.modulesList:
-            from AnagraficaPromemoria import AnagraficaPromemoria
-            anag = AnagraficaPromemoria(self.aziendaStr)
-            showAnagrafica(self.getTopLevel(), anag, mainClass=self)
-            icon_view.unselect_all()
-#                return
-#            else:
-#                fenceDialog()
+            if posso("PR"):
+                from AnagraficaPromemoria import AnagraficaPromemoria
+                anag = AnagraficaPromemoria(self.aziendaStr)
+                showAnagrafica(self.getTopLevel(), anag, mainClass=self)
+                icon_view.unselect_all()
+                return
+            else:
+                fencemsg()
         else:
             i = selected[0][0]
             selection = model[i][0]
@@ -336,7 +334,7 @@ class Main(GladeWidget):
     def on_agenti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        if "Agenti" or "pan" in Environment.modulesList:
+        if posso("AG"):
             from promogest.modules.Agenti.ui.AnagraficaAgenti import AnagraficaAgenti
             anag = AnagraficaAgenti(aziendaStr=self.aziendaStr)
             showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
@@ -373,10 +371,9 @@ class Main(GladeWidget):
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
     def on_utenti_button_toggled(self, toggleButton):
-        print "MOMOMOO", Environment.modulesList
         if toggleButton.get_property('active') is False:
             return
-        if posso("RuoliAzioni"):
+        if posso("RA"):
             from promogest.modules.RuoliAzioni.ui.AnagraficaUtenti import AnagraficaUtenti
             anag = AnagraficaUtenti()
             showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
@@ -387,7 +384,7 @@ class Main(GladeWidget):
     def on_ruoli_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        if posso("RuoliAzioni"):
+        if posso("RA"):
             from promogest.modules.RuoliAzioni.ui.AnagraficaRuoli import AnagraficaRuoli
             anag = AnagraficaRuoli()
             showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
@@ -398,7 +395,7 @@ class Main(GladeWidget):
     def on_ruoli_azioni_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        if posso("RuoliAzioni"):
+        if posso("RA"):
             from promogest.modules.RuoliAzioni.ui.ManageRoleAction import ManageRuoloAzioni
             anag = ManageRuoloAzioni()
             showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
@@ -592,7 +589,7 @@ class Main(GladeWidget):
                                                     "short":p.ragione_sociale_cliente,
                                                     "tipo":"data_documento",
                                                     "colore":"#6495ED"},p.data_documento.day))
-                if "GestioneNoleggio" in Environment.modulesList:
+                if posso("GN"):
                     arcTemp = TestataGestioneNoleggio().select(idTestataDocumento=p.id, batchSize=None)
                     for a in arcTemp:
                         startDate =a.data_inizio_noleggio
@@ -616,7 +613,7 @@ class Main(GladeWidget):
                                 "short":p.ragione_sociale_cliente,
                                 "tipo":"data_documento",
                                 "colore":"#FFA500"},p.data_documento.day))
-                if "GestioneNoleggio" in Environment.modulesList:
+                if posso("GN"):
                     arcTemp = TestataGestioneNoleggio().select(idTestataDocumento=p.id, batchSize=None)
                     for a in arcTemp:
                         startDate =a.data_inizio_noleggio
@@ -1234,7 +1231,7 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
         dialog.destroy()
 
     def on_client_sincro_db_activate(self, widget):
-        if "SincroDB" in Environment.modulesList and Environment.conf.SincroDB.tipo =="client":
+        if posso("SD") and Environment.conf.SincroDB.tipo =="client":
             from promogest.modules.SincroDB.ui.SincroDB import SincroDB
             anag = SincroDB()
             showAnagrafica(self.getTopLevel(), anag)

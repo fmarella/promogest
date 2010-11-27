@@ -129,7 +129,7 @@ class StatisticaGenerale(GladeWidget):
 
     def on_ok_button_clicked(self, button):
         """ cb del bottone ELABORA """
-        if "Statistiche" in Environment.modulesList:
+        if posso("STA"):
             self.exportss(self)
         else:
             fenceDialog()

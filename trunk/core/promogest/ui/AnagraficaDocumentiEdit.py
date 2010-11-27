@@ -51,16 +51,14 @@ from utils import *
 from utilsCombobox import *
 from promogest.dao.DaoUtils import giacenzaArticolo
 
-if "PromoWear" in Environment.modulesList:
+if posso("PW"):
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
-if "SuMisura" in Environment.modulesList:
+if posso("SM"):
     from promogest.modules.SuMisura.ui import AnagraficaDocumentiEditSuMisuraExt
     from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
-if "GestioneNoleggio" in Environment.modulesList:
+if posso("GN"):
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
-if ("Pagamenti" in Environment.modulesList) or \
-    ("pan" in Environment.modulesList) or \
-    ("basic" in Environment.modulesList):
+if posso("PA"):
     from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 
 class AnagraficaDocumentiEdit(AnagraficaEdit):
@@ -128,18 +126,16 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.checkMAGAZZINO = True
 #        self.completion.set_minimum_key_length(3)
 
-        if (not "Pagamenti" in Environment.modulesList) and \
-            (not "pan"  in Environment.modulesList) and \
-            (not "basic" in Environment.modulesList):
+        if not posso("PA"):
             self.notebook.remove_page(3)
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
             self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
         else:
             hidePromoWear(self)
-        if "SuMisura" not in Environment.modulesList:
+        if not posso("SM"):
             hideSuMisura(self)
-        if "GestioneNoleggio" not in Environment.modulesList:
+        if not posso("GN"):
             self.rent_checkbutton.destroy()
             self.hbox29.destroy()
             self.hbox30.destroy()
@@ -214,11 +210,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "codiceArticoloFornitore": '',
                                 "prezzoNettoUltimo": 0,
                                 "quantita_minima": None}
-        if "SuMisura" in Environment.modulesList:
+        if posso("SM"):
             AnagraficaDocumentiEditSuMisuraExt.azzeraRiga(self,numero)
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             AnagraficaDocumentiEditPromoWearExt.azzeraRiga(self,numero)
-        if "GestioneNoleggio" in Environment.modulesList:
+        if posso("GN"):
             AnagraficaDocumentiEditGestioneNoleggioExt.azzeraRiga(self,numero)
 
 
@@ -250,7 +246,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "codiceArticoloFornitore": rigatampone['codiceArticoloFornitore'],
                                 "prezzoNettoUltimo": rigatampone['prezzoNettoUltimo'],
                                 "quantita_minima": rigatampone['quantita_minima']}
-        if "SuMisura" in Environment.modulesList:
+        if posso("SM"):
             AnagraficaDocumentiEditSuMisuraExt.azzeraRigaPartial(self,numero, rigatampone)
 
 
@@ -276,18 +272,16 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.giacenza_label.set_text('0')
         self.quantitaMinima_label.set_text('0')
 
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             AnagraficaDocumentiEditPromoWearExt.setLabelInfo(self)
 
-        if "SuMisura" in Environment.modulesList:
+        if posso("SM"):
             AnagraficaDocumentiEditSuMisuraExt.setLabels(self)
 
-        if "GestioneNoleggio" in Environment.modulesList:
+        if posso("GN"):
             AnagraficaDocumentiEditGestioneNoleggioExt.setLabels(self)
 
-        if ("Pagamenti" in Environment.modulesList) or \
-                ("pan" in Environment.modulesList) or \
-                ("basic" in Environment.modulesList):
+        if posso("PA"):
             AnagraficadocumentiPagamentExt.nuovaRiga(self)
             AnagraficadocumentiPagamentExt.attiva_prima_scadenza(self,False, True)
             AnagraficadocumentiPagamentExt.attiva_seconda_scadenza(self,False, True)
@@ -405,7 +399,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if page_num == 2:
             self.calcolaTotale()
         elif page_num ==3:
-            if (not "Pagamenti" or not "pan" or not "basic") in Environment.modulesList:
+            if not posso("PA"):
                 fenceDialog()
                 self.calcola_importi_scadenza_button.set_sensitive(False)
                 self.controlla_rate_scadenza_button.set_sensitive(False)
@@ -487,7 +481,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.numero_documento_entry.set_text(str(self.dao.numero or '0'))
         self.showDatiMovimento()
 
-        if "GestioneNoleggio" in Environment.modulesList:
+        if posso("GN"):
             self.start_rent_entry.set_text(dateTimeToString(self.dao.data_inizio_noleggio))
             self.end_rent_entry.set_text(dateTimeToString(self.dao.data_fine_noleggio))
 #            self.on_end_rent_entry_focus_out_event()
@@ -550,7 +544,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             multiplo = leggiMultiplo(riga.id_multiplo)
             (sconti, applicazione) = getScontiFromDao(
                     riga.sconti, riga.applicazione_sconti)
-            if "SuMisura" in Environment.modulesList and riga.misura_pezzo:
+            if posso("SM") and riga.misura_pezzo:
                 altezza = (riga.misura_pezzo[-1].altezza)
                 larghezza = (riga.misura_pezzo[-1].larghezza)
                 moltiplicatore_pezzi = riga.misura_pezzo[-1].moltiplicatore
@@ -583,11 +577,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["prezzoNetto"] = Decimal(riga.valore_unitario_netto)
             self._righe[0]["prezzoNettoUltimo"] = Decimal(riga.valore_unitario_netto)
             self._righe[0]["totale"] = 0
-            if "SuMisura" in Environment.modulesList:
+            if posso("SM"):
                 self._righe[0]["altezza"] = mN(altezza)
                 self._righe[0]["larghezza"] = mN(larghezza)
                 self._righe[0]["molt_pezzi"] =mN(moltiplicatore_pezzi)
-            if "GestioneNoleggio" in  Environment.modulesList:
+            if posso("GN"):
                 print " ISRENT  ",riga.isrent
                 if riga.isrent :
                     self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
@@ -596,7 +590,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 self._righe[0]["prezzo_acquisto"] = mN(riga.prezzo_acquisto_noleggio)
                 self._righe[0]["divisore_noleggio"] = mN(riga.coeficente_noleggio)
             self.getTotaleRiga()
-            if "GestioneNoleggio" in Environment.modulesList and self._righe[0]["arco_temporale"] != "NO" :
+            if posso("GN") and self._righe[0]["arco_temporale"] != "NO" :
                 totaleNoleggio = AnagraficaDocumentiEditGestioneNoleggioExt.totaleNoleggio(self)
 
             self.unitaBaseLabel.set_text(self._righe[0]["unitaBase"])
@@ -607,14 +601,14 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe.append(self._righe[0])
             rigadoc= self._righe[j]
 
-            if "SuMisura" in Environment.modulesList:
+            if posso("SM"):
                     altezza=rigadoc["altezza"]
                     larghezza =rigadoc["larghezza"]
                     molt_pezzi = rigadoc["molt_pezzi"]
             else:
                 altezza = larghezza= molt_pezzi= ""
             #riempimento della treeview righe
-            if "GestioneNoleggio" in Environment.modulesList:
+            if posso("GN"):
                 arc_temp = rigadoc["arco_temporale"]
             else:
                 arc_temp = ""
@@ -653,9 +647,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.id_operazione_combobox.grab_focus()
         else:
             self.id_magazzino_combobox.grab_focus()
-        if ("Pagamenti" in Environment.modulesList) or \
-                ("pan" in Environment.modulesList) or \
-                ("basic" in Environment.modulesList):
+        if posso("PA"):
            AnagraficadocumentiPagamentExt.getScadenze(self)
 
     def setDao(self, dao):
@@ -802,7 +794,7 @@ del documento.
         self.dao.note_interne = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter())
         self.dao.note_pie_pagina = self.note_pie_pagina_comboboxentry.get_active_text()
         self.dao.applicazione_sconti = self.sconti_testata_widget.getApplicazione()
-        if "GestioneNoleggio" in Environment.modulesList:
+        if posso("GN"):
             self.dao.data_inizio_noleggio= self.start_rent_entry.get_text()
             self.dao.data_fine_noleggio = self.end_rent_entry.get_text()
         pbar(self.dialog.pbar,parziale=2, totale=4)
@@ -836,7 +828,7 @@ del documento.
             daoRiga.valore_unitario_lordo = self._righe[i]["prezzoLordo"]
             daoRiga.valore_unitario_netto = self._righe[i]["prezzoNetto"]
 #            pbar(self.dialog.pbar,pulse=True)
-            if "GestioneNoleggio" in Environment.modulesList:
+            if posso("GN"):
                 daoRiga.prezzo_acquisto_noleggio = self._righe[i]["prezzo_acquisto"]
                 daoRiga.coeficente_noleggio = self._righe[i]["divisore_noleggio"]
                 if self._righe[i]["arco_temporale"] != "NO":
@@ -855,7 +847,7 @@ del documento.
             daoRiga.scontiRigaDocumento = scontiRigaDocumento
             scontiRigaDocumento =[]
             misure = []
-            if "SuMisura" in Environment.modulesList and \
+            if posso("SM") and \
                             self._righe[i]["altezza"] != '' and \
                             self._righe[i]["larghezza"] != '':
                 daoMisura = MisuraPezzo()
@@ -866,9 +858,7 @@ del documento.
             #righe[i]=daoRiga
             righeDocumento.append(daoRiga)
         self.dao.righeDocumento = righeDocumento
-        if ("Pagamenti" in Environment.modulesList) or \
-                ("pan" in Environment.modulesList) or \
-                ("basic" in Environment.modulesList):
+        if posso("PA"):
             AnagraficadocumentiPagamentExt.saveScadenze(self)
 
         tipoid = findIdFromCombobox(self.id_operazione_combobox)
@@ -950,11 +940,11 @@ del documento.
         self._righe[0]["prezzoNetto"] = self._righe[self._numRiga]["prezzoNetto"]
         self._righe[0]["totale"] = self._righe[self._numRiga]["totale"]
         self._righe[0]["prezzoNettoUltimo"] = self._righe[self._numRiga]["prezzoNettoUltimo"]
-        if "SuMisura" in Environment.modulesList:
+        if posso("SM"):
             self._righe[0]["altezza"] = self._righe[self._numRiga]["altezza"]
             self._righe[0]["larghezza"] = self._righe[self._numRiga]["larghezza"]
             self._righe[0]["molt_pezzi"] = self._righe[self._numRiga]["molt_pezzi"]
-        if "GestioneNoleggio"in Environment.modulesList:
+        if posso("GN"):
             self._righe[0]["divisore_noleggio"] = self._righe[self._numRiga]["divisore_noleggio"]
             self._righe[0]["prezzo_acquisto"] = self._righe[self._numRiga]["prezzo_acquisto"]
         self.giacenza_label.set_text(str(giacenzaArticolo(year=Environment.workingYear,
@@ -978,11 +968,11 @@ del documento.
         self.prezzo_lordo_entry.set_text(str(self._righe[0]["prezzoLordo"]))
         self.prezzo_netto_label.set_text(str(self._righe[0]["prezzoNetto"]))
         self.totale_riga_label.set_text(str(self._righe[0]["totale"]))
-        if "SuMisura" in Environment.modulesList:
+        if posso("SM"):
             self.altezza_entry.set_text(str(self._righe[0]["altezza"]))
             self.larghezza_entry.set_text(str(self._righe[0]["larghezza"]))
             self.moltiplicatore_entry.set_text(str(self._righe[0]["molt_pezzi"]))
-        if "GestioneNoleggio"in Environment.modulesList and self.noleggio:
+        if posso("GN") and self.noleggio:
             self.coeficente_noleggio_entry.set_text(str(self._righe[0]["divisore_noleggio"]))
             self.prezzo_aquisto_entry.set_text(str(self._righe[0]["prezzo_acquisto"]))
             #self._righe[0]["totale"] = self._righe[self._numRiga]["totale_periodo"]
@@ -1051,13 +1041,13 @@ del documento.
         totale = self._righe[0]["totale"]
 
         # CONTROLLI DI Gestione NOLEGGIO
-        if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
+        if posso("GN") and self.noleggio:
             self._righe[0]["divisore_noleggio"] = self.coeficente_noleggio_entry.get_text()
             self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
             self._righe[0]["totale_periodo"] = self.totale_periodo_label.get_text()
             totale = AnagraficaDocumentiEditGestioneNoleggioExt.totaleNoleggio(self)
 
-        if "SuMisura" in Environment.modulesList:
+        if posso("SM"):
             self._righe[0]["altezza"] = self.altezza_entry.get_text()
             self._righe[0]["larghezza"] = self.larghezza_entry.get_text()
             self._righe[0]["molt_pezzi"] = self.moltiplicatore_entry.get_text()
@@ -1081,13 +1071,13 @@ del documento.
         self._righe[self._numRiga]["applicazioneSconti"] = self._righe[0]["applicazioneSconti"]
         self._righe[self._numRiga]["sconti"] = self._righe[0]["sconti"]
         self._righe[self._numRiga]["prezzoNetto"] = self._righe[0]["prezzoNetto"]
-        if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
+        if posso("GN") and self.noleggio:
             self._righe[self._numRiga]["divisore_noleggio"] = self._righe[0]["divisore_noleggio"]
             self._righe[self._numRiga]["prezzo_acquisto"] = self._righe[0]["prezzo_acquisto"]
             arco_temporale = self._righe[self._numRiga]["arco_temporale"] = self._righe[0]["arco_temporale"]
         else:
             arco_temporale="NO"
-        if "SuMisura" in Environment.modulesList:
+        if posso("SM"):
             altezza =self._righe[self._numRiga]["altezza"] = self._righe[0]["altezza"]
             larghezza=self._righe[self._numRiga]["larghezza"] = self._righe[0]["larghezza"]
             molt_pezzi=self._righe[self._numRiga]["molt_pezzi"] = self._righe[0]["molt_pezzi"]
@@ -1103,7 +1093,7 @@ del documento.
             self.modelRiga.set_value(self._iteratorRiga, 2, self._righe[self._numRiga]["codiceArticolo"])
             self.modelRiga.set_value(self._iteratorRiga, 3, self._righe[self._numRiga]["descrizione"])
             self.modelRiga.set_value(self._iteratorRiga, 4, self._righe[self._numRiga]["percentualeIva"])
-            if "SuMisura" in Environment.modulesList:
+            if posso("SM"):
                 self.modelRiga.set_value(self._iteratorRiga, 5, altezza)
                 self.modelRiga.set_value(self._iteratorRiga, 6, larghezza)
                 self.modelRiga.set_value(self._iteratorRiga, 7, molt_pezzi)
@@ -1116,7 +1106,7 @@ del documento.
                 ' ' + getStringaSconti(self._righe[self._numRiga]["sconti"])))
             self.modelRiga.set_value(self._iteratorRiga, 14, self._righe[self._numRiga]["prezzoNetto"])
 
-            if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
+            if posso("GN") and self.noleggio:
                 self.modelRiga.set_value(self._iteratorRiga, 15, arco_temporale)
 
             self.modelRiga.set_value(self._iteratorRiga, 16, totale)
@@ -1362,7 +1352,7 @@ del documento.
         self._righe[0]["prezzoNetto"] = Decimal(self._righe[0]["prezzoLordo"]) or 0
         self._righe[0]["sconti"] = self.sconti_widget.getSconti()
         self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()
-        if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
+        if posso("GN") and self.noleggio:
             # Setti le label "indirette" come prezzoLordo dreivato dalla divisione
             self._righe[0]["arco_temporale"] = float(self.giorni_label.get_text() or 1)
             self._righe[0]["divisore_noleggio"] = float(self.coeficente_noleggio_entry.get_text() or 0)
@@ -1392,7 +1382,7 @@ del documento.
         self.getTotaleRiga()
         # metto il totale riga nella label apposita"
         self.totale_riga_label.set_text(str(self._righe[0]["totale"]))
-        if "GestioneNoleggio" in Environment.modulesList and self.noleggio:
+        if posso("GN") and self.noleggio:
             totaleNoleggio = totaleNoleggio()
 
 
@@ -1738,8 +1728,6 @@ del documento.
                                                 self.id_persona_giuridica_customcombobox.getId())
 
     #END TAB 2
-
-
 
     #NOTEBOOK TAB 3
 

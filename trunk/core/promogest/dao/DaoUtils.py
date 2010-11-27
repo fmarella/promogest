@@ -239,14 +239,14 @@ def righeDocumentoDel(id=None):
     Cancella le righe associate ad un documento
     """
     from promogest.dao.RigaDocumento import RigaDocumento
-    if "SuMisura" in Environment.modulesList:
+    if posso("SM"):
         from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
     row = RigaDocumento().select(idTestataDocumento= id,
                                                 offset = None,
                                                 batchSize = None)
     if row:
         for r in row:
-            if "SuMisura" in Environment.modulesList:
+            if posso("SM"):
                 mp = MisuraPezzo().select(idRiga=r.id)
                 if mp:
                     for m in mp:
@@ -268,7 +268,7 @@ def righeMovimentoDel(id=None):
                                 batchSize = None)
     if row:
         for r in row:
-            if "SuMisura" in Environment.modulesList:
+            if posso("SM"):
                 mp = MisuraPezzo().select(idRiga=r.id)
                 if mp:
                     for m in mp:

@@ -98,13 +98,6 @@ class ElencoListini(GladeWidget):
         liss = Listino().select(orderBy='denominazione',
                                             batchSize=None,
                                             offset=None)
-        if (not "pan" in Environment.modulesList) and \
-            (not "basic" in  Environment.modulesList) and \
-                Listino().count() >1 \
-                and Environment.tipodb =="sqlite"\
-                and not Environment.listini:
-            if len(liss) >1:
-                liss = [liss[0]]
         for l in liss:
             model.append((l,
                           (l.denominazione or ''),
@@ -113,7 +106,6 @@ class ElencoListini(GladeWidget):
 
 
     def _changeOrderBy(self, widget, campi):
-        print "CAMBI L'ORDINE", campi
         self.orderBy = campi
         self.refresh()
 
@@ -130,8 +122,7 @@ class ElencoListini(GladeWidget):
 
 
     def on_stampa_frontaline_togglebutton_clicked(self, toggleButton):
-        if ("Label" in Environment.modulesList) or \
-            ("ONE FULL" in Environment.modulesList):
+        if posso("LA"):
             from promogest.modules.Label.ui.ManageLabelsToPrint import ManageLabelsToPrint
             a = ManageLabelsToPrint(mainWindow=self,daos=[])
             anagWindow = a.getTopLevel()
@@ -173,8 +164,7 @@ class ElencoListini(GladeWidget):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
-        if ("ImportPriceList" in Environment.modulesList) or \
-            ("pan" in Environment.modulesList):
+        if posso("IPL"):
             from promogest.modules.ImportPriceList.ui.ImportPriceList import ImportPriceList
             idListino = None
             if self._currentDao:

@@ -10,21 +10,16 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, workingYear, conf, modulesList
+from promogest.Environment import params, workingYear, conf
 from Dao import Dao
 from Articolo import Articolo
 from Magazzino import Magazzino
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from DaoUtils import giacenzaSel
-from promogest.ui.utils import mN
-if hasattr(conf, "PromoWear") and getattr(conf.PromoWear, 'mod_enable')=="yes":
-#    from promogest.modules.PromoWear.dao.Colore import Colore
-#    from promogest.modules.PromoWear.dao.Taglia import Taglia
+from promogest.ui.utils import mN, posso
+
+if posso("PW"):
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
-#    from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
-#    from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
-#    from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
-#    from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
 
 
 class Stoccaggio(Dao):
@@ -164,7 +159,7 @@ class Stoccaggio(Dao):
             dic= {k: and_(stoc.c.id_articolo==Articolo.id, Articolo.id_stato_articolo == v)}
         elif k == 'cancellato':
             dic = {k: or_(and_(stoc.c.id_articolo==Articolo.id, Articolo.cancellato != v))}
-        elif "PromoWear" in modulesList:
+        elif posso("PW"):
             if k == 'figliTagliaColore':
                 dic = {k: and_(stoc.c.id_articolo==Articolo.id, Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_articolo_padre==None)}
             elif k == 'idTaglia':

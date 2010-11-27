@@ -8,7 +8,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, conf, modulesList
+from promogest.Environment import params, conf
 from Dao import Dao
 from Magazzino import Magazzino
 from ScontoRigaMovimento import ScontoRigaMovimento
@@ -19,7 +19,7 @@ from Listino import Listino
 from Multiplo import Multiplo
 from Stoccaggio import Stoccaggio
 from Riga import Riga
-from promogest.ui.utils import getScontiFromDao, getStringaSconti, tempo
+from promogest.ui.utils import getScontiFromDao, getStringaSconti, tempo, posso
 
 if hasattr(conf, "SuMisura") and getattr(conf.SuMisura,'mod_enable') == "yes":
     #from promogest.modules.SuMisura.data.SuMisuraDb import *
@@ -314,8 +314,7 @@ class RigaMovimento(Dao):
                 #params["session"].add(value)
             #params["session"].commit()
         #print "DOPO sconti riga movimento persist", tempo()
-        #print "MAAAAAAAAAAAAAAAAAAA",modulesList
-        if "SuMisura" in modulesList:
+        if posso("SM"):
             #try:
             if self.__misuraPezzo:
                 self.__misuraPezzo[0].id_riga = self.id

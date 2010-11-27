@@ -158,14 +158,7 @@ class AnagraficaBancheDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            if (not "pan" in Environment.modulesList) \
-                and (not "basic" in  Environment.modulesList) \
-                and Banca().count() >= 1 \
-                and Environment.tipodb =="sqlite":
-                fenceDialog()
-                return
-            else:
-                self.dao = Banca()
+            self.dao = Banca()
 #                self._anagrafica._newRow((self.dao, '', '', '', '', '', '', ''))
 #                self._refresh()
         else:

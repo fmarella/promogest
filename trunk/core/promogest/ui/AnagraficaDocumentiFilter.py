@@ -41,7 +41,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                                   'anagrafica_documenti_filter_table',
                                     '_ricerca_semplice_documenti.glade')
         self._widgetFirstFocus = self.da_data_filter_entry
-        if not "GestioneNoleggio" in Environment.modulesList:
+        if not posso("GN"):
             self.noleggio_expander.destroy()
         self.orderBy = 'data_documento'
         self.xptDaoList = None
@@ -135,9 +135,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         column.set_expand(True)
         column.set_min_width(200)
         treeview.append_column(column)
-        if ("Pagamenti" in Environment.modulesList) or \
-                ("pan" in Environment.modulesList) or \
-                ("basic" in Environment.modulesList):
+        if posso("PA"):
             column = gtk.TreeViewColumn('Saldato', rendererSx, text=11, background=10)
             column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
             column.set_clickable(False)
@@ -190,11 +188,9 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.id_cliente_filter_customcombobox.set_active(0)
         self.id_fornitore_filter_customcombobox.set_active(0)
         self.id_agente_filter_customcombobox.set_active(0)
-        if ("Pagamenti" in Environment.modulesList) or \
-                 ("pan" in Environment.modulesList) or \
-                                ("basic" in Environment.modulesList):
+        if posso("PA"):
             self.stato_documento_filter_combobox.set_active(-1)
-        if "GestioneNoleggio" in Environment.modulesList:
+        if posso("GN"):
             self.a_data_inizio_noleggio_filter_entry.set_text('')
             self.da_data_inizio_noleggio_filter_entry.set_text('')
             self.a_data_fine_noleggio_filter_entry.set_text('')
@@ -244,7 +240,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                             "idAgente":idAgente,
                             "statoDocumento":statoDocumento,
                             "idArticolo":idArticolo}
-        if "GestioneNoleggio" in Environment.modulesList:
+        if posso("GN"):
             daDataInizioNoleggio = stringToDate(self.da_data_inizio_noleggio_filter_entry.get_text())
             aDataInizioNoleggio = stringToDate(self.a_data_inizio_noleggio_filter_entry.get_text())
             daDataFineNoleggio = stringToDate(self.da_data_fine_noleggio_filter_entry.get_text())

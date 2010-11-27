@@ -138,7 +138,7 @@ def leggiArticoloPromoWear(id, full=False):
                 if daoAliquotaIva is not None:
                     _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
                     _percentualeAliquotaIva = daoAliquotaIva.percentuale or 0
-            if "PromoWear" in Environment.modulesList:
+            if posso("PW"):
                 daoArticoloTagliaColore = daoArticolo
                 if daoArticoloTagliaColore is not None:
                     _idGruppoTaglia = daoArticoloTagliaColore.id_gruppo_taglia
@@ -197,7 +197,7 @@ def leggiListino(idListino, idArticolo=None):
                 daoListinoArticolo = ListinoArticolo().select(idListino=idListino,
                                                                 idArticolo= idArticolo,
                                                                 batchSize=None)
-                if "PromoWear" in Environment.modulesList:
+                if posso("PW"):
                         try:
                             articolo = ArticoloTagliaColore().getRecord(id=idArticolo)
                             idArticoloPadre = articolo.id_articolo_padre
@@ -246,7 +246,7 @@ def fillComboboxMultipli(combobox, idArticolo=None, noSottoMultipli=False, filte
     for m in muls:
         model.append((m, m.id, m.denominazione, m.moltiplicatore))
 
-    if "PromoWear" in Environment.modulesList:
+    if posso("PW"):
         try:
             articolo = ArticoloTagliaColore().getRecord(id=idArticolo)
             if articolo.id_articolo_padre is not None:
@@ -288,7 +288,7 @@ def fillComboboxListiniFiltrati(combobox, idArticolo=None, idMagazzino=None, idC
     for l in liss:
         model.append((l, l['id'], (l['denominazione'] or '')[0:20]))
 
-    if "PromoWear" in Environment.modulesList and Environment.conf.PromoWear.taglia_colore=="yes":
+    if posso("PW") and Environment.conf.PromoWear.taglia_colore=="yes":
         try:
             articolo = ArticoloTagliaColore(Environment.connection, idArticolo)
             if articolo is not None:

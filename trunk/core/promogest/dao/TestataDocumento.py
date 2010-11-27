@@ -394,7 +394,7 @@ class TestataDocumento(Dao):
         self.scontiTestataDocumentoDel(id=self.id)
 
 
-        if "GestioneNoleggio"in Environment.modulesList:
+        if posso("GN"):
             self.testataDocumentoGestioneNoleggioDel(id=self.id)
         self.righeDocumentoDel(id=self.id)
         #verifica se sono presenti righe di movimentazione magazzino
@@ -540,7 +540,7 @@ class TestataDocumento(Dao):
                                                     batchSize = None)
         if row:
             for r in row:
-                if "SuMisura" in modulesList:
+                if posso("SM"):
                     mp = MisuraPezzo().select(idRiga=r.id)
                     if mp:
                         for m in mp:

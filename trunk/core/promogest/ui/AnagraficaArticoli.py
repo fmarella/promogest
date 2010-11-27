@@ -32,7 +32,7 @@ import promogest.dao.Fornitura
 
 from utils import *
 from utilsCombobox import *
-if "PromoWear" in Environment.modulesList:
+if posso("PW"):
     from promogest.modules.PromoWear.ui.PromowearUtils import *
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
     from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
@@ -88,7 +88,7 @@ class AnagraficaArticoli(Anagrafica):
         self.editElement._duplicatedDaoId = dao.id
         self.editElement.dao = Articolo()
 
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
                 # le varianti non si possono duplicare !!!
                 #articoloTagliaColore = dao.articoloTagliaColore
                 if dao.id_articolo_padre is not None:
@@ -234,7 +234,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         column.set_expand(False)
         column.set_min_width(100)
         treeview.append_column(column)
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             AnagraficaArticoliPromoWearExpand.treeViewExpand(self, treeview, renderer)
         else:
             self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str)
@@ -266,7 +266,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         self.id_categoria_articolo_filter_combobox.set_active(0)
         self.id_stato_articolo_filter_combobox.set_active(0)
         self.cancellato_filter_checkbutton.set_active(False)
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             AnagraficaArticoliPromoWearExpand.clear(self)
         self.refresh()
 
@@ -295,7 +295,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
                             "idStato":idStato,
                             "cancellato":cancellato}
 
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             AnagraficaArticoliPromoWearExpand.refresh(self)
 
         def filterCountClosure():
@@ -329,7 +329,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
                         (a.codice_articolo_fornitore or ''),
                         (a.denominazione_famiglia or ''),
                         (a.denominazione_categoria or '')]
-            if "PromoWear" in Environment.modulesList:
+            if posso("PW"):
                 modelRowPromoWear = [(a.denominazione_gruppo_taglia or ''),
                                     (a.denominazione_modello or ''),
                                     (a.denominazione_taglia or ''),

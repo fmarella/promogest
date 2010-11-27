@@ -149,7 +149,7 @@ class GestioneTaglieColori(GladeWidget):
         self.treeview.set_model(self._treeViewModel)
         self.head_color.set_active(True)
         self.only_variation.set_active(True)
-        if ("VenditaDettaglio" and "Label" ) not in Environment.modulesList:
+        if not posso("VD") and not posso("LA"):
             self.genera_codice_a_barre_button.set_sensitive(False)
         self._loading = True
 

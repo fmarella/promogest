@@ -38,7 +38,7 @@ from promogest.ui.utils import *
 from promogest.dao.DaoUtils import giacenzaArticolo
 from sqlalchemy import func
 
-if "PromoWear" in Environment.modulesList:
+if posso("PW"):
     from promogest.modules.PromoWear.ui.PromowearUtils import *
     from promogest.modules.PromoWear.ui import AnagraficaArticoliPromoWearExpand
 
@@ -310,7 +310,7 @@ class GestioneInventario(RicercaComplessaArticoli):
                             "cancellato":cancellato
                             }
         self._ricerca.filterDict= self.filterDict
-#        if "PromoWear" in Environment.modulesList:
+#        if posso("PW"):
 #            AnagraficaArticoliPromoWearExpand.refresh(self._ricerca)
 
         self.filter.numRecords = Inventario().count(anno=self.annoScorso,

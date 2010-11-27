@@ -31,15 +31,13 @@ from promogest.dao.Articolo import Articolo
 from promogest.dao.DaoUtils import giacenzaArticolo
 from promogest.dao.Pagamento import Pagamento
 
-if "PromoWear" in Environment.modulesList:
+if posso("PW"):
     from promogest.modules.PromoWear.ui import AnagraficaDocumentiEditPromoWearExt
-if "SuMisura" in Environment.modulesList:
+if posso("SM"):
     from promogest.modules.SuMisura.ui import AnagraficaDocumentiEditSuMisuraExt
-if "GestioneNoleggio" in Environment.modulesList:
+if posso("GN"):
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
-if ("Pagamenti" in Environment.modulesList) or \
-    ("pan" in Environment.modulesList) or \
-    ("basic" in Environment.modulesList):
+if posso("PA"):
     from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
 
 
@@ -84,7 +82,7 @@ def drawPart(anaedit):
     column.set_expand(False)
     treeview.append_column(column)
     #treeview.set_reorderable(True)
-    if "SuMisura" in Environment.modulesList:
+    if posso("SM"):
         AnagraficaDocumentiEditSuMisuraExt.setTreeview(treeview, rendererSx)
 
     column = gtk.TreeViewColumn('Multiplo', rendererSx, text=8)
@@ -136,7 +134,7 @@ def drawPart(anaedit):
     column.set_expand(False)
     treeview.append_column(column)
 
-    if "GestioneNoleggio" in Environment.modulesList:
+    if posso("GN"):
         AnagraficaDocumentiEditGestioneNoleggioExt.setTreeview(treeview, rendererSx)
 
     column = gtk.TreeViewColumn('Totale', rendererDx, text=16)
@@ -217,9 +215,7 @@ def drawPart(anaedit):
             anaedit.on_sconti_widget_button_toggled)
     anaedit.sconti_testata_widget.button.connect('toggled',
             anaedit.on_sconti_testata_widget_button_toggled)
-    if ("Pagamenti" in Environment.modulesList) or \
-        ("pan" in Environment.modulesList) or \
-        ("basic" in Environment.modulesList):
+    if posso("PA"):
         AnagraficadocumentiPagamentExt.connectEntryPag(anaedit)
 
 
@@ -247,7 +243,7 @@ def calcolaTotalePart(anaedit, dao=None):
 
         # PARTE dedicata al modulo noleggio ...
         # TODO : Rivedere quanto prima
-        if "GestioneNoleggio" in Environment.modulesList and anaedit.noleggio and str(anaedit._righe[i]["arco_temporale"]) != "NO" :
+        if posso("GN") and anaedit.noleggio and str(anaedit._righe[i]["arco_temporale"]) != "NO" :
             arco_temporale = Decimal(anaedit.giorni_label.get_text())
             if str(anaedit._righe[i]["divisore_noleggio"]) == "1":
                 totaleRiga = mN(totaleRiga *Decimal(anaedit._righe[i]["arco_temporale"]))
@@ -355,7 +351,7 @@ def mostraArticoloPart(anaedit, id, art=None):
         fillComboboxMultipli(anaedit.id_multiplo_customcombobox.combobox, id, True)
         articolo = leggiArticolo(id)
 #        print "ARTICOLOOOOOOOOOOOOOOOOOOOOOO", articolo
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             AnagraficaDocumentiEditPromoWearExt.fillLabelInfo(anaedit, articolo)
         artic = Articolo().getRecord(id=id)
 #        print "ARTIIIIIIIIIIIIIIIIIIICC", artic, articleType(artic)
@@ -456,7 +452,7 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit._righe[0]["idMultiplo"] = None
         anaedit._righe[0]["moltiplicatore"] = 1
 
-        if "GestioneNoleggio" in Environment.modulesList and anaedit.noleggio:
+        if posso("GN") and anaedit.noleggio:
             anaedit._righe[0]["divisore_noleggio"] = artic.divisore_noleggio
             anaedit.coeficente_noleggio_entry.set_text(str(anaedit._righe[0]["divisore_noleggio"]))
             anaedit.getPrezzoAcquisto()
@@ -578,7 +574,6 @@ QMIN = False
 
 def on_moltiplicatore_entry_focus_out_eventPart(anaedit, entry, event):
     """ funzione di controllo per quantià superiori a uno """
-#    if "suMisura" in Environment.modulesList:
     from promogest.modules.SuMisura.ui.SuMisura import CalcolaArea, CalcolaPerimetro
     altezza = float(anaedit.altezza_entry.get_text() or 0)
     molti = float(anaedit.moltiplicatore_entry.get_text() or 1)

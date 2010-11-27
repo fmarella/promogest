@@ -98,7 +98,7 @@ class ManageLabelsToPrint(GladeWidget):
         column.set_expand(True)
         column.set_min_width(40)
         treeview.append_column(column)
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             self._treeViewModel = gtk.TreeStore(object,str,str,str,str,str)
         else:
             self._treeViewModel = gtk.ListStore(object,str,str,str,str,str)
@@ -194,7 +194,7 @@ class ManageLabelsToPrint(GladeWidget):
         #print(dir(self.daos[0]))
         quantita ="1"
         for dao in self.daos:
-            if "PromoWear" in Environment.modulesList:
+            if posso("PW"):
                 if articleType(dao.arti) == "father":
                     parent = self._treeViewModel.append(None,(dao,
                                                 dao.codice_articolo,

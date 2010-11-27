@@ -35,7 +35,7 @@ from promogest.dao.ListinoComplessoListino import ListinoComplessoListino
 from utils import *
 from utilsCombobox import fillComboboxListini,findIdFromCombobox,findComboboxRowFromId
 
-if "PromoWear" in Environment.modulesList:
+if posso("PW"):
     from promogest.modules.PromoWear.ui.AnagraficaListinoArticoliExpand import *
 
 class AnagraficaListiniArticoli(Anagrafica):
@@ -49,7 +49,7 @@ class AnagraficaListiniArticoli(Anagrafica):
         self._listinoFissato = (idListino <> None)
         self._idArticolo=idArticolo
         self._idListino=idListino
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
         Anagrafica.__init__(self,
                             windowTitle='Promogest - Anagrafica listini di vendita',
@@ -66,88 +66,6 @@ class AnagraficaListiniArticoli(Anagrafica):
             #self.Stampa_Frontaline.set_sensitive(False)
         self.records_file_export.set_sensitive(True)
 
-#    def set_data_list(self, data):
-#        """
-#        """
-#        rowlist=[]
-#        for d in data:
-#            #print "DDDDDDDDDDDD", dir(d.arti),
-#            denominazione = d.denominazione or ''
-#            codice_articolo = d.codice_articolo or ''
-#            articolo = d.articolo or ''
-#            data = dateToString(d.data_listino_articolo)
-#            prezzo_dettaglio = mN(str(d.prezzo_dettaglio)) or 0
-#            sconto_dettaglio = []
-#            for sconto_det in d.sconto_vendita_dettaglio:
-#                sconto_dettaglio.append(str(mN(str(sconto_det.valore))) or 0)
-#            sconto_dettagliostr = string.join( sconto_dettaglio, '' )
-#            #sconto_dettaglio = mN(d.sconto_vendita_dettaglio) or 0
-#            prezzo_ingrosso = mN(str(d.prezzo_ingrosso)) or 0
-#            sconto_ingrosso = []
-#            for sconto_ing in d.sconto_vendita_ingrosso:
-#                sconto_ingrosso.append(str(mN(str(sconto_ing.valore))) or 0)
-#            sconto_ingrossostr = string.join( sconto_ingrosso, '' )
-#            if sconto_dettagliostr == "[]":
-#                sconto_dettagliostr == ""
-#            if sconto_ingrossostr == "[]":
-#                sconto_ingrossostr = ""
-#            try:
-#                categoria = d.arti.denominazione_categoria
-#            except:
-#                categoria = ""
-#            try:
-#                famiglia = d.arti.denominazione_famiglia
-#            except:
-#                famiglia =""
-#            try:
-#                percentuale_iva = d.percentuale_iva
-#            except:
-#                percentuale_iva =""
-#            #sconto_ingrosso = mN(d.sconto_vendita_ingrosso[0]) or 0
-#            datalist=[denominazione,codice_articolo,articolo,data,prezzo_dettaglio,
-#                        sconto_dettagliostr,prezzo_ingrosso,sconto_ingrossostr,
-#                        categoria, famiglia, percentuale_iva]
-#            if "PromoWear" in Environment.modulesList:
-#                if d.id_articolo_padre:
-#                    codiceArticoloPAdre = Articolo().getRecord(id=d.id_articolo_padre).codice
-#                else:
-#                    codiceArticoloPAdre = ""
-#                datalist = datalist + [d.denominazione_gruppo_taglia,
-#                                        d.denominazione_taglia,
-#                                        d.denominazione_colore,
-#                                        str(d.anno),
-#                                        d.stagione,
-#                                        d.genere,
-#                                        d.denominazione_modello,
-#                                        codiceArticoloPAdre]
-
-#            rowlist.append(datalist)
-#        return rowlist
-
-#    def set_export_data(self):
-#        """
-#        Raccoglie informazioni specifiche per l'anagrafica restituite all'interno di un dizionario
-#        """
-#        data_details = {}
-#        data = datetime.datetime.today()
-#        curr_date = string.zfill(str(data.day), 2) + '-' + string.zfill(str(data.month),2) + '-' + string.zfill(str(data.year),4)
-#        data_details['curr_date'] = curr_date
-#        data_details['currentName'] = 'Listino_Articoli_aggiornato_al_'+curr_date+'.xml'
-#        FieldsList = ['Listino','Codice Articolo','Articolo','Data Variazione','Prezzo Dettaglio', 'Sconto Dettaglio',
-#                            'Prezzo Ingrosso', 'Sconto Ingrosso', "Categoria", "Famiglia", "Iva"]
-#        colData= [0,0,0,1,2,0,2,0]
-#        colWidth_Align = [('130','l'),('100','c'),('250','l'),('100','c'),('100','r'),('100','r'),
-#                            ('100','r'),('100','r'),('100','r'),('100','r'),('100','r')]
-#        if "PromoWear" in Environment.modulesList:
-#            FieldsList = FieldsList +["Gruppo Taglia","Taglia","Colore","Anno",
-#                                        "Stagione","Genere","Modello","Codice Padre"]
-#            colData = colData+[0,0,0,0,0,0,0,0]
-#            colWidth_Align = colWidth_Align+ [('100','r'),('100','r'),('100','r'),
-#                                                ('100','r'),('100','r'),('100','r'),
-#                                                ('100','r'),('100','r')]
-
-#        data_details['XmlMarkup'] = (FieldsList, colData, colWidth_Align)
-#        return data_details
 
 
 class AnagraficaListiniArticoliFilter(AnagraficaFilter):
@@ -228,7 +146,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
         column.set_expand(False)
         column.set_min_width(100)
         treeview.append_column(column)
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             drawPromoWearExpand1(self)
         else:
             self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str)
@@ -251,7 +169,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                 column.set_property('visible', False)
                 column = self._anagrafica.anagrafica_filter_treeview.get_column(2)
                 column.set_property('visible', False)
-                if "PromoWear" in Environment.modulesList:
+                if posso("PW"):
                     drawPromoWearExpand2(self)
         if self._anagrafica._listinoFissato:
             findComboboxRowFromId(self.id_listino_filter_combobox, self._anagrafica._idListino)
@@ -334,7 +252,7 @@ class AnagraficaListiniArticoliFilter(AnagraficaFilter):
                         str(mN(l.prezzo_dettaglio) or 0),
                         str(mN(l.prezzo_ingrosso) or 0)]
 
-            if "PromoWear" in Environment.modulesList:
+            if posso("PW"):
                 modelRowPromoWear=[(l.denominazione_gruppo_taglia or ''),
                                         (l.denominazione_taglia or ''),
                                         (l.denominazione_colore or ''),
@@ -399,7 +317,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                                 gladeFile='_anagrafica_listini_articoli_elements.glade')
         self._widgetFirstFocus = self.id_articolo_customcombobox
         self._percentualeIva = 0
-        if "PromoWear" not in Environment.modulesList:
+        if not posso("PW"):
             self.taglia_colore_table.hide()
             self.taglia_colore_table.set_no_show_all(True)
         self.sconti_dettaglio_widget.button.connect('toggled',
@@ -771,7 +689,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         self.sconti_dettaglio_widget.setValues(self.dao.sconto_vendita_dettaglio, self.dao.applicazione_sconti_dettaglio)
         self.sconti_ingrosso_widget.setValues(self.dao.sconto_vendita_ingrosso, self.dao.applicazione_sconti_ingrosso)
 
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             self._refreshTagliaColore(self.dao.id_articolo)
 
     def _refreshTagliaColore(self, idArticolo):
@@ -813,7 +731,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         self.dao.id_listino = listin
         self.dao.id_articolo = self.id_articolo_customcombobox.getId()
 
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             articolo = Articolo().getRecord(id=self.dao.id_articolo)
             if articleType(articolo) == "father":
                 msg = 'Attenzione! Si sta aggiungengo un Articolo Padre, creare le voci listino anche delle varianti?'

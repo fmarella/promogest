@@ -8,7 +8,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, modulesList, conf
+from promogest.Environment import params, conf
 from Dao import Dao
 from UnitaBase import UnitaBase
 from ScontoRigaDocumento import ScontoRigaDocumento
@@ -20,10 +20,10 @@ from Listino import Listino
 from Multiplo import Multiplo
 from DaoUtils import scontiRigaDocumentoDel
 from Riga import Riga
-
-if "SuMisura" in modulesList:
-    from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
 from promogest.ui.utils import *
+if posso("SM"):
+    from promogest.modules.SuMisura.dao.MisuraPezzo import MisuraPezzo
+
 
 class RigaDocumento(Dao):
     """ User class provides to make a Users dao which include more used"""

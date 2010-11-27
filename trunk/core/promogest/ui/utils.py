@@ -64,7 +64,7 @@ def articleType(dao):
     @param dao: Dao articolo su cui fare le verifiche
     @type dao: object
     """
-    if dao and "PromoWear" in Environment.modulesList:
+    if dao and posso("PW"):
         #print "AAAAAAA", dao.id, dao.id_articolo_taglia_colore, dao.id_articolo_padre_taglia_colore, dao.articoliTagliaColore, "AAAAAA"
         if (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre is None) and (dao.articoliTagliaColore):
 #            print "ARTICOLO FATHER"
@@ -101,7 +101,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
     daoArticolo = None
     _codicearticolofornitore = ""
     if id is not None:
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             from promogest.modules.PromoWear.ui.PromowearUtils import leggiArticoloPromoWear, leggiFornituraPromoWear
             artiDict = leggiArticoloPromoWear(id)
             return artiDict
@@ -430,7 +430,7 @@ def leggiListino(idListino=None, idArticolo=None):
                                                             listinoAttuale = True,
                                                             batchSize=None,
                                                             orderBy=ListinoArticolo.id_listino)
-                    if not daoListinoArticolo1 and "PromoWear" in Environment.modulesList:
+                    if not daoListinoArticolo1 and posso("PW"):
                         from promogest.dao.Articolo import Articolo
                         father = Articolo().getRecord(id=idArticolo)
                         idArticolo = father.id_articolo_padre
@@ -2917,12 +2917,57 @@ def scribusVersion(slafile):
 
 def posso(mod=None):
     moduli = Environment.modulesList
-    if mod=="RuoliAzioni":
+    if mod == "RA":
         if "RuoliAzioni"in moduli: return True
         if "ONE FULL" in moduli :return True
         if "PRO STANDARD" in moduli: return True
-
-
+    if mod == "PW":
+        if "PromoWear" in moduli:return True
+    if mod == "AG":
+        if "Agenti" in moduli: return True
+        if "ONE FULL" in moduli :return True
+        if "PRO STANDARD" in moduli: return True
+    if mod == "GN":
+        if "GestioneNoleggio" in moduli: return True
+    if mod == "VD":
+        if "VenditaDettaglio" in moduli:return True
+    if mod == "DB":
+        if "DistintaBase" in moduli: return True
+    if mod == "CN":
+        if "Contatti" in moduli:return True
+        if "ONE STANDARD" in moduli: return True
+        if "ONE FULL" in moduli: return True
+        if "PRO BASIC" in moduli : return True
+        if "PRO STANDARD" in moduli: return True
+    if mod == "PR":
+        if "Promemoria" in moduli:return True
+        if "ONE BASIC" in moduli : return True
+        if "PRO BASIC" in moduli : return True
+        if "ONE STANDARD" in moduli: return True
+        if "ONE FULL" in moduli: return True
+        if "PRO STANDARD" in moduli: return True
+    if mod == "IN":
+        if "Inventario"  in moduli: return True
+        if "ONE FULL" in moduli: return True
+    if mod == "IPL":
+        if "ImportPriceList" in moduli:return True
+        if "ONE FULL" in moduli: return True
+    if mod == "LA":
+        if "Label" in moduli: return True
+        if "ONE FULL" in moduli: return True
+    if mod == "SM":
+        if "SuMisura" in moduli: return True
+    if mod == "PA":
+        if "Pagamenti" in moduli: return True
+        if "ONE STANDARD" in moduli: return True
+        if "ONE FULL" in moduli: return True
+        if "PRO STANDARD" in moduli: return True
+    if mod == "STA":
+        if "STA" in moduli: return True
+        if "ONE FULL" in moduli: return True
+    if mod == "SD":
+        if "SincroDB" in moduli :return True
+    return False
 
 
 def fencemsg():

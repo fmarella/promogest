@@ -27,7 +27,7 @@ from promogest.dao.CategoriaArticolo import CategoriaArticolo
 from promogest.dao.StatoArticolo import StatoArticolo
 from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.dao.Fornitura import Fornitura
-if "PromoWear" in Environment.modulesList:
+if posso("PW"):
     from promogest.modules.PromoWear.ui.PromowearUtils import *
     from promogest.modules.PromoWear.ui import RicercaComplessaArticoliPromoWearExpand
 
@@ -173,7 +173,7 @@ class RicercaComplessaArticoli(RicercaComplessa):
         column.set_expand(False)
         column.set_min_width(100)
         treeview.append_column(column)
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             model = RicercaComplessaArticoliPromoWearExpand.drawPromoWearPart(self, renderer)
         else:
             model = gtk.ListStore(object, str, str, str, str, str, str, str, str)
@@ -370,7 +370,7 @@ class RicercaArticoliFilter(GladeWidget):
         self.ricerca_semplice_articoli_filter_vbox.set_no_show_all(True)
         self.ricerca_semplice_articoli_filter_vbox.hide()
         self.ricerca_avanzata_articoli_filter_vbox.show()
-        if "PromoWear" not in Environment.modulesList:
+        if not posso("PW"):
 #            self.promowear_filter_frame.destroy()
             self.filter_promowear2.destroy()
         self.descrizione_articolo_filter_expander.grab_focus()
@@ -387,7 +387,7 @@ class RicercaArticoliFilter(GladeWidget):
         fillComboboxFamiglieArticoli(self.id_famiglia_articolo_filter_combobox, filter=True)
         fillComboboxCategorieArticoli(self.id_categoria_articolo_filter_combobox, True)
         fillComboboxStatiArticoli(self.id_stato_articolo_filter_combobox, True)
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             RicercaComplessaArticoliPromoWearExpand.drawRicercaSemplicePromoWearPart(self)
         else:
             self.promowear_expander_semplice.destroy()
@@ -426,7 +426,7 @@ class RicercaArticoliFilter(GladeWidget):
         self.drawUnitaBaseTreeView()
         self.includi_eliminati_articolo_filter_checkbutton.set_active(self._cancellato or False)
         self.solo_eliminati_articolo_filter_checkbutton.set_active(False)
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             RicercaComplessaArticoliPromoWearExpand.drawRicercaComplessaPromoWearPart(self)
         else:
             self.filter_promowear2.destroy()
@@ -1216,7 +1216,7 @@ class RicercaArticoliFilter(GladeWidget):
         self.stato_articolo_filter_expander.set_expanded(False)
         self.unita_base_articolo_filter_expander.set_expanded(False)
         self.varie_articolo_filter_expander.set_expanded(False)
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             RicercaComplessaArticoliPromoWearExpand.collapseAllExpandersPromoWearPart(self)
 
 
@@ -1369,7 +1369,7 @@ class RicercaArticoliFilter(GladeWidget):
         if self.solo_eliminati_articolo_filter_checkbutton.get_active():
             testo += '  + Solo articoli eliminati\n'
 
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             RicercaComplessaArticoliPromoWearExpand.setRiepilogoArticoloPromoWearPart(self)
 
             #FIXME They are not present. check how to make this kinf of filter now
@@ -1476,7 +1476,7 @@ class RicercaArticoliFilter(GladeWidget):
                 cancellato = True
 #            cancellato = False
             listinoFissato = self._listinoFissato
-            #if "PromoWear" in Environment.modulesList:
+            #if posso("PW"):
                 #RicercaComplessaArticoliPromoWearExpand.refreshPromoWearPart(self)
         elif self._tipoRicerca == 'avanzata':
             self.complexFilter = self._prepare()
@@ -1514,7 +1514,7 @@ class RicercaArticoliFilter(GladeWidget):
         if cancellato:
             self.filterDict.update(cancellato = cancellato)
 
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             RicercaComplessaArticoliPromoWearExpand.refreshPromoWearPart(self)
 
         self.filter.numRecords = Articolo().count(filterDict = self.filterDict,complexFilter =self.complexFilter)
@@ -1557,7 +1557,7 @@ class RicercaArticoliFilter(GladeWidget):
                         (a.denominazione_famiglia or ''),
                         (a.denominazione_categoria or '')]
 
-            if "PromoWear" in Environment.modulesList:
+            if posso("PW"):
                 modelRowPromoWear = [(a.denominazione_gruppo_taglia or ''),
                                     #(a.denominazione_modello or ''),
                                     (a.denominazione_taglia or ''),
@@ -1668,7 +1668,7 @@ class RicercaArticoliFilter(GladeWidget):
             parseModel(self._categoriaTreeViewModel, getCategorieIn, 2)
             parseModel(self._statoTreeViewModel, getStatiIn, 2)
             parseModel(self._unitaBaseTreeViewModel, getUnitaBaseIn, 2)
-            if "PromoWear" in Environment.modulesList:
+            if posso("PW"):
                 RicercaComplessaArticoliPromoWearExpand.preparePromoWearPart(self)
 
 

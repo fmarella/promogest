@@ -22,10 +22,7 @@
 
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
-try:
-    from sqlalchemy.orm import relationship
-except:
-    print "AGGIORNARE SQLALCHEMY"
+
 from promogest.Environment import *
 from Dao import Dao
 from Regioni import Regioni
@@ -99,12 +96,15 @@ user=Table('utente', params['metadata'],schema = params['mainSchema'],autoload=T
 std_mapper = mapper(User, user, order_by=user.c.username)
 
 from promogest.modules.RuoliAzioni.dao.Role import Role
-if tipodb =="sqlite":
-    pass
-#    std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),foreign_keys=[Role.id],backref="users",uselist=False))
-else:
-    std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),backref="users",uselist=False))
-
+try:
+    from sqlalchemy.orm import relationship
+    if tipodb =="sqlite":
+    #    pass
+        std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),foreign_keys=[Role.id],backref="users",uselist=False))
+    else:
+        std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),backref="users",uselist=False))
+except:
+    Environment.pg2log.info("AGGIORNARE SQLALCHEMY RUOLI NON FUNZIONERANNO")
 if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
     from promogest.modules.MultiLingua.dao.UserLanguage import UserLanguage
     std_mapper.add_property("userlang",relation(UserLanguage,primaryjoin=(user.c.id==UserLanguage.id_user),backref="users",uselist=False))

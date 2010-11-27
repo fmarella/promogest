@@ -359,9 +359,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         anag.filter.refresh()
 
     def on_contatti_togglebutton_clicked(self, toggleButton):
-        if ("Contatti" in Environment.modulesList) or \
-                ("pan" in Environment.modulesList) or \
-                                ("basic" in Environment.modulesList):
+        if posso("CN"):
             if not(toggleButton.get_active()):
                 toggleButton.set_active(False)
                 return

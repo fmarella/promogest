@@ -81,14 +81,6 @@ class ElencoMagazzini(GladeWidget):
         model.clear()
 
         mags = Magazzino().select(offset=None, batchSize=None)
-
-        if (not "pan" in Environment.modulesList) and \
-            (not "basic" in  Environment.modulesList) and \
-                Magazzino().count() >1 and \
-                 Environment.tipodb =="sqlite"\
-                and not Environment.magazzini:
-            if len(mags) >1:
-                mags = [mags[0]]
         for m in mags:
             model.append((m,
                           (m.denominazione or ''),
@@ -153,8 +145,7 @@ class ElencoMagazzini(GladeWidget):
         if not(toggleButton.get_active()):
             toggleButton.set_active(False)
             return
-        if ("Inventario"  in Environment.modulesList) or \
-            ("pan" in Environment.modulesList):
+        if posso("IN"):
 #            return
 
             if self._currentDao is not None:

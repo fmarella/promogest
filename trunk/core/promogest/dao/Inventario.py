@@ -110,7 +110,7 @@ class Inventario(Dao):
             dic= {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id_stato_articolo == v)}
         elif k == 'cancellato':
             dic = {k:or_(and_(inventario.c.id_articolo==Articolo.id,Articolo.cancellato != v))}
-        elif "PromoWear" in Environment.modulesList:
+        elif posso("PW"):
             if k == 'figliTagliaColore':
                 dic = {k:and_(inventario.c.id_articolo==Articolo.id,Articolo.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_articolo_padre==None)}
             elif k == 'idTaglia':

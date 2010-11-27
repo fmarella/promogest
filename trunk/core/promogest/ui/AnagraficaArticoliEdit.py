@@ -20,7 +20,7 @@ from utilsCombobox import *
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
 
-if "PromoWear" in Environment.modulesList:
+if posso("PW"):
     from promogest.modules.PromoWear.ui.PromowearUtils import *
     from promogest.modules.PromoWear.dao.ArticoloTagliaColore import ArticoloTagliaColore
     from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
@@ -46,7 +46,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         self._codiceByFamiglia = promogest.dao.Articolo.isNuovoCodiceByFamiglia()
         self._duplicatedDaoId = None
 
-        if "PromoWear" not in Environment.modulesList:
+        if not posso("PW"):
             self.normale_radiobutton.set_active(True)
             self.codici_a_barre_label.set_text('')
             self.plus_radiobutton.set_property('visible', False)
@@ -59,12 +59,12 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.taglie_colori_togglebutton.set_no_show_all(True)
             self.notebook1.remove_page(3)
             self.promowear_frame.destroy()
-        if "GestioneNoleggio" not in Environment.modulesList:
+        if not posso("GN"):
             self.divisore_noleggio_entry.destroy()
             self.divisore_noleggio_label.destroy()
 
     def draw(self,cplx=False):
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             self.normale_radiobutton.set_active(True)
             self.frame_promowear.set_sensitive(False)
             self.codici_a_barre_togglebutton.set_sensitive(True)
@@ -182,11 +182,11 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             textBuffer.set_text('')
         self.note_textview.set_buffer(textBuffer)
         self.sospeso_checkbutton.set_active(self.dao.sospeso or False)
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
              #articolo ancora non salvato o articolo senza taglia e colore
              #Articolo in anagrafica già salvato con id_articolo_padre pieno quindi è una variante
             a = articleTypeGuiManage(self, self.dao, new=self.new)
-        if "GestioneNoleggio" in Environment.modulesList:
+        if posso("GN"):
             self.divisore_noleggio_entry.set_text(str(self.dao.divisore_noleggio))
         self._loading = False
 
@@ -224,7 +224,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                             self.id_unita_base_combobox,
                             msg='Campo obbligatorio !\n\nUnita\' base')
         pbar(self.dialog.pbar,parziale=1, totale=4)
-        if "PromoWear" in Environment.modulesList and (articleType(self.dao) == "plus" or self.plus_radiobutton.get_active()):
+        if posso("PW"): and (articleType(self.dao) == "plus" or self.plus_radiobutton.get_active()):
             articoloTagliaColore = ArticoloTagliaColore()
             articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
             articoloTagliaColore.id_taglia = findIdFromCombobox(self.id_taglia_customcombobox.combobox)
@@ -236,7 +236,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.dao.articoloTagliaColore = articoloTagliaColore
             articoloTagliaColore = None
             #potrà sembrare una ripetizione ma preferisco gestirlo di fino con altri controlli
-        elif "PromoWear" in Environment.modulesList and (articleType(self.dao) == "son" and self.con_taglie_colori_radiobutton.get_active()):
+        elif posso("PW") and (articleType(self.dao) == "son" and self.con_taglie_colori_radiobutton.get_active()):
             articoloTagliaColore = ArticoloTagliaColore()
             articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
             articoloTagliaColore.id_taglia = findIdFromCombobox(self.id_taglia_customcombobox.combobox)
@@ -248,7 +248,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             articoloTagliaColore.id_articolo_padre = self.dao.id_articolo_padre
             self.dao.articoloTagliaColore = articoloTagliaColore
             articoloTagliaColore = None
-        elif "PromoWear" in Environment.modulesList and (articleType(self.dao) == "father" or self.con_taglie_colori_radiobutton.get_active()):
+        elif posso("PW") and (articleType(self.dao) == "father" or self.con_taglie_colori_radiobutton.get_active()):
             print "SALVATAGGIO ARTICOLO PADRE"
             if self.dao.denominazione != self.denominazione_entry.get_text():
                 msg = """ATTENZIONE La descrizione di un articolo padre è cambiata, vuoi riportare la modifica anche ai suoi figli?"""
@@ -293,7 +293,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if not cod:
             return
         self.dao.denominazione = self.denominazione_entry.get_text()
-        if "GestioneNoleggio" in Environment.modulesList:
+        if posso("GN"):
             self.dao.divisore_noleggio_value_set = self.divisore_noleggio_entry.get_text()
         self.dao.id_aliquota_iva = findIdFromCombobox(self.id_aliquota_iva_customcombobox.combobox)
         self.dao.id_famiglia_articolo = findIdFromCombobox(self.id_famiglia_articolo_customcombobox.combobox)

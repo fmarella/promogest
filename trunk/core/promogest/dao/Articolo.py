@@ -433,7 +433,7 @@ class Articolo(Dao):
                 img.delete()
         except:
             pass
-        if "GestioneNoleggio" in Environment.modulesList:
+        if posso("GN"):
             if self.divisore_noleggio_value_set and self.id:
                 div_nol = ArticoloGestioneNoleggio().getRecord(id=self.id)
                 if div_nol:
@@ -445,7 +445,7 @@ class Articolo(Dao):
                     div_nol.divisore_noleggio_value = self.divisore_noleggio_value_set
                     params["session"].add(div_nol)
 
-        if "PromoWear" in Environment.modulesList:
+        if posso("PW"):
             try:
                 if self.__articoloTagliaColore:
                     isTc = ArticoloTagliaColore().getRecord(id=self.id)
@@ -475,7 +475,7 @@ class Articolo(Dao):
         res = Riga().select(id_articolo=self.id)
         inv = Inventario().select(idArticolo=self.id)
         sc = None
-        if "VenditaDettaglio" in Environment.modulesList:
+        if posso("VD"):
             from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
             sc = RigaScontrino().select(idArticolo= self.id)
         if res or inv:
@@ -487,7 +487,7 @@ class Articolo(Dao):
             daoArticolo.cancellato = True
             params["session"].add(daoArticolo)
         else:
-            if "PromoWear" in Environment.modulesList:
+            if posso("PW"):
                 atc = ArticoloTagliaColore().getRecord(id=self.id)
                 if atc:
                     atc.delete()
@@ -541,7 +541,7 @@ class Articolo(Dao):
             dic = {k:or_(articolo.c.id == v)}
         elif k == "listinoFissato":
             dic = {k:and_(listinoarticolo.c.id_articolo == articolo.c.id, listinoarticolo.c.id_listino == v)}
-        elif "PromoWear" in Environment.modulesList:
+        elif posso("PW"):
             if k == 'figliTagliaColore':
                 dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_articolo_padre==None)}
             elif k == 'idTaglia':
@@ -560,7 +560,7 @@ class Articolo(Dao):
                 dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_anno == v)}
             elif k == 'idGenere':
                 dic = {k:and_(articolo.c.id==ArticoloTagliaColore.id_articolo, ArticoloTagliaColore.id_genere ==v)}
-        elif "DistintaBase" in Environment.modulesList:
+        elif posso("DB"):
             if k =="node":
                 dic = {k: and_(AssociazioneArticolo.id_padre==articolo.c.id,
                         AssociazioneArticolo.id_figlio ==articolo.c.id)}
