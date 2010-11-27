@@ -67,6 +67,7 @@ class SlaTpl2Sla(SlaParser):
             if l.get("ANNAME") =="LOGO_AZIENDA":
                 if l.get("PFILE") =="":
                     if "azi_percorso_immagine" in objects[0] and objects[0]["azi_percorso_immagine"] !="":
+                        print "ORORORORRORORORORROROORORRORORRO", objects[0]["azi_percorso_immagine"]
                         log_path = objects[0]["azi_percorso_immagine"]
                         l.set("PFILE", os.path.relpath(log_path,os.path.expanduser('~')))
                         print os.path.relpath(log_path,os.path.expanduser('~'))

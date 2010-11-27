@@ -339,7 +339,7 @@ class Main(GladeWidget):
             anag = AnagraficaAgenti(aziendaStr=self.aziendaStr)
             showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
         else:
-            fenceDialog()
+            fencemsg()
             toggleButton.set_active(False)
 
     def on_categorie_articoli_button_clicked(self, toggleButton):

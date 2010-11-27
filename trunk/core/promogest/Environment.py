@@ -103,7 +103,7 @@ hapag = ["Fattura accompagnatoria","Fattura acquisto","Fattura differita acquist
 "Nota di credito a cliente","Nota di credito da fornitore"]
 
 fromHtmlLits = ["Promemoria", "TestataPrimaNota","Articolo", "Cliente",
-                "Contatto", "Fornitore"]
+                "Contatto", "Fornitore", "Fornitura", "Contatto", "Vettore"]
 
 package = ["ONE BASIC", "ONE FULL", "ONE STANDARD", "PRO BASIC", "PRO STANDARD",
             "ONE PROMOWEAR", "ONE PROMOSHOP", "PRO PROMOWEAR", "PRO PROMOSHOP"]
