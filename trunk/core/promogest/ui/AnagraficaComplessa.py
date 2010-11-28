@@ -478,9 +478,9 @@ class Anagrafica(GladeWidget):
                 if self.__cancelOperation:
                     # Progress bar is being destroyed, do nothing
                     return
-
-                frac = len(results) / float(totalLen)
-                pbar.set_fraction(frac)
+                if results:
+                    frac = len(results) / float(totalLen)
+                    pbar.set_fraction(frac)
                 return False
             gobject.idle_add(updateProgressBarIdle)
 
