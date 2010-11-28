@@ -159,7 +159,7 @@ class ExportCsv(GladeWidget):
         for m in model:
             if m[0] ==True:
                 self.campi.append((m[1], m.path[0]))
-        if self.nome_entry.get_text() =="" and self.selezione_modello_combobox.get_active_text() =="":
+        if self.nome_entry.get_text() =="" and self.selezione_modello_combobox.get_active_text() ==None:
             obligatoryField(self.getTopLevel(), self.nome_entry)
         self._savePgxAttributes()
         nome = self.nome_entry.get_text()

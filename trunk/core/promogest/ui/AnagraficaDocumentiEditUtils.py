@@ -298,9 +298,17 @@ def calcolaTotalePart(anaedit, dao=None):
                                         'sconosciuto: %s' % s['tipo'])
             elif s["tipo"] == 'valore':
                 totaleScontato = mN(totaleScontato - Decimal(s["valore"]))
+                if totaleScontato <0:
+                    messageInfo(msg="TOTALE SCONTATO NON PUÒ ESSERE INFERIORE A ZERO")
+                    anaedit.sconti_testata_widget.setValues([])
+#                    raise Exception, ("TOTALE SCONTATO NON PUÒ ESSERE INFERIORE A ZERO")
+                    return
 
         # riporta l'insieme di sconti ad una percentuale globale
-        percentualeScontoGlobale = (1 - totaleScontato / totaleNonScontato) * 100
+        if totaleScontato >0:
+            percentualeScontoGlobale = (1 - totaleScontato / totaleNonScontato) * 100
+        else:
+            percentualeScontoGlobale = 100
         totaleImpostaScontata = 0
         totaleImponibileScontato = 0
 #        totaleScontato = 0
