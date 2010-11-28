@@ -345,8 +345,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._righe[0]["idMultiplo"] = findIdFromCombobox(self.id_multiplo_customcombobox.combobox)
         #multiplo = leggiMultiplo(self._righe[0]["idMultiplo"])
         multiplo = Multiplo().getRecord(id=self._righe[0]["idMultiplo"])
-        self._righe[0]["multiplo"] = multiplo.denominazione_breve + ' ( ' + str(multiplo.moltiplicatore) + ' X )'
-        self._righe[0]["moltiplicatore"] = multiplo.moltiplicatore
+        if multiplo:
+            self._righe[0]["multiplo"] = multiplo.denominazione_breve + ' ( ' + str(multiplo.moltiplicatore) + ' X )'
+            self._righe[0]["moltiplicatore"] = multiplo.moltiplicatore
         self.calcolaTotaleRiga()
 
     def getPrezzoVenditaLordo(self, idListino, idArticolo):
