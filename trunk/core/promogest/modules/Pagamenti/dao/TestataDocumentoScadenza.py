@@ -42,5 +42,5 @@ tesdocsca=Table('testata_documento_scadenza',
             schema = params['schema'],
             autoload=True)
 
-std_mapper = mapper(TestataDocumentoScadenza, tesdocsca, properties={},
+std_mapper = mapper(TestataDocumentoScadenza, tesdocsca,
                                 order_by=tesdocsca.c.id)

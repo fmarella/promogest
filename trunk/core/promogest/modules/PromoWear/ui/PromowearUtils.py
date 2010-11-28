@@ -19,7 +19,7 @@ from promogest.modules.PromoWear.dao.AnnoAbbigliamento import AnnoAbbigliamento
 from promogest.modules.PromoWear.dao.StagioneAbbigliamento import StagioneAbbigliamento
 from promogest.modules.PromoWear.dao.GenereAbbigliamento import GenereAbbigliamento
 import promogest.dao.Listino
-from promogest.ui.utils import findIdFromCombobox, findComboboxRowFromId
+from promogest.ui.utils import findIdFromCombobox, findComboboxRowFromId, posso
 from promogest import Environment
 import gtk
 import gobject
