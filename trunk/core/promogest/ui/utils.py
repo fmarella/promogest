@@ -2921,7 +2921,7 @@ def posso(mod=None):
         if "RuoliAzioni"in moduli: return True
         if "ONE FULL" in moduli :return True
         if "PRO STANDARD" in moduli: return True
-    if mod == "PW":
+    if mod == "PW" or mod=="PromoWear":
         if "PromoWear" in moduli:return True
     if mod == "AG":
         if "Agenti" in moduli: return True
@@ -2929,17 +2929,17 @@ def posso(mod=None):
         if "PRO STANDARD" in moduli: return True
     if mod == "GN":
         if "GestioneNoleggio" in moduli: return True
-    if mod == "VD":
+    if mod == "VD" or mod=="VenditaDettaglio":
         if "VenditaDettaglio" in moduli:return True
     if mod == "DB":
         if "DistintaBase" in moduli: return True
-    if mod == "CN":
+    if mod == "CN" or mod=="Contatti":
         if "Contatti" in moduli:return True
         if "ONE STANDARD" in moduli: return True
         if "ONE FULL" in moduli: return True
         if "PRO BASIC" in moduli : return True
         if "PRO STANDARD" in moduli: return True
-    if mod == "PR":
+    if mod == "PR" or mod=="Promemoria":
         if "Promemoria" in moduli:return True
         if "ONE BASIC" in moduli : return True
         if "PRO BASIC" in moduli : return True
@@ -2957,7 +2957,7 @@ def posso(mod=None):
         if "ONE FULL" in moduli: return True
     if mod == "SM":
         if "SuMisura" in moduli: return True
-    if mod == "PA":
+    if mod == "PA" or mod=="Pagamenti":
         if "Pagamenti" in moduli: return True
         if "ONE STANDARD" in moduli: return True
         if "ONE FULL" in moduli: return True

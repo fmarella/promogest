@@ -33,7 +33,7 @@ from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from GtkExceptionHandler import GtkExceptionHandler
 from utils import hasAction, checkAggiorna, aggiorna, \
-                                checkInstallation, setconf
+                                checkInstallation, setconf, posso
 from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
 import sqlalchemy
@@ -229,11 +229,12 @@ class Login(GladeApp):
                         Environment.windowGroup.remove(self.getTopLevel())
 
                         import promogest.lib.UpdateDB
-                        self.importModulesFromDir('promogest/modules')
+
                         #saveAppLog(action="login", status=True,value=username)
                         Environment.pg2log.info("LOGIN  id, user, role azienda: %s, %s" %(repr(Environment.params['usernameLoggedList']),self.azienda) )
                         import promogest.ui.SetConf
                         checkInstallation()
+                        self.importModulesFromDir('promogest/modules')
                         from Main import Main
                         main = Main(self.azienda,
                                     self.anagrafiche_modules,
@@ -296,15 +297,22 @@ class Login(GladeApp):
             Check the modules directory and automatically try to load all available modules
             """
             #global jinja_env
-            Environment.modulesList=[]
+            Environment.modulesList=[Environment.tipo_pg]
+#            print "111111111", Environment.modulesList, Environment.tipo_pg
             modules_folders = [folder for folder in os.listdir(modules_dir) \
                             if (os.path.isdir(os.path.join(modules_dir, folder)) \
                             and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
             for m_str in modules_folders:
-                if hasattr(Environment.conf,m_str):
-                    exec "mod_enable = hasattr(Environment.conf.%s,'mod_enable')" %m_str
+                if hasattr(Environment.conf,m_str) or posso(m_str):
+                    try:
+                        exec "mod_enable = hasattr(Environment.conf.%s,'mod_enable')" %m_str
+                    except:
+                        mod_enable=posso(m_str)
                     if mod_enable:
-                        exec "mod_enableyes = getattr(Environment.conf.%s,'mod_enable','yes')" %m_str
+                        try:
+                            exec "mod_enableyes = getattr(Environment.conf.%s,'mod_enable','yes')" %m_str
+                        except:
+                            mod_enableyes="yes"
                         if mod_enableyes=="yes":
                             stringa= "%s.%s.module" % (modules_dir.replace("/", "."), m_str)
                             m= __import__(stringa, globals(), locals(), ["m"], -1)
