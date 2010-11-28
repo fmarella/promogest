@@ -46,7 +46,7 @@ from promogest.lib import feedparser
 from promogest.ui.PrintDialog import PrintDialogHandler
 from utils import hasAction, fencemsg, aggiorna, updateScadenzePromemoria,\
          setconf, dateTimeToString, dateToString, last_day_of_month, \
-         date_range, orda, posso
+         date_range, orda, posso, messageInfo
 from utilsCombobox import *
 from ParametriFrame import ParametriFrame
 from SetConf import SetConfUI
