@@ -215,7 +215,7 @@ class SimpleGladeWrapper:
         entry.set_property("secondary_icon_activatable", True)
         entry.set_property("secondary_icon_sensitive", True)
 
-    def on_icon_press(self, widget):
+    def on_icon_press(self, widget,position,event):
         pass
 
     def on_focus_in_event(self, widget, event):
