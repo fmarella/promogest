@@ -18,7 +18,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
     if posso("PW"):
         column = gtk.TreeViewColumn('Gruppo taglia', renderer, text=9, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
+        column.set_clickable(False)
         column.connect("clicked", gtkgui._changeOrderBy, (ArticoloTagliaColore, ArticoloTagliaColore.id_gruppo_taglia))
         column.set_resizable(True)
         column.set_expand(False)
@@ -27,7 +27,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
 
         column = gtk.TreeViewColumn('Modello', renderer, text=10, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
+        column.set_clickable(False)
         column.connect("clicked", gtkgui._changeOrderBy, (None, Articolo.denominazione_modello))
         column.set_resizable(True)
         column.set_expand(False)
@@ -36,7 +36,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
 
         column = gtk.TreeViewColumn('Taglia', renderer, text=11, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
+        column.set_clickable(False)
         column.connect("clicked", gtkgui._changeOrderBy, (None,Articolo.denominazione_taglia))
         column.set_resizable(True)
         column.set_expand(False)
@@ -45,7 +45,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
 
         column = gtk.TreeViewColumn('Colore', renderer, text=12, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
+        column.set_clickable(False)
         column.connect("clicked", gtkgui._changeOrderBy, 'denominazione_colore')
         column.set_resizable(True)
         column.set_expand(False)
@@ -63,7 +63,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
 
         column = gtk.TreeViewColumn('Stagione', renderer, text=14, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
+        column.set_clickable(False)
         column.connect("clicked", gtkgui._changeOrderBy, 'stagione')
         column.set_resizable(True)
         column.set_expand(False)
@@ -72,7 +72,7 @@ def treeViewExpand(gtkgui, treeview, renderer):
 
         column = gtk.TreeViewColumn('Genere', renderer, text=15, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
+        column.set_clickable(False)
         column.connect("clicked", gtkgui._changeOrderBy, 'genere')
         column.set_resizable(True)
         column.set_expand(False)
