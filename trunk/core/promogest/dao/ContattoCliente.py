@@ -54,7 +54,7 @@ class ContattoCliente(Dao):
 
     def filter_values(self,k,v):
         if k == 'idCategoria':
-            dic = {k:None} #FIXME :perchè idCategoria e' none?
+            dic = {k:and_(ContattoCategoriaContatto.id_contatto==contatto.c.id, ContattoCategoriaContatto.id_categoria_contatto==v)}
         elif k == 'idCliente':
             dic = {k:contattocliente.c.id_cliente == v}
         elif k == "idClienteList":
@@ -65,6 +65,7 @@ class ContattoCliente(Dao):
             dic = {k:contatto.c.ruolo.ilike("%"+v+"%")}
         elif k=='descrizione':
             dic = {k:contatto.c.descrizione.ilike("%"+v+"%")}
+
         #FIXME: #'recapito'
         #FIXME : #'tipoRecapito':
         return dic[k]

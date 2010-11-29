@@ -57,7 +57,7 @@ class ContattoFornitore(Dao):
     #FIXME: sistemare questo filtro
     def filter_values(self, k,v):
         if k == 'idCategoria':
-            dic = {k:None}
+            dic = {k:and_(ContattoCategoriaContatto.id_contatto==contatto.c.id, ContattoCategoriaContatto.id_categoria_contatto==v)}
         elif k == 'idFornitore':
             dic = {k:contattofornitore.c.id_fornitore == v}
         elif k == 'idFornitoreList':

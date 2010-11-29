@@ -52,7 +52,7 @@ class ContattoMagazzino(Dao):
 
     def filter_values(self,k,v):
         if k == 'idCategoria':
-            dic = {k : None}
+            dic = {k:and_(ContattoCategoriaContatto.id_contatto==contatto.c.id, ContattoCategoriaContatto.id_categoria_contatto==v)}
         elif k == 'idMagazzino':
             dic = {k : contattomagazzino.c.id_magazzino == v}
         elif k == 'idMagazzinoList':
@@ -84,4 +84,3 @@ std_mapper = mapper(ContattoMagazzino, j,properties={
                 'tipo_contatto':[contatto.c.tipo_contatto, contattomagazzino.c.tipo_contatto],
                 "magazzino":relation(Magazzino, backref="contatto_magazzino")},
                 order_by=contattomagazzino.c.id)
-

@@ -72,7 +72,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
                   'anagrafica_contatti_filter_table',
                   gladeFile='Contatti/gui/_anagrafica_contatti_elements.glade',
                    module=True)
-        self._widgetFirstFocus = self.appartenenza_filter_entry
+#        self._widgetFirstFocus = self.appartenenza_filter_entry
 
     def draw(self, cplx=False):
         # Colonne della Treeview per il filtro
@@ -163,7 +163,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         self.id_fornitore_filter_customcombobox.set_active(0)
         self.id_magazzino_filter_combobox.set_active(0)
         self.schema_azienda_filter_combobox.set_active(0)
-        self.appartenenza_filter_entry.set_text('')
+#        self.appartenenza_filter_entry.set_text('')
         self.cognome_nome_filter_entry.set_text('')
         self.ruolo_filter_entry.set_text('')
         self.descrizione_filter_entry.set_text('')
@@ -181,7 +181,6 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         recapito = prepareFilterString(self.recapito_filter_entry.get_text())
         tipoRecapito = prepareFilterString(self.tipo_recapito_filter_comboboxentry.child.get_text())
         idCategoria = findIdFromCombobox(self.id_categoria_contatto_filter_combobox)
-
         if self.cliente_filter_radiobutton.get_active():
             # CONTATTO CLIENTE
             idCliente = self.id_cliente_filter_customcombobox.getId()
@@ -340,8 +339,8 @@ class AnagraficaContattiFilter(AnagraficaFilter):
         else:
             #CONTATTO GENERICO
             self.generico_filter_radiobutton.set_active(True)
-            appartenenza = prepareFilterString(self.appartenenza_filter_entry.get_text())
-
+#            appartenenza = prepareFilterString(self.appartenenza_filter_entry.get_text())
+#            print "APPPPPPPPPPARTENENDZA",appartenenza
             def filterCountClosure():
                 return Contatto().count(cognomeNome=cognomeNome,
                                         ruolo=ruolo,
@@ -349,7 +348,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
                                         recapito=recapito,
                                         tipoRecapito=tipoRecapito,
                                         idCategoria=idCategoria,
-                                        appartenenza=appartenenza)
+                                            )
 
             self._filterCountClosure = filterCountClosure
             self.numRecords = self.countFilterResults()
@@ -363,7 +362,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
                                                 recapito=recapito,
                                                 tipoRecapito=tipoRecapito,
                                                 idCategoria=idCategoria,
-                                                appartenenza=appartenenza,
+#                                                appartenenza=appartenenza,
                                                 offset=offset,
                                                 batchSize=batchSize)
 
@@ -388,7 +387,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             self.id_magazzino_filter_combobox.set_sensitive(False)
             self.schema_azienda_filter_combobox.set_active(0)
             self.schema_azienda_filter_combobox.set_sensitive(False)
-            self.appartenenza_filter_entry.set_sensitive(False)
+#            self.appartenenza_filter_entry.set_sensitive(False)
         elif self.fornitore_filter_radiobutton.get_active():
             self.id_fornitore_filter_customcombobox.set_sensitive(True)
             self.id_fornitore_filter_customcombobox.grab_focus()
@@ -398,7 +397,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             self.id_magazzino_filter_combobox.set_sensitive(False)
             self.schema_azienda_filter_combobox.set_active(0)
             self.schema_azienda_filter_combobox.set_sensitive(False)
-            self.appartenenza_filter_entry.set_sensitive(False)
+#            self.appartenenza_filter_entry.set_sensitive(False)
         elif self.magazzino_filter_radiobutton.get_active():
             self.id_magazzino_filter_combobox.set_sensitive(True)
             self.id_magazzino_filter_combobox.grab_focus()
@@ -408,7 +407,7 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             self.id_fornitore_filter_customcombobox.set_sensitive(False)
             self.schema_azienda_filter_combobox.set_active(0)
             self.schema_azienda_filter_combobox.set_sensitive(False)
-            self.appartenenza_filter_entry.set_sensitive(False)
+#            self.appartenenza_filter_entry.set_sensitive(False)
         elif self.azienda_filter_radiobutton.get_active():
             self.schema_azienda_filter_combobox.set_sensitive(True)
             self.schema_azienda_filter_combobox.grab_focus()
@@ -418,10 +417,10 @@ class AnagraficaContattiFilter(AnagraficaFilter):
             self.id_fornitore_filter_customcombobox.set_sensitive(False)
             self.id_magazzino_filter_combobox.set_active(0)
             self.id_magazzino_filter_combobox.set_sensitive(False)
-            self.appartenenza_filter_entry.set_sensitive(False)
+#            self.appartenenza_filter_entry.set_sensitive(False)
         elif self.generico_filter_radiobutton.get_active():
-            self.appartenenza_filter_entry.set_sensitive(True)
-            self.appartenenza_filter_entry.grab_focus()
+#            self.appartenenza_filter_entry.set_sensitive(True)
+#            self.appartenenza_filter_entry.grab_focus()
             self.id_cliente_filter_customcombobox.set_active(0)
             self.id_cliente_filter_customcombobox.set_sensitive(False)
             self.id_fornitore_filter_customcombobox.set_active(0)
