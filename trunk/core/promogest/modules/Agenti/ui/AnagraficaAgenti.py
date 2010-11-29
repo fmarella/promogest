@@ -252,7 +252,7 @@ class AnagraficaAgentiEdit(AnagraficaEdit):
     def saveDao(self):
         """ Save data to DB """
         self.dao.codice = self.codice_entry.get_text()
-        self.dao.codice = omogeneousCode(section="Agenti", string=self.dao.codice )
+#        self.dao.codice = omogeneousCode(section="Agenti", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
         self.dao.insegna = self.insegna_entry.get_text()
         self.dao.cognome = self.cognome_entry.get_text()
