@@ -177,10 +177,13 @@ class DuplicazioneDocumento(GladeWidget):
               daoRiga.valore_unitario_lordo = 0
               daoRiga.valore_unitario_netto = 0
             elif indice_prezzo_combobox == 2:
-              fornitura = Environment.params['session'].query(Fornitura).filter(Fornitura.id_articolo == r.id_articolo).order_by(Fornitura.data_prezzo.asc()).all()[0]
+              fornitura = Environment.params['session'].query(Fornitura).filter(Fornitura.id_articolo == r.id_articolo).order_by(Fornitura.data_prezzo.asc()).all()
+              if fornitura:
+                fornitura = fornitura[0]
+                daoRiga.valore_unitario_lordo = fornitura.prezzo_lordo
+                daoRiga.valore_unitario_netto = fornitura.prezzo_netto
               daoRiga.id_listino = r.id_listino
-              daoRiga.valore_unitario_lordo = fornitura.prezzo_lordo
-              daoRiga.valore_unitario_netto = fornitura.prezzo_netto
+
             else:
               #ricalcola prezzi
               listino = self.id_prezzo_combobox.get_model()[indice_prezzo_combobox][0]
