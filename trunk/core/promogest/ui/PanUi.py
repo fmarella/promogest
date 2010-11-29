@@ -21,6 +21,7 @@
 
 import gtk
 import hashlib
+from threading import Timer
 from promogest.ui.utils import orda, messageInfo, setconf
 from promogest.dao.Setconf import SetConf
 from promogest import Environment
@@ -149,7 +150,9 @@ se non sei registrato fallo premendo il pulsante 'registrati sito'""")
             if azione =="PAN" or azione == "BASIC":
                 values = urllib.urlencode(data)
                 req = urllib2.Request(url, values)
-                response = urllib2.urlopen(req,timeout=5)
+                response = urllib2.urlopen(req)
+                t = timer(5.0, response.close)
+                t.start()
                 content = response.read()
                 conte = json.loads(content)
                 if conte["rows"] > 0 and (conte["pan"] == "PAN" or conte["pan"] == "BASIC"):

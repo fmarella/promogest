@@ -510,7 +510,7 @@ def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=
             print "LISTINO ASSOCIATO AL PADRE IN QUANDO FIGLIO NON NE AVEVA UNO", listin
             return listin
     else:
-        print "LISTINI ASSOCIATI:", listin
+        Environment.pg2log.info("LISTINI ASSOCIATI: "+str(listin))
         return listin
 
 def fillComboboxListiniFiltrati(combobox, idArticolo=None, idMagazzino=None, idCliente=None, filter=False):

@@ -8,6 +8,7 @@ import os
 import sys
 import gtk
 import gobject
+from threading import Timer
 try:
     from webkit import WebView, WebSettings
     WEBKIT = True
@@ -171,7 +172,9 @@ def _on_html_request_url(document, url, stream):
             stream.close()
         except:
             req = urllib2.Request(url)
-            response = urllib2.urlopen(req,timeout=5)
+            response = urllib2.urlopen(req)
+            t = timer(5.0, response.close)
+            t.start()
             html = response.read()
             stream.write(html)
             stream.close()

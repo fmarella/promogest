@@ -23,6 +23,7 @@
 
 from textwrap import TextWrapper
 import os
+from threading import Timer
 import hashlib
 from calendar import Calendar
 from decimal import *
@@ -2711,7 +2712,9 @@ def checkInstallation():
         data = {"masterkey" : SetConf().select(key="install_code",section="Master")[0].value}
         values = urllib.urlencode(data)
         req = urllib2.Request(url, values)
-        response = urllib2.urlopen(req,timeout=5)
+        response = urllib2.urlopen(req)
+        t = timer(5.0, response.close)
+        t.start()
         content = response.read()
         conte = json.loads(content)
         if conte == {}:
