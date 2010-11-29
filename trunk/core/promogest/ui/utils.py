@@ -1567,6 +1567,7 @@ def calcolaListinoDaMargine(costo=0, margine=0, iva=0):
     """
     Calcola il prezzo di vendita a partire dal costo, dal margine e dall'iva
     sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
+    TODO: C'è da verificare la coerenza in caso di iva a zero o margine a zero
     """
     if costo is None:
         costo = 0

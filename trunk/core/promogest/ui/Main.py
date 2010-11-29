@@ -1149,7 +1149,7 @@ class Main(GladeWidget):
             msg = """NELLA VERSIONE LITE IL BACKUP SI
 EFFETTUA COPIANDO IL FILE db CHE SI TROVA NELLA CARTELLA
 promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
-            messageInfo(msg= MSG)
+            messageInfo(msg= msg)
         else:
             st= Environment.startdir()
             nameDump = "promoGest2_dump_"+self.aziendaStr+"_"+datetime.datetime.now().strftime('%d_%m_%Y_%H_%M')
