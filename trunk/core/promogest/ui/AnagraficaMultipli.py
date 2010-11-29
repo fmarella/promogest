@@ -118,7 +118,7 @@ class AnagraficaMultipliFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Unita'' base', renderer, text=4)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect('clicked', self._changeOrderBy, (None, 'unita_base'))
+        column.connect('clicked', self._changeOrderBy, (None, 'id_unita_base'))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
