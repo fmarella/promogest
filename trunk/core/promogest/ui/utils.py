@@ -2713,7 +2713,7 @@ def checkInstallation():
         values = urllib.urlencode(data)
         req = urllib2.Request(url, values)
         response = urllib2.urlopen(req)
-        t = timer(5.0, response.close)
+        t = Timer(5.0, response.close)
         t.start()
         content = response.read()
         conte = json.loads(content)

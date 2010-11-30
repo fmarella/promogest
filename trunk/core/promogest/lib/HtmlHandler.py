@@ -173,7 +173,7 @@ def _on_html_request_url(document, url, stream):
         except:
             req = urllib2.Request(url)
             response = urllib2.urlopen(req)
-            t = timer(5.0, response.close)
+            t = Timer(5.0, response.close)
             t.start()
             html = response.read()
             stream.write(html)
