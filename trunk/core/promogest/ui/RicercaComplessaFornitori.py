@@ -1548,7 +1548,7 @@ class RicercaFornitoriFilter(GladeWidget):
         self.resultsCount = self.filter.numRecords
         self.filter._refreshPageCount()
 
-        clis = Fornitore().select(orderBy = self.filter.orderBy,
+        clis = Fornitore().select(orderBy = "id",
                                               ragioneSociale = ragioneSociale,
                                               insegna = insegna,
                                               cognomeNome = cognomeNome,
