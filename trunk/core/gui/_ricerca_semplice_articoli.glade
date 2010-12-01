@@ -1,10 +1,9 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkVBox" id="ricerca_semplice_articoli_filter_vbox">
     <property name="visible">True</property>
-    <property name="orientation">vertical</property>
     <child>
       <object class="GtkTable" id="anagrafica_articoli_filter_table">
         <property name="visible">True</property>
@@ -30,8 +29,9 @@
         <child>
           <object class="GtkEntry" id="denominazione_filter_entry">
             <property name="can_focus">True</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
             <signal name="button_press_event" handler="on_button_press_event"/>
+            <signal name="changed" handler="on_filter_entry_changed"/>
             <signal name="focus_out_event" handler="on_focus_out_event"/>
             <signal name="focus_in_event" handler="on_focus_in_event"/>
           </object>
@@ -110,8 +110,9 @@
         <child>
           <object class="GtkEntry" id="codice_articolo_fornitore_filter_entry">
             <property name="can_focus">True</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
             <signal name="button_press_event" handler="on_button_press_event"/>
+            <signal name="changed" handler="on_filter_entry_changed"/>
             <signal name="focus_out_event" handler="on_focus_out_event"/>
             <signal name="focus_in_event" handler="on_focus_in_event"/>
           </object>
@@ -127,8 +128,9 @@
         <child>
           <object class="GtkEntry" id="codice_a_barre_filter_entry">
             <property name="can_focus">True</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
             <signal name="button_press_event" handler="on_button_press_event"/>
+            <signal name="changed" handler="on_filter_entry_changed"/>
             <signal name="focus_out_event" handler="on_focus_out_event"/>
             <signal name="focus_in_event" handler="on_focus_in_event"/>
           </object>
@@ -144,8 +146,9 @@
         <child>
           <object class="GtkEntry" id="codice_filter_entry">
             <property name="can_focus">True</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
             <signal name="button_press_event" handler="on_button_press_event"/>
+            <signal name="changed" handler="on_filter_entry_changed"/>
             <signal name="focus_out_event" handler="on_focus_out_event"/>
             <signal name="focus_in_event" handler="on_focus_in_event"/>
           </object>
@@ -161,8 +164,9 @@
         <child>
           <object class="GtkEntry" id="produttore_filter_entry">
             <property name="can_focus">True</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
             <signal name="button_press_event" handler="on_button_press_event"/>
+            <signal name="changed" handler="on_filter_entry_changed"/>
             <signal name="focus_out_event" handler="on_focus_out_event"/>
             <signal name="focus_in_event" handler="on_focus_in_event"/>
           </object>

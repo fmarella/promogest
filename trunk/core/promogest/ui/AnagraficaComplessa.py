@@ -854,6 +854,12 @@ class AnagraficaFilter(GladeWidget):
         """ Ripulisci il filtro di ricerca e aggiorna la ricerca stessa """
         raise NotImplementedError
 
+    def on_filter_entry_changed(self, text):
+        stringa = text.get_text()
+        def bobo():
+            self.refresh()
+        gobject.idle_add(bobo)
+
     def refresh(self):
         """ Aggiorna il filtro di ricerca in base ai parametri impostati """
         raise NotImplementedError

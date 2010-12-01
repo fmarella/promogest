@@ -128,6 +128,7 @@
                 <property name="can_focus">True</property>
                 <property name="invisible_char">●</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
+                <signal name="changed" handler="on_filter_entry_changed"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
                 <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -145,6 +146,7 @@
                 <property name="can_focus">True</property>
                 <property name="invisible_char">●</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
+                <signal name="changed" handler="on_filter_entry_changed"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
                 <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -164,6 +166,7 @@
                 <property name="can_focus">True</property>
                 <property name="invisible_char">●</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
+                <signal name="changed" handler="on_filter_entry_changed"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
                 <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -183,6 +186,7 @@
                 <property name="can_focus">True</property>
                 <property name="invisible_char">●</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
+                <signal name="changed" handler="on_filter_entry_changed"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
                 <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -202,6 +206,7 @@
                 <property name="can_focus">True</property>
                 <property name="invisible_char">●</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
+                <signal name="changed" handler="on_filter_entry_changed"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
                 <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -221,6 +226,7 @@
                 <property name="can_focus">True</property>
                 <property name="invisible_char">●</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
+                <signal name="changed" handler="on_filter_entry_changed"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
                 <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -240,6 +246,7 @@
                 <property name="can_focus">True</property>
                 <property name="invisible_char">●</property>
                 <signal name="button_press_event" handler="on_button_press_event"/>
+                <signal name="changed" handler="on_filter_entry_changed"/>
                 <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
                 <signal name="focus_in_event" handler="on_focus_in_event"/>
                 <signal name="focus_out_event" handler="on_focus_out_event"/>
