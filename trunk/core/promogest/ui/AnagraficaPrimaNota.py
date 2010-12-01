@@ -309,7 +309,7 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
 Scegliendo NO verrà proposta quella precedente,
 Scegliendo SI verrà chiusa la precedente ed aperta una nuova
 """
-                    dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                    dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                                gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
                     response = dialog.run()
                     dialog.destroy()
