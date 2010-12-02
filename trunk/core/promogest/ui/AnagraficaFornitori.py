@@ -132,6 +132,12 @@ class AnagraficaFornitoriFilter(AnagraficaFilter):
         self.id_categoria_fornitore_filter_combobox.set_active(0)
         self.refresh()
 
+    def on_filter_entry_changed(self, text):
+        stringa = text.get_text()
+        def bobo():
+            self.refresh()
+        gobject.idle_add(bobo)
+
     def refresh(self):
         # Aggiornamento TreeView
         codice = prepareFilterString(self.codice_filter_entry.get_text())

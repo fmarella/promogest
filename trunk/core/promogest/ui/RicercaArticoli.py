@@ -144,6 +144,12 @@ class RicercaArticoliFilter(RicercaFilter):
         self.denominazione_filter_entry.grab_focus()
         self.refresh()
 
+    def on_filter_entry_changed(self, text):
+        stringa = text.get_text()
+        def bobo():
+            self.refresh()
+        gobject.idle_add(bobo)
+
 
     def clear(self):
         # Annullamento filtro

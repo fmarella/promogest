@@ -411,6 +411,13 @@ class RicercaArticoliFilter(GladeWidget):
         self.cancellato_filter_checkbutton.set_property('visible', True)
         self.cancellato_filter_checkbutton.set_no_show_all(False)
 
+    def on_filter_entry_changed(self, text):
+        stringa = text.get_text()
+        def bobo():
+            self.refresh()
+        gobject.idle_add(bobo)
+
+
     def drawRicercaComplessa(self):
         """ Disegna e imposta i widgets relativi alla sola parte avanzata della ricerca """
         self.collapseAllExpanders()

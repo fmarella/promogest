@@ -8,6 +8,7 @@
 #         Francesco Meloni <francesco@promotux.it>
 
 import gtk
+import gobject
 from RicercaComplessa import RicercaComplessa
 from sqlalchemy import and_, or_, not_
 from RicercaComplessa import analyze_treeview_key_press_event
@@ -159,7 +160,6 @@ class RicercaComplessaClienti(RicercaComplessa):
         treeview.set_search_column(1)
         treeview.set_model(model)
 
-
     def setInitialSearch(self):
         """ Imposta il tipo di ricerca iniziale """
         # puo' essere ridefinito dalle classi derivate
@@ -235,6 +235,11 @@ class RicercaComplessaClienti(RicercaComplessa):
         else:
             selection.set_mode(gtk.SELECTION_NONE)
 
+    def on_filter_entry_changed(self, text):
+        stringa = text.get_text()
+        def bobo():
+            self.refresh()
+        gobject.idle_add(bobo)
 
     def setTreeViewSelectionType(self, mode=None):
         self._fixedSelectionTreeViewType = True
@@ -358,6 +363,12 @@ class RicercaClientiFilter(GladeWidget):
         self.ragione_sociale_filter_entry.grab_focus()
         self._parentObject._changeTreeViewSelectionType()
         self._parentObject.refresh()
+
+    def on_filter_entry_changed(self, text):
+        stringa = text.get_text()
+        def bobo():
+            self.refresh()
+        gobject.idle_add(bobo)
 
 
     def setRicercaAvanzata(self):

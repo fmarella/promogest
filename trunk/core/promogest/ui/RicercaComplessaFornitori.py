@@ -157,7 +157,6 @@ class RicercaComplessaFornitori(RicercaComplessa):
         treeview.set_search_column(1)
         treeview.set_model(model)
 
-
     def setInitialSearch(self):
         """ Imposta il tipo di ricerca iniziale """
         # puo' essere ridefinito dalle classi derivate
@@ -233,6 +232,11 @@ class RicercaComplessaFornitori(RicercaComplessa):
         else:
             selection.set_mode(gtk.SELECTION_NONE)
 
+    def on_filter_entry_changed(self, text):
+        stringa = text.get_text()
+        def bobo():
+            self.refresh()
+        gobject.idle_add(bobo)
 
     def setTreeViewSelectionType(self, mode=None):
         self._fixedSelectionTreeViewType = True
@@ -459,6 +463,12 @@ class RicercaFornitoriFilter(GladeWidget):
 
         treeview.set_model(model)
         self.insertRagioneSociale(self._ragioneSociale)
+
+    def on_filter_entry_changed(self, text):
+        stringa = text.get_text()
+        def bobo():
+            self.refresh()
+        gobject.idle_add(bobo)
 
 
     def drawInsegnaTreeView(self):

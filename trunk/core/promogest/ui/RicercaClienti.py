@@ -122,9 +122,15 @@ class RicercaClientiFilter(RicercaFilter):
         self.ragione_sociale_filter_entry.grab_focus()
         self.refresh()
 
+    def on_filter_entry_changed(self, text):
+        stringa = text.get_text()
+        def bobo():
+            self.refresh()
+        gobject.idle_add(bobo)
 
     def refresh(self):
         # Aggiornamento TreeView
+        print "AHHHHHHHHHHHHHDO)DDODDODOOODDO"
         codice = prepareFilterString(self.codice_filter_entry.get_text())
         ragioneSociale = prepareFilterString(self.ragione_sociale_filter_entry.get_text())
         insegna = prepareFilterString(self.insegna_filter_entry.get_text())
