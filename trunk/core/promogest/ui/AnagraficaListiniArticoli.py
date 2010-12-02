@@ -600,9 +600,10 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         FIXME
         """
         res = self.id_articolo_customcombobox.getData()
-        self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
-        self._percentualeIva = res["percentualeAliquotaIva"]
-        self.percentuale_aliquota_iva_label.set_text(('%5.' + Environment.conf.decimals + 'f') % self._percentualeIva + ' %')
+        if res:
+            self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
+            self._percentualeIva = res["percentualeAliquotaIva"]
+            self.percentuale_aliquota_iva_label.set_text(('%5.' + Environment.conf.decimals + 'f') % self._percentualeIva + ' %')
 
         fornitura = leggiFornitura(self.id_articolo_customcombobox.getId())
         self.ultimo_costo_entry.set_text(Environment.conf.number_format % float(fornitura["prezzoNetto"]))

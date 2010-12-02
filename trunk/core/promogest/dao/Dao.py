@@ -375,7 +375,7 @@ class Dao(object):
         """ Send the filter dict to the function """
         filters = []
         for elem in filter_parameters:
-            if elem[0] and elem[2]=="Lista":
+            if elem[0] is not None and elem[2]=="Lista":
                 arg= self.filter_values(str(elem[1]+"List"),elem[0])
                 filters.append(arg)
             elif elem[0] or type(elem[0])==bool:

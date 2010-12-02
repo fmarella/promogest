@@ -422,6 +422,6 @@ O LA "ONE FULL" PER ATTIVARE ANCHE TUTTI I MODULI"""
 #            if records > 50: stopp = True
         print "VERSIONE STANDARD", classe
 
-    else:
-        print " TUTTO OK PUOI ANDARE"
+#    else:
+#        print " TUTTO OK PUOI ANDARE"
     return True
