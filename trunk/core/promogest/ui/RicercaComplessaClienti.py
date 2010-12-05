@@ -1591,7 +1591,7 @@ class RicercaClientiFilter(GladeWidget):
         self.resultsCount = self.filter.numRecords
         self.filter._refreshPageCount()
 
-        clis = Cliente().select(orderBy = self.filter.orderBy,
+        clis = Cliente().select(
                                             ragioneSociale = ragioneSociale,
                                             insegna = insegna,
                                             cognomeNome = cognomeNome,
@@ -1620,7 +1620,7 @@ class RicercaClientiFilter(GladeWidget):
                           (c.cognome or '') + ' ' + (c.nome or ''),
                           loc,
                           pi_cf))
-        self.clientResult = Cliente().select(orderBy = self.filter.orderBy,
+        self.clientResult = Cliente().select(
                                             ragioneSociale = ragioneSociale,
                                             insegna = insegna,
                                             cognomeNome = cognomeNome,
