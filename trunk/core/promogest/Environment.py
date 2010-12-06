@@ -31,6 +31,8 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.interfaces import PoolListener
 from sqlalchemy.pool import NullPool
+from sqlalchemy.interfaces import ConnectionProxy
+from sqlalchemy.exc import *
 import logging
 import logging.handlers
 import smtplib
@@ -129,12 +131,43 @@ def getConfigureDir(company='__default__'):
     except getopt.GetoptError:
         return default
 
+def messageInfo(msg="Messaggio generico"):
+    """generic msg dialog """
+    dialoggg = gtk.MessageDialog(None,
+                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                        gtk.MESSAGE_INFO,
+                        gtk.BUTTONS_OK,
+                        msg)
+    dialoggg.run()
+    dialoggg.destroy()
+
+
+
 def startdir():
     startDir = getConfigureDir()
     promogestStartDir = os.path.expanduser('~') + os.sep + startDir + os.sep
     return promogestStartDir
 
 
+class MyProxy(ConnectionProxy):
+    def cursor_execute(self, execute, cursor, statement, parameters, context, executemany):
+        try:
+            return execute(cursor, statement, parameters, context)
+        except OperationalError as e:
+            # Handle this exception
+            print("ATTENZIONE:OperationalError",e)
+            messageInfo(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
+#            pass
+        except ProgrammingError as e:
+            # Handle this exception
+            print("ATTENZIONE:ProgrammingError",e)
+            messageInfo(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
+            session.rollback()
+        except InvalidRequestError as e:
+            # Handle this exception
+            print("ATTENZIONE:InvalidRequestError",e)
+            messageInfo(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
+            session.rollback()
 
 def _pg8000():
     try:
@@ -144,8 +177,8 @@ def _pg8000():
                     + host + ':'
                     + port + '/'
                     + database,
-                    encoding='utf-8',
-                    convert_unicode=True )
+                    encoding='utf-8',pool_size=30,
+                    convert_unicode=True,proxy=MyProxy() )
 #        pg2log.info("PG8000")
         return engine
     except:
@@ -160,28 +193,42 @@ def _py_postgresql():
                     + host + ':'
                     + port + '/'
                     + database,
-                    encoding='utf-8',
-                    convert_unicode=True )
+                    encoding='utf-8',pool_size=30,
+                    convert_unicode=True,proxy=MyProxy())
 #        pg2log.info("PY-POSTGRESQL")
         return engine
     except:
 #        pg2log.info("PY-POSTGRESQL NON PRESENTE")
         return False
 
+def connect():
+    import psycopg2
+    a=None
+    try:
+        a = psycopg2.connect(user=user, host=host, port=port,
+                            password=password, database=database)
+    except Exception, e:
+        a= "CONNESSIONE AL DB NON RIUSCITA.\n DETTAGLIO ERRORE: [%s]" % ( e,)
+        messageInfo(msg=a)
+        exit( )
+    if a:
+        return a
+
 def _psycopg2new():
     try:
-        engine = create_engine('postgresql:'+'//'
-                    +user+':'
-                    + password+ '@'
-                    + host + ':'
-                    + port + '/'
-                    + database,
-                    encoding='utf-8',
-                    convert_unicode=True )
-#        pg2log.info("PSYCOPG2 NEW")
+        engine = create_engine('postgresql://', creator=connect,
+                convert_unicode=True,
+                proxy=MyProxy())
+#        engine = create_engine('postgresql:'+'//'
+#                    +user+':'
+#                    + password+ '@'
+#                    + host + ':'
+#                    + port + '/'
+#                    + database,
+#                    encoding='utf-8',pool_size=30,
+#                    convert_unicode=True,proxy=MyProxy() )
         return engine
     except:
-#        pg2log.info("PSYCOPG2 NEW NON PRESENTE")
         return False
 
 def _psycopg2old():
@@ -192,8 +239,8 @@ def _psycopg2old():
                     + host + ':'
                     + port + '/'
                     + database,
-                    encoding='utf-8',
-                    convert_unicode=True )
+                    encoding='utf-8',pool_size=30,
+                    convert_unicode=True,proxy=MyProxy())
 #        print "PSYCOPG2 OLD"
 #        pg2log.info("PSYCOPG2 OLD")
         return engine
@@ -441,7 +488,7 @@ class SetTextFactory(PoolListener):
 if tipodb == "sqlite":
     azienda = None
     mainSchema = None
-    engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()])
+    engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()],proxy=MyProxy())
 else:
     mainSchema = "promogest2"
     engine = _pg8000()
