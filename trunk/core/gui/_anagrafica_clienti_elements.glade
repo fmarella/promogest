@@ -1152,8 +1152,8 @@ che lo coinvolgono </property>
     <child type="tab">
       <object class="GtkLabel" id="informazioni_principali_label">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Informazioni
-   principali</property>
+        <property name="label" translatable="yes">&lt;b&gt;Informazioni principali&lt;/b&gt;</property>
+        <property name="use_markup">True</property>
       </object>
       <packing>
         <property name="tab_fill">False</property>
@@ -1389,220 +1389,319 @@ per inserirne</property>
           </packing>
         </child>
         <child>
-          <object class="GtkTable" id="anagrafica_clienti_detail2_table">
+          <object class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
-            <property name="border_width">6</property>
-            <property name="n_rows">5</property>
-            <property name="n_columns">3</property>
-            <property name="row_spacing">3</property>
             <child>
-              <object class="GtkLabel" id="pagamento_preferenziale_label">
+              <object class="GtkVBox" id="vbox1">
                 <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">Pagamento
+                <property name="spacing">5</property>
+                <child>
+                  <object class="GtkHBox" id="hbox2">
+                    <property name="visible">True</property>
+                    <property name="spacing">5</property>
+                    <child>
+                      <object class="GtkLabel" id="pagamento_preferenziale_label">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Pagamento
    preferenziale</property>
-              </object>
-              <packing>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
-                <property name="x_padding">10</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="magazzino_preferenziale_label">
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">Magazzino
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CustomComboBoxModify" id="id_pagamento_customcombobox">
+                        <property name="width_request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox3">
+                    <property name="visible">True</property>
+                    <property name="spacing">5</property>
+                    <child>
+                      <object class="GtkLabel" id="banca_preferenziale_label">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Banca
    preferenziale</property>
-              </object>
-              <packing>
-                <property name="top_attach">2</property>
-                <property name="bottom_attach">3</property>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
-                <property name="x_padding">10</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="listino_preferenziale_label">
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">Listino
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CustomComboBoxModify" id="id_banca_customcombobox">
+                        <property name="width_request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox4">
+                    <property name="visible">True</property>
+                    <property name="spacing">5</property>
+                    <child>
+                      <object class="GtkLabel" id="magazzino_preferenziale_label">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Magazzino
    preferenziale</property>
-              </object>
-              <packing>
-                <property name="top_attach">3</property>
-                <property name="bottom_attach">4</property>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
-                <property name="x_padding">10</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkAlignment" id="alignment478">
-                <property name="width_request">200</property>
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="xscale">0</property>
-                <child>
-                  <object class="CustomComboBoxModify" id="id_pagamento_customcombobox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="yes">Selezionare una tipologia di pagamento
-preferenziale. Se non ce ne fossero usare il pulsante di fianco</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CustomComboBoxModify" id="id_magazzino_customcombobox">
+                        <property name="width_request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
+                  </packing>
                 </child>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkAlignment" id="alignment479">
-                <property name="width_request">200</property>
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="xscale">0</property>
                 <child>
-                  <object class="CustomComboBoxModify" id="id_magazzino_customcombobox">
+                  <object class="GtkHBox" id="hbox5">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="yes">Associare un Magazzino preferenziale 
-da cui prelevare la merce in vendita</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">2</property>
-                <property name="bottom_attach">3</property>
-                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkAlignment" id="alignment480">
-                <property name="width_request">200</property>
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="xscale">0</property>
-                <child>
-                  <object class="CustomComboBoxModify" id="id_listino_customcombobox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="yes">Associare un listino preferenziale 
-con cui vendere al cliente questo prevarrà 
-su una eventuale associazione della ctegoria cliente 
-con altri listini</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">3</property>
-                <property name="bottom_attach">4</property>
-                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label3455">
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">Banca
+                    <property name="spacing">5</property>
+                    <child>
+                      <object class="GtkLabel" id="listino_preferenziale_label">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Listino
    preferenziale</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CustomComboBoxModify" id="id_listino_customcombobox">
+                        <property name="width_request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox6">
+                    <property name="visible">True</property>
+                    <property name="spacing">5</property>
+                    <child>
+                      <object class="GtkLabel" id="aliquota_iva_label">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Aliquota Iva 
+   preferenziale</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="CustomComboBoxModify" id="id_aliquota_iva_customcombobox">
+                        <property name="width_request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
               </object>
               <packing>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
-                <property name="x_padding">10</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
-              <object class="GtkAlignment" id="alignment500">
-                <property name="width_request">200</property>
+              <object class="GtkFrame" id="contatti_principali_frame">
                 <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="xscale">0</property>
+                <property name="sensitive">False</property>
+                <property name="label_xalign">0</property>
+                <property name="shadow_type">in</property>
                 <child>
-                  <object class="CustomComboBoxModify" id="id_banca_customcombobox">
+                  <object class="GtkAlignment" id="alignment4">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="yes">Selezione di una banca </property>
+                    <property name="top_padding">5</property>
+                    <property name="left_padding">12</property>
+                    <property name="right_padding">5</property>
+                    <child>
+                      <object class="GtkVBox" id="vbox2">
+                        <property name="visible">True</property>
+                        <property name="spacing">5</property>
+                        <child>
+                          <object class="GtkHBox" id="telefono_hbox">
+                            <property name="visible">True</property>
+                            <property name="spacing">5</property>
+                            <child>
+                              <object class="GtkLabel" id="telefono_principale_label">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Telefono
+  principale</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="telefono_princiale_entry">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="invisible_char">●</property>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkHBox" id="email_principale_hbox">
+                            <property name="visible">True</property>
+                            <property name="spacing">5</property>
+                            <child>
+                              <object class="GtkLabel" id="email_principale_label">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Email
+  principale</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="email_principale_entry">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="invisible_char">●</property>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkHBox" id="fax_principale_hbox">
+                            <property name="visible">True</property>
+                            <property name="spacing">5</property>
+                            <child>
+                              <object class="GtkLabel" id="fax_principale_label">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Fax
+  principale</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="fax_princiale_entry">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="invisible_char">●</property>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLabel" id="label1">
+                    <property name="visible">True</property>
+                    <property name="xpad">4</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Contatti aziendali principali&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
                   </object>
                 </child>
               </object>
               <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
+                <property name="padding">5</property>
+                <property name="position">1</property>
               </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="aliquota_iva_label">
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">Aliquota Iva 
-     preferenziale</property>
-              </object>
-              <packing>
-                <property name="top_attach">4</property>
-                <property name="bottom_attach">5</property>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options"></property>
-                <property name="x_padding">10</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkAlignment" id="alignment3">
-                <property name="width_request">200</property>
-                <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="xscale">0</property>
-                <child>
-                  <object class="CustomComboBoxModify" id="id_aliquota_iva_customcombobox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="yes">Selezione di una aliquota iva preferenziale
-Questa selezione prevarrà sull'aliquota iva dell'articolo 
-ed andrà a settare la gestione generale iva
-presente in testata documento</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">4</property>
-                <property name="bottom_attach">5</property>
-                <property name="x_options">GTK_EXPAND | GTK_SHRINK | GTK_FILL</property>
-                <property name="y_options"></property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
             </child>
           </object>
           <packing>
@@ -1617,7 +1716,8 @@ presente in testata documento</property>
     <child type="tab">
       <object class="GtkLabel" id="altre_label">
         <property name="visible">True</property>
-        <property name="label" translatable="yes">Altre</property>
+        <property name="label" translatable="yes">&lt;b&gt;Categorie - info preferenziali - contatti principali&lt;/b&gt;</property>
+        <property name="use_markup">True</property>
       </object>
       <packing>
         <property name="position">1</property>
