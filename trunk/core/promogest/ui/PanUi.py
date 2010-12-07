@@ -36,13 +36,11 @@ except:
 
 def checkPan(main):
     print "TIPO PG", Environment.tipo_pg
-    if "Pagamenti" not in  Environment.modulesList and \
-        "Promemoria" not in Environment.modulesList and \
-        "ONE STANDARD" not in Environment.modulesList and \
-        "ONE FULL" not in Environment.modulesList and \
-        "PRO BASIC" not in Environment.modulesList and \
-        "PRO STANDARD" not in  Environment.modulesList and\
-        Environment.tipodb=="postgresql":
+    if  ("ONE STANDARD" not in Environment.modulesList) and \
+        ("ONE FULL" not in Environment.modulesList) and \
+        ("PRO BASIC" not in Environment.modulesList) and \
+        ("PRO STANDARD" not in  Environment.modulesList) and\
+        (Environment.tipodb!="postgresql"):
         pp = PanUi(main).draw()
         a = gtk.Label()
         a.set_text("OPZIONI MODULI")
