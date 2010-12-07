@@ -45,6 +45,8 @@ def numerazioneJnet(dao):
 
     if dao.operazione == "Fattura vendita":
         return "F"+str(new)+"JN"+str(Environment.workingYear)
+    elif dao.operazione == "Fattura differita":
+        return "F"+str(new)+"JN"+str(Environment.workingYear)
     elif "DDT" in dao.operazione:
         return str(new)+"JN"+str(Environment.workingYear)[2:]+"-DDT"
     elif dao.operazione == "Ordine a fornitore":
