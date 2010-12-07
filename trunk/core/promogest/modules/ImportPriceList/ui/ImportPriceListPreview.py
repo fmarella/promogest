@@ -88,7 +88,7 @@ class ImportPreview(GladeWidget):
                             idfornitore=self.fornitore,
                             dataListino=self.data_listino,).save(product)
             savedlines += 1
-        pbar(self.dialog.pbar,stop=True)
+        pbar(self.pbar,stop=True)
         if err_count > 0:
             msg = """Si è verificato un errore nel salvataggio dei dati di qualche prodotto.
 È stato creato un nuovo file CSV con questi prodotti nella cartella documenti.
