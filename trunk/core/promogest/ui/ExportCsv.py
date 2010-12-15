@@ -228,15 +228,19 @@ class ExportCsv(GladeWidget):
 
     def recordToCSV(self, record):
         """ TODO: Aggiungere i campi obbligatori"""
-        if self.separatore_combobox.get_active_text() =="":
-            obligatoryField(self.getTopLevel(), self.separatore_combobox)
-        if self.stringa_combobox.get_active_text() =="":
-            obligatoryField(self.getTopLevel(), self.stringa_combobox)
+        if self.separatore_combobox.get_active_text() =="" or self.separatore_combobox.get_active_text() == None:
+            obligatoryField(self.getTopLevel(), self.separatore_combobox, msg="Separatatore Campo obbligatorio")
+        if self.stringa_combobox.get_active_text() =="" or self.stringa_combobox.get_active_text() ==None:
+            obligatoryField(self.getTopLevel(), self.stringa_combobox,msg="Separatatore Testo obbligatorio")
         tempFileCsv = Environment.tempDir+"tempCSV"
         separatore = self.separatore_combobox.get_active_text()
+        print("SEPARATORE: ", separatore)
+        Environment.pg2log.info("SEPARATORE: "+ (separatore or ""))
         stringa = self.stringa_combobox.get_active_text()
-        spamWriter = csv.writer(open(tempFileCsv, 'wb'), delimiter=separatore,
-                                quotechar=stringa, quoting=csv.QUOTE_MINIMAL)
+        print("STRINGA: ", stringa)
+        Environment.pg2log.info("STRINGA: "+ (stringa or ""))
+        spamWriter = csv.writer(open(tempFileCsv, 'wb'), delimiter=separatore or ";",
+                                quotechar=stringa or '"', quoting=csv.QUOTE_MINIMAL)
         model = self.modello_treeview.get_model()
         campilist = []
         for m in model:
