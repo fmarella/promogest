@@ -354,12 +354,11 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
 
     def saveDao(self):
         if self.data_scadenza_entry.get_text() == '':
-            msg = 'Data scadenza. \nCampo obbligatorio'
-            obligatoryField(self.dialogTopLevel, self.data_scadenza_entry, msg)
-
+            obligatoryField(self.dialogTopLevel, self.data_scadenza_entry,
+                     msg = 'Data scadenza. \nCampo obbligatorio')
         if self.oggetto_entry.get_text() == '':
-            msg = 'Oggetto. \nCampo obbligatorio'
-            obligatoryField(self.dialogTopLevel, self.oggetto_entry, msg)
+            obligatoryField(self.dialogTopLevel, self.oggetto_entry,
+                     msg = 'Oggetto. \nCampo obbligatorio')
         self.dao.data_inserimento = stringToDateTime(self.data_inserimento_entry.get_text())
         self.dao.data_scadenza = stringToDateTime(self.data_scadenza_entry.get_text())
         self.dao.oggetto = self.oggetto_entry.get_text()
