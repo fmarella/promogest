@@ -2078,7 +2078,7 @@
                                 <child>
                                   <object class="GtkLabel" id="label4">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Conferma senza pulire (&lt;b&gt;F6&lt;/b&gt;)</property>
+                                    <property name="label" translatable="yes">Conferma &lt;b&gt;RIGA&lt;/b&gt; senza pulire (&lt;b&gt;F6&lt;/b&gt;)</property>
                                     <property name="use_markup">True</property>
                                     <property name="use_underline">True</property>
                                   </object>
@@ -2129,7 +2129,7 @@
                                 <child>
                                   <object class="GtkLabel" id="label185">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Conferma e pulisci (&lt;b&gt;F4&lt;/b&gt;)</property>
+                                    <property name="label" translatable="yes">Conferma &lt;b&gt;RIGA&lt;/b&gt; e pulisci (&lt;b&gt;F4&lt;/b&gt;)</property>
                                     <property name="use_markup">True</property>
                                     <property name="use_underline">True</property>
                                   </object>
@@ -2178,7 +2178,8 @@
                                 <child>
                                   <object class="GtkLabel" id="label189">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Abbandona</property>
+                                    <property name="label" translatable="yes">Abbandona &lt;b&gt;RIGA&lt;/b&gt;</property>
+                                    <property name="use_markup">True</property>
                                     <property name="use_underline">True</property>
                                   </object>
                                   <packing>
@@ -2226,7 +2227,8 @@
                                 <child>
                                   <object class="GtkLabel" id="label190">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Nuovo</property>
+                                    <property name="label" translatable="yes">Nuova &lt;b&gt;RIGA&lt;/b&gt;</property>
+                                    <property name="use_markup">True</property>
                                     <property name="use_underline">True</property>
                                   </object>
                                   <packing>
@@ -2274,7 +2276,8 @@
                                 <child>
                                   <object class="GtkLabel" id="label186">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Elimina</property>
+                                    <property name="label" translatable="yes">Elimina &lt;b&gt;RIGA&lt;/b&gt;</property>
+                                    <property name="use_markup">True</property>
                                     <property name="use_underline">True</property>
                                   </object>
                                   <packing>
@@ -2983,24 +2986,6 @@ _
               </packing>
             </child>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
               <object class="GtkComboBoxEntry" id="note_pie_pagina_comboboxentry">
                 <property name="visible">True</property>
               </object>
@@ -3012,6 +2997,24 @@ _
                 <property name="x_options">GTK_SHRINK | GTK_FILL</property>
                 <property name="y_options"></property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
             </child>
           </object>
           <packing>
