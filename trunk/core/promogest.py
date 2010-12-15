@@ -19,6 +19,7 @@ class BigBang(object):
         usage = """Uso: %prog [options]
         Opzioni disponibili sono :
                 -d   --debugDao Per visualizzare con delle print i dizionari dao
+                -c   --config-dir Configurazione
                 -f   --debugFilter Per visualizzare maggiori informazioni sui filtri
                 -a   --debugALL Per mettere il debug al massimo
                 -t   --tipoDB  Permette, quando possibile da modificare il DB
@@ -55,7 +56,11 @@ class BigBang(object):
                             default="False",
                             dest="debugFilter")
 
-
+        parser.add_option("-c","--config-dir",
+                            help="Per visualizzare maggiori informazioni sui filtri",
+                            default="False",
+                            type="string",
+                            dest="configDir")
         (options, args) = parser.parse_args()
         if options.debugDao == True:
             Environment.debugDao = True
@@ -63,6 +68,8 @@ class BigBang(object):
             Environment.debugFilter = True
         elif options.debugSQL == True:
             Environment.debugSQL = True
+        elif options.configDir:
+            Environment.configDir =options.configDir
         elif options.tipoDB == "sqlite":
             try:
                 default='promogest2'
