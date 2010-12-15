@@ -284,14 +284,17 @@ class AnagraficaFamiglieArticoliEdit(AnagraficaEdit):
 
     def saveDao(self):
         if (self.codice_entry.get_text() == ''):
-            obligatoryField(self.dialogTopLevel, self.codice_entry)
+            obligatoryField(self.dialogTopLevel, self.codice_entry,
+            msg="Codice Famiglia Articolo.\n\n Campo Obbligatorio!")
             self.dao.codice = omogeneousCode(section="Famiglie", string=self.dao.codice )
 
         if (self.denominazione_entry.get_text() == ''):
-            obligatoryField(self.dialogTopLevel, self.denominazione_entry)
+            obligatoryField(self.dialogTopLevel, self.denominazione_entry,
+            msg="Denominazione Famiglia Articolo.\n\n Campo Obbligatorio!")
 
         if (self.denominazione_breve_entry.get_text() == ''):
-            obligatoryField(self.dialogTopLevel, self.denominazione_breve_entry)
+            obligatoryField(self.dialogTopLevel, self.denominazione_breve_entry,
+            msg="Denominazione Breve Famiglia Articolo.\n\n Campo Obbligatorio!")
 
         self.dao.codice = self.codice_entry.get_text()
         self.dao.denominazione = self.denominazione_entry.get_text()

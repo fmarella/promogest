@@ -1923,7 +1923,7 @@ def obligatoryField(window, widget=None, msg=None):
     if widget is not None:
         if widget.get_property("can-focus"):
             widget.grab_focus()
-    raise Exception, 'Operation aborted'
+    raise Exception, 'Operation aborted campo obbligatorio'
 
 
 def showComplexQuestion(parentWindow, message):
