@@ -354,7 +354,9 @@ if not bb:
     k.date = datetime.datetime.now()
     k.persist()
 else:
-    if bb[0].value == None or bb[0].value =="":
+    try:
+        int(bb[0].value)
+    except:
         bb[0].value ="2"
         bb[0].persist()
 
@@ -370,7 +372,9 @@ if not aa:
     k.date = datetime.datetime.now()
     k.persist()
 else:
-    if aa[0].value == None or aa[0].value =="":
+    try:
+        int(aa[0].value)
+    except:
         aa[0].value ="15"
         aa[0].persist()
 
@@ -386,9 +390,12 @@ if not cc:
     k.date = datetime.datetime.now()
     k.persist()
 else:
-    if cc[0].value == None or cc[0].value =="":
+    try:
+        int(cc[0].value)
+    except:
         cc[0].value ="3"
         cc[0].persist()
+
 if not SetConf().select(key="rotazione_primanota", section="Primanota"):
     k = SetConf()
     k.key = "rotazione_primanota"
