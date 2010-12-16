@@ -419,7 +419,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
             dialog.run()
             dialog.destroy()
-            raise Exception, 'Operation aborted'
+            raise Exception, 'Operation aborted Campo minimo cliente non inserito'
         self.dao.sede_operativa_indirizzo = self.indirizzo_sede_operativa_entry.get_text()
         self.dao.sede_operativa_cap = self.cap_sede_operativa_entry.get_text()
         self.dao.sede_operativa_localita = self.localita_sede_operativa_entry.get_text()
@@ -433,7 +433,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         if self.dao.partita_iva != '':
             partiva = checkPartIva(self.dao.partita_iva)
             if not partiva:
-                raise Exception, 'Operation aborted'
+                raise Exception, 'Operation aborted: Partita iva non corretta'
         self.dao.id_pagamento = findIdFromCombobox(self.id_pagamento_customcombobox.combobox)
         self.dao.id_magazzino = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)
         self.dao.id_listino = findIdFromCombobox(self.id_listino_customcombobox.combobox)
@@ -442,7 +442,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         if self.dao.codice_fiscale != '':
             codfis = checkCodFisc(self.dao.codice_fiscale)
             if not codfis:
-                raise Exception, 'Operation aborted'
+                raise Exception, 'Operation aborted: Codice Fiscale non corretto'
         self.dao.persist()
         model = self.categorie_treeview.get_model()
         cleanClienteCategoriaCliente = ClienteCategoriaCliente()\

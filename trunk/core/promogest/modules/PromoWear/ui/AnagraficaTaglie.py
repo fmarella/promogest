@@ -276,7 +276,7 @@ class AnagraficaTaglieEdit(AnagraficaEdit):
                 response = dialog.run()
                 dialog.destroy()
                 if response != gtk.RESPONSE_YES:
-                    raise Exception, 'Operation aborted'
+                    raise Exception, 'Operation aborted: Errore in taglie'
 
         # Controllo se esiste gia' la taglia
         self.taglia.denominazione = self.denominazione_entry.get_text()

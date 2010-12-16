@@ -202,4 +202,4 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
                                            msg)
                 dialog.run()
                 dialog.destroy()
-                raise Exception, 'Operation aborted'
+                raise Exception, 'Operation aborted: Cod Barre già assegnato'
