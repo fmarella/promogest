@@ -502,7 +502,7 @@ else:
         engine = _psycopg2old()
 
 tipo_eng = engine.name
-engine.echo = True
+engine.echo = False
 meta = MetaData(engine)
 #Session = sessionmaker(bind=engine)
 Session = scoped_session(sessionmaker(bind=engine, autoflush=True))

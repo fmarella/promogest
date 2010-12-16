@@ -248,7 +248,6 @@ class FilterWidget(GladeWidget):
         """ Changes results order
         RITOCCO fatto per SA 0.6.3 ...ancora da approfondire
         """
-        print "SEI TU"
         if sqlalchemy.__version__ > "0.6.0":
             if (self.orderBy is not None) == (fieldsString[1] is not None):
                 if self.flag == False:
@@ -258,7 +257,6 @@ class FilterWidget(GladeWidget):
                     self.orderBy = desc(fieldsString[1])
                     self.flag = False
             else:
-                print "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", fieldsString[1]
                 self.orderBy = fieldsString[1]
 
             if fieldsString[0] is not None:
@@ -316,7 +314,6 @@ class FilterWidget(GladeWidget):
                 iterator = self.batchsize_combo.get_active_iter()
                 model = self.batchsize_combo.get_model()
                 if iterator is not None:
-                    print " TUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU", model.get_value(iterator, 0)
                     self._owner.filterss.batchSize = model.get_value(iterator, 0)
         self._owner.batchSize = self.batchSize
         self._owner.offset = self.offset

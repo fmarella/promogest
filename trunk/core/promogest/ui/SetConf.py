@@ -341,7 +341,9 @@ if not SetConf().select(key="multilinealimite", section="Multilinea"):
     k.active = True
     k.date = datetime.datetime.now()
     k.persist()
-if not SetConf().select(key="decimals", section="Numbers"):
+
+bb = SetConf().select(key="decimals", section="Numbers")
+if not bb:
     k = SetConf()
     k.key = "decimals"
     k.value ="2"
@@ -351,7 +353,13 @@ if not SetConf().select(key="decimals", section="Numbers"):
     k.active = True
     k.date = datetime.datetime.now()
     k.persist()
-if not SetConf().select(key="batch_size", section="Numbers"):
+else:
+    if bb[0].value == None or bb[0].value =="":
+        bb[0].value ="2"
+        bb[0].persist()
+
+aa = SetConf().select(key="batch_size", section="Numbers")
+if not aa:
     k = SetConf()
     k.key = "batch_size"
     k.value ="15"
@@ -361,7 +369,13 @@ if not SetConf().select(key="batch_size", section="Numbers"):
     k.active = True
     k.date = datetime.datetime.now()
     k.persist()
-if not SetConf().select(key="combo_column", section="Numbers"):
+else:
+    if aa[0].value == None or aa[0].value =="":
+        aa[0].value ="15"
+        aa[0].persist()
+
+cc = SetConf().select(key="combo_column", section="Numbers")
+if not cc:
     k = SetConf()
     k.key = "combo_column"
     k.value ="3"
@@ -371,6 +385,10 @@ if not SetConf().select(key="combo_column", section="Numbers"):
     k.active = True
     k.date = datetime.datetime.now()
     k.persist()
+else:
+    if cc[0].value == None or cc[0].value =="":
+        cc[0].value ="3"
+        cc[0].persist()
 if not SetConf().select(key="rotazione_primanota", section="Primanota"):
     k = SetConf()
     k.key = "rotazione_primanota"
