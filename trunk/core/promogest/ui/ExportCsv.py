@@ -22,7 +22,6 @@
 
 import csv
 from GladeWidget import GladeWidget
-import Image
 from shutil import copy2
 import os
 from promogest import Environment
