@@ -502,7 +502,7 @@ else:
         engine = _psycopg2old()
 
 tipo_eng = engine.name
-engine.echo = False
+engine.echo = True
 meta = MetaData(engine)
 #Session = sessionmaker(bind=engine)
 Session = scoped_session(sessionmaker(bind=engine, autoflush=True))
@@ -579,6 +579,8 @@ def _send(fromaddr=None, total_addrs=None, msg=None):
 def hook(et, ev, eb):
     import traceback
     if "Operation aborted campo obbligatorio" in ev:
+        return
+    if "ATTENZIONE, TENTATIVO DI SALVATAGGIO SENZA RIGHE?????" in ev:
         return
     pg2log.info("\n  ".join (["Error occurred: traceback follows"]+list(traceback.format_exception(et, ev, eb))))
     print "UN ERRORE È STATO INTERCETTATO E LOGGATO, SI CONSIGLIA DI RIAVVIARE E DI CONTATTARE L'ASSISTENZA \n\nPREMERE CTRL+C PER CHIUDERE"

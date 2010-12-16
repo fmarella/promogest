@@ -6,14 +6,14 @@
 # Author: Andrea Argiolas <andrea@promotux.it>
 
 import gtk
-import gobject
 from Visualizzazione import Visualizzazione, VisualizzazioneFilter
-
+from sqlalchemy.orm import mapper, join
 from promogest import Environment
-import promogest.dao.ListinoArticolo
 from promogest.dao.ListinoArticolo import ListinoArticolo
 
-from utils import *
+from utils import stringToDate, fillComboboxListini, findIdFromCombobox,\
+            calcolaRicarico, calcolaMargine, dateToString
+
 
 class StoricoListini(Visualizzazione):
     """ Visualizzazione listini """
@@ -22,10 +22,9 @@ class StoricoListini(Visualizzazione):
                        daDataListino = None, aDataListino = None):
         self._idArticolo = idArticolo
         self._idListino = idListino
-        Visualizzazione.__init__(self, 'Promogest - Visualizzazione storico prezzi di vendita',
+        Visualizzazione.__init__(self,
+                    'Promogest - Visualizzazione storico prezzi di vendita',
                                 StoricoListiniFilter(self))
-#        Visualizzazione.__init__(self, 'Promogest - Visualizzazione storico prezzi di vendita',
-#                                None)
 
 
 class StoricoListiniFilter(VisualizzazioneFilter):
@@ -35,12 +34,10 @@ class StoricoListiniFilter(VisualizzazioneFilter):
         VisualizzazioneFilter.__init__(self,
                                     visualizzazione,
                                     'storico_listini_articoli_filter_table')
-        self.orderBy = 'data_listino'
-
+#        self.orderBy = 'data_listino'
 
     def on_filter_treeview_selection_changed(self, treeview):
         pass
-
 
     def draw(self):
         # Colonne della Treeview per il filtro
@@ -52,24 +49,28 @@ class StoricoListiniFilter(VisualizzazioneFilter):
 
         column = gtk.TreeViewColumn('Listino', rendererSx, text=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'denominazione')
+#        column.set_clickable(True)
+#        column.connect("clicked", self._changeOrderBy,
+#                                        (self.joinT, Listino.denominazione))
         column.set_resizable(True)
         column.set_expand(True)
         treeview.append_column(column)
 
         column = gtk.TreeViewColumn('Data listino', rendererSx, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'data_listino')
+#        column.set_clickable(True)
+#        column.connect("clicked", self._changeOrderBy,
+#                                        (self.joinT, Listino.data_listino))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Prezzo dettaglio (ivato)', rendererDx, text=3)
+        column = gtk.TreeViewColumn('Prezzo dettaglio (ivato)',
+                                                        rendererDx, text=3)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'prezzo_dettaglio')
+        column.connect("clicked", self._changeOrderBy,
+                                                (None, 'prezzo_dettaglio'))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
@@ -86,10 +87,12 @@ class StoricoListiniFilter(VisualizzazioneFilter):
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Prezzo ingrosso (non ivato)', rendererDx, text=6)
+        column = gtk.TreeViewColumn('Prezzo ingrosso (non ivato)',
+                                                    rendererDx, text=6)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'prezzo_dettaglio')
+        column.connect("clicked", self._changeOrderBy,
+                                                (None, 'prezzo_dettaglio'))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
@@ -106,25 +109,28 @@ class StoricoListiniFilter(VisualizzazioneFilter):
         column.set_expand(False)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Costo base (non ivato)', rendererDx, text=9)
+        column = gtk.TreeViewColumn('Costo base (non ivato)',
+                                                        rendererDx, text=9)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, 'ultimo_costo')
+        column.connect("clicked", self._changeOrderBy, (None, 'ultimo_costo'))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
 
-        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str, str, str)
-        self._visualizzazione.visualizzazione_filter_treeview.set_model(self._treeViewModel)
+        self._treeViewModel = gtk.ListStore(object, str, str, str,
+                                            str, str, str, str, str, str)
+        self._visualizzazione.visualizzazione_filter_treeview.\
+                                        set_model(self._treeViewModel)
 
         returnWindow = self._visualizzazione.getTopLevel()
-        self.id_articolo_filter_customcombobox1.setId(self._visualizzazione._idArticolo)
+        self.id_articolo_filter_customcombobox1.\
+                                setId(self._visualizzazione._idArticolo)
         self.id_articolo_filter_customcombobox1.setSingleValue()
         fillComboboxListini(self.id_listino_filter_combobox1, True)
         self.id_listino_filter_combobox1.set_active(0)
 
         self.refresh()
-
 
     def clear(self):
         # Annullamento filtro
@@ -133,7 +139,6 @@ class StoricoListiniFilter(VisualizzazioneFilter):
         self.da_data_listino_filter_entry.set_text('')
         self.a_data_listino_filter_entry.set_text('')
         self.refresh()
-
 
     def refresh(self):
         # Aggiornamento TreeView

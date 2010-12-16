@@ -68,8 +68,6 @@ class BigBang(object):
             Environment.debugFilter = True
         elif options.debugSQL == True:
             Environment.debugSQL = True
-        elif options.configDir:
-            Environment.configDir =options.configDir
         elif options.tipoDB == "sqlite":
             try:
                 default='promogest2'

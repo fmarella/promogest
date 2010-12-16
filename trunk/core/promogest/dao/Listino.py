@@ -94,20 +94,20 @@ class Listino(Dao):
 
     def filter_values(self,k,v):
         if k=='id' or k=='idListino':
-            dic= {k:listino.c.id ==v}
+            dic= {k:listinoT.c.id ==v}
         elif k =='listinoAttuale':
-            dic= {k:listino.c.listino_attuale ==v}
+            dic= {k:listinoT.c.listino_attuale ==v}
         elif k=='denominazione':
-            dic= {k:listino.c.denominazione.ilike("%"+v+"%")}
+            dic= {k:listinoT.c.denominazione.ilike("%"+v+"%")}
         elif k=='denominazioneEM':
-            dic= {k:listino.c.denominazione ==v}
+            dic= {k:listinoT.c.denominazione ==v}
         return  dic[k]
 
-listino=Table('listino', params['metadata'],schema = params['schema'],autoload=True)
+listinoT=Table('listino', params['metadata'],schema = params['schema'],autoload=True)
 
-std_mapper = mapper(Listino, listino, properties={
+std_mapper = mapper(Listino, listinoT, properties={
     "listino_categoria_cliente" :relation(ListinoCategoriaCliente, backref="listino"),
     "listino_magazzino" :relation(ListinoMagazzino, backref="listino"),
     "listino_complesso":relation(ListinoComplessoListino,primaryjoin=
-                        ListinoComplessoListino.id_listino==listino.c.id, backref="listino")},
-        order_by=listino.c.id)
+                        ListinoComplessoListino.id_listino==listinoT.c.id, backref="listino")},
+        order_by=listinoT.c.id)
