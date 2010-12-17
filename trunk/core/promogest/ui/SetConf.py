@@ -3,7 +3,6 @@
 # Promogest
 #
 # Copyright (C) 2005-2009 by Promotux Informatica - http://www.promotux.it/
-# Author: Alceste Scalas <alceste@promotux.it>
 # Author: Francesco Meloni <francesco@promotux.it>
 #
 # This program is free software; you can redistribute it and/or
@@ -186,16 +185,16 @@ class SetConfUI(GladeWidget):
 
 
 if not SetConf().select(key="install_code",section="Master"):
-    k = SetConf()
-    k.key = "install_code"
-    k.value =str(hashlib.sha224("aziendapromo"+orda("aziendapromo")).hexdigest())
-    k.section = "Master"
-    k.description = "codice identificativo della propria installazione"
-    k.tipo_section = "General"
-    k.tipo = "ONE"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    kmm = SetConf()
+    kmm.key = "install_code"
+    kmm.value =str(hashlib.sha224("aziendapromo"+orda("aziendapromo")).hexdigest())
+    kmm.section = "Master"
+    kmm.description = "codice identificativo della propria installazione"
+    kmm.tipo_section = "General"
+    kmm.tipo = "ONE"
+    kmm.active = True
+    kmm.date = datetime.datetime.now()
+    kmm.persist()
 
 codice=  SetConf().select(key="install_code",section="Master")
 if codice:
@@ -205,154 +204,166 @@ if codice:
 
 
 if not SetConf().select(key="fornitore_predefinito",section="Documenti"):
-    k = SetConf()
-    k.key = "fornitore_predefinito"
-    k.value =""
-    k.section = "Documenti"
-    k.description = "eventuale fornitore preferenziale da preimpostare"
-    k.tipo_section = "Generico"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    kkk = SetConf()
+    kkk.key = "fornitore_predefinito"
+    kkk.value =""
+    kkk.section = "Documenti"
+    kkk.description = "eventuale fornitore preferenziale da preimpostare"
+    kkk.tipo_section = "Generico"
+    kkk.active = True
+    kkk.date = datetime.datetime.now()
+    kkk.persist()
+
 if not SetConf().select(key="cliente_predefinito",section="Documenti"):
-    k = SetConf()
-    k.key = "cliente_predefinito"
-    k.value =""
-    k.section = "Documenti"
-    k.description = "eventuale cliente preferenziale da preimpostare"
-    k.tipo_section = "Generico"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    kll = SetConf()
+    kll.key = "cliente_predefinito"
+    kll.value =""
+    kll.section = "Documenti"
+    kll.description = "eventuale cliente preferenziale da preimpostare"
+    kll.tipo_section = "Generico"
+    kll.active = True
+    kll.date = datetime.datetime.now()
+    kll.persist()
+
 if not SetConf().select(key="tipo_documento_predefinito",section="Documenti"):
-    k = SetConf()
-    k.key = "tipo_documento_predefinito"
-    k.value =""
-    k.section = "Documenti"
-    k.description = "eventuale tipo documento preferenziale da preimpostare"
-    k.tipo_section = "Generico"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    knn = SetConf()
+    knn.key = "tipo_documento_predefinito"
+    knn.value =""
+    knn.section = "Documenti"
+    knn.description = "eventuale tipo documento preferenziale da preimpostare"
+    knn.tipo_section = "Generico"
+    knn.active = True
+    knn.date = datetime.datetime.now()
+    knn.persist()
+
 if not SetConf().select(key="altezza_logo",section="Documenti"):
-    k = SetConf()
-    k.key = "altezza_logo"
-    k.value ="110"
-    k.section = "Documenti"
-    k.description = "altezza logo documento"
-    k.tipo_section = "Generico"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    koo = SetConf()
+    koo.key = "altezza_logo"
+    koo.value ="110"
+    koo.section = "Documenti"
+    koo.description = "altezza logo documento"
+    koo.tipo_section = "Generico"
+    koo.active = True
+    koo.date = datetime.datetime.now()
+    koo.persist()
+
 if not SetConf().select(key="larghezza_logo",section="Documenti"):
-    k = SetConf()
-    k.key = "larghezza_logo"
-    k.value ="300"
-    k.section = "Documenti"
-    k.description = "larghezza logo documento"
-    k.tipo_section = "Generico"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    kpp = SetConf()
+    kpp.key = "larghezza_logo"
+    kpp.value ="300"
+    kpp.section = "Documenti"
+    kpp.description = "larghezza logo documento"
+    kpp.tipo_section = "Generico"
+    kpp.active = True
+    kpp.date = datetime.datetime.now()
+    kpp.persist()
+
 if not SetConf().select(key="tipo_movimento_predefinito",section="Documenti"):
-    k = SetConf()
-    k.key = "tipo_movimento_predefinito"
-    k.value =""
-    k.section = "Documenti"
-    k.description = "eventuale tipo movimento preferenziale da preimpostare"
-    k.tipo_section = "Generico"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    kqq = SetConf()
+    kqq.key = "tipo_movimento_predefinito"
+    kqq.value =""
+    kqq.section = "Documenti"
+    kqq.description = "eventuale tipo movimento preferenziale da preimpostare"
+    kqq.tipo_section = "Generico"
+    kqq.active = True
+    kqq.date = datetime.datetime.now()
+    kqq.persist()
+
 if not SetConf().select(key="ricerca_per",section="Documenti"):
-    k = SetConf()
-    k.key = "ricerca_per"
-    k.value ="codice"
-    k.section = "Documenti"
-    k.description = "Preimposta un tipo di ricerca Valori possibili:(codice,descrizione,codice_a_barre,codice_articolo_fornitore "
-    k.tipo_section = "Generico"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    krr = SetConf()
+    krr.key = "ricerca_per"
+    krr.value ="codice"
+    krr.section = "Documenti"
+    krr.description = "Preimposta un tipo di ricerca Valori possibili:(codice,descrizione,codice_a_barre,codice_articolo_fornitore "
+    krr.tipo_section = "Generico"
+    krr.active = True
+    krr.date = datetime.datetime.now()
+    krr.persist()
+
 if not SetConf().select(key="color_base",section="Documenti"):
-    k = SetConf()
-    k.key = "color_base"
-    k.value ="#F9FBA7"
-    k.section = "Documenti"
-    k.description = "Preimposta il colore di base "
-    k.tipo_section = "Generico"
-    k.tipo = "Colore"
-    k.active = True
+    kss = SetConf()
+    kss.key = "color_base"
+    kss.value ="#F9FBA7"
+    kss.section = "Documenti"
+    kss.description = "Preimposta il colore di base "
+    kss.tipo_section = "Generico"
+    kss.tipo = "Colore"
+    kss.active = True
     k.date = datetime.datetime.now()
-    k.persist()
+    kss.persist()
+
 if not SetConf().select(key="color_text",section="Documenti"):
-    k = SetConf()
-    k.key = "color_text"
-    k.value ="black"
-    k.section = "Documenti"
-    k.description = "Preimposta il colore del testo "
-    k.tipo_section = "Generico"
-    k.tipo = "Colore"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    ktt = SetConf()
+    ktt.key = "color_text"
+    ktt.value ="black"
+    ktt.section = "Documenti"
+    ktt.description = "Preimposta il colore del testo "
+    ktt.tipo_section = "Generico"
+    ktt.tipo = "Colore"
+    ktt.active = True
+    ktt.date = datetime.datetime.now()
+    ktt.persist()
+
 if not SetConf().select(key="feed",section="Feed"):
-    k = SetConf()
-    k.key = "feed"
-    k.value =""
-    k.section = "Feed"
-    k.description = "Notizie nella home"
-    k.tipo_section = "Generico"
-    k.active = True
-    k.tipo = "BOOLEAN"
-    k.date = datetime.datetime.now()
-    k.persist()
+    kuu = SetConf()
+    kuu.key = "feed"
+    kuu.value =""
+    kuu.section = "Feed"
+    kuu.description = "Notizie nella home"
+    kuu.tipo_section = "Generico"
+    kuu.active = True
+    kuu.tipo = "BOOLEAN"
+    kuu.date = datetime.datetime.now()
+    kuu.persist()
 ff = SetConf().select(key="feed", section="Feed")
 if ff:
     ff[0].tipo = "BOOLEAN"
     ff[0].persist()
+
 if not SetConf().select(key="smtpserver", section="Smtp"):
-    k = SetConf()
-    k.key = "smtpserver"
-    k.value =""
-    k.section = "Smtp"
-    k.tipo_section = "Generico"
-    k.description = "server per l'invio della posta"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    kvv = SetConf()
+    kvv.key = "smtpserver"
+    kvv.value =""
+    kvv.section = "Smtp"
+    kvv.tipo_section = "Generico"
+    kvv.description = "server per l'invio della posta"
+    kvv.active = True
+    kvv.date = datetime.datetime.now()
+    kvv.persist()
+
 if not SetConf().select(key="emailmittente", section="Smtp"):
-    k = SetConf()
-    k.key = "emailmittente"
-    k.value =""
-    k.section = "Smtp"
-    k.tipo_section = "Generico"
-    k.description = "Email del mittente"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    kzz = SetConf()
+    kzz.key = "emailmittente"
+    kzz.value =""
+    kzz.section = "Smtp"
+    kzz.tipo_section = "Generico"
+    kzz.description = "Email del mittente"
+    kzz.active = True
+    kzz.date = datetime.datetime.now()
+    kzz.persist()
+
 if not SetConf().select(key="multilinealimite", section="Multilinea"):
-    k = SetConf()
-    k.key = "multilinealimite"
-    k.value ="60"
-    k.section = "Multilinea"
-    k.tipo_section = "Generico"
-    k.description = "Gestione dei multilinea nei documenti"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    kaa = SetConf()
+    kaa.key = "multilinealimite"
+    kaa.value ="60"
+    kaa.section = "Multilinea"
+    kaa.tipo_section = "Generico"
+    kaa.description = "Gestione dei multilinea nei documenti"
+    kaa.active = True
+    kaa.date = datetime.datetime.now()
+    kaa.persist()
 
 bb = SetConf().select(key="decimals", section="Numbers")
 if not bb:
-    k = SetConf()
-    k.key = "decimals"
-    k.value ="2"
-    k.section = "Numbers"
-    k.tipo_section = "Generico"
-    k.description = "Gestione dei decimali"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    kbb = SetConf()
+    kbb.key = "decimals"
+    kbb.value ="2"
+    kbb.section = "Numbers"
+    kbb.tipo_section = "Generico"
+    kbb.description = "Gestione dei decimali"
+    kbb.active = True
+    kbb.date = datetime.datetime.now()
+    kbb.persist()
 else:
     try:
         int(bb[0].value)
@@ -362,15 +373,15 @@ else:
 
 aa = SetConf().select(key="batch_size", section="Numbers")
 if not aa:
-    k = SetConf()
-    k.key = "batch_size"
-    k.value ="15"
-    k.section = "Numbers"
-    k.tipo_section = "Generico"
-    k.description = "Gestione dei batchSize"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    kcc = SetConf()
+    kcc.key = "batch_size"
+    kcc.value ="15"
+    kcc.section = "Numbers"
+    kcc.tipo_section = "Generico"
+    kcc.description = "Gestione dei batchSize"
+    kcc.active = True
+    kcc.date = datetime.datetime.now()
+    kcc.persist()
 else:
     try:
         int(aa[0].value)
@@ -380,15 +391,15 @@ else:
 
 cc = SetConf().select(key="combo_column", section="Numbers")
 if not cc:
-    k = SetConf()
-    k.key = "combo_column"
-    k.value ="3"
-    k.section = "Numbers"
-    k.tipo_section = "Generico"
-    k.description = "Gestione dei combo_column cioè le colonne nelle combobox"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    kdd = SetConf()
+    kdd.key = "combo_column"
+    kdd.value ="3"
+    kdd.section = "Numbers"
+    kdd.tipo_section = "Generico"
+    kdd.description = "Gestione dei combo_column cioè le colonne nelle combobox"
+    kdd.active = True
+    kdd.date = datetime.datetime.now()
+    kdd.persist()
 else:
     try:
         int(cc[0].value)
@@ -397,12 +408,12 @@ else:
         cc[0].persist()
 
 if not SetConf().select(key="rotazione_primanota", section="Primanota"):
-    k = SetConf()
-    k.key = "rotazione_primanota"
-    k.value ="mensile"
-    k.section = "Primanota"
-    k.tipo_section = "Generico"
-    k.description = "Gestione della creazione della prima nota, valori ammessi, MESE, SETTIMANA, TRIMESTRE"
-    k.active = True
-    k.date = datetime.datetime.now()
-    k.persist()
+    kee = SetConf()
+    kee.key = "rotazione_primanota"
+    kee.value ="mensile"
+    kee.section = "Primanota"
+    kee.tipo_section = "Generico"
+    kee.description = "Gestione della creazione della prima nota, valori ammessi, MESE, SETTIMANA, TRIMESTRE"
+    kee.active = True
+    kee.date = datetime.datetime.now()
+    kee.persist()

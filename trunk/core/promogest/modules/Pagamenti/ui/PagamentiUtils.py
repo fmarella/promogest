@@ -615,7 +615,7 @@ Procedere con la "chiusura" del Pagamento?"""
                     self.anagrafica.data_quarta_scadenza_entry.get_text())
             daoTestataDocumentoScadenza.importo = float(
                     self.anagrafica.importo_quarta_scadenza_entry.get_text() or '0')
-            idpag4 = findIdFromCombobox(self.anagrafica.id_pagamento_quarto_scadenza_customcombobox.combobox)
+            idpag4 = findIdFromCombobox(self.anagrafica.id_pagamento_quarta_scadenza_customcombobox.combobox)
             if idpag4:
                 p4 = Pagamento().getRecord(id=idpag4)
                 daoTestataDocumentoScadenza.pagamento = p4.denominazione

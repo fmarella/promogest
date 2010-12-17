@@ -1103,16 +1103,17 @@ class Main(GladeWidget):
         sets = SetConf().select(key="install_code",section="Master")
         if sets:
             sets[0].delete()
-        k = SetConf()
-        k.key = "install_code"
-        k.value =str(hashlib.sha224(codice+orda(codice)).hexdigest())
-        k.section = "Master"
-        k.description = "codice identificativo della propria installazione"
-        k.tipo_section = "General"
-        k.tipo = "Lite"
-        k.active = True
-        k.date = datetime.datetime.now()
-        k.persist()
+        if codice:
+            k = SetConf()
+            k.key = "install_code"
+            k.value =str(hashlib.sha224(codice+orda(codice)).hexdigest())
+            k.section = "Master"
+            k.description = "codice identificativo della propria installazione"
+            k.tipo_section = "General"
+            k.tipo = "Lite"
+            k.active = True
+            k.date = datetime.datetime.now()
+            k.persist()
         dialog.destroy()
 
 
