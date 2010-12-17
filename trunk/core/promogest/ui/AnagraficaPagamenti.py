@@ -160,6 +160,8 @@ class AnagraficaPagamentiDetail(AnagraficaDetail):
     def _refresh(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
+        if not iterator:return
+        if not self.dao:return
         model.set_value(iterator, 0, self.dao)
         model.set_value(iterator, 1, self.dao.denominazione)
         model.set_value(iterator, 2, self.dao.tipo)
