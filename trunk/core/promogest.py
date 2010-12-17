@@ -109,4 +109,30 @@ class BigBang(object):
 
 
 if __name__ == '__main__':
-    BigBang()
+    default='promogest2'
+    promogestStartDir = os.path.expanduser('~') + os.sep + default + os.sep
+    configFile = promogestStartDir + 'configure'
+    conf = Config(configFile)
+    if conf.Database.tipodb =="sqlite":
+        import socket
+        import sys
+        import gtk
+        try:
+            s = socket.socket()
+            host = socket.gethostname()
+            port = 35636    #make sure this port is not used on this system
+            s.bind((host, port))
+            BigBang()
+        except Exception as e:
+    #        raise
+            dialog = gtk.MessageDialog(None,
+                                       gtk.DIALOG_MODAL
+                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                       gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
+                                       "Un altro PromoGest ONE risulta già aperto\n\n")
+            response = dialog.run()
+            dialog.destroy()
+            sys.exit()
+    else:
+        BigBang()
+#    BigBang()
