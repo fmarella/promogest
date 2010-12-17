@@ -1037,7 +1037,7 @@ class Main(GladeWidget):
         fltr.add_pattern('*')
         fltr.set_name('Tutti i file')
         fileDialog.add_filter(fltr)
-
+        n = ""
         response = fileDialog.run()
         if response == gtk.RESPONSE_OK:
             filename = fileDialog.get_filename()
