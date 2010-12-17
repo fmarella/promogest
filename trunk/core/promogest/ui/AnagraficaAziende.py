@@ -24,7 +24,6 @@ from GladeWidget import GladeWidget
 import Image
 import os
 from promogest import Environment
-import promogest.dao.Azienda
 from promogest.dao.Azienda import Azienda
 
 from utils import dateToString, stringToDate, checkCodFisc, checkPartIva, showAnagraficaRichiamata, fenceDialog, setconf, posso
