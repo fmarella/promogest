@@ -289,7 +289,7 @@ if not SetConf().select(key="color_base",section="Documenti"):
     kss.tipo_section = "Generico"
     kss.tipo = "Colore"
     kss.active = True
-    k.date = datetime.datetime.now()
+    kss.date = datetime.datetime.now()
     kss.persist()
 
 if not SetConf().select(key="color_text",section="Documenti"):
