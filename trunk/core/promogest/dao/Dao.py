@@ -96,7 +96,6 @@ class Dao(object):
         self.record= self._session.query(self._DaoModule)
         if sqlalchemy.__version__ > "0.6":
             if join is not None:
-                print "JOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", join
                 self.record = self.record.join(join)
             if filter is not None:
                 self.record = self.record.filter(filter)
