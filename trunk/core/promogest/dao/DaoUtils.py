@@ -215,6 +215,8 @@ def TotaleAnnualeFornitore(id_fornitore=None):
         if doc.operazione in ['Fattura acquisto',
                             'Fattura differita acquisto',
                             'Nota di credito da fornitore']:
+            if not doc.totale_pagato: doc.totale_pagato=0
+            if not doc.totale_sospeso: doc.totale_sospeso=0
             totale += (doc.totale_pagato + doc.totale_sospeso)
     return totale
 
