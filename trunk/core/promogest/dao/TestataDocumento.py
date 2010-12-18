@@ -269,7 +269,8 @@ class TestataDocumento(Dao):
             #print "VALORIIIIIIIIIIIIIIIII", riga.quantita, riga.moltiplicatore, riga.valore_unitario_netto
             if not riga.moltiplicatore:
                 riga.moltiplicatore = 1
-            totaleRiga = mN(Decimal(str(riga.quantita)) * Decimal(str(riga.moltiplicatore)) * Decimal(str(riga.valore_unitario_netto)))
+            print("DOLCENERAAAAAA",riga.quantita,riga.moltiplicatore,riga.valore_unitario_netto)
+            totaleRiga = mN(Decimal(str(riga.quantita or "0")) * Decimal(str(riga.moltiplicatore)) * Decimal(str(riga.valore_unitario_netto or "0")))
             percentualeIvaRiga = Decimal(str(riga.percentuale_iva))
             if percentualeIvaRiga != Environment.percentualeIvaRiga:
                 aliquotaIvaRiga = riga.aliquota
