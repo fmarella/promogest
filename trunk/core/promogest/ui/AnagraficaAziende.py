@@ -89,7 +89,7 @@ class AnagraficaAziende(GladeWidget):
         self.cin_entry.set_text(self.dao.cin or '')
         self.iban_entry.set_text(self.dao.iban or '')
         self.path_label.set_text(self.dao.percorso_immagine or '')
-        self.logo_azienda.set_from_file(self.resizeImgThumbnailGeneric(filename =self.dao.percorso_immagine))
+        self.logo_azienda.set_from_file(self.dao.percorso_immagine)
 
         #self.percorso_immagine_entry.set_text(self.dao.percorso_immagine or '')
 
@@ -148,8 +148,8 @@ class AnagraficaAziende(GladeWidget):
     def on_apri_button_clicked(self,button):
         filename = self.logo_filechooserdialog.get_filename()
         self.path_label.set_text(filename)
-        f = self.resizeImgThumbnailGeneric(filename = filename)
-        self.logo_azienda.set_from_file(f)
+#        f = self.resizeImgThumbnailGeneric(filename = filename)
+        self.logo_azienda.set_from_file(filename)
         self.logo_filechooserdialog.hide()
 
     def on_rimuovi_logo_clicked(self, button):

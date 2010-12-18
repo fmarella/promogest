@@ -68,11 +68,12 @@ class SlaTpl2Sla(SlaParser):
                 if l.get("PFILE") =="":
                     if "azi_percorso_immagine" in objects[0] and objects[0]["azi_percorso_immagine"] !=""\
                     and objects[0]["azi_percorso_immagine"]:
-
-                        print "IMMAGINE LOGO", objects[0]["azi_percorso_immagine"]
-                        log_path = objects[0]["azi_percorso_immagine"]
-                        l.set("PFILE", os.path.relpath(log_path,os.path.expanduser('~')))
-                        print os.path.relpath(log_path,os.path.expanduser('~'))
+                        try:
+                            log_path = objects[0]["azi_percorso_immagine"]
+                            l.set("PFILE", os.path.relpath(log_path,os.path.expanduser('~')))
+                            print os.path.relpath(log_path,os.path.expanduser('~'))
+                        except Exception as e:
+                            Environment.pg2log("ERRORE NELL'INSERIMENTO DEL LOGO"+e)
         self.pagesNumber = self.getPagesNumber()
         if self.label and self.classic:
             self.duplicateElementLabel()
