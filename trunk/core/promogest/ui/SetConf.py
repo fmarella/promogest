@@ -39,9 +39,9 @@ class SetConfUI(GladeWidget):
         self.draw()
 
     def draw(self):
-        self.mastercode = SetConf().select(key="install_code", section="Master")[0]
-        self.cod_installazione_entry.set_text(self.mastercode.value)
-        self.cod_installazione_entry.set_sensitive(False)
+#        self.mastercode = SetConf().select(key="install_code", section="Master")[0]
+#        self.cod_installazione_entry.set_text(self.mastercode.value)
+#        self.cod_installazione_entry.set_sensitive(False)
         self.treeview = self.setconf_treeview
         rendererSx = gtk.CellRendererText()
         column = gtk.TreeViewColumn("Sezione/Chiave", rendererSx, text=1, background=6, font=7)
@@ -103,12 +103,6 @@ class SetConfUI(GladeWidget):
         self.treeview.set_model(self._treeViewModel)
         self._refresh()
 
-    def on_edit_togglebutton_toggled(self, button):
-        if button.get_active():
-            self.cod_installazione_entry.set_sensitive(True)
-        else:
-            self.cod_installazione_entry.set_sensitive(False)
-
     def _refresh(self):
         self._treeViewModel.clear()
         sc = SetConf().select(batchSize=None, orderBy=SetConf.section)
@@ -168,12 +162,12 @@ class SetConfUI(GladeWidget):
             if oggettoFiglio.active !=  model.get_value(iter, 8):
                 oggettoFiglio.active = model.get_value(iter, 8)
             oggettoFiglio.persist()
-        mcode = self.cod_installazione_entry.get_text()
-        mcode = mcode.lower().strip()
-        if mcode != "":
-            self.mastercode.value =  mcode
-            self.mastercode.tipo = "PRO"
-            self.mastercode.persist()
+#        mcode = self.cod_installazione_entry.get_text()
+#        mcode = mcode.lower().strip()
+#        if mcode != "":
+#            self.mastercode.value =  mcode
+#            self.mastercode.tipo = "PRO"
+#            self.mastercode.persist()
 
     def on_save_button_clicked(self,button):
         self._treeViewModel.foreach(self.saveDao)
