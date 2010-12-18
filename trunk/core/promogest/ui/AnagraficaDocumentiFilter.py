@@ -72,7 +72,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Numero', rendererSx, text=2, background=10)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,'numero'))
+        column.connect("clicked", self._changeOrderBy, (TestataDocumento,TestataDocumento.numero))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
