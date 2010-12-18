@@ -515,8 +515,8 @@ def setRiepilogoArticoloPromoWearPart(anaarti):
         if row[1]:
             anaarti._excludedString += '     - ' + row[index] + '\n'
 
-
-
+    if not testo:
+        testo = ""
     model = anaarti._gruppoTagliaTreeViewModel
     anaarti._includedString = ''
     parseModel(model, buildIncludedString, 4)
@@ -658,4 +658,3 @@ def preparePromoWearPart(anaarti):
     parseModel(anaarti._stagioneTreeViewModel, getStagioniIn, 2)
     parseModel(anaarti._genereTreeViewModel, getGeneriIn, 2)
     parseModel(anaarti._cutisizeTreeViewModel, getCutSizeIn, 2)
-
