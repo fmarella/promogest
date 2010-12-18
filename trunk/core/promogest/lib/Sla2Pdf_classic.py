@@ -435,7 +435,7 @@ class Sla2Pdf_classic(object):
         self.pageObjects = self.document.findall('PAGEOBJECT')
         for pageObject in self.pageObjects:
             isTableItem = pageObject.get('isTableItem') == "1"
-            group = pageObject.get('GROUPS')
+            group = pageObject.get('GROUPS').strip()
             pageNumber = int(pageObject.get('OwnPage')) + 1
             if isTableItem and (group in self.iteratableGroups):
                 itexts = pageObject.findall('ITEXT')
