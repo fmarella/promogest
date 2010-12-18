@@ -73,7 +73,7 @@ class SlaTpl2Sla(SlaParser):
                             l.set("PFILE", os.path.relpath(log_path,os.path.expanduser('~')))
                             print os.path.relpath(log_path,os.path.expanduser('~'))
                         except Exception as e:
-                            Environment.pg2log("ERRORE NELL'INSERIMENTO DEL LOGO"+e)
+                            Environment.pg2log.info("ERRORE NELL'INSERIMENTO DEL LOGO"+e)
         self.pagesNumber = self.getPagesNumber()
         if self.label and self.classic:
             self.duplicateElementLabel()

@@ -363,6 +363,7 @@ class Sla2Pdf_classic(object):
             else:
                 if k.find('(n)') > -1:
                     if increment:
+#                        Environment.pg2log.info(self.tablesProperties)
                         self.tablesProperties[group]['counters'][column - 1] += 1
                     counter = self.tablesProperties[group]['counters'][column - 1]
                     tag = tags[k]['completeTag']
@@ -435,7 +436,7 @@ class Sla2Pdf_classic(object):
         self.pageObjects = self.document.findall('PAGEOBJECT')
         for pageObject in self.pageObjects:
             isTableItem = pageObject.get('isTableItem') == "1"
-            group = pageObject.get('GROUPS').strip()
+            group = pageObject.get('GROUPS')
             pageNumber = int(pageObject.get('OwnPage')) + 1
             if isTableItem and (group in self.iteratableGroups):
                 itexts = pageObject.findall('ITEXT')
