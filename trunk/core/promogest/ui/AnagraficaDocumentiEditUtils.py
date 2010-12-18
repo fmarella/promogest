@@ -586,6 +586,7 @@ def on_moltiplicatore_entry_focus_out_eventPart(anaedit, entry, event):
     altezza = float(anaedit.altezza_entry.get_text() or 0)
     molti = float(anaedit.moltiplicatore_entry.get_text() or 1)
     larghezza = float(anaedit.larghezza_entry.get_text() or 0)
+    quantita = None
     if anaedit._righe[0]["unitaBase"] == "Metri Quadri":
         quantita = CalcolaArea(altezza, larghezza)
     elif anaedit._righe[0]["unitaBase"] == "Metri":
