@@ -129,7 +129,8 @@ class AnagraficaCategorieArticoliDetail(AnagraficaDetail):
 
 
     def updateDao(self):
-        self.dao = CategoriaArticolo().getRecord(id=self.dao.id)
+        if self.dao:
+            self.dao = CategoriaArticolo().getRecord(id=self.dao.id)
         self._refresh()
 
 
