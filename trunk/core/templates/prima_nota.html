@@ -7,7 +7,7 @@ size: A4 portrait;
 margin: 1cm;
 }
 </style>
-<h3 ><strong>DATI PRIMA NOTA</strong></h3>
+<h3 ><strong>DATI TESTATA PRIMA NOTA</strong></h3>
 <table>
 <th width="200">NUMERO</th>
 <th width="200">DATA INIZIO</th>
@@ -18,9 +18,10 @@ margin: 1cm;
 <td ><strong>{{utils.dateToString(dao.data_fine)}}</strong></td>
 </tr>
 </table>
-<br /><br />
+<br />
+<h3 ><strong>DATI OPERAZIONI IN PRIMA NOTA</strong></h3><br />
     <table cellpadding="0" cellspacing="0" border="0">
-        <th><b>NUMERO</b></th>
+        <th><b>N° OP.</b></th>
         <th><b>DATA</b></th>
         <th><b>DESCRIZIONE</b></th>
         <th><b>ENT CASSA</b></th>
@@ -80,8 +81,8 @@ margin: 1cm;
         <td style="color:red" ><b>{{utils.mN(dao.totali["totale"])}}</b></td>
          {% endif %}
 </tr>
-</table>        
-        
-        
-        
+</table>
+
+
+
 {% endblock %}

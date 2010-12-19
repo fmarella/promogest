@@ -444,10 +444,18 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
         self.id_banca_customcombobox.combobox.set_active(-1)
 
     def on_aggiungi_button_clicked(self, button):
-        if (self.denominazione_entry.get_text() == ''):
-            obligatoryField(self.dialogTopLevel, self.denominazione_entry)
-        if self.data_inserimento_datewidget.get_text() == "":
-            obligatoryField(self.dialogTopLevel, self.data_inserimento_datewidget)
+        """ Aggiunge la riga con i campi di denominazione e valore cassa o banca
+            entrata o uscita """
+        if self.denominazione_entry.get_text() == '' or \
+            self.denominazione_entry.get_text == None:
+            obligatoryField(self.dialogTopLevel, self.denominazione_entry,
+            msg="Campo obbligatorio: DENOMINAZIONE!")
+
+        if self.data_inserimento_datewidget.get_text() == "" or \
+            self.data_inserimento_datewidget.get_text() == None:
+            obligatoryField(self.dialogTopLevel, self.data_inserimento_datewidget,
+            msg= "Campo obbligatorio: DATA INSERIMENTO!")
+
         model = self.riga_primanota_treeview.get_model()
         if self.editRiga:
             riga = self.editRiga
@@ -455,10 +463,24 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
         else:
             riga = RigaPrimaNota()
             riga.numero = len(model)+1
+
         data_registrazione = stringToDate(self.data_inserimento_datewidget.get_text())
         riga.data_registrazione = data_registrazione
         denominazione = self.denominazione_entry.get_text()
         riga.denominazione = denominazione
+        print "APAPAPAPAPPAPPA", repr(self.entrata_cassa_entry.get_text().replace(",",".").strip())
+        if self.entrata_cassa_entry.get_text().replace(",",".").strip() in [ "", None, "0"] and \
+            self.entrata_cassa_radio.get_active():
+            messageInfo(msg="ATTENZIONE!\n\nVALORE Entrata cassa = zero")
+        if self.uscita_cassa_entry.get_text().replace(",",".").strip() in [ "", None, "0"] and \
+            self.uscita_cassa_radio.get_active():
+            messageInfo(msg="ATTENZIONE!\n\nVALORE Uscita cassa = zero")
+        if self.entrata_banca_entry.get_text().replace(",",".").strip() in [ "", None, "0"] and \
+            self.entrata_banca_radio.get_active():
+            messageInfo(msg="ATTENZIONE!\n\nVALORE Entrata banca = zero")
+        if self.uscita_banca_entry.get_text().replace(",",".").strip() in [ "", None, "0"] and \
+            self.uscita_banca_radio.get_active():
+            messageInfo(msg="ATTENZIONE!\n\nVALORE Uscita banca = zero")
         cassa_entrata = Decimal(self.entrata_cassa_entry.get_text().replace(",",".").strip() or 0)
         cassa_uscita = Decimal(self.uscita_cassa_entry.get_text().replace(",",".").strip() or 0)
         banca_entrata = Decimal(self.entrata_banca_entry.get_text().replace(",",".").strip() or 0)
@@ -562,16 +584,17 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
         self.saldo_label.set_markup(b(c(str(mN(self.saldo())+mN(tot_saldo)), "blue")))
 
     def on_rimuovi_button_clicked(self, button):
-        """ Elimina la riga di prima nota selezioata"""
-        dao = RigaPrimaNota().getRecord(id=self.editRiga.id)
-        rpn = RigaPrimaNotaTestataDocumentoScadenza().select(idRigaPrimaNota=dao.id)
-        if rpn:
-            for r in rpn:
-                r.delete()
-        dao.delete()
-        self._editModel.remove(self._editIterator)
-        self.clear()
-        self.calcolaTotali(self._editModel)
+        """ Elimina la riga di prima nota selezionata"""
+        if self.editRiga:
+            dao = RigaPrimaNota().getRecord(id=self.editRiga.id)
+            rpn = RigaPrimaNotaTestataDocumentoScadenza().select(idRigaPrimaNota=dao.id)
+            if rpn:
+                for r in rpn:
+                    r.delete()
+            dao.delete()
+            self._editModel.remove(self._editIterator)
+            self.clear()
+            self.calcolaTotali(self._editModel)
 
     def on_riga_primanota_treeview_row_activated(self,treeview, path, column):
         sel = self.riga_primanota_treeview.get_selection()

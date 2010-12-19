@@ -24,6 +24,7 @@ import hashlib
 import os
 import gtk
 import datetime
+import random
 import threading
 import webbrowser
 #from  subprocess import *
@@ -44,7 +45,6 @@ from promogest.lib import feedparser
 from promogest.lib import HtmlHandler
 from promogest.ui.StatusBar import Pg2StatusIcon
 
-#754181316
 
 class Login(GladeApp):
 
@@ -80,15 +80,8 @@ class Login(GladeApp):
             model.append((a.schemaa, a.denominazione))
 
         Environment.windowGroup.append(self.getTopLevel())
-        if Environment.engine.name == "sqlite": #forzo lo splash per lite
-            fileSplashImage = "gui/splash_pg2_lite.png"
-            self.login_tipo_label.set_markup("<b>PromoGest 'ONE'</b>")
-            self.urll = "http://www.promotux.it/promoGest/preventivo_one"
-        else:
-            fileSplashImage=self.randomSplash() #splash random
-            self.login_tipo_label.set_markup("<b>PromoGest 'PRO'</b>")
-            self.urll = "http://www.promotux.it/promoGest/preventivo_pro"
-        self.splash_image.set_from_file(fileSplashImage)
+
+        self.splashHandler()
         dateTimeLabel = datetime.datetime.now().strftime('%d/%m/%Y  %H:%M')
         self.date_label.set_text(dateTimeLabel)
         renderer = gtk.CellRendererText()
@@ -122,14 +115,32 @@ class Login(GladeApp):
     def on_logo_button_clicked(self, button):
         webbrowser.open_new_tab(self.urll)
 
-    def randomSplash(self):
-        """
-        take a random splash for pg2 login window
-        """
-        import random
-        randomFile = random.sample([1, 2, 3, 4, 5, 6, 7, 8], 1)[0]
-        fileName = Environment.conf.guiDir + "splash["+str(randomFile)+"].png"
-        return fileName
+
+    def splashHandler(self):
+        data = datetime.datetime.now()
+        if data > datetime.datetime(data.year,12,15) or \
+            data < datetime.datetime(data.year+1,1,10):
+            randomFile = random.sample([1, 2, 3, 4], 1)[0]
+            fileSplashImage = Environment.conf.guiDir + "natale["+str(randomFile)+"].png"
+            if Environment.engine.name == "sqlite":
+                self.login_tipo_label.set_markup("<b>PromoGest 'ONE'</b>")
+                self.urll = "http://www.promotux.it/promoGest/preventivo_one"
+            else:
+                self.login_tipo_label.set_markup("<b>PromoGest 'PRO'</b>")
+                self.urll = "http://www.promotux.it/promoGest/preventivo_pro"
+        else:
+            if Environment.engine.name == "sqlite": #forzo lo splash per lite
+                fileSplashImage = "gui/splash_pg2_lite.png"
+                self.login_tipo_label.set_markup("<b>PromoGest 'ONE'</b>")
+                self.urll = "http://www.promotux.it/promoGest/preventivo_one"
+            else:
+                randomFile = random.sample([1, 2, 3, 4, 5, 6, 7, 8], 1)[0]
+                fileSplashImage = Environment.conf.guiDir + "splash["+str(randomFile)+"].png"
+                self.login_tipo_label.set_markup("<b>PromoGest 'PRO'</b>")
+                self.urll = "http://www.promotux.it/promoGest/preventivo_pro"
+        self.splash_image.set_from_file(fileSplashImage)
+
+
 
     def feddretreive(self):
         """ FIXME """
