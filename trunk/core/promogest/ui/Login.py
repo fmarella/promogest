@@ -121,6 +121,7 @@ class Login(GladeApp):
         if data > datetime.datetime(data.year,12,15) or \
             data < datetime.datetime(data.year+1,1,10):
             randomFile = random.sample([1, 2, 3, 4], 1)[0]
+            print "RANDOM FILE NUMERO", randomFile
             fileSplashImage = Environment.conf.guiDir + "natale["+str(randomFile)+"].png"
             if Environment.engine.name == "sqlite":
                 self.login_tipo_label.set_markup("<b>PromoGest 'ONE'</b>")
