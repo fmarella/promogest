@@ -120,7 +120,7 @@ class Login(GladeApp):
         data = datetime.datetime.now()
         if data > datetime.datetime(data.year,12,15) or \
             data < datetime.datetime(data.year+1,1,10):
-            randomFile = random.sample([1, 2, 3, 4], 1)[0]
+            randomFile = random.sample([1, 2, 3, 4, 5], 1)[0]
             print "RANDOM FILE NUMERO", randomFile
             fileSplashImage = Environment.conf.guiDir + "natale["+str(randomFile)+"].png"
             if Environment.engine.name == "sqlite":

@@ -170,8 +170,8 @@ class DuplicazioneDocumento(GladeWidget):
             indice_prezzo_combobox = self.id_prezzo_combobox.get_model()[self.id_prezzo_combobox.get_active()][1]
             if  indice_prezzo_combobox == 0:
               daoRiga.id_listino = r.id_listino
-              daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
-              daoRiga.valore_unitario_netto = r.valore_unitario_netto
+              daoRiga.valore_unitario_lordo = r.valore_unitario_lordo or 0
+              daoRiga.valore_unitario_netto = r.valore_unitario_netto or 0
             elif indice_prezzo_combobox == 1:
               daoRiga.id_listino = r.id_listino
               daoRiga.valore_unitario_lordo = 0
