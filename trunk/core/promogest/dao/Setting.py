@@ -57,5 +57,9 @@ if (u'Ordine beni strumentali.registro',) not in s or s==[]:
     settinggg.execute(key = "Ordine beni strumentali.registro", description = "Registro associato a Ordine beni strumentali", value= "registro_ordine_beni_strumentali")
     settinggg.execute(key = "registro_ordine_beni_strumentali.rotazione", description = "Tipologia di rotazione registro associato a Ordine beni strumentali ", value= "annuale")
 
+if (u'Preventivo dettaglio.registro',) not in s or s==[]:
+    settinggg  = settingg.insert()
+    settinggg.execute(key = "Preventivo dettaglio.registro", description = "Registro associato a Preventivo dettaglio", value= "registro_preventivo")
+
 
 std_mapper = mapper(Setting, settingg, order_by=settingg.c.key)
