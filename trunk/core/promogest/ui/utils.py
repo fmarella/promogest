@@ -2731,7 +2731,7 @@ def checkInstallation():
             con.section = "Master"
             con.description = "codice identificativo della propria installazione"
             con.tipo_section = "General"
-            con.tipo = "ONE"
+            con.tipo = "ONE BASIC"
             con.active = True
             con.date = datetime.datetime.now()
             con.persist()

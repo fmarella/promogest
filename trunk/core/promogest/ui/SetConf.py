@@ -185,7 +185,7 @@ if not SetConf().select(key="install_code",section="Master"):
     kmm.section = "Master"
     kmm.description = "codice identificativo della propria installazione"
     kmm.tipo_section = "General"
-    kmm.tipo = "ONE"
+    kmm.tipo = "ONE BASIC"
     kmm.active = True
     kmm.date = datetime.datetime.now()
     kmm.persist()
