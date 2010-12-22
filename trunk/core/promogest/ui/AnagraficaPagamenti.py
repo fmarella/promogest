@@ -136,19 +136,9 @@ class AnagraficaPagamentiDetail(AnagraficaDetail):
 
     def setDao(self, dao):
         if dao is None:
-            if "Pagamentilite" in dir(Environment.conf) and\
-                         Environment.conf.Pagamentilite.mod_enable =="yes":
-                self.dao = Pagamento()
-                self._anagrafica._newRow((self.dao, ''))
-                self._refresh()
-            elif Environment.engine.name =="sqlite" and\
-                                         Pagamento().count() >= 3:
-                fenceDialog()
-                return
-            else:
-                self.dao = Pagamento()
-                self._anagrafica._newRow((self.dao, '',''))
-                self._refresh()
+            self.dao = Pagamento()
+            self._anagrafica._newRow((self.dao, '',''))
+            self._refresh()
         else:
             self.dao = dao
         return self.dao
@@ -171,9 +161,10 @@ class AnagraficaPagamentiDetail(AnagraficaDetail):
         (model, iterator) = sel.get_selected()
         denominazione = model.get_value(iterator, 1) or ''
         tipo = model.get_value(iterator, 2) or ''
-        if (denominazione == ''):
+        if denominazione == '' or denominazione == None:
             obligatoryField(self._anagrafica.getTopLevel(),
-                                        self._anagrafica.anagrafica_treeview)
+                                self._anagrafica.anagrafica_treeview,
+                                msg="Campo Obbligatorio:Denominazione Pagamento!")
         self.dao.denominazione = denominazione
         self.dao.tipo = tipo
         self.dao.persist()
