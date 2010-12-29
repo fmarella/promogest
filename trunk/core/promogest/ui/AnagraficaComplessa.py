@@ -1097,6 +1097,7 @@ class AnagraficaHtml(object):
                                             report=self._anagrafica._reportType,
                                             classic = True,
                                             template_file=template_file)
+            Environment.pg2log.info("DAO IN STAMPA CLASSIC: "+str(self.dao))
             return self._slaTemplateObj.serialize(param, classic = True,dao=self.dao)
 
     def cancelOperation(self):
