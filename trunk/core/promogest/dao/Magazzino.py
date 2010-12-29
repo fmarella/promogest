@@ -11,18 +11,22 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
+from migrate import *
 
 
-magazzinoTable=Table('magazzino',params['metadata'],schema = params['schema'],autoload=True)
-if "magazzino.pvcode" not in str(magazzinoTable.columns):
-    #print "AGGIUNGO LA COLONNA PVCODE"
-    conn = params["engine"].connect()
-    trans = conn.begin()
-    if tipodb == "sqlite":
-        conn.execute("ALTER TABLE magazzino ADD COLUMN pvcode varchar(3);")
-    else:
-        conn.execute("ALTER TABLE "+ params['schema']+".magazzino"+" ADD COLUMN pvcode varchar(3);")
-    trans.commit()
+#magazzinoTable=Table('magazzino',params['metadata'],schema = params['schema'],autoload=True)
+#if "magazzino.pvcode" not in str(magazzinoTable.columns):
+#    #print "AGGIUNGO LA COLONNA PVCODE"
+#    conn = params["engine"].connect()
+#    trans = conn.begin()
+#    if tipodb == "sqlite":
+#        conn.execute("ALTER TABLE magazzino ADD COLUMN pvcode varchar(3);")
+#    else:
+#        conn.execute("ALTER TABLE "+ params['schema']+".magazzino"+" ADD COLUMN pvcode varchar(3);")
+#    trans.commit()
+
+
+
 
 class Magazzino(Dao):
 
@@ -34,5 +38,11 @@ class Magazzino(Dao):
         return  dic[k]
 
 magazzino=Table('magazzino',params['metadata'],schema = params['schema'],autoload=True)
+
+if "pvcode_" not in [c.name for c in magazzino.columns]:
+    col = Column('pvcode_', String)
+    col.create(magazzino)
+
+
 
 std_mapper = mapper(Magazzino, magazzino, order_by=magazzino.c.id)

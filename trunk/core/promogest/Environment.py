@@ -185,7 +185,7 @@ def _pg8000():
         return engine
     except:
 #        pg2log.info("PG8000 NON PRESENTE")
-        return False
+        return None
 
 def _py_postgresql():
     try:
@@ -201,7 +201,7 @@ def _py_postgresql():
         return engine
     except:
 #        pg2log.info("PY-POSTGRESQL NON PRESENTE")
-        return False
+        return None
 
 def connect():
     import psycopg2
@@ -231,7 +231,7 @@ def _psycopg2new():
 #                    convert_unicode=True,proxy=MyProxy() )
         return engine
     except:
-        return False
+        return None
 
 def _psycopg2old():
     try:
@@ -248,7 +248,7 @@ def _psycopg2old():
         return engine
     except:
 #        pg2log.info("PSYCOPG2 OLD NON PRESENTE")
-        return False
+        return None
 
 
 try:
@@ -500,7 +500,8 @@ else:
         engine = _psycopg2new()
     if not engine:
         engine = _psycopg2old()
-
+if not engine:
+    raise Exception, "NON È STATO TROVATO UN BACKEND PER IL DB"
 tipo_eng = engine.name
 engine.echo = False
 meta = MetaData(engine)
