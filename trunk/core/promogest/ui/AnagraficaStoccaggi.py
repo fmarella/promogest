@@ -355,16 +355,16 @@ class AnagraficaStoccaggiEdit(AnagraficaEdit):
 #                response = dialog.run()
 #                dialog.destroy()
 #                raise Exception("Tentativo di inserimento di un articolo esistente")
-                a[0].scorta_minima = int(self.scorta_minima_entry.get_text())
-                a[0].livello_riordino = int(self.livello_riordino_entry.get_text())
+                a[0].scorta_minima = int(self.scorta_minima_entry.get_text() or 0)
+                a[0].livello_riordino = int(self.livello_riordino_entry.get_text() or 0)
                 a[0].data_fine_scorte = stringToDate(self.data_fine_scorte_entry.get_text())
                 a[0].data_prossimo_ordine = stringToDate(self.data_prossimo_ordine_entry.get_text())
                 a[0].persist()
                 return
         self.dao.id_magazzino = idMagazzino
         self.dao.id_articolo = idArticolo
-        self.dao.scorta_minima = int(self.scorta_minima_entry.get_text())
-        self.dao.livello_riordino = int(self.livello_riordino_entry.get_text())
+        self.dao.scorta_minima = int(self.scorta_minima_entry.get_text() or 0)
+        self.dao.livello_riordino = int(self.livello_riordino_entry.get_text() or 0)
         self.dao.data_fine_scorte = stringToDate(self.data_fine_scorte_entry.get_text())
         self.dao.data_prossimo_ordine = stringToDate(self.data_prossimo_ordine_entry.get_text())
         self.dao.persist()
