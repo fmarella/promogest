@@ -2241,7 +2241,7 @@ def numeroRegistroGet(tipo=None, date=None):
     _key= str(tipo+".registro").strip()
     registro = Setting().getRecord(id=_key)
     if not registro :
-        raise "ATTENZIONE , Registro numerazione non trovato"
+        raise Exception, "ATTENZIONE , Registro numerazione non trovato"
 
     registrovalue = registro.value
     registrovalueforrotazione = registrovalue+".rotazione"

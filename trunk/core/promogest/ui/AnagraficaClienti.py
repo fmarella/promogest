@@ -49,6 +49,31 @@ class AnagraficaClienti(Anagrafica):
                             aziendaStr=aziendaStr)
         self.records_file_export.set_sensitive(True)
 
+    def on_record_delete_activate(self, widget):
+        dialog = gtk.MessageDialog(self.getTopLevel(),
+                                   gtk.DIALOG_MODAL
+                                   | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                                   'Confermi l\'eliminazione ?')
+
+        response = dialog.run()
+        dialog.destroy()
+        if response !=  gtk.RESPONSE_YES:
+            return
+
+        #verificare se ci sono relazioni con documenti o con contatti o recapiti
+        #chiedere se si vuole rimuovere ugualmente tutto, nel caso procedere
+        #davvero alla rimozione ed a quel punto gestire il "delete" a livello di
+        #dao
+        dao = self.filter.getSelectedDao()
+        print dao.__dict__
+#        dao.delete()
+#        self.filter.refresh()
+#        self.htmlHandler.setDao(None)
+#        self.setFocus()
+
+
+
 class AnagraficaClientiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei clienti """
 

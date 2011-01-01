@@ -43,7 +43,6 @@ class AnagraficaFamiglieArticoli(Anagrafica):
 
         dao = self.filter.getSelectedDao()
         usata = Articolo().select(idFamiglia=dao.id, batchSize=None)
-        print "USATAAAAAAAAAAAAAAAAAAAAAAAA", usata
         if usata:
             msg = """NON è possibile cancellare questa FAMIGLIA ARTICOLO
 perchè abbinata ad uno o più articoli
