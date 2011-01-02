@@ -141,7 +141,7 @@ class RicercaContattiFilter(RicercaFilter):
         self.id_fornitore_filter_customcombobox.set_active(0)
         self.id_magazzino_filter_combobox.set_active(0)
         self.schema_azienda_filter_combobox.set_active(0)
-        self.appartenenza_filter_entry.set_text('')
+#        self.appartenenza_filter_entry.set_text('')
         self.cognome_nome_filter_entry.set_text('')
         self.ruolo_filter_entry.set_text('')
         self.descrizione_filter_entry.set_text('')
@@ -255,14 +255,15 @@ class RicercaContattiFilter(RicercaFilter):
                                  batchSize=self.batchSize)
 
         else:
-            appartenenza = prepareFilterString(self.appartenenza_filter_entry.get_text())
+#            appartenenza = prepareFilterString(self.appartenenza_filter_entry.get_text())
             self.numRecords = Contatto().count(cognomeNome=cognomeNome,
                                            ruolo=ruolo,
                                            descrizione=descrizione,
                                            recapito=recapito,
                                            tipoRecapito=tipoRecapito,
                                            idCategoria=idCategoria,
-                                           appartenenza=appartenenza)
+#                                           appartenenza=appartenenza
+                                           )
 
             self._refreshPageCount()
 
@@ -273,7 +274,7 @@ class RicercaContattiFilter(RicercaFilter):
                                  recapito=recapito,
                                  tipoRecapito=tipoRecapito,
                                  idCategoria=idCategoria,
-                                 appartenenza=appartenenza,
+#                                 appartenenza=appartenenza,
                                  offset=self.offset,
                                  batchSize=self.batchSize)
 
@@ -300,7 +301,7 @@ class RicercaContattiFilter(RicercaFilter):
             self.id_magazzino_filter_combobox.set_sensitive(False)
             self.schema_azienda_filter_combobox.set_active(0)
             self.schema_azienda_filter_combobox.set_sensitive(False)
-            self.appartenenza_filter_entry.set_sensitive(False)
+#            self.appartenenza_filter_entry.set_sensitive(False)
         elif self.fornitore_filter_radiobutton.get_active():
             self.id_fornitore_filter_customcombobox.set_sensitive(True)
             self.id_fornitore_filter_customcombobox.grab_focus()
@@ -310,7 +311,7 @@ class RicercaContattiFilter(RicercaFilter):
             self.id_magazzino_filter_combobox.set_sensitive(False)
             self.schema_azienda_filter_combobox.set_active(0)
             self.schema_azienda_filter_combobox.set_sensitive(False)
-            self.appartenenza_filter_entry.set_sensitive(False)
+#            self.appartenenza_filter_entry.set_sensitive(False)
         elif self.magazzino_filter_radiobutton.get_active():
             self.id_magazzino_filter_combobox.set_sensitive(True)
             self.id_magazzino_filter_combobox.grab_focus()
@@ -320,7 +321,7 @@ class RicercaContattiFilter(RicercaFilter):
             self.id_fornitore_filter_customcombobox.set_sensitive(False)
             self.schema_azienda_filter_combobox.set_active(0)
             self.schema_azienda_filter_combobox.set_sensitive(False)
-            self.appartenenza_filter_entry.set_sensitive(False)
+#            self.appartenenza_filter_entry.set_sensitive(False)
         elif self.azienda_filter_radiobutton.get_active():
             self.schema_azienda_filter_combobox.set_sensitive(True)
             self.schema_azienda_filter_combobox.grab_focus()
@@ -330,10 +331,10 @@ class RicercaContattiFilter(RicercaFilter):
             self.id_fornitore_filter_customcombobox.set_sensitive(False)
             self.id_magazzino_filter_combobox.set_active(0)
             self.id_magazzino_filter_combobox.set_sensitive(False)
-            self.appartenenza_filter_entry.set_sensitive(False)
+#            self.appartenenza_filter_entry.set_sensitive(False)
         elif self.generico_filter_radiobutton.get_active():
-            self.appartenenza_filter_entry.set_sensitive(True)
-            self.appartenenza_filter_entry.grab_focus()
+#            self.appartenenza_filter_entry.set_sensitive(True)
+#            self.appartenenza_filter_entry.grab_focus()
             self.id_cliente_filter_customcombobox.set_active(0)
             self.id_cliente_filter_customcombobox.set_sensitive(False)
             self.id_fornitore_filter_customcombobox.set_active(0)
