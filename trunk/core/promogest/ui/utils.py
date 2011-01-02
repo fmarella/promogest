@@ -2909,7 +2909,7 @@ def c(stringa, color):
     return stringa
 
 def scribusVersion(slafile):
-    print "QUESTO E' IL FILE SLA", slafile
+    Environment.pg2log.info( "QUESTO E' IL FILE SLA"+ slafile)
     try:
         doc = ET.parse(slafile)
     except:
@@ -2918,9 +2918,12 @@ def scribusVersion(slafile):
     root = doc.getroot()
     document = doc.findall('DOCUMENT')[0]
     slaversion = root.get('Version')
-    print "FILE SLA DA VERIFICARE PRIMA DLLA STAMPA", slafile
-    print "VERSIONE SLA", slaversion
-    if "1.3.6" in slaversion or "1.3.7" in slaversion or "1.3.8" in slaversion:
+    Environment.pg2log.info( "FILE SLA DA VERIFICARE PRIMA DLLA STAMPA "+ slafile)
+    Environment.pg2log.info("VERSIONE SLA  "+ str(slaversion))
+    if "1.3.6" in slaversion or \
+            "1.3.7" in slaversion or\
+             "1.3.8" in slaversion or\
+             "1.3.9" in slaversion:
         Environment.new_print_enjine=True
         return True
     elif "1.3.5.1" in slaversion or "1.3.5svn" in slaversion:
