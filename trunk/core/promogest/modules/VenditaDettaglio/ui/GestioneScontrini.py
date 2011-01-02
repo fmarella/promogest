@@ -199,15 +199,6 @@ class GestioneScontrini(GladeWidget):
                                                                       idPuntoCassa = idPuntoCassa)
         self.filterss._refreshPageCount()
 
-#        self.filters.tot_daos_label.set_text(str(self.filterss.numRecords))
-#        if self.filters.batchsize_combo.get_active_iter():
-#            iterator = self.filters.batchsize_combo.get_active_iter()
-#            model = self.filters.batchsize_combo.get_model()
-#            if iterator is not None:
-#                print " TUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU", model.get_value(iterator, 0)
-#                self.filterss.batchSize = model.get_value(iterator, 0)
-
-
         scos = TestataScontrino().select( orderBy=self.filterss.orderBy,
                                                      idArticolo=idArticolo,
                                                      daData=daData,

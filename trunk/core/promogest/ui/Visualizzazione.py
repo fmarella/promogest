@@ -99,7 +99,6 @@ class VisualizzazioneFilter(GladeWidget):
 
         # mapping fields and methods from bodyWidget to this class
         self._changeOrderBy = self.bodyWidget._changeOrderBy
-        print  "VEDIAMO UN PO", self.bodyWidget._changeOrderBy
         self.orderBy = self.bodyWidget.orderBy = None
         self.batchSize = self.bodyWidget.batchSize = 30
         self.offset = self.bodyWidget.offset = 0

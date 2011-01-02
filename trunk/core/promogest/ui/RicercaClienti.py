@@ -130,7 +130,6 @@ class RicercaClientiFilter(RicercaFilter):
 
     def refresh(self):
         # Aggiornamento TreeView
-        print "AHHHHHHHHHHHHHDO)DDODDODOOODDO"
         codice = prepareFilterString(self.codice_filter_entry.get_text())
         ragioneSociale = prepareFilterString(self.ragione_sociale_filter_entry.get_text())
         insegna = prepareFilterString(self.insegna_filter_entry.get_text())

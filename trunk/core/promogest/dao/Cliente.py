@@ -93,7 +93,6 @@ def getNuovoCodiceCliente():
                 pass
     return codice
 
-
 persona_giuridica=Table('persona_giuridica', params['metadata'],schema = params['schema'], autoload=True)
 cliente=Table('cliente', params['metadata'],schema = params['schema'], autoload=True)
 j = join(cliente, persona_giuridica)

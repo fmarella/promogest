@@ -30,7 +30,6 @@ from promogest.ui.utils import *
 
 
 try:
-
     testataprimanota=Table('testata_prima_nota',
             params['metadata'],
             schema = params['schema'],

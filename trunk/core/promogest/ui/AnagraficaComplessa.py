@@ -1082,7 +1082,7 @@ class AnagraficaHtml(object):
         versione = scribusVersion(self._slaTemplate)
 
         if Environment.new_print_enjine:
-            stpl2sla = SlaTpl2Sla_ng(slafile=None,labedl=None, report=None,
+            stpl2sla = SlaTpl2Sla_ng(slafile=None,label=None, report=None,
                                     objects=param,
                                     daos=self.dao,
                                     slaFileName=self._slaTemplate,
