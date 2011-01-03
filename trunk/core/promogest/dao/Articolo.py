@@ -81,9 +81,10 @@ class Articolo(Dao):
             return ""
 
     def _setGiacenzaArticolo(self):
-        giace =giacenzaArticolo(year=Environment.workingYear,
-                                        idArticolo=self.id)
-        return giace
+#        giace =giacenzaArticolo(year=Environment.workingYear,
+#                                        idArticolo=self.id)
+#        return giace
+        return 0
     giacenza = property(_setGiacenzaArticolo)
 
 
