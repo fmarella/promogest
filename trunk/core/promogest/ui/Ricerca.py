@@ -170,7 +170,6 @@ class RicercaFilter(GladeWidget):
         raise NotImplementedError
 
 
-
     def refresh(self):
         """ Aggiorna il filtro di ricerca in base ai parametri impostati """
         raise NotImplementedError

@@ -45,11 +45,11 @@ class Operazione(Dao):
 
 operazione=Table('operazione',params['metadata'],schema = params['mainSchema'],autoload=True)
 
-
 s= select([operazione.c.denominazione]).execute().fetchall()
 if (u'Fattura pro-forma',) not in s or s==[]:
     ope  = operazione.insert()
-    ope.execute(denominazione = "Fattura pro-forma", fonte_valore = "vendita_senza_iva", tipo_persona_giuridica="cliente", tipo_operazione="documento")
+    ope.execute(denominazione = "Fattura pro-forma", fonte_valore = "vendita_senza_iva",
+    tipo_persona_giuridica="cliente", tipo_operazione="documento")
 
 if (u'Ordine a magazzino',) not in s or s==[]:
     ope  = operazione.insert()
