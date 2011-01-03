@@ -272,7 +272,6 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
 
     def refresh(self):
         # Aggiornamento TreeView
-
         denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())
         produttore = prepareFilterString(self.produttore_filter_entry.get_text())
         codice = prepareFilterString(self.codice_filter_entry.get_text())
@@ -319,6 +318,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         arts = self.runFilter()
         self._treeViewModel.clear()
         for a in arts:
+            print a, a.__dict__
             modelRowPromoWear = []
             modelRow = []
             col = None

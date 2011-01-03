@@ -130,9 +130,14 @@
         </td>
             </tr>
 
-    <tr><td colspan="4" class="table-header" py:if="dao.note">Note</td></tr>
+    <tr><td colspan="4" class="table-header">Note</td></tr>
             <tr>
                 <td class="odd-detail"><strong>{{dao.note|nonone}}</strong>
+                </td>
+            </tr>
+             <tr><td colspan="4" class="table-header"">GIACENZA</td></tr>
+            <tr>
+                <td class="odd-detail"><strong>{{dao.giacenza|nonone or 0}}</strong>
                 </td>
             </tr>
         </table>

@@ -716,6 +716,22 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     'Inserire l\'intestatario del documento !')
 
         self.dao.data_documento = stringToDate(self.data_documento_entry.get_text())
+        date = time.strftime("%Y")
+        if date != Environment.workingYear:
+            print "ATTENZIONE ANNO DI LAVORO DIVERSO QUALE PRENDERE??????"
+            msg = """ ATTENZIONE!!
+    L'anno di lavoro e l'anno di creazione documento non corrispondono.
+       Vuoi che la DATA UTILIZZATA SIA 31/12/%s?
+
+        """ %str(Environment.workingYear)
+            dialog = gtk.MessageDialog(None,
+                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                        gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+            response = dialog.run()
+            dialog.destroy()
+            if response == gtk.RESPONSE_YES:
+                self.dao.data_documento = stringToDate("31/12/"+Environment.workingYear)
+
         if self.dao.id is not None and self.numero_documento_entry.get_text() != '0':
 
             if self.data_documento_entry.get_text() != self._controllo_data_documento\
@@ -865,7 +881,8 @@ del documento.
         tipoid = findIdFromCombobox(self.id_operazione_combobox)
         tipo = Operazione().getRecord(id=tipoid)
         if not self.dao.numero:
-            valori = numeroRegistroGet(tipo=tipo.denominazione, date=self.data_documento_entry.get_text())
+            valori = numeroRegistroGet(tipo=tipo.denominazione,
+            date=self.data_documento_entry.get_text())
             self.dao.numero = valori[0]
             self.dao.registro_numerazione= valori[1]
         #porto in persist tre dizionari: uno per gli sconti sul totale, l'altro per gli sconti sulle righe e le righe stesse

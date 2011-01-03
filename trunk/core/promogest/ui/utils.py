@@ -2236,6 +2236,21 @@ def numeroRegistroGet(tipo=None, date=None):
     from promogest.dao.TestataDocumento import TestataDocumento
     from promogest.dao.Setting import Setting
     date = time.strftime("%Y")
+    if date != Environment.workingYear:
+        print "ATTENZIONE ANNO DI LAVORO DIVERSO QUALE PRENDERE??????"
+        msg = """ ATTENZIONE!!
+L'anno di lavoro e l'anno di creazione documento non corrispondono.
+   Vuoi che la numerazione incrementi l'anno di lavoro selezionato ( %s )?
+
+    """ %str(Environment.workingYear)
+        dialog = gtk.MessageDialog(None,
+                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                    gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+        response = dialog.run()
+        dialog.destroy()
+        if response == gtk.RESPONSE_YES:
+            date = Environment.workingYear
+
     numeri = []
 
     _key= str(tipo+".registro").strip()

@@ -24,6 +24,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
+from promogest.dao.DaoUtils import giacenzaArticolo
 from promogest import Environment
 from Imballaggio import Imballaggio
 from AliquotaIva import AliquotaIva
@@ -78,6 +79,14 @@ class Articolo(Dao):
                 return a.codice
         except:
             return ""
+
+    def _setGiacenzaArticolo(self):
+        giace =giacenzaArticolo(year=Environment.workingYear,
+                                        idArticolo=self.id)
+        return giace
+    giacenza = property(_setGiacenzaArticolo)
+
+
 
     @property
     def codice_articolo_fornitore(self):
