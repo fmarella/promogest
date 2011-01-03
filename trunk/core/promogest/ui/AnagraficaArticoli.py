@@ -318,7 +318,7 @@ class AnagraficaArticoliFilter(AnagraficaFilter):
         arts = self.runFilter()
         self._treeViewModel.clear()
         for a in arts:
-            print a, a.__dict__
+#            print a, a.__dict__
             modelRowPromoWear = []
             modelRow = []
             col = None

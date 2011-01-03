@@ -80,12 +80,13 @@ class Articolo(Dao):
         except:
             return ""
 
-    def _setGiacenzaArticolo(self):
-#        giace =giacenzaArticolo(year=Environment.workingYear,
-#                                        idArticolo=self.id)
-#        return giace
-        return 0
-    giacenza = property(_setGiacenzaArticolo)
+    def getGiacenza(self):
+        giace =giacenzaArticolo(year=Environment.workingYear,
+                                        idArticolo=self.id,
+                                        allMag=True)
+        return giace
+#        return 0
+#    giacenza = property(_setGiacenzaArticolo)
 
 
 
