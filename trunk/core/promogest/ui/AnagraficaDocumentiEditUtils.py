@@ -234,8 +234,8 @@ def calcolaTotalePart(anaedit, dao=None):
     anaedit.avvertimento_sconti_button.set_sensitive(False)
     anaedit.avvertimento_sconti_button.hide()
     for i in range(1, len(anaedit._righe)):
-        prezzoNetto = Decimal(anaedit._righe[i]["prezzoNetto"])
-        quantita = Decimal(anaedit._righe[i]["quantita"])
+        prezzoNetto = Decimal(str(anaedit._righe[i]["prezzoNetto"]))
+        quantita = Decimal(str(anaedit._righe[i]["quantita"]))
         moltiplicatore = Decimal(str(anaedit._righe[i]["moltiplicatore"]))
         percentualeIva = Decimal(str(anaedit._righe[i]["percentualeIva"]))
 
