@@ -35,7 +35,7 @@ from promogest.dao.Stoccaggio import Stoccaggio
 from promogest.dao.Listino import Listino
 from promogest.ui.GladeWidget import GladeWidget
 from promogest.ui.utils import *
-from promogest.dao.DaoUtils import giacenzaArticolo, calcolaGiacenza
+from promogest.dao.DaoUtils import giacenzaArticolo
 from sqlalchemy import func
 
 if posso("PW"):
