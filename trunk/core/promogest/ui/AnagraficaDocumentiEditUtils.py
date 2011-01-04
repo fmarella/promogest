@@ -463,7 +463,7 @@ def mostraArticoloPart(anaedit, id, art=None):
         if posso("GN") and anaedit.noleggio:
             anaedit._righe[0]["divisore_noleggio"] = artic.divisore_noleggio
             anaedit.coeficente_noleggio_entry.set_text(str(anaedit._righe[0]["divisore_noleggio"]))
-            anaedit.getPrezzoAcquisto()
+            anaedit._getPrezzoAcquisto()
 
         anaedit._righe[0]["prezzoLordo"] = 0
         anaedit._righe[0]["prezzoNetto"] = 0
