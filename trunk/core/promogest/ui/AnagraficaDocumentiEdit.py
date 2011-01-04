@@ -392,7 +392,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             return
         self.calcolaTotale()
 
-    def on_notebook_select_page(self,notebook,page, page_num):
+    def on_notebook_select_page(self,notebook,move_focus=None, page=None, page_num=None):
         """ AL MOMENTO INUTILIZZATA"""
         return
 
