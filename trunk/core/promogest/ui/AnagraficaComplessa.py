@@ -987,7 +987,7 @@ class AnagraficaHtml(object):
         html = "<html><body></body></html>"
         if not self._gtkHtml:
             self._gtkHtml = self._anagrafica.getHtmlWidget()
-        if self.dao:
+        if self.dao. and self.dao.__class__.__name__ =="Articolo":
             if posso("GN"):
                 from promogest.dao.TestataDocumento import TestataDocumento
                 from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
