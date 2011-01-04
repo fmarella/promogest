@@ -1405,7 +1405,7 @@ del documento.
         # metto il totale riga nella label apposita"
         self.totale_riga_label.set_text(str(self._righe[0]["totale"]))
         if posso("GN") and self.noleggio:
-            totaleNoleggio = totaleNoleggio()
+            totaleNoleggio = AnagraficaDocumentiEditGestioneNoleggioExt.totaleNoleggio(self)
 
 
     def getTotaleRiga(self):
