@@ -161,5 +161,5 @@ class ElencoMagazzini(GladeWidget):
                                 None,
                                 '\nSelezionare un magazzino !')
         else:
-            fenceDialog()
+            fencemsg()
             toggleButton.set_active(False)

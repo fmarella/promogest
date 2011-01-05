@@ -42,9 +42,12 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
     from Riga import Riga
     from promogest.dao.Magazzino import Magazzino
     if allMag:
-        magazzini = Environment.params["session"].query(Magazzino.id).all()[0]
+        magazzini = Environment.params["session"].query(Magazzino.id).all()
+
         if not magazzini:
             return 0
+        else:
+            magazzini = magazzini[0]
     else:
         magazzini = [idMagazzino]
     righeArticoloMovimentate= Environment.params["session"]\
