@@ -54,10 +54,21 @@ class ListinoArticolo(Dao):
         else: return ""
     codice_articolo= property(_codice_articolo)
 
+    def _articolo_famiglia(self):
+        if self.arti:return self.arti.denominazione_famiglia
+        else: return ""
+    articolo_famiglia= property(_articolo_famiglia)
+
+    def _articolo_categoria(self):
+        if self.arti:return self.arti.denominazione_categoria
+        else: return ""
+    articolo_categoria= property(_articolo_categoria)
+
     def _articolo(self):
         if self.arti:return self.arti.denominazione
         else: return ""
     articolo= property(_articolo)
+
 
     def _aliquota_iva(self):
         if self.arti:return self.arti.denominazione_aliquota_iva
@@ -167,6 +178,16 @@ class ListinoArticolo(Dao):
         self.__scontiVenditaIngr = value
 
     sconto_vendita_ingrosso = property(_getScontiVenditaIngrosso, _setScontiVenditaIngrosso)
+
+    @property
+    def sconto_vendita_ingrosso_valore(self):
+        if self.sconto_vendita_ingrosso:return self.sconto_vendita_ingrosso[0].valore
+        else: return ""
+
+    @property
+    def sconto_vendita_dettaglio_valore(self):
+        if self.sconto_vendita_dettaglio:return self.sconto_vendita_dettaglio[0].valore
+        else: return ""
 
     def _getStringaScontiDettaglio(self):
         (listSconti, applicazione) = getScontiFromDao(self._getScontiVenditaDettaglio(),daoApplicazione = 'scalare')
