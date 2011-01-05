@@ -60,7 +60,7 @@ if (u'Ordine beni strumentali.registro',) not in s or s==[]:
 if (u'Preventivo dettaglio.registro',) not in s or s==[]:
     settinggg  = settingg.insert()
     settinggg.execute(key = "Preventivo dettaglio.registro", description = "Registro associato a Preventivo dettaglio", value= "registro_preventivo")
-print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", s
+
 if (u'registro_preventivo_dettaglio.rotazione',) not in s or s==[]:
     settinggg  = settingg.insert()
     settinggg.execute(key = "registro_preventivo_dettaglio.rotazione", description = "Tipologia di rotazione registro associato a preventivo dettaglio ", value= "annuale")
