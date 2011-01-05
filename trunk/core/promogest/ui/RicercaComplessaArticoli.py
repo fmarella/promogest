@@ -1546,7 +1546,6 @@ class RicercaArticoliFilter(GladeWidget):
                                             batchSize=None,
                                             complexFilter =self.complexFilter,
                                             filterDict = self.filterDict)
-
         model.clear()
         for a in arts:
             modelRowPromoWear = []
@@ -1554,15 +1553,30 @@ class RicercaArticoliFilter(GladeWidget):
             bgCol = None
             if a.cancellato:
                 bgCol = 'red'
-            modelRow = [a,
-                        bgCol,
-                        (a.codice or ''),
-                        (a.denominazione or ''),
-                        (a.produttore or ''),
-                        (a.codice_a_barre or ''),
-                        (a.codice_articolo_fornitore or ''),
-                        (a.denominazione_famiglia or ''),
-                        (a.denominazione_categoria or '')]
+            if self._parentObject.__class__.__name__ == "GestioneInventario":
+                modelRow =[a,
+                          bgCol,
+                          "",
+                          (a.denominazione_breve_unita_base or ''),
+                          "0" ,
+                          "",
+                          (a.codice or ''),
+                          (a.denominazione or ""),
+                          (a.codice_a_barre or ''),
+                          (a.produttore or ''),
+                          (a.denominazione_famiglia or ''),
+                          (a.denominazione_categoria or ''),
+                          (a.codice_articolo_fornitore or '')]
+            else:
+                modelRow = [a,
+                            bgCol,
+                            (a.codice or ''),
+                            (a.denominazione or ''),
+                            (a.produttore or ''),
+                            (a.codice_a_barre or ''),
+                            (a.codice_articolo_fornitore or ''),
+                            (a.denominazione_famiglia or ''),
+                            (a.denominazione_categoria or '')]
 
             if posso("PW"):
                 modelRowPromoWear = [(a.denominazione_gruppo_taglia or ''),

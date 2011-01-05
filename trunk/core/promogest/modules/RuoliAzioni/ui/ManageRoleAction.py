@@ -23,7 +23,7 @@
 import gtk, gobject
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.dao.Action import Action
+from promogest.modules.RuoliAzioni.dao.Action import Action
 from promogest.modules.RuoliAzioni.dao.RoleAction import RoleAction
 from promogest.ui.utilsCombobox import *
 from promogest.ui.utils import *
