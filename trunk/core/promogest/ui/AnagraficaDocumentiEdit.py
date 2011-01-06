@@ -1372,16 +1372,14 @@ del documento.
         self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()
         if posso("GN") and self.noleggio:
             # Setti le label "indirette" come prezzoLordo dreivato dalla divisione
-            if self.giorni_label.get_text() == "NO":
-                giorni_lab = "1"
-            else:
+            if self.giorni_label.get_text() != "NO":
                 giorni_lab = self.giorni_label.get_text()
-            self._righe[0]["arco_temporale"] = float(giorni_lab or 1)
-            self._righe[0]["divisore_noleggio"] = float(self.coeficente_noleggio_entry.get_text() or 0)
-            self._righe[0]["prezzo_acquisto"] = float(self.prezzo_aquisto_entry.get_text() or 0)
-            if not (self._righe[0]["prezzo_acquisto"] == 0 and self._righe[0]["divisore_noleggio"] ==0):
-                self._righe[0]["prezzoLordo"] = self._righe[0]["prezzo_acquisto"] / self._righe[0]["divisore_noleggio"]
-                self.prezzo_lordo_entry.set_text(str(self._righe[0]["prezzoLordo"]))
+                self._righe[0]["arco_temporale"] = float(giorni_lab or 1)
+                self._righe[0]["divisore_noleggio"] = float(self.coeficente_noleggio_entry.get_text() or 0)
+                self._righe[0]["prezzo_acquisto"] = float(self.prezzo_aquisto_entry.get_text() or 0)
+                if self._righe[0]["prezzo_acquisto"] > 0 and self._righe[0]["divisore_noleggio"]  > 0 :
+                    self._righe[0]["prezzoLordo"] = self._righe[0]["prezzo_acquisto"] / self._righe[0]["divisore_noleggio"]
+                    self.prezzo_lordo_entry.set_text(str(self._righe[0]["prezzoLordo"]))
 
         self.getPrezzoNetto()
         self.prezzo_netto_label.set_text(str(self._righe[0]["prezzoNetto"]))
