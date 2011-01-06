@@ -399,7 +399,7 @@ def ckd(dao):
         if "FamigliaArticolo" in classe:
             if records > 3: stopp = True
         if "Cliente" in classe:
-            if records > 50: stopp = True
+            if records > 30: stopp = True
         if "Fornitore" in classe:
             if records > 10: stopp = True
         if "Magazzino" in classe:

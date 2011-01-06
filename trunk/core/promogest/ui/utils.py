@@ -3005,7 +3005,8 @@ def posso(mod=None):
         if "ONE FULL" in moduli: return True
     if mod == "SD":
         if "SincroDB" in moduli :return True
-    return False
+    return setconf("Master", mod)
+#    return False
 
 
 def fencemsg():

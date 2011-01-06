@@ -1087,12 +1087,12 @@ class Main(GladeWidget):
                                    gtk.DIALOG_MODAL
                                    | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
-        dialog.set_markup("""<b>CODICE ATTIVAZIONE PACCHETTO</b>""")
+        dialog.set_markup("""<b>      CODICE ATTIVAZIONE PACCHETTO       </b>""")
         hbox = gtk.HBox()
         entry___ = gtk.Entry()
 
         label = gtk.Label(False)
-        label.set_markup("<b>   Inserisci codice</b>")
+        label.set_markup("<b>   Inserisci codice   </b>")
         hbox.pack_start(label)
         hbox.pack_start(entry___)
         dialog.vbox.pack_start(hbox)
@@ -1100,20 +1100,59 @@ class Main(GladeWidget):
         response = dialog.run()
         codice = entry___.get_text()
 #        hascode = str(hashlib.sha224(codice+orda(codice)).hexdigest())
-        sets = SetConf().select(key="install_code",section="Master")
-        if sets:
-            sets[0].delete()
-        if codice:
-            k = SetConf()
-            k.key = "install_code"
-            k.value =str(hashlib.sha224(codice+orda(codice)).hexdigest())
-            k.section = "Master"
-            k.description = "codice identificativo della propria installazione"
-            k.tipo_section = "General"
-            k.tipo = "Lite"
-            k.active = True
-            k.date = datetime.datetime.now()
-            k.persist()
+        if "modu" in codice:
+#            print "NON E' UN CODICE INSTALLAZIONE MA UNA ATTIVAZIONE MODULO"
+            if "_" in codice and "=" in codice:
+                codi = codice.split("=")
+                codpart = codi[0].split("_")[1].strip()
+                setpart = codi[1]
+                print "CANGASEIRO",setpart.upper()
+                if setpart.upper().strip() in ["YES", "SI"]:
+                    sett = True
+                elif setpart.upper().strip() == "NO":
+                    sett = False
+                else:
+                    print "FINISCI QUI"
+                    messageInfo(msg="ERRORE ATTIVAZIONE MODULO")
+                    return
+            else:
+                messageInfo(msg="ERRORE ATTIVAZIONE MODULO")
+                return
+            if codpart not in Environment.modules_folders:
+                messageInfo(msg="ERRORE ATTIVAZIONE MODULO")
+                return
+            dao = SetConf().select(key=codpart,section="Master")
+            if dao:
+                d = dao[0]
+            else:
+                d = SetConf()
+            d.key = codpart
+            d.value =sett
+            d.section = "Master"
+            d.description = ""
+            d.tipo_section = "Moduli"
+            d.tipo = "BOOLEAN"
+            d.active = sett
+            d.date = datetime.datetime.now()
+            d.persist()
+            messageInfo(msg="MODULO MODIFICATO attivato o disattivato")
+            dialog.destroy()
+            return
+        else:
+            sets = SetConf().select(key="install_code",section="Master")
+            if sets:
+                sets[0].delete()
+            if codice:
+                k = SetConf()
+                k.key = "install_code"
+                k.value =str(hashlib.sha224(codice+orda(codice)).hexdigest())
+                k.section = "Master"
+                k.description = "codice identificativo della propria installazione"
+                k.tipo_section = "General"
+                k.tipo = "Lite"
+                k.active = True
+                k.date = datetime.datetime.now()
+                k.persist()
         dialog.destroy()
 
 
@@ -1243,7 +1282,7 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
         msg = """ATTENZIONE!! ATTENZIONE!! ATTENZIONE!!
 
 QUESTA FUNZIONALITÀ È STATA AGGIUNTA PER
-PERMETTERE DI PROVARE IL PROMOGEST2 LITE CON
+PERMETTERE DI PROVARE IL PROMOGEST2 ONE BASIC CON
 IL MODULO TAGLIA E COLORE PROMOWEAR
 QUESTO MODULO SERVE A CHI DEVE GESTIRE
 UNA ATTIVITÀ CHE MOVIMENTA E VENDE
@@ -1306,7 +1345,7 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
         anagWindow = anag.getTopLevel()
 
     def on_main_window_key_press_event(self, widget, event):
-        return
+#        return
 #        if event.type == gtk.gdk.KEY_PRESS:
 #            if event.state & gtk.gdk.CONTROL_MASK and (
 #                (event.state & gtk.gdk.MOD2_MASK) or (event.state & gtk.gdk.MOD1_MASK)):
@@ -1348,28 +1387,28 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
 #                            item.show()
 #                    utilities_menu.popup(None, None, None, 3, event.time)
 #                    return True
-#            elif gtk.gdk.keyval_name(event.keyval) == "t":
-#                import random
-#                msg= """
-#Il Promogest2 "MentoR" ha generato per te due sestine
-#"vincenti" per il prossimo concorso del superenalotto
-#giocale e facci sapere .....
-#Mi raccomando se dovessi vincere ricordati di noi :)
+        if gtk.gdk.keyval_name(event.keyval) == "t":
+            import random
+            msg= """
+Il Promogest2 "MentoR" ha generato per te due sestine
+"vincenti" per il prossimo concorso del superenalotto
+giocale e facci sapere .....
+Mi raccomando se dovessi vincere ricordati di noi :)
 
-#Il Team:
+Il Team:
 
-#I Numeri:   %s
-#                %s
-#""" %(str(random.sample(xrange(90), 6))[1:-1],str(random.sample(xrange(90), 6))[1:-1])
-#                dialog = gtk.MessageDialog(self.getTopLevel(),
-#                                   gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-#                                   gtk.MESSAGE_INFO,
-#                                   gtk.BUTTONS_OK,
-#                                   msg)
-#                dialog.run()
-#                dialog.destroy()
+I Numeri:   %s
+            %s
+""" %(str(random.sample(xrange(90), 6))[1:-1],str(random.sample(xrange(90), 6))[1:-1])
+            dialog = gtk.MessageDialog(self.getTopLevel(),
+                               gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                               gtk.MESSAGE_INFO,
+                               gtk.BUTTONS_OK,
+                               msg)
+            dialog.run()
+            dialog.destroy()
 
-#            return True
+        return True
 #        else:
 #            return False
 

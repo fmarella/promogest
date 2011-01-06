@@ -82,6 +82,7 @@ feedAll = ""
 scontisave = {}
 tagliacoloretempdata = (False,None)
 lastCode = None
+modules_folders = []
 righeDocumentoDict = {}
 totaliDict = {}
 percentualeIvaRiga = None

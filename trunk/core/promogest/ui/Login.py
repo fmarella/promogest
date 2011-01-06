@@ -310,10 +310,11 @@ class Login(GladeApp):
             """
             #global jinja_env
             Environment.modulesList=[Environment.tipo_pg]
-#            print "111111111", Environment.modulesList, Environment.tipo_pg
+            print "111111111", Environment.modulesList, Environment.tipo_pg
             modules_folders = [folder for folder in os.listdir(modules_dir) \
                             if (os.path.isdir(os.path.join(modules_dir, folder)) \
                             and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
+            Environment.modules_folders = modules_folders
             for m_str in modules_folders:
                 if hasattr(Environment.conf,m_str) or posso(m_str):
                     try:
