@@ -42,13 +42,16 @@ class UnsignedDecimalEntryField(CustomEntryField):
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname not in self.acceptedKeys:
             return True
-        s = self.get_text()
+        s = widget.get_text()
         # verifica che non sia gia' stato inserito un separatore decimale
         if (',' in s or '.' in s) and (keyname in self.delimiterKeys):
             return True
 
-
     def my_focus_out_event(self, widget, event):
+        s = widget.get_text()
+        r = s.replace(",",".")
+        widget.set_text("")
+        widget.set_text(r)
         try:
             f = "%-" + str(self._lunghezza) + "." + str(self._precisione) + "f"
             if self.get_text():

@@ -307,9 +307,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
     Modifica un record dell'anagrafica degli articoli dei listini
     """
     def __init__(self, anagrafica):
-        """
-        Gestione la modifica e l'editing dei listino articolo
-        """
+        """ Gestione la modifica e l'editing dei listino articolo """
         AnagraficaEdit.__init__(self,
                                 anagrafica,
                                 'anagrafica_listini_articoli_detail_table',
@@ -320,147 +318,125 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         if not posso("PW"):
             self.taglia_colore_table.hide()
             self.taglia_colore_table.set_no_show_all(True)
-        self.sconti_dettaglio_widget.button.connect('toggled',
-                                        self.on_sconti_dettaglio_widget_button_toggled)
-        self.sconti_ingrosso_widget.button.connect('toggled',
-                                        self.on_sconti_ingrosso_widget_button_toggled)
-        #ListinoArticolo().cleann()
+#        self.sconti_dettaglio_widget.button.connect('toggled',
+#                            self.on_sconti_dettaglio_widget_button_toggled)
 
+#        self.sconti_ingrosso_widget.button.connect('toggled',
+#                            self.on_sconti_ingrosso_widget_button_toggled)
+        #ListinoArticolo().cleann()
+        self.nformat = Environment.conf.number_format
 
     def on_sconti_dettaglio_widget_button_toggled(self, button):
-        """
-        Gestione sconti dettaglio  con custom Widget
-        FIXME: trovare alternativa a custom widget
-        """
+        """ Gestione sconti dettaglio  con custom Widget """
         if button.get_property('active') is True:
             return
         _scontoDettaglio= self.sconti_dettaglio_widget.getSconti()
 
     def on_sconti_ingrosso_widget_button_toggled(self, button):
-        """
-        Gestione sconti dettaglio  con custom Widget
-        FIXME: trovare alternativa a custom widget
-        """
+        """ Gestione sconti dettaglio  con custom Widget """
         if button.get_property('active') is True:
             return
-
         _scontoIngrosso= self.sconti_ingrosso_widget.getSconti()
 
     def calcolaPercentualiDettaglio(self, widget=None, event=None):
-        """
-        calcolaPercentualiDettaglio
-        """
-        self.percentuale_ricarico_dettaglio_entry.set_text('%-6.3f' % calcolaRicarico(float(self.ultimo_costo_entry.get_text()),
-                                                                                      float(self.prezzo_dettaglio_entry.get_text()),
-                                                                                      float(self._percentualeIva)))
-        self.percentuale_margine_dettaglio_entry.set_text('%-6.3f' % calcolaMargine(float(self.ultimo_costo_entry.get_text()),
-                                                                                    float(self.prezzo_dettaglio_entry.get_text()),
-                                                                                    float(self._percentualeIva)))
-
+        """ calcolaPercentualiDettaglio """
+        self.percentuale_ricarico_dettaglio_entry.set_text('%-6.3f' % calcolaRicarico(
+                                        self.ultimo_costo_entry.get_text(),
+                                        self.prezzo_dettaglio_entry.get_text(),
+                                        self._percentualeIva))
+        self.percentuale_margine_dettaglio_entry.set_text('%-6.3f' % calcolaMargine(
+                                        self.ultimo_costo_entry.get_text(),
+                                        self.prezzo_dettaglio_entry.get_text(),
+                                        self._percentualeIva))
 
     def confermaCalcolaPercentualiDettaglio(self, widget=None, event=None):
-        """
-        confermaCalcolaPercentualiDettaglio
-        """
+        """ confermaCalcolaPercentualiDettaglio """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaPercentualiDettaglio()
 
-
     def calcolaPercentualiIngrosso(self, widget=None, event=None):
-        """
-        calcolaPercentualiIngrosso
-        """
-        self.percentuale_ricarico_ingrosso_entry.set_text('%-6.3f' % calcolaRicarico(float(self.ultimo_costo_entry.get_text()),
-                                                                                     float(self.prezzo_ingrosso_entry.get_text())))
-        self.percentuale_margine_ingrosso_entry.set_text('%-6.3f' % calcolaMargine(float(self.ultimo_costo_entry.get_text()),
-                                                                                   float(self.prezzo_ingrosso_entry.get_text())))
-
+        """ calcolaPercentualiIngrosso """
+        self.percentuale_ricarico_ingrosso_entry.set_text('%-6.3f' % calcolaRicarico(
+                                    self.ultimo_costo_entry.get_text(),
+                                    self.prezzo_ingrosso_entry.get_text()))
+        self.percentuale_margine_ingrosso_entry.set_text('%-6.3f' % calcolaMargine(
+                                    self.ultimo_costo_entry.get_text(),
+                                    self.prezzo_ingrosso_entry.get_text()))
 
     def confermaCalcolaPercentualiIngrosso(self, widget=None, event=None):
-        """
-        FIXME
-        """
+        """        """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaPercentualiIngrosso()
 
-
     def aggiornaCostoIvato(self, widget=None, event=None):
         """ """
-        self.ultimo_costo_ivato_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(float(self.ultimo_costo_entry.get_text()),
-                                                                                                 float(self._percentualeIva)))
+        self.ultimo_costo_ivato_label.set_text(self.nformat % calcolaPrezzoIva(
+                                                self.ultimo_costo_entry.get_text(),
+                                                self._percentualeIva))
         return False
 
-
     def aggiornaDaCosto(self, widget=None, event=None):
-        """
-        FIXME
-        """
+        """        """
         self.aggiornaCostoIvato()
 
     def confermaAggiornaDaCosto(self, widget=None, event=None):
-        """
-        FIXME
-        """
+        """        """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.aggiornaDaCosto()
 
     def calcolaDettaglioDaRicarico(self, widget=None, event=None):
-        """
-        FIXME
-        """
-        prezzoDettaglio=Environment.conf.number_format % calcolaListinoDaRicarico(float(self.ultimo_costo_entry.get_text()),
-                                                                                            float(self.percentuale_ricarico_dettaglio_entry.get_text()),
-                                                                                            float(self._percentualeIva))
+        """        """
+        prezzoDettaglio=self.nformat % calcolaListinoDaRicarico(
+                                        self.ultimo_costo_entry.get_text(),
+                                        self.percentuale_ricarico_dettaglio_entry.get_text(),
+                                        self._percentualeIva)
         self.prezzo_dettaglio_entry.set_text(prezzoDettaglio)
-        self.prezzo_dettaglio_noiva_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(float(prezzoDettaglio),
-                                                                                    float(- self._percentualeIva)))
-        self.percentuale_margine_dettaglio_entry.set_text('%-6.3f' % calcolaMargine(float(self.ultimo_costo_entry.get_text()),
-                                                                                    float(prezzoDettaglio),
-                                                                                    float(self._percentualeIva)))
-
+        self.prezzo_dettaglio_noiva_label.set_text(self.nformat % calcolaPrezzoIva(
+                                                                prezzoDettaglio,
+                                                                ((-1)*self._percentualeIva)))
+        self.percentuale_margine_dettaglio_entry.set_text('%-6.3f' % calcolaMargine(
+                                        self.ultimo_costo_entry.get_text(),
+                                        prezzoDettaglio,
+                                        self._percentualeIva))
 
     def confermaCalcolaDettaglioDaRicarico(self, widget=None, event=None):
-        """
-        FIXME
-        """
+        """        """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaDettaglioDaRicarico()
 
     def calcolaDettaglioDaMargine(self, widget=None, event=None):
-        """
-        FIXME
-        """
-        self.prezzo_dettaglio_entry.set_text(Environment.conf.number_format % calcolaListinoDaMargine(float(self.ultimo_costo_entry.get_text()),
-                                                                                                      float(self.percentuale_margine_dettaglio_entry.get_text()),
-                                                                                                      float(self._percentualeIva)))
-        self.prezzo_dettaglio_noiva_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(float(self.prezzo_dettaglio_entry.get_text()),
-                                                                                                     float(- self._percentualeIva)))
-        self.percentuale_ricarico_dettaglio_entry.set_text('%-6.3f' % calcolaRicarico(float(self.ultimo_costo_entry.get_text()),
-                                                                                      float(self.prezzo_dettaglio_entry.get_text()),
-                                                                                      float(self._percentualeIva)))
+        """        """
+        self.prezzo_dettaglio_entry.set_text(self.nformat % calcolaListinoDaMargine(
+                                        self.ultimo_costo_entry.get_text(),
+                                        self.percentuale_margine_dettaglio_entry.get_text(),
+                                        self._percentualeIva))
+        self.prezzo_dettaglio_noiva_label.set_text(self.nformat % calcolaPrezzoIva(
+                                        self.prezzo_dettaglio_entry.get_text(),
+                                        ((-1)*self._percentualeIva)))
+        self.percentuale_ricarico_dettaglio_entry.set_text('%-6.3f' % calcolaRicarico(
+                                        self.ultimo_costo_entry.get_text(),
+                                        self.prezzo_dettaglio_entry.get_text(),
+                                        self._percentualeIva))
 
     def confermaCalcolaDettaglioDaMargine(self, widget=None, event=None):
-        """
-        FIXME
-        """
+        """        """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaDettaglioDaMargine()
 
     def aggiornaDaDettaglio(self, widget=None, event=None):
-        """
-        FIXME
-        """
-        self.prezzo_dettaglio_noiva_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(float(self.prezzo_dettaglio_entry.get_text()),
-                                                                                                     float(- self._percentualeIva)))
+        """        """
+        self.prezzo_dettaglio_noiva_label.set_text(self.nformat % calcolaPrezzoIva(
+                                        self.prezzo_dettaglio_entry.get_text(),
+                                        ((-1)*self._percentualeIva)))
         przD = float(self.prezzo_dettaglio_noiva_label.get_text())
         przI = float(self.prezzo_ingrosso_entry.get_text())
         if przI == float(0):
-            self.prezzo_ingrosso_entry.set_text(Environment.conf.number_format % przD)
+            self.prezzo_ingrosso_entry.set_text(self.nformat % przD)
             self.prezzo_ingrosso_ivato_label.set_text(self.prezzo_dettaglio_entry.get_text())
         else:
             if przD != przI:
@@ -470,58 +446,55 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                 response = dialog.run()
                 dialog.destroy()
                 if response == gtk.RESPONSE_YES:
-                    self.prezzo_ingrosso_entry.set_text(Environment.conf.number_format % przD)
+                    self.prezzo_ingrosso_entry.set_text(self.nformat % przD)
                     self.prezzo_ingrosso_ivato_label.set_text(self.prezzo_dettaglio_entry.get_text())
         return False
 
     def calcolaIngrossoDaRicarico(self, widget=None, event=None):
-        """
-        FIXME
-        """
-        self.prezzo_ingrosso_entry.set_text(Environment.conf.number_format % calcolaListinoDaRicarico(float(self.ultimo_costo_entry.get_text()),
-                                                                                                      float(self.percentuale_ricarico_ingrosso_entry.get_text())))
-        self.prezzo_ingrosso_ivato_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(float(self.prezzo_ingrosso_entry.get_text()),
-                                                                                                    float(self._percentualeIva)))
-        self.percentuale_margine_ingrosso_entry.set_text('%-6.3f' % calcolaMargine(float(self.ultimo_costo_entry.get_text()),
-                                                                                   float(self.prezzo_ingrosso_entry.get_text())))
+        """        """
+        self.prezzo_ingrosso_entry.set_text(self.nformat % calcolaListinoDaRicarico(
+                                        self.ultimo_costo_entry.get_text(),
+                                        self.percentuale_ricarico_ingrosso_entry.get_text()))
+        self.prezzo_ingrosso_ivato_label.set_text(self.nformat % calcolaPrezzoIva(
+                                        self.prezzo_ingrosso_entry.get_text(),
+                                        self._percentualeIva))
+        self.percentuale_margine_ingrosso_entry.set_text('%-6.3f' % calcolaMargine(
+                                        self.ultimo_costo_entry.get_text(),
+                                        self.prezzo_ingrosso_entry.get_text()))
 
     def confermaCalcolaIngrossoDaRicarico(self, widget=None, event=None):
-        """
-        FIXME
-        """
+        """        """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaIngrossoDaRicarico()
 
     def calcolaIngrossoDaMargine(self, widget=None, event=None):
-        """
-        FIXME
-        """
-        self.prezzo_ingrosso_entry.set_text(Environment.conf.number_format % calcolaListinoDaMargine(float(self.ultimo_costo_entry.get_text()),
-                                                                                                     float(self.percentuale_margine_ingrosso_entry.get_text())))
-        self.prezzo_ingrosso_ivato_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(float(self.prezzo_ingrosso_entry.get_text()),
-                                                                                                    float(self._percentualeIva)))
-        self.percentuale_ricarico_ingrosso_entry.set_text('%-6.3f' % calcolaRicarico(float(self.ultimo_costo_entry.get_text()),
-                                                                                     float(self.prezzo_ingrosso_entry.get_text())))
+        """        """
+        self.prezzo_ingrosso_entry.set_text(self.nformat % calcolaListinoDaMargine(
+                                        self.ultimo_costo_entry.get_text(),
+                                        self.percentuale_margine_ingrosso_entry.get_text()))
+        self.prezzo_ingrosso_ivato_label.set_text(self.nformat % calcolaPrezzoIva(
+                                        self.prezzo_ingrosso_entry.get_text(),
+                                        self._percentualeIva))
+        self.percentuale_ricarico_ingrosso_entry.set_text('%-6.3f' % calcolaRicarico(
+                                        self.ultimo_costo_entry.get_text(),
+                                        self.prezzo_ingrosso_entry.get_text()))
 
     def confermaCalcolaIngrossoDaMargine(self, widget=None, event=None):
-        """
-        FIXME
-        """
+        """        """
         keyname = gtk.gdk.keyval_name(event.keyval)
         if keyname == 'Return' or keyname == 'KP_Enter':
             self.calcolaIngrossoDaMargine()
 
     def aggiornaDaIngrosso(self, widget=None, event=None):
-        """
-        FIXME
-        """
-        self.prezzo_ingrosso_ivato_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(float(self.prezzo_ingrosso_entry.get_text()),
-                                                                                                    float(self._percentualeIva)))
+        """        """
+        self.prezzo_ingrosso_ivato_label.set_text(self.nformat % calcolaPrezzoIva(
+                                        self.prezzo_ingrosso_entry.get_text(),
+                                        self._percentualeIva))
         przI = float(self.prezzo_ingrosso_ivato_label.get_text())
         przD = float(self.prezzo_dettaglio_entry.get_text())
         if przD == float(0):
-            self.prezzo_dettaglio_entry.set_text(Environment.conf.number_format % przI)
+            self.prezzo_dettaglio_entry.set_text(self.nformat % przI)
             self.prezzo_dettaglio_noiva_label.set_text(self.prezzo_ingrosso_entry.get_text())
         else:
             if przI != przD:
@@ -531,14 +504,12 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                 response = dialog.run()
                 dialog.destroy()
                 if response == gtk.RESPONSE_YES:
-                    self.prezzo_dettaglio_entry.set_text(Environment.conf.number_format % przI)
+                    self.prezzo_dettaglio_entry.set_text(self.nformat % przI)
                     self.prezzo_dettaglio_noiva_label.set_text(self.prezzo_ingrosso_entry.get_text())
         return False
 
     def draw(self, cplx=False):
-        """
-        FIXME
-        """
+        """        """
         self.id_articolo_customcombobox.setSingleValue()
         self.id_articolo_customcombobox.setOnChangedCall(self.on_id_articolo_customcombobox_changed)
 
@@ -561,44 +532,8 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         self.sconti_dettaglio_widget.setValues()
         self.sconti_ingrosso_widget.setValues()
 
-        self.ultimo_costo_entry.connect('focus_out_event',
-                                        self.aggiornaDaCosto)
-        self.ultimo_costo_entry.connect('key_press_event',
-                                        self.confermaAggiornaDaCosto)
-        self.prezzo_dettaglio_entry.connect('focus_out_event',
-                                            self.aggiornaDaDettaglio)
-        self.prezzo_dettaglio_entry.connect('key_press_event',
-                                            self.confermaCalcolaPercentualiDettaglio)
-        self.percentuale_ricarico_dettaglio_entry.connect('key_press_event',
-                                                          self.confermaCalcolaDettaglioDaRicarico)
-        self.calcola_dettaglio_da_ricarico_button.connect('clicked',
-                                                          self.calcolaDettaglioDaRicarico)
-        self.percentuale_margine_dettaglio_entry.connect('key_press_event',
-                                                         self.confermaCalcolaDettaglioDaMargine)
-        self.calcola_dettaglio_da_margine_button.connect('clicked',
-                                                         self.calcolaDettaglioDaMargine)
-        self.calcola_percentuali_dettaglio_button.connect('clicked',
-                                                          self.calcolaPercentualiDettaglio)
-        self.prezzo_ingrosso_entry.connect('focus_out_event',
-                                           self.aggiornaDaIngrosso)
-        self.prezzo_ingrosso_entry.connect('key_press_event',
-                                           self.confermaCalcolaPercentualiIngrosso)
-        self.percentuale_ricarico_ingrosso_entry.connect('key_press_event',
-                                                         self.confermaCalcolaIngrossoDaRicarico)
-        self.calcola_ingrosso_da_ricarico_button.connect('clicked',
-                                                         self.calcolaIngrossoDaRicarico)
-        self.percentuale_margine_ingrosso_entry.connect('key_press_event',
-                                                        self.confermaCalcolaIngrossoDaMargine)
-        self.calcola_ingrosso_da_margine_button.connect('clicked',
-                                                        self.calcolaIngrossoDaMargine)
-        self.calcola_percentuali_ingrosso_button.connect('clicked',
-                                                         self.calcolaPercentualiIngrosso)
-
-
     def on_id_articolo_customcombobox_changed(self):
-        """
-        FIXME
-        """
+        """        """
         res = self.id_articolo_customcombobox.getData()
         if res:
             self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
@@ -606,7 +541,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             self.percentuale_aliquota_iva_label.set_text(('%5.' + Environment.conf.decimals + 'f') % self._percentualeIva + ' %')
 
         fornitura = leggiFornitura(self.id_articolo_customcombobox.getId())
-        self.ultimo_costo_entry.set_text(Environment.conf.number_format % float(fornitura["prezzoNetto"]))
+        self.ultimo_costo_entry.set_text(self.nformat % float(fornitura["prezzoNetto"]))
 
         self.aggiornaCostoIvato()
         self.calcolaDettaglioDaRicarico()
@@ -629,11 +564,8 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         self._refresh()
         return self.dao
 
-
     def _refresh(self):
-        """
-        FIXME
-        """
+        """        """
         self.id_articolo_customcombobox.refresh(clear=True, filter=False)
         self.id_articolo_customcombobox.set_sensitive(True)
         if self.dao.id_articolo is None:
@@ -648,7 +580,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         res = self.id_articolo_customcombobox.getData()
         self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
         self._percentualeIva = res["percentualeAliquotaIva"]
-        self.percentuale_aliquota_iva_label.set_text(Environment.conf.number_format % self._percentualeIva + ' %')
+        self.percentuale_aliquota_iva_label.set_text(self.nformat % self._percentualeIva + ' %')
         self.id_listino_customcombobox.combobox.set_active(-1)
         self.id_listino_customcombobox.set_sensitive(True)
         if self.dao.id_listino is None:
@@ -661,44 +593,49 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 
         if self.dao.ultimo_costo is None:
             fornitura = leggiFornitura(self.id_articolo_customcombobox.getId())
-            self.ultimo_costo_entry.set_text(Environment.conf.number_format % float(fornitura["prezzoNetto"]))
+            self.ultimo_costo_entry.set_text(self.nformat % float(fornitura["prezzoNetto"]))
         else:
-            self.ultimo_costo_entry.set_text(Environment.conf.number_format % float(self.dao.ultimo_costo or 0))
+            self.ultimo_costo_entry.set_text(self.nformat % float(self.dao.ultimo_costo or 0))
         self.data_listino_articolo_label.set_text(dateToString(self.dao.data_listino_articolo))
-        self.prezzo_dettaglio_entry.set_text(Environment.conf.number_format % float(self.dao.prezzo_dettaglio or 0))
-        self.prezzo_ingrosso_entry.set_text(Environment.conf.number_format % float(self.dao.prezzo_ingrosso or 0))
-        self.percentuale_ricarico_dettaglio_entry.set_text('%-6.3f' % calcolaRicarico(self.dao.ultimo_costo,
-                                                                                      self.dao.prezzo_dettaglio,
-                                                                                      self._percentualeIva))
-        self.percentuale_margine_dettaglio_entry.set_text('%-6.3f' % calcolaMargine(self.dao.ultimo_costo,
-                                                                                    self.dao.prezzo_dettaglio,
-                                                                                    self._percentualeIva))
-        self.percentuale_ricarico_ingrosso_entry.set_text('%-6.3f' % calcolaRicarico(self.dao.ultimo_costo,
-                                                                                     self.dao.prezzo_ingrosso))
-        self.percentuale_margine_ingrosso_entry.set_text('%-6.3f' % calcolaMargine(self.dao.ultimo_costo,
-                                                                                   self.dao.prezzo_ingrosso))
+        self.prezzo_dettaglio_entry.set_text(self.nformat % float(self.dao.prezzo_dettaglio or 0))
+        self.prezzo_ingrosso_entry.set_text(self.nformat % float(self.dao.prezzo_ingrosso or 0))
+        self.percentuale_ricarico_dettaglio_entry.set_text('%-6.3f' % calcolaRicarico(
+                                                    self.dao.ultimo_costo,
+                                                    self.dao.prezzo_dettaglio,
+                                                    self._percentualeIva))
+        self.percentuale_margine_dettaglio_entry.set_text('%-6.3f' % calcolaMargine(
+                                                    self.dao.ultimo_costo,
+                                                    self.dao.prezzo_dettaglio,
+                                                    self._percentualeIva))
+        self.percentuale_ricarico_ingrosso_entry.set_text('%-6.3f' % calcolaRicarico(
+                                                    self.dao.ultimo_costo,
+                                                    self.dao.prezzo_ingrosso))
+        self.percentuale_margine_ingrosso_entry.set_text('%-6.3f' % calcolaMargine(
+                                                    self.dao.ultimo_costo,
+                                                    self.dao.prezzo_ingrosso))
 
-        self.ultimo_costo_ivato_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(self.dao.ultimo_costo,
-                                                                                                 self._percentualeIva))
+        self.ultimo_costo_ivato_label.set_text(self.nformat % calcolaPrezzoIva(
+                                                    self.dao.ultimo_costo,
+                                                    self._percentualeIva))
         a = calcolaPrezzoIva(self.dao.prezzo_dettaglio,((-1)*self._percentualeIva))
-        self.prezzo_dettaglio_noiva_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(self.dao.prezzo_dettaglio,
-                                                                                                    - self._percentualeIva))
+        self.prezzo_dettaglio_noiva_label.set_text(self.nformat % calcolaPrezzoIva(
+                                                    self.dao.prezzo_dettaglio,
+                                                    ((-1)*self._percentualeIva)))
 
-        self.prezzo_ingrosso_ivato_label.set_text(Environment.conf.number_format % calcolaPrezzoIva(self.dao.prezzo_ingrosso,
-                                                                                                    self._percentualeIva))
+        self.prezzo_ingrosso_ivato_label.set_text(self.nformat % calcolaPrezzoIva(
+                                                    self.dao.prezzo_ingrosso,
+                                                    self._percentualeIva))
 
-        self.sconti_dettaglio_widget.setValues(self.dao.sconto_vendita_dettaglio, self.dao.applicazione_sconti_dettaglio)
-        self.sconti_ingrosso_widget.setValues(self.dao.sconto_vendita_ingrosso, self.dao.applicazione_sconti_ingrosso)
+        self.sconti_dettaglio_widget.setValues(self.dao.sconto_vendita_dettaglio,
+                                    self.dao.applicazione_sconti_dettaglio)
+        self.sconti_ingrosso_widget.setValues(self.dao.sconto_vendita_ingrosso,
+                                    self.dao.applicazione_sconti_ingrosso)
 
         if posso("PW"):
             self._refreshTagliaColore(self.dao.id_articolo)
 
     def _refreshTagliaColore(self, idArticolo):
-        """
-        FIXME
-        @param idArticolo:
-        @type idArticolo:
-        """
+        """        """
         articoloTagliaColore = Articolo().getRecord(id=idArticolo)
         self.taglia_colore_table.hide()
         if articoloTagliaColore is not None:
@@ -717,9 +654,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             self.taglia_colore_table.show()
 
     def saveDao(self):
-        """
-        FIXME
-        """
+        """        """
         creaentryvarianti = False
         articolo = None
         if findIdFromCombobox(self.id_listino_customcombobox.combobox) is None:

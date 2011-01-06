@@ -1277,33 +1277,13 @@ def on_id_destinazione_merce_customcombobox_clicked(widget, button, idCliente):
 
 
 def insertComboboxSearchArticolo(combobox, idArticolo, clear=False, filter=True):
-    """
-    FIXME
-    @param combobox:
-    @type combobox:
-    @param idArticolo:
-    @type idArticolo:
-    @param clear=False:
-    @type clear=False:
-    @param filter=True:
-    @type filter=True:
-    """
+    """    """
     res = leggiArticolo(idArticolo)
     combobox.refresh(idArticolo, res["denominazione"], res, clear, filter)
 
 
 def insertComboboxSearchFornitore(combobox, idFornitore, clear=False, filter=True):
-    """
-    FIXME
-    @param combobox:
-    @type combobox:
-    @param idFornitore:
-    @type idFornitore:
-    @param clear=False:
-    @type clear=False:
-    @param filter=True:
-    @type filter=True:
-    """
+    """    """
     res = leggiFornitore(idFornitore)
     if res["ragioneSociale"] != '':
         combobox.refresh(idFornitore, res["ragioneSociale"], res, clear, filter)
@@ -1312,17 +1292,7 @@ def insertComboboxSearchFornitore(combobox, idFornitore, clear=False, filter=Tru
 
 
 def insertComboboxSearchCliente(combobox, idCliente, clear=False, filter=True):
-    """
-    FIXME
-    @param combobox:
-    @type combobox:
-    @param idCliente:
-    @type idCliente:
-    @param clear=False:
-    @type clear=False:
-    @param filter=True:
-    @type filter=True:
-    """
+    """    """
     res = leggiCliente(idCliente)
     if res["ragioneSociale"] != '':
         combobox.refresh(idCliente, res["ragioneSociale"], res, clear, filter)
@@ -1331,17 +1301,7 @@ def insertComboboxSearchCliente(combobox, idCliente, clear=False, filter=True):
 
 
 def insertComboboxSearchVettore(combobox, idVettore, clear=False, filter=True):
-    """
-    FIXME
-    @param combobox:
-    @type combobox:
-    @param idVettore:
-    @type idVettore:
-    @param clear=False:
-    @type clear=False:
-    @param filter=True:
-    @type filter=True:
-    """
+    """    """
     res = leggiVettore(idVettore)
     if res["ragioneSociale"] != '':
         combobox.refresh(idVettore, res["ragioneSociale"], res, clear, filter)
@@ -1350,49 +1310,19 @@ def insertComboboxSearchVettore(combobox, idVettore, clear=False, filter=True):
 
 
 def insertComboboxSearchMagazzino(combobox, idMagazzino, clear=False, filter=True):
-    """
-    FIXME
-    @param combobox:
-    @type combobox:
-    @param idMagazzino:
-    @type idMagazzino:
-    @param clear=False:
-    @type clear=False:
-    @param filter=True:
-    @type filter=True:
-     """
+    """     """
     res = leggiMagazzino(idMagazzino)
     combobox.refresh(idMagazzino, res["denominazione"], res, clear, filter)
 
 
 def insertComboboxSearchAzienda(combobox, schemaAzienda, clear=False, filter=True):
-    """
-    FIXME
-    @param combobox:
-    @type combobox:
-    @param schemaAzienda:
-    @type schemaAzienda:
-    @param clear=False:
-    @type clear=False:
-    @param filter=True:
-    @type filter=True:
-    """
+    """    """
     res = leggiAzienda(schemaAzienda)
     combobox.refresh(schemaAzienda, res["denominazione"], res, clear, filter)
 
 
 def insertComboboxSearchAgente(combobox, idAgente, clear=False, filter=True):
-    """
-    FIXME
-    @param combobox:
-    @type combobox:
-    @param idAgente:
-    @type idAgente:
-    @param clear=False:
-    @type clear=False:
-    @param filter=True:
-    @type filter=True:
-    """
+    """    """
     res = leggiAgente(idAgente)
     if res["ragioneSociale"] != '':
         combobox.refresh(idAgente, res["ragioneSociale"], res, clear, filter)
@@ -1402,31 +1332,13 @@ def insertComboboxSearchAgente(combobox, idAgente, clear=False, filter=True):
 
 
 def insertComboboxSearchArticolo(combobox, idArticolo, clear=False, filter=True):
-    """
-    @param combobox:
-    @type combobox:
-    @param idArticolo:
-    @type idArticolo:
-    @param clear=False:
-    @type clear=False:
-    @param filter=True:
-    @type filter=True:
-    """
+    """    """
     res = leggiArticolo(idArticolo)
     combobox.refresh(idArticolo, res["denominazione"], res, clear, filter)
 
 
 def insertComboboxSearchFornitore(combobox, idFornitore, clear=False, filter=True):
-    """
-    @param combobox:
-    @type combobox:
-    @param idFornitore:
-    @type idFornitore:
-    @param clear=False:
-    @type clear=False:
-    @param filter=True:
-    @type filter=True:
-    """
+    """    """
     res = leggiFornitore(idFornitore)
     if res["ragioneSociale"] != '':
         combobox.refresh(idFornitore, res["ragioneSociale"], res, clear, filter)
@@ -1435,17 +1347,7 @@ def insertComboboxSearchFornitore(combobox, idFornitore, clear=False, filter=Tru
 
 
 def insertComboboxSearchCliente(combobox, idCliente, clear=False, filter=True):
-    """
-    FIXME
-    @param combobox:
-    @type combobox:
-    @param idCliente:
-    @type idCliente:
-    @param clear=False:
-    @type clear=False:
-    @param filter=True:
-    @type filter=True:
-    """
+    """    """
     res = leggiCliente(idCliente)
     if res["ragioneSociale"] != '':
         combobox.refresh(idCliente, res["ragioneSociale"], res, clear, filter)
@@ -1454,17 +1356,7 @@ def insertComboboxSearchCliente(combobox, idCliente, clear=False, filter=True):
 
 
 def insertComboboxSearchVettore(combobox, idVettore, clear=False, filter=True):
-    """
-    FIXME
-    @param combobox:
-    @type combobox:
-    @param idVettore:
-    @type idVettore:
-    @param clear=False:
-    @type clear=False:
-    @param filter=True:
-    @type filter=True:
-    """
+    """    """
     res = leggiVettore(idVettore)
     if res["ragioneSociale"] != '':
         combobox.refresh(idVettore, res["ragioneSociale"], res, clear, filter)
@@ -1473,49 +1365,19 @@ def insertComboboxSearchVettore(combobox, idVettore, clear=False, filter=True):
 
 
 def insertComboboxSearchMagazzino(combobox, idMagazzino, clear=False, filter=True):
-    """
-    FIXME
-    @param combobox:
-    @type combobox:
-    @param idMagazzino:
-    @type idMagazzino:
-    @param clear=False:
-    @type clear=False:
-    @param filter=True:
-    @type filter=True:
-    """
+    """    """
     res = leggiMagazzino(idMagazzino)
     combobox.refresh(idMagazzino, res["denominazione"], res, clear, filter)
 
 
 def insertComboboxSearchAzienda(combobox, schemaAzienda, clear=False, filter=True):
-    """
-    FIXME
-    @param combobox:
-    @type combobox:
-    @param schemaAzienda:
-    @type schemaAzienda:
-    @param clear=False:
-    @type clear=False:
-    @param filter=True:
-    @type filter=True:
-    """
+    """    """
     res = leggiAzienda(schemaAzienda)
     combobox.refresh(schemaAzienda, res["denominazione"], res, clear, filter)
 
 
 def insertComboboxSearchAgente(combobox, idAgente, clear=False, filter=True):
-    """
-    FIXME
-    @param combobox:
-    @type combobox:
-    @param idAgente:
-    @type idAgente:
-    @param clear=False:
-    @type clear=False:
-    @param filter=True:
-    @type filter=True:
-    """
+    """    """
     res = leggiAgente(idAgente)
     if res["ragioneSociale"] != '':
         combobox.refresh(idAgente, res["ragioneSociale"], res, clear, filter)
@@ -1530,12 +1392,12 @@ def calcolaListinoDaRicarico(costo=0, ricarico=0, iva=0):
     Calcola il prezzo di vendita a partire dal costo, dal ricarico e dall'iva
     sel gli argomenti sono tutti oggetti Decimal, lo � anche il valore di ritorno
     """
-    if costo is None:
-        costo = 0
-    if ricarico is None:
-        ricarico = 0
-    if iva is None:
-        iva = 0
+    if type(costo)==type("stringa") or costo is None:
+        costo = Decimal(sanitizer(costo) or 0)
+    if type(ricarico)==type("stringa") or ricarico is None:
+        ricarico = Decimal(sanitizer(ricarico) or 0)
+    if type(iva)==type("stringa") or iva is None:
+        iva = Decimal(sanitizer(iva) or 0)
     if costo.__class__ == Decimal and ricarico.__class__ == Decimal and iva.__class__ == Decimal:
         return costo * (1 + (ricarico / 100)) * (1 + (iva / 100))
     else:
@@ -1547,12 +1409,12 @@ def calcolaRicarico(costo=0, listino=0, iva=0):
     Calcola il ricarico a partire dal costo, dal prezzo di vendita e dall'iva
     sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
     """
-    if costo is None:
-        costo = 0
-    if listino is None:
-        listino = 0
-    if iva is None:
-        iva = 0
+    if type(costo)==type("stringa") or costo is None:
+        costo = Decimal(sanitizer(costo) or 0)
+    if type(listino)==type("stringa") or listino is None:
+        listino = Decimal(sanitizer(listino) or 0)
+    if type(iva)==type("stringa") or iva is None:
+        iva = Decimal(sanitizer(iva) or 0)
     if costo.__class__ == Decimal and listino.__class__ == Decimal and iva.__class__ == Decimal:
         if costo == 0:
             return Decimal('0')
@@ -1570,12 +1432,13 @@ def calcolaListinoDaMargine(costo=0, margine=0, iva=0):
     sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
     TODO: C'è da verificare la coerenza in caso di iva a zero o margine a zero
     """
-    if costo is None:
-        costo = 0
-    if margine is None:
-        margine = 0
-    if iva is None:
-        iva = 0
+    if type(costo)==type("stringa") or costo is None:
+        costo = Decimal(sanitizer(costo) or 0)
+    if type(margine)==type("stringa") or margine is None:
+        margine = Decimal(sanitizer(margine) or 0)
+    if type(iva)==type("stringa") or iva is None:
+        iva = Decimal(sanitizer(iva) or 0)
+
     if costo.__class__ == Decimal and margine.__class__ == Decimal and iva.__class__ == Decimal:
         return (costo / (1 - (margine / 100))) * (1 + (iva / 100))
     else:
@@ -1587,12 +1450,12 @@ def calcolaMargine(costo=0, listino=0, iva=0):
     Calcola il margine a partire dal costo, dal prezzo di vendita e dall'iva
     sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
     """
-    if costo is None:
-        costo = 0
-    if listino is None:
-        listino = 1
-    if iva is None:
-        iva = 0
+    if type(costo)==type("stringa") or costo is None:
+        costo = Decimal(sanitizer(costo) or 0)
+    if type(listino)==type("stringa") or listino is None:
+        listino = Decimal(sanitizer(listino) or 1)
+    if type(iva)==type("stringa") or iva is None:
+        iva = Decimal(sanitizer(iva) or 0)
     if costo.__class__ == Decimal and listino.__class__ == Decimal and iva.__class__ == Decimal:
         if listino == 0:
             return Decimal('0')
@@ -1608,8 +1471,8 @@ def calcolaMargineDaRicarico(ricarico=0):
     Calcola il margine dal ricarico
     sel l'argomento è un oggetto Decimal, lo è anche il valore di ritorno
     """
-    if ricarico is None:
-        ricarico = 0
+    if type(ricarico)==type("stringa") or ricarico is None:
+        ricarico = Decimal(sanitizer(ricarico) or 0)
     if ricarico.__class__ == Decimal:
         return ricarico / (1 + (ricarico / 100))
     return float(ricarico / (1 + (ricarico / 100)))
@@ -1620,8 +1483,8 @@ def calcolaRicaricoDaMargine(margine=0):
     Calcola il ricarico dal margine
     sel l'argomento è un oggetto Decimal, lo è anche il valore di ritorno
     """
-    if margine is None:
-        margine = 0
+    if type(margine)==type("stringa") or margine is None:
+        margine = Decimal(sanitizer(margine) or 0)
     if margine.__class__ == Decimal:
         return margine / (1 - (margine / 100))
     else:
@@ -1633,10 +1496,10 @@ def calcolaPrezzoIva(prezzo=0, iva=0):
     Calcola un prezzo ivato (iva > 0) o scorpora l'iva da un prezzo (iva < 0)
     sel gli argomenti sono tutti oggetti Decimal, lo è anche il valore di ritorno
     """
-    if prezzo is None:
-        prezzo = 0
-    if iva is None:
-        iva = 0
+    if type(prezzo)==type("stringa") or prezzo is None:
+        prezzo = Decimal(sanitizer(prezzo) or 0)
+    if type(iva)==type("stringa") or iva is None:
+        iva = Decimal(sanitizer(iva) or 0)
     if prezzo.__class__ == Decimal and iva.__class__ == Decimal:
         if iva <0:
             return (100*prezzo)/(abs(iva)+100)
@@ -2369,6 +2232,15 @@ def checkCodiceDuplicato(codice=None,id=None,tipo=None):
         return False
     else:
         return True
+
+def sanitizer(value):
+    if value:
+        value = value.strip()
+        value = value.replace("€", "")
+        value = value.replace("%", "")
+        value = value.replace(",", ".")
+    return value
+
 
 def mN(value,decimal=None):
     """

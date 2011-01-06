@@ -1012,15 +1012,15 @@ class AnagraficaHtml(object):
                                             "tipo":"data_documento",
                                             "colore":"#AFEEEE"},d.day))
                 calendarioDatetime = Calendar().yeardatescalendar(int(Environment.workingYear))
-            pageData = {
-                    "file" :self.defaultFileName+".html",
-                    "dao":self.dao,
-                    "objects":self.dao,
-                    "eventipreves": eventipreves,
-                    "eventiprevesAT": eventiprevesAT,
-                    "calendarioDatetime": calendarioDatetime,
-                    }
-            html = renderTemplate(pageData)
+        pageData = {
+                "file" :self.defaultFileName+".html",
+                "dao":self.dao,
+                "objects":self.dao,
+                "eventipreves": eventipreves,
+                "eventiprevesAT": eventiprevesAT,
+                "calendarioDatetime": calendarioDatetime,
+                }
+        html = renderTemplate(pageData)
         self.hh = html
         renderHTML(self._gtkHtml,html)
 

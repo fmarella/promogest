@@ -412,6 +412,9 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
+                        <property name="text" translatable="yes">0.00      </property>
+                        <signal name="key_press_event" handler="confermaAggiornaDaCosto"/>
+                        <signal name="focus_out_event" handler="aggiornaDaCosto"/>
                       </object>
                     </child>
                   </object>
@@ -529,6 +532,9 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
+                        <property name="text" translatable="yes">0.00      </property>
+                        <signal name="key_press_event" handler="confermaCalcolaPercentualiIngrosso"/>
+                        <signal name="focus_out_event" handler="aggiornaDaIngrosso"/>
                       </object>
                     </child>
                   </object>
@@ -553,6 +559,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
+                        <property name="text" translatable="yes">0.00      </property>
+                        <signal name="key_press_event" handler="confermaCalcolaIngrossoDaMargine"/>
                       </object>
                     </child>
                   </object>
@@ -577,6 +585,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
+                        <property name="text" translatable="yes">0.00      </property>
+                        <signal name="key_press_event" handler="confermaCalcolaIngrossoDaRicarico"/>
                       </object>
                     </child>
                   </object>
@@ -601,6 +611,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_underline">True</property>
+                        <signal name="clicked" handler="calcolaPercentualiIngrosso"/>
                       </object>
                     </child>
                   </object>
@@ -662,6 +673,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_underline">True</property>
+                        <signal name="clicked" handler="calcolaIngrossoDaMargine"/>
                       </object>
                     </child>
                   </object>
@@ -687,6 +699,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_underline">True</property>
+                        <signal name="clicked" handler="calcolaIngrossoDaRicarico"/>
                       </object>
                     </child>
                   </object>
@@ -702,7 +715,9 @@
                     <property name="width_request">140</property>
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
-                    <property name="label" translatable="yes">Prezzo di vendita (non ivato)</property>
+                    <property name="label" translatable="yes">Prezzo di vendita 
+              (&lt;b&gt;non ivato&lt;/b&gt;)</property>
+                    <property name="use_markup">True</property>
                   </object>
                   <packing>
                     <property name="top_attach">3</property>
@@ -813,6 +828,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
+                        <property name="text" translatable="yes">0.00      </property>
+                        <signal name="key_press_event" handler="confermaCalcolaDettaglioDaRicarico"/>
                       </object>
                     </child>
                   </object>
@@ -835,6 +852,9 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
+                        <property name="text" translatable="yes">0.00      </property>
+                        <signal name="key_press_event" handler="confermaCalcolaPercentualiDettaglio"/>
+                        <signal name="focus_out_event" handler="aggiornaDaDettaglio"/>
                       </object>
                     </child>
                   </object>
@@ -859,6 +879,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
+                        <property name="text" translatable="yes">0.00      </property>
+                        <signal name="key_press_event" handler="confermaCalcolaDettaglioDaMargine"/>
                       </object>
                     </child>
                   </object>
@@ -885,6 +907,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_underline">True</property>
+                        <signal name="clicked" handler="calcolaPercentualiDettaglio"/>
                       </object>
                     </child>
                   </object>
@@ -944,6 +967,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_underline">True</property>
+                        <signal name="clicked" handler="calcolaDettaglioDaMargine"/>
                       </object>
                     </child>
                   </object>
@@ -969,6 +993,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_underline">True</property>
+                        <signal name="clicked" handler="calcolaDettaglioDaRicarico"/>
                       </object>
                     </child>
                   </object>
@@ -984,7 +1009,8 @@
                     <property name="width_request">140</property>
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
-                    <property name="label" translatable="yes">Prezzo di vendita (ivato)</property>
+                    <property name="label" translatable="yes">Prezzo di vendita (&lt;b&gt;ivato&lt;/b&gt;)</property>
+                    <property name="use_markup">True</property>
                   </object>
                   <packing>
                     <property name="top_attach">3</property>

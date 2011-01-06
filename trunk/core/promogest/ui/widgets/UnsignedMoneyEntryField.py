@@ -51,6 +51,10 @@ class UnsignedMoneyEntryField(CustomEntryField):
             return True
 
     def my_focus_out_event(self, widget, event):
+        s = widget.get_text()
+        r = s.replace(",",".")
+        widget.set_text("")
+        widget.set_text(r)
         try:
             f = "%-" + str(self._lunghezza) + "." + str(self._precisione) + "f"
             d = float(self.get_text())
