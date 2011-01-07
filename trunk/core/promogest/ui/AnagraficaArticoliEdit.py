@@ -267,6 +267,27 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                             ar.denominazione= self.denominazione_entry.get_text() +" "+ ar.denominazione_breve_taglia + ' ' + ar.denominazione_breve_colore
                             ar.persist()
                     dialog.destroy()
+
+            if self.dao.produttore != self.produttore_entry.get_text():
+                msg = """ATTENZIONE Il  produttore di un articolo padre è cambiata, vuoi riportare la modifica anche ai suoi figli?"""
+                dialog = gtk.MessageDialog(None,
+                                       gtk.DIALOG_MODAL
+                                       | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                       gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                                       msg)
+                response = dialog.run()
+
+                if response !=  gtk.RESPONSE_YES:
+                    dialog.destroy()
+                else:
+                    if self.dao.articoliVarianti:
+                        for ar in self.dao.articoliVarianti:
+                            ar.produttore= self.produttore_entry.get_text()
+                            ar.persist()
+                    dialog.destroy()
+
+
+
             articoloTagliaColore = ArticoloTagliaColore()
             articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
             articoloTagliaColore.id_taglia = findIdFromCombobox(self.id_taglia_customcombobox.combobox)
