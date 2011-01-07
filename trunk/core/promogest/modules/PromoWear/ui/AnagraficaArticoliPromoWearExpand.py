@@ -189,6 +189,7 @@ def articleTypeGuiManage(anagrafica, dao, new):
         gtkgui.denominazione_modello_label.set_property('visible', False)
         gtkgui.denominazione_gruppo_taglia_label.set_property('visible', False)
         gtkgui.denominazione_stagione_anno_label.set_property('visible', False)
+        gtkgui.produttore_entry.set_sensitive(True)
 
 
     elif articleType(dao) == "normal":

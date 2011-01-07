@@ -286,8 +286,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                             ar.persist()
                     dialog.destroy()
 
-
-
             articoloTagliaColore = ArticoloTagliaColore()
             articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
             articoloTagliaColore.id_taglia = findIdFromCombobox(self.id_taglia_customcombobox.combobox)
