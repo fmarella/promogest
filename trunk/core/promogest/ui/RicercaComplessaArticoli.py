@@ -1578,7 +1578,7 @@ class RicercaArticoliFilter(GladeWidget):
                             (a.denominazione_famiglia or ''),
                             (a.denominazione_categoria or '')]
 
-            if posso("PW") and not self._parentObject.__class__.__name__ == "GestioneInventario"::
+            if posso("PW") and self._parentObject.__class__.__name__ != "GestioneInventario":
                 modelRowPromoWear = [(a.denominazione_gruppo_taglia or ''),
                                     #(a.denominazione_modello or ''),
                                     (a.denominazione_taglia or ''),
