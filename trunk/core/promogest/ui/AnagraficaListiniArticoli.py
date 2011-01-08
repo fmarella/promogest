@@ -524,7 +524,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
             self.id_articolo_customcombobox.set_sensitive(False)
             self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
             self._percentualeIva = res["percentualeAliquotaIva"]
-            self.percentuale_aliquota_iva_label.set_text(('%5.' + Environment.conf.decimals + 'f') % self._percentualeIva + ' %')
+            self.percentuale_aliquota_iva_label.set_text(str(mN(self._percentualeIva,0)) + ' %')
         if self._anagrafica._listinoFissato:
             findComboboxRowFromId(self.id_listino_customcombobox.combobox, self._anagrafica._idListino)
             self.id_listino_customcombobox.set_sensitive(False)
@@ -538,7 +538,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         if res:
             self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
             self._percentualeIva = res["percentualeAliquotaIva"]
-            self.percentuale_aliquota_iva_label.set_text(('%5.' + Environment.conf.decimals + 'f') % self._percentualeIva + ' %')
+            self.percentuale_aliquota_iva_label.set_text(str(mN(self._percentualeIva,0)) + ' %')
 
         fornitura = leggiFornitura(self.id_articolo_customcombobox.getId())
         self.ultimo_costo_entry.set_text(self.nformat % float(fornitura["prezzoNetto"]))

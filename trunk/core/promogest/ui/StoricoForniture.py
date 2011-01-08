@@ -180,8 +180,8 @@ class StoricoFornitureFilter(VisualizzazioneFilter):
         self._treeViewModel.clear()
 
         for f in fors:
-            przLordo = ('%14.' + Environment.conf.decimals + 'f') % (f.prezzo_lordo or 0)
-            przNetto = ('%14.' + Environment.conf.decimals + 'f') % (f.prezzo_netto or 0)
+            przLordo = mN(f.prezzo_lordo or 0)
+            przNetto = mN(f.prezzo_netto or 0)
             self._treeViewModel.append((f,
                                         (f.codice_articolo or ''),
                                         (f.articolo or ''),
