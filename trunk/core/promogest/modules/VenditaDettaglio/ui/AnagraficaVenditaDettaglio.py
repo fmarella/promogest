@@ -30,6 +30,7 @@ from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScont
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ScontoTestataScontrino import ScontoTestataScontrino
+from  promogest.dao.Azienda import Azienda
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
