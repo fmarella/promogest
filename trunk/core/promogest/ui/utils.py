@@ -2251,8 +2251,14 @@ def mN(value,decimal=None):
     if not value or value =='':
         return Decimal(0)
     value = deItalianizza(value)
-    precisione = decimal or int(setconf(key="decimals", section="Numbers"))
-    decimals = Decimal(10) ** -(precisione)
+    if decimal >=0:
+        precisione = decimal
+    else:
+        precisione = int(setconf(key="decimals", section="Numbers"))
+    if precisione == 0 :
+        decimals = 0
+    else:
+        decimals = Decimal(10) ** -(precisione)
     newvalue= Decimal(str(value).strip()).quantize(Decimal(decimals), rounding=ROUND_HALF_UP)
     return newvalue
 
