@@ -23,6 +23,7 @@
 import gtk
 from CustomEntryField import CustomEntryField
 from promogest import Environment
+from promogest.ui.utils import mN, setconf
 
 class UnsignedDecimalEntryField(CustomEntryField):
 # Effettua la validazione per decimali senza segno
@@ -33,7 +34,7 @@ class UnsignedDecimalEntryField(CustomEntryField):
         self._lunghezza = 10
         #self._precisione = int2
         #if self._precisione =="0":
-        self._precisione = Environment.conf.decimals
+        self._precisione = int(setconf(key="decimals", section="Numbers"))
         self._default = str1
         self.acceptedKeys = self.controlKeys + self.numberKeys + self.delimiterKeys
 

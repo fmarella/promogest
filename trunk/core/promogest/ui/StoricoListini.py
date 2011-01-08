@@ -12,7 +12,7 @@ from promogest import Environment
 from promogest.dao.ListinoArticolo import ListinoArticolo
 
 from utils import stringToDate, fillComboboxListini, findIdFromCombobox,\
-            calcolaRicarico, calcolaMargine, dateToString
+            calcolaRicarico, calcolaMargine, dateToString, setconf
 
 
 class StoricoListini(Visualizzazione):
@@ -178,8 +178,8 @@ class StoricoListiniFilter(VisualizzazioneFilter):
         self._treeViewModel.clear()
 
         for l in liss:
-            przDet = ('%14.' + Environment.conf.decimals + 'f') % (l.prezzo_dettaglio or 0)
-            przIngr = ('%14.' + Environment.conf.decimals + 'f') % (l.prezzo_ingrosso or 0)
+            przDet = mN(l.prezzo_dettaglio or 0)
+            przIngr = mN(l.prezzo_ingrosso or 0)
             ricDett = '%-6.3f' % calcolaRicarico(float(l.ultimo_costo or 0),
                                                  float(l.prezzo_dettaglio or 0),
                                                  float(l.percentuale_iva or 0))

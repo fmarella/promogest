@@ -28,10 +28,6 @@ import gtk
 import time, datetime
 from promogest import Environment
 
-from promogest.dao.TipoAliquotaIva import TipoAliquotaIva
-from promogest.dao.Operazione import Operazione
-from promogest.dao.Azienda import Azienda
-from promogest.dao.TipoRecapito import TipoRecapito
 from sqlalchemy.orm import *
 from sqlalchemy import *
 #from utils import leggiAgente
@@ -72,6 +68,7 @@ def fillComboboxTipiAliquoteIva(combobox, filter=False):
     """
     Crea l'elenco dei tipi aliquota iva
     """
+    from promogest.dao.TipoAliquotaIva import TipoAliquotaIva
     res = TipoAliquotaIva().select(offset=None,batchSize=None)
     model = gtk.ListStore(object, int, str)
 
@@ -583,6 +580,7 @@ def fillComboboxMagazzini(combobox, filter=False, noempty=False):
 def fillComboboxOperazioni(combobox, tipo=None, filter=False):
     """
     Crea l'elenco delle operazioni per la movimentazione di magazzino """
+    from promogest.dao.Operazione import Operazione
     if tipo:
 #        res = Environment.params['session'].query(Operazione).filter(Operazione.tipo_operazione==tipo).order_by(Operazione.denominazione).all()
         res = Environment.params['session'].query(Operazione).filter(or_(Operazione.tipo_operazione==None,Operazione.tipo_operazione==tipo)).order_by(Operazione.denominazione).all()
@@ -620,6 +618,7 @@ def fillComboboxTipiRecapito(combobox):
 
 def fillModelTipiRecapito():
     """ Crea l'elenco dei tipi di recapito per i contatti  """
+    from promogest.dao.TipoRecapito import TipoRecapito
     res = TipoRecapito().select(orderBy=TipoRecapito.denominazione)
     model = gtk.ListStore(str)
     model.append(('', ))
@@ -629,7 +628,7 @@ def fillModelTipiRecapito():
 
 def fillComboboxAziende(combobox, filter=False):
     """ Crea l'elenco delle aziende  """
-
+    from promogest.dao.Azienda import Azienda
     model = gtk.ListStore(object, str, str)
     res = Azienda().select(offset=None,batchSize=None, orderBy=Azienda.schemaa)
     if not filter:

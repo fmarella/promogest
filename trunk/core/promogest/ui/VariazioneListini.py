@@ -132,18 +132,18 @@ class VariazioneListini(GladeWidget):
         self._percentualeIva = articolo["percentualeAliquotaIva"]
         self.articolo_label.set_text(articolo["codice"] + "   " + articolo["denominazione"])
         if self._ultimoCosto is not None:
-            uc = ('%14.' + Environment.conf.decimals + 'f') % self._ultimoCosto
-            uci = ('%14.' + Environment.conf.decimals + 'f') % calcolaPrezzoIva(float(self._ultimoCosto),
-                                                                                float(self._percentualeIva))
+            uc = mN(self._ultimoCosto)
+            uci = mN(calcolaPrezzoIva(float(self._ultimoCosto),
+                                            float(self._percentualeIva)))
         else:
             uc = '-'
             uci = '-'
         self.ultimo_costo_no_iva_label.set_text(uc)
         self.ultimo_costo_iva_label.set_text(uci)
         if self._nuovoCosto is not None:
-            nc = ('%14.' + Environment.conf.decimals + 'f') % self._nuovoCosto
-            nci = ('%14.' + Environment.conf.decimals + 'f') % calcolaPrezzoIva(float(self._nuovoCosto),
-                                                                                float(self._percentualeIva))
+            nc = mN(self._nuovoCosto)
+            nci = mN(calcolaPrezzoIva(float(self._nuovoCosto),
+                                            float(self._percentualeIva)))
         else:
             nc = '-'
             nci = '-'
@@ -166,19 +166,19 @@ class VariazioneListini(GladeWidget):
 
 
         for l in liss:
-            ultCosto = ('%14.' + Environment.conf.decimals + 'f') % (l.ultimo_costo or 0)
-            przDett = ('%14.' + Environment.conf.decimals + 'f') % (l.prezzo_dettaglio or 0)
-            przIngr = ('%14.' + Environment.conf.decimals + 'f') % (l.prezzo_ingrosso or 0)
-            ricDett = '%-6.3f' % calcolaRicarico(float(l.ultimo_costo or 0),
+            ultCosto = mN(l.ultimo_costo or 0)
+            przDett = mN(l.prezzo_dettaglio or 0)
+            przIngr = mN(l.prezzo_ingrosso or 0)
+            ricDett = mN(calcolaRicarico(float(l.ultimo_costo or 0),
                                                  float(l.prezzo_dettaglio or 0),
-                                                 float(l.percentuale_iva or 0))
-            margDett = '%-6.3f' % calcolaMargine(float(l.ultimo_costo or 0),
+                                                 float(l.percentuale_iva or 0)),3)
+            margDett = mN(calcolaMargine(float(l.ultimo_costo or 0),
                                                  float(l.prezzo_dettaglio or 0),
-                                                 float(l.percentuale_iva or 0))
-            ricIngr = '%-6.3f' % calcolaRicarico(float(l.ultimo_costo or 0),
-                                                 float(l.prezzo_ingrosso or 0))
-            margIngr = '%-6.3f' % calcolaMargine(float(l.ultimo_costo or 0),
-                                                 float(l.prezzo_ingrosso or 0))
+                                                 float(l.percentuale_iva or 0)),3)
+            ricIngr = mN(calcolaRicarico(float(l.ultimo_costo or 0),
+                                                 float(l.prezzo_ingrosso or 0)),3)
+            margIngr = mN(calcolaMargine(float(l.ultimo_costo or 0),
+                                                 float(l.prezzo_ingrosso or 0)),3)
 
             model.append((l,
                           False,

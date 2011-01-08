@@ -35,8 +35,7 @@ import time, datetime
 from sqlalchemy.orm import *
 from sqlalchemy import *
 from promogest import Environment
-from promogest.dao.UnitaBase import UnitaBase
-from promogest.dao.Operazione import Operazione
+
 from promogest.lib.relativedelta import relativedelta
 import string, re
 import pysvn
@@ -90,6 +89,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
     """
     from promogest.dao.AliquotaIva import AliquotaIva
     from promogest.dao.Articolo import Articolo
+    from promogest.dao.UnitaBase import UnitaBase
     _id = None
     _denominazione = ''
     _codice = ''
@@ -535,6 +535,7 @@ def leggiOperazione(id):
     """
     Restituisce un dizionario con le informazioni sulla operazione letta
     """
+    from promogest.dao.Operazione import Operazione
     _denominazione = id
     _fonteValore = ''
     _segno = ''
@@ -1691,7 +1692,7 @@ def getStringaSconti(listSconti):
             tipo = '%'
         elif tipo == 'valore':
             tipo = ''
-            decimals = Environment.conf.decimals
+            decimals = int(setconf(key="decimals", section="Numbers"))
         valore = ('%.' + str(decimals) + 'f') % float(s["valore"])
         stringaSconti = stringaSconti + valore + tipo + '; '
     return stringaSconti
@@ -2302,7 +2303,7 @@ def italianizza(value, decimal=0, curr='', sep='.', dp=',',
 
     """
 #    qq = Decimal(10) ** -places      # 2 places --> '0.01'
-    precisione = int(Environment.conf.decimals) or int(decimal)
+    precisione = int(setconf(key="decimals", section="Numbers")) or int(decimal)
     sign, digits, exp = Decimal(value).as_tuple()
     result = []
     digits = map(str, digits)

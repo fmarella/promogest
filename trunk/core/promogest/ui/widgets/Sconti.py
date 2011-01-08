@@ -7,7 +7,7 @@
 
 import gtk
 from promogest.ui.GladeWidget import GladeWidget
-
+from promogest.ui.Utils import *
 from promogest import Environment
 from SignedDecimalEntryField import SignedDecimalEntryField
 
@@ -64,7 +64,7 @@ class Sconti(GladeWidget):
         for s in self.listSconti:
             decimals = '2'
             if s["tipo"] == 'valore':
-                decimals = Environment.conf.decimals
+                decimals = int(setconf(key="decimals", section="Numbers"))
             model.append((('%.' + str(decimals) + 'f') % float(s["valore"]), s["tipo"]))
         self.sconti_treeview.set_model(model)
 
@@ -73,7 +73,7 @@ class Sconti(GladeWidget):
 
 
     def CreateSignedMoneyEntryField(self, str1, str2, int1, int2):
-        return SignedDecimalEntryField(str1, str2, int1, Environment.conf.decimals)
+        return SignedDecimalEntryField(str1, str2, int1, int(setconf(key="decimals", section="Numbers")))
 
 
     def show_all(self):
@@ -89,7 +89,7 @@ class Sconti(GladeWidget):
             self.percentuale_radiobutton.set_active(True)
         elif model.get_value(self._currentIterator, 1) == "valore":
             self.valore_radiobutton.set_active(True)
-            decimals = Environment.conf.decimals
+            decimals = int(setconf(key="decimals", section="Numbers"))
         else:
             self.percentuale_radiobutton.set_active(False)
             self.valore_radiobutton.set_active(False)
@@ -130,7 +130,7 @@ class Sconti(GladeWidget):
             tipo = "percentuale"
         elif self.valore_radiobutton.get_active():
             tipo = "valore"
-            decimals = Environment.conf.decimals
+            decimals = int(setconf(key="decimals", section="Numbers"))
 
         valore = ('%.' + str(decimals) + 'f') % float(self.valore_entry.get_text())
 
@@ -163,7 +163,7 @@ class Sconti(GladeWidget):
                 tipo = r[1]
                 decimals = '2'
                 if tipo == 'valore':
-                    decimals = Environment.conf.decimals
+                    decimals = int(setconf(key="decimals", section="Numbers"))
                 valore = ('%-10.' + str(decimals) + 'f') % float(r[0])
                 self.listSconti.append({"valore": valore.strip(), "tipo": tipo})
             except:

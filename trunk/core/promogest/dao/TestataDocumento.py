@@ -24,6 +24,7 @@ from Dao import Dao
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
+from Operazione import Operazione
 from ScontoTestataDocumento import ScontoTestataDocumento
 from DestinazioneMerce import DestinazioneMerce
 from TestataMovimento import TestataMovimento

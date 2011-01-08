@@ -23,6 +23,8 @@
 import gtk
 from CustomEntryField import CustomEntryField
 from promogest import Environment
+from promogest.ui.utils import mN, setconf
+
 
 class SignedMoneyEntryField(CustomEntryField):
 # Effettua la validazione per decimali senza segno
@@ -31,7 +33,7 @@ class SignedMoneyEntryField(CustomEntryField):
         CustomEntryField.__init__(self)
 
         self._lunghezza = 10
-        self._precisione = Environment.conf.decimals
+        self._precisione = int(setconf(key="decimals", section="Numbers"))
         self._default = str1
         self.acceptedKeys = self.controlKeys + self.numberKeys + self.delimiterKeys
 
@@ -59,4 +61,3 @@ class SignedMoneyEntryField(CustomEntryField):
                 self.set_text('')
             else:
                 self.set_text(self._default)
-

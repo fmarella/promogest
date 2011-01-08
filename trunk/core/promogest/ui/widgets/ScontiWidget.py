@@ -8,6 +8,8 @@
 import gtk
 from CustomLabel import CustomLabel
 from promogest import Environment
+from promogest.ui.utils import mN, setconf
+
 
 class ScontiWidget(CustomLabel):
     __gtype_name__ = 'ScontiWidget'
@@ -71,7 +73,7 @@ class ScontiWidget(CustomLabel):
                 tipo = '%'
             elif tipo == 'valore':
                 tipo = ''
-                decimals = Environment.conf.decimals
+                decimals = int(setconf(key="decimals", section="Numbers"))
             valore = ('%10.' + str(decimals) + 'f') % float(s["valore"])
             stringSconti = stringSconti + valore + tipo + '; '
         return stringSconti
