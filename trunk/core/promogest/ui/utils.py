@@ -2246,11 +2246,12 @@ def mN(value,decimal=None):
     """
     funzione importante perchè normalizza le valute, mettendo i decimali così
     come settato nel configure e restituisce un arrotondamento corretto
+    RICORDA: Per un valore TOTALE quindi con due decimali si deve forzare il 2
     """
     if not value or value =='':
         return Decimal(0)
     value = deItalianizza(value)
-    precisione = decimal or int(Environment.conf.decimals)
+    precisione = decimal or int(setconf(key="decimals", section="Numbers"))
     decimals = Decimal(10) ** -(precisione)
     newvalue= Decimal(str(value).strip()).quantize(Decimal(decimals), rounding=ROUND_HALF_UP)
     return newvalue

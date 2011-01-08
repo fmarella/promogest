@@ -2,12 +2,11 @@
 
 {% block body %}
 <div id="head">
-        <div id="img"></div>
     <div id="testo">{{ui|replace("_"," ")|capitalize()}}</div>
   </div>  <div id="rigaheader"></div>
         <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                    <td class="report-header" colspan="2"><p><img src= "gui/composizione_listino24x24.png"> Articolo: <strong>{{dao.articolo}}</strong></p>Listino: <strong>{{dao.denominazione}}</strong><br /><br /></td>
+                    <td class="report-header" colspan="2"><p> Articolo: <strong>{{dao.articolo}}</strong></p>Listino: <strong>{{dao.denominazione}}</strong><br /><br /></td>
                 </tr>
                 <tr>
                     <td class="report-header" colspan="0"></td>
@@ -26,12 +25,12 @@
             </tr>
             <tr>
                 <td class="even-detail">Ultimo costo</td>
-                <td class="even-detail"><strong>{{environment.conf.number_format % dao.ultimo_costo}}</strong></td>
+                <td class="even-detail"><strong>{{utils.mN(dao.ultimo_costo)}}</strong></td>
             </tr>
             <tr>
                 <td class="odd-detail">Ultimo costo ivato</td>
                 <td class="odd-detail">
-                    <strong>{{environment.conf.number_format % utils.calcolaPrezzoIva(dao.ultimo_costo,dao.percentuale_iva)}}</strong></td>
+                    <strong>{{utils.mN(utils.calcolaPrezzoIva(dao.ultimo_costo,dao.percentuale_iva))}}</strong></td>
             </tr>
 </table>
 <table cellpadding="0" cellspacing="4" border="0">
@@ -41,11 +40,11 @@
 	<tr><td colspan="2" class="table-header">Vendita al dettaglio</td></tr>
 	    <tr>
                 <td width="150px" class="odd-detail">Prezzo </td>
-                <td class="odd-detail"><strong>{{environment.conf.number_format % utils.calcolaPrezzoIva(dao.prezzo_dettaglio, -1*dao.percentuale_iva)}}</strong></td>
+                <td class="odd-detail"><strong>{{utils.mN(utils.calcolaPrezzoIva(dao.prezzo_dettaglio, -1*dao.percentuale_iva))}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Prezzo ivato</td>
-                <td class="even-detail"><strong>{{environment.conf.number_format % dao.prezzo_dettaglio}}</strong></td>
+                <td class="even-detail"><strong>{{utils.mN(dao.prezzo_dettaglio)}}</strong></td>
             </tr>
                         <tr>
                 <td class="even-detail">Sconto Vendita Dettaglio</td>
@@ -53,11 +52,11 @@
             </tr>
             <tr>
                 <td class="odd-detail">Ricarico</td>
-                <td class="odd-detail"><strong>{{environment.conf.number_format % utils.calcolaRicarico(dao.ultimo_costo,dao.prezzo_dettaglio,dao.percentuale_iva)}}</strong> %</td>
+                <td class="odd-detail"><strong>{{utils.mN(utils.calcolaRicarico(dao.ultimo_costo,dao.prezzo_dettaglio,dao.percentuale_iva),1)}}</strong> %</td>
             </tr>
             <tr>
                 <td class="even-detail">Margine </td>
-                <td class="even-detail"><strong>{{environment.conf.number_format % utils.calcolaMargine(dao.ultimo_costo,dao.prezzo_dettaglio,dao.percentuale_iva)}}</strong> %</td>
+                <td class="even-detail"><strong>{{utils.mN(utils.calcolaMargine(dao.ultimo_costo,dao.prezzo_dettaglio,dao.percentuale_iva),1)}}</strong> %</td>
             </tr>
 	</table>
      </td>
@@ -66,11 +65,11 @@
 	<tr><td colspan="2" class="table-header">Vendita con fatturazione</td></tr>
             <tr>
                 <td width="150px" class="odd-detail">Prezzo </td>
-                <td class="odd-detail"><strong>{{environment.conf.number_format % dao.prezzo_ingrosso}}</strong></td>
+                <td class="odd-detail"><strong>{{utils.mN(dao.prezzo_ingrosso)}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Prezzo ivato</td>
-                <td class="even-detail"><strong>{{environment.conf.number_format % utils.calcolaPrezzoIva(dao.prezzo_ingrosso, dao.percentuale_iva)}}</strong></td>
+                <td class="even-detail"><strong>{{utils.mN(utils.calcolaPrezzoIva(dao.prezzo_ingrosso, dao.percentuale_iva))}}</strong></td>
             </tr>
                                     <tr>
                 <td class="even-detail">Sconto Vendita Ingrosso</td>
@@ -78,11 +77,11 @@
             </tr>
             <tr>
                 <td class="odd-detail">Ricarico </td>
-                <td class="odd-detail"><strong>{{environment.conf.number_format % utils.calcolaRicarico(dao.ultimo_costo,dao.prezzo_ingrosso)}}</strong> %</td>
+                <td class="odd-detail"><strong>{{utils.mN(utils.calcolaRicarico(dao.ultimo_costo,dao.prezzo_ingrosso),1)}}</strong> %</td>
             </tr>
             <tr>
                 <td class="even-detail">Margine </td>
-                <td class="even-detail"><strong>{{environment.conf.number_format % utils.calcolaMargine(dao.ultimo_costo,dao.prezzo_ingrosso)}}</strong> %</td>
+                <td class="even-detail"><strong>{{utils.mN(utils.calcolaMargine(dao.ultimo_costo,dao.prezzo_ingrosso),1)}}</strong> %</td>
             </tr>
         </table>
 </td>
