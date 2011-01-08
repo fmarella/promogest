@@ -1501,12 +1501,12 @@ def calcolaPrezzoIva(prezzo=0, iva=0):
     if type(iva)==type("stringa") or iva is None:
         iva = Decimal(sanitizer(iva) or 0)
     if prezzo.__class__ == Decimal and iva.__class__ == Decimal:
-        if iva <0:
+        if iva and iva <0:
             return (100*prezzo)/(abs(iva)+100)
         else:
             return prezzo*(1+(iva/100))
     else:
-        if iva < 0:
+        if iva  and iva < 0:
             return float((int(100) * float(prezzo)) / float((abs(iva) + int(100))))
         else:
             return float(prezzo * (1 + (iva / 100)))
@@ -2247,6 +2247,7 @@ def mN(value,decimal=None):
     funzione importante perchè normalizza le valute, mettendo i decimali così
     come settato nel configure e restituisce un arrotondamento corretto
     RICORDA: Per un valore TOTALE quindi con due decimali si deve forzare il 2
+    UPDATE: adesso supporta anche lo zero
     """
     if not value or value =='':
         return Decimal(0)
