@@ -21,6 +21,7 @@ import Login
 from utils import *
 from utilsCombobox import *
 from promogest import Environment
+from promogest.dao.UnitaBase import UnitaBase
 from promogest.dao.Articolo import Articolo
 from promogest.dao.FamigliaArticolo import FamigliaArticolo
 from promogest.dao.CategoriaArticolo import CategoriaArticolo
