@@ -7,7 +7,7 @@
 
 import gtk
 from promogest.ui.GladeWidget import GladeWidget
-from promogest.ui.Utils import *
+from promogest.ui.utils import *
 from promogest import Environment
 from SignedDecimalEntryField import SignedDecimalEntryField
 
