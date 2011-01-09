@@ -4,7 +4,7 @@
 
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>
-                <td class="report-header" colspan="2"><h3><img src= "gui/multiplo48x48.png"> Multiplo: <strong>{{dao.denominazione}}</strong></h3></td>
+                <td class="report-header" colspan="2"><h3>Multiplo: <strong>{{dao.denominazione}}</strong></h3></td>
             </tr>
             <tr><td colspan="2" class="table-header">Caratteristiche</td></tr>
             <tr>
@@ -18,7 +18,7 @@
             </tr>
             <tr>
                 <td class="odd-detail">Moltiplicatore</td>
-                <td class="odd-detail"><strong>{{'%14.2f' % dao.moltiplicatore}}</strong></td>
+                <td class="odd-detail"><strong>{{utils.mN(dao.moltiplicatore,2)}}</strong></td>
             </tr>
             <tr py:if="dao.articolo is not None">
                 <td class="even-detail">Associato ad articolo</td>
