@@ -45,7 +45,7 @@ def giacenzaSel(year=None, idMagazzino=None, idArticolo=None,allMag= None):
         magazzini = Environment.params["session"].query(Magazzino.id).all()
 
         if not magazzini:
-            return 0
+            return []
         else:
             magazzini = magazzini[0]
     else:
