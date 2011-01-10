@@ -7,8 +7,8 @@
         <td class="table-header">N° Mov.</td>
 </tr>
 <tr class="row">
-            <td class="odd-detail">{{dao.data_inserimento|string[0:-7]}}</td>
-            <td class="odd-detail">{{dao.data_movimento|string[0:-7]}}</td>
+            <td class="odd-detail">{{utils.dateToString(dao.data_inserimento)}}</td>
+            <td class="odd-detail">{{utils.dateToString(dao.data_movimento)}}</td>
             <td class="odd-detail">{{dao.numero_movimento}}</td>
 </tr><br/>
 </table>
@@ -29,8 +29,8 @@
             <td class="odd-detail">{{riga.codice_articolo}}</td>
             <td class="odd-detail">{{riga.codice_a_barre}}</td>
             <td class="odd-detail">{{riga.descrizione[:20]}}</td>
-            <td class="odd-number">{{environment.conf.number_format % (riga.quantita or 0)}}</td>
-            <td class="odd-number">{{environment.conf.number_format % (riga.prezzo or 0)}}</td>
+            <td class="odd-number">{{utils.mN(riga.quantita or 0,1)}}</td>
+            <td class="odd-number">{{utils.mN(riga.prezzo or 0,2)}}</td>
             {% if riga.tipo_sconto == 'percentuale' %}
             <td class="odd-number">
                 {{environment.conf.number_format % (riga.valore_sconto or 0) + "%"}}
@@ -40,8 +40,8 @@
                 {{environment.conf.number_format % (riga.valore_sconto or 0) + " "}}
             </td>
             {% endif %}
-            <td class="odd-number">{{environment.conf.number_format % (riga.prezzo_scontato or 0)}}</td>
-            <td class="odd-number"><strong>{{environment.conf.number_format % ( riga.quantita * riga.prezzo_scontato ) or 0}}</strong></td>
+            <td class="odd-number">{{utils.mN(riga.prezzo_scontato or 0,2)}}</td>
+            <td class="odd-number"><strong>{{utils.mN((riga.quantita * riga.prezzo_scontato ) or 0,2)}}</strong></td>
         </tr>
             {% endfor %}
         </table>
