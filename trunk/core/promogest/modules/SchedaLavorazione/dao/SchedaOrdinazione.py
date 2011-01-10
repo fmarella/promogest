@@ -604,4 +604,4 @@ std_mapper = mapper(SchedaOrdinazione, schedaordinazione, properties={
                     NotaScheda.id_scheda==schedaordinazione.c.id,
                     cascade="all, delete",
                     backref="sched_ord", uselist=False) },
-                order_by=desc(schedaordinazione.c.numero))
+                order_by=asc(schedaordinazione.c.numero))
