@@ -12,6 +12,7 @@ from decimal import *
 from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport
 from promogest import Environment
 from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
+from promogest.modules.SchedaLavorazione.dao.Datario import Datario
 from promogest.ui.utils import *
 from SchedaLavorazioneUtils import fillComboboxColoreStampa, fillComboboxCarattereStampa, fillComboboxAssociazioneArticoli, fetch_date, get_nomi_sposi, create_schede_ordinazioni, getPrezzoNetto
 from AnagraficaSchedeOrdinazioniEdit import AnagraficaSchedeOrdinazioniEdit
@@ -40,7 +41,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
                                     gladeFile='SchedaLavorazione/gui/SchedaLavorazione.glade',
                                     module=True)
         self._widgetFirstFocus = self.nome_sposi_filter_entry
-        self.orderBy = 'id'
+#        self.orderBy = 'id'
 
     def draw(self, cplx=False):
         treeview = self._anagrafica.anagrafica_filter_treeview
@@ -76,7 +77,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
         column = gtk.TreeViewColumn('Data Matrimonio', renderer, text=4)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy,(Datario, Datario.data_matrimonio))
+        column.connect("clicked", self._changeOrderBy,(Datario, Datario.matrimonio))
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
@@ -214,7 +215,8 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return SchedaOrdinazione().select(  orderBy=self.orderBy,
+            return SchedaOrdinazione().select(
+#                                                orderBy=self.orderBy,
                                                 daNumero=daNumero,
                                                 aNumero=aNumero,
                                                 daDataMatrimonio=daDataMatrimonio,
