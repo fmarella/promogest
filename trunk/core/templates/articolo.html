@@ -129,9 +129,12 @@
             <strong>{{dao.unita_peso|nonone}}</strong>
         </td>
             </tr><tr><td></td></tr>
+            {% if dao %}
  <tr><td class="odd-detail"><strong>GIACENZA: {{dao.getGiacenza()|nonone or 0}}</strong>
                 </td>
-            </tr><tr><td></td></tr>
+            </tr>
+                {% endif %}
+            <tr><td></td></tr>
     <tr><td colspan="4" class="table-header">Note</td></tr>
             <tr>
                 <td class="odd-detail"><strong>{{dao.note|nonone}}</strong>
