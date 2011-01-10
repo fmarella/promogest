@@ -41,7 +41,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
                                     gladeFile='SchedaLavorazione/gui/SchedaLavorazione.glade',
                                     module=True)
         self._widgetFirstFocus = self.nome_sposi_filter_entry
-#        self.orderBy = 'id'
+        self.orderBy = (Datario, Datario.presa_in_carico)
 
     def draw(self, cplx=False):
         treeview = self._anagrafica.anagrafica_filter_treeview
@@ -216,7 +216,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return SchedaOrdinazione().select(
-#                                                orderBy=self.orderBy,
+                                                orderBy=self.orderBy,
                                                 daNumero=daNumero,
                                                 aNumero=aNumero,
                                                 daDataMatrimonio=daDataMatrimonio,
