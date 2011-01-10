@@ -42,7 +42,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
                                     gladeFile='SchedaLavorazione/gui/SchedaLavorazione.glade',
                                     module=True)
         self._widgetFirstFocus = self.nome_sposi_filter_entry
-        self.orderBy = desc((Datario, Datario.presa_in_carico))
+        self.orderBy = "id"
 
     def draw(self, cplx=False):
         treeview = self._anagrafica.anagrafica_filter_treeview
