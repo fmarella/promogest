@@ -239,9 +239,9 @@ class AnagraficaVariazioniListiniEdit(AnagraficaEdit):
             self.a_moltiplicatore_radiobutton.set_active(True)
             if self.dao.valore:
                 values = self.dao.valore.split("|")
-            self.primo_moltiplicatore_entry.set_text(values[0] or "")
-            self.secondo_moltiplicatore_entry.set_text(values[1] or "" )
-            if values[2] == "stesso":
+                self.primo_moltiplicatore_entry.set_text(values[0] or "")
+                self.secondo_moltiplicatore_entry.set_text(values[1] or "" )
+            if values and values[2] == "stesso":
                 self.stesso_articolo_radiobutton.set_active(True)
             else:
                 self.ogni_articolo_radiobutton.set_active(True)
