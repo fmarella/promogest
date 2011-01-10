@@ -8,7 +8,8 @@
 
 import datetime
 from decimal import *
-
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport
 from promogest import Environment
 from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
@@ -41,7 +42,7 @@ class AnagraficaSchedeOrdinazioniFilter(AnagraficaFilter):
                                     gladeFile='SchedaLavorazione/gui/SchedaLavorazione.glade',
                                     module=True)
         self._widgetFirstFocus = self.nome_sposi_filter_entry
-        self.orderBy = (Datario, Datario.presa_in_carico)
+        self.orderBy = desc((Datario, Datario.presa_in_carico))
 
     def draw(self, cplx=False):
         treeview = self._anagrafica.anagrafica_filter_treeview
