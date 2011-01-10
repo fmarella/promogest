@@ -40,6 +40,7 @@ from promogest.modules.SchedaLavorazione.dao.RigaSchedaOrdinazione import RigaSc
 from promogest.modules.SchedaLavorazione.dao.ScontoSchedaOrdinazione import ScontoSchedaOrdinazione
 from promogest.modules.SchedaLavorazione.dao.ColoreStampa import ColoreStampa
 from promogest.modules.SchedaLavorazione.dao.CarattereStampa import CarattereStampa
+from promogest.modules.SchedaLavorazione.dao.Datario import Datario
 from promogest.ui.AnagraficaClienti import AnagraficaClienti
 from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
@@ -266,7 +267,6 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
         """
         Riempie  tutti i form della scheda con i relativi valori del dao (se impostati)
         """
-
         self._loading = True
         self._parzialeLordo = int(0)
         self._parzialeNetto = int(0)
@@ -520,7 +520,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                                                     aDataScheda=fine,
                                                     offset=None,
                                                     batchSize=None)
-                if len(result) != 0:
+                if result:
                     if len(result) == 1 and result[0].id != self.dao.id:
                         response = self.advertise("E' gia' presente una scheda con questo numero. Continuare comunque?")
                     elif len(result) > 1:
@@ -567,11 +567,21 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
 
         allarmi = []
         if self.dao.numero is None:
-            queryString = Environment.params['session'].query(SchedaOrdinazione.numero).order_by(desc("numero")).all()
-            if queryString:
-                rif_num_scheda = queryString[0][0]+1
+            date = time.strftime("%Y")
+            numeroSEL = SchedaOrdinazione().select(complexFilter=(and_(SchedaOrdinazione.id==Datario.id_scheda,  Datario.presa_in_carico.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)) ,
+                        )), batchSize=None)
+            if numeroSEL:
+                rif_num_scheda = max([p.numero for p in numeroSEL]) +1
             else:
                 rif_num_scheda = 1
+            print "NUMEROPPPPPPPPPPPPPPPPPPPPPPPPPPPP", rif_num_scheda
+
+#            return
+#            queryString = Environment.params['session'].query(SchedaOrdinazione.numero).order_by(desc("numero")).all()
+#            if queryString:
+#                rif_num_scheda = queryString[0][0]+1
+#            else:
+#                rif_num_scheda = 1
         else:
             rif_num_scheda = self.dao.numero
 
