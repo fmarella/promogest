@@ -30,7 +30,10 @@
             <tr>
                 <td class="odd-detail">Ultimo costo ivato</td>
                 <td class="odd-detail">
-                    <strong>{{utils.mN(utils.calcolaPrezzoIva(dao.ultimo_costo,dao.percentuale_iva))}}</strong></td>
+                {% if dao.ultimo_costo and dao.percentuale_iva %}
+                    <strong>{{utils.mN(utils.calcolaPrezzoIva(dao.ultimo_costo,dao.percentuale_iva))}}</strong>
+                                    {% endif %}
+                    </td>
             </tr>
 </table>
 <table cellpadding="0" cellspacing="4" border="0">
