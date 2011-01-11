@@ -1467,7 +1467,7 @@ class RicercaArticoliFilter(GladeWidget):
 
     def refresh(self):
         # Aggiornamento TreeView
-        model = self._parentObject.filter.resultsElement.get_model()
+        model = self.filter.resultsElement.get_model()
 
         if self._tipoRicerca == 'semplice':
             denominazione = prepareFilterString(self.denominazione_filter_entry.get_text())

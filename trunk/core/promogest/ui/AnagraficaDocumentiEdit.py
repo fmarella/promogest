@@ -147,7 +147,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.label40.destroy()
             self.totale_periodo_label.destroy()
 
-
     def draw(self, cplx=False):
         self.cplx = cplx
         drawPart (self)
@@ -217,7 +216,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if posso("GN"):
             AnagraficaDocumentiEditGestioneNoleggioExt.azzeraRiga(self,numero)
 
-
     def azzeraRigaPartial(self, numero = 0, rigatampone=None):
         """
         Azzera i campi del dizionario privato delle righe, alla riga
@@ -248,7 +246,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "quantita_minima": rigatampone['quantita_minima']}
         if posso("SM"):
             AnagraficaDocumentiEditSuMisuraExt.azzeraRigaPartial(self,numero, rigatampone)
-
 
     def nuovaRiga(self):
         """
@@ -401,7 +398,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.calcolaTotale()
         elif page_num ==3:
             if not posso("PA"):
-                fenceDialog()
+                fencemsg()
                 self.calcola_importi_scadenza_button.set_sensitive(False)
                 self.controlla_rate_scadenza_button.set_sensitive(False)
                 self.pulisci_scadenza_button.set_sensitive(False)

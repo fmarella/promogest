@@ -1345,72 +1345,7 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
         anagWindow = anag.getTopLevel()
 
     def on_main_window_key_press_event(self, widget, event):
-#        return
-#        if event.type == gtk.gdk.KEY_PRESS:
-#            if event.state & gtk.gdk.CONTROL_MASK and (
-#                (event.state & gtk.gdk.MOD2_MASK) or (event.state & gtk.gdk.MOD1_MASK)):
-#                if gtk.gdk.keyval_name(event.keyval) == "m":
-#                    # easter egg
-
-#                    def menuitem_response(game):
-#                        games_menu.hide()
-#                        os.system(game)
-
-#                    tetris_games = (
-#                        'gnometris','ksirtet','xtris','kcalc','emacs','ksmiletris','ltris')
-#                    games_menu = gtk.Menu()
-#                    for game in tetris_games:
-#                        ret = os.system('which ' + game + ' > /dev/null')
-#                        if ret==0:
-#                            item = gtk.MenuItem(game)
-#                            games_menu.append(item)
-#                            item.connect_object("activate", menuitem_response, game)
-#                            item.show()
-#                    games_menu.popup(None, None, None, 3, event.time)
-#                    return True
-#                elif gtk.gdk.keyval_name(event.keyval) == "u":
-#                    # easter egg
-
-#                    def menuitem_response(utilities):
-#                        utilities_menu.hide()
-#                        os.system(utilities)
-
-#                    utils = (
-#                        'firefox','konqueror','thunderbird','kcalc','kate','gcalctool', "gedit")
-#                    utilities_menu = gtk.Menu()
-#                    for util in utils:
-#                        ret = os.system('which ' + util + ' > /dev/null')
-#                        if ret==0:
-#                            item = gtk.MenuItem(util)
-#                            utilities_menu.append(item)
-#                            item.connect_object("activate", menuitem_response, util)
-#                            item.show()
-#                    utilities_menu.popup(None, None, None, 3, event.time)
-#                    return True
-        if gtk.gdk.keyval_name(event.keyval) == "t":
-            import random
-            msg= """
-Il Promogest2 "MentoR" ha generato per te due sestine
-"vincenti" per il prossimo concorso del superenalotto
-giocale e facci sapere .....
-Mi raccomando se dovessi vincere ricordati di noi :)
-
-Il Team:
-
-I Numeri:   %s
-            %s
-""" %(str(random.sample(xrange(90), 6))[1:-1],str(random.sample(xrange(90), 6))[1:-1])
-            dialog = gtk.MessageDialog(self.getTopLevel(),
-                               gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                               gtk.MESSAGE_INFO,
-                               gtk.BUTTONS_OK,
-                               msg)
-            dialog.run()
-            dialog.destroy()
-
-        return True
-#        else:
-#            return False
+        on_main_window_key_press_eventPart(self,widget, event)
 
     def on_disconnect(self, widget=None):
         dialog = gtk.MessageDialog(self.getTopLevel(),
@@ -1486,7 +1421,6 @@ class RegistrazioniFrame(GladeWidget):
 class ListiniFrame(ElencoListini):
     """ Frame per la gestione dei listini
     """
-
     def __init__(self, mainWindow,azs):
         self.mainWindow = mainWindow
         ElencoListini.__init__(self, self.mainWindow,azs)
