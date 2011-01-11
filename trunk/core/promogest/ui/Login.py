@@ -118,8 +118,8 @@ class Login(GladeApp):
 
     def splashHandler(self):
         data = datetime.datetime.now()
-        if data > datetime.datetime(data.year,12,15) or \
-            data < datetime.datetime(data.year+1,1,10):
+        if (data > datetime.datetime(data.year,12,15) and data < datetime.datetime(data.year,12,31)) or \
+            (data < datetime.datetime(data.year,1,10) and data > datetime.datetime(data.year,1,1)) :
             randomFile = random.sample([1, 2, 3, 4, 5,6], 1)[0]
             print "RANDOM FILE NUMERO", randomFile
             fileSplashImage = Environment.conf.guiDir + "natale["+str(randomFile)+"].png"
@@ -131,12 +131,13 @@ class Login(GladeApp):
                 self.urll = "http://www.promotux.it/promoGest/preventivo_pro"
         else:
             if Environment.engine.name == "sqlite": #forzo lo splash per lite
-                fileSplashImage = "gui/splash_pg2_lite.png"
+                randomFile = random.sample([1, 2, 3, 4, 5, 6], 1)[0]
+                fileSplashImage = Environment.conf.guiDir + "one["+str(randomFile)+"].png"
                 self.login_tipo_label.set_markup("<b>PromoGest 'ONE'</b>")
                 self.urll = "http://www.promotux.it/promoGest/preventivo_one"
             else:
-                randomFile = random.sample([1, 2, 3, 4, 5, 6, 7, 8], 1)[0]
-                fileSplashImage = Environment.conf.guiDir + "splash["+str(randomFile)+"].png"
+                randomFile = random.sample([1, 2, 3, 4, 5, 6], 1)[0]
+                fileSplashImage = Environment.conf.guiDir + "pro["+str(randomFile)+"].png"
                 self.login_tipo_label.set_markup("<b>PromoGest 'PRO'</b>")
                 self.urll = "http://www.promotux.it/promoGest/preventivo_pro"
         self.splash_image.set_from_file(fileSplashImage)
@@ -310,7 +311,6 @@ class Login(GladeApp):
             """
             #global jinja_env
             Environment.modulesList=[Environment.tipo_pg]
-            print "111111111", Environment.modulesList, Environment.tipo_pg
             modules_folders = [folder for folder in os.listdir(modules_dir) \
                             if (os.path.isdir(os.path.join(modules_dir, folder)) \
                             and os.path.isfile(os.path.join(modules_dir, folder, 'module.py')))]
