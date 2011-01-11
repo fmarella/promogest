@@ -138,8 +138,8 @@ class VariazioneListini(GladeWidget):
         else:
             uc = '-'
             uci = '-'
-        self.ultimo_costo_no_iva_label.set_text(uc)
-        self.ultimo_costo_iva_label.set_text(uci)
+        self.ultimo_costo_no_iva_label.set_text(str(uc))
+        self.ultimo_costo_iva_label.set_text(str(uci))
         if self._nuovoCosto is not None:
             nc = mN(self._nuovoCosto)
             nci = mN(calcolaPrezzoIva(float(self._nuovoCosto),
@@ -147,8 +147,8 @@ class VariazioneListini(GladeWidget):
         else:
             nc = '-'
             nci = '-'
-        self.nuovo_costo_no_iva_label.set_text(nc)
-        self.nuovo_costo_iva_label.set_text(nci)
+        self.nuovo_costo_no_iva_label.set_text(str(nc))
+        self.nuovo_costo_iva_label.set_text(str(nci))
 
         self.refresh()
 
