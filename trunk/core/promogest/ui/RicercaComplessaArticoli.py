@@ -1573,9 +1573,9 @@ class RicercaArticoliFilter(GladeWidget):
                                     (a.anno or ''),
                                     (a.stagione or ''),
                                     (a.genere or '')]
-            if modelRowPromoWear:
+            if self._parentObject.__class__.__name__ != "GestioneInventario" and modelRowPromoWear:
                 model.append(modelRow +modelRowPromoWear)
-            else:
+            elif self._parentObject.__class__.__name__ != "GestioneInventario":
                 model.append(modelRow)
 
     def _prepare(self):
