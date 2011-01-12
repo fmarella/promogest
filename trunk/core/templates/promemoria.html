@@ -1,6 +1,7 @@
 {% extends 'index.html' %}
 
 {% block body %}
+    {% if dao %}
 <style>
 @page {
 size: A4 portrait;
@@ -39,4 +40,8 @@ margin: 1cm;
                 <td colspan="2" class="even-detail"><p>{{dao.annotazione|nl2br}}</p></td>
             </tr>
         </table>
+                {% else %}
+        <p><img src= "gui/attenzione_48X48.png">ELIMINATO: Niente da visualizzare</p>
+        <p><img src= "gui/testata_promogest2.png"></p>
+        {% endif %}
 {% endblock %}
