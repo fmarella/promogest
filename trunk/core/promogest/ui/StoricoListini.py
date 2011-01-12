@@ -160,8 +160,9 @@ class StoricoListiniFilter(VisualizzazioneFilter):
         self.numRecords = ListinoArticolo().count(idArticolo=idArticolo,
                                                             idListino=idListino,
                                                             listinoAttuale=None,
-                                                            daDataListino=daDataListino,
-                                                            aDataListino=aDataListino)
+#                                                            daDataListino =daDataListino,
+#                                                            aDataListino=aDataListino
+                                                            )
 
         self._refreshPageCount()
 
@@ -169,8 +170,8 @@ class StoricoListiniFilter(VisualizzazioneFilter):
                                                     idArticolo=idArticolo,
                                                     idListino=idListino,
                                                     listinoAttuale=None,
-                                                    daDataListino=daDataListino,
-                                                    aDataListino=aDataListino,
+#                                                    daDataListino=daDataListino,
+#                                                    aDataListino=aDataListino,
                                                     offset = self.offset,
                                                     batchSize = self.batchSize)
 
