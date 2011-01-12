@@ -1,6 +1,7 @@
 {% extends 'index.html' %}
 
 {% block body %}
+    {% if dao %}
     <table>
         <tr>
             <td class="report-header"><h3> Registro: <strong> {{(dao.registro_numerazione).replace("_"," ").capitalize()}}</strong></h3></td>
@@ -206,4 +207,8 @@
                 <td class="odd-detail"><strong>{{dao.protocollo}}</strong></td>
             </tr>
         </table>
+        {% else %}
+        <p><img src= "gui/attenzione_48X48.png">ELIMINATO: Niente da visualizzare</p>
+        <p><img src= "gui/testata_promogest2.png"></p>
+        {% endif %}
 {% endblock %}
