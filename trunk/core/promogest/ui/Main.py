@@ -147,6 +147,9 @@ class Main(GladeWidget):
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'promemoria48x48.png')
         model.append([5, "Promemoria", pbuf,None])
 
+        pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'gest_commessa48X48.png')
+        model.append([10, "Gestione\nCommesse", pbuf,None])
+
         # right vertical icon list  adding modules
 #        model_right = gtk.ListStore(int, str, gtk.gdk.Pixbuf, object)
         ind = 6
@@ -248,6 +251,13 @@ class Main(GladeWidget):
                 return
             else:
                 fencemsg()
+        elif selection == 10:
+                messageInfo(msg="""     MODULO IN LAVORAZIONE!!
+
+SE SEI INTERESSATO AD AIUTARE NELLA FASE DI TEST E DEBUG
+
+INVIA UNA EMAIL A assistenza@promotux.it
+    Grazie""")
         else:
             i = selected[0][0]
             selection = model[i][0]
