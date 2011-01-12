@@ -12,7 +12,7 @@ from promogest import Environment
 from promogest.dao.ListinoArticolo import ListinoArticolo
 
 from utils import stringToDate, fillComboboxListini, findIdFromCombobox,\
-            calcolaRicarico, calcolaMargine, dateToString, setconf
+            calcolaRicarico, calcolaMargine, dateToString, setconf, mN
 
 
 class StoricoListini(Visualizzazione):
