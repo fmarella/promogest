@@ -40,7 +40,6 @@ class Pagamenti(object):
         if disable == True:
             self.anagrafica.data_acconto_entry.set_sensitive(action)
             self.anagrafica.importo_acconto_scadenza_entry.set_sensitive(action)
-            self.anagrafica.pn_acconto_button.set_sensitive(action)
         if action == False:
             self.anagrafica.data_acconto_entry.set_text("")
             self.anagrafica.importo_acconto_scadenza_entry.set_text("")
@@ -59,7 +58,6 @@ class Pagamenti(object):
             self.anagrafica.data_pagamento_prima_scadenza_entry.set_sensitive(action)
             self.anagrafica.importo_acconto_scadenza_entry.set_sensitive(action)
             self.anagrafica.importo_prima_scadenza_entry.set_sensitive(action)
-            self.anagrafica.pn_prima_rata_button.set_sensitive(action)
 
         if action == False:
             self.anagrafica.data_acconto_entry.set_text("")
@@ -80,7 +78,6 @@ class Pagamenti(object):
             self.anagrafica.importo_seconda_scadenza_entry.set_sensitive(action)
 #            self.anagrafica.secondo_pagamento_entry.set_sensitive(action)
             self.anagrafica.data_pagamento_seconda_scadenza_entry.set_sensitive(action)
-            self.anagrafica.pn_seconda_rata_button.set_sensitive(action)
         if action == False:
             self.anagrafica.data_seconda_scadenza_entry.set_text("")
             self.anagrafica.importo_seconda_scadenza_entry.set_text("")
@@ -98,7 +95,6 @@ class Pagamenti(object):
             self.anagrafica.importo_terza_scadenza_entry.set_sensitive(action)
 #            self.anagrafica.terzo_pagamento_entry.set_sensitive(action)
             self.anagrafica.data_pagamento_terza_scadenza_entry.set_sensitive(action)
-            self.anagrafica.pn_terza_rata_button.set_sensitive(action)
         if action == False:
             self.anagrafica.data_terza_scadenza_entry.set_text("")
             self.anagrafica.importo_terza_scadenza_entry.set_text("")
@@ -116,7 +112,6 @@ class Pagamenti(object):
             self.anagrafica.importo_quarta_scadenza_entry.set_sensitive(action)
 #            self.anagrafica.quarto_pagamento_entry.set_sensitive(action)
             self.anagrafica.data_pagamento_quarta_scadenza_entry.set_sensitive(action)
-            self.anagrafica.pn_quarta_rata_button.set_sensitive(action)
         if action == False:
             self.anagrafica.data_quarta_scadenza_entry.set_text("")
             self.anagrafica.importo_quarta_scadenza_entry.set_text("")
