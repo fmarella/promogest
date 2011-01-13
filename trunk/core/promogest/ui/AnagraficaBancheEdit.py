@@ -55,7 +55,6 @@ class AnagraficaBancheEdit(GladeWidget):
 
     def _refresh(self):
         """ qui ci vanno i dati per riempire le entry e la label"""
-#        print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", self.dao
         if self.dao and self.dao.denominazione:
             self.denominazione_banca_entry.set_text(str(self.dao.denominazione))
             self.agenzia_entry.set_text(str(self.dao.agenzia))

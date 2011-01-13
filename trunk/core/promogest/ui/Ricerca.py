@@ -213,7 +213,6 @@ class RicercaHtml(object):
         self._htmlTemplate = os.path.join('templates')
         self.description = description
         self.defaultFileName = template
-        print "MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
         self.dao = None
 
         self._slaTemplateObj = None

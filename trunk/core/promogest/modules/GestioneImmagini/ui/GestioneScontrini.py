@@ -200,7 +200,6 @@ class GestioneScontrini(GladeWidget):
         (model, iterator) = sel.get_selected()
 
         if iterator is None:
-            print 'on_filter_treeview_cursor_changed(): FIXME: iterator is None!'
             return
 
         self.dao = model.get_value(iterator, 0)

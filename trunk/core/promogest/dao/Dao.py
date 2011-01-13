@@ -165,7 +165,6 @@ class Dao(object):
             self.raiseException(e)
 
     def persist(self,multiple=False, record=True):
-#        print "SEEEEEEEEEEEEEEEEEEEEEEEEEEEL111111", self.__class__.__name__
         if self.dd(self.__class__.__name__):
             params["session"].add(self)
             self.saveAppLog(self)
@@ -177,7 +176,6 @@ class Dao(object):
         self.saveAppLog(self)
 
     def add(self,multiple=False, record=True):
-#        print "SEEEEEEEEEEEEEEEEEEEEEEEEEEEL22222", self, dir(self), self.__dict__
         params["session"].add(self)
         self.saveAppLog(self)
 
@@ -231,7 +229,6 @@ class Dao(object):
 
     def dd(self,clase):
 #        clasemd5 = hashlib.md5(clase).hexdigest()
-#        print "okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", clasemd5, mm
         return True
 #        if clasemd5 in mm:
 ##            print "OLLELLE OLLALLA", self.count()

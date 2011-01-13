@@ -53,7 +53,6 @@ def on_seleziona_prima_nota_button_clicked(anaedit, button):
     if anaedit.numero_primo_documento_entry.get_text() != "":
             response = Pagamenti(anaedit).impostaDocumentoCollegato(
                     int(anaedit.numero_primo_documento_entry.get_text()))
-            print "on_seleziona_prima_nota: response = ", response
     else:
         anaedit.showMessage("Inserisci il numero del documento")
         response = False

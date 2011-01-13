@@ -326,7 +326,6 @@ Procedere con la "chiusura" del Pagamento?"""
             return 1
 
         scadenze = self.IsPagamentoMultiplo(self.anagrafica.id_pagamento_customcombobox.combobox)
-        print "SCADENZEEEEEEEEEE", scadenze
         data_doc = stringToDate(self.anagrafica.data_documento_entry.get_text())
         importotot = float(self.anagrafica.totale_scontato_riepiloghi_label.get_text())
 
@@ -418,7 +417,6 @@ Procedere con la "chiusura" del Pagamento?"""
     def getScadenze(self):
         if  self.anagrafica.dao.scadenze:
             for scadenza in self.anagrafica.dao.scadenze:
-                print scadenza.__dict__
                 if scadenza.numero_scadenza == 0:
                     self.anagrafica.data_acconto_entry.set_text(dateToString(scadenza.data) or '')
                     self.anagrafica.importo_acconto_scadenza_entry.set_text(str(scadenza.importo or ''))

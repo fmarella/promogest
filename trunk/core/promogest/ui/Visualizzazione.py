@@ -19,7 +19,6 @@ class Visualizzazione(GladeWidget):
 
     def __init__(self, windowTitle, filterElement):
         GladeWidget.__init__(self, 'visualizzazione_window', 'visualizzazione_window.glade')
-        print "AKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK", self.visualizzazione_window, filterElement
         self.visualizzazione_window.set_title(windowTitle)
         self.dao = None
         self._setFilterElement(filterElement)
@@ -83,15 +82,12 @@ class Visualizzazione(GladeWidget):
         return None
 
 
-
 class VisualizzazioneFilter(GladeWidget):
     """ Filtro per la visualizzazione """
 
     def __init__(self, visualizzazione, rootWidget):
-#        print "666666666666666666666666666", rootWidget, visualizzazione
         GladeWidget.__init__(self, rootWidget)
         self._visualizzazione = visualizzazione
-
 
     def build(self):
         """ reindirizza alcuni campi e metodi dal filterWidget """

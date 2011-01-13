@@ -142,10 +142,6 @@ class Inventario(Dao):
                 inv.id_magazzino = s[0]
                 inv.id_articolo = s[1]
                 inv.persist()
-        print sel2, sel
-
-
-
 
     def control(self,window):
 
@@ -160,7 +156,6 @@ class Inventario(Dao):
 
         """ Verifica se esistono gia' delle righe di inventario nell'anno di esercizio """
         res = self.count(anno=Environment.workingYear)
-        print "REEEEEEEEEEEEEEEEEEEESSS PER INVENTARIO", res
         if not res :
             # richiesta di generazione dell'inventario
             msg = ("Non e' presente nessun caricamento di inventario nell'anno di lavoro:\n\n" +

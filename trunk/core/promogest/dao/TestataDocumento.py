@@ -494,7 +494,6 @@ class TestataDocumento(Dao):
                     row.id_testata_documento = self.id
                     righeMovimento.append(row)
 
-        #print "DOPO IL FOR", tempo()
         if (DaoTestataMovimento is not None):
             if righeMovimento:
                 ##print "SE ARRIVI QUI DOVREBBE ANDARE TUTTO BENE" , righeMovimento
@@ -503,22 +502,64 @@ class TestataDocumento(Dao):
         else:
             for riga in righeMovimento:
                 riga.persist()
-        #print "DOPO IL PERSIST DI RIGA", tempo()
-        self.testataDocumentoScadenzaDel(id=self.id)
+
+        #Gestione anche della prima nota abbinata al pagamento
+        #agganciare qui con dei controlli, le cancellazioni preventive ed i
+        #reinserimenti.
+        self.testataDocumentoScadenzaDel(dao=self)
         if self.__ScadenzeDocumento:
             for scad in self.__ScadenzeDocumento:
                 scad.id_testata_documento = self.id
                 Environment.session.add(scad)
+                if self.ripartire_importo: #aka prima nota
+                    ope= leggiOperazione(self.operazione)
+                    tipo = Pagamento().select(denominazione=scad.pagamento)[0].tipo
+                    if scad.numero_scadenza == 0:
+                        tipo_pag = "ACCONTO"
+                    elif scad.numero_scadenza == 1:
+                        tipo_pag = "PRIMA RATA"
+                    elif scad.numero_scadenza == 2:
+                        tipo_pag = "SECONDA RATA"
+                    elif scad.numero_scadenza == 3:
+                        tipo_pag = "TERZA RATA"
+                    elif scad.numero_scadenza == 4:
+                        tipo_pag = "QUARTA RATA"
+                    if ope["segno"] == "-":
+                        stringa = "%s N.%s del. %s a %s ,  %s"    %(self.operazione, str(self.numero), dateToString(self.data_documento), self.intestatario, tipo_pag)
+                        segno = "entrata"
+                    else:
+                        stringa = "%s N.%s del. %s da %s, %s"    %(self.operazione, str(self.numero), dateToString(self.data_documento), self.intestatario, tipo_pag)
+                        segno = "uscita"
+                    tpn = TestataPrimaNota().select(datafinecheck = True)
+                    try:
+                        numero = max(a.numero for a in RigaPrimaNota().select(idTestataPrimaNota=tpn[0].id, batchSize=None))
+                    except:
+                        numero = 0
+                    rigaprimanota = RigaPrimaNota()
+                    rigaprimanota.denominazione = stringa
+                    rigaprimanota.id_testata_prima_nota = tpn[0].id
+        #        rigaprimanota.id_banca = #trovare
+                    rigaprimanota.numero = numero+1
+                    rigaprimanota.data_registrazione = scad.data_pagamento
+                    rigaprimanota.tipo = tipo.lower()
+                    rigaprimanota.segno = segno
+                    rigaprimanota.valore = scad.importo
+                    params["session"].add(rigaprimanota)
+                    params["session"].commit()
+                    a = RigaPrimaNotaTestataDocumentoScadenza()
+                    a.id_riga_prima_nota = rigaprimanota.id
+                    a.id_testata_documento_scadenza = scad.id
+                    params["session"].add(a)
+                    params["session"].commit()
             Environment.session.commit()
-        #print "DOPO SCADENZE", tempo()
 
+        #parte relativa al noleggio
         if self.__data_fine_noleggio and self.__data_inizio_noleggio:
             tn = TestataGestioneNoleggio()
             tn.id_testata_documento = self.id
             tn.data_inizio_noleggio = self.data_inizio_noleggio
             tn.data_fine_noleggio = self.data_fine_noleggio
             tn.persist()
-        #print "DOPO FINE NOLEGGIO", tempo()
 
         if self.scontiSuTotale:
             self.scontiTestataDocumentoDel(id=self.id)
@@ -530,7 +571,6 @@ class TestataDocumento(Dao):
             self.scontiSuTotale = []
 #                scontisutot.persist()
         Environment.pg2log.info("FINE SALVATAGGIO DOCUMENTO")
-
 
     def righeDocumentoDel(self, id=None):
         """
@@ -566,17 +606,29 @@ class TestataDocumento(Dao):
             return True
 
 
-    def testataDocumentoScadenzaDel(self,id=None):
+    def testataDocumentoScadenzaDel(self,dao=None):
         """
         Cancella la scadenza documento associato ad un documento
         """
-        row = TestataDocumentoScadenza().select(idTestataDocumento= id,
+        row = TestataDocumentoScadenza().select(idTestataDocumento= dao.id,
                         offset = None,
                         batchSize = None)
         for r in row:
+            #a cascata
+#            if dao.ripartire_importo: #aka prima nota
+            pnn = RigaPrimaNotaTestataDocumentoScadenza().\
+                    select(idTestataDocumentoScadenza=r.id, batchSize=None)
+            if pnn:
+                for p in pnn:
+                    rpn = RigaPrimaNota().getRecord(id=p.id_riga_prima_nota)
+                    if rpn:
+                        params['session'].delete(rpn)
+                    params['session'].delete(p)
             params['session'].delete(r)
         params["session"].commit()
         return True
+
+
 
     def testataDocumentoGestioneNoleggioDel(self,id=None):
         """

@@ -118,7 +118,6 @@ class AnagraficaDocumenti(Anagrafica):
 
 class AnagraficaDocumentiHtml(AnagraficaHtml):
     def __init__(self, anagrafica):
-        print "GOGOGOGGOGOGOGOGOGOGOGOGOGGOOGGOGO"
         AnagraficaHtml.__init__(self, anagrafica, 'documento',
                                 'Documento')
 

@@ -12,18 +12,15 @@ from datetime import datetime
 import re
 
 
-
 class Section(object):
     def __init__(self, config, name):
         self._name = name
         self._config = config
 
-
     def __setattr__(self, name, value):
         if name not in ('_name','_config'):
             self._config._configDict[self._name][name] = value
         self.__dict__[name] = value
-
 
     def remove_option(self, option):
         if self._config._ini.has_option(self._name, option):
@@ -31,14 +28,11 @@ class Section(object):
             del(self._config._configDict[self._name][option])
             del(self.__dict__[option])
 
-
     def options(self):
         return self._config._ini.options(self._name)
 
-
     def items(self):
         return self._config._ini.items(self._name)
-
 
 
 class Config(object):
@@ -58,7 +52,6 @@ class Config(object):
                 for item in items:
                     setattr(getattr(self, section), item[0], item[1])
 
-
     def save(self):
         for section in self._configDict:
             for entry, entryValue in self._configDict[section].iteritems():
@@ -67,7 +60,6 @@ class Config(object):
         self._ini.write(f)
         f.close()
 
-
     def add_section(self, section):
         if not self._ini.has_section(section):
             self._ini.add_section(section)
@@ -75,22 +67,17 @@ class Config(object):
             _sec = Section(self, section)
             self.__dict__[section] = _sec
 
-
     def remove_section(self, section):
         if self._ini.has_section(section):
             self._ini.remove_section(section)
             del(self._configDict[section])
             del(self.__dict__[section])
 
-
     def dump(self):
-#        print self._configDict
         return
-
 
     def sections(self):
         return self._ini.sections()
-
 
     def parseDate(self, isoDate):
         __regDate = '(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)\..*'
@@ -104,7 +91,6 @@ class Config(object):
             return None
 
 
-
 class OrderedConfigParser(ConfigParser):
     """ Adds the feature of load/save sections from the config file in the exact order """
 
@@ -112,7 +98,6 @@ class OrderedConfigParser(ConfigParser):
         ConfigParser.__init__(self)
 
         self._orderedSectionNames = []
-
 
     def initOrderedSectionNames(self, filename):
         # ConfigParser does not return an ordered section list: we try to obtain this
@@ -130,13 +115,10 @@ class OrderedConfigParser(ConfigParser):
                        if finishIndex > 0:
                            self._orderedSectionNames.append(l[1:finishIndex])
         except:
-            print 'Error retrieving ordered sections list'
             self._orderedSectionNames = []
-
 
     def sections(self):
         return self.refreshOrderedSectionNames()
-
 
     def refreshOrderedSectionNames(self):
         # It is useful only if some section was added-removed
@@ -151,13 +133,11 @@ class OrderedConfigParser(ConfigParser):
                 orderedSections.append(s)
         return orderedSections
 
-
     def read(self, filenames):
         # Overloads the base class method and create initial order list of sections names
         value = ConfigParser.read(self, filenames)
         self.initOrderedSectionNames(filenames)
         return value
-
 
     def write(self, fp):
         """Write an .ini-format representation of the configuration state."""

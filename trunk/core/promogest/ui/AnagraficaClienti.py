@@ -590,7 +590,6 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                 #magazziniListino = set(m.id_magazzino for m in ListinoMagazzino()\
                                         #.select(idListino=listino,batchSize=None, orderBy="id_listino"))
                 #magazzinoOk = (magazzino in magazziniListino)
-            #print "FIXME: RICONTROLLLLLLLAAAAAARREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
             #if not(categoriaOk and magazzinoOk):
                 #msg = 'Il listino inserito non sembra compatibile con il magazzino e le categorie indicate.\nContinuare ?'
                 #dialog = gtk.MessageDialog(self.dialogTopLevel, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,

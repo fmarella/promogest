@@ -1536,7 +1536,6 @@ class RicercaClientiFilter(GladeWidget):
                 value = self.id_categoria_cliente_filter_combobox.get_active_text()
                 testo += '  Categoria:\n'
                 testo += '       ' + value + '\n'
-            print "QUESTO E' IL TESTO DEL RIEPILOGO IN BASSO .....",testo
             return testo
         else:
             buffer = self.riepilogo_cliente_filter_textview.get_buffer()

@@ -33,7 +33,6 @@ class ListinoArticolo(Dao):
         self.__scontiVenditaIngr = None
 
     def cleann(self):
-        #print "VERIFICO SE CI SONO ENTRY FALSE IN LISTINO ARTICOLO"
         falsi = self.select(listinoAttuale=bool(0), batchSize=None)
         if falsi:
             for f in falsi:

@@ -43,7 +43,7 @@ class RicercaContatti(Ricerca):
 
             anag.on_record_new_activate(anag.record_new_button)
         else:
-            print "MESSAGGIO DI PAT"
+            fencemsg()
 
 
 class RicercaContattiFilter(RicercaFilter):

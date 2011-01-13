@@ -179,7 +179,6 @@ class RicercaArticoliFilter(RicercaFilter):
             cancellato = False
         else:
             cancellato = True
-        print " MA INSOMMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", cancellato
         self.numRecords = Articolo().count(denominazione=denominazione,
                                                        codice=codice,
                                                        codiceABarre=codiceABarre,

@@ -70,7 +70,6 @@ class AnagraficaCodiciABarreArticoli(Anagrafica):
         self.refresh()
 
     def on_generic_combobox_changed(self,combobox):
-        #print "VVVVVVVVVVVVVVVVVVVVVVVVVVVVV", self.codBar_combo.get_active()
         if self.codBar_combo.get_active()==0:
             codice = generateRandomBarCode(ean=13)
             self.on_record_new_activate(self,codice=codice)

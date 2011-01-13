@@ -468,7 +468,6 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
         riga.data_registrazione = data_registrazione
         denominazione = self.denominazione_entry.get_text()
         riga.denominazione = denominazione
-        print "APAPAPAPAPPAPPA", repr(self.entrata_cassa_entry.get_text().replace(",",".").strip())
         if self.entrata_cassa_entry.get_text().replace(",",".").strip() in [ "", None, "0"] and \
             self.entrata_cassa_radio.get_active():
             messageInfo(msg="ATTENZIONE!\n\nVALORE Entrata cassa = zero")

@@ -405,6 +405,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             else:
                 id_pag = findIdFromCombobox(self.id_pagamento_customcombobox.combobox)
                 pago = Pagamento().getRecord(id=id_pag)
+                self.primanota_check.set_active(self.dao.ripartire_importo or False)
                 if pago:
                     self.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str(pago.denominazione)+'</span></b>')
                 else:
@@ -893,9 +894,10 @@ del documento.
         pbar(self.dialog.pbar,stop=True)
 
     def on_importo_da_ripartire_entry_changed(self, entry):
+        return
         self.dao.removeDividedCost()
-        self.dao.ripartire_importo = False
-        self.ripartire_importo_checkbutton.set_active(self.dao.ripartire_importo)
+#        self.dao.ripartire_importo = False
+#        self.ripartire_importo_checkbutton.set_active(self.dao.ripartire_importo)
         self.dao.costo_da_ripartire = Decimal(self.importo_da_ripartire_entry.get_text())
 
         self.importo_sovrapprezzo_label.set_text(str((mN(self.dao.costo_da_ripartire) or 0)/self.dao.totalConfections))
@@ -1314,10 +1316,8 @@ del documento.
                                         idStato=None,
                                         offset=None,
                                         batchSize=None)
-#        print "GGPGPGGPGPGPGGPGPGGP"
         if (len(arts) == 1):
             self.mostraArticolo(arts[0].id)
-#            print "OASASASASASASASAS"
             self.articolo_matchato = None
         else:
             from RicercaComplessaArticoli import RicercaComplessaArticoli

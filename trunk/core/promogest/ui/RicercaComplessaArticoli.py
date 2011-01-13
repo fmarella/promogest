@@ -1585,7 +1585,6 @@ class RicercaArticoliFilter(GladeWidget):
         """
         stringa= []
         wherestring=[]
-        print "HERE I AM"
         def getDescrizioniIn(row, index):
             if row[0]:
                 self._descrizioniIn.append(optimizeString(row[index]))

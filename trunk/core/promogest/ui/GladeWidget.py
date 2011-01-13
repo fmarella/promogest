@@ -61,7 +61,6 @@ class GladeWidget(SimpleGladeApp):
         self._prepareWindowPlacement()
 
     def on_generic_button_clicked(self, button):
-        print "generic button press "
         return False
 
     def _prepareWindowPlacement(self):
