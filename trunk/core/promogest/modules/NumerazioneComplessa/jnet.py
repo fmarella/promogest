@@ -42,18 +42,18 @@ def numerazioneJnet(dao):
         new = "0"+str(numero)
     else:
         new = str(numero)
-
+    anno = dao.data_documento.year
     if dao.operazione == "Fattura vendita":
-        return "F"+str(new)+"JN"+str(Environment.workingYear)
+        return "F"+str(new)+"JN"+str(anno)
     elif dao.operazione == "Fattura differita vendita":
-        return "F"+str(new)+"JN"+str(Environment.workingYear)
+        return "F"+str(new)+"JN"+str(anno)
     elif "DDT" in dao.operazione:
-        return str(new)+"JN"+str(Environment.workingYear)[2:]+"-DDT"
+        return str(new)+"JN"+str(anno)[2:]+"-DDT"
     elif dao.operazione == "Ordine a fornitore":
-        return str(new)+".00-JN"+str(Environment.workingYear)
+        return str(new)+".00-JN"+str(anno)
     elif dao.operazione == "Ordine a magazzino":
-        return str(new)+".00-MA"+str(Environment.workingYear)
+        return str(new)+".00-MA"+str(anno)
     elif dao.operazione == "Ordine beni strumentali":
-        return str(new)+".00-BS"+str(Environment.workingYear)
+        return str(new)+".00-BS"+str(anno)
     elif "Preventivo" in dao.operazione:
-        return str(new)+"JN"+str(Environment.workingYear)
+        return str(new)+"JN"+str(anno)
