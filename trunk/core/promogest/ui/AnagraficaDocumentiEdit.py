@@ -700,7 +700,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         if (self.data_documento_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel,
                     self.data_documento_entry,
-                    'Inserire la data del documento !1')
+                    'Inserire la data del documento !')
 
         if (findIdFromCombobox(self.id_operazione_combobox) is None):
             obligatoryField(self.dialogTopLevel,
@@ -873,6 +873,7 @@ del documento.
             righeDocumento.append(daoRiga)
         self.dao.righeDocumento = righeDocumento
         if posso("PA"):
+            #questa parte rimanda ai pagamenti
             AnagraficadocumentiPagamentExt.saveScadenze(self)
 
         tipoid = findIdFromCombobox(self.id_operazione_combobox)

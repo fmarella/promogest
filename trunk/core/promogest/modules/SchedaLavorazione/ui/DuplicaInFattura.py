@@ -183,7 +183,7 @@ class DuplicaInFattura(object):
         daoTestataFattura.totale_peso = None
         daoTestataFattura.applicazione_sconti = self.dao.applicazione_sconti
         daoTestataFattura.porto = 'franco'
-        daoTestataFattura.ripartire_importo = False
+        daoTestataFattura.ripartire_importo = self.dao.ripartire_importo or False
         if daoTestataFattura.documento_saldato:
             daoTestataFattura.totale_pagato = float(self.ui.tot_scontato_entry.get_text()) or 0
             daoTestataFattura.totale_sospeso = 0

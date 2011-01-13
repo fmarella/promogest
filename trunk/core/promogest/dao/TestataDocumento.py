@@ -504,7 +504,7 @@ class TestataDocumento(Dao):
             for riga in righeMovimento:
                 riga.persist()
         #print "DOPO IL PERSIST DI RIGA", tempo()
-
+        self.testataDocumentoScadenzaDel(id=self.id)
         if self.__ScadenzeDocumento:
             for scad in self.__ScadenzeDocumento:
                 scad.id_testata_documento = self.id
