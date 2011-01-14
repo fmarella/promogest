@@ -662,10 +662,10 @@ Verificare i permessi della cartella"""
 #        else:
 #            arghi = "xdg-email --attach '%s' --subject '%s' --body '%s'" %(str(pdfFile),subject,body)
         messageInfo(msg=""" Purtroppo per un bug indipendente dalla nostra volontà
-l'unico client di posta supportato su windows e su linux è Thunderbird
+l'unico client di posta supportato su windows e su linux è <b>Thunderbird</b>
 
 Chi avesse bisogno di un template di spedizione email più complesso anche in formato
-html contatti assistenza@promotux.it per informazioni
+html contatti <b>assistenza@promotux.it</b> per informazioni
 
 Grazie!""")
 

@@ -2553,8 +2553,8 @@ def messageInfo(msg="Messaggio generico"):
     dialoggg = gtk.MessageDialog(None,
                         gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                         gtk.MESSAGE_INFO,
-                        gtk.BUTTONS_OK,
-                        msg)
+                        gtk.BUTTONS_OK)
+    dialoggg.set_markup(msg)
     dialoggg.run()
     dialoggg.destroy()
 
