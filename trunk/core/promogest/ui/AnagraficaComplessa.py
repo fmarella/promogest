@@ -657,11 +657,24 @@ Verificare i permessi della cartella"""
         fileName = self._pdfName +'.pdf'
         subject= "Invio: %s" %fileName
         body = conf.body %fileName
-        if self.email:
-            arghi = "xdg-email --attach '%s' --subject '%s' --body '%s' '%s'" %(str(pdfFile),subject,body,self.email)
+#        if self.email:
+#        arghi = "xdg-email --utf8 --attach '%s' --subject '%s' --body '%s' '%s'" %(pdfFile,subject,body,self.email)
+#        else:
+#            arghi = "xdg-email --attach '%s' --subject '%s' --body '%s'" %(str(pdfFile),subject,body)
+        messageInfo(msg=""" Purtroppo per un bug indipendente dalla nostra volontà
+l'unico client di posta supportato su windows e su linux è Thunderbird
+
+Chi avesse bisogno di un template di spedizione email più complesso anche in formato
+html contatti assistenza@promotux.it per informazioni
+
+Grazie!""")
+
+        if os.name == "nt":
+            arghi = "start thunderbird -compose subject='%s',body='%s',attachment='file:///%s',to='%s'" %(subject,body,str(pdfFile),self.email)
         else:
-            arghi = "xdg-email --attach '%s' --subject '%s' --body '%s'" %(str(pdfFile),subject,body)
-        args = shlex.split(arghi)
+            arghi = "thunderbird -compose subject='%s',body='%s',attachment='file:///%s',to='%s'" %(subject,body,str(pdfFile),self.email)
+#        args = shlex.split(arghi)
+#        arghi = "evolution mailto:frank@sislands.com&Subject=mailto Creator"
         subprocess.Popen(arghi, shell=True)
 
     def on_close_button_clicked(self,widget):

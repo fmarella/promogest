@@ -134,6 +134,8 @@ class RicercaContattiFilter(RicercaFilter):
 
         self.clear()
 
+    def on_filter_treeview_selection_changed(self, treeview):
+        pass
 
     def clear(self):
         # Annullamento filtro
