@@ -521,7 +521,7 @@ Procedere con la "chiusura" del Pagamento?"""
                 p0 = Pagamento().getRecord(id=idpag0)
                 daoTestataDocumentoScadenza.pagamento = p0.denominazione
             else:
-                obligatoryField(self.dialogTopLevel,
+                obligatoryField(self.anagrafica.dialogTopLevel,
                         self.anagrafica.id_pagamento_acconto_customcombobox.combobox,
                         'Inserire una forma di pagamento!')
             daoTestataDocumentoScadenza.data_pagamento = daoTestataDocumentoScadenza.data
@@ -545,7 +545,7 @@ Procedere con la "chiusura" del Pagamento?"""
                 p1 = Pagamento().getRecord(id=idpag1)
                 daoTestataDocumentoScadenza.pagamento = p1.denominazione
             else:
-                obligatoryField(self.dialogTopLevel,
+                obligatoryField(self.anagrafica.dialogTopLevel,
                     self.anagrafica.id_pagamento_acconto_customcombobox.combobox,
                     'Inserire una forma di pagamento!')
             daoTestataDocumentoScadenza.data_pagamento = stringToDate(
@@ -572,7 +572,7 @@ Procedere con la "chiusura" del Pagamento?"""
                 p2 = Pagamento().getRecord(id=idpag2)
                 daoTestataDocumentoScadenza.pagamento = p2.denominazione
             else:
-                obligatoryField(self.dialogTopLevel,
+                obligatoryField(self.anagrafica.dialogTopLevel,
                     self.anagrafica.id_pagamento_acconto_customcombobox.combobox,
                     'Inserire una forma di pagamento!')
             daoTestataDocumentoScadenza.data_pagamento = stringToDate(
@@ -599,7 +599,7 @@ Procedere con la "chiusura" del Pagamento?"""
                 p3 = Pagamento().getRecord(id=idpag3)
                 daoTestataDocumentoScadenza.pagamento = p3.denominazione
             else:
-                obligatoryField(self.dialogTopLevel,
+                obligatoryField(self.anagrafica.dialogTopLevel,
                     self.anagrafica.id_pagamento_acconto_customcombobox.combobox,
                     'Inserire una forma di pagamento!')
             daoTestataDocumentoScadenza.data_pagamento = stringToDate(
@@ -626,7 +626,7 @@ Procedere con la "chiusura" del Pagamento?"""
                 p4 = Pagamento().getRecord(id=idpag4)
                 daoTestataDocumentoScadenza.pagamento = p4.denominazione
             else:
-                obligatoryField(self.dialogTopLevel,
+                obligatoryField(self.anagrafica.dialogTopLevel,
                     self.anagrafica.id_pagamento_acconto_customcombobox.combobox,
                     'Inserire una forma di pagamento!')
             daoTestataDocumentoScadenza.data_pagamento = stringToDate(
