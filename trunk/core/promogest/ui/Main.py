@@ -46,7 +46,7 @@ from promogest.lib import feedparser
 from promogest.ui.PrintDialog import PrintDialogHandler
 from utils import hasAction, fencemsg, aggiorna, updateScadenzePromemoria,\
          setconf, dateTimeToString, dateToString, last_day_of_month, \
-         date_range, orda, posso, messageInfo
+         date_range, orda, posso, messageInfo, installId
 from utilsCombobox import *
 from ParametriFrame import ParametriFrame
 from SetConf import SetConfUI
@@ -85,7 +85,6 @@ class Main(GladeWidget):
                                 Environment.params['usernameLoggedList'][1]+\
                                 ' ***')
         self.aziendaStr = aziendaStr
-
         self.statusBarHandler()
         for filename in glob.glob(Environment.promogestDir+\
                                                     "/temp/"+'*.cache'):

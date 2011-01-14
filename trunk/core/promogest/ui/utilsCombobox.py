@@ -34,7 +34,7 @@ from sqlalchemy import *
 import string, re
 import xml.etree.cElementTree as ElementTree
 from xml.etree.cElementTree import *
-
+from random import randint as rint
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
 
 # Riempimento lookup combobox

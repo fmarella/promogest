@@ -2602,9 +2602,10 @@ def checkInstallation():
     fallisce il check """
     from promogest.dao.Setconf import SetConf
     try:
-#        url = "http://localhost:8080/check"
+#    url = "http://localhost:8080/check"
         url = "http://www.promotux.it/check"
-        data = {"masterkey" : SetConf().select(key="install_code",section="Master")[0].value}
+        data = {"masterkey" : SetConf().select(key="install_code",section="Master")[0].value,
+                "icode":SetConf().select(key="icode",section="Master")[0].value}
         values = urllib.urlencode(data)
         req = urllib2.Request(url, values)
         response = urllib2.urlopen(req)
@@ -2887,6 +2888,25 @@ def posso(mod=None):
         if "SincroDB" in moduli :return True
     return setconf("Master", mod)
 #    return False
+
+def installId():
+    from promogest.dao.Setconf import SetConf
+    a = setconf(section="Master", key ="icode")
+    if not a:
+        string = ""
+        values = "23456789QWERTYUPASDFGHJKLZXCVBNMabcdefghmnpqrstuvz"
+        for a in range(15):
+            b =  rint(0,35)
+            string += values[b]
+        kdd = SetConf()
+        kdd.key = "icode"
+        kdd.value = string
+        kdd.section = "Master"
+        kdd.tipo_section = "Master"
+        kdd.description = ""
+        kdd.active = True
+        kdd.date = datetime.datetime.now()
+        kdd.persist()
 
 
 def fencemsg():

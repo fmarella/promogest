@@ -34,7 +34,7 @@ from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from GtkExceptionHandler import GtkExceptionHandler
 from utils import hasAction, checkAggiorna, aggiorna, \
-                                checkInstallation, setconf, posso
+                                checkInstallation, setconf, posso, installId
 from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
 import sqlalchemy
@@ -240,7 +240,7 @@ class Login(GladeApp):
                     if hasAction(actionID=1):
                         self.login_window.hide()
                         Environment.windowGroup.remove(self.getTopLevel())
-
+                        installId()
                         import promogest.lib.UpdateDB
 
                         #saveAppLog(action="login", status=True,value=username)
