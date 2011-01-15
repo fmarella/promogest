@@ -9,6 +9,7 @@
 """
 
 import gtk
+import gobject
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy import and_, or_

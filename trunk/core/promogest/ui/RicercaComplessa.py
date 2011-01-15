@@ -9,6 +9,7 @@
 import math
 
 import gtk
+import gobject
 from GladeWidget import GladeWidget
 from promogest.ui.widgets.FilterWidget import FilterWidget
 import Login

@@ -22,6 +22,7 @@
 
 import locale
 import gtk
+import gobject
 import hashlib
 import os
 import glob

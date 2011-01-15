@@ -22,6 +22,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
+import gobject
 from Ricerca import Ricerca, RicercaFilter
 from promogest.dao.Fornitore import Fornitore
 from utils import showAnagraficaRichiamata, fillComboboxCategorieFornitori,\
