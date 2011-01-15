@@ -161,7 +161,7 @@ def drawPart(anaedit):
     """
     anaedit.modelRiga = gtk.ListStore(int,str, str, str, str, str, str, str,str, str, str, str, str, str,str, str,str)
     anaedit.righe_treeview.set_model(anaedit.modelRiga)
-
+    anaedit.ricerca = None
     anaedit.nuovaRiga()
     # preferenza ricerca articolo ?
     """ ATTENZIONE schifezza per tamponare il bug di gtk 2.17 numero :
