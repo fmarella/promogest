@@ -37,8 +37,8 @@ class Magazzino(Dao):
 
 magazzino=Table('magazzino',params['metadata'],schema = params['schema'],autoload=True)
 
-if "pvcode_" not in [c.name for c in magazzino.columns]:
-    col = Column('pvcode_', String)
+if "pvcode" not in [c.name for c in magazzino.columns]:
+    col = Column('pvcode', String)
     col.create(magazzino)
 
 
