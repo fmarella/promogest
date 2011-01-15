@@ -188,6 +188,9 @@ def drawPart(anaedit):
 #                anaedit.ricerca =  anaedit.ricerca_codice_articolo_fornitore_button.get_name()
                 anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_articolo_fornitore_button)
 #                anaedit.ricerca =  anaedit.ricerca_codice_articolo_fornitore_button.get_tooltip_text()
+    if not anaedit.ricerca:
+        anaedit.ricerca_codice_button.set_active(True)
+        anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_button)
 
     anaedit.id_persona_giuridica_customcombobox.setSingleValue()
     anaedit.id_persona_giuridica_customcombobox.setOnChangedCall(anaedit.persona_giuridica_changed)
