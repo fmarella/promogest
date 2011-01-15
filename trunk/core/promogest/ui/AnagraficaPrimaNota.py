@@ -48,6 +48,9 @@ class AnagraficaPrimaNota(Anagrafica):
         self.records_print_on_screen_button.set_sensitive(False)
         self.records_print_button.set_sensitive(False)
         self.records_file_export.set_sensitive(True)
+        print "MA ISNOSOOSOSOSOSOSSOSOSOSOS"
+
+
 
 
 class AnagraficaPrimaNotaFilter(AnagraficaFilter):
@@ -59,7 +62,22 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
                           'anagrafica_prima_nota_filter_table',
                           gladeFile='_anagrafica_primanota_elements.glade')
         self._widgetFirstFocus = self.numero_filter_entry
+        self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear+" 00:00")
+        self.checkAnnoPrimaNota()
 
+    def checkAnnoPrimaNota(self):
+
+        ddd = TestataPrimaNota().select(daDataInizio=stringToDate("01/01/"+str(int(Environment.workingYear)-1)),
+        aDataInizio=stringToDate("31/12/"+str(int(Environment.workingYear)-1)),
+        batchSize=None)
+        print "DDDDDDDDD", ddd
+        for dd in ddd:
+            if not dd.data_fine :
+                messageInfo(msg= """ATTENZIONE!!!
+C'è una Prima nota Aperta dell'anno scorso. Adesso Verrà chiusa.
+Premendo Nuovo se ne creerà una al primo Gennaio del corrente anno di lavoro""")
+                dd.data_fine = stringToDate("31/12/"+str(int(Environment.workingYear)-1))
+                dd.persist()
 
     def draw(self):
         # Colonne della Treeview per il filtro
@@ -93,31 +111,42 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Saldo singolo', renderer, text=5, background=1)
+        column = gtk.TreeViewColumn('Saldo singola Prima nota', renderer, text=5, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Totale', renderer, text=6, background=1)
+        column = gtk.TreeViewColumn('Totale Riporti', renderer, text=6, background=1)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_resizable(True)
         column.set_expand(False)
         column.set_min_width(100)
         treeview.append_column(column)
+
+        column = gtk.TreeViewColumn('Nome/Note', renderer, text=7, background=1)
+        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+#        column.set_clickable(True)
+#        column.connect('clicked', self._changeOrderBy, (None, 'data_inizio'))
+        column.set_resizable(True)
+        column.set_expand(False)
+        column.set_min_width(200)
+        treeview.append_column(column)
+
 
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.ListStore(object, str,str, str, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str,str, str, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         self.refresh()
 
     def clear(self):
         # Annullamento filtro
+        self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear+" 00:00")
         self.numero_filter_entry.set_text('')
-        self.da_data_inizio_datetimewidget.set_text('')
+#        self.da_data_inizio_datetimewidget.set_text('')
         self.a_data_inizio_datetimewidget.set_text('')
         self.da_data_fine_datetimewidget.set_text('')
         self.a_data_fine_datetimewidget.set_text('')
@@ -171,7 +200,8 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
                                         (dateToString(i.data_inizio) or ''),
                                         (dateToString(i.data_fine) or ''),
                                         (str(mN(i.totali["totale"])) or "0"),
-                                        str(valore)))
+                                        str(valore),
+                                        (i.note or "")))
 
 
 class AnagraficaPrimaNotaHtml(AnagraficaHtml):
@@ -370,12 +400,18 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
         self.entrata_cassa_entry.set_text("")
 
     def on_riattiva_button_clicked(self, button):
-        messageInfo(msg= "ATTENZIONE, SI sta modificando una nota già chiusa")
+        messageInfo(msg= "ATTENZIONE, SI sta modificando <b>TEMPORANEAMENTE</b> una Prima nota già chiusa")
         self.riga_primanota_frame.set_sensitive(True)
 
     def on_forza_chiusura_button_clicked(self, button):
-        self.saveDao(chiusura=True)
-
+        msg = ("Attenzione!!, Si sta chiudendo una Prima nota Procedere?")
+        dialog = gtk.MessageDialog(window, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
+        response = dialog.run()
+        dialog.destroy()
+        if response == gtk.RESPONSE_YES:
+            self.saveDao(chiusura=True)
+            messageInfo(msg= "FATTO, Chiudere")
 
     def _refresh(self):
         self.id_banca_customcombobox.hide()
@@ -470,16 +506,16 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
         riga.denominazione = denominazione
         if self.entrata_cassa_entry.get_text().replace(",",".").strip() in [ "", None, "0"] and \
             self.entrata_cassa_radio.get_active():
-            messageInfo(msg="ATTENZIONE!\n\nVALORE Entrata cassa = zero")
+            messageInfo(msg="ATTENZIONE!\n\nVALORE Entrata cassa = <b>zero</b>")
         if self.uscita_cassa_entry.get_text().replace(",",".").strip() in [ "", None, "0"] and \
             self.uscita_cassa_radio.get_active():
-            messageInfo(msg="ATTENZIONE!\n\nVALORE Uscita cassa = zero")
+            messageInfo(msg="ATTENZIONE!\n\nVALORE Uscita cassa = <b>zero</b>")
         if self.entrata_banca_entry.get_text().replace(",",".").strip() in [ "", None, "0"] and \
             self.entrata_banca_radio.get_active():
-            messageInfo(msg="ATTENZIONE!\n\nVALORE Entrata banca = zero")
+            messageInfo(msg="ATTENZIONE!\n\nVALORE Entrata banca = <b>zero</b>")
         if self.uscita_banca_entry.get_text().replace(",",".").strip() in [ "", None, "0"] and \
             self.uscita_banca_radio.get_active():
-            messageInfo(msg="ATTENZIONE!\n\nVALORE Uscita banca = zero")
+            messageInfo(msg="ATTENZIONE!\n\nVALORE Uscita banca = <b>zero</b>")
         cassa_entrata = Decimal(self.entrata_cassa_entry.get_text().replace(",",".").strip() or 0)
         cassa_uscita = Decimal(self.uscita_cassa_entry.get_text().replace(",",".").strip() or 0)
         banca_entrata = Decimal(self.entrata_banca_entry.get_text().replace(",",".").strip() or 0)

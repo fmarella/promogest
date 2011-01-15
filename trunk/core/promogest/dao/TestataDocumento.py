@@ -511,7 +511,7 @@ class TestataDocumento(Dao):
             for scad in self.__ScadenzeDocumento:
                 scad.id_testata_documento = self.id
                 Environment.session.add(scad)
-                if self.ripartire_importo: #aka prima nota
+                if self.ripartire_importo and scad.data_pagamento: #aka prima nota
                     ope= leggiOperazione(self.operazione)
                     tipo = Pagamento().select(denominazione=scad.pagamento)[0].tipo
                     if scad.numero_scadenza == 0:

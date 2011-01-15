@@ -58,7 +58,6 @@ class Pagamenti(object):
             self.anagrafica.data_pagamento_prima_scadenza_entry.set_sensitive(action)
             self.anagrafica.importo_acconto_scadenza_entry.set_sensitive(action)
             self.anagrafica.importo_prima_scadenza_entry.set_sensitive(action)
-
         if action == False:
             self.anagrafica.data_acconto_entry.set_text("")
             self.anagrafica.data_prima_scadenza_entry.set_text("")
@@ -335,14 +334,15 @@ Procedere con la "chiusura" del Pagamento?"""
                                                      # della variabile passata, sottraendo il caratteee di
                                                      # Fine Mese e dividendo per due ( vedere la doc di
                                                      # IsPagamentoMultiplo per maggiori informazioni )
-
+            paga = findStrFromCombobox(self.anagrafica.id_pagamento_customcombobox.combobox,2)
             if scadenze[len(scadenze)-1] != "FM":
                 fine_mese = False
             else:
                 fine_mese = True
+            print "SCADENZEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", scadenze
+#            self.anagrafica.primo_pagamento_entry.set_text(scadenze[0] + scadenze[1] + " gg")
 
-            self.anagrafica.primo_pagamento_entry.set_text(scadenze[0] + scadenze[1] + " gg")
-
+            findComboboxRowFromStr(self.anagrafica.id_pagamento_prima_scadenza_customcombobox.combobox, paga,2)
             if numeroscadenze == 1:
                 self.attiva_prima_scadenza(True, True)
                 self.attiva_seconda_scadenza(False, True)
@@ -356,7 +356,8 @@ Procedere con la "chiusura" del Pagamento?"""
                 self.attiva_quarta_scadenza(False, True)
                 self.anagrafica.data_prima_scadenza_entry.set_text(dateToString(getScadenza(data_doc, int(scadenze[1]), fine_mese)))
                 self.anagrafica.data_seconda_scadenza_entry.set_text(dateToString(getScadenza(data_doc, int(scadenze[3]), fine_mese)))
-                self.anagrafica.secondo_pagamento_entry.set_text(scadenze[0] + scadenze[3] + " gg")
+#                self.anagrafica.secondo_pagamento_entry.set_text(scadenze[0] + scadenze[3] + " gg")
+                findComboboxRowFromStr(self.anagrafica.id_pagamento_seconda_scadenza_customcombobox.combobox, paga,2)
             elif numeroscadenze == 3:
                 self.attiva_terza_scadenza(True, True)
                 self.attiva_seconda_scadenza(True, True)
@@ -365,8 +366,10 @@ Procedere con la "chiusura" del Pagamento?"""
                 self.anagrafica.data_prima_scadenza_entry.set_text(dateToString(getScadenza(data_doc, int(scadenze[1]), fine_mese)))
                 self.anagrafica.data_seconda_scadenza_entry.set_text(dateToString(getScadenza(data_doc, int(scadenze[3]), fine_mese)))
                 self.anagrafica.data_terza_scadenza_entry.set_text(dateToString(getScadenza(data_doc, int(scadenze[5]), fine_mese)))
-                self.anagrafica.secondo_pagamento_entry.set_text(scadenze[0] + scadenze[3] + " gg")
-                self.anagrafica.terzo_pagamento_entry.set_text(scadenze[0] + scadenze[5] + " gg")
+#                self.anagrafica.secondo_pagamento_entry.set_text(scadenze[0] + scadenze[3] + " gg")
+                findComboboxRowFromStr(self.anagrafica.id_pagamento_seconda_scadenza_customcombobox.combobox, paga,2)
+#                self.anagrafica.terzo_pagamento_entry.set_text(scadenze[0] + scadenze[5] + " gg")
+                findComboboxRowFromStr(self.anagrafica.id_pagamento_terza_scadenza_customcombobox.combobox, paga,2)
             elif numeroscadenze == 4:
                 self.attiva_quarta_scadenza(True, True)
                 self.attiva_seconda_scadenza(True, True)
@@ -376,9 +379,12 @@ Procedere con la "chiusura" del Pagamento?"""
                 self.anagrafica.data_terza_scadenza_entry.set_text(dateToString(getScadenza(data_doc, int(scadenze[5]), fine_mese)))
                 self.anagrafica.data_prima_scadenza_entry.set_text(dateToString(getScadenza(data_doc, int(scadenze[1]), fine_mese)))
                 self.anagrafica.data_seconda_scadenza_entry.set_text(dateToString(getScadenza(data_doc, int(scadenze[3]), fine_mese)))
-                self.anagrafica.secondo_pagamento_entry.set_text(scadenze[0] + scadenze[3] + " gg")
-                self.anagrafica.terzo_pagamento_entry.set_text(scadenze[0] + scadenze[5] + " gg")
-                self.anagrafica.quarto_pagamento_entry.set_text(scadenze[0] + scadenze[7] + " gg")
+#                self.anagrafica.secondo_pagamento_entry.set_text(scadenze[0] + scadenze[3] + " gg")
+                findComboboxRowFromStr(self.anagrafica.id_pagamento_seconda_scadenza_customcombobox.combobox, paga,2)
+#                self.anagrafica.terzo_pagamento_entry.set_text(scadenze[0] + scadenze[5] + " gg")
+                findComboboxRowFromStr(self.anagrafica.id_pagamento_terza_scadenza_customcombobox.combobox, paga,2)
+#                self.anagrafica.quarto_pagamento_entry.set_text(scadenze[0] + scadenze[7] + " gg")
+                findComboboxRowFromStr(self.anagrafica.id_pagamento_quarta_scadenza_customcombobox.combobox, paga,2)
             else:
                 print "Numero troppo alto di scadenze; Funzione non ancora implementata. Manda un bug report"
         else:

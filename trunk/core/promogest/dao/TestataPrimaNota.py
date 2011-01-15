@@ -148,6 +148,22 @@ class TestataPrimaNota(Dao):
         return totali
     totali = property(__TotalePrimaNota)
 
+    def delete(self):
+        from RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
+        row = RigaPrimaNota().select(idTestataPrimaNota= self.id,
+                                    offset = None,
+                                    batchSize = None)
+        if row:
+            for r in row:
+                params['session'].delete(r)
+                rpntdsc = RigaPrimaNotaTestataDocumentoScadenza().select(idRigaPrimaNota=r.id, batchSize=None)
+                if rpntdsc:
+                    for rr in rpntdsc:
+                        params['session'].delete(rr)
+        params['session'].delete(self)
+        params["session"].commit()
+
+
     def persist(self):
         """ cancellazione righe associate alla testata """
         pg2log.info("DENTRO IL TESTATA PRIMA NOTA CASSA")
