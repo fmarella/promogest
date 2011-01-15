@@ -470,9 +470,9 @@ if tipodb == "sqlite" and not (os.path.exists(startdir()+"db")):
     if os.path.exists("data/db"):
         shutil.copy("data/db",startdir()+"db")
         os.remove("data/db")
-    elif os.path.exists("data/db_pw.dist")\
-                        and pw.upper()=="YES":
-        shutil.copy("data/db_pw.dist",startdir()+"db" )
+#    elif os.path.exists("data/db_pw.dist")\
+#                        and pw.upper()=="YES":
+#        shutil.copy("data/db_pw.dist",startdir()+"db" )
     elif os.path.exists("data/db.dist"):
         shutil.copy("data/db.dist",startdir()+"db" )
     else:
