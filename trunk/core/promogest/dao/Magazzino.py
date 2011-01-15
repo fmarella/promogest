@@ -37,10 +37,13 @@ class Magazzino(Dao):
 
 magazzino=Table('magazzino',params['metadata'],schema = params['schema'],autoload=True)
 
+if "pvcode_" not in [c.name for c in magazzino.columns]:
+    col = Column('pvcode_', String)
+    col.create(magazzino)
+
 if "pvcode" not in [c.name for c in magazzino.columns]:
     col = Column('pvcode', String)
     col.create(magazzino)
-
 
 
 std_mapper = mapper(Magazzino, magazzino, order_by=magazzino.c.id)
