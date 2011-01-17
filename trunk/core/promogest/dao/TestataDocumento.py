@@ -623,9 +623,11 @@ class TestataDocumento(Dao):
                     rpn = RigaPrimaNota().getRecord(id=p.id_riga_prima_nota)
                     if rpn:
                         params['session'].delete(rpn)
+                        params["session"].commit()
                     params['session'].delete(p)
+                    params["session"].commit()
             params['session'].delete(r)
-        params["session"].commit()
+            params["session"].commit()
         return True
 
 

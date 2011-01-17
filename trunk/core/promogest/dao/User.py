@@ -27,6 +27,7 @@ from promogest.Environment import *
 from Dao import Dao
 from Regioni import Regioni
 from Province import Province
+#from ApplicationLog import ApplicationLog
 #if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
     #from promogest.modules.RuoliAzioni.dao.Role import Role
 #from Language import Language
@@ -68,6 +69,10 @@ class User(Dao):
             return False
         else:
             params['session'].delete(self)
+#            dd = params['session'].query(ApplicationLog).filter_by(id_user = self.id).all()
+#            if dd:
+#                for d in dd:
+#                    params['session'].delete(d)
             params["session"].commit()
             return True
 
