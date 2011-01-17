@@ -405,7 +405,7 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
 
     def on_forza_chiusura_button_clicked(self, button):
         msg = ("Attenzione!!, Si sta chiudendo una Prima nota Procedere?")
-        dialog = gtk.MessageDialog(window, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                 gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
         response = dialog.run()
         dialog.destroy()
