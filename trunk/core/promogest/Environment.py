@@ -172,6 +172,11 @@ class MyProxy(ConnectionProxy):
             print("ATTENZIONE:InvalidRequestError",e)
             messageInfo(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
             session.rollback()
+        except ValueError as e:
+            # Handle this exception
+            print("ATTENZIONE:ValueError",e)
+            messageInfo(msg="Risulta inserito un Valore non corretto. Ricontrolla: "+e.message)
+#            session.rollback()
 
 def _pg8000():
     try:
