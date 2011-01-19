@@ -469,6 +469,7 @@ def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=
     listin = None
 
     def _dirtyWork(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=None):
+        listinoSelezionato = []
         listinoIDS= []
         listiniMAG = []
         listiniArt = []
