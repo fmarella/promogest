@@ -466,34 +466,62 @@ def listinoCandidateSel(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=
     from promogest.dao.ListinoArticolo import ListinoArticolo
     from promogest.dao.ListinoCategoriaCliente import ListinoCategoriaCliente
     from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
+    listin = None
 
     def _dirtyWork(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=None):
+        listinoIDS= []
+        listiniMAG = []
+        listiniArt = []
+        aa = []
         if idArticolo:
-            filter1 = Listino.id.in_(select([ListinoArticolo.id_listino], ListinoArticolo.id_articolo == idArticolo))
-        else:
-            filter1 = None
-
+            listiniArt=  Environment.session.\
+                        query(ListinoArticolo.id_listino).\
+                        filter(ListinoArticolo.id_articolo == idArticolo).all()
         if idMagazzino:
-            filter2 = or_(Listino.id.in_(select([ListinoMagazzino.id_listino], ListinoMagazzino.id_magazzino == idMagazzino)),
-                        not_(Listino.id.in_(select([ListinoMagazzino.id_listino]).distinct())))
-        else :
-            filter2 = None
-
+            listiniMAG = Environment.session.\
+                        query(ListinoMagazzino.id_listino).\
+                        filter(ListinoMagazzino.id_magazzino == idMagazzino).all()
         if idCliente:
-            filter3 = or_(Listino.id.in_(select([ListinoCategoriaCliente.id_listino] ,
-                            ListinoCategoriaCliente.id_categoria_cliente.in_(select([ClienteCategoriaCliente.id_categoria_cliente] ,
-                                ClienteCategoriaCliente.id_cliente ==idCliente)))),
-                            not_(Listino.id.in_(select([ListinoCategoriaCliente.id_listino]).distinct())))
-        else :
-            filter3 = None
-
-        filter4 = and_(Listino.listino_attuale == True)
-
-        if not OrderBy:
-            OrderBy= "denominazione"
-
-        listinoSelezionato = Listino().select(complexFilter=and_(filter1,filter2,filter3, filter4), orderBy=OrderBy)
+            categorie_cliente_id = Environment.session.\
+                        query(ClienteCategoriaCliente.id_categoria_cliente).all()
+            if categorie_cliente_id:
+                cclid = [a[0] for a in categorie_cliente_id]
+                aa = Environment.session.\
+                        query(ListinoCategoriaCliente.id_listino).\
+                        filter(ListinoCategoriaCliente.id_categoria_cliente.in_(cclid)).all()
+        listinoIDS = listiniMAG+listiniArt+aa
+        listid = list(set([ a[0] for a in listinoIDS]))
+        if listid:
+            listinoSelezionato = Environment.session.query(Listino).filter(and_(Listino.id.in_(listid),Listino.listino_attuale==True)).all()
         return listinoSelezionato
+
+#    def _dirtyWork(OrderBy=None,idArticolo=None,idMagazzino=None,idCliente=None):
+#        if idArticolo:
+#            filter1 = Listino.id.in_(select([ListinoArticolo.id_listino], ListinoArticolo.id_articolo == idArticolo))
+#        else:
+#            filter1 = None
+
+#        if idMagazzino:
+#            filter2 = or_(Listino.id.in_(select([ListinoMagazzino.id_listino], ListinoMagazzino.id_magazzino == idMagazzino)),
+#                        not_(Listino.id.in_(select([ListinoMagazzino.id_listino]).distinct())))
+#        else :
+#            filter2 = None
+
+#        if idCliente:
+#            filter3 = or_(Listino.id.in_(select([ListinoCategoriaCliente.id_listino] ,
+#                            ListinoCategoriaCliente.id_categoria_cliente.in_(select([ClienteCategoriaCliente.id_categoria_cliente] ,
+#                                ClienteCategoriaCliente.id_cliente ==idCliente)))),
+#                            not_(Listino.id.in_(select([ListinoCategoriaCliente.id_listino]).distinct())))
+#        else :
+#            filter3 = None
+
+#        filter4 = and_(Listino.listino_attuale == True)
+
+#        if not OrderBy:
+#            OrderBy= "denominazione"
+
+#        listinoSelezionato = Listino().select(complexFilter=and_(filter1,filter2,filter3, filter4), orderBy=OrderBy)
+#        return listinoSelezionato
     listin = _dirtyWork(OrderBy=OrderBy,idArticolo=idArticolo,
                                     idMagazzino=idMagazzino,idCliente=idCliente)
     if not listin and "PromoWear" in Environment.modulesList:
@@ -876,11 +904,8 @@ def findComboboxRowFromId(combobox, id):
     """
     evidenzia la riga di una combobox relativa ad un id
     """
-
     def findTreeStoreRow(model, path, iter, (combobox, id)):
-        """
-        evidenzia la riga di una combobox relativa ad un id in un albero
-        """
+        """evidenzia la riga di una combobox relativa ad un id in un albero"""
 
         r = model.get_value(iter, 1)
         if r == id:
@@ -888,16 +913,13 @@ def findComboboxRowFromId(combobox, id):
             return True
 
     def findListStoreRow(model, combobox, id):
-        """
-        evidenzia la riga di una combobox relativa ad un id in una lista
-        """
-
+        """evidenzia la riga di una combobox relativa ad un id in una lista"""
         for r in model:
             if r[1] == id:
                 combobox.set_active_iter(r.iter)
 
     combobox.set_active(-1)
-    if not(id is None or id == 0):
+    if id and id != 0:
         model = combobox.get_model()
 
         if model.__class__ is gtk.TreeStore:

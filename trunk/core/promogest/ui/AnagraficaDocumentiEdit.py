@@ -326,7 +326,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                             self._righe[0]["idArticolo"],
                                             self._righe[0]["idMagazzino"],
                                             self.id_persona_giuridica_customcombobox.getId())
-            if self._id_listino is not None:
+            if self._id_listino:
                 findComboboxRowFromId(self.id_listino_customcombobox.combobox, self._id_listino)
 
     def on_id_multiplo_customcombobox_button_clicked(self, widget, toggleButton):
@@ -1626,6 +1626,7 @@ del documento.
 
     def persona_giuridica_changed(self):
         if self._loading:
+            self.refresh_combobox_listini()
             return
 
         inseritoIntestatario = (self.id_persona_giuridica_customcombobox.getId() is not None)
@@ -1636,7 +1637,6 @@ del documento.
             if self._tipoPersonaGiuridica == "cliente":
                 self._id_listino = datiIntestatario["id_listino"]
                 self._id_banca = datiIntestatario["id_banca"]
-
             if self.id_pagamento_customcombobox.combobox.get_active() == -1:
                 findComboboxRowFromId(self.id_pagamento_customcombobox.combobox, self._id_pagamento)
             if self.id_magazzino_combobox.get_active() == -1:

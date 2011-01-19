@@ -1,6 +1,7 @@
 {% extends 'index.html' %}
 
 {% block body %}
+    {% if dao %}
         <div id="img" ><img src= "{{dao.url_immagine}}"></div>
     <div id="testo">{{ui|replace("_"," ")|capitalize()}}</div>
   </div>  <div id="rigaheader"></div>
@@ -170,4 +171,8 @@
     </div>
 {% endfor %}
 </div>
+        {% else %}
+        <p><img src= "gui/attenzione_48X48.png">ELIMINATO: Niente da visualizzare</p>
+        <p><img src= "gui/testata_promogest2.png"></p>
+        {% endif %}
 {% endblock %}
