@@ -25,6 +25,7 @@ import os
 from datetime import datetime
 from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
 from promogest import Environment
+from dao.Operazione import Operazione
 from promogest.dao.Inventario import Inventario
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.RigaMovimento import RigaMovimento
