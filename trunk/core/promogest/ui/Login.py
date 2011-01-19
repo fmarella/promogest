@@ -34,11 +34,13 @@ from promogest.dao.User import User
 from promogest.dao.Azienda import Azienda
 from GtkExceptionHandler import GtkExceptionHandler
 from utils import hasAction, checkAggiorna, aggiorna, \
-                                checkInstallation, setconf, posso, installId
+                                checkInstallation, setconf, posso, installId, messageInfo
 from utilsCombobox import findComboboxRowFromStr
 from promogest.ui.SendEmail import SendEmail
 import sqlalchemy
 Environment.pg2log.info("SQLALCHEMY:"+str(sqlalchemy.__version__))
+if sqlalchemy.__version__ < "0.5.8":
+    messageInfo(msg="ATTENZIONE!! Versione di python-sqlalchemy inferiore a 0.5.8\n Alcune parti potrebbero dare errore\nSi consiglia di aggiornare alla versione 0.6.3 o superiore")
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.lib import feedparser
