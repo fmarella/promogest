@@ -1534,6 +1534,7 @@ class RicercaArticoliFilter(GladeWidget):
             #arts = []
             #model.clear()
         #else:
+
         arts = Articolo().select(orderBy=self.filter.orderBy,
                                             join=self.filter.join,
                                             offset=self.filter.offset,

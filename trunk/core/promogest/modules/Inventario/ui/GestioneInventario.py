@@ -25,7 +25,7 @@ import os
 from datetime import datetime
 from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
 from promogest import Environment
-from dao.Operazione import Operazione
+from promogest.dao.Operazione import Operazione
 from promogest.dao.Inventario import Inventario
 from promogest.dao.TestataMovimento import TestataMovimento
 from promogest.dao.RigaMovimento import RigaMovimento
@@ -215,7 +215,7 @@ class GestioneInventario(RicercaComplessaArticoli):
         column = gtk.TreeViewColumn('C Barre', rendererSx, text=8)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
-        column.connect("clicked", self.filter._changeOrderBy, 'produttore')
+        column.connect("clicked", self.filter._changeOrderBy, (None, 'produttore'))
         column.set_resizable(True)
         column.set_expand(False)
         treeview.append_column(column)
