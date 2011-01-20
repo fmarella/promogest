@@ -156,10 +156,12 @@ class TestataPrimaNota(Dao):
         if row:
             for r in row:
                 params['session'].delete(r)
+                params["session"].commit()
                 rpntdsc = RigaPrimaNotaTestataDocumentoScadenza().select(idRigaPrimaNota=r.id, batchSize=None)
                 if rpntdsc:
                     for rr in rpntdsc:
                         params['session'].delete(rr)
+                        params["session"].commit()
         params['session'].delete(self)
         params["session"].commit()
 
