@@ -159,7 +159,10 @@
                 <property name="can_focus">True</property>
                 <property name="invisible_char">●</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
+                <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">True</property>
+                <property name="primary_icon_sensitive">True</property>
+                <property name="secondary_icon_sensitive">True</property>
                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
                 <signal name="icon-press" handler="on_icon_press" swapped="no"/>
                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
@@ -404,6 +407,10 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
+                        <property name="primary_icon_activatable">False</property>
+                        <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
                         <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                         <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
                       </object>
@@ -608,7 +615,10 @@
                                 <property name="invisible_char">●</property>
                                 <property name="primary_icon_stock">gtk-find</property>
                                 <property name="secondary_icon_stock">gtk-clear</property>
+                                <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">True</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
                                 <property name="primary_icon_tooltip_text">Clicca qui per la ricerca</property>
                                 <property name="primary_icon_tooltip_markup">Clicca qui per la ricerca</property>
                                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
@@ -767,7 +777,10 @@
                                 <property name="max_length">500</property>
                                 <property name="invisible_char">●</property>
                                 <property name="secondary_icon_stock">gtk-clear</property>
+                                <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">True</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
                                 <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
                                 <signal name="insert-text" handler="on_number_insert_text" swapped="no"/>
                                 <signal name="icon-press" handler="on_descrizione_entry_icon_press" swapped="no"/>
@@ -1146,6 +1159,10 @@
                                         <property name="can_focus">True</property>
                                         <property name="invisible_char">●</property>
                                         <property name="text" translatable="yes">0.00      </property>
+                                        <property name="primary_icon_activatable">False</property>
+                                        <property name="secondary_icon_activatable">False</property>
+                                        <property name="primary_icon_sensitive">True</property>
+                                        <property name="secondary_icon_sensitive">True</property>
                                         <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                                         <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
                                         <signal name="focus-out-event" handler="on_show_totali_riga" swapped="no"/>
@@ -1179,7 +1196,10 @@
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">●</property>
                                     <property name="secondary_icon_stock">gtk-clear</property>
+                                    <property name="primary_icon_activatable">False</property>
                                     <property name="secondary_icon_activatable">True</property>
+                                    <property name="primary_icon_sensitive">True</property>
+                                    <property name="secondary_icon_sensitive">True</property>
                                     <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
                                     <signal name="icon-press" handler="on_icon_press" swapped="no"/>
                                     <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
@@ -1264,6 +1284,10 @@
                                                 <property name="can_focus">True</property>
                                                 <property name="invisible_char">●</property>
                                                 <property name="text" translatable="yes">0.00      </property>
+                                                <property name="primary_icon_activatable">False</property>
+                                                <property name="secondary_icon_activatable">False</property>
+                                                <property name="primary_icon_sensitive">True</property>
+                                                <property name="secondary_icon_sensitive">True</property>
                                                 <signal name="key-press-event" handler="on_larghezza_entry_key_press_event" swapped="no"/>
                                                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                                                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
@@ -1291,6 +1315,10 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="invisible_char">●</property>
+                                                <property name="primary_icon_activatable">False</property>
+                                                <property name="secondary_icon_activatable">False</property>
+                                                <property name="primary_icon_sensitive">True</property>
+                                                <property name="secondary_icon_sensitive">True</property>
                                                 <signal name="key-press-event" handler="on_altezza_entry_key_press_event" swapped="no"/>
                                                 <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                                                 <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
@@ -1431,6 +1459,10 @@
                                                     <property name="can_focus">True</property>
                                                     <property name="invisible_char">●</property>
                                                     <property name="text" translatable="yes">0.00      </property>
+                                                    <property name="primary_icon_activatable">False</property>
+                                                    <property name="secondary_icon_activatable">False</property>
+                                                    <property name="primary_icon_sensitive">True</property>
+                                                    <property name="secondary_icon_sensitive">True</property>
                                                     <signal name="focus-out-event" handler="on_quantita_entry_focus_out_event" swapped="no"/>
                                                     <signal name="focus-out-event" handler="on_show_totali_riga" swapped="no"/>
                                                     <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
@@ -1460,6 +1492,10 @@
                                                     <property name="can_focus">True</property>
                                                     <property name="invisible_char">●</property>
                                                     <property name="text" translatable="yes">0.00      </property>
+                                                    <property name="primary_icon_activatable">False</property>
+                                                    <property name="secondary_icon_activatable">False</property>
+                                                    <property name="primary_icon_sensitive">True</property>
+                                                    <property name="secondary_icon_sensitive">True</property>
                                                     <signal name="key-press-event" handler="on_prezzo_lordo_entry_key_press_event" swapped="no"/>
                                                     <signal name="focus-out-event" handler="on_show_totali_riga" swapped="no"/>
                                                     <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
@@ -1512,6 +1548,10 @@
                                                     <property name="can_focus">True</property>
                                                     <property name="invisible_char">●</property>
                                                     <property name="text" translatable="yes">0.00      </property>
+                                                    <property name="primary_icon_activatable">False</property>
+                                                    <property name="secondary_icon_activatable">False</property>
+                                                    <property name="primary_icon_sensitive">True</property>
+                                                    <property name="secondary_icon_sensitive">True</property>
                                                     <signal name="focus-out-event" handler="on_moltiplicatore_entry_focus_out_event" swapped="no"/>
                                                     <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
                                                     <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
@@ -1551,6 +1591,10 @@
                                                     <property name="can_focus">True</property>
                                                     <property name="max_length">3</property>
                                                     <property name="invisible_char">●</property>
+                                                    <property name="primary_icon_activatable">False</property>
+                                                    <property name="secondary_icon_activatable">False</property>
+                                                    <property name="primary_icon_sensitive">True</property>
+                                                    <property name="secondary_icon_sensitive">True</property>
                                                     <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
                                                     <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
                                                   </object>
@@ -1642,6 +1686,10 @@
                                                     <property name="can_focus">True</property>
                                                     <property name="invisible_char">●</property>
                                                     <property name="text" translatable="yes">0.00      </property>
+                                                    <property name="primary_icon_activatable">False</property>
+                                                    <property name="secondary_icon_activatable">False</property>
+                                                    <property name="primary_icon_sensitive">True</property>
+                                                    <property name="secondary_icon_sensitive">True</property>
                                                   </object>
                                                 </child>
                                               </object>
@@ -3020,6 +3068,10 @@ _
                 <child internal-child="entry">
                   <object class="GtkEntry" id="comboboxentry-entry2">
                     <property name="can_focus">False</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
+                    <property name="primary_icon_sensitive">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
                   </object>
                 </child>
               </object>
@@ -3039,6 +3091,10 @@ _
                 <child internal-child="entry">
                   <object class="GtkEntry" id="comboboxentry-entry4">
                     <property name="can_focus">False</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
+                    <property name="primary_icon_sensitive">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
                   </object>
                 </child>
               </object>
@@ -3264,12 +3320,16 @@ _
             <child>
               <object class="GtkComboBoxEntry" id="note_pie_pagina_comboboxentry">
                 <property name="visible">True</property>
-#                <property name="can_focus">True</property>
-#                <child internal-child="entry">
-#                  <object class="GtkEntry" id="comboboxentry-entry6">
-#                    <property name="can_focus">True</property>
-#                  </object>
-#                </child>
+                <property name="can_focus">True</property>
+                <child internal-child="entry">
+                  <object class="GtkEntry" id="comboboxentry-entry6">
+                    <property name="can_focus">True</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
+                    <property name="primary_icon_sensitive">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -3356,6 +3416,10 @@ _
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="invisible_char">●</property>
+                            <property name="primary_icon_activatable">False</property>
+                            <property name="secondary_icon_activatable">False</property>
+                            <property name="primary_icon_sensitive">True</property>
+                            <property name="secondary_icon_sensitive">True</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -3394,6 +3458,10 @@ _
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="invisible_char">●</property>
+                            <property name="primary_icon_activatable">False</property>
+                            <property name="secondary_icon_activatable">False</property>
+                            <property name="primary_icon_sensitive">True</property>
+                            <property name="secondary_icon_sensitive">True</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -3953,6 +4021,10 @@ _
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
                                 <property name="text" translatable="yes">0.00      </property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -4113,6 +4185,10 @@ _
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
                                 <property name="text" translatable="yes">0.00      </property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -4270,6 +4346,10 @@ _
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
                                 <property name="text" translatable="yes">0.00      </property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -4442,6 +4522,10 @@ _
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
                                 <property name="text" translatable="yes">0.00      </property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -4599,6 +4683,10 @@ _
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
                                 <property name="text" translatable="yes">0.00      </property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -4766,6 +4854,10 @@ _
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -4841,6 +4933,10 @@ _
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
                                 <property name="text" translatable="yes">0.00      </property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -4880,6 +4976,10 @@ _
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -4957,6 +5057,10 @@ _
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
                                 <property name="text" translatable="yes">0.00      </property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -5214,6 +5318,7 @@ _
                                 <property name="use_action_appearance">False</property>
                                 <property name="yalign">0.55000001192092896</property>
                                 <property name="draw_indicator">True</property>
+                                <signal name="toggled" handler="on_primanota_check_toggled" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
