@@ -151,6 +151,8 @@ class Stoccaggio(Dao):
             dic = {k: and_(stoc.c.id_articolo==Articolo.id, Articolo.produttore.ilike("%"+v+"%"))}
         elif k== 'codiceArticoloFornitoreEM':
             dic = {k: and_(stoc.c.id_articolo==Articolo.id, Articolo.id==Fornitura.id_articolo, Fornitura.codice_articolo_fornitore == v)}
+        elif k== 'codiceArticoloFornitore':
+            dic = {k: and_(stoc.c.id_articolo==Articolo.id, Articolo.id==Fornitura.id_articolo, Fornitura.codice_articolo_fornitore.ilike("%"+v+"%"))}
         elif k=='idFamiglia':
             dic = {k: and_(stoc.c.id_articolo==Articolo.id, Articolo.id_famiglia_articolo ==v)}
         elif k == 'idCategoria':

@@ -67,7 +67,6 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         ddd = TestataPrimaNota().select(daDataInizio=stringToDate("01/01/"+str(int(Environment.workingYear)-1)),
         aDataInizio=stringToDate("31/12/"+str(int(Environment.workingYear)-1)),
         batchSize=None)
-        print "DDDDDDDDD", ddd
         for dd in ddd:
             if not dd.data_fine :
                 messageInfo(msg= """ATTENZIONE!!!
@@ -216,7 +215,6 @@ class AnagraficaPrimaNotaReport(AnagraficaReport):
                                   defaultFileName='prima_nota',
                                   htmlTemplate='prima_nota',
                                   sxwTemplate='prima_nota')
-
 
 
 class AnagraficaPrimaNotaEdit(AnagraficaEdit):

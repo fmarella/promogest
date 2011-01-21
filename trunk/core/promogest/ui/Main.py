@@ -1223,7 +1223,6 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
 
             stname = st+nameDump
             os.environ["PGPASSWORD"]=Environment.password
-
             retcode = call(["pg_dump",
                             "-h",Environment.host,
                             "-p",Environment.port,

@@ -213,7 +213,7 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         def filterCountClosure():
             return Stoccaggio().count(idMagazzino=idMagazzino,
                                     idArticolo = idArticolo,
-                                          filterDict = self.filterDict)
+                                    filterDict = self.filterDict)
 #                                            idArticolo=idArticolo,
 
 
@@ -226,11 +226,11 @@ class AnagraficaStoccaggiFilter(AnagraficaFilter):
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return Stoccaggio().select(orderBy=self.orderBy,
-                                                   idMagazzino=idMagazzino,
-                                                   idArticolo = idArticolo,
-                                                   offset=offset,
-                                                   batchSize=batchSize,
-                                                   filterDict = self.filterDict)
+                                       idMagazzino=idMagazzino,
+                                       idArticolo = idArticolo,
+                                       offset=offset,
+                                       batchSize=batchSize,
+                                       filterDict = self.filterDict)
 #                                                   idArticolo=idArticolo,
         self._filterClosure = filterClosure
 
