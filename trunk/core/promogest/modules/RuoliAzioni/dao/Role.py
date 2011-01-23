@@ -56,6 +56,9 @@ class Role(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {  'name' : role.c.name.ilike("%"+v+"%")}
+        if k =="idRole":
+            dic= {k : role.c.id == v}
+        elif k == "name":
+            dic= { k : role.c.name.ilike("%"+v+"%")}
         return  dic[k]
 std_mapper = mapper(Role, role, order_by=role.c.id)

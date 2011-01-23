@@ -87,8 +87,18 @@ class User(Dao):
 
     @property
     def ruolo(self):
-        if self.role: return self.role.name
-        else: return ""
+        try:
+            if self.role: return self.role.name
+            else: return ""
+        except:
+            nome = Role().select(idRole=self.id_role)
+            if nome:
+                return nome[0].name or ""
+            else:
+                return ""
+#            print "NESSUN NOME DI ROLE"
+
+
 
     if hasattr(conf, "MultiLingua") and getattr(conf.MultiLingua,'mod_enable')=="yes":
         @property
@@ -104,8 +114,9 @@ from promogest.modules.RuoliAzioni.dao.Role import Role
 try:
     from sqlalchemy.orm import relationship
     if tipodb =="sqlite":
-    #    pass
-        std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),foreign_keys=[Role.id],backref="users",uselist=False))
+        pass
+#    #    pass
+#        std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),foreign_keys=[Role.id],backref="users",uselist=False,passive_deletes=True))
     else:
         std_mapper.add_property("role",relationship(Role,primaryjoin=(user.c.id_role==Role.id),backref="users",uselist=False))
 except:
