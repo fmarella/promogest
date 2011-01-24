@@ -50,7 +50,7 @@ class User(Dao):
         elif k == 'active':
             dic = {k:user.c.active == v}
         elif k == 'idRole':
-            dic = {k:and_(user.c.id==UserRole.id_user,UserRole.id_role == v)}
+            dic = {k:user.c.id_role == v}
         return  dic[k]
     #if hasattr(conf, "RuoliAzioni") and getattr(conf.RuoliAzioni,'mod_enable')=="yes":
         #def _ruolo(self):
