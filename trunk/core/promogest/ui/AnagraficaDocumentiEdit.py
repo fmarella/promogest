@@ -1358,6 +1358,18 @@ del documento.
     def mostraArticolo(self, id, art=None):
         mostraArticoloPart(self, id, art=art)
 
+    def apriAnagraficaArticoliEdit(self, idArticolo):
+        from promogest.ui.AnagraficaArticoli import AnagraficaArticoli
+        from promogest.ui.AnagraficaArticoliEdit import AnagraficaArticoliEdit
+        from promogest.dao.Articolo import Articolo
+        a = AnagraficaArticoli()
+        art = Articolo().getRecord(id=idArticolo)
+        a.on_record_edit_activate(a, dao=art)
+
+
+    def on_edit_articolo_button_clicked(self, button):
+        idArticolo = self._righe[0]["idArticolo"]
+        self.apriAnagraficaArticoliEdit(idArticolo)
 
     def on_show_totali_riga(self, widget = None, event = None):
         """ calcola il prezzo netto """
