@@ -511,7 +511,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             insertComboboxSearchVettore(self.id_vettore_customcombobox,
                     self.dao.id_vettore)
             self.porto_combobox.set_sensitive(True)
-#            print "VETTOREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
         if self.dao.porto == 'Franco':
             self.porto_combobox.set_active(1)
         elif self.dao.porto == 'Assegnato':
@@ -1377,7 +1376,7 @@ del documento.
                 self._righe[0]["divisore_noleggio"] = float(self.coeficente_noleggio_entry.get_text() or 0)
                 self._righe[0]["prezzo_acquisto"] = float(self.prezzo_aquisto_entry.get_text() or 0)
                 if self._righe[0]["prezzo_acquisto"] > 0 and self._righe[0]["divisore_noleggio"]  > 0 :
-                    self._righe[0]["prezzoLordo"] = self._righe[0]["prezzo_acquisto"] / self._righe[0]["divisore_noleggio"]
+                    self._righe[0]["prezzoLordo"] = mN(self._righe[0]["prezzo_acquisto"] / self._righe[0]["divisore_noleggio"],3)
                     self.prezzo_lordo_entry.set_text(str(self._righe[0]["prezzoLordo"]))
 
         self.getPrezzoNetto()
