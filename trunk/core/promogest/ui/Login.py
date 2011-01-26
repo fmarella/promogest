@@ -23,6 +23,11 @@
 import hashlib
 import os
 import gtk
+try:
+    settings = gtk.settings_get_default()
+    gtk.Settings.set_long_property(settings, "gtk-button-images", 1, "main")
+except:
+    print "Aggiunta icone non ha funzionato"
 import datetime
 import random
 import threading
