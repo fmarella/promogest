@@ -42,7 +42,6 @@ class ElaExecute(object):
 #                righe.insert(0, riga)
         f.write("1322\n")
         for riga in daoScontrino.righe:
-#            print "RIGAAAAAA", riga.__dict__
             quantita = abs(riga.quantita)
             if riga.quantita < 0:
                 # riga reso

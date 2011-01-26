@@ -111,7 +111,6 @@ class TestataMovimento(Dao):
             if riga.id_magazzino not in __numeroMagazzini:
                 __numeroMagazzini.append(riga.id_magazzino)
         return len(__numeroMagazzini)
-        #print len(self.righe), 'aaaaaaaa'
         #if len(self.righe) > 0 and self.id:
             #mov_query = params['session'].query(RigaMovimento.id).filter(RigaMovimento.id_testata_movimento == self.id)
             #doc_query = params['session'].query(RigaDocumento.id).filter(RigaDocumento.id_testata_documento == self.id)

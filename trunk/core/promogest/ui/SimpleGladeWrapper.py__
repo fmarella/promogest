@@ -212,12 +212,10 @@ class SimpleGladeWrapper(object):
                     setattr(self, widget_api_name, widget)
                     if prefixes:
                         gtk.Widget.set_data(widget, "prefixes", prefixes)
-                print "AHAHAAHAHAHAHAAHAHAH", widget.__gtype__
                 if widget.__gtype__.name == "UnsignedIntegerEntryField":
                     setattr(widget, "nomee",widget_api_name)
                     self.entryGlobalcb(widget)
                 if widget.__gtype__.name == "GtkEntry":
-                    print "MAAAAAAAAAAAAAAAAAAAAAAA"
                     self.entryGlobalcb(widget)
             except:
                 print "WIDGET NON WIDGET", widget

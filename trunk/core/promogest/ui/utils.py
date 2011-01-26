@@ -65,7 +65,6 @@ def articleType(dao):
     @type dao: object
     """
     if dao and posso("PW"):
-        #print "AAAAAAA", dao.id, dao.id_articolo_taglia_colore, dao.id_articolo_padre_taglia_colore, dao.articoliTagliaColore, "AAAAAA"
         if (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre is None) and (dao.articoliTagliaColore):
 #            print "ARTICOLO FATHER"
             return "father"
@@ -2835,6 +2834,7 @@ def scribusVersion(slafile):
         return False
 
 def posso(mod=None):
+    from promogest.dao.Setconf import SetConf
     moduli = Environment.modulesList
     if mod == "RA":
         if "RuoliAzioni"in moduli: return True
@@ -2886,8 +2886,10 @@ def posso(mod=None):
         if "ONE FULL" in moduli: return True
     if mod == "SD":
         if "SincroDB" in moduli :return True
-    return setconf("Master", mod)
-#    return False
+    d = SetConf().select(key="mod_enable",section=mod,value="yes" )
+    if d:
+        return True
+    return False
 
 def installId():
     from promogest.dao.Setconf import SetConf

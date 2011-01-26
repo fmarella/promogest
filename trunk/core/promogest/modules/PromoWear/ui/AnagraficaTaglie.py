@@ -161,7 +161,6 @@ class AnagraficaTaglieFilter(AnagraficaFilter):
                                              None))
                 parentNodes[gruppoTagliaTaglia.id_gruppo_taglia] = parentNode
             taglia = Taglia().getRecord(id=gruppoTagliaTaglia.id_taglia)
-            #print "TAGLIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", taglia.numero_ordine
             node = self._treeViewModel.append(parentNodes[gruppoTagliaTaglia.id_gruppo_taglia],
                                               (gruppoTagliaTaglia,
                                                taglia.denominazione,

@@ -117,12 +117,9 @@ class AnagraficaCategorieClientiDetail(AnagraficaDetail):
     def _refresh(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
-        if not iterator:
-            return
-#        if self.dao == None:
-#            return
-        model.set_value(iterator, 0, self.dao)
-        model.set_value(iterator, 1, self.dao.denominazione)
+        if iterator and self.dao:
+            model.set_value(iterator, 0, self.dao)
+            model.set_value(iterator, 1, self.dao.denominazione)
 
     def saveDao(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()

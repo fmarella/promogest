@@ -125,7 +125,6 @@ class Sla2Pdf_classic(object):
 
         else:
             self.defaultAlignment = "0"
-        #print "AAAAAAAAAAAAAAAAAAAAA self.defaultAlignment", self.defaultAlignment
 
     def findTablesAndTags(self):
         """ Creates associations between groups and tags """

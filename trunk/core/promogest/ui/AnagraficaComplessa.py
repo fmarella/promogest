@@ -368,7 +368,8 @@ class Anagrafica(GladeWidget):
             return
 
         dao = self.filter.getSelectedDao()
-        dao.delete()
+        if dao:
+            dao.delete()
         self.filter.refresh()
         self.htmlHandler.setDao(None)
         self.setFocus()

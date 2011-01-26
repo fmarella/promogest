@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
@@ -25,7 +25,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_categorie_articoli_button_clicked"/>
+                <signal name="clicked" handler="on_categorie_articoli_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment249">
                     <property name="visible">True</property>
@@ -73,7 +73,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_famiglie_articoli_button_clicked"/>
+                <signal name="clicked" handler="on_famiglie_articoli_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment250">
                     <property name="visible">True</property>
@@ -123,7 +123,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_categorie_clienti_button_clicked"/>
+                <signal name="clicked" handler="on_categorie_clienti_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment251">
                     <property name="visible">True</property>
@@ -173,7 +173,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_categorie_fornitori_button_clicked"/>
+                <signal name="clicked" handler="on_categorie_fornitori_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment252">
                     <property name="visible">True</property>
@@ -224,7 +224,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_categorie_contatti_button_clicked"/>
+                <signal name="clicked" handler="on_categorie_contatti_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment255">
                     <property name="visible">True</property>
@@ -274,7 +274,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_aliquote_iva_button_clicked"/>
+                <signal name="clicked" handler="on_aliquote_iva_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment246">
                     <property name="visible">True</property>
@@ -326,7 +326,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_pagamenti_button_clicked"/>
+                <signal name="clicked" handler="on_pagamenti_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment253">
                     <property name="visible">True</property>
@@ -378,7 +378,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_banche_button_clicked"/>
+                <signal name="clicked" handler="on_banche_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment254">
                     <property name="visible">True</property>
@@ -430,7 +430,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_imballaggi_button_clicked"/>
+                <signal name="clicked" handler="on_imballaggi_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment247">
                     <property name="visible">True</property>
@@ -480,7 +480,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_multipli_button_clicked"/>
+                <signal name="clicked" handler="on_multipli_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment248">
                     <property name="visible">True</property>
@@ -532,7 +532,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="toggled" handler="on_utenti_button_toggled"/>
+                <signal name="toggled" handler="on_utenti_button_toggled" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment1">
                     <property name="visible">True</property>
@@ -582,7 +582,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="toggled" handler="on_ruoli_button_toggled"/>
+                <signal name="toggled" handler="on_ruoli_button_toggled" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="alignment2">
                     <property name="visible">True</property>
@@ -634,7 +634,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="toggled" handler="on_ruoli_azioni_button_toggled"/>
+                <signal name="toggled" handler="on_ruoli_azioni_button_toggled" swapped="no"/>
                 <child>
                   <object class="GtkAlignment" id="r">
                     <property name="visible">True</property>
@@ -682,7 +682,56 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkToggleButton" id="stadio_commessa_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="toggled" handler="on_stadio_commessa_button_toggled" swapped="no"/>
+                <child>
+                  <object class="GtkAlignment" id="r1">
+                    <property name="visible">True</property>
+                    <property name="xscale">0</property>
+                    <property name="yscale">0</property>
+                    <child>
+                      <object class="GtkHBox" id="hbox4">
+                        <property name="visible">True</property>
+                        <property name="spacing">2</property>
+                        <child>
+                          <object class="GtkImage" id="image4">
+                            <property name="visible">True</property>
+                            <property name="pixbuf">gest_commessa48X48.png</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="ruoli_azioni1">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">_Stadio Commessa</property>
+                            <property name="use_underline">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">3</property>
+                <property name="top_attach">3</property>
+                <property name="bottom_attach">4</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options"></property>
+              </packing>
             </child>
             <child>
               <placeholder/>

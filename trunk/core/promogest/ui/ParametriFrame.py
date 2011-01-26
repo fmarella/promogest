@@ -181,6 +181,13 @@ class ParametriFrame(GladeWidget):
         anag = AnagraficaCategorieFornitori()
         showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
 
+    def on_stadio_commessa_button_toggled(self, button):
+        if toggleButton.get_property('active') is False:
+            return
+        from promogest.modules.GestioneCommessa.ui import AnagraficaStadioCommessa
+        anag = AnagraficaStadioCommessa()
+
+        showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
 
     def on_pagamenti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:

@@ -16,7 +16,7 @@ from promogest.dao.Dao import Dao
     e lanciato da li dopo aver correttamente impostato i valori sottostanti
 """
 MAINSCHEMA = "promogest2"
-SCHEMA = "aaaaa" # da passare anche come primo parametri al lancio del comando
+SCHEMA = "pippo" # da passare anche come primo parametri al lancio del comando
 USER = "promoadmin"
 PASSWORD = "admin"
 HOST = "localhost"
@@ -57,4 +57,3 @@ primy_keyTable.create(checkfirst=True)
         #se tutto è andato bene ..... posso settare la variabile primoavvio su False
         #conf.RuoliAzioni.primoavvio = "no"
         #conf.save()
-

@@ -30,7 +30,7 @@ from promogest.dao.Dao import Dao
     e lanciato da li dopo aver correttamente impostato i valori sottostanti
 """
 MAINSCHEMA = "promogest2"
-SCHEMA = "aaaaa" # da passare anche come primo parametri al lancio del comando
+SCHEMA = "pippo22" # da passare anche come primo parametri al lancio del comando
 USER = "promoadmin"
 PASSWORD = "admin"
 HOST = "localhost"
@@ -103,18 +103,18 @@ if (1,) not in s or s ==[]:
     for i in range(1,15):
         ruolieazioni.execute(id_role = 1, id_action =i)
 
-userTable = Table('utente',meta, autoload=True, schema=MAINSCHEMA)
-roleTable = Table('role',meta, autoload=True, schema=MAINSCHEMA)
-userroleTable = Table('userrole', meta,
-        Column('id_role', Integer, ForeignKey(MAINSCHEMA+'.role.id'),primary_key=True),
-        Column('id_user', Integer, ForeignKey(MAINSCHEMA+'.utente.id'),primary_key=True),
-        schema=MAINSCHEMA,useexisting=True
-        )
-userroleTable.create(checkfirst=True)
-s= select([userroleTable.c.id_role]).execute().fetchall()
-if (1,) not in s or s ==[]:
-    userruoli = userroleTable.insert()
-    userruoli.execute(id_role = 1, id_user =1)
+#userTable = Table('utente',meta, autoload=True, schema=MAINSCHEMA)
+#roleTable = Table('role',meta, autoload=True, schema=MAINSCHEMA)
+#userroleTable = Table('userrole', meta,
+#        Column('id_role', Integer, ForeignKey(MAINSCHEMA+'.role.id'),primary_key=True),
+#        Column('id_user', Integer, ForeignKey(MAINSCHEMA+'.utente.id'),primary_key=True),
+#        schema=MAINSCHEMA,useexisting=True
+#        )
+#userroleTable.create(checkfirst=True)
+#s= select([userroleTable.c.id_role]).execute().fetchall()
+#if (1,) not in s or s ==[]:
+#    userruoli = userroleTable.insert()
+#    userruoli.execute(id_role = 1, id_user =1)
 
         #se tutto è andato bene ..... posso settare la variabile primoavvio su False
         #conf.RuoliAzioni.primoavvio = "no"

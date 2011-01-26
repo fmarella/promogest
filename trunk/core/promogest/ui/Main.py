@@ -251,7 +251,14 @@ class Main(GladeWidget):
                 return
             else:
                 fencemsg()
-        elif selection == 10:
+        elif selection == 10: #gestione commessa
+            if posso("GC"):
+                from AnagraficaPrimaNota import AnagraficaPrimaNota
+                anag = AnagraficaPrimaNota(aziendaStr=self.aziendaStr)
+                showAnagrafica(self.getTopLevel(), anag, mainClass=self)
+                icon_view.unselect_all()
+                return
+            else:
                 messageInfo(msg="""     MODULO IN LAVORAZIONE!!
 
 SE SEI INTERESSATO AD AIUTARE NELLA FASE DI TEST E DEBUG
@@ -457,6 +464,23 @@ INVIA UNA EMAIL A assistenza@promotux.it
         from AnagraficaImballaggi import AnagraficaImballaggi
         anag = AnagraficaImballaggi()
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+
+    def on_stadio_commessa_button_toggled(self, toggleButton):
+
+        if toggleButton.get_property('active') is False:
+            return
+        if posso("GC"):
+            from promogest.modules.GestioneCommesse.ui.AnagraficaStadioCommessa import AnagraficaStadioCommessa
+            anag = AnagraficaStadioCommessa()
+            showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+            return
+        else:
+                messageInfo(msg="""     MODULO IN LAVORAZIONE!!
+
+SE SEI INTERESSATO AD AIUTARE NELLA FASE DI TEST E DEBUG
+
+INVIA UNA EMAIL A assistenza@promotux.it
+    Grazie""")
 
     def on_main_iconview_right_select(self, icon_view, model=None):
         selected = icon_view.get_selected_items()
@@ -1110,44 +1134,58 @@ INVIA UNA EMAIL A assistenza@promotux.it
         response = dialog.run()
         codice = entry___.get_text()
 #        hascode = str(hashlib.sha224(codice+orda(codice)).hexdigest())
-        if "modu" in codice:
-#            print "NON E' UN CODICE INSTALLAZIONE MA UNA ATTIVAZIONE MODULO"
-            if "_" in codice and "=" in codice:
-                codi = codice.split("=")
-                codpart = codi[0].split("_")[1].strip()
-                setpart = codi[1]
-                print "CANGASEIRO",setpart.upper()
-                if setpart.upper().strip() in ["YES", "SI"]:
-                    sett = True
-                elif setpart.upper().strip() == "NO":
-                    sett = False
+        if "cl" and "|" in codice :
+            d = codice.split("|")
+            if d[1] == "azienda":
+                if Environment.tipodb == "sqlite":
+                    from promogest.dao.Azienda import Azienda
+                    oldnomeazienda= d[2]
+                    newnameazienda = d[3]
+                    aa = Azienda().select(schemaa = oldnomeazienda)
+                    if aa:
+                        aa[0].schemaa = newnameazienda.strip()
+                        aa[0].persist()
+                        messageInfo(msg="NOME AZIENDA MODIFICATO")
+                        dialog.destroy()
+                        return
+                    else:
+                        messageInfo(msg="VECCHIO NOME AZIENDA NON TROVATO")
+                        dialog.destroy()
+                        return
                 else:
-                    print "FINISCI QUI"
+                    messageInfo(msg="POSSIBILE SOLO CON LA VERSIONE ONE")
+                    dialog.destroy()
+                    return
+            elif d[1] == "modulo":
+                tipo_section = d[2] #Modulo
+                section = d[3] # Inventario
+                description = str(d[4]) or "" #Gestione inventario
+                tipo = d[5] or None # Niente o BOOLEAN o colore
+                active = bool(d[6]) or True # bool
+                visible = bool(d[7]) or True #bool
+                key = d[8]  # mod_enable
+                value = d[9] # yes or no
+                if section not in Environment.modules_folders:
                     messageInfo(msg="ERRORE ATTIVAZIONE MODULO")
                     return
-            else:
-                messageInfo(msg="ERRORE ATTIVAZIONE MODULO")
+                dao = SetConf().select(key=key,section=section)
+                if dao:
+                    d = dao[0]
+                else:
+                    d = SetConf()
+                d.key = key
+                d.value =value
+                d.section = section
+                d.description = description
+                d.tipo_section = tipo_section
+                d.tipo = tipo
+                d.active = active
+                d.visible = visible
+                d.date = datetime.datetime.now()
+                d.persist()
+                messageInfo(msg="MODULO O OPZIONE MODIFICATO attivato o disattivato")
+                dialog.destroy()
                 return
-            if codpart not in Environment.modules_folders:
-                messageInfo(msg="ERRORE ATTIVAZIONE MODULO")
-                return
-            dao = SetConf().select(key=codpart,section="Master")
-            if dao:
-                d = dao[0]
-            else:
-                d = SetConf()
-            d.key = codpart
-            d.value =sett
-            d.section = "Master"
-            d.description = ""
-            d.tipo_section = "Moduli"
-            d.tipo = "BOOLEAN"
-            d.active = sett
-            d.date = datetime.datetime.now()
-            d.persist()
-            messageInfo(msg="MODULO MODIFICATO attivato o disattivato")
-            dialog.destroy()
-            return
         else:
             sets = SetConf().select(key="install_code",section="Master")
             if sets:

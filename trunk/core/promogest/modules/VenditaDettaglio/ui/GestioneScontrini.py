@@ -392,7 +392,6 @@ TOT CARTA:<b>%s</b> - TOT ASSEGNI:<b>%s</b> - TOT CONT.:<b>%s</b> - TOT SCONTI:<
                     return
                 for scontrino in self.scontrini:
                     for riga in scontrino.righe:
-    #                    print "RIGAAAAAAAAAAAAAAAA", riga.id_articolo
                         daoInv = Inventario().select(idArticolo=riga.id_articolo, idMagazzino = idMagazzino)
                         if daoInv and idArticoloGenerico!=riga.id_articolo:
                             if daoInv[0].data_aggiornamento is None or scontrino.data_inserimento < daoInv[0].data_aggiornamento:

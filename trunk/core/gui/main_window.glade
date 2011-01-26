@@ -7,7 +7,7 @@
     <property name="upper">9999</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-    <signal name="value_changed" handler="on_anno_calendar_spinbutton_change_value"/>
+    <signal name="value-changed" handler="on_anno_calendar_spinbutton_change_value" swapped="no"/>
   </object>
   <object class="GtkListStore" id="liststore1">
     <columns>
@@ -30,7 +30,7 @@
     <property name="title" translatable="yes">PromoGest2</property>
     <property name="window_position">center</property>
     <property name="icon">promogest.png</property>
-    <signal name="key_press_event" handler="on_main_window_key_press_event"/>
+    <signal name="key-press-event" handler="on_main_window_key_press_event" swapped="no"/>
     <child>
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
@@ -56,7 +56,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Configurazione</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_configurazione_menu_activate"/>
+                        <signal name="activate" handler="on_configurazione_menu_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -65,7 +65,7 @@
                         <property name="tooltip_text" translatable="yes">Importa/attiva un modulo</property>
                         <property name="label" translatable="yes">Importa Modulo</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_importa_modulo_activate"/>
+                        <signal name="activate" handler="on_importa_modulo_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -74,7 +74,7 @@
                         <property name="tooltip_text" translatable="yes">i dati della azienda</property>
                         <property name="label" translatable="yes">Dati Azienda</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_dati_azienda_activate"/>
+                        <signal name="activate" handler="on_dati_azienda_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -83,7 +83,7 @@
                         <property name="tooltip_text" translatable="yes">Clicca qui per aggiornare il promogest ( solo sistemi linux)</property>
                         <property name="label" translatable="yes">Aggiorna</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_aggiorna_activate"/>
+                        <signal name="activate" handler="on_aggiorna_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -92,7 +92,7 @@
                         <property name="tooltip_text" translatable="yes">Se il Client è nello stesso pc del database è possibile effettuare una copia di sicurezza del database</property>
                         <property name="label" translatable="yes">Back up DB</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_Back_up_Database_activate"/>
+                        <signal name="activate" handler="on_Back_up_Database_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -112,7 +112,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">server</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_master_sincro_db_activate"/>
+                        <signal name="activate" handler="on_master_sincro_db_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -120,7 +120,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">client</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_client_sincro_db_activate"/>
+                        <signal name="activate" handler="on_client_sincro_db_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -140,7 +140,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">CALCOLO RICARICO MEDIO e INFLUENZA SULLE VENDITE</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_ricmedio_activate"/>
+                        <signal name="activate" handler="on_ricmedio_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -148,7 +148,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">CONTROLLO FATTURATO</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_controllo_fatturato_activate"/>
+                        <signal name="activate" handler="on_controllo_fatturato_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -159,7 +159,7 @@ generico del magazzino
 articoli per un certo </property>
                         <property name="label" translatable="yes">EXPORT MAGAZZINO</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_export_magazzino_activate"/>
+                        <signal name="activate" handler="on_export_magazzino_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -174,13 +174,12 @@ articoli per un certo </property>
                 <child type="submenu">
                   <object class="GtkMenu" id="codice_menu">
                     <property name="visible">True</property>
-                    <property name="ubuntu_local">True</property>
                     <child>
                       <object class="GtkMenuItem" id="inserimento_codice">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Inserimento codice</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_inserimento_codice_activate"/>
+                        <signal name="activate" handler="on_inserimento_codice_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -201,7 +200,7 @@ articoli per un certo </property>
                         <property name="tooltip_text" translatable="yes">Permette di spedire una email all'asitenza con  segnalazioni bug, consigli, critiche.</property>
                         <property name="label" translatable="yes">Spedisci email Assistenza</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_send_Email_activate"/>
+                        <signal name="activate" handler="on_send_Email_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -209,7 +208,7 @@ articoli per un certo </property>
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Credits</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_credits_menu_activate"/>
+                        <signal name="activate" handler="on_credits_menu_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -217,7 +216,7 @@ articoli per un certo </property>
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Vedi la licenza</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_licenza_menu_activate"/>
+                        <signal name="activate" handler="on_licenza_menu_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -225,7 +224,7 @@ articoli per un certo </property>
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Codice installazione...</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_seriale_menu_activate"/>
+                        <signal name="activate" handler="on_seriale_menu_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -233,7 +232,7 @@ articoli per un certo </property>
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Manuale online</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_manuale_online_activate"/>
+                        <signal name="activate" handler="on_manuale_online_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -301,7 +300,7 @@ articoli per un certo </property>
                                 <property name="receives_default">True</property>
                                 <property name="image">image1</property>
                                 <property name="use_underline">True</property>
-                                <signal name="clicked" handler="on_articoli_button_clicked"/>
+                                <signal name="clicked" handler="on_articoli_button_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -317,7 +316,7 @@ articoli per un certo </property>
                                 <property name="receives_default">True</property>
                                 <property name="image">image2</property>
                                 <property name="use_underline">True</property>
-                                <signal name="clicked" handler="on_forniture_button_clicked"/>
+                                <signal name="clicked" handler="on_forniture_button_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -333,7 +332,7 @@ articoli per un certo </property>
                                 <property name="receives_default">True</property>
                                 <property name="image">image3</property>
                                 <property name="use_underline">True</property>
-                                <signal name="clicked" handler="on_clienti_button_clicked"/>
+                                <signal name="clicked" handler="on_clienti_button_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -349,7 +348,7 @@ articoli per un certo </property>
                                 <property name="receives_default">True</property>
                                 <property name="image">image4</property>
                                 <property name="use_underline">True</property>
-                                <signal name="clicked" handler="on_fornitori_button_clicked"/>
+                                <signal name="clicked" handler="on_fornitori_button_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -365,7 +364,7 @@ articoli per un certo </property>
                                 <property name="receives_default">True</property>
                                 <property name="image">image5</property>
                                 <property name="use_underline">True</property>
-                                <signal name="clicked" handler="on_vettori_button_clicked"/>
+                                <signal name="clicked" handler="on_vettori_button_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -381,7 +380,7 @@ articoli per un certo </property>
                                 <property name="receives_default">True</property>
                                 <property name="image">image6</property>
                                 <property name="use_underline">True</property>
-                                <signal name="clicked" handler="on_agenti_button_clicked"/>
+                                <signal name="clicked" handler="on_agenti_button_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -477,7 +476,7 @@ articoli per un certo </property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">articolo_image1</property>
-                            <signal name="clicked" handler="on_nuovo_articolo_button_clicked"/>
+                            <signal name="clicked" handler="on_nuovo_articolo_button_clicked" swapped="no"/>
                           </object>
                         </child>
                         <child>
@@ -487,7 +486,7 @@ articoli per un certo </property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">cliente_image2</property>
-                            <signal name="clicked" handler="on_nuovo_cliente_button_clicked"/>
+                            <signal name="clicked" handler="on_nuovo_cliente_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -501,7 +500,7 @@ articoli per un certo </property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">fornitore_image3</property>
-                            <signal name="clicked" handler="on_nuovo_fornitore_button_clicked"/>
+                            <signal name="clicked" handler="on_nuovo_fornitore_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">2</property>
@@ -515,7 +514,7 @@ articoli per un certo </property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">ordine_da_cliente_image</property>
-                            <signal name="clicked" handler="on_nuovo_ordine_da_cliente_button_clicked"/>
+                            <signal name="clicked" handler="on_nuovo_ordine_da_cliente_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -531,7 +530,7 @@ articoli per un certo </property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">ddt_reso_a_fornitore_image</property>
-                            <signal name="clicked" handler="on_nuovo_ddt_reso_a_fornitore_button_clicked"/>
+                            <signal name="clicked" handler="on_nuovo_ddt_reso_a_fornitore_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">2</property>
@@ -547,7 +546,7 @@ articoli per un certo </property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">ddt_vendita_image1</property>
-                            <signal name="clicked" handler="on_nuovo_ddt_vendita_button_clicked"/>
+                            <signal name="clicked" handler="on_nuovo_ddt_vendita_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="top_attach">3</property>
@@ -561,7 +560,7 @@ articoli per un certo </property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">ddt_acquisto_image</property>
-                            <signal name="clicked" handler="on_nuovo_ddt_acquisto_button_clicked"/>
+                            <signal name="clicked" handler="on_nuovo_ddt_acquisto_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -577,7 +576,7 @@ articoli per un certo </property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">fattura_vendita_image1</property>
-                            <signal name="clicked" handler="on_nuovo_fattura_vendita_button_clicked"/>
+                            <signal name="clicked" handler="on_nuovo_fattura_vendita_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">2</property>
@@ -593,7 +592,7 @@ articoli per un certo </property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">promemoria_image1</property>
-                            <signal name="clicked" handler="on_nuovo_promemoria_button_clicked"/>
+                            <signal name="clicked" handler="on_nuovo_promemoria_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="top_attach">1</property>
@@ -607,7 +606,7 @@ articoli per un certo </property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">contatto_image</property>
-                            <signal name="clicked" handler="on_nuovo_contatto_button_clicked"/>
+                            <signal name="clicked" handler="on_nuovo_contatto_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -623,7 +622,7 @@ articoli per un certo </property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">fattura_acquisto_image1</property>
-                            <signal name="clicked" handler="on_nuovo_fattura_acquisto_button_clicked"/>
+                            <signal name="clicked" handler="on_nuovo_fattura_acquisto_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">2</property>
@@ -639,7 +638,7 @@ articoli per un certo </property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">preventivo_image1</property>
-                            <signal name="clicked" handler="on_nuovo_preventivo_button_clicked"/>
+                            <signal name="clicked" handler="on_nuovo_preventivo_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="top_attach">2</property>
@@ -653,7 +652,7 @@ articoli per un certo </property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">promotux_image1</property>
-                            <signal name="clicked" handler="on_promotux_button_clicked"/>
+                            <signal name="clicked" handler="on_promotux_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="top_attach">4</property>
@@ -667,7 +666,7 @@ articoli per un certo </property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">promogest_image1</property>
-                            <signal name="clicked" handler="on_promogest_button_clicked"/>
+                            <signal name="clicked" handler="on_promogest_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -683,7 +682,7 @@ articoli per un certo </property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="image">email_image</property>
-                            <signal name="clicked" handler="on_email_button_clicked"/>
+                            <signal name="clicked" handler="on_email_button_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">2</property>
@@ -783,7 +782,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                    <signal name="clicked" handler="on_snooze_alarm_button_clicked"/>
+                                    <signal name="clicked" handler="on_snooze_alarm_button_clicked" swapped="no"/>
                                     <child>
                                       <object class="GtkAlignment" id="alignment1">
                                         <property name="visible">True</property>
@@ -838,7 +837,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                    <signal name="clicked" handler="on_cancel_alarm_button_clicked"/>
+                                    <signal name="clicked" handler="on_cancel_alarm_button_clicked" swapped="no"/>
                                     <child>
                                       <object class="GtkAlignment" id="alignment2">
                                         <property name="visible">True</property>
@@ -916,7 +915,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                     <property name="rules_hint">True</property>
                                     <property name="rubber_banding">True</property>
                                     <property name="enable_grid_lines">both</property>
-                                    <signal name="row_activated" handler="on_alarm_notify_treeview_row_activated"/>
+                                    <signal name="row-activated" handler="on_alarm_notify_treeview_row_activated" swapped="no"/>
                                   </object>
                                 </child>
                               </object>
@@ -1019,7 +1018,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="draw_indicator">False</property>
-                                <signal name="toggled" handler="on_check_toggled"/>
+                                <signal name="toggled" handler="on_check_toggled" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="position">0</property>
@@ -1032,7 +1031,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="draw_indicator">False</property>
-                                <signal name="toggled" handler="on_check_toggled"/>
+                                <signal name="toggled" handler="on_check_toggled" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="position">1</property>
@@ -1045,7 +1044,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="draw_indicator">False</property>
-                                <signal name="toggled" handler="on_check_toggled"/>
+                                <signal name="toggled" handler="on_check_toggled" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="position">2</property>
@@ -1058,7 +1057,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="draw_indicator">False</property>
-                                <signal name="toggled" handler="on_check_toggled"/>
+                                <signal name="toggled" handler="on_check_toggled" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="position">3</property>
@@ -1071,7 +1070,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="draw_indicator">True</property>
-                                <signal name="toggled" handler="on_tutti_check_toggled"/>
+                                <signal name="toggled" handler="on_tutti_check_toggled" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -1112,7 +1111,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="model">liststore1</property>
                                 <property name="active">0</property>
-                                <signal name="changed" handler="on_when_combo_changed"/>
+                                <signal name="changed" handler="on_when_combo_changed" swapped="no"/>
                                 <child>
                                   <object class="GtkCellRendererText" id="cellrenderertext1"/>
                                   <attributes>
@@ -1130,7 +1129,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_menomesi_calendar_button_clicked"/>
+                                <signal name="clicked" handler="on_menomesi_calendar_button_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="position">1</property>
@@ -1142,7 +1141,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_menogiorni_calendar_button_clicked"/>
+                                <signal name="clicked" handler="on_menogiorni_calendar_button_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="position">2</property>
@@ -1154,7 +1153,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_corrente_calendar_button_clicked"/>
+                                <signal name="clicked" handler="on_corrente_calendar_button_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="position">3</property>
@@ -1166,7 +1165,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_piugiorni_calendar_button_clicked"/>
+                                <signal name="clicked" handler="on_piugiorni_calendar_button_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="position">4</property>
@@ -1178,7 +1177,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_piumesi_calendar_button_clicked"/>
+                                <signal name="clicked" handler="on_piumesi_calendar_button_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="position">5</property>
@@ -1209,7 +1208,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="use_stock">True</property>
-                                <signal name="clicked" handler="on_print_button_clicked"/>
+                                <signal name="clicked" handler="on_print_button_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="position">7</property>
@@ -1222,7 +1221,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="use_stock">True</property>
-                                <signal name="clicked" handler="on_refresh_button_clicked"/>
+                                <signal name="clicked" handler="on_refresh_button_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="position">8</property>
@@ -1380,7 +1379,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_categorie_articoli_button_clicked"/>
+                                <signal name="clicked" handler="on_categorie_articoli_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment249">
                                     <property name="visible">True</property>
@@ -1428,7 +1427,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_famiglie_articoli_button_clicked"/>
+                                <signal name="clicked" handler="on_famiglie_articoli_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment250">
                                     <property name="visible">True</property>
@@ -1478,7 +1477,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_categorie_clienti_button_clicked"/>
+                                <signal name="clicked" handler="on_categorie_clienti_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment251">
                                     <property name="visible">True</property>
@@ -1528,7 +1527,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_categorie_fornitori_button_clicked"/>
+                                <signal name="clicked" handler="on_categorie_fornitori_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment252">
                                     <property name="visible">True</property>
@@ -1579,7 +1578,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_categorie_contatti_button_clicked"/>
+                                <signal name="clicked" handler="on_categorie_contatti_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment255">
                                     <property name="visible">True</property>
@@ -1629,7 +1628,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_aliquote_iva_button_clicked"/>
+                                <signal name="clicked" handler="on_aliquote_iva_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment246">
                                     <property name="visible">True</property>
@@ -1681,7 +1680,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_pagamenti_button_clicked"/>
+                                <signal name="clicked" handler="on_pagamenti_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment253">
                                     <property name="visible">True</property>
@@ -1733,7 +1732,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_banche_button_clicked"/>
+                                <signal name="clicked" handler="on_banche_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment254">
                                     <property name="visible">True</property>
@@ -1785,7 +1784,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_imballaggi_button_clicked"/>
+                                <signal name="clicked" handler="on_imballaggi_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment247">
                                     <property name="visible">True</property>
@@ -1835,7 +1834,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_multipli_button_clicked"/>
+                                <signal name="clicked" handler="on_multipli_button_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment248">
                                     <property name="visible">True</property>
@@ -1887,7 +1886,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="toggled" handler="on_utenti_button_toggled"/>
+                                <signal name="toggled" handler="on_utenti_button_toggled" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment5">
                                     <property name="visible">True</property>
@@ -1937,7 +1936,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="toggled" handler="on_ruoli_button_toggled"/>
+                                <signal name="toggled" handler="on_ruoli_button_toggled" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment6">
                                     <property name="visible">True</property>
@@ -1989,7 +1988,7 @@ Promemoria in scadenza. Verificare?!?</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="toggled" handler="on_ruoli_azioni_button_toggled"/>
+                                <signal name="toggled" handler="on_ruoli_azioni_button_toggled" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="r">
                                     <property name="visible">True</property>
@@ -2037,7 +2036,54 @@ Promemoria in scadenza. Verificare?!?</property>
                               </packing>
                             </child>
                             <child>
-                              <placeholder/>
+                              <object class="GtkToggleButton" id="stadio_commessa_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <signal name="toggled" handler="on_stadio_commessa_button_toggled" swapped="no"/>
+                                <child>
+                                  <object class="GtkAlignment" id="r1">
+                                    <property name="visible">True</property>
+                                    <property name="xscale">0</property>
+                                    <property name="yscale">0</property>
+                                    <child>
+                                      <object class="GtkHBox" id="hbox18">
+                                        <property name="visible">True</property>
+                                        <property name="spacing">2</property>
+                                        <child>
+                                          <object class="GtkImage" id="gest_stadio_commessa">
+                                            <property name="visible">True</property>
+                                            <property name="pixbuf">gest_commessa48X48.png</property>
+                                          </object>
+                                          <packing>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="ruoli_azioni1">
+                                            <property name="visible">True</property>
+                                            <property name="label" translatable="yes">_Stadio Commessa</property>
+                                            <property name="use_underline">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">2</property>
+                                <property name="right_attach">3</property>
+                                <property name="top_attach">3</property>
+                                <property name="bottom_attach">4</property>
+                                <property name="x_options">GTK_FILL</property>
+                                <property name="y_options"></property>
+                              </packing>
                             </child>
                             <child>
                               <placeholder/>
@@ -2109,7 +2155,7 @@ Promemoria in scadenza. Verificare?!?</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="image">regstrati_image</property>
-                <signal name="clicked" handler="on_registrati_button_clicked"/>
+                <signal name="clicked" handler="on_registrati_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2137,7 +2183,7 @@ Promemoria in scadenza. Verificare?!?</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="image">prova_promowear_image</property>
-                <signal name="clicked" handler="on_test_promowear_button_clicked"/>
+                <signal name="clicked" handler="on_test_promowear_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2153,7 +2199,7 @@ Promemoria in scadenza. Verificare?!?</property>
                 <property name="receives_default">True</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_button_refresh_clicked"/>
+                <signal name="clicked" handler="on_button_refresh_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2170,7 +2216,7 @@ Promemoria in scadenza. Verificare?!?</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_disconnect"/>
+                <signal name="clicked" handler="on_disconnect" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2187,7 +2233,7 @@ Promemoria in scadenza. Verificare?!?</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_quit"/>
+                <signal name="clicked" handler="on_quit" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2242,7 +2288,7 @@ Promemoria in scadenza. Verificare?!?</property>
                 <property name="tooltip_text" translatable="yes">Verde: PromoGest2 Aggiornato
 Rosso: PromoGest2 Da Aggiornare</property>
                 <property name="relief">half</property>
-                <signal name="clicked" handler="on_aggiorna_activate"/>
+                <signal name="clicked" handler="on_aggiorna_activate" swapped="no"/>
                 <child>
                   <object class="GtkImage" id="active_img">
                     <property name="visible">True</property>
@@ -2294,7 +2340,7 @@ Rosso: PromoGest2 Da Aggiornare</property>
     <property name="visible">True</property>
     <property name="pixbuf">cliente48x48.png</property>
   </object>
-  <object class="GtkImage" id="image4">
+  <object class="GtkImage" id="image4_">
     <property name="visible">True</property>
     <property name="pixbuf">fornitore48x48.png</property>
   </object>

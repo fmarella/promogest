@@ -3,12 +3,6 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name item -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkNotebook" id="anagrafica_clienti_detail_notebook">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -108,8 +102,8 @@ ciò che si è venduto a questo cliente
 calcolato sulla base dei documenti dell'anno di lavoro</property>
             <property name="editable">False</property>
             <property name="invisible_char">●</property>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -366,11 +360,10 @@ se diverso da quella legale</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -404,11 +397,10 @@ se diverso da quella legale</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -508,12 +500,10 @@ icona a sinistra per farne generare uno nuovo dal promogest</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="primary_icon_activatable">True</property>
                 <property name="secondary_icon_activatable">True</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
-                <signal name="button_press_event" handler="on_button_press_event"/>
-                <signal name="focus_in_event" handler="on_focus_in_event"/>
-                <signal name="icon_press" handler="on_icon_press"/>
-                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+                <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+                <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
               </object>
             </child>
           </object>
@@ -538,11 +528,10 @@ Nome</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -569,11 +558,10 @@ Nome
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -597,11 +585,10 @@ Nome</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -625,11 +612,10 @@ Nome</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -654,11 +640,10 @@ Nome</property>
                 <property name="invisible_char">●</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="secondary_icon_activatable">True</property>
-                <property name="secondary_icon_sensitive">True</property>
-                <signal name="button_press_event" handler="on_button_press_event"/>
-                <signal name="focus_in_event" handler="on_focus_in_event"/>
-                <signal name="icon_press" handler="on_icon_press"/>
-                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+                <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+                <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
               </object>
             </child>
           </object>
@@ -681,11 +666,10 @@ sede legale del cliente</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="icon_press" handler="on_entry_icon_press"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_entry_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -706,11 +690,10 @@ della sede legale del cliente</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="secondary_icon_activatable">True</property>
-            <property name="secondary_icon_sensitive">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -733,9 +716,9 @@ della sede legale del cliente</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">2</property>
                 <property name="invisible_char">●</property>
-                <signal name="button_press_event" handler="on_button_press_event"/>
-                <signal name="focus_in_event" handler="on_focus_in_event"/>
-                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+                <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
               </object>
             </child>
           </object>
@@ -839,7 +822,7 @@ della sede legale del cliente</property>
 uno o più contatti sia aziendali che personali 
 con i relativi recapiti telefonici, email, msn 
 </property>
-                    <signal name="clicked" handler="on_contatti_togglebutton_clicked"/>
+                    <signal name="clicked" handler="on_contatti_togglebutton_clicked" swapped="no"/>
                     <child>
                       <object class="GtkAlignment" id="alignment108">
                         <property name="visible">True</property>
@@ -891,7 +874,7 @@ con i relativi recapiti telefonici, email, msn
                     <property name="tooltip_text" translatable="yes">Permette di abbinare al cliente 
 altre destinazioni differenti da quella legale o 
 operativa</property>
-                    <signal name="clicked" handler="on_destinazioni_merce_togglebutton_clicked"/>
+                    <signal name="clicked" handler="on_destinazioni_merce_togglebutton_clicked" swapped="no"/>
                     <child>
                       <object class="GtkAlignment" id="alignment181">
                         <property name="visible">True</property>
@@ -943,7 +926,7 @@ operativa</property>
                     <property name="tooltip_text" translatable="yes">Permette di visualizzare 
 per il cliente i documenti 
 che lo coinvolgono </property>
-                    <signal name="clicked" handler="on_scheda_contabile_togglebutton_clicked"/>
+                    <signal name="clicked" handler="on_scheda_contabile_togglebutton_clicked" swapped="no"/>
                     <child>
                       <object class="GtkAlignment" id="alignment14">
                         <property name="visible">True</property>
@@ -1197,7 +1180,7 @@ per inserirne</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Aggiungi una associazione categoria cliente</property>
-                            <signal name="clicked" handler="on_categorie_clienti_add_row_button_clicked"/>
+                            <signal name="clicked" handler="on_categorie_clienti_add_row_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkAlignment" id="alignment132">
                                 <property name="visible">True</property>
@@ -1249,7 +1232,7 @@ per inserirne</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Elimina una associazione categoria cliente</property>
-                            <signal name="clicked" handler="on_categorie_clienti_delete_row_button_clicked"/>
+                            <signal name="clicked" handler="on_categorie_clienti_delete_row_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkAlignment" id="alignment135">
                                 <property name="visible">True</property>
@@ -1301,7 +1284,7 @@ per inserirne</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Rirpristina una associazione categoria cliente precedente</property>
-                            <signal name="clicked" handler="on_categorie_clienti_undelete_row_button_clicked"/>
+                            <signal name="clicked" handler="on_categorie_clienti_undelete_row_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkAlignment" id="alignment138">
                                 <property name="visible">True</property>
@@ -1364,7 +1347,7 @@ per inserirne</property>
                           <object class="GtkTreeView" id="categorie_treeview">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <signal name="cursor_changed" handler="on_categorie_treeview_cursor_changed"/>
+                            <signal name="cursor-changed" handler="on_categorie_treeview_cursor_changed" swapped="no"/>
                           </object>
                         </child>
                       </object>
@@ -1379,7 +1362,7 @@ per inserirne</property>
             <child type="label">
               <object class="GtkLabel" id="label481">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Categorie</property>
+                <property name="label" translatable="yes">&lt;b&gt;Categorie Cliente&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
               </object>
             </child>
@@ -1724,5 +1707,11 @@ per inserirne</property>
         <property name="tab_fill">False</property>
       </packing>
     </child>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name item -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>
