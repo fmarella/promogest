@@ -277,7 +277,7 @@ class DuplicazioneDocumento(GladeWidget):
         newDao.persist()
 
         if posso("GN"):
-            if self.dao.data_inizio_noleggio or self.data_fine_noleggio:
+            if self.dao.data_inizio_noleggio or self.dao.data_fine_noleggio:
 
                 from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
                 newTestataGestioneNoleggio = TestataGestioneNoleggio()
