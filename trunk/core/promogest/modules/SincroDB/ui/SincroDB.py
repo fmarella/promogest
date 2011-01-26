@@ -99,6 +99,8 @@ class SincroDB(GladeWidget):
 
     def connectDbRemote(self):
         """ effettua la connessione al DB remoto """
+        SessionRemote = None
+        self.metaRemote = None
         mainschema_remoto = Environment.conf.SincroDB.mainschema_remoto
         user_remoto = Environment.conf.SincroDB.user_remoto
         password_remoto = Environment.conf.SincroDB.password_remoto
@@ -127,6 +129,9 @@ class SincroDB(GladeWidget):
 
     def connectDbLocale(self):
         """ effettua la connessione al DB locale """
+        SessionLocale = None
+        self.engineLocale = None
+        self.metaLocale = None
         mainschema_locale = Environment.conf.SincroDB.mainschema_locale
         user_locale = Environment.conf.SincroDB.user_locale
         password_locale = Environment.conf.SincroDB.password_locale
