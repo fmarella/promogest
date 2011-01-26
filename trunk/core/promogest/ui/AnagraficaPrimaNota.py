@@ -615,13 +615,16 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
 
     def on_rimuovi_button_clicked(self, button):
         """ Elimina la riga di prima nota selezionata"""
+        rpn = None
         if self.editRiga:
             dao = RigaPrimaNota().getRecord(id=self.editRiga.id)
-            rpn = RigaPrimaNotaTestataDocumentoScadenza().select(idRigaPrimaNota=dao.id)
+            if dao:
+                rpn = RigaPrimaNotaTestataDocumentoScadenza().select(idRigaPrimaNota=dao.id)
             if rpn:
                 for r in rpn:
                     r.delete()
-            dao.delete()
+            if dao:
+                dao.delete()
             self._editModel.remove(self._editIterator)
             self.clear()
             self.calcolaTotali(self._editModel)
