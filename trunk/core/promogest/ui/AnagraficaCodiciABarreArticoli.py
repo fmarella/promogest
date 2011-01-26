@@ -151,16 +151,18 @@ class AnagraficaCodiciABarreArticoliDetail(AnagraficaDetail):
         return self.dao
 
     def updateDao(self):
-        self.dao = CodiceABarreArticolo().getRecord(id=self.dao.id)
+        if self.dao:
+            self.dao = CodiceABarreArticolo().getRecord(id=self.dao.id)
         self._refresh()
 
 
     def _refresh(self):
         sel = self._anagrafica.anagrafica_treeview.get_selection()
         (model, iterator) = sel.get_selected()
-        model.set_value(iterator, 0, self.dao)
-        model.set_value(iterator, 1, self.dao.codice)
-        model.set_value(iterator, 2, self.dao.primario or False)
+        if iterator and self.dao:
+            model.set_value(iterator, 0, self.dao)
+            model.set_value(iterator, 1, self.dao.codice)
+            model.set_value(iterator, 2, self.dao.primario or False)
 
 
     def saveDao(self):
