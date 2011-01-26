@@ -960,6 +960,7 @@ class SincroDB(GladeWidget):
 
     def runBatch(self):
         sqlalchemy.ext.sqlsoup.Session.expunge_all()
+        sqlalchemy.ext.sqlsoup.Session.close()
 
         self.connectDbRemote()
         self.connectDbLocale()
