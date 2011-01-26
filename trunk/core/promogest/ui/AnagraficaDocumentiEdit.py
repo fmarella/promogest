@@ -1091,7 +1091,10 @@ del documento.
         self._righe[self._numRiga]["prezzoNetto"] = self._righe[0]["prezzoNetto"]
         if posso("GN") and self.noleggio:
             self._righe[self._numRiga]["divisore_noleggio"] = self._righe[0]["divisore_noleggio"]
-            self._righe[self._numRiga]["prezzo_acquisto"] = self._righe[0]["prezzo_acquisto"]
+            if "prezzo_acquisto" in self._righe[0]:
+                self._righe[self._numRiga]["prezzo_acquisto"] = self._righe[0]["prezzo_acquisto"]
+            else:
+                messageInfo(msg="ATTENZIONE!!, SEMBRA UN NOLEGGIO MA MANCA PREZZO ACQUISTO.\n RICONTROLLARE RIGA")
             arco_temporale = self._righe[self._numRiga]["arco_temporale"] = self._righe[0]["arco_temporale"]
         else:
             arco_temporale="NO"
