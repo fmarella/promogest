@@ -60,7 +60,7 @@ class AnagraficaAziende(GladeWidget):
         # Creazione dao azienda corrente
         self.dao = Azienda().getRecord(id=Environment.params["schema"])
         if not self.dao:
-            self.dao = Azienda().getRecord(id="AziendaPromo")
+            self.dao = Azienda().getRecord(id=Environment.azienda)
         self._refresh()
 
 
