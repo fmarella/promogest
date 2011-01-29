@@ -172,11 +172,16 @@ class MyProxy(ConnectionProxy):
             print("ATTENZIONE:InvalidRequestError",e)
             messageInfo(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
             session.rollback()
+        except AssertionError as e:
+            # Handle this exception
+            print("ATTENZIONE:AssertionError",e)
+            messageInfo(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO\n Possibile tentativo di cancellazione di un dato\n collegato ad altri dati fondamentali: "+e.message)
+            session.rollback()
         except ValueError as e:
             # Handle this exception
             print("ATTENZIONE:ValueError",e)
             messageInfo(msg="Risulta inserito un Valore non corretto. Ricontrolla: "+e.message)
-#            session.rollback()
+            session.rollback()
 
 def _pg8000():
     try:
@@ -217,7 +222,7 @@ def connect():
         a = psycopg2.connect(user=user, host=host, port=port,
                             password=password, database=database)
     except Exception, e:
-        a= "CONNESSIONE AL DB NON RIUSCITA.\n DETTAGLIO ERRORE: [%s]" % ( e,)
+        a= "CONNESSIONE AL DATABASE PRO NON RIUSCITA.\n DETTAGLIO ERRORE: [%s]" % ( e,)
         messageInfo(msg=a)
         exit( )
     if a:
