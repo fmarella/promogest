@@ -35,7 +35,7 @@ class SignedMoneyEntryField(CustomEntryField):
         self._lunghezza = 10
         self._precisione = int(setconf(key="decimals", section="Numbers"))
         self._default = str1
-        self.acceptedKeys = self.controlKeys + self.numberKeys + self.delimiterKeys
+        self.acceptedKeys = self.controlKeys + self.numberKeys + self.delimiterKeys+self.signKeys
 
 
     def my_key_press_event(self, widget, event):
