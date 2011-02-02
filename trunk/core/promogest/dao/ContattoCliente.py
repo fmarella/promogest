@@ -63,6 +63,10 @@ class ContattoCliente(Dao):
             dic = {k:or_(contatto.c.cognome.ilike("%"+v+"%"),contatto.c.nome.ilike("%"+v+"%"))}
         elif k == 'ruolo':
             dic = {k:contatto.c.ruolo.ilike("%"+v+"%")}
+        elif k == "recapito":
+            dic={k:and_(contattocliente.c.id==recapito.c.id_contatto,recapito.c.recapito.ilike("%"+v+"%"))}
+        elif k == "tipoRecapito":
+            dic={k:and_(contattocliente.c.id==recapito.c.id_contatto,recapito.c.tipo_recapito ==v)}
         elif k=='descrizione':
             dic = {k:contatto.c.descrizione.ilike("%"+v+"%")}
 
@@ -70,7 +74,7 @@ class ContattoCliente(Dao):
         #FIXME : #'tipoRecapito':
         return dic[k]
 
-
+recapito=Table('recapito',params['metadata'],autoload=True,schema = params['schema'])
 contatto=Table('contatto', params['metadata'],schema = params['schema'], autoload=True)
 contattocliente=Table('contatto_cliente', params['metadata'],schema = params['schema'], autoload=True)
 
