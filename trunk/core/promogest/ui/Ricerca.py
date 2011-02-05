@@ -121,7 +121,7 @@ class Ricerca(GladeWidget):
         self.ricerca_window.hide()
         if self.ricerca_window in Environment.windowGroup:
             Environment.windowGroup.remove(self.ricerca_window)
-
+        return self.dao
 
     def on_ricerca_window_close(self, widget, event=None):
         """ Uscita """
@@ -143,7 +143,6 @@ class RicercaFilter(GladeWidget):
         GladeWidget.__init__(self, rootWidget, fileName,isModule=isModule)
         self._ricerca = ricerca
 
-
     def build(self):
         """ reindirizza alcuni campi e metodi dal filterWidget """
         self.bodyWidget = self._ricerca.bodyWidget
@@ -156,7 +155,6 @@ class RicercaFilter(GladeWidget):
         self.numRecords = self.bodyWidget.numRecords = 0
         self._filterClosure = None
 
-
     def draw(self):
         """
         Disegna i contenuti del filtro ricerca.  Metodo invocato
@@ -164,30 +162,24 @@ class RicercaFilter(GladeWidget):
         """
         raise NotImplementedError
 
-
     def clear(self):
         """ Ripulisci il filtro di ricerca e aggiorna la ricerca stessa """
         raise NotImplementedError
-
 
     def refresh(self):
         """ Aggiorna il filtro di ricerca in base ai parametri impostati """
         raise NotImplementedError
 
-
     def on_campo_filter_entry_key_press_event(self, widget, event):
         return self._ricerca.bodyWidget.on_filter_element_key_press_event(widget, event)
-
 
     def on_filter_treeview_row_activated(self, treeview, path, column):
         """ Gestisce la conferma della riga """
         self._ricerca.on_filter_treeview_row_activated(treeview, path, column)
 
-
     def on_filter_treeview_cursor_changed(self, treeview):
         """ Gestisce lo spostamento tra le righe """
         self._ricerca.on_filter_treeview_cursor_changed(treeview)
-
 
     def runFilter(self, offset='__default__', batchSize='__default__',
                   progressCB=None, progressBatchSize=0):
@@ -196,7 +188,6 @@ class RicercaFilter(GladeWidget):
         return self.bodyWidget.runFilter(offset=offset, batchSize=batchSize,
                                          progressCB=progressCB, progressBatchSize=progressBatchSize,
                                          filterClosure=self._filterClosure)
-
 
     def _refreshPageCount(self):
         """ Aggiorna la paginazione """
@@ -266,12 +257,9 @@ class RicercaHtml(object):
         document.close_stream()
         self._gtkHtml.set_document(document)
 
-
     def setObjects(self, objects):
         # FIXME: dummy function for API compatibility, refactoring(TM) needed!
         pass
-
-
 
     def pdf(self, operationName):
         operationNameUnderscored = operationName.replace(' ' , '_').lower()
@@ -289,7 +277,6 @@ class RicercaHtml(object):
         param = [self.dao.dictionary(complete=True)]
         multilinedirtywork(param)
         return self._slaTemplateObj.serialize(param)
-
 
     def cancelOperation(self):
         """ Cancel current operation """

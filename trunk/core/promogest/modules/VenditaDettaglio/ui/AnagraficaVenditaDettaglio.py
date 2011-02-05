@@ -72,7 +72,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self._currentRow = {}
         self._simboloPercentuale = '%'
         self._simboloEuro = '€'
-        textStatusBar = "     PromoGest2 - Vendita Dettaglio - by PromoTUX Informatica - 800034561 - www.PromoTUX.it - info@PromoTUX.it      "
+        textStatusBar = "     PromoGest2 - Vendita Dettaglio - by PromoTUX Informatica - 800034561 - www.promogest.me - info@PromoTUX.it      "
         context_id = self.vendita_dettaglio_statusbar.get_context_id("vendita_dettaglio_window")
         self.vendita_dettaglio_statusbar.push(context_id, textStatusBar)
         azienda = Azienda().getRecord(id=Environment.params["schema"])

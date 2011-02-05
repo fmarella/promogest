@@ -40,6 +40,7 @@ def checkPan(main):
         ("ONE FULL" not in Environment.modulesList) and \
         ("PRO BASIC" not in Environment.modulesList) and \
         ("PRO STANDARD" not in  Environment.modulesList) and\
+        ("PRO FULL" not in  Environment.modulesList) and\
         (Environment.tipodb!="postgresql"):
         pp = PanUi(main).draw()
         a = gtk.Label()
@@ -52,7 +53,7 @@ def checkPan(main):
     else:
         text = "OPZIONE:<b>%s!</b>" %(Environment.tipo_pg)
         main.pan_label_info.set_markup(text)
-        main.main_notebook.set_current_page(4)
+#        main.main_notebook.set_current_page(4)
 
 
 class PanUi(GladeWidget):
@@ -70,59 +71,59 @@ class PanUi(GladeWidget):
         return self
 
     def on_registrati_button_clicked(self, button):
-        url ="http://www.promotux.it/userRegistration"
+        url ="http://www.promogest.me/userRegistration"
         webbrowser.open_new_tab(url)
 
     def on_one_main_button_clicked(self, button):
-        url ="http://www.promotux.it/promoGest/preventivo_one"
+        url ="http://www.promogest.me/promoGest/preventivo_one"
         webbrowser.open_new_tab(url)
 
     def on_pro_main_button_clicked(self, button):
-        url ="http://www.promotux.it/promoGest/preventivo_pro"
+        url ="http://www.promogest.me/promoGest/preventivo_pro"
         webbrowser.open_new_tab(url)
 
     def on_promowear_main_button_clicked(self, button):
-        url ="http://www.promotux.it/promoGest/preventivo_pro"
+        url ="http://www.promogest.me/promoGest/preventivo_pro"
         webbrowser.open_new_tab(url)
 
     def on_promoshop_main_button_clicked(self, button):
-        url ="http://www.promotux.it/promoGest/preventivo_pro"
+        url ="http://www.promogest.me/promoGest/preventivo_pro"
         webbrowser.open_new_tab(url)
 
     def on_promowear_one_button_clicked(self, button):
-        url ="http://www.promotux.it/promoGest/preventivo_one"
+        url ="http://www.promogest.me/promoGest/preventivo_one"
         webbrowser.open_new_tab(url)
 
 
     def on_promowear_pro_button_clicked(self, button):
-        url ="http://www.promotux.it/promoGest/preventivo_pro"
+        url ="http://www.promogest.me/promoGest/preventivo_pro"
         webbrowser.open_new_tab(url)
 
     def on_promoshop_one_button_clicked(self, button):
-        url ="http://www.promotux.it/promoGest/preventivo_one"
+        url ="http://www.promogest.me/promoGest/preventivo_one"
         webbrowser.open_new_tab(url)
 
     def on_promoshop_pro_button_clicked(self, button):
-        url ="http://www.promotux.it/promoGest/preventivo_pro"
+        url ="http://www.promogest.me/promoGest/preventivo_pro"
         webbrowser.open_new_tab(url)
 
 
     def on_acquista_button_clicked(self, button):
         if self.main.pp.lite_radio.get_active():
-            url ="http://www.promotux.it/promoGest/preventivo_lite"
+            url ="http://www.promogest.me/promoGest/preventivo_lite"
             webbrowser.open_new_tab(url)
         elif self.main.pp.pro_radio.get_active():
-            url ="http://www.promotux.it/promoGest/preventivo_pro"
+            url ="http://www.promogest.me/promoGest/preventivo_pro"
             webbrowser.open_new_tab(url)
         elif self.main.pp.promowear_radio.get_active():
             messageInfo(msg="NON ancora disponibile")
             return
-            url ="http://www.promotux.it/promoGest/preventivo_promowear"
+            url ="http://www.promogest.me/promoGest/preventivo_promowear"
             webbrowser.open_new_tab(url)
         elif self.main.pp.promoshop_radio.get_active():
             messageInfo(msg="NON ancora disponibile")
             return
-            url ="http://www.promotux.it/promoGest/preventivo_promoshop"
+            url ="http://www.promogest.met/promoGest/preventivo_promoshop"
             webbrowser.open_new_tab(url)
 
 
@@ -140,7 +141,7 @@ class PanUi(GladeWidget):
             messageInfo(msg = """Nessun Username o password sono state inserite,
 se non sei registrato fallo premendo il pulsante 'registrati sito'""")
         else:
-            url = "http://www.promotux.it/trial"
+            url = "http://www.promogest.me/trial"
 #            url = "http://localhost:8080/trial"
             password = hashlib.md5(username + passw).hexdigest()
             data = {"username" : username,"password":password, "company":company,

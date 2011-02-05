@@ -16,7 +16,6 @@ import Login
 from utils import *
 
 
-
 class RicercaComplessa(GladeWidget):
     """ Classe base per le ricerche avanzate di Promogest """
 

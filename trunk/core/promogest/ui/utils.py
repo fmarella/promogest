@@ -653,7 +653,7 @@ def on_combobox_agente_search_clicked(combobox, callName=None):
 
 
     if combobox.on_selection_changed():
-        from RicercaAgenti import RicercaAgenti
+        from promogest.ui.SimpleSearch.RicercaAgenti import RicercaAgenti
         anag = RicercaAgenti()
 
         anagWindow = anag.getTopLevel()
@@ -690,7 +690,7 @@ def on_combobox_vettore_search_clicked(combobox, callName=None):
 
 
     if combobox.on_selection_changed():
-        from RicercaVettori import RicercaVettori
+        from promogest.ui.SimpleSearch.RicercaVettori import RicercaVettori
         anag = RicercaVettori()
 
         anagWindow = anag.getTopLevel()
@@ -725,7 +725,7 @@ def on_combobox_magazzino_search_clicked(combobox, callName=None):
 
 
     if combobox.on_selection_changed():
-        from RicercaMagazzini import RicercaMagazzini
+        from promogest.ui.SimpleSearch.RicercaMagazzini import RicercaMagazzini
         anag = RicercaMagazzini()
 
         anagWindow = anag.getTopLevel()
@@ -793,14 +793,13 @@ def on_combobox_cliente_search_clicked(combobox, callName=None):
             callName()
 
     if combobox.on_selection_changed():
-        from RicercaClienti import RicercaClienti
+        from promogest.ui.SimpleSearch.RicercaClienti import RicercaClienti
         anag = RicercaClienti()
 
         anagWindow = anag.getTopLevel()
         returnWindow = combobox.get_toplevel()
         anagWindow.set_transient_for(returnWindow)
         anagWindow.show_all()
-
         anagWindow.connect("hide",
                            refresh_combobox_cliente)
     elif callName is not None:
@@ -830,7 +829,7 @@ def on_combobox_fornitore_search_clicked(combobox, callName=None):
 
 
     if combobox.on_selection_changed():
-        from RicercaFornitori import RicercaFornitori
+        from promogest.ui.SimpleSearch.RicercaFornitori import RicercaFornitori
         anag = RicercaFornitori()
 
         anagWindow = anag.getTopLevel()
@@ -950,6 +949,30 @@ def on_id_famiglia_articolo_customcombobox_clicked(widget, button):
     anagWindow.show_all()
     anagWindow.connect("destroy",
                         on_anagrafica_famiglie_articoli_destroyed)
+
+def on_stadio_commessa_combobox_clicked(widget, button):
+    """Richiama l'anagrafica delle categorie articoli """
+
+    def on_anagrafica_stadio_commessa_destroyed(window):
+        """    """
+        # all'uscita dall'anagrafica richiamata, aggiorna l'elenco associato
+        widget.button.set_active(False)
+        id = findIdFromCombobox(widget.combobox)
+        fillComboboxStadioCommessa(widget.combobox)
+        findComboboxRowFromId(widget.combobox, id)
+
+    if widget.button.get_property('active') is False:
+        return
+
+    from promogest.modules.GestioneCommesse.ui.AnagraficaStadioCommessa import AnagraficaStadioCommessa
+    anag = AnagraficaStadioCommessa()
+
+    anagWindow = anag.getTopLevel()
+    returnWindow = widget.get_toplevel()
+    anagWindow.set_transient_for(returnWindow)
+    anagWindow.show_all()
+    anagWindow.connect("destroy",
+                        on_anagrafica_stadio_commessa_destroyed)
 
 
 def on_id_imballaggio_customcombobox_clicked(widget, button):
@@ -2602,7 +2625,7 @@ def checkInstallation():
     from promogest.dao.Setconf import SetConf
     try:
 #        url = "http://localhost:8080/check"
-        url = "http://www.promotux.it/check"
+        url = "http://www.promogest.me/check"
         data = {"masterkey" : SetConf().select(key="install_code",section="Master")[0].value,
                 "icode":SetConf().select(key="icode",section="Master")[0].value}
         values = urllib.urlencode(data)
@@ -2886,6 +2909,8 @@ def posso(mod=None):
         if "ONE FULL" in moduli: return True
     if mod == "SD":
         if "SincroDB" in moduli :return True
+    if mod == "GC" or mod =="GestioneCommesse":
+        if "GestioneCommesse" in moduli :return True
     d = SetConf().select(key="mod_enable",section=mod,value="yes" )
     if d:
         return True

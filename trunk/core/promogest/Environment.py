@@ -48,7 +48,7 @@ from email import Encoders
 import datetime
 
 PRODOTTO = "PromoTux"
-VERSIONE = "PromoGest 2.6.3.3"
+VERSIONE = "PromoGest 2.7.0.1"
 debugFilter = False
 debugDao = False
 debugSQL = False
@@ -110,7 +110,7 @@ fromHtmlLits = ["Promemoria", "TestataPrimaNota","Articolo", "Cliente",
                 "AliquotaIva"]
 
 package = ["ONE BASIC", "ONE FULL", "ONE STANDARD", "PRO BASIC", "PRO STANDARD",
-            "ONE PROMOWEAR", "ONE PROMOSHOP", "PRO PROMOWEAR", "PRO PROMOSHOP"]
+            "PRO FULL","ONE PROMOWEAR", "ONE PROMOSHOP", "PRO PROMOWEAR", "PRO PROMOSHOP"]
 
 loc = locale.setlocale(locale.LC_ALL, '')
 

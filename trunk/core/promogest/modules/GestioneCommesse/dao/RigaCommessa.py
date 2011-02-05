@@ -38,16 +38,14 @@ except:
 
     if params["tipo_db"] == "sqlite":
         testatacommessaFK ='testata_commessa.id'
-        stadiocommessaFK ='stadio_commessa.id'
+
     else:
         testatacommessaFK = params['schema']+'.testata_commessa.id'
-        stadiocommessaFK = params['schema']+'.stadio_commessa.id'
 
     rigacommessa = Table('riga_commessa', params["metadata"],
             Column('id', Integer, primary_key=True),
             Column('denominazione', String(300), nullable=False),
             Column('id_testata_commessa', Integer,ForeignKey(testatacommessaFK,onupdate="CASCADE",ondelete="CASCADE")),
-            Column('id_stadio_commessa', Integer,ForeignKey(stadiocommessaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
 #            Column('numero', Integer, nullable=False),
             Column('data_registrazione', DateTime, nullable=True),
             Column('dao_class', String(100), nullable=True),
@@ -68,10 +66,8 @@ class RigaCommessa(Dao):
             dic= {k:rigacommessa.c.id ==v}
         elif k == 'idTestataCommessa':
             dic = {k:rigacommessa.c.id_testata_commessa==v}
-        elif k == 'idStadioCommessa':
-            dic = {k:rigacommessa.c.id_stadio_commessa==v}
-        elif k == 'numero':
-            dic = {k:rigacommessa.c.numero==v}
+#        elif k == 'numero':
+#            dic = {k:rigacommessa.c.numero==v}
         elif k == 'daoClass':
             dic = {k:rigacommessa.c.dao_class==v}
         elif k == 'idDao':

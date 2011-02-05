@@ -136,28 +136,27 @@ class Login(GladeApp):
             fileSplashImage = Environment.conf.guiDir + "natale["+str(randomFile)+"].png"
             if Environment.engine.name == "sqlite":
                 self.login_tipo_label.set_markup("<b>PromoGest 'ONE'</b>")
-                self.urll = "http://www.promotux.it/promoGest/preventivo_one"
+                self.urll = "http://www.promogest.me/promoGest/preventivo_one"
             else:
                 self.login_tipo_label.set_markup("<b>PromoGest 'PRO'</b>")
-                self.urll = "http://www.promotux.it/promoGest/preventivo_pro"
+                self.urll = "http://www.promogest.me/promoGest/preventivo_pro"
         else:
             if Environment.engine.name == "sqlite": #forzo lo splash per lite
                 randomFile = random.sample([1, 2, 3, 4, 5, 6], 1)[0]
                 fileSplashImage = Environment.conf.guiDir + "one["+str(randomFile)+"].png"
                 self.login_tipo_label.set_markup("<b>PromoGest 'ONE'</b>")
-                self.urll = "http://www.promotux.it/promoGest/preventivo_one"
+                self.urll = "http://www.promogest.me/promoGest/preventivo_one"
             else:
                 randomFile = random.sample([1, 2, 3, 4, 5, 6], 1)[0]
                 fileSplashImage = Environment.conf.guiDir + "pro["+str(randomFile)+"].png"
                 self.login_tipo_label.set_markup("<b>PromoGest 'PRO'</b>")
-                self.urll = "http://www.promotux.it/promoGest/preventivo_pro"
+                self.urll = "http://www.promogest.me/promoGest/preventivo_pro"
         self.splash_image.set_from_file(fileSplashImage)
-
 
 
     def feddretreive(self):
         """ FIXME """
-        d = feedparser.parse("http://www.promotux.it/newsfeed")
+        d = feedparser.parse("http://www.promogest.me/newsfeed")
         Environment.feedAll = d
         return
 

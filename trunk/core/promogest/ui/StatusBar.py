@@ -103,10 +103,10 @@ class Pg2StatusIcon(gtk.StatusIcon):
         about = gtk.AboutDialog()
         about.set_name("PromoGest2")
         about.set_version("svn")
-        about.set_copyright("Promotux 2010")
+        about.set_copyright("Promotux 2011")
         about.set_license("license")
-        about.set_website("http://promogest.promotux.it")
-        about.set_authors(["Francesco <francesco@promtux.it>"])
+        about.set_website("http://www.promogest.me")
+        about.set_authors(["Francesco <francesco@promotux.it>"])
         try:
             about.set_logo(gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'logo_promogest_piccolo.png'))
         except:

@@ -1,20 +1,33 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                       di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest import Environment
 import promogest.ui.Login
-from promogest.modules.DistintaBase.data.DistintaBaseDB import *
-from promogest.modules.DistintaBase.ui.AnagraficaDistintaBase import AnagraficaDistintaBase
 
-MODULES_NAME = "DistintaBase"
-MODULES_FOR_EXPORT = ['DistintaBase']
-GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/DistintaBase/gui/'
+MODULES_NAME = "GestioneCommesse"
+MODULES_FOR_EXPORT = []
+GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/GestioneCommesse/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
-TEMPLATES = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/DistintaBase/templates/'
+TEMPLATES = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/GestioneCommesse/templates/'
 
 """
     view_type è composto da:
@@ -27,9 +40,8 @@ TEMPLATES = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modul
 """
 #testataMovimentoTable = Table('testata_movimento', params['metadata'], autoload=True, schema=params['schema'])
 
-class DistintaBase(object):
-    VIEW_TYPE = ('anagrafica', 'Distinta Base ', 'report48x48.png')
-    def getApplication(self):
-        anag = AnagraficaDistintaBase()
-        return anag
-
+#class DistintaBase(object):
+#    VIEW_TYPE = ('anagrafica', 'Distinta Base ', 'report48x48.png')
+#    def getApplication(self):
+#        anag = AnagraficaDistintaBase()
+#        return anag

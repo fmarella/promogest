@@ -42,7 +42,7 @@ class VistaPrincipale(GladeWidget):
         webbrowser.open_new_tab(url)
 
     def on_promogest_button_clicked(self, button):
-        url ="http://www.promotux.it/promoGest"
+        url ="http://www.promogest.me"
         webbrowser.open_new_tab(url)
 
     def on_numero_verde_button_clicked(self, button):

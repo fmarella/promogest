@@ -76,7 +76,7 @@ class Anagrafica(GladeWidget):
         self._setLabelHandler(labelHandler)
         self._selectedDao = None
         # Initial (in)sensitive widgets
-        textStatusBar = "     *****   PromoGest - 800 034561 - www.promotux.it - info@promotux.it  *****     "
+        textStatusBar = "     *****   PromoGest - 800 034561 - www.promogest.me - info@promotux.it  *****     "
         context_id =  self.pg2_statusbar.get_context_id("anagrafica_complessa_windows")
         self.pg2_statusbar.push(context_id,textStatusBar)
         self.record_delete_button.set_sensitive(False)

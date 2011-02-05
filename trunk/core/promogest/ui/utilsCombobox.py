@@ -381,6 +381,28 @@ def fillComboboxCategorieFornitori(combobox, filter=False):
     if combobox.__class__ is gtk.ComboBoxEntry:
         combobox.set_text_column(2)
 
+def fillComboboxStadioCommessa(combobox, filter=False):
+    """ Riempi combo degli stadi commessa """
+    from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa
+    model = gtk.ListStore(gobject.TYPE_PYOBJECT, int, str)
+    stcom = StadioCommessa().select(batchSize=None)
+    if not filter:
+        emptyRow = ''
+#    else:
+#        emptyRow = '< Tutti >'
+    model.append((None, 0, emptyRow))
+    for c in stcom:
+        model.append((c, c.id, (c.denominazione or '')[0:20]))
+
+    combobox.clear()
+    renderer = gtk.CellRendererText()
+    combobox.pack_start(renderer, True)
+    combobox.add_attribute(renderer, 'text', 2)
+    combobox.set_model(model)
+    if combobox.__class__ is gtk.ComboBoxEntry:
+        combobox.set_text_column(2)
+
+
 
 def fillComboboxMultipli(combobox, idArticolo=None, noSottoMultipli=False, filter=False):
     """
@@ -989,7 +1011,7 @@ def on_combobox_articolo_search_clicked(combobox, callName=None):
 
 
     if combobox.on_selection_changed():
-        from RicercaArticoli import RicercaArticoli
+        from promogest.ui.SimpleSearch.RicercaArticoli import RicercaArticoli
         anag = RicercaArticoli()
 
         anagWindow = anag.getTopLevel()

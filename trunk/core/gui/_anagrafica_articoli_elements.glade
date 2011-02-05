@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkVBox" id="anagrafica_articoli_filter_vbox">
     <property name="visible">True</property>
+    <property name="orientation">vertical</property>
     <property name="homogeneous">True</property>
     <child>
       <object class="GtkVBox" id="ricerca_semplice_articoli_filter_vbox">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkAlignment" id="alignment474">
             <property name="visible">True</property>
@@ -60,6 +62,7 @@
     <child>
       <object class="GtkVBox" id="ricerca_avanzata_articoli_filter_vbox">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkHBox" id="ricerca_semplice_articoli_filter_hbox">
             <property name="visible">True</property>
@@ -144,7 +147,7 @@
     <child>
       <object class="GtkEntry" id="denominazione_filter_entry">
         <property name="can_focus">True</property>
-        <property name="invisible_char">●</property>
+        <property name="invisible_char">&#x25CF;</property>
         <signal name="button_press_event" handler="on_button_press_event"/>
         <signal name="changed" handler="on_filter_entry_changed"/>
         <signal name="key_press_event" handler="on_denominazione_filter_entry_key_press_event"/>
@@ -226,7 +229,7 @@
     <child>
       <object class="GtkEntry" id="codice_articolo_fornitore_filter_entry">
         <property name="can_focus">True</property>
-        <property name="invisible_char">●</property>
+        <property name="invisible_char">&#x25CF;</property>
         <signal name="button_press_event" handler="on_button_press_event"/>
         <signal name="changed" handler="on_filter_entry_changed"/>
         <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -244,7 +247,7 @@
     <child>
       <object class="GtkEntry" id="codice_a_barre_filter_entry">
         <property name="can_focus">True</property>
-        <property name="invisible_char">●</property>
+        <property name="invisible_char">&#x25CF;</property>
         <signal name="button_press_event" handler="on_button_press_event"/>
         <signal name="changed" handler="on_filter_entry_changed"/>
         <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -262,7 +265,7 @@
     <child>
       <object class="GtkEntry" id="codice_filter_entry">
         <property name="can_focus">True</property>
-        <property name="invisible_char">●</property>
+        <property name="invisible_char">&#x25CF;</property>
         <signal name="button_press_event" handler="on_button_press_event"/>
         <signal name="changed" handler="on_codice_filter_entry_changed" after="yes"/>
         <signal name="changed" handler="on_filter_entry_changed"/>
@@ -282,7 +285,7 @@
     <child>
       <object class="GtkEntry" id="produttore_filter_entry">
         <property name="can_focus">True</property>
-        <property name="invisible_char">●</property>
+        <property name="invisible_char">&#x25CF;</property>
         <signal name="button_press_event" handler="on_button_press_event"/>
         <signal name="changed" handler="on_filter_entry_changed"/>
         <signal name="focus_out_event" handler="on_focus_out_event"/>
@@ -774,8 +777,8 @@
                           <object class="GtkTreeView" id="descrizione_articolo_filter_treeview">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <signal name="key_press_event" handler="on_descrizione_articolo_filter_treeview_key_press_event"/>
                             <signal name="cursor_changed" handler="on_descrizione_articolo_filter_treeview_cursor_changed"/>
+                            <signal name="key_press_event" handler="on_descrizione_articolo_filter_treeview_key_press_event"/>
                           </object>
                         </child>
                       </object>
@@ -874,8 +877,8 @@
                           <object class="GtkTreeView" id="produttore_articolo_filter_treeview">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <signal name="key_press_event" handler="on_produttore_articolo_filter_treeview_key_press_event"/>
                             <signal name="cursor_changed" handler="on_produttore_articolo_filter_treeview_cursor_changed"/>
+                            <signal name="key_press_event" handler="on_produttore_articolo_filter_treeview_key_press_event"/>
                           </object>
                         </child>
                       </object>
@@ -974,8 +977,8 @@
                           <object class="GtkTreeView" id="codice_articolo_filter_treeview">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <signal name="key_press_event" handler="on_codice_articolo_filter_treeview_key_press_event"/>
                             <signal name="cursor_changed" handler="on_codice_articolo_filter_treeview_cursor_changed"/>
+                            <signal name="key_press_event" handler="on_codice_articolo_filter_treeview_key_press_event"/>
                           </object>
                         </child>
                       </object>
@@ -1074,8 +1077,8 @@
                           <object class="GtkTreeView" id="codice_a_barre_articolo_filter_treeview">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <signal name="key_press_event" handler="on_codice_a_barre_articolo_filter_treeview_key_press_event"/>
                             <signal name="cursor_changed" handler="on_codice_a_barre_articolo_filter_treeview_cursor_changed"/>
+                            <signal name="key_press_event" handler="on_codice_a_barre_articolo_filter_treeview_key_press_event"/>
                           </object>
                         </child>
                       </object>
@@ -1174,8 +1177,8 @@
                           <object class="GtkTreeView" id="codice_articolo_fornitore_articolo_filter_treeview">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <signal name="key_press_event" handler="on_codice_articolo_fornitore_articolo_filter_treeview_key_press_event"/>
                             <signal name="cursor_changed" handler="on_codice_articolo_fornitore_articolo_filter_treeview_cursor_changed"/>
+                            <signal name="key_press_event" handler="on_codice_articolo_fornitore_articolo_filter_treeview_key_press_event"/>
                           </object>
                         </child>
                       </object>

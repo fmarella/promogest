@@ -23,12 +23,12 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
-from DaoUtils import *
+from promogest.dao.Dao import Dao
+from promogest.dao.DaoUtils import *
 from promogest.ui.utils import numeroRegistroGet
 from promogest.ui.utils import *
 from promogest.dao.Cliente import Cliente
-from RigaCommessa import RigaCommessa
+
 try:
     testatacommessa = Table('testata_commessa',
             params['metadata'],
@@ -36,24 +36,29 @@ try:
             autoload=True)
 except:
     clienteTable = Table('cliente', params['metadata'], autoload=True, schema=params['schema'])
-
+    stadiocommessaTable = Table('stadio_commessa', params['metadata'], autoload=True, schema=params['schema'])
 
     if params["tipo_db"] == "sqlite":
         clienteFK ='cliente.id'
+        stadiocommessaFK ='stadio_commessa.id'
     else:
         clienteFK = params['schema']+'.cliente.id'
+        stadiocommessaFK = params['schema']+'.stadio_commessa.id'
 
     testatacommessa = Table('testata_commessa', params["metadata"],
             Column('id', Integer, primary_key=True),
             Column('numero', Integer, nullable=False),
+            Column('denominazione', String(300), nullable=False),
             Column('note', Text, nullable=True),
             Column('id_cliente', Integer,ForeignKey(clienteFK,onupdate="CASCADE",ondelete="CASCADE")),
+            Column('id_stadio_commessa', Integer,ForeignKey(stadiocommessaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
             Column('data_inizio', DateTime, nullable=True),
             Column('data_fine', DateTime, nullable=True),
             schema=params["schema"],
             useexisting=True)
     testatacommessa.create(checkfirst=True)
 
+from RigaCommessa import RigaCommessa
 
 class TestataCommessa(Dao):
 
@@ -107,6 +112,8 @@ class TestataCommessa(Dao):
             dic = {k:testatacommessa.c.data_fine >= v}
         elif k== 'aDataFine':
             dic = {k:testatacommessa.c.data_fine <= v}
+        elif k == 'idStadioCommessa':
+            dic = {k:rigacommessa.c.id_stadio_commessa==v}
         return  dic[k]
 
     def righeCommessaDel(self,id=None):
@@ -148,7 +155,7 @@ class TestataCommessa(Dao):
 
 std_mapper = mapper(TestataCommessa, testatacommessa,properties={
         "rigatestcomm": relation(RigaCommessa,primaryjoin=
-                testatacommessa.c.id==RigaCommessa.id_testata_comessa,
+                testatacommessa.c.id==RigaCommessa.id_testata_commessa,
 #                foreign_keys=[RigaPrimaNota.id_testata_prima_nota],
                 cascade="all, delete")},
                 order_by=testatacommessa.c.id)
