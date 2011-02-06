@@ -56,8 +56,8 @@ class AnagraficaCommesse(Anagrafica):
 class AnagraficaCommesseHtml(AnagraficaHtml):
 
     def __init__(self, anagrafica):
-        AnagraficaHtml.__init__(self, anagrafica, 'prima_nota',
-                                'Dettaglio Prima Nota Cassa')
+        AnagraficaHtml.__init__(self, anagrafica, 'commessa',
+                                'Dettaglio Commessa')
 
 
 class AnagraficaCommesseReport(AnagraficaReport):

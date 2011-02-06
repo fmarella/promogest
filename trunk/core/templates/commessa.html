@@ -1,0 +1,52 @@
+{% extends 'index.html' %}
+
+{% block body %}
+    {% if dao %}
+<style>
+@page {
+size: A4 landscape;
+margin: 1cm;
+}
+</style>
+<h3 ><strong>DATI TESTATA PRIMA NOTA</strong></h3>
+<table>
+<th width="200">NUMERO</th>
+<th width="200">DATA INIZIO</th>
+<th width="200">DATA FINE</th>
+<tr>
+<td ><strong>{{dao.numero}}</strong></td>
+<td ><strong>{{utils.dateToString(dao.data_inizio)}}</strong></td>
+<td ><strong>{{utils.dateToString(dao.data_fine)}}</strong></td>
+</tr>
+</table>
+<br />
+<h3 ><strong>DATI OPERAZIONI IN PRIMA NOTA</strong></h3><br />
+    <table cellpadding="0" cellspacing="0" border="0">
+        <th><b>N° OP.</b></th>
+        <th><b>DATA</b></th>
+        <th><b>DESCRIZIONE</b></th>
+
+        <th><b>RIF.</b></th>
+
+        {% for riga in dao.righeprimanota %}
+        <tr >
+        <td class="odd-detail">{{riga.numero}}</td>
+        <td class="odd-detail">{{utils.dateToString(riga.data_registrazione)}}</td>
+            <td width ="30%" class="odd-detail">{{riga.denominazione}}</td>
+
+        </tr>
+        {% endfor %}
+                </table>
+<br /><br />
+<table>
+<tr>
+
+</tr>
+</table>
+        {% else %}
+        <p><img src= "gui/attenzione_48X48.png">ELIMINATO: Niente da visualizzare</p>
+        <p><img src= "gui/testata_promogest2.png"></p>
+        {% endif %}
+
+
+{% endblock %}

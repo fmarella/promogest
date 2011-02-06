@@ -54,6 +54,9 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         self.anagrafica = anagrafica
         self.editRiga = None
         self.daoo = None
+        self.dao_temp = None
+        self.dao_class = None
+        self.dao_id = None
         self.aziendaStr = Environment.azienda
 #        self.rotazione = setconf("rotazione_primanota","Primanota")
 #        fillComboboxBanche(self.id_banca_customcombobox.combobox)
@@ -257,28 +260,31 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         self.tipo_combobox.set_active(0)
 
     def on_delete_row_button_clicked(self, button):
-        print "CANCELLIAMO"
+        """ Elimina la riga commessa selezionata"""
+        rpn = None
+        if self.editRiga:
+            dao = RigaCommessa().getRecord(id=self.editRiga.id)
+            if dao:
+                dao.delete()
+            self._editModel.remove(self._editIterator)
+            self.clear()
 
 
     def on_add_row_button_clicked(self, button):
         """ Aggiunge la riga """
-
         titolo_riga = self.titolo_riga_commessa_entry.get_text()
         if not titolo_riga:
             titolo_riga = self.info_dao_label.get_text()
         bufferNoteRiga= self.riga_testo.get_buffer()
         note_riga = bufferNoteRiga.get_text(bufferNoteRiga.get_start_iter(), bufferNoteRiga.get_end_iter()) or ""
-
         if self.dao_temp:
             self.dao_id = self.dao_temp.id
             self.dao_class = self.dao_temp.__class__.__name__
 
-        if not titolo_riga:
-            obligatoryField(self.dialogTopLevel, self.denominazione_entry,
+        if titolo_riga =="" or titolo_riga =="-":
+            obligatoryField(self.dialogTopLevel, self.titolo_riga_commessa_entry,
             msg="Campo obbligatorio: TITOLO RIGA!")
         data_ins_riga = dateToString(self.data_ins_riga.get_text())
-
-#        print "DDDDDDDDDDDDDDDDDD",  titolo_riga, note_riga, data_ins_riga, dao_id, dao_class
 
         model = self.riga_commessa_treeview.get_model()
         if self.editRiga:
@@ -296,7 +302,6 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
             dc = self.dao_temp.operazione
         else:
             dc = self.dao_class
-
         dati = (riga,str(len(model)+1),data_ins_riga,
                         titolo_riga,
                         str(dc),
@@ -324,6 +329,8 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         self.clear()
 
     def daoRetreive(self,daoId, daoName):
+        """Funzione che restituisce un dao, dato una classe come stringa, ed un id
+        """
         if daoName:
             return getattr(sys.modules[__name__], daoName)().getRecord(id=daoId)
         else:
@@ -370,10 +377,23 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         righe_ = []
         for m in model:
             righe_.append(m[0])
-        self.dao.note = self.note_entry.get_text()
+        self.dao.data_inizio = stringToDate(self.data_inizio_commessa_entry.get_text())
+        self.dao.data_fine = stringToDate(self.data_fine_commessa_entry.get_text())
+        self.dao.denominazione = self.titolo_commessa_entry.get_text()
+        if self.dao.denominazione =="":
+            obligatoryField(self.dialogTopLevel, self.titolo_commessa_entry,
+            msg="Campo obbligatorio: TITOLO COMMESSA!")
+        bufferNoteRiga= self.commessa_testo.get_buffer()
+        self.dao.note = bufferNoteRiga.get_text(bufferNoteRiga.get_start_iter(), bufferNoteRiga.get_end_iter()) or ""
         self.dao.righecommessa = righe_
-        if chiusura:
-            self.dao.data_fine = datetime.datetime.now()
+        self.dao.id_stadio_commessa = findIdFromCombobox(self.stadio_commessa_combobox.combobox)
+        self.dao.id_cliente = findIdFromCombobox(self.id_cliente_combobox)
+        self.dao.id_articolo =findIdFromCombobox(self.id_articolo_combobox)
+        a = select([func.max(TestataCommessa.numero)]).execute().fetchall() or 0
+        print "AAAAAAAAAAAAAA", a
+        numero = 0
+        if a: numero = a[0][0] or 0
+        self.dao.numero = numero+1
         self.dao.persist()
         self.clear()
 

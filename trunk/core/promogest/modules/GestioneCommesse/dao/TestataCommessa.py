@@ -36,14 +36,17 @@ try:
             autoload=True)
 except:
     clienteTable = Table('cliente', params['metadata'], autoload=True, schema=params['schema'])
+    articoloTable = Table('articolo', params['metadata'], autoload=True, schema=params['schema'])
     stadiocommessaTable = Table('stadio_commessa', params['metadata'], autoload=True, schema=params['schema'])
 
     if params["tipo_db"] == "sqlite":
         clienteFK ='cliente.id'
         stadiocommessaFK ='stadio_commessa.id'
+        articoloFK ='articolo.id'
     else:
         clienteFK = params['schema']+'.cliente.id'
         stadiocommessaFK = params['schema']+'.stadio_commessa.id'
+        articoloFK =params['schema']+'.articolo.id'
 
     testatacommessa = Table('testata_commessa', params["metadata"],
             Column('id', Integer, primary_key=True),
@@ -51,6 +54,7 @@ except:
             Column('denominazione', String(300), nullable=False),
             Column('note', Text, nullable=True),
             Column('id_cliente', Integer,ForeignKey(clienteFK,onupdate="CASCADE",ondelete="CASCADE")),
+            Column('id_articolo', Integer,ForeignKey(articoloFK)),
             Column('id_stadio_commessa', Integer,ForeignKey(stadiocommessaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True),
             Column('data_inizio', DateTime, nullable=True),
             Column('data_fine', DateTime, nullable=True),

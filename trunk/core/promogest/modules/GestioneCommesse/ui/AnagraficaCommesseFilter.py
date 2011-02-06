@@ -160,11 +160,10 @@ class AnagraficaCommesseFilter(AnagraficaFilter):
             col = None
             if not i.data_fine:
                 col = "#CCFFAA"
-            valore += mN(i.totali["totale"]) or 0
             self._treeViewModel.append((i,col,
                                         (i.numero or ''),
                                         (dateToString(i.data_inizio) or ''),
                                         (dateToString(i.data_fine) or ''),
-                                        (str(mN(i.totali["totale"])) or "0"),
-                                        str(valore),
+                                        "0",
+                                        "0",
                                         (i.note or "")))
