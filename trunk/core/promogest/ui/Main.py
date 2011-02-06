@@ -235,19 +235,19 @@ class Main(GladeWidget):
             else:
                 fencemsg()
         elif selection == 10: #gestione commessa
-            if posso("GC"):
-                from promogest.modules.GestioneCommesse.ui.AnagraficaCommesse import AnagraficaCommesse
-                anag = AnagraficaCommesse(aziendaStr=self.aziendaStr)
-                showAnagrafica(self.getTopLevel(), anag, mainClass=self)
-                icon_view.unselect_all()
-                return
-            else:
-                messageInfo(msg="""     MODULO IN LAVORAZIONE!!
+#            if posso("GC"):
+            from promogest.modules.GestioneCommesse.ui.AnagraficaCommesse import AnagraficaCommesse
+            anag = AnagraficaCommesse(aziendaStr=self.aziendaStr)
+            showAnagrafica(self.getTopLevel(), anag, mainClass=self)
+            icon_view.unselect_all()
+            return
+#            else:
+#                messageInfo(msg="""     MODULO IN LAVORAZIONE!!
 
-ANCORA QUALCHE GIORNO DI PAZIENZA E SARA' DISPONIBILE
+#ANCORA QUALCHE GIORNO DI PAZIENZA E SARA' DISPONIBILE
 
-STIAMO LAVORANDO PER VOI
-    Grazie""")
+#STIAMO LAVORANDO PER VOI
+#    Grazie""")
         else:
             i = selected[0][0]
             selection = model[i][0]
@@ -456,18 +456,18 @@ STIAMO LAVORANDO PER VOI
 
         if toggleButton.get_property('active') is False:
             return
-        if posso("GC"):
-            from promogest.modules.GestioneCommesse.ui.AnagraficaStadioCommessa import AnagraficaStadioCommessa
-            anag = AnagraficaStadioCommessa()
-            showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
-            return
-        else:
-                messageInfo(msg="""     MODULO IN LAVORAZIONE!!
+#        if posso("GC"):
+        from promogest.modules.GestioneCommesse.ui.AnagraficaStadioCommessa import AnagraficaStadioCommessa
+        anag = AnagraficaStadioCommessa()
+        showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
+#            return
+#        else:
+#                messageInfo(msg="""     MODULO IN LAVORAZIONE!!
 
-ANCORA QUALCHE GIORNO DI PAZIENZA E SARA' DISPONIBILE
+#ANCORA QUALCHE GIORNO DI PAZIENZA E SARA' DISPONIBILE
 
-STIAMO LAVORANDO PER VOI
-    Grazie""")
+#STIAMO LAVORANDO PER VOI
+#    Grazie""")
 
     def on_main_iconview_right_select(self, icon_view, model=None):
         selected = icon_view.get_selected_items()

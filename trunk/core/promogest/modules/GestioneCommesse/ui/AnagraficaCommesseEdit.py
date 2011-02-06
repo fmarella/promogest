@@ -57,6 +57,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         self.dao_temp = None
         self.dao_class = None
         self.dao_id = None
+        self.num = None
         self.aziendaStr = Environment.azienda
 #        self.rotazione = setconf("rotazione_primanota","Primanota")
 #        fillComboboxBanche(self.id_banca_customcombobox.combobox)
@@ -126,6 +127,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         if not dao:
             info = ""
         elif dao.__class__.__name__ == "TestataDocumento":
+            print "DIIIIIIIIIIIIIIIRS", dao.totali
             info = "<b>%s</b>  - <b>del</b> %s <b>N°</b> %s - <b>Da/A</b> %s  - <b>TOT: €</b> %s" %(str(dao.operazione),
                                                                 dateToString(dao.data_documento),
                                                                 str(dao.numero),
@@ -241,6 +243,10 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         if dao is None:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = TestataCommessa()
+            a = select([func.max(TestataCommessa.numero)]).execute().fetchall() or 0
+            numero = 0
+            if a: numero = a[0][0] or 0
+            self.dao.numero = numero+1
         else:
             self.dao = TestataCommessa().getRecord(id=dao.id)
         self._refresh()
@@ -248,7 +254,36 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
 
 
     def _refresh(self):
-        return
+        """ Funzione che ricarica i dati in gui"""
+        self.data_inizio_commessa_entry.set_text(dateToString(self.dao.data_inizio))
+        self.data_fine_commessa_entry.set_text(dateToString(self.dao.data_fine))
+        self.titolo_commessa_entry.set_text(self.dao.denominazione or "")
+        bufferNote= self.commessa_testo.get_buffer()
+        bufferNote.set_text(self.dao.note or "")
+        self.commessa_testo.set_buffer(bufferNote)
+        findComboboxRowFromId(self.stadio_commessa_combobox.combobox, self.dao.id_stadio_commessa)
+#        findComboboxRowFromId(self.id_cliente_combobox, self.dao.id_cliente)
+        self.id_cliente_combobox.setId(self.dao.id_cliente)
+        self.id_articolo_combobox.setId(self.dao.id_articolo)
+#        self.stadio_commessa_combobox.setId( self.dao.id_stadio_commessa)
+#        findComboboxRowFromId(self.id_articolo_combobox, self.dao.id_articolo)
+
+        model = self.riga_commessa_treeview.get_model()
+        model.clear()
+        for r in self.dao.righecommessa:
+            if r.dao_class=="TestataDocumento":
+                td = TestataDocumento().getRecord(id=r.id_dao)
+                dc = td.operazione
+            else:
+                dc = r.dao_class
+            model.append((r, str(len(model)+1),
+                        r.data_registrazione,
+                        r.denominazione,
+                        dc,
+                        r.note,
+                        r.dao_class,
+                        r.id_dao))
+
 
     def clear(self):
         self.data_ins_riga.set_text("")
@@ -258,6 +293,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         self.info_dao_label.set_text("-")
         self.titolo_riga_commessa_entry.set_text("")
         self.tipo_combobox.set_active(0)
+        self.composeInfoDaoLabel(None)
 
     def on_delete_row_button_clicked(self, button):
         """ Elimina la riga commessa selezionata"""
@@ -295,7 +331,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
             riga.numero = len(model)+1
         riga.dao_class = self.dao_class
         riga.id_dao = self.dao_id
-        riga.data_registrazione = data_ins_riga
+        riga.data_registrazione = stringToDate(data_ins_riga)
         riga.denominazione = titolo_riga
         riga.note = note_riga
         if self.dao_class =="TestataDocumento":
@@ -326,6 +362,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
             model.append(dati)
         self.riga_commessa_treeview.set_model(model)
         self.editRiga = None
+
         self.clear()
 
     def daoRetreive(self,daoId, daoName):
@@ -348,12 +385,14 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
     def on_riga_commessa_treeview_row_activated(self,treeview, path, column):
         """Selezione della riga nella treeview
         """
+        self.composeInfoDaoLabel(None)
+        self.dao_temp = None
         sel = self.riga_commessa_treeview.get_selection()
         (model, iterator) = sel.get_selected()
         self.rigaIter = model[iterator]
         self._editIterator = iterator
         self._editModel = model
-        self.data_ins_riga.set_text(self.rigaIter[2])
+        self.data_ins_riga.set_text(self.rigaIter[2] or "")
         self.titolo_riga_commessa_entry.set_text(self.rigaIter[3] or "")
         bufferNoteRiga= self.riga_testo.get_buffer()
         bufferNoteRiga.set_text(self.rigaIter[5] or "")
@@ -389,11 +428,9 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         self.dao.id_stadio_commessa = findIdFromCombobox(self.stadio_commessa_combobox.combobox)
         self.dao.id_cliente = findIdFromCombobox(self.id_cliente_combobox)
         self.dao.id_articolo =findIdFromCombobox(self.id_articolo_combobox)
-        a = select([func.max(TestataCommessa.numero)]).execute().fetchall() or 0
-        print "AAAAAAAAAAAAAA", a
-        numero = 0
-        if a: numero = a[0][0] or 0
-        self.dao.numero = numero+1
+        if self.dao.id_cliente == None:
+            obligatoryField(self.dialogTopLevel, self.id_cliente_combobox,
+            msg="Campo obbligatorio: CLIENTE!")
         self.dao.persist()
         self.clear()
 

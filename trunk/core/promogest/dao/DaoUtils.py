@@ -390,6 +390,10 @@ def ckd(dao):
             if records > 1: stopp = True
         if "Promemoria" in classe:
             if records > 5: stopp = True
+        if "PrimaNota" in classe:
+            if records > 5: stopp = True
+        if "TestataCommessa" in classe:
+            if records > 5: stopp = True
         if "Articolo" in classe:
             if records > 500: stopp = True
         if "Banca" in classe:

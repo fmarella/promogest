@@ -28,6 +28,8 @@ from promogest.dao.DaoUtils import *
 from promogest.ui.utils import numeroRegistroGet
 from promogest.ui.utils import *
 from promogest.dao.Cliente import Cliente
+from promogest.dao.Articolo import Articolo
+from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa
 
 try:
     testatacommessa = Table('testata_commessa',
@@ -80,7 +82,7 @@ class TestataCommessa(Dao):
 #        if not self.__righePrimaNota:
         self.__dbRigheCommessa = session.query(RigaCommessa)\
                                             .with_parent(self)\
-                                            .filter_by(id_testata_comessa=self.id)\
+                                            .filter_by(id_testata_commessa=self.id)\
                                             .all()
         self.__righeCommessa = self.__dbRigheCommessa[:]
         return self.__righeCommessa
@@ -96,6 +98,43 @@ class TestataCommessa(Dao):
             return a[0][0]
         else:
             return None
+
+    @property
+    def cliente(self):
+        """ esempio di funzione  unita alla property """
+        cli=  Cliente().getRecord(id=self.id_cliente)
+        if cli:
+            return cli.ragione_sociale
+        else:
+            return ""
+
+    @property
+    def articolo(self):
+        """ esempio di funzione  unita alla property """
+        art=  Articolo().getRecord(id=self.id_articolo)
+        if art:
+            return art.codice + " " + art.denominazione
+        else:
+            return ""
+
+#    @property
+#    def articolo(self):
+#        """ esempio di funzione  unita alla property """
+#        art=  Articolo().getRecord(id=self.id_articolo)
+#        if art:
+#            return art.codice + " " + art.denominazione
+#        else:
+#            return ""
+
+
+    @property
+    def stadio_commessa(self):
+        """ esempio di funzione  unita alla property """
+        cli=  StadioCommessa().getRecord(id=self.id_stadio_commessa)
+        if cli:
+            return cli.denominazione
+        else:
+            return ""
 
     def filter_values(self,k,v):
         if k == 'daNumero':
@@ -153,7 +192,7 @@ class TestataCommessa(Dao):
         params["session"].commit()
         if self.__righeCommessa:
             for riga in self.__righeCommessa:
-                riga.id_testata_comessa = self.id
+                riga.id_testata_commessa = self.id
                 riga.persist()
         self.__righeCommessa = []
 

@@ -44,6 +44,7 @@ except:
 
     rigacommessa = Table('riga_commessa', params["metadata"],
             Column('id', Integer, primary_key=True),
+            Column('numero', Integer, nullable=False),
             Column('denominazione', String(300), nullable=False),
             Column('id_testata_commessa', Integer,ForeignKey(testatacommessaFK,onupdate="CASCADE",ondelete="CASCADE")),
 #            Column('numero', Integer, nullable=False),

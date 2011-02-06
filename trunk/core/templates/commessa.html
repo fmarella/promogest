@@ -8,31 +8,37 @@ size: A4 landscape;
 margin: 1cm;
 }
 </style>
-<h3 ><strong>DATI TESTATA PRIMA NOTA</strong></h3>
+<h3 ><strong>DATI COMMESSA</strong></h3>
 <table>
-<th width="200">NUMERO</th>
-<th width="200">DATA INIZIO</th>
-<th width="200">DATA FINE</th>
+<th width="50px">NUMERO</th>
+<th width="80px">DATA INIZIO</th>
+<th width="80px">DATA FINE</th>
+<th width="200">CLIENTE</th>
+<th width="300">ARTICOLO</th>
+<th width="100px">STADIO COMMESSA</th>
 <tr>
 <td ><strong>{{dao.numero}}</strong></td>
 <td ><strong>{{utils.dateToString(dao.data_inizio)}}</strong></td>
 <td ><strong>{{utils.dateToString(dao.data_fine)}}</strong></td>
+<td ><strong>{{dao.cliente}}</strong></td>
+<td ><strong>{{dao.articolo}}</strong></td>
+<td ><strong>{{dao.stadio_commessa}}</strong></td>
 </tr>
 </table>
 <br />
-<h3 ><strong>DATI OPERAZIONI IN PRIMA NOTA</strong></h3><br />
+<h3 ><strong>DATI RIGHE COMMESSA</strong></h3><br />
     <table cellpadding="0" cellspacing="0" border="0">
-        <th><b>N° OP.</b></th>
+        <th><b>N</b></th>
         <th><b>DATA</b></th>
         <th><b>DESCRIZIONE</b></th>
+        <th><b>TIPO</b></th>
 
-        <th><b>RIF.</b></th>
-
-        {% for riga in dao.righeprimanota %}
+        {% for riga in dao.righecommessa %}
         <tr >
-        <td class="odd-detail">{{riga.numero}}</td>
-        <td class="odd-detail">{{utils.dateToString(riga.data_registrazione)}}</td>
-            <td width ="30%" class="odd-detail">{{riga.denominazione}}</td>
+        <td width ="44px" class="odd-detail">{{dao.righecommessa.index(riga)+1}}</td>
+        <td width ="80px" class="odd-detail">{{utils.dateToString(riga.data_registrazione)}}</td>
+        <td width ="50%" class="odd-detail">{{riga.denominazione}}</td>
+        <td width ="50%" class="odd-detail">{{riga.tipo}}</td>
 
         </tr>
         {% endfor %}
