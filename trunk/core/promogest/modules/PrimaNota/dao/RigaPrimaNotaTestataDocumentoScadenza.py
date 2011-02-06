@@ -23,7 +23,7 @@
 from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.orm import mapper, relation, backref
 from promogest.Environment import params
-from Dao import Dao
+from promogest.dao.Dao import Dao
 #from promogest.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 

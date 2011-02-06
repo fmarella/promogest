@@ -40,9 +40,9 @@ from RigaMovimento import RigaMovimento
 from Banca import Banca
 from Riga import Riga
 from Articolo import Articolo
-from TestataPrimaNota import TestataPrimaNota
-from promogest.dao.RigaPrimaNota import RigaPrimaNota
-from RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
+from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
+from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
+from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 

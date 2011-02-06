@@ -23,8 +23,8 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
-from DaoUtils import *
+from promogest.dao.Dao import Dao
+from promogest.dao.DaoUtils import *
 from promogest.ui.utils import numeroRegistroGet
 from promogest.ui.utils import *
 
@@ -45,7 +45,7 @@ except:
             useexisting=True)
     testataprimanota.create(checkfirst=True)
 
-from promogest.dao.RigaPrimaNota import RigaPrimaNota
+from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 
 class TestataPrimaNota(Dao):
 
