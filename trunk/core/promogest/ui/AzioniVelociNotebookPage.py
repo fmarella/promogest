@@ -28,17 +28,16 @@ from GladeWidget import GladeWidget
 class AzioniVelociNotebookPage(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
     di configurazione """
-    def __init__(self, main, azienda):
+    def __init__(self, mainnn, aziendaa):
         GladeWidget.__init__(self, 'azioni_veloci_frame',
                                     'azioni_veloce_notebook.glade')
 #        self.placeWindow(self.getTopLevel())
         self.rowBackGround = None
-        self.main_wind = main
-        print "SEEEEEELF MAIN;", self.main_wind, main
-        self.aziendaStr = azienda or ""
+        self.main_wind = mainnn
+        print "SEEEEEELF MAIN;", self.main_wind, mainnn
+        self.aziendaStr = aziendaa or ""
 
-    def draw(self, main):
-        self.main_wind = main
+    def draw(self):
         return self
 
     def on_nuovo_articolo_button_clicked(self, widget):
