@@ -333,6 +333,10 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">Pulsante principale per l'inserimento dell'oggetto o del documento
+nella nostra commessa, da usare anche dopo il tasto nuovo 
+per cercare l'oggetto appena inserito 
+e metterlo nella commessa</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_trova_button_clicked" swapped="no"/>
@@ -349,6 +353,10 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">Usare questo bottone per creare un documento
+un preventivo, un DDT o una fattura 
+dopo averlo creato per inserirlo si dovrà comunque 
+usare il pulsante di ricerca posto qui di fianco</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_new_dao_button_clicked" swapped="no"/>
@@ -365,6 +373,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">Permette di visualizzare ed eventualmente 
+modificare l'oggetto inserito</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_open_button_clicked" swapped="no"/>
@@ -381,6 +391,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">Stampiamo l'oggetto inserito</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">True</property>
                         <signal name="clicked" handler="on_stampa_dao_button_clicked" swapped="no"/>
