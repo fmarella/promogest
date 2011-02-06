@@ -7,274 +7,300 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">articolo24x24.png</property>
   </object>
-  <object class="GtkVBox" id="azioni_veloci_vbox">
+  <object class="GtkImage" id="articolo_image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="pixbuf">articolo24x24.png</property>
+  </object>
+  <object class="GtkFrame" id="azioni_veloci_frame">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="label_xalign">0</property>
+    <property name="shadow_type">none</property>
     <child>
-      <object class="GtkImage" id="logo_grande_image6">
+      <object class="GtkVBox" id="azioni_veloci_vbox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="pixbuf">testata_promogest2.png</property>
+        <child>
+          <object class="GtkImage" id="logo_grande_image6">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">testata_promogest2.png</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkTable" id="table1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="n_rows">5</property>
+            <property name="n_columns">3</property>
+            <property name="column_spacing">3</property>
+            <property name="row_spacing">3</property>
+            <child>
+              <object class="GtkButton" id="nuovo_articolo_button">
+                <property name="label" translatable="yes">Articolo</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">articolo_image2</property>
+                <signal name="clicked" handler="on_nuovo_articolo_button_clicked" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="nuovo_cliente_button">
+                <property name="label" translatable="yes">Cliente</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">cliente_image1</property>
+                <signal name="clicked" handler="on_nuovo_cliente_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="nuovo_fornitore_button">
+                <property name="label" translatable="yes">Fornitore</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">fornitore_image1</property>
+                <signal name="clicked" handler="on_nuovo_fornitore_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="nuovo_ordine_da_cliente_button">
+                <property name="label" translatable="yes">Ordine Da Cliente</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">ordine_da_cliente_image1</property>
+                <signal name="clicked" handler="on_nuovo_ordine_da_cliente_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="nuovo_ddt_reso_a_fornitore_button">
+                <property name="label" translatable="yes">DDT Reso a Fornitore</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">ddt_reso_a_fornitore_image1</property>
+                <signal name="clicked" handler="on_nuovo_ddt_reso_a_fornitore_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">3</property>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="nuovo_ddt_vendita_button">
+                <property name="label" translatable="yes">DDT Vendita</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">ddt_vendita_image2</property>
+                <signal name="clicked" handler="on_nuovo_ddt_vendita_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="top_attach">3</property>
+                <property name="bottom_attach">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="nuovo_ddt_acquisto_button">
+                <property name="label" translatable="yes">DDT Acquisto</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">ddt_acquisto_image1</property>
+                <signal name="clicked" handler="on_nuovo_ddt_acquisto_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">3</property>
+                <property name="bottom_attach">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="nuovo_fattura_vendita_button">
+                <property name="label" translatable="yes">Fattura vendita</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">fattura_vendita_image2</property>
+                <signal name="clicked" handler="on_nuovo_fattura_vendita_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">3</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="nuovo_promemoria_button">
+                <property name="label" translatable="yes">Promemoria</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">promemoria_image2</property>
+                <signal name="clicked" handler="on_nuovo_promemoria_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="nuovo_contatto_button">
+                <property name="label" translatable="yes">Contatto</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">contatto_image1</property>
+                <signal name="clicked" handler="on_nuovo_contatto_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="nuovo_fattura_acquisto_button">
+                <property name="label" translatable="yes">Fattura Acquisto</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">fattura_acquisto_image2</property>
+                <signal name="clicked" handler="on_nuovo_fattura_acquisto_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">3</property>
+                <property name="top_attach">3</property>
+                <property name="bottom_attach">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="nuovo_preventivo_button">
+                <property name="label" translatable="yes">Preventivo</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">preventivo_image2</property>
+                <signal name="clicked" handler="on_nuovo_preventivo_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="promotux_button">
+                <property name="label" translatable="yes">Sito PromoTux</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">promotux_image2</property>
+                <signal name="clicked" handler="on_promotux_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="top_attach">4</property>
+                <property name="bottom_attach">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="promogest_button">
+                <property name="label" translatable="yes">Sito PromoGest</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">promogest_image2</property>
+                <signal name="clicked" handler="on_promogest_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">4</property>
+                <property name="bottom_attach">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="email_button">
+                <property name="label" translatable="yes">Email Assistenza</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="image">email_image1</property>
+                <signal name="clicked" handler="on_email_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">3</property>
+                <property name="top_attach">4</property>
+                <property name="bottom_attach">5</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="padding">2</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
       </object>
-      <packing>
-        <property name="expand">True</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
     </child>
-    <child>
-      <object class="GtkTable" id="table1">
+    <child type="label">
+      <object class="GtkLabel" id="label1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="n_rows">5</property>
-        <property name="n_columns">3</property>
-        <property name="column_spacing">3</property>
-        <property name="row_spacing">3</property>
-        <child>
-          <object class="GtkButton" id="nuovo_articolo_button">
-            <property name="label" translatable="yes">Articolo</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="image">articolo_image1</property>
-            <signal name="clicked" handler="on_nuovo_articolo_button_clicked" swapped="no"/>
-          </object>
-        </child>
-        <child>
-          <object class="GtkButton" id="nuovo_cliente_button">
-            <property name="label" translatable="yes">Cliente</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="image">cliente_image2</property>
-            <signal name="clicked" handler="on_nuovo_cliente_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="right_attach">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="nuovo_fornitore_button">
-            <property name="label" translatable="yes">Fornitore</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="image">fornitore_image3</property>
-            <signal name="clicked" handler="on_nuovo_fornitore_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="right_attach">3</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="nuovo_ordine_da_cliente_button">
-            <property name="label" translatable="yes">Ordine Da Cliente</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="image">ordine_da_cliente_image</property>
-            <signal name="clicked" handler="on_nuovo_ordine_da_cliente_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="right_attach">2</property>
-            <property name="top_attach">2</property>
-            <property name="bottom_attach">3</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="nuovo_ddt_reso_a_fornitore_button">
-            <property name="label" translatable="yes">DDT Reso a Fornitore</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="image">ddt_reso_a_fornitore_image</property>
-            <signal name="clicked" handler="on_nuovo_ddt_reso_a_fornitore_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="right_attach">3</property>
-            <property name="top_attach">2</property>
-            <property name="bottom_attach">3</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="nuovo_ddt_vendita_button">
-            <property name="label" translatable="yes">DDT Vendita</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="image">ddt_vendita_image1</property>
-            <signal name="clicked" handler="on_nuovo_ddt_vendita_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="top_attach">3</property>
-            <property name="bottom_attach">4</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="nuovo_ddt_acquisto_button">
-            <property name="label" translatable="yes">DDT Acquisto</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="image">ddt_acquisto_image</property>
-            <signal name="clicked" handler="on_nuovo_ddt_acquisto_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="right_attach">2</property>
-            <property name="top_attach">3</property>
-            <property name="bottom_attach">4</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="nuovo_fattura_vendita_button">
-            <property name="label" translatable="yes">Fattura vendita</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="image">fattura_vendita_image1</property>
-            <signal name="clicked" handler="on_nuovo_fattura_vendita_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="right_attach">3</property>
-            <property name="top_attach">1</property>
-            <property name="bottom_attach">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="nuovo_promemoria_button">
-            <property name="label" translatable="yes">Promemoria</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="image">promemoria_image1</property>
-            <signal name="clicked" handler="on_nuovo_promemoria_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="top_attach">1</property>
-            <property name="bottom_attach">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="nuovo_contatto_button">
-            <property name="label" translatable="yes">Contatto</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="image">contatto_image</property>
-            <signal name="clicked" handler="on_nuovo_contatto_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="right_attach">2</property>
-            <property name="top_attach">1</property>
-            <property name="bottom_attach">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="nuovo_fattura_acquisto_button">
-            <property name="label" translatable="yes">Fattura Acquisto</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="image">fattura_acquisto_image1</property>
-            <signal name="clicked" handler="on_nuovo_fattura_acquisto_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="right_attach">3</property>
-            <property name="top_attach">3</property>
-            <property name="bottom_attach">4</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="nuovo_preventivo_button">
-            <property name="label" translatable="yes">Preventivo</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="image">preventivo_image1</property>
-            <signal name="clicked" handler="on_nuovo_preventivo_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="top_attach">2</property>
-            <property name="bottom_attach">3</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="promotux_button">
-            <property name="label" translatable="yes">Sito PromoTux</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="image">promotux_image1</property>
-            <signal name="clicked" handler="on_promotux_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="top_attach">4</property>
-            <property name="bottom_attach">5</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="promogest_button">
-            <property name="label" translatable="yes">Sito PromoGest</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="image">promogest_image1</property>
-            <signal name="clicked" handler="on_promogest_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="right_attach">2</property>
-            <property name="top_attach">4</property>
-            <property name="bottom_attach">5</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="email_button">
-            <property name="label" translatable="yes">Email Assistenza</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="image">email_image</property>
-            <signal name="clicked" handler="on_email_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="right_attach">3</property>
-            <property name="top_attach">4</property>
-            <property name="bottom_attach">5</property>
-          </packing>
-        </child>
+        <property name="label" translatable="yes">&lt;b&gt;Azioni veloci&lt;/b&gt;</property>
+        <property name="use_markup">True</property>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">False</property>
-        <property name="padding">2</property>
-        <property name="position">1</property>
-      </packing>
     </child>
+  </object>
+  <object class="GtkImage" id="cliente_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">cliente24x24.png</property>
   </object>
   <object class="GtkImage" id="cliente_image2">
     <property name="visible">True</property>
@@ -286,7 +312,17 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">contatto24x24.png</property>
   </object>
+  <object class="GtkImage" id="contatto_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">contatto24x24.png</property>
+  </object>
   <object class="GtkImage" id="ddt_acquisto_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="ddt_acquisto_image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">duplica24x24.png</property>
@@ -296,7 +332,17 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">duplica24x24.png</property>
   </object>
+  <object class="GtkImage" id="ddt_reso_a_fornitore_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
   <object class="GtkImage" id="ddt_vendita_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="ddt_vendita_image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">duplica24x24.png</property>
@@ -306,7 +352,17 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">spedisci24x24.png</property>
   </object>
+  <object class="GtkImage" id="email_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">spedisci24x24.png</property>
+  </object>
   <object class="GtkImage" id="fattura_acquisto_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">duplica16x16.png</property>
+  </object>
+  <object class="GtkImage" id="fattura_acquisto_image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">duplica16x16.png</property>
@@ -315,6 +371,16 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="fattura_vendita_image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="fornitore_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">fornitore24x24.png</property>
   </object>
   <object class="GtkImage" id="fornitore_image3">
     <property name="visible">True</property>
@@ -326,7 +392,17 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">duplica24x24.png</property>
   </object>
+  <object class="GtkImage" id="ordine_da_cliente_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
   <object class="GtkImage" id="preventivo_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">duplica24x24.png</property>
+  </object>
+  <object class="GtkImage" id="preventivo_image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">duplica24x24.png</property>
@@ -336,12 +412,27 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">promemoria24x24.png</property>
   </object>
+  <object class="GtkImage" id="promemoria_image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">promemoria24x24.png</property>
+  </object>
   <object class="GtkImage" id="promogest_image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">mask_24.png</property>
   </object>
+  <object class="GtkImage" id="promogest_image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">mask_24.png</property>
+  </object>
   <object class="GtkImage" id="promotux_image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">mask_24.png</property>
+  </object>
+  <object class="GtkImage" id="promotux_image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">mask_24.png</property>

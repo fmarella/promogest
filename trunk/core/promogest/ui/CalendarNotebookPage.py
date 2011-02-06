@@ -28,6 +28,14 @@ from promogest import Environment
 from GladeWidget import GladeWidget
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.lib import feedparser
+from promogest.ui.PrintDialog import PrintDialogHandler
+try:
+    import ho.pisa as pisa
+except:
+    print """ERRORE NELL'IMPORT DI PISA prova a digitare
+'sudo apt-get install python-pisa" nel terminale' """
+#    import pisaLib.ho.pisa as pisa
+
 
 try:
     from webkit import WebView
@@ -80,7 +88,7 @@ class CalendarNotebookPage(GladeWidget):
         g = file(Environment.tempDir+".temp.pdf", "wb")
         pdf = pisa.CreatePDF(str(self.hhttmmll),g)
         g.close()
-        anag = PrintDialogHandler(self.main_window, nomefile)
+        anag = PrintDialogHandler(self.main.main_window, nomefile)
         anagWindow = anag.getTopLevel()
         returnWindow = self.getTopLevel().get_toplevel()
         anagWindow.set_transient_for(returnWindow)

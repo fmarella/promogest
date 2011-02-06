@@ -29,14 +29,16 @@ class AzioniVelociNotebookPage(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
     di configurazione """
     def __init__(self, main, azienda):
-        GladeWidget.__init__(self, 'azioni_veloci_vbox',
+        GladeWidget.__init__(self, 'azioni_veloci_frame',
                                     'azioni_veloce_notebook.glade')
 #        self.placeWindow(self.getTopLevel())
         self.rowBackGround = None
-        self.main = main
+        self.main_wind = main
+        print "SEEEEEELF MAIN;", self.main_wind, main
         self.aziendaStr = azienda or ""
 
-    def draw(self):
+    def draw(self, main):
+        self.main_wind = main
         return self
 
     def on_nuovo_articolo_button_clicked(self, widget):
@@ -49,8 +51,9 @@ class AzioniVelociNotebookPage(GladeWidget):
     def on_nuovo_cliente_button_clicked(self, widget):
         if not hasAction(actionID=11):return
         from AnagraficaClienti import AnagraficaClienti
-        anag = AnagraficaClienti(self.aziendaStr)
-        showAnagrafica(self.getTopLevel(), anag)
+        print dir(self), self
+        anag = AnagraficaClienti(self.main_wind.aziendaStr)
+        showAnagrafica(self.main_wind.getTopLevel(), anag)
         anag.on_record_new_activate()
 
     def on_nuovo_fornitore_button_clicked(self, widget):
@@ -126,8 +129,9 @@ class AzioniVelociNotebookPage(GladeWidget):
         if not hasAction(actionID=2):return
         from AnagraficaDocumenti import AnagraficaDocumenti
         #from utils import findComboboxRowFromStr
-        anag = AnagraficaDocumenti(self.aziendaStr)
-        showAnagrafica(self.getTopLevel(), anag)
+#        self.aziendaStr = Environment.azienda
+        anag = AnagraficaDocumenti()
+        showAnagrafica(self.main_wind.getTopLevel(), anag)
         anag.on_record_new_activate()
         findComboboxRowFromStr(anag.editElement.id_operazione_combobox, kind, 1)
         anag.editElement.id_persona_giuridica_customcombobox.grab_focus()
