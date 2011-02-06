@@ -457,6 +457,7 @@ class Main(GladeWidget):
         if toggleButton.get_property('active') is False:
             return
 #        if posso("GC"):
+        messageInfo(msg="""RICORDIAMO CHE QUESTO MODULO E' ANCORA IN FASE DI TEST """
         from promogest.modules.GestioneCommesse.ui.AnagraficaStadioCommessa import AnagraficaStadioCommessa
         anag = AnagraficaStadioCommessa()
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
