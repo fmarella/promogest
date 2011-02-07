@@ -35,7 +35,6 @@ class AzioniVelociNotebookPage(GladeWidget):
 #        self.placeWindow(self.getTopLevel())
         self.rowBackGround = None
         self.main_wind = mainnn
-        print "SEEEEEELF MAIN;", self.main_wind, mainnn
         self.aziendaStr = aziendaa or ""
 
     def draw(self):
@@ -51,7 +50,6 @@ class AzioniVelociNotebookPage(GladeWidget):
     def on_nuovo_cliente_button_clicked(self, widget):
         if not hasAction(actionID=11):return
         from AnagraficaClienti import AnagraficaClienti
-        print dir(self), self
         anag = AnagraficaClienti(self.main_wind.aziendaStr)
         showAnagrafica(self.main_wind.getTopLevel(), anag)
         anag.on_record_new_activate()
