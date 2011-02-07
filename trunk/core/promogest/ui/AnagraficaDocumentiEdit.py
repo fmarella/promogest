@@ -46,7 +46,7 @@ from promogest.dao.Operazione import Operazione
 from promogest.dao.Cliente import Cliente
 from promogest.dao.Multiplo import Multiplo
 from promogest.dao.Pagamento import Pagamento
-from promogest.dao.TestataPrimaNota import TestataPrimaNota
+from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 
 from utils import *
 from utilsCombobox import *

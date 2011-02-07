@@ -24,9 +24,9 @@ import gtk
 from decimal import *
 from PagamentiUtils import Pagamenti
 from promogest.dao.Pagamento import Pagamento
-from promogest.dao.TestataPrimaNota import TestataPrimaNota
-from promogest.dao.RigaPrimaNota import RigaPrimaNota
-from promogest.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
+from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
+from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
+from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from promogest.ui.utils import leggiOperazione, dateToString, stringToDate, messageInfo, pbar
 
