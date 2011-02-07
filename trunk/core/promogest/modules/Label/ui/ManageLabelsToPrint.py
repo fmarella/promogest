@@ -109,12 +109,10 @@ class ManageLabelsToPrint(GladeWidget):
         path=Environment.labelTemplatesDir  # insert the path to the directory of interest
         # preleva i file .sla dalla cartella
         dirList=os.listdir(path)
-        print dirList
         for fname in dirList:
             if os.path.splitext(fname)[1] ==".sla":
                 modek.append([fname],)
         self.refresh()
-
 
     def selectFilter(self, model, path, iter):
         #lista = []
@@ -128,7 +126,6 @@ class ManageLabelsToPrint(GladeWidget):
             for ogg in range(0,int(quantita)):
                 oggetto.codice_a_barre = model.get_value(iter, 4)
                 self.resultList.append(oggetto)
-        #return lista
 
     def get_active_text(self, combobox):
         model = combobox.get_model()
@@ -136,7 +133,6 @@ class ManageLabelsToPrint(GladeWidget):
         if active < 0:
             return None
         return model[active][0]
-
 
     def on_ok_button_clicked(self,button):
         self._folder = ''
@@ -185,8 +181,6 @@ class ManageLabelsToPrint(GladeWidget):
         g.close()
         pbar(self.pbar,stop=True)
         anag = PrintDialogHandler(self,g)
-
-
 
     def refresh(self):
         # Aggiornamento TreeView

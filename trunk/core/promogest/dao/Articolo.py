@@ -98,7 +98,7 @@ class Articolo(Dao):
                 if not f.codice_articolo_fornitore in codi and f.codice_articolo_fornitore is not None:
                     codi.append(f.codice_articolo_fornitore)
             if len(codi)>1:
-                print "STRANAMENTE CI SONO PI§ CODICI FORNITORE PER QUESTO ARTICOLO"
+#                print "STRANAMENTE CI SONO PI§ CODICI FORNITORE PER QUESTO ARTICOLO"
                 return codi[-1] or ""
             elif len(codi)==1:
                 return codi[0]
