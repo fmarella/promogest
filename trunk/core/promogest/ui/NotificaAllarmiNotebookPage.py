@@ -32,12 +32,12 @@ from promogest.ui.AnagraficaPromemoria import AnagraficaPromemoria
 class NotificaAllarmiNotebookPage(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
     di configurazione """
-    def __init__(self, main, azienda):
+    def __init__(self, mainnn, azienda):
         GladeWidget.__init__(self, 'notifica_allarmi_frame',
                                     'notifica_allarmi_notebook.glade')
 #        self.placeWindow(self.getTopLevel())
         self.rowBackGround = None
-        self.main = main
+        self.main = mainnn
         self.aziendaStr = azienda or ""
         gobject.idle_add(self.create_allarmi_frame)
 
