@@ -124,6 +124,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
 
 
     def composeInfoDaoLabel(self, dao):
+        info = ""
         if not dao:
             info = ""
         elif dao.__class__.__name__ == "TestataDocumento":
