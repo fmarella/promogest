@@ -39,7 +39,7 @@ class NotificaAllarmiNotebookPage(GladeWidget):
         self.rowBackGround = None
         self.main = mainnn
         self.aziendaStr = azienda or ""
-        gobject.idle_add(self.create_allarmi_frame)
+        self.create_allarmi_frame()
 
     def drawAllarmi(self):
         """
