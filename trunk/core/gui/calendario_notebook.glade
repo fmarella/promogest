@@ -272,6 +272,7 @@
                 <property name="secondary_icon_activatable">False</property>
                 <property name="primary_icon_sensitive">True</property>
                 <property name="secondary_icon_sensitive">True</property>
+                <property name="adjustment">anno_calendar_adj</property>
                 <property name="climb_rate">1</property>
                 <property name="numeric">True</property>
               </object>
