@@ -167,6 +167,7 @@
               <object class="GtkComboBox" id="when_combo">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="model">liststore1</property>
                 <property name="active">0</property>
                 <signal name="changed" handler="on_when_combo_changed" swapped="no"/>
                 <child>
@@ -261,7 +262,9 @@
               <object class="GtkSpinButton" id="anno_calendar_spinbutton">
                 <property name="width_request">60</property>
                 <property name="visible">True</property>
+                <property name="app_paintable">True</property>
                 <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
                 <property name="invisible_char">●</property>
                 <property name="invisible_char_set">True</property>
                 <property name="progress_pulse_step">1</property>
@@ -332,5 +335,22 @@
         <property name="use_markup">True</property>
       </object>
     </child>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name nome -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Mese</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Settimana</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Giorno</col>
+      </row>
+    </data>
   </object>
 </interface>

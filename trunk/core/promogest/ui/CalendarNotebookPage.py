@@ -29,6 +29,8 @@ from GladeWidget import GladeWidget
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.lib import feedparser
 from promogest.ui.PrintDialog import PrintDialogHandler
+from promogest.dao.TestataDocumento import TestataDocumento
+from promogest.dao.Promemoria import Promemoria
 try:
     import ho.pisa as pisa
 except:
@@ -56,7 +58,8 @@ class CalendarNotebookPage(GladeWidget):
         self.htmlPlanningWidget = createHtmlObj(self)
         self.planning_scrolled.add(self.htmlPlanningWidget)
 #                    self.create_planning_frame()
-        gobject.idle_add(self.create_planning_frame)
+#        gobject.idle_add(self.create_planning_frame)
+        self.create_planning_frame()
 
     def draw(self):
         return self
