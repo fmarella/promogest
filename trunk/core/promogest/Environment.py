@@ -230,8 +230,10 @@ def connect():
 
 def _psycopg2new():
     try:
+        print "SONQUI"
         engine = create_engine('postgresql://', creator=connect,
                 convert_unicode=True,
+                encoding='utf-8',
                 proxy=MyProxy())
 #        engine = create_engine('postgresql:'+'//'
 #                    +user+':'
