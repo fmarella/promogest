@@ -54,7 +54,7 @@ class SlaTpl2Sla(SlaParser):
         self.objects = objects
         self.pbar = pbar
         self.label = label
-        self.formatFunctions = ['trunc','approx','itformat','itformatdataora','itformatdata', 'bcview']
+        self.formatFunctions = ['trunc','approx','itformat','itformatdataora','itformatdata', 'bcview',"approxit"]
         self.timeTags = ['date','time','datetime']
         self.positionTags = ['first','last']
         self.pageTags = ['currentPage','totalPage']
@@ -515,6 +515,11 @@ class SlaTpl2Sla(SlaParser):
                 return ''
             else:
                 return Sla2pdfUtils.approxValue(value, int(parameter))
+        elif functionName == 'approxit':
+            if value == '' or parameter == '':
+                return ''
+            else:
+                return Sla2pdfUtils.approxValueIt(value, int(parameter))
         elif functionName == 'itformat' or functionName == 'itformatdataora':
             if value == '':
                 return ''

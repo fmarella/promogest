@@ -9,6 +9,7 @@
 
 
 import datetime
+from decimal import *
 from reportlab.platypus import  Paragraph
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
@@ -75,6 +76,62 @@ def alignment(slaAlignment,styleAlignment=None):
         #pdfAlignment = 'LEFT'
     return pdfAlignment
 
+
+def italianizza(value, decimal=0, curr='', sep='.', dp=',',
+             pos='', neg='-', trailneg=''):
+    """Convert Decimal to a money formatted string.
+
+    places:  required number of places after the decimal point
+    curr:    optional currency symbol before the sign (may be blank)
+    sep:     optional grouping separator (comma, period, space, or blank)
+    dp:      decimal point indicator (comma or period)
+             only specify as blank when places is zero
+    pos:     optional sign for positive numbers: '+', space or blank
+    neg:     optional sign for negative numbers: '-', '(', space or blank
+    trailneg:optional trailing minus indicator:  '-', ')', space or blank
+
+    >>> d = Decimal('-1234567.8901')
+    >>> moneyfmt(d, curr='$')
+    '-$1,234,567.89'
+    >>> moneyfmt(d, places=0, sep='.', dp='', neg='', trailneg='-')
+    '1.234.568-'
+    >>> moneyfmt(d, curr='$', neg='(', trailneg=')')
+    '($1,234,567.89)'
+    >>> moneyfmt(Decimal(123456789), sep=' ')
+    '123 456 789.00'
+    >>> moneyfmt(Decimal('-0.02'), neg='<', trailneg='>')
+    '<0.02>'
+
+    """
+#    qq = Decimal(10) ** -places      # 2 places --> '0.01'
+#    precisione = int(setconf(key="decimals", section="Numbers")) or int(decimal)
+    precisione = int(decimal)
+    sign, digits, exp = Decimal(value).as_tuple()
+    result = []
+    digits = map(str, digits)
+    build, next = result.append, digits.pop
+    if sign:
+        build(trailneg)
+    for i in range(precisione):
+        build(next() if digits else '0')
+    if not precisione:
+        build("0")
+        build("0")
+    build(dp)
+    if not digits:
+        build('0')
+    i = 0
+    while digits:
+        build(next())
+        i += 1
+        if i == 3 and digits:
+            i = 0
+            build(sep)
+    build(curr)
+    build(neg if sign else pos)
+    return ''.join(reversed(result))
+
+
 def createbarcode(ch):
         data = ch.split(';')
         #print "DATA for Barcode", ch,data[1]
@@ -134,6 +191,18 @@ def approxValue(value, decimals):
     value = float(value)
     return ((value != '' and value is not None) and (format % (value or 0.0)) or '')
 
+def approxValueIt(value, decimals):
+    """
+    Approximate the floating point values of the element with the
+    given number of decimals
+    """
+    format = '%%.%df' % decimals
+    #print value
+    value = float(value)
+    if value !="" and value is not None:
+        return italianizza((format % (value)),decimal=decimals)
+    else:
+        return "0"
 
 def itformatValue(value,tronca=False):
     """
