@@ -1057,14 +1057,12 @@ del documento.
         self._righe[0]["descrizione"] = self.descrizione_entry.get_text()
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
         totale = self._righe[0]["totale"]
-
         # CONTROLLI DI Gestione NOLEGGIO
         if posso("GN") and self.noleggio:
             self._righe[0]["divisore_noleggio"] = self.coeficente_noleggio_entry.get_text()
             self._righe[0]["arco_temporale"] = self.giorni_label.get_text()
             self._righe[0]["totale_periodo"] = self.totale_periodo_label.get_text()
             totale = AnagraficaDocumentiEditGestioneNoleggioExt.totaleNoleggio(self)
-
         if posso("SM"):
             self._righe[0]["altezza"] = self.altezza_entry.get_text()
             self._righe[0]["larghezza"] = self.larghezza_entry.get_text()
@@ -1132,24 +1130,25 @@ del documento.
 
             self.modelRiga.set_value(self._iteratorRiga, 16, totale)
         else:
-            self.modelRiga.append([self._numRiga,
+            print "TOTALEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", totale, type(totale)
+            self.modelRiga.append([int(self._numRiga),
                             self._righe[self._numRiga]["magazzino"],
                             self._righe[self._numRiga]["codiceArticolo"],
                             self._righe[self._numRiga]["descrizione"],
-                            self._righe[self._numRiga]["percentualeIva"],
-                            altezza,
-                            larghezza,
-                            molt_pezzi,
+                            str(self._righe[self._numRiga]["percentualeIva"]),
+                            str(altezza),
+                            str(larghezza),
+                            str(molt_pezzi),
                             self._righe[self._numRiga]["multiplo"],
                             self._righe[self._numRiga]["listino"],
                             self._righe[self._numRiga]["unitaBase"],
-                            self._righe[self._numRiga]["quantita"],
-                            self._righe[self._numRiga]["prezzoLordo"],
+                            str(self._righe[self._numRiga]["quantita"]),
+                            str(self._righe[self._numRiga]["prezzoLordo"]),
                             str(self._righe[self._numRiga]["applicazioneSconti"]) + ' ' + str(getStringaSconti(
                             self._righe[self._numRiga]["sconti"])),
-                            self._righe[self._numRiga]["prezzoNetto"],
-                            arco_temporale,
-                            totale])
+                            str(self._righe[self._numRiga]["prezzoNetto"]),
+                            str(arco_temporale),
+                            str(totale)])
         self.righe_treeview.set_model(self.modelRiga)
         self.righe_treeview.scroll_to_cell(str(len(self.modelRiga)-1))
         self.calcolaTotale()

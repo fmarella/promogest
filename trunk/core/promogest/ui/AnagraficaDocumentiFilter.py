@@ -290,16 +290,16 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                 documento_saldato_filter = ''
             self._treeViewModel.append((t,
                                     dateToString(t.data_documento),
-                                    (t.numero or 0),
+                                    (str(t.numero) or 0),
                                     (t.operazione or ''),
                                     (t.intestatario or ''),
                                     (t.protocollo or ''),
-                                    totaleImponibile,
-                                    totaleImposta,
-                                    totale,
+                                    str(totaleImponibile),
+                                    str(totaleImposta),
+                                    str(totale),
                                     (t.note_interne or ''),
                                     col,
-                                    (documento_saldato_filter or '')
+                                    (str(documento_saldato_filter) or '')
                                     ))
 
 

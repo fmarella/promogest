@@ -196,7 +196,7 @@ class AnagraficaMovimentiFilter(AnagraficaFilter):
                     soggetto = (t.cognome_fornitore or '') + ' ' + (t.nome_fornitore or '')
             self._treeViewModel.append((t,
                                         dateToString(t.data_movimento),
-                                        (t.numero or 0),
+                                        (str(t.numero) or "0"),
                                         (t.operazione or ''),
                                         (soggetto or ''),
                                         (t.note_interne or '')))

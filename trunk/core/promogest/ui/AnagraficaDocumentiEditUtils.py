@@ -348,9 +348,9 @@ def calcolaTotalePart(anaedit, dao=None):
     model = anaedit.riepiloghi_iva_treeview.get_model()
     model.clear()
     for k in castellettoIva.keys():
-        model.append((mN(k),
-                        (mN(castellettoIva[k]['imponibile'])),
-                        (mN(castellettoIva[k]['imposta'])),))
+        model.append((str(mN(k)),
+                        (str(mN(castellettoIva[k]['imponibile']))),
+                        (str(mN(castellettoIva[k]['imposta']))),))
 
 def mostraArticoloPart(anaedit, id, art=None):
     """questa funzione viene chiamata da ricerca articolo e si occupa di

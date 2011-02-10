@@ -1231,7 +1231,8 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         model = self.riepiloghi_iva_treeview.get_model()
         model.clear()
         for k in castellettoIva.keys():
-            model.append((mN(k,2),
+            print "PPPPPPPPPPPPPPPPPPP", type(mN(k,2)), str(mN(castellettoIva[k]['imponibile'],2)), str(mN(castellettoIva[k]['imposta'],2))
+            model.append((str(mN(k,2)),
                          str(mN(castellettoIva[k]['imponibile'],2)),
                          str(mN(castellettoIva[k]['imposta'],2))))
 
