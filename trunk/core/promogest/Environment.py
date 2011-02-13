@@ -29,8 +29,8 @@ import glob
 import getopt, sys
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from sqlalchemy.interfaces import PoolListener
-from sqlalchemy.pool import NullPool
+#from sqlalchemy.interfaces import PoolListener
+#from sqlalchemy.pool import NullPool
 from sqlalchemy.interfaces import ConnectionProxy
 from sqlalchemy.exc import *
 import logging
@@ -496,14 +496,15 @@ password = conf.Database.password
 host = conf.Database.host
 userdata = ["","","",user]
 
-class SetTextFactory(PoolListener):
-     def connect(self, dbapi_con, con_record):
-         dbapi_con.text_factory = str
+#class SetTextFactory(PoolListener):
+#     def connect(self, dbapi_con, con_record):
+#         dbapi_con.text_factory = str
 
 if tipodb == "sqlite":
     azienda = None
     mainSchema = None
-    engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()],proxy=MyProxy())
+#    engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()],proxy=MyProxy())
+    engine =create_engine("sqlite:///"+startdir()+"db",proxy=MyProxy())
 else:
     mainSchema = "promogest2"
     engine = _pg8000()
@@ -583,12 +584,15 @@ def sendmail(msg="PG"):
     return _msgDef(text=msg)
 
 def _send(fromaddr=None, total_addrs=None, msg=None):
-    server = smtplib.SMTP("smtp.gmail.com")
-    server.ehlo()
-    server.starttls()
-    server.ehlo()
-    server.login("promogestlogs@gmail.com", "pr0m0t0x")
-    return server.sendmail("promogestlogs@gmail.com", "promogestlogs@gmail.com" , msg.as_string())
+    try:
+        server = smtplib.SMTP("smtp.gmail.com")
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
+        server.login("promogestlogs@gmail.com", "pr0m0t0x")
+        return server.sendmail("promogestlogs@gmail.com", "promogestlogs@gmail.com" , msg.as_string())
+    except Exception as e:
+        print "ERRORE NELLA SPEDIZIONE EMAIL", e.message
 
 def hook(et, ev, eb):
     import traceback
