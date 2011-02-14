@@ -29,7 +29,7 @@ import glob
 import getopt, sys
 from sqlalchemy import *
 from sqlalchemy.orm import *
-#from sqlalchemy.interfaces import PoolListener
+from sqlalchemy.interfaces import PoolListener
 #from sqlalchemy.pool import NullPool
 from sqlalchemy.interfaces import ConnectionProxy
 from sqlalchemy.exc import *
@@ -496,15 +496,15 @@ password = conf.Database.password
 host = conf.Database.host
 userdata = ["","","",user]
 
-#class SetTextFactory(PoolListener):
-#     def connect(self, dbapi_con, con_record):
-#         dbapi_con.text_factory = str
+class SetTextFactory(PoolListener):
+     def connect(self, dbapi_con, con_record):
+         dbapi_con.text_factory = str
 
 if tipodb == "sqlite":
     azienda = None
     mainSchema = None
-#    engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()],proxy=MyProxy())
-    engine =create_engine("sqlite:///"+startdir()+"db",proxy=MyProxy())
+    engine =create_engine("sqlite:///"+startdir()+"db",listeners=[SetTextFactory()],proxy=MyProxy())
+#    engine =create_engine("sqlite:///"+startdir()+"db",proxy=MyProxy())
 else:
     mainSchema = "promogest2"
     engine = _pg8000()
