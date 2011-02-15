@@ -34,7 +34,7 @@ from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.Operazione import Operazione
 from promogest.dao.Fornitura import Fornitura
 from AnagraficaDocumenti import *
-if Environment.conf.hasPagamenti == True:
+if posso("PA"):
     import promogest.modules.Pagamenti.dao.TestataDocumentoScadenza
     from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 from utils import *
@@ -308,9 +308,9 @@ class DuplicazioneDocumento(GladeWidget):
     def on_id_operazione_combobox_changed(self, widget, event=None):
         tipoPersonaGiuridica = self.id_operazione_combobox.get_model()[self.id_operazione_combobox.get_active()][0].tipo_persona_giuridica
         if self.tipoPersonaGiuridica == tipoPersonaGiuridica:
-            self.personaGiuridicaCambiata = False
-        else:
             self.personaGiuridicaCambiata = True
+        else:
+            self.personaGiuridicaCambiata = False
 
         if self.id_persona_giuridica_customcombobox.getType() == "fornitore" and tipoPersonaGiuridica == 'cliente':
             self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)

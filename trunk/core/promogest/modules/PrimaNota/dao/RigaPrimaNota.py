@@ -32,6 +32,7 @@ try:
                 params['metadata'],
                 schema = params['schema'],
                 autoload=True)
+
     if "id_banca" not in [c.name for c in rigaprimanota.columns]:
         col = Column('id_banca', Integer,ForeignKey(bancaFK,onupdate="CASCADE",ondelete="RESTRICT"),nullable=True)
         col.create(rigaprimanota)

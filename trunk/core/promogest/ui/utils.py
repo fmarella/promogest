@@ -94,6 +94,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
     _codice = ''
     _denominazioneBreveAliquotaIva = ''
     _percentualeAliquotaIva = 0
+    _tipoAliquotaIva = 1
     _idUnitaBase = None
     _unitaBase = ''
     _quantita_minima = ''
@@ -114,6 +115,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
             _codicearticolofornitore = daoArticolo.codice_articolo_fornitore
             _denominazioneBreveAliquotaIva = daoArticolo.denominazione_breve_aliquota_iva
             _percentualeAliquotaIva = daoArticolo.percentuale_aliquota_iva
+            _tipoAliquotaIva = daoArticolo.id_tipo_aliquota_iva
             _unitaBase = daoArticolo.denominazione_unita_base
             try:
                 _quantita_minima = daoArticolo.quantita_minima
@@ -134,6 +136,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
                 "codice": _codice,
                 "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
                 "percentualeAliquotaIva": _percentualeAliquotaIva,
+                "idTipoAliquotaIva":_tipoAliquotaIva,
                 "idUnitaBase": _idUnitaBase,
                 "unitaBase": _unitaBase,
                 "quantita_minima": _quantita_minima,
@@ -894,19 +897,14 @@ def on_id_categoria_articolo_customcombobox_clicked(widget, button):
     """
     Richiama l'anagrafica delle categorie articoli
     """
-
     def on_anagrafica_categorie_articoli_destroyed(window):
         """
-        FIXME
-        @param window:
-        @type window:
         """
         # all'uscita dall'anagrafica richiamata, aggiorna l'elenco associato
         widget.button.set_active(False)
         id = findIdFromCombobox(widget.combobox)
         fillComboboxCategorieArticoli(widget.combobox)
         findComboboxRowFromId(widget.combobox, id)
-
 
     if widget.button.get_property('active') is False:
         return
@@ -2899,6 +2897,8 @@ def posso(mod=None):
         if "ONE FULL" in moduli: return True
     if mod == "SM":
         if "SuMisura" in moduli: return True
+    if mod == "IP":
+        if "InfoPeso" in moduli: return True
     if mod == "PA" or mod=="Pagamenti":
         if "Pagamenti" in moduli: return True
         if "ONE STANDARD" in moduli: return True

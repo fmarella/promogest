@@ -140,6 +140,11 @@ class Articolo(Dao):
         else: return ""
 
     @property
+    def id_tipo_aliquota_iva(self):
+        if self.ali_iva :return self.ali_iva.id_tipo
+        else: return 1
+
+    @property
     def denominazione_aliquota_iva(self):
         if self.ali_iva :return self.ali_iva.denominazione
         else: return ""

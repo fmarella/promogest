@@ -1111,26 +1111,25 @@ del documento.
             self.modelRiga.set_value(self._iteratorRiga, 1, self._righe[self._numRiga]["magazzino"])
             self.modelRiga.set_value(self._iteratorRiga, 2, self._righe[self._numRiga]["codiceArticolo"])
             self.modelRiga.set_value(self._iteratorRiga, 3, self._righe[self._numRiga]["descrizione"])
-            self.modelRiga.set_value(self._iteratorRiga, 4, self._righe[self._numRiga]["percentualeIva"])
+            self.modelRiga.set_value(self._iteratorRiga, 4, str(self._righe[self._numRiga]["percentualeIva"]))
             if posso("SM"):
-                self.modelRiga.set_value(self._iteratorRiga, 5, altezza)
-                self.modelRiga.set_value(self._iteratorRiga, 6, larghezza)
-                self.modelRiga.set_value(self._iteratorRiga, 7, molt_pezzi)
-            self.modelRiga.set_value(self._iteratorRiga, 8, self._righe[self._numRiga]["multiplo"])
-            self.modelRiga.set_value(self._iteratorRiga, 9, self._righe[self._numRiga]["listino"])
-            self.modelRiga.set_value(self._iteratorRiga, 10, self._righe[self._numRiga]["unitaBase"])
-            self.modelRiga.set_value(self._iteratorRiga, 11, self._righe[self._numRiga]["quantita"])
-            self.modelRiga.set_value(self._iteratorRiga, 12, self._righe[self._numRiga]["prezzoLordo"])
+                self.modelRiga.set_value(self._iteratorRiga, 5, str(altezza))
+                self.modelRiga.set_value(self._iteratorRiga, 6, str(larghezza))
+                self.modelRiga.set_value(self._iteratorRiga, 7, str(molt_pezzi))
+            self.modelRiga.set_value(self._iteratorRiga, 8, str(self._righe[self._numRiga]["multiplo"]))
+            self.modelRiga.set_value(self._iteratorRiga, 9, str(self._righe[self._numRiga]["listino"]))
+            self.modelRiga.set_value(self._iteratorRiga, 10, str(self._righe[self._numRiga]["unitaBase"]))
+            self.modelRiga.set_value(self._iteratorRiga, 11, str(self._righe[self._numRiga]["quantita"]))
+            self.modelRiga.set_value(self._iteratorRiga, 12, str(self._righe[self._numRiga]["prezzoLordo"]))
             self.modelRiga.set_value(self._iteratorRiga, 13, self._righe[self._numRiga]["applicazioneSconti"] + (
                 ' ' + getStringaSconti(self._righe[self._numRiga]["sconti"])))
-            self.modelRiga.set_value(self._iteratorRiga, 14, self._righe[self._numRiga]["prezzoNetto"])
+            self.modelRiga.set_value(self._iteratorRiga, 14, str(self._righe[self._numRiga]["prezzoNetto"]))
 
             if posso("GN") and self.noleggio:
-                self.modelRiga.set_value(self._iteratorRiga, 15, arco_temporale)
+                self.modelRiga.set_value(self._iteratorRiga, 15, str(arco_temporale))
 
-            self.modelRiga.set_value(self._iteratorRiga, 16, totale)
+            self.modelRiga.set_value(self._iteratorRiga, 16, str(totale))
         else:
-            print "TOTALEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", totale, type(totale)
             self.modelRiga.append([int(self._numRiga),
                             self._righe[self._numRiga]["magazzino"],
                             self._righe[self._numRiga]["codiceArticolo"],

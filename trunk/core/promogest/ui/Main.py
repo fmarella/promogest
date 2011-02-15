@@ -618,11 +618,11 @@ class Main(GladeWidget):
                                    gtk.DIALOG_MODAL
                                    | gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
-        dialog.set_markup("""<b>      CODICE ATTIVAZIONE PACCHETTO       </b>""")
+        dialog.set_markup("""<b>                CODICE ATTIVAZIONE PACCHETTO               </b>""")
         hbox = gtk.HBox()
         entry___ = gtk.Entry()
 
-        label = gtk.Label(False)
+        label = gtk.Label()
         label.set_markup("<b>   Inserisci codice   </b>")
         hbox.pack_start(label)
         hbox.pack_start(entry___)

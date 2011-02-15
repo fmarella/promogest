@@ -48,7 +48,7 @@ from email import Encoders
 import datetime
 
 PRODOTTO = "PromoTux"
-VERSIONE = "PromoGest 2.7.0.1"
+VERSIONE = "PromoGest 2.6.4.5"
 debugFilter = False
 debugDao = False
 debugSQL = False

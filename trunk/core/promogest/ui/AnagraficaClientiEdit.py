@@ -33,7 +33,9 @@ from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.dao.DaoUtils import *
 from utils import *
 from utilsCombobox import *
-
+if posso("IP"):
+    from promogest.modules.InfoPeso.ui.InfoPesoNotebookPage import InfoPesoNotebookPage
+    from promogest.modules.InfoPeso.dao.TestataInfoPeso import TestataInfoPeso
 
 class AnagraficaClientiEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica dei clienti """
@@ -73,25 +75,31 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         self.categorie_treeview.set_model(model)
 
         fillComboBoxNazione(self.nazione_combobox, default="Italia")
-        #Popola combobox pagamenti
+
         fillComboboxPagamenti(self.id_pagamento_customcombobox.combobox)
         self.id_pagamento_customcombobox.connect('clicked',
                                  on_id_pagamento_customcombobox_clicked)
-        #Popola combobox magazzini
         fillComboboxMagazzini(self.id_magazzino_customcombobox.combobox)
         self.id_magazzino_customcombobox.connect('clicked',
                                  on_id_magazzino_customcombobox_clicked)
-        #Popola combobox listini
         fillComboboxListini(self.id_listino_customcombobox.combobox)
         self.id_listino_customcombobox.connect('clicked',
                                on_id_listino_customcombobox_clicked)
         fillComboboxBanche(self.id_banca_customcombobox.combobox)
         self.id_banca_customcombobox.connect('clicked',
                                  on_id_banca_customcombobox_clicked)
-        #Popola combobox aliquote iva
         fillComboboxAliquoteIva(self.id_aliquota_iva_customcombobox.combobox)
         self.id_aliquota_iva_customcombobox.connect('clicked',
                                 on_id_aliquota_iva_customcombobox_clicked)
+
+#        if not setconf(key="INFOPESO", section="General"):
+        if posso("IP"):
+            self.infopeso_page = InfoPesoNotebookPage(self, "")
+            self.infopeso_page_label = gtk.Label()
+            self.infopeso_page_label.set_markup("<b>INFO PESO</b>")
+            self.anagrafica_clienti_detail_notebook.append_page(self.infopeso_page.infopeso_frame, self.infopeso_page_label)
+
+
 
     def on_categorie_clienti_add_row_button_clicked(self, widget):
         """
@@ -157,11 +165,19 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             self.dao = Cliente()
             self.dao.codice = promogest.dao.Cliente.getNuovoCodiceCliente()
             self._oldDaoRicreato = False
+            if posso("IP"):
+                self.dao_tinfopeso = TestataInfoPeso()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Cliente().getRecord(id=dao.id)
             self._oldDaoRicreato = True
+            if posso("IP"):
+                self.dao_tinfopeso = TestataInfoPeso().select(idCliente=self.dao.id)
+                if self.dao_tinfopeso:
+                    self.dao_tinfopeso = self.dao_tinfopeso[0]
         self._refresh()
+        if posso("IP"):
+            self.infopeso_page.nome_cognome_label.set_text(str(self.dao.ragione_sociale) or ""+"\n"+str(self.dao.cognome) or ""+" "+str(self.dao.nome) or "")
         return self.dao
 
     def _refresh(self):

@@ -1095,6 +1095,7 @@ class AnagraficaHtml(object):
         # controllo la versione dello sla che devo elaborare
         versione = scribusVersion(self._slaTemplate)
         Environment.pg2log.info("VERSIONE SLA: "+ str(versione))
+
         if Environment.new_print_enjine:
             stpl2sla = SlaTpl2Sla_ng(slafile=None,label=None, report=None,
                                     objects=param,

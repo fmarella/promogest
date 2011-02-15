@@ -1,20 +1,15 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name item -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkNotebook" id="anagrafica_clienti_detail_notebook">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
     <child>
       <object class="GtkTable" id="anagrafica_clienti_detail_table">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="border_width">6</property>
         <property name="n_rows">19</property>
         <property name="n_columns">6</property>
@@ -22,20 +17,25 @@
         <child>
           <object class="GtkHBox" id="nazione_hbox">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <object class="GtkAlignment" id="alignment2">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
                   <placeholder/>
                 </child>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="nazione_label">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="xpad">5</property>
                 <property name="label" translatable="yes">Nazione</property>
               </object>
@@ -48,6 +48,7 @@
             <child>
               <object class="GtkComboBox" id="nazione_combobox">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Gestione nazione</property>
                 <property name="model">liststore1</property>
                 <property name="wrap_width">1</property>
@@ -61,6 +62,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="fill">True</property>
                 <property name="padding">10</property>
                 <property name="position">2</property>
               </packing>
@@ -76,6 +78,7 @@
         <child>
           <object class="GtkAlignment" id="alignment130">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xscale">0</property>
             <child>
@@ -85,7 +88,11 @@
                 <property name="can_focus">True</property>
                 <property name="tooltip_text" translatable="yes">Provincia sede operativa</property>
                 <property name="max_length">2</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
+                <property name="primary_icon_activatable">False</property>
+                <property name="secondary_icon_activatable">False</property>
+                <property name="primary_icon_sensitive">True</property>
+                <property name="secondary_icon_sensitive">True</property>
               </object>
             </child>
           </object>
@@ -104,12 +111,16 @@
             <property name="can_focus">True</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <property name="tooltip_text" translatable="yes">Saldo del totale di 
-ci&#xF2; che si &#xE8; venduto a questo cliente 
+ciò che si è venduto a questo cliente 
 calcolato sulla base dei documenti dell'anno di lavoro</property>
             <property name="editable">False</property>
-            <property name="invisible_char">&#x25CF;</property>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <property name="invisible_char">●</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -121,6 +132,7 @@ calcolato sulla base dei documenti dell'anno di lavoro</property>
         <child>
           <object class="GtkLabel" id="totale_venduto_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">  Totale Venduto</property>
@@ -134,7 +146,8 @@ calcolato sulla base dei documenti dell'anno di lavoro</property>
         <child>
           <object class="GtkLabel" id="codice_label">
             <property name="visible">True</property>
-            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio &#xE8; uno tra:
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
@@ -152,7 +165,8 @@ Nome</property>
         <child>
           <object class="GtkLabel" id="ragione_sociale_label">
             <property name="visible">True</property>
-            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio &#xE8; uno tra:
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
@@ -172,7 +186,8 @@ Nome</property>
         <child>
           <object class="GtkLabel" id="insegna_label">
             <property name="visible">True</property>
-            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio &#xE8; uno tra:
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
@@ -192,7 +207,8 @@ Nome</property>
         <child>
           <object class="GtkLabel" id="cognome_label">
             <property name="visible">True</property>
-            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio &#xE8; uno tra:
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
@@ -212,7 +228,8 @@ Nome</property>
         <child>
           <object class="GtkLabel" id="nome_label">
             <property name="visible">True</property>
-            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio &#xE8; uno tra:
+            <property name="can_focus">False</property>
+            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
@@ -232,6 +249,7 @@ Nome</property>
         <child>
           <object class="GtkLabel" id="indirizzo_sede_legale_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Indirizzo</property>
           </object>
@@ -246,6 +264,7 @@ Nome</property>
         <child>
           <object class="GtkHSeparator" id="hseparator14">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
           </object>
           <packing>
             <property name="right_attach">6</property>
@@ -258,6 +277,7 @@ Nome</property>
         <child>
           <object class="GtkLabel" id="info_sede_legale_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Sede legale</property>
             <property name="use_markup">True</property>
@@ -273,6 +293,7 @@ Nome</property>
         <child>
           <object class="GtkLabel" id="localita_sede_legale_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Localita'</property>
           </object>
@@ -287,6 +308,7 @@ Nome</property>
         <child>
           <object class="GtkLabel" id="cap_sede_legale_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">C.A.P.</property>
           </object>
@@ -303,6 +325,7 @@ Nome</property>
         <child>
           <object class="GtkLabel" id="provincia_sede_legale_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Provincia</property>
           </object>
@@ -319,6 +342,7 @@ Nome</property>
         <child>
           <object class="GtkHSeparator" id="hseparator15">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
           </object>
           <packing>
             <property name="right_attach">6</property>
@@ -331,6 +355,7 @@ Nome</property>
         <child>
           <object class="GtkLabel" id="info_sede_operativa_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Sede operativa</property>
           </object>
@@ -345,6 +370,7 @@ Nome</property>
         <child>
           <object class="GtkLabel" id="indirizzo_sede_operativa_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Indirizzo</property>
           </object>
@@ -363,13 +389,16 @@ Nome</property>
             <property name="tooltip_text" translatable="yes">Inserire l'indirizzo di una eventuale sede operativa 
 se diverso da quella legale</property>
             <property name="max_length">200</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -383,6 +412,7 @@ se diverso da quella legale</property>
         <child>
           <object class="GtkLabel" id="localita_sede_operativa_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Localita'</property>
           </object>
@@ -398,15 +428,18 @@ se diverso da quella legale</property>
           <object class="GtkEntry" id="localita_sede_operativa_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Localit&#xE0; sede operativa se diverso da quello legale</property>
+            <property name="tooltip_text" translatable="yes">Località sede operativa se diverso da quello legale</property>
             <property name="max_length">100</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -420,6 +453,7 @@ se diverso da quella legale</property>
         <child>
           <object class="GtkLabel" id="cap_sede_operativa">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">C.A.P.</property>
           </object>
@@ -436,6 +470,7 @@ se diverso da quella legale</property>
         <child>
           <object class="GtkLabel" id="provincia_sede_operativa_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Provincia</property>
           </object>
@@ -452,6 +487,7 @@ se diverso da quella legale</property>
         <child>
           <object class="GtkLabel" id="codice_fiscale_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Codice fiscale</property>
           </object>
@@ -466,6 +502,7 @@ se diverso da quella legale</property>
         <child>
           <object class="GtkLabel" id="partita_iva_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">Partita I.V.A.</property>
           </object>
@@ -480,6 +517,7 @@ se diverso da quella legale</property>
         <child>
           <object class="GtkHSeparator" id="hseparator16">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
           </object>
           <packing>
             <property name="right_attach">6</property>
@@ -491,6 +529,7 @@ se diverso da quella legale</property>
         <child>
           <object class="GtkAlignment" id="alignment66">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xscale">0</property>
             <child>
@@ -501,15 +540,17 @@ se diverso da quella legale</property>
 se non ne avete uno premere sulla piccola 
 icona a sinistra per farne generare uno nuovo dal promogest</property>
                 <property name="max_length">100</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
                 <property name="primary_icon_stock">gtk-new</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
                 <property name="primary_icon_activatable">True</property>
                 <property name="secondary_icon_activatable">True</property>
-                <signal name="button_press_event" handler="on_button_press_event"/>
-                <signal name="icon_press" handler="on_icon_press"/>
-                <signal name="focus_in_event" handler="on_focus_in_event"/>
-                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                <property name="primary_icon_sensitive">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+                <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+                <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+                <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
               </object>
             </child>
           </object>
@@ -525,19 +566,22 @@ icona a sinistra per farne generare uno nuovo dal promogest</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="tooltip_text" translatable="yes">Inserire la Ragione sociale 
-Il  campo obbligatorio &#xE8; uno tra:
+Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
 Nome</property>
             <property name="max_length">200</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -552,22 +596,25 @@ Nome</property>
           <object class="GtkEntry" id="insegna_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Inserire l'insegna cio&#xE8; il nome pubblico dell'azienda, spesso 
+            <property name="tooltip_text" translatable="yes">Inserire l'insegna cioè il nome pubblico dell'azienda, spesso 
 la ragione sociale differisce dal nome comune
-Il  campo obbligatorio &#xE8; uno tra:
+Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
 Nome
 </property>
             <property name="max_length">200</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -582,19 +629,22 @@ Nome
           <object class="GtkEntry" id="cognome_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio &#xE8; uno tra:
+            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
 Nome</property>
             <property name="max_length">100</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -609,19 +659,22 @@ Nome</property>
           <object class="GtkEntry" id="nome_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio &#xE8; uno tra:
+            <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
 Nome</property>
             <property name="max_length">100</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -635,6 +688,7 @@ Nome</property>
         <child>
           <object class="GtkAlignment" id="alignment61">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xscale">0</property>
             <child>
@@ -643,13 +697,16 @@ Nome</property>
                 <property name="can_focus">True</property>
                 <property name="tooltip_text" translatable="yes">Inserire il codice fiscale</property>
                 <property name="max_length">16</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
                 <property name="secondary_icon_stock">gtk-clear</property>
+                <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">True</property>
-                <signal name="button_press_event" handler="on_button_press_event"/>
-                <signal name="icon_press" handler="on_icon_press"/>
-                <signal name="focus_in_event" handler="on_focus_in_event"/>
-                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                <property name="primary_icon_sensitive">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+                <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+                <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+                <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
               </object>
             </child>
           </object>
@@ -669,13 +726,16 @@ Nome</property>
             <property name="tooltip_text" translatable="yes">Inserimento dell'indirizzo della 
 sede legale del cliente</property>
             <property name="max_length">200</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="icon_press" handler="on_entry_icon_press"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_entry_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -693,13 +753,16 @@ sede legale del cliente</property>
             <property name="tooltip_text" translatable="yes">Inserimento della localita 
 della sede legale del cliente</property>
             <property name="max_length">100</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -713,6 +776,7 @@ della sede legale del cliente</property>
         <child>
           <object class="GtkAlignment" id="alignment64">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xscale">0</property>
             <child>
@@ -721,10 +785,14 @@ della sede legale del cliente</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">2</property>
-                <property name="invisible_char">&#x25CF;</property>
-                <signal name="button_press_event" handler="on_button_press_event"/>
-                <signal name="focus_in_event" handler="on_focus_in_event"/>
-                <signal name="focus_out_event" handler="on_focus_out_event"/>
+                <property name="invisible_char">●</property>
+                <property name="primary_icon_activatable">False</property>
+                <property name="secondary_icon_activatable">False</property>
+                <property name="primary_icon_sensitive">True</property>
+                <property name="secondary_icon_sensitive">True</property>
+                <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+                <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+                <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
               </object>
             </child>
           </object>
@@ -741,13 +809,18 @@ della sede legale del cliente</property>
           <object class="GtkAlignment" id="alignment289">
             <property name="width_request">100</property>
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xscale">0</property>
             <child>
               <object class="GtkEntry" id="partita_iva_entry">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
+                <property name="primary_icon_activatable">False</property>
+                <property name="secondary_icon_activatable">False</property>
+                <property name="primary_icon_sensitive">True</property>
+                <property name="secondary_icon_sensitive">True</property>
               </object>
             </child>
           </object>
@@ -764,6 +837,7 @@ della sede legale del cliente</property>
           <object class="GtkAlignment" id="alignment65">
             <property name="width_request">70</property>
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xscale">0</property>
             <child>
@@ -771,7 +845,11 @@ della sede legale del cliente</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">5</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
+                <property name="primary_icon_activatable">False</property>
+                <property name="secondary_icon_activatable">False</property>
+                <property name="primary_icon_sensitive">True</property>
+                <property name="secondary_icon_sensitive">True</property>
               </object>
             </child>
           </object>
@@ -788,6 +866,7 @@ della sede legale del cliente</property>
           <object class="GtkAlignment" id="alignment131">
             <property name="width_request">70</property>
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0</property>
             <property name="xscale">0</property>
             <child>
@@ -795,7 +874,11 @@ della sede legale del cliente</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">5</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="invisible_char">●</property>
+                <property name="primary_icon_activatable">False</property>
+                <property name="secondary_icon_activatable">False</property>
+                <property name="primary_icon_sensitive">True</property>
+                <property name="secondary_icon_sensitive">True</property>
               </object>
             </child>
           </object>
@@ -811,11 +894,13 @@ della sede legale del cliente</property>
         <child>
           <object class="GtkAlignment" id="alignment378">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">1</property>
             <property name="xscale">0</property>
             <child>
               <object class="GtkHBox" id="hbox304">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">5</property>
                 <child>
                   <object class="GtkToggleButton" id="contatti_togglebutton">
@@ -823,22 +908,26 @@ della sede legale del cliente</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Permette di associare al cliente 
-uno o pi&#xF9; contatti sia aziendali che personali 
+uno o più contatti sia aziendali che personali 
 con i relativi recapiti telefonici, email, msn 
 </property>
-                    <signal name="clicked" handler="on_contatti_togglebutton_clicked"/>
+                    <property name="use_action_appearance">False</property>
+                    <signal name="clicked" handler="on_contatti_togglebutton_clicked" swapped="no"/>
                     <child>
                       <object class="GtkAlignment" id="alignment108">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xscale">0</property>
                         <property name="yscale">0</property>
                         <child>
                           <object class="GtkHBox" id="hbox106">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="spacing">2</property>
                             <child>
                               <object class="GtkImage" id="image70">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="pixbuf">contatto24x24.png</property>
                               </object>
                               <packing>
@@ -850,6 +939,7 @@ con i relativi recapiti telefonici, email, msn
                             <child>
                               <object class="GtkLabel" id="label213">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Contatti</property>
                                 <property name="use_underline">True</property>
                               </object>
@@ -878,19 +968,23 @@ con i relativi recapiti telefonici, email, msn
                     <property name="tooltip_text" translatable="yes">Permette di abbinare al cliente 
 altre destinazioni differenti da quella legale o 
 operativa</property>
-                    <signal name="clicked" handler="on_destinazioni_merce_togglebutton_clicked"/>
+                    <property name="use_action_appearance">False</property>
+                    <signal name="clicked" handler="on_destinazioni_merce_togglebutton_clicked" swapped="no"/>
                     <child>
                       <object class="GtkAlignment" id="alignment181">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xscale">0</property>
                         <property name="yscale">0</property>
                         <child>
                           <object class="GtkHBox" id="hbox153">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="spacing">2</property>
                             <child>
                               <object class="GtkImage" id="image105">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="pixbuf">destinazione_merce24x24.png</property>
                               </object>
                               <packing>
@@ -902,6 +996,7 @@ operativa</property>
                             <child>
                               <object class="GtkLabel" id="label375">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Destinazioni merce</property>
                                 <property name="use_underline">True</property>
                               </object>
@@ -930,19 +1025,23 @@ operativa</property>
                     <property name="tooltip_text" translatable="yes">Permette di visualizzare 
 per il cliente i documenti 
 che lo coinvolgono </property>
-                    <signal name="clicked" handler="on_scheda_contabile_togglebutton_clicked"/>
+                    <property name="use_action_appearance">False</property>
+                    <signal name="clicked" handler="on_scheda_contabile_togglebutton_clicked" swapped="no"/>
                     <child>
                       <object class="GtkAlignment" id="alignment14">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xscale">0</property>
                         <property name="yscale">0</property>
                         <child>
                           <object class="GtkHBox" id="hbox21">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="spacing">2</property>
                             <child>
                               <object class="GtkImage" id="image14">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="pixbuf">modifica24x24.png</property>
                               </object>
                               <packing>
@@ -954,6 +1053,7 @@ che lo coinvolgono </property>
                             <child>
                               <object class="GtkLabel" id="label19">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Scheda Contabile</property>
                                 <property name="use_underline">True</property>
                               </object>
@@ -989,6 +1089,7 @@ che lo coinvolgono </property>
         <child>
           <object class="GtkLabel" id="totale_partite_aperte_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <property name="xalign">0</property>
             <property name="label" translatable="yes">  Totale Partite
@@ -1006,7 +1107,11 @@ che lo coinvolgono </property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <property name="tooltip_text" translatable="yes">Residuo non ancora pagato dal cliente</property>
             <property name="editable">False</property>
-            <property name="invisible_char">&#x25CF;</property>
+            <property name="invisible_char">●</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -1018,6 +1123,7 @@ che lo coinvolgono </property>
         <child>
           <object class="GtkVSeparator" id="vseparator1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
           </object>
           <packing>
@@ -1030,6 +1136,7 @@ che lo coinvolgono </property>
         <child>
           <object class="GtkAlignment" id="alignment1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <child>
               <object class="GtkCheckButton" id="fatturazione_riepilogativa_checkbutton">
@@ -1039,6 +1146,7 @@ che lo coinvolgono </property>
                 <property name="receives_default">False</property>
                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                 <property name="tooltip_text" translatable="yes">???</property>
+                <property name="use_action_appearance">False</property>
                 <property name="draw_indicator">True</property>
               </object>
             </child>
@@ -1139,6 +1247,7 @@ che lo coinvolgono </property>
     <child type="tab">
       <object class="GtkLabel" id="informazioni_principali_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="label" translatable="yes">&lt;b&gt;Informazioni principali&lt;/b&gt;</property>
         <property name="use_markup">True</property>
       </object>
@@ -1149,24 +1258,27 @@ che lo coinvolgono </property>
     <child>
       <object class="GtkVBox" id="anagrafica_clienti_detail2_vbox">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
+        <property name="can_focus">False</property>
         <child>
           <object class="GtkFrame" id="frame6">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="label_xalign">0</property>
             <child>
               <object class="GtkAlignment" id="alignment261">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="bottom_padding">5</property>
                 <property name="left_padding">12</property>
                 <property name="right_padding">5</property>
                 <child>
                   <object class="GtkVBox" id="categorie_clientevbox">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkHBox" id="hbox233">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <child>
                           <object class="CustomComboBoxModify" id="id_categoria_cliente_customcombobox">
                             <property name="visible">True</property>
@@ -1177,6 +1289,8 @@ Se non ce ne fossero usare il pulsante di fianco
 per inserirne</property>
                           </object>
                           <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
@@ -1186,19 +1300,23 @@ per inserirne</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Aggiungi una associazione categoria cliente</property>
-                            <signal name="clicked" handler="on_categorie_clienti_add_row_button_clicked"/>
+                            <property name="use_action_appearance">False</property>
+                            <signal name="clicked" handler="on_categorie_clienti_add_row_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkAlignment" id="alignment132">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xscale">0</property>
                                 <property name="yscale">0</property>
                                 <child>
                                   <object class="GtkHBox" id="hbox122">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="spacing">2</property>
                                     <child>
                                       <object class="GtkImage" id="image80">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="pixbuf">aggiungi16x16.png</property>
                                       </object>
                                       <packing>
@@ -1210,6 +1328,7 @@ per inserirne</property>
                                     <child>
                                       <object class="GtkLabel" id="label258">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">Aggiungi</property>
                                         <property name="use_underline">True</property>
                                       </object>
@@ -1238,19 +1357,23 @@ per inserirne</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Elimina una associazione categoria cliente</property>
-                            <signal name="clicked" handler="on_categorie_clienti_delete_row_button_clicked"/>
+                            <property name="use_action_appearance">False</property>
+                            <signal name="clicked" handler="on_categorie_clienti_delete_row_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkAlignment" id="alignment135">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xscale">0</property>
                                 <property name="yscale">0</property>
                                 <child>
                                   <object class="GtkHBox" id="hbox125">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="spacing">2</property>
                                     <child>
                                       <object class="GtkImage" id="image83">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="pixbuf">sottrai16X16.png</property>
                                       </object>
                                       <packing>
@@ -1262,6 +1385,7 @@ per inserirne</property>
                                     <child>
                                       <object class="GtkLabel" id="label261">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">Elimina</property>
                                         <property name="use_underline">True</property>
                                       </object>
@@ -1290,19 +1414,23 @@ per inserirne</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Rirpristina una associazione categoria cliente precedente</property>
-                            <signal name="clicked" handler="on_categorie_clienti_undelete_row_button_clicked"/>
+                            <property name="use_action_appearance">False</property>
+                            <signal name="clicked" handler="on_categorie_clienti_undelete_row_button_clicked" swapped="no"/>
                             <child>
                               <object class="GtkAlignment" id="alignment138">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="xscale">0</property>
                                 <property name="yscale">0</property>
                                 <child>
                                   <object class="GtkHBox" id="hbox126">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="spacing">2</property>
                                     <child>
                                       <object class="GtkImage" id="image84">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="pixbuf">annulla16x16.png</property>
                                       </object>
                                       <packing>
@@ -1314,6 +1442,7 @@ per inserirne</property>
                                     <child>
                                       <object class="GtkLabel" id="label269">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">Ripristina</property>
                                         <property name="use_underline">True</property>
                                       </object>
@@ -1338,6 +1467,7 @@ per inserirne</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
+                        <property name="fill">True</property>
                         <property name="padding">6</property>
                         <property name="position">0</property>
                       </packing>
@@ -1353,11 +1483,13 @@ per inserirne</property>
                           <object class="GtkTreeView" id="categorie_treeview">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <signal name="cursor_changed" handler="on_categorie_treeview_cursor_changed"/>
+                            <signal name="cursor-changed" handler="on_categorie_treeview_cursor_changed" swapped="no"/>
                           </object>
                         </child>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -1368,30 +1500,36 @@ per inserirne</property>
             <child type="label">
               <object class="GtkLabel" id="label481">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">&lt;b&gt;Categorie Cliente&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
               </object>
             </child>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <object class="GtkVBox" id="vbox1">
                 <property name="visible">True</property>
-                <property name="orientation">vertical</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">5</property>
                 <child>
                   <object class="GtkHBox" id="hbox2">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="spacing">5</property>
                     <child>
                       <object class="GtkLabel" id="pagamento_preferenziale_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Pagamento
    preferenziale</property>
@@ -1409,6 +1547,8 @@ per inserirne</property>
                         <property name="can_focus">True</property>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -1422,10 +1562,12 @@ per inserirne</property>
                 <child>
                   <object class="GtkHBox" id="hbox3">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="spacing">5</property>
                     <child>
                       <object class="GtkLabel" id="banca_preferenziale_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Banca
    preferenziale</property>
@@ -1443,6 +1585,8 @@ per inserirne</property>
                         <property name="can_focus">True</property>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -1456,10 +1600,12 @@ per inserirne</property>
                 <child>
                   <object class="GtkHBox" id="hbox4">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="spacing">5</property>
                     <child>
                       <object class="GtkLabel" id="magazzino_preferenziale_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Magazzino
    preferenziale</property>
@@ -1477,6 +1623,8 @@ per inserirne</property>
                         <property name="can_focus">True</property>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -1490,10 +1638,12 @@ per inserirne</property>
                 <child>
                   <object class="GtkHBox" id="hbox5">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="spacing">5</property>
                     <child>
                       <object class="GtkLabel" id="listino_preferenziale_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Listino
    preferenziale</property>
@@ -1511,6 +1661,8 @@ per inserirne</property>
                         <property name="can_focus">True</property>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -1524,10 +1676,12 @@ per inserirne</property>
                 <child>
                   <object class="GtkHBox" id="hbox6">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="spacing">5</property>
                     <child>
                       <object class="GtkLabel" id="aliquota_iva_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Aliquota Iva 
    preferenziale</property>
@@ -1545,6 +1699,8 @@ per inserirne</property>
                         <property name="can_focus">True</property>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -1557,6 +1713,8 @@ per inserirne</property>
                 </child>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -1564,26 +1722,30 @@ per inserirne</property>
               <object class="GtkFrame" id="contatti_principali_frame">
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
+                <property name="can_focus">False</property>
                 <property name="label_xalign">0</property>
                 <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkAlignment" id="alignment4">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="top_padding">5</property>
                     <property name="left_padding">12</property>
                     <property name="right_padding">5</property>
                     <child>
                       <object class="GtkVBox" id="vbox2">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
+                        <property name="can_focus">False</property>
                         <property name="spacing">5</property>
                         <child>
                           <object class="GtkHBox" id="telefono_hbox">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="spacing">5</property>
                             <child>
                               <object class="GtkLabel" id="telefono_principale_label">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Telefono
   principale</property>
                               </object>
@@ -1597,9 +1759,15 @@ per inserirne</property>
                               <object class="GtkEntry" id="telefono_princiale_entry">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="invisible_char">●</property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -1613,10 +1781,12 @@ per inserirne</property>
                         <child>
                           <object class="GtkHBox" id="email_principale_hbox">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="spacing">5</property>
                             <child>
                               <object class="GtkLabel" id="email_principale_label">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Email
   principale</property>
                               </object>
@@ -1630,9 +1800,15 @@ per inserirne</property>
                               <object class="GtkEntry" id="email_principale_entry">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="invisible_char">●</property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -1646,10 +1822,12 @@ per inserirne</property>
                         <child>
                           <object class="GtkHBox" id="fax_principale_hbox">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="spacing">5</property>
                             <child>
                               <object class="GtkLabel" id="fax_principale_label">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Fax
   principale</property>
                               </object>
@@ -1663,9 +1841,15 @@ per inserirne</property>
                               <object class="GtkEntry" id="fax_princiale_entry">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="invisible_char">●</property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
                               </object>
                               <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -1676,6 +1860,9 @@ per inserirne</property>
                             <property name="position">2</property>
                           </packing>
                         </child>
+                        <child>
+                          <placeholder/>
+                        </child>
                       </object>
                     </child>
                   </object>
@@ -1683,6 +1870,7 @@ per inserirne</property>
                 <child type="label">
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xpad">4</property>
                     <property name="label" translatable="yes">&lt;b&gt;Contatti aziendali principali&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
@@ -1690,12 +1878,16 @@ per inserirne</property>
                 </child>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="padding">5</property>
                 <property name="position">1</property>
               </packing>
             </child>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -1707,6 +1899,7 @@ per inserirne</property>
     <child type="tab">
       <object class="GtkLabel" id="altre_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="label" translatable="yes">&lt;b&gt;Categorie - info preferenziali - contatti principali&lt;/b&gt;</property>
         <property name="use_markup">True</property>
       </object>
@@ -1715,5 +1908,11 @@ per inserirne</property>
         <property name="tab_fill">False</property>
       </packing>
     </child>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name item -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>

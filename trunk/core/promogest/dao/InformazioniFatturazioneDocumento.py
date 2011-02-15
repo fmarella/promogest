@@ -1,43 +1,62 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: JJDaNiMoTh <jjdanimoth@gmail.com>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
+
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from promogest.Environment import *
+from Dao import Dao
 
 
-import Dao
-from promogest import Environment
-
-class InformazioniFatturazioneDocumento(Dao.Dao):
-
-    def __init__(self, connection, idFattura=None):
-        Dao.Dao.__init__(self, connection,
-                         'InformazioniFatturazioneDocumentoGet', 'InformazioniFatturazioneDocumentoSet', 'InformazioniFatturazioneDocumentoDel',
-                         ('id_fattura', ), (idFattura, ))
-
-
-    def persist(self, conn):
-        if conn is None:
-            raise NotImplementedError, 'Connection must be passed'
-
-        #salvataggio riga
-        Dao.Dao.persist(self, conn)
-
-
-
-def select(connection, idFattura=None, idDDT=None, immediate=False):
-    """ 
-    Seleziona le informazioni sulle fatture desiderate
-    """
-
-    cursor = connection.execStoredProcedure('InformazioniFatturazioneDocumentoSel',
-                                            (idFattura,
-                                             idDDT),
-                                            returnCursor=True)
-
-    if immediate:
-        return Dao.select(cursor=cursor, daoClass=InformazioniFatturazioneDocumento)
+try:
+    informazionifatturazionedocumento = Table('informazioni_fatturazione_documento',
+                params['metadata'],
+                schema = params['schema'],
+                autoload=True)
+except:
+    azTable = Table('testata_documento', params['metadata'], autoload=True, schema=params['schema'])
+    if params["tipo_db"] == "sqlite":
+        testata_documentoFK = 'testata_documento.id'
     else:
-        return (cursor, InformazioniFatturazioneDocumento)
+        testata_documentoFK =params['schema']+'.testata_documento.id'
 
+    informazionifatturazionedocumento = Table('informazioni_fatturazione_documento', params['metadata'],
+            Column('id_fattura',Integer,ForeignKey(testata_documentoFK,onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
+            Column('id_ddt',Integer,ForeignKey(testata_documentoFK,onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True,nullable=False),
+            schema=params["schema"]
+            )
+    informazionifatturazionedocumento.create(checkfirst=True)
+
+class InformazioniFatturazioneDocumento(Dao):
+
+    def __init__(self, arg=None):
+        Dao.__init__(self, entity=self)
+
+    def filter_values(self,k,v):
+        if k == "id_fattura":
+            dic= {k:informazionifatturazionedocumento.c.id_fattura ==v}
+        elif k == 'id_ddt':
+            dic = {k:informazionifatturazionedocumento.c.id_ddt==v}
+        return  dic[k]
+
+
+std_mapper = mapper(InformazioniFatturazioneDocumento,informazionifatturazionedocumento,properties={
+        }, order_by=informazionifatturazionedocumento.c.id_fattura)

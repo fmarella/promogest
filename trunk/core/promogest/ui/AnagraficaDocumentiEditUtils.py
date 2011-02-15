@@ -226,6 +226,7 @@ def calcolaTotalePart(anaedit, dao=None):
     """ calcola i totali documento """
     # FIXME: duplicated in TestataDocumenti.py
     totaleImponibile = Decimal(0)
+    totaleFuoriImponibile = Decimal(0)
     totaleImposta = Decimal(0)
     totaleNonScontato = Decimal(0)
     totaleImpostaScontata = Decimal(0)
