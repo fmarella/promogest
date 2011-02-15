@@ -224,8 +224,8 @@ class FatturazioneDifferita(GladeWidget):
             print "FATTUR", fattura
             if fattura:
                 righe = []
+                ddt_id = []
                 for ddt in self.listdoc[ragsoc]:
-                    ddt_id = []
                     if self.daoGiaPresente(InformazioniFatturazioneDocumento()\
                                                         .select(id_fattura=ddt[0].id)):
                         # Ok, ora posso registrare le righe dei documenti
@@ -244,8 +244,30 @@ class FatturazioneDifferita(GladeWidget):
                         daoRiga.valore_unitario_netto = 0.0
                         daoRiga.scontiRigaDocumento = []
                         righe.append(daoRiga)
-                        if self.dettaglio_check.get_active():
-                            print "DOVREI AGGIUNGERE LE RIGHE NEL DETTAGLIO"
+#                        if self.dettaglio_check.get_active():
+                        if 1==1:
+                            for r in dao_da_fatturare.righe:
+                                daoRiga = RigaDocumento()
+                                daoRiga.id_articolo = r.id_articolo
+                                daoRiga.id_magazzino = r.id_magazzino
+                                daoRiga.descrizione = "   "+r.descrizione
+                                daoRiga.id_listino = r.id_listino
+                                daoRiga.percentuale_iva = r.percentuale_iva
+                                daoRiga.applicazione_sconti = r.applicazione_sconti
+                                daoRiga.quantita = r.quantita
+                                daoRiga.id_multiplo = r.id_multiplo
+                                daoRiga.moltiplicatore = r.moltiplicatore
+                                daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
+                                daoRiga.valore_unitario_netto = r.valore_unitario_netto
+                                daoRiga.misura_pezzo = r.misura_pezzo
+                                sconti = []
+                                for s in r.sconti:
+                                    daoSconto = ScontoRigaDocumento()
+                                    daoSconto.valore = s.valore
+                                    daoSconto.tipo_sconto = s.tipo_sconto
+                                    sconti.append(daoSconto)
+                                daoRiga.scontiRigaDocumento = sconti
+                                righe.append(daoRiga)
                         ddt_id.append(dao_da_fatturare.id)
                 if righe:
                     fattura.righeDocumento = righe
