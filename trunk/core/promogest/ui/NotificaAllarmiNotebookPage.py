@@ -21,7 +21,7 @@
 
 import gtk
 from promogest.ui.utils import *
-from promogest.dao.Setconf import SetConf
+#from promogest.dao.Setconf import SetConf
 from promogest import Environment
 from GladeWidget import GladeWidget
 import promogest.dao.Promemoria
@@ -124,7 +124,7 @@ class NotificaAllarmiNotebookPage(GladeWidget):
         """
         viene(vengono) eliminato(i) l'allarme(i) selezionato(i) nella treeview
         """
-        count = self.alarm_notify_treeview.get_selection().count_selected_rows()
+        count = self.maino.notifica_allarmi.alarm_notify_treeview.get_selection().count_selected_rows()
         dialog = gtk.MessageDialog(None,
                                    gtk.DIALOG_MODAL
                                    | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -134,7 +134,7 @@ class NotificaAllarmiNotebookPage(GladeWidget):
         response = dialog.run()
         dialog.destroy()
         if response ==  gtk.RESPONSE_YES:
-            (model, indexes)= self.alarm_notify_treeview.get_selection().get_selected_rows()
+            (model, indexes)= self.maino.notifica_allarmi.alarm_notify_treeview.get_selection().get_selected_rows()
             rows = []
             for index in indexes:
                 iter = model.get_iter(index)
@@ -148,8 +148,7 @@ class NotificaAllarmiNotebookPage(GladeWidget):
             return
 
     def on_snooze_alarm_button_clicked(self, button):
-        print dir(self)
-        (model, indexes)= self.maino.alarm_notify_treeview.get_selection().get_selected_rows()
+        (model, indexes)= self.maino.notifica_allarmi.alarm_notify_treeview.get_selection().get_selected_rows()
         rows = []
         for index in indexes:
             iter = model.get_iter(index)
@@ -158,6 +157,3 @@ class NotificaAllarmiNotebookPage(GladeWidget):
             dao.in_scadenza = False
             dao.persist()
             model.remove(iter)
-
-    def create_allarmi_frame(self):
-        """ creiamo il tab degli allarmi"""
