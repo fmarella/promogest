@@ -32,14 +32,27 @@ from promogest.ui.AnagraficaPromemoria import AnagraficaPromemoria
 class NotificaAllarmiNotebookPage(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
     di configurazione """
-    def __init__(self, mainnn, azienda):
+    def __init__(self, maino, azienda):
         GladeWidget.__init__(self, 'notifica_allarmi_frame',
                                     'notifica_allarmi_notebook.glade')
 #        self.placeWindow(self.getTopLevel())
         self.rowBackGround = None
-        self.main = mainnn
+        self.maino = maino
         self.aziendaStr = azienda or ""
-        self.create_allarmi_frame()
+        self.drawAllarmi()
+        model = self.alarm_notify_treeview.get_model()
+        model.clear()
+        #get the current alarms from db
+        idAllarmi = promogest.dao.Promemoria.getScadenze()
+        #fill again the model of the treeview (a gtk.ListStore)
+        for idAllarme in idAllarmi:
+            dao = Promemoria().getRecord(id=idAllarme)
+            model.append((dao, dateToString(dao.data_scadenza),
+                                dao.oggetto,
+                                dao.descrizione,
+                                dao.incaricato,
+                                dao.autore,
+                                dao.annotazione))
 
     def drawAllarmi(self):
         """
@@ -135,29 +148,16 @@ class NotificaAllarmiNotebookPage(GladeWidget):
             return
 
     def on_snooze_alarm_button_clicked(self, button):
-            (model, indexes)= self.alarm_notify_treeview.get_selection().get_selected_rows()
-            rows = []
-            for index in indexes:
-                iter = model.get_iter(index)
-                dao = model.get(iter,0)[0]
-                dao.giorni_preavviso += -1
-                dao.in_scadenza = False
-                dao.persist()
-                model.remove(iter)
+        print dir(self)
+        (model, indexes)= self.maino.alarm_notify_treeview.get_selection().get_selected_rows()
+        rows = []
+        for index in indexes:
+            iter = model.get_iter(index)
+            dao = model.get(iter,0)[0]
+            dao.giorni_preavviso += -1
+            dao.in_scadenza = False
+            dao.persist()
+            model.remove(iter)
 
     def create_allarmi_frame(self):
         """ creiamo il tab degli allarmi"""
-        self.drawAllarmi()
-        model = self.alarm_notify_treeview.get_model()
-        model.clear()
-        #get the current alarms from db
-        idAllarmi = promogest.dao.Promemoria.getScadenze()
-        #fill again the model of the treeview (a gtk.ListStore)
-        for idAllarme in idAllarmi:
-            dao = Promemoria().getRecord(id=idAllarme)
-            model.append((dao, dateToString(dao.data_scadenza),
-                                dao.oggetto,
-                                dao.descrizione,
-                                dao.incaricato,
-                                dao.autore,
-                                dao.annotazione))

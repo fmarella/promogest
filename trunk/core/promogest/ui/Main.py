@@ -945,10 +945,10 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
         calendar_page_label.set_markup("<b>CALENDARIO</b>")
         self.main_notebook.append_page(calendar_page.calendario_frame, calendar_page_label)
 
-        notifica_allarmi = NotificaAllarmiNotebookPage(self, self.aziendaStr)
-        notifica_allarmi_label = gtk.Label()
-        notifica_allarmi_label.set_markup("<b>NOTIFICA ALLARMI</b>")
-        self.main_notebook.append_page(notifica_allarmi.notifica_allarmi_frame, notifica_allarmi_label)
+#        notifica_allarmi = NotificaAllarmiNotebookPage(self, self.aziendaStr)
+#        notifica_allarmi_label = gtk.Label()
+#        notifica_allarmi_label.set_markup("<b>NOTIFICA ALLARMI</b>")
+#        self.main_notebook.append_page(notifica_allarmi.notifica_allarmi_frame, notifica_allarmi_label)
 
         azioni_veloci_page = AzioniVelociNotebookPage(self, self.aziendaStr).draw()
         self.azioni_veloci_page = azioni_veloci_page
@@ -958,7 +958,7 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
 
 
     def statusBarHandler(self):
-        textStatusBar = "    PromoGest2 - 800 034561 - www.promogest.me - info@promotux.it     "
+        textStatusBar = "    PromoGest2 - 0708649705 - www.promogest.me - info@promotux.it     "
         context_id =  self.pg2_statusbar.get_context_id("main_window")
         self.pg2_statusbar.push(context_id,textStatusBar)
 
