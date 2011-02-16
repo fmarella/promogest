@@ -382,60 +382,66 @@ def ckd(dao):
                         +str(Environment.tipo_pg) \
                         +" "+str(classe))
     stopp = False
-    if "ONE BASIC" in Environment.modulesList and Environment.tipodb =="sqlite":
-        records = Environment.session.query(dao.__class__).count()
-        if "TestataDocumento" in classe:
-            if records > 50: stopp = True
-        if "Listino" in classe:
-            if records > 1: stopp = True
-        if "Promemoria" in classe:
-            if records > 5: stopp = True
-        if "PrimaNota" in classe:
-            if records > 5: stopp = True
-        if "TestataCommessa" in classe:
-            if records > 5: stopp = True
-        if "Articolo" in classe:
-            if records > 500: stopp = True
-        if "Banca" in classe:
-            if records > 1: stopp = True
-        if "CategoriaArticolo" in classe:
-            if records > 3: stopp = True
-        if "FamigliaArticolo" in classe:
-            if records > 3: stopp = True
-        if "Cliente" in classe:
-            if records > 30: stopp = True
-        if "Fornitore" in classe:
-            if records > 10: stopp = True
-        if "Magazzino" in classe:
-            if records > 1: stopp = True
-        if "Pagamento" in classe:
-            if records > 3: stopp = True
-        if "Vettore" in classe:
-            if records > 1: stopp = True
-        if "Colore" in classe:
-            if records > 5: stopp = True
-        if "Taglia" in classe:
-            if records > 5: stopp = True
-        if stopp:
-            msg = """HAI RAGGIUNTO IL LIMITE MASSIMO CONSENTITO
-DALLA VERSIONE ONE BASIC GRATUITA PER QUESTA OPERAZIONE, ACQUISTA
-LA VERSIONE "ONE STANDARD" PER ELIMINARE TUTTI I LIMITI
-O LA "ONE FULL" PER ATTIVARE ANCHE TUTTI I MODULI"""
-            dialoggg = gtk.MessageDialog(None,
-                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                    gtk.MESSAGE_INFO,
-                    gtk.BUTTONS_OK,
-                    msg)
-            dialoggg.run()
-            dialoggg.destroy()
-            Environment.params["session"].rollback()
-            return False
-#    elif "ONE STANDARD" in Environment.modulesList:
-#        records = Environment.session.query(dao.__class__).count()
-#        if "TestataDocumento" in classe:
-#            if records > 50: stopp = True
-#        print "VERSIONE STANDARD", classe
+    if "ONE BASIC" in Environment.modulesList or \
+                            "PRO BASIC" in Environment.modulesList:
+        if Environment.tipodb =="sqlite":
+            records = Environment.session.query(dao.__class__).count()
+            if "TestataDocumento" in classe:
+                if records > 50: stopp = True
+            if "Listino" in classe:
+                if records > 1: stopp = True
+            if "Promemoria" in classe:
+                if records > 5: stopp = True
+            if "PrimaNota" in classe:
+                if records > 5: stopp = True
+            if "TestataCommessa" in classe:
+                if records > 5: stopp = True
+            if "Articolo" in classe:
+                if records > 500: stopp = True
+            if "Banca" in classe:
+                if records > 1: stopp = True
+            if "Contatto" in classe:
+                if records > 35: stopp = True
+            if "CategoriaArticolo" in classe:
+                if records > 3: stopp = True
+            if "FamigliaArticolo" in classe:
+                if records > 3: stopp = True
+            if "Cliente" in classe:
+                if records > 30: stopp = True
+            if "Fornitore" in classe:
+                if records > 10: stopp = True
+            if "Magazzino" in classe:
+                if records > 1: stopp = True
+            if "Pagamento" in classe:
+                if records > 3: stopp = True
+            if "Vettore" in classe:
+                if records > 1: stopp = True
+            if "Colore" in classe:
+                if records > 5: stopp = True
+            if "Taglia" in classe:
+                if records > 5: stopp = True
+            if stopp:
+                msg = """HAI RAGGIUNTO IL LIMITE MASSIMO CONSENTITO
+    DALLA VERSIONE ONE BASIC GRATUITA PER QUESTA OPERAZIONE, ACQUISTA
+    LA VERSIONE "ONE STANDARD" PER ELIMINARE TUTTI I LIMITI
+    O LA "ONE FULL" PER ATTIVARE ANCHE TUTTI I MODULI"""
+                dialoggg = gtk.MessageDialog(None,
+                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                        gtk.MESSAGE_INFO,
+                        gtk.BUTTONS_OK,
+                        msg)
+                dialoggg.run()
+                dialoggg.destroy()
+                Environment.params["session"].rollback()
+                return False
+    #    elif "ONE STANDARD" in Environment.modulesList:
+    #        records = Environment.session.query(dao.__class__).count()
+    #        if "TestataDocumento" in classe:
+    #            if records > 50: stopp = True
+    #        print "VERSIONE STANDARD", classe
 
-#    else:
-#        print " TUTTO OK PUOI ANDARE"
+    #    else:
+    #        print " TUTTO OK PUOI ANDARE"
+        else:
+            print "CIAOOOO"
     return True

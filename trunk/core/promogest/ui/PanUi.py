@@ -35,19 +35,20 @@ except:
     None
 
 def checkPan(main):
-    print "TIPO PG", Environment.tipo_pg
+    print "TIPO PG", Environment.tipo_pg, Environment.modulesList
     if  ("ONE STANDARD" not in Environment.modulesList) and \
         ("ONE FULL" not in Environment.modulesList) and \
         ("PRO BASIC" not in Environment.modulesList) and \
         ("PRO STANDARD" not in  Environment.modulesList) and\
         ("PRO FULL" not in  Environment.modulesList) and\
         (Environment.tipodb!="postgresql"):
+        print "PASSI QUI"
         pp = PanUi(main).draw()
         a = gtk.Label()
         a.set_text("OPZIONI MODULI")
         main.main_notebook.prepend_page(pp.pan_frame, a)
         main.main_notebook.set_current_page(0)
-        text = "OPZIONE:<b>%s!</b>" %("NESSUNA")
+        text = "OPZIONE:<b>%s!</b>" %("ONE BASIC")
         main.pan_label_info.set_markup(text)
         return pp
     else:
@@ -125,80 +126,3 @@ class PanUi(GladeWidget):
             return
             url ="http://www.promogest.met/promoGest/preventivo_promoshop"
             webbrowser.open_new_tab(url)
-
-
-    def on_pan_esegui_button_clicked(self,button):
-        username = self.main.pp.pan_entry_username.get_text()
-        passw = self.main.pp.pan_password_entry.get_text()
-        company = Environment.azienda
-        if self.main.pp.pan_radio_si.get_active():
-            azione = "PAN"
-#        elif self.main.pp.pan_radio_no.get_active():
-#            azione = "NO"
-        elif self.main.pp.basic_radio.get_active():
-            azione = "BASIC"
-        if (azione == "PAN" or azione == "BASIC") and (username =="" or passw == ""):
-            messageInfo(msg = """Nessun Username o password sono state inserite,
-se non sei registrato fallo premendo il pulsante 'registrati sito'""")
-        else:
-            url = "http://www.promogest.me/trial"
-#            url = "http://localhost:8080/trial"
-            password = hashlib.md5(username + passw).hexdigest()
-            data = {"username" : username,"password":password, "company":company,
-                        "pan":azione}
-            if azione =="PAN" or azione == "BASIC":
-                values = urllib.urlencode(data)
-                req = urllib2.Request(url, values)
-                response = urllib2.urlopen(req)
-                t = Timer(5.0, response.close)
-                t.start()
-                content = response.read()
-                conte = json.loads(content)
-                if conte["rows"] > 0 and (conte["pan"] == "PAN" or conte["pan"] == "BASIC"):
-                    conf = SetConf().select(key="pan", section="Master")
-                    if conf:
-                        c = conf[0]
-                    else:
-                        c = SetConf()
-                    c.key="pan"
-                    c.section= "Master"
-                    c.value = conte["pan"]
-                    c.active = True
-                    c.visible = False
-                    c.persist()
-                    dd = SetConf().select(key="username", section="Master")
-                    if dd:
-                        d = dd[0]
-                    else:
-                        d = SetConf()
-                    d.key="username"
-                    d.value = username
-                    d.section = "Master"
-                    d.active = True
-                    d.visible = False
-                    d.persist()
-                    ee = SetConf().select(key="password", section="Master")
-                    if ee:
-                        e = ee[0]
-                    else:
-                        e = SetConf()
-                    e.key= "password"
-                    e.section = "Master"
-                    e.value = password
-                    e.visible = False
-                    e.active = True
-                    e.persist()
-                    if conte["pan"] == "PAN":
-                        Environment.modulesList.append("pan")
-                        text = "OPZIONE:<b>PAN!</b>,GIORNI RESIDUI: <b>%s</b>" %str(conte["residui"])
-                    elif conte["pan"] == "BASIC":
-                        Environment.modulesList.append("basic")
-                        text = "OPZIONE:<b>BASIC!</b>,GIORNI RESIDUI: <b>%s</b>" %str(conte["residui"])
-                    self.main.pan_label_info.set_markup(text)
-                    self.main.main_notebook.remove_page(0)
-                elif conte["rows"] < 1:
-                    messageInfo(msg=""" Username o password errate, riprovare""")
-                else:
-                    messageInfo(msg="""NON e' possibile attivare l'opzione
-Probabilmente sono scaduti i trenta giorni, o è stata attivata e poi disattivata
-prova comunque a contattarci per una soluzione""")
