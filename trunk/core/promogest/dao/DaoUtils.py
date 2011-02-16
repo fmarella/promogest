@@ -430,11 +430,11 @@ O LA "ONE FULL" PER ATTIVARE ANCHE TUTTI I MODULI"""
             dialoggg.destroy()
             Environment.params["session"].rollback()
             return False
-    elif "ONE STANDARD" in Environment.modulesList:
+#    elif "ONE STANDARD" in Environment.modulesList:
 #        records = Environment.session.query(dao.__class__).count()
 #        if "TestataDocumento" in classe:
 #            if records > 50: stopp = True
-        print "VERSIONE STANDARD", classe
+#        print "VERSIONE STANDARD", classe
 
 #    else:
 #        print " TUTTO OK PUOI ANDARE"

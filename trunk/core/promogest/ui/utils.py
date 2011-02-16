@@ -2861,12 +2861,14 @@ def posso(mod=None):
         if "RuoliAzioni"in moduli: return True
         if "ONE FULL" in moduli :return True
         if "PRO STANDARD" in moduli: return True
+        if "PRO FULL" in moduli: return True
     if mod == "PW" or mod=="PromoWear":
         if "PromoWear" in moduli:return True
     if mod == "AG":
         if "Agenti" in moduli: return True
         if "ONE FULL" in moduli :return True
         if "PRO STANDARD" in moduli: return True
+        if "PRO FULL" in moduli: return True
     if mod == "GN":
         if "GestioneNoleggio" in moduli: return True
     if mod == "VD" or mod=="VenditaDettaglio":
@@ -2875,10 +2877,12 @@ def posso(mod=None):
         if "DistintaBase" in moduli: return True
     if mod == "CN" or mod=="Contatti":
         if "Contatti" in moduli:return True
+        if "ONE BASIC" in moduli : return True
         if "ONE STANDARD" in moduli: return True
         if "ONE FULL" in moduli: return True
         if "PRO BASIC" in moduli : return True
         if "PRO STANDARD" in moduli: return True
+        if "PRO FULL" in moduli: return True
     if mod == "PR" or mod=="Promemoria":
         if "Promemoria" in moduli:return True
         if "ONE BASIC" in moduli : return True
@@ -2889,28 +2893,49 @@ def posso(mod=None):
     if mod == "IN":
         if "Inventario"  in moduli: return True
         if "ONE FULL" in moduli: return True
+        if "PRO FULL" in moduli: return True
     if mod == "IPL":
         if "ImportPriceList" in moduli:return True
         if "ONE FULL" in moduli: return True
+        if "PRO FULL" in moduli: return True
     if mod == "LA":
         if "Label" in moduli: return True
         if "ONE FULL" in moduli: return True
+        if "PRO FULL" in moduli: return True
     if mod == "SM":
         if "SuMisura" in moduli: return True
     if mod == "IP":
         if "InfoPeso" in moduli: return True
     if mod == "PA" or mod=="Pagamenti":
         if "Pagamenti" in moduli: return True
+        if "ONE BASIC" in moduli: return True
         if "ONE STANDARD" in moduli: return True
         if "ONE FULL" in moduli: return True
+        if "PRO BASIC" in moduli: return True
         if "PRO STANDARD" in moduli: return True
+        if "PRO FULL" in moduli: return True
+    if mod == "PN" or mod=="PrimaNota":
+        if "PrimaNota" in moduli: return True
+        if "ONE BASIC" in moduli: return True
+        if "ONE STANDARD" in moduli: return True
+        if "ONE FULL" in moduli: return True
+        if "PRO BASIC" in moduli: return True
+        if "PRO STANDARD" in moduli: return True
+        if "PRO FULL" in moduli: return True
     if mod == "STA":
         if "STA" in moduli: return True
         if "ONE FULL" in moduli: return True
+        if "PRO FULL" in moduli: return True
     if mod == "SD":
         if "SincroDB" in moduli :return True
     if mod == "GC" or mod =="GestioneCommesse":
         if "GestioneCommesse" in moduli :return True
+        if "ONE BASIC" in moduli: return True
+        if "ONE STANDARD" in moduli: return True
+        if "ONE FULL" in moduli: return True
+        if "PRO BASIC" in moduli: return True
+        if "PRO STANDARD" in moduli: return True
+        if "PRO FULL" in moduli: return True
     d = SetConf().select(key="mod_enable",section=mod,value="yes" )
     if d:
         return True

@@ -29,50 +29,6 @@ from promogest.modules.InfoPeso.dao.RigaInfoPeso import RigaInfoPeso
 
 from promogest.modules.InfoPeso.dao.ClienteGeneralita import ClienteGeneralita
 
-def fillComboboxTipoTrattamento(combobox, filter=False):
-    """ Riempi combo degli stadi commessa """
-    model = gtk.ListStore(object, int, str)
-    stcom = TipoTrattamento().select(batchSize=None)
-    if not filter:
-        emptyRow = ''
-    model.append((None, 0, emptyRow))
-    for c in stcom:
-        model.append((c, c.id, (c.denominazione or '')[0:20]))
-
-    combobox.clear()
-    renderer = gtk.CellRendererText()
-    combobox.pack_start(renderer, True)
-    combobox.add_attribute(renderer, 'text', 2)
-    combobox.set_model(model)
-    if combobox.__class__ is gtk.ComboBoxEntry:
-        combobox.set_text_column(2)
-
-
-def on_id_tipo_trattamento_customcombobox_clicked(widget, button):
-    """
-    Richiama l'anagrafica tipo trattamento
-    """
-    def on_anagrafica_tipo_trattamento_articoli_destroyed(window):
-        """
-        """
-        # all'uscita dall'anagrafica richiamata, aggiorna l'elenco associato
-        widget.button.set_active(False)
-        id = findIdFromCombobox(widget.combobox)
-        fillComboboxTipoTrattamento(widget.combobox)
-        findComboboxRowFromId(widget.combobox, id)
-
-    if widget.button.get_property('active') is False:
-        return
-
-    from promogest.modules.InfoPeso.ui.AnagraficaTipotrattamento import AnagraficaTipoTrattamento
-    anag = AnagraficaTipoTrattamento()
-
-    anagWindow = anag.getTopLevel()
-    returnWindow = widget.get_toplevel()
-    anagWindow.set_transient_for(returnWindow)
-    anagWindow.show_all()
-    anagWindow.connect("destroy",
-                        on_anagrafica_tipo_trattamento_articoli_destroyed)
 
 class InfoPesoNotebookPage(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
@@ -237,8 +193,7 @@ class InfoPesoNotebookPage(GladeWidget):
 
     def on_righe_pesata_treeview_row_activated(self, treeview, path, column):
         print "APAPAPAPAAPAPAPAP"
-        sel = self.righe_pesata_treeview.get_selection()
-        (model, iterator) = sel.get_selected()
+        (model, iterator) = self.righe_pesata_treeview.get_selection().get_selected()
         self.rigaIter = model[iterator]
         self._editIterator = iterator
         self._editModel = model
@@ -252,3 +207,49 @@ class InfoPesoNotebookPage(GladeWidget):
         findComboboxRowFromStr(self.rigaIter[6] or "")
 
         self.editRiga = self.rigaIter[0]
+
+
+def fillComboboxTipoTrattamento(combobox, filter=False):
+    """ Riempi combo degli stadi commessa """
+    model = gtk.ListStore(object, int, str)
+    stcom = TipoTrattamento().select(batchSize=None)
+    if not filter:
+        emptyRow = ''
+    model.append((None, 0, emptyRow))
+    for c in stcom:
+        model.append((c, c.id, (c.denominazione or '')[0:20]))
+
+    combobox.clear()
+    renderer = gtk.CellRendererText()
+    combobox.pack_start(renderer, True)
+    combobox.add_attribute(renderer, 'text', 2)
+    combobox.set_model(model)
+    if combobox.__class__ is gtk.ComboBoxEntry:
+        combobox.set_text_column(2)
+
+
+def on_id_tipo_trattamento_customcombobox_clicked(widget, button):
+    """
+    Richiama l'anagrafica tipo trattamento
+    """
+    def on_anagrafica_tipo_trattamento_articoli_destroyed(window):
+        """
+        """
+        # all'uscita dall'anagrafica richiamata, aggiorna l'elenco associato
+        widget.button.set_active(False)
+        id = findIdFromCombobox(widget.combobox)
+        fillComboboxTipoTrattamento(widget.combobox)
+        findComboboxRowFromId(widget.combobox, id)
+
+    if widget.button.get_property('active') is False:
+        return
+
+    from promogest.modules.InfoPeso.ui.AnagraficaTipotrattamento import AnagraficaTipoTrattamento
+    anag = AnagraficaTipoTrattamento()
+
+    anagWindow = anag.getTopLevel()
+    returnWindow = widget.get_toplevel()
+    anagWindow.set_transient_for(returnWindow)
+    anagWindow.show_all()
+    anagWindow.connect("destroy",
+                        on_anagrafica_tipo_trattamento_articoli_destroyed)

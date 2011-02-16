@@ -127,8 +127,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.checkMAGAZZINO = True
 #        self.completion.set_minimum_key_length(3)
 
-        if not posso("PA"):
-            self.notebook.remove_page(3)
+#        if not posso("PA"):
+#            self.notebook.remove_page(3)
         if posso("PW"):
             self.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
             self.promowear_manager_taglia_colore_togglebutton.set_sensitive(False)
