@@ -684,6 +684,25 @@ class Main(GladeWidget):
                 messageInfo(msg="MODULO O OPZIONE MODIFICATO attivato o disattivato")
                 dialog.destroy()
                 return
+            elif d[1] =="registro":
+                operazione = d[2].strip()+".registro"
+                registro_da_assegnare = d[3]
+                from promogest.dao.Setting import Setting
+                a = Setting().getRecord(id=operazione)
+                if a:
+                    b = Setting().select(value=registro_da_assegnare)
+                    if b:
+                        a.value = registro_da_assegnare
+                        a.persist()
+                        messageInfo(msg="REGISTRO NUMERAZIONE MODIFICATO\n\nRIAVVIARE")
+                        dialog.destroy()
+                        return True
+                    else:
+                        messageInfo(msg="REGISTRO DA ASSEGNARE NON TROVATO O CORRETTO\n\n RIPROVARE")
+                        return False
+                else:
+                    messageInfo(msg="OPERAZIONE NON CORRETTA E NON TROVATA\n\nRIPROVARE")
+                    return False
         else:
             sets = SetConf().select(key="install_code",section="Master")
             if sets:

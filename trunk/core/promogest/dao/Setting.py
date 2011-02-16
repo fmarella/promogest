@@ -26,7 +26,31 @@ from promogest.Environment import params
 from Dao import Dao
 
 class Setting(Dao):
+    """SCHEMA: cl | registro | registro da modificare | registro da assegnare
 
+    esempio:
+    cl|registro|Fattura differita vendita|registro_fattura_vendita
+
+    tabella corrente:
+         operazioni.registri | registri possibili
+
+    DDT acquisto.registro | registro_ddt_acquisto
+    DDT reso a fornitore.registro | registro_ddt_reso_a_fornitore
+    DDT reso da cliente.registro | registro_ddt_reso_da_cliente
+    DDT vendita.registro | registro_ddt_vendita
+    Fattura accompagnatoria.registro | registro_fattura_accompagnatoria
+    Fattura acquisto.registro | registro_fattura_acquisto
+    Fattura differita acquisto.registro | registro_vendita_dettaglio
+    Fattura differita vendita.registro | registro_fattura_differita_vendita
+    Fattura vendita.registro | registro_fattura_vendita
+    Movimento.registro | registro_movimenti
+    Nota di credito a cliente.registro | registro_nota_credito_a_cliente
+    Nota di credito da fornitore.registro | registro_nota_credito_da_fornitore
+    Ordine a fornitore.registro | registro_ordine_a_fornitore
+    Ordine da cliente.registro | registro_ordine_da_cliente
+    Preventivo.registro | registro_preventivo
+    Vendita dettaglio.registro | registro_vendita_dettaglio
+    """
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
 
