@@ -437,7 +437,6 @@ class Main(GladeWidget):
         anag = AnagraficaCategorieContatti()
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
-
     def on_aliquote_iva_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
@@ -461,14 +460,6 @@ class Main(GladeWidget):
         from promogest.modules.GestioneCommesse.ui.AnagraficaStadioCommessa import AnagraficaStadioCommessa
         anag = AnagraficaStadioCommessa()
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
-#            return
-#        else:
-#                messageInfo(msg="""     MODULO IN LAVORAZIONE!!
-
-#ANCORA QUALCHE GIORNO DI PAZIENZA E SARA' DISPONIBILE
-
-#STIAMO LAVORANDO PER VOI
-#    Grazie""")
 
     def on_main_iconview_right_select(self, icon_view, model=None):
         selected = icon_view.get_selected_items()
@@ -552,6 +543,7 @@ class Main(GladeWidget):
         showAnagrafica(self.getTopLevel(), anag)
 
     def on_importa_modulo_activate(self, widget):
+        return
         fileDialog = gtk.FileChooserDialog(title='Importazione modulo',
                                            parent=self.getTopLevel(),
                                            action=gtk.FILE_CHOOSER_ACTION_OPEN,
