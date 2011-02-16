@@ -37,18 +37,6 @@ from promogest.dao.RigaDocumento import RigaDocumento
 from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
 
 
-
-def registraInfoFatturazione(idFattura, idDdt):
-    """
-    Registra le informazioni relative alla fatturazione di un documento
-    """
-
-
-def controllaInfoFatturazione(idDocumento):
-    """ Se esiste un risultato vuol dire che questo ddt è già inseriro in una
-    fattura"""
-    return InformazioniFatturazioneDocumento().select(id_fattura=idDocumento, batchSize=None)
-
 class FatturazioneDifferita(GladeWidget):
 
     def __init__(self, selection=None):
@@ -86,10 +74,10 @@ class FatturazioneDifferita(GladeWidget):
         self.data_documento_entry.grab_focus()
 
     def daoGiaPresente(self, dao):
-        if dao:
+        if dao!=[]:
             daoFattura = TestataDocumento().getRecord(id=dao[0].id_fattura)
             daoDdt = TestataDocumento().getRecord(id=dao[0].id_ddt)
-            msg = "Il documento " + str(daoDdt.numero) + msg + " e' gia' stato elaborato nel documento " + str(daoFattura.numero) + "\nPertanto non verra' elaborato in questa sessione"
+            msg = "Il documento N." + str(daoDdt.numero) +" e' gia' stato elaborato nel documento " + str(daoFattura.numero) + "\nPertanto non verra' elaborato in questa sessione"
             messageInfo(msg)
             return False
         else:
@@ -140,63 +128,8 @@ class FatturazioneDifferita(GladeWidget):
         newDao.costo_da_ripartire = daoDocumento.costo_da_ripartire
         return newDao
 
-#    def registraRigheDocumento(self, riga_riferimento, rig, newDao, vecchierighe):
-
-#        righe = []
-#        for i in vecchierighe:
-#            daoRiga = RigaDocumento()
-##            daoRiga.id_testata_documento = newDao.id
-#            daoRiga.id_articolo = i.id_articolo
-#            daoRiga.id_magazzino = i.id_magazzino
-#            daoRiga.descrizione = i.descrizione
-#            daoRiga.id_listino = i.id_listino
-#            daoRiga.percentuale_iva = i.percentuale_iva
-#            daoRiga.applicazione_sconti = i.applicazione_sconti
-#            daoRiga.quantita = i.quantita
-#            daoRiga.id_multiplo = i.id_multiplo
-#            daoRiga.moltiplicatore = i.moltiplicatore
-#            daoRiga.valore_unitario_lordo = i.valore_unitario_lordo
-#            daoRiga.valore_unitario_netto = i.valore_unitario_netto
-#            daoRiga.misura_pezzo = i.misura_pezzo
-#            sconti = []
-#            sco = i.sconti
-#            for s in sco:
-#                daoSconto = ScontoRigaDocumento()
-#                daoSconto.valore = s.valore
-#                daoSconto.tipo_sconto = s.tipo_sconto
-#                sconti.append(daoSconto)
-#            daoRiga.sconti = sconti
-#            righe.append(daoRiga)
-#        for r in rig:
-#            daoRiga = RigaDocumento()
-#            daoRiga.id_testata_documento = newDao.id
-#            daoRiga.id_articolo = r.id_articolo
-#            daoRiga.id_magazzino = r.id_magazzino
-#            daoRiga.descrizione = r.descrizione
-#            daoRiga.id_listino = r.id_listino
-#            daoRiga.percentuale_iva = r.percentuale_iva
-#            daoRiga.applicazione_sconti = r.applicazione_sconti
-#            daoRiga.quantita = r.quantita
-#            daoRiga.id_multiplo = r.id_multiplo
-#            daoRiga.moltiplicatore = r.moltiplicatore
-#            daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
-#            daoRiga.valore_unitario_netto = r.valore_unitario_netto
-#            daoRiga.misura_pezzo = r.misura_pezzo
-#            sconti = []
-#            sco = r.sconti
-#            for s in sco:
-#                daoSconto = ScontoRigaDocumento()
-#                daoSconto.valore = s.valore
-#                daoSconto.tipo_sconto = s.tipo_sconto
-#                sconti.append(daoSconto)
-#            daoRiga.sconti = sconti
-#            righe.append(daoRiga)
-#        return righe
-
     def on_confirm_button_clicked(self, button=None):
         """ COSA CAVOLO DOBBIAMO FARE QUI ....porca miseria ... commentare..."""
-
-
         #Verifichiamo che ci sia una data documento
         if self.data_documento_entry.get_text() == '':
             obligatoryField(self.getTopLevel(), self.data_documento_entry)
@@ -211,7 +144,6 @@ class FatturazioneDifferita(GladeWidget):
             #e come valore una lista di gtkTreeiter a lui riferiti
             fattura = None
             for ddt in self.listdoc[ragsoc]:
-                print "DDDDDTTTTTT", ddt[0]
                 if self.daoGiaPresente(InformazioniFatturazioneDocumento()\
                                                     .select(id_fattura=ddt[0].id)) and \
                     operazione in ["Fattura vendita","Fattura differita vendita"]:
@@ -221,13 +153,12 @@ class FatturazioneDifferita(GladeWidget):
                                             operazione,
                                             "",
                                             ddt[0])
-            print "FATTUR", fattura
             if fattura:
                 righe = []
                 ddt_id = []
                 for ddt in self.listdoc[ragsoc]:
                     if self.daoGiaPresente(InformazioniFatturazioneDocumento()\
-                                                        .select(id_fattura=ddt[0].id)):
+                                                        .select(id_ddt=ddt[0].id)):
                         # Ok, ora posso registrare le righe dei documenti
                         dao_da_fatturare = ddt[0]
                         # Inserisco il riferimento:
@@ -259,7 +190,7 @@ class FatturazioneDifferita(GladeWidget):
                                 daoRiga.moltiplicatore = r.moltiplicatore
                                 daoRiga.valore_unitario_lordo = r.valore_unitario_lordo
                                 daoRiga.valore_unitario_netto = r.valore_unitario_netto
-                                daoRiga.misura_pezzo = r.misura_pezzo
+#                                daoRiga.misura_pezzo = r.misura_pezzo
                                 sconti = []
                                 for s in r.sconti:
                                     daoSconto = ScontoRigaDocumento()
@@ -277,7 +208,6 @@ class FatturazioneDifferita(GladeWidget):
                         fattura.numero = valori[0]
                         fattura.registro_numerazione= valori[1]
                     fattura.persist()
-                    print "FAAAAAAAAATTURA", fattura, fattura.id, ddt_id
                     for d in ddt_id:
                         info = InformazioniFatturazioneDocumento()
                         info.id_fattura = fattura.id
@@ -306,6 +236,7 @@ class FatturazioneDifferita(GladeWidget):
         for i in iterator:
             if model[i][3] == "DDT vendita":
                 newmodel.append(model[i])
+        newmodel.reverse()
         return newmodel
 
 

@@ -24,7 +24,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from Dao import Dao
-
+#from promogest.dao.TestataDocumento import TestataDocumento
 
 try:
     informazionifatturazionedocumento = Table('informazioni_fatturazione_documento',
@@ -39,7 +39,7 @@ except:
         testata_documentoFK =params['schema']+'.testata_documento.id'
 
     informazionifatturazionedocumento = Table('informazioni_fatturazione_documento', params['metadata'],
-            Column('id_fattura',Integer,ForeignKey(testata_documentoFK,onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True),
+            Column('id_fattura',Integer,ForeignKey(testata_documentoFK,onupdate="CASCADE",ondelete="DELETE"),primary_key=True),
             Column('id_ddt',Integer,ForeignKey(testata_documentoFK,onupdate="CASCADE",ondelete="RESTRICT"),primary_key=True,nullable=False),
             schema=params["schema"]
             )
@@ -59,4 +59,5 @@ class InformazioniFatturazioneDocumento(Dao):
 
 
 std_mapper = mapper(InformazioniFatturazioneDocumento,informazionifatturazionedocumento,properties={
+#"TD":relation(TestataDocumento,primaryjoin = (TestataDocumento.id==informazionifatturazionedocumento.c.id_fattura),cascade="all, delete", backref='IFD'
         }, order_by=informazionifatturazionedocumento.c.id_fattura)

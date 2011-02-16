@@ -898,8 +898,15 @@ class TestataDocumento(Dao):
 
     def delete(self):
         """ Cancelliamo una testata documento con tutti i cascade"""
+        from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
+        ifd = InformazioniFatturazioneDocumento().select(id_fattura=self.id, batchSize=None)
+        if ifd:
+            for f in ifd:
+                params['session'].delete(f)
+            params['session'].commit()
         params['session'].delete(self)
         params['session'].commit()
+
 
     def filter_values(self,k,v):
         if k == 'daNumero':
