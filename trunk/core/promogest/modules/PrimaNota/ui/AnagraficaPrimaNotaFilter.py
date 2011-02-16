@@ -175,9 +175,9 @@ Premendo Nuovo se ne creerà una al primo Gennaio del corrente anno di lavoro"""
                 col = "#CCFFAA"
             valore += mN(i.totali["totale"]) or 0
             self._treeViewModel.append((i,col,
-                                        (i.numero or ''),
+                                        (str(i.numero) or ''),
                                         (dateToString(i.data_inizio) or ''),
                                         (dateToString(i.data_fine) or ''),
                                         (str(mN(i.totali["totale"])) or "0"),
                                         str(valore),
-                                        (i.note or "")))
+                                        (str(i.note) or "")))
