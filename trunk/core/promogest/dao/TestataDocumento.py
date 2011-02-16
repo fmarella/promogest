@@ -45,6 +45,7 @@ from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
+from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
 
 #from DaoUtils import *
 from decimal import *
@@ -898,7 +899,6 @@ class TestataDocumento(Dao):
 
     def delete(self):
         """ Cancelliamo una testata documento con tutti i cascade"""
-        from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
         ifd = InformazioniFatturazioneDocumento().select(id_fattura=self.id, batchSize=None)
         if ifd:
             for f in ifd:
