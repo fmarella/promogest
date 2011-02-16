@@ -159,11 +159,11 @@ class InfoPesoNotebookPage(GladeWidget):
             self.rigaIter[0] = riga
 #            self.rigaIter[1] = str(riga.numero)
             self.rigaIter[1] = dateToString(riga.data_registrazione)
-            self.rigaIter[2] = riga.peso
-            self.rigaIter[3] = riga.massa_grassa
-            self.rigaIter[4] = riga.massa_magra_e_acqua
-            self.rigaIter[5] = riga.acqua
-            self.rigaIter[6] = riga.note
+            self.rigaIter[2] = str(riga.peso)
+            self.rigaIter[3] = str(riga.massa_grassa)
+            self.rigaIter[4] = str(riga.massa_magra_e_acqua)
+            self.rigaIter[5] = str(riga.acqua)
+            self.rigaIter[6] = str(riga.note)
         else:
             model.append((riga,
                         dateToString(data_pesata),
@@ -204,7 +204,7 @@ class InfoPesoNotebookPage(GladeWidget):
         bufferNoteRiga.set_text(self.rigaIter[8] or "")
         self.note_riga_pesata_textview.set_buffer(bufferNoteRiga)
 
-        findComboboxRowFromStr(self.rigaIter[6] or "")
+        findComboboxRowFromStr(self.id_tipo_trattamento_customcombobox.combobox, self.rigaIter[6] or "",2)
 
         self.editRiga = self.rigaIter[0]
 
