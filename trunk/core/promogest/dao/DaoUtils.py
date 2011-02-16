@@ -443,5 +443,18 @@ def ckd(dao):
     #    else:
     #        print " TUTTO OK PUOI ANDARE"
         else:
-            print "CIAOOOO"
+            import gtk
+            msg = """ATTENZIONE!! MESSAGGIO DI AVVISO!
+SEI UN CLIENTE CON INSTALLAZIONE PRO MA NON HAI UN PROFILO ATTIVO
+CONTATTACI A assistenza@promotux.it PER AVERE IL TUO CODICE INSTALLAZIONE
+GRAZIE
+"""
+            dialoggg = gtk.MessageDialog(None,
+                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                gtk.MESSAGE_INFO,
+                                gtk.BUTTONS_OK)
+            dialoggg.set_markup(msg)
+            dialoggg.run()
+            dialoggg.destroy()
+            return True
     return True
