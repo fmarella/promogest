@@ -45,7 +45,7 @@ from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-#from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
+from promogest.dao.InformazioniFatturazioneDocumento import InformazioniFatturazioneDocumento
 
 #from DaoUtils import *
 from decimal import *
