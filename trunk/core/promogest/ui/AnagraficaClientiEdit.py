@@ -394,7 +394,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         recontw = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Sito")
         if recontw:
             recow = recontw[0]
-            if self.sito_web_principale_entry.get_text() =="" and recow.recapito=="":
+            if self.sito_web_principale_entry.get_text() =="" or recow.recapito=="":
                 recow.delete()
             else:
                 recow.id_contatto = self.dao_contatto.id
@@ -411,7 +411,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         recont = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Fax")
         if recont:
             reco = recont[0]
-            if self.fax_principale_entry.get_text() =="" and reco.recapito=="":
+            if self.fax_principale_entry.get_text() =="" or reco.recapito=="":
                 reco.delete()
             else:
                 reco.id_contatto = self.dao_contatto.id
