@@ -76,6 +76,14 @@
             <td class="even-detail"><strong>{{dao.sede_legale_cap}}</strong></td>
         </tr>
     </table>
+
 </td></tr>
+</table>
+<table>
+{% for a in utils.getRecapitiCliente(dao.id) %}
+<tr>
+<td>{{a.tipo_recapito}} :</td><td> {{ a.recapito}}</td>
+</tr>
+{% endfor %}
 </table>
 {% endblock %}

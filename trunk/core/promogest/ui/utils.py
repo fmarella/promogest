@@ -2204,6 +2204,18 @@ def getRecapitiContatto(id=None):
         dbRecapitiContatto = []
     return dbRecapitiContatto
 
+
+def getRecapitiCliente(idCliente):
+    """Dato un cliente restituisce un dizionario dei recapiti"""
+    from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
+    from promogest.dao.RecapitoContatto import RecapitoContatto
+    recaCli = {}
+    cc = ContattoCliente().select(idCliente=idCliente)
+    if cc:
+        reca = RecapitoContatto().select(idContatto=cc[0].id,  batchSize=None)
+        return reca
+    return []
+
 def codeIncrement(value):
     """
     FIXME

@@ -325,104 +325,105 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         #self.dao.categorieCliente = categorie
         self._refreshCategorie()
         #SEzione dedicata ai contatti/recapiti principali
-#        if Environment.tipo_eng =="sqlite" and not self.dao.id:
-#            forMaxId = Contatto().select(batchSize=None)
-#            if not forMaxId:
-#                self.dao_contatto.id = 1
-#            else:
-#                idss = []
-#                for l in forMaxId:
-#                    idss.append(l.id)
-#                self.dao_contatto.id = (max(idss)) +1
-#        self.dao_contatto.tipo_contatto =="cliente"
-#        self.dao_contatto.persist()
+        if Environment.tipo_eng =="sqlite" and not self.dao.id:
+            forMaxId = Contatto().select(batchSize=None)
+            if not forMaxId:
+                self.dao_contatto.id = 1
+            else:
+                idss = []
+                for l in forMaxId:
+                    idss.append(l.id)
+                self.dao_contatto.id = (max(idss)) +1
+        self.dao_contatto.tipo_contatto ="cliente"
+        self.dao_contatto.id_cliente =self.dao.id
+        self.dao_contatto.persist()
 
-#        recont = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Cellulare")
-#        if recont:
-#            reco = recont[0]
-#            if self.cellulare_principale_entry.get_text() =="" or reco.recapito=="":
-#                reco.delete()
-#            else:
-#                reco.id_contatto = self.dao_contatto.id
-#                reco.tipo_recapito = "Cellulare"
-#                reco.recapito = self.cellulare_principale_entry.get_text()
-#                reco.persist()
+        recont = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Cellulare")
+        if recont:
+            reco = recont[0]
+            if self.cellulare_principale_entry.get_text() =="" or reco.recapito=="":
+                reco.delete()
+            else:
+                reco.id_contatto = self.dao_contatto.id
+                reco.tipo_recapito = "Cellulare"
+                reco.recapito = self.cellulare_principale_entry.get_text()
+                reco.persist()
 
-#        else:
-#            reco = RecapitoContatto()
-#            reco.id_contatto = self.dao_contatto.id
-#            reco.tipo_recapito = "Cellulare"
-#            reco.recapito = self.cellulare_principale_entry.get_text()
-#            reco.persist()
+        else:
+            reco = RecapitoContatto()
+            reco.id_contatto = self.dao_contatto.id
+            reco.tipo_recapito = "Cellulare"
+            reco.recapito = self.cellulare_principale_entry.get_text()
+            reco.persist()
 
-#        recont = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Telefono")
-#        if recont:
-#            reco = recont[0]
-#            if self.telefono_principale_entry.get_text() =="" or reco.recapito=="":
-#                reco.delete()
-#            else:
-#                reco.id_contatto = self.dao_contatto.id
-#                reco.tipo_recapito = "Telefono"
-#                reco.recapito = self.telefono_principale_entry.get_text()
-#                reco.persist()
-#        else:
-#            reco = RecapitoContatto()
-#            reco.id_contatto = self.dao_contatto.id
-#            reco.tipo_recapito = "Telefono"
-#            reco.recapito = self.telefono_principale_entry.get_text()
-#            reco.persist()
+        recont = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Telefono")
+        if recont:
+            reco = recont[0]
+            if self.telefono_principale_entry.get_text() =="" or reco.recapito=="":
+                reco.delete()
+            else:
+                reco.id_contatto = self.dao_contatto.id
+                reco.tipo_recapito = "Telefono"
+                reco.recapito = self.telefono_principale_entry.get_text()
+                reco.persist()
+        else:
+            reco = RecapitoContatto()
+            reco.id_contatto = self.dao_contatto.id
+            reco.tipo_recapito = "Telefono"
+            reco.recapito = self.telefono_principale_entry.get_text()
+            reco.persist()
 
 
-#        recont = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Email")
-#        if recont:
-#            reco = recont[0]
-#            if self.email_principale_entry.get_text() =="" or reco.recapito=="":
-#                reco.delete()
-#            else:
-#                reco.id_contatto = self.dao_contatto.id
-#                reco.tipo_recapito = "Email"
-#                reco.recapito = self.email_principale_entry.get_text()
-#                reco.persist()
-#        else:
-#            reco = RecapitoContatto()
-#            reco.id_contatto = self.dao_contatto.id
-#            reco.tipo_recapito = "Email"
-#            reco.recapito = self.email_principale_entry.get_text()
-#            reco.persist()
+        recont = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Email")
+        if recont:
+            reco = recont[0]
+            if self.email_principale_entry.get_text() =="" or reco.recapito=="":
+                reco.delete()
+            else:
+                reco.id_contatto = self.dao_contatto.id
+                reco.tipo_recapito = "Email"
+                reco.recapito = self.email_principale_entry.get_text()
+                reco.persist()
+        else:
+            reco = RecapitoContatto()
+            reco.id_contatto = self.dao_contatto.id
+            reco.tipo_recapito = "Email"
+            reco.recapito = self.email_principale_entry.get_text()
+            reco.persist()
 
-#        recontw = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Sito")
-#        if recontw:
-#            recow = recontw[0]
-#            if self.sito_web_principale_entry.get_text() =="" and recow.recapito=="":
-#                recow.delete()
-#            else:
-#                recow.id_contatto = self.dao_contatto.id
-#                recow.tipo_recapito = "Sito"
-#                recow.recapito = self.sito_web_principale_entry.get_text()
-#                recow.persist()
-#        else:
-#            recow = RecapitoContatto()
-#            recow.id_contatto = self.dao_contatto.id
-#            recow.tipo_recapito = "Sito"
-#            recow.recapito = self.sito_web_principale_entry.get_text()
-#            recow.persist()
+        recontw = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Sito")
+        if recontw:
+            recow = recontw[0]
+            if self.sito_web_principale_entry.get_text() =="" and recow.recapito=="":
+                recow.delete()
+            else:
+                recow.id_contatto = self.dao_contatto.id
+                recow.tipo_recapito = "Sito"
+                recow.recapito = self.sito_web_principale_entry.get_text()
+                recow.persist()
+        else:
+            recow = RecapitoContatto()
+            recow.id_contatto = self.dao_contatto.id
+            recow.tipo_recapito = "Sito"
+            recow.recapito = self.sito_web_principale_entry.get_text()
+            recow.persist()
 
-#        recont = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Fax")
-#        if recont:
-#            reco = recont[0]
-#            if self.fax_principale_entry.get_text() =="" and reco.recapito=="":
-#                reco.delete()
-#            else:
-#                reco.id_contatto = self.dao_contatto.id
-#                reco.tipo_recapito = "Fax"
-#                reco.recapito = self.fax_principale_entry.get_text()
-#                reco.persist()
-#        else:
-#            reco = RecapitoContatto()
-#            reco.id_contatto = self.dao_contatto.id
-#            reco.tipo_recapito = "Fax"
-#            reco.recapito = self.fax_principale_entry.get_text()
-#            reco.persist()
+        recont = RecapitoContatto().select(idContatto=self.dao_contatto.id,tipoRecapito="Fax")
+        if recont:
+            reco = recont[0]
+            if self.fax_principale_entry.get_text() =="" and reco.recapito=="":
+                reco.delete()
+            else:
+                reco.id_contatto = self.dao_contatto.id
+                reco.tipo_recapito = "Fax"
+                reco.recapito = self.fax_principale_entry.get_text()
+                reco.persist()
+        else:
+            reco = RecapitoContatto()
+            reco.id_contatto = self.dao_contatto.id
+            reco.tipo_recapito = "Fax"
+            reco.recapito = self.fax_principale_entry.get_text()
+            reco.persist()
 
     def on_scheda_contabile_togglebutton_clicked(self, toggleButton):
         """
