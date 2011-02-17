@@ -381,12 +381,13 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
 
     def on_id_articolo_customcombobox_changed(self):
         res = self.id_articolo_customcombobox.getData()
-        self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
-        self._percentualeIva = res["percentualeAliquotaIva"]
-        self.percentuale_aliquota_iva_label.set_text('%5.2f' % self._percentualeIva + ' %')
-        fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self.id_articolo_customcombobox.getId())
-        if posso("PW"):
-            self._refreshTagliaColore(res["id"])
+        if res:
+            self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
+            self._percentualeIva = res["percentualeAliquotaIva"]
+            self.percentuale_aliquota_iva_label.set_text('%5.2f' % self._percentualeIva + ' %')
+            fillComboboxMultipli(self.id_multiplo_customcombobox.combobox, self.id_articolo_customcombobox.getId())
+            if posso("PW"):
+                self._refreshTagliaColore(res["id"])
 
     def setDao(self, dao):
         if dao is None:

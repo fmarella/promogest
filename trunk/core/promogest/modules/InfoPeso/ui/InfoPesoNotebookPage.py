@@ -129,6 +129,12 @@ class InfoPesoNotebookPage(GladeWidget):
                                  on_id_tipo_trattamento_customcombobox_clicked)
         self.nome_cognome_label.set_text("")
 
+    def _calcolaDifferenzaPeso(self):
+        model = self.righe_pesata_treeview
+        for m in model:
+            print m[0].peso
+
+
     def on_aggiungi_pesata_button_clicked(self, button):
 
         data_pesata = self.data_pesata_datewidget.get_text()
@@ -147,7 +153,7 @@ class InfoPesoNotebookPage(GladeWidget):
             riga = RigaInfoPeso()
             riga.numero =len(model)+1
 
-#        riga.id_testata_info_peso =
+        tipo_tratt = findStrFromCombobox(self.id_tipo_trattamento_customcombobox.combobox,2)
         riga.id_tipo_trattamento = findIdFromCombobox(self.id_tipo_trattamento_customcombobox.combobox)
         riga.data_registrazione = stringToDate(data_pesata)
         riga.note = note_riga
@@ -160,19 +166,21 @@ class InfoPesoNotebookPage(GladeWidget):
 #            self.rigaIter[1] = str(riga.numero)
             self.rigaIter[1] = dateToString(riga.data_registrazione)
             self.rigaIter[2] = str(riga.peso)
-            self.rigaIter[3] = str(riga.massa_grassa)
-            self.rigaIter[4] = str(riga.massa_magra_e_acqua)
-            self.rigaIter[5] = str(riga.acqua)
-            self.rigaIter[6] = str(riga.note)
+            self.rigaIter[3] = str(0)
+            self.rigaIter[4] = str(riga.massa_grassa)
+            self.rigaIter[5] = str(riga.massa_magra_e_acqua)
+            self.rigaIter[6] = str(riga.acqua)
+            self.rigaIter[7] = str(tipo_tratt)
+            self.rigaIter[8] = str(riga.note)
         else:
             model.append((riga,
                         dateToString(data_pesata),
                         str(peso) or "",
-                        str(" differenza"),
+                        str("0"),
                         str(mgrassa) or "",
                         str(mmagraeacqua) or "",
                         str(acqua) or "",
-                        str("TIPO"),
+                        str(tipo_tratt),
                         str(note_riga.replace("\n"," ")[0:100])
                         ))
         self.righe_pesata_treeview.set_model(model)
@@ -187,6 +195,7 @@ class InfoPesoNotebookPage(GladeWidget):
         self.acqua_entry.set_text("")
         bufferNoteRiga= self.note_riga_pesata_textview.get_buffer()
         bufferNoteRiga.set_text("")
+        self.id_tipo_trattamento_customcombobox.combobox.set_active(-1)
 
     def on_elimina_pesata_button_clicked(self, button):
         print "ELIMINA"
@@ -198,13 +207,16 @@ class InfoPesoNotebookPage(GladeWidget):
         self._editIterator = iterator
         self._editModel = model
 
-        self.data_pesata_datewidget.set_text(self.rigaIter[2] or "")
-        self.peso_pesata_entry.set_text(self.rigaIter[3] or "")
+        self.data_pesata_datewidget.set_text(self.rigaIter[1] or "")
+        self.peso_pesata_entry.set_text(self.rigaIter[2] or "")
+        self.massa_grassa_entry.set_text(self.rigaIter[4] or "")
+        self.massa_magra_e_acqua_entry.set_text(self.rigaIter[5] or "")
+        self.acqua_entry.set_text(self.rigaIter[6] or "")
         bufferNoteRiga= self.note_riga_pesata_textview.get_buffer()
         bufferNoteRiga.set_text(self.rigaIter[8] or "")
         self.note_riga_pesata_textview.set_buffer(bufferNoteRiga)
 
-        findComboboxRowFromStr(self.id_tipo_trattamento_customcombobox.combobox, self.rigaIter[6] or "",2)
+        findComboboxRowFromStr(self.id_tipo_trattamento_customcombobox.combobox, self.rigaIter[7] or "",2)
 
         self.editRiga = self.rigaIter[0]
 
