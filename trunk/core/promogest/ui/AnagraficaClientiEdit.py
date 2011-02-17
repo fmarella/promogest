@@ -238,8 +238,8 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 
     def saveDao(self):
         self.verificaListino()
-        print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP", self.dao_tinfopeso
-        print "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ", self.infopeso_page.citta_nascita_entry.get_text()
+#        print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP", self.dao_tinfopeso
+#        print "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ", self.infopeso_page.citta_nascita_entry.get_text()
         self.dao.codice = self.codice_entry.get_text()
         self.dao.codice = omogeneousCode(section="Clienti", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
