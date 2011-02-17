@@ -325,7 +325,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         #self.dao.categorieCliente = categorie
         self._refreshCategorie()
         #SEzione dedicata ai contatti/recapiti principali
-        if Environment.tipo_eng =="sqlite" and not self.dao.id:
+        if Environment.tipo_eng =="sqlite" and not self.dao_contatto.id:
             forMaxId = Contatto().select(batchSize=None)
             if not forMaxId:
                 self.dao_contatto.id = 1
