@@ -90,7 +90,6 @@ class Main(GladeWidget):
         self.statusBarHandler()
         for filename in glob.glob(Environment.promogestDir+\
                                                     "temp"+os.sep+'*.cache'):
-            print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", filename
             os.remove(filename)
         Environment.windowGroup.append(self.getTopLevel())
         self.anagrafiche_modules = anagrafiche_modules

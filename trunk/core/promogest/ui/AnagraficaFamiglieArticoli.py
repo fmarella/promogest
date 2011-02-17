@@ -29,6 +29,7 @@ class AnagraficaFamiglieArticoli(Anagrafica):
                             editElement=AnagraficaFamiglieArticoliEdit(self))
         self.hideNavigator()
         self.records_file_export.set_sensitive(True)
+        self.duplica_button.set_sensitive(False)
 
     def on_record_delete_activate(self, widget):
         dialog = gtk.MessageDialog(self.getTopLevel(),

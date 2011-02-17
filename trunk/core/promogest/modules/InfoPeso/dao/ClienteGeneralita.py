@@ -45,8 +45,8 @@ except:
             Column('id', Integer, primary_key=True),
             Column('id_cliente', Integer,ForeignKey(clienteFK,onupdate="CASCADE",ondelete="CASCADE")),
             Column('data_nascita', DateTime, nullable=True),
-            Column('altezza', Numeric(16,4), nullable=False),
-            Column('genere', String(10), nullable=False),
+            Column('altezza', Numeric(16,4), nullable=True),
+            Column('genere', String(10), nullable=True),
             schema=params["schema"],
             useexisting=True)
     clientegeneralita.create(checkfirst=True)

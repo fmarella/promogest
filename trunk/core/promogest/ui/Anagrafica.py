@@ -252,6 +252,8 @@ class Anagrafica(GladeWidget):
         self.record_edit_button.set_sensitive(False)
         self.record_edit_menu.set_sensitive(False)
 
+        self.duplica_button.set_sensitive(False)
+
         self.set_focus(self.detail._widgetFirstFocus)
 
 
@@ -279,7 +281,7 @@ class Anagrafica(GladeWidget):
 
         self.record_edit_button.set_sensitive(False)
         self.record_edit_menu.set_sensitive(False)
-
+        self.duplica_button.set_sensitive(False)
         self.set_focus(self.detail._widgetFirstFocus)
 
 
@@ -308,6 +310,7 @@ class Anagrafica(GladeWidget):
 
         self.detail.setDao(dao)
 
+        self.duplica_button.set_sensitive(True)
         self.record_edit_button.set_sensitive(True)
         self.record_edit_menu.set_sensitive(True)
 

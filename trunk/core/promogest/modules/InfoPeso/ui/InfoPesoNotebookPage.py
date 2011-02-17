@@ -129,6 +129,12 @@ class InfoPesoNotebookPage(GladeWidget):
                                  on_id_tipo_trattamento_customcombobox_clicked)
         self.nome_cognome_label.set_text("")
 
+#        self.infoPeso_refresh() # ????
+
+
+
+
+
     def _calcolaDifferenzaPeso(self):
         model = self.righe_pesata_treeview
         for m in model:
@@ -185,7 +191,6 @@ class InfoPesoNotebookPage(GladeWidget):
                         ))
         self.righe_pesata_treeview.set_model(model)
         self._clear()
-        print "AGGIUNGI"
 
     def _clear(self):
         self.data_pesata_datewidget.set_text("")
@@ -201,7 +206,6 @@ class InfoPesoNotebookPage(GladeWidget):
         print "ELIMINA"
 
     def on_righe_pesata_treeview_row_activated(self, treeview, path, column):
-        print "APAPAPAPAAPAPAPAP"
         (model, iterator) = self.righe_pesata_treeview.get_selection().get_selected()
         self.rigaIter = model[iterator]
         self._editIterator = iterator
@@ -220,6 +224,79 @@ class InfoPesoNotebookPage(GladeWidget):
 
         self.editRiga = self.rigaIter[0]
 
+
+    def infoPesoSetDao(self, dao):
+        if not dao.id:
+            self.dao_testata_infopeso = TestataInfoPeso()
+            self.dao_generalita_infopeso = ClienteGeneralita()
+        else:
+            self.dao_testata_infopeso = TestataInfoPeso().select(idCliente=dao.id)
+            self.dao_generalita_infopeso = ClienteGeneralita().select(idCliente = dao.id)
+            if self.dao_testata_infopeso:
+                self.dao_testata_infopeso = self.dao_testata_infopeso[0]
+            else:
+                self.dao_testata_infopeso = TestataInfoPeso()
+            if self.dao_generalita_infopeso:
+                self.dao_generalita_infopeso = self.dao_generalita_infopeso[0]
+            else:
+                self.dao_generalita_infopeso = ClienteGeneralita()
+        self.infoPeso_refresh()
+
+    def infoPeso_refresh(self):
+        self.data_infopeso_datewidget.set_text(dateToString(self.dao_testata_infopeso.data_inizio))
+        self.data_fine_datewidget.set_text(dateToString(self.dao_testata_infopeso.data_fine))
+        self.privacy_check.set_active(int(self.dao_testata_infopeso.privacy or 0))
+        bufferNote = self.note_textview.get_buffer()
+        bufferNote.set_text(self.dao_testata_infopeso.note or "")
+        self.note_textview.set_buffer(bufferNote)
+        self.citta_centro_entry.set_text(self.dao_testata_infopeso.citta or "")
+
+        self.data_nascita_datewidget.set_text(dateToString(self.dao_generalita_infopeso.data_nascita))
+        self.altezza_entry.set_text(str(self.dao_generalita_infopeso.altezza or ""))
+        if self.dao_generalita_infopeso.genere =="Donna":
+            self.donna_radio.set_active(True)
+        else:
+            self.donna_radio.set_active(False)
+
+        model = self.righe_pesata_treeview.get_model()
+        model.clear()
+        for m in self.dao_testata_infopeso.righeinfopeso:
+            model.append((m,
+                        dateToString(m.data_registrazione),
+                        str(m.peso) or "",
+                        str("0"),
+                        str(m.massa_grassa) or "",
+                        str(m.massa_magra_e_acqua) or "",
+                        str(m.acqua) or "",
+                        str(m.tipotrattamento),
+                        str(m.note.replace("\n"," ")[0:100])
+                        ))
+        self.righe_pesata_treeview.set_model(model)
+
+
+    def infoPesoSaveDao(self):
+        self.dao_testata_infopeso.data_inizio= stringToDate(self.data_infopeso_datewidget.get_text())
+        self.dao_testata_infopeso.data_fine = stringToDate(self.data_fine_datewidget.get_text())
+        self.dao_testata_infopeso.privacy = self.privacy_check.get_active()
+        bufferNote= self.note_textview.get_buffer()
+        self.dao_testata_infopeso.note = bufferNote.get_text(bufferNote.get_start_iter(), bufferNote.get_end_iter()) or ""
+        self.dao_testata_infopeso.citta = self.citta_centro_entry.get_text()
+
+        self.dao_generalita_infopeso.data_nascita = stringToDate(self.data_nascita_datewidget.get_text())
+        self.dao_generalita_infopeso.altezza = self.altezza_entry.get_text() or 0
+
+        if self.donna_radio.get_active():
+            self.dao_generalita_infopeso.genere = "Donna"
+        else:
+            self.dao_generalita_infopeso.genere = "Uomo"
+
+        righe = []
+        model = self.righe_pesata_treeview.get_model()
+        for m in model:
+            righe.append(m[0])
+
+        self.dao_testata_infopeso.righeinfopeso = righe
+        return (self.dao_generalita_infopeso, self.dao_testata_infopeso)
 
 def fillComboboxTipoTrattamento(combobox, filter=False):
     """ Riempi combo degli stadi commessa """

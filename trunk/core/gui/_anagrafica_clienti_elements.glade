@@ -1248,7 +1248,7 @@ che lo coinvolgono </property>
       <object class="GtkLabel" id="informazioni_principali_label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">&lt;b&gt;Informazioni principali&lt;/b&gt;</property>
+        <property name="label" translatable="yes">&lt;b&gt;INFO DI BASE&lt;/b&gt;</property>
         <property name="use_markup">True</property>
       </object>
       <packing>
@@ -1721,7 +1721,6 @@ per inserirne</property>
             <child>
               <object class="GtkFrame" id="contatti_principali_frame">
                 <property name="visible">True</property>
-                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="label_xalign">0</property>
                 <property name="shadow_type">in</property>
@@ -1861,6 +1860,48 @@ per inserirne</property>
                           </packing>
                         </child>
                         <child>
+                          <object class="GtkHBox" id="cellulare_hbox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="spacing">5</property>
+                            <child>
+                              <object class="GtkLabel" id="cellulre_principale_label">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Cellulare
+  principale</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="cellulare_princiale_entry">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="invisible_char">●</property>
+                                <property name="invisible_char_set">True</property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                        <child>
                           <placeholder/>
                         </child>
                       </object>
@@ -1900,7 +1941,7 @@ per inserirne</property>
       <object class="GtkLabel" id="altre_label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">&lt;b&gt;Categorie - info preferenziali - contatti principali&lt;/b&gt;</property>
+        <property name="label" translatable="yes">&lt;b&gt;ALTRE INFORMAZIONI&lt;/b&gt;</property>
         <property name="use_markup">True</property>
       </object>
       <packing>

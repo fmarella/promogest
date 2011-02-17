@@ -165,21 +165,17 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             self.dao = Cliente()
             self.dao.codice = promogest.dao.Cliente.getNuovoCodiceCliente()
             self._oldDaoRicreato = False
-            if posso("IP"):
-                self.dao_tinfopeso = TestataInfoPeso()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Cliente().getRecord(id=dao.id)
             self._oldDaoRicreato = True
-            if posso("IP"):
-                self.dao_tinfopeso = TestataInfoPeso().select(idCliente=self.dao.id)
-                if self.dao_tinfopeso:
-                    self.dao_tinfopeso = self.dao_tinfopeso[0]
-                else:
-                    self.dao_tinfopeso = TestataInfoPeso()
-        self._refresh()
+
         if posso("IP"):
+            self.infopeso_page.infoPesoSetDao(self.dao)
             self.infopeso_page.nome_cognome_label.set_text(str(self.dao.ragione_sociale) or ""+"\n"+str(self.dao.cognome) or ""+" "+str(self.dao.nome) or "")
+        self._refresh()
+
+
         return self.dao
 
     def _refresh(self):
@@ -213,16 +209,18 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         findComboboxRowFromStr(self.nazione_combobox,self.dao.nazione, 0)
         #finComboBoxNazione(self.nazione_combobox, default="Italia")
         #if Environment.conf.hasPagamenti == True:
-        self.showTotaliPrimaNota()
+        if posso("IP"):
+            self.infopeso_page.infoPeso_refresh()
+        self.showTotaliDareAvere()
 
-    def showTotaliPrimaNota(self):
+    def showTotaliDareAvere(self):
 
         if self.dao.id:
             totaleDareAnnuale = TotaleAnnualeCliente(id_cliente=self.dao.id)
-            self.totale_annuale_dare_entry.set_text('%.2f' % totaleDareAnnuale)
+            self.totale_annuale_dare_entry.set_text(str(mN(totaleDareAnnuale,2)))
             # Calcoliamo il totale sospeso:
             totaleDareAperto = TotaleClienteAperto(id_cliente=self.dao.id)
-            self.totale_dare_entry.set_text('%.2f' % totaleDareAperto)
+            self.totale_dare_entry.set_text(str(mN(totaleDareAperto,2)))
 
         self.anagrafica_clienti_detail_notebook.set_current_page(0)
 
@@ -238,8 +236,6 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 
     def saveDao(self):
         self.verificaListino()
-#        print "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP", self.dao_tinfopeso
-#        print "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ", self.infopeso_page.citta_nascita_entry.get_text()
         self.dao.codice = self.codice_entry.get_text()
         self.dao.codice = omogeneousCode(section="Clienti", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
@@ -279,6 +275,13 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             if not codfis:
                 raise Exception, 'Operation aborted: Codice Fiscale non corretto'
         self.dao.persist()
+
+        (dao_testata_infopeso, dao_generalita_infopeso) = self.infopeso_page.infoPesoSaveDao()
+        dao_testata_infopeso.id_cliente = self.dao.id
+        dao_testata_infopeso.persist()
+        dao_generalita_infopeso.id_cliente = self.dao.id
+        dao_generalita_infopeso.persist()
+
         model = self.categorie_treeview.get_model()
         cleanClienteCategoriaCliente = ClienteCategoriaCliente()\
                                                     .select(idCliente=self.dao.id,

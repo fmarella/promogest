@@ -42,6 +42,7 @@ class AnagraficaMovimenti(Anagrafica):
                             reportHandler=AnagraficaMovimentiReport(self),
                             editElement=AnagraficaMovimentiEdit(self),
                             aziendaStr=aziendaStr)
+        self.duplica_button.set_sensitive(True)
         self.record_duplicate_menu.set_property('visible', True)
         self.records_file_export.set_sensitive(True)
 

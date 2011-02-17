@@ -46,8 +46,9 @@ except:
             Column('note', Text, nullable=True),
             Column('id_cliente', Integer,ForeignKey(clienteFK,onupdate="CASCADE",ondelete="CASCADE")),
             Column('data_inizio', DateTime, nullable=True),
+            Column('citta', String(10), nullable=True),
             Column('data_fine', DateTime, nullable=True),
-            Column('privacy', Boolean, default=False),
+            Column('privacy', Boolean, default=True),
             schema=params["schema"],
             useexisting=True)
     testatainfopeso.create(checkfirst=True)
@@ -80,22 +81,13 @@ class TestataInfoPeso(Dao):
 
     righeinfopeso = property(_getRigheInfoPeso, _setRigheInfoPeso)
 
-    @property
-    def cliente(self):
-        """ esempio di funzione  unita alla property """
-        cli=  Cliente().getRecord(id=self.id_cliente)
-        if cli:
-            return cli.ragione_sociale
-        else:
-            return ""
-
     def filter_values(self,k,v):
         if k == 'idCliente':
-            dic = {k:testatainfopeso.c.data_fine == None}
+            dic = {k:testatainfopeso.c.id_cliente == v}
         return  dic[k]
 
     def righeInfoPesoDel(self,id=None):
-        """ Cancella le righe associate ad una cmmessa
+        """ Cancella le righe associate ad un info peso
         """
         row = RigaInfoPeso().select(idTestataInfoPeso= id,
                                     offset = None,
@@ -124,6 +116,7 @@ class TestataInfoPeso(Dao):
         pg2log.info("DENTRO IL TESTATA INFOPESO")
         params["session"].add(self)
         params["session"].commit()
+#        self.righeInfoPesoDel(self.id)
         if self.__righeInfoPeso:
             for riga in self.__righeInfoPeso:
                 riga.id_testata_info_peso = self.id

@@ -24,7 +24,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkFrame" id="frame1">
+                  <object class="GtkFrame" id="frame_nome_cognome">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label_xalign">0</property>
@@ -64,7 +64,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="DateWidget" id="DateWidget1">
+                  <object class="DateWidget" id="data_infopeso_datewidget">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                   </object>
@@ -75,20 +75,37 @@
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkLabel" id="data_fine_label">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Data Fine</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="DateWidget" id="data_fine_datewidget">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">4</property>
+                  </packing>
                 </child>
                 <child>
                   <placeholder/>
                 </child>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="citta_label">
+                  <object class="GtkLabel" id="citta_centro_label">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="xpad">5</property>
-                    <property name="label" translatable="yes">citta</property>
+                    <property name="label" translatable="yes">Città</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -97,7 +114,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="citta_nascita_entry">
+                  <object class="GtkEntry" id="citta_centro_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="invisible_char">●</property>
@@ -156,7 +173,6 @@
                     <property name="use_action_appearance">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
-                    <property name="group">uomo_radio</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -173,6 +189,7 @@
                     <property name="use_action_appearance">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
+                    <property name="group">donna_radio</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>

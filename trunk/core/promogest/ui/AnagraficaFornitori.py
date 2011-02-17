@@ -46,6 +46,7 @@ class AnagraficaFornitori(Anagrafica):
                             editElement=AnagraficaFornitoriEdit(self),
                             aziendaStr=aziendaStr)
         self.records_file_export.set_sensitive(True)
+        self.duplica_button.set_sensitive(False)
 
 class AnagraficaFornitoriFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei fornitori """

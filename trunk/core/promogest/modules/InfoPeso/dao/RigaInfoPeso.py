@@ -25,7 +25,7 @@ from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 from migrate import *
-
+from promogest.modules.InfoPeso.dao.TipoTrattamento import TipoTrattamento
 
 try:
     rigainfopeso=Table('riga_info_peso',
@@ -51,7 +51,7 @@ except:
             Column('id_tipo_trattamento', Integer,ForeignKey(tipotrattamentoFK,onupdate="CASCADE",ondelete="RESTRICT")),
             Column('data_registrazione', DateTime, nullable=True),
             Column('note',Text,nullable=True),
-            Column('peso', Numeric(16,4), nullable=False),
+            Column('peso', Numeric(16,4), nullable=True),
             Column('massa_grassa', Numeric(16,4), nullable=True),
             Column('massa_magra_e_acqua', Numeric(16,4), nullable=True),
             Column('acqua', Numeric(16,4), nullable=True),
@@ -69,8 +69,14 @@ class RigaInfoPeso(Dao):
         if k == "id":
             dic= {k:rigainfopeso.c.id ==v}
         elif k == 'idTestataInfoPeso':
-            dic = {k:rigainfopeso.c.id_testata_commessa==v}
+            dic = {k:rigainfopeso.c.id_testata_info_peso==v}
         return  dic[k]
+
+    def _tipoTrattamento(self):
+        a = TipoTrattamento().getRecord(id=self.id_tipo_trattamento)
+        return a.denominazione
+
+    tipotrattamento = property(_tipoTrattamento)
 
 std_mapper = mapper(RigaInfoPeso,rigainfopeso,
                 properties={}, order_by=rigainfopeso.c.id)

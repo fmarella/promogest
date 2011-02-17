@@ -81,11 +81,13 @@ class Anagrafica(GladeWidget):
         self.pg2_statusbar.push(context_id,textStatusBar)
         self.record_delete_button.set_sensitive(False)
         self.record_delete_menu.set_sensitive(False)
+        self.duplica_button.set_sensitive(False)
         self.record_edit_button.set_sensitive(False)
         self.record_edit_menu.set_sensitive(False)
-        self.record_duplicate_menu.set_property('visible', False)
-        self.record_duplicate_menu.set_no_show_all(True)
+#        self.record_duplicate_menu.set_property('visible', False)
+#        self.record_duplicate_menu.set_no_show_all(True)
         self.record_duplicate_menu.set_sensitive(False)
+        self.duplica_button.set_sensitive(False)
         self.selected_record_print_button.set_sensitive(False)
         self.selected_record_print_menu.set_sensitive(False)
         self.placeWindow(self.anagrafica_complessa_window)
@@ -303,7 +305,8 @@ class Anagrafica(GladeWidget):
 
         self.record_edit_button.set_sensitive(self.dao is not None)
         self.record_edit_menu.set_sensitive(self.dao is not None)
-
+        if self.dao.__class__.__name__ in ["TestataDocumento", "Articolo", "TestataMovimento"]:
+            self.duplica_button.set_sensitive(self.dao is not None)
         self.record_duplicate_menu.set_sensitive(self.dao is not None)
 
         self.record_delete_button.set_sensitive(self.dao is not None)
@@ -340,7 +343,8 @@ class Anagrafica(GladeWidget):
 
         self.record_edit_button.set_sensitive(self.dao is not None)
         self.record_edit_menu.set_sensitive(self.dao is not None)
-
+        if self.dao.__class__.__name__ in ["TestataDocumento", "Articolo", "TestataMovimento"]:
+            self.duplica_button.set_sensitive(self.dao is not None)
         self.record_duplicate_menu.set_sensitive(self.dao is not None)
 
         self.record_delete_button.set_sensitive(self.dao is not None)
