@@ -2198,7 +2198,10 @@ def getRecapitiContatto(id=None):
     @type id=None:
     """
     from promogest.dao.RecapitoContatto import RecapitoContatto
-    dbRecapitiContatto = RecapitoContatto().select(idContatto=id)
+    if id:
+        dbRecapitiContatto = RecapitoContatto().select(idContatto=id)
+    else:
+        dbRecapitiContatto = []
     return dbRecapitiContatto
 
 def codeIncrement(value):

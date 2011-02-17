@@ -11,7 +11,7 @@ from promogest.ui.Ricerca import Ricerca, RicercaFilter, RicercaHtml
 
 from promogest import Environment
 from promogest.dao.Contatto import Contatto
-from promogest.dao.ContattoCliente import ContattoCliente
+from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
 from promogest.dao.ContattoFornitore import ContattoFornitore
 from promogest.dao.ContattoAzienda import ContattoAzienda
 from promogest.dao.ContattoMagazzino import ContattoMagazzino

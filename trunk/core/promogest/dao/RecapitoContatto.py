@@ -18,8 +18,12 @@ class RecapitoContatto(Dao):
         Dao.__init__(self, entity=self)
 
     def filter_values(self, k,v):
-        dic= {'id':recapito.c.id_contatto==v,
-            'idContatto':recapito.c.id_contatto==v}
+        if k =="id":
+            dic= {k:recapito.c.id_contatto==v}
+        elif k =="idContatto":
+            dic = {k:recapito.c.id_contatto==v}
+        elif k =="tipoRecapito":
+            dic = {k:recapito.c.tipo_recapito==v}
         return  dic[k]
 
 recapito=Table('recapito',

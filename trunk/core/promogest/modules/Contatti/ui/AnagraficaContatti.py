@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010,2011 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -27,9 +27,8 @@ from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter,\
                          AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
-#from promogest.dao.Dao import Dao
 from promogest.dao.Contatto import Contatto
-from promogest.dao.ContattoCliente import ContattoCliente
+from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
 from promogest.dao.ContattoFornitore import ContattoFornitore
 from promogest.dao.ContattoMagazzino import ContattoMagazzino
 from promogest.dao.ContattoAzienda import ContattoAzienda

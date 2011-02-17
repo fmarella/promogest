@@ -10,10 +10,10 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import params
-from Dao import Dao
-from Cliente import Cliente
-from RecapitoContatto import RecapitoContatto
-from ContattoCategoriaContatto import ContattoCategoriaContatto
+from promogest.dao.Dao import Dao
+from promogest.dao.Cliente import Cliente
+from promogest.dao.RecapitoContatto import RecapitoContatto
+from promogest.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
 
 class ContattoCliente(Dao):
 
