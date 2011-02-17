@@ -124,7 +124,7 @@ Proseguire comunque?
     def on_elimina_banca_button_clicked(self, button):
         self.deleteDao()
         self.anagrafica.refresh()
-        self.duplica_button.set_sensitive(False)
+#        self.duplica_button.set_sensitive(False)
         self.anagrafica.record_new_button.set_sensitive(True)
         self.anagrafica.record_new_menu.set_sensitive(True)
 
