@@ -162,6 +162,11 @@ class MyProxy(ConnectionProxy):
             print("ATTENZIONE:OperationalError",e)
             messageInfo(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
 #            pass
+        except IntegrityError as e:
+            # Handle this exception
+            print("ATTENZIONE:IntegrityError",e)
+            messageInfo(msg="IntegrityError UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
+            session.rollback()
         except ProgrammingError as e:
             # Handle this exception
             print("ATTENZIONE:ProgrammingError",e)
