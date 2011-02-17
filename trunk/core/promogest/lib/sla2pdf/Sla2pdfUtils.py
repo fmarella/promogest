@@ -19,6 +19,10 @@ try:
     from reportlab.graphics.barcode.common import *
     from reportlab.graphics.barcode.usps import *
     from reportlab.graphics.barcode import createBarcodeDrawing
+    from reportlab.graphics.barcode.widgets.widgets import BarcodeI2of5, BarcodeCode128, BarcodeStandard93,\
+                        BarcodeExtended93, BarcodeStandard39, BarcodeExtended39,\
+                        BarcodeMSI, BarcodeCodabar, BarcodeCode11, BarcodeFIM,\
+                        BarcodePOSTNET, BarcodeUSPS_4State
 except:
     pass
 
@@ -133,17 +137,28 @@ def italianizza(value, decimal=0, curr='', sep='.', dp=',',
 
 
 def createbarcode(ch):
-        data = ch.split(';')
-        #print "DATA for Barcode", ch,data[1]
-        #print "CODICE A BARRE " , data[1]
-        if len(data[1]) ==13:
-            bcd = createBarcodeDrawing('EAN13', value=data[1], width=float(data[2])*cm,height=float(data[3])*cm)
-        elif len(data[1]) == 8:
-            bcd = createBarcodeDrawing('EAN8', value=data[1], width=float(data[2])*cm,height=float(data[3])*cm)
-        else:
-            bcd = createBarcodeDrawing('EAN13', value=data[1], width=float(data[2])*cm,height=float(data[3])*cm)
-        #bcd = createBarcodeDrawing('EAN13', value="8002705005009", width=float(data[2])*cm,height=float(data[3])*cm)
+    """'Standard39','QR','Extended39','EAN13','FIM','EAN8','Extended93','USPS_4State'
+    'Codabar' 'MSI' 'POSTNET' 'Code11' 'Standard93' 'I2of5' 'Code128' """
+    data = ch.split(';')
+    #print "DATA for Barcode", ch,data[1]
+    #print "CODICE A BARRE " , data[1]
+    bcd = False
+    def create(tipo, data):
+        try:
+            bcd = createBarcodeDrawing(tipo, value=data[1], width=float(data[2])*cm,height=float(data[3])*cm)
+        except:
+            bcd= None
         return bcd
+
+    for tipo in ['EAN13','EAN8','Extended93','Standard39','QR','Extended39','FIM','USPS_4State',
+                    'Codabar','MSI','POSTNET','Code11','Standard93','I2of5','Code128']:
+        bcd = create(tipo, data)
+        if not bcd:
+            continue
+        else:
+            return bcd
+    print " NON SONO RIUSCITO AD ELABORARE IL CODICE A BARRE", data
+    return bcd
 
 
 

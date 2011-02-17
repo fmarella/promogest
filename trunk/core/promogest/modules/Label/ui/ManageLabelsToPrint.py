@@ -194,7 +194,7 @@ class ManageLabelsToPrint(GladeWidget):
                                                 dao.codice_articolo,
                                                 dao.articolo,
                                                 dao.codice_a_barre,
-                                                dao.prezzo_dettaglio,
+                                                str(dao.prezzo_dettaglio),
                                                 "0",
                                                 ))
                 else:
@@ -203,7 +203,7 @@ class ManageLabelsToPrint(GladeWidget):
                                             dao.codice_articolo,
                                             dao.articolo,
                                             dao.codice_a_barre,
-                                            dao.prezzo_dettaglio,
+                                            str(dao.prezzo_dettaglio),
                                             quantita,
                                             ))
             else:
@@ -211,7 +211,7 @@ class ManageLabelsToPrint(GladeWidget):
                                             dao.codice_articolo,
                                             dao.articolo,
                                             dao.codice_a_barre,
-                                            dao.prezzo_dettaglio,
+                                            str(dao.prezzo_dettaglio),
                                             quantita,
                                             ))
 
