@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 from SimpleGladeWrapper import SimpleGladeWrapper
-
+import os
 import gtk
 import gobject
 import xml.etree.cElementTree as ElementTree
@@ -88,18 +88,20 @@ class GladeWidget(SimpleGladeApp):
         self.top = None
 
         file = open(self._defaultWindowAttributesFile, "r")
-        doc = ElementTree.parse(file)
-        file.close()
-        elem = doc.getroot()
-        if  elem.findall(self._windowName):
-            obj = elem.find(self._windowName)
-            self.width = int(obj.get('width'))
-            self.height = int(obj.get('height'))
-            self.left = int(obj.get('left'))
-            self.top = int(obj.get('top'))
-        else:
-#            print "Dimensioni %s impostati sui valori di default" % self._windowName
-            pass
+        try:
+            doc = ElementTree.parse(file)
+            file.close()
+            elem = doc.getroot()
+            if  elem.findall(self._windowName):
+                obj = elem.find(self._windowName)
+                self.width = int(obj.get('width'))
+                self.height = int(obj.get('height'))
+                self.left = int(obj.get('left'))
+                self.top = int(obj.get('top'))
+        except:
+            print "FILE XMLWINDOW errato da cancellare e ricreare"
+            os.remove(self._defaultWindowAttributesFile)
+
 
     def _saveWindowAttributes(self):
         """
