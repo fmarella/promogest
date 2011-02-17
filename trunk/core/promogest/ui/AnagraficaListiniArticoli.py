@@ -578,9 +578,10 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         self.sconti_ingrosso_widget.setValues(sco=self.dao.sconto_vendita_ingrosso)
         self.id_articolo_customcombobox.setId(self.dao.id_articolo)
         res = self.id_articolo_customcombobox.getData()
-        self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
-        self._percentualeIva = res["percentualeAliquotaIva"]
-        self.percentuale_aliquota_iva_label.set_text(self.nformat % self._percentualeIva + ' %')
+        if res:
+            self.descrizione_breve_aliquota_iva_label.set_text(res["denominazioneBreveAliquotaIva"])
+            self._percentualeIva = res["percentualeAliquotaIva"]
+            self.percentuale_aliquota_iva_label.set_text(self.nformat % self._percentualeIva + ' %')
         self.id_listino_customcombobox.combobox.set_active(-1)
         self.id_listino_customcombobox.set_sensitive(True)
         if self.dao.id_listino is None:
