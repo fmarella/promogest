@@ -165,6 +165,10 @@ class AnagraficaPagamentiDetail(AnagraficaDetail):
             obligatoryField(self._anagrafica.getTopLevel(),
                                 self._anagrafica.anagrafica_treeview,
                                 msg="Campo Obbligatorio:Denominazione Pagamento!")
+        if model.get_value(iterator, 2)=="" or model.get_value(iterator, 2) == None :
+            obligatoryField(self._anagrafica.getTopLevel(),
+                            self._anagrafica.anagrafica_treeview,
+                            msg="Campo Obbligatorio:Denominazione TIPO Pagamento!")
         self.dao.denominazione = denominazione
         self.dao.tipo = tipo
         self.dao.persist()
