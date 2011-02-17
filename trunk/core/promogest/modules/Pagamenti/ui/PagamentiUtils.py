@@ -520,6 +520,10 @@ Procedere con la "chiusura" del Pagamento?"""
 #            else:
             daoTestataDocumentoScadenza = TestataDocumentoScadenza()
             daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
+            if stringToDate(self.anagrafica.data_acconto_entry.get_text()) =="":
+                obligatoryField(self.anagrafica.dialogTopLevel,
+                    self.anagrafica.data_acconto_entry,
+                    'Inserire una data acconto!')
             daoTestataDocumentoScadenza.data = stringToDate(self.anagrafica.data_acconto_entry.get_text())
             daoTestataDocumentoScadenza.importo = float(self.anagrafica.importo_acconto_scadenza_entry.get_text() or '0')
             idpag0 = findIdFromCombobox(self.anagrafica.id_pagamento_acconto_customcombobox.combobox)
@@ -533,17 +537,13 @@ Procedere con la "chiusura" del Pagamento?"""
             daoTestataDocumentoScadenza.data_pagamento = daoTestataDocumentoScadenza.data
             daoTestataDocumentoScadenza.numero_scadenza = 0
             scadenze.append(daoTestataDocumentoScadenza)
-#        else:
-#            if accontoDao0:
-#                accontoDao0[0].delete()
-        # Se c'e`, salviamo la prima scadenza
-#        accontoDao1= TestataDocumentoScadenza().select(idTestataDocumento=self.anagrafica.dao.id, numeroScadenza=1)
         if self.anagrafica.data_prima_scadenza_entry.get_text() != "":
-#            if accontoDao1:
-#                daoTestataDocumentoScadenza = accontoDao1[0]
-#            else:
             daoTestataDocumentoScadenza = TestataDocumentoScadenza()
             daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
+            if stringToDate(self.anagrafica.data_prima_scadenza_entry.get_text()) =="":
+                obligatoryField(self.anagrafica.dialogTopLevel,
+                    self.anagrafica.data_prima_scadenza_entry,
+                    'Inserire una data!')
             daoTestataDocumentoScadenza.data = stringToDate(self.anagrafica.data_prima_scadenza_entry.get_text())
             daoTestataDocumentoScadenza.importo = float(self.anagrafica.importo_prima_scadenza_entry.get_text() or '0')
             idpag1 = findIdFromCombobox(self.anagrafica.id_pagamento_prima_scadenza_customcombobox.combobox)
@@ -558,17 +558,13 @@ Procedere con la "chiusura" del Pagamento?"""
                     self.anagrafica.data_pagamento_prima_scadenza_entry.get_text())
             daoTestataDocumentoScadenza.numero_scadenza = 1
             scadenze.append(daoTestataDocumentoScadenza)
-#        else:
-#            if accontoDao1:
-#                accontoDao1[0].delete()
-        #seconda rata scadenza
-#        accontoDao2= TestataDocumentoScadenza().select(idTestataDocumento=self.anagrafica.dao.id, numeroScadenza=2)
         if self.anagrafica.data_seconda_scadenza_entry.get_text() != "":
-#            if accontoDao2:
-#                daoTestataDocumentoScadenza = accontoDao2[0]
-#            else:
             daoTestataDocumentoScadenza = TestataDocumentoScadenza()
             daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
+            if stringToDate(self.anagrafica.data_seconda_scadenza_entry.get_text()) =="":
+                obligatoryField(self.anagrafica.dialogTopLevel,
+                    self.anagrafica.data_seconda_scadenza_entry,
+                    'Inserire una data!')
             daoTestataDocumentoScadenza.data = stringToDate(
                     self.anagrafica.data_seconda_scadenza_entry.get_text())
             daoTestataDocumentoScadenza.importo = float(
@@ -585,17 +581,13 @@ Procedere con la "chiusura" del Pagamento?"""
                     self.anagrafica.data_pagamento_seconda_scadenza_entry.get_text())
             daoTestataDocumentoScadenza.numero_scadenza = 2
             scadenze.append(daoTestataDocumentoScadenza)
-#        else:
-#            if accontoDao2:
-#                accontoDao2[0].delete()
-        #terza rata scadenza
-#        accontoDao3= TestataDocumentoScadenza().select(idTestataDocumento=self.anagrafica.dao.id, numeroScadenza=3)
         if self.anagrafica.data_terza_scadenza_entry.get_text() != "":
-#            if accontoDao3:
-#                daoTestataDocumentoScadenza = accontoDao3[0]
-#            else:
             daoTestataDocumentoScadenza = TestataDocumentoScadenza()
             daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
+            if stringToDate(self.anagrafica.data_terza_scadenza_entry.get_text()) =="":
+                obligatoryField(self.anagrafica.dialogTopLevel,
+                    self.anagrafica.data_terza_scadenza_entry,
+                    'Inserire una data!')
             daoTestataDocumentoScadenza.data = stringToDate(
                     self.anagrafica.data_terza_scadenza_entry.get_text())
             daoTestataDocumentoScadenza.importo = float(
@@ -612,17 +604,13 @@ Procedere con la "chiusura" del Pagamento?"""
                     self.anagrafica.data_pagamento_terza_scadenza_entry.get_text())
             daoTestataDocumentoScadenza.numero_scadenza = 3
             scadenze.append(daoTestataDocumentoScadenza)
-#        else:
-#            if accontoDao3:
-#                accontoDao3[0].delete()
-        #quarta rata scadenza
-#        accontoDao4= TestataDocumentoScadenza().select(idTestataDocumento=self.anagrafica.dao.id, numeroScadenza=4)
         if self.anagrafica.data_quarta_scadenza_entry.get_text() != "":
-#            if accontoDao4:
-#                daoTestataDocumentoScadenza = accontoDao4[0]
-#            else:
             daoTestataDocumentoScadenza = TestataDocumentoScadenza()
             daoTestataDocumentoScadenza.id_testata_documento = self.anagrafica.dao.id
+            if stringToDate(self.anagrafica.data_quarta_scadenza_entry.get_text()) =="":
+                obligatoryField(self.anagrafica.dialogTopLevel,
+                    self.anagrafica.data_quarta_scadenza_entry,
+                    'Inserire una data!')
             daoTestataDocumentoScadenza.data = stringToDate(
                     self.anagrafica.data_quarta_scadenza_entry.get_text())
             daoTestataDocumentoScadenza.importo = float(
@@ -639,9 +627,6 @@ Procedere con la "chiusura" del Pagamento?"""
                     self.anagrafica.data_pagamento_quarta_scadenza_entry.get_text())
             daoTestataDocumentoScadenza.numero_scadenza = 4
             scadenze.append(daoTestataDocumentoScadenza)
-#        else:
-#            if accontoDao4:
-#                accontoDao4[0].delete()
         self.anagrafica.dao.scadenze = scadenze
 
         #TODO: finire di sistemare questa parte ......
