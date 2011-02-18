@@ -219,7 +219,7 @@ def approxValueIt(value, decimals):
     else:
         return "0"
 
-def itformatValue(value,tronca=False):
+def itformatValue(value,tronca=True):
     """
     Convert the dates of the element into strings with italian
     datetime format
