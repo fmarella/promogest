@@ -22,7 +22,7 @@
 import gtk
 import gobject
 from decimal import *
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, \
+from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, \
                             AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 from promogest.modules.PrimaNota.ui.AnagraficaPrimaNotaEdit import AnagraficaPrimaNotaEdit
 from promogest.modules.PrimaNota.ui.AnagraficaPrimaNotaFilter import AnagraficaPrimaNotaFilter
@@ -31,8 +31,8 @@ from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.dao.Banca import Banca
 from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from promogest.lib.relativedelta import relativedelta
-from utils import *
-from utilsCombobox import *
+from promogest.ui.utils import *
+from promogest.ui.utilsCombobox import *
 
 
 class AnagraficaPrimaNota(Anagrafica):

@@ -155,19 +155,19 @@ class TestataPrimaNota(Dao):
                                     batchSize = None)
         if row:
             for r in row:
-                params['session'].delete(r)
-                params["session"].commit()
                 rpntdsc = RigaPrimaNotaTestataDocumentoScadenza().select(idRigaPrimaNota=r.id, batchSize=None)
                 if rpntdsc:
                     for rr in rpntdsc:
                         params['session'].delete(rr)
                         params["session"].commit()
+                params['session'].delete(r)
+                params["session"].commit()
         params['session'].delete(self)
         params["session"].commit()
 
 
     def persist(self):
-        """ cancellazione righe associate alla testata """
+        """ salvataggio righe associate alla testata """
         pg2log.info("DENTRO IL TESTATA PRIMA NOTA CASSA")
         params["session"].add(self)
         params["session"].commit()
