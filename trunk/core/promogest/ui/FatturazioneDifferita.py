@@ -164,7 +164,10 @@ class FatturazioneDifferita(GladeWidget):
                         # Inserisco il riferimento:
                         riga_riferimento = "Rif. " + str(dao_da_fatturare.operazione) + " n. " + str(
                                             dao_da_fatturare.numero) + " del " + dateToString(
-                                            dao_da_fatturare.data_documento)
+                                            dao_da_fatturare.data_documento )
+                        if dao_da_fatturare.inizio_trasporto:
+                             riga_riferimento = riga_riferimento + "In.Tr. il "+ dateToString(
+                                            dao_da_fatturare.inizio_trasporto)
                         daoRiga = RigaDocumento()
     #                    daoRiga.id_testata_documento = newDao.id
                         daoRiga.descrizione = riga_riferimento
@@ -216,7 +219,7 @@ class FatturazioneDifferita(GladeWidget):
                 else:
                     messageInfo(msg= "NON CI SONO RIGHE NON CREO NIENTE")
         if fattura:
-            msg = "Nuovi documenti creati !\n\n)"
+            msg = "Nuovi documenti creati !\n\n"
             messageInfo(msg)
             self.getTopLevel().destroy()
         else:
