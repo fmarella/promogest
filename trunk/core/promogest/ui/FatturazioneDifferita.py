@@ -181,7 +181,7 @@ class FatturazioneDifferita(GladeWidget):
                                 daoRiga = RigaDocumento()
                                 daoRiga.id_articolo = r.id_articolo
                                 daoRiga.id_magazzino = r.id_magazzino
-                                daoRiga.descrizione = "   "+r.descrizione
+                                daoRiga.descrizione = ".    "+ r.descrizione
                                 daoRiga.id_listino = r.id_listino
                                 daoRiga.percentuale_iva = r.percentuale_iva
                                 daoRiga.applicazione_sconti = r.applicazione_sconti
