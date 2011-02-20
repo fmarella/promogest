@@ -969,7 +969,7 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
 
 
     def statusBarHandler(self):
-        textStatusBar = "    PromoGest2 - 0708649705 - www.promogest.me - info@promotux.it     "
+        textStatusBar = "    PromoGest2 - 070 8649705 - www.promogest.me - info@promotux.it     "
         context_id =  self.pg2_statusbar.get_context_id("main_window")
         self.pg2_statusbar.push(context_id,textStatusBar)
 

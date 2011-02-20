@@ -59,6 +59,7 @@ def fillComboboxAliquoteIva(combobox, filter=False):
     renderer = gtk.CellRendererText()
     combobox.pack_start(renderer, True)
     combobox.add_attribute(renderer, 'text', 2)
+    combobox.set_wrap_width(1)
     combobox.set_model(model)
     if combobox.__class__ is gtk.ComboBoxEntry:
         combobox.set_text_column(2)
@@ -949,6 +950,16 @@ def findComboboxRowFromId(combobox, id):
             model.foreach(findTreeStoreRow, (combobox, id))
         elif model.__class__ is gtk.ListStore:
             findListStoreRow(model, combobox, id)
+
+
+#def findComboboxIvaRowFromPercentage(combobox,id):
+#    combobox.set_active(-1)
+#    combobox.set_active(-1)
+#    if not(string is None or string == ''):
+#        model = combobox.get_model()
+#        for r in model:
+#            if string in r[column] and :
+#                combobox.set_active_iter(r.iter)
 
 
 def findComboboxRowFromStr(combobox, string, column):

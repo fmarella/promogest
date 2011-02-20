@@ -37,6 +37,11 @@ class AliquotaIva(Dao):
             dic= { k: aliquota_iva.c.percentuale == v}
         return  dic[k]
 
+    def _tipoAliquota(self):
+        if self.tipo_aliquota_iva: return self.tipo_aliquota_iva.denominazione
+        else: return None
+    tipo_ali_iva = property(_tipoAliquota)
+
 aliquota_iva = Table('aliquota_iva',params['metadata'],schema = params['schema'],autoload=True)
 
 std_mapper = mapper(AliquotaIva,aliquota_iva, properties={

@@ -20,7 +20,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
 import gtk
 from math import sqrt
 from GladeWidget import GladeWidget
@@ -28,6 +27,7 @@ from promogest import Environment
 from utils import *
 from utilsCombobox import *
 from promogest.dao.Articolo import Articolo
+from promogest.dao.AliquotaIva import AliquotaIva
 from promogest.dao.DaoUtils import giacenzaArticolo
 from promogest.dao.Pagamento import Pagamento
 
@@ -144,6 +144,9 @@ def drawPart(anaedit):
     column.set_expand(False)
     treeview.append_column(column)
     #treeview.set_reorderable(True)
+    fillComboboxAliquoteIva(anaedit.id_iva_customcombobox.combobox)
+    anaedit.id_iva_customcombobox.connect('clicked',
+                                on_id_aliquota_iva_customcombobox_clicked)
     fillComboboxOperazioni(anaedit.id_operazione_combobox, 'documento')
     fillComboboxMagazzini(anaedit.id_magazzino_combobox)
     fillComboboxPagamenti(anaedit.id_pagamento_customcombobox.combobox)
@@ -159,35 +162,28 @@ def drawPart(anaedit):
     descrizione, percentuale iva, unita base, multiplo, listino,
     quantita, prezzo lordo, sconti, prezzo netto, totale, altezza, larghezza,molt_pezzi
     """
-    anaedit.modelRiga = gtk.ListStore(int,str, str, str, str, str, str, str,str, str, str, str, str, str,str, str,str)
+    anaedit.modelRiga = gtk.ListStore(int, str, str, str, str, str, str, str,\
+                             str, str, str, str, str, str, str, str, str)
     anaedit.righe_treeview.set_model(anaedit.modelRiga)
     anaedit.ricerca = None
     anaedit.nuovaRiga()
     # preferenza ricerca articolo ?
     """ ATTENZIONE schifezza per tamponare il bug di gtk 2.17 numero :
         Bug 607492 - widget.get_name(): semirisolto!!!! """
-    if hasattr(Environment.conf,'Documenti'):
-        if hasattr(Environment.conf.Documenti,'ricerca_per'):
+    if hasattr(Environment.conf, 'Documenti'):
+        if hasattr(Environment.conf.Documenti, 'ricerca_per'):
             if Environment.conf.Documenti.ricerca_per == 'codice':
                 anaedit.ricerca_codice_button.set_active(True)
-#                anaedit.ricerca = anaedit.ricerca_codice_button.get_name()
                 anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_button)
-#                anaedit.ricerca = anaedit.ricerca_codice_button.get_tooltip_text()
             elif Environment.conf.Documenti.ricerca_per == 'codice_a_barre':
                 anaedit.ricerca_codice_a_barre_button.set_active(True)
-#                anaedit.ricerca = anaedit.ricerca_codice_a_barre_button.get_name()
                 anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_a_barre_button)
-#                anaedit.ricerca = anaedit.ricerca_codice_a_barre_button.get_tooltip_text()
             elif Environment.conf.Documenti.ricerca_per == 'descrizione':
                 anaedit.ricerca_descrizione_button.set_active(True)
-#                anaedit.ricerca = anaedit.ricerca_descrizione_button.get_name()
                 anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_descrizione_button)
-#                anaedit.ricerca = anaedit.ricerca_descrizione_button.get_tooltip_text()
             elif Environment.conf.Documenti.ricerca_per == 'codice_articolo_fornitore':
                 anaedit.ricerca_codice_articolo_fornitore_button.set_active(True)
-#                anaedit.ricerca =  anaedit.ricerca_codice_articolo_fornitore_button.get_name()
                 anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_articolo_fornitore_button)
-#                anaedit.ricerca =  anaedit.ricerca_codice_articolo_fornitore_button.get_tooltip_text()
     if not anaedit.ricerca:
         anaedit.ricerca_codice_button.set_active(True)
         anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_button)
@@ -226,28 +222,36 @@ def calcolaTotalePart(anaedit, dao=None):
     """ calcola i totali documento """
     # FIXME: duplicated in TestataDocumenti.py
     totaleImponibile = Decimal(0)
-    totaleFuoriImponibile = Decimal(0)
     totaleImposta = Decimal(0)
     totaleNonScontato = Decimal(0)
     totaleImpostaScontata = Decimal(0)
     totaleImponibileScontato = Decimal(0)
+    totaleEsclusoBaseImponibile = Decimal(0)
     totaleScontato = Decimal(0)
-
     castellettoIva = {}
 
     anaedit.avvertimento_sconti_button.set_sensitive(False)
     anaedit.avvertimento_sconti_button.hide()
+    totaleEsclusoBaseImponibileRiga = 0
+    totaleImponibileRiga = 0
     for i in range(1, len(anaedit._righe)):
         prezzoNetto = Decimal(str(anaedit._righe[i]["prezzoNetto"]))
         quantita = Decimal(str(anaedit._righe[i]["quantita"]))
         moltiplicatore = Decimal(str(anaedit._righe[i]["moltiplicatore"]))
+
         percentualeIva = Decimal(str(anaedit._righe[i]["percentualeIva"]))
+        idAliquotaIva = anaedit._righe[i]["idAliquotaIva"]
+        daoiva=None
+        if idAliquotaIva:
+            daoiva = AliquotaIva().getRecord(id=idAliquotaIva)
+        if daoiva and daoiva.percentuale != percentualeIva:
+            messageInfo(msg="ATTENZIONE, % IVA non corrispondente")
 
         totaleRiga = mN(prezzoNetto * quantita * moltiplicatore)
 
         # PARTE dedicata al modulo noleggio ...
         # TODO : Rivedere quanto prima
-        if posso("GN") and anaedit.noleggio and str(anaedit._righe[i]["arco_temporale"]) != "NO" :
+        if posso("GN") and anaedit.noleggio and str(anaedit._righe[i]["arco_temporale"]) != "NO":
             arco_temporale = Decimal(anaedit.giorni_label.get_text())
             if str(anaedit._righe[i]["divisore_noleggio"]) == "1":
                 totaleRiga = mN(totaleRiga *Decimal(anaedit._righe[i]["arco_temporale"]))
@@ -257,16 +261,26 @@ def calcolaTotalePart(anaedit, dao=None):
         percentualeIvaRiga = percentualeIva
 
         if (anaedit._fonteValore == "vendita_iva" or anaedit._fonteValore == "acquisto_iva"):
-            totaleImponibileRiga = mN(calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)) or 0
+            if daoiva and daoiva.tipo_ali_iva == "Non imponibile":
+                totaleEsclusoBaseImponibileRiga = totaleRiga
+                totaleImponibileRiga = 0
+            else:
+                totaleEsclusoBaseImponibileRiga = 0
+                totaleImponibileRiga = mN(calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)) or 0
         else:
-#            print " SONO QUI O DOVE SONO", totaleRiga
-            totaleImponibileRiga = totaleRiga
-            totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
-#            print " SONO QUI O DOVE SONO 2222222", totaleRiga
+            if daoiva and daoiva.tipo_ali_iva == "Non imponibile":
+                totaleEsclusoBaseImponibileRiga = totaleRiga
+                totaleImponibileRiga = 0
+                totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
+            else:
+                totaleEsclusoBaseImponibileRiga = 0
+                totaleImponibileRiga = totaleRiga
+                totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
         totaleImpostaRiga = totaleRiga - totaleImponibileRiga
         totaleNonScontato += totaleRiga
         totaleImponibile += totaleImponibileRiga
         totaleImposta += totaleImpostaRiga
+        totaleEsclusoBaseImponibile += totaleEsclusoBaseImponibileRiga
 
         if percentualeIvaRiga not in castellettoIva.keys():
             castellettoIva[percentualeIvaRiga] = {'imponibile': totaleImponibileRiga, 'imposta': totaleImpostaRiga, 'totale': totaleRiga}
@@ -277,11 +291,12 @@ def calcolaTotalePart(anaedit, dao=None):
 
     totaleNonScontato = mN(totaleNonScontato,2)
     totaleImponibile = mN(totaleImponibile)
-    totaleImposta = totaleNonScontato - totaleImponibile
+    totaleImposta = totaleNonScontato - (totaleImponibile+totaleEsclusoBaseImponibile)
+    totaleEsclusoBaseImponibile = mN(totaleEsclusoBaseImponibile)
     for percentualeIva in castellettoIva:
         castellettoIva[percentualeIva]['imponibile'] = mN(castellettoIva[percentualeIva]['imponibile'])
         castellettoIva[percentualeIva]['imposta'] = mN(castellettoIva[percentualeIva]['imposta'])
-        castellettoIva[percentualeIva]['totale'] = mN(castellettoIva[percentualeIva]['totale'],2)
+        castellettoIva[percentualeIva]['totale'] = mN(castellettoIva[percentualeIva]['totale'], 2)
 
     totaleImponibileScontato = totaleImponibile
     totaleImpostaScontata = totaleImposta
@@ -325,19 +340,21 @@ def calcolaTotalePart(anaedit, dao=None):
             totaleImponibileScontato += Decimal(castellettoIva[k]['imponibile'])
             totaleImpostaScontata += Decimal(castellettoIva[k]['imposta'])
 
-        totaleScontato = mN(Decimal(totaleImponibileScontato) + Decimal(totaleImpostaScontata),2)
+        totaleScontato = mN(Decimal(totaleImponibileScontato) + Decimal(totaleImpostaScontata), 2)
 
 
     anaedit.totale_generale_label.set_text(str(totaleScontato))
     anaedit.totale_generale_riepiloghi_label.set_text(str(totaleNonScontato))
-    anaedit.totale_imponibile_label.set_text(str(mN(totaleImponibileScontato,2)))
+    anaedit.totale_imponibile_label.set_text(str(mN(totaleImponibileScontato, 2)))
     anaedit.totale_imponibile_riepiloghi_label.set_text(str(totaleImponibile))
-    anaedit.totale_imposta_label.set_text(str(mN(totaleImpostaScontata,2)))
+    anaedit.totale_imposta_label.set_text(str(mN(totaleImpostaScontata, 2)))
     anaedit.totale_imposta_riepiloghi_label.set_text(str(totaleImposta))
-    anaedit.totale_imponibile_scontato_riepiloghi_label.set_text(str(mN(totaleImponibileScontato,2)))
-    anaedit.totale_imposta_scontata_riepiloghi_label.set_text(str(mN(totaleImpostaScontata,2)))
+    anaedit.totale_imponibile_scontato_riepiloghi_label.set_text(str(mN(totaleImponibileScontato, 2)))
+    anaedit.totale_imposta_scontata_riepiloghi_label.set_text(str(mN(totaleImpostaScontata, 2)))
     anaedit.totale_scontato_riepiloghi_label.set_text(str(totaleScontato))
     anaedit.totale_in_pagamenti_label.set_markup('<b><span foreground="black" size="24000">'+str(totaleScontato)+'</span></b>')
+    anaedit.totale_non_base_imponibile_label.set_text(str(mN(totaleEsclusoBaseImponibile,2)))
+
     id_pag = anaedit._id_pagamento
     pago = Pagamento().getRecord(id=id_pag)
     if pago:
@@ -353,21 +370,20 @@ def calcolaTotalePart(anaedit, dao=None):
                         (str(mN(castellettoIva[k]['imponibile']))),
                         (str(mN(castellettoIva[k]['imposta']))),))
 
+
 def mostraArticoloPart(anaedit, id, art=None):
     """questa funzione viene chiamata da ricerca articolo e si occupa di
-        riempire la riga[0] con i dati corretti
+        riempire la riga[0] con i dati corretti presi dall'articolo
     """
     data = stringToDate(anaedit.data_documento_entry.get_text())
     # articolo c'è
     if id is not None:
         fillComboboxMultipli(anaedit.id_multiplo_customcombobox.combobox, id, True)
         articolo = leggiArticolo(id)
-#        print "ARTICOLOOOOOOOOOOOOOOOOOOOOOO", articolo
         if posso("PW"):
             AnagraficaDocumentiEditPromoWearExt.fillLabelInfo(anaedit, articolo)
         artic = Articolo().getRecord(id=id)
-#        print "ARTIIIIIIIIIIIIIIIIIIICC", artic, articleType(artic)
-        if articleType(artic) =="father" :
+        if articleType(artic) =="father":
             anaedit.ArticoloPadre = artic
             anaedit.promowear_manager_taglia_colore_togglebutton.set_property("visible", True)
             anaedit.promowear_manager_taglia_colore_togglebutton.set_sensitive(True)
@@ -383,17 +399,19 @@ def mostraArticoloPart(anaedit, id, art=None):
             anaedit._righe[0]["descrizione"] = articolo["denominazione"]
             anaedit.descrizione_entry.set_text(anaedit._righe[0]["descrizione"])
             anaedit._righe[0]["percentualeIva"] = mN(articolo["percentualeAliquotaIva"],2)
-            anaedit.percentuale_iva_entry.set_text(str(anaedit._righe[0]["percentualeIva"]))
+#ATTENZIONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!!!
+            findComboboxRowFromStr(anaedit.id_iva_customcombobox.combobox, str(anaedit._righe[0]["percentualeIva"]),3)
+#            anaedit.percentuale_iva_entry.set_text(str(anaedit._righe[0]["percentualeIva"]))
             anaedit._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
             anaedit._righe[0]["unitaBase"] = articolo["unitaBase"]
             anaedit.unitaBaseLabel.set_text(anaedit._righe[0]["unitaBase"])
             if ((anaedit._fonteValore == "acquisto_iva") or  (anaedit._fonteValore == "acquisto_senza_iva")):
                 costoLordo = str(articolo['valori']["prezzoLordo"])
                 if costoLordo:
-                    costoLordo = costoLordo.replace(',','.')
+                    costoLordo = costoLordo.replace(',', '.')
                 costoNetto = str(articolo['valori']["prezzoNetto"])
                 if costoNetto:
-                    costoNetto = costoNetto.replace(',','.')
+                    costoNetto = costoNetto.replace(',', '.')
                 if anaedit._fonteValore == "acquisto_iva":
                     costoLordo = calcolaPrezzoIva(costoLordo, anaedit._righe[0]["percentualeIva"])
                     costoNetto = calcolaPrezzoIva(costoNetto, anaedit._righe[0]["percentualeIva"])
@@ -413,7 +431,7 @@ def mostraArticoloPart(anaedit, id, art=None):
                 anaedit.quantita_entry.set_text(anaedit._righe[0]["quantita"])
                 if anaedit._righe[0]["quantita"]:
                     anaedit.calcolaTotaleRiga()
-            elif anaedit._fonteValore == "vendita_iva" :
+            elif anaedit._fonteValore == "vendita_iva":
 
                 costoLordo = str(articolo['valori']["prezzoDettaglio"])
                 if costoLordo:
@@ -424,7 +442,7 @@ def mostraArticoloPart(anaedit, id, art=None):
                 anaedit._righe[0]["applicazioneSconti"] = articolo['valori']["applicazioneScontiDettaglio"]
                 anaedit.sconti_widget.setValues(anaedit._righe[0]["sconti"], anaedit._righe[0]["applicazioneSconti"], False)
                 quantita =articolo["quantita"]
-                quantita = quantita.replace(',','.')
+                quantita = quantita.replace(',', '.')
                 anaedit._righe[0]["quantita"] = quantita
                 anaedit.quantita_entry.set_text(anaedit._righe[0]["quantita"])
                 if anaedit._righe[0]["quantita"]:
@@ -457,7 +475,10 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit._righe[0]["descrizione"] = articolo["denominazione"]
         anaedit.descrizione_entry.set_text(anaedit._righe[0]["descrizione"])
         anaedit._righe[0]["percentualeIva"] = mN(articolo["percentualeAliquotaIva"],2)
-        anaedit.percentuale_iva_entry.set_text(str(anaedit._righe[0]["percentualeIva"]))
+        anaedit._righe[0]["idAliquotaIva"] = articolo["idAliquotaIva"]
+        print "ABBIAMO UN DATO", anaedit._righe[0]["idAliquotaIva"]
+        findComboboxRowFromId(anaedit.id_iva_customcombobox.combobox,anaedit._righe[0]["idAliquotaIva"])
+#        anaedit.percentuale_iva_entry.set_text(str(anaedit._righe[0]["percentualeIva"]))
         anaedit._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
         anaedit._righe[0]["unitaBase"] = articolo["unitaBase"]
         anaedit.unitaBaseLabel.set_text(anaedit._righe[0]["unitaBase"])
@@ -486,8 +507,10 @@ def mostraArticoloPart(anaedit, id, art=None):
             costoLordo = fornitura["prezzoLordo"]
             costoNetto = fornitura["prezzoNetto"]
             if anaedit._fonteValore == "acquisto_iva":
-                    costoLordo = calcolaPrezzoIva(costoLordo, anaedit._righe[0]["percentualeIva"])
-                    costoNetto = calcolaPrezzoIva(costoNetto, anaedit._righe[0]["percentualeIva"])
+                    costoLordo = calcolaPrezzoIva(costoLordo,
+                                            anaedit._righe[0]["percentualeIva"])
+                    costoNetto = calcolaPrezzoIva(costoNetto,
+                                            anaedit._righe[0]["percentualeIva"])
             anaedit._righe[0]["prezzoLordo"] = costoLordo
             anaedit.prezzo_lordo_entry.set_text(str(anaedit._righe[0]["prezzoLordo"]))
             anaedit._righe[0]["prezzoNetto"] = costoNetto
@@ -505,7 +528,8 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit.articolo_entry.set_text('')
         anaedit.descrizione_entry.set_text('')
         anaedit.codice_articolo_fornitore_entry.set_text('')
-        anaedit.percentuale_iva_entry.set_text('0')
+#        anaedit.percentuale_iva_entry.set_text('0')
+        anaedit.id_iva_customcombobox.combobox.set_active(-1)
         anaedit.id_multiplo_customcombobox.combobox.clear()
         anaedit.id_listino_customcombobox.combobox.clear()
         anaedit.prezzo_lordo_entry.set_text('0')
@@ -519,6 +543,7 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit._righe[0]["descrizione"] = ''
         anaedit._righe[0]["codiceArticoloFornitore"] = ''
         anaedit._righe[0]["percentualeIva"] = 0
+        anaedit._righe[0]["idAliquotaIva"] = None
         anaedit._righe[0]["idUnitaBase"] = None
         anaedit._righe[0]["idMultiplo"] = None
         anaedit._righe[0]["moltiplicatore"] = 1
@@ -662,9 +687,9 @@ def hidePromoWear(ui):
     ui.tipo_label.destroy()
     ui.label_tipo.destroy()
 
+
 def hideSuMisura(ui):
-    """
-    funzione per SuMisura .....rimuove dalla vista quando modulo è disattivato
+    """funzione per SuMisura .....rimuove dalla vista quando modulo è disattivato
     """
     ui.sumisura_frame.destroy()
     ui.moltiplicatore_entry.destroy()

@@ -1147,32 +1147,14 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkAlignment" id="alignment305">
-                                    <property name="width_request">100</property>
+                                  <object class="CustomComboBoxModify" id="id_iva_customcombobox">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="xalign">0</property>
-                                    <property name="xscale">0</property>
-                                    <child>
-                                      <object class="UnsignedDecimalEntryField" id="percentuale_iva_entry">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="invisible_char">●</property>
-                                        <property name="text" translatable="yes">0.00      </property>
-                                        <property name="primary_icon_activatable">False</property>
-                                        <property name="secondary_icon_activatable">False</property>
-                                        <property name="primary_icon_sensitive">True</property>
-                                        <property name="secondary_icon_sensitive">True</property>
-                                        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
-                                        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
-                                        <signal name="focus-out-event" handler="on_show_totali_riga" swapped="no"/>
-                                      </object>
-                                    </child>
+                                    <property name="spacing">1</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
-                                    <property name="fill">True</property>
-                                    <property name="padding">14</property>
+                                    <property name="fill">False</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
@@ -2634,6 +2616,31 @@
                       </packing>
                     </child>
                     <child>
+                      <object class="GtkLabel" id="non_base_imponibile_label_label">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Tot Non base Impo.&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="totale_non_base_imponibile_label">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">-</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                    <child>
                       <object class="GtkLabel" id="label165">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -2644,7 +2651,7 @@
                       <packing>
                         <property name="expand">True</property>
                         <property name="fill">False</property>
-                        <property name="position">2</property>
+                        <property name="position">4</property>
                       </packing>
                     </child>
                     <child>
@@ -2657,7 +2664,7 @@
                       <packing>
                         <property name="expand">True</property>
                         <property name="fill">True</property>
-                        <property name="position">3</property>
+                        <property name="position">5</property>
                       </packing>
                     </child>
                     <child>
@@ -2671,7 +2678,7 @@
                       <packing>
                         <property name="expand">True</property>
                         <property name="fill">False</property>
-                        <property name="position">4</property>
+                        <property name="position">6</property>
                       </packing>
                     </child>
                     <child>
@@ -2684,7 +2691,7 @@
                       <packing>
                         <property name="expand">True</property>
                         <property name="fill">True</property>
-                        <property name="position">5</property>
+                        <property name="position">7</property>
                       </packing>
                     </child>
                     <child>
@@ -2698,7 +2705,7 @@
                       <packing>
                         <property name="expand">True</property>
                         <property name="fill">False</property>
-                        <property name="position">6</property>
+                        <property name="position">8</property>
                       </packing>
                     </child>
                     <child>
@@ -2711,7 +2718,7 @@
                       <packing>
                         <property name="expand">True</property>
                         <property name="fill">True</property>
-                        <property name="position">7</property>
+                        <property name="position">9</property>
                       </packing>
                     </child>
                     <child>
@@ -2729,7 +2736,7 @@ nella sezione riepiloghi</property>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="position">8</property>
+                        <property name="position">10</property>
                       </packing>
                     </child>
                   </object>

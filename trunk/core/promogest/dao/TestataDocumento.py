@@ -70,9 +70,9 @@ class TestataDocumento(Dao):
         self.__dbRigheMovimentoPart = []
         self.__righeDocumento = []
         self._totaleImponibile = 0
+        self._totaleNonBaseImponibile = 0
         self._totaleNonScontato = 0
         self._totaleScontato = 0
-        self._totaleImponibile = 0
         self._totaleImponibileScontato = 0
         self._totaleImposta = 0
         self._totaleImpostaScontata = 0
@@ -251,6 +251,7 @@ class TestataDocumento(Dao):
 
 
     def _getTotaliDocumento(self):
+        """ funzione di calcolo dei totali documento """
         self.__operazione = leggiOperazione(self.operazione)
         fonteValore = self.__operazione["fonteValore"]
 
@@ -260,9 +261,12 @@ class TestataDocumento(Dao):
         totaleNonScontato = Decimal(0)
         totaleImpostaScontata = Decimal(0)
         totaleImponibileScontato = Decimal(0)
+        totaleEsclusoBaseImponibile = Decimal(0)
         totaleScontato = Decimal(0)
         castellettoIva = {}
         righeDocumento = self.righe
+        totaleEsclusoBaseImponibileRiga = 0
+        totaleImponibileRiga = 0
         for riga in righeDocumento:
 
             # FIXME: added for supporting dumb rows when printing
@@ -271,27 +275,49 @@ class TestataDocumento(Dao):
             #print "VALORIIIIIIIIIIIIIIIII", riga.quantita, riga.moltiplicatore, riga.valore_unitario_netto
             if not riga.moltiplicatore:
                 riga.moltiplicatore = 1
+
             totaleRiga = mN(Decimal(str(riga.quantita or "0")) * Decimal(str(riga.moltiplicatore)) * Decimal(str(riga.valore_unitario_netto or "0")))
+
             percentualeIvaRiga = Decimal(str(riga.percentuale_iva))
-            if percentualeIvaRiga != Environment.percentualeIvaRiga:
-                aliquotaIvaRiga = riga.aliquota
-                Environment.percentualeIvaRiga = percentualeIvaRiga
-                Environment.aliquotaIvaRiga = aliquotaIvaRiga
-            else:
-                aliquotaIvaRiga = Environment.aliquotaIvaRiga
+            idAliquotaIva = riga.id_iva
+            daoiva=None
+            if idAliquotaIva:
+                daoiva = AliquotaIva().getRecord(id=idAliquotaIva)
+
+#            if daoiva.percentuale != percentualeIvaRiga:
+#                messageInfo(msg="ATTENZIONE, % IVA non corrispondente")
+
+#            if percentualeIvaRiga != Environment.percentualeIvaRiga:
+#                aliquotaIvaRiga = riga.aliquota
+#                Environment.percentualeIvaRiga = percentualeIvaRiga
+#                Environment.aliquotaIvaRiga = aliquotaIvaRiga
+#            else:
+#                aliquotaIvaRiga = Environment.aliquotaIvaRiga
             #aliquotaIvaRiga = righeDocumento[i].aliquota
 
 
             if (fonteValore == "vendita_iva" or fonteValore == "acquisto_iva"):
-                totaleImponibileRiga = calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)
+                if daoiva and daoiva.tipo_ali_iva == "Non imponibile":
+                    totaleEsclusoBaseImponibileRiga = totaleRiga
+                    totaleImponibileRiga = 0
+                else:
+                    totaleEsclusoBaseImponibileRiga = 0
+                    totaleImponibileRiga = calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)
             else:
-                totaleImponibileRiga = totaleRiga
-                totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
+                if daoiva and daoiva.tipo_ali_iva == "Non imponibile":
+                    totaleEsclusoBaseImponibileRiga = totaleRiga
+                    totaleImponibileRiga = 0
+                    totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
+                else:
+                    totaleEsclusoBaseImponibileRiga = 0
+                    totaleImponibileRiga = totaleRiga
+                    totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
 
             totaleImpostaRiga = totaleRiga - totaleImponibileRiga
             totaleNonScontato += totaleRiga
             totaleImponibile += totaleImponibileRiga
             totaleImposta += totaleImpostaRiga
+            totaleEsclusoBaseImponibile += totaleEsclusoBaseImponibileRiga
 
             if aliquotaIvaRiga not in castellettoIva.keys():
                 castellettoIva[aliquotaIvaRiga] = {'percentuale': percentualeIvaRiga,
@@ -307,6 +333,7 @@ class TestataDocumento(Dao):
         totaleNonScontato = Decimal(totaleNonScontato)
         totaleImponibile = Decimal(totaleImponibile)
         totaleImposta = totaleNonScontato - totaleImponibile
+        totaleEsclusoBaseImponibile = mN(totaleEsclusoBaseImponibile)
 #        print "VEDIAMO I TOTALI", totaleNonScontato, totaleImponibile, totaleImposta
         for aliquotaIva in castellettoIva:
             castellettoIva[aliquotaIva]['imponibile'] = mN(castellettoIva[aliquotaIva]['imponibile'], 2)
@@ -353,6 +380,7 @@ class TestataDocumento(Dao):
         self._totaleNonScontato = totaleNonScontato
         self._totaleScontato = totaleScontato
         self._totaleImponibile = totaleImponibile
+        self._totaleNonBaseImponibile = totaleEsclusoBaseImponibile
         self._totaleImposta = totaleImposta
         self._totaleImponibileScontato = totaleImponibileScontato
         self._totaleImpostaScontata = totaleImpostaScontata
@@ -461,6 +489,7 @@ class TestataDocumento(Dao):
                     daoRigaMovimento.moltiplicatore = row.moltiplicatore
                     daoRigaMovimento.applicazione_sconti = row.applicazione_sconti
                     daoRigaMovimento.percentuale_iva = row.percentuale_iva
+                    daoRigaMovimento.id_iva = row.id_iva
                     daoRigaMovimento.descrizione = row.descrizione
                     daoRigaMovimento.id_listino = row.id_listino
                     daoRigaMovimento.id_magazzino = row.id_magazzino

@@ -1,19 +1,42 @@
-#-*- coding: utf-8 -*-
-#
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Francesco Meloni <francesco@promotux.it>
+# -*- coding: utf-8 -*-
+
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                       di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper
+from migrate import *
 from promogest.Environment import *
-from Dao import Dao
-from Magazzino import Magazzino
-from Listino import Listino
-from Multiplo import Multiplo
-from Articolo import Articolo
-from UnitaBase import UnitaBase
+from promogest.dao.Dao import Dao
+from promogest.dao.Magazzino import Magazzino
+from promogest.dao.Listino import Listino
+from promogest.dao.Multiplo import Multiplo
+from promogest.dao.Articolo import Articolo
+from promogest.dao.UnitaBase import UnitaBase
+
+
+artic = Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
+riga=Table('riga', params['metadata'],schema = params['schema'],autoload=True)
+
+if "id_iva" not in [c.name for c in riga.columns]:
+    col = Column('id_iva', Integer)
+    col.create(riga)
 
 class Riga(Dao):
     """ Mapper to handle the Row Table """
@@ -59,7 +82,7 @@ class Riga(Dao):
     def _getAliquotaIva(self):
         if self.arti:return self.arti.denominazione_breve_aliquota_iva
         else: return ""
-    aliquota = property(_getAliquotaIva, )
+    aliquota = property(_getAliquotaIva)
 
     def __unita_base(self):
 
@@ -130,8 +153,7 @@ class Riga(Dao):
         denominazione_modello = property(_modello)
 
 
-artic = Table('articolo', params['metadata'],schema = params['schema'],autoload=True)
-riga=Table('riga', params['metadata'],schema = params['schema'],autoload=True)
+
 
 std_mapper = mapper(Riga, riga, properties={
             "maga":relation(Magazzino,primaryjoin=riga.c.id_magazzino==Magazzino.id),

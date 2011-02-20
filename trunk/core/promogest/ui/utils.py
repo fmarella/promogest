@@ -20,7 +20,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-
 from textwrap import TextWrapper
 import os
 from threading import Timer
@@ -31,18 +30,19 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 import threading
-import time, datetime
+import time
+import datetime
 from sqlalchemy.orm import *
 from sqlalchemy import *
 from promogest import Environment
 
-from promogest.lib.relativedelta import relativedelta
-import string, re
+import string
+import re
 import pysvn
 import xml.etree.ElementTree as ET
 import unicodedata
-import socket
-import urllib, urllib2
+import urllib
+import urllib2
 try:
     import json
 except:
@@ -57,7 +57,6 @@ from utilsCombobox import *
 
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
 
-
 def articleType(dao):
     """
     Che tipo di articolo è? Necessaria principalmente per taglie e Colore
@@ -65,16 +64,20 @@ def articleType(dao):
     @type dao: object
     """
     if dao and posso("PW"):
-        if (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre is None) and (dao.articoliTagliaColore):
+        if (dao.id) and (dao.id_articolo_taglia_colore is not None) and \
+            (dao.id_articolo_padre is None) and (dao.articoliTagliaColore):
 #            print "ARTICOLO FATHER"
             return "father"
-        elif (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre_taglia_colore is not None):
+        elif (dao.id) and (dao.id_articolo_taglia_colore is not None) and \
+                        (dao.id_articolo_padre_taglia_colore is not None):
 #            print "ARTICOLO SON"
             return "son"
-        elif (dao.id) and (dao.id_articolo_taglia_colore is not None) and (dao.id_articolo_padre is None) and (not dao.articoliTagliaColore):
+        elif (dao.id) and (dao.id_articolo_taglia_colore is not None) and\
+         (dao.id_articolo_padre is None) and (not dao.articoliTagliaColore):
 #            print "ARTICOLO PLUS"
             return "plus"
-        elif (dao.id) and (dao.id_articolo_taglia_colore is None) and (dao.id_articolo_padre is None) and (not dao.articoliTagliaColore):
+        elif (dao.id) and (dao.id_articolo_taglia_colore is None) and\
+         (dao.id_articolo_padre is None) and (not dao.articoliTagliaColore):
 #            print "ARTICOLO NORMAL"
             return "normal"
         elif not dao.id:
@@ -82,11 +85,10 @@ def articleType(dao):
             return "new"
 
 
-def leggiArticolo(id, full=False, idFornitore=False,data=None):
+def leggiArticolo(id, full=False, idFornitore=False, data=None):
     """
     Restituisce un dizionario con le informazioni sull'articolo letto
     """
-    from promogest.dao.AliquotaIva import AliquotaIva
     from promogest.dao.Articolo import Articolo
     from promogest.dao.UnitaBase import UnitaBase
     _id = None
@@ -94,7 +96,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
     _codice = ''
     _denominazioneBreveAliquotaIva = ''
     _percentualeAliquotaIva = 0
-    _tipoAliquotaIva = 1
+    _idAliquotaIva = None
     _idUnitaBase = None
     _unitaBase = ''
     _quantita_minima = ''
@@ -115,7 +117,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
             _codicearticolofornitore = daoArticolo.codice_articolo_fornitore
             _denominazioneBreveAliquotaIva = daoArticolo.denominazione_breve_aliquota_iva
             _percentualeAliquotaIva = daoArticolo.percentuale_aliquota_iva
-            _tipoAliquotaIva = daoArticolo.id_tipo_aliquota_iva
+            _idAliquotaIva = daoArticolo.id_aliquota_iva
             _unitaBase = daoArticolo.denominazione_unita_base
             try:
                 _quantita_minima = daoArticolo.quantita_minima
@@ -136,7 +138,7 @@ def leggiArticolo(id, full=False, idFornitore=False,data=None):
                 "codice": _codice,
                 "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
                 "percentualeAliquotaIva": _percentualeAliquotaIva,
-                "idTipoAliquotaIva":_tipoAliquotaIva,
+                "idAliquotaIva":_idAliquotaIva,
                 "idUnitaBase": _idUnitaBase,
                 "unitaBase": _unitaBase,
                 "quantita_minima": _quantita_minima,
@@ -285,22 +287,7 @@ def leggiVettore(id):
             "cognome": _cognome,}
 
 
-def leggiDestinazioneMerce(id):
-    """
-    Restituisce un dizionario con le informazioni sul vettore letto
-    """
-    from promogest.dao.DestinazioneMerce import DestinazioneMerce
-    _id = None
-    _denominazione = ''
 
-    if id is not None:
-        daoDestinazioneMerce = DestinazioneMerce().getRecord(id=id)
-        if daoDestinazioneMerce is not None:
-            _id = id
-            _denominazione = daoDestinazioneMerce.denominazione or ''
-
-    return {"id": _id,
-            "denominazione": _denominazione}
 
 
 def leggiContatto(id):
@@ -357,6 +344,7 @@ def leggiMagazzino(id):
     return {"id": _id,
             "denominazione": _denominazione,
             "email": _email}
+
 
 def leggiListino(idListino=None, idArticolo=None):
     """
@@ -465,6 +453,7 @@ def leggiListino(idListino=None, idArticolo=None):
                     listinoDict['applicazioneScontiIngrosso'] = _applicazioneIngrosso
 
     return listinoDict
+
 
 def leggiFornitura(idArticolo, idFornitore=None, data=None, noPreferenziale=False):
     """
@@ -1342,60 +1331,6 @@ def insertComboboxSearchAzienda(combobox, schemaAzienda, clear=False, filter=Tru
     combobox.refresh(schemaAzienda, res["denominazione"], res, clear, filter)
 
 
-def insertComboboxSearchAgente(combobox, idAgente, clear=False, filter=True):
-    """    """
-    res = leggiAgente(idAgente)
-    if res["ragioneSociale"] != '':
-        combobox.refresh(idAgente, res["ragioneSociale"], res, clear, filter)
-    else:
-        combobox.refresh(idAgente, res["cognome"] + ' ' + res["nome"], res, clear, filter)
-
-
-
-def insertComboboxSearchArticolo(combobox, idArticolo, clear=False, filter=True):
-    """    """
-    res = leggiArticolo(idArticolo)
-    combobox.refresh(idArticolo, res["denominazione"], res, clear, filter)
-
-
-def insertComboboxSearchFornitore(combobox, idFornitore, clear=False, filter=True):
-    """    """
-    res = leggiFornitore(idFornitore)
-    if res["ragioneSociale"] != '':
-        combobox.refresh(idFornitore, res["ragioneSociale"], res, clear, filter)
-    else:
-        combobox.refresh(idFornitore, res["cognome"] + ' ' + res["nome"], res, clear, filter)
-
-
-def insertComboboxSearchCliente(combobox, idCliente, clear=False, filter=True):
-    """    """
-    res = leggiCliente(idCliente)
-    if res["ragioneSociale"] != '':
-        combobox.refresh(idCliente, res["ragioneSociale"], res, clear, filter)
-    else:
-        combobox.refresh(idCliente, res["cognome"] + ' ' + res["nome"], res, clear, filter)
-
-
-def insertComboboxSearchVettore(combobox, idVettore, clear=False, filter=True):
-    """    """
-    res = leggiVettore(idVettore)
-    if res["ragioneSociale"] != '':
-        combobox.refresh(idVettore, res["ragioneSociale"], res, clear, filter)
-    else:
-        combobox.refresh(idVettore, res["cognome"] + ' ' + res["nome"], res, clear, filter)
-
-
-def insertComboboxSearchMagazzino(combobox, idMagazzino, clear=False, filter=True):
-    """    """
-    res = leggiMagazzino(idMagazzino)
-    combobox.refresh(idMagazzino, res["denominazione"], res, clear, filter)
-
-
-def insertComboboxSearchAzienda(combobox, schemaAzienda, clear=False, filter=True):
-    """    """
-    res = leggiAzienda(schemaAzienda)
-    combobox.refresh(schemaAzienda, res["denominazione"], res, clear, filter)
-
 
 def insertComboboxSearchAgente(combobox, idAgente, clear=False, filter=True):
     """    """
@@ -1794,6 +1729,7 @@ def getDateRange(string):
     end_date = stringToDate(san_silvestro)
     return (begin_date, end_date)
 
+
 def obligatoryField(window, widget=None, msg=None):
     """
     Gestisce un dialog di segnalazione campo obbligatorio
@@ -1946,16 +1882,7 @@ def on_status_activate(status, windowGroup, visible, blink, screens):
         screens = []
         return (visible,blink,screens)
 
-def getDateRange(string):
-    """
-    returns a set of two timestamps one at beginning and at the end of
-    the year indicated by string (it must be placed on the last 4 characters of the string) (01/01/YEAR, 31/12/YEAR)
-    """
-    capodanno = '01/01/'+string[-4:]
-    san_silvestro = '31/12/'+string[-4:]
-    begin_date = stringToDate(capodanno)
-    end_date = stringToDate(san_silvestro)
-    return (begin_date, end_date)
+
 
 def checkCodFisc(codfis):
     """
@@ -2424,12 +2351,11 @@ def removeCodBarorphan():
 
 def calcolaTotali(daos):
     """
-    FIXME
-    @param daos:
-    @type daos:
+    Preleva i dati del totale del dao e ne fa un dizionario
     """
     totale_imponibile_non_scontato = 0
     totale_imponibile_scontato = 0
+    totale_non_base_imponibile = 0
     totale_imposta_non_scontata = 0
     totale_imposta_scontata = 0
     totale_non_scontato = 0
@@ -2443,6 +2369,10 @@ def calcolaTotali(daos):
             pass
         try:
             totale_imposta_non_scontata=totale_imposta_non_scontata +tot._totaleImposta
+        except:
+            pass
+        try:
+            totale_non_base_imponibile=totale_non_base_imponibile+tot._totaleNonBaseImponibile
         except:
             pass
         try:
@@ -2472,6 +2402,7 @@ def calcolaTotali(daos):
     totaliGenerali = { "totale_imponibile_non_scontato":totale_imponibile_non_scontato,
                         "totale_imponibile_scontato":totale_imponibile_scontato,
                         "totale_imposta_scontata":totale_imposta_scontata,
+                        "totale_non_base_imponibile":totale_non_base_imponibile,
                         "totale_imposta_non_scontata":totale_imposta_non_scontata,
                         "totale_non_scontato" :totale_non_scontato,
                         "totale_scontato":totale_scontato,

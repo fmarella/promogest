@@ -28,7 +28,6 @@ import gtk
 import datetime
 
 from promogest import Environment
-from GladeWidget import GladeWidget
 from AnagraficaComplessa import AnagraficaEdit
 from AnagraficaDocumentiEditUtils import *
 
@@ -39,13 +38,13 @@ from promogest.dao.ScontoRigaDocumento import ScontoRigaDocumento
 from promogest.dao.ScontoTestataDocumento import ScontoTestataDocumento
 from promogest.dao.ScontoVenditaDettaglio import ScontoVenditaDettaglio
 from promogest.dao.ScontoVenditaIngrosso import ScontoVenditaIngrosso
-from promogest.dao.CodiceABarreArticolo import CodiceABarreArticolo
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Operazione import Operazione
 from promogest.dao.Cliente import Cliente
 from promogest.dao.Multiplo import Multiplo
 from promogest.dao.Pagamento import Pagamento
+from promogest.dao.AliquotaIva import AliquotaIva
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 
 from utils import *
@@ -71,7 +70,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 'anagrafica_documenti_detail_vbox',
                                 'Dati Documento',
                                 'anagrafica_documenti.glade')
-#        print "ANAGRAFICA EDITA", self.dialogTopLevelself.docu_spinner
 #        self.placeWindow(self.getTopLevel())
         self._widgetFirstFocus = self.data_documento_entry
         # contenitore (dizionario) righe (riga 0 riservata per  variazioni in corso)
@@ -155,16 +153,19 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
     def on_scorporo_button_clicked(self, button):
         """ Bottone con una "s" minuscola, che permette di effettuare "al volo"
         lo scorporo di un valore finale nel campo prezzo """
-        iva = self.percentuale_iva_entry.get_text().strip()
-        if iva == "" or iva == "0":
-            self.showMessage(msg="ATTENZIONE IVA a 0%")
-        else:
-            prezzoLordo = self.prezzo_lordo_entry.get_text()
-            print "PREZZO LORDO " , prezzoLordo
-            imponibile = float(prezzoLordo)/(1+float(iva)/100)
-            print "IMPONIBILE", mN(str(imponibile))
-            self.prezzo_lordo_entry.set_text(str(mN(str(imponibile))))
-            self.prezzo_lordo_entry.grab_focus()
+#        iva = self.percentuale_iva_entry.get_text().strip()
+        ivaobj = findStrFromCombobox(self.id_iva_customcombobox.combobox,0)
+        if type(ivaobj) != type("CIAO"):
+            iva = ivaobj.percentuale
+            if iva == "" or iva == "0":
+                self.showMessage(msg="ATTENZIONE IVA a 0%")
+            else:
+                prezzoLordo = self.prezzo_lordo_entry.get_text()
+#                print "PREZZO LORDO " , prezzoLordo
+                imponibile = float(prezzoLordo)/(1+float(iva)/100)
+#                print "IMPONIBILE", mN(str(imponibile))
+                self.prezzo_lordo_entry.set_text(str(mN(str(imponibile))))
+                self.prezzo_lordo_entry.grab_focus()
 
     def on_articolo_entry_focus_in_event(self, widget, event):
         """ controlliamo prima di effettuare una ricerca che il magazzino sia
@@ -194,6 +195,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "codiceArticolo": '',
                                 "descrizione": '',
                                 "percentualeIva": 0,
+                                "idAliquotaIva":None,
                                 "idUnitaBase": None,
                                 "unitaBase": '',
                                 "idMultiplo": None,
@@ -229,6 +231,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                                 "codiceArticolo": rigatampone['codiceArticolo'],
                                 "descrizione": rigatampone['descrizione'],
                                 "percentualeIva": rigatampone['percentualeIva'],
+                                "idAliquotaIva": rigatampone['idAliquotaIva'],
                                 "idUnitaBase": rigatampone['idUnitaBase'],
                                 "unitaBase": rigatampone['unitaBase'],
                                 "idMultiplo": rigatampone['idMultiplo'],
@@ -259,7 +262,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self.unitaBaseLabel.set_text('')
         self.descrizione_entry.set_text('')
         self.codice_articolo_fornitore_entry.set_text('')
-        self.percentuale_iva_entry.set_text('0')
+        self.id_iva_customcombobox.combobox.set_active(-1)
+#        self.percentuale_iva_entry.set_text('0')
         self.id_multiplo_customcombobox.combobox.clear()
         self.id_listino_customcombobox.combobox.clear()
         self.prezzo_lordo_entry.set_text('0')
@@ -491,7 +495,7 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 (self.dao.id_aliquota_iva_esenzione or -1))
         self.id_agente_customcombobox.refresh(clear=True, filter=False)
         insertComboboxSearchAgente(self.id_agente_customcombobox,
-                self.dao.id_agente)
+                                                        self.dao.id_agente)
         self.protocollo_entry1.set_text(self.dao.protocollo or '')
         self.note_pie_pagina_comboboxentry.child.set_text(self.dao.note_pie_pagina or '')
         textBuffer = self.note_interne_textview.get_buffer()
@@ -558,7 +562,45 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["idArticolo"] = riga.id_articolo
             self._righe[0]["codiceArticolo"] = articolo["codice"]
             self._righe[0]["descrizione"] = riga.descrizione
-            self._righe[0]["percentualeIva"] = mN(riga.percentuale_iva,2)
+            self._righe[0]["percentualeIva"] = mN(riga.percentuale_iva,0)
+
+
+
+
+
+
+
+        # RIPARTI DA QUI DOMANI MATTINA
+            # Questo valore potrebbe essere a none per le righe
+            #precedenti il 19/02/2011 , cerchiamo di derurre l'id e lo settiamo
+            idiva = None
+            if riga.id_iva == None:
+                if riga.id_articolo is not None:
+                    #siamo di fronte ad un articolo "vecchio"
+                    art = Articolo().getRecord(id=riga.id_articolo)
+                    ivaart = art.id_aliquota_iva
+                    daoiva = AliquotaIva().select(percentuale=riga.percentuale_iva)
+                    if daoiva:
+#                        if ivaart == daoiva[0].id:
+                        idiva = daoiva[0].id
+#                        else:
+#                            print "CHIEDIAMO CONFERMA", art.denominazione
+#                    else:
+#                        print "mandiamo un avviso. è un articolo registrato ma non ha iva"
+#                        idiva = None
+                else:
+                    if riga.percentuale_iva != 0:
+                        #riga descrittiva
+                        daoiva = AliquotaIva().select(percentuale=riga.percentuale_iva)
+                        if daoiva:
+                            idiva = daoiva[0].id
+            else:
+                idiva = riga.id_iva
+            self._righe[0]["idAliquotaIva"] = idiva
+
+
+
+
             self._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
             self._righe[0]["unitaBase"] = articolo["unitaBase"]
             self._righe[0]["idMultiplo"] = riga.id_multiplo
@@ -836,6 +878,7 @@ del documento.
             daoRiga.codiceArticoloFornitore = self._righe[i]["codiceArticoloFornitore"]
             daoRiga.id_listino = self._righe[i]["idListino"]
             daoRiga.percentuale_iva = self._righe[i]["percentualeIva"]
+            daoRiga.id_iva = self._righe[i]["idAliquotaIva"]
             daoRiga.applicazione_sconti = self._righe[i]["applicazioneSconti"]
             daoRiga.quantita = self._righe[i]["quantita"]
             daoRiga.id_multiplo = self._righe[i]["idMultiplo"]
@@ -953,6 +996,7 @@ del documento.
         self._righe[0]["moltiplicatore"] = self._righe[self._numRiga]["moltiplicatore"]
         self._righe[0]["prezzoLordo"] = self._righe[self._numRiga]["prezzoLordo"]
         self._righe[0]["percentualeIva"] = self._righe[self._numRiga]["percentualeIva"]
+        self._righe[0]["idAliquotaIva"] = self._righe[self._numRiga]["idAliquotaIva"]
         self._righe[0]["applicazioneSconti"] = self._righe[self._numRiga]["applicazioneSconti"]
         self._righe[0]["sconti"] = self._righe[self._numRiga]["sconti"]
         self._righe[0]["prezzoNetto"] = self._righe[self._numRiga]["prezzoNetto"]
@@ -976,7 +1020,9 @@ del documento.
         self.articolo_entry.set_text(self._righe[0]["codiceArticolo"])
         self.descrizione_entry.set_text(self._righe[0]["descrizione"])
         self.codice_articolo_fornitore_entry.set_text(self._righe[0]["codiceArticoloFornitore"])
-        self.percentuale_iva_entry.set_text(str(self._righe[0]["percentualeIva"]).strip())
+        findComboboxRowFromId(self.id_iva_customcombobox.combobox, self._righe[0]["idAliquotaIva"])
+#        self.percentuale_iva_entry.set_text(str(self._righe[0]["percentualeIva"]).strip())
+
         self.sconti_widget.setValues(self._righe[0]["sconti"], self._righe[0]["applicazioneSconti"], False)
         self.quantita_entry.set_text(str(self._righe[0]["quantita"]))
         try:
@@ -1011,11 +1057,6 @@ del documento.
             self.showMessage('ARTICOLO NON USABILE IN UNA RIGA IN QUANTO ARTICOLO PRINCIPALE O PADRE!')
             return
 
-#        iva = self.percentuale_iva_entry.get_text()
-#        if iva == "" or iva == "0" or iva =="0.00":
-#            self.showMessage(msg="ATTENZIONE IVA a 0%??")
-#            ivaazero = True
-#            return
         self._righe[0]["idMagazzino"] = findIdFromCombobox(self.id_magazzino_combobox)
         magazzino = leggiMagazzino(self._righe[0]["idMagazzino"])
         #magazzino = Magazzino().getRecord(id=self._righe[0]["idMagazzino"])
@@ -1042,7 +1083,7 @@ del documento.
                 (self._righe[0]["idMagazzino"] is None)):
             self.showMessage('Inserire il magazzino !')
             return
-
+        self.on_show_totali_riga()
         costoVariato = (self._tipoPersonaGiuridica == "fornitore" and self._righe[0]["idArticolo"] is not None and
                 (self._righe[0]["prezzoNetto"] != self._righe[0]["prezzoNettoUltimo"]) and
                 (self._segno is not None and self._segno != ''))
@@ -1075,6 +1116,7 @@ del documento.
         self._righe[self._numRiga]["descrizione"] = self._righe[0]["descrizione"]
         self._righe[self._numRiga]["codiceArticoloFornitore"] = self._righe[0]["codiceArticoloFornitore"]
         self._righe[self._numRiga]["percentualeIva"] = self._righe[0]["percentualeIva"]
+        self._righe[self._numRiga]["idAliquotaIva"] = self._righe[0]["idAliquotaIva"]
         self._righe[self._numRiga]["idUnitaBase"] = self._righe[0]["idUnitaBase"]
         self._righe[self._numRiga]["unitaBase"] = self._righe[0]["unitaBase"]
         self._righe[self._numRiga]["idMultiplo"] = self._righe[0]["idMultiplo"]
@@ -1272,7 +1314,6 @@ del documento.
         denominazione = None
         codiceArticoloFornitore = None
         join = None
-#        print "MA L?ARTICOLO E SEEZIONATO?", self.articolo_matchato, self.mattu
         if self.ricerca_codice_button.get_active():
             codice = self.articolo_entry.get_text()
             if Environment.tipo_eng =="sqlite":
@@ -1361,12 +1402,10 @@ del documento.
 
     def apriAnagraficaArticoliEdit(self, idArticolo):
         from promogest.ui.AnagraficaArticoli import AnagraficaArticoli
-        from promogest.ui.AnagraficaArticoliEdit import AnagraficaArticoliEdit
         from promogest.dao.Articolo import Articolo
         a = AnagraficaArticoli()
         art = Articolo().getRecord(id=idArticolo)
         a.on_record_edit_activate(a, dao=art)
-
 
     def on_edit_articolo_button_clicked(self, button):
         idArticolo = self._righe[0]["idArticolo"]
@@ -1376,7 +1415,14 @@ del documento.
         """ calcola il prezzo netto """
         self._righe[0]["quantita"] = Decimal(self.quantita_entry.get_text().strip() or 0)
         self._righe[0]["prezzoLordo"] = Decimal(self.prezzo_lordo_entry.get_text().strip() or 0)
-        self._righe[0]["percentualeIva"] = Decimal(self.percentuale_iva_entry.get_text().strip() or 0)
+        iva = findStrFromCombobox(self.id_iva_customcombobox.combobox,0)
+        if iva and type(iva) != type("CIAO"):
+            self._righe[0]["percentualeIva"] = mN(iva.percentuale,0) or 0
+            self._righe[0]["idAliquotaIva"] = iva.id or None
+        else:
+            self._righe[0]["percentualeIva"] =  0
+            self._righe[0]["idAliquotaIva"] = None
+
         self._righe[0]["applicazioneSconti"] = self.sconti_widget.getApplicazione()
         self._righe[0]["prezzoNetto"] = Decimal(self._righe[0]["prezzoLordo"]) or 0
         self._righe[0]["sconti"] = self.sconti_widget.getSconti()
