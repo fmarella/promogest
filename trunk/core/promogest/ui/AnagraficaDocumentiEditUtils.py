@@ -476,7 +476,6 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit.descrizione_entry.set_text(anaedit._righe[0]["descrizione"])
         anaedit._righe[0]["percentualeIva"] = mN(articolo["percentualeAliquotaIva"],2)
         anaedit._righe[0]["idAliquotaIva"] = articolo["idAliquotaIva"]
-        print "ABBIAMO UN DATO", anaedit._righe[0]["idAliquotaIva"]
         findComboboxRowFromId(anaedit.id_iva_customcombobox.combobox,anaedit._righe[0]["idAliquotaIva"])
 #        anaedit.percentuale_iva_entry.set_text(str(anaedit._righe[0]["percentualeIva"]))
         anaedit._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]

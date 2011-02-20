@@ -598,9 +598,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 idiva = riga.id_iva
             self._righe[0]["idAliquotaIva"] = idiva
 
-
-
-
             self._righe[0]["idUnitaBase"] = articolo["idUnitaBase"]
             self._righe[0]["unitaBase"] = articolo["unitaBase"]
             self._righe[0]["idMultiplo"] = riga.id_multiplo

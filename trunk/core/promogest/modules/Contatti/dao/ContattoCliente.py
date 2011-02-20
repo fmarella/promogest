@@ -12,6 +12,7 @@ from sqlalchemy.orm import *
 from promogest.Environment import params
 from promogest.dao.Dao import Dao
 from promogest.dao.Cliente import Cliente
+from promogest.dao.Contatto import Contatto
 from promogest.dao.RecapitoContatto import RecapitoContatto
 from promogest.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
 
@@ -44,11 +45,11 @@ class ContattoCliente(Dao):
     categorieContatto = property(_getCategorieContatto, _setCategorieContatto)
 
     def _appartenenza(self):
+        appa = ""
         a =  params["session"].query(Cliente).with_parent(self).filter(self.id_cliente==Cliente.id).all()
-        if not a:
-            return a
-        else:
-            return a[0].ragione_sociale or a[0].cognome or a[0].nome
+        if a:
+            appa = "Rif."+a[0].ragione_sociale+" "+a[0].cognome + " " +a[0].nome
+        return appa
     appartenenza = property(_appartenenza)
 
 
@@ -82,6 +83,7 @@ j = join(contatto, contattocliente)
 
 std_mapper = mapper(ContattoCliente, j,properties={
                 'id':[contatto.c.id, contattocliente.c.id],
+                "cc" : relation(Contatto, backref="contatto_cliente"),
                 'tipo_contatto':[contatto.c.tipo_contatto, contattocliente.c.tipo_contatto],
                 "cliente":relation(Cliente, backref="contatto_cliente")
                 }, order_by=contattocliente.c.id)
