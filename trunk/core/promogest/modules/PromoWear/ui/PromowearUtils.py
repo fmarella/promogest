@@ -97,6 +97,7 @@ def leggiArticoloPromoWear(id, full=False):
     _codice = ''
     _denominazioneBreveAliquotaIva = ''
     _percentualeAliquotaIva = 0
+    _idAliquotaIva = None
     _idUnitaBase = None
     _unitaBase = ''
     _idGruppoTaglia = None
@@ -138,6 +139,7 @@ def leggiArticoloPromoWear(id, full=False):
                 if daoAliquotaIva is not None:
                     _denominazioneBreveAliquotaIva = daoAliquotaIva.denominazione_breve or ''
                     _percentualeAliquotaIva = daoAliquotaIva.percentuale or 0
+                    _idAliquotaIva = daoAliquotaIva.id or None
             if posso("PW"):
                 daoArticoloTagliaColore = daoArticolo
                 if daoArticoloTagliaColore is not None:
@@ -158,6 +160,7 @@ def leggiArticoloPromoWear(id, full=False):
                     "denominazione": _denominazione, "codice": _codice,
                     "denominazioneBreveAliquotaIva": _denominazioneBreveAliquotaIva,
                     "percentualeAliquotaIva": _percentualeAliquotaIva,
+                    "idAliquotaIva":_idAliquotaIva,
                     "idUnitaBase": _idUnitaBase,
                     "unitaBase": _unitaBase,
                     "idGruppoTaglia": _idGruppoTaglia,
