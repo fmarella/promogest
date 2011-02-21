@@ -110,10 +110,10 @@ class TestataDocumento(Dao):
     #if Environment.conf.hasPagamenti == True:
     scadenze = property(_getScadenzeDocumento, _setScadenzeDocumento)
 
-    def sort_by_attr(self,seq,attr):
-        intermed = [ (getattr(seq[i],attr), i, seq[i]) for i in xrange(len(seq)) ]
+    def sort_by_attr(self, seq,attr):
+        intermed = [(getattr(seq[i], attr), i, seq[i]) for i in xrange(len(seq))]
         intermed.sort()
-        return [ tup[-1] for tup in intermed ]
+        return [tup[-1] for tup in intermed]
 
     def _getRigheDocumento(self):
         if self.id:

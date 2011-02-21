@@ -177,7 +177,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
             self.infopeso_page.infoPesoSetDao(self.dao)
             self.infopeso_page.nome_cognome_label.set_text(str(self.dao.ragione_sociale) or ""+"\n"+str(self.dao.cognome) or ""+" "+str(self.dao.nome) or "")
 
-        if not self.dao.id:
+        if dao is None:
             self.dao_contatto = ContattoCliente()
         else:
             self.dao_contatto = ContattoCliente().select(idCliente=self.dao.id)
