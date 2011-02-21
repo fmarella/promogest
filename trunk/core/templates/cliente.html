@@ -13,23 +13,23 @@
             </tr>
             <tr>
                 <td class="even-detail">Ragione sociale</td>
-                <td class="even-detail"><strong>{{dao.ragione_sociale}}</strong></td>
+                <td class="even-detail"><strong>{{dao.ragione_sociale|nonone}}</strong></td>
             </tr>
             <tr>
                 <td class="odd-detail">Cognome</td>
-                <td class="odd-detail"><strong>{{dao.cognome}}</strong></td>
+                <td class="odd-detail"><strong>{{dao.cognome|nonone}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Nome</td>
-                <td class="even-detail"><strong>{{dao.nome}}</strong></td>
+                <td class="even-detail"><strong>{{dao.nome|nonone}}</strong></td>
             </tr>
             <tr>
                 <td class="odd-detail">Codice fiscale</td>
-                <td class="odd-detail"><strong>{{dao.codice_fiscale}}</strong></td>
+                <td class="odd-detail"><strong>{{dao.codice_fiscale|nonone}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Partita IVA</td>
-                <td class="even-detail"><strong>{{dao.partita_iva}}</strong></td>
+                <td class="even-detail"><strong>{{dao.partita_iva|nonone}}</strong></td>
             </tr>
         </table>
 
@@ -40,19 +40,19 @@
 	    </tr>
             <tr>
                 <td width="140px" class="odd-detail">Indirizzo</td>
-                <td class="odd-detail"><strong>{{dao.sede_operativa_indirizzo}}</strong></td>
+                <td class="odd-detail"><strong>{{dao.sede_operativa_indirizzo|nonone}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Località</td>
-                <td class="even-detail"><strong>{{dao.sede_operativa_localita}}</strong></td>
+                <td class="even-detail"><strong>{{dao.sede_operativa_localita|nonone}}</strong></td>
             </tr>
             <tr>
                 <td class="odd-detail">Provincia</td>
-                <td class="odd-detail"><strong>{{dao.sede_operativa_provincia}}</strong></td>
+                <td class="odd-detail"><strong>{{dao.sede_operativa_provincia|nonone}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">CAP</td>
-                <td class="even-detail"><strong>{{dao.sede_operativa_cap}}</strong></td>
+                <td class="even-detail"><strong>{{dao.sede_operativa_cap|nonone}}</strong></td>
 
             </tr>
         </table>
@@ -61,19 +61,19 @@
         <tr><td colspan="2" class="table-header">Sede legale</td></tr>
         <tr>
             <td width="140px" class="odd-detail">Indirizzo</td>
-            <td class="odd-detail"><strong>{{dao.sede_legale_indirizzo}}</strong></td>
+            <td class="odd-detail"><strong>{{dao.sede_legale_indirizzo|nonone}}</strong></td>
         </tr>
         <tr>
             <td class="even-detail">Località</td>
-            <td class="even-detail"><strong>{{dao.sede_legale_localita}}</strong></td>
+            <td class="even-detail"><strong>{{dao.sede_legale_localita|nonone}}</strong></td>
         </tr>
         <tr>
             <td class="odd-detail">Provincia</td>
-            <td class="odd-detail"><strong>{{dao.sede_legale_provincia}}</strong></td>
+            <td class="odd-detail"><strong>{{dao.sede_legale_provincia|nonone}}</strong></td>
         </tr>
         <tr>
             <td class="even-detail">CAP</td>
-            <td class="even-detail"><strong>{{dao.sede_legale_cap}}</strong></td>
+            <td class="even-detail"><strong>{{dao.sede_legale_cap|nonone}}</strong></td>
         </tr>
     </table>
 
@@ -82,7 +82,7 @@
 <table>
 {% for a in utils.getRecapitiCliente(dao.id) %}
 <tr>
-<td><b>{{a.tipo_recapito}} : </b>{{ a.recapito}}</td>
+<td><b>{{a.tipo_recapito|nonone}} : </b>{{ a.recapito|nonone}}</td>
 </tr>
 {% endfor %}
 </table>
