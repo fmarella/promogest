@@ -22,6 +22,7 @@
 
 import hashlib
 import os
+import sys
 import gtk
 try:
     settings = gtk.settings_get_default()

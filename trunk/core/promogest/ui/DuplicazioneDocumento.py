@@ -46,7 +46,7 @@ class DuplicazioneDocumento(GladeWidget):
 
         self.dao = daoDocumento
         self.anagrafica_documenti = anagraficaDocumenti
-
+        self.personaGiuridicaCambiata = False
         GladeWidget.__init__(self, 'duplicazione_documento_window',
                                     'duplicazione_documento.glade')
         self.placeWindow(self.getTopLevel())
@@ -57,6 +57,7 @@ class DuplicazioneDocumento(GladeWidget):
         operazione = leggiOperazione(self.dao.operazione)
         self.tipoPersonaGiuridica = operazione['tipoPersonaGiuridica']
         self.persona_label.set_text(self.tipoPersonaGiuridica.capitalize())
+
         self.id_persona_giuridica_customcombobox.setType(self.tipoPersonaGiuridica)
 
         res = Environment.params['session'].query(Operazione).filter(Operazione.tipo_persona_giuridica != '').all()
@@ -104,8 +105,10 @@ class DuplicazioneDocumento(GladeWidget):
 
         if (findIdFromCombobox(self.id_operazione_combobox) is None):
             obligatoryField(self.getTopLevel(), self.id_operazione_combobox)
-
-        note = "Rif. " + self.dao.operazione + " n. " + str(self.dao.numero) + " del " + dateToString(self.dao.data_documento)
+        if self.note_check.get_active():
+            note = "Rif. " + self.dao.operazione + " n. " + str(self.dao.numero) + " del " + dateToString(self.dao.data_documento)
+        else:
+            note = ""
 
         newDao = TestataDocumento()
         newDao.data_documento = stringToDate(self.data_documento_entry.get_text())
@@ -307,10 +310,11 @@ class DuplicazioneDocumento(GladeWidget):
 
     def on_id_operazione_combobox_changed(self, widget, event=None):
         tipoPersonaGiuridica = self.id_operazione_combobox.get_model()[self.id_operazione_combobox.get_active()][0].tipo_persona_giuridica
+        print " QUI NON PASSI VERO", self.tipoPersonaGiuridica, tipoPersonaGiuridica
         if self.tipoPersonaGiuridica == tipoPersonaGiuridica:
-            self.personaGiuridicaCambiata = True
-        else:
             self.personaGiuridicaCambiata = False
+        else:
+            self.personaGiuridicaCambiata = True
 
         if self.id_persona_giuridica_customcombobox.getType() == "fornitore" and tipoPersonaGiuridica == 'cliente':
             self.id_persona_giuridica_customcombobox.refresh(clear=True, filter=True)

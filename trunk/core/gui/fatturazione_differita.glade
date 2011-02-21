@@ -110,24 +110,12 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkCheckButton" id="dettaglio_check">
-                            <property name="label" translatable="yes">
-Inserire il dettaglio delle righe ddt  all'interno della fattura.
-DDT N° xx DEL xx/xx/xxxx
-	art 001 descrizione quantità ... 
-	art 002 descrizione quantità
-DDT N° yy del yy/yy/yyyy
-	art 001 descrizione quantità
-	art 005 descrizione quantità
-
-Se non si spunta il risultato sarà questo:
- DDT N° xx DEL xx/xx/xxxx
- DDT N° yy del yy/yy/yyyy</property>
-                            <property name="sensitive">False</property>
-                            <property name="can_focus">False</property>
+                          <object class="GtkCheckButton" id="data_consegna_check">
+                            <property name="label" translatable="yes">Inserisci data consegna</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="use_action_appearance">False</property>
-                            <property name="inconsistent">True</property>
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
@@ -135,6 +123,41 @@ Se non si spunta il risultato sarà questo:
                             <property name="fill">False</property>
                             <property name="position">2</property>
                           </packing>
+                        </child>
+                        <child>
+                          <object class="GtkCheckButton" id="note_check">
+                            <property name="label" translatable="yes">Inserisci Note DDT</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="use_action_appearance">False</property>
+                            <property name="draw_indicator">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkCheckButton" id="no_row_check">
+                            <property name="label" translatable="yes">Inserisci Righe del singolo DDT</property>
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="use_action_appearance">False</property>
+                            <property name="active">True</property>
+                            <property name="draw_indicator">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
                         </child>
                       </object>
                     </child>

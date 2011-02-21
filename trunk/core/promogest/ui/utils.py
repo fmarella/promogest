@@ -22,6 +22,7 @@
 
 from textwrap import TextWrapper
 import os
+import sys
 from threading import Timer
 import hashlib
 from calendar import Calendar
@@ -2476,17 +2477,19 @@ def aggiorna(anag):
             if response == gtk.RESPONSE_YES:
                 try:
                     client.update( '.' )
-                    msgg = "TUTTO OK AGGIORNAMENTO EFFETTUATO\n\n RIAVVIARE IL PROMOGEST"
+                    msgg = "TUTTO OK AGGIORNAMENTO EFFETTUATO\n\n IL PROMOGEST VERRA' CHIUSO PER UN RIAVVIO"
                     Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO A BUON FINE")
                     try:
                         anag.active_img.set_from_file("gui/active_on.png")
                         anag.aggiornamento_label.set_label("AGGIORNATO")
                     except:
                         pass
+                    ok = True
                 except pysvn.ClientError, e:
                     # convert to a string
                     msgg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
                     Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO MALE")
+                    ok = False
                 dialogg = gtk.MessageDialog(anag.getTopLevel(),
                                     gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                     gtk.MESSAGE_INFO,
@@ -2494,6 +2497,8 @@ def aggiorna(anag):
                                     msgg)
                 dialogg.run()
                 dialogg.destroy()
+                if ok:
+                    sys.exit()
         else:
             msggg = "Il PromoGest è già aggiornato all'ultima versione ( %s) \n Riprova in un altro momento\n\nGrazie" %(str(rl))
             dialoggg = gtk.MessageDialog(anag.getTopLevel(),

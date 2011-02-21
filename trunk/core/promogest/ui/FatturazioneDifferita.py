@@ -165,9 +165,12 @@ class FatturazioneDifferita(GladeWidget):
                         riga_riferimento = "Rif. " + str(dao_da_fatturare.operazione) + " n. " + str(
                                             dao_da_fatturare.numero) + " del " + dateToString(
                                             dao_da_fatturare.data_documento )
-                        if dao_da_fatturare.inizio_trasporto:
-                             riga_riferimento = riga_riferimento + "In.Tr. il "+ dateToString(
+                        if self.data_consegna_check.get_active() and  dao_da_fatturare.inizio_trasporto:
+                             riga_riferimento = riga_riferimento + "\nIn.Tr. il "+ dateToString(
                                             dao_da_fatturare.inizio_trasporto)
+                        if self.note_check.get_active() and dao_da_fatturare.note_pie_pagina:
+                            riga_riferimento = riga_riferimento+ "\n "+ dao_da_fatturare.note_pie_pagina
+
                         daoRiga = RigaDocumento()
     #                    daoRiga.id_testata_documento = newDao.id
                         daoRiga.descrizione = riga_riferimento
