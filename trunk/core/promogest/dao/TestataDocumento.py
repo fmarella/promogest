@@ -332,7 +332,7 @@ class TestataDocumento(Dao):
 
         totaleNonScontato = Decimal(totaleNonScontato)
         totaleImponibile = Decimal(totaleImponibile)
-        totaleImposta = totaleNonScontato - totaleImponibile
+        totaleImposta = totaleNonScontato - (totaleImponibile+totaleEsclusoBaseImponibile)
         totaleEsclusoBaseImponibile = mN(totaleEsclusoBaseImponibile)
 #        print "VEDIAMO I TOTALI", totaleNonScontato, totaleImponibile, totaleImposta
         for aliquotaIva in castellettoIva:

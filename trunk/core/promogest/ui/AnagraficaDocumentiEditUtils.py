@@ -244,8 +244,8 @@ def calcolaTotalePart(anaedit, dao=None):
         daoiva=None
         if idAliquotaIva:
             daoiva = AliquotaIva().getRecord(id=idAliquotaIva)
-        if daoiva and daoiva.percentuale != percentualeIva:
-            messageInfo(msg="ATTENZIONE, % IVA non corrispondente")
+#        if daoiva and daoiva.percentuale != percentualeIva:
+#            messageInfo(msg="ATTENZIONE, % IVA non corrispondente")
 
         totaleRiga = mN(prezzoNetto * quantita * moltiplicatore)
 
