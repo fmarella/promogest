@@ -272,7 +272,6 @@ class TestataDocumento(Dao):
             # FIXME: added for supporting dumb rows when printing
             if riga is None:
                 continue
-            #print "VALORIIIIIIIIIIIIIIIII", riga.quantita, riga.moltiplicatore, riga.valore_unitario_netto
             if not riga.moltiplicatore:
                 riga.moltiplicatore = 1
 
@@ -312,8 +311,7 @@ class TestataDocumento(Dao):
                     totaleEsclusoBaseImponibileRiga = 0
                     totaleImponibileRiga = totaleRiga
                     totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
-
-            totaleImpostaRiga = totaleRiga - totaleImponibileRiga
+            totaleImpostaRiga = totaleRiga - (totaleImponibileRiga+totaleEsclusoBaseImponibileRiga)
             totaleNonScontato += totaleRiga
             totaleImponibile += totaleImponibileRiga
             totaleImposta += totaleImpostaRiga
@@ -386,9 +384,10 @@ class TestataDocumento(Dao):
         self._totaleImpostaScontata = totaleImpostaScontata
         self._castellettoIva = []
         for k in castellettoIva.keys():
-            dictCastellettoIva = castellettoIva[k]
-            dictCastellettoIva['aliquota'] = k
-            self._castellettoIva.append(dictCastellettoIva)
+            if k !=0:
+                dictCastellettoIva = castellettoIva[k]
+                dictCastellettoIva['aliquota'] = k
+                self._castellettoIva.append(dictCastellettoIva)
 
         return None
 

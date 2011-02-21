@@ -276,15 +276,20 @@ def calcolaTotalePart(anaedit, dao=None):
                 totaleEsclusoBaseImponibileRiga = 0
                 totaleImponibileRiga = totaleRiga
                 totaleRiga = calcolaPrezzoIva(totaleRiga, percentualeIvaRiga)
-        totaleImpostaRiga = totaleRiga - totaleImponibileRiga
+        totaleImpostaRiga = totaleRiga - (totaleImponibileRiga+totaleEsclusoBaseImponibileRiga)
         totaleNonScontato += totaleRiga
         totaleImponibile += totaleImponibileRiga
         totaleImposta += totaleImpostaRiga
         totaleEsclusoBaseImponibile += totaleEsclusoBaseImponibileRiga
 
         if percentualeIvaRiga not in castellettoIva.keys():
-            castellettoIva[percentualeIvaRiga] = {'imponibile': totaleImponibileRiga, 'imposta': totaleImpostaRiga, 'totale': totaleRiga}
+
+            castellettoIva[percentualeIvaRiga] = {'percentuale': percentualeIvaRiga,
+                                                'imponibile': totaleImponibileRiga,
+                                                'imposta': totaleImpostaRiga,
+                                                'totale': totaleRiga}
         else:
+            castellettoIva[percentualeIvaRiga]['percentuale'] = percentualeIvaRiga
             castellettoIva[percentualeIvaRiga]['imponibile'] += totaleImponibileRiga
             castellettoIva[percentualeIvaRiga]['imposta'] += totaleImpostaRiga
             castellettoIva[percentualeIvaRiga]['totale'] += mN(totaleRiga,2)
@@ -366,9 +371,10 @@ def calcolaTotalePart(anaedit, dao=None):
     model = anaedit.riepiloghi_iva_treeview.get_model()
     model.clear()
     for k in castellettoIva.keys():
-        model.append((str(mN(k)),
-                        (str(mN(castellettoIva[k]['imponibile']))),
-                        (str(mN(castellettoIva[k]['imposta']))),))
+        if k !=0:
+            model.append((str(mN(k)),
+                            (str(mN(castellettoIva[k]['imponibile']))),
+                            (str(mN(castellettoIva[k]['imposta']))),))
 
 
 def mostraArticoloPart(anaedit, id, art=None):

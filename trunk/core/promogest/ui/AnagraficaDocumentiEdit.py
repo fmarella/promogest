@@ -565,12 +565,6 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["percentualeIva"] = mN(riga.percentuale_iva,0)
 
 
-
-
-
-
-
-        # RIPARTI DA QUI DOMANI MATTINA
             # Questo valore potrebbe essere a none per le righe
             #precedenti il 19/02/2011 , cerchiamo di derurre l'id e lo settiamo
             idiva = None
