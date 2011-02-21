@@ -154,7 +154,7 @@ Proseguire comunque?
 
         self.anagrafica.record_new_button.set_sensitive(True)
         self.anagrafica.record_new_menu.set_sensitive(True)
-        self.duplica_button.set_sensitive(False)
+#        self.duplica_button.set_sensitive(False)
         self.anagrafica.record_edit_button.set_sensitive(False)
         self.anagrafica.record_edit_menu.set_sensitive(False)
 
