@@ -216,7 +216,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="note_check">
-                        <property name="label" translatable="yes">Inserisci RIf. in note </property>
+                        <property name="label" translatable="yes">Inserisci RIf. in note piè di pagina </property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>

@@ -60,7 +60,13 @@ class ContattoCliente(Dao):
         appa = ""
         a =  params["session"].query(Cliente).with_parent(self).filter(self.id_cliente==Cliente.id).all()
         if a:
-            appa = "Rif."+a[0].ragione_sociale+" "+a[0].cognome + " " +a[0].nome
+            appa = "Rif."
+            if a[0].ragione_sociale:
+                appa = appa +" "+a[0].ragione_sociale
+            if a[0].cognome:
+                appa = appa+" " +a[0].cognome
+            if a[0].nome:
+                appa = appa+" "+a[0].nome
         return appa
     appartenenza = property(_appartenenza)
 
