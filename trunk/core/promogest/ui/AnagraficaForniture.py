@@ -300,8 +300,8 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
                             (f.codice_articolo or ''),
                             (f.articolo or ''),
                             dateToString(f.data_fornitura),
-                            (mN(f.prezzo_lordo)),
-                            (mN(f.prezzo_netto)),
+                            str((mN(f.prezzo_lordo))),
+                            str((mN(f.prezzo_netto))),
                             (f.denominazione_gruppo_taglia or ''),
                             (f.denominazione_taglia or ''),
                             (f.denominazione_colore or ''),
@@ -315,8 +315,8 @@ class AnagraficaFornitureFilter(AnagraficaFilter):
                             (f.codice_articolo or ''),
                             (f.articolo or ''),
                             dateToString(f.data_fornitura),
-                            (mN(f.prezzo_lordo) or 0),
-                            (mN(f.prezzo_netto) or 0)))
+                            str((mN(f.prezzo_lordo) or 0)),
+                            str((mN(f.prezzo_netto) or 0))))
 
 
 class AnagraficaFornitureHtml(AnagraficaHtml):

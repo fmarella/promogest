@@ -55,11 +55,18 @@ class Contatto(Dao):
 
     def _appartenenza(self):
         appa = ""
+        a =None
         if self.tipo_contatto=="cliente" and self.contatto_cliente :
             from promogest.dao.Cliente import Cliente
             a =  params["session"].query(Cliente).filter(self.contatto_cliente[0].id_cliente==Cliente.id).all()
-            if a:
-                appa = "Rif."+a[0].ragione_sociale+" "+a[0].cognome + " " +a[0].nome
+        if a:
+            appa = "Rif."
+            if a[0].ragione_sociale:
+                appa = appa +" "+a[0].ragione_sociale
+            if a[0].cognome:
+                appa = appa+" " +a[0].cognome
+            if a[0].nome:
+                appa = appa+" "+a[0].nome" +a[0].nome
         return appa
     appartenenza = property(_appartenenza)
 

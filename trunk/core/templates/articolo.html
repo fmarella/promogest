@@ -9,7 +9,7 @@
 <table cellpadding="0" cellspacing="0" border="0">
             <tr>
                 <td><h3>Articolo: {{dao.codice}}</h3></td>
-        <td><h3>Codice a barre principale:{{dao.codice_a_barre}}</h3></td>
+        <td ><h3>Codice a barre principale: <span style="font-size:14pt"> {{dao.codice_a_barre}}</span></h3></td>
             </tr>
 </table>
 <table cellpadding="0" cellspacing="0" border="0">
@@ -20,7 +20,7 @@
 	    </tr>
             <tr>
                 <td width="130px" class="odd-detail">Descrizione</td>
-                <td class="odd-detail"><strong>{{dao.denominazione}}</strong></td>
+                <td class="odd-detail" style="font-size:14pt"><strong>{{dao.denominazione}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Produttore</td>
@@ -131,7 +131,7 @@
         </td>
             </tr><tr><td></td></tr>
             {% if dao %}
- <tr><td class="odd-detail"><strong>GIACENZA: {{dao.getGiacenza()|nonone or 0}}</strong>
+ <tr><td colspan="4"  class="odd-detail" style="font-size:16pt" ><strong>GIACENZA: {{dao.getGiacenza()|nonone or 0}}</strong>
                 </td>
             </tr>
                 {% endif %}

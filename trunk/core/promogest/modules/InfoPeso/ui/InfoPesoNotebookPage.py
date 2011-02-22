@@ -2,7 +2,8 @@
 
 # Promogest
 #
-# Copyright (C) 2005-2009 by Promotux Informatica - http://www.promotux.it/
+# Copyright (C) 2005,2006,2007,2008,2009,2010,2011,
+#                         by Promotux Informatica - http://www.promotux.it/
 # Author: Francesco Meloni <francesco@promotux.it>
 #
 # This program is free software; you can redistribute it and/or
@@ -42,10 +43,6 @@ class InfoPesoNotebookPage(GladeWidget):
         self.ana = mainnn
         self.aziendaStr = azienda or ""
         self.editRiga = None
-        print self.ana.ragione_sociale_entry.get_text()
-        print self.ana.insegna_entry.get_text()
-        print self.ana.cognome_entry.get_text()
-        print self.ana.nome_entry.get_text()
         self.draw()
 
     def draw(self):
@@ -131,14 +128,22 @@ class InfoPesoNotebookPage(GladeWidget):
 
 #        self.infoPeso_refresh() # ????
 
-
-
-
-
     def _calcolaDifferenzaPeso(self):
-        model = self.righe_pesata_treeview
+        model = self.righe_pesata_treeview.get_model()
+        llll = []
         for m in model:
-            print m[0].peso
+            llll.append((stringToDate(m[1]), m[2], m, m[0]))
+            print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", m[0].peso
+        llll.sort()
+        for i in range(0, len(llll)):
+            if i+1 < len(llll):
+                print "DA PAZZOOOOOO", llll[i], llll[i+1],Decimal(llll[i][1]) - Decimal(llll[i+1][1])
+                for m in model:
+                    if m[0] == llll[i][3]:
+                        print "POPOPPOPOPOPO"
+                        m[3] = str(-1*(Decimal(llll[i][1]) - Decimal(llll[i+1][1])))
+
+        self.righe_pesata_treeview.set_model(model)
 
 
     def on_aggiungi_pesata_button_clicked(self, button):
@@ -152,6 +157,7 @@ class InfoPesoNotebookPage(GladeWidget):
         note_riga = bufferNoteRiga.get_text(bufferNoteRiga.get_start_iter(), bufferNoteRiga.get_end_iter()) or ""
 
         model = self.righe_pesata_treeview.get_model()
+        modelo = len(model)
         if self.editRiga:
             riga = self.editRiga
             riga.numero = self.editRiga.numero
@@ -171,26 +177,28 @@ class InfoPesoNotebookPage(GladeWidget):
             self.rigaIter[0] = riga
 #            self.rigaIter[1] = str(riga.numero)
             self.rigaIter[1] = dateToString(riga.data_registrazione)
-            self.rigaIter[2] = str(riga.peso)
+            self.rigaIter[2] = str(mN(riga.peso,1))
             self.rigaIter[3] = str(0)
-            self.rigaIter[4] = str(riga.massa_grassa)
-            self.rigaIter[5] = str(riga.massa_magra_e_acqua)
-            self.rigaIter[6] = str(riga.acqua)
+            self.rigaIter[4] = str(mN(riga.massa_grassa,1))
+            self.rigaIter[5] = str(mN(riga.massa_magra_e_acqua,1))
+            self.rigaIter[6] = str(mN(riga.acqua,1))
             self.rigaIter[7] = str(tipo_tratt)
             self.rigaIter[8] = str(riga.note)
         else:
             model.append((riga,
                         dateToString(data_pesata),
-                        str(peso) or "",
+                        str(mN(peso,1)) or "",
                         str("0"),
-                        str(mgrassa) or "",
-                        str(mmagraeacqua) or "",
-                        str(acqua) or "",
+                        str(mN(mgrassa,1)) or "",
+                        str(mN(mmagraeacqua,1)) or "",
+                        str(mN(acqua,1)) or "",
                         str(tipo_tratt),
                         str(note_riga.replace("\n"," ")[0:100])
                         ))
         self.righe_pesata_treeview.set_model(model)
+        self._calcolaDifferenzaPeso()
         self._clear()
+        self.righe_pesata_treeview.scroll_to_cell(str(modelo-1))
 
     def _clear(self):
         self.data_pesata_datewidget.set_text("")
@@ -263,16 +271,17 @@ class InfoPesoNotebookPage(GladeWidget):
         for m in self.dao_testata_infopeso.righeinfopeso:
             model.append((m,
                         dateToString(m.data_registrazione),
-                        str(m.peso) or "",
+                        str(mN(m.peso,1)) or "",
                         str("0"),
-                        str(m.massa_grassa) or "",
-                        str(m.massa_magra_e_acqua) or "",
-                        str(m.acqua) or "",
+                        str(mN(m.massa_grassa,1)) or "",
+                        str(mN(m.massa_magra_e_acqua,1)) or "",
+                        str(mN(m.acqua,1)) or "",
                         str(m.tipotrattamento),
                         str(m.note.replace("\n"," ")[0:100])
                         ))
         self.righe_pesata_treeview.set_model(model)
-
+        self.righe_pesata_treeview.scroll_to_cell(str(len(model)-1))
+        self._calcolaDifferenzaPeso()
 
     def infoPesoSaveDao(self):
         self.dao_testata_infopeso.data_inizio= stringToDate(self.data_infopeso_datewidget.get_text())
