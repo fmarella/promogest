@@ -66,7 +66,7 @@ class Contatto(Dao):
             if a[0].cognome:
                 appa = appa+" " +a[0].cognome
             if a[0].nome:
-                appa = appa+" "+a[0].nome" +a[0].nome
+                appa = appa+" "+a[0].nome
         return appa
     appartenenza = property(_appartenenza)
 
