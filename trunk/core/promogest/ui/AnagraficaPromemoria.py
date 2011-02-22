@@ -34,11 +34,11 @@ from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 class AnagraficaPromemoria(Anagrafica):
     """ Anagrafica promemoria """
 
-    def __init__(self, aziendaStr=None, selectedData=None):
+    def __init__(self, aziendaStr=None, selectedData=None, pg=None):
         Anagrafica.__init__(self,
                             windowTitle='Promogest - Anagrafica promemoria',
                             recordMenuLabel='_Promemoria',
-                            filterElement=AnagraficaPromemoriaFilter(self),
+                            filterElement=AnagraficaPromemoriaFilter(self, pg=pg),
                             htmlHandler=AnagraficaPromemoriaHtml(self),
                             reportHandler=AnagraficaPromemoriaReport(self),
                             editElement=AnagraficaPromemoriaEdit(self, selectedData=selectedData),
@@ -48,13 +48,14 @@ class AnagraficaPromemoria(Anagrafica):
 class AnagraficaPromemoriaFilter(AnagraficaFilter):
     """ Filtro per la ricerca nell'anagrafica dei clienti """
 
-    def __init__(self, anagrafica):
+    def __init__(self, anagrafica, pg=None):
         AnagraficaFilter.__init__(self,
                                   anagrafica,
                                   'anagrafica_promemoria_filter_table',
                                   gladeFile='_anagrafica_promemoria_elements.glade')
         self._widgetFirstFocus = self.da_data_inserimento_entry.entry
         self.orderBy = 'data_scadenza'
+        self.pg = pg
 
     def draw(self,cplx=False):
         # Colonne della Treeview per il filtro
@@ -164,7 +165,7 @@ class AnagraficaPromemoriaFilter(AnagraficaFilter):
         self.autore_combobox_filter_entry.child.set_text('')
         self.descrizione_filter_entry.set_text('')
         self.annotazione_filter_entry.set_text('')
-        self.riferimento_filter_entry.set_text('')
+        self.riferimento_filter_entry.set_text(self.pg or '')
         self.completati_checkbox.set_active(False)
         self.scaduti_checkbox.set_active(False)
         self.in_scadenza_checkbox.set_active(True)

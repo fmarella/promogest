@@ -21,10 +21,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-from sqlalchemy.orm import join
-from sqlalchemy import or_
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, \
-                        AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from AnagraficaComplessa import AnagraficaEdit
 import promogest.dao.Cliente
 from promogest import Environment
 from promogest.dao.Cliente import Cliente
@@ -458,6 +455,40 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                 toggleButton)
         anag.filter.id_cliente_filter_customcombobox.setId(self.dao.id)
         anag.filter.refresh()
+
+    def on_promemoria_togglebutton_toggled(self, toggleButton):
+        if not(toggleButton.get_active()):
+            toggleButton.set_active(False)
+            return
+        if posso("PR"):
+            if self.dao.id is None:
+                msg = 'Prima di poter inserire i contatti occorre salvare il cliente.\n Salvare ?'
+                dialog = gtk.MessageDialog(self.dialogTopLevel,
+                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                        gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
+                        msg)
+                response = dialog.run()
+                dialog.destroy()
+                if response == gtk.RESPONSE_YES:
+                    self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, gtk.RESPONSE_APPLY)
+                else:
+                    toggleButton.set_active(False)
+                    return
+
+            from promogest.ui.AnagraficaPromemoria import AnagraficaPromemoria
+            if self.dao.ragione_sociale:
+                stringa = self.dao.ragione_sociale
+            elif self.dao.cognome:
+                stringa = self.dao.cognome
+            else:
+                stringa = None
+            anag = AnagraficaPromemoria(pg=stringa)
+            anagWindow = anag.getTopLevel()
+
+            showAnagraficaRichiamata(self.dialogTopLevel, anagWindow, toggleButton)
+        else:
+            fenceDialog()
+            toggleButton.set_active(False)
 
     def on_contatti_togglebutton_clicked(self, toggleButton):
         if not(toggleButton.get_active()):
