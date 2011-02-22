@@ -14,23 +14,23 @@
             <tr><td colspan="2" class="table-header">Dati contatto</td></tr>
             <tr>
                 <td width="120px" class="odd-detail">Cognome</td>
-                <td class="odd-detail"><strong>{{dao.cognome}}</strong></td>
+                <td class="odd-detail"><strong>{{dao.cognome|nonone}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Nome</td>
-                <td class="even-detail"><strong>{{dao.nome}}</strong></td>
+                <td class="even-detail"><strong>{{dao.nome|nonone}}</strong></td>
             </tr>
             <tr>
                 <td class="odd-detail">Ruolo</td>
-                <td class="odd-detail"><strong>{{dao.ruolo}}</strong></td>
+                <td class="odd-detail"><strong>{{dao.ruolo|nonone}}</strong></td>
             </tr>
             <tr>
                 <td class="even-detail">Descrizione</td>
-                <td class="even-detail"><strong>{{dao.descrizione}}</strong></td>
+                <td class="even-detail"><strong>{{dao.descrizione|nonone}}</strong></td>
             </tr>
             <tr>
                 <td class="odd-detail">Appartenenza</td>
-                <td class="odd-detail"><strong>{{dao.appartenenza}}</strong></td>
+                <td class="odd-detail"><strong>{{dao.appartenenza|nonone}}</strong></td>
             </tr>
 	</table>
 </td>
@@ -39,8 +39,8 @@
             <tr><td colspan="2" class="table-header">Recapiti contatto</td></tr>
             {% for recapito in dao.recapiti %}
             <tr >
-               	<td class = "even-detail">{{recapito.tipo_recapito}}</td>
-                <td class = "even-detail"><strong>{{recapito.recapito}}</strong></td>
+               	<td class = "even-detail">{{recapito.tipo_recapito|nonone}}</td>
+                <td class = "even-detail"><strong>{{recapito.recapito|nonone}}</strong></td>
             </tr>
             {% endfor %}
         </table>
@@ -51,7 +51,7 @@
            	<td class="table-header">Note</td>
 	   </tr>
            <tr>
-		<td class="odd-detail"><strong>{{dao.note}}</strong></td>
+		<td class="odd-detail"><strong>{{dao.note|nonone}}</strong></td>
            </tr>
 	</table>
 {% endblock %}
