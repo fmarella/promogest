@@ -19,15 +19,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-import gtk
 import calendar
 from promogest.lib.relativedelta import relativedelta
 from promogest.ui.utils import *
-from promogest.dao.Setconf import SetConf
 from promogest import Environment
 from GladeWidget import GladeWidget
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
-from promogest.lib import feedparser
 from promogest.ui.PrintDialog import PrintDialogHandler
 from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.Promemoria import Promemoria
@@ -37,7 +34,6 @@ except:
     print """ERRORE NELL'IMPORT DI PISA prova a digitare
 'sudo apt-get install python-pisa" nel terminale' """
 #    import pisaLib.ho.pisa as pisa
-
 
 try:
     from webkit import WebView
@@ -53,7 +49,7 @@ class CalendarNotebookPage(GladeWidget):
                                     'calendario_notebook.glade')
 #        self.placeWindow(self.getTopLevel())
         self.rowBackGround = None
-        self.main = mainnnn
+        self.mainoo = mainnnn
         self.aziendaStr = azienda or ""
         self.htmlPlanningWidget = createHtmlObj(self)
         self.planning_scrolled.add(self.htmlPlanningWidget)
@@ -91,7 +87,7 @@ class CalendarNotebookPage(GladeWidget):
         g = file(Environment.tempDir+".temp.pdf", "wb")
         pdf = pisa.CreatePDF(str(self.hhttmmll),g)
         g.close()
-        anag = PrintDialogHandler(self.main.main_window, nomefile)
+        anag = PrintDialogHandler(self.mainoo.main_window, nomefile)
         anagWindow = anag.getTopLevel()
         returnWindow = self.getTopLevel().get_toplevel()
         anagWindow.set_transient_for(returnWindow)
