@@ -22,7 +22,6 @@
 
 import locale
 import gtk
-import gobject
 import hashlib
 import os
 import glob
@@ -44,8 +43,8 @@ from VistaPrincipale import VistaPrincipale
 from promogest.ui.SendEmail import SendEmail
 from promogest.ui.PrintDialog import PrintDialogHandler
 from utils import hasAction, fencemsg, aggiorna, updateScadenzePromemoria,\
-         setconf, dateTimeToString, dateToString, last_day_of_month, \
-         date_range, orda, posso, messageInfo, installId
+         setconf, dateTimeToString, dateToString, \
+         orda, posso, messageInfo, installId
 from utilsCombobox import *
 from ParametriFrame import ParametriFrame
 from SetConf import SetConfUI
@@ -53,7 +52,6 @@ from AnagraficaPrincipaleFrame import AnagrafichePrincipaliFrame
 #from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 import promogest.dao.Promemoria
 from promogest.dao.Promemoria import Promemoria
-from promogest.dao.TestataDocumento import TestataDocumento
 from promogest.dao.VariazioneListino import VariazioneListino
 from ConfiguraWindow import ConfiguraWindow
 from promogest.ui.PanUi import PanUi, checkPan
@@ -61,6 +59,7 @@ from promogest.ui.AzioniVelociNotebookPage import AzioniVelociNotebookPage
 from promogest.ui.NewsNotebookPage import NewsNotebookPage
 from promogest.ui.CalendarNotebookPage import CalendarNotebookPage
 from promogest.ui.NotificaAllarmiNotebookPage import NotificaAllarmiNotebookPage
+
 #inizializzano il customwidget
 from widgets.ArticoloSearchWidget import ArticoloSearchWidget
 from widgets.ClienteSearchWidget import ClienteSearchWidget
@@ -119,19 +118,19 @@ class Main(GladeWidget):
         """ Visualizza la finestra """
         self.anno_lavoro_label.set_markup('<b>Anno di lavoro:   ' + \
                                         Environment.workingYear + '</b>')
-        model = gtk.ListStore(int, str, gtk.gdk.Pixbuf,object)
+        model = gtk.ListStore(int, str, gtk.gdk.Pixbuf, object)
 
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'documento48x48.png')
-        model.append([3, "Documenti\n(Fatture,DDT\nPreventivi)", pbuf,None])
+        model.append([3, "Documenti\n(Fatture,DDT\nPreventivi)", pbuf, None])
 
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'primanota_48X48.png')
-        model.append([4, "Prima Nota", pbuf,None])
+        model.append([4, "Prima Nota", pbuf, None])
 
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'promemoria48x48.png')
-        model.append([5, "Promemoria", pbuf,None])
+        model.append([5, "Promemoria", pbuf, None])
 
         pbuf = gtk.gdk.pixbuf_new_from_file(Environment.conf.guiDir + 'gest_commessa48X48.png')
-        model.append([10, "Gestione\nCommesse", pbuf,None])
+        model.append([10, "Gestione\nCommesse", pbuf, None])
 
         # right vertical icon list  adding modules
 #        model_right = gtk.ListStore(int, str, gtk.gdk.Pixbuf, object)
@@ -194,7 +193,7 @@ class Main(GladeWidget):
 #        if WEBKIT:
 #            self.create_planning_frame()
         if self.creata:
-           self.main_notebook.remove_page(0)
+            self.main_notebook.remove_page(0)
 #           self.creata = False
         self._refresh()
 
@@ -212,14 +211,16 @@ class Main(GladeWidget):
             # Andrea
             # richiamo diretto dei documenti: evita di dover premere il
             # pulsante nel frame registrazioni
-            if not hasAction(actionID=2):return
+            if not hasAction(actionID=2):
+                return
             from AnagraficaDocumenti import AnagraficaDocumenti
             anag = AnagraficaDocumenti(aziendaStr=self.aziendaStr)
             showAnagrafica(self.getTopLevel(), anag, mainClass=self)
             icon_view.unselect_all()
             return
         elif selection == 4:
-            if not hasAction(actionID=2):return
+            if not hasAction(actionID=2):
+                return
             from promogest.modules.PrimaNota.ui.AnagraficaPrimaNota import AnagraficaPrimaNota
             anag = AnagraficaPrimaNota(aziendaStr=self.aziendaStr)
             showAnagrafica(self.getTopLevel(), anag, mainClass=self)
@@ -268,13 +269,6 @@ class Main(GladeWidget):
         self.main_notebook.set_current_page(0)
         self._refresh()
 
-
-#    def on_main_notebook_change_current_page(self, notebook, page, page_num):
-#        print "CCCCCCCCCC222222222", notebook, page, page_num
-
-#    def on_main_notebook_switch_page(self, notebook, page, page_num):
-#        print "CCCCCCCCCCCCCCCCCCCCC", notebook, page, page_num
-
     def setModulesButtons(self):
 
         if self.anagrafiche_modules is not None:
@@ -300,7 +294,8 @@ class Main(GladeWidget):
                 showAnagrafica(self.getTopLevel(), anag, button=None, mainClass=self)
 
     def on_articoli_button_clicked(self, toggleButton):
-        if not hasAction(actionID=2): return
+        if not hasAction(actionID=2):
+            return
         if toggleButton.get_property('active') is False:
             return
         from AnagraficaArticoli import AnagraficaArticoli
@@ -383,7 +378,7 @@ class Main(GladeWidget):
             showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
         else:
             fencemsg()
-            toggleButton.set_property('active',False)
+            toggleButton.set_property('active', False)
 
     def on_ruoli_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
@@ -394,7 +389,7 @@ class Main(GladeWidget):
             showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
         else:
             fencemsg()
-            toggleButton.set_property('active',False)
+            toggleButton.set_property('active', False)
 
     def on_ruoli_azioni_button_toggled(self, toggleButton):
         if toggleButton.get_property('active') is False:
@@ -405,7 +400,7 @@ class Main(GladeWidget):
             showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
         else:
             fencemsg()
-            toggleButton.set_property('active',False)
+            toggleButton.set_property('active', False)
 
     def on_multipli_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
@@ -421,14 +416,12 @@ class Main(GladeWidget):
         anag = AnagraficaPagamenti()
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 
-
     def on_banche_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
         from AnagraficaBanche import AnagraficaBanche
         anag = AnagraficaBanche()
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
-
 
     def on_categorie_contatti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
@@ -1031,7 +1024,7 @@ def on_anagrafica_destroyed(anagrafica_window, argList):
 
 def showAnagrafica(window, anag, button=None, mainClass=None):
     anagWindow = anag.getTopLevel()
-    anagWindow.connect("destroy", on_anagrafica_destroyed, [window, button,mainClass])
+    anagWindow.connect("destroy", on_anagrafica_destroyed, [window, button, mainClass])
     #anagWindow.connect("hide", on_anagrafica_destroyed, [window, button,mainClass])
     anagWindow.set_transient_for(window)
 #    setattr(anagWindow, "mainClass",mainClass)

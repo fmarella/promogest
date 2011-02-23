@@ -31,7 +31,6 @@ from promogest import Environment
 from sqlalchemy.orm import *
 from sqlalchemy import *
 #from utils import leggiAgente
-import string, re
 #import xml.etree.cElementTree as ElementTree
 #from xml.etree.cElementTree import *
 from random import randint as rint

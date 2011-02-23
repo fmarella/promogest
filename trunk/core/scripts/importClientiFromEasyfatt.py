@@ -171,9 +171,11 @@ class GenericFillData(object):
                         idss.append(l.id)
                     iid = (max(idss)) +1
 #            cont.id_cliente = cli.id
+
             cont = self.pg_db_dest.contatto()
             if self.tipo =="sqlite":
                 cont.id = iid
+            cont.ragione_sociale = row[1]
             cont.tipo_contatto ="cliente"
             cont.note = row[12]
             sqlalchemy.ext.sqlsoup.Session.add(cont)

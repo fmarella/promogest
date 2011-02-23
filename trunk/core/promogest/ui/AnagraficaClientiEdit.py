@@ -28,7 +28,7 @@ from promogest.dao.Cliente import Cliente
 from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
-from promogest.dao.RecapitoContatto import RecapitoContatto
+from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
 from promogest.modules.Contatti.dao.Contatto import Contatto
 from promogest.dao.DaoUtils import *
 from utils import *
@@ -331,6 +331,14 @@ class AnagraficaClientiEdit(AnagraficaEdit):
                 for l in forMaxId:
                     idss.append(l.id)
                 self.dao_contatto.id = (max(idss)) +1
+        appa = ""
+        if self.dao.ragione_sociale:
+            appa = appa +" "+self.dao.ragione_sociale
+        if self.dao.cognome:
+            appa = appa+" " +self.dao.cognome
+        self.dao_contatto.cognome = appa
+        if self.dao.nome:
+            self.dao_contatto.nome = self.dao.nome
         self.dao_contatto.tipo_contatto ="cliente"
         self.dao_contatto.id_cliente =self.dao.id
         self.dao_contatto.persist()

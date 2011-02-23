@@ -19,38 +19,31 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import gtk
-import gobject
-from decimal import *
-from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, \
-                            AnagraficaHtml, AnagraficaReport, AnagraficaEdit
-from promogest.modules.PrimaNota.ui.AnagraficaPrimaNotaEdit import AnagraficaPrimaNotaEdit
-from promogest.modules.PrimaNota.ui.AnagraficaPrimaNotaFilter import AnagraficaPrimaNotaFilter
-from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
-from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
-from promogest.dao.Banca import Banca
-from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
-from promogest.lib.relativedelta import relativedelta
-from promogest.ui.utils import *
-from promogest.ui.utilsCombobox import *
-
+#from decimal import *
+from promogest.ui.AnagraficaComplessa import Anagrafica, \
+                        AnagraficaHtml, AnagraficaReport
+from promogest.modules.PrimaNota.ui.\
+                        AnagraficaPrimaNotaEdit import AnagraficaPrimaNotaEdit
+from promogest.modules.PrimaNota.ui.\
+                    AnagraficaPrimaNotaFilter import AnagraficaPrimaNotaFilter
+#from promogest.ui.utils import *
+#from promogest.ui.utilsCombobox import *
 
 class AnagraficaPrimaNota(Anagrafica):
     """ Anagrafica Variazioni Listini """
 
     def __init__(self, aziendaStr=None):
         Anagrafica.__init__(self,
-                            windowTitle='Promogest - Anagrafica Prima Nota Cassa',
-                            recordMenuLabel='_Prima nota cassa',
-                            filterElement=AnagraficaPrimaNotaFilter(self),
-                            htmlHandler=AnagraficaPrimaNotaHtml(self),
-                            reportHandler=AnagraficaPrimaNotaReport(self),
-                            editElement=AnagraficaPrimaNotaEdit(self),
-                            aziendaStr=aziendaStr)
+                        windowTitle='Promogest - Anagrafica Prima Nota Cassa',
+                        recordMenuLabel='_Prima nota cassa',
+                        filterElement=AnagraficaPrimaNotaFilter(self),
+                        htmlHandler=AnagraficaPrimaNotaHtml(self),
+                        reportHandler=AnagraficaPrimaNotaReport(self),
+                        editElement=AnagraficaPrimaNotaEdit(self),
+                        aziendaStr=aziendaStr)
         self.records_print_on_screen_button.set_sensitive(False)
         self.records_print_button.set_sensitive(False)
         self.records_file_export.set_sensitive(True)
-
 
 
 class AnagraficaPrimaNotaHtml(AnagraficaHtml):
