@@ -41,7 +41,7 @@ class RicercaDocumenti(Ricerca):
             self.filter.refresh()
 #            self.filter.ragione_sociale_filter_entry.grab_focus()
 
-        from AnagraficaDocumenti import AnagraficaDocumenti
+        from promogest.ui.AnagraficaDocumenti import AnagraficaDocumenti
         anag = AnagraficaDocumenti()
         anagWindow = anag.getTopLevel()
         showAnagraficaRichiamata(returnWindow, anagWindow, toggleButton, refresh)
