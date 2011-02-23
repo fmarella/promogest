@@ -2122,7 +2122,7 @@ def getRecapitiContatto(id=None):
     @param id=None:
     @type id=None:
     """
-    from promogest.dao.RecapitoContatto import RecapitoContatto
+    from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
     if id:
         dbRecapitiContatto = RecapitoContatto().select(idContatto=id)
     else:
@@ -2133,7 +2133,7 @@ def getRecapitiContatto(id=None):
 def getRecapitiCliente(idCliente):
     """Dato un cliente restituisce un dizionario dei recapiti"""
     from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
-    from promogest.dao.RecapitoContatto import RecapitoContatto
+    from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
     recaCli = {}
     cc = ContattoCliente().select(idCliente=idCliente)
     if cc:
