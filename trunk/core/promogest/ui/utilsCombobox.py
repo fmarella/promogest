@@ -32,8 +32,8 @@ from sqlalchemy.orm import *
 from sqlalchemy import *
 #from utils import leggiAgente
 import string, re
-import xml.etree.cElementTree as ElementTree
-from xml.etree.cElementTree import *
+#import xml.etree.cElementTree as ElementTree
+#from xml.etree.cElementTree import *
 from random import randint as rint
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
 
@@ -339,7 +339,7 @@ def fillComboboxCategorieContatti(combobox, filter=False):
     """
     Crea l'elenco delle categorie contatti
     """
-    from promogest.dao.CategoriaContatto import CategoriaContatto
+    from promogest.modules.Contatti.dao.CategoriaContatto import CategoriaContatto
     model = gtk.ListStore(object, int, str)
     cats = CategoriaContatto().select(offset=None,batchSize=None)
 
@@ -670,7 +670,7 @@ def fillComboboxTipiRecapito(combobox):
 
 def fillModelTipiRecapito():
     """ Crea l'elenco dei tipi di recapito per i contatti  """
-    from promogest.dao.TipoRecapito import TipoRecapito
+    from promogest.modules.Contatti.dao.TipoRecapito import TipoRecapito
     res = TipoRecapito().select(orderBy=TipoRecapito.denominazione)
     model = gtk.ListStore(str)
     model.append(('', ))

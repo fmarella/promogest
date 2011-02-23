@@ -24,9 +24,9 @@ from sqlalchemy.orm import *
 from promogest.Environment import params
 from promogest.dao.Dao import Dao
 from promogest.dao.Cliente import Cliente
-from promogest.dao.Contatto import Contatto
-from promogest.dao.RecapitoContatto import RecapitoContatto
-from promogest.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
+from promogest.modules.Contatti.dao.Contatto import Contatto
+from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
+from promogest.modules.Contatti.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
 
 class ContattoCliente(Dao):
 

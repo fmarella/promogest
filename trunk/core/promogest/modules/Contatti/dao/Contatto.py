@@ -23,10 +23,10 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-from Dao import Dao
+from promogest.dao.Dao import Dao
 from promogest.ui.utils import getCategorieContatto, getRecapitiContatto
-from RecapitoContatto import RecapitoContatto
-from ContattoCategoriaContatto import ContattoCategoriaContatto
+from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
+from promogest.modules.Contatti.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
 
 class Contatto(Dao):
 

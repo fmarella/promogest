@@ -22,8 +22,8 @@
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation
 from promogest.Environment import params
-from Dao import Dao
-from TipoAliquotaIva import TipoAliquotaIva
+from promogest.dao.Dao import Dao
+from promogest.dao.TipoAliquotaIva import TipoAliquotaIva
 
 class AliquotaIva(Dao):
 

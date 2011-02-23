@@ -27,13 +27,13 @@ from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter,\
                          AnagraficaHtml, AnagraficaReport, AnagraficaEdit
 
 from promogest import Environment
-from promogest.dao.Contatto import Contatto
+from promogest.modules.Contatti.dao.Contatto import Contatto
 from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
-from promogest.dao.ContattoFornitore import ContattoFornitore
-from promogest.dao.ContattoMagazzino import ContattoMagazzino
-from promogest.dao.ContattoAzienda import ContattoAzienda
-from promogest.dao.RecapitoContatto import RecapitoContatto
-from promogest.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
+from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
+from promogest.modules.Contatti.dao.ContattoMagazzino import ContattoMagazzino
+from promogest.modules.Contatti.dao.ContattoAzienda import ContattoAzienda
+from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
+from promogest.modules.Contatti.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
 
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *

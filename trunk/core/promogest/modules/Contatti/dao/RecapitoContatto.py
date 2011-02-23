@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
-#                       di Francesco Meloni snc - http://www.promotux.it/
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010,2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -22,20 +23,28 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
+from promogest.modules.Contatti.dao.TipoRecapito import TipoRecapito
 from promogest.dao.Dao import Dao
 
-class Action(Dao):
+class RecapitoContatto(Dao):
 
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
 
-    def filter_values(self,k,v):
-        dic= {  'denominazione' : action.c.denominazione.ilike("%"+v+"%")}
+    def filter_values(self, k,v):
+        if k =="id":
+            dic= {k:recapito.c.id_contatto==v}
+        elif k =="idContatto":
+            dic = {k:recapito.c.id_contatto==v}
+        elif k =="tipoRecapito":
+            dic = {k:recapito.c.tipo_recapito==v}
         return  dic[k]
 
-action=Table('action',
-            params['metadata'],
-            schema = params['mainSchema'],
-            autoload=True)
+recapito=Table('recapito',
+        params['metadata'],
+        autoload=True,
+        schema = params['schema'])
 
-std_mapper = mapper(Action, action, order_by=action.c.id)
+std_mapper = mapper(RecapitoContatto, recapito,properties={
+    'tipo_reca':relation(TipoRecapito, backref='recapito')
+    }, order_by=recapito.c.id)

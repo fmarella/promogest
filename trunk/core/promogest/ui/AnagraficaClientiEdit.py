@@ -29,7 +29,7 @@ from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
 from promogest.dao.RecapitoContatto import RecapitoContatto
-from promogest.dao.Contatto import Contatto
+from promogest.modules.Contatti.dao.Contatto import Contatto
 from promogest.dao.DaoUtils import *
 from utils import *
 from utilsCombobox import *

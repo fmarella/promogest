@@ -23,8 +23,8 @@
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relation, backref
 from promogest.Environment import params
-from CategoriaContatto import CategoriaContatto
-from Dao import Dao
+from promogest.modules.Contatti.dao.CategoriaContatto import CategoriaContatto
+from promogest.dao.Dao import Dao
 
 class ContattoCategoriaContatto(Dao):
 

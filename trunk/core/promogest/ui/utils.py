@@ -288,14 +288,11 @@ def leggiVettore(id):
             "cognome": _cognome,}
 
 
-
-
-
 def leggiContatto(id):
     """
     Restituisce un dizionario con le informazioni sul contatto letto
     """
-    from promogest.dao.Contatto import Contatto
+    from promogest.modules.Contatti.dao.Contatto import Contatto
     _id = None
     _nome = ''
     _cognome = ''

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
-#                       di Francesco Meloni snc - http://www.promotux.it/
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010,2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
+
 #    This file is part of Promogest.
 
 #    Promogest is free software: you can redistribute it and/or modify
@@ -19,23 +20,24 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
+
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
 
-class Action(Dao):
+
+class TipoRecapito(Dao):
 
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
 
     def filter_values(self,k,v):
-        dic= {  'denominazione' : action.c.denominazione.ilike("%"+v+"%")}
+        dic= { 'denominazione' : tipo_recapito.c.denominazione.ilike("%"+v+"%") }
         return  dic[k]
 
-action=Table('action',
-            params['metadata'],
-            schema = params['mainSchema'],
-            autoload=True)
-
-std_mapper = mapper(Action, action, order_by=action.c.id)
+tipo_recapito = Table('tipo_recapito',
+                        params['metadata'],
+                        schema = params['mainSchema'],
+                        autoload=True)
+std_mapper = mapper(TipoRecapito, tipo_recapito, order_by=tipo_recapito.c.denominazione)

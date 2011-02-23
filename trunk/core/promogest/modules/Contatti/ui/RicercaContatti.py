@@ -1,20 +1,35 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005 by Promotux Informatica - http://www.promotux.it/
-# Author: Alessandro Scano <alessandro@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010,2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
 import gobject
 from promogest.ui.Ricerca import Ricerca, RicercaFilter, RicercaHtml
 
 from promogest import Environment
-from promogest.dao.Contatto import Contatto
+from promogest.modules.Contatti.dao.Contatto import Contatto
 from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
-from promogest.dao.ContattoFornitore import ContattoFornitore
-from promogest.dao.ContattoAzienda import ContattoAzienda
-from promogest.dao.ContattoMagazzino import ContattoMagazzino
+from promogest.modules.Contatti.dao.ContattoFornitore import ContattoFornitore
+from promogest.modules.Contatti.dao.ContattoAzienda import ContattoAzienda
+from promogest.modules.Contatti.dao.ContattoMagazzino import ContattoMagazzino
 
 from promogest.ui.utils import *
 
