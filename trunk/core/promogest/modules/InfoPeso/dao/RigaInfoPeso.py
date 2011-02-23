@@ -79,4 +79,4 @@ class RigaInfoPeso(Dao):
     tipotrattamento = property(_tipoTrattamento)
 
 std_mapper = mapper(RigaInfoPeso,rigainfopeso,
-                properties={}, order_by=rigainfopeso.c.id)
+                properties={}, order_by=rigainfopeso.c.data_registrazione.desc())

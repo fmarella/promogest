@@ -25,7 +25,6 @@ from AnagraficaComplessa import AnagraficaEdit
 import promogest.dao.Cliente
 from promogest import Environment
 from promogest.dao.Cliente import Cliente
-from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest.dao.ClienteCategoriaCliente import ClienteCategoriaCliente
 from promogest.modules.Contatti.dao.ContattoCliente import ContattoCliente
 from promogest.modules.Contatti.dao.RecapitoContatto import RecapitoContatto
@@ -35,7 +34,6 @@ from utils import *
 from utilsCombobox import *
 if posso("IP"):
     from promogest.modules.InfoPeso.ui.InfoPesoNotebookPage import InfoPesoNotebookPage
-    from promogest.modules.InfoPeso.dao.TestataInfoPeso import TestataInfoPeso
 
 class AnagraficaClientiEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica dei clienti """

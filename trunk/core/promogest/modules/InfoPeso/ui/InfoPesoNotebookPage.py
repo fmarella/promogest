@@ -38,7 +38,6 @@ class InfoPesoNotebookPage(GladeWidget):
         GladeWidget.__init__(self, 'infopeso_frame',
                                     'InfoPeso/gui/infopeso_notebook.glade',
                                     isModule=True)
-#        self.placeWindow(self.getTopLevel())
         self.rowBackGround = None
         self.ana = mainnn
         self.aziendaStr = azienda or ""
@@ -54,7 +53,7 @@ class InfoPesoNotebookPage(GladeWidget):
         rendererCtr = gtk.CellRendererText()
         rendererCtr.set_property('xalign', 0.5)
 
-        column = gtk.TreeViewColumn('Data Pesata', rendererCtr, text=1)
+        column = gtk.TreeViewColumn('Data Pesata', rendererCtr, text=1, background=9)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
         column.set_resizable(True)
@@ -62,7 +61,7 @@ class InfoPesoNotebookPage(GladeWidget):
         column.set_min_width(120)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Peso', renderer, text=2)
+        column = gtk.TreeViewColumn('Peso', renderer, text=2, background=9)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
 #        column.set_resizable(True)
@@ -70,7 +69,7 @@ class InfoPesoNotebookPage(GladeWidget):
         column.set_min_width(80)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Diff Peso', renderer, text=3)
+        column = gtk.TreeViewColumn('Diff Peso', renderer, text=3, background=9)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
 #        column.set_resizable(True)
@@ -78,7 +77,7 @@ class InfoPesoNotebookPage(GladeWidget):
         column.set_min_width(80)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('M.Grassa', rendererCtr, text=4)
+        column = gtk.TreeViewColumn('M.Grassa', rendererCtr, text=4, background=9)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
 #        column.set_resizable(True)
@@ -86,7 +85,7 @@ class InfoPesoNotebookPage(GladeWidget):
         column.set_min_width(80)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('M.Magra&Acq.', rendererCtr, text=5)
+        column = gtk.TreeViewColumn('M.Magra&Acq.', rendererCtr, text=5, background=9)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
 #        column.set_resizable(True)
@@ -94,7 +93,7 @@ class InfoPesoNotebookPage(GladeWidget):
         column.set_min_width(80)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Acqua', renderer, text=6)
+        column = gtk.TreeViewColumn('Acqua', renderer, text=6, background=9)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
 #        column.set_resizable(True)
@@ -102,7 +101,7 @@ class InfoPesoNotebookPage(GladeWidget):
         column.set_min_width(80)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Tipo Trattamento', renderer, text=7)
+        column = gtk.TreeViewColumn('Tipo Trattamento', renderer, text=7, background=9)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(True)
 #        column.set_resizable(True)
@@ -110,7 +109,7 @@ class InfoPesoNotebookPage(GladeWidget):
         column.set_min_width(100)
         treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('Note', renderer, text=8)
+        column = gtk.TreeViewColumn('Note', renderer, text=8, background=9)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
 #        column.set_clickable(True)
         column.set_resizable(True)
@@ -118,7 +117,7 @@ class InfoPesoNotebookPage(GladeWidget):
         column.set_min_width(200)
         treeview.append_column(column)
 
-        model = gtk.ListStore(object, str, str, str, str, str, str, str, str)
+        model = gtk.ListStore(object, str, str, str, str, str, str, str, str, str)
         treeview.set_model(model)
 
         fillComboboxTipoTrattamento(self.id_tipo_trattamento_customcombobox.combobox)
@@ -132,17 +131,18 @@ class InfoPesoNotebookPage(GladeWidget):
         model = self.righe_pesata_treeview.get_model()
         llll = []
         for m in model:
-            llll.append((stringToDate(m[1]), m[2], m, m[0]))
-            print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", m[0].peso
+            llll.append((stringToDate(m[1]), m[2], m, m[0], m[9]))
         llll.sort()
         for i in range(0, len(llll)):
             if i+1 < len(llll):
-                print "DA PAZZOOOOOO", llll[i], llll[i+1],Decimal(llll[i][1]) - Decimal(llll[i+1][1])
                 for m in model:
                     if m[0] == llll[i][3]:
-                        print "POPOPPOPOPOPO"
-                        m[3] = str(-1*(Decimal(llll[i][1]) - Decimal(llll[i+1][1])))
-
+                        diffe = -1*(Decimal(llll[i][1]) - Decimal(llll[i+1][1]))
+                        m[3] = str(diffe)
+                        if diffe<0:
+                            m[9] = "#CCFFAA"
+                        elif diffe>0 :
+                            m[9] = "#FFD7D7"
         self.righe_pesata_treeview.set_model(model)
 
 
@@ -155,6 +155,19 @@ class InfoPesoNotebookPage(GladeWidget):
         acqua = self.acqua_entry.get_text() or "0"
         bufferNoteRiga= self.note_riga_pesata_textview.get_buffer()
         note_riga = bufferNoteRiga.get_text(bufferNoteRiga.get_start_iter(), bufferNoteRiga.get_end_iter()) or ""
+
+        if not data_pesata:
+            obligatoryField(None,
+                    self.data_pesata_datewidget,
+                    'Inserire una data pesata !')
+        if not peso:
+            obligatoryField(None,
+                    self.peso_pesata_entry,
+                    'Inserire un peso !')
+
+        if float(mgrassa)+float(mmagraeacqua)+float(acqua) > float(peso):
+            messageInfo(msg = "ATTENZIONE! La somma di M.GRASSA , M.MAGRA e ACQUA\n è superiore al peso totale")
+            return
 
         model = self.righe_pesata_treeview.get_model()
         modelo = len(model)
@@ -185,7 +198,7 @@ class InfoPesoNotebookPage(GladeWidget):
             self.rigaIter[7] = str(tipo_tratt)
             self.rigaIter[8] = str(riga.note)
         else:
-            model.append((riga,
+            model.prepend((riga,
                         dateToString(data_pesata),
                         str(mN(peso,1)) or "",
                         str("0"),
@@ -193,12 +206,15 @@ class InfoPesoNotebookPage(GladeWidget):
                         str(mN(mmagraeacqua,1)) or "",
                         str(mN(acqua,1)) or "",
                         str(tipo_tratt),
-                        str(note_riga.replace("\n"," ")[0:100])
+                        str(note_riga.replace("\n"," ")[0:100]),
+                        "#FFFFFF"
                         ))
         self.righe_pesata_treeview.set_model(model)
         self._calcolaDifferenzaPeso()
         self._clear()
-        self.righe_pesata_treeview.scroll_to_cell(str(modelo-1))
+        if len(model)>0:
+            self.righe_pesata_treeview.scroll_to_cell("0")
+#        self.righe_pesata_treeview.scroll_to_cell(str(modelo-1))
 
     def _clear(self):
         self.data_pesata_datewidget.set_text("")
@@ -211,7 +227,14 @@ class InfoPesoNotebookPage(GladeWidget):
         self.id_tipo_trattamento_customcombobox.combobox.set_active(-1)
 
     def on_elimina_pesata_button_clicked(self, button):
-        print "ELIMINA"
+        rpn = None
+        if self.editRiga:
+            dao = RigaInfoPeso().getRecord(id=self.editRiga.id)
+            if dao:
+                dao.delete()
+            self._editModel.remove(self._editIterator)
+            self._clear()
+        self._calcolaDifferenzaPeso()
 
     def on_righe_pesata_treeview_row_activated(self, treeview, path, column):
         (model, iterator) = self.righe_pesata_treeview.get_selection().get_selected()
@@ -277,10 +300,12 @@ class InfoPesoNotebookPage(GladeWidget):
                         str(mN(m.massa_magra_e_acqua,1)) or "",
                         str(mN(m.acqua,1)) or "",
                         str(m.tipotrattamento),
-                        str(m.note.replace("\n"," ")[0:100])
+                        str(m.note.replace("\n"," ")[0:100]),
+                        "#FFFFFF"
                         ))
         self.righe_pesata_treeview.set_model(model)
-        self.righe_pesata_treeview.scroll_to_cell(str(len(model)-1))
+        if len(model)>0:
+            self.righe_pesata_treeview.scroll_to_cell("0")
         self._calcolaDifferenzaPeso()
 
     def infoPesoSaveDao(self):

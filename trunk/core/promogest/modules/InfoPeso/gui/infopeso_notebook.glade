@@ -644,7 +644,9 @@
                       <object class="GtkTreeView" id="righe_pesata_treeview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="border_width">2</property>
                         <property name="model">liststore1</property>
+                        <property name="enable_grid_lines">both</property>
                         <signal name="row-activated" handler="on_righe_pesata_treeview_row_activated" swapped="no"/>
                       </object>
                     </child>

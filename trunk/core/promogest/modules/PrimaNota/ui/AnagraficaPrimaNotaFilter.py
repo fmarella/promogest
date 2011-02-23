@@ -20,15 +20,10 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-import gobject
 from decimal import *
-from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, \
-                            AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from promogest.ui.AnagraficaComplessa import AnagraficaFilter
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
-from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.dao.Banca import Banca
-from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
-from promogest.lib.relativedelta import relativedelta
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 
