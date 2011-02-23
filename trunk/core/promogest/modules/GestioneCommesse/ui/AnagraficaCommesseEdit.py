@@ -24,19 +24,16 @@ import gtk
 import gobject
 from decimal import *
 from promogest import Environment
-from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, \
-                            AnagraficaHtml, AnagraficaReport, AnagraficaEdit
-from AnagraficaCommesseFilter import AnagraficaCommesseFilter
-from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa
+from promogest.ui.AnagraficaComplessa import AnagraficaEdit
 from promogest.modules.GestioneCommesse.dao.TestataCommessa import TestataCommessa
 from promogest.modules.GestioneCommesse.dao.RigaCommessa import RigaCommessa
 from promogest.dao.Cliente import Cliente
+from promogest.dao.Articolo import Articolo
 from promogest.dao.Fornitore import Fornitore
 from promogest.dao.Magazzino import Magazzino
 from promogest.dao.Vettore import Vettore
 from promogest.dao.Promemoria import Promemoria
 from promogest.dao.TestataDocumento import TestataDocumento
-from promogest.lib.relativedelta import relativedelta
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 
@@ -143,7 +140,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
                                         dao.cognome,
                                         dao.nome)
         elif dao.__class__.__name__ =="Magazzino":
-            info = "Magazzino: %s , %s " %(str(dao.denominazione),str(dao.pvcode))
+            info = "Magazzino: %s , %s " %(str(dao.denominazione), str(dao.pvcode))
         self.info_dao_label.set_markup(info)
 
 
@@ -246,7 +243,8 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
             self.dao = TestataCommessa()
             a = select([func.max(TestataCommessa.numero)]).execute().fetchall() or 0
             numero = 0
-            if a: numero = a[0][0] or 0
+            if a:
+                numero = a[0][0] or 0
             self.dao.numero = numero+1
         else:
             self.dao = TestataCommessa().getRecord(id=dao.id)
