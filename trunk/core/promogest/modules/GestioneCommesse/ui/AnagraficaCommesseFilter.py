@@ -20,16 +20,9 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-import gobject
 from decimal import *
-from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, \
-                            AnagraficaHtml, AnagraficaReport, AnagraficaEdit
-from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa
+from promogest.ui.AnagraficaComplessa import AnagraficaFilter
 from promogest.modules.GestioneCommesse.dao.TestataCommessa import TestataCommessa
-from promogest.modules.GestioneCommesse.dao.RigaCommessa import RigaCommessa
-from promogest.dao.Cliente import Cliente
-from promogest.dao.TestataDocumento import TestataDocumento
-from promogest.lib.relativedelta import relativedelta
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 
@@ -161,9 +154,9 @@ class AnagraficaCommesseFilter(AnagraficaFilter):
             if not i.data_fine:
                 col = "#CCFFAA"
             self._treeViewModel.append((i,col,
-                                        (i.numero or ''),
+                                        (str(i.numero) or ''),
                                         (dateToString(i.data_inizio) or ''),
                                         (dateToString(i.data_fine) or ''),
                                         "0",
                                         "0",
-                                        (i.note or "")))
+                                        (str(i.note) or "")))

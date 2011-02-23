@@ -276,12 +276,12 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
             else:
                 dc = r.dao_class
             model.append((r, str(len(model)+1),
-                        r.data_registrazione,
+                        stringToDate(r.data_registrazione),
                         r.denominazione,
                         dc,
                         r.note,
                         r.dao_class,
-                        r.id_dao))
+                        str(r.id_dao)))
 
 
     def clear(self):
