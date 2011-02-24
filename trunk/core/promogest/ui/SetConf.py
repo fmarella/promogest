@@ -411,3 +411,35 @@ if not SetConf().select(key="rotazione_primanota", section="Primanota"):
     kee.active = True
     kee.date = datetime.datetime.now()
     kee.persist()
+
+if not SetConf().select(key="zeri_in_riga",section="Stampa"):
+    kuu = SetConf()
+    kuu.key = "zeri_in_riga"
+    kuu.value =""
+    kuu.section = "Stampa"
+    kuu.description = "Visualizza gli zeri nelle righe documento"
+    kuu.tipo_section = "Generico"
+    kuu.active = False
+    kuu.tipo = "BOOLEAN"
+    kuu.date = datetime.datetime.now()
+    kuu.persist()
+ff = SetConf().select(key="zeri_in_riga", section="Stampa")
+if ff:
+    ff[0].tipo = "BOOLEAN"
+    ff[0].persist()
+
+if not SetConf().select(key="zeri_in_totali",section="Stampa"):
+    kuu1 = SetConf()
+    kuu1.key = "zeri_in_totali"
+    kuu1.value =""
+    kuu1.section = "Stampa"
+    kuu1.description = "Visualizza gli zeri nei totali"
+    kuu1.tipo_section = "Generico"
+    kuu1.active = False
+    kuu1.tipo = "BOOLEAN"
+    kuu1.date = datetime.datetime.now()
+    kuu1.persist()
+ff1 = SetConf().select(key="zeri_in_totali", section="Stampa")
+if ff1:
+    ff1[0].tipo = "BOOLEAN"
+    ff1[0].persist()

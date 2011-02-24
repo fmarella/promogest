@@ -27,8 +27,13 @@ import xml.etree.cElementTree as ElementTree
 from promogest import Environment
 import Sla2pdfUtils
 from SlaParser import SlaParser
+SHOWZERORIGA = False
+SHOWZEROTOTALI = False
+
 try:
-    from promogest.ui.utils import pbar
+    from promogest.ui.utils import pbar, setconf
+    SHOWZEROTOTALI = setconf( "Stampa","zeri_in_totali")
+    SHOWZERORIGA = setconf( "Stampa","zeri_in_riga")
 except:
     pass
 
@@ -470,7 +475,12 @@ class SlaTpl2Sla(SlaParser):
                                             if self.cycle <= (len(self.objects) - 1):
                                                 if arrayIndex <= (len(self.objects[self.cycle][arrayName]) - 1):
                                                     arraySource = self.objects[self.cycle][arrayName][arrayIndex]
-                                                    value = arraySource[tagName] or ''
+
+                                                    if SHOWZERORIGA == True:
+                                                        print "TUUUUUUUUUUUUUUUUUUUUUUUUUUUUU", SHOWZERORIGA
+                                                        value = str(arraySource[tagName])
+                                                    else:
+                                                        value = arraySource[tagName] or ""
                                                 else:
                                                     value = ''
                                             else:
@@ -479,7 +489,10 @@ class SlaTpl2Sla(SlaParser):
                                             tagName = k[:indexN]
                                             if arrayIndex <= (len(self.objects) - 1):
                                                 arraySource = self.objects[arrayIndex]
-                                                value = arraySource[tagName] or ''
+                                                if SHOWZEROTOTALI:
+                                                    value = str(arraySource[tagName])
+                                                else:
+                                                    value = arraySource[tagName] or ''
                                             else:
                                                 value = ''
                                     else:

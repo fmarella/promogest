@@ -154,6 +154,7 @@ class ManageLabelsToPrint(GladeWidget):
         classic = False
         param = []
         for d in self.resultList:
+            d.prezzo_dettaglio = str(self.prezzoVenditaDettaglio(d))
             d.resolveProperties()
             param.append(d.dictionary(complete=True))
             pbar(self.pbar,parziale=self.resultList.index(d), totale=len(self.resultList),text="GENERAZIONE DATI")
@@ -194,7 +195,7 @@ class ManageLabelsToPrint(GladeWidget):
                                                 dao.codice_articolo,
                                                 dao.articolo,
                                                 dao.codice_a_barre,
-                                                str(dao.prezzo_dettaglio),
+                                                str(self.prezzoVenditaDettaglio(dao)),
                                                 "0",
                                                 ))
                 else:
@@ -203,17 +204,38 @@ class ManageLabelsToPrint(GladeWidget):
                                             dao.codice_articolo,
                                             dao.articolo,
                                             dao.codice_a_barre,
-                                            str(dao.prezzo_dettaglio),
-                                            quantita,
+                                            str(self.prezzoVenditaDettaglio(dao)),
+                                            str(quantita),
                                             ))
             else:
                 self._treeViewModel.append((dao,
                                             dao.codice_articolo,
                                             dao.articolo,
                                             dao.codice_a_barre,
-                                            str(dao.prezzo_dettaglio),
+                                            str(self.prezzoVenditaDettaglio(dao)),
                                             quantita,
                                             ))
+
+    def prezzoVenditaDettaglio(self, dao):
+        listino = leggiListino(dao.id_listino, dao.id_articolo)
+        prezzo = mN(listino["prezzoDettaglio"])
+        prezzoScontato = prezzo
+        tipoSconto = None
+        if listino.has_key('scontiDettaglio'):
+            if  len(listino["scontiDettaglio"]) > 0:
+                valoreSconto = listino['scontiDettaglio'][0].valore or 0
+                if valoreSconto == 0:
+                    tipoSconto = None
+                    prezzoScontato = prezzo
+                else:
+                    tipoSconto = listino['scontiDettaglio'][0].tipo_sconto
+                    if tipoSconto == "percentuale":
+                        prezzoScontato = mN(mN(prezzo) - (mN(prezzo) * mN(valoreSconto)) / 100)
+                    else:
+                        prezzoScontato = mN(mN(prezzo) -mN(valoreSconto))
+        return prezzoScontato
+
+
 
     def on_search_row_button_clicked(self, button):
         print "OKOKOK"

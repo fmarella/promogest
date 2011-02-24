@@ -481,11 +481,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                         self._currentRow['codiceABarre'],
                         self._currentRow['codice'],
                         self._currentRow['descrizione'],
-                        mN(self._currentRow['prezzo']),
-                        mN(self._currentRow['valoreSconto']),
+                        str(mN(self._currentRow['prezzo'])),
+                        str(mN(self._currentRow['valoreSconto'])),
                         self._currentRow['tipoSconto'],
-                        mN(self._currentRow['prezzoScontato']),
-                        Decimal(self._currentRow['quantita']),
+                        str(mN(self._currentRow['prezzoScontato'])),
+                        str(Decimal(self._currentRow['quantita'])),
                         self.rowBackGround,
                         self.rowBoldFont))
         elif self._state == 'editing':
@@ -494,11 +494,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             model.set_value(self.currentIteratorRow, 2, self._currentRow['codiceABarre'])
             model.set_value(self.currentIteratorRow, 3, self._currentRow['codice'])
             model.set_value(self.currentIteratorRow, 4, self._currentRow['descrizione'])
-            model.set_value(self.currentIteratorRow, 5, mN(self._currentRow['prezzo']))
-            model.set_value(self.currentIteratorRow, 6, mN(self._currentRow['valoreSconto']))
+            model.set_value(self.currentIteratorRow, 5, str(mN(self._currentRow['prezzo'])))
+            model.set_value(self.currentIteratorRow, 6, str(mN(self._currentRow['valoreSconto'])))
             model.set_value(self.currentIteratorRow, 7, self._currentRow['tipoSconto'])
-            model.set_value(self.currentIteratorRow, 8, mN(self._currentRow['prezzoScontato']))
-            model.set_value(self.currentIteratorRow, 9, Decimal(self._currentRow['quantita']))
+            model.set_value(self.currentIteratorRow, 8, str(mN(self._currentRow['prezzoScontato'])))
+            model.set_value(self.currentIteratorRow, 9, str(Decimal(self._currentRow['quantita'])))
 
         self.marginevalue_label.set_text('')
         self.ultimocostovalue_label.set_text('')
