@@ -195,7 +195,7 @@ class Dao(object):
 
     def commit(self):
         """ Salva i dati nel DB"""
-        if not self.ckdd(self):
+        if not params["session"].deleted and not self.ckdd(self):
             return
         try:
             params["session"].commit()
