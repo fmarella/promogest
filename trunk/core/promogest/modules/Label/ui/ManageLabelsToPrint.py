@@ -18,7 +18,7 @@ from promogest.dao.ListinoArticolo import ListinoArticolo
 #from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
 from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
-from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
+#from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
 from promogest.ui.PrintDialog import PrintDialogHandler
 
 class ManageLabelsToPrint(GladeWidget):
@@ -154,9 +154,10 @@ class ManageLabelsToPrint(GladeWidget):
         classic = False
         param = []
         for d in self.resultList:
-            d.prezzo_dettaglio = str(self.prezzoVenditaDettaglio(d))
-            d.resolveProperties()
-            param.append(d.dictionary(complete=True))
+#            d.resolveProperties()
+            a = d.dictionary(complete=True)
+            a["prezzo_dettaglio"] = str(self.prezzoVenditaDettaglio(d))
+            param.append(a)
             pbar(self.pbar,parziale=self.resultList.index(d), totale=len(self.resultList),text="GENERAZIONE DATI")
         if self.classic_radio.get_active():
             classic = True
@@ -169,7 +170,7 @@ class ManageLabelsToPrint(GladeWidget):
         stpl2sla = SlaTpl2Sla_ng(slafile=None,label=True,
                                     report=False,
                                     objects=param,
-                                    daos=self.daos,
+                                    daos=[], #self.daos,
                                     slaFileName=slafile,
                                     pdfFolder=self._folder,
                                     classic=classic,
@@ -217,6 +218,8 @@ class ManageLabelsToPrint(GladeWidget):
                                             ))
 
     def prezzoVenditaDettaglio(self, dao):
+        """Funzione importante perchè restituisce
+            il prezzo scontato per il dettaglio"""
         listino = leggiListino(dao.id_listino, dao.id_articolo)
         prezzo = mN(listino["prezzoDettaglio"])
         prezzoScontato = prezzo

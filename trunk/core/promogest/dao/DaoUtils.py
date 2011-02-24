@@ -377,10 +377,10 @@ def scontiRigaMovimentoDel(id=None):
 
 def ckd(dao):
     classe = dao.__class__.__name__
-    Environment.pg2log.info("MODULI E OPZIONI:  " \
-                        + str(Environment.modulesList)+" "\
-                        +str(Environment.tipo_pg) \
-                        +" "+str(classe))
+#    Environment.pg2log.info("MODULI E OPZIONI:  " \
+#                        + str(Environment.modulesList)+" "\
+#                        +str(Environment.tipo_pg) \
+#                        +" "+str(classe))
     stopp = False
     if "ONE BASIC" in Environment.modulesList or \
                             "PRO BASIC" in Environment.modulesList:
