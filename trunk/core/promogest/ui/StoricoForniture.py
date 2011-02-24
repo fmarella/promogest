@@ -1,18 +1,30 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
-# Promogest
-#
-# Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Francesco Meloni <francesco@promotux.it>
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
 import gtk
-import gobject
 from Visualizzazione import Visualizzazione, VisualizzazioneFilter
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
 import promogest.dao.Fornitura
 from promogest.dao.Fornitura import Fornitura
 
@@ -185,10 +197,10 @@ class StoricoFornitureFilter(VisualizzazioneFilter):
             self._treeViewModel.append((f,
                                         (f.codice_articolo or ''),
                                         (f.articolo or ''),
-                                        przLordo,
-                                        przNetto,
+                                        str(przLordo),
+                                        str(przNetto),
                                         dateToString(f.data_prezzo),
                                         dateToString(f.data_fornitura),
                                         (f.codice_fornitore or ''),
                                         (f.fornitore or ''),
-                                        (f.codice_articolo_fornitore or '')))
+                                        (str(f.codice_articolo_fornitore) or '')))

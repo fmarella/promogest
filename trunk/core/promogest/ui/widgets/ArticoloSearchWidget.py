@@ -23,9 +23,12 @@
 
 import gtk
 from promogest import Environment
+
 from CustomComboBoxSearch import CustomComboBoxSearch
 from promogest.ui.utils import leggiArticolo
 from promogest.ui.utilsCombobox import fillComboboxListini,findIdFromCombobox,findComboboxRowFromId
+from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
+
 
 class ArticoloSearchWidget(CustomComboBoxSearch):
     """ Classe base per la ricerca articoli """
@@ -71,14 +74,13 @@ class ArticoloSearchWidget(CustomComboBoxSearch):
                 self._callName()
 
         if combobox.on_selection_changed():
-            if self._ricerca is None:
-                from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
-                self._ricerca = RicercaComplessaArticoli(listinoFissato=Environment.listinoFissato)
-                Environment.listinoFissato = None
-                if not self._filter:
-                    self._ricerca.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
-            else:
-                self._ricerca.refresh()
+#            if self._ricerca is None:
+            self._ricerca = RicercaComplessaArticoli(listinoFissato=Environment.listinoFissato)
+            Environment.listinoFissato = None
+            if not self._filter:
+                self._ricerca.setTreeViewSelectionType(gtk.SELECTION_SINGLE)
+#            else:
+#                self._ricerca.refresh()
             anagWindow = self._ricerca.getTopLevel()
             returnWindow = combobox.get_toplevel()
             anagWindow.set_transient_for(returnWindow)
