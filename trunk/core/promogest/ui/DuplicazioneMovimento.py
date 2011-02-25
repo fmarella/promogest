@@ -34,10 +34,11 @@ from promogest.dao.RigaMovimento import RigaMovimento
 from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.dao.Operazione import Operazione
 from AnagraficaDocumenti import *
-if Environment.conf.hasPagamenti == True:
+from utils import *
+if posso("PA"):
     import promogest.modules.Pagamenti.dao.TestataDocumentoScadenza
     from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-from utils import *
+
 
 
 class DuplicazioneMovimento(GladeWidget):

@@ -243,7 +243,7 @@ class DuplicazioneDocumento(GladeWidget):
 
         newDao.righeDocumento = righeDocumento
         scadenze = []
-        if Environment.conf.hasPagamenti == True:
+        if posso("PA"):
             scad = self.dao.scadenze
             for s in scad:
                 daoTestataDocumentoScadenza = TestataDocumentoScadenza()
