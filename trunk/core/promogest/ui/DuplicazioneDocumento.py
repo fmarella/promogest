@@ -123,8 +123,16 @@ class DuplicazioneDocumento(GladeWidget):
                 newDao.id_fornitore = self.id_persona_giuridica_customcombobox.getId()
                 newDao.id_cliente = None
         else:
-            newDao.id_fornitore = self.dao.id_fornitore
-            newDao.id_cliente = self.dao.id_cliente
+            if not self.id_persona_giuridica_customcombobox.getId():
+                newDao.id_fornitore = self.dao.id_fornitore
+                newDao.id_cliente = self.dao.id_cliente
+            else:
+                if self.id_persona_giuridica_customcombobox.getType() == "cliente":
+                    newDao.id_cliente = self.id_persona_giuridica_customcombobox.getId()
+                    newDao.id_fornitore = None
+                else:
+                    newDao.id_fornitore = self.id_persona_giuridica_customcombobox.getId()
+                    newDao.id_cliente = None
 
         newDao.id_destinazione_merce = self.dao.id_destinazione_merce
         newDao.id_pagamento = self.dao.id_pagamento
@@ -310,7 +318,6 @@ class DuplicazioneDocumento(GladeWidget):
 
     def on_id_operazione_combobox_changed(self, widget, event=None):
         tipoPersonaGiuridica = self.id_operazione_combobox.get_model()[self.id_operazione_combobox.get_active()][0].tipo_persona_giuridica
-        print " QUI NON PASSI VERO", self.tipoPersonaGiuridica, tipoPersonaGiuridica
         if self.tipoPersonaGiuridica == tipoPersonaGiuridica:
             self.personaGiuridicaCambiata = False
         else:
