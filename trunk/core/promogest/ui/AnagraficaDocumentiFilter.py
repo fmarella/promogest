@@ -274,13 +274,13 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             totaleImposta = mN(t._totaleImpostaScontata,2) or 0
             totale = mN(t._totaleScontato,2) or 0
             col = None
-            if Environment.conf.hasPagamenti == True and t.documento_saldato == 1:
+            if posso("PA") and t.documento_saldato == 1:
                 documento_saldato_filter = "Si"
                 if t.operazione in Environment.hapag:
                     col = "#CCFFAA"
                 else:
                     col = None
-            elif Environment.conf.hasPagamenti == True and t.documento_saldato == 0:
+            elif posso("PA") and t.documento_saldato == 0:
                 documento_saldato_filter = "No"
                 if t.operazione in Environment.hapag:
                     col = "#FFD7D7"
