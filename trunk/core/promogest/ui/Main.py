@@ -426,7 +426,7 @@ class Main(GladeWidget):
     def on_categorie_contatti_button_clicked(self, toggleButton):
         if toggleButton.get_property('active') is False:
             return
-        from AnagraficaCategorieContatti import AnagraficaCategorieContatti
+        from promogest.modules.Contatti.ui.AnagraficaCategorieContatti import AnagraficaCategorieContatti
         anag = AnagraficaCategorieContatti()
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)
 

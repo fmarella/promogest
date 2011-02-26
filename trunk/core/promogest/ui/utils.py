@@ -1065,7 +1065,7 @@ def on_id_categoria_contatto_customcombobox_clicked(widget, button):
     if widget.button.get_property('active') is False:
         return
 
-    from AnagraficaCategorieContatti import AnagraficaCategorieContatti
+    from promogest.modules.Contatti.ui.AnagraficaCategorieContatti import AnagraficaCategorieContatti
     anag = AnagraficaCategorieContatti()
 
     anagWindow = anag.getTopLevel()

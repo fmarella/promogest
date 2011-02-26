@@ -213,7 +213,7 @@ class ParametriFrame(GladeWidget):
         if toggleButton.get_property('active') is False:
             return
 
-        from AnagraficaCategorieContatti import AnagraficaCategorieContatti
+        from promogest.modules.Contatti.ui.AnagraficaCategorieContatti import AnagraficaCategorieContatti
         anag = AnagraficaCategorieContatti()
 
         showAnagrafica(self.mainWindow, anag, toggleButton, self.mainClass)
