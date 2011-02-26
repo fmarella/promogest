@@ -15,8 +15,8 @@ from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
 
 from promogest import Environment
 from promogest.dao.Dao import Dao
-import promogest.dao.CategoriaContatto
-from promogest.dao.CategoriaContatto import CategoriaContatto
+import promogest.modules.Contatti.dao.CategoriaContatto
+from promogest.modules.Contatti.dao.CategoriaContatto import CategoriaContatto
 
 from utils import *
 
