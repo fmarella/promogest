@@ -28,7 +28,8 @@ class ConfiguraWindow(GladeWidget):
 
     def __init__(self, mainWindow):
         self.mainWindow = mainWindow
-        GladeWidget.__init__(self, 'configura_window', fileName='configura_window.glade')
+        GladeWidget.__init__(self, 'configura_window',
+                                    fileName='configura_window.glade')
         self.placeWindow(self.getTopLevel())
 
         self.draw()

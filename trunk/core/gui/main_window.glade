@@ -133,27 +133,6 @@
                   <object class="GtkMenu" id="opzioni_menu_menu">
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkMenuItem" id="configurazione_menu">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Configurazione</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_configurazione_menu_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="importa_modulo">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Importa/attiva un modulo</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Importa Modulo</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_importa_modulo_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkMenuItem" id="dati_azienda">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -184,6 +163,16 @@
                         <property name="label" translatable="yes">Back up DB</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_Back_up_Database_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="configurazione_menu">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Preferenze</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_configurazione_menu_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>

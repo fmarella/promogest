@@ -44,7 +44,7 @@ class SetConfUI(GladeWidget):
 #        self.cod_installazione_entry.set_sensitive(False)
         self.treeview = self.setconf_treeview
         rendererSx = gtk.CellRendererText()
-        column = gtk.TreeViewColumn("Sezione/Chiave", rendererSx, text=1, background=6, font=7)
+        column = gtk.TreeViewColumn("Sezione/Chiave", rendererSx, text=1, background=4, font=5)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
@@ -69,37 +69,38 @@ class SetConfUI(GladeWidget):
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_clickable(False)
         column.set_resizable(True)
+        column.set_expand(True)
         column.set_min_width(300)
         self.treeview.append_column(column)
 
-        rendererSx = gtk.CellRendererText()
-        column = gtk.TreeViewColumn("Tipo Sezione", rendererSx, text=4)
-#        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-#        column.set_resizable(True)
-        column.set_min_width(70)
-        self.treeview.append_column(column)
+#        rendererSx = gtk.CellRendererText()
+#        column = gtk.TreeViewColumn("Tipo Sezione", rendererSx, text=4)
+##        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+#        column.set_clickable(False)
+##        column.set_resizable(True)
+#        column.set_min_width(70)
+#        self.treeview.append_column(column)
 
-        rendererSx = gtk.CellRendererText()
-        column = gtk.TreeViewColumn("Tipo Chiave", rendererSx, text=5)
-#        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-#        column.set_resizable(True)
-        column.set_min_width(70)
-        self.treeview.append_column(column)
+#        rendererSx = gtk.CellRendererText()
+#        column = gtk.TreeViewColumn("Tipo Chiave", rendererSx, text=5)
+##        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+#        column.set_clickable(False)
+##        column.set_resizable(True)
+#        column.set_min_width(70)
+#        self.treeview.append_column(column)
 
         cellspin = gtk.CellRendererToggle()
         cellspin.set_property('activatable', True)
         cellspin.connect('toggled', self.on_column_selected_edited, self.treeview, True)
         column = gtk.TreeViewColumn('Attiva', cellspin)
-        column.add_attribute( cellspin, "active", 8)
+        column.add_attribute( cellspin, "active", 6)
 #        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         column.set_resizable(False)
         column.set_expand(False)
         column.set_min_width(70)
         self.treeview.append_column(column)
 
-        self._treeViewModel = gtk.TreeStore(object,str,str,str, str,str,str,str,bool)
+        self._treeViewModel = gtk.TreeStore(object,str,str,str, str,str,bool)
         self.treeview.set_model(self._treeViewModel)
         self._refresh()
 
@@ -108,11 +109,11 @@ class SetConfUI(GladeWidget):
         sc = SetConf().select(batchSize=None, orderBy=SetConf.section)
         sect = list(set([ x.section for x in sc]))
         for s in sect:
-            if s != "Master":
+            if s in "Master":
+                continue
+            if s not in "Master":
                 iter = self._treeViewModel.append(None,(s,
                                             s,
-                                            "",
-                                            "",
                                             "",
                                            "",
                                             self.rowBackGround,
@@ -120,20 +121,16 @@ class SetConfUI(GladeWidget):
                                             False))
             ss = SetConf().select(section=s,batchSize=None, orderBy=SetConf.section)
             for s in ss:
-                if (s.key != "install_code") and\
-                        (s.key !="pan") and \
-                            (s.key != "password") and\
+                if    (s.key != "password") and\
                                 (s.key != "username") :
                     if s.tipo == "BOOLEAN":
-                        valore = "USARE 'ATTIVA' PER ATTIVARE / DISATTIVARE"
+                        valore = "USARE 'ATTIVA' / DISATTIVA"
                     else:
                         valore = s.value
                     self._treeViewModel.append(iter,(s,
                                             s.key,
                                             valore,
                                             s.description,
-                                            s.tipo_section,
-                                            s.tipo,
                                             None,
                                             None,
                                             s.active))
@@ -141,9 +138,9 @@ class SetConfUI(GladeWidget):
     def on_column_selected_edited(self, cell, path, treeview,value, editNext=True):
         """ Function to set the value quantita edit in the cell"""
         model = treeview.get_model()
-        model[path][8] = not model[path][8]
+        model[path][6] = not model[path][6]
         for a in  model[path].iterchildren():
-             a[8] = model[path][8]
+             a[6] = model[path][6]
 
     def on_column_codice_edited(self, cell, path, value, treeview, editNext=True):
         """ Function ti set the value codice edit in the cell"""
@@ -159,8 +156,8 @@ class SetConfUI(GladeWidget):
             oggettoFiglio = model.get_value(iter, 0)
             if oggettoFiglio.value != model.get_value(iter, 2):
                 oggettoFiglio.value = model.get_value(iter, 2)
-            if oggettoFiglio.active !=  model.get_value(iter, 8):
-                oggettoFiglio.active = model.get_value(iter, 8)
+            if oggettoFiglio.active !=  model.get_value(iter, 6):
+                oggettoFiglio.active = model.get_value(iter, 6)
             oggettoFiglio.persist()
 #        mcode = self.cod_installazione_entry.get_text()
 #        mcode = mcode.lower().strip()
