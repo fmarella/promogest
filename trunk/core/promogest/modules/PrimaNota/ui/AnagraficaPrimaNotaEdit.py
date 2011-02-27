@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010,2011 by Promotux
 #                       di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -20,27 +20,25 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-import gobject
 from decimal import *
-from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, \
-                            AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from promogest.ui.AnagraficaComplessa import AnagraficaEdit
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.dao.Banca import Banca
 from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
-from promogest.lib.relativedelta import relativedelta
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 
+
 class AnagraficaPrimaNotaEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica delle prima nota cassa """
-
     def __init__(self, anagrafica):
         AnagraficaEdit.__init__(self,
-                                anagrafica,
-                                'anagrafica_prima_nota_detail_vbox',
-                                'Dati Prima nota cassa.',
-                                gladeFile='_anagrafica_primanota_elements.glade')
+                anagrafica,
+                'anagrafica_prima_nota_detail_vbox',
+                'Dati Prima nota cassa.',
+                gladeFile='PrimaNota/gui/_anagrafica_primanota_elements.glade',
+                module=True)
         self._widgetFirstFocus = self.data_inserimento_datewidget
         self.anagrafica = anagrafica
         self.editRiga = None
@@ -51,79 +49,8 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
 #        self.id_banca_customcombobox.set_sensitive(False)
 
     def draw(self, cplx=False):
-        treeview = self.riga_primanota_treeview
-        renderer = gtk.CellRendererText()
-
-        column = gtk.TreeViewColumn('Numero', renderer, text=1, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Data', renderer, text=2, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=3, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Cassa Entrata', renderer, text=4, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Cassa Uscita', renderer, text=5, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Banca Entrata', renderer, text=6, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Banca Uscita', renderer, text=7, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Rif.Banca', renderer, text=8, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Rif.Docu', renderer, text=9, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._rigaModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str,str, str, str, str, str, str, str,str)
-        self.riga_primanota_treeview.set_model(self._rigaModel)
 #        self.banca_viewport.set_property("visible",False)
-
+        return
 
     def setDao(self, dao):
         if dao is None:
@@ -373,12 +300,12 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
             self.rigaIter[1] = str(riga.numero)
             self.rigaIter[2] = dateToString(riga.data_registrazione)
             self.rigaIter[3] = riga.denominazione
-            self.rigaIter[4] = cassa_entrata or ""
-            self.rigaIter[5] = cassa_uscita or ""
-            self.rigaIter[6] = banca_entrata or ""
-            self.rigaIter[7] = banca_uscita or ""
-            self.rigaIter[8] = banca or ""
-            self.rigaIter[9] = riferimento
+            self.rigaIter[4] = str(cassa_entrata) or ""
+            self.rigaIter[5] = str(cassa_uscita) or ""
+            self.rigaIter[6] = str(banca_entrata) or ""
+            self.rigaIter[7] = str(banca_uscita) or ""
+            self.rigaIter[8] = str(banca) or ""
+            self.rigaIter[9] = str(riferimento)
         else:
             model.append(dati)
         self.riga_primanota_treeview.set_model(model)
@@ -406,26 +333,26 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
             tot_ent_banca += float(a[6] or 0)
             self.totale_entrate_banca_label.set_markup(c(str(mN(tot_ent_banca)),"#00AA00"))
             tot_usc_cassa += float(a[5] or 0)
-            self.totale_uscite_cassa_label.set_markup(c(str(mN(tot_usc_cassa)),"#FFD7D7"))
+            self.totale_uscite_cassa_label.set_markup(c(str(mN(tot_usc_cassa)),"#FF5353"))
             tot_usc_banca += float(a[7] or 0)
-            self.totale_uscite_banca_label.set_markup(c(str(mN(tot_usc_banca)),"#FFD7D7"))
+            self.totale_uscite_banca_label.set_markup(c(str(mN(tot_usc_banca)),"#FF5353"))
 
         tot_banca = tot_ent_banca - tot_usc_banca
         if tot_banca >0:
             self.totale_banca_label.set_markup(c(str(mN(tot_banca)),"#00AA00"))
         else:
-            self.totale_banca_label.set_markup(c(str(mN(tot_banca)),"#FFD7D7"))
+            self.totale_banca_label.set_markup(c(str(mN(tot_banca)),"#FF5353"))
         tot_cassa = tot_ent_cassa - tot_usc_cassa
         if tot_cassa >0:
-            self.totale_cassa_label.set_markup(c(str(mN(tot_cassa)),"#FFD7D7"))
+            self.totale_cassa_label.set_markup(c(str(mN(tot_cassa)),"#FF5353"))
         else:
             self.totale_cassa_label.set_markup(c(str(mN(tot_cassa)),"#00AA00"))
         tot_saldo = (tot_ent_banca+tot_ent_cassa)-(tot_usc_banca+tot_usc_cassa)
 
         if tot_saldo >0:
-            self.totale_saldo_label.set_markup(b(c(str(mN(tot_saldo)),"#FFD7D7")))
+            self.totale_saldo_label.set_markup(b(c(str(mN(tot_saldo)),"#FF5353")))
         else:
-            self.totale_saldo_label.set_markup(b(c(str(mN(tot_saldo)),"#FFD7D7")))
+            self.totale_saldo_label.set_markup(b(c(str(mN(tot_saldo)),"#FF5353")))
         self.saldo_label.set_markup(b(c(str(mN(self.saldo())+mN(tot_saldo)), "blue")))
 
     def on_rimuovi_button_clicked(self, button):

@@ -1,177 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkTable" id="anagrafica_prima_nota_filter_table">
-    <property name="height_request">130</property>
-    <property name="visible">True</property>
-    <property name="n_rows">5</property>
-    <property name="n_columns">2</property>
-    <child>
-      <object class="GtkEntry" id="numero_filter_entry">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="invisible_char">●</property>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="numerolabel">
-        <property name="visible">True</property>
-        <property name="xalign">0</property>
-        <property name="label" translatable="yes">Numero</property>
-      </object>
-      <packing>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
-        <property name="x_padding">10</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="da_data_inizio_label">
-        <property name="visible">True</property>
-        <property name="label" translatable="yes">Da data inizio</property>
-      </object>
-      <packing>
-        <property name="top_attach">1</property>
-        <property name="bottom_attach">2</property>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="a_data_inizio_label">
-        <property name="visible">True</property>
-        <property name="label" translatable="yes">A data inizio</property>
-      </object>
-      <packing>
-        <property name="top_attach">2</property>
-        <property name="bottom_attach">3</property>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="DateTimeWidget" id="da_data_inizio_datetimewidget">
-        <property name="visible">True</property>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">1</property>
-        <property name="bottom_attach">2</property>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="DateTimeWidget" id="a_data_inizio_datetimewidget">
-        <property name="visible">True</property>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">2</property>
-        <property name="bottom_attach">3</property>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="da_data_fine_label">
-        <property name="visible">True</property>
-        <property name="label" translatable="yes">Da data fine</property>
-      </object>
-      <packing>
-        <property name="top_attach">3</property>
-        <property name="bottom_attach">4</property>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="a_data_fine_label">
-        <property name="visible">True</property>
-        <property name="label" translatable="yes">A data fine</property>
-      </object>
-      <packing>
-        <property name="top_attach">4</property>
-        <property name="bottom_attach">5</property>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="DateTimeWidget" id="da_data_fine_datetimewidget">
-        <property name="visible">True</property>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">3</property>
-        <property name="bottom_attach">4</property>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="DateTimeWidget" id="a_data_fine_datetimewidget">
-        <property name="visible">True</property>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">4</property>
-        <property name="bottom_attach">5</property>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-  </object>
   <object class="GtkVBox" id="anagrafica_prima_nota_detail_vbox">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="spacing">4</property>
     <child>
       <object class="GtkFrame" id="info_testata_frame">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="label_xalign">0</property>
         <property name="shadow_type">in</property>
         <child>
           <object class="GtkAlignment" id="alignment1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="left_padding">12</property>
             <child>
               <object class="GtkVBox" id="vbox1">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkHBox" id="hbox6">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="border_width">5</property>
                     <child>
                       <object class="GtkLabel" id="numero_label_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">&lt;b&gt;NUMERO&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
+                        <property name="fill">True</property>
                         <property name="padding">5</property>
                         <property name="position">0</property>
                       </packing>
@@ -179,6 +45,7 @@
                     <child>
                       <object class="GtkLabel" id="numero_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">---</property>
                       </object>
                       <packing>
@@ -191,14 +58,18 @@
                     <child>
                       <object class="GtkHSeparator" id="hseparator6">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">2</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkLabel" id="data_inizio_label_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">&lt;b&gt;DATA INIZIO:&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
@@ -212,6 +83,7 @@
                     <child>
                       <object class="GtkLabel" id="data_inizio_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">--/--/----</property>
                       </object>
                       <packing>
@@ -224,6 +96,7 @@
                     <child>
                       <object class="GtkLabel" id="data_fine_label_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">&lt;b&gt;DATA FINE:&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
@@ -237,6 +110,7 @@
                     <child>
                       <object class="GtkLabel" id="data_fine_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">--/--/----</property>
                       </object>
                       <packing>
@@ -249,14 +123,18 @@
                     <child>
                       <object class="GtkHSeparator" id="hseparator5">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">7</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkLabel" id="saldo_precedente_label_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">&lt;b&gt;SALDO PRECEDENTE:&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
@@ -269,6 +147,7 @@
                     <child>
                       <object class="GtkLabel" id="saldo_precedente_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">0.00</property>
                       </object>
                       <packing>
@@ -288,8 +167,9 @@
                         <property name="tooltip_text" translatable="yes">Riattiva la parte di gestione 
 delle righe di prima nota 
 su una Prima nota già chiusa</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image1</property>
-                        <signal name="clicked" handler="on_riattiva_button_clicked"/>
+                        <signal name="clicked" handler="on_riattiva_button_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -304,7 +184,8 @@ su una Prima nota già chiusa</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="tooltip_text" translatable="yes">Forza la chiusura di una prima nota</property>
-                        <signal name="clicked" handler="on_forza_chiusura_button_clicked"/>
+                        <property name="use_action_appearance">False</property>
+                        <signal name="clicked" handler="on_forza_chiusura_button_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -314,15 +195,19 @@ su una Prima nota già chiusa</property>
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkHBox" id="hbox9">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkLabel" id="note_label">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xpad">3</property>
                         <property name="label" translatable="yes">Note</property>
                       </object>
@@ -338,13 +223,21 @@ su una Prima nota già chiusa</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">Eventuale descrizione di prima nota</property>
                         <property name="invisible_char">●</property>
+                        <property name="primary_icon_activatable">False</property>
+                        <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -355,6 +248,7 @@ su una Prima nota già chiusa</property>
         <child type="label">
           <object class="GtkLabel" id="testata_info">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">22</property>
             <property name="label" translatable="yes">&lt;b&gt;Informazioni generali prima nota&lt;/b&gt;</property>
             <property name="use_markup">True</property>
@@ -371,17 +265,21 @@ su una Prima nota già chiusa</property>
     <child>
       <object class="GtkFrame" id="riga_primanota_frame">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="label_xalign">0</property>
         <property name="shadow_type">in</property>
         <child>
           <object class="GtkVBox" id="vbox2">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <object class="GtkHBox" id="hbox1">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkLabel" id="data_pn_label">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xpad">10</property>
                     <property name="label" translatable="yes">Data operazione</property>
                   </object>
@@ -394,6 +292,7 @@ su una Prima nota già chiusa</property>
                 <child>
                   <object class="DateWidget" id="data_inserimento_datewidget">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="tooltip_text" translatable="yes">Data dell'operazione</property>
                     <child>
                       <placeholder/>
@@ -415,9 +314,11 @@ su una Prima nota già chiusa</property>
             <child>
               <object class="GtkHBox" id="hbox2">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkLabel" id="descrizione_pn_label">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xpad">9</property>
                     <property name="label" translatable="yes">Descrizione</property>
                   </object>
@@ -433,8 +334,14 @@ su una Prima nota già chiusa</property>
                     <property name="can_focus">True</property>
                     <property name="tooltip_text" translatable="yes">Descrizione della prima nota</property>
                     <property name="invisible_char">●</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
+                    <property name="primary_icon_sensitive">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -448,36 +355,45 @@ su una Prima nota già chiusa</property>
             <child>
               <object class="GtkHBox" id="hbox3">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="border_width">10</property>
                 <property name="spacing">2</property>
                 <child>
                   <object class="GtkLabel" id="cassa_label">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="ypad">2</property>
                     <property name="label" translatable="yes">&lt;b&gt;CASSA&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkVSeparator" id="vseparator3">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="banca_label">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="ypad">2</property>
                     <property name="label" translatable="yes">&lt;b&gt;BANCA&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">2</property>
                   </packing>
                 </child>
@@ -503,6 +419,7 @@ su una Prima nota già chiusa</property>
             <child>
               <object class="GtkHBox" id="hbox4">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="border_width">3</property>
                 <child>
                   <object class="GtkRadioButton" id="entrata_cassa_radio">
@@ -510,11 +427,14 @@ su una Prima nota già chiusa</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">False</property>
-                    <signal name="toggled" handler="on_entrata_cassa_radio_toggled"/>
+                    <signal name="toggled" handler="on_entrata_cassa_radio_toggled" swapped="no"/>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -524,21 +444,26 @@ su una Prima nota già chiusa</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">False</property>
                     <property name="group">entrata_cassa_radio</property>
-                    <signal name="toggled" handler="on_entrata_cassa_radio_toggled"/>
+                    <signal name="toggled" handler="on_entrata_cassa_radio_toggled" swapped="no"/>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkVSeparator" id="vseparator2">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="position">2</property>
                   </packing>
                 </child>
@@ -548,12 +473,15 @@ su una Prima nota già chiusa</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">False</property>
                     <property name="group">entrata_cassa_radio</property>
-                    <signal name="toggled" handler="on_entrata_cassa_radio_toggled"/>
+                    <signal name="toggled" handler="on_entrata_cassa_radio_toggled" swapped="no"/>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">3</property>
                   </packing>
                 </child>
@@ -563,12 +491,15 @@ su una Prima nota già chiusa</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">False</property>
                     <property name="group">entrata_cassa_radio</property>
-                    <signal name="toggled" handler="on_entrata_cassa_radio_toggled"/>
+                    <signal name="toggled" handler="on_entrata_cassa_radio_toggled" swapped="no"/>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">4</property>
                   </packing>
                 </child>
@@ -582,14 +513,21 @@ su una Prima nota già chiusa</property>
             <child>
               <object class="GtkHBox" id="hbox5">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkEntry" id="entrata_cassa_entry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="tooltip_text" translatable="yes">Valore di entrata cassa</property>
                     <property name="invisible_char">●</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
+                    <property name="primary_icon_sensitive">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -600,17 +538,25 @@ su una Prima nota già chiusa</property>
                     <property name="can_focus">True</property>
                     <property name="tooltip_text" translatable="yes">Valore di uscita cassa</property>
                     <property name="invisible_char">●</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
+                    <property name="primary_icon_sensitive">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkVSeparator" id="vseparator1">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="position">2</property>
                   </packing>
                 </child>
@@ -621,8 +567,14 @@ su una Prima nota già chiusa</property>
                     <property name="can_focus">True</property>
                     <property name="tooltip_text" translatable="yes">Valore di entrata banca</property>
                     <property name="invisible_char">●</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
+                    <property name="primary_icon_sensitive">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">3</property>
                   </packing>
                 </child>
@@ -633,8 +585,14 @@ su una Prima nota già chiusa</property>
                     <property name="can_focus">True</property>
                     <property name="tooltip_text" translatable="yes">Valore di uscita banca</property>
                     <property name="invisible_char">●</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
+                    <property name="primary_icon_sensitive">True</property>
+                    <property name="secondary_icon_sensitive">True</property>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">4</property>
                   </packing>
                 </child>
@@ -649,6 +607,7 @@ su una Prima nota già chiusa</property>
             <child>
               <object class="GtkHButtonBox" id="hbuttonbox1">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="homogeneous">True</property>
                 <property name="layout_style">center</property>
                 <child>
@@ -658,8 +617,9 @@ su una Prima nota già chiusa</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Aggiunge la riga inserita </property>
+                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
-                    <signal name="clicked" handler="on_aggiungi_button_clicked"/>
+                    <signal name="clicked" handler="on_aggiungi_button_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -674,8 +634,9 @@ su una Prima nota già chiusa</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Elimina la riga di prima nota selezionata</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="use_stock">True</property>
-                    <signal name="clicked" handler="on_rimuovi_button_clicked"/>
+                    <signal name="clicked" handler="on_rimuovi_button_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -701,12 +662,118 @@ su una Prima nota già chiusa</property>
                   <object class="GtkTreeView" id="riga_primanota_treeview">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="model">prima_nota_filter_listore</property>
+                    <property name="search_column">1</property>
                     <property name="enable_grid_lines">both</property>
-                    <signal name="row_activated" handler="on_riga_primanota_treeview_row_activated"/>
+                    <signal name="row-activated" handler="on_riga_primanota_treeview_row_activated" swapped="no"/>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="numero_column">
+                        <property name="title" translatable="yes">Numero</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                          <attributes>
+                            <attribute name="text">1</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="data_column">
+                        <property name="title" translatable="yes">Data</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                          <attributes>
+                            <attribute name="text">2</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="descrizione_column">
+                        <property name="sizing">autosize</property>
+                        <property name="fixed_width">100</property>
+                        <property name="title" translatable="yes">Descrizione</property>
+                        <property name="expand">True</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+                          <attributes>
+                            <attribute name="text">3</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="cassa_entrata_column">
+                        <property name="title" translatable="yes">Cassa Entrata</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext4"/>
+                          <attributes>
+                            <attribute name="text">4</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="cassa_uscita_column">
+                        <property name="title" translatable="yes">Cassa Uscita</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext5"/>
+                          <attributes>
+                            <attribute name="text">5</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="banca_entrata_column">
+                        <property name="title" translatable="yes">Banca Entrata</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext6"/>
+                          <attributes>
+                            <attribute name="text">6</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="banca_uscita_column">
+                        <property name="title" translatable="yes">Banca Uscita</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext7"/>
+                          <attributes>
+                            <attribute name="text">7</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="rifa_banca_column">
+                        <property name="title" translatable="yes">Rif.Banca</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext8"/>
+                          <attributes>
+                            <attribute name="text">8</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn" id="rif_docu_column">
+                        <property name="title" translatable="yes">Rif.Docu</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext9"/>
+                          <attributes>
+                            <attribute name="text">9</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="position">6</property>
               </packing>
             </child>
@@ -715,6 +782,7 @@ su una Prima nota già chiusa</property>
         <child type="label">
           <object class="GtkLabel" id="riga_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">11</property>
             <property name="label" translatable="yes">&lt;b&gt;Dati rigaprima nota&lt;/b&gt;</property>
             <property name="use_markup">True</property>
@@ -722,16 +790,20 @@ su una Prima nota già chiusa</property>
         </child>
       </object>
       <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
         <property name="position">1</property>
       </packing>
     </child>
     <child>
       <object class="GtkHBox" id="hbox7">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="spacing">1</property>
         <child>
           <object class="GtkLabel" id="totale_righe_label_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">1</property>
             <property name="label" translatable="yes">&lt;b&gt;TOT RIGHE:&lt;/b&gt;</property>
             <property name="use_markup">True</property>
@@ -746,6 +818,7 @@ su una Prima nota già chiusa</property>
         <child>
           <object class="GtkLabel" id="totale_righe_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="label" translatable="yes">---</property>
           </object>
           <packing>
@@ -758,6 +831,7 @@ su una Prima nota già chiusa</property>
         <child>
           <object class="GtkLabel" id="totale_entrate_cassa_label_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">1</property>
             <property name="label" translatable="yes">&lt;b&gt;TOT ENTRATE CASSA:&lt;/b&gt;</property>
             <property name="use_markup">True</property>
@@ -771,6 +845,7 @@ su una Prima nota già chiusa</property>
         <child>
           <object class="GtkLabel" id="totale_entrate_cassa_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">3</property>
             <property name="label" translatable="yes">0.00</property>
           </object>
@@ -784,6 +859,7 @@ su una Prima nota già chiusa</property>
         <child>
           <object class="GtkLabel" id="totale_uscite_cassa_label_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xalign">0.49000000953674316</property>
             <property name="xpad">2</property>
             <property name="label" translatable="yes">&lt;b&gt;TOT USCITE CASSA:&lt;/b&gt;</property>
@@ -798,6 +874,7 @@ su una Prima nota già chiusa</property>
         <child>
           <object class="GtkLabel" id="totale_uscite_cassa_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">3</property>
             <property name="label" translatable="yes">0.00</property>
           </object>
@@ -811,17 +888,21 @@ su una Prima nota già chiusa</property>
         <child>
           <object class="GtkLabel" id="totale_entrate_banca_label_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">1</property>
             <property name="label" translatable="yes">&lt;b&gt;TOT ENTRATE BANCA:&lt;/b&gt;</property>
             <property name="use_markup">True</property>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">6</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="totale_entrate_banca_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">3</property>
             <property name="label" translatable="yes">0.00</property>
           </object>
@@ -835,17 +916,21 @@ su una Prima nota già chiusa</property>
         <child>
           <object class="GtkLabel" id="totale_uscite_banca_label_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">1</property>
             <property name="label" translatable="yes">&lt;b&gt;TOT USCITE BANCA:&lt;/b&gt;</property>
             <property name="use_markup">True</property>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">8</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="totale_uscite_banca_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">3</property>
             <property name="label" translatable="yes">0.00</property>
           </object>
@@ -866,10 +951,12 @@ su una Prima nota già chiusa</property>
     <child>
       <object class="GtkHBox" id="hbox8">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="spacing">1</property>
         <child>
           <object class="GtkLabel" id="totale_cassa_label_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">1</property>
             <property name="label" translatable="yes">&lt;b&gt;TOT CASSA:&lt;/b&gt;</property>
             <property name="use_markup">True</property>
@@ -884,6 +971,7 @@ su una Prima nota già chiusa</property>
         <child>
           <object class="GtkLabel" id="totale_cassa_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">3</property>
             <property name="label" translatable="yes">0.00</property>
           </object>
@@ -897,6 +985,7 @@ su una Prima nota già chiusa</property>
         <child>
           <object class="GtkLabel" id="totale_banca_label_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">1</property>
             <property name="label" translatable="yes">&lt;b&gt;TOT BANCA:&lt;/b&gt;</property>
             <property name="use_markup">True</property>
@@ -910,6 +999,7 @@ su una Prima nota già chiusa</property>
         <child>
           <object class="GtkLabel" id="totale_banca_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">3</property>
             <property name="label" translatable="yes">0.00</property>
           </object>
@@ -923,14 +1013,18 @@ su una Prima nota già chiusa</property>
         <child>
           <object class="GtkHSeparator" id="hseparator1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">4</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="totale_saldo_label_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">1</property>
             <property name="label" translatable="yes">&lt;b&gt;TOTALE PARZIALE :&lt;/b&gt;</property>
             <property name="use_markup">True</property>
@@ -945,34 +1039,44 @@ su una Prima nota già chiusa</property>
         <child>
           <object class="GtkLabel" id="totale_saldo_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="label" translatable="yes">0.00</property>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">6</property>
           </packing>
         </child>
         <child>
           <object class="GtkHSeparator" id="hseparator2">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">7</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="saldo_label_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">10</property>
             <property name="label" translatable="yes">&lt;b&gt;SALDO ATTUALE&lt;/b&gt;</property>
             <property name="use_markup">True</property>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">8</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="saldo_label">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="xpad">10</property>
             <property name="label" translatable="yes">0.00</property>
           </object>
@@ -990,8 +1094,188 @@ su una Prima nota già chiusa</property>
       </packing>
     </child>
   </object>
+  <object class="GtkTable" id="anagrafica_prima_nota_filter_table">
+    <property name="height_request">130</property>
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="n_rows">5</property>
+    <property name="n_columns">2</property>
+    <child>
+      <object class="GtkEntry" id="numero_filter_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="invisible_char">●</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="numerolabel">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="xalign">0</property>
+        <property name="label" translatable="yes">Numero</property>
+      </object>
+      <packing>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+        <property name="x_padding">10</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="da_data_inizio_label">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Da data inizio</property>
+      </object>
+      <packing>
+        <property name="top_attach">1</property>
+        <property name="bottom_attach">2</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="a_data_inizio_label">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">A data inizio</property>
+      </object>
+      <packing>
+        <property name="top_attach">2</property>
+        <property name="bottom_attach">3</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="DateTimeWidget" id="da_data_inizio_datetimewidget">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">1</property>
+        <property name="bottom_attach">2</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="DateTimeWidget" id="a_data_inizio_datetimewidget">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">2</property>
+        <property name="bottom_attach">3</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="da_data_fine_label">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Da data fine</property>
+      </object>
+      <packing>
+        <property name="top_attach">3</property>
+        <property name="bottom_attach">4</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkLabel" id="a_data_fine_label">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">A data fine</property>
+      </object>
+      <packing>
+        <property name="top_attach">4</property>
+        <property name="bottom_attach">5</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="DateTimeWidget" id="da_data_fine_datetimewidget">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">3</property>
+        <property name="bottom_attach">4</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="DateTimeWidget" id="a_data_fine_datetimewidget">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">4</property>
+        <property name="bottom_attach">5</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+  </object>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="stock">gtk-edit</property>
+  </object>
+  <object class="GtkListStore" id="prima_nota_filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray6 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray7 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray8 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray9 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>

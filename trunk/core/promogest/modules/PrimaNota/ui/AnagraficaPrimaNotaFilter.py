@@ -35,7 +35,8 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
         AnagraficaFilter.__init__(self,
                           anagrafica,
                           'anagrafica_prima_nota_filter_table',
-                          gladeFile='_anagrafica_primanota_elements.glade')
+                          gladeFile='PrimaNota/gui/_anagrafica_primanota_elements.glade',
+                          module=True)
         self._widgetFirstFocus = self.numero_filter_entry
         self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear+" 00:00")
         self.checkAnnoPrimaNota()
