@@ -31,8 +31,8 @@ from promogest import Environment
 from sqlalchemy.orm import *
 from sqlalchemy import *
 #from utils import leggiAgente
-#import xml.etree.cElementTree as ElementTree
-#from xml.etree.cElementTree import *
+import xml.etree.cElementTree as ElementTree
+from xml.etree.cElementTree import *
 from random import randint as rint
 # Letture per recuperare velocemente dati da uno o piu' dao correlati
 
