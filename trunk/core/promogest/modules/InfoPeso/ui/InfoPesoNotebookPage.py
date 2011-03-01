@@ -149,7 +149,7 @@ class InfoPesoNotebookPage(GladeWidget):
     def on_aggiungi_pesata_button_clicked(self, button):
 
         data_pesata = self.data_pesata_datewidget.get_text()
-        peso = self.peso_pesata_entry.get_text().replace(",",".") or "0"
+        peso = self.peso_pesata_entry.get_text() or "0"
         mgrassa = self.massa_grassa_entry.get_text() or "0"
         mmagraeacqua = self.massa_magra_e_acqua_entry.get_text() or "0"
         acqua = self.acqua_entry.get_text() or "0"
@@ -192,7 +192,7 @@ class InfoPesoNotebookPage(GladeWidget):
             self.rigaIter[1] = dateToString(riga.data_registrazione)
             self.rigaIter[2] = str(mN(riga.peso,1))
             self.rigaIter[3] = str(0)
-            self.rigaIter[4] = str(mN(riga.massa_grassa.replace,1))
+            self.rigaIter[4] = str(mN(riga.massa_grassa,1))
             self.rigaIter[5] = str(mN(riga.massa_magra_e_acqua,1))
             self.rigaIter[6] = str(mN(riga.acqua,1))
             self.rigaIter[7] = str(tipo_tratt)
@@ -283,7 +283,7 @@ class InfoPesoNotebookPage(GladeWidget):
         self.citta_centro_entry.set_text(self.dao_testata_infopeso.citta or "")
 
         self.data_nascita_datewidget.set_text(dateToString(self.dao_generalita_infopeso.data_nascita))
-        self.altezza_entry.set_text(str(self.dao_generalita_infopeso.altezza or ""))
+        self.altezza_entry.set_text(str(mN(self.dao_generalita_infopeso.altezza,1) or ""))
         if self.dao_generalita_infopeso.genere =="Donna":
             self.donna_radio.set_active(True)
         else:
@@ -317,7 +317,7 @@ class InfoPesoNotebookPage(GladeWidget):
         self.dao_testata_infopeso.citta = self.citta_centro_entry.get_text()
 
         self.dao_generalita_infopeso.data_nascita = stringToDate(self.data_nascita_datewidget.get_text())
-        self.dao_generalita_infopeso.altezza = self.altezza_entry.get_text() or 0
+        self.dao_generalita_infopeso.altezza = self.altezza_entry.get_text().replace(",",".") or 0
 
         if self.donna_radio.get_active():
             self.dao_generalita_infopeso.genere = "Donna"

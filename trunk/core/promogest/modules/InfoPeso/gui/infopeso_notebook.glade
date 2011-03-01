@@ -212,7 +212,7 @@
                 </child>
                 <child>
                   <object class="GtkEntry" id="altezza_entry">
-                    <property name="width_request">60</property>
+                    <property name="width_request">90</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="invisible_char">●</property>
