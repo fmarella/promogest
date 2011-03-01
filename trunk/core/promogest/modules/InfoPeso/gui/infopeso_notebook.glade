@@ -278,7 +278,7 @@
                     <property name="shadow_type">in</property>
                     <child>
                       <object class="GtkTextView" id="note_textview">
-                        <property name="height_request">30</property>
+                        <property name="height_request">25</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                       </object>
@@ -292,8 +292,8 @@
                 </child>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -521,7 +521,7 @@
                             </child>
                             <child>
                               <object class="GtkScrolledWindow" id="scrolledwindow3">
-                                <property name="height_request">25</property>
+                                <property name="height_request">50</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="hscrollbar_policy">automatic</property>
@@ -529,7 +529,6 @@
                                 <property name="shadow_type">in</property>
                                 <child>
                                   <object class="GtkTextView" id="note_riga_pesata_textview">
-                                    <property name="height_request">30</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                   </object>
@@ -562,8 +561,8 @@
                 </child>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">3</property>
               </packing>
             </child>
@@ -643,6 +642,7 @@
                     <property name="shadow_type">in</property>
                     <child>
                       <object class="GtkTreeView" id="righe_pesata_treeview">
+                        <property name="height_request">20</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="border_width">2</property>
