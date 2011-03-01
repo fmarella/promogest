@@ -149,7 +149,7 @@ class InfoPesoNotebookPage(GladeWidget):
     def on_aggiungi_pesata_button_clicked(self, button):
 
         data_pesata = self.data_pesata_datewidget.get_text()
-        peso = self.peso_pesata_entry.get_text() or "0"
+        peso = self.peso_pesata_entry.get_text().replace(",",".") or "0"
         mgrassa = self.massa_grassa_entry.get_text() or "0"
         mmagraeacqua = self.massa_magra_e_acqua_entry.get_text() or "0"
         acqua = self.acqua_entry.get_text() or "0"
@@ -165,7 +165,7 @@ class InfoPesoNotebookPage(GladeWidget):
                     self.peso_pesata_entry,
                     'Inserire un peso !')
 
-        if float(mgrassa)+float(mmagraeacqua)+float(acqua) > float(peso):
+        if float(mgrassa.replace(",","."))+float(mmagraeacqua.replace(",","."))+float(acqua.replace(",",".")) > float(peso.replace(",",".")):
             messageInfo(msg = "ATTENZIONE! La somma di M.GRASSA , M.MAGRA e ACQUA\n è superiore al peso totale")
             return
 
@@ -182,17 +182,17 @@ class InfoPesoNotebookPage(GladeWidget):
         riga.id_tipo_trattamento = findIdFromCombobox(self.id_tipo_trattamento_customcombobox.combobox)
         riga.data_registrazione = stringToDate(data_pesata)
         riga.note = note_riga
-        riga.peso = Decimal(peso)
-        riga.massa_grassa = Decimal(mgrassa)
-        riga.massa_magra_e_acqua = Decimal(mmagraeacqua)
-        riga.acqua = Decimal(acqua)
+        riga.peso = Decimal(peso.replace(",","."))
+        riga.massa_grassa = Decimal(mgrassa.replace(",","."))
+        riga.massa_magra_e_acqua = Decimal(mmagraeacqua.replace(",","."))
+        riga.acqua = Decimal(acqua.replace(",","."))
         if self.editRiga:
             self.rigaIter[0] = riga
 #            self.rigaIter[1] = str(riga.numero)
             self.rigaIter[1] = dateToString(riga.data_registrazione)
             self.rigaIter[2] = str(mN(riga.peso,1))
             self.rigaIter[3] = str(0)
-            self.rigaIter[4] = str(mN(riga.massa_grassa,1))
+            self.rigaIter[4] = str(mN(riga.massa_grassa.replace,1))
             self.rigaIter[5] = str(mN(riga.massa_magra_e_acqua,1))
             self.rigaIter[6] = str(mN(riga.acqua,1))
             self.rigaIter[7] = str(tipo_tratt)

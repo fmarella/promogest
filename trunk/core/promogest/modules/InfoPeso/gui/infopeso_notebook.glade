@@ -278,7 +278,7 @@
                     <property name="shadow_type">in</property>
                     <child>
                       <object class="GtkTextView" id="note_textview">
-                        <property name="height_request">70</property>
+                        <property name="height_request">30</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                       </object>
@@ -521,6 +521,7 @@
                             </child>
                             <child>
                               <object class="GtkScrolledWindow" id="scrolledwindow3">
+                                <property name="height_request">25</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="hscrollbar_policy">automatic</property>
@@ -528,7 +529,7 @@
                                 <property name="shadow_type">in</property>
                                 <child>
                                   <object class="GtkTextView" id="note_riga_pesata_textview">
-                                    <property name="height_request">80</property>
+                                    <property name="height_request">30</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                   </object>
