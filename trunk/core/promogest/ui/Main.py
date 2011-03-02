@@ -938,10 +938,10 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
         mm.set_markup("<b>LISTINI</b>")
         self.main_notebook.append_page(self.create_listini_frame(),mm)
 
-        calendar_page = CalendarNotebookPage(self, self.aziendaStr).draw()
+        self.calendar_page = CalendarNotebookPage(self, self.aziendaStr).draw()
         calendar_page_label = gtk.Label()
         calendar_page_label.set_markup("<b>CALENDARIO</b>")
-        self.main_notebook.append_page(calendar_page.calendario_frame, calendar_page_label)
+        self.main_notebook.append_page(self.calendar_page.calendario_frame, calendar_page_label)
 
         self.notifica_allarmi = NotificaAllarmiNotebookPage(self, self.aziendaStr)
         notifica_allarmi_label = gtk.Label()

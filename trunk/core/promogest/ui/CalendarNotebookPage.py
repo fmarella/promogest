@@ -61,9 +61,9 @@ class CalendarNotebookPage(GladeWidget):
         return self
 
     def on_when_combo_changed(self, combo):
-        if self.when_combo.get_active() == 0:
+        if combo.get_active() == 0:
             Environment.view = "month"
-        elif self.when_combo.get_active() == 1:
+        elif combo.get_active() == 1:
             Environment.view = "week"
         else:
             Environment.view = "day"

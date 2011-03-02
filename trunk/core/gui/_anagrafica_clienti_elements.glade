@@ -83,7 +83,7 @@
             <property name="xscale">0</property>
             <child>
               <object class="GtkEntry" id="provincia_sede_operativa_entry">
-                <property name="width_request">130</property>
+                <property name="width_request">160</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="tooltip_text" translatable="yes">Provincia sede operativa</property>
@@ -781,7 +781,7 @@ della sede legale del cliente</property>
             <property name="xscale">0</property>
             <child>
               <object class="GtkEntry" id="provincia_sede_legale_entry">
-                <property name="width_request">130</property>
+                <property name="width_request">160</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">2</property>
