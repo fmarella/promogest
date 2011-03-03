@@ -59,7 +59,9 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
 #        self.sconti_ingrosso_widget.button.connect('toggled',
 #                            self.on_sconti_ingrosso_widget_button_toggled)
         #ListinoArticolo().cleann()
-        self.nformat = Environment.conf.number_format
+        decimals = int(setconf(key="decimals", section="Numbers"))
+        self.nformat = '%-14.' + str(decimals) + 'f'
+#        self.nformat = Environment.conf.number_format
 
     def on_sconti_dettaglio_widget_button_toggled(self, button):
         """ Gestione sconti dettaglio  con custom Widget """

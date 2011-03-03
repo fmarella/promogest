@@ -2919,6 +2919,11 @@ def installId():
         kdd.date = datetime.datetime.now()
         kdd.persist()
 
+def getListiniArticolo(idArticolo=None):
+    from promogest.dao.ListinoArticolo import ListinoArticolo
+    listi = ListinoArticolo().select(idArticolo = idArticolo,listinoAttuale=True, batchSize=None)
+    print "@LISTIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", listi
+    return listi
 
 def fencemsg():
     msg = """OPERAZIONE NON CONSENTITA CON IL PACCHETTO

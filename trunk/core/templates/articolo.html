@@ -141,7 +141,14 @@
                 <td class="odd-detail"><strong>{{dao.note|nonone}}</strong>
                 </td>
             </tr>
-
+                <tr><td colspan="4" class="table-header">PRESENTE NEI LISTINI:</td></tr>
+                {% for li in utils.getListiniArticolo(dao.id) %}
+            <tr>
+                <td colspan="4" class="odd-detail"><b>{{utils.leggiListino(li.id_listino, li.id_articolo)["denominazione"]}}:</b>&nbsp;&nbsp;<b>PR. DETTAGLIO: € </b>{{utils.leggiListino(li.id_listino, li.id_articolo)["prezzoDettaglio"]}}&nbsp;
+                <b>PR. INGROSSO: € </b>{{utils.leggiListino(li.id_listino, li.id_articolo)["prezzoIngrosso"]}}&nbsp;</strong>
+                <lr></td>
+                {% endfor %}
+            </tr>
         </table>
         <BR /><BR />
 {% for anno in pageData["calendarioDatetime"] %}
