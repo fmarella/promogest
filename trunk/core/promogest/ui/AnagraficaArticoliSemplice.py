@@ -128,7 +128,7 @@ class AnagraficaArticoliSemplice(GladeWidget):
             dialog.destroy()
 
             self.codice_entry.grab_focus()
-            raise Exception, 'Operation aborted:Codice articolo gia assegnato: !'
+            raise Exception, 'Operation aborted'
 
         # controllo esistenza codice a barre su altro articolo
         bars = CodiceABarreArticolo().select(idArticolo=None,
@@ -147,7 +147,7 @@ class AnagraficaArticoliSemplice(GladeWidget):
             dialog.destroy()
 
             self.codice_a_barre_entry.grab_focus()
-            raise Exception, 'Operation aborted: Codice a barre già assegnato'
+            raise Exception, 'Operation aborted'
 
         self.save()
         self.quit()

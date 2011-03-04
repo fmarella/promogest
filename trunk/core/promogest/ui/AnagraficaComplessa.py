@@ -1380,7 +1380,7 @@ class AnagraficaPrintPreview(GladeWidget):
         self._anagrafica = anagrafica
 
         self.bodyWidget = FilterWidget(owner=self, resultsElement='html')
-        self.html_scrolledwindow.add(self.bodyWidget.getTopLevel())
+        self.html_scrolledwindow.add_with_viewport(self.bodyWidget.getTopLevel())
 #        self.bodyWidget.filter_body_label.set_no_show_all(True)
 #        self.bodyWidget.filter_body_label.set_property('visible', False)
 

@@ -103,7 +103,6 @@ class Anagrafica(GladeWidget):
 
     def on_anagrafica_current_page_entry_key_press_event(self, widget, event):
         keyname = gtk.gdk.keyval_name(event.keyval)
-        print " M CI SEI ANCHE TU", keyname
         if keyname == 'Return' or keyname == 'KP_Enter':
             pagina = int(self.anagrafica_current_page_entry.get_text())
             self.filter.gotoPage(int(pagina))

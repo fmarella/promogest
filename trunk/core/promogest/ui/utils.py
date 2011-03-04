@@ -2754,7 +2754,7 @@ def pbar(pbar,parziale=1, totale=1, pulse=False, stop=False, text=""):
         if parziale == 0: parziale=1
         if totale ==0 :totale =1
         if totale - 1.0 >0:
-            pbar.set_fraction(parziale/(totale - 1.0))
+            pbar.set_fraction(parziale/(totale - 1.0))  # genera un warning, perc >= 0 and perc <= 1.0, infatti vale 1.33 all'ultimo passaggio...
         while gtk.events_pending():
              gtk.main_iteration_do(False)
         pbar.grab_remove()
@@ -2795,13 +2795,10 @@ def scribusVersion(slafile):
     slaversion = root.get('Version')
     Environment.pg2log.info( "FILE SLA DA VERIFICARE PRIMA DLLA STAMPA "+ slafile)
     Environment.pg2log.info("VERSIONE SLA  "+ str(slaversion))
-    if "1.3.6" in slaversion or \
-            "1.3.7" in slaversion or\
-             "1.3.8" in slaversion or\
-             "1.3.9" in slaversion:
+    if slaversion in ("1.3.6", "1.3.7", "1.3.8", "1.3.9"):
         Environment.new_print_enjine=True
         return True
-    elif "1.3.5.1" in slaversion or "1.3.5svn" in slaversion:
+    elif slaversion in ("1.3.5.1", "1.3.5svn"):
 #        messageInfo(msg="ATTENZIONE FORMATO TEMPLATE SLA DA CORREGGERE 1.3.5")
         print "ATTENZIONE FORMATO TEMPLATE SLA DA CORREGGERE 1.3.5"
         Environment.pg2log.info("ATTENZIONE FORMATO TEMPLATE SLA DA CORREGGERE 1.3.5")
@@ -2809,7 +2806,7 @@ def scribusVersion(slafile):
     elif "1.3.4" in slaversion:
         Environment.new_print_enjine=False
         return False
-    elif "1.3.3" in slaversion or "1.3.3.6cvs" in slaversion:
+    elif slaversion in ("1.3.3","1.3.3.6cvs"):
         Environment.new_print_enjine = False
         return False
 
