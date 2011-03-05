@@ -637,34 +637,61 @@ def isNuovoCodiceByFamiglia():
     return dependsOn
 
 def getNuovoCodiceArticolo(idFamiglia=None):
-    """ Restituisce il codice progressivo per un nuovo articolo """
+    """ Restituisce il codice progressivo per un nuovo articolo
+        05/03/2011: rivista e semplificata, forse troppo però adesso
+        è velocissima
+    """
 
     lunghezzaProgressivo = 0
     lunghezzaCodiceFamiglia = 0
     numeroFamiglie = 0
     codice = ''
     if hasattr(conf,'Articoli'):
-        if hasattr(conf.Articoli,'lunghezza_progressivo'):
-            if isNuovoCodiceByFamiglia():
-                #print "passi qui,isNuovoCodiceByFamiglia() "
-                lunghezzaCodiceFamiglia = int(conf.Articoli.lunghezza_codice_famiglia)
-                numeroFamiglie = int(conf.Articoli.numero_famiglie)
+        if hasattr(conf.Articoli,'struttura_codice'):
+            try:
+                n = 1
+                quanti = session.query(Articolo).count()
+                while session.query(Articolo).order_by(Articolo.codice.asc()).offset(quanti-n).limit(1).all():
+                    art = session.query(Articolo).order_by(Articolo.codice.asc()).offset(quanti-n).limit(1).all()
+    #                for cod in codicesel:
+    #                    listacodici.append(cod.codice)
+                    codice = codeIncrement(art[0].codice)
+    #                print "CODICEEE", art[0].codice, codice
+                    if not codice or Articolo().select(codice=codice):
+                        n =n+1
+                    else:
+                        if not Articolo().select(codice=codice):
+                            return codice
+            except:
+                pass
+            try:
+                if not codice:
+                    codice = codeIncrement(conf.Articoli.struttura_codice)
+            except:
+                pass
+
+
+#            if isNuovoCodiceByFamiglia():
+#                #print "passi qui,isNuovoCodiceByFamiglia() "
+#                lunghezzaCodiceFamiglia = int(conf.Articoli.lunghezza_codice_famiglia)
+#                numeroFamiglie = int(conf.Articoli.numero_famiglie)
             #codicesel  =params['session'].query(Articolo.codice).order_by("id").all()
-            if Environment.lastCode:
-                codice = codeIncrement(Environment.lastCode)
-                Environment.lastCode = codice
-            else:
-                codice = codeIncrement(conf.Articoli.struttura_codice)
-                while params['session'].query(Articolo.codice).filter(codice==Articolo.codice).order_by("id").all():
-                    codice = codeIncrement(codice)
-                else:
-                    codice = codice
-    if params['session'].query(Articolo.codice).filter(codice==Articolo.codice).order_by("id").all():
-        while params['session'].query(Articolo.codice).filter(codice==Articolo.codice).order_by("id").all():
-            codice = codeIncrement(codice)
-            Environment.lastCode = codice
-        else:
-            codice = codice
-    else:
-        Environment.lastCode = codice
+#            if Environment.lastCode:
+#                codice = codeIncrement(Environment.lastCode)
+#                Environment.lastCode = codice
+#            else:
+#            codice = codeIncrement(conf.Articoli.struttura_codice)
+#            while params['session'].query(Articolo.codice).filter(codice==Articolo.codice).order_by("id").all()[-10:]:
+#                codice = codeIncrement(codice)
+#            else:
+#                codice = codice
+#            return codice
+#    if params['session'].query(Articolo.codice).filter(codice==Articolo.codice).order_by("id").all()[-10:]:
+#        while params['session'].query(Articolo.codice).filter(codice==Articolo.codice).order_by("id").all()[-10:]:
+#            codice = codeIncrement(codice)
+##            Environment.lastCode = codice
+#        else:
+#            codice = codice
+#    else:
+#        Environment.lastCode = codice
     return codice

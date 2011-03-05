@@ -40,11 +40,13 @@ def getNuovoCodiceVettore():
     codice = ''
     listacodici= []
     if hasattr(conf,'Vettori'):
+    if hasattr(conf,'Fornitori'):
         try:
-            codicesel = Vettore().select(batchSize=None)
+#            codicesel = Fornitore().select(batchSize=None, orderBy=Fornitore.ragione_sociale)
+            codicesel  = session.query(Vettore).all()[-3:]
             for cod in codicesel:
                 listacodici.append(cod.codice)
-            codice = codeIncrement(str(max(listacodici)))
+                codice = codeIncrement(str(max(listacodici)))
         except:
             pass
         try:
@@ -70,6 +72,3 @@ j = join(vettore, persona_giuridica)
 std_mapper = mapper(Vettore, j, properties={
     'id':[vettore.c.id, persona_giuridica.c.id]},
     order_by=vettore.c.id)
-
-
-
