@@ -2495,13 +2495,6 @@ def aggiorna(anag):
                     ok = True
                 except pysvn.ClientError, e:
                     # convert to a string
-                    if "webkit.pyd'" in str(e):
-                        os.remove("core/gtkhtml2.pyd")
-                        os.remove("core/poppler.pyd")
-                        os.remove("core/webkit.pyd")
-                        client.update( '.' )
-                        msgg = "TUTTO OK AGGIORNAMENTO EFFETTUATO\n\n IL PROMOGEST VERRA' CHIUSO PER UN RIAVVIO"
-                        ok = True
                     msgg = "ERRORE AGGIORNAMENTO:  %s " %str(e)
                     Environment.pg2log.info("EFFETTUATO AGGIORNAMENTO ANDATO MALE")
                     ok = False
