@@ -40,7 +40,6 @@ def getNuovoCodiceVettore():
     codice = ''
     listacodici= []
     if hasattr(conf,'Vettori'):
-    if hasattr(conf,'Fornitori'):
         try:
 #            codicesel = Fornitore().select(batchSize=None, orderBy=Fornitore.ragione_sociale)
             codicesel  = session.query(Vettore).all()[-3:]
