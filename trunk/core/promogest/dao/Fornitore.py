@@ -51,13 +51,14 @@ class Fornitore(Dao):
 def getNuovoCodiceFornitore():
     """ Restituisce il codice progressivo per un nuovo fornitore """
 
-    lunghezzaCodice = 10
+    lunghezzaCodice = 8
     prefissoCodice = 'FO'
     codice = ''
     listacodici = []
     if hasattr(conf,'Fornitori'):
         try:
-            codicesel = Fornitore().select(batchSize=None, orderBy=Fornitore.ragione_sociale)
+#            codicesel = Fornitore().select(batchSize=None, orderBy=Fornitore.ragione_sociale)
+            codicesel  = session.query(Fornitore).all()[-3:]
             for cod in codicesel:
                 listacodici.append(cod.codice)
                 codice = codeIncrement(str(max(listacodici)))

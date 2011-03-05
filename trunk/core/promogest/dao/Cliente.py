@@ -19,8 +19,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import Table, or_,and_
-from sqlalchemy.orm import mapper, join, relation
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from promogest.Environment import params, conf,session
 from Dao import Dao
 from ClienteCategoriaCliente import ClienteCategoriaCliente
@@ -81,7 +81,7 @@ def getNuovoCodiceCliente():
         Restituisce il codice progressivo per un nuovo cliente
     """
 
-    lunghezzaCodice = 10
+    lunghezzaCodice = 8
     prefissoCodice = 'CL'
     codice = ''
     listacodici= []
@@ -91,8 +91,8 @@ def getNuovoCodiceCliente():
         if hasattr(conf.Clienti,'prefisso_codice'):
             prefissoCodice = conf.Clienti.prefisso_codice
             try:
-            #codicesel  = select([func.max(Cliente.codice)]).execute().fetchall()
-                codicesel = Cliente().select(batchSize=None)
+                codicesel  = session.query(Cliente).all()[-3:]
+#                codicesel = Cliente().select(batchSize=None)
                 for cod in codicesel:
                     listacodici.append(cod.codice)
                 codice = codeIncrement(str(max(listacodici)))
