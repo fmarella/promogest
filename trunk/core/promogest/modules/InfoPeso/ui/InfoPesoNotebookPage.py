@@ -137,7 +137,7 @@ class InfoPesoNotebookPage(GladeWidget):
             self.rigaIter[7] = str(tipo_tratt)
             self.rigaIter[8] = str(riga.note)
         else:
-            model.prepend((riga,
+            riga = (riga,
                         dateToString(data_pesata),
                         str(mN(peso,1)) or "",
                         str("0"),
@@ -146,10 +146,17 @@ class InfoPesoNotebookPage(GladeWidget):
                         str(mN(acqua,1)) or "",
                         str(tipo_tratt),
                         str(note_riga.replace("\n"," ")[0:100]),
-                        "#FFFFFF"
-                        ))
+                        "#FFFFFF")
+            a = 0
+            for m in model:
+                if stringToDate(data_pesata) < stringToDate(m[1]):
+                    a =a+1
+                elif stringToDate(data_pesata) > stringToDate(m[1]):
+                    model.insert(a,riga)
+                    break
         self.righe_pesata_treeview.set_model(model)
         self._calcolaDifferenzaPeso()
+
         self._clear()
         if len(model)>0:
             self.righe_pesata_treeview.scroll_to_cell("0")
@@ -213,7 +220,7 @@ class InfoPesoNotebookPage(GladeWidget):
         self.infoPeso_refresh()
 
     def infoPeso_refresh(self):
-        self.data_infopeso_datewidget.set_text(dateToString(self.dao_testata_infopeso.data_inizio))
+        self.data_infopeso_datewidget.set_text(dateToString(self.dao_testata_infopeso.data_inizio) or dateToString(datetime.date.today))
         self.data_fine_datewidget.set_text(dateToString(self.dao_testata_infopeso.data_fine))
         self.privacy_check.set_active(int(self.dao_testata_infopeso.privacy or 0))
         bufferNote = self.note_textview.get_buffer()
