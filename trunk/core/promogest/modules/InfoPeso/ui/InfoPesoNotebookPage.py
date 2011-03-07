@@ -46,98 +46,33 @@ class InfoPesoNotebookPage(GladeWidget):
 
     def draw(self):
         """
-        disegna questo frame nella finestra principale
+        TreeView creata con GLADE
+        MODEL: (object, str, str, str, str, str, str, str, str, str)
+        'Data Pesata', rendererCtr, text=1, background=9
+        'Peso', renderer, text=2, background=9
+        'Diff Peso', renderer, text=3, background=9
+        'M.Grassa', rendererCtr, text=4, background=9
+        'M.Magra&Acq.', rendererCtr, text=5, background=9
+        'Acqua', renderer, text=6, background=9
+        'Tipo Trattamento', renderer, text=7, background=9
+        'Note', renderer, text=8, background=9
         """
-        treeview = self.righe_pesata_treeview
-        renderer = gtk.CellRendererText()
-        rendererCtr = gtk.CellRendererText()
-        rendererCtr.set_property('xalign', 0.5)
-
-        column = gtk.TreeViewColumn('Data Pesata', rendererCtr, text=1, background=9)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(120)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Peso', renderer, text=2, background=9)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-#        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(80)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Diff Peso', renderer, text=3, background=9)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-#        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(80)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('M.Grassa', rendererCtr, text=4, background=9)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-#        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(80)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('M.Magra&Acq.', rendererCtr, text=5, background=9)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-#        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(80)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Acqua', renderer, text=6, background=9)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-#        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(80)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Tipo Trattamento', renderer, text=7, background=9)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-#        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Note', renderer, text=8, background=9)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-#        column.set_clickable(True)
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(200)
-        treeview.append_column(column)
-
-        model = gtk.ListStore(object, str, str, str, str, str, str, str, str, str)
-        treeview.set_model(model)
-
         fillComboboxTipoTrattamento(self.id_tipo_trattamento_customcombobox.combobox)
         self.id_tipo_trattamento_customcombobox.connect('clicked',
                                  on_id_tipo_trattamento_customcombobox_clicked)
         self.nome_cognome_label.set_text("")
 
-#        self.infoPeso_refresh() # ????
-
     def _calcolaDifferenzaPeso(self):
         model = self.righe_pesata_treeview.get_model()
-        llll = []
+        diff_peso = []
         for m in model:
-            llll.append((stringToDate(m[1]), m[2], m, m[0], m[9]))
-        llll.sort()
-        for i in range(0, len(llll)):
-            if i+1 < len(llll):
+            diff_peso.append((stringToDate(m[1]), m[2], m, m[0], m[9]))
+        diff_peso.sort()
+        for i in range(1, len(diff_peso)):
+            if i < len(diff_peso):
                 for m in model:
-                    if m[0] == llll[i][3]:
-                        diffe = -1*(Decimal(llll[i][1]) - Decimal(llll[i+1][1]))
+                    if m[0] == diff_peso[i][3]:
+                        diffe = (Decimal(diff_peso[i][1]) - Decimal(diff_peso[i-1][1]))
                         m[3] = str(diffe)
                         if diffe<0:
                             m[9] = "#CCFFAA"
@@ -167,6 +102,10 @@ class InfoPesoNotebookPage(GladeWidget):
 
         if float(mgrassa.replace(",","."))+float(mmagraeacqua.replace(",",".")) > float(peso.replace(",",".")):
             messageInfo(msg = "ATTENZIONE! La somma di M.GRASSA , M.MAGRA e ACQUA\n è superiore al peso totale")
+            return
+
+        if float(mmagraeacqua.replace(",",".")) < float(acqua.replace(",",".")):
+            messageInfo(msg = "ATTENZIONE! La M.MAGRA e ACQUA\n è inferiore alla sola ACQUA")
             return
 
         model = self.righe_pesata_treeview.get_model()
@@ -255,8 +194,8 @@ class InfoPesoNotebookPage(GladeWidget):
 
         self.editRiga = self.rigaIter[0]
 
-
     def infoPesoSetDao(self, dao):
+        """ Estensione del SetDao principale"""
         if not dao.id:
             self.dao_testata_infopeso = TestataInfoPeso()
             self.dao_generalita_infopeso = ClienteGeneralita()
@@ -356,8 +295,6 @@ def on_id_tipo_trattamento_customcombobox_clicked(widget, button):
     Richiama l'anagrafica tipo trattamento
     """
     def on_anagrafica_tipo_trattamento_articoli_destroyed(window):
-        """
-        """
         # all'uscita dall'anagrafica richiamata, aggiorna l'elenco associato
         widget.button.set_active(False)
         id = findIdFromCombobox(widget.combobox)
