@@ -836,7 +836,7 @@ del documento.
             self.dao.id_vettore = None
             self.dao.incaricato_trasporto = 'destinatario'
             self.dao.porto = 'Assegnato'
-        self.dao.totale_colli = float(self.totale_colli_entry.get_text())or 0
+        self.dao.totale_colli = float(self.totale_colli_entry.get_text() or 0)
         self.dao.totale_peso = self.totale_peso_entry.get_text()
         textBuffer = self.note_interne_textview.get_buffer()
         self.dao.note_interne = textBuffer.get_text(textBuffer.get_start_iter(), textBuffer.get_end_iter())
