@@ -30,19 +30,20 @@ from promogest.ui.utils import *
 
 
 try:
-    testataprimanota=Table('testata_prima_nota',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
+    testataprimanota = Table('testata_prima_nota',
+        params['metadata'],
+        schema = params['schema'],
+        autoload=True)
 except:
-    testataprimanota = Table('testata_prima_nota', params["metadata"],
-            Column('id', Integer, primary_key=True),
-            Column('numero', Integer, nullable=False),
-            Column('note', Text, nullable=True),
-            Column('data_inizio', DateTime, nullable=True),
-            Column('data_fine', DateTime, nullable=True),
-            schema=params["schema"],
-            useexisting=True)
+    testataprimanota = Table('testata_prima_nota',
+        params["metadata"],
+        Column('id', Integer, primary_key=True),
+        Column('numero', Integer, nullable=False),
+        Column('note', Text, nullable=True),
+        Column('data_inizio', DateTime, nullable=True),
+        Column('data_fine', DateTime, nullable=True),
+        schema=params["schema"],
+        useexisting=True)
     testataprimanota.create(checkfirst=True)
 
 from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
@@ -137,13 +138,13 @@ class TestataPrimaNota(Dao):
                 else:
                     tot_uscite_banca -= riga.valore
         totali = {
-                "totale" : totale,
-                "tot_entrate" :tot_entrate,
+                "totale": totale,
+                "tot_entrate": tot_entrate,
                 "tot_uscite": tot_uscite,
-                "tot_entrate_banca" :tot_entrate_banca,
-                "tot_entrate_cassa":tot_entrate_cassa,
-                "tot_uscite_banca":tot_uscite_banca,
-                "tot_uscite_cassa":tot_uscite_cassa
+                "tot_entrate_banca": tot_entrate_banca,
+                "tot_entrate_cassa": tot_entrate_cassa,
+                "tot_uscite_banca": tot_uscite_banca,
+                "tot_uscite_cassa": tot_uscite_cassa
                 }
         return totali
     totali = property(__TotalePrimaNota)
