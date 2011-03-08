@@ -61,6 +61,7 @@ class InfoPesoNotebookPage(GladeWidget):
         self.id_tipo_trattamento_customcombobox.connect('clicked',
                                  on_id_tipo_trattamento_customcombobox_clicked)
         self.nome_cognome_label.set_text("")
+        self._clear()
 
     def _calcolaDifferenzaPeso(self):
         model = self.righe_pesata_treeview.get_model()
@@ -203,6 +204,7 @@ class InfoPesoNotebookPage(GladeWidget):
 
     def infoPesoSetDao(self, dao):
         """ Estensione del SetDao principale"""
+        self.editRiga = None
         if not dao.id:
             self.dao_testata_infopeso = TestataInfoPeso()
             self.dao_generalita_infopeso = ClienteGeneralita()
@@ -220,6 +222,7 @@ class InfoPesoNotebookPage(GladeWidget):
         self.infoPeso_refresh()
 
     def infoPeso_refresh(self):
+        self.editRiga= None
         self.data_infopeso_datewidget.set_text(dateToString(self.dao_testata_infopeso.data_inizio) or dateToString(datetime.date.today))
         self.data_fine_datewidget.set_text(dateToString(self.dao_testata_infopeso.data_fine))
         self.privacy_check.set_active(int(self.dao_testata_infopeso.privacy or 0))
@@ -253,6 +256,7 @@ class InfoPesoNotebookPage(GladeWidget):
         if len(model)>0:
             self.righe_pesata_treeview.scroll_to_cell("0")
         self._calcolaDifferenzaPeso()
+        self._clear()
 
     def infoPesoSaveDao(self):
         self.dao_testata_infopeso.data_inizio= stringToDate(self.data_infopeso_datewidget.get_text())
