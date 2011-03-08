@@ -388,7 +388,7 @@ class Articolo(Dao):
             else:
                 return False
 
-    if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+    if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
 
         @property
         def divisore_noleggio(self):
@@ -619,7 +619,7 @@ if hasattr(conf, "DistintaBase") and getattr(conf.DistintaBase,'mod_enable')=="y
     from promogest.modules.DistintaBase.dao.AssociazioneArticolo import AssociazioneArticolo
     std_mapper.add_property("AAPadre",relation(AssociazioneArticolo,primaryjoin=(articolo.c.id==AssociazioneArticolo.id_padre),backref="ARTIPADRE"))
     std_mapper.add_property("AAFiglio",relation(AssociazioneArticolo,primaryjoin=(articolo.c.id==AssociazioneArticolo.id_figlio),backref="ARTIFIGLIO"))
-if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio"in modulesList):
     from promogest.modules.GestioneNoleggio.dao.ArticoloGestioneNoleggio import ArticoloGestioneNoleggio
     std_mapper.add_property("APGN",relation(ArticoloGestioneNoleggio,primaryjoin=(articolo.c.id==ArticoloGestioneNoleggio.id_articolo),backref="ARTI",uselist=False))
 

@@ -115,7 +115,6 @@ class InfoPesoNotebookPage(GladeWidget):
             riga = self.editRiga
             riga.numero = self.editRiga.numero
         else:
-            print "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
             riga = RigaInfoPeso()
             riga.numero =len(model)+1
 
@@ -127,7 +126,6 @@ class InfoPesoNotebookPage(GladeWidget):
         riga.massa_grassa = Decimal(mgrassa.replace(",","."))
         riga.massa_magra_e_acqua = Decimal(mmagraeacqua.replace(",","."))
         riga.acqua = Decimal(acqua.replace(",","."))
-        print "RIGAAAAAAAAAAAAAAAAAAAAAAA", riga, riga.__dict__
         if self.editRiga:
             self.rigaIter[0] = riga
 #            self.rigaIter[1] = str(riga.numero)

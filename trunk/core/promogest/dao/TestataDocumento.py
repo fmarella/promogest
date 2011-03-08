@@ -495,7 +495,7 @@ class TestataDocumento(Dao):
                     daoRigaMovimento.id_articolo = row.id_articolo
                     daoRigaMovimento.id_multiplo = row.id_multiplo
                     daoRigaMovimento.codiceArticoloFornitore = row.__dict__["_RigaDocumento__codiceArticoloFornitore"]
-                    if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+                    if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
                         daoRigaMovimento.prezzo_acquisto_noleggio = row.prezzo_acquisto_noleggio
                         daoRigaMovimento.coeficente_noleggio = row.coeficente_noleggio
                         daoRigaMovimento.isrent = row.isrent
@@ -901,7 +901,7 @@ class TestataDocumento(Dao):
     ragione_sociale_agente= property(_ragione_sociale_agente)
 
 
-    if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+    if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
         def _get_data_inizio_noleggio(self):
             if not self.__data_inizio_noleggio:
                 if self.TGN:
@@ -982,7 +982,7 @@ class TestataDocumento(Dao):
 #            dic = {k:and_(v ==Riga.id_articolo,
 #                        riga.c.id==RigaDocumento.id,
 #                        RigaDocumento.id_testata_documento == testata_documento.c.id)}
-        elif hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+        elif (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
             if k == 'daDataInizioNoleggio':
                 dic = {k:and_(testata_documento.c.id == TestataGestioneNoleggio.id_testata_documento,
                             TestataGestioneNoleggio.data_inizio_noleggio >= v)}
@@ -1027,6 +1027,6 @@ std_mapper = mapper(TestataDocumento, testata_documento, properties={
         #'lang':relation(Language, backref='user')
         }, order_by=testata_documento.c.data_inserimento.desc())
 
-if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in Environment.modulesList):
     from promogest.modules.GestioneNoleggio.dao.TestataGestioneNoleggio import TestataGestioneNoleggio
     std_mapper.add_property("TGN",relation(TestataGestioneNoleggio,primaryjoin=(testata_documento.c.id==TestataGestioneNoleggio.id_testata_documento),cascade="all, delete",backref=backref("TD"),uselist = False))

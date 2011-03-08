@@ -22,7 +22,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, conf
+from promogest.Environment import params, conf, modulesList
 from Dao import Dao
 from UnitaBase import UnitaBase
 from ScontoRigaDocumento import ScontoRigaDocumento
@@ -169,7 +169,7 @@ class RigaDocumento(Dao):
             return ""
         denominazione_modello = property(_modello)
 
-    if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+    if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
 
         def _get_coeficente_noleggio(self):
             if not self.__coeficente_noleggio:
@@ -270,7 +270,7 @@ class RigaDocumento(Dao):
                 self.__misuraPezzo[0].id_riga = self.id
                 self.__misuraPezzo[0].persist()
 
-        if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+        if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
         #if self.__coeficente_noleggio and self.__prezzo_acquisto_noleggio:
             nr = NoleggioRiga()
             nr.coeficente = self.coeficente_noleggio
@@ -304,6 +304,6 @@ std_mapper = mapper(RigaDocumento, j,properties={
         "SCD":relation(ScontoRigaDocumento,primaryjoin = riga_doc.c.id==ScontoRigaDocumento.id_riga_documento, cascade="all, delete", backref="RD"),
             },order_by=riga_doc.c.id)
 
-if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
     from promogest.modules.GestioneNoleggio.dao.NoleggioRiga import NoleggioRiga
     std_mapper.add_property("NR",relation(NoleggioRiga,primaryjoin=NoleggioRiga.id_riga==riga.c.id,cascade="all, delete",backref="RD",uselist=False))

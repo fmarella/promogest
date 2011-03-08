@@ -8,7 +8,7 @@
 
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.Environment import params, conf
+from promogest.Environment import params, conf, modulesList
 from Dao import Dao
 from Magazzino import Magazzino
 from ScontoRigaMovimento import ScontoRigaMovimento
@@ -164,7 +164,7 @@ class RigaMovimento(Dao):
                 return ""
         pezzi_moltiplicatore = property(_moltiplicatore)
 
-    if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+    if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
         def _get_coeficente_noleggio(self):
             if not self.__coeficente_noleggio:
                 if self.NR:
@@ -293,7 +293,7 @@ class RigaMovimento(Dao):
             params["session"].add(daoStoccaggio)
             params["session"].commit()
         #print "DOPO Stoccato", tempo()
-        if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+        if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
         #if self.__coeficente_noleggio and self.__prezzo_acquisto_noleggio:
             nr = NoleggioRiga()
             nr.coeficente = self.coeficente_noleggio
@@ -340,6 +340,6 @@ std_mapper = mapper(RigaMovimento, j,properties={
                         backref="RM"),
         }, order_by=riga_mov.c.id)
 
-if hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes":
+if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_enable')=="yes") or ("GestioneNoleggio" in modulesList):
     from promogest.modules.GestioneNoleggio.dao.NoleggioRiga import NoleggioRiga
     std_mapper.add_property("NR",relation(NoleggioRiga,primaryjoin=NoleggioRiga.id_riga==riga.c.id,cascade="all, delete",backref="RM",uselist=False))
