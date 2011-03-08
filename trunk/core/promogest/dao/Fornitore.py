@@ -65,7 +65,7 @@ def getNuovoCodiceFornitore():
         except:
             pass
         try:
-            if codice == "" and hasattr(conf.Fornitori,'struttura_codice'):
+            if ( not codice or codice == "")  and hasattr(conf.Fornitori,'struttura_codice'):
                 codice = codeIncrement(conf.Fornitori.struttura_codice)
         except:
             pass

@@ -115,6 +115,7 @@ class InfoPesoNotebookPage(GladeWidget):
             riga = self.editRiga
             riga.numero = self.editRiga.numero
         else:
+            print "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
             riga = RigaInfoPeso()
             riga.numero =len(model)+1
 
@@ -126,6 +127,7 @@ class InfoPesoNotebookPage(GladeWidget):
         riga.massa_grassa = Decimal(mgrassa.replace(",","."))
         riga.massa_magra_e_acqua = Decimal(mmagraeacqua.replace(",","."))
         riga.acqua = Decimal(acqua.replace(",","."))
+        print "RIGAAAAAAAAAAAAAAAAAAAAAAA", riga, riga.__dict__
         if self.editRiga:
             self.rigaIter[0] = riga
 #            self.rigaIter[1] = str(riga.numero)
@@ -149,15 +151,22 @@ class InfoPesoNotebookPage(GladeWidget):
                         str(note_riga.replace("\n"," ")[0:100]),
                         "#FFFFFF")
             a = 0
-            for m in model:
-                if stringToDate(data_pesata) < stringToDate(m[1]):
-                    a =a+1
-                elif stringToDate(data_pesata) > stringToDate(m[1]):
-                    model.insert(a,riga)
-                    break
+            ok = False
+            if len(model)==0:
+                model.append(riga)
+                ok= True
+            else:
+                for m in model:
+                    if stringToDate(data_pesata) < stringToDate(m[1]):
+                        a =a+1
+                    elif stringToDate(data_pesata) > stringToDate(m[1]):
+                        model.insert(a,riga)
+                        ok = True
+                        break
+            if not ok:
+                model.append(riga)
         self.righe_pesata_treeview.set_model(model)
         self._calcolaDifferenzaPeso()
-
         self._clear()
         if len(model)>0:
             self.righe_pesata_treeview.scroll_to_cell("0")

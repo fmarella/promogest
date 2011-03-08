@@ -81,7 +81,7 @@ def getNuovoCodiceCliente():
         Restituisce il codice progressivo per un nuovo cliente
     """
 
-    lunghezzaCodice = 8
+    lunghezzaCodice = 10
     prefissoCodice = 'CL'
     codice = ''
     listacodici= []
@@ -99,7 +99,7 @@ def getNuovoCodiceCliente():
             except:
                 pass
             try:
-                if codice == "" and hasattr(conf.Clienti,'struttura_codice'):
+                if ( not codice or codice == "") and hasattr(conf.Clienti,'struttura_codice'):
                     codice = codeIncrement(conf.Clienti.struttura_codice)
             except:
                 pass
