@@ -74,7 +74,11 @@ class RigaInfoPeso(Dao):
 
     def _tipoTrattamento(self):
         a = TipoTrattamento().getRecord(id=self.id_tipo_trattamento)
-        return a.denominazione
+        if a:
+            return a.denominazione
+        else:
+            return "STANDARD"
+
 
     tipotrattamento = property(_tipoTrattamento)
 
