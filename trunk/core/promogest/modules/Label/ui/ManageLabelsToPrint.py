@@ -193,25 +193,25 @@ class ManageLabelsToPrint(GladeWidget):
                         prezzoScontato = mN(mN(prezzo) -mN(valoreSconto))
         return prezzoScontato
 
-
-
     def on_search_row_button_clicked(self, button):
         print "OKOKOK"
 
     def on_add_button_clicked(self, button=None):
+        if self.articolo_entry.get_text() =="":
+            return
         idListino = findIdFromCombobox(self.listino_combobox)
         self.articolo_entry.set_text("")
         if self.articolo_matchato:
             artilist = ListinoArticolo().select(idListino=idListino, idArticolo=self.articolo_matchato.id)
             if artilist:
                 self.daos.append(artilist[0])
+                self.articolo_matchato = None
                 self.refresh()
 
     # Funzione utile. Gestione inserimento testo nella entry
     def on_articolo_entry_insert_text(self, text):
         # Assegna il testo della entri ad una variabile
         stringa = text.get_text()
-#        print "AJAJAAJAJAJAJAJ", stringa, self.mattu,self.ricerca
         if self.mattu:
             text.set_text(stringa.split(self.sepric)[0])
         model = gtk.ListStore(str,object)
@@ -277,7 +277,6 @@ class ManageLabelsToPrint(GladeWidget):
 
 
     def on_column_quantita_edited(self, treeview, path, value):
-        print "AAAAAAAAAAAAAAAAAA", treeview, path, value
         """ Function ti set the value quantita edit in the cell"""
         model = self.labels_treeview.get_model()
         #model[path][0]["quantita"] = value
