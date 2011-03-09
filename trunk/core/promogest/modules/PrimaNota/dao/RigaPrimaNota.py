@@ -39,7 +39,7 @@ try:
             nullable=True)
         col.create(rigaprimanota)
 
-    rigaprimanota.c.valore.alter(Numeric(16,4), nullable=False)
+    rigaprimanota.c.valore.alter(Numeric(16, 4), nullable=False)
 
 except:
     userTableTable = Table('testata_documento',
@@ -48,8 +48,8 @@ except:
         schema=params['schema'])
     testata_prima_notaTable = Table('testata_prima_nota',
         params['metadata'],
-        schema = params['schema'],
-        autoload = True)
+        schema=params['schema'],
+        autoload=True)
 
     if params["tipo_db"] == "sqlite":
         primanotaFK = 'testata_prima_nota.id'
@@ -75,7 +75,7 @@ except:
             Column('data_registrazione', DateTime, nullable=True),
             Column('tipo', String(25), nullable=False),
             Column('segno', String(25), nullable=False),
-            Column('valore', Numeric(16,4), nullable=False),
+            Column('valore', Numeric(16, 4), nullable=False),
             schema=params["schema"],
             useexisting=True)
     rigaprimanota.create(checkfirst=True)
@@ -86,19 +86,21 @@ class RigaPrimaNota(Dao):
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
 
-    def filter_values(self,k,v):
+    def filter_values(self, k, v):
         if k == "id":
-            dic= {k:rigaprimanota.c.id ==v}
+            dic = {k: rigaprimanota.c.id == v}
         elif k == 'idTestataDocumento':
-            dic = {k:rigaprimanota.c.id_testata_documento==v}
+            dic = {k: rigaprimanota.c.id_testata_documento == v}
         elif k == 'segno':
-            dic = {k:rigaprimanota.c.segno==v}
+            dic = {k: rigaprimanota.c.segno == v}
         elif k == 'tipo':
-            dic = {k:rigaprimanota.c.tipo==v}
+            dic = {k: rigaprimanota.c.tipo == v}
         elif k == 'idTestataPrimaNota':
-            dic = {k:rigaprimanota.c.id_testata_prima_nota==v}
-        return  dic[k]
+            dic = {k: rigaprimanota.c.id_testata_prima_nota == v}
+        return dic[k]
 
 
-std_mapper = mapper(RigaPrimaNota,rigaprimanota,properties={
-        }, order_by=rigaprimanota.c.id)
+std_mapper = mapper(RigaPrimaNota,
+                    rigaprimanota,
+                    properties={},
+                    order_by=rigaprimanota.c.id)

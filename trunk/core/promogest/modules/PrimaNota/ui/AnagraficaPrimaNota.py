@@ -29,6 +29,7 @@ from promogest.modules.PrimaNota.ui.\
 #from promogest.ui.utils import *
 #from promogest.ui.utilsCombobox import *
 
+
 class AnagraficaPrimaNota(Anagrafica):
     """ Anagrafica Variazioni Listini """
 

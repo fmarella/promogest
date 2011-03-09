@@ -27,29 +27,42 @@ from promogest.dao.Dao import Dao
 #from promogest.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
 
-riga_primanotaTable = Table('riga_prima_nota', params['metadata'], autoload=True, schema=params['schema'])
-testata_documento_scadenzaTable=Table('testata_documento_scadenza', params['metadata'],schema = params['schema'],autoload=True)
+riga_primanotaTable = Table('riga_prima_nota',
+                            params['metadata'],
+                            autoload=True,
+                            schema=params['schema'])
+testata_documento_scadenzaTable = Table('testata_documento_scadenza',
+                                      params['metadata'],
+                                      schema=params['schema'],
+                                      autoload=True)
 
 try:
-    rigaprimanotatestatadocumentoscadenza=Table('riga_primanota_testata_documento_scadenza',
-            params['metadata'],
-            schema = params['schema'],
-            autoload=True)
+    rigaprimanotatestatadocumentoscadenza = Table('riga_primanota_testata_documento_scadenza',
+                                                  params['metadata'],
+                                                  schema=params['schema'],
+                                                  autoload=True)
 except:
     if params["tipo_db"] == "sqlite":
-        rigaprimanotaFK ='riga_prima_nota.id'
-        testatadocumentoscadenzaFK ='testata_documento_scadenza.id'
+        rigaprimanotaFK = 'riga_prima_nota.id'
+        testatadocumentoscadenzaFK = 'testata_documento_scadenza.id'
     else:
-        rigaprimanotaFK =params['schema']+'.riga_prima_nota.id'
-        testatadocumentoscadenzaFK =params['schema']+'.testata_documento_scadenza.id'
+        rigaprimanotaFK = params['schema'] + '.riga_prima_nota.id'
+        testatadocumentoscadenzaFK = params['schema'] + '.testata_documento_scadenza.id'
 
     rigaprimanotatestatadocumentoscadenza = Table('riga_primanota_testata_documento_scadenza',
-            params["metadata"],
-            Column('id', Integer, primary_key=True),
-            Column('id_riga_prima_nota', Integer, ForeignKey(rigaprimanotaFK), nullable=False),
-            Column('id_testata_documento_scadenza', Integer,ForeignKey(testatadocumentoscadenzaFK), nullable=False),
-            schema=params["schema"],
-            useexisting=True)
+                                                  params["metadata"],
+                                                  Column('id', Integer, primary_key=True),
+                                                  Column('id_riga_prima_nota',
+                                                         Integer,
+                                                         ForeignKey(rigaprimanotaFK),
+                                                         nullable=False),
+                                                  Column('id_testata_documento_scadenza',
+                                                         Integer,
+                                                         ForeignKey(testatadocumentoscadenzaFK),
+                                                         nullable=False),
+                                                  schema=params["schema"],
+                                                  useexisting=True)
+
     rigaprimanotatestatadocumentoscadenza.create(checkfirst=True)
 
 
@@ -58,14 +71,16 @@ class RigaPrimaNotaTestataDocumentoScadenza(Dao):
     def __init__(self, arg=None):
         Dao.__init__(self, entity=self)
 
-    def filter_values(self,k,v):
+    def filter_values(self, k, v):
         if k == "idRigaPrimaNota":
-            dic= {k : rigaprimanotatestatadocumentoscadenza.c.id_riga_prima_nota==v}
+            dic = {k: rigaprimanotatestatadocumentoscadenza.c.id_riga_prima_nota == v}
         elif k == 'idTestataDocumentoScadenza':
-            dic = {k : rigaprimanotatestatadocumentoscadenza.c.id_testata_documento_scadenza==v}
+            dic = {k: rigaprimanotatestatadocumentoscadenza.c.id_testata_documento_scadenza == v}
         return  dic[k]
 
-std_mapper= mapper(RigaPrimaNotaTestataDocumentoScadenza, rigaprimanotatestatadocumentoscadenza,properties={
-#        "tds" :relation(TestataDocumentoScadenza,cascade="all, delete", backref="rpntds")
-        },
-                    order_by=rigaprimanotatestatadocumentoscadenza.c.id_riga_prima_nota)
+std_mapper = mapper(RigaPrimaNotaTestataDocumentoScadenza,
+                   rigaprimanotatestatadocumentoscadenza,
+                   properties={
+#                       "tds" :relation(TestataDocumentoScadenza,cascade="all, delete", backref="rpntds")
+                   },
+                   order_by=rigaprimanotatestatadocumentoscadenza.c.id_riga_prima_nota)

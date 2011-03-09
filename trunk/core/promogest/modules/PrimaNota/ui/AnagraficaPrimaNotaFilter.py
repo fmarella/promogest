@@ -38,20 +38,20 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
                           gladeFile='PrimaNota/gui/_anagrafica_primanota_elements.glade',
                           module=True)
         self._widgetFirstFocus = self.numero_filter_entry
-        self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear+" 00:00")
+        self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear + " 00:00")
         self.checkAnnoPrimaNota()
 
     def checkAnnoPrimaNota(self):
 
-        ddd = TestataPrimaNota().select(daDataInizio=stringToDate("01/01/"+str(int(Environment.workingYear)-1)),
-        aDataInizio=stringToDate("31/12/"+str(int(Environment.workingYear)-1)),
+        ddd = TestataPrimaNota().select(daDataInizio=stringToDate("01/01/" + str(int(Environment.workingYear) - 1)),
+        aDataInizio=stringToDate("31/12/" + str(int(Environment.workingYear) - 1)),
         batchSize=None)
         for dd in ddd:
-            if not dd.data_fine :
-                messageInfo(msg= """ATTENZIONE!!!
+            if not dd.data_fine:
+                messageInfo(msg="""ATTENZIONE!!!
 C'è una Prima nota Aperta dell'anno scorso. Adesso Verrà chiusa.
 Premendo Nuovo se ne creerà una al primo Gennaio del corrente anno di lavoro""")
-                dd.data_fine = stringToDate("31/12/"+str(int(Environment.workingYear)-1))
+                dd.data_fine = stringToDate("31/12/" + str(int(Environment.workingYear) - 1))
                 dd.persist()
 
     def draw(self):
@@ -109,17 +109,16 @@ Premendo Nuovo se ne creerà una al primo Gennaio del corrente anno di lavoro"""
         column.set_min_width(200)
         treeview.append_column(column)
 
-
         treeview.set_search_column(1)
 
-        self._treeViewModel = gtk.ListStore(object, str,str, str, str, str, str, str)
+        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str)
         self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
 
         self.refresh()
 
     def clear(self):
         # Annullamento filtro
-        self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear+" 00:00")
+        self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear + " 00:00")
         self.numero_filter_entry.set_text('')
 #        self.da_data_inizio_datetimewidget.set_text('')
         self.a_data_inizio_datetimewidget.set_text('')
@@ -137,27 +136,26 @@ Premendo Nuovo se ne creerà una al primo Gennaio del corrente anno di lavoro"""
 
         def filterCountClosure():
             return TestataPrimaNota().count(numero=numero,
-                                daDataInizio = da_data_inizio,
-                                aDataInizio = a_data_inizio,
-                                daDataFine = da_data_fine,
-                                aDataFine = a_data_fine)
+                                daDataInizio=da_data_inizio,
+                                aDataInizio=a_data_inizio,
+                                daDataFine=da_data_fine,
+                                aDataFine=a_data_fine)
 
         self._filterCountClosure = filterCountClosure
 
         self.numRecords = self.countFilterResults()
-
         self._refreshPageCount()
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
             return TestataPrimaNota().select(numero=numero,
-                                     daDataInizio = da_data_inizio,
-                                    aDataInizio = a_data_inizio,
-                                    daDataFine = da_data_fine,
-                                    aDataFine = a_data_fine,
-                                        orderBy=self.orderBy,
-                                        offset=offset,
-                                        batchSize=batchSize)
+                                             daDataInizio=da_data_inizio,
+                                             aDataInizio=a_data_inizio,
+                                             daDataFine=da_data_fine,
+                                             aDataFine=a_data_fine,
+                                             orderBy=self.orderBy,
+                                             offset=offset,
+                                             batchSize=batchSize)
 
         self._filterClosure = filterClosure
 
@@ -170,7 +168,7 @@ Premendo Nuovo se ne creerà una al primo Gennaio del corrente anno di lavoro"""
             if not i.data_fine:
                 col = "#CCFFAA"
             valore += mN(i.totali["totale"]) or 0
-            self._treeViewModel.append((i,col,
+            self._treeViewModel.append((i, col,
                                         (str(i.numero) or ''),
                                         (dateToString(i.data_inizio) or ''),
                                         (dateToString(i.data_fine) or ''),

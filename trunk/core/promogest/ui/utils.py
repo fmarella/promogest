@@ -2919,7 +2919,6 @@ def installId():
 def getListiniArticolo(idArticolo=None):
     from promogest.dao.ListinoArticolo import ListinoArticolo
     listi = ListinoArticolo().select(idArticolo = idArticolo,listinoAttuale=True, batchSize=None)
-    print "@LISTIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", listi
     return listi
 
 def fencemsg():
