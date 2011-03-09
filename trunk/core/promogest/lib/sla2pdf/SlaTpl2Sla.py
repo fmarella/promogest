@@ -477,7 +477,6 @@ class SlaTpl2Sla(SlaParser):
                                                     arraySource = self.objects[self.cycle][arrayName][arrayIndex]
 
                                                     if SHOWZERORIGA == True:
-                                                        print "TUUUUUUUUUUUUUUUUUUUUUUUUUUUUU", SHOWZERORIGA
                                                         value = str(arraySource[tagName])
                                                     else:
                                                         value = arraySource[tagName] or ""

@@ -189,7 +189,7 @@ class SimpleGladeWrapper:
                 prefixes_name_l = widget_name.split(":")
                 prefixes = prefixes_name_l[ : -1]
                 widget_api_name = prefixes_name_l[-1]
-                widget_api_name = "_".join( re.findall(tokenize.Name, widget_api_name) )
+                widget_api_name = "_".join( re.findall(tokenize.Name, widget_api_name))
                 gtk.Widget.set_name(widget, widget_api_name)
                 if hasattr(self, widget_api_name):
                     raise AttributeError("instance %s already has an attribute %s" % (self,widget_api_name))
@@ -203,8 +203,20 @@ class SimpleGladeWrapper:
                 if widget.__gtype__.name == "GtkEntry":
                     self.entryGlobalcb(widget)
             except:
-                pass
-#                print "WIDGET NON WIDGET", widget
+#                pass
+                try:
+                    widget_name = gtk.Buildable.get_name(widget)
+                    prefixes_name_l = widget_name.split(":")
+                    prefixes = prefixes_name_l[ : -1]
+                    widget_api_name = prefixes_name_l[-1]
+                    widget_api_name = "_".join( re.findall(tokenize.Name, widget_api_name))
+                    if hasattr(self, widget_api_name):
+                        raise AttributeError("instance %s already has an attribute %s" % (self,widget_api_name))
+                    else:
+                        setattr(self, widget_api_name, widget)
+#                    print "WIDGET NON WIDGET", widget.get_name(), widget, dir(widget)
+                except:
+                    pass
 
 
     def entryGlobalcb(self,entry):

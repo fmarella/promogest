@@ -52,57 +52,11 @@ class ManageLabelsToPrint(GladeWidget):
         """Creo una treeviewper la visualizzazione degli articoli che
             andranno poi in stampa
         """
-        treeview = self.labels_treeview
-
-        rendererSx = gtk.CellRendererText()
-		# istanzia la gestione della TreeViewColumn
-        column = gtk.TreeViewColumn("Codice", rendererSx, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_min_width(80)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn("Denominazione", rendererSx, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(80)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn("codide a barre", rendererSx, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(60)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Prezzo', rendererSx, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(60)
-        treeview.append_column(column)
-
-        cellspin = gtk.CellRendererSpin()
-        cellspin.set_property("editable", True)
-        cellspin.set_property("visible", True)
-        adjustment = gtk.Adjustment(1, 1, 1000,1,2)
-        cellspin.set_property("adjustment", adjustment)
-        #cellspin.set_property("digits",3)
-        cellspin.set_property("climb-rate",3)
-        cellspin.connect('edited', self.on_column_quantita_edited, treeview, True)
-        column = gtk.TreeViewColumn('Quantità', cellspin, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(40)
-        treeview.append_column(column)
         if posso("PW"):
-            self._treeViewModel = gtk.TreeStore(object,str,str,str,str,str)
+            self._treeViewModel = self.label_treestore # gtk.TreeStore(object,str,str,str,str,str)
         else:
-            self._treeViewModel = gtk.ListStore(object,str,str,str,str,str)
-        treeview.set_model(self._treeViewModel)
+            self._treeViewModel = self.label_liststore # gtk.ListStore(object,str,str,str,str,str)
+        self.labels_treeview.set_model(self._treeViewModel)
         fillComboboxMagazzini(self.id_magazzino_label_combobox, True)
         self.id_magazzino_label_combobox.set_active(0)
         modek = self.select_template_combobox.get_model()
@@ -165,7 +119,8 @@ class ManageLabelsToPrint(GladeWidget):
         if template_file:
             slafile = Environment.labelTemplatesDir +template_file
         else:
-            slafile = self._slaTemplate
+            messageInfo(msg="NESSUN TEMPLATE LABEL SELEZIONATO?")
+            return
         pbar(self.pbar,pulse=True,text="GENERAZIONE STAMPA ATTENDERE")
         stpl2sla = SlaTpl2Sla_ng(slafile=None,label=True,
                                     report=False,
@@ -321,9 +276,10 @@ class ManageLabelsToPrint(GladeWidget):
         self.articolo_entry.set_position(-1)
 
 
-    def on_column_quantita_edited(self, cell, path, value, treeview, editNext=True):
+    def on_column_quantita_edited(self, treeview, path, value):
+        print "AAAAAAAAAAAAAAAAAA", treeview, path, value
         """ Function ti set the value quantita edit in the cell"""
-        model = treeview.get_model()
+        model = self.labels_treeview.get_model()
         #model[path][0]["quantita"] = value
         model[path][5] = value
 

@@ -2,6 +2,12 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
+  <object class="GtkAdjustment" id="adjustment1">
+    <property name="upper">10000</property>
+    <property name="value">1</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkDialog" id="label_dialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -441,7 +447,6 @@
                               <object class="GtkComboBox" id="id_magazzino_label_combobox">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="model">label_liststore</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -594,7 +599,71 @@
                       <object class="GtkTreeView" id="labels_treeview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="model">label_liststore</property>
                         <signal name="button-press-event" handler="on_treeview_button_press_event" swapped="no"/>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                            <property name="title" translatable="yes">Codice</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                              <attributes>
+                                <attribute name="text">1</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+                            <property name="resizable">True</property>
+                            <property name="title" translatable="yes">Denominazione</property>
+                            <property name="expand">True</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                              <attributes>
+                                <attribute name="text">2</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+                            <property name="title" translatable="yes">Codide a barre</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext3"/>
+                              <attributes>
+                                <attribute name="text">3</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn4">
+                            <property name="title" translatable="yes">Prezzo</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext4"/>
+                              <attributes>
+                                <attribute name="text">4</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn5">
+                            <property name="title" translatable="yes">Quantità</property>
+                            <child>
+                              <object class="GtkCellRendererSpin" id="cellrendererspin1">
+                                <property name="editable">True</property>
+                                <property name="adjustment">adjustment1</property>
+                                <property name="climb_rate">0.5</property>
+                                <signal name="edited" handler="on_column_quantita_edited" swapped="no"/>
+                                <signal name="edited" handler="on_column_quantita_edited" swapped="no"/>
+                              </object>
+                              <attributes>
+                                <attribute name="text">5</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
@@ -705,7 +774,7 @@
                           <object class="GtkComboBox" id="select_template_combobox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="model">label_liststore</property>
+                            <property name="model">liststore1</property>
                             <child>
                               <object class="GtkCellRendererText" id="Nome"/>
                               <attributes>
@@ -759,9 +828,40 @@
   </object>
   <object class="GtkListStore" id="label_liststore">
     <columns>
-      <!-- column-name nome -->
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkTreeStore" id="label_treestore"/>
+  <object class="GtkTreeStore" id="label_treestore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
 </interface>
