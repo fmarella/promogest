@@ -14,6 +14,7 @@ from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
 from promogest.dao.DaoUtils import giacenzaArticolo
 from promogest.dao.Articolo import Articolo
+from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
 #from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
@@ -45,7 +46,8 @@ class ManageLabelsToPrint(GladeWidget):
         self.articolo_matchato = None
         self.ricerca = "ricerca_codice_a_barre_button" # ATTENZIONE ...scorciatoia ... check non gestite
         self.daos = daos
-        fillComboboxListini(self.listino_combobox, True)
+
+#        fillComboboxListini(self.listino_combobox, True)
         self.draw()
 
     def draw(self):
@@ -172,10 +174,27 @@ class ManageLabelsToPrint(GladeWidget):
                                             quantita,
                                             ))
 
+    def ricercaListino(self):
+        """ check if there is a priceList like setted on configure file
+        """
+        pricelist = Listino().select(denominazione = Environment.conf.VenditaDettaglio.listino,
+                                    offset = None,
+                                    batchSize = None)
+
+        if pricelist:
+            id_listino = pricelist[0].id
+        else:
+            id_listino = None
+        return id_listino
+
     def prezzoVenditaDettaglio(self, dao):
         """Funzione importante perchè restituisce
             il prezzo scontato per il dettaglio"""
-        listino = leggiListino(dao.id_listino, dao.id_articolo)
+        if self.listino_vendita_dettaglio.get_active() and self.ricercaListino():
+            listino = leggiListino(self.ricercaListino(), dao.id_articolo)
+        else:
+            listino = leggiListino(dao.id_listino, dao.id_articolo)
+
         prezzo = mN(listino["prezzoDettaglio"])
         prezzoScontato = prezzo
         tipoSconto = None

@@ -355,6 +355,27 @@
                         <property name="position">1</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkCheckButton" id="listino_vendita_dettaglio">
+                        <property name="label" translatable="yes">Preseleziona Listino
+per la vendita al Dettaglio</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="tooltip_text" translatable="yes">Questa spunta serve a fare in modo che il programmi
+cerchi un Listino preimpostato per la vendita al 
+dettaglio e cerchi di usare quello, in caso di fallimento 
+userà il listino classico</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">True</property>

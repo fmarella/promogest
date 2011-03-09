@@ -858,7 +858,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                     offset = None,
                                     batchSize = None)
 
-        if pricelist and len(pricelist) > 0:
+        if pricelist:
             id_listino = pricelist[0].id
         else:
             id_listino = None
