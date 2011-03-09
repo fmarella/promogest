@@ -370,8 +370,9 @@ def leggiListino(idListino=None, idArticolo=None):
                     'applicazioneScontiIngrosso':[]}
 
     if idListino:
-        daoListino = Listino().select(idListino=idListino, listinoAttuale=True)[0]
-        if daoListino:
+        daoListinoo = Listino().select(idListino=idListino, listinoAttuale=True)
+        if daoListinoo:
+            daoListino = daoListinoo[0]
             _denominazione = daoListino.denominazione
             _complesso = daoListino.isComplex  #verifico se il listino è complesso
             listinoDict["denominazione"] = _denominazione
