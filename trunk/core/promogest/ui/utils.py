@@ -1563,8 +1563,12 @@ def stringToDateTime(stringa):
             d = time.strptime(stringa, "%d/%m/%Y %H:%M")
             data = datetime.datetime(d[0], d[1], d[2], d[3], d[4])
         except:
-            messageInfo(msg= "LA DATA E' IN QUALCHE MODO ERRATA O INCOMPLETA")
-            data=None
+            try:
+                d = time.strptime(stringa, "%d/%m/%Y")
+                data = datetime.time(d[0], d[1], d[2])
+#            messageInfo(msg= "LA DATA E' IN QUALCHE MODO ERRATA O INCOMPLETA")
+            except:
+                data=None
         return data
 
 def getScadenza(data_documento, ngiorniscad, FM = True):

@@ -125,7 +125,6 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         if not dao:
             info = ""
         elif dao.__class__.__name__ == "TestataDocumento":
-            print "DIIIIIIIIIIIIIIIRS", dao.totali
             info = "<b>%s</b>  - <b>del</b> %s <b>N°</b> %s - <b>Da/A</b> %s  - <b>TOT: €</b> %s" %(str(dao.operazione),
                                                                 dateToString(dao.data_documento),
                                                                 str(dao.numero),
@@ -276,7 +275,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
             else:
                 dc = r.dao_class
             model.append((r, str(len(model)+1),
-                        stringToDate(r.data_registrazione),
+                        dateToString(r.data_registrazione),
                         r.denominazione,
                         dc,
                         r.note,
@@ -416,6 +415,10 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         for m in model:
             righe_.append(m[0])
         self.dao.data_inizio = stringToDate(self.data_inizio_commessa_entry.get_text())
+        if (self.dao.data_inizio == ''or self.dao.data_inizio==None):
+            obligatoryField(self.dialogTopLevel,
+                    self.data_inizio_commessa_entry,
+                    'Inserire la data della commessa !')
         self.dao.data_fine = stringToDate(self.data_fine_commessa_entry.get_text())
         self.dao.denominazione = self.titolo_commessa_entry.get_text()
         if self.dao.denominazione =="":

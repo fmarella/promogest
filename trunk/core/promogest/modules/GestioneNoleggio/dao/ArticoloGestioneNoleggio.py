@@ -59,7 +59,4 @@ class ArticoloGestioneNoleggio(Dao):
         return  dic[k]
 
 std_mapper = mapper(ArticoloGestioneNoleggio, articologestionenoleggio,
-                    #properties=dict(
-                    #DN =relation(DivisoreNoleggio,primaryjoin=
-                        #(DivisoreNoleggio.id==articologestionenoleggio.c.id_divisore_noleggio), backref="APGNDN"),
                 order_by=articologestionenoleggio.c.id_articolo)

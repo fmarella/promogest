@@ -212,12 +212,15 @@
                       <object class="GtkScrolledWindow" id="commessa_scrolled">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="border_width">2</property>
                         <property name="hscrollbar_policy">automatic</property>
                         <property name="vscrollbar_policy">automatic</property>
+                        <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTextView" id="commessa_testo">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="border_width">2</property>
                             <property name="buffer">note_commessa_buffer</property>
                           </object>
                         </child>
@@ -483,12 +486,15 @@ modificare l'oggetto inserito</property>
                       <object class="GtkScrolledWindow" id="testo_riga_scroilled">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="border_width">2</property>
                         <property name="hscrollbar_policy">automatic</property>
                         <property name="vscrollbar_policy">automatic</property>
+                        <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTextView" id="riga_testo">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="border_width">2</property>
                             <property name="buffer">note_riga_buffer</property>
                           </object>
                         </child>
@@ -604,11 +610,13 @@ modificare l'oggetto inserito</property>
             <property name="can_focus">True</property>
             <property name="hscrollbar_policy">automatic</property>
             <property name="vscrollbar_policy">automatic</property>
+            <property name="shadow_type">in</property>
             <child>
               <object class="GtkTreeView" id="riga_commessa_treeview">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="model">liststore1</property>
+                <property name="enable_grid_lines">both</property>
                 <signal name="row-activated" handler="on_riga_commessa_treeview_row_activated" swapped="no"/>
               </object>
             </child>
@@ -633,10 +641,9 @@ modificare l'oggetto inserito</property>
     </child>
   </object>
   <object class="GtkTable" id="anagrafica_commessa_filter_table">
-    <property name="height_request">130</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="n_rows">5</property>
+    <property name="n_rows">6</property>
     <property name="n_columns">2</property>
     <child>
       <object class="GtkEntry" id="numero_filter_entry">
@@ -651,6 +658,7 @@ modificare l'oggetto inserito</property>
       <packing>
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
+        <property name="y_options"></property>
       </packing>
     </child>
     <child>
@@ -693,40 +701,6 @@ modificare l'oggetto inserito</property>
       </packing>
     </child>
     <child>
-      <object class="DateTimeWidget" id="da_data_inizio_datetimewidget">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">1</property>
-        <property name="bottom_attach">2</property>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
-      <object class="DateTimeWidget" id="a_data_inizio_datetimewidget">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <placeholder/>
-        </child>
-      </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="right_attach">2</property>
-        <property name="top_attach">2</property>
-        <property name="bottom_attach">3</property>
-        <property name="x_options"></property>
-        <property name="y_options"></property>
-      </packing>
-    </child>
-    <child>
       <object class="GtkLabel" id="da_data_fine_label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
@@ -753,38 +727,186 @@ modificare l'oggetto inserito</property>
       </packing>
     </child>
     <child>
-      <object class="DateTimeWidget" id="da_data_fine_datetimewidget">
+      <object class="GtkLabel" id="label1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <child>
-          <placeholder/>
-        </child>
+        <property name="label" translatable="yes">Cliente</property>
+      </object>
+      <packing>
+        <property name="top_attach">5</property>
+        <property name="bottom_attach">6</property>
+        <property name="x_options"></property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="ClienteSearchWidget" id="commesse_filter_ClienteSearchWidget">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">5</property>
+        <property name="bottom_attach">6</property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="DateWidget" id="da_data_inizio_datetimewidget">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">1</property>
+        <property name="bottom_attach">2</property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="DateWidget" id="a_data_inizio_datetimewidget">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+      <packing>
+        <property name="left_attach">1</property>
+        <property name="right_attach">2</property>
+        <property name="top_attach">2</property>
+        <property name="bottom_attach">3</property>
+        <property name="y_options"></property>
+      </packing>
+    </child>
+    <child>
+      <object class="DateWidget" id="da_data_fine_datetimewidget">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
       </object>
       <packing>
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
         <property name="top_attach">3</property>
         <property name="bottom_attach">4</property>
-        <property name="x_options"></property>
         <property name="y_options"></property>
       </packing>
     </child>
     <child>
-      <object class="DateTimeWidget" id="a_data_fine_datetimewidget">
+      <object class="DateWidget" id="a_data_fine_datetimewidget">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <child>
-          <placeholder/>
-        </child>
       </object>
       <packing>
         <property name="left_attach">1</property>
         <property name="right_attach">2</property>
         <property name="top_attach">4</property>
         <property name="bottom_attach">5</property>
-        <property name="x_options"></property>
         <property name="y_options"></property>
       </packing>
+    </child>
+  </object>
+  <object class="GtkListStore" id="commesse_filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray6 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray7 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkTreeView" id="anagrafica_filter_treeview">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="model">commesse_filter_listore</property>
+    <property name="search_column">1</property>
+    <property name="enable_grid_lines">both</property>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+        <property name="title" translatable="yes">Numero</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+          <attributes>
+            <attribute name="text">1</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+        <property name="title" translatable="yes">Cliente</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+          <attributes>
+            <attribute name="text">2</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn7">
+        <property name="title" translatable="yes">Titolo</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext8"/>
+          <attributes>
+            <attribute name="text">3</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+        <property name="title" translatable="yes">Data inizio</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext4"/>
+          <attributes>
+            <attribute name="text">4</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn4">
+        <property name="title" translatable="yes">Data fine</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext5"/>
+          <attributes>
+            <attribute name="text">5</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn5">
+        <property name="title" translatable="yes">Stadio</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext6"/>
+          <attributes>
+            <attribute name="text">6</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn6">
+        <property name="title" translatable="yes">Articolo</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext7"/>
+          <attributes>
+            <attribute name="text">7</attribute>
+          </attributes>
+        </child>
+      </object>
     </child>
   </object>
   <object class="GtkListStore" id="liststore1"/>

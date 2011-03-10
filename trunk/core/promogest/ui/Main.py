@@ -236,7 +236,7 @@ class Main(GladeWidget):
             else:
                 fencemsg()
         elif selection == 10: #gestione commessa
-            messageInfo(msg="""RICORDIAMO CHE QUESTO MODULO E' ANCORA IN FASE DI TEST """)
+#            messageInfo(msg="""RICORDIAMO CHE QUESTO MODULO E' ANCORA IN FASE DI TEST """)
 #            if posso("GC"):
             from promogest.modules.GestioneCommesse.ui.AnagraficaCommesse import AnagraficaCommesse
             anag = AnagraficaCommesse(aziendaStr=self.aziendaStr)
@@ -443,7 +443,7 @@ class Main(GladeWidget):
         if toggleButton.get_property('active') is False:
             return
 #        if posso("GC"):
-        messageInfo(msg="""RICORDIAMO CHE QUESTO MODULO E' ANCORA IN FASE DI TEST """)
+#        messageInfo(msg="""RICORDIAMO CHE QUESTO MODULO E' ANCORA IN FASE DI TEST """)
         from promogest.modules.GestioneCommesse.ui.AnagraficaStadioCommessa import AnagraficaStadioCommessa
         anag = AnagraficaStadioCommessa()
         showAnagrafica(self.getTopLevel(), anag, toggleButton, mainClass=self)

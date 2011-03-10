@@ -13,7 +13,7 @@ domain="glade-3" depends="gtk+">
 
     <glade-widget-class title="UnsignedMoneyEntryField" name="UnsignedMoneyEntryField" generic-name="UnsignedMoneyEntryField"/>
     <glade-widget-class title="SignedMoneyEntryField" name="SignedMoneyEntryField" generic-name="SignedMoneyEntryField"/>
-    
+
     <glade-widget-class title="ArticoloSearchWidget" name="ArticoloSearchWidget" generic-name="ArticoloSearchWidget"/>
     <glade-widget-class title="ClienteSearchWidget" name="ClienteSearchWidget" generic-name="ClienteSearchWidget"/>
     <glade-widget-class title="FornitoreSearchWidget" name="FornitoreSearchWidget" generic-name="FornitoreSearchWidget"/>
@@ -44,6 +44,3 @@ domain="glade-3" depends="gtk+">
     <glade-widget-class-ref name="ScontoWidget"/>
  </glade-widget-group>
 </glade-catalog>
-
-
-

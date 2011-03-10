@@ -365,19 +365,25 @@ class FilterWidget(GladeWidget):
         return button
 
     def getTreeViewFilterResultsWidget(self):
-        """ Return a treeview widget for filter results """
+        """ Return a treeview widget for filter results
+        AGGIUNTA: il passaggio alla costruzione delle treeview
+        con glade porta ad una piccola rivoluzione, verifichiamo che non
+        arrivi dal glade una treeview altrimenti ne creiamo una"""
+        if  hasattr(self._owner,"anagrafica_filter_treeview"):
+            treeview = self._owner.anagrafica_filter_treeview
+        else:
+            treeview = gtk.TreeView()
 
-        treeview = gtk.TreeView()
-
-        # some default settings
-        treeview.set_headers_clickable(True)
-        treeview.set_headers_visible(True)
-        treeview.set_rules_hint(True)
-        treeview.set_reorderable(False)
-        treeview.set_enable_search(True)
-        treeview.set_fixed_height_mode(False)
-        treeview.set_hover_selection(False)
-        treeview.set_hover_expand(False)
+            # some default settings
+            # LASCIO libertà nella creazione da glade.... è giusto?
+            treeview.set_headers_clickable(True)
+            treeview.set_headers_visible(True)
+            treeview.set_rules_hint(True)
+            treeview.set_reorderable(False)
+            treeview.set_enable_search(True)
+            treeview.set_fixed_height_mode(False)
+            treeview.set_hover_selection(False)
+            treeview.set_hover_expand(False)
         treeview.connect('row_activated',
                          self.on_filter_treeview_row_activated)
         treeview.connect('cursor_changed',

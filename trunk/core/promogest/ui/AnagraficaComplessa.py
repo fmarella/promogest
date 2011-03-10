@@ -68,7 +68,6 @@ class Anagrafica(GladeWidget):
 
         self.html = createHtmlObj(self)
         self.anagrafica_detail_scrolledwindow.add(self.html)
-
         self._setFilterElement(filterElement)
         self._setHtmlHandler(htmlHandler)
         self._setReportHandler(reportHandler)
@@ -823,9 +822,12 @@ Grazie!""")
 class AnagraficaFilter(GladeWidget):
     """ Filtro per la ricerca nell'anagrafica articoli """
 
-    def __init__(self, anagrafica, rootWidget, gladeFile=None, module=False):
+    def __init__(self, anagrafica, rootWidget,
+                                    gladeFile=None,
+                                    filterTreeview=None,
+                                    module=False):
         GladeWidget.__init__(self, rootWidget, fileName=gladeFile, isModule=module)
-
+        self.filterTreeview = filterTreeview
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
         self._isSensitive = True

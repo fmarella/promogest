@@ -28,7 +28,7 @@ from promogest.ui.utilsCombobox import *
 
 
 class AnagraficaCommesseFilter(AnagraficaFilter):
-    """ Filtro per la ricerca nella prim nota cassa """
+    """ Filtro per la ricerca nella gestione commesse"""
 
     def __init__(self, anagrafica):
         AnagraficaFilter.__init__(self,
@@ -37,73 +37,16 @@ class AnagraficaCommesseFilter(AnagraficaFilter):
                           gladeFile='GestioneCommesse/gui/_anagrafica_commessa_elements.glade',
                           module=True)
         self._widgetFirstFocus = self.numero_filter_entry
-        self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear+" 00:00")
+        self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear)
 
 
     def draw(self):
-        # Colonne della Treeview per il filtro
-        treeview = self._anagrafica.anagrafica_filter_treeview
-        renderer = gtk.CellRendererText()
-
-        column = gtk.TreeViewColumn('Numero', renderer, text=2, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'numero'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Da Data', renderer, text=3, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect('clicked', self._changeOrderBy, (None, 'data_inizio'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('A Data', renderer, text=4, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect('clicked', self._changeOrderBy, (None, 'data_fine'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Saldo singola Prima nota', renderer, text=5, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Totale Riporti', renderer, text=6, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Nome/Note', renderer, text=7, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(200)
-        treeview.append_column(column)
-
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.ListStore(object, str,str, str, str, str, str, str)
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-
+        """ """
         self.refresh()
 
     def clear(self):
         # Annullamento filtro
-        self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear+" 00:00")
+        self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear)
         self.numero_filter_entry.set_text('')
 #        self.da_data_inizio_datetimewidget.set_text('')
         self.a_data_inizio_datetimewidget.set_text('')
@@ -127,36 +70,28 @@ class AnagraficaCommesseFilter(AnagraficaFilter):
                                 aDataFine = a_data_fine)
 
         self._filterCountClosure = filterCountClosure
-
         self.numRecords = self.countFilterResults()
-
         self._refreshPageCount()
-
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return TestataCommessa().select(numero=numero,
-                                     daDataInizio = da_data_inizio,
-                                    aDataInizio = a_data_inizio,
-                                    daDataFine = da_data_fine,
-                                    aDataFine = a_data_fine,
-                                        orderBy=self.orderBy,
-                                        offset=offset,
-                                        batchSize=batchSize)
-
+            return TestataCommessa().select(
+                numero=numero,
+                daDataInizio = da_data_inizio,
+                aDataInizio = a_data_inizio,
+                daDataFine = da_data_fine,
+                aDataFine = a_data_fine,
+                orderBy=self.orderBy,
+                offset=offset,
+                batchSize=batchSize)
         self._filterClosure = filterClosure
-
         valis = self.runFilter()
-
-        self._treeViewModel.clear()
-        valore = 0
+        self.commesse_filter_listore.clear()
         for i in valis:
-            col = None
-            if not i.data_fine:
-                col = "#CCFFAA"
-            self._treeViewModel.append((i,col,
+            self.commesse_filter_listore.append((i,
                                         (str(i.numero) or ''),
+                                        i.cliente,
+                                        i.denominazione,
                                         (dateToString(i.data_inizio) or ''),
                                         (dateToString(i.data_fine) or ''),
-                                        "0",
-                                        "0",
-                                        (str(i.note) or "")))
+                                        i.stadio_commessa,
+                                        i.articolo))
