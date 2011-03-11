@@ -51,60 +51,13 @@ class AnagraficaClientiFilter(AnagraficaFilter):
 
     def draw(self):
         """ Disegno la treeview e gli altri oggetti della gui """
-        treeview = self._anagrafica.anagrafica_filter_treeview
-        renderer = gtk.CellRendererText()
-
-        column = gtk.TreeViewColumn('Codice', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,PersonaGiuridica_.codice))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Ragione Sociale', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-
-        column.connect("clicked", self._changeOrderBy,(None,PersonaGiuridica_.ragione_sociale))
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(200)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Cognome - Nome', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,PersonaGiuridica_.cognome))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(200)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Localita''', renderer, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None,PersonaGiuridica_.sede_operativa_localita))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Partita IVA / Codice fiscale', renderer, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str)
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-
         self.clear()
+
+    def _reOrderBy(self, column):
+        if column.get_name() == "codice_column":
+            return self._changeOrderBy(column,(None,PersonaGiuridica_.codice))
+        if column.get_name() == "ragione_sociale_column":
+            return self._changeOrderBy(column,(None,PersonaGiuridica_.ragione_sociale))
 
     def clear(self):
         # Annullamento filtro
@@ -171,7 +124,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
 
         clis = self.runFilter()
 
-        self._treeViewModel.clear()
+        self.filter_listore.clear()
 
         for c in clis:
             pvcf = ''
@@ -179,7 +132,7 @@ class AnagraficaClientiFilter(AnagraficaFilter):
                 pvcf = (c.codice_fiscale or '')
             else:
                 pvcf = (c.partita_iva or '')
-            self._treeViewModel.append((c,
+            self.filter_listore.append((c,
                                         (c.codice or ''),
                                         (c.ragione_sociale or ''),
                                         (c.cognome or '') + ' ' + (c.nome or ''),

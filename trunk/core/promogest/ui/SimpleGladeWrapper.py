@@ -214,10 +214,14 @@ class SimpleGladeWrapper:
                         raise AttributeError("instance %s already has an attribute %s" % (self,widget_api_name))
                     else:
                         setattr(self, widget_api_name, widget)
+                    if widget.__gtype__.name == "GtkTreeViewColumn":
+                        widget.connect("clicked", self._reOrderBy)
 #                    print "WIDGET NON WIDGET", widget.get_name(), widget, dir(widget)
                 except:
                     pass
 
+    def _reOrderBy(self, column):
+        pass
 
     def entryGlobalcb(self,entry):
         entry.connect("icon-press", self.on_icon_press)
