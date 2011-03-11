@@ -74,6 +74,8 @@ class AnagraficaClienti(Anagrafica):
 #        self.htmlHandler.setDao(None)
 #        self.setFocus()
 
+
+
 class AnagraficaClientiHtml(AnagraficaHtml):
     """
     Anteprima Html

@@ -766,6 +766,12 @@ class TestataDocumento(Dao):
         else: return ""
     ragione_sociale_cliente= property(_ragione_sociale_cliente)
 
+    def _insegna_cliente(self):
+        if self.CLI: return self.CLI.insegna
+        else: return ""
+    insegna_cliente= property(_insegna_cliente)
+
+
     def _indirizzo_cliente(self):
         if self.CLI: return self.CLI.sede_legale_indirizzo
         else: return ""
@@ -833,6 +839,11 @@ class TestataDocumento(Dao):
         if self.FORN: return self.FORN.ragione_sociale
         else: return ""
     ragione_sociale_fornitore= property(_ragione_sociale_fornitore)
+
+    def _insegna_fornitore(self):
+        if self.FORN: return self.FORN.insegna
+        else: return ""
+    insegna_fornitore= property(_insegna_fornitore)
 
     def _indirizzo_fornitore(self):
         if self.FORN: return self.FORN.sede_legale_indirizzo
