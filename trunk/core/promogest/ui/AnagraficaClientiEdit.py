@@ -201,9 +201,9 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         else:
             rag_soc = ""
         self.ragione_sociale_entry.set_text(rag_soc)
-        self.insegna_entry.set_text(self.dao.insegna or '')
-        self.cognome_entry.set_text(self.dao.cognome or '')
-        self.nome_entry.set_text(self.dao.nome or '')
+#        self.insegna_entry.set_text(self.dao.insegna or '')
+#        self.cognome_entry.set_text(self.dao.cognome or '')
+#        self.nome_entry.set_text(self.dao.nome or '')
         self.indirizzo_sede_operativa_entry.set_text(self.dao.sede_operativa_indirizzo or '')
         self.cap_sede_operativa_entry.set_text(self.dao.sede_operativa_cap or '')
         self.localita_sede_operativa_entry.set_text(self.dao.sede_operativa_localita or '')
@@ -275,9 +275,9 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         self.dao.codice = self.codice_entry.get_text()
         self.dao.codice = omogeneousCode(section="Clienti", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
-        self.dao.insegna = self.insegna_entry.get_text()
-        self.dao.cognome= self.cognome_entry.get_text()
-        self.dao.nome= self.nome_entry.get_text()
+#        self.dao.insegna = self.insegna_entry.get_text()
+#        self.dao.cognome= self.cognome_entry.get_text()
+#        self.dao.nome= self.nome_entry.get_text()
         if (self.dao.codice and (self.dao.ragione_sociale or self.dao.insegna or self.dao.cognome or self.dao.nome)) =='':
             msg="""Il codice è obbligatorio.
     Inserire almeno un campo a scelta tra:
