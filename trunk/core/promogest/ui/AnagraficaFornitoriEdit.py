@@ -97,7 +97,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         else:
             rag_soc = ""
         self.codice_entry.set_text(self.dao.codice or '')
-        self.ragione_sociale_entry.set_text(self.dao.ragione_sociale or '')
+        self.ragione_sociale_entry.set_text(rag_soc)
 #        self.insegna_entry.set_text(self.dao.insegna or '')
 #        self.cognome_entry.set_text(self.dao.cognome or '')
 #        self.nome_entry.set_text(self.dao.nome or '')
