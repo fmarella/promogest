@@ -597,7 +597,7 @@ Nome</property>
         <child>
           <object class="GtkEntry" id="insegna_entry">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can_focus">True</property>
             <property name="tooltip_text" translatable="yes">Inserire l'insegna cioè il nome pubblico dell'azienda, spesso 
 la ragione sociale differisce dal nome comune
 Il  campo obbligatorio è uno tra:
@@ -630,14 +630,13 @@ Nome
         <child>
           <object class="GtkEntry" id="cognome_entry">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can_focus">True</property>
             <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
 Nome</property>
             <property name="max_length">100</property>
-            <property name="visibility">False</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
@@ -661,14 +660,13 @@ Nome</property>
         <child>
           <object class="GtkEntry" id="nome_entry">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can_focus">True</property>
             <property name="tooltip_text" translatable="yes">Il  campo obbligatorio è uno tra:
 Ragione Sociale
 Insegna
 Cognome 
 Nome</property>
             <property name="max_length">100</property>
-            <property name="visibility">False</property>
             <property name="invisible_char">●</property>
             <property name="secondary_icon_stock">gtk-clear</property>
             <property name="primary_icon_activatable">False</property>
