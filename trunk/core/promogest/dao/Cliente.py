@@ -92,7 +92,10 @@ def getNuovoCodiceCliente():
             art = session.query(Cliente).order_by(Cliente.codice.asc()).offset(quanti-n).limit(1).all()
             codice = codeIncrement(art[0].codice)
             if not codice or Cliente().select(codice=codice):
-                n =n+1
+                if n < 50:
+                    n =n+1
+                else:
+                    break
             else:
                 if not Cliente().select(codice=codice):
                     return codice

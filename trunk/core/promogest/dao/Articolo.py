@@ -653,7 +653,10 @@ def getNuovoCodiceArticolo(idFamiglia=None):
             art = session.query(Articolo).order_by(Articolo.codice.asc()).offset(quanti-n).limit(1).all()
             codice = codeIncrement(art[0].codice)
             if not codice or Articolo().select(codice=codice):
-                n =n+1
+                if n < 100:
+                    n =n+1
+                else:
+                    break
             else:
                 if not Articolo().select(codice=codice):
                     return codice
