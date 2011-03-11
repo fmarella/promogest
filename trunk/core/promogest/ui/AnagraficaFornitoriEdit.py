@@ -60,6 +60,13 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         self.id_magazzino_customcombobox.connect('clicked',
                                                  on_id_magazzino_customcombobox_clicked)
 
+        self.nome_entry.destroy()
+        self.cognome_entry.destroy()
+        self.insegna_entry.destroy()
+        self.insegna_label.destroy()
+        self.cognome_label.destroy()
+        self.nome_label.destroy()
+
 
     def setDao(self, dao):
         if dao is None:
@@ -81,11 +88,19 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         return self.dao
 
     def _refresh(self):
+        if self.dao.ragione_sociale:
+            rag_soc= self.dao.ragione_sociale
+        elif self.dao.cognome or self.dao.nome:
+            rag_soc = str(self.dao.cognome)+" "+str(self.dao.nome)
+        elif self.dao.insegna:
+            rag_soc = self.dao.insegna
+        else:
+            rag_soc = ""
         self.codice_entry.set_text(self.dao.codice or '')
         self.ragione_sociale_entry.set_text(self.dao.ragione_sociale or '')
-        self.insegna_entry.set_text(self.dao.insegna or '')
-        self.cognome_entry.set_text(self.dao.cognome or '')
-        self.nome_entry.set_text(self.dao.nome or '')
+#        self.insegna_entry.set_text(self.dao.insegna or '')
+#        self.cognome_entry.set_text(self.dao.cognome or '')
+#        self.nome_entry.set_text(self.dao.nome or '')
         self.indirizzo_sede_operativa_entry.set_text(self.dao.sede_operativa_indirizzo or '')
         self.cap_sede_operativa_entry.set_text(self.dao.sede_operativa_cap or '')
         self.localita_sede_operativa_entry.set_text(self.dao.sede_operativa_localita or '')
@@ -134,12 +149,12 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
 
 
     def saveDao(self):
-        self.dao.codice = self.codice_entry.get_text()
-        self.dao.codice = omogeneousCode(section="Fornitori", string=self.dao.codice )
+        self.dao.codice = self.codice_entry.get_text().upper()
+#        self.dao.codice = omogeneousCode(section="Fornitori", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
-        self.dao.insegna = self.insegna_entry.get_text()
-        self.dao.cognome= self.cognome_entry.get_text()
-        self.dao.nome = self.nome_entry.get_text()
+#        self.dao.insegna = self.insegna_entry.get_text()
+#        self.dao.cognome= self.cognome_entry.get_text()
+#        self.dao.nome = self.nome_entry.get_text()
         if (self.dao.codice and (self.dao.ragione_sociale or self.dao.insegna or self.dao.cognome or self.dao.nome)) =='':
             msg="""Il codice è obbligatorio.
     Inserire almeno un campo a scelta tra:
