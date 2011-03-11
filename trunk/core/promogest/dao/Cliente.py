@@ -85,24 +85,50 @@ def getNuovoCodiceCliente():
     prefissoCodice = 'CL'
     codice = ''
     listacodici= []
-    if hasattr(conf,'Clienti'):
-        if hasattr(conf.Clienti,'lunghezza_codice'):
-            lunghezzaCodice = conf.Clienti.lunghezza_codice
-        if hasattr(conf.Clienti,'prefisso_codice'):
-            prefissoCodice = conf.Clienti.prefisso_codice
-            try:
-                codicesel  = session.query(Cliente).all()[-3:]
-#                codicesel = Cliente().select(batchSize=None)
-                for cod in codicesel:
-                    listacodici.append(cod.codice)
-                codice = codeIncrement(str(max(listacodici)))
-            except:
-                pass
-            try:
-                if ( not codice or codice == "") and hasattr(conf.Clienti,'struttura_codice'):
-                    codice = codeIncrement(conf.Clienti.struttura_codice)
-            except:
-                pass
+    try:
+        n = 1
+        quanti = session.query(Cliente).count()
+        while session.query(Cliente).order_by(Cliente.codice.asc()).offset(quanti-n).limit(1).all():
+            art = session.query(Cliente).order_by(Cliente.codice.asc()).offset(quanti-n).limit(1).all()
+            codice = codeIncrement(art[0].codice)
+            if not codice or Cliente().select(codice=codice):
+                n =n+1
+            else:
+                if not Cliente().select(codice=codice):
+                    return codice
+    except:
+        pass
+    try:
+        if not codice:
+            if hasattr(conf,"Clienti") and hasattr(conf.Clienti,"struttura_codice"):
+                dd = conf.Clienti.struttura_codice
+            else:
+                dd = "CL0000"
+            codice = codeIncrement(dd)
+    except:
+        pass
+#    if hasattr(conf,'Clienti'):
+#        if hasattr(conf.Clienti,'lunghezza_codice'):
+#            lunghezzaCodice = conf.Clienti.lunghezza_codice
+#        if hasattr(conf.Clienti,'prefisso_codice'):
+#            prefissoCodice = conf.Clienti.prefisso_codice
+#            try:
+#                codicesel  = session.query(Cliente).all()[-5:]
+##                codicesel = Cliente().select(batchSize=None)
+#                for cod in codicesel:
+#                    listacodici.append(cod.codice)
+#                codice = codeIncrement(str(max(listacodici)))
+#            except:
+#                pass
+#            try:
+#                if ( not codice or codice == "") and hasattr(conf.Clienti,'struttura_codice'):
+#                    codice = codeIncrement(conf.Clienti.struttura_codice)
+#            except:
+#                pass
+#            if not Cliente().select(codice = codice):
+#                return codice
+#            else:
+#                return ""
     return codice
 
 persona_giuridica=Table('persona_giuridica', params['metadata'],schema = params['schema'], autoload=True)

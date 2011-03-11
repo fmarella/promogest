@@ -90,6 +90,13 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         self.id_aliquota_iva_customcombobox.connect('clicked',
                                 on_id_aliquota_iva_customcombobox_clicked)
 
+        self.nome_entry.destroy()
+        self.cognome_entry.destroy()
+        self.insegna_entry.destroy()
+        self.insegna_label.destroy()
+        self.cognome_label.destroy()
+        self.nome_label.destroy()
+
 #        if not setconf(key="INFOPESO", section="General"):
         if posso("IP"):
             self.infopeso_page = InfoPesoNotebookPage(self, "")
@@ -185,7 +192,15 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 
     def _refresh(self):
         self.codice_entry.set_text(self.dao.codice or '')
-        self.ragione_sociale_entry.set_text(self.dao.ragione_sociale or '')
+        if self.dao.ragione_sociale:
+            rag_soc= self.dao.ragione_sociale
+        elif self.dao.cognome or self.dao.nome:
+            rag_soc = str(self.dao.cognome)+" "+str(self.dao.nome)
+        elif self.dao.insegna:
+            rag_soc = self.dao.insegna
+        else:
+            rag_soc = ""
+        self.ragione_sociale_entry.set_text(rag_soc)
         self.insegna_entry.set_text(self.dao.insegna or '')
         self.cognome_entry.set_text(self.dao.cognome or '')
         self.nome_entry.set_text(self.dao.nome or '')

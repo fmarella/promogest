@@ -55,20 +55,43 @@ def getNuovoCodiceFornitore():
     prefissoCodice = 'FO'
     codice = ''
     listacodici = []
-    if hasattr(conf,'Fornitori'):
-        try:
-#            codicesel = Fornitore().select(batchSize=None, orderBy=Fornitore.ragione_sociale)
-            codicesel  = session.query(Fornitore).all()[-3:]
-            for cod in codicesel:
-                listacodici.append(cod.codice)
-                codice = codeIncrement(str(max(listacodici)))
-        except:
-            pass
-        try:
-            if ( not codice or codice == "")  and hasattr(conf.Fornitori,'struttura_codice'):
-                codice = codeIncrement(conf.Fornitori.struttura_codice)
-        except:
-            pass
+#    if hasattr(conf,'Fornitori'):
+    try:
+        n = 1
+        quanti = session.query(Fornitore).count()
+        while session.query(Fornitore).order_by(Fornitore.codice.asc()).offset(quanti-n).limit(1).all():
+            art = session.query(Fornitore).order_by(Fornitore.codice.asc()).offset(quanti-n).limit(1).all()
+            codice = codeIncrement(art[0].codice)
+            if not codice or Fornitore().select(codice=codice):
+                n =n+1
+            else:
+                if not Fornitore().select(codice=codice):
+                    return codice
+    except:
+        pass
+    try:
+        if not codice:
+            if hasattr(conf,"Fornitori") and hasattr(conf.Fornitori,"struttura_codice"):
+                dd = conf.Fornitori.struttura_codice
+            else:
+                dd = "FO0000"
+            codice = codeIncrement(dd)
+    except:
+        pass
+
+#        try:
+##            codicesel = Fornitore().select(batchSize=None, orderBy=Fornitore.ragione_sociale)
+#            codicesel  = session.query(Fornitore).all()[-3:]
+#            for cod in codicesel:
+#                listacodici.append(cod.codice)
+#                codice = codeIncrement(str(max(listacodici)))
+#        except:
+#            pass
+#        try:
+#            if ( not codice or codice == "")  and hasattr(conf.Fornitori,'struttura_codice'):
+#                codice = codeIncrement(conf.Fornitori.struttura_codice)
+#        except:
+#            pass
     return codice
 
 fornitore=Table('fornitore',params['metadata'],schema = params['schema'],autoload=True)

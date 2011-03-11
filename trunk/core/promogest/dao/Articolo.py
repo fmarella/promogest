@@ -646,29 +646,28 @@ def getNuovoCodiceArticolo(idFamiglia=None):
     lunghezzaCodiceFamiglia = 0
     numeroFamiglie = 0
     codice = ''
-    if hasattr(conf,'Articoli'):
-        if hasattr(conf.Articoli,'struttura_codice'):
-            try:
-                n = 1
-                quanti = session.query(Articolo).count()
-                while session.query(Articolo).order_by(Articolo.codice.asc()).offset(quanti-n).limit(1).all():
-                    art = session.query(Articolo).order_by(Articolo.codice.asc()).offset(quanti-n).limit(1).all()
-    #                for cod in codicesel:
-    #                    listacodici.append(cod.codice)
-                    codice = codeIncrement(art[0].codice)
-    #                print "CODICEEE", art[0].codice, codice
-                    if not codice or Articolo().select(codice=codice):
-                        n =n+1
-                    else:
-                        if not Articolo().select(codice=codice):
-                            return codice
-            except:
-                pass
-            try:
-                if not codice:
-                    codice = codeIncrement(conf.Articoli.struttura_codice)
-            except:
-                pass
+    try:
+        n = 1
+        quanti = session.query(Articolo).count()
+        while session.query(Articolo).order_by(Articolo.codice.asc()).offset(quanti-n).limit(1).all():
+            art = session.query(Articolo).order_by(Articolo.codice.asc()).offset(quanti-n).limit(1).all()
+            codice = codeIncrement(art[0].codice)
+            if not codice or Articolo().select(codice=codice):
+                n =n+1
+            else:
+                if not Articolo().select(codice=codice):
+                    return codice
+    except:
+        pass
+    try:
+        if not codice:
+            if hasattr(conf,"Articoli") and hasattr(conf.Articoli,"struttura_codice"):
+                dd = conf.Articoli.struttura_codice
+            else:
+                dd = "ART000000"
+            codice = codeIncrement(dd)
+    except:
+        pass
 
 
 #            if isNuovoCodiceByFamiglia():

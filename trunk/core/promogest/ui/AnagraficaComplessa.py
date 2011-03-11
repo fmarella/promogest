@@ -824,10 +824,8 @@ class AnagraficaFilter(GladeWidget):
 
     def __init__(self, anagrafica, rootWidget,
                                     gladeFile=None,
-                                    filterTreeview=None,
                                     module=False):
         GladeWidget.__init__(self, rootWidget, fileName=gladeFile, isModule=module)
-        self.filterTreeview = filterTreeview
         self._anagrafica = anagrafica
         self._widgetFirstFocus = None
         self._isSensitive = True
