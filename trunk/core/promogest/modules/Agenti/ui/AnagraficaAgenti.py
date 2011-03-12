@@ -1,15 +1,31 @@
 # -*- coding: utf-8 -*-
 
-# Promogest
-# Copyright (C) 2005-2008 by Promotux Informatica - http://www.promotux.it/
-# Author: Andrea Argiolas <andrea@promotux.it>
-# Author: Francesco Meloni <francesco@promotux.it>
-# License: GNU GPLv2
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
+
+#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Author: Andrea Argiolas   <andrea@promotux.it>
+#    This file is part of Promogest.
+
+#    Promogest is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 2 of the License, or
+#    (at your option) any later version.
+
+#    Promogest is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
 
-from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
-
+from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter,\
+                     AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from promogest.modules.Agenti.ui.AnagraficaAgentiEdit import AnagraficaAgentiEdit
+from promogest.modules.Agenti.ui.AnagraficaAgentiFilter import AnagraficaAgentiFilter
 from promogest import Environment
 from promogest.modules.Agenti.dao.Agente import Agente, getNuovoCodiceAgente
 from promogest.ui.utils import *
@@ -30,157 +46,13 @@ class AnagraficaAgenti(Anagrafica):
                             aziendaStr=aziendaStr)
 
 
-class AnagraficaAgentiFilter(AnagraficaFilter):
-    """ Filtro per la ricerca nell'anagrafica degli agenti """
-
-    def __init__(self, anagrafica):
-        AnagraficaFilter.__init__(self,
-                            anagrafica,
-                            'anagrafica_agenti_filter_table',
-                            gladeFile='Agenti/gui/_anagrafica_agenti_elements.glade',
-                            module=True)
-     ##   self._widgetFirstFocus = self.ragione_sociale_filter_entry
-        self.orderBy = 'ragione_sociale'
-        persona_giuridica=Table('persona_giuridica', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
-        agenti=Table('agente', Environment.params['metadata'],schema = Environment.params['schema'], autoload=True)
-        self.joinT = join(agenti, persona_giuridica)
-
-    def draw(self):
-        """Colonne della Treeview per il filtro"""
-        treeview = self._anagrafica.anagrafica_filter_treeview
-        renderer = gtk.CellRendererText()
-
-        column = gtk.TreeViewColumn('Codice', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (self.joinT,Agente.codice))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Ragione Sociale', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (self.joinT,Agente.ragione_sociale))
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(200)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Cognome - Nome', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy,(self.joinT,Agente.cognome))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(200)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Localita''', renderer, text=4)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (self.joinT,Agente.sede_operativa_localita))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Partita IVA / Codice fiscale', renderer, text=5)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(False)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str)
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-
-        self.clear()
-
-
-    def clear(self):
-        """ Annullamento filtro"""
-        self.codice_filter_entry.set_text('')
-        self.ragione_sociale_filter_entry.set_text('')
-        self.insegna_filter_entry.set_text('')
-        self.cognome_nome_filter_entry.set_text('')
-        self.localita_filter_entry.set_text('')
-        self.codice_fiscale_filter_entry.set_text('')
-        self.partita_iva_filter_entry.set_text('')
-        self.percentuale_entry.set_text('')
-        self.ragione_sociale_filter_entry.grab_focus()
-        self.refresh()
-
-
-    def refresh(self):
-        """ Aggiornamento TreeView"""
-        codice = prepareFilterString(self.codice_filter_entry.get_text())
-        ragioneSociale = prepareFilterString(self.ragione_sociale_filter_entry.get_text())
-        insegna = prepareFilterString(self.insegna_filter_entry.get_text())
-        cognomeNome = prepareFilterString(self.cognome_nome_filter_entry.get_text())
-        localita = prepareFilterString(self.localita_filter_entry.get_text())
-        partitaIva = prepareFilterString(self.partita_iva_filter_entry.get_text())
-        codiceFiscale = prepareFilterString(self.codice_fiscale_filter_entry.get_text())
-
-        def filterCountClosure():
-            return Agente().count(codice=codice,
-                                    ragioneSociale=ragioneSociale,
-                                    insegna=insegna,
-                                    cognomeNome=cognomeNome,
-                                    localita=localita,
-                                    partitaIva=partitaIva,
-                                    codiceFiscale=codiceFiscale)
-
-        self._filterCountClosure = filterCountClosure
-
-        self.numRecords = self.countFilterResults()
-
-        self._refreshPageCount()
-
-        # Let's save the current search as a closure
-        def filterClosure(offset, batchSize):
-            return Agente().select(orderBy=self.orderBy,
-                                    join=self.join,
-                                    codice=codice,
-                                    ragioneSociale=ragioneSociale,
-                                    insegna=insegna,
-                                    cognomeNome=cognomeNome,
-                                    localita=localita,
-                                    partitaIva=partitaIva,
-                                    codiceFiscale=codiceFiscale,
-                                    offset=offset,
-                                    batchSize=batchSize)
-
-        self._filterClosure = filterClosure
-
-        fors = self.runFilter()
-
-        self._treeViewModel.clear()
-
-        for f in fors:
-            pvcf = ''
-            if (f.ragione_sociale or '') == '':
-                pvcf = f.codice_fiscale
-            else:
-                pvcf = f.partita_iva
-            self._treeViewModel.append((f,
-                                        (f.codice or ''),
-                                        (f.ragione_sociale or ''),
-                                        (f.cognome or '') + ' ' + (f.nome or ''),
-                                        (f.sede_operativa_localita or ''),
-                                        pvcf))
-
-
-
 class AnagraficaAgentiHtml(AnagraficaHtml):
     """ Anagrafica Agenti HTML widget di anteprima"""
     def __init__(self, anagrafica):
-        AnagraficaHtml.__init__(self, anagrafica, 'agente',
-                                'Informazioni sull''agente')
+        AnagraficaHtml.__init__(self, anagrafica,
+                                'agente',
+                                "Informazioni sull'agente",
+                                )
 
 
 
@@ -192,97 +64,3 @@ class AnagraficaAgentiReport(AnagraficaReport):
                                   defaultFileName='agenti',
                                   htmlTemplate='agenti',
                                   sxwTemplate='agenti')
-
-
-
-class AnagraficaAgentiEdit(AnagraficaEdit):
-    """ Modifica un record dell'anagrafica degli agenti """
-
-    def __init__(self, anagrafica):
-        AnagraficaEdit.__init__(self,
-                                anagrafica,
-                                'anagrafica_agenti_detail_table',
-                                'Dati agente',
-                                gladeFile='Agenti/gui/_anagrafica_agenti_elements.glade',
-                                module=True)
-        self._widgetFirstFocus = self.codice_entry
-
-
-    def draw(self, cplx=False):
-        pass
-
-
-    def on_codice_entry_icon_press(self,entry,position,event):
-        if position.value_nick == "primary":
-            codice = getNuovoCodiceAgente()
-            self.codice_entry.set_text(codice)
-
-    def setDao(self, dao):
-        """ Istanzia un  oggetto nuovo se non presente """
-        if dao is None:
-            # Crea un nuovo Dao vuoto
-            self.dao = Agente()
-            self.dao.codice = getNuovoCodiceAgente()
-        else:
-            # Ricrea il Dao con una connessione al DBMS SQL
-            self.dao = Agente().getRecord(id=dao.id)
-        self._refresh()
-
-
-    def _refresh(self):
-        """ Aggiorna gli oggetti della gui """
-        self.codice_entry.set_text(self.dao.codice or '')
-        self.ragione_sociale_entry.set_text(self.dao.ragione_sociale or '')
-        self.insegna_entry.set_text(self.dao.insegna or '')
-        self.cognome_entry.set_text(self.dao.cognome or '')
-        self.nome_entry.set_text(self.dao.nome or '')
-        self.indirizzo_sede_operativa_entry.set_text(self.dao.sede_operativa_indirizzo or '')
-        self.cap_sede_operativa_entry.set_text(self.dao.sede_operativa_cap or '')
-        self.localita_sede_operativa_entry.set_text(self.dao.sede_operativa_localita or '')
-        self.provincia_sede_operativa_entry.set_text(self.dao.sede_operativa_provincia or '')
-        self.indirizzo_sede_legale_entry.set_text(self.dao.sede_legale_indirizzo or '')
-        self.cap_sede_legale_entry.set_text(self.dao.sede_legale_cap or '')
-        self.localita_sede_legale_entry.set_text(self.dao.sede_legale_localita or '')
-        self.provincia_sede_legale_entry.set_text(self.dao.sede_legale_provincia or '')
-        self.codice_fiscale_entry.set_text(self.dao.codice_fiscale or '')
-        self.partita_iva_entry.set_text(self.dao.partita_iva or '')
-        self.percentuale_entry.set_text(str(self.dao.percentuale) or '')
-
-
-    def saveDao(self):
-        """ Save data to DB """
-        self.dao.codice = self.codice_entry.get_text()
-#        self.dao.codice = omogeneousCode(section="Agenti", string=self.dao.codice )
-        self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
-        self.dao.insegna = self.insegna_entry.get_text()
-        self.dao.cognome = self.cognome_entry.get_text()
-        self.dao.nome = self.nome_entry.get_text()
-        if (self.dao.codice and (self.dao.ragione_sociale or self.dao.insegna or self.dao.cognome or self.dao.nome)) =='':
-            msg="""Il codice è obbligatorio!
-    Inserire almeno un campo a scelta tra:
-    ragione sociale, insegna, cognome o nome """
-            dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                               gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
-            dialog.run()
-            dialog.destroy()
-            return
-        self.dao.sede_operativa_indirizzo = self.indirizzo_sede_operativa_entry.get_text()
-        self.dao.sede_operativa_cap = self.cap_sede_operativa_entry.get_text()
-        self.dao.sede_operativa_localita = self.localita_sede_operativa_entry.get_text()
-        self.dao.sede_operativa_provincia = self.provincia_sede_operativa_entry.get_text()
-        self.dao.sede_legale_indirizzo = self.indirizzo_sede_legale_entry.get_text()
-        self.dao.sede_legale_cap = self.cap_sede_legale_entry.get_text()
-        self.dao.sede_legale_localita = self.localita_sede_legale_entry.get_text()
-        self.dao.sede_legale_provincia = self.provincia_sede_legale_entry.get_text()
-        self.dao.codice_fiscale = self.codice_fiscale_entry.get_text()
-        if self.dao.codice_fiscale != '':
-            codfis = checkCodFisc(self.dao.codice_fiscale)
-            if not codfis:
-                return
-        self.dao.partita_iva = self.partita_iva_entry.get_text()
-        if self.dao.partita_iva != '':
-            partiva = checkPartIva(self.dao.partita_iva)
-            if not partiva:
-                return
-        self.dao.percentuale = float(self.percentuale_entry.get_text() or 0)
-        self.dao.persist()

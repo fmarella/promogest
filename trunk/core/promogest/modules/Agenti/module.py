@@ -11,10 +11,10 @@ import promogest.ui.Login
 
 MODULES_NAME = "Agenti"
 MODULES_FOR_EXPORT = []
-GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/Agenti/gui/'
+GUI_DIR = 'promogest/modules/Agenti/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
-TEMPLATES = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+"/Agenti/templates/"
+TEMPLATES = "promogest/modules/Agenti/templates/"
 """
     view_type è composto da:
 
@@ -24,12 +24,3 @@ TEMPLATES = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modul
     es:
         VIEW_TYPE = ('parametro', 'Colori Stampa', 'colori_stampa24x24.png')
 """
-#testataMovimentoTable = Table('testata_movimento', params['metadata'], autoload=True, schema=params['schema'])
-
-#class AnagraficaAgenti(object):
-    #VIEW_TYPE = ('anagrafica', 'Distinta Base ', 'report48x48.png')
-    #def getApplication(self):
-        #anag = AnagraficaAgenti()
-        #return anag
-    #pass
-

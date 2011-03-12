@@ -351,6 +351,7 @@ class Login(GladeApp):
                                                     'module_dir': "%s" % (m_str),
                                                     'guiDir':m.GUI_DIR}
             Environment.pg2log.info("LISTA DEI MODULI CARICATI E FUNZIONANTI %s" %(str(repr(Environment.modulesList))))
+            HtmlHandler.templates_dir.append("promogest/modules/Agenti/templates/") # da aggiungere a mano perchè al momento Agenti non è un vero e proprio modulo
             HtmlHandler.jinja_env = HtmlHandler.env(HtmlHandler.templates_dir)
             self.groupModulesByType()
 

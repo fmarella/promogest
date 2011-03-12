@@ -1,17 +1,19 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkTable" id="anagrafica_agenti_detail_table">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="border_width">6</property>
     <property name="n_rows">15</property>
     <property name="n_columns">6</property>
     <property name="row_spacing">6</property>
     <child>
-      <object class="GtkLabel" id="label144">
+      <object class="GtkLabel" id="codice_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Codice</property>
       </object>
@@ -22,10 +24,13 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label35">
+      <object class="GtkLabel" id="ragione_sociale_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
-        <property name="label" translatable="yes">Ragione Sociale</property>
+        <property name="label" translatable="yes">Ragione Sociale o
+Cognome Nome</property>
+        <property name="use_markup">True</property>
       </object>
       <packing>
         <property name="top_attach">1</property>
@@ -36,8 +41,9 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label123">
+      <object class="GtkLabel" id="insegna_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Insegna</property>
       </object>
@@ -50,8 +56,9 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label124">
+      <object class="GtkLabel" id="cognome_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Cognome</property>
       </object>
@@ -64,8 +71,9 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label125">
+      <object class="GtkLabel" id="nome_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Nome</property>
       </object>
@@ -80,6 +88,7 @@
     <child>
       <object class="GtkLabel" id="label126">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Indirizzo</property>
       </object>
@@ -94,6 +103,7 @@
     <child>
       <object class="GtkLabel" id="label130">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Codice fiscale</property>
       </object>
@@ -108,6 +118,7 @@
     <child>
       <object class="GtkLabel" id="label131">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Partita I.V.A.</property>
       </object>
@@ -122,6 +133,7 @@
     <child>
       <object class="GtkHSeparator" id="hseparator17">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
       </object>
       <packing>
         <property name="right_attach">6</property>
@@ -134,8 +146,10 @@
     <child>
       <object class="GtkLabel" id="label262">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
-        <property name="label" translatable="yes">Sede operativa</property>
+        <property name="label" translatable="yes">Sede Legale o
+Domicilio</property>
         <property name="use_markup">True</property>
       </object>
       <packing>
@@ -149,6 +163,7 @@
     <child>
       <object class="GtkLabel" id="label127">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">C.A.P.</property>
       </object>
@@ -165,6 +180,7 @@
     <child>
       <object class="GtkLabel" id="label145">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Provincia</property>
       </object>
@@ -181,17 +197,22 @@
     <child>
       <object class="GtkAlignment" id="alignment64">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
-          <object class="GtkEntry" id="provincia_sede_operativa_entry">
+          <object class="GtkEntry" id="provincia_sede_legale_entry">
             <property name="width_request">130</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">2</property>
-            <property name="invisible_char">&#x2022;</property>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <property name="invisible_char">•</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
         </child>
       </object>
@@ -206,6 +227,7 @@
     <child>
       <object class="GtkHSeparator" id="hseparator18">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
       </object>
       <packing>
         <property name="right_attach">6</property>
@@ -218,8 +240,9 @@
     <child>
       <object class="GtkLabel" id="label263">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
-        <property name="label" translatable="yes">Sede legale</property>
+        <property name="label" translatable="yes">Sede Operativa</property>
         <property name="use_markup">True</property>
       </object>
       <packing>
@@ -233,6 +256,7 @@
     <child>
       <object class="GtkLabel" id="label265">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Localita'</property>
       </object>
@@ -247,6 +271,7 @@
     <child>
       <object class="GtkLabel" id="label264">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Indirizzo</property>
       </object>
@@ -261,6 +286,7 @@
     <child>
       <object class="GtkLabel" id="label266">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Localita'</property>
       </object>
@@ -275,6 +301,7 @@
     <child>
       <object class="GtkLabel" id="label267">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">C.A.P.</property>
       </object>
@@ -291,6 +318,7 @@
     <child>
       <object class="GtkLabel" id="label268">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Provincia</property>
       </object>
@@ -305,17 +333,19 @@
       </packing>
     </child>
     <child>
-      <object class="GtkEntry" id="indirizzo_sede_legale_entry">
+      <object class="GtkEntry" id="indirizzo_sede_operativa_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">200</property>
-        <property name="invisible_char">&#x2022;</property>
+        <property name="invisible_char">•</property>
         <property name="secondary_icon_stock">gtk-clear</property>
+        <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">True</property>
+        <property name="primary_icon_sensitive">True</property>
         <property name="secondary_icon_sensitive">True</property>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
-        <signal name="icon_press" handler="on_icon_press"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -329,17 +359,22 @@
     <child>
       <object class="GtkAlignment" id="alignment137">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
-          <object class="GtkEntry" id="provincia_sede_legale_entry">
+          <object class="GtkEntry" id="provincia_sede_operativa_entry">
             <property name="width_request">130</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">2</property>
-            <property name="invisible_char">&#x2022;</property>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <property name="invisible_char">•</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
         </child>
       </object>
@@ -352,17 +387,19 @@
       </packing>
     </child>
     <child>
-      <object class="GtkEntry" id="localita_sede_legale_entry">
+      <object class="GtkEntry" id="localita_sede_operativa_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">100</property>
-        <property name="invisible_char">&#x2022;</property>
+        <property name="invisible_char">•</property>
         <property name="secondary_icon_stock">gtk-clear</property>
+        <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">True</property>
+        <property name="primary_icon_sensitive">True</property>
         <property name="secondary_icon_sensitive">True</property>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
-        <signal name="icon_press" handler="on_icon_press"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -374,17 +411,19 @@
       </packing>
     </child>
     <child>
-      <object class="GtkEntry" id="localita_sede_operativa_entry">
+      <object class="GtkEntry" id="localita_sede_legale_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">100</property>
-        <property name="invisible_char">&#x2022;</property>
+        <property name="invisible_char">•</property>
         <property name="secondary_icon_stock">gtk-clear</property>
+        <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">True</property>
+        <property name="primary_icon_sensitive">True</property>
         <property name="secondary_icon_sensitive">True</property>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
-        <signal name="icon_press" handler="on_icon_press"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -396,15 +435,17 @@
       </packing>
     </child>
     <child>
-      <object class="GtkEntry" id="indirizzo_sede_operativa_entry">
+      <object class="GtkEntry" id="indirizzo_sede_legale_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">200</property>
-        <property name="invisible_char">&#x2022;</property>
+        <property name="invisible_char">•</property>
         <property name="secondary_icon_stock">gtk-clear</property>
+        <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">True</property>
+        <property name="primary_icon_sensitive">True</property>
         <property name="secondary_icon_sensitive">True</property>
-        <signal name="icon_press" handler="on_icon_press"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -418,6 +459,7 @@
     <child>
       <object class="GtkAlignment" id="alignment61">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
@@ -425,9 +467,13 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">16</property>
-            <property name="invisible_char">&#x2022;</property>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <property name="invisible_char">•</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
         </child>
       </object>
@@ -445,13 +491,15 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">100</property>
-        <property name="invisible_char">&#x2022;</property>
+        <property name="invisible_char">•</property>
         <property name="secondary_icon_stock">gtk-clear</property>
+        <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">True</property>
+        <property name="primary_icon_sensitive">True</property>
         <property name="secondary_icon_sensitive">True</property>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
-        <signal name="icon_press" handler="on_icon_press"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -467,13 +515,15 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">100</property>
-        <property name="invisible_char">&#x2022;</property>
+        <property name="invisible_char">•</property>
         <property name="secondary_icon_stock">gtk-clear</property>
+        <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">True</property>
+        <property name="primary_icon_sensitive">True</property>
         <property name="secondary_icon_sensitive">True</property>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
-        <signal name="icon_press" handler="on_icon_press"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -489,13 +539,15 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">200</property>
-        <property name="invisible_char">&#x2022;</property>
+        <property name="invisible_char">•</property>
         <property name="secondary_icon_stock">gtk-clear</property>
+        <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">True</property>
+        <property name="primary_icon_sensitive">True</property>
         <property name="secondary_icon_sensitive">True</property>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
-        <signal name="icon_press" handler="on_icon_press"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -511,13 +563,15 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="max_length">200</property>
-        <property name="invisible_char">&#x2022;</property>
+        <property name="invisible_char">•</property>
         <property name="secondary_icon_stock">gtk-clear</property>
+        <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">True</property>
+        <property name="primary_icon_sensitive">True</property>
         <property name="secondary_icon_sensitive">True</property>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
-        <signal name="icon_press" handler="on_icon_press"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -531,6 +585,7 @@
     <child>
       <object class="GtkAlignment" id="alignment66">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
@@ -538,14 +593,16 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">100</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">True</property>
+            <property name="primary_icon_sensitive">True</property>
             <property name="secondary_icon_sensitive">True</property>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
-            <signal name="icon_press" handler="on_codice_entry_icon_press"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="icon-press" handler="on_codice_entry_icon_press" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
           </object>
         </child>
       </object>
@@ -560,13 +617,18 @@
       <object class="GtkAlignment" id="alignment65">
         <property name="width_request">70</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
-          <object class="UnsignedIntegerEntryField" id="cap_sede_operativa_entry">
+          <object class="UnsignedIntegerEntryField" id="cap_sede_legale_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
         </child>
       </object>
@@ -583,13 +645,18 @@
       <object class="GtkAlignment" id="alignment136">
         <property name="width_request">70</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
-          <object class="UnsignedIntegerEntryField" id="cap_sede_legale_entry">
+          <object class="UnsignedIntegerEntryField" id="cap_sede_operativa_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
         </child>
       </object>
@@ -606,13 +673,18 @@
       <object class="GtkAlignment" id="alignment62">
         <property name="width_request">100</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="UnsignedIntegerEntryField" id="partita_iva_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
         </child>
       </object>
@@ -628,6 +700,7 @@
     <child>
       <object class="GtkLabel" id="label1">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xpad">3</property>
         <property name="label" translatable="yes">Percentuale </property>
       </object>
@@ -644,7 +717,11 @@
         <property name="can_focus">True</property>
         <property name="tooltip_text" translatable="yes">Percentuale provvigionale </property>
         <property name="max_length">5</property>
-        <property name="invisible_char">&#x25CF;</property>
+        <property name="invisible_char">●</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
       </object>
       <packing>
         <property name="left_attach">5</property>
@@ -716,11 +793,13 @@
   </object>
   <object class="GtkTable" id="anagrafica_agenti_filter_table">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="n_rows">7</property>
     <property name="n_columns">2</property>
     <child>
       <object class="GtkLabel" id="label34">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Ragione Sociale</property>
       </object>
@@ -733,6 +812,7 @@
     <child>
       <object class="GtkLabel" id="label133">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Insegna</property>
       </object>
@@ -747,6 +827,7 @@
     <child>
       <object class="GtkLabel" id="label134">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Cognome e nome</property>
       </object>
@@ -761,6 +842,7 @@
     <child>
       <object class="GtkLabel" id="label143">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Codice</property>
       </object>
@@ -775,6 +857,7 @@
     <child>
       <object class="GtkLabel" id="label135">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Localita'</property>
       </object>
@@ -789,6 +872,7 @@
     <child>
       <object class="GtkLabel" id="label136">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Codice fiscale</property>
       </object>
@@ -803,6 +887,7 @@
     <child>
       <object class="GtkLabel" id="label137">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Partita I.V.A.</property>
       </object>
@@ -818,10 +903,14 @@
       <object class="GtkEntry" id="ragione_sociale_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x2022;</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
+        <property name="invisible_char">•</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -834,10 +923,14 @@
       <object class="GtkEntry" id="insegna_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x2022;</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
+        <property name="invisible_char">•</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -852,10 +945,14 @@
       <object class="GtkEntry" id="cognome_nome_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x2022;</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
+        <property name="invisible_char">•</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -870,10 +967,14 @@
       <object class="GtkEntry" id="codice_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x2022;</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
+        <property name="invisible_char">•</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -888,10 +989,14 @@
       <object class="GtkEntry" id="localita_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x2022;</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
+        <property name="invisible_char">•</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -906,10 +1011,14 @@
       <object class="GtkEntry" id="codice_fiscale_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x2022;</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
+        <property name="invisible_char">•</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -924,10 +1033,14 @@
       <object class="GtkEntry" id="partita_iva_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x2022;</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
+        <property name="invisible_char">•</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -937,6 +1050,97 @@
         <property name="x_options">GTK_SHRINK | GTK_FILL</property>
         <property name="y_options"></property>
       </packing>
+    </child>
+  </object>
+  <object class="GtkListStore" id="filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkTreeView" id="anagrafica_filter_treeview">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="border_width">1</property>
+    <property name="model">filter_listore</property>
+    <property name="headers_clickable">False</property>
+    <property name="reorderable">True</property>
+    <property name="search_column">1</property>
+    <property name="enable_grid_lines">both</property>
+    <child>
+      <object class="GtkTreeViewColumn" id="codice_column">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Codice</property>
+        <property name="expand">True</property>
+        <property name="clickable">True</property>
+        <property name="reorderable">True</property>
+        <property name="sort_indicator">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+          <attributes>
+            <attribute name="text">1</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="ragione_sociale_column">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Ragione Sociale</property>
+        <property name="expand">True</property>
+        <property name="clickable">True</property>
+        <property name="reorderable">True</property>
+        <property name="sort_indicator">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+          <attributes>
+            <attribute name="text">2</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="cognome_nome_column">
+        <property name="title" translatable="yes">Cognome - Nome</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext8"/>
+          <attributes>
+            <attribute name="text">3</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="localita_column">
+        <property name="title" translatable="yes">Località</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext4"/>
+          <attributes>
+            <attribute name="text">4</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="partita_iva_column">
+        <property name="title" translatable="yes">Partita IVA / C.F.</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext5"/>
+          <attributes>
+            <attribute name="text">5</attribute>
+          </attributes>
+        </child>
+      </object>
     </child>
   </object>
 </interface>
