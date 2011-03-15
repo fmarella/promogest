@@ -26,6 +26,7 @@ from GladeWidget import GladeWidget
 from promogest import Environment
 from utils import *
 from utilsCombobox import *
+#from promogest.lib.calcolaTotaleDocumento import totaliDocumento
 from promogest.dao.Articolo import Articolo
 from promogest.dao.AliquotaIva import AliquotaIva
 from promogest.dao.DaoUtils import giacenzaArticolo
@@ -230,33 +231,27 @@ def calcolaTotalePart(anaedit, dao=None):
     totaleScontato = Decimal(0)
     castellettoIva = {}
 
-    anaedit.avvertimento_sconti_button.set_sensitive(False)
-    anaedit.avvertimento_sconti_button.hide()
     totaleEsclusoBaseImponibileRiga = 0
     totaleImponibileRiga = 0
-    for i in range(1, len(anaedit._righe)):
-        prezzoNetto = Decimal(str(anaedit._righe[i]["prezzoNetto"]))
-        quantita = Decimal(str(anaedit._righe[i]["quantita"]))
-        moltiplicatore = Decimal(str(anaedit._righe[i]["moltiplicatore"]))
-
-        percentualeIva = Decimal(str(anaedit._righe[i]["percentualeIva"]))
-        idAliquotaIva = anaedit._righe[i]["idAliquotaIva"]
+    for riga in anaedit._righe:
+        prezzoNetto = Decimal(riga["prezzoNetto"])
+        quantita = Decimal(riga["quantita"])
+        moltiplicatore = Decimal(riga["moltiplicatore"])
+        percentualeIva = Decimal(riga["percentualeIva"])
+        idAliquotaIva = riga["idAliquotaIva"]
         daoiva=None
         if idAliquotaIva:
             daoiva = AliquotaIva().getRecord(id=idAliquotaIva)
-#        if daoiva and daoiva.percentuale != percentualeIva:
-#            messageInfo(msg="ATTENZIONE, % IVA non corrispondente")
-
-        totaleRiga = mN(prezzoNetto * quantita * moltiplicatore)
+        totaleRiga = Decimal(prezzoNetto * quantita * moltiplicatore)
 
         # PARTE dedicata al modulo noleggio ...
         # TODO : Rivedere quanto prima
-        if posso("GN") and anaedit.noleggio and str(anaedit._righe[i]["arco_temporale"]) != "NO":
+        if posso("GN") and anaedit.noleggio and str(riga["arco_temporale"]) != "NO":
             arco_temporale = Decimal(anaedit.giorni_label.get_text())
-            if str(anaedit._righe[i]["divisore_noleggio"]) == "1":
-                totaleRiga = mN(totaleRiga *Decimal(anaedit._righe[i]["arco_temporale"]))
+            if str(riga["divisore_noleggio"]) == "1":
+                totaleRiga = mN(totaleRiga *Decimal(riga["arco_temporale"]))
             else:
-                totaleRiga= mN(totaleRiga *Decimal(str(sqrt(int(anaedit._righe[i]["arco_temporale"])))))
+                totaleRiga= mN(totaleRiga *Decimal(str(sqrt(int(riga["arco_temporale"])))))
 
         percentualeIvaRiga = percentualeIva
 
@@ -266,7 +261,7 @@ def calcolaTotalePart(anaedit, dao=None):
                 totaleImponibileRiga = 0
             else:
                 totaleEsclusoBaseImponibileRiga = 0
-                totaleImponibileRiga = mN(calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga)) or 0
+                totaleImponibileRiga = calcolaPrezzoIva(totaleRiga, -1 * percentualeIvaRiga) or 0
         else:
             if daoiva and daoiva.tipo_ali_iva == "Non imponibile":
                 totaleEsclusoBaseImponibileRiga = totaleRiga
@@ -292,51 +287,55 @@ def calcolaTotalePart(anaedit, dao=None):
             castellettoIva[percentualeIvaRiga]['percentuale'] = percentualeIvaRiga
             castellettoIva[percentualeIvaRiga]['imponibile'] += totaleImponibileRiga
             castellettoIva[percentualeIvaRiga]['imposta'] += totaleImpostaRiga
-            castellettoIva[percentualeIvaRiga]['totale'] += mN(totaleRiga,2)
+            castellettoIva[percentualeIvaRiga]['totale'] += totaleRiga
 
-    totaleNonScontato = mN(totaleNonScontato,2)
-    totaleImponibile = mN(totaleImponibile)
+#    totaleNonScontato = totaleNonScontato
+#    totaleImponibile = totaleImponibile
     totaleImposta = totaleNonScontato - (totaleImponibile+totaleEsclusoBaseImponibile)
-    totaleEsclusoBaseImponibile = mN(totaleEsclusoBaseImponibile)
-    for percentualeIva in castellettoIva:
-        castellettoIva[percentualeIva]['imponibile'] = mN(castellettoIva[percentualeIva]['imponibile'])
-        castellettoIva[percentualeIva]['imposta'] = mN(castellettoIva[percentualeIva]['imposta'])
-        castellettoIva[percentualeIva]['totale'] = mN(castellettoIva[percentualeIva]['totale'], 2)
+#    totaleEsclusoBaseImponibile = totaleEsclusoBaseImponibile
+#    for percentualeIva in castellettoIva: #????????????????????????
+#        castellettoIva[percentualeIva]['imponibile'] = castellettoIva[percentualeIva]['imponibile']
+#        castellettoIva[percentualeIva]['imposta'] = castellettoIva[percentualeIva]['imposta']
+#        castellettoIva[percentualeIva]['totale'] = castellettoIva[percentualeIva]['totale']
+
 
     totaleImponibileScontato = totaleImponibile
     totaleImpostaScontata = totaleImposta
     totaleScontato = totaleNonScontato
     scontiSuTotale = anaedit.sconti_testata_widget.getSconti()
     applicazioneSconti = anaedit.sconti_testata_widget.getApplicazione()
+
+
     if len(scontiSuTotale) > 0:
         anaedit.avvertimento_sconti_button.set_sensitive(True)
         anaedit.avvertimento_sconti_button.show()
         for s in scontiSuTotale:
             if s["tipo"] == 'percentuale':
                 if applicazioneSconti == 'scalare':
-                    totaleScontato = mN(totaleScontato) * (1 - mN(s["valore"]) / 100)
+                    totaleImponibileScontato = totaleImponibileScontato * (1 - Decimal(s["valore"]) / 100)
                 elif applicazioneSconti == 'non scalare':
-                    totaleScontato = mN(totaleScontato) - mN(totaleNonScontato) * mN(s["valore"]) / 100
+                    totaleImponibileScontato = totaleImponibileScontato - totaleImponibile * Decimal(s["valore"]) / 100
                 else:
                     raise Exception, ('BUG! Tipo di applicazione sconto '
                                         'sconosciuto: %s' % s['tipo'])
             elif s["tipo"] == 'valore':
-                totaleScontato = mN(totaleScontato - Decimal(s["valore"]))
-                if totaleScontato <0:
+                totaleImponibileScontato = totaleImponibileScontato - Decimal(s["valore"])
+                if totaleImponibileScontato <0:
                     messageInfo(msg="TOTALE SCONTATO NON PUÒ ESSERE INFERIORE A ZERO")
                     anaedit.sconti_testata_widget.setValues([])
-#                    raise Exception, ("TOTALE SCONTATO NON PUÒ ESSERE INFERIORE A ZERO")
                     return
 
         # riporta l'insieme di sconti ad una percentuale globale
         if totaleScontato >0:
-            percentualeScontoGlobale = (1 - totaleScontato / totaleNonScontato) * 100
+            percentualeScontoGlobale = (1 - totaleImponibileScontato / totaleImponibile) * 100
         else:
             percentualeScontoGlobale = 100
+
         totaleImpostaScontata = 0
         totaleImponibileScontato = 0
 #        totaleScontato = 0
         # riproporzione del totale, dell'imponibile e dell'imposta
+
         for k in castellettoIva.keys():
             castellettoIva[k]['totale'] = Decimal(castellettoIva[k]['totale']) * (1 - Decimal(percentualeScontoGlobale) / 100)
             castellettoIva[k]['imponibile'] = Decimal(castellettoIva[k]['imponibile']) * (1 - Decimal(percentualeScontoGlobale) / 100)
@@ -345,19 +344,20 @@ def calcolaTotalePart(anaedit, dao=None):
             totaleImponibileScontato += Decimal(castellettoIva[k]['imponibile'])
             totaleImpostaScontata += Decimal(castellettoIva[k]['imposta'])
 
-        totaleScontato = mN(Decimal(totaleImponibileScontato) + Decimal(totaleImpostaScontata), 2)
+        totaleScontato = Decimal(totaleImponibileScontato) + Decimal(totaleImpostaScontata)
+    anaedit.avvertimento_sconti_button.set_sensitive(False)
+    anaedit.avvertimento_sconti_button.hide()
 
-
-    anaedit.totale_generale_label.set_text(str(totaleScontato))
-    anaedit.totale_generale_riepiloghi_label.set_text(str(totaleNonScontato))
+    anaedit.totale_generale_label.set_text(str(mN(totaleScontato,2)))
+    anaedit.totale_generale_riepiloghi_label.set_text(str(mN(totaleNonScontato,2)))
     anaedit.totale_imponibile_label.set_text(str(mN(totaleImponibileScontato, 2)))
-    anaedit.totale_imponibile_riepiloghi_label.set_text(str(totaleImponibile))
+    anaedit.totale_imponibile_riepiloghi_label.set_text(str(mN(totaleImponibile,2)))
     anaedit.totale_imposta_label.set_text(str(mN(totaleImpostaScontata, 2)))
-    anaedit.totale_imposta_riepiloghi_label.set_text(str(totaleImposta))
+    anaedit.totale_imposta_riepiloghi_label.set_text(str(mN(totaleImposta, 2)))
     anaedit.totale_imponibile_scontato_riepiloghi_label.set_text(str(mN(totaleImponibileScontato, 2)))
     anaedit.totale_imposta_scontata_riepiloghi_label.set_text(str(mN(totaleImpostaScontata, 2)))
-    anaedit.totale_scontato_riepiloghi_label.set_text(str(totaleScontato))
-    anaedit.totale_in_pagamenti_label.set_markup('<b><span foreground="black" size="24000">'+str(totaleScontato)+'</span></b>')
+    anaedit.totale_scontato_riepiloghi_label.set_text(str(mN(totaleScontato, 2)))
+    anaedit.totale_in_pagamenti_label.set_markup('<b><span foreground="black" size="24000">'+str(mN(totaleScontato,2))+'</span></b>')
     anaedit.totale_non_base_imponibile_label.set_text(str(mN(totaleEsclusoBaseImponibile,2)))
 
     id_pag = anaedit._id_pagamento
@@ -367,14 +367,13 @@ def calcolaTotalePart(anaedit, dao=None):
     else:
         anaedit.metodo_pagamento_label.set_markup('<b><span foreground="black" size="16000">'+str("NESSUNO?")+'</span></b>')
 
-
     model = anaedit.riepiloghi_iva_treeview.get_model()
     model.clear()
     for k in castellettoIva.keys():
         if k !=0:
-            model.append((str(mN(k)),
-                            (str(mN(castellettoIva[k]['imponibile']))),
-                            (str(mN(castellettoIva[k]['imposta']))),))
+            model.append((str(mN(k,1)),
+                            (str(mN(castellettoIva[k]['imponibile'],2))),
+                            (str(mN(castellettoIva[k]['imposta'],2))),))
 
 
 def mostraArticoloPart(anaedit, id, art=None):
