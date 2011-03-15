@@ -231,9 +231,12 @@ def calcolaTotalePart(anaedit, dao=None):
     totaleScontato = Decimal(0)
     castellettoIva = {}
 
+    anaedit.avvertimento_sconti_button.set_sensitive(False)
+    anaedit.avvertimento_sconti_button.hide()
+
     totaleEsclusoBaseImponibileRiga = 0
     totaleImponibileRiga = 0
-    for riga in anaedit._righe:
+    for riga in anaedit._righe[1:]:
         prezzoNetto = Decimal(riga["prezzoNetto"])
         quantita = Decimal(riga["quantita"])
         moltiplicatore = Decimal(riga["moltiplicatore"])
@@ -305,7 +308,6 @@ def calcolaTotalePart(anaedit, dao=None):
     scontiSuTotale = anaedit.sconti_testata_widget.getSconti()
     applicazioneSconti = anaedit.sconti_testata_widget.getApplicazione()
 
-
     if len(scontiSuTotale) > 0:
         anaedit.avvertimento_sconti_button.set_sensitive(True)
         anaedit.avvertimento_sconti_button.show()
@@ -345,9 +347,6 @@ def calcolaTotalePart(anaedit, dao=None):
             totaleImpostaScontata += Decimal(castellettoIva[k]['imposta'])
 
         totaleScontato = Decimal(totaleImponibileScontato) + Decimal(totaleImpostaScontata)
-    anaedit.avvertimento_sconti_button.set_sensitive(False)
-    anaedit.avvertimento_sconti_button.hide()
-
     anaedit.totale_generale_label.set_text(str(mN(totaleScontato,2)))
     anaedit.totale_generale_riepiloghi_label.set_text(str(mN(totaleNonScontato,2)))
     anaedit.totale_imponibile_label.set_text(str(mN(totaleImponibileScontato, 2)))
