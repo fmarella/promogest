@@ -1520,7 +1520,7 @@ def stringToDate(stringa):
 
 def stringToDateBumped(stringa):
     """
-    Converte una stringa in data
+    Converte una stringa in data e ci aggiunge un giorno per la ricerca
     """
     if stringa is None or stringa == '':
         return None
