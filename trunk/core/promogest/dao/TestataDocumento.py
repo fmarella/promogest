@@ -947,9 +947,9 @@ class TestataDocumento(Dao):
         elif k == 'aParte':
             dic = {k:testata_documento.c.parte <= v}
         elif k == 'daData':
-            dic = {k:testata_documento.c.data_documento >= v}
+            dic = {k:testata_documento.c.data_inserimento >= v}
         elif k== 'aData':
-            dic = {k:testata_documento.c.data_documento <= v}
+            dic = {k:testata_documento.c.data_inserimento <= v}
         elif k =='protocollo':
             dic = {k:testata_documento.c.protocollo.ilike("%"+v+"%")}
         elif k == 'idOperazione':
