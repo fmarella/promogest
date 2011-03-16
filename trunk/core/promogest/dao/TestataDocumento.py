@@ -276,9 +276,12 @@ class TestataDocumento(Dao):
             percentualeIvaRiga = Decimal(riga.percentuale_iva)
             idAliquotaIva = riga.id_iva
             daoiva=None
+            aliquotaIvaRiga = None
             if idAliquotaIva:
                 daoiva = AliquotaIva().getRecord(id=idAliquotaIva)
-
+                aliquotaIvaRiga = daoiva.percentuale
+            if not aliquotaIvaRiga:
+                aliquotaIvaRiga =  percentualeIvaRiga
             totaleRiga = Decimal(riga.quantita or 0) * Decimal(riga.moltiplicatore) * Decimal(riga.valore_unitario_netto or 0)
 
             if (fonteValore == "vendita_iva" or fonteValore == "acquisto_iva"):
@@ -302,7 +305,6 @@ class TestataDocumento(Dao):
             totaleImponibile += totaleImponibileRiga
             totaleImposta += totaleImpostaRiga
             totaleEsclusoBaseImponibile += totaleEsclusoBaseImponibileRiga
-
             if aliquotaIvaRiga not in castellettoIva.keys():
                 castellettoIva[aliquotaIvaRiga] = {'percentuale': percentualeIvaRiga,
                                                     'imponibile': totaleImponibileRiga,
@@ -313,7 +315,6 @@ class TestataDocumento(Dao):
                 castellettoIva[aliquotaIvaRiga]['imponibile'] += totaleImponibileRiga
                 castellettoIva[aliquotaIvaRiga]['imposta'] += totaleImpostaRiga
                 castellettoIva[aliquotaIvaRiga]['totale'] += totaleRiga
-
 #        totaleNonScontato = totaleNonScontato
 #        totaleImponibile = totaleImponibile
         totaleImposta = totaleNonScontato - (totaleImponibile+totaleEsclusoBaseImponibile)
@@ -378,7 +379,6 @@ class TestataDocumento(Dao):
                 dictCastellettoIva = castellettoIva[k]
                 dictCastellettoIva['aliquota'] = k
                 self._castellettoIva.append(dictCastellettoIva)
-
         return None
 
     totali = property(_getTotaliDocumento, )
