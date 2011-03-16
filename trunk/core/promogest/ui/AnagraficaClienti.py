@@ -68,7 +68,6 @@ class AnagraficaClienti(Anagrafica):
         #davvero alla rimozione ed a quel punto gestire il "delete" a livello di
         #dao
         dao = self.filter.getSelectedDao()
-        print dao.__dict__
 #        dao.delete()
 #        self.filter.refresh()
 #        self.htmlHandler.setDao(None)
