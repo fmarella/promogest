@@ -2116,7 +2116,7 @@ def getCategorieContatto(id=None):
     @param id=None:
     @type id=None:
     """
-    from promogest.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
+    from promogest.modules.Contatti.dao.ContattoCategoriaContatto import ContattoCategoriaContatto
     dbCategorieContatto = ContattoCategoriaContatto().select(id=id,
                                                             batchSize=None)
     return dbCategorieContatto
