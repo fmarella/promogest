@@ -85,17 +85,18 @@ def getNuovoCodiceFornitore():
     try:
         n = 1
         quanti = session.query(Fornitore).count()
-        while session.query(Fornitore).order_by(Fornitore.codice.asc()).offset(quanti-n).limit(1).all():
-            art = session.query(Fornitore).order_by(Fornitore.codice.asc()).offset(quanti-n).limit(1).all()
-            codice = codeIncrement(art[0].codice)
-            if not codice or Fornitore().select(codice=codice):
-                if n < 50:
-                    n =n+1
+        if quanti > 0:
+            while session.query(Fornitore).order_by(Fornitore.codice.asc()).offset(quanti-n).limit(1).all():
+                art = session.query(Fornitore).order_by(Fornitore.codice.asc()).offset(quanti-n).limit(1).all()
+                codice = codeIncrement(art[0].codice)
+                if not codice or Fornitore().select(codice=codice):
+                    if n < 50:
+                        n =n+1
+                    else:
+                        break
                 else:
-                    break
-            else:
-                if not Fornitore().select(codice=codice):
-                    return codice
+                    if not Fornitore().select(codice=codice):
+                        return codice
     except:
         pass
     try:
