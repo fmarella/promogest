@@ -2548,19 +2548,37 @@ def deaccenta(riga=None):
     only_ascii = nkfd_form.encode('ASCII', 'ignore')
     return only_ascii
 
-def setconf(section, key):
+def setconf(section, key, value=False):
     """ Importante funzione che "semplifica" la lettura dei dati dalla tabella
     di configurazione setconf
     Tentativo abbastanza rudimentale per gestire le liste attraverso i ; ma
     forse si potrebbero gestire più semplicemente con le virgole
     """
     from promogest.dao.Setconf import SetConf
-    conf = SetConf().select(key=key, section=section)
+    confList = Environment.confList
+    confff = None
+    if not confList:
+        confList = SetConf().select(batchSize=None)
+        Environment.confList = confList
+    for d in confList:
+        if not value:
+            if d.key==key and d.section==section:
+                confff = d
+        else:
+            if d.key==key and d.section==section and d.value == value:
+                confff = d
+    if not confff:
+        if not value:
+            confff = SetConf().select(key=key, section=section)
+        elif value:
+            confff = SetConf().select(key=key, section=section, value=value)
+        if confff:
+            confff = conf[0]
     c = []
-    if conf:
-        valore = conf[0].value
-        if conf[0].tipo == "BOOLEAN":
-            return conf[0].active
+    if confff:
+        valore = confff.value
+        if confff.tipo == "BOOLEAN":
+            return confff.active
         if ";" in str(valore):
             val = str(valore).split(";")
             for a in val:
@@ -2816,7 +2834,10 @@ def scribusVersion(slafile):
         return False
 
 def posso(mod=None):
-    from promogest.dao.Setconf import SetConf
+    try:
+        SetConf()
+    except:
+        from promogest.dao.Setconf import SetConf
     moduli = Environment.modulesList
     if mod == "RA":
         if "RuoliAzioni"in moduli: return True
@@ -2897,7 +2918,7 @@ def posso(mod=None):
         if "PRO BASIC" in moduli: return True
         if "PRO STANDARD" in moduli: return True
         if "PRO FULL" in moduli: return True
-    d = SetConf().select(key="mod_enable",section=mod,value="yes" )
+    d = setconf(mod,"mod_enable", value="yes")
     if d:
         return True
     return False

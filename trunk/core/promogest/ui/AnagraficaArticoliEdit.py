@@ -31,6 +31,9 @@ if posso("PW"):
     from promogest.modules.PromoWear.ui.AnagraficaArticoliPromoWearExpand import articleTypeGuiManage, treeViewExpand
     from promogest.modules.PromoWear.ui.TaglieColori import GestioneTaglieColori
 
+if posso("ADR"):
+    from promogest.modules.ADR.ui.ADRNotebookPage import ADRNotebookPage
+
 class AnagraficaArticoliEdit(AnagraficaEdit):
     """ Modifica un record dell'anagrafica degli articoli """
 
@@ -118,6 +121,12 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         fillComboboxUnitaFisica(self.unita_volume_comboboxentry,'volume')
         fillComboboxUnitaFisica(self.unita_peso_comboboxentry,'peso')
 
+        if posso("ADR"):
+            self.adr_page = ADRNotebookPage(self, "")
+            self.adr_page_label = gtk.Label()
+            self.adr_page_label.set_markup("Dati ADR")
+            self.notebook1.append_page(self.adr_page.adr_frame, self.adr_page_label)
+
 
     def setDao(self, dao):
         if dao is None:
@@ -134,6 +143,11 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = Articolo().getRecord(id=dao.id)
             self.new=False
+
+        if posso("ADR"):
+            self.adr_page.adrSetDao(self.dao)
+            #self.adr_page.nome_cognome_label.set_text(str(self.dao.ragione_sociale) or ""+"\n"+str(self.dao.cognome) or ""+" "+str(self.dao.nome) or "")
+
         self._refresh()
         return self.dao
 
@@ -188,6 +202,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             a = articleTypeGuiManage(self, self.dao, new=self.new)
         if posso("GN"):
             self.divisore_noleggio_entry.set_text(str(self.dao.divisore_noleggio))
+        if posso("ADR"):
+            self.adr_page.adr_refresh()
         self._loading = False
 
     def saveDao(self):

@@ -88,17 +88,18 @@ def getNuovoCodiceCliente():
     try:
         n = 1
         quanti = session.query(Cliente).count()
-        while session.query(Cliente).order_by(Cliente.codice.asc()).offset(quanti-n).limit(1).all():
-            art = session.query(Cliente).order_by(Cliente.codice.asc()).offset(quanti-n).limit(1).all()
-            codice = codeIncrement(art[0].codice)
-            if not codice or Cliente().select(codice=codice):
-                if n < 50:
-                    n =n+1
+        if quanti > 0:
+            while session.query(Cliente).order_by(Cliente.codice.asc()).offset(quanti-n).limit(1).all():
+                art = session.query(Cliente).order_by(Cliente.codice.asc()).offset(quanti-n).limit(1).all()
+                codice = codeIncrement(art[0].codice)
+                if not codice or Cliente().select(codice=codice):
+                    if n < 50:
+                        n =n+1
+                    else:
+                        break
                 else:
-                    break
-            else:
-                if not Cliente().select(codice=codice):
-                    return codice
+                    if not Cliente().select(codice=codice):
+                        return codice
     except:
         pass
     try:
@@ -108,7 +109,7 @@ def getNuovoCodiceCliente():
             else:
                 dd = "CL0000"
             codice = codeIncrement(dd)
-    except:
+    except Exception as e:
         pass
 #    if hasattr(conf,'Clienti'):
 #        if hasattr(conf.Clienti,'lunghezza_codice'):

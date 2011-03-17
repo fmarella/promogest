@@ -36,29 +36,6 @@ except:
             schema = params['mainSchema'])
 
     regioni.create(checkfirst=True)
-    s= select([regioni.c.denominazione]).execute().fetchall()
-    if (u'Piemonte',) not in s or s ==[]:
-        tipo = regioni.insert()
-        tipo.execute(codice = "01", denominazione='Piemonte')
-        tipo.execute(codice = "02", denominazione="Valle D'Aosta")
-        tipo.execute(codice = "03", denominazione="Lombardia")
-        tipo.execute(codice = "04", denominazione="Trentino Alto Adige")
-        tipo.execute(codice = "05", denominazione="Veneto")
-        tipo.execute(codice = "06", denominazione="Friuli Venezia Giulia")
-        tipo.execute(codice = "07", denominazione="Liguria")
-        tipo.execute(codice = "08", denominazione="Emilia Romagna")
-        tipo.execute(codice = "09", denominazione="Toscana")
-        tipo.execute(codice = "10", denominazione="Umbria")
-        tipo.execute(codice = "11", denominazione="Marche")
-        tipo.execute(codice = "12", denominazione="Lazio")
-        tipo.execute(codice = "13", denominazione="Abruzzo")
-        tipo.execute(codice = "14", denominazione="Molise")
-        tipo.execute(codice = "15", denominazione="Campania")
-        tipo.execute(codice = "16", denominazione="Puglia")
-        tipo.execute(codice = "17", denominazione="Basilicata")
-        tipo.execute(codice = "18", denominazione="Calabria")
-        tipo.execute(codice = "19", denominazione="Sicilia")
-        tipo.execute(codice = "20", denominazione="Sardegna")
 
 class Regioni(Dao):
 
@@ -72,3 +49,32 @@ class Regioni(Dao):
         return  dic[k]
 
 std_mapper = mapper(Regioni, regioni,order_by=regioni.c.denominazione)
+regis = [ ("01",'Piemonte'),
+        ("02","Valle D'Aosta"),
+        ("03","Lombardia"),
+        ("04","Trentino Alto Adige"),
+        ("05","Veneto"),
+        ("06","Friuli Venezia Giulia"),
+        ("07","Liguria"),
+        ("08","Emilia Romagna"),
+        ("09","Toscana"),
+        ("10","Umbria"),
+        ("11","Marche"),
+        ("12","Lazio"),
+        ("13","Abruzzo"),
+        ("14","Molise"),
+        ("15","Campania"),
+        ("16","Puglia"),
+        ("17","Basilicata"),
+        ("18","Calabria"),
+        ("19","Sicilia"),
+        ("20","Sardegna"),]
+
+f = Regioni().select(denominazione="Piemonte")
+if not f:
+    for p in regis:
+        a = Regioni()
+        a.codice=p[0]
+        a.denominazione = p[1]
+        session.add(a)
+    session.commit()

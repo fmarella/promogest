@@ -105,7 +105,7 @@ class Dao(object):
                 self.record = self.record.limit(batchSize)
             if distinct is not None:
                 self.record = self.record.distinct(distinct)
-            if offset is not None:
+            if offset is not None and offset is not 0:
                 self.record = self.record.offset(offset)
             if groupBy is not None:
                 self.record = self.record.group_by(groupBy)

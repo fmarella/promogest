@@ -623,6 +623,13 @@ if (hasattr(conf, "GestioneNoleggio") and getattr(conf.GestioneNoleggio,'mod_ena
     from promogest.modules.GestioneNoleggio.dao.ArticoloGestioneNoleggio import ArticoloGestioneNoleggio
     std_mapper.add_property("APGN",relation(ArticoloGestioneNoleggio,primaryjoin=(articolo.c.id==ArticoloGestioneNoleggio.id_articolo),backref="ARTI",uselist=False))
 
+if (hasattr(conf, "ADR") and getattr(conf.ADR, 'mod_enable') == "yes") or ("ADR" in modulesList):
+    from promogest.modules.ADR.dao.ArticoloADR import ArticoloADR
+    std_mapper.add_property("APADR",
+                            relation(ArticoloADR,
+                                     primaryjoin=(articolo.c.id==ArticoloADR.id_articolo),
+                                     backref="ARTI",
+                                     uselist=False))
 
 
 def isNuovoCodiceByFamiglia():
@@ -649,21 +656,23 @@ def getNuovoCodiceArticolo(idFamiglia=None):
     try:
         n = 1
         quanti = session.query(Articolo).count()
-        while session.query(Articolo).order_by(Articolo.codice.asc()).offset(quanti-n).limit(1).all():
-            art = session.query(Articolo).order_by(Articolo.codice.asc()).offset(quanti-n).limit(1).all()
-            codice = codeIncrement(art[0].codice)
-            if not codice or Articolo().select(codice=codice):
-                if n < 100:
-                    n =n+1
+        if quanti > 0:
+            while session.query(Articolo).order_by(Articolo.codice.asc()).offset(quanti-n).limit(1).all():
+                art = session.query(Articolo).order_by(Articolo.codice.asc()).offset(quanti-n).limit(1).all()
+                codice = codeIncrement(art[0].codice)
+                if not codice or Articolo().select(codice=codice):
+                    if n < 100:
+                        n =n+1
+                    else:
+                        break
                 else:
-                    break
-            else:
-                if not Articolo().select(codice=codice):
-                    return codice
+                    if not Articolo().select(codice=codice):
+                        return codice
     except:
         pass
     try:
         if not codice:
+
             if hasattr(conf,"Articoli") and hasattr(conf.Articoli,"struttura_codice"):
                 dd = conf.Articoli.struttura_codice
             else:
@@ -671,7 +680,7 @@ def getNuovoCodiceArticolo(idFamiglia=None):
             codice = codeIncrement(dd)
     except:
         pass
-
+    return codice
 
 #            if isNuovoCodiceByFamiglia():
 #                #print "passi qui,isNuovoCodiceByFamiglia() "
@@ -696,4 +705,3 @@ def getNuovoCodiceArticolo(idFamiglia=None):
 #            codice = codice
 #    else:
 #        Environment.lastCode = codice
-    return codice

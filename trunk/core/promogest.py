@@ -124,7 +124,7 @@ if __name__ == '__main__':
                 s.bind((host, port))
                 BigBang()
             except Exception as e:
-        #        raise
+                print "EEEEEEE", e
                 dialog = gtk.MessageDialog(None,
                                            gtk.DIALOG_MODAL
                                            | gtk.DIALOG_DESTROY_WITH_PARENT,

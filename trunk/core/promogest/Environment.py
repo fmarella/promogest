@@ -117,6 +117,8 @@ loc = locale.setlocale(locale.LC_ALL, '')
 mm = {'3996679c06ebc369feefc92063644d83':'e4da3b7fbbce2345d7772b0674a318d5', #Contatto = 5
         'cfe6753e5e82f522119e09df7b726e4a':'eccbc87e4b5ce2fe28308fd9f2a7baf3'} #Promemoria = 3
 
+confList=[]
+
 configDir= None
 
 def getConfigureDir(company='__default__'):
@@ -523,6 +525,7 @@ if not engine:
     raise Exception, "NON È STATO TROVATO UN BACKEND PER IL DB"
 tipo_eng = engine.name
 engine.echo = False
+#engine.autocommit= True
 meta = MetaData(engine)
 #Session = sessionmaker(bind=engine)
 Session = scoped_session(sessionmaker(bind=engine, autoflush=True))
