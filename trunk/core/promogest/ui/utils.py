@@ -2834,10 +2834,6 @@ def scribusVersion(slafile):
         return False
 
 def posso(mod=None):
-    try:
-        SetConf()
-    except:
-        from promogest.dao.Setconf import SetConf
     moduli = Environment.modulesList
     if mod == "RA":
         if "RuoliAzioni"in moduli: return True

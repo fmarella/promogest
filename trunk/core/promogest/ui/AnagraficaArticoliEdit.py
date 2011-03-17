@@ -384,6 +384,10 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         self.dao.url_immagine = self.url_articolo_entry.get_text()
         pbar(self.dialog.pbar,parziale=3, totale=4)
         self.dao.persist()
+        if posso("ADR"):
+            dao_articolo_adr = self.adr_page.adrSaveDao()
+            dao_articolo_adr.id_articolo = self.dao.id
+            dao_articolo_adr.persist()
         pbar(self.dialog.pbar,parziale=4, totale=4)
         pbar(self.dialog.pbar,stop=True)
 

@@ -26,7 +26,6 @@ from GladeWidget import GladeWidget
 from promogest import Environment
 from utils import *
 from utilsCombobox import *
-#from promogest.lib.calcolaTotaleDocumento import totaliDocumento
 from promogest.dao.Articolo import Articolo
 from promogest.dao.AliquotaIva import AliquotaIva
 from promogest.dao.DaoUtils import giacenzaArticolo
