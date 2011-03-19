@@ -375,7 +375,7 @@ class Dao(object):
             if elem[0] is not None and elem[2]=="Lista":
                 arg= self.filter_values(str(elem[1]+"List"),elem[0])
                 filters.append(arg)
-            elif elem[0] or type(elem[0])==bool:
+            elif elem[0] is not None or type(elem[0])==bool:
                 arg= self.filter_values(str(elem[1]),elem[0])
                 filters.append(arg)
         return and_(*filters)
