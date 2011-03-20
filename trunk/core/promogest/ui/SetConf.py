@@ -245,10 +245,10 @@ if not SetConf().select(key="feed",section="Feed"):  # OK
     kuu.tipo = "bool"
     kuu.date = datetime.datetime.now()
     kuu.persist()
-ff = SetConf().select(key="feed", section="Feed")
-if ff:
-    ff[0].tipo = "bool"
-    ff[0].persist()
+#ff = SetConf().select(key="feed", section="Feed")
+#if ff:
+#    ff[0].tipo = "bool"
+#    ff[0].persist()
 #-------------------------------------------------------------------------------
 if not SetConf().select(key="smtpserver", section="Smtp"):
     kvv = SetConf()
@@ -290,7 +290,7 @@ bb = SetConf().select(key="decimals", section="Numbers")
 if not bb:
     kbb = SetConf()
     kbb.key = "decimals"
-    kbb.value ="2"
+    kbb.value ="3"
     kbb.section = "Numbers"
     kbb.tipo_section = "Generico"
     kbb.description = "Gestione dei decimali"
@@ -298,12 +298,12 @@ if not bb:
     kbb.tipo = "int"
     kbb.date = datetime.datetime.now()
     kbb.persist()
-else:
-    try:
-        int(bb[0].value)
-    except:
-        bb[0].value ="2"
-        bb[0].persist()
+#else:
+#    try:
+#        int(bb[0].value)
+#    except:
+#        bb[0].value ="2"
+#        bb[0].persist()
 # ---------------------------------------------------------------------------- OK
 aa = SetConf().select(key="batch_size", section="Numbers")
 if not aa:
@@ -317,12 +317,12 @@ if not aa:
     kcc.tipo = "int"
     kcc.date = datetime.datetime.now()
     kcc.persist()
-else:
-    try:
-        int(aa[0].value)
-    except:
-        aa[0].value ="15"
-        aa[0].persist()
+#else:
+#    try:
+#        int(aa[0].value)
+#    except:
+#        aa[0].value ="15"
+#        aa[0].persist()
 # ------------------------------------------------------------------------- OK
 cc = SetConf().select(key="combo_column", section="Numbers")
 if not cc:
@@ -336,12 +336,12 @@ if not cc:
     kdd.tipo = "int"
     kdd.date = datetime.datetime.now()
     kdd.persist()
-else:
-    try:
-        int(cc[0].value)
-    except:
-        cc[0].value ="3"
-        cc[0].persist()
+#else:
+#    try:
+#        int(cc[0].value)
+#    except:
+#        cc[0].value ="3"
+#        cc[0].persist()
 # -----------------------------------------------------------------------ok
 if not SetConf().select(key="zeri_in_riga",section="Stampa"):
     kuu = SetConf()
@@ -354,10 +354,10 @@ if not SetConf().select(key="zeri_in_riga",section="Stampa"):
     kuu.tipo = "bool"
     kuu.date = datetime.datetime.now()
     kuu.persist()
-ff = SetConf().select(key="zeri_in_riga", section="Stampa")
-if ff:
-    ff[0].tipo = "bool"
-    ff[0].persist()
+#ff = SetConf().select(key="zeri_in_riga", section="Stampa")
+#if ff:
+#    ff[0].tipo = "bool"
+#    ff[0].persist()
 #------------------------------------------------------------------------ok
 if not SetConf().select(key="zeri_in_totali",section="Stampa"):
     kuu1 = SetConf()
@@ -370,7 +370,7 @@ if not SetConf().select(key="zeri_in_totali",section="Stampa"):
     kuu1.tipo = "bool"
     kuu1.date = datetime.datetime.now()
     kuu1.persist()
-ff1 = SetConf().select(key="zeri_in_totali", section="Stampa")
-if ff1:
-    ff1[0].tipo = "bool"
-    ff1[0].persist()
+#ff1 = SetConf().select(key="zeri_in_totali", section="Stampa")
+#if ff1:
+#    ff1[0].tipo = "bool"
+#    ff1[0].persist()

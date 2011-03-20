@@ -50,7 +50,7 @@ class ConfiguraWindow(GladeWidget):
     def _refresh(self):
         self.zeri_in_riga_check.set_active(int(setconf("Stampa", "zeri_in_riga") or 0))
         self.zeri_in_totali_check.set_active(int(setconf("Stampa", "zeri_in_totali") or 0 ))
-        self.feed_check.set_active(int(setconf("Feed", "feed")))
+        self.feed_check.set_active(int(setconf("Feed", "feed") or 1))
 
         self.altezza_logo_entry.set_text(str(setconf("Documenti", "altezza_logo")))
         self.larghezza_logo_entry.set_text(str(setconf("Documenti", "larghezza_logo")))
