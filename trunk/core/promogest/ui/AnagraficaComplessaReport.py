@@ -44,7 +44,7 @@ from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
 from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
 from promogest.lib.SlaTpl2Sla import SlaTpl2Sla
 #else:
-
+from promogest.ui.AnagraficaComplessaPrintPreview import AnagraficaPrintPreview
 
 from promogest.ui.SendEmail import SendEmail
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
