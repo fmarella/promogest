@@ -23,8 +23,7 @@
 import gtk
 from sqlalchemy.orm import join
 from sqlalchemy import or_
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, \
-                        AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 import promogest.dao.Cliente
 from promogest import Environment
 from promogest.dao.Cliente import Cliente

@@ -22,8 +22,11 @@
 
 import gtk
 import gobject
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, \
-                            AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
+from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
+from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
+from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.dao.AliquotaIva import AliquotaIva
 from utils import *
 from utilsCombobox import *

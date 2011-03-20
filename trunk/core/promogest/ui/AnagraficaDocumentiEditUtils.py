@@ -154,7 +154,9 @@ def drawPart(anaedit):
     fillComboboxAliquoteIva(anaedit.id_aliquota_iva_esenzione_customcombobox.combobox)
     fillComboboxCausaliTrasporto(anaedit.causale_trasporto_comboboxentry)
     fillComboboxAspettoEsterioreBeni(anaedit.aspetto_esteriore_beni_comboboxentry)
+
     anaedit.id_operazione_combobox.set_wrap_width(int(setconf("Numbers", "combo_column")))
+
     anaedit.porto_combobox.set_active(-1)
     anaedit.porto_combobox.set_sensitive(False)
     fillComboboxNotePiePaginaTestataDocumento(anaedit.note_pie_pagina_comboboxentry)
@@ -170,20 +172,19 @@ def drawPart(anaedit):
     # preferenza ricerca articolo ?
     """ ATTENZIONE schifezza per tamponare il bug di gtk 2.17 numero :
         Bug 607492 - widget.get_name(): semirisolto!!!! """
-    if hasattr(Environment.conf, 'Documenti'):
-        if hasattr(Environment.conf.Documenti, 'ricerca_per'):
-            if Environment.conf.Documenti.ricerca_per == 'codice':
-                anaedit.ricerca_codice_button.set_active(True)
-                anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_button)
-            elif Environment.conf.Documenti.ricerca_per == 'codice_a_barre':
-                anaedit.ricerca_codice_a_barre_button.set_active(True)
-                anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_a_barre_button)
-            elif Environment.conf.Documenti.ricerca_per == 'descrizione':
-                anaedit.ricerca_descrizione_button.set_active(True)
-                anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_descrizione_button)
-            elif Environment.conf.Documenti.ricerca_per == 'codice_articolo_fornitore':
-                anaedit.ricerca_codice_articolo_fornitore_button.set_active(True)
-                anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_articolo_fornitore_button)
+    crit = setconf("Documenti", "ricerca_per")
+    if crit == 'codice':
+        anaedit.ricerca_codice_button.set_active(True)
+        anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_button)
+    elif crit == 'codice_a_barre':
+        anaedit.ricerca_codice_a_barre_button.set_active(True)
+        anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_a_barre_button)
+    elif crit == 'descrizione':
+        anaedit.ricerca_descrizione_button.set_active(True)
+        anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_descrizione_button)
+    elif crit == 'codice_articolo_fornitore':
+        anaedit.ricerca_codice_articolo_fornitore_button.set_active(True)
+        anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_articolo_fornitore_button)
     if not anaedit.ricerca:
         anaedit.ricerca_codice_button.set_active(True)
         anaedit.ricerca = gtk.Buildable.get_name(anaedit.ricerca_codice_button)

@@ -20,7 +20,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-from AnagraficaComplessa import Anagrafica, AnagraficaHtml, AnagraficaReport
+from AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
+from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaFornitoriEdit import AnagraficaFornitoriEdit
 from promogest.ui.AnagraficaFornitoriFilter import AnagraficaFornitoriFilter
 from promogest.dao.DaoUtils import *

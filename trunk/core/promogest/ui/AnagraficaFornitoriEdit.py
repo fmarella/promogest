@@ -22,7 +22,7 @@
 
 import gtk
 
-from AnagraficaComplessa import AnagraficaEdit
+from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 
 import promogest.dao.Fornitore
 from promogest.dao.Fornitore import Fornitore

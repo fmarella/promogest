@@ -22,7 +22,7 @@
 
 import gtk
 
-from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 
 from promogest import Environment
 from promogest.modules.Agenti.dao.Agente import Agente, getNuovoCodiceAgente

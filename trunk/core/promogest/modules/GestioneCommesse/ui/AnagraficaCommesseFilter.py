@@ -21,7 +21,7 @@
 
 import gtk
 from decimal import *
-from promogest.ui.AnagraficaComplessa import AnagraficaFilter
+from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.modules.GestioneCommesse.dao.TestataCommessa import TestataCommessa
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *

@@ -24,7 +24,7 @@ import gtk
 import gobject
 from decimal import *
 from promogest import Environment
-from promogest.ui.AnagraficaComplessa import AnagraficaEdit
+from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.modules.GestioneCommesse.dao.TestataCommessa import TestataCommessa
 from promogest.modules.GestioneCommesse.dao.RigaCommessa import RigaCommessa
 from promogest.dao.Cliente import Cliente

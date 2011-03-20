@@ -2577,8 +2577,8 @@ def setconf(section, key, value=False):
     c = []
     if confff:
         valore = confff.value
-        if confff.tipo == "BOOLEAN":
-            return confff.active
+#        if confff.tipo == "BOOLEAN" or confff.tipo == "bool":
+#            return eval(valore)
         if ";" in str(valore):
             val = str(valore).split(";")
             for a in val:

@@ -35,10 +35,9 @@ try:
 
     if "id_banca" not in [c.name for c in rigaprimanota.columns]:
         col = Column('id_banca', Integer,
-            ForeignKey(bancaFK, onupdate="CASCADE", ondelete="RESTRICT"),
+#            ForeignKey(bancaFK, onupdate="CASCADE", ondelete="RESTRICT"),
             nullable=True)
         col.create(rigaprimanota)
-
     rigaprimanota.c.valore.alter(Numeric(16, 4), nullable=False)
 
 except:

@@ -22,8 +22,10 @@
 import gtk
 import gobject
 from decimal import *
-from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, \
-                            AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from promogest.ui.AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
+from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
+
 from AnagraficaCommesseFilter import AnagraficaCommesseFilter
 from AnagraficaCommesseEdit import AnagraficaCommesseEdit
 from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa

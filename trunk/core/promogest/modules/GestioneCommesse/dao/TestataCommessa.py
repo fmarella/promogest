@@ -173,7 +173,6 @@ class TestataCommessa(Dao):
 
 
     def delete(self):
-#        from RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
         row = RigaCommessa().select(idTestataCommessa= self.id,
                                     offset = None,
                                     batchSize = None)

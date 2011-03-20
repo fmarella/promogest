@@ -10,7 +10,10 @@ import os
 import gtk
 import datetime
 #from decimal import *
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
+from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
+
 from AnagraficaMovimentiEdit import AnagraficaMovimentiEdit
 from AnagraficaMovimentiFilter import AnagraficaMovimentiFilter
 from AnagraficaDocumentiEditUtils import *

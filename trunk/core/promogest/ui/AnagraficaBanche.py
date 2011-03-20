@@ -24,7 +24,6 @@ import gtk
 import gobject
 
 from AnagraficaSemplice import Anagrafica, AnagraficaDetail, AnagraficaFilter
-#from AnagraficaComplessa import AnagraficaEdit
 from promogest import Environment
 from promogest.dao.Banca import Banca
 from promogest.lib.ControlloIBAN import *

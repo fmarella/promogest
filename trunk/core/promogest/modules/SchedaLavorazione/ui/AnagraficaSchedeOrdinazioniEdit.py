@@ -30,7 +30,7 @@ import string
 from random import Random
 import threading
 from promogest import Environment
-from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.dao.Operazione import Operazione
 from promogest.modules.SchedaLavorazione.ui.AnagraficaCaratteriStampa import AnagraficaCaratteriStampa
 from promogest.modules.SchedaLavorazione.ui.AnagraficaColoriStampa import AnagraficaColoriStampa

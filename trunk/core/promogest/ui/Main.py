@@ -513,6 +513,7 @@ class Main(GladeWidget):
         if not hasAction(actionID=6):return
         if self.currentFrame is not None:
             self.main_hbox.remove(self.currentFrame)
+        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.parametri_modules
         frame = ParametriFrame(self.main_window, self.aziendaStr, modules=self.parametri_modules)
         return frame.getTopLevel()
 
@@ -521,7 +522,7 @@ class Main(GladeWidget):
     def on_configurazione_menu_activate(self, widget):
         if not hasAction(actionID=14):return
         configuraWindow = ConfiguraWindow(self)
-        configuraWindow = SetConfUI(self)
+#        configuraWindow = SetConfUI(self)
         showAnagrafica(self.getTopLevel(), configuraWindow)
 
     def on_dati_azienda_activate(self, widget):
@@ -779,7 +780,6 @@ promogest2 IN /HOME/NOMEUTENTE/ O IN C:/UTENTI/NOMEUTENTE"""
 
     def on_pan_active_clicked(self, button):
 #        if not hasAction(actionID=14):return
-#        configuraWindow = ConfiguraWindow(self)
         configuraWindow = PanUi(self)
         showAnagrafica(self.getTopLevel(), configuraWindow)
 

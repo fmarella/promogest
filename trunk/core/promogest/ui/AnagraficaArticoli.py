@@ -22,7 +22,10 @@
 
 import gtk
 from GladeWidget import GladeWidget
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
+from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
+from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from AnagraficaArticoliEdit import AnagraficaArticoliEdit
 from promogest import Environment
 

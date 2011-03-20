@@ -9,7 +9,7 @@
  """
 
 import gtk
-from AnagraficaComplessa import Anagrafica, AnagraficaEdit
+from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest import Environment
 #from promogest.dao.Dao import Dao
 import promogest.dao.Fornitura

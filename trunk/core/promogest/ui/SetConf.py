@@ -39,9 +39,6 @@ class SetConfUI(GladeWidget):
         self.draw()
 
     def draw(self):
-#        self.mastercode = SetConf().select(key="install_code", section="Master")[0]
-#        self.cod_installazione_entry.set_text(self.mastercode.value)
-#        self.cod_installazione_entry.set_sensitive(False)
         self.treeview = self.setconf_treeview
         rendererSx = gtk.CellRendererText()
         column = gtk.TreeViewColumn("Sezione/Chiave", rendererSx, text=1, background=4, font=5)
@@ -57,9 +54,6 @@ class SetConfUI(GladeWidget):
         celltext.connect('edited', self.on_column_codice_edited, self.treeview, True)
         column = gtk.TreeViewColumn('Valore', celltext, text=2)
         column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-#        column.set_resizable(True)
-#        column.set_expand(True)
-#        column.set_min_width(50)
         self.treeview.append_column(column)
 
         rendererSx = gtk.CellRendererText()
@@ -72,22 +66,6 @@ class SetConfUI(GladeWidget):
         column.set_expand(True)
         column.set_min_width(300)
         self.treeview.append_column(column)
-
-#        rendererSx = gtk.CellRendererText()
-#        column = gtk.TreeViewColumn("Tipo Sezione", rendererSx, text=4)
-##        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-#        column.set_clickable(False)
-##        column.set_resizable(True)
-#        column.set_min_width(70)
-#        self.treeview.append_column(column)
-
-#        rendererSx = gtk.CellRendererText()
-#        column = gtk.TreeViewColumn("Tipo Chiave", rendererSx, text=5)
-##        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-#        column.set_clickable(False)
-##        column.set_resizable(True)
-#        column.set_min_width(70)
-#        self.treeview.append_column(column)
 
         cellspin = gtk.CellRendererToggle()
         cellspin.set_property('activatable', True)
@@ -159,12 +137,6 @@ class SetConfUI(GladeWidget):
             if oggettoFiglio.active !=  model.get_value(iter, 6):
                 oggettoFiglio.active = model.get_value(iter, 6)
             oggettoFiglio.persist()
-#        mcode = self.cod_installazione_entry.get_text()
-#        mcode = mcode.lower().strip()
-#        if mcode != "":
-#            self.mastercode.value =  mcode
-#            self.mastercode.tipo = "PRO"
-#            self.mastercode.persist()
 
     def on_save_button_clicked(self,button):
         self._treeViewModel.foreach(self.saveDao)
@@ -173,8 +145,17 @@ class SetConfUI(GladeWidget):
     def on_close_button_clicked(self, button):
         self.destroy()
 
-
-
+if not SetConf().select(key="rotazione_primanota", section="Primanota"):
+    kee = SetConf()
+    kee.key = "rotazione_primanota"
+    kee.value ="mensile"
+    kee.section = "Primanota"
+    kee.tipo_section = "Generico"
+    kee.description = "Gestione della creazione della prima nota, valori ammessi, MESE, SETTIMANA, TRIMESTRE"
+    kee.active = True
+    kee.date = datetime.datetime.now()
+    kee.persist()
+#-------------------------------------------------------------------------------------------
 if not SetConf().select(key="install_code",section="Master"):
     kmm = SetConf()
     kmm.key = "install_code"
@@ -193,40 +174,7 @@ if codice:
         codice[0].value = "8f0eff136d1fb1d2b76fde5de7c83eb60d558c4f155ee687dcac5504"
         codice[0].persist()
 
-
-if not SetConf().select(key="fornitore_predefinito",section="Documenti"):
-    kkk = SetConf()
-    kkk.key = "fornitore_predefinito"
-    kkk.value =""
-    kkk.section = "Documenti"
-    kkk.description = "eventuale fornitore preferenziale da preimpostare"
-    kkk.tipo_section = "Generico"
-    kkk.active = True
-    kkk.date = datetime.datetime.now()
-    kkk.persist()
-
-if not SetConf().select(key="cliente_predefinito",section="Documenti"):
-    kll = SetConf()
-    kll.key = "cliente_predefinito"
-    kll.value =""
-    kll.section = "Documenti"
-    kll.description = "eventuale cliente preferenziale da preimpostare"
-    kll.tipo_section = "Generico"
-    kll.active = True
-    kll.date = datetime.datetime.now()
-    kll.persist()
-
-if not SetConf().select(key="tipo_documento_predefinito",section="Documenti"):
-    knn = SetConf()
-    knn.key = "tipo_documento_predefinito"
-    knn.value =""
-    knn.section = "Documenti"
-    knn.description = "eventuale tipo documento preferenziale da preimpostare"
-    knn.tipo_section = "Generico"
-    knn.active = True
-    knn.date = datetime.datetime.now()
-    knn.persist()
-
+#---------------------------------------------------------------------------- OK
 if not SetConf().select(key="altezza_logo",section="Documenti"):
     koo = SetConf()
     koo.key = "altezza_logo"
@@ -237,7 +185,7 @@ if not SetConf().select(key="altezza_logo",section="Documenti"):
     koo.active = True
     koo.date = datetime.datetime.now()
     koo.persist()
-
+#---------------------------------------------------------------------------- OK
 if not SetConf().select(key="larghezza_logo",section="Documenti"):
     kpp = SetConf()
     kpp.key = "larghezza_logo"
@@ -249,17 +197,7 @@ if not SetConf().select(key="larghezza_logo",section="Documenti"):
     kpp.date = datetime.datetime.now()
     kpp.persist()
 
-if not SetConf().select(key="tipo_movimento_predefinito",section="Documenti"):
-    kqq = SetConf()
-    kqq.key = "tipo_movimento_predefinito"
-    kqq.value =""
-    kqq.section = "Documenti"
-    kqq.description = "eventuale tipo movimento preferenziale da preimpostare"
-    kqq.tipo_section = "Generico"
-    kqq.active = True
-    kqq.date = datetime.datetime.now()
-    kqq.persist()
-
+#---------------------------------------------------------------------------- OK
 if not SetConf().select(key="ricerca_per",section="Documenti"):
     krr = SetConf()
     krr.key = "ricerca_per"
@@ -268,9 +206,10 @@ if not SetConf().select(key="ricerca_per",section="Documenti"):
     krr.description = "Preimposta un tipo di ricerca Valori possibili:(codice,descrizione,codice_a_barre,codice_articolo_fornitore "
     krr.tipo_section = "Generico"
     krr.active = True
+    krr.visible = True
     krr.date = datetime.datetime.now()
     krr.persist()
-
+#-----------------------------------------------------------------------------
 if not SetConf().select(key="color_base",section="Documenti"):
     kss = SetConf()
     kss.key = "color_base"
@@ -282,7 +221,7 @@ if not SetConf().select(key="color_base",section="Documenti"):
     kss.active = True
     kss.date = datetime.datetime.now()
     kss.persist()
-
+#------------------------------------------------------------------------------
 if not SetConf().select(key="color_text",section="Documenti"):
     ktt = SetConf()
     ktt.key = "color_text"
@@ -294,23 +233,23 @@ if not SetConf().select(key="color_text",section="Documenti"):
     ktt.active = True
     ktt.date = datetime.datetime.now()
     ktt.persist()
-
-if not SetConf().select(key="feed",section="Feed"):
+#------------------------------------------------------------------------------
+if not SetConf().select(key="feed",section="Feed"):  # OK
     kuu = SetConf()
     kuu.key = "feed"
-    kuu.value =""
+    kuu.value = "True"
     kuu.section = "Feed"
     kuu.description = "Notizie nella home"
     kuu.tipo_section = "Generico"
     kuu.active = True
-    kuu.tipo = "BOOLEAN"
+    kuu.tipo = "bool"
     kuu.date = datetime.datetime.now()
     kuu.persist()
 ff = SetConf().select(key="feed", section="Feed")
 if ff:
-    ff[0].tipo = "BOOLEAN"
+    ff[0].tipo = "bool"
     ff[0].persist()
-
+#-------------------------------------------------------------------------------
 if not SetConf().select(key="smtpserver", section="Smtp"):
     kvv = SetConf()
     kvv.key = "smtpserver"
@@ -321,7 +260,7 @@ if not SetConf().select(key="smtpserver", section="Smtp"):
     kvv.active = True
     kvv.date = datetime.datetime.now()
     kvv.persist()
-
+#-----------------------------------------------------------------------------
 if not SetConf().select(key="emailmittente", section="Smtp"):
     kzz = SetConf()
     kzz.key = "emailmittente"
@@ -330,9 +269,10 @@ if not SetConf().select(key="emailmittente", section="Smtp"):
     kzz.tipo_section = "Generico"
     kzz.description = "Email del mittente"
     kzz.active = True
+    kzz.tipo = "str"
     kzz.date = datetime.datetime.now()
     kzz.persist()
-
+#-----------------------------------------------------------------------------
 if not SetConf().select(key="multilinealimite", section="Multilinea"):
     kaa = SetConf()
     kaa.key = "multilinealimite"
@@ -341,9 +281,11 @@ if not SetConf().select(key="multilinealimite", section="Multilinea"):
     kaa.tipo_section = "Generico"
     kaa.description = "Gestione dei multilinea nei documenti"
     kaa.active = True
+    kaa.tipo = "int"
     kaa.date = datetime.datetime.now()
     kaa.persist()
 
+#----------------------------------------------------------------------------- ok
 bb = SetConf().select(key="decimals", section="Numbers")
 if not bb:
     kbb = SetConf()
@@ -353,6 +295,7 @@ if not bb:
     kbb.tipo_section = "Generico"
     kbb.description = "Gestione dei decimali"
     kbb.active = True
+    kbb.tipo = "int"
     kbb.date = datetime.datetime.now()
     kbb.persist()
 else:
@@ -361,7 +304,7 @@ else:
     except:
         bb[0].value ="2"
         bb[0].persist()
-
+# ---------------------------------------------------------------------------- OK
 aa = SetConf().select(key="batch_size", section="Numbers")
 if not aa:
     kcc = SetConf()
@@ -371,6 +314,7 @@ if not aa:
     kcc.tipo_section = "Generico"
     kcc.description = "Gestione dei batchSize"
     kcc.active = True
+    kcc.tipo = "int"
     kcc.date = datetime.datetime.now()
     kcc.persist()
 else:
@@ -379,7 +323,7 @@ else:
     except:
         aa[0].value ="15"
         aa[0].persist()
-
+# ------------------------------------------------------------------------- OK
 cc = SetConf().select(key="combo_column", section="Numbers")
 if not cc:
     kdd = SetConf()
@@ -389,6 +333,7 @@ if not cc:
     kdd.tipo_section = "Generico"
     kdd.description = "Gestione dei combo_column cioè le colonne nelle combobox"
     kdd.active = True
+    kdd.tipo = "int"
     kdd.date = datetime.datetime.now()
     kdd.persist()
 else:
@@ -397,18 +342,7 @@ else:
     except:
         cc[0].value ="3"
         cc[0].persist()
-
-if not SetConf().select(key="rotazione_primanota", section="Primanota"):
-    kee = SetConf()
-    kee.key = "rotazione_primanota"
-    kee.value ="mensile"
-    kee.section = "Primanota"
-    kee.tipo_section = "Generico"
-    kee.description = "Gestione della creazione della prima nota, valori ammessi, MESE, SETTIMANA, TRIMESTRE"
-    kee.active = True
-    kee.date = datetime.datetime.now()
-    kee.persist()
-
+# -----------------------------------------------------------------------ok
 if not SetConf().select(key="zeri_in_riga",section="Stampa"):
     kuu = SetConf()
     kuu.key = "zeri_in_riga"
@@ -417,14 +351,14 @@ if not SetConf().select(key="zeri_in_riga",section="Stampa"):
     kuu.description = "Visualizza gli zeri nelle righe documento"
     kuu.tipo_section = "Generico"
     kuu.active = False
-    kuu.tipo = "BOOLEAN"
+    kuu.tipo = "bool"
     kuu.date = datetime.datetime.now()
     kuu.persist()
 ff = SetConf().select(key="zeri_in_riga", section="Stampa")
 if ff:
-    ff[0].tipo = "BOOLEAN"
+    ff[0].tipo = "bool"
     ff[0].persist()
-
+#------------------------------------------------------------------------ok
 if not SetConf().select(key="zeri_in_totali",section="Stampa"):
     kuu1 = SetConf()
     kuu1.key = "zeri_in_totali"
@@ -433,10 +367,10 @@ if not SetConf().select(key="zeri_in_totali",section="Stampa"):
     kuu1.description = "Visualizza gli zeri nei totali"
     kuu1.tipo_section = "Generico"
     kuu1.active = False
-    kuu1.tipo = "BOOLEAN"
+    kuu1.tipo = "bool"
     kuu1.date = datetime.datetime.now()
     kuu1.persist()
 ff1 = SetConf().select(key="zeri_in_totali", section="Stampa")
 if ff1:
-    ff1[0].tipo = "BOOLEAN"
+    ff1[0].tipo = "bool"
     ff1[0].persist()

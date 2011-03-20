@@ -21,8 +21,11 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-from promogest.ui.AnagraficaComplessa import Anagrafica,\
-         AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from promogest.ui.AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
+from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
+from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
+from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.modules.PromoWear.dao.Taglia import Taglia
 from promogest.modules.PromoWear.dao.GruppoTaglia import GruppoTaglia
 from promogest.modules.PromoWear.dao.GruppoTagliaTaglia import GruppoTagliaTaglia

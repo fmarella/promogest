@@ -10,7 +10,10 @@ import datetime
 from decimal import *
 from sqlalchemy import *
 from sqlalchemy.orm import *
-from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport
+from promogest.ui.AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
+from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
+from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest import Environment
 from promogest.modules.SchedaLavorazione.dao.SchedaOrdinazione import SchedaOrdinazione
 from promogest.modules.SchedaLavorazione.dao.Datario import Datario

@@ -31,7 +31,6 @@ from promogest.dao.DaoUtils import giacenzaArticolo
 from promogest.dao.Articolo import Articolo
 from promogest.dao.Listino import Listino
 from promogest.dao.ListinoArticolo import ListinoArticolo
-#from promogest.ui.AnagraficaComplessa import Anagrafica
 from promogest.lib.sla2pdf.Sla2Pdf_ng import Sla2Pdf_ng
 from promogest.lib.sla2pdf.SlaTpl2Sla import SlaTpl2Sla as SlaTpl2Sla_ng
 #from promogest.lib.SlaTpl2Sla import SlaTpl2Sla

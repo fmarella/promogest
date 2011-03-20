@@ -22,7 +22,7 @@
 
 import gtk
 from promogest.ui.AnagraficaSemplice import Anagrafica,\
-                                    AnagraficaDetail, AnagraficaFilter
+                                    AnagraficaDetail,AnagraficaFilter
 from promogest import Environment
 from promogest.modules.GestioneCommesse.dao.StadioCommessa import StadioCommessa
 from promogest.ui.utils import *

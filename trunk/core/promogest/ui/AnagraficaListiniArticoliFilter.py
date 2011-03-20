@@ -22,7 +22,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-from AnagraficaComplessa import AnagraficaFilter
+from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 
 from promogest import Environment
 from promogest.dao.ListinoArticolo import ListinoArticolo

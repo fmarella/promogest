@@ -22,11 +22,9 @@
 
 import gtk
 
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml,\
-                                 AnagraficaReport, AnagraficaEdit
+from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 
 from promogest import Environment
-from promogest.dao.Dao import Dao
 import promogest.dao.Vettore
 from promogest.dao.Vettore import Vettore
 

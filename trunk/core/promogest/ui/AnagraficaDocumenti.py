@@ -21,16 +21,13 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import AnagraficaComplessa
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
-
+from AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
+from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest import Environment
-#from promogest.dao.Dao import Dao
 from AnagraficaDocumentiFilter import AnagraficaDocumentiFilter
 from AnagraficaDocumentiEdit import AnagraficaDocumentiEdit
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-#from promogest.dao.MisuraPezzo import MisuraPezzo
-#import promogest.dao.TestataDocumento
 from promogest.dao.TestataDocumento import TestataDocumento
 from utils import *
 
@@ -74,7 +71,7 @@ class AnagraficaDocumenti(Anagrafica):
         showAnagraficaRichiamata(self.getTopLevel(), anag.getTopLevel(), button=None, callName=self.filter.refresh)
 
     def on_anagrafica_filter_treeview_selection_changed(self, selection):
-        dao = AnagraficaComplessa.Anagrafica.on_anagrafica_filter_treeview_selection_changed(self,selection)
+        dao = Anagrafica.on_anagrafica_filter_treeview_selection_changed(self,selection)
         if dao.__class__ != TestataDocumento:
             if dao.__class__ == list:
                 if len(dao) > 1:

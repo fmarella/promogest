@@ -24,7 +24,10 @@
 import gtk
 import datetime
 import string
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport,  AnagraficaEdit, AnagraficaLabel
+from AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessaLabel import AnagraficaLabel
+from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
+from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.ui.AnagraficaListiniArticoliEdit import AnagraficaListiniArticoliEdit
 from promogest.ui.AnagraficaListiniArticoliFilter import AnagraficaListiniArticoliFilter
 from promogest import Environment

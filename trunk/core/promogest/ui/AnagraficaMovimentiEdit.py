@@ -24,7 +24,7 @@ import os
 import gtk
 import datetime
 #from decimal import *
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from AnagraficaDocumentiEditUtils import *
 from promogest import Environment
 from promogest.dao.TestataMovimento import TestataMovimento

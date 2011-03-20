@@ -22,8 +22,9 @@
 
 import gtk
 
-from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter,\
-                     AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from promogest.ui.AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
+from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 from promogest.modules.Agenti.ui.AnagraficaAgentiEdit import AnagraficaAgentiEdit
 from promogest.modules.Agenti.ui.AnagraficaAgentiFilter import AnagraficaAgentiFilter
 from promogest import Environment

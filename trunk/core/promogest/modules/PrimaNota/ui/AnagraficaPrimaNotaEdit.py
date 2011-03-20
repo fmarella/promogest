@@ -21,7 +21,7 @@
 
 import gtk
 from decimal import *
-from promogest.ui.AnagraficaComplessa import AnagraficaEdit
+from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.dao.Banca import Banca

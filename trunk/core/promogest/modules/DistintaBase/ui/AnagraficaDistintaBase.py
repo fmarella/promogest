@@ -8,7 +8,11 @@
 import gtk
 import gobject
 
-from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaEdit,AnagraficaHtml, AnagraficaFilter, AnagraficaReport
+from promogest.ui.AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
+from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
+from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
+from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
 
 from promogest import Environment
 from promogest.dao.Articolo import Articolo

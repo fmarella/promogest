@@ -28,7 +28,7 @@ import gtk
 import datetime
 
 from promogest import Environment
-from AnagraficaComplessa import AnagraficaEdit
+from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from AnagraficaDocumentiEditUtils import *
 
 from promogest.dao.TestataDocumento import TestataDocumento
@@ -696,21 +696,27 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.dao.data_documento = datetime.datetime.today()
             self._oldDaoRicreato = False #il dao è nuovo il controllo sul nuovo codice è necessario
             try:
-                if Environment.conf.Documenti.tipo_documento_predefinito:
-                    op = Operazione().select(denominazioneEM= Environment.conf.Documenti.tipo_documento_predefinito)
-                    if op:
-                        self.dao.operazione = op[0].denominazione
+                op = setconf("Documenti", "tipo_documento_predefinito")
+                if op:
+                    self.dao.operazione = op
             except:
                 print "TIPO_DOCUMENTO_PREDEFINITO NON SETTATO"
             try:
-                if Environment.conf.Documenti.cliente_predefinito:
-                    cli = Cliente().select(codicesatto=Environment.conf.Documenti.cliente_predefinito)
-                    if cli:
-                        self.dao.id_cliente = cli[0].id
-                        self.oneshot = True
-                        self.articolo_entry.grab_focus()
+                cli = setconf("Documenti", "cliente_predefinito")
+                if cli:
+                    self.dao.id_cliente = int(cli)
+                    self.oneshot = True
+                    self.articolo_entry.grab_focus()
             except:
                 print "CLIENTE_PREDEFINITO NON SETTATO"
+            try:
+                forn = setconf("Documenti", "fornitore_predefinito")
+                if forn:
+                    self.dao.id_fornitore = int(forn)
+                    self.oneshot = True
+                    self.articolo_entry.grab_focus()
+            except:
+                print "FORNITORE_PREDEFINITO NON SETTATO"
 
         else:
             # Ricrea il Dao prendendolo dal DB

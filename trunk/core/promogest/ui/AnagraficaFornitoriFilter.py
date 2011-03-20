@@ -23,7 +23,7 @@
 import gtk
 import gobject
 
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 
 from promogest import Environment
 import promogest.dao.Fornitore

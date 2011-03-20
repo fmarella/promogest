@@ -22,7 +22,7 @@
 
 import gtk
 #from decimal import *
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter
+from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from AnagraficaDocumentiEditUtils import *
 from promogest import Environment
 from promogest.dao.TestataMovimento import TestataMovimento

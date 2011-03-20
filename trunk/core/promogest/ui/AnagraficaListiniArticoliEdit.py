@@ -23,7 +23,7 @@
 
 import gtk
 import datetime
-from AnagraficaComplessa import  AnagraficaEdit
+from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 
 from promogest import Environment
 from promogest.dao.Articolo import Articolo

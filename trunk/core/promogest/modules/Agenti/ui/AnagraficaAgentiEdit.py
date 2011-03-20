@@ -21,7 +21,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 import gtk
-from promogest.ui.AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
 from promogest import Environment
 from promogest.modules.Agenti.dao.Agente import Agente, getNuovoCodiceAgente
 from promogest.ui.utils import *

@@ -22,7 +22,11 @@
 
 import gtk
 
-from AnagraficaComplessa import Anagrafica, AnagraficaFilter, AnagraficaHtml, AnagraficaReport, AnagraficaEdit
+from AnagraficaComplessa import Anagrafica
+from promogest.ui.AnagraficaComplessaEdit import AnagraficaEdit
+from promogest.ui.AnagraficaComplessaReport import AnagraficaReport
+from promogest.ui.AnagraficaComplessaHtml import AnagraficaHtml
+from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 
 from promogest import Environment
 from promogest.dao.Stoccaggio import Stoccaggio

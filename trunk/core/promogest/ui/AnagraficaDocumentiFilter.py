@@ -24,8 +24,8 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from AnagraficaComplessa import AnagraficaFilter
 import gtk
+from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from utils import *
 from promogest.dao.TestataDocumento import TestataDocumento
 import datetime
@@ -143,6 +143,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
             column.set_expand(True)
             column.set_min_width(200)
             treeview.append_column(column)
+            self.stato_documento_filter_combobox.set_active(1)
         else:
             self.stato_documento_filter_combobox.destroy()
             self.statoDocumento_label.destroy()
@@ -189,7 +190,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.id_fornitore_filter_customcombobox.set_active(0)
         self.id_agente_filter_customcombobox.set_active(0)
         if posso("PA"):
-            self.stato_documento_filter_combobox.set_active(-1)
+            self.stato_documento_filter_combobox.set_active(1)
         if posso("GN"):
             self.a_data_inizio_noleggio_filter_entry.set_text('')
             self.da_data_inizio_noleggio_filter_entry.set_text('')
@@ -217,16 +218,16 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         if statoDocumento == -1 or statoDocumento == 0:
             statoDocumento = None
         elif statoDocumento == 1:
-            statoDocumento = and_("FALSE", "TRUE")
+            statoDocumento = None
         elif statoDocumento == 2:
-            statoDocumento = "FALSE"
+            statoDocumento = bool(False)
         elif statoDocumento == 3:
-            statoDocumento = "TRUE"
+            statoDocumento = bool(True)
         else:
             statoDocumento = None
         idArticolo = self.id_articolo_filter_customcombobox.getId()
         #genero il dizionario dei filtri
-        self.filterDict = {"daNumero":daNumero ,
+        self.filterDict = {"daNumero":daNumero,
                             "aNumero":aNumero,
                             "daData":daData,
                             "aData":aData,
