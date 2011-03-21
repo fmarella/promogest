@@ -48,8 +48,14 @@ class ConfiguraWindow(GladeWidget):
 #        self.setup_notebook.append_page(frame, documenti_setup_page_label)
 
     def _refresh(self):
-        self.zeri_in_riga_check.set_active(int(setconf("Stampa", "zeri_in_riga") or 0))
-        self.zeri_in_totali_check.set_active(int(setconf("Stampa", "zeri_in_totali") or 0 ))
+        try:
+            self.zeri_in_riga_check.set_active(int(setconf("Stampa", "zeri_in_riga")))
+        except:
+            self.zeri_in_riga_check.set_active(0)
+        try:
+            self.zeri_in_totali_check.set_active(int(setconf("Stampa", "zeri_in_totali")))
+        except:
+            self.zeri_in_totali_check.set_active(0)
         self.feed_check.set_active(int(setconf("Feed", "feed") or 1))
 
         self.altezza_logo_entry.set_text(str(setconf("Documenti", "altezza_logo")))

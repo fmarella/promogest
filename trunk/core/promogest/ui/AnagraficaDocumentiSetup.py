@@ -36,11 +36,13 @@ class AnagraficaDocumentiSetup(GladeWidget):
         self._draw()
 
     def _draw(self):
+        """ Riempiamo le combo """
         fillComboboxOperazioni(self.tipo_documento_predefinito_combo,'documento')
         fillComboboxOperazioni(self.tipo_movimento_predefinito_combo)
 
     def _refresh(self):
         """
+        Carichiamo i dati in interfaccia
         """
         self.multilinea_entry.set_text(str(setconf("Multilinea", "multilinealimite")))
         a = setconf("Documenti", "tipo_documento_predefinito")
@@ -67,6 +69,7 @@ class AnagraficaDocumentiSetup(GladeWidget):
 
 
     def _saveSetup(self):
+        """ Salviamo i dati modificati in interfaccia """
         d = SetConf().select(key="multilinealimite", section="Multilinea")
         d[0].value = str(self.multilinea_entry.get_text())
         d[0].tipo = "int"
