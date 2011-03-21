@@ -20,17 +20,8 @@ mod_enable=Yes
 #                                            capitalize ( Maiuscolizza solo la prima lettera ),
 #                                            lower ( Minuscolizza tutto il codice)
 
-[Numbers]
-decimals = 2
-
 
 [Documenti]
-cartella_predefinita =
-fornitore_predefinito =  ""
-cliente_predefinito = ""
-tipo_documento_predefinito = ""
-tipo_movimento_predefinito =  ""
-ricerca_per = codice / descrizione / codice_a_barre / codice_articolo_fornitore
 color_base = #F9FBA7
 color_text = black
 

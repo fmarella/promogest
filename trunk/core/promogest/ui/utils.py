@@ -2593,6 +2593,10 @@ def setconf(section, key, value=False):
     else:
         return ""
 
+def number_format():
+    stringa = str('%-14.'+ str(setconf("Numbers", "decimals")) +'f')
+    return stringa
+
 def orda(name):
      a = "".join([str(ord(x)) for x in list(name)])
      return a

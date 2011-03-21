@@ -350,6 +350,7 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         self._percentualeIva = 0
         self.taglia_colore_table.hide()
         self.taglia_colore_table.set_no_show_all(True)
+        self.number_format = '%-14.'+ str(setconf("Numbers", "decimals")) +'f'
 
 
     def draw(self,cplx=False):
@@ -426,8 +427,8 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
             self.id_fornitore_customcombobox.set_sensitive(False)
         self.id_fornitore_customcombobox.setId(self.dao.id_fornitore)
         self.codice_articolo_fornitore_entry.set_text(self.dao.codice_articolo_fornitore or '')
-        self.prezzo_lordo_entry.set_text(Environment.conf.number_format % float(self.dao.prezzo_lordo or 0))
-        self.prezzo_netto_label.set_text(Environment.conf.number_format % float(self.dao.prezzo_netto or 0))
+        self.prezzo_lordo_entry.set_text(self.number_format % float(self.dao.prezzo_lordo or 0))
+        self.prezzo_netto_label.set_text(self.number_format % float(self.dao.prezzo_netto or 0))
         self.scorta_minima_entry.set_text('%-6d' % int(self.dao.scorta_minima or 0))
         self.tempo_arrivo_merce_entry.set_text('%-6d' % float(self.dao.tempo_arrivo_merce or 0))
         self.fornitore_preferenziale_checkbutton.set_active(self.dao.fornitore_preferenziale or False)
@@ -463,7 +464,7 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
     def _calcolaPrezzoNetto(self, widget = None, event = None):
         self.prezzo_netto_label.set_text('')
         if self.prezzo_lordo_entry.get_text() == '':
-            self.prezzo_lordo_entry.set_text(Environment.conf.number_format % float(0))
+            self.prezzo_lordo_entry.set_text(self.number_format % float(0))
         prezzoLordo = prezzoNetto = float(self.prezzo_lordo_entry.get_text())
         sconti = self.sconti_widget.getSconti()
         applicazione = self.sconti_widget.getApplicazione()
@@ -475,7 +476,7 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
                     prezzoNetto = prezzoNetto - prezzoLordo * float(s["valore"]) / 100
             elif s["tipo"] == 'valore':
                 prezzoNetto = prezzoNetto - float(s["valore"])
-        self.prezzo_netto_label.set_text(Environment.conf.number_format % float(prezzoNetto or 0))
+        self.prezzo_netto_label.set_text(self.number_format % float(prezzoNetto or 0))
 
 
     def saveDao(self):

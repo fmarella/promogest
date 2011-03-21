@@ -22,11 +22,11 @@
             <tr>
                 <td>{{utils.dateToString(dao.data_listino_articolo)}}</td>
                 <td class="number"> {{dao.ultimo_costo}}</td>
-                <td class="number">{{environment.conf.number_format % utils.calcolaPrezzoIva(dao.ultimo_costo,dao.percentuale_iva)}}</td>
+                <td class="number">{{utils.number_format() % utils.calcolaPrezzoIva(dao.ultimo_costo,dao.percentuale_iva)}}</td>
                 <td class="number">{{dao.prezzo_dettaglio}}</td>
-                <td class="number">{{environment.conf.number_format % utils.calcolaRicarico(dao.ultimo_costo,dao.prezzo_dettaglio,dao.percentuale_iva)}}</td>
+                <td class="number">{{utils.number_format() % utils.calcolaRicarico(dao.ultimo_costo,dao.prezzo_dettaglio,dao.percentuale_iva)}}</td>
                 <td class="number">{{dao.prezzo_ingrosso}}</td>
-                <td class="number">{{environment.conf.number_format % utils.calcolaRicarico(dao.ultimo_costo,dao.prezzo_ingrosso)}}</td>
+                <td class="number">{{utils.number_format() % utils.calcolaRicarico(dao.ultimo_costo,dao.prezzo_ingrosso)}}</td>
             </tr>
         </table>
         <hr />

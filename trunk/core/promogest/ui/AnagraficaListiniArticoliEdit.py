@@ -61,7 +61,6 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
         #ListinoArticolo().cleann()
         decimals = int(setconf(key="decimals", section="Numbers"))
         self.nformat = '%-14.' + str(decimals) + 'f'
-#        self.nformat = Environment.conf.number_format
 
     def on_sconti_dettaglio_widget_button_toggled(self, button):
         """ Gestione sconti dettaglio  con custom Widget """

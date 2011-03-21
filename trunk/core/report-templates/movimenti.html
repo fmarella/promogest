@@ -21,10 +21,10 @@
             <tr >
                 <td>{{riga.magazzino[:20]}}</td>
                 <td>{{riga.descrizione[:20]}}</td>
-                <td class="number">{{environment.conf.number_format % riga.percentuale_iva}}</td>
-                <td class="number">{{environment.conf.number_format % ( riga.quantita * riga.moltiplicatore )}}</td>
-                <td class="number">{{environment.conf.number_format % riga.valore_unitario_netto}}</td>
-                <td class="number">{{environment.conf.number_format % ( riga.quantita * riga.moltiplicatore * riga.valore_unitario_netto )}}</td>
+                <td class="number">{{utils.number_format() % riga.percentuale_iva}}</td>
+                <td class="number">{{utils.number_format() % ( riga.quantita * riga.moltiplicatore )}}</td>
+                <td class="number">{{utils.number_format() % riga.valore_unitario_netto}}</td>
+                <td class="number">{{utils.number_format() % ( riga.quantita * riga.moltiplicatore * riga.valore_unitario_netto )}}</td>
             </tr>
                 {% endfor %}
         </table>

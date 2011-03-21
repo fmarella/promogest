@@ -374,14 +374,7 @@ Grazie per aver scelto il PromoGest""" %str(promogestDir)
         overDialog.destroy()
         sendmail(msg=str(promogestDir))
 
-    # Impostazioni di default
-#        cartella_predefinita = documentsDir
         conf.save()
-
-
-    # Imposto variabili di formattazione numeri
-    conf.number_format = '%-14.' + str(getattr(conf.Numbers, 'decimals', 4)) + 'f'
-#    conf.decimals = str(getattr(conf.Numbers, 'decimals', 4))
 
     # Parametri localizzazione formati
     loc = locale.setlocale(locale.LC_ALL, '')

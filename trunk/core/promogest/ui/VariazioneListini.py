@@ -311,10 +311,10 @@ class VariazioneListini(GladeWidget):
         anagWindow = anag.getTopLevel()
 
         showAnagraficaRichiamata(returnWindow, anagWindow, None, self.refresh)
-
+        number_format = '%-14.'+ str(setconf("Numbers", "decimals")) +'f'
         anag.on_record_new_activate(anag.record_edit_button)
         if self._nuovoCosto is not None:
-            anag.editElement.ultimo_costo_entry.set_text(Environment.conf.number_format % self._nuovoCosto)
+            anag.editElement.ultimo_costo_entry.set_text(number_format % self._nuovoCosto)
             anag.editElement.aggiornaCostoIvato()
 
 
