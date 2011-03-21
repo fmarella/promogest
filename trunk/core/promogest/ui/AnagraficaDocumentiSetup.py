@@ -27,7 +27,18 @@ from GladeWidget import GladeWidget
 
 class AnagraficaDocumentiSetup(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
-    di configurazione """
+    di configurazione
+
+    [Documenti]
+    cliente_predefinito =  # FATTO
+    tipo_documento_predefinito = # FATTO
+    color_base = #F9FBA7
+    ricerca_per = descrizione  #FATTO
+    tipo_movimento_predefinito =  #FATTO
+    cartella_predefinita = /home/vete/promogest2/AziendaPromo/documenti/  # FATTO
+    fornitore_predefinito =  #FATTO
+    color_text = black
+    """
     def __init__(self, maino):
         GladeWidget.__init__(self, '_anagrafica_documenti_setup_frame',
                                     '_anagrafica_documenti_setup.glade')

@@ -22,9 +22,7 @@ class PrintDialogHandler(GladeWidget):
             self._pdfName = nome.replace(" ","_") + '_report_' + time.strftime('%d-%m-%Y')
         except:
             self._pdfName = "generic labels"+ time.strftime('%d-%m-%Y')
-#        self._folder = getattr(Environment.conf.Documenti,'cartella_predefinita','')
-        if hasattr(Environment.conf,'Documenti'):
-            self._folder = getattr(Environment.conf.Documenti,'cartella_predefinita','')
+        self._folder = setconf("General", "cartella_predefinita") or ""
         if self._folder == '':
             if os.name == 'posix':
                 self._folder = os.environ['HOME']

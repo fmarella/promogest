@@ -60,9 +60,7 @@ class StatisticheMagazzino(GladeWidget):
     def on_ok_buttonn_clicked(self, button):
 
         self.filechooserdialog_stats.show()
-        folder = ''
-        if hasattr(Environment.conf,'Documenti'):
-            folder = getattr(Environment.conf.Documenti,'cartella_predefinita','')
+        folder = setconf("General", "cartella_predefinita") or ""
         if folder == '':
             if os.name == 'posix':
                 folder = os.environ['HOME']

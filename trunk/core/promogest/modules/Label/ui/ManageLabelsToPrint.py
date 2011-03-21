@@ -105,10 +105,7 @@ class ManageLabelsToPrint(GladeWidget):
         return model[active][0]
 
     def on_ok_button_clicked(self,button):
-        self._folder = ''
-#        self._pdfName = str(pdfGenerator.defaultFileName)
-        if hasattr(Environment.conf,'Documenti'):
-            self._folder = getattr(Environment.conf.Documenti,'cartella_predefinita','')
+        folder = setconf("General", "cartella_predefinita") or ""
         if self._folder == '':
             if os.name == 'posix':
                 self._folder = os.environ['HOME']

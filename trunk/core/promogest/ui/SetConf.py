@@ -22,6 +22,7 @@
 import gtk
 import hashlib
 from promogest.ui.utils import orda
+from promogest import Environment
 from promogest.dao.Setconf import SetConf
 from promogest.dao.SectionUser import SectionUser
 from GladeWidget import GladeWidget
@@ -210,6 +211,21 @@ if not SetConf().select(key="ricerca_per",section="Documenti"):
     krr.date = datetime.datetime.now()
     krr.persist()
 #-----------------------------------------------------------------------------
+
+if not SetConf().select(key="cartella_predefinita",section="General"):
+    krr = SetConf()
+    krr.key = "cartella_predefinita"
+    krr.value = Environment.documentsDir
+    krr.section = "General"
+    krr.description = "Cartella di salvataggio predefinita"
+    krr.tipo_section = "Generico"
+    krr.active = True
+    krr.visible = True
+    krr.date = datetime.datetime.now()
+    krr.persist()
+#-----------------------------------------------------------------------------
+
+
 if not SetConf().select(key="color_base",section="Documenti"):
     kss = SetConf()
     kss.key = "color_base"

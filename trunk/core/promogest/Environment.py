@@ -375,15 +375,13 @@ Grazie per aver scelto il PromoGest""" %str(promogestDir)
         sendmail(msg=str(promogestDir))
 
     # Impostazioni di default
-        conf.Documenti.cartella_predefinita = documentsDir
-        conf.Documenti.ricerca_per = 'descrizione'
+#        cartella_predefinita = documentsDir
         conf.save()
 
 
     # Imposto variabili di formattazione numeri
     conf.number_format = '%-14.' + str(getattr(conf.Numbers, 'decimals', 4)) + 'f'
-    conf.decimals = str(getattr(conf.Numbers, 'decimals', 4))
-
+#    conf.decimals = str(getattr(conf.Numbers, 'decimals', 4))
 
     # Parametri localizzazione formati
     loc = locale.setlocale(locale.LC_ALL, '')
@@ -422,8 +420,8 @@ Grazie per aver scelto il PromoGest""" %str(promogestDir)
         rivenditoreUrl = "http://promogest.promotux.it/contatti.php"
 
     #[Documenti]
-    cliente_predefinito = str(getattr(conf.Documenti, 'cliente_predefinito'))
-    tipo_documento_predefinito = str(getattr(conf.Documenti, 'tipo_documento_predefinito'))
+#    cliente_predefinito = str(getattr(conf.Documenti, 'cliente_predefinito'))
+#    tipo_documento_predefinito = str(getattr(conf.Documenti, 'tipo_documento_predefinito'))
 
     mltext = ""
 

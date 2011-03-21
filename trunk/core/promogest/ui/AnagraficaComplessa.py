@@ -172,10 +172,7 @@ class Anagrafica(GladeWidget):
                                             gtk.RESPONSE_OK))
         saveDialog.set_default_response(gtk.RESPONSE_OK)
 
-        self.__homeFolder = ''
-        if hasattr(Environment.conf,'Documenti'):
-            self.__homeFolder = getattr(Environment.conf.Documenti,
-                                                    'cartella_predefinita','')
+        self.__homeFolder = setconf("General", "cartella_predefinita") or ""
         if self.__homeFolder == '':
             if os.name == 'posix':
                 self.__homeFolder = os.environ['HOME']
@@ -439,10 +436,8 @@ class Anagrafica(GladeWidget):
         self._template_file = template_file
         self._classic = classic
         self.label = label # tipo report ma anche opzione label
-        self._folder = ''
         self._pdfName = str(pdfGenerator.defaultFileName)
-        if hasattr(Environment.conf,'Documenti'):
-            self._folder = getattr(Environment.conf.Documenti,'cartella_predefinita','')
+        self._folder = setconf("General", "cartella_predefinita") or ""
         if self._folder == '':
             if os.name == 'posix':
                 self._folder = os.environ['HOME']

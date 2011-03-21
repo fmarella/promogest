@@ -2573,12 +2573,10 @@ def setconf(section, key, value=False):
         elif value:
             confff = SetConf().select(key=key, section=section, value=value)
         if confff:
-            confff = conf[0]
+            confff = confff[0]
     c = []
     if confff:
         valore = confff.value
-#        if confff.tipo == "BOOLEAN" or confff.tipo == "bool":
-#            return eval(valore)
         if ";" in str(valore):
             val = str(valore).split(";")
             for a in val:

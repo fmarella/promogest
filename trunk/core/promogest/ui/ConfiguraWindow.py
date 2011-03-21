@@ -24,6 +24,7 @@ import gtk
 from promogest import Environment
 from GladeWidget import GladeWidget
 from promogest.ui.AnagraficaDocumentiSetup import AnagraficaDocumentiSetup
+from promogest.ui.AnagraficaArticoliSetup import AnagraficaArticoliSetup
 from ParametriFrame import ParametriFrame
 from promogest.dao.Setconf import SetConf
 from promogest.ui.utils import setconf, messageInfo
@@ -35,13 +36,25 @@ class ConfiguraWindow(GladeWidget):
         GladeWidget.__init__(self, 'configura_window',
                                     fileName='configura_window.glade')
         self.placeWindow(self.getTopLevel())
+
+        self.draw()
         self.addTabs()
+
+    def draw(self):
+        folder = setconf("General", "cartella_predefinita") or ""
+        self.cartella_predefinita_filechooserbutton.set_current_folder(folder)
+        self.path_label.set_text(folder)
+
+    def on_cartella_predefinita_filechooserbutton_file_set(self,filechooser):
+        self.path_label.set_text(str(filechooser.get_current_folder()))
 
     def addTabs(self):
         self.documenti_setup_page = AnagraficaDocumentiSetup(self)
-        documenti_setup_page_label = gtk.Label()
-        documenti_setup_page_label.set_markup("DOCUMENTI")
-        self.setup_notebook.append_page(self.documenti_setup_page._anagrafica_documenti_setup_frame, documenti_setup_page_label)
+        self.setup_notebook.append_page(self.documenti_setup_page._anagrafica_documenti_setup_frame, self.documenti_setup_page.documenti_setup_page_label)
+
+        self.articoli_setup_page = AnagraficaArticoliSetup(self)
+        self.setup_notebook.append_page(self.articoli_setup_page._anagrafica_articoli_setup_frame, self.articoli_setup_page.articoli_setup_page_label)
+
         self._refresh()
 
 #        frame = ParametriFrame(self,"NONE", modules=self.parametri_modules)
@@ -88,6 +101,11 @@ class ConfiguraWindow(GladeWidget):
         d = SetConf().select(key="altezza_logo", section="Documenti")
         d[0].value = str(self.altezza_logo_entry.get_text())
         d[0].tipo = "float"
+        Environment.session.add(d[0])
+
+        d = SetConf().select(key="cartella_predefinita", section="General")
+        d[0].value = str(self.path_label.get_text())
+        d[0].tipo = "str"
         Environment.session.add(d[0])
 
         e = SetConf().select(key="larghezza_logo", section="Documenti")

@@ -744,9 +744,7 @@ class GestioneInventario(RicercaComplessaArticoli):
                                            backend=None)
 
 
-        folder = ''
-        if hasattr(Environment.conf, 'Documenti'):
-            folder = getattr(Environment.conf.Documenti, 'cartella_predefinita', '')
+        folder = setconf("General", "cartella_predefinita") or ""
         if folder == '':
             if os.name == 'posix':
                 folder = os.environ['HOME']
