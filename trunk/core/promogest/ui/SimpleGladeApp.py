@@ -84,9 +84,7 @@ class SimpleGladeApp(SimpleGladeWrapper):
         Use the method run() instead.
         """
         gtk.gdk.threads_init()
-
         gtk.gdk.threads_enter()
-
         gtk.main()
         gtk.gdk.threads_leave()
 
