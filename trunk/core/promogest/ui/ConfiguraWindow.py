@@ -57,7 +57,7 @@ class ConfiguraWindow(GladeWidget):
         except:
             self.zeri_in_totali_check.set_active(0)
         try:
-            self.feed_check.set_active(int(setconf("Feed", "feed") or 1))
+            self.feed_check.set_active(int(setconf("Feed", "feed")))
         except:
             self.feed_check.set_active(1)
 
