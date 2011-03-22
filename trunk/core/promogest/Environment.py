@@ -295,7 +295,7 @@ except IOError:
 """ Sets configuration value """
 def set_configuration(company=None, year = None):
     global conf,connection, exceptionHandler, promogestDir, feed,  emailcompose,\
-                emailmittente, smtpServer, cliente_predefinito, tipo_documento_predefinito,\
+                emailmittente, smtpServer, \
                 multilinelimit, mltext, sistemaColonnaFrontaline, sistemaRigaFrontaline,\
                 imagesDir, labelTemplatesDir, templatesDir, documentsDir, reportTemplatesDir,\
                 bordoDestro, bordoSinistro, magazzini, listini, tempDir
@@ -410,10 +410,6 @@ Grazie per aver scelto il PromoGest""" %str(promogestDir)
         rivenditoreUrl = str(getattr(conf.Composer, 'rivenditoreurl'))
     else:
         rivenditoreUrl = "http://promogest.promotux.it/contatti.php"
-
-    #[Documenti]
-#    cliente_predefinito = str(getattr(conf.Documenti, 'cliente_predefinito'))
-#    tipo_documento_predefinito = str(getattr(conf.Documenti, 'tipo_documento_predefinito'))
 
     mltext = ""
 

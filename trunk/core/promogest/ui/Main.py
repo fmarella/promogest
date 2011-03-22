@@ -924,7 +924,7 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
         if WEBKIT:
             self.nn = NewsNotebookPage(self, self.aziendaStr).draw()
             n = gtk.Label()
-            n.set_markup("<b>NEWS</b>")
+            n.set_markup("<b>NEWS/A.VEL</b>")
             ind = self.main_notebook.append_page(self.nn.notizie_frame, n)
             self.main_notebook.set_current_page(ind)
 
@@ -948,11 +948,11 @@ PROCEDERE ALL'INSTALLAZIONE DEL MODULO PROMOWEAR? """
         notifica_allarmi_label.set_markup("<b>NOTIFICA ALLARMI</b>")
         self.main_notebook.append_page(self.notifica_allarmi.notifica_allarmi_frame, notifica_allarmi_label)
 
-        azioni_veloci_page = AzioniVelociNotebookPage(self, self.aziendaStr).draw()
-        self.azioni_veloci_page = azioni_veloci_page
-        azioni_veloci_page_label = gtk.Label()
-        azioni_veloci_page_label.set_markup("<b>AZIONI VELOCI</b>")
-        self.main_notebook.append_page(azioni_veloci_page.azioni_veloci_frame, azioni_veloci_page_label)
+#        azioni_veloci_page = AzioniVelociNotebookPage(self, self.aziendaStr).draw()
+#        self.azioni_veloci_page = azioni_veloci_page
+#        azioni_veloci_page_label = gtk.Label()
+#        azioni_veloci_page_label.set_markup("<b>AZIONI VELOCI</b>")
+#        self.main_notebook.append_page(azioni_veloci_page.azioni_veloci_frame, azioni_veloci_page_label)
 
 
     def statusBarHandler(self):

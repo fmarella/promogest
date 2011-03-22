@@ -26,6 +26,7 @@ from promogest import Environment
 from GladeWidget import GladeWidget
 from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
 from promogest.lib import feedparser
+from promogest.ui.SendEmail import SendEmail
 
 try:
     from webkit import WebView
@@ -42,6 +43,7 @@ class NewsNotebookPage(GladeWidget):
 #        self.placeWindow(self.getTopLevel())
         self.rowBackGround = None
         self.main = main
+        self.main_wind = main
         self.aziendaStr = azienda or ""
         gobject.idle_add(self.create_news_frame)
 
@@ -97,3 +99,117 @@ class NewsNotebookPage(GladeWidget):
             feedToHtml.append(feed)
         Environment.feedCache = feedToHtml
         self.renderPage(feedToHtml)
+
+    def on_nuovo_articolo_button_clicked(self, widget):
+        if not hasAction(actionID=8):return
+        from AnagraficaArticoli import AnagraficaArticoli
+        anag = AnagraficaArticoli(self.aziendaStr)
+        showAnagrafica(self.getTopLevel(), anag)
+        anag.on_record_new_activate()
+
+    def on_nuovo_cliente_button_clicked(self, widget):
+        if not hasAction(actionID=11):return
+        from AnagraficaClienti import AnagraficaClienti
+        anag = AnagraficaClienti(self.main_wind.aziendaStr)
+        showAnagrafica(self.main_wind.getTopLevel(), anag)
+        anag.on_record_new_activate()
+
+    def on_nuovo_fornitore_button_clicked(self, widget):
+        if not hasAction(actionID=11):return
+        from AnagraficaFornitori import AnagraficaFornitori
+        anag = AnagraficaFornitori(self.aziendaStr)
+        showAnagrafica(self.getTopLevel(), anag)
+        anag.on_record_new_activate()
+
+    def on_nuovo_promemoria_button_clicked(self, widget):
+        if not hasAction(actionID=11):return
+        from AnagraficaPromemoria import AnagraficaPromemoria
+        anag = AnagraficaPromemoria(self.aziendaStr)
+        showAnagrafica(self.getTopLevel(), anag)
+        anag.on_record_new_activate()
+
+    def on_nuovo_contatto_button_clicked(self, widget):
+        if not hasAction(actionID=11):return
+        from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
+        anag = AnagraficaContatti(self.aziendaStr)
+        showAnagrafica(self.getTopLevel(), anag)
+        anag.on_record_new_activate()
+
+    def on_nuovo_fattura_vendita_button_clicked(self, widget):
+        if not hasAction(actionID=2):return
+        self.nuovoDocumento("Fattura vendita")
+
+    def on_nuovo_fattura_acquisto_button_clicked(self, widget):
+        if not hasAction(actionID=2):return
+        self.nuovoDocumento("Fattura acquisto")
+
+    def on_nuovo_ddt_vendita_button_clicked(self, widget):
+        if not hasAction(actionID=2):return
+        self.nuovoDocumento("DDT vendita")
+
+    def on_nuovo_ddt_acquisto_button_clicked(self, widget):
+        if not hasAction(actionID=2):return
+        self.nuovoDocumento("DDT acquisto")
+
+    def on_nuovo_ddt_reso_da_cliente_button_clicked(self, widget):
+        if not hasAction(actionID=2):return
+        self.nuovoDocumento("DDT reso da cliente")
+
+    def on_nuovo_ddt_reso_a_fornitore_button_clicked(self, widget):
+        if not hasAction(actionID=2):return
+        self.nuovoDocumento("DDT reso a fornitore")
+
+    def on_nota_di_credito_a_cliente_button_clicked(self, widget):
+        if not hasAction(actionID=2):return
+        self.nuovoDocumento("Nota di credito a cliente")
+
+    def on_nota_di_credito_a_fornitore_button_clicked(self, widget):
+        if not hasAction(actionID=2):return
+        self.nuovoDocumento("Nota di credito da fornitore")
+
+    def on_fattura_accompagnatoria_menu_activate(self, widget):
+        if not hasAction(actionID=2):return
+        self.nuovoDocumento("Fattura accompagnatoria")
+
+    def on_nuovo_preventivo_button_clicked(self, widget):
+        if not hasAction(actionID=2):return
+        self.nuovoDocumento("Preventivo")
+
+    def on_nuovo_ordine_da_cliente_button_clicked(self, widget):
+        if not hasAction(actionID=2):return
+        self.nuovoDocumento("Ordine da cliente")
+
+    def on_nuovo_vendita_al_dettaglio_button_clicked(self, widget):
+        if not hasAction(actionID=2):return
+        self.nuovoDocumento("Vendita dettaglio")
+
+    def nuovoDocumento(self, kind):
+        if not hasAction(actionID=2):return
+        from AnagraficaDocumenti import AnagraficaDocumenti
+        #from utils import findComboboxRowFromStr
+#        self.aziendaStr = Environment.azienda
+        anag = AnagraficaDocumenti()
+        showAnagrafica(self.main_wind.getTopLevel(), anag)
+        anag.on_record_new_activate()
+        findComboboxRowFromStr(anag.editElement.id_operazione_combobox, kind, 1)
+        anag.editElement.id_persona_giuridica_customcombobox.grab_focus()
+        findComboboxRowFromStr(anag.editElement.id_persona_giuridica_customcombobox, "Altro", 1)
+
+    def on_promotux_button_clicked(self, button):
+        url ="http://www.promotux.it"
+        webbrowser.open_new_tab(url)
+
+    def on_promogest_button_clicked(self, button):
+        url ="http://www.promogest.me"
+        webbrowser.open_new_tab(url)
+
+    def on_email_button_clicked(self, button):
+        sendemail = SendEmail()
+
+def showAnagrafica(window, anag, button=None, mainClass=None):
+    anagWindow = anag.getTopLevel()
+#    anagWindow.connect("destroy", on_anagrafica_destroyed, [window, button,mainClass])
+    #anagWindow.connect("hide", on_anagrafica_destroyed, [window, button,mainClass])
+#    anagWindow.set_transient_for(window)
+#    setattr(anagWindow, "mainClass",mainClass)
+    anagWindow.show_all()

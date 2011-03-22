@@ -700,7 +700,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                 if op:
                     self.dao.operazione = op
             except:
-                print "TIPO_DOCUMENTO_PREDEFINITO NON SETTATO"
+                pass
+#                print "TIPO_DOCUMENTO_PREDEFINITO NON SETTATO"
             try:
                 cli = setconf("Documenti", "cliente_predefinito")
                 if cli:
@@ -708,7 +709,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     self.oneshot = True
                     self.articolo_entry.grab_focus()
             except:
-                print "CLIENTE_PREDEFINITO NON SETTATO"
+                pass
+#                print "CLIENTE_PREDEFINITO NON SETTATO"
             try:
                 forn = setconf("Documenti", "fornitore_predefinito")
                 if forn:
@@ -716,7 +718,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
                     self.oneshot = True
                     self.articolo_entry.grab_focus()
             except:
-                print "FORNITORE_PREDEFINITO NON SETTATO"
+                pass
+#                print "FORNITORE_PREDEFINITO NON SETTATO"
 
         else:
             # Ricrea il Dao prendendolo dal DB
