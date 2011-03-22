@@ -56,3 +56,80 @@ class SetConf(Dao):
         return  dic[k]
 
 std_mapper = mapper(SetConf, setconf, order_by=setconf.c.key)
+
+bb = SetConf().select(key="articolo_struttura_codice", section="Articoli")
+if not bb:
+    kbb = SetConf()
+    kbb.key = "articolo_struttura_codice"
+    kbb.value ="ART000000"
+    kbb.section = "Articoli"
+    kbb.tipo_section = "Generico"
+    kbb.description = "Articolo struttura codice"
+    kbb.active = True
+    kbb.tipo = "str"
+    kbb.date = datetime.datetime.now()
+    session.add(kbb)
+bb = SetConf().select(key="articolo_codice_upper", section="Articoli")
+if not bb:
+    kbb = SetConf()
+    kbb.key = "articolo_codice_upper"
+    kbb.value ="True"
+    kbb.section = "Articoli"
+    kbb.tipo_section = "Generico"
+    kbb.description = "Articolo struttura codice"
+    kbb.active = True
+    kbb.tipo = "bool"
+    kbb.date = datetime.datetime.now()
+    session.add(kbb)
+bb = SetConf().select(key="articolo_immagini", section="Articoli")
+if not bb:
+    kbb = SetConf()
+    kbb.key = "articolo_immagini"
+    kbb.value ="True"
+    kbb.section = "Articoli"
+    kbb.tipo_section = "Generico"
+    kbb.description = "Articolo visualizzazione immagini"
+    kbb.active = True
+    kbb.tipo = "bool"
+    kbb.date = datetime.datetime.now()
+    session.add(kbb)
+
+
+bb = SetConf().select(key="cliente_struttura_codice", section="Clienti")
+if not bb:
+    kbb = SetConf()
+    kbb.key = "cliente_struttura_codice"
+    kbb.value ="CLI000000"
+    kbb.section = "Clienti"
+    kbb.tipo_section = "Generico"
+    kbb.description = "Cliente struttura codice"
+    kbb.active = True
+    kbb.tipo = "str"
+    kbb.date = datetime.datetime.now()
+    session.add(kbb)
+bb = SetConf().select(key="cliente_codice_upper", section="Clienti")
+if not bb:
+    kbb = SetConf()
+    kbb.key = "cliente_codice_upper"
+    kbb.value ="True"
+    kbb.section = "Clienti"
+    kbb.tipo_section = "Generico"
+    kbb.description = "Clienti codice upper"
+    kbb.active = True
+    kbb.tipo = "bool"
+    kbb.date = datetime.datetime.now()
+    session.add(kbb)
+bb = SetConf().select(key="cliente_nome_cognome", section="Clienti")
+if not bb:
+    kbb = SetConf()
+    kbb.key = "cliente_nome_cognome"
+    kbb.value ="False"
+    kbb.section = "Clienti"
+    kbb.tipo_section = "Generico"
+    kbb.description = "Visualizza nome cognome"
+    kbb.active = True
+    kbb.tipo = "bool"
+    kbb.date = datetime.datetime.now()
+    session.add(kbb)
+
+session.commit()

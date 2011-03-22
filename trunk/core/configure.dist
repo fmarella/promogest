@@ -21,25 +21,6 @@ mod_enable=Yes
 #                                            lower ( Minuscolizza tutto il codice)
 
 
-[Documenti]
-color_base = #F9FBA7
-color_text = black
-
-[Articoli]
-lunghezza_codice_famiglia = 0
-lunghezza_progressivo = 7
-numero_famiglie = 0
-prefisso_codice = ART
-omogeneus_codice= upper
-struttura_codice = ART000000
-immagini = True
-
-[Clienti]
-lunghezza_codice = 5
-prefisso_codice = CL
-omogeneus_codice= upper
-struttura_codice = CLI000000
-
 [Forniture]
 omogeneus_codice = upper
 

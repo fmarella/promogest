@@ -25,6 +25,7 @@ from promogest import Environment
 from GladeWidget import GladeWidget
 from promogest.ui.AnagraficaDocumentiSetup import AnagraficaDocumentiSetup
 from promogest.ui.AnagraficaArticoliSetup import AnagraficaArticoliSetup
+from promogest.ui.AnagraficaClientiSetup import AnagraficaClientiSetup
 from ParametriFrame import ParametriFrame
 from promogest.dao.Setconf import SetConf
 from promogest.ui.utils import setconf, messageInfo
@@ -55,6 +56,9 @@ class ConfiguraWindow(GladeWidget):
         self.articoli_setup_page = AnagraficaArticoliSetup(self)
         self.setup_notebook.append_page(self.articoli_setup_page._anagrafica_articoli_setup_frame, self.articoli_setup_page.articoli_setup_page_label)
 
+        self.clienti_setup_page = AnagraficaClientiSetup(self)
+        self.setup_notebook.append_page(self.clienti_setup_page._anagrafica_clienti_setup_frame, self.clienti_setup_page.clienti_setup_page_label)
+
         self._refresh()
 
 #        frame = ParametriFrame(self,"NONE", modules=self.parametri_modules)
@@ -80,6 +84,8 @@ class ConfiguraWindow(GladeWidget):
         self.decimals_entry.set_text(str(setconf("Numbers","decimals")))
         self.batch_size_entry.set_text(str(setconf("Numbers","batch_size")))
         self.documenti_setup_page._refresh()
+        self.articoli_setup_page._refresh()
+        self.clienti_setup_page._refresh()
 
     def on_salva_button_clicked(self, button_salva):
 
@@ -129,6 +135,8 @@ class ConfiguraWindow(GladeWidget):
         Environment.session.add(f[0])
 
         self.documenti_setup_page._saveSetup()
+        self.articoli_setup_page._saveSetup()
+        self.clienti_setup_page._saveSetup()
 
         Environment.session.commit()
         confList = SetConf().select(batchSize=None)

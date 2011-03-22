@@ -373,7 +373,6 @@ Grazie per aver scelto il PromoGest""" %str(promogestDir)
             conf = Config(configFile)
         overDialog.destroy()
         sendmail(msg=str(promogestDir))
-
         conf.save()
 
     # Parametri localizzazione formati

@@ -324,6 +324,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             articoloTagliaColore = None
         pbar(self.dialog.pbar,parziale=2, totale=4)
         self.dao.codice = str(self.codice_entry.get_text()).strip()
+        self.dao.codice = omogeneousCode(section="Articoli", string=self.dao.codice )
         cod=checkCodiceDuplicato(codice=self.dao.codice,id=self.dao.id, tipo="Articolo")
         if not cod:
             return

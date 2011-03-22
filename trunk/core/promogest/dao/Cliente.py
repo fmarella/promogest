@@ -104,10 +104,8 @@ def getNuovoCodiceCliente():
         pass
     try:
         if not codice:
-            if hasattr(conf,"Clienti") and hasattr(conf.Clienti,"struttura_codice"):
-                dd = conf.Clienti.struttura_codice
-            else:
-                dd = "CL0000"
+            from promogest.ui.utils import setconf
+            dd = setconf("Clienti", "cliente_struttura_codice")
             codice = codeIncrement(dd)
     except Exception as e:
         pass

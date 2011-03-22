@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkFrame" id="_anagrafica_articoli_setup_frame">
+  <object class="GtkFrame" id="_anagrafica_clienti_setup_frame">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="label_xalign">0</property>
@@ -25,13 +25,13 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkLabel" id="articolo_struttura_codice_label">
+                      <object class="GtkLabel" id="clienti_struttura_codice_label">
                         <property name="width_request">250</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="xalign">0.10000000149011612</property>
                         <property name="label" translatable="yes">Struttura base del codice 
-( ART000000 )</property>
+( CLI000000 )</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -40,7 +40,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="articolo_struttura_codice_entry">
+                      <object class="GtkEntry" id="clienti_struttura_codice_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">●</property>
@@ -64,8 +64,8 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkCheckButton" id="articolo_immagini_check">
-                    <property name="label" translatable="yes">Visualizza Immagine se presente</property>
+                  <object class="GtkCheckButton" id="clienti_nome_cognome_check">
+                    <property name="label" translatable="yes">Visualizza campi per nome cognome e insegna</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -79,7 +79,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkCheckButton" id="articolo_codice_upper_check">
+                  <object class="GtkCheckButton" id="clienti_codice_upper_check">
                     <property name="label" translatable="yes">Trasforma il codice in MAIUSCOLO</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -109,31 +109,15 @@
       <object class="GtkLabel" id="label1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">&lt;b&gt;Opzioni Articoli&lt;/b&gt;</property>
+        <property name="label" translatable="yes">&lt;b&gt;Opzioni Clienti&lt;/b&gt;</property>
         <property name="use_markup">True</property>
       </object>
     </child>
   </object>
-  <object class="GtkLabel" id="articoli_setup_page_label">
+  <object class="GtkLabel" id="clienti_setup_page_label">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="label" translatable="yes">ARTICOLI</property>
+    <property name="label" translatable="yes">CLIENTI</property>
     <property name="use_markup">True</property>
-  </object>
-  <object class="GtkListStore" id="tipo_documento_predefinito_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
-  <object class="GtkListStore" id="tipo_movimento_predefinito_listore">
-    <columns>
-      <!-- column-name PyObject1 -->
-      <column type="PyObject"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-    </columns>
   </object>
 </interface>

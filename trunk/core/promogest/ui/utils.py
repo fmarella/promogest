@@ -1979,9 +1979,9 @@ def omogeneousCode(section=None, string = None):
     @type string:
     """
     if section == "Clienti":
-        try:
-            function = Environment.conf.Clienti.omogeneus_codice
-        except:
+        if setconf("Clienti", "cliente_codice_upper"):
+            return string.upper()
+        else:
             return string
     elif section == "Fornitori":
         try:
@@ -1989,9 +1989,9 @@ def omogeneousCode(section=None, string = None):
         except:
             return string
     elif section == "Articoli":
-        try:
-            function = Environment.conf.Articoli.omogeneus_codice
-        except:
+        if setconf("Articoli", "articolo_codice_upper"):
+            return string.upper()
+        else:
             return string
     elif section == "Agenti":
         try:

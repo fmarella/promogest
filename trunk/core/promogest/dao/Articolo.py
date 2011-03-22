@@ -672,11 +672,8 @@ def getNuovoCodiceArticolo(idFamiglia=None):
         pass
     try:
         if not codice:
-
-            if hasattr(conf,"Articoli") and hasattr(conf.Articoli,"struttura_codice"):
-                dd = conf.Articoli.struttura_codice
-            else:
-                dd = "ART000000"
+            from promogest.ui.utils import setconf
+            dd = setconf("Articoli", "articolo_struttura_codice")
             codice = codeIncrement(dd)
     except:
         pass

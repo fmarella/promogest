@@ -26,22 +26,19 @@ from promogest import Environment
 from GladeWidget import GladeWidget
 
 
-class AnagraficaArticoliSetup(GladeWidget):
+class AnagraficaClientiSetup(GladeWidget):
     """ Widget di configurazione del codice installazione e dei parametri
     di configurazione
 
-    [Articoli]
-    lunghezza_progressivo = 7
-    immagini = True
-    struttura_codice = ART000000
-    omogeneus_codice = upper
-    numero_famiglie = 0
-    prefisso_codice = ART
-    lunghezza_codice_famiglia = 0
+    [Clienti]
+    lunghezza_codice = 5
+    prefisso_codice = CL
+    omogeneus_codice= upper
+    struttura_codice = CLI000000
     """
     def __init__(self, maino):
-        GladeWidget.__init__(self, '_anagrafica_articoli_setup_frame',
-                                    '_anagrafica_articoli_setup.glade')
+        GladeWidget.__init__(self, '_anagrafica_clienti_setup_frame',
+                                    '_anagrafica_clienti_setup.glade')
         self.maino = maino
         self._draw()
 
@@ -54,27 +51,27 @@ class AnagraficaArticoliSetup(GladeWidget):
         Carichiamo i dati in interfaccia
         """
         try:
-            self.articolo_codice_upper_check.set_active(int(setconf("Articoli", "articolo_codice_upper")))
+            self.clienti_codice_upper_check.set_active(int(setconf("Clienti", "cliente_codice_upper")))
         except:
-            self.articolo_codice_upper_check.set_active(1)
+            self.clienti_codice_upper_check.set_active(1)
         try:
-            self.articolo_immagini_check.set_active(int(setconf("Articoli", "articolo_immagini")))
+            self.clienti_nome_cognome_check.set_active(int(setconf("Clienti", "cliente_nome_cognome")))
         except:
-            self.articolo_immagini_check.set_active(1)
-        self.articolo_struttura_codice_entry.set_text(str(setconf("Articoli", "articolo_struttura_codice")))
+            self.clienti_nome_cognome_check.set_active(0)
+        self.clienti_struttura_codice_entry.set_text(str(setconf("Clienti", "cliente_struttura_codice")))
 
     def _saveSetup(self):
         """ Salviamo i dati modificati in interfaccia """
-        g = SetConf().select(key="articolo_struttura_codice", section="Articoli")
-        g[0].value = str(self.articolo_struttura_codice_entry.get_text())
+        g = SetConf().select(key="cliente_struttura_codice", section="Clienti")
+        g[0].value = str(self.clienti_struttura_codice_entry.get_text())
         g[0].tipo = "str"
         Environment.session.add(g[0])
 
-        c = SetConf().select(key="articolo_codice_upper", section="Articoli")
-        c[0].value = str(self.articolo_codice_upper_check.get_active())
+        c = SetConf().select(key="cliente_codice_upper", section="Clienti")
+        c[0].value = str(self.clienti_codice_upper_check.get_active())
         c[0].tipo = "bool"
         Environment.session.add(c[0])
-        c = SetConf().select(key="articolo_immagini", section="Articoli")
-        c[0].value = str(self.articolo_immagini_check.get_active())
+        c = SetConf().select(key="cliente_nome_cognome", section="Clienti")
+        c[0].value = str(self.clienti_nome_cognome_check.get_active())
         c[0].tipo = "bool"
         Environment.session.add(c[0])

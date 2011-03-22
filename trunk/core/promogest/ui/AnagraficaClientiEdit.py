@@ -273,7 +273,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
     def saveDao(self):
         self.verificaListino()
         self.dao.codice = self.codice_entry.get_text().upper()
-#        self.dao.codice = omogeneousCode(section="Clienti", string=self.dao.codice )
+        self.dao.codice = omogeneousCode(section="Clienti", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()
 #        self.dao.insegna = self.insegna_entry.get_text()
 #        self.dao.cognome= self.cognome_entry.get_text()
