@@ -278,7 +278,7 @@ class AnagraficaStoccaggiEdit(AnagraficaEdit):
                                 'Dati stoccaggi',
                                 gladeFile='_anagrafica_stoccaggi_articoli_elements.glade')
         self._widgetFirstFocus = self.id_magazzino_customcombobox
-        if posso("PW"):
+        if not posso("PW"):
             self.promowear_frame.destroy()
 
 

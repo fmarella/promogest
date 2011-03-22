@@ -668,7 +668,6 @@ class GestioneInventario(RicercaComplessaArticoli):
 
     def on_aggiorna_button_clicked(self, button):
         """ Aggiornamento inventario con gli articoli eventualmente non presenti """
-        #Environment.connection.execStoredProcedure('InventarioUpd', (int(Environment.conf.workingYear),))
         #sql_statement:= \'INSERT INTO inventario (anno, id_magazzino, id_articolo, quantita, valore_unitario, data_aggiornamento)
                             #(SELECT \' || _anno || \', M.id, A.id, NULL, NULL, NULL
                             #FROM magazzino M CROSS JOIN articolo A

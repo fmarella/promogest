@@ -199,7 +199,6 @@ class Inventario(Dao):
 
                 # genera l'inventario per l'anno in corso sulla base delle giacenze finali
                 # dell'anno precedente, per ogni magazzino e per ogni articolo
-                #Environment.connection.execStoredProcedure('InventarioFill', (int(Environment.conf.workingYear),))
 
                 msg = ("Generazione completata.\n\nEffettuare le dovute modifiche dall'apposita maschera\n" +
                     "di caricamento inventario dopo aver fatto i rilevamenti\n" +

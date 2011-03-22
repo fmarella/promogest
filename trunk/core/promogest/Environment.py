@@ -270,9 +270,7 @@ def _psycopg2old():
 #        pg2log.info("PSYCOPG2 OLD NON PRESENTE")
         return None
 
-
 try:
-
     promogestStartDir = startdir()
     if not (os.path.exists(promogestStartDir)):
         os.mkdir(promogestStartDir)
@@ -381,10 +379,7 @@ Grazie per aver scelto il PromoGest""" %str(promogestDir)
     conf.guiDir = '.' + os.sep + 'gui' + os.sep
 
     #Anno di lavoro
-    conf.workingYear = None
     workingYear = None
-    # stampa il debug del Dao
-
 
     #[Composer]
     if hasattr(conf,'Composer'):

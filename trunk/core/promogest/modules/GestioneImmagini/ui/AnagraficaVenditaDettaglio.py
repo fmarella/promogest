@@ -1195,11 +1195,9 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         idMagazzino = self.id_magazzino
         totGiacenza = 0
         movs = giacenzaSel(year=Environment.workingYear, idMagazzino= self.id_magazzino, idArticolo=idArticolo)
-        #movs = Environment.connection.execStoredProcedure('GiacenzaSel', (None, Environment.conf.workingYear, idMagazzino, idArticolo))
         for m in movs:
             totGiacenza += m['giacenza'] or 0
         #FIXME: attenzione funzioen da rifareeeeeeeeeeeeeeeee
-        #movs = Environment.connection.execStoredProcedure('ScaricoScontrinoSel', (None, Environment.conf.workingYear, idArticolo, idMagazzino, False))
         #for m in movs:
             #totGiacenza += ((m['scarico_qta'] or 0 ) * -1)
         return totGiacenza
