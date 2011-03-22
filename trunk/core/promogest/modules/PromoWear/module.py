@@ -23,11 +23,11 @@ from promogest.modules.PromoWear.ui.PromowearUtils import *
 
 MODULES_NAME = "PromoWear"
 MODULES_FOR_EXPORT = ['Taglie', 'Colori','GruppiTaglia', 'Modelli']
-GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/PromoWear/gui/'
+GUI_DIR = Environment.cartella_moduli+'/PromoWear/gui/'
 #COMPANY = Environment.conf.PromoWear.company_name
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None
-TEMPLATES = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+"/PromoWear/templates/"
+TEMPLATES = Environment.cartella_moduli+"/PromoWear/templates/"
 
 class Taglie(object):
     VIEW_TYPE = ('anagrafica', 'Taglie', 'taglia48x48.png')

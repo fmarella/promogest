@@ -27,11 +27,10 @@ from promogest.modules.VenditaDettaglio.ui.AnagraficaVenditaDettaglio import Ana
 
 MODULES_NAME = "VenditaDettaglio"
 MODULES_FOR_EXPORT = ['VenditaDettaglio']
-GUI_DIR = getattr(Environment.conf.Moduli,
-                'cartella_moduli', 'promogest/modules')+'/VenditaDettaglio/gui/'
+GUI_DIR = Environment.cartella_moduli+'/VenditaDettaglio/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
-TEMPLATES = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+"/VenditaDettaglio/templates/"
+TEMPLATES = Environment.cartella_moduli+"/VenditaDettaglio/templates/"
 
 """
     view_type è composto da:

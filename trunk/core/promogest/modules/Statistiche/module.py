@@ -9,7 +9,7 @@ import promogest.ui.Login
 
 MODULES_NAME = "Statistiche"
 MODULES_FOR_EXPORT = []
-GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/Statistiche/gui/'
+GUI_DIR = Environment.cartella_moduli+'/Statistiche/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
 

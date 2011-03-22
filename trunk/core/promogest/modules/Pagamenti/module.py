@@ -27,7 +27,7 @@ import promogest.ui.Login
 
 MODULES_NAME = "Pagamenti"
 MODULES_FOR_EXPORT = []
-GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/Pagamenti/gui/'
+GUI_DIR = Environment.cartella_moduli+'/Pagamenti/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
 

@@ -11,7 +11,7 @@ from promogest.modules.Contatti.ui.AnagraficaContatti import AnagraficaContatti
 
 MODULES_NAME = "Contatti"
 MODULES_FOR_EXPORT = ['Contatti']
-GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/Contatti/gui/'
+GUI_DIR = Environment.cartella_moduli+'/Contatti/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
 
@@ -31,4 +31,3 @@ class Contatti(object):
     def getApplication(self):
         anag = AnagraficaContatti()
         return anag
-

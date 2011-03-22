@@ -20,10 +20,8 @@ mod_enable=Yes
 #                                            capitalize ( Maiuscolizza solo la prima lettera ),
 #                                            lower ( Minuscolizza tutto il codice)
 
-
 [Forniture]
 omogeneus_codice = upper
-
 
 [Agenti]
 omogeneus_codice = upper
@@ -39,9 +37,6 @@ omogeneus_codice = upper
 prefisso_codice = VE
 lunghezza_codice = 5
 struttura_codice = VE000000
-
-[Moduli]
-cartella_moduli = ./promogest/modules
 
 #in sistemi *nix inserire thunderbird -compose, in sistemi windows  è necessario
 # inserire anche il percorso completo C:\programmi\Thunderbird ....

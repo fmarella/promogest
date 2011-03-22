@@ -8,7 +8,6 @@ from promogest import Environment
 
 MODULES_NAME = "ImportContats"
 MODULES_FOR_EXPORT = []
-GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/ImportContats/gui/'
+GUI_DIR = Environment.cartella_moduli+'/ImportContats/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
-

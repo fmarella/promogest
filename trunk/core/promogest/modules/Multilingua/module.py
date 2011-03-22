@@ -11,7 +11,7 @@ from promogest import Environment
 
 MODULES_NAME = "Multilingua"
 MODULES_FOR_EXPORT = []
-GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/Multilingua/gui/'
+GUI_DIR = Environment.cartella_moduli+'/Multilingua/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
 
@@ -31,4 +31,3 @@ START_CALL = None                              # of this call in a separated Thr
     #def getApplication(self):
         #anag = AnagraficaVenditaDettaglio()
         #return anag
-

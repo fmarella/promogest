@@ -24,10 +24,10 @@ import promogest.ui.Login
 
 MODULES_NAME = "GestioneCommesse"
 MODULES_FOR_EXPORT = []
-GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/GestioneCommesse/gui/'
+GUI_DIR = Environment.cartella_moduli+'/GestioneCommesse/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
-TEMPLATES = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/GestioneCommesse/templates/'
+TEMPLATES = Environment.cartella_moduli+'/GestioneCommesse/templates/'
 
 """
     view_type è composto da:

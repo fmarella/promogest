@@ -565,7 +565,7 @@ class Main(GladeWidget):
             v = Environment.VERSIONE.strip()
             p = hashlib.sha224(n+c+v).hexdigest()
             if p.strip()==r.strip():
-                pa = os.path.join(Environment.conf.Moduli.cartella_moduli,n+"/"+"module.py")
+                pa = os.path.join(Environment.cartella_moduli,n+"/"+"module.py")
                 g = file(pa,"w")
                 for a in al:
                     g.write(a)

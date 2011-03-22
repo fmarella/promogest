@@ -24,7 +24,7 @@ import promogest.ui.Login
 
 MODULES_NAME = "InfoPeso"
 MODULES_FOR_EXPORT = []
-GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/InfoPeso/gui/'
+GUI_DIR = Environment.cartella_moduli+'/InfoPeso/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
-TEMPLATES = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/InfoPeso/templates/'
+TEMPLATES = Environment.cartella_moduli+'/InfoPeso/templates/'

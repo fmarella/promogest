@@ -9,7 +9,7 @@ import promogest.ui.Login
 
 MODULES_NAME = "Inventario"
 MODULES_FOR_EXPORT = []
-GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/Inventario/gui/'
+GUI_DIR = Environment.cartella_moduli+'/Inventario/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
 
@@ -29,4 +29,3 @@ START_CALL = None                              # of this call in a separated Thr
     #def getApplication(self):
         #anag = AnagraficaDistintaBase()
         #return anag
-

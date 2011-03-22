@@ -101,6 +101,9 @@ puntoB = None
 puntoP = None
 eta = 0
 tipo_pg = None
+cartella_moduli = 'promogest/modules'
+
+
 hapag = ["Fattura accompagnatoria","Fattura acquisto","Fattura differita acquisto",
 "Fattura differita vendita","Fattura vendita","Ricevuta Fiscale","Vendita dettaglio",
 "Nota di credito a cliente","Nota di credito da fornitore"]

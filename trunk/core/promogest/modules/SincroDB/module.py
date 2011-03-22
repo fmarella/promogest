@@ -10,7 +10,7 @@ from promogest.modules.SincroDB.ui.SincroDB import SincroDB
 
 MODULES_NAME = "SincroDB"
 MODULES_FOR_EXPORT = []
-GUI_DIR = getattr(Environment.conf.Moduli, 'cartella_moduli', 'promogest/modules')+'/SincroDB/gui/'
+GUI_DIR = Environment.cartella_moduli+'/SincroDB/gui/'
 START_CALL_IS_IN_THREAD = True        # False if you  do NOT want to put execution
 START_CALL = None                              # of this call in a separated Thread
 
@@ -30,4 +30,3 @@ START_CALL = None                              # of this call in a separated Thr
     #def getApplication(self):
         #anag = SincroDB()
         #return anag
-
