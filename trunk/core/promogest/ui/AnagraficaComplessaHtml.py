@@ -163,9 +163,12 @@ class AnagraficaHtml(object):
             return f
         param = [self.dao.dictionary(complete=True)]
         multilinedirtywork(param)
-        if hasattr(Environment.conf.Documenti,"jnet"):
-            from promogest.modules.NumerazioneComplessa.jnet import numerazioneJnet
-            param[0]["numero"]= numerazioneJnet(self.dao)
+        try:
+            if hasattr(Environment.conf.Documenti,"jnet"):
+                from promogest.modules.NumerazioneComplessa.jnet import numerazioneJnet
+                param[0]["numero"]= numerazioneJnet(self.dao)
+        except:
+            print "hack jnet ...correggere!!!"
         if azienda:
             azidict = azienda.dictionary(complete=True)
             for a,b in azidict.items():
