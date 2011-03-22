@@ -223,7 +223,6 @@ if not SetConf().select(key="cartella_predefinita",section="General"):
     krr.visible = True
     krr.date = datetime.datetime.now()
     krr.persist()
------------------------------------------------------------------------------
 
 
 if not SetConf().select(key="color_base",section="Documenti"):
