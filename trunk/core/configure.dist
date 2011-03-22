@@ -24,11 +24,6 @@ mod_enable=Yes
 [Forniture]
 omogeneus_codice = upper
 
-[Fornitori]
-lunghezza_codice = 5
-prefisso_codice = FO
-omogeneus_codice= upper
-struttura_codice = FOR000000
 
 [Agenti]
 omogeneus_codice = upper

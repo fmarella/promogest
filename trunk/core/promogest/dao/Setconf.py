@@ -132,4 +132,41 @@ if not bb:
     kbb.date = datetime.datetime.now()
     session.add(kbb)
 
+bb = SetConf().select(key="fornitore_struttura_codice", section="Fornitori")
+if not bb:
+    kbb = SetConf()
+    kbb.key = "fornitore_struttura_codice"
+    kbb.value ="FOR000000"
+    kbb.section = "Fornitori"
+    kbb.tipo_section = "Generico"
+    kbb.description = "Fornitori struttura codice"
+    kbb.active = True
+    kbb.tipo = "str"
+    kbb.date = datetime.datetime.now()
+    session.add(kbb)
+bb = SetConf().select(key="fornitore_codice_upper", section="Fornitori")
+if not bb:
+    kbb = SetConf()
+    kbb.key = "fornitore_codice_upper"
+    kbb.value ="True"
+    kbb.section = "Fornitori"
+    kbb.tipo_section = "Generico"
+    kbb.description = "Fornitori codice upper"
+    kbb.active = True
+    kbb.tipo = "bool"
+    kbb.date = datetime.datetime.now()
+    session.add(kbb)
+bb = SetConf().select(key="fornitore_nome_cognome", section="Fornitori")
+if not bb:
+    kbb = SetConf()
+    kbb.key = "fornitore_nome_cognome"
+    kbb.value ="False"
+    kbb.section = "Fornitori"
+    kbb.tipo_section = "Generico"
+    kbb.description = "Visualizza nome cognome"
+    kbb.active = True
+    kbb.tipo = "bool"
+    kbb.date = datetime.datetime.now()
+    session.add(kbb)
+
 session.commit()
