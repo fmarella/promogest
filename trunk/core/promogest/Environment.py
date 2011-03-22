@@ -510,6 +510,7 @@ else:
 if not engine:
     raise Exception, "NON È STATO TROVATO UN BACKEND PER IL DB"
 tipo_eng = engine.name
+print "TIPO ENGINE", tipo_eng
 engine.echo = False
 #engine.autocommit= True
 meta = MetaData(engine)

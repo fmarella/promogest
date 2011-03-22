@@ -2554,9 +2554,19 @@ def setconf(section, key, value=False):
     Tentativo abbastanza rudimentale per gestire le liste attraverso i ; ma
     forse si potrebbero gestire più semplicemente con le virgole
     """
+    if Environment.tipo_eng =="postgresql":
+        if not hasattr(Environment.conf, "Documenti"):
+            Environment.conf.add_section("Documenti")
+            Environment.conf.save()
+        if  hasattr(Environment.conf, "Documenti") and not hasattr(Environment.conf.Documenti, "cartella_predefinita"):
+            setattr(Environment.conf.Documenti,"cartella_predefinita",Environment.documentsDir)
+            Environment.conf.save()
+        if key == "cartella_predefinita":
+            return Environment.conf.Documenti.cartella_predefinita
     from promogest.dao.Setconf import SetConf
     confList = Environment.confList
     confff = None
+
     if not confList:
         confList = SetConf().select(batchSize=None)
         Environment.confList = confList

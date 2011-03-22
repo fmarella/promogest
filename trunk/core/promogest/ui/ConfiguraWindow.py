@@ -108,11 +108,20 @@ class ConfiguraWindow(GladeWidget):
         d[0].value = str(self.altezza_logo_entry.get_text())
         d[0].tipo = "float"
         Environment.session.add(d[0])
-
-        d = SetConf().select(key="cartella_predefinita", section="General")
-        d[0].value = str(self.path_label.get_text())
-        d[0].tipo = "str"
-        Environment.session.add(d[0])
+        if Environment.tipo_eng =="postgresql":
+            if not hasattr(Environment.conf, "Documenti"):
+                Environment.conf.add_section("Documenti")
+                Environment.conf.save()
+            if  hasattr(Environment.conf, "Documenti") and not hasattr(Environment.conf.Documenti, "cartella_predefinita"):
+                setattr(Environment.conf.Documenti,"cartella_predefinita",Environment.documentsDir)
+                Environment.conf.save()
+            Environment.conf.Documenti.cartella_predefinita = str(self.path_label.get_text())
+            Environment.conf.save()
+        else:
+            d = SetConf().select(key="cartella_predefinita", section="General")
+            d[0].value = str(self.path_label.get_text())
+            d[0].tipo = "str"
+            Environment.session.add(d[0])
 
         e = SetConf().select(key="larghezza_logo", section="Documenti")
         e[0].value = str(self.larghezza_logo_entry.get_text())
