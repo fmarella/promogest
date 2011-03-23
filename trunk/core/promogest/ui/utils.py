@@ -1972,50 +1972,20 @@ def checkPartIva(partitaIVA):
 
 def omogeneousCode(section=None, string = None):
     """
-    FIXME
-    @param section=None:
-    @type section=None:
-    @param string:
-    @type string:
     """
     if section == "Clienti":
         if setconf("Clienti", "cliente_codice_upper"):
             return string.upper()
-        else:
-            return string
     elif section == "Fornitori":
-        try:
-            function = Environment.conf.Fornitori.omogeneus_codice
-        except:
-            return string
+        if setconf("Fornitori", "fornitore_codice_upper"):
+            return string.upper()
     elif section == "Articoli":
         if setconf("Articoli", "articolo_codice_upper"):
             return string.upper()
-        else:
-            return string
-    elif section == "Agenti":
-        try:
-            function = Environment.conf.Agenti.omogeneus_codice
-        except:
-            return string
-    elif section == "Famiglie":
-        try:
-            function = Environment.conf.Famiglie.omogeneus_codice
-        except:
-            return string
     elif section == "Vettori":
-        try:
-            function = Environment.conf.Vettori.omogeneus_codice
-        except:
-            return string
-    if function =="upper":
-        return string.upper()
-    elif function == "capitalize":
-        return string.capitalize()
-    elif function == "lower":
-        return string.lower()
-    else:
-        return string
+        if setconf("Vettori", "vettore_codice_upper"):
+            return string.upper()
+    return string
 
 def hasAction(actionID=None):
     """

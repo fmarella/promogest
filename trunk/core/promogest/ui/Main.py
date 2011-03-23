@@ -513,7 +513,6 @@ class Main(GladeWidget):
         if not hasAction(actionID=6):return
         if self.currentFrame is not None:
             self.main_hbox.remove(self.currentFrame)
-        print "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO", self.parametri_modules
         frame = ParametriFrame(self.main_window, self.aziendaStr, modules=self.parametri_modules)
         return frame.getTopLevel()
 

@@ -14,14 +14,6 @@ mod_enable=yes
 mod_enable=Yes
 
 #NON RIMUOVERE LE RIGHE VUOTE SOPRA QUESTA
-# L'opzione omogeneus_codice serve a stabilire come dev'essere trattato il codice.
-#    Permette 4 possibili opzioni che sono : None ( non in uso),
-#                                            upper ( Maiuscolizza tutto il codice),
-#                                            capitalize ( Maiuscolizza solo la prima lettera ),
-#                                            lower ( Minuscolizza tutto il codice)
-
-[Forniture]
-omogeneus_codice = upper
 
 [Agenti]
 omogeneus_codice = upper
@@ -29,17 +21,12 @@ prefisso_codice = AG
 lunghezza_codice = 5
 struttura_codice = AG000000
 
-[Famiglie]
-omogeneus_codice = upper
-
 [Vettori]
 omogeneus_codice = upper
 prefisso_codice = VE
 lunghezza_codice = 5
 struttura_codice = VE000000
 
-#in sistemi *nix inserire thunderbird -compose, in sistemi windows  è necessario
-# inserire anche il percorso completo C:\programmi\Thunderbird ....
 # Accetta html ma non virgole
 [Composer]
 emailcompose = thunderbird

@@ -169,4 +169,29 @@ if not bb:
     kbb.date = datetime.datetime.now()
     session.add(kbb)
 
+bb = SetConf().select(key="vettore_struttura_codice", section="Vettori")
+if not bb:
+    kbb = SetConf()
+    kbb.key = "vettore_struttura_codice"
+    kbb.value ="VE0000"
+    kbb.section = "Vettori"
+    kbb.tipo_section = "Generico"
+    kbb.description = "Vettori struttura codice"
+    kbb.active = True
+    kbb.tipo = "str"
+    kbb.date = datetime.datetime.now()
+    session.add(kbb)
+
+bb = SetConf().select(key="vettore_codice_upper", section="Vettori")
+if not bb:
+    kbb = SetConf()
+    kbb.key = "vettore_codice_upper"
+    kbb.value ="True"
+    kbb.section = "Vettori"
+    kbb.tipo_section = "Generico"
+    kbb.description = "Vettori codice upper"
+    kbb.active = True
+    kbb.tipo = "bool"
+    kbb.date = datetime.datetime.now()
+    session.add(kbb)
 session.commit()

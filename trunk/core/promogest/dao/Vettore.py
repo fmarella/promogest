@@ -11,6 +11,7 @@ from promogest.Environment import params, conf
 from Dao import Dao
 from promogest.ui.utils import  codeIncrement
 
+
 class Vettore(Dao):
 
     def __init__(self, arg=None):
@@ -41,7 +42,6 @@ def getNuovoCodiceVettore():
     listacodici= []
     if hasattr(conf,'Vettori'):
         try:
-#            codicesel = Fornitore().select(batchSize=None, orderBy=Fornitore.ragione_sociale)
             codicesel  = session.query(Vettore).all()[-3:]
             for cod in codicesel:
                 listacodici.append(cod.codice)
@@ -49,8 +49,9 @@ def getNuovoCodiceVettore():
         except:
             pass
         try:
-            if codice == "" and hasattr(conf.Vettori,'struttura_codice'):
-                codice = codeIncrement(conf.Vettori.struttura_codice)
+            if codice == "":
+                from promogest.ui.utils import setconf
+                codice = codeIncrement(setconf("Vettori", "vettore_struttura_codice"))
         except:
             pass
     return codice

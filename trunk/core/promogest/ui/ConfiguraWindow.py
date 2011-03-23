@@ -82,6 +82,12 @@ class ConfiguraWindow(GladeWidget):
         except:
             self.feed_check.set_active(1)
 
+        try:
+            self.vettore_codice_upper_check.set_active(int(setconf("Vettori", "vettore_codice_upper")))
+        except:
+            self.vettore_codice_upper_check.set_active(1)
+
+        self.vettore_struttura_codice_entry.set_text(str(setconf("Vettori", "vettore_struttura_codice")))
         self.altezza_logo_entry.set_text(str(setconf("Documenti", "altezza_logo")))
         self.larghezza_logo_entry.set_text(str(setconf("Documenti", "larghezza_logo")))
         self.combo_column_entry.set_text(str(setconf("Numbers", "combo_column")))
@@ -147,6 +153,16 @@ class ConfiguraWindow(GladeWidget):
         f[0].value = str(self.batch_size_entry.get_text())
         f[0].tipo = "int"
         Environment.session.add(f[0])
+
+        c = SetConf().select(key="vettore_codice_upper", section="Vettori")
+        c[0].value = str(self.vettore_codice_upper_check.get_active())
+        c[0].tipo = "bool"
+        Environment.session.add(c[0])
+
+        g = SetConf().select(key="vettore_struttura_codice", section="Vettori")
+        g[0].value = str(self.vettore_struttura_codice_entry.get_text())
+        g[0].tipo = "str"
+        Environment.session.add(g[0])
 
         self.documenti_setup_page._saveSetup()
         self.articoli_setup_page._saveSetup()
