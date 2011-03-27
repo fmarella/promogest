@@ -23,6 +23,7 @@ import gtk
 from decimal import *
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
 from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
+from promogest.dao.Setconf import SetConf
 from promogest.dao.Banca import Banca
 from promogest.ui.utils import *
 from promogest.ui.utilsCombobox import *
@@ -37,110 +38,85 @@ class AnagraficaPrimaNotaFilter(AnagraficaFilter):
                           'anagrafica_prima_nota_filter_table',
                           gladeFile='PrimaNota/gui/_anagrafica_primanota_elements.glade',
                           module=True)
-        self._widgetFirstFocus = self.numero_filter_entry
-        self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear + " 00:00")
-        self.checkAnnoPrimaNota()
+        self._widgetFirstFocus = self.a_numero_filter_entry
+        self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear)
+        self.aggiornamento=False
 
-    def checkAnnoPrimaNota(self):
-
-        ddd = TestataPrimaNota().select(daDataInizio=stringToDate("01/01/" + str(int(Environment.workingYear) - 1)),
-        aDataInizio=stringToDate("31/12/" + str(int(Environment.workingYear) - 1)),
-        batchSize=None)
-        for dd in ddd:
-            if not dd.data_fine:
-                messageInfo(msg="""ATTENZIONE!!!
-C'è una Prima nota Aperta dell'anno scorso. Adesso Verrà chiusa.
-Premendo Nuovo se ne creerà una al primo Gennaio del corrente anno di lavoro""")
-                dd.data_fine = stringToDate("31/12/" + str(int(Environment.workingYear) - 1))
-                dd.persist()
 
     def draw(self):
-        # Colonne della Treeview per il filtro
-        treeview = self._anagrafica.anagrafica_filter_treeview
-        renderer = gtk.CellRendererText()
+        """ """
+        pns = TestataPrimaNota().select(batchSize=None)
+        for i in pns:
+            self.checkOldPN(i)
+        if not setconf("Primanota", "valore_saldo_parziale_primanota") and \
+            not setconf("Primanota", "data_saldo_parziale_primanota"):
+            self.inizializzaValoriPrimaNotaSaldo()
 
-        column = gtk.TreeViewColumn('Numero', renderer, text=2, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'numero'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Da Data', renderer, text=3, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect('clicked', self._changeOrderBy, (None, 'data_inizio'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('A Data', renderer, text=4, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect('clicked', self._changeOrderBy, (None, 'data_fine'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Saldo singola Prima nota', renderer, text=5, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Totale Riporti', renderer, text=6, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
-
-        column = gtk.TreeViewColumn('Nome/Note', renderer, text=7, background=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-#        column.set_clickable(True)
-#        column.connect('clicked', self._changeOrderBy, (None, 'data_inizio'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(200)
-        treeview.append_column(column)
-
-        treeview.set_search_column(1)
-
-        self._treeViewModel = gtk.ListStore(object, str, str, str, str, str, str, str)
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-
+        stringa = "<b>Per i totali parziali e complessivi usare 'report a video'</b>"
+        self._anagrafica.info_anag_complessa_label.set_markup(stringa)
         self.refresh()
+
+
+    def _reOrderBy(self, column):
+        if column.get_name() == "numero":
+            return self._changeOrderBy(column,(None,TestataPrimaNota.numero))
+        if column.get_name() == "data_inizio":
+            return self._changeOrderBy(column,(None,TestataPrimaNota.data_inizio))
+
+
+    def inizializzaValoriPrimaNotaSaldo(self):
+        messageInfo(msg="Nessun riporto settato, imposto uno standard al primo gennaio")
+        tpn= TestataPrimaNota().select(aDataInizio=stringToDate('01/01/' + Environment.workingYear), batchSize=None)
+        tot = calcolaTotaliPrimeNote(tpn)
+
+        bb = SetConf().select(key="valore_saldo_parziale_primanota", section="Primanota")
+        if not bb:
+            kbb = SetConf()
+            kbb.key = "valore_saldo_parziale_primanota"
+            kbb.value =str(tot["totale"])
+            kbb.section = "Primanota"
+            kbb.tipo_section = "Generico"
+            kbb.description = "Valore Saldo parziale prima nota"
+            kbb.active = True
+            kbb.tipo = "float"
+            kbb.date = datetime.datetime.now()
+            Environment.session.add(kbb)
+
+        bb = SetConf().select(key="data_saldo_parziale_primanota", section="Primanota")
+        if not bb:
+            kbb = SetConf()
+            kbb.key = "data_saldo_parziale_primanota"
+            kbb.value = '01/01/' + Environment.workingYear
+            kbb.section = "Primanota"
+            kbb.tipo_section = "Generico"
+            kbb.description = "Valore Saldo parziale prima nota"
+            kbb.active = True
+            kbb.tipo = "date"
+            kbb.date = datetime.datetime.now()
+            Environment.session.add(kbb)
+        Environment.session.commit()
 
     def clear(self):
         # Annullamento filtro
-        self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear + " 00:00")
-        self.numero_filter_entry.set_text('')
-#        self.da_data_inizio_datetimewidget.set_text('')
+        self.da_data_inizio_datetimewidget.set_text('01/01/' + Environment.workingYear)
+        self.a_numero_filter_entry.set_text('')
+        self.da_numero_filter_entry.set_text('')
         self.a_data_inizio_datetimewidget.set_text('')
-        self.da_data_fine_datetimewidget.set_text('')
-        self.a_data_fine_datetimewidget.set_text('')
         self.refresh()
 
     def refresh(self):
         # Aggiornamento TreeView
-        numero = prepareFilterString(self.numero_filter_entry.get_text())
-        da_data_inizio = stringToDateTime(emptyStringToNone(self.da_data_inizio_datetimewidget.get_text()))
-        a_data_inizio = stringToDateTime(emptyStringToNone(self.a_data_inizio_datetimewidget.get_text()))
-        da_data_fine = stringToDateTime(emptyStringToNone(self.da_data_fine_datetimewidget.get_text()))
-        a_data_fine = stringToDateTime(emptyStringToNone(self.a_data_fine_datetimewidget.get_text()))
+        anumero = prepareFilterString(self.a_numero_filter_entry.get_text())
+        danumero = prepareFilterString(self.da_numero_filter_entry.get_text())
+        da_data_inizio = stringToDate(self.da_data_inizio_datetimewidget.get_text())
+        a_data_inizio = stringToDate(self.a_data_inizio_datetimewidget.get_text())
 
         def filterCountClosure():
-            return TestataPrimaNota().count(numero=numero,
+            return TestataPrimaNota().count(aNumero=anumero,
+                                daNumero=danumero,
                                 daDataInizio=da_data_inizio,
                                 aDataInizio=a_data_inizio,
-                                daDataFine=da_data_fine,
-                                aDataFine=a_data_fine)
-
+                                                            )
         self._filterCountClosure = filterCountClosure
 
         self.numRecords = self.countFilterResults()
@@ -148,11 +124,10 @@ Premendo Nuovo se ne creerà una al primo Gennaio del corrente anno di lavoro"""
 
         # Let's save the current search as a closure
         def filterClosure(offset, batchSize):
-            return TestataPrimaNota().select(numero=numero,
+            return TestataPrimaNota().select(aNumero=anumero,
+                                            daNumero=danumero,
                                              daDataInizio=da_data_inizio,
                                              aDataInizio=a_data_inizio,
-                                             daDataFine=da_data_fine,
-                                             aDataFine=a_data_fine,
                                              orderBy=self.orderBy,
                                              offset=offset,
                                              batchSize=batchSize)
@@ -161,17 +136,83 @@ Premendo Nuovo se ne creerà una al primo Gennaio del corrente anno di lavoro"""
 
         valis = self.runFilter()
 
-        self._treeViewModel.clear()
+        self.primanota_filter_listore.clear()
         valore = 0
         for i in valis:
-            col = None
-            if not i.data_fine:
-                col = "#CCFFAA"
-            valore += mN(i.totali["totale"]) or 0
-            self._treeViewModel.append((i, col,
+            col_valore = None
+            col_tipo = None
+
+            if mN(i.totali["totale"]) >0:
+                col_valore = "#CCFFAA"
+            else:
+                col_valore = "#FFD7D7"
+
+            if len(i.righeprimanota) >1:
+                denom = i.note
+                note = "( Più operazioni )"
+                a = [l for l in i.righeprimanota]
+                if len(a)==1:
+                    tipo = i.righeprimanota[0].tipo
+                else:
+                    tipo = "misto"
+            elif len(i.righeprimanota) ==1:
+                denom = i.righeprimanota[0].denominazione
+                note = i.note
+                tipo = i.righeprimanota[0].tipo
+            else:
+                print "ATTENZIONE TESTATA PRIMA NOTA SENZA RIGHE", i, i.note, i.data_inizio
+                denom ="SENZARIGHE"
+                note = i.note
+
+            if tipo =="cassa":
+                col_tipo = "#FFF2C7"
+            elif tipo=="banca":
+                col_tipo = "#CFF5FF"
+            else:
+                col_tipo = ""
+            self.primanota_filter_listore.append((i, col_valore,
                                         (str(i.numero) or ''),
                                         (dateToString(i.data_inizio) or ''),
-                                        (dateToString(i.data_fine) or ''),
-                                        (str(mN(i.totali["totale"])) or "0"),
-                                        str(valore),
-                                        (str(i.note) or "")))
+                                        denom or '',
+                                        (str(italianizza(mN(i.totali["totale"],2),2)) or "0"),
+                                        tipo,
+                                        note or "",
+                                        col_tipo
+                                        ))
+
+    def checkOldPN(self, dao):
+        numero = None
+        numeroSEL = None
+        date = []
+        if len(dao.righeprimanota)>1 :
+            for f in dao.righeprimanota:
+                if f.data_registrazione not in date:
+                    date.append(f.data_registrazione)
+            if len(date)>1:
+                if not self.aggiornamento:
+                    messageInfo(msg="""ATTENZIONE! Alcune parti del modulo PrimaNota sono
+state modificate ed è necessario un aggiornamento di quelle precedentemente
+inserite. Saranno salvaguardati i riferimenti interni e quelli con i pagamenti documenti.
+La differenza sarà che principalmente verrà creata una primanota per ogni operazione
+di cassa o di banca effettuata. Non ci sarà la "chiusura" della prima nota.
+Si potranno ancora fare PrimeNote con più operazioni. Rimandiamo comunque alla
+lettura delle novità sul sito del programma o nella sezione news interna.
+Si avvisa che la migrazione potrebbe richiedere anche qualche minuto""")
+                    self.aggiornamento = True
+                for r in dao.righeprimanota:
+                    print "DATA REGISTRAZIONE", r.numero, r.data_registrazione.day, r.data_registrazione.month, r.data_registrazione.year
+                    a = TestataPrimaNota()
+                    a.data_inizio = r.data_registrazione
+                    date = Environment.workingYear
+                    numeroSEL= TestataPrimaNota().select(complexFilter=(and_(TestataPrimaNota.data_inizio.between(datetime.date(int(r.data_registrazione.year), 1, 1), datetime.date(int(r.data_registrazione.year) + 1, 1, 1)))), batchSize=None)
+                    if numeroSEL:
+                        numero = max([p.numero for p in numeroSEL]) +1
+                    else:
+                        numero = 1
+                    a.numero = numero
+                    a.persist()
+                    r.id_testata_prima_nota = a.id
+                    r.persist()
+                dao.delete()
+        elif len(dao.righeprimanota) ==0:
+            dao.delete()

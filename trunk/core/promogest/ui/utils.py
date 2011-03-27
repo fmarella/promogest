@@ -833,8 +833,48 @@ def on_combobox_fornitore_search_clicked(combobox, callName=None):
     elif callName is not None:
         callName()
 
+def calcolaSaldoGeneralePrimaNota():
+    from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
+    #TODO Aggiungere una opzione in setconf con una data ed un saldo di partenza
+#        valore = 0
 
+    data_riporto = setconf("Primanota", "data_saldo_parziale_primanota")
+    if data_riporto:
+        tpn= TestataPrimaNota().select(daDataInizio=stringToDate(data_riporto), batchSize=None)
+        riporto = setconf("Primanota", "valore_saldo_parziale_primanota")
+    else:
+        tpn= TestataPrimaNota().select(batchSize=None)
+        riporto = 0
+    tot = calcolaTotaliPrimeNote(tpn)
+    tot["totale_con_riporto"] = tot["totale"] + Decimal(str(riporto))
+    return tot
 
+def calcolaTotaliPrimeNote(daos):
+    totale = 0
+    tot_entrate = 0
+    tot_uscite = 0
+    tot_entrate_cassa = 0
+    tot_entrate_banca = 0
+    tot_uscite_cassa = 0
+    tot_uscite_banca = 0
+    for dao in daos:
+        tot_entrate_cassa += dao.totali["tot_entrate_cassa"]
+        tot_entrate_banca += dao.totali["tot_entrate_banca"]
+        tot_uscite_cassa += dao.totali["tot_uscite_cassa"]
+        tot_uscite_banca += dao.totali["tot_uscite_banca"]
+    tot_entrate = tot_entrate_cassa+tot_entrate_banca
+    tot_uscite = tot_uscite_cassa+tot_uscite_banca
+    totale = tot_entrate+tot_uscite
+    totalii = {
+            "totale": totale,
+            "tot_entrate": tot_entrate,
+            "tot_uscite": tot_uscite,
+            "tot_entrate_banca": tot_entrate_banca,
+            "tot_entrate_cassa": tot_entrate_cassa,
+            "tot_uscite_banca": tot_uscite_banca,
+            "tot_uscite_cassa": tot_uscite_cassa
+            }
+    return totalii
 
 def findIdFromCombobox(combobox):
     """
@@ -2246,10 +2286,11 @@ def italianizza(value, decimal=0, curr='', sep='.', dp=',',
     '123 456 789.00'
     >>> moneyfmt(Decimal('-0.02'), neg='<', trailneg='>')
     '<0.02>'
-
+    ATTENZIONE: se si vuole che arrotondi si deve mettere un due ma si deve dare anche
+    un valore con soli due decimali
     """
 #    qq = Decimal(10) ** -places      # 2 places --> '0.01'
-    precisione = int(setconf(key="decimals", section="Numbers")) or int(decimal)
+    precisione = int(decimal) or int(setconf(key="decimals", section="Numbers"))
     sign, digits, exp = Decimal(value).as_tuple()
     result = []
     digits = map(str, digits)
@@ -2565,6 +2606,8 @@ def setconf(section, key, value=False):
         else:
             if valore == "":
                 return None
+            elif len(valore.split("/"))>=2:
+                return str(valore)
             else:
                 try:
                     return eval(valore)
@@ -2800,7 +2843,7 @@ def scribusVersion(slafile):
     slaversion = root.get('Version')
     Environment.pg2log.info( "FILE SLA DA VERIFICARE PRIMA DLLA STAMPA "+ slafile)
     Environment.pg2log.info("VERSIONE SLA  "+ str(slaversion))
-    if slaversion in ("1.3.6", "1.3.7", "1.3.8", "1.3.9"):
+    if slaversion in ("1.3.6", "1.3.7", "1.3.8", "1.3.9","1.4.0"):
         Environment.new_print_enjine=True
         return True
     elif slaversion in ("1.3.5.1", "1.3.5svn"):

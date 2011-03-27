@@ -758,6 +758,7 @@ def fillComboboxBanche(combobox, filter=False):
     """
     Crea elenco delle banche
     """
+    combobox.set_wrap_width(1)
     from promogest.dao.Banca import Banca
     model = gtk.ListStore(object, int, str)
     bans = Banca().select(offset=None,batchSize=None)

@@ -42,11 +42,18 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
         self._widgetFirstFocus = self.data_inserimento_datewidget
         self.anagrafica = anagrafica
         self.editRiga = None
-        self.rotazione = setconf("rotazione_primanota", "Primanota")
+#        self.rotazione = setconf("rotazione_primanota", "Primanota")
         fillComboboxBanche(self.id_banca_customcombobox.combobox)
         self.id_banca_customcombobox.connect('clicked',
                                  on_id_banca_customcombobox_clicked)
-#        self.id_banca_customcombobox.set_sensitive(False)
+
+    def on_come_combobox_changed(self, combobox):
+        come = findStrFromCombobox(self.come_combobox,0).lower()
+        if come =="banca":
+            self.id_banca_customcombobox.set_sensitive(True)
+        else:
+            self.id_banca_customcombobox.set_sensitive(False)
+
 
     def draw(self, cplx=False):
 #        self.banca_viewport.set_property("visible",False)
@@ -55,149 +62,48 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
     def setDao(self, dao):
         if dao is None:
             # Crea un nuovo Dao vuoto
-            inizializzazione = TestataPrimaNota().select(daDataInizio=stringToDate("01/01/" + Environment.workingYear))
-            # nn c'è una testata dall'inizio dell'anno ne creo una
-            if not inizializzazione:
-                print "CREO LA PRIMA PRIMA NOTA"
-                a = TestataPrimaNota()
-                a.numero = 1
-                a.data_inizio = stringToDate("01/01/" + Environment.workingYear)
-                a.note = " PRIMA NOTA AUTOMATICA"
-                a.persist()
-                self.dao = TestataPrimaNota().getRecord(id=a.id)
-            else:
-                #ce n'è una devo verificare se è chiusa
-                ancoraaperta = TestataPrimaNota().select(datafinecheck=True)
-                if len(ancoraaperta) > 1:
-                    print "ATTENZIONE CI SONO PIÙ PRIMA NOTA APERTE"
-                    messageInfo(msg="Attenzione ci sono più prime note aperte")
-                elif len(ancoraaperta) == 1:
-                    msg = """Attenzione! E' stata trovata una prima nota ancora aperta
-Scegliendo NO verrà proposta quella precedente,
-Scegliendo SI verrà chiusa la precedente ed aperta una nuova
-"""
-                    dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                               gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-                    response = dialog.run()
-                    dialog.destroy()
-                    if response == gtk.RESPONSE_YES:
-                        ancoraaperta[0].data_fine = datetime.datetime.now()
-                        Environment.session.add(ancoraaperta[0])
-                        Environment.session.commit()
-                        self.dao = TestataPrimaNota()
-                        self.dao.numero = ancoraaperta[0].numero + 1
-                        self.dao.data_inizio = ancoraaperta[0].data_fine
-                        self.dao.note = "NUOVA"
-                    else:
-                        self.dao = ancoraaperta[0]
-                elif len(ancoraaperta) < 1:
-                    ultimadatachiusa = TestataPrimaNota().ultimaNota()
-                    ultimachiusa = TestataPrimaNota().select(datafine=ultimadatachiusa)
-                    if ultimadatachiusa:
-                        self.dao = TestataPrimaNota()
-                        self.dao.numero = ultimachiusa[0].numero + 1
-                        self.dao.data_inizio = ultimadatachiusa
-                        self.dao.note = "NUOVA PRIMA NOTA"
+            self.dao = TestataPrimaNota()
         else:
             # Ricrea il Dao con una connessione al DBMS SQL
             self.dao = TestataPrimaNota().getRecord(id=dao.id)
-            print "ROTAZION", self.rotazione
-#            ultimadatachiusa = TestataPrimaNota().ultimaNota()
         self._refresh()
         return self.dao
 
-    def on_entrata_cassa_radio_toggled(self, toggled):
-        if self.entrata_cassa_radio.get_active():
-            self.entrata_cassa_entry.set_sensitive(True)
-            self.uscita_cassa_entry.set_sensitive(False)
-            self.uscita_banca_entry.set_sensitive(False)
-            self.entrata_banca_entry.set_sensitive(False)
-            self.id_banca_customcombobox.hide()
-        elif self.uscita_cassa_radio.get_active():
-            self.uscita_cassa_entry.set_sensitive(True)
-            self.uscita_banca_entry.set_sensitive(False)
-            self.entrata_banca_entry.set_sensitive(False)
-            self.entrata_cassa_entry.set_sensitive(False)
-            self.id_banca_customcombobox.hide()
-        elif self.uscita_banca_radio.get_active():
-            self.uscita_banca_entry.set_sensitive(True)
-            self.uscita_cassa_entry.set_sensitive(False)
-            self.entrata_cassa_entry.set_sensitive(False)
-            self.uscita_cassa_entry.set_sensitive(False)
-            self.id_banca_customcombobox.show()
-        elif self.entrata_banca_radio.get_active():
-            self.entrata_banca_entry.set_sensitive(True)
-            self.uscita_banca_entry.set_sensitive(False)
-            self.uscita_cassa_entry.set_sensitive(False)
-            self.entrata_cassa_entry.set_sensitive(False)
-            self.id_banca_customcombobox.show()
-        self.entrata_banca_entry.set_text("")
-        self.uscita_banca_entry.set_text("")
-        self.uscita_cassa_entry.set_text("")
-        self.entrata_cassa_entry.set_text("")
-
-    def on_riattiva_button_clicked(self, button):
-        messageInfo(msg="ATTENZIONE, SI sta modificando <b>TEMPORANEAMENTE</b> una Prima nota già chiusa")
-        self.riga_primanota_frame.set_sensitive(True)
-
-    def on_forza_chiusura_button_clicked(self, button):
-        msg = ("Attenzione!!, Si sta chiudendo una Prima nota Procedere?")
-        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, msg)
-        response = dialog.run()
-        dialog.destroy()
-        if response == gtk.RESPONSE_YES:
-            self.saveDao(chiusura=True)
-            messageInfo(msg="FATTO, Chiudere")
 
     def _refresh(self):
-        self.id_banca_customcombobox.hide()
-        self.numero_label.set_text(str(self.dao.numero) or "")
+#        self.id_banca_customcombobox.hide()
+        self.note_entry.set_sensitive(False)
+        self.numero_label.set_text(str(self.dao.numero or ""))
         self.note_entry.set_text(self.dao.note or "")
-        self.data_inizio_label.set_text(dateToString(self.dao.data_inizio) or "")
-        self.data_fine_label.set_text(dateToString(self.dao.data_fine) or "")
-        if self.dao.data_fine:
-            self.riga_primanota_frame.set_sensitive(False)
-            self.riattiva_button.set_sensitive(True)
-        else:
-            self.riattiva_button.set_sensitive(False)
-
-        model = self.riga_primanota_treeview.get_model()
-        model.clear()
-        cassa_entrata = ""
-        cassa_uscita = ""
-        banca_entrata = ""
-        banca_uscita = ""
+        self.data_inserimento_datewidget.set_text(dateToString(self.dao.data_inizio) or "")
+        self.primanota_riga_listore.clear()
         riferimento = ""
+        if self.dao.note or len(self.dao.righeprimanota):
+            self.note_entry.set_sensitive(True)
         for r in self.dao.righeprimanota:
-            if r.segno == "uscita" and r.tipo == "banca":
-                banca_uscita = str(r.valore)
-            elif r.segno == "uscita" and r.tipo == "cassa":
-                cassa_uscita = str(r.valore)
-            elif r.segno == "entrata" and r.tipo == "banca":
-                banca_entrata = str(r.valore)
-            elif r.segno == "entrata" and r.tipo == "cassa":
-                cassa_entrata = str(r.valore)
+            if r.segno == "uscita":
+                col_valore = "#FFD7D7"
+                valore = -1*mN(r.valore)
+            else:
+                col_valore = "#CCFFAA"
+                valore =mN(r.valore)
+            if r.tipo =="cassa":
+                col_tipo = "#FFF2C7"
+            elif r.tipo=="banca":
+                col_tipo = "#CFF5FF"
+            else:
+                col_tipo = ""
             banca = ""
             if r.id_banca:
                 banca = Banca().getRecord(id=r.id_banca).denominazione
-            model.append((r, str(r.numero),
-                        dateToString(r.data_registrazione),
-                        r.denominazione,
-                        str(mN(cassa_entrata)),
-                        str(mN(cassa_uscita)),
-                        str(mN(banca_entrata)),
-                        str(mN(banca_uscita)),
-                        str(banca) or "",
-                        riferimento or ""))
-            cassa_entrata = ""
-            cassa_uscita = ""
-            banca_entrata = ""
-            banca_uscita = ""
-        if self.dao.numero > 1:
-#            saldoPrecedente = TestataPrimaNota().select(numero=self.dao.numero-1)[0].totali["totale"]
-            self.saldo_precedente_label.set_text(str(self.saldo()))
-        self.calcolaTotali(model)
+            self.primanota_riga_listore.append((r,
+                                                r.denominazione,
+                                                str(valore),
+                                                str(r.tipo),
+                                                str(banca) or "",
+                                                riferimento or "",
+                                                col_valore,
+                                                col_tipo))
 
     def saldo(self):
         tutte = TestataPrimaNota().select(batchSize=None)
@@ -208,11 +114,7 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
         return mN(saldo_precedente)
 
     def clear(self):
-        self.entrata_cassa_entry.set_text("")
-        self.uscita_cassa_entry.set_text("")
-        self.entrata_banca_entry.set_text("")
-        self.uscita_banca_entry.set_text("")
-        self.data_inserimento_datewidget.set_text("")
+        self.valore_entry.set_text("")
         self.denominazione_entry.set_text("")
         self.id_banca_customcombobox.combobox.set_active(-1)
 
@@ -229,131 +131,81 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
             obligatoryField(self.dialogTopLevel, self.data_inserimento_datewidget,
             msg="Campo obbligatorio: DATA INSERIMENTO!")
 
-        model = self.riga_primanota_treeview.get_model()
+        model = self.primanota_riga_listore
         if self.editRiga:
             riga = self.editRiga
-            riga.numero = self.editRiga.numero
         else:
             riga = RigaPrimaNota()
-            riga.numero = len(model) + 1
-
+        riga.numero = 1
         data_registrazione = stringToDate(self.data_inserimento_datewidget.get_text())
         riga.data_registrazione = data_registrazione
         denominazione = self.denominazione_entry.get_text()
         riga.denominazione = denominazione
-        if self.entrata_cassa_entry.get_text().replace(",", ".").strip() in ["", None, "0"] and \
-            self.entrata_cassa_radio.get_active():
-            messageInfo(msg="ATTENZIONE!\n\nVALORE Entrata cassa = <b>zero</b>")
-        if self.uscita_cassa_entry.get_text().replace(",", ".").strip() in ["", None, "0"] and \
-            self.uscita_cassa_radio.get_active():
-            messageInfo(msg="ATTENZIONE!\n\nVALORE Uscita cassa = <b>zero</b>")
-        if self.entrata_banca_entry.get_text().replace(",", ".").strip() in ["", None, "0"] and \
-            self.entrata_banca_radio.get_active():
-            messageInfo(msg="ATTENZIONE!\n\nVALORE Entrata banca = <b>zero</b>")
-        if self.uscita_banca_entry.get_text().replace(",", ".").strip() in ["", None, "0"] and \
-            self.uscita_banca_radio.get_active():
-            messageInfo(msg="ATTENZIONE!\n\nVALORE Uscita banca = <b>zero</b>")
-        cassa_entrata = Decimal(self.entrata_cassa_entry.get_text().replace(",", ".").strip() or 0)
-        cassa_uscita = Decimal(self.uscita_cassa_entry.get_text().replace(",", ".").strip() or 0)
-        banca_entrata = Decimal(self.entrata_banca_entry.get_text().replace(",", ".").strip() or 0)
-        banca_uscita = Decimal(self.uscita_banca_entry.get_text().replace(",", ".").strip() or 0)
+        if self.valore_entry.get_text().replace(",", ".").strip() in ["", None, "0"]:
+            messageInfo(msg="ATTENZIONE!\n\nVALORE  = <b>zero</b>")
+
+        valore = Decimal(self.valore_entry.get_text().replace(",", ".").strip() or 0)
+        riga.valore = valore
+        tipo_operazione = "entrata"
+        riga.segno = tipo_operazione
+        col_valore = "#CCFFAA"
+        if self.tipo_uscita_radio.get_active():
+            tipo_operazione = "uscita"
+            if valore >0:
+                valore = valore*(-1)
+            col_valore = "#FFD7D7"
+            riga.segno = tipo_operazione
+
+        riga.operazione = tipo_operazione
+        come = findStrFromCombobox(self.come_combobox,0).lower()
+        riga.tipo = come
+        if come =="cassa":
+            col_tipo = "#FFF2C7"
+        elif come=="banca":
+            col_tipo = "#CFF5FF"
+        else:
+            col_tipo = ""
         riferimento = None
-        if cassa_entrata:
-            riga.valore = cassa_entrata
-            riga.tipo = "cassa"
-            riga.segno = "entrata"
-        elif cassa_uscita:
-            riga.valore = cassa_uscita
-            riga.segno = "uscita"
-            riga.tipo = "cassa"
-        elif banca_entrata:
-            riga.valore = banca_entrata
-            riga.tipo = "banca"
-            riga.segno = "entrata"
-            if (findIdFromCombobox(self.id_banca_customcombobox.combobox) is None):
-                obligatoryField(self.dialogTopLevel,
-                        self.id_banca_customcombobox,
-                        'Inserire un riferimento ad una banca !')
-            riga.id_banca = findIdFromCombobox(self.id_banca_customcombobox.combobox)
-        elif banca_uscita:
-            riga.valore = banca_uscita
-            riga.segno = "uscita"
-            riga.tipo = "banca"
-            if (findIdFromCombobox(self.id_banca_customcombobox.combobox) is None):
-                obligatoryField(self.dialogTopLevel,
-                        self.id_banca_customcombobox,
-                        'Inserire un riferimento ad una banca !')
-            riga.id_banca = findIdFromCombobox(self.id_banca_customcombobox.combobox)
+#            if (findIdFromCombobox(self.id_banca_customcombobox.combobox) is None):
+#                obligatoryField(self.dialogTopLevel,
+#                        self.id_banca_customcombobox,
+#                        'Inserire un riferimento ad una banca !')
+
+        riga.id_banca = findIdFromCombobox(self.id_banca_customcombobox.combobox)
         banca = ""
         if riga.id_banca:
             banca = Banca().getRecord(id=riga.id_banca).denominazione
-        dati = (riga, str(len(model) + 1), dateToString(data_registrazione) or "",
+        dati = (riga,
                         denominazione,
-                        str(mN(cassa_entrata)),
-                        str(mN(cassa_uscita)),
-                        str(mN(banca_entrata)),
-                        str(mN(banca_uscita)),
+                        str(mN(valore,2)),
+                        str(come),
                         str(banca),
-                        riferimento or "")
+                        riferimento or "",
+                        col_valore,
+                        col_tipo)
         if self.editRiga:
             self.rigaIter[0] = riga
-            self.rigaIter[1] = str(riga.numero)
-            self.rigaIter[2] = dateToString(riga.data_registrazione)
-            self.rigaIter[3] = riga.denominazione
-            self.rigaIter[4] = str(cassa_entrata) or ""
-            self.rigaIter[5] = str(cassa_uscita) or ""
-            self.rigaIter[6] = str(banca_entrata) or ""
-            self.rigaIter[7] = str(banca_uscita) or ""
-            self.rigaIter[8] = str(banca) or ""
-            self.rigaIter[9] = str(riferimento)
+            self.rigaIter[1] = denominazione
+            self.rigaIter[2] = str(valore) or ""
+            self.rigaIter[3] = str(come)
+            self.rigaIter[4] = str(banca) or ""
+            self.rigaIter[5] = str(riferimento)
         else:
             model.append(dati)
+        if len(model) >1:
+            self.note_entry.set_sensitive(True)
+            messageInfo(msg="Ricordiamo che con più operazioni si deve inserire una nota nel campo note")
+            self.note_entry.grab_focus()
+
         self.riga_primanota_treeview.set_model(model)
         self.editRiga = None
-        cassa_entrata = ""
-        cassa_uscita = ""
-        banca_entrata = ""
-        banca_uscita = ""
         self.clear()
-        self.calcolaTotali(model)
 
-    def calcolaTotali(self, model):
-        rghe = len(model)
-        self.totale_righe_label.set_markup(c(str(rghe), "blue"))
-        tot_ent_cassa = 0
-        tot_ent_banca = 0
-        tot_usc_cassa = 0
-        tot_usc_banca = 0
-        tot_banca = 0
-        tot_cassa = 0
-        tot_saldo = 0
-        for a in model:
-            tot_ent_cassa += float(a[4] or 0)
-            self.totale_entrate_cassa_label.set_markup(c(str(mN(tot_ent_cassa)), "#00AA00"))
-            tot_ent_banca += float(a[6] or 0)
-            self.totale_entrate_banca_label.set_markup(c(str(mN(tot_ent_banca)), "#00AA00"))
-            tot_usc_cassa += float(a[5] or 0)
-            self.totale_uscite_cassa_label.set_markup(c(str(mN(tot_usc_cassa)), "#FF5353"))
-            tot_usc_banca += float(a[7] or 0)
-            self.totale_uscite_banca_label.set_markup(c(str(mN(tot_usc_banca)), "#FF5353"))
-
-        tot_banca = tot_ent_banca - tot_usc_banca
-        if tot_banca > 0:
-            self.totale_banca_label.set_markup(c(str(mN(tot_banca)), "#00AA00"))
+    def on_attiva_note_toggled_toggled(self, button):
+        if button.get_active():
+            self.note_entry.set_sensitive(True)
         else:
-            self.totale_banca_label.set_markup(c(str(mN(tot_banca)), "#FF5353"))
-        tot_cassa = tot_ent_cassa - tot_usc_cassa
-        if tot_cassa > 0:
-            self.totale_cassa_label.set_markup(c(str(mN(tot_cassa)), "#FF5353"))
-        else:
-            self.totale_cassa_label.set_markup(c(str(mN(tot_cassa)), "#00AA00"))
-        tot_saldo = (tot_ent_banca + tot_ent_cassa) - (tot_usc_banca + tot_usc_cassa)
-
-        if tot_saldo > 0:
-            self.totale_saldo_label.set_markup(b(c(str(mN(tot_saldo)), "#FF5353")))
-        else:
-            self.totale_saldo_label.set_markup(b(c(str(mN(tot_saldo)), "#FF5353")))
-        self.saldo_label.set_markup(b(c(str(mN(self.saldo()) + mN(tot_saldo)), "blue")))
+            self.note_entry.set_sensitive(False)
 
     def on_rimuovi_button_clicked(self, button):
         """ Elimina la riga di prima nota selezionata"""
@@ -369,7 +221,6 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
                 dao.delete()
             self._editModel.remove(self._editIterator)
             self.clear()
-            self.calcolaTotali(self._editModel)
 
     def on_riga_primanota_treeview_row_activated(self, treeview, path, column):
         sel = self.riga_primanota_treeview.get_selection()
@@ -377,33 +228,44 @@ Scegliendo SI verrà chiusa la precedente ed aperta una nuova
         self.rigaIter = model[iterator]
         self._editIterator = iterator
         self._editModel = model
-        self.data_inserimento_datewidget.set_text(self.rigaIter[2])
-        if self.rigaIter[4] != "0":
-            self.entrata_cassa_radio.set_active(True)
-        if self.rigaIter[5] != "0":
-            self.uscita_cassa_radio.set_active(True)
-        if self.rigaIter[6] != "0":
-            self.entrata_banca_radio.set_active(True)
-            findComboboxRowFromId(self.id_banca_customcombobox.combobox, self.rigaIter[0].id_banca)
-        if self.rigaIter[7] != "0":
-            self.uscita_banca_radio.set_active(True)
-            findComboboxRowFromId(self.id_banca_customcombobox.combobox, self.rigaIter[0].id_banca)
-        self.entrata_cassa_entry.set_text(self.rigaIter[4])
-        self.uscita_cassa_entry.set_text(self.rigaIter[5])
-        self.entrata_banca_entry.set_text(self.rigaIter[6])
-        self.uscita_banca_entry.set_text(self.rigaIter[7])
-        self.denominazione_entry.set_text(self.rigaIter[3])
+#        self.data_inserimento_datewidget.set_text(self.rigaIter[3])
+        if self.rigaIter[0].segno == "entrata":
+            self.tipo_entrata_radio.set_active(True)
+            self.valore_entry.set_text(self.rigaIter[2])
+        else:
+            self.tipo_uscita_radio.set_active(True)
+            if Decimal(self.rigaIter[2]) > 0:
+                self.valore_entry.set_text(self.rigaIter[2])
+            else:
+                self.valore_entry.set_text(str(-1*(Decimal(self.rigaIter[2]))))
 
+
+        if self.rigaIter[4] != "":
+#            self.uscita_banca_radio.set_active(True)
+            findComboboxRowFromStr(self.come_combobox,"BANCA",0)
+            findComboboxRowFromId(self.id_banca_customcombobox.combobox, self.rigaIter[0].id_banca)
+            self.id_banca_customcombobox.set_sensitive(True)
+
+
+        self.denominazione_entry.set_text(self.rigaIter[1])
         self.editRiga = self.rigaIter[0]
 
     def saveDao(self, chiusura=False):
-        model = self.riga_primanota_treeview.get_model()
+        if not self.dao.numero:
+            date = Environment.workingYear
+            numeroSEL= TestataPrimaNota().select(complexFilter=(and_(TestataPrimaNota.data_inizio.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)))), batchSize=None)
+            if numeroSEL:
+                numero = max([p.numero for p in numeroSEL]) +1
+            else:
+                numero = 1
+            self.dao.numero = numero
+        self.dao.data_inizio = stringToDate(self.data_inserimento_datewidget.get_text())
         righe_ = []
-        for m in model:
+        for m in self.primanota_riga_listore:
             righe_.append(m[0])
         self.dao.note = self.note_entry.get_text()
         self.dao.righeprimanota = righe_
-        if chiusura:
-            self.dao.data_fine = datetime.datetime.now()
+#        if chiusura:
+#            self.dao.data_fine = datetime.datetime.now()
         self.dao.persist()
         self.clear()

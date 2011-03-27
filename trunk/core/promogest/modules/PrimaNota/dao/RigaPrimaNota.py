@@ -24,6 +24,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
 from promogest.dao.Dao import Dao
+from promogest.dao.Banca import Banca
 from migrate import *
 
 
@@ -97,6 +98,14 @@ class RigaPrimaNota(Dao):
         elif k == 'idTestataPrimaNota':
             dic = {k: rigaprimanota.c.id_testata_prima_nota == v}
         return dic[k]
+
+    def _banca(self):
+        bn = Banca().getRecord(id=self.id_banca)
+        if bn:
+            return bn.denominazione
+        else:
+            return ""
+    banca= property(_banca)
 
 
 std_mapper = mapper(RigaPrimaNota,

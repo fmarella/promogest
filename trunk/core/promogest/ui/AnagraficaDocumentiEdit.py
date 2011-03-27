@@ -924,7 +924,7 @@ del documento.
         tipo = Operazione().getRecord(id=tipoid)
         if not self.dao.numero:
             valori = numeroRegistroGet(tipo=tipo.denominazione,
-            date=self.data_documento_entry.get_text())
+                                    date=self.data_documento_entry.get_text())
             self.dao.numero = valori[0]
             self.dao.registro_numerazione= valori[1]
         #porto in persist tre dizionari: uno per gli sconti sul totale, l'altro per gli sconti sulle righe e le righe stesse

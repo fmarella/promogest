@@ -21,12 +21,6 @@ prefisso_codice = AG
 lunghezza_codice = 5
 struttura_codice = AG000000
 
-[Vettori]
-omogeneus_codice = upper
-prefisso_codice = VE
-lunghezza_codice = 5
-struttura_codice = VE000000
-
 # Accetta html ma non virgole
 [Composer]
 emailcompose = thunderbird

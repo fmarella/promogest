@@ -1,0 +1,88 @@
+{% extends 'index.html' %}
+{% block body %}<br>
+<style type='text/css'>
+@page {
+size: A4 portrait;
+margin: 1cm;
+}
+</style>
+{% for dao in objects %}
+<table style="width:auto;">
+<th style="width:70px;">NUMERO</th>
+<th style="width:90px;">DATA</th>
+<tr>
+<td style="width:70px;text-align:center;"><strong>{{dao.numero}}</strong></td>
+<td style="width:90px;text-align:center;"><strong>{{utils.dateToString(dao.data_inizio)}}</strong></td>
+</tr>
+</table>
+<table cellpadding="0" cellspacing="0" border="0">
+        <th>DESCRIZIONE</th>
+        <th >VALORE</th>
+        <th>TIPO</th>
+        <th>RIF.</th>
+
+        {% for riga in dao.righeprimanota %}
+        <tr >
+          <td style="width:80%;" class="odd-detail">{{riga.denominazione}}</td>
+            {% if riga.segno =="entrata" %}
+                <td style="color:green;width:80px;text-align:center;" class="odd-detail">{{(utils.italianizza(utils.mN(riga.valore,2),2))}}</td>
+            {% elif riga.segno =="uscita" %}
+            <td style="color:red;width:80px;text-align:center;" class="odd-detail">-{{utils.italianizza(utils.mN(riga.valore,2),2)}}</td>
+            {% endif %}
+            {% if riga.tipo =="banca" %}
+                <td style="color:blue;width:80px;text-align:center;" class="odd-detail">{{(riga.tipo)}}</td>
+            {% elif riga.tipo =="cassa" %}
+            <td style="color:orange;width:80px;text-align:center;" class="odd-detail">{{riga.tipo}}</td>
+            {% endif %}
+              <td style="width:10%;" class="odd-detail">{{riga.banca[0:30]}}</td>
+        </tr>
+        {% endfor %}
+                </table>
+    <hr>
+    </tr>{% endfor %}
+</table>
+<table style="width:300px;">
+{% set tot=utils.calcolaTotaliPrimeNote(objects) %}
+{% set tot_gen= utils.calcolaSaldoGeneralePrimaNota() %}
+<tr>
+        <td style="width:120px;">TOTALE ENTRATE CASSA</td>
+<td style="color:green;width:90px;text-align:right;" > &#8364; {{utils.italianizza(utils.mN(tot["tot_entrate_cassa"],2),2)}}</td>
+</tr>
+<tr>
+        <td style="width:120px;">TOTALE USCITE CASSA</td>
+        <td style="color:red;width:90px;text-align:right;"> &#8364; {{utils.italianizza(utils.mN(tot["tot_uscite_cassa"],2),2)}}</td>
+</tr>
+<tr>
+        <td style="width:120px;">TOTALE ENTRATE BANCA</td>
+        <td style="color:green;width:90px;text-align:right;"> &#8364; {{utils.italianizza(utils.mN(tot["tot_entrate_banca"],2),2)}}</td>
+</tr>
+<tr>
+        <td style="width:120px;">TOTALE USCITE BANCA</td>
+        <td style="color:red;width:90px;text-align:right;"> &#8364; {{utils.italianizza(utils.mN(tot["tot_uscite_banca"],2),2)}}</td>
+</tr>
+<tr>
+        <td style="width:120px;"><b>TOTALE ENTRATE</b></td>
+        <td style="color:green;width:90px;text-align:right;"> &#8364; {{utils.italianizza(utils.mN(tot["tot_entrate"],2),2)}}</td>
+</tr>
+<tr>
+        <td style="width:120px;"><b>TOTALE USCITE</b></td>
+        <td style="color:red;width:90px;text-align:right;"> &#8364; {{utils.italianizza(utils.mN(tot["tot_uscite"],2),2)}}</td>
+</tr>
+<tr>
+        <td style="width:120px;font-size:16px;"><b>SALDO PERIODO SELEZIONATO</b></td>
+        {% if tot["totale"] > 0 %}
+        <td style="color:green;width:100px;font-size:16px;text-align:right;"><b> &#8364; {{utils.italianizza(utils.mN(tot["totale"],2),2)}}</b></td>
+        {% else %}
+        <td style="color:red;width:100px;font-size:16px;text-align:right;" ><b> &#8364; {{utils.italianizza(utils.mN(tot["totale"],2),2)}}</b></td>
+         {% endif %}
+</tr>
+<tr>
+        <td style="width:120px;"><b>SALDO COMPLESSIVO</b></td>
+        {% if tot_gen["totale_con_riporto"] > 0 %}
+        <td style="color:green;width:100px;text-align:right;"><b> &#8364; {{utils.italianizza(utils.mN(tot_gen["totale_con_riporto"],2),2)}}</b></td>
+        {% else %}
+        <td style="color:red;width:100px;text-align:right;" ><b> &#8364; {{utils.italianizza(utils.mN(tot_gen["totale_con_riporto"],2),2)}}</b></td>
+         {% endif %}
+</tr>
+</table>
+{% endblock %}

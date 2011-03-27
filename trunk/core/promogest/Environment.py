@@ -102,6 +102,7 @@ puntoP = None
 eta = 0
 tipo_pg = None
 cartella_moduli = 'promogest/modules'
+totale_pn_con_riporto = 0
 
 
 hapag = ["Fattura accompagnatoria","Fattura acquisto","Fattura differita acquisto",

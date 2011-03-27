@@ -86,20 +86,20 @@ class TestataPrimaNota(Dao):
             dic = {k:testataprimanota.c.numero >= v}
         elif k == 'aNumero':
             dic = {k:testataprimanota.c.numero <= v}
-        elif k == 'datafinecheck':
-            dic = {k:testataprimanota.c.data_fine == None}
-        elif k == 'datafine':
-            dic = {k:testataprimanota.c.data_fine == v}
+#        elif k == 'datafinecheck':
+#            dic = {k:testataprimanota.c.data_fine == None}
+#        elif k == 'datafine':
+#            dic = {k:testataprimanota.c.data_fine == v}
         elif k == 'numero':
             dic = {k:testataprimanota.c.numero == v}
         elif k == 'daDataInizio':
             dic = {k:testataprimanota.c.data_inizio >= v}
         elif k== 'aDataInizio':
             dic = {k:testataprimanota.c.data_inizio <= v}
-        elif k == 'daDataFine':
-            dic = {k:testataprimanota.c.data_fine >= v}
-        elif k== 'aDataFine':
-            dic = {k:testataprimanota.c.data_fine <= v}
+#        elif k == 'daDataFine':
+#            dic = {k:testataprimanota.c.data_fine >= v}
+#        elif k== 'aDataFine':
+#            dic = {k:testataprimanota.c.data_fine <= v}
         return  dic[k]
 
     def righePrimaNotaDel(self,id=None):
@@ -183,4 +183,4 @@ std_mapper = mapper(TestataPrimaNota, testataprimanota,properties={
                 testataprimanota.c.id==RigaPrimaNota.id_testata_prima_nota,
                 foreign_keys=[RigaPrimaNota.id_testata_prima_nota],
                 cascade="all, delete")},
-                order_by=testataprimanota.c.id)
+                order_by=testataprimanota.c.numero.desc())

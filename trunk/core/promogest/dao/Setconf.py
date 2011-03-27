@@ -194,4 +194,5 @@ if not bb:
     kbb.tipo = "bool"
     kbb.date = datetime.datetime.now()
     session.add(kbb)
+
 session.commit()

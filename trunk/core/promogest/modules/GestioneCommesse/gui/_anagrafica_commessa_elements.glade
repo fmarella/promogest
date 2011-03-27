@@ -825,6 +825,7 @@ modificare l'oggetto inserito</property>
       <column type="gchararray"/>
     </columns>
   </object>
+  <object class="GtkListStore" id="liststore1"/>
   <object class="GtkTreeView" id="anagrafica_filter_treeview">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
@@ -909,7 +910,6 @@ modificare l'oggetto inserito</property>
       </object>
     </child>
   </object>
-  <object class="GtkListStore" id="liststore1"/>
   <object class="GtkTextBuffer" id="note_commessa_buffer"/>
   <object class="GtkTextBuffer" id="note_riga_buffer"/>
   <object class="GtkListStore" id="tipo_listore">
