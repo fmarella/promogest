@@ -57,43 +57,55 @@ class AnagraficaAliquoteIvaFilter(AnagraficaFilter):
         self._widgetFirstFocus = self.denominazione_filter_entry
 
     def draw(self):
-        # Colonne della Treeview per il filtro
-        treeview = self._anagrafica.anagrafica_filter_treeview
-        renderer = gtk.CellRendererText()
+        """ Disegno la treeview e gli altri oggetti della gui """
+        self.clear()
 
-        column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
-        column.set_resizable(True)
-        column.set_expand(True)
-        column.set_min_width(100)
-        treeview.append_column(column)
+    def _reOrderBy(self, column):
+        if column.get_name() == "descrizione_column":
+            return self._changeOrderBy(column,(None,AliquotaIva.denominazione))
+        if column.get_name() == "descrizione_breve_column":
+            return self._changeOrderBy(column,(None,AliquotaIva.denominazione_breve))
 
-        column = gtk.TreeViewColumn('Descrizione breve', renderer, text=2)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect('clicked', self._changeOrderBy, (None, 'denominazione_breve'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
 
-        column = gtk.TreeViewColumn('%', renderer, text=3)
-        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-        column.set_clickable(True)
-        column.connect('clicked', self._changeOrderBy, (None, 'percentuale'))
-        column.set_resizable(True)
-        column.set_expand(False)
-        column.set_min_width(100)
-        treeview.append_column(column)
 
-        treeview.set_search_column(1)
+#    def draw(self):
+#        # Colonne della Treeview per il filtro
+#        treeview = self._anagrafica.anagrafica_filter_treeview
+#        renderer = gtk.CellRendererText()
 
-        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, str)
-        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
+#        column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
+#        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+#        column.set_clickable(True)
+#        column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
+#        column.set_resizable(True)
+#        column.set_expand(True)
+#        column.set_min_width(100)
+#        treeview.append_column(column)
 
-        self.refresh()
+#        column = gtk.TreeViewColumn('Descrizione breve', renderer, text=2)
+#        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+#        column.set_clickable(True)
+#        column.connect('clicked', self._changeOrderBy, (None, 'denominazione_breve'))
+#        column.set_resizable(True)
+#        column.set_expand(False)
+#        column.set_min_width(100)
+#        treeview.append_column(column)
+
+#        column = gtk.TreeViewColumn('%', renderer, text=3)
+#        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+#        column.set_clickable(True)
+#        column.connect('clicked', self._changeOrderBy, (None, 'percentuale'))
+#        column.set_resizable(True)
+#        column.set_expand(False)
+#        column.set_min_width(100)
+#        treeview.append_column(column)
+
+#        treeview.set_search_column(1)
+
+#        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, str)
+#        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
+
+
 
     def clear(self):
         # Annullamento filtro
@@ -125,9 +137,9 @@ class AnagraficaAliquoteIvaFilter(AnagraficaFilter):
 
         ivas = self.runFilter()
 
-        self._treeViewModel.clear()
+        self.filter_listore.clear()
         for i in ivas:
-            self._treeViewModel.append((i,
+            self.filter_listore.append((i,
                                         (i.denominazione or ''),
                                         (i.denominazione_breve or ''),
                                         (('%5.2f') % (i.percentuale or 0))))

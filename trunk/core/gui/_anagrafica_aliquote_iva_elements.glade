@@ -1,10 +1,11 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires pythonplugin 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkTable" id="anagrafica_aliquote_iva_detail_table">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="border_width">6</property>
     <property name="n_rows">6</property>
     <property name="n_columns">2</property>
@@ -12,12 +13,14 @@
     <child>
       <object class="GtkAlignment" id="alignment407">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="GtkComboBox" id="id_tipo_combobox">
             <property name="width_request">150</property>
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="tooltip_text" translatable="yes">Tipologie 
 di aliquota iva gestite 
 dal programma</property>
@@ -37,6 +40,7 @@ dal programma</property>
       <object class="GtkAlignment" id="alignment375">
         <property name="width_request">50</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
@@ -46,12 +50,14 @@ dal programma</property>
             <property name="tooltip_text" translatable="yes">Percentuale della aliquota
 quando presente e non 
 esente</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
             <property name="text" translatable="yes">0.00      </property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">True</property>
+            <property name="primary_icon_sensitive">True</property>
             <property name="secondary_icon_sensitive">True</property>
-            <signal name="icon_press" handler="on_icon_press"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
         </child>
       </object>
@@ -69,14 +75,16 @@ esente</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="tooltip_text" translatable="yes">Descrizione della aliquota (max 100 )</property>
-        <property name="invisible_char">&#x2022;</property>
+        <property name="invisible_char">•</property>
         <property name="secondary_icon_stock">gtk-clear</property>
+        <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">True</property>
+        <property name="primary_icon_sensitive">True</property>
         <property name="secondary_icon_sensitive">True</property>
-        <signal name="button_press_event" handler="on_button_press_event"/>
-        <signal name="focus_out_event" handler="on_entry_focus_out_event"/>
-        <signal name="focus_in_event" handler="on_entry_focus_in_event"/>
-        <signal name="icon_press" handler="on_icon_press"/>
+        <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+        <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
+        <signal name="focus-in-event" handler="on_entry_focus_in_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -89,6 +97,7 @@ esente</property>
       <object class="GtkAlignment" id="alignment263">
         <property name="width_request">50</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
@@ -97,12 +106,14 @@ esente</property>
             <property name="can_focus">True</property>
             <property name="tooltip_text" translatable="yes">Percentuale di detrazione 
 quando presente</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
             <property name="text" translatable="yes">0.00      </property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">True</property>
+            <property name="primary_icon_sensitive">True</property>
             <property name="secondary_icon_sensitive">True</property>
-            <signal name="icon_press" handler="on_icon_press"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
           </object>
         </child>
       </object>
@@ -120,14 +131,16 @@ quando presente</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="tooltip_text" translatable="yes">Descrizione della detrazione</property>
-        <property name="invisible_char">&#x2022;</property>
+        <property name="invisible_char">•</property>
         <property name="secondary_icon_stock">gtk-clear</property>
+        <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">True</property>
+        <property name="primary_icon_sensitive">True</property>
         <property name="secondary_icon_sensitive">True</property>
-        <signal name="button_press_event" handler="on_button_press_event"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
-        <signal name="icon_press" handler="on_icon_press"/>
+        <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+        <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -141,6 +154,7 @@ quando presente</property>
     <child>
       <object class="GtkLabel" id="tipo_aliquota_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">&lt;b&gt;Tipo Aliquota&lt;/b&gt;</property>
         <property name="use_markup">True</property>
@@ -156,6 +170,7 @@ quando presente</property>
     <child>
       <object class="GtkLabel" id="descrizione_dotazioni_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="yalign">0.47999998927116394</property>
         <property name="label" translatable="yes">Descrizione detrazione</property>
@@ -171,6 +186,7 @@ quando presente</property>
     <child>
       <object class="GtkLabel" id="percentuale_detrazione_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">% Detrazione</property>
       </object>
@@ -185,6 +201,7 @@ quando presente</property>
     <child>
       <object class="GtkLabel" id="percentuale_aliquota_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">% Aliquota IVA</property>
       </object>
@@ -199,6 +216,7 @@ quando presente</property>
     <child>
       <object class="GtkAlignment" id="alignment55">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
@@ -207,14 +225,16 @@ quando presente</property>
             <property name="can_focus">True</property>
             <property name="tooltip_text" translatable="yes">Descrizione Breve ( max 10 )</property>
             <property name="max_length">10</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
             <property name="secondary_icon_stock">gtk-clear</property>
+            <property name="primary_icon_activatable">False</property>
             <property name="secondary_icon_activatable">True</property>
+            <property name="primary_icon_sensitive">True</property>
             <property name="secondary_icon_sensitive">True</property>
-            <signal name="button_press_event" handler="on_button_press_event"/>
-            <signal name="focus_out_event" handler="on_focus_out_event"/>
-            <signal name="focus_in_event" handler="on_focus_in_event"/>
-            <signal name="icon_press" handler="on_icon_press"/>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <signal name="icon-press" handler="on_icon_press" swapped="no"/>
+            <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+            <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
           </object>
         </child>
       </object>
@@ -230,6 +250,7 @@ quando presente</property>
     <child>
       <object class="GtkLabel" id="descrizione_breve_aliquota_iva_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">&lt;b&gt;Descrizione breve&lt;/b&gt;</property>
         <property name="use_markup">True</property>
@@ -245,6 +266,7 @@ quando presente</property>
     <child>
       <object class="GtkLabel" id="descrizione_aliquota_iva_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">&lt;b&gt;Descrizione&lt;/b&gt;</property>
         <property name="use_markup">True</property>
@@ -259,16 +281,21 @@ quando presente</property>
   <object class="GtkTable" id="anagrafica_aliquote_iva_filter_table">
     <property name="height_request">130</property>
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="n_columns">2</property>
     <child>
       <object class="GtkEntry" id="denominazione_filter_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x2022;</property>
-        <signal name="button_press_event" handler="on_button_press_event"/>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
+        <property name="invisible_char">•</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -280,6 +307,7 @@ quando presente</property>
     <child>
       <object class="GtkLabel" id="label34">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Descrizione</property>
       </object>
@@ -289,5 +317,64 @@ quando presente</property>
         <property name="x_padding">10</property>
       </packing>
     </child>
+  </object>
+  <object class="GtkTreeView" id="anagrafica_filter_treeview">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="border_width">1</property>
+    <property name="model">filter_listore</property>
+    <property name="search_column">1</property>
+    <property name="enable_grid_lines">both</property>
+    <child>
+      <object class="GtkTreeViewColumn" id="descrizione_column">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Descrizione</property>
+        <property name="clickable">True</property>
+        <property name="sort_indicator">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+          <attributes>
+            <attribute name="text">1</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="descrizione_breve_column">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Descrizione Breve</property>
+        <property name="clickable">True</property>
+        <property name="sort_indicator">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+          <attributes>
+            <attribute name="text">2</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="percentuale_column">
+        <property name="title" translatable="yes">Percentuale</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext8"/>
+          <attributes>
+            <attribute name="text">3</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkListStore" id="filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>
