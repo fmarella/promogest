@@ -48,7 +48,8 @@ class AnagraficaPrimaNota(Anagrafica):
 #        self.records_print_on_screen_button.set_sensitive(False)
         self.records_print_button.set_sensitive(False)
         self.records_file_export.set_sensitive(True)
-
+        self.record_duplicate_menu.set_sensitive(False)
+        self.record_duplicate_menu.set_sensitive(False)
 
 class AnagraficaPrimaNotaHtml(AnagraficaHtml):
 

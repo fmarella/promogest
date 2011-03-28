@@ -301,9 +301,9 @@ class Anagrafica(GladeWidget):
 
         self.record_edit_button.set_sensitive(self.dao is not None)
         self.record_edit_menu.set_sensitive(self.dao is not None)
-        if self.dao.__class__.__name__ in ["TestataDocumento", "Articolo", "TestataMovimento"]:
+        if self.dao.__class__.__name__ in ["TestataDocumento", "Articolo", "TestataMovimento", "Listino"]:
             self.duplica_button.set_sensitive(self.dao is not None)
-        self.record_duplicate_menu.set_sensitive(self.dao is not None)
+            self.record_duplicate_menu.set_sensitive(self.dao is not None)
 
         self.record_delete_button.set_sensitive(self.dao is not None)
         self.record_delete_menu.set_sensitive(self.dao is not None)
@@ -339,9 +339,9 @@ class Anagrafica(GladeWidget):
 
         self.record_edit_button.set_sensitive(self.dao is not None)
         self.record_edit_menu.set_sensitive(self.dao is not None)
-        if self.dao.__class__.__name__ in ["TestataDocumento", "Articolo", "TestataMovimento"]:
+        if self.dao.__class__.__name__ in ["TestataDocumento", "Articolo", "TestataMovimento", "Listino"]:
             self.duplica_button.set_sensitive(self.dao is not None)
-        self.record_duplicate_menu.set_sensitive(self.dao is not None)
+            self.record_duplicate_menu.set_sensitive(self.dao is not None)
 
         self.record_delete_button.set_sensitive(self.dao is not None)
         self.record_delete_menu.set_sensitive(self.dao is not None)
