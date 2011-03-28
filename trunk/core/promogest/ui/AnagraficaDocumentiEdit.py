@@ -1809,21 +1809,7 @@ del documento.
     #NOTEBOOK TAB 3
 
     def on_primanota_check_toggled(self, button):
-        tpn = TestataPrimaNota().select(datafinecheck = True)
-        if not tpn:
-            messageInfo(msg="""ATTENZIONE!!
-Non risulta presente nessuna prima nota "aperta" al momento.
-E' possibile che ne siano state create ed usate altre in passato e poi chiuse,
-oppure sia la prima dell'anno. Ne verrà creata una ora a partire dal 01/01
-con la dicitura generica di :" PRIMA NOTA AUTOMATICA".
-Si consiglia di tenere sempre una prima nota aperta""")
-            a = TestataPrimaNota()
-            a.numero = 1
-            a.data_inizio = stringToDate("01/01/"+Environment.workingYear)
-            a.note = " PRIMA NOTA AUTOMATICA"
-            a.persist()
-
-
+        return
 
     def on_pulisci_scadenza_button_clicked(self, button):
         AnagraficadocumentiPagamentExt.on_pulisci_scadenza_button_clicked(self, button)

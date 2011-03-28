@@ -170,6 +170,8 @@ class TestataPrimaNota(Dao):
     def persist(self):
         """ salvataggio righe associate alla testata """
         pg2log.info("DENTRO IL TESTATA PRIMA NOTA CASSA")
+        if not self.numero:
+            self.numero = getNuovoNumero()
         params["session"].add(self)
         params["session"].commit()
         if self.__righePrimaNota:
@@ -177,6 +179,15 @@ class TestataPrimaNota(Dao):
                 riga.id_testata_prima_nota = self.id
                 riga.persist()
         self.__righePrimaNota = []
+
+def getNuovoNumero():
+    date = workingYear
+    numeroSEL= TestataPrimaNota().select(complexFilter=(and_(TestataPrimaNota.data_inizio.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)))), batchSize=None)
+    if numeroSEL:
+        numero = max([p.numero for p in numeroSEL]) +1
+    else:
+        numero = 1
+    return numero
 
 std_mapper = mapper(TestataPrimaNota, testataprimanota,properties={
         "rigatest": relation(RigaPrimaNota,primaryjoin=

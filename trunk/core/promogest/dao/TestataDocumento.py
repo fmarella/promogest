@@ -549,22 +549,20 @@ class TestataDocumento(Dao):
                     else:
                         stringa = "%s N.%s del. %s da %s, %s"    %(self.operazione, str(self.numero), dateToString(self.data_documento), self.intestatario, tipo_pag)
                         segno = "uscita"
-                    tpn = TestataPrimaNota().select(datafinecheck = True)
-                    try:
-                        numero = max(a.numero for a in RigaPrimaNota().select(idTestataPrimaNota=tpn[0].id, batchSize=None))
-                    except:
-                        numero = 0
+
+                    tpn = TestataPrimaNota()
+                    tpn.data_inizio = scad.data_pagamento
+                    tpn.note = ""
                     rigaprimanota = RigaPrimaNota()
                     rigaprimanota.denominazione = stringa
-                    rigaprimanota.id_testata_prima_nota = tpn[0].id
-        #        rigaprimanota.id_banca = #trovare
-                    rigaprimanota.numero = numero+1
+                    rigaprimanota.numero = 1
                     rigaprimanota.data_registrazione = scad.data_pagamento
                     rigaprimanota.tipo = tipo.lower()
                     rigaprimanota.segno = segno
                     rigaprimanota.valore = scad.importo
-                    params["session"].add(rigaprimanota)
-                    params["session"].commit()
+                    rigaprimanota.id_testata_documento = self.id
+                    tpn.righeprimanota = [rigaprimanota]
+                    tpn.persist()
                     a = RigaPrimaNotaTestataDocumentoScadenza()
                     a.id_riga_prima_nota = rigaprimanota.id
                     a.id_testata_documento_scadenza = scad.id
@@ -640,8 +638,12 @@ class TestataDocumento(Dao):
             if pnn:
                 for p in pnn:
                     rpn = RigaPrimaNota().getRecord(id=p.id_riga_prima_nota)
+                    tpn = TestataPrimaNota().getRecord(id=rpn.id_testata_prima_nota)
                     if rpn:
                         params['session'].delete(rpn)
+                        params["session"].commit()
+                    if len(tpn.righeprimanota)==0:
+                        params['session'].delete(tpn)
                         params["session"].commit()
                     params['session'].delete(p)
                     params["session"].commit()
