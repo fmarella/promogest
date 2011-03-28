@@ -259,8 +259,8 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
                 numero = 1
             self.dao.numero = numero
         self.dao.data_inizio = stringToDate(self.data_inserimento_datewidget.get_text())
-        if self.data_inserimento_datewidget.get_text() == '':
-            obligatoryField(self.getTopLevel(),self.data_inserimento_datewidget)
+        if self.dao.data_inizio == '' or self.dao.data_inizio ==None:
+            obligatoryField(None,self.data_inserimento_datewidget)
         righe_ = []
         for m in self.primanota_riga_listore:
             righe_.append(m[0])
