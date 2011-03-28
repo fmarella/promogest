@@ -2606,7 +2606,7 @@ def setconf(section, key, value=False):
         else:
             if valore == "":
                 return None
-            elif len(valore.split("/"))>=2:
+            elif valore and len(valore.split("/"))>=2:
                 return str(valore)
             else:
                 try:
