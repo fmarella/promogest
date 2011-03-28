@@ -246,7 +246,6 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
             findComboboxRowFromId(self.id_banca_customcombobox.combobox, self.rigaIter[0].id_banca)
             self.id_banca_customcombobox.set_sensitive(True)
 
-
         self.denominazione_entry.set_text(self.rigaIter[1])
         self.editRiga = self.rigaIter[0]
 
@@ -260,12 +259,15 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
                 numero = 1
             self.dao.numero = numero
         self.dao.data_inizio = stringToDate(self.data_inserimento_datewidget.get_text())
+        if self.data_inserimento_datewidget.get_text() == '':
+            obligatoryField(self.getTopLevel(),self.data_inserimento_datewidget)
         righe_ = []
         for m in self.primanota_riga_listore:
             righe_.append(m[0])
+        if (len(righe_)==0):
+            messageInfo(msg="L'INSERIMENTO DI UNA OPERAZIONE È OBBLIGATORIO")
+            raise Exception, 'Operation aborted campo obbligatorio'
         self.dao.note = self.note_entry.get_text()
         self.dao.righeprimanota = righe_
-#        if chiusura:
-#            self.dao.data_fine = datetime.datetime.now()
         self.dao.persist()
         self.clear()
