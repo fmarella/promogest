@@ -105,7 +105,7 @@ class ManageLabelsToPrint(GladeWidget):
         return model[active][0]
 
     def on_ok_button_clicked(self,button):
-        folder = setconf("General", "cartella_predefinita") or ""
+        self._folder = setconf("General", "cartella_predefinita") or ""
         if self._folder == '':
             if os.name == 'posix':
                 self._folder = os.environ['HOME']
