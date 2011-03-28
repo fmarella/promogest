@@ -24,7 +24,7 @@ import gtk
 import gobject
 
 from promogest.ui.AnagraficaComplessaFilter import AnagraficaFilter
-
+from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest import Environment
 import promogest.dao.Fornitore
 from promogest.dao.Fornitore import Fornitore
