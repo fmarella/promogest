@@ -1,16 +1,18 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires pythonplugin 0.0 -->
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkTable" id="anagrafica_documenti_filter_table">
     <property name="visible">True</property>
+    <property name="can_focus">False</property>
     <property name="n_rows">16</property>
     <property name="n_columns">2</property>
     <child>
       <object class="GtkAlignment" id="alignment551">
         <property name="width_request">200</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
@@ -32,6 +34,7 @@
     <child>
       <object class="GtkLabel" id="label3510">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Agente</property>
       </object>
@@ -47,6 +50,7 @@
       <object class="GtkAlignment" id="alignment400">
         <property name="width_request">200</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
@@ -69,6 +73,7 @@
       <object class="GtkAlignment" id="alignment399">
         <property name="width_request">200</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
@@ -91,13 +96,18 @@
       <object class="GtkAlignment" id="alignment398">
         <property name="width_request">100</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="UnsignedIntegerEntryField" id="a_numero_filter_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
         </child>
       </object>
@@ -114,13 +124,18 @@
       <object class="GtkAlignment" id="alignment397">
         <property name="width_request">100</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="UnsignedIntegerEntryField" id="da_numero_filter_entry">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="invisible_char">•</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="secondary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">True</property>
+            <property name="secondary_icon_sensitive">True</property>
           </object>
         </child>
       </object>
@@ -137,11 +152,13 @@
       <object class="GtkAlignment" id="alignment396">
         <property name="width_request">120</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="DateWidget" id="a_data_filter_entry">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <placeholder/>
             </child>
@@ -161,11 +178,13 @@
       <object class="GtkAlignment" id="alignment395">
         <property name="width_request">120</property>
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="xscale">0</property>
         <child>
           <object class="DateWidget" id="da_data_filter_entry">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <placeholder/>
             </child>
@@ -185,6 +204,7 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="use_underline">True</property>
         <property name="draw_indicator">True</property>
         <property name="group">cliente_filter_radiobutton</property>
@@ -203,6 +223,7 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="use_underline">True</property>
         <property name="active">True</property>
         <property name="draw_indicator">True</property>
@@ -218,7 +239,8 @@
     <child>
       <object class="GtkComboBox" id="id_magazzino_filter_combobox">
         <property name="visible">True</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+        <property name="can_focus">False</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -232,7 +254,8 @@
     <child>
       <object class="GtkComboBox" id="id_operazione_filter_combobox">
         <property name="visible">True</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
+        <property name="can_focus">False</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -247,10 +270,14 @@
       <object class="GtkEntry" id="protocollo_entry">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="invisible_char">&#x2022;</property>
-        <signal name="key_press_event" handler="on_campo_filter_entry_key_press_event"/>
-        <signal name="focus_in_event" handler="on_focus_in_event"/>
-        <signal name="focus_out_event" handler="on_focus_out_event"/>
+        <property name="invisible_char">•</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="secondary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">True</property>
+        <property name="secondary_icon_sensitive">True</property>
+        <signal name="key-press-event" handler="on_campo_filter_entry_key_press_event" swapped="no"/>
+        <signal name="focus-in-event" handler="on_focus_in_event" swapped="no"/>
+        <signal name="focus-out-event" handler="on_focus_out_event" swapped="no"/>
       </object>
       <packing>
         <property name="left_attach">1</property>
@@ -264,6 +291,7 @@
     <child>
       <object class="GtkLabel" id="label376">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Rif. doc. fornitore</property>
       </object>
@@ -278,6 +306,7 @@
     <child>
       <object class="GtkLabel" id="label339">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Magazzino</property>
       </object>
@@ -292,6 +321,7 @@
     <child>
       <object class="GtkLabel" id="label164">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Tipo documento</property>
       </object>
@@ -306,6 +336,7 @@
     <child>
       <object class="GtkLabel" id="label163">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">A numero</property>
       </object>
@@ -320,6 +351,7 @@
     <child>
       <object class="GtkLabel" id="label162">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Da numero</property>
       </object>
@@ -334,6 +366,7 @@
     <child>
       <object class="GtkLabel" id="label117">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">A data</property>
       </object>
@@ -348,6 +381,7 @@
     <child>
       <object class="GtkLabel" id="label116">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Da data</property>
       </object>
@@ -360,6 +394,7 @@
     <child>
       <object class="GtkLabel" id="statoDocumento_label">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Stato Documento</property>
       </object>
@@ -374,6 +409,7 @@
     <child>
       <object class="GtkComboBox" id="stato_documento_filter_combobox">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
         <property name="model">liststore1</property>
         <child>
@@ -395,6 +431,7 @@
     <child>
       <object class="GtkLabel" id="label1">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
         <property name="xalign">0</property>
         <property name="label" translatable="yes">Articolo</property>
@@ -410,6 +447,7 @@
     <child>
       <object class="GtkAlignment" id="alignment4">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
         <property name="xalign">0</property>
         <child>
@@ -436,20 +474,24 @@
         <child>
           <object class="GtkFrame" id="noleggio_filter_frame">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="label_xalign">0</property>
             <property name="shadow_type">in</property>
             <child>
               <object class="GtkAlignment" id="alignment27">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="left_padding">12</property>
                 <child>
                   <object class="GtkTable" id="table4">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="n_rows">4</property>
                     <property name="n_columns">2</property>
                     <child>
                       <object class="GtkLabel" id="label35">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">DaData Inizio Noleggio</property>
                       </object>
@@ -461,11 +503,13 @@
                       <object class="GtkAlignment" id="alignment7">
                         <property name="width_request">120</property>
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="xscale">0</property>
                         <child>
                           <object class="DateWidget" id="da_data_inizio_noleggio_filter_entry">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -482,6 +526,7 @@
                     <child>
                       <object class="GtkLabel" id="label41">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">A data Inizio Noleggio</property>
                       </object>
@@ -495,11 +540,13 @@
                       <object class="GtkAlignment" id="alignment26">
                         <property name="width_request">120</property>
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="xscale">0</property>
                         <child>
                           <object class="DateWidget" id="a_data_inizio_noleggio_filter_entry">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -518,6 +565,7 @@
                     <child>
                       <object class="GtkLabel" id="label42">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">DaData Fine Noleggio</property>
                       </object>
@@ -530,6 +578,7 @@
                     <child>
                       <object class="GtkLabel" id="label50">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">A data Fine Noleggio</property>
                       </object>
@@ -543,11 +592,13 @@
                       <object class="GtkAlignment" id="alignment28">
                         <property name="width_request">120</property>
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="xscale">0</property>
                         <child>
                           <object class="DateWidget" id="da_data_fine_noleggio_filter_entry">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -567,11 +618,13 @@
                       <object class="GtkAlignment" id="alignment29">
                         <property name="width_request">120</property>
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="xalign">0</property>
                         <property name="xscale">0</property>
                         <child>
                           <object class="DateWidget" id="a_data_fine_noleggio_filter_entry">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -594,6 +647,7 @@
             <child type="label">
               <object class="GtkLabel" id="label52">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">&lt;b&gt;Filtri Gestione Noleggio&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
               </object>
@@ -603,6 +657,7 @@
         <child type="label">
           <object class="GtkLabel" id="label34">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="label" translatable="yes">&lt;b&gt;Noleggio&lt;/b&gt;</property>
             <property name="use_markup">True</property>
           </object>
@@ -634,6 +689,178 @@
     </child>
     <child>
       <placeholder/>
+    </child>
+  </object>
+  <object class="GtkListStore" id="filter_listore">
+    <columns>
+      <!-- column-name PyObject1 -->
+      <column type="PyObject"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray5 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray6 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray7 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray8 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray9 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray10 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray11 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkTreeView" id="anagrafica_filter_treeview">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="border_width">1</property>
+    <property name="model">filter_listore</property>
+    <property name="search_column">1</property>
+    <property name="enable_grid_lines">both</property>
+    <child>
+      <object class="GtkTreeViewColumn" id="data_column">
+        <property name="title" translatable="yes">Data</property>
+        <property name="clickable">True</property>
+        <property name="reorderable">True</property>
+        <property name="sort_indicator">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext1"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">1</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="numero_column">
+        <property name="title" translatable="yes">Numero</property>
+        <property name="clickable">True</property>
+        <property name="reorderable">True</property>
+        <property name="sort_indicator">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">2</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="tipo_documento_column">
+        <property name="title" translatable="yes">Tipo Documento</property>
+        <property name="clickable">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext8"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">3</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="cliente_fornitore_column">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Cliente / Fornitore</property>
+        <property name="expand">True</property>
+        <property name="reorderable">True</property>
+        <property name="sort_indicator">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext4"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">4</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="rif_doc_fornitore_column">
+        <property name="title" translatable="yes">Rif.doc.Fornitore</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext5"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">5</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+        <property name="title" translatable="yes">Imponibile</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext6"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">6</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+        <property name="title" translatable="yes">Imposta</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext7"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">7</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+        <property name="title" translatable="yes">Totale</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext9">
+            <property name="alignment">center</property>
+            <property name="variant">small-caps</property>
+          </object>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">8</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn4">
+        <property name="resizable">True</property>
+        <property name="title" translatable="yes">Note interne</property>
+        <property name="expand">True</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext10"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">9</attribute>
+          </attributes>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkTreeViewColumn" id="treeviewcolumn5">
+        <property name="title" translatable="yes">Saldato</property>
+        <child>
+          <object class="GtkCellRendererText" id="cellrenderertext11"/>
+          <attributes>
+            <attribute name="cell-background">10</attribute>
+            <attribute name="text">11</attribute>
+          </attributes>
+        </child>
+      </object>
     </child>
   </object>
   <object class="GtkListStore" id="liststore1">
