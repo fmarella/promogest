@@ -146,22 +146,6 @@ def startdir():
     promogestStartDir = os.path.expanduser('~') + os.sep + startDir + os.sep
     return promogestStartDir
 
-LOG_FILENAME = startdir()+'pg2.log'
-
-# Set up a specific logger with our desired output level
-pg2log = logging.getLogger('PromoGest2')
-pg2log.setLevel(logging.INFO)
-
-# Add the log message handler to the logger
-handler = logging.handlers.RotatingFileHandler(
-              LOG_FILENAME, maxBytes=10000, backupCount=6)
-
-formatter = logging.Formatter(
-    "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(pathname)s - %(funcName)s - %(lineno)d")
-# add formatter to ch
-handler.setFormatter(formatter)
-pg2log.addHandler(handler)
-pg2log.info("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
 
 def messageInfo(msg="Messaggio generico"):
     """generic msg dialog """
@@ -208,7 +192,6 @@ class MyProxy(ConnectionProxy):
 #            print("ATTENZIONE:ValueError",e)
             messageInfo(msg="Risulta inserito un Valore non corretto. Ricontrolla: "+e.message)
             session.rollback()
-        session.rollback()
 
 
 def _pg8000():
@@ -556,7 +539,22 @@ loc = locale.setlocale(locale.LC_ALL, '')
 conf.windowsrc = os.path.expanduser('~') + os.sep + 'promogest2/windowsrc.xml'
 conf.guiDir = '.' + os.sep + 'gui' + os.sep
 
+LOG_FILENAME = startdir()+'pg2.log'
 
+# Set up a specific logger with our desired output level
+pg2log = logging.getLogger('PromoGest2')
+pg2log.setLevel(logging.INFO)
+
+# Add the log message handler to the logger
+handler = logging.handlers.RotatingFileHandler(
+              LOG_FILENAME, maxBytes=10000, backupCount=6)
+
+formatter = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(pathname)s - %(funcName)s - %(lineno)d")
+# add formatter to ch
+handler.setFormatter(formatter)
+pg2log.addHandler(handler)
+pg2log.info("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
 
 def _msgDef(text="", html="",img="", subject=""):
     msgg = MIMEMultipart()
