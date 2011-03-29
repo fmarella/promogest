@@ -408,7 +408,6 @@ Procedere con la "chiusura" del Pagamento?"""
         controllascadenza = re.compile('^.* [0-9]?(.[0-9]+)+.*$')
         r = controllascadenza.match(stringaCombobox)
         finemese = re.compile('^.* [(F|f).(M|m)]*.$')
-
         if r:
             var = re.split('([0-9]+)', stringaCombobox)
             p = finemese.match(var[len(var)-1])
