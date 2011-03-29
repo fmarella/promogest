@@ -29,7 +29,7 @@
                 <td class="odd-detail">
                     {% if dao.ragione_sociale_cliente %}
                         <strong>{{dao.ragione_sociale_cliente}}
-            ({{dao.cognome_cliente + ' ' + dao.nome_cliente}})</strong>
+            </strong>
                 {% endif %}</td>
             </tr>
             {% else %}
@@ -38,7 +38,7 @@
                 <td class="odd-detail">
                     {%  if dao.ragione_sociale_fornitore %}
                     <strong >{{dao.ragione_sociale_fornitore}}
-                            ({{dao.cognome_fornitore + ' ' + dao.nome_fornitore}})
+
                     </strong>
                 {% endif %}
                 </td>
