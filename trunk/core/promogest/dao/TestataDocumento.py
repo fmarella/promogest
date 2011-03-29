@@ -930,11 +930,13 @@ class TestataDocumento(Dao):
 
     def delete(self):
         """ Cancelliamo una testata documento con tutti i cascade"""
+
         ifd = InformazioniFatturazioneDocumento().select(id_fattura=self.id, batchSize=None)
         if ifd:
             for f in ifd:
                 params['session'].delete(f)
             params['session'].commit()
+        self.testataDocumentoScadenzaDel(dao=self)
         params['session'].delete(self)
         params['session'].commit()
 

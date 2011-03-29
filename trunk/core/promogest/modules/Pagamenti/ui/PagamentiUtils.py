@@ -639,29 +639,3 @@ Procedere con la "chiusura" del Pagamento?"""
             if doc2 != "" and doc2 != "0":
                 documentocollegato = self.getDocumentoCollegato(int(doc2))
                 self.anagrafica.dao.id_secondo_riferimento = documentocollegato[0].id
-
-
-    def connectEntryPag(self):
-        self.anagrafica.data_pagamento_prima_scadenza_entry.entry.connect('changed',
-                self.anagrafica.on_data_pagamento_prima_scadenza_entry_changed)
-        self.anagrafica.data_pagamento_seconda_scadenza_entry.entry.connect('changed',
-                self.anagrafica.on_data_pagamento_seconda_scadenza_entry_changed)
-        self.anagrafica.data_pagamento_terza_scadenza_entry.entry.connect('changed',
-                self.anagrafica.on_data_pagamento_terza_scadenza_entry_changed)
-        self.anagrafica.data_pagamento_quarta_scadenza_entry.entry.connect('changed',
-                self.anagrafica.on_data_pagamento_quarta_scadenza_entry_changed)
-
-        self.anagrafica.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">'+str(
-            0)+'</span></b>')
-        self.anagrafica.totale_sospeso_scadenza_label.set_markup('<b><span foreground="#B40000" size="24000">'+str(
-            0)+'</span></b>')
-        self.anagrafica.importo_primo_documento_entry.set_text('')
-        self.anagrafica.importo_secondo_documento_entry.set_text('')
-        self.anagrafica.numero_primo_documento_entry.set_text('')
-        self.anagrafica.numero_secondo_documento_entry.set_text('')
-
-        fillComboboxPagamenti(self.anagrafica.id_pagamento_acconto_customcombobox.combobox)
-        fillComboboxPagamenti(self.anagrafica.id_pagamento_prima_scadenza_customcombobox.combobox)
-        fillComboboxPagamenti(self.anagrafica.id_pagamento_seconda_scadenza_customcombobox.combobox)
-        fillComboboxPagamenti(self.anagrafica.id_pagamento_terza_scadenza_customcombobox.combobox)
-        fillComboboxPagamenti(self.anagrafica.id_pagamento_quarta_scadenza_customcombobox.combobox)
