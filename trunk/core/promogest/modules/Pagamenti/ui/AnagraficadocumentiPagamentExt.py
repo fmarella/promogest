@@ -28,7 +28,7 @@ from promogest.modules.PrimaNota.dao.TestataPrimaNota import TestataPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNota import RigaPrimaNota
 from promogest.modules.PrimaNota.dao.RigaPrimaNotaTestataDocumentoScadenza import RigaPrimaNotaTestataDocumentoScadenza
 from promogest.modules.Pagamenti.dao.TestataDocumentoScadenza import TestataDocumentoScadenza
-from promogest.ui.utils import leggiOperazione, dateToString, stringToDate, messageInfo, pbar
+from promogest.ui.utils import *
 
 def on_pulisci_scadenza_button_clicked(anaedit,button):
     """
@@ -121,7 +121,30 @@ def ricalcola_sospeso_e_pagato(anaedit):
     Pagamenti(anaedit).ricalcola_sospeso_e_pagato()
 
 def connectEntryPag(anaedit):
-    Pagamenti(anaedit).connectEntryPag()
+    #come sempre c'è questo inutile palleggiamento
+    anaedit.data_pagamento_prima_scadenza_entry.entry.connect('changed',
+            anaedit.on_data_pagamento_prima_scadenza_entry_changed)
+    anaedit.data_pagamento_seconda_scadenza_entry.entry.connect('changed',
+            anaedit.on_data_pagamento_seconda_scadenza_entry_changed)
+    anaedit.data_pagamento_terza_scadenza_entry.entry.connect('changed',
+            anaedit.on_data_pagamento_terza_scadenza_entry_changed)
+    anaedit.data_pagamento_quarta_scadenza_entry.entry.connect('changed',
+            anaedit.on_data_pagamento_quarta_scadenza_entry_changed)
+
+    anaedit.totale_pagato_scadenza_label.set_markup('<b><span foreground="#338000" size="24000">'+str(
+        0)+'</span></b>')
+    anaedit.totale_sospeso_scadenza_label.set_markup('<b><span foreground="#B40000" size="24000">'+str(
+        0)+'</span></b>')
+    anaedit.importo_primo_documento_entry.set_text('')
+    anaedit.importo_secondo_documento_entry.set_text('')
+    anaedit.numero_primo_documento_entry.set_text('')
+    anaedit.numero_secondo_documento_entry.set_text('')
+
+    fillComboboxPagamenti(anaedit.id_pagamento_acconto_customcombobox.combobox)
+    fillComboboxPagamenti(anaedit.id_pagamento_prima_scadenza_customcombobox.combobox)
+    fillComboboxPagamenti(anaedit.id_pagamento_seconda_scadenza_customcombobox.combobox)
+    fillComboboxPagamenti(anaedit.id_pagamento_terza_scadenza_customcombobox.combobox)
+    fillComboboxPagamenti(anaedit.id_pagamento_quarta_scadenza_customcombobox.combobox)
 
 def on_chiudi_pagamento_documento_button_clicked(anaedit, button):
     "chiudi pagamento"

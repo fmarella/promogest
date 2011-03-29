@@ -659,6 +659,7 @@ Procedere con la "chiusura" del Pagamento?"""
         self.anagrafica.importo_secondo_documento_entry.set_text('')
         self.anagrafica.numero_primo_documento_entry.set_text('')
         self.anagrafica.numero_secondo_documento_entry.set_text('')
+
         fillComboboxPagamenti(self.anagrafica.id_pagamento_acconto_customcombobox.combobox)
         fillComboboxPagamenti(self.anagrafica.id_pagamento_prima_scadenza_customcombobox.combobox)
         fillComboboxPagamenti(self.anagrafica.id_pagamento_seconda_scadenza_customcombobox.combobox)

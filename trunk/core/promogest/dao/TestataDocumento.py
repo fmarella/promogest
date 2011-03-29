@@ -633,20 +633,20 @@ class TestataDocumento(Dao):
         for r in row:
             #a cascata
 #            if dao.ripartire_importo: #aka prima nota
-            pnn = RigaPrimaNotaTestataDocumentoScadenza().\
+            rpntds = RigaPrimaNotaTestataDocumentoScadenza().\
                     select(idTestataDocumentoScadenza=r.id, batchSize=None)
-            if pnn:
-                for p in pnn:
+            if rpntds:
+                for p in rpntds:
                     rpn = RigaPrimaNota().getRecord(id=p.id_riga_prima_nota)
                     tpn = TestataPrimaNota().getRecord(id=rpn.id_testata_prima_nota)
+                    params['session'].delete(p)
+                    params["session"].commit()
                     if rpn:
                         params['session'].delete(rpn)
                         params["session"].commit()
                     if len(tpn.righeprimanota)==0:
                         params['session'].delete(tpn)
                         params["session"].commit()
-                    params['session'].delete(p)
-                    params["session"].commit()
             params['session'].delete(r)
             params["session"].commit()
         return True

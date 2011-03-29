@@ -215,7 +215,9 @@ def drawPart(anaedit):
             anaedit.on_sconti_widget_button_toggled)
     anaedit.sconti_testata_widget.button.connect('toggled',
             anaedit.on_sconti_testata_widget_button_toggled)
+
     if posso("PA"):
+        # Vado a popolare anche il tab dei pagamenti
         AnagraficadocumentiPagamentExt.connectEntryPag(anaedit)
 
 
