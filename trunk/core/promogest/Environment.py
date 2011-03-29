@@ -141,6 +141,28 @@ def getConfigureDir(company='__default__'):
     except getopt.GetoptError:
         return default
 
+def startdir():
+    startDir = getConfigureDir()
+    promogestStartDir = os.path.expanduser('~') + os.sep + startDir + os.sep
+    return promogestStartDir
+
+LOG_FILENAME = startdir()+'pg2.log'
+
+# Set up a specific logger with our desired output level
+pg2log = logging.getLogger('PromoGest2')
+pg2log.setLevel(logging.INFO)
+
+# Add the log message handler to the logger
+handler = logging.handlers.RotatingFileHandler(
+              LOG_FILENAME, maxBytes=10000, backupCount=6)
+
+formatter = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(pathname)s - %(funcName)s - %(lineno)d")
+# add formatter to ch
+handler.setFormatter(formatter)
+pg2log.addHandler(handler)
+pg2log.info("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
+
 def messageInfo(msg="Messaggio generico"):
     """generic msg dialog """
     dialoggg = gtk.MessageDialog(None,
@@ -148,16 +170,9 @@ def messageInfo(msg="Messaggio generico"):
                         gtk.MESSAGE_INFO,
                         gtk.BUTTONS_OK,
                         msg)
+    pg2log.info(msg)
     dialoggg.run()
     dialoggg.destroy()
-
-
-
-def startdir():
-    startDir = getConfigureDir()
-    promogestStartDir = os.path.expanduser('~') + os.sep + startDir + os.sep
-    return promogestStartDir
-
 
 class MyProxy(ConnectionProxy):
     def cursor_execute(self, execute, cursor, statement, parameters, context, executemany):
@@ -165,34 +180,36 @@ class MyProxy(ConnectionProxy):
             return execute(cursor, statement, parameters, context)
         except OperationalError as e:
             # Handle this exception
-            print("ATTENZIONE:OperationalError",e)
+#            print("ATTENZIONE:OperationalError",e)
             messageInfo(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
 #            pass
         except IntegrityError as e:
             # Handle this exception
-            print("ATTENZIONE:IntegrityError",e)
+#            print("ATTENZIONE:IntegrityError",e)
             messageInfo(msg="IntegrityError UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
             session.rollback()
         except ProgrammingError as e:
             # Handle this exception
-            print("ATTENZIONE:ProgrammingError",e)
+#            print("ATTENZIONE:ProgrammingError",e)
             messageInfo(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
             session.rollback()
         except InvalidRequestError as e:
             # Handle this exception
-            print("ATTENZIONE:InvalidRequestError",e)
+#            print("ATTENZIONE:InvalidRequestError",e)
             messageInfo(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO: "+e.message)
             session.rollback()
         except AssertionError as e:
             # Handle this exception
-            print("ATTENZIONE:AssertionError",e)
+#            print("ATTENZIONE:AssertionError",e)
             messageInfo(msg="UN ERRORE È STATO INTERCETTATO E SEGNALATO\n Possibile tentativo di cancellazione di un dato\n collegato ad altri dati fondamentali: "+e.message)
             session.rollback()
         except ValueError as e:
             # Handle this exception
-            print("ATTENZIONE:ValueError",e)
+#            print("ATTENZIONE:ValueError",e)
             messageInfo(msg="Risulta inserito un Valore non corretto. Ricontrolla: "+e.message)
             session.rollback()
+        session.rollback()
+
 
 def _pg8000():
     try:
@@ -539,22 +556,7 @@ loc = locale.setlocale(locale.LC_ALL, '')
 conf.windowsrc = os.path.expanduser('~') + os.sep + 'promogest2/windowsrc.xml'
 conf.guiDir = '.' + os.sep + 'gui' + os.sep
 
-LOG_FILENAME = startdir()+'pg2.log'
 
-# Set up a specific logger with our desired output level
-pg2log = logging.getLogger('PromoGest2')
-pg2log.setLevel(logging.INFO)
-
-# Add the log message handler to the logger
-handler = logging.handlers.RotatingFileHandler(
-              LOG_FILENAME, maxBytes=10000, backupCount=6)
-
-formatter = logging.Formatter(
-    "%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(pathname)s - %(funcName)s - %(lineno)d")
-# add formatter to ch
-handler.setFormatter(formatter)
-pg2log.addHandler(handler)
-pg2log.info("\n\n<<<<<<<<<<<  AVVIO PROMOGEST >>>>>>>>>>")
 
 def _msgDef(text="", html="",img="", subject=""):
     msgg = MIMEMultipart()
