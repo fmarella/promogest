@@ -253,7 +253,7 @@ class AnagraficaMultipliEdit(AnagraficaEdit):
             self.id_unita_base_combobox.set_sensitive(False)
 
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         if (self.denominazione_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel, self.denominazione_entry)
 

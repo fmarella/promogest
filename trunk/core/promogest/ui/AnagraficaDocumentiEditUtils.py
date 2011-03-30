@@ -39,6 +39,8 @@ if posso("GN"):
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
 if posso("PA"):
     from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
+if posso("ADR"):
+    from promogest.modules.ADR.ui import AnagraficaDocumentiEditADRExt
 
 
 def drawPart(anaedit):
@@ -480,6 +482,14 @@ def mostraArticoloPart(anaedit, id, art=None):
         anaedit._righe[0]["codiceArticolo"] = articolo["codice"]
         anaedit.articolo_entry.set_text(anaedit._righe[0]["codiceArticolo"])
         anaedit._righe[0]["descrizione"] = articolo["denominazione"]
+        if posso("ADR"):
+            artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(id)
+            if artADR:
+                # Aggiorna la descrizione con alcuni dati ADR
+                anaedit._righe[0]["descrizione"] += "\nUN {0},, {1},, {2}, {3}".format(artADR.numero_un,
+                    artADR.classe_pericolo,
+                    artADR.gruppo_imballaggio,
+                    artADR.galleria)
         anaedit.descrizione_entry.set_text(anaedit._righe[0]["descrizione"])
         anaedit._righe[0]["percentualeIva"] = mN(articolo["percentualeAliquotaIva"],2)
         anaedit._righe[0]["idAliquotaIva"] = articolo["idAliquotaIva"]
@@ -700,3 +710,6 @@ def hideSuMisura(ui):
     ui.sumisura_frame.destroy()
     ui.moltiplicatore_entry.destroy()
     ui.label_moltiplicatore.hide()
+
+def hideADR(ui):
+    ui.adr_frame.destroy()

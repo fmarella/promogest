@@ -89,7 +89,7 @@ class AnagraficaBancheEdit(GladeWidget):
 """ % (nazione.__dict__["name"], code, checksum, bank,cin,abi,cab,account))
         return iban
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         denominazione = self.denominazione_banca_entry.get_text()
         agenzia = self.agenzia_entry.get_text()
         iban = self.iban_entry.get_text()

@@ -299,7 +299,7 @@ class AnagraficaFamiglieArticoliEdit(AnagraficaEdit):
         fillComboboxFamiglieArticoli(self.id_padre_combobox, ignore=[self.dao.id])
         findComboboxRowFromId(self.id_padre_combobox, self.dao.id_padre)
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         if (self.codice_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel, self.codice_entry,
             msg="Codice Famiglia Articolo.\n\n Campo Obbligatorio!")

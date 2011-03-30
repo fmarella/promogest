@@ -407,7 +407,7 @@ class AnagraficaCommesseEdit(AnagraficaEdit):
         self.editRiga = self.rigaIter[0]
 
 
-    def saveDao(self, chiusura=False):
+    def saveDao(self, chiusura=False, tipo=None):
         """ Salvataggio della commessa nel tabase
         """
         model = self.riga_commessa_treeview.get_model()

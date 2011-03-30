@@ -898,7 +898,7 @@ class AnagraficaContattiEdit(AnagraficaEdit):
             elif self.azienda_radiobutton.get_active():
                 self.appartenenza_label.set_text('Azienda')
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         if not self.generico_radiobutton.get_active():
             if self.appartenenza_customcombobox._id is None:
                 obligatoryField(self.dialogTopLevel, self.appartenenza_customcombobox)

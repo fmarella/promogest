@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
+#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010, 2011 by Promotux
+#                        di Francesco Meloni snc - http://www.promotux.it/
 
-#    Copyright (C) 2005, 2006, 2007 2008, 2009, 2010
-#by Promotux di Francesco Meloni snc - http://www.promotux.it/
-
-#    Author: Andrea Argiolas <andrea@promotux.it>
-#    Author: JJDaNiMoTh <jjdanimoth@gmail.com>
-#    Author: Dr astico  (Marco Pinna)<marco@promotux.it>
-#    Author: Francesco Meloni  <francesco@promotux.it>
+#    Authors:
+#             Andrea Argiolas <andrea@promotux.it>
+#             JJDaNiMoTh <jjdanimoth@gmail.com>
+#             Dr astico (Marco Pinna) <marco@promotux.it>
+#             Francesco Meloni <francesco@promotux.it>
+#             Francesco Marella <francesco.marella@gmail.com>
 
 #    This file is part of Promogest.
 
@@ -60,6 +61,8 @@ if posso("GN"):
     from promogest.modules.GestioneNoleggio.ui import AnagraficaDocumentiEditGestioneNoleggioExt
 if posso("PA"):
     from promogest.modules.Pagamenti.ui import AnagraficadocumentiPagamentExt
+if posso("ADR"):
+    from promogest.modules.ADR.ui import AnagraficaDocumentiEditADRExt
 
 class AnagraficaDocumentiEdit(AnagraficaEdit):
     """ Modifica un record dei documenti """
@@ -145,6 +148,8 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self.label38.destroy()
             self.label40.destroy()
             self.totale_periodo_label.destroy()
+        if not posso("ADR"):
+            hideADR(self)
 
     def draw(self, cplx=False):
         self.cplx = cplx
@@ -318,6 +323,9 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._righe = []
         self._righe.append({})
         self._numRiga = 0
+        if posso("ADR"):
+            self.dati_adr = {}
+            AnagraficaDocumentiEditADRExt.setLabels(self)
         self.modelRiga.clear()
         self._iteratorRiga = None
         self.nuovaRiga()
@@ -537,7 +545,15 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
 
         self.clearRows()
 
+        scarta = False
         for riga in self.dao.righe:
+            if posso("ADR"):
+                # Scartiamo le righe di riepilogo ADR
+                if "RIEPILOGO" in riga.descrizione:
+                    scarta = True
+                    continue
+                if scarta:
+                    continue
             self.azzeraRiga(0)
             j = self.dao.righe.index(riga) + 1
             magazzino = leggiMagazzino(riga.id_magazzino)
@@ -609,6 +625,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
             self._righe[0]["prezzoNetto"] = Decimal(riga.valore_unitario_netto)
             self._righe[0]["prezzoNettoUltimo"] = Decimal(riga.valore_unitario_netto)
             self._righe[0]["totale"] = 0
+            if posso("ADR"):
+                artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(riga.id_articolo)
+                if artADR:
+                    # Calcola se viene superato il limite massimo di esenzione
+                    AnagraficaDocumentiEditADRExt.calcolaLimiteTrasportoADR(self, artADR)
             if posso("SM"):
                 self._righe[0]["altezza"] = mN(altezza)
                 self._righe[0]["larghezza"] = mN(larghezza)
@@ -731,10 +752,11 @@ class AnagraficaDocumentiEdit(AnagraficaEdit):
         self._refresh()
         return self.dao
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         """ Salvataggio del Dao
         """
-
+        if posso("ADR") and tipo==gtk.RESPONSE_OK:
+            AnagraficaDocumentiEditADRExt.sposta_sommario_in_tabella(self)
         scontiRigaDocumentoList = {}
         if not(len(self._righe) > 1):
             messageInfo(msg="TENTATIVO DI SALVATAGGIO DOCUMENTO SENZA RIGHE???")
@@ -993,6 +1015,7 @@ del documento.
         self._righe[0]["idListino"] = self._righe[self._numRiga]["idListino"]
         self._righe[0]["listino"] = self._righe[self._numRiga]["listino"]
         self._righe[0]["quantita"] = self._righe[self._numRiga]["quantita"]
+        self.last_qta = self._righe[self._numRiga]["quantita"]
         self._righe[0]["moltiplicatore"] = self._righe[self._numRiga]["moltiplicatore"]
         self._righe[0]["prezzoLordo"] = self._righe[self._numRiga]["prezzoLordo"]
         self._righe[0]["percentualeIva"] = self._righe[self._numRiga]["percentualeIva"]
@@ -1096,6 +1119,15 @@ del documento.
             inserisci = False
         # memorizzazione delle parti descrittive (liberamente modificabili)
         self._righe[0]["descrizione"] = self.descrizione_entry.get_text()
+
+        if posso("ADR"):
+            artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(self._righe[0]["idArticolo"])
+            if artADR:
+                if inserisci:
+                    AnagraficaDocumentiEditADRExt.calcolaLimiteTrasportoADR(self, artADR)
+                else:
+                    AnagraficaDocumentiEditADRExt.calcolaLimiteTrasportoADR(self, artADR, azione='agg', qta=self.last_qta)
+
         self._righe[0]["codiceArticoloFornitore"] = self.codice_articolo_fornitore_entry.get_text()
         totale = self._righe[0]["totale"]
         # CONTROLLI DI Gestione NOLEGGIO
@@ -1277,7 +1309,6 @@ del documento.
         model = self.completion.get_model()
         self.mattu = False
         self.articolo_matchato = None
-#        print "MODELLLLLLLLLLLLLLLLLL", model[iter][0], key, completion.get_text_column()
         if model[iter][0] and self.articolo_entry.get_text().lower() in model[iter][0].lower():
             return model[iter][0]
         else:
@@ -1287,6 +1318,7 @@ del documento.
         self.mattu = True
         self.articolo_matchato = model[iter][1]
         self.articolo_entry.set_position(-1)
+
 
     def ricercaArticolo(self):
         def on_ricerca_articolo_hide(anagWindow, anag):
@@ -1347,7 +1379,7 @@ del documento.
         if self.articolo_matchato:
             arts = [self.articolo_matchato]
         else:
-            arts = Articolo().select(codice=prepareFilterString(codice),
+            arts = Articolo().select(codiceEM=prepareFilterString(codice),
                                         orderBy=orderBy,
                                         join = join,
                                         denominazione=prepareFilterString(denominazione),
@@ -1531,6 +1563,11 @@ del documento.
         """ elimina la riga in primo piano """
 
         if not(self._numRiga == 0):
+            if posso("ADR"):
+                artADR = AnagraficaDocumentiEditADRExt.getADRArticolo(self._righe[self._numRiga]["idArticolo"])
+                if artADR:
+                    # Calcola se viene superato il limite massimo di esenzione
+                    AnagraficaDocumentiEditADRExt.calcolaLimiteTrasportoADR(self, artADR, azione='rm')
             del(self._righe[self._numRiga])
             self.modelRiga.remove(self._iteratorRiga)
         self.calcolaTotale()

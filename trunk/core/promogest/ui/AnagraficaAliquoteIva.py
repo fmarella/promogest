@@ -67,46 +67,6 @@ class AnagraficaAliquoteIvaFilter(AnagraficaFilter):
             return self._changeOrderBy(column,(None,AliquotaIva.denominazione_breve))
 
 
-
-#    def draw(self):
-#        # Colonne della Treeview per il filtro
-#        treeview = self._anagrafica.anagrafica_filter_treeview
-#        renderer = gtk.CellRendererText()
-
-#        column = gtk.TreeViewColumn('Descrizione', renderer, text=1)
-#        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-#        column.set_clickable(True)
-#        column.connect("clicked", self._changeOrderBy, (None, 'denominazione'))
-#        column.set_resizable(True)
-#        column.set_expand(True)
-#        column.set_min_width(100)
-#        treeview.append_column(column)
-
-#        column = gtk.TreeViewColumn('Descrizione breve', renderer, text=2)
-#        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-#        column.set_clickable(True)
-#        column.connect('clicked', self._changeOrderBy, (None, 'denominazione_breve'))
-#        column.set_resizable(True)
-#        column.set_expand(False)
-#        column.set_min_width(100)
-#        treeview.append_column(column)
-
-#        column = gtk.TreeViewColumn('%', renderer, text=3)
-#        column.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
-#        column.set_clickable(True)
-#        column.connect('clicked', self._changeOrderBy, (None, 'percentuale'))
-#        column.set_resizable(True)
-#        column.set_expand(False)
-#        column.set_min_width(100)
-#        treeview.append_column(column)
-
-#        treeview.set_search_column(1)
-
-#        self._treeViewModel = gtk.ListStore(gobject.TYPE_PYOBJECT, str, str, str)
-#        self._anagrafica.anagrafica_filter_treeview.set_model(self._treeViewModel)
-
-
-
     def clear(self):
         # Annullamento filtro
         self.denominazione_filter_entry.set_text('')
@@ -196,7 +156,7 @@ class AnagraficaAliquoteIvaEdit(AnagraficaEdit):
         self.descrizione_detrazione_entry.set_text(self.dao.descrizione_detrazione or '')
         findComboboxRowFromId(self.id_tipo_combobox, self.dao.id_tipo)
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         if (self.denominazione_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel, self.denominazione_entry)
 

@@ -146,7 +146,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
         if posso("ADR"):
             self.adr_page.adrSetDao(self.dao)
-            #self.adr_page.nome_cognome_label.set_text(str(self.dao.ragione_sociale) or ""+"\n"+str(self.dao.cognome) or ""+" "+str(self.dao.nome) or "")
 
         self._refresh()
         return self.dao
@@ -206,7 +205,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.adr_page.adr_refresh()
         self._loading = False
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         """ Salvataggio del dao con un po' di logica legata alle diverse
             tipologie di articolo :noleggio, su misura, promowear
         """

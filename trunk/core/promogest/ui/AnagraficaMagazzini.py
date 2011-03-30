@@ -176,7 +176,7 @@ class AnagraficaMagazziniEdit(AnagraficaEdit):
         self.provincia_entry.set_text(self.dao.provincia or '')
         self.pvcode_entry.set_text(self.dao.pvcode or '')
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         if (self.denominazione_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel, self.denominazione_entry)
 

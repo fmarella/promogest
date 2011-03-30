@@ -506,7 +506,7 @@ class AnagraficaSchedeOrdinazioniEdit(SchedeOrdinazioniEditWidget,AnagraficaEdit
                 daoRiga.scontiRiga = scontiRiga
         return daoRiga
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         """
         Recupera tutte le inforamzioni necessarie al salvataggio del Dao
         """

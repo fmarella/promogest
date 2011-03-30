@@ -309,7 +309,7 @@ class AnagraficaListiniEdit(AnagraficaEdit):
         for m in listini:
             model.append((m.id_listino, m.listino_denominazione, None, None))
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         if (self.denominazione_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel, self.denominazione_entry)
 

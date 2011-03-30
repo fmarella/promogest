@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+
+{% block body %}
+    {% if dao %}
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td class="report-header" colspan="2"><h3> Categoria di trasporto: <strong>{{dao.denominazione}}</strong></h3></td>
+            </tr>
+            <tr><td colspan="2" class="table-header">Dati categoria di trasporto</td></tr>
+            <tr>
+                <td class="odd-detail" width="180px">Descrizione</td>
+                <td class="odd-detail"><strong>{{dao.denominazione}}</strong></td>
+            </tr>
+            <tr>
+                <td class="even-detail" >Quantità massima trasportabile</td>
+                <td class="even-detail"><strong>{{dao.quantita_massima_trasportabile}}</strong></td>
+            </tr>
+            <tr>
+                <td class="odd-detail" >Coefficiente moltiplicazione virtuale</td>
+                <td class="odd-detail"><strong>{{dao.coefficiente_moltiplicazione_virtuale}}</strong></td>
+            </tr>
+            <tr>
+            <td class="even-detail" >Note</td>
+            <td class="even-detail"><strong>{{dao.note}}</strong></td>
+            </tr>
+        </table>
+        {% else %}
+        <p><img src= "gui/attenzione_48X48.png">ELIMINATO: Niente da visualizzare</p>
+        <p><img src= "gui/testata_promogest2.png"></p>
+        {% endif %}
+    {% endblock %}

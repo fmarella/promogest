@@ -357,7 +357,7 @@ class AnagraficaPromemoriaEdit(AnagraficaEdit):
         fillComboboxIncaricatiPromemoria(self.incaricato_combobox_entry)
         fillComboboxAutoriPromemoria(self.autore_combobox_entry)
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         if self.data_scadenza_entry.get_text() == '':
             obligatoryField(self.dialogTopLevel, self.data_scadenza_entry,
                      msg = 'Data scadenza. \nCampo obbligatorio')

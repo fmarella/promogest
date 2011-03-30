@@ -656,7 +656,7 @@ class AnagraficaMovimentiEdit(AnagraficaEdit):
         self._refresh()
         return self.dao
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         """
         Salva il Dao nel Database
         """

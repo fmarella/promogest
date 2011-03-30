@@ -343,7 +343,7 @@ class AnagraficaStoccaggiEdit(AnagraficaEdit):
                 tagliageneregruppotaglia = ""
             self.taglia_label.set_markup(tagliageneregruppotaglia)
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         if findIdFromCombobox(self.id_magazzino_customcombobox.combobox) is None:
             obligatoryField(self.dialogTopLevel, self.id_magazzino_customcombobox.combobox)
         idMagazzino = findIdFromCombobox(self.id_magazzino_customcombobox.combobox)

@@ -217,7 +217,7 @@ class AnagraficaUtentiEdit(AnagraficaEdit):
 #        findComboboxRowFromId(self.id_language_combobox, self.dao.id_language)
 
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         if (self.username_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel, self.username_entry)
 

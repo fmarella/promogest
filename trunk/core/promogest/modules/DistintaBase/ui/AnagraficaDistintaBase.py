@@ -346,7 +346,7 @@ class AnagraficaDistintaBaseEdit(AnagraficaEdit):
     def on_add_article_button_clicked(self, button):
         self.ricercaArticolo()
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         """
         salva tutte le distinte base nel database
         """

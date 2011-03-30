@@ -390,7 +390,7 @@ class AnagraficaListiniArticoliEdit(AnagraficaEdit):
                                            % (stagione, anno))
             self.taglia_colore_table.show()
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         """        """
         creaentryvarianti = False
         articolo = None

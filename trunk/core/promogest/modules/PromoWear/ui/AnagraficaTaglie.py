@@ -253,7 +253,7 @@ class AnagraficaTaglieEdit(AnagraficaEdit):
                                                 self.dao.id_gruppo_taglia)
         self.ordine_spinbutton.set_value(self.dao.ordine or 1)
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         if (self.denominazione_entry.get_text() == ''):
             obligatoryField(self.dialogTopLevel, self.denominazione_entry)
 

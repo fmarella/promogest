@@ -479,7 +479,7 @@ class AnagraficaFornitureEdit(AnagraficaEdit):
         self.prezzo_netto_label.set_text(self.number_format % float(prezzoNetto or 0))
 
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         if self.id_articolo_customcombobox.getId() is None:
             obligatoryField(self.dialogTopLevel, self.id_articolo_customcombobox)
 

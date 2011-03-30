@@ -148,7 +148,7 @@ class AnagraficaFornitoriEdit(AnagraficaEdit):
         self.anagrafica_fornitori_detail_notebook.set_current_page(0)
 
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         self.dao.codice = self.codice_entry.get_text().upper()
 #        self.dao.codice = omogeneousCode(section="Fornitori", string=self.dao.codice )
         self.dao.ragione_sociale = self.ragione_sociale_entry.get_text()

@@ -105,7 +105,7 @@ class AnagraficaEdit(GladeWidget):
         """ Visualizza il Dao specificato """
         raise NotImplementedError
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         """ Salva il Dao attualmente selezionato """
         raise NotImplementedError
 
@@ -125,13 +125,13 @@ class AnagraficaEdit(GladeWidget):
             #self.clearDao()
             self.setVisible(False)
         elif responseId == gtk.RESPONSE_OK:
-            self.saveDao()
+            self.saveDao(tipo=gtk.RESPONSE_OK)
             self._anagrafica.filter.refresh()
             self._anagrafica.filter.selectCurrentDao()
             self._anagrafica.filter.getSelectedDao()
             self.setVisible(False)
         elif responseId == gtk.RESPONSE_APPLY:
-            self.saveDao()
+            self.saveDao(tipo=gtk.RESPONSE_APPLY)
             self._anagrafica.filter.refresh()
             self._anagrafica.filter.selectCurrentDao()
 

@@ -96,7 +96,7 @@ class AnagraficaAgentiEdit(AnagraficaEdit):
         self.percentuale_entry.set_text(str(self.dao.percentuale) or '')
 
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         """ Save data to DB """
         self.dao.codice = self.codice_entry.get_text().upper()
 #        self.dao.codice = omogeneousCode(section="Agenti", string=self.dao.codice )

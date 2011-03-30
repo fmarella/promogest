@@ -270,7 +270,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
         for c in categorie:
             model.append([c.id_categoria_cliente, c.categoria_cliente.denominazione, None, None])
 
-    def saveDao(self):
+    def saveDao(self, tipo=None):
         self.verificaListino()
         self.dao.codice = self.codice_entry.get_text().upper()
         self.dao.codice = omogeneousCode(section="Clienti", string=self.dao.codice )
