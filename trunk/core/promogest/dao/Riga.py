@@ -152,9 +152,6 @@ class Riga(Dao):
             if self.arti:return self.arti.denominazione_modello
         denominazione_modello = property(_modello)
 
-
-
-
 std_mapper = mapper(Riga, riga, properties={
             "maga":relation(Magazzino,primaryjoin=riga.c.id_magazzino==Magazzino.id),
             "listi":relation(Listino,primaryjoin=riga.c.id_listino==Listino.id),

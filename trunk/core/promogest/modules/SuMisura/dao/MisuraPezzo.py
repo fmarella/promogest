@@ -27,7 +27,7 @@ misurapezzo=Table('misura_pezzo',
         autoload=True)
 
 std_mapper = mapper(MisuraPezzo, misurapezzo, properties={
-        "rig":relation(Riga,primaryjoin=Riga.id==misurapezzo.c.id_riga, backref=backref("sumi", cascade="all, delete")),
+        "rig":relation(Riga,primaryjoin=Riga.id==misurapezzo.c.id_riga, backref=backref("sumi")),
 
 }, order_by=misurapezzo.c.id)
 

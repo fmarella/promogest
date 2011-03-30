@@ -937,6 +937,13 @@ class TestataDocumento(Dao):
                 params['session'].delete(f)
             params['session'].commit()
         self.testataDocumentoScadenzaDel(dao=self)
+        if posso("SM"):
+            for r in self.righe:
+                mp = MisuraPezzo().select(idRiga=r.id, batchSize=None)
+                if mp:
+                    for m in mp:
+                        params['session'].delete(m)
+                    params["session"].commit()
         params['session'].delete(self)
         params['session'].commit()
 
