@@ -143,7 +143,7 @@ class Sla2Pdf_ng(SlaParser):
             cellpict = celle[v].get('PFILE')
             cellIMGHeight = celle[v].get('HEIGHT')
             cellIMGWidth = celle[v].get('WIDTH')
-            if (celle[v].get('BottomLine') == "1" and celle[v].get('TopLine') == "1" and\
+            if str(celle[v].get('PCOLOR2')) != "None" or (celle[v].get('BottomLine') == "1" and celle[v].get('TopLine') == "1" and\
                         celle[v].get('LeftLine') =="1" and celle[v].get('RightLine') == "1"):
                 stile.add('BOX', (contColumns,contRows),
                                 (contColumns,contRows),
