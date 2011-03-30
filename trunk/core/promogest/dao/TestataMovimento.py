@@ -175,7 +175,7 @@ class TestataMovimento(Dao):
         if row:
             for r in row:
                 if posso("SM"):
-                    mp = MisuraPezzo().select(idRiga=r.id)
+                    mp = MisuraPezzo().select(idRiga=r.id, batchSize=None)
                     if mp:
                         for m in mp:
                             params['session'].delete(m)

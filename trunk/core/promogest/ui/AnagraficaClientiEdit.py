@@ -280,8 +280,7 @@ class AnagraficaClientiEdit(AnagraficaEdit):
 #        self.dao.nome= self.nome_entry.get_text()
         if (self.dao.codice and (self.dao.ragione_sociale or self.dao.insegna or self.dao.cognome or self.dao.nome)) =='':
             msg="""Il codice è obbligatorio.
-    Inserire almeno un campo a scelta tra:
-    ragione sociale, insegna, cognome o nome """
+    Inserire anche ragione sociale / cognome e nome """
             dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK, msg)
             dialog.run()
