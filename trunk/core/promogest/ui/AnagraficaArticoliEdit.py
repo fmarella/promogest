@@ -326,7 +326,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         self.dao.codice = omogeneousCode(section="Articoli", string=self.dao.codice )
         cod=checkCodiceDuplicato(codice=self.dao.codice,id=self.dao.id, tipo="Articolo")
         if not cod:
-            return
+            raise Exception, 'Operation aborted campo obbligatorio'
         self.dao.denominazione = self.denominazione_entry.get_text()
         if posso("GN"):
             self.dao.divisore_noleggio_value_set = self.divisore_noleggio_entry.get_text()

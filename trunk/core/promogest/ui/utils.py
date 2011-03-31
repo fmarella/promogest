@@ -2189,13 +2189,6 @@ def codeIncrement(value):
 
 def checkCodiceDuplicato(codice=None,id=None,tipo=None):
     """
-    FIXME
-    @param codice=None:
-    @type codice=None:
-    @param id=None:
-    @type id=None:
-    @param tipo=None:
-    @type tipo=None:
     """
     if tipo =="Articolo":
         from promogest.dao.Articolo import Articolo

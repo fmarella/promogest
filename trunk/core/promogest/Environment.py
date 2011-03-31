@@ -154,7 +154,10 @@ def messageInfo(msg="Messaggio generico"):
                         gtk.MESSAGE_INFO,
                         gtk.BUTTONS_OK,
                         msg)
-    pg2log.info(msg)
+    try:
+        pg2log.info(msg)
+    except:
+        pass
     dialoggg.run()
     dialoggg.destroy()
 
