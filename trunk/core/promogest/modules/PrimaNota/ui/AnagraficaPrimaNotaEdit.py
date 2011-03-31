@@ -249,7 +249,7 @@ class AnagraficaPrimaNotaEdit(AnagraficaEdit):
         self.denominazione_entry.set_text(self.rigaIter[1])
         self.editRiga = self.rigaIter[0]
 
-    def saveDao(self, chiusura=False):
+    def saveDao(self, chiusura=False, tipo=None):
         if not self.dao.numero:
             date = Environment.workingYear
             numeroSEL= TestataPrimaNota().select(complexFilter=(and_(TestataPrimaNota.data_inizio.between(datetime.date(int(date), 1, 1), datetime.date(int(date) + 1, 1, 1)))), batchSize=None)
