@@ -143,35 +143,45 @@ class Sla2Pdf_ng(SlaParser):
             cellpict = celle[v].get('PFILE')
             cellIMGHeight = celle[v].get('HEIGHT')
             cellIMGWidth = celle[v].get('WIDTH')
-            if str(celle[v].get('PCOLOR2')) != "None" or (celle[v].get('BottomLine') == "1" and celle[v].get('TopLine') == "1" and\
+#            print "CELLEEEEEEEEEEEEE", celle[v].get('PCOLOR2'), type(celle[v].get('PCOLOR2'))
+            bordoriga = False
+            if (celle[v].get('BottomLine') == "1" and celle[v].get('TopLine') == "1" and\
                         celle[v].get('LeftLine') =="1" and celle[v].get('RightLine') == "1"):
                 stile.add('BOX', (contColumns,contRows),
                                 (contColumns,contRows),
                                 float(celle[v].get('PWIDTH')),
                                 hexBorderColor)
-#                print "AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH", celle[v].get('PWIDTH'), stile
+                bordoriga = True
             else:
                 if celle[v].get('BottomLine') == "1":
                     stile.add('LINEBELOW', (contColumns,contRows),
                                 (contColumns,contRows),
                                 float(celle[v].get('PWIDTH')),
                                 hexBorderColor)
+                    bordoriga = True
                 if celle[v].get('TopLine') == "1":
                     stile.add('LINEABOVE', (contColumns,contRows),
                                 (contColumns,contRows),
                                 float(celle[v].get('PWIDTH')),
                                 hexBorderColor)
+                    bordoriga = True
                 if celle[v].get('LeftLine') == "1":
                     stile.add('LINEBEFORE', (contColumns,contRows),
                                 (contColumns,contRows),
                                 float(celle[v].get('PWIDTH')),
                                 hexBorderColor)
+                    bordoriga = True
                 if celle[v].get('RightLine') == "1":
                     stile.add('LINEAFTER', (contColumns,contRows),
                                 (contColumns,contRows),
                                 float(celle[v].get('PWIDTH')),
                                 hexBorderColor)
-
+                    bordoriga = True
+            if not bordoriga and str(celle[v].get('PCOLOR2')) != "None":
+                stile.add('BOX', (contColumns,contRows),
+                                (contColumns,contRows),
+                                float(celle[v].get('PWIDTH')),
+                                hexBorderColor)
             if not monocell:
                 ch = self.chFunc(itexts[v])[0]
                 itext = self.chFunc(itexts[v])[1]
